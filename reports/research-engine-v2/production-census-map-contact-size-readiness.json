@@ -1,0 +1,217 @@
+{
+  "ok": true,
+  "version": "census-map-contact-size-readiness-v1",
+  "generated_at": "2026-08-07T17:28:24.118Z",
+  "status": "production_census_map_contact_size_readiness_ready_needs_production_cycle",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "phone_field": "Phone",
+  "phone_field_exists": true,
+  "phone_schema_note": "Phone field present — High official enrichment allowed",
+  "counters": {
+    "total_records": 1224,
+    "clean_core": 1023,
+    "map_contact_size_ready": 0,
+    "rich_enrichment_ready": 0,
+    "below_clean_core": 201,
+    "address_complete": 400,
+    "lat_long_complete": 379,
+    "lat_long_eligible": 89,
+    "phone_complete": 350,
+    "phone_source_available": 874,
+    "rooms_complete": 0,
+    "rooms_source_available": 1224,
+    "blocked_dirty_identity": 199,
+    "blocked_missing_address": 712,
+    "blocked_source_insufficient": 0,
+    "steward_conflicts": 0
+  },
+  "mapbox_permanent": {
+    "ready": true,
+    "missing_flags": [],
+    "estimated_geocode_requests": 89,
+    "estimated_cost": {
+      "requests": 89,
+      "estimated_usd": 0.445,
+      "basis": "mapbox_permanent",
+      "rate_per_1k_usd": 5,
+      "note": "Order-of-magnitude estimate only; confirm current provider pricing.",
+      "pricing_configured": false
+    }
+  },
+  "production_cycle_order": [
+    "source_discovery",
+    "core_identity_quality",
+    "core_identity_source_lookup",
+    "clean_core_classification",
+    "key_field_completion",
+    "address_confirmation",
+    "coordinate_completion",
+    "phone_number_enrichment",
+    "rooms_keys",
+    "property_type_asset_context",
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness"
+  ],
+  "sample_below_clean_core": [
+    {
+      "record_id": "rec02pPY8kVklN6mK",
+      "missing": [],
+      "blockers": [
+        "brand_steward_review_required",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec02wJ8dk7HtjPjx",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "city_city_unknown",
+        "canonical_steward_review_required",
+        "human_review_required",
+        "blocked_dirty_core_identity"
+      ]
+    },
+    {
+      "record_id": "rec0IqAQQtjvBvstj",
+      "missing": [],
+      "blockers": [
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec0P2XU4LWSkAMKm",
+      "missing": [],
+      "blockers": [
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1XdpdiXxT2K18C",
+      "missing": [],
+      "blockers": [
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1f0W6zwB9lA50p",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1fjvAKLJPb7AzI",
+      "missing": [],
+      "blockers": [
+        "brand_steward_review_required",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2gjht94CaFSfNX",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2lIoIR5zP8K3XZ",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2vGUV97V68xHMp",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown"
+      ]
+    },
+    {
+      "record_id": "rec2wRckl0EfhiNyY",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec30eORcGKDSQKhJ",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3NdKlsDqp9AWpc",
+      "missing": [],
+      "blockers": [
+        "brand_steward_review_required",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3QgXCAUGHlVw6c",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3bK7fOFBnEsJwM",
+      "missing": [],
+      "blockers": [
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    }
+  ],
+  "sample_lat_long_eligible": [
+    "rec1SGAKRL8dvYyqu",
+    "rec2CnwDDzuMNJS8p",
+    "rec2qzq0V2Hvr2m6l",
+    "rec2vPnXJrkRLOAoB",
+    "rec3N3vaZ7C6AVZDQ",
+    "rec3c9fCwqOCA9TAO",
+    "rec3t0vOGGf5LeXDb",
+    "rec4oP5nj76kK9D0s",
+    "rec6pGcGtBpLNH2nn",
+    "rec81sb3lgZqO0qWv"
+  ]
+}

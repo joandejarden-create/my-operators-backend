@@ -1,0 +1,55 @@
+const fs = require("fs");
+const path = require("path");
+const { spawnSync } = require("child_process");
+
+const root = "C:/Dev/deal-capture-proxy";
+const metas = {
+  "section-type": {
+    uploadUrl: "https://webflow-prod-assets.s3.amazonaws.com/",
+    uploadDetails: {
+      acl: "public-read",
+      bucket: "webflow-prod-assets",
+      xAmzAlgorithm: "AWS4-HMAC-SHA256",
+      xAmzCredential: "AKIAQLLHWD6MEJGETLST/20260801/us-east-1/s3/aws4_request",
+      xAmzDate: "20260801T013434Z",
+      key: "68108c29063eeb5d1bd7ae4a/6a6d4d297aebfdd31871d780_dealality-old-home-section-type.v20260801a.css",
+      policy:
+        "eyJleHBpcmF0aW9uIjoiMjAyNi0wOC0wMVQwMjozNDozNFoiLCJjb25kaXRpb25zIjpbWyJzdGFydHMtd2l0aCIsIiRrZXkiLCI2ODEwOGMyOTA2M2VlYjVkMWJkN2FlNGEvIl0seyJjYWNoZS1jb250cm9sIjoibWF4LWFnZT0zMTUzNjAwMCJ9LHsiQ29udGVudC1UeXBlIjoidGV4dC9jc3MifSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwidGV4dC9jc3MiXSxbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwwLDMxNDU3MjgwXSx7ImFjbCI6InB1YmxpYy1yZWFkIn0seyJidWNrZXQiOiJ3ZWJmbG93LXByb2QtYXNzZXRzIn0seyJYLUFtei1BbGdvcml0aG0iOiJBV1M0LUhNQUMtU0hBMjU2In0seyJYLUFtei1DcmVkZW50aWFsIjoiQUtJQVFMTEhXRDZNRUpHRVRMU1QvMjAyNjA4MDEvdXMtZWFzdC0xL3MzL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotRGF0ZSI6IjIwMjYwODAxVDAxMzQzNFoifSx7ImtleSI6IjY4MTA4YzI5MDYzZWViNWQxYmQ3YWU0YS82YTZkNGQyOTdhZWJmZGQzMTg3MWQ3ODBfZGVhbGFsaXR5LW9sZC1ob21lLXNlY3Rpb24tdHlwZS52MjAyNjA4MDFhLmNzcyJ9XX0=",
+      xAmzSignature: "dbf182f19cd5fae5424abcae7181731e15ea317886a0d880745650d8a876b5dc",
+      successActionStatus: "201",
+      contentType: "text/css",
+      cacheControl: "max-age=31536000",
+    },
+    file: "public/marketing/dealality-old-home-section-type.v20260801a.css",
+  },
+  "how-css": {
+    uploadUrl: "https://webflow-prod-assets.s3.amazonaws.com/",
+    uploadDetails: {
+      acl: "public-read",
+      bucket: "webflow-prod-assets",
+      xAmzAlgorithm: "AWS4-HMAC-SHA256",
+      xAmzCredential: "AKIAQLLHWD6MEJGETLST/20260801/us-east-1/s3/aws4_request",
+      xAmzDate: "20260801T013434Z",
+      key: "68108c29063eeb5d1bd7ae4a/6a6d4d2ab780fbbd5e582d34_dealality-old-home-how-we-do-it.v20260801a.css",
+      policy:
+        "eyJleHBpcmF0aW9uIjoiMjAyNi0wOC0wMVQwMjozNDozNFoiLCJjb25kaXRpb25zIjpbWyJzdGFydHMtd2l0aCIsIiRrZXkiLCI2ODEwOGMyOTA2M2VlYjVkMWJkN2FlNGEvIl0seyJjYWNoZS1jb250cm9sIjoibWF4LWFnZT0zMTUzNjAwMCJ9LHsiQ29udGVudC1UeXBlIjoidGV4dC9jc3MifSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwidGV4dC9jc3MiXSxbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwwLDMxNDU3MjgwXSx7ImFjbCI6InB1YmxpYy1yZWFkIn0seyJidWNrZXQiOiJ3ZWJmbG93LXByb2QtYXNzZXRzIn0seyJYLUFtei1BbGdvcml0aG0iOiJBV1M0LUhNQUMtU0hBMjU2In0seyJYLUFtei1DcmVkZW50aWFsIjoiQUtJQVFMTEhXRDZNRUpHRVRMU1QvMjAyNjA4MDEvdXMtZWFzdC0xL3MzL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotRGF0ZSI6IjIwMjYwODAxVDAxMzQzNFoifSx7ImtleSI6IjY4MTA4YzI5MDYzZWViNWQxYmQ3YWU0YS82YTZkNGQyYWI3ODBmYmJkNWU1ODJkMzRfZGVhbGFsaXR5LW9sZC1ob21lLWhvdy13ZS1kby1pdC52MjAyNjA4MDFhLmNzcyJ9XX0=",
+      xAmzSignature: "c66caa043dfe149bab4d48bb8650f8f7612096e479d2b7e3686bcf18cfe36dfa",
+      successActionStatus: "201",
+      contentType: "text/css",
+      cacheControl: "max-age=31536000",
+    },
+    file: "public/marketing/dealality-old-home-how-we-do-it.v20260801a.css",
+  },
+};
+
+fs.mkdirSync(path.join(root, "tmp"), { recursive: true });
+for (const [k, meta] of Object.entries(metas)) {
+  const metaPath = path.join(root, "tmp", `mp-gap-${k}.json`);
+  fs.writeFileSync(metaPath, JSON.stringify({ uploadUrl: meta.uploadUrl, uploadDetails: meta.uploadDetails }));
+  const r = spawnSync(
+    "node",
+    [path.join(root, "scripts/upload-webflow-asset.mjs"), "--complete", metaPath, path.join(root, meta.file)],
+    { encoding: "utf8" }
+  );
+  console.log(k, r.status, r.stdout || r.stderr);
+}

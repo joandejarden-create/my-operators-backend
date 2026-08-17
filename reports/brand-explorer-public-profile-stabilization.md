@@ -1,0 +1,316 @@
+# Public Profile Stabilization
+
+Version: `public-profile-stabilization-v1`
+Generated: 2026-07-22T20:02:35.329Z
+Patches: **484** · Blocked brands: **0**
+Applied: **true**
+
+## Targets
+- Primary: everhome-suites, kimpton, design-hotels
+- Legacy: ascend, comfort-inn-suites, curio-collection, tribute-portfolio
+- Protected (no writes): hotel-indigo, mgallery-collection, radisson-individuals-by-choice, small-luxury-hotels-of-the-world
+
+## Brand plans
+### Everhome Suites (`everhome-suites`)
+- Before failFindings=39 empty=0 auditPass=false
+- Patches: 42 · Blocked: false
+  - PATCH `overview.development_model` rec6mqSpVpkg1XQu2 — public_profile_stabilization_field_gate
+  - POST `overview.relative_positioning` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.scenario.1` recXTbIl53SC0JQ92 — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.2` rec8MN6H9nxFjTdPu — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.3` rec6EVyYDBskOk9sv — public_profile_stabilization_field_gate
+  - PATCH `overview.why_value` recFqEwvESTCvtRi1 — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.1` recJ2YwRLjIrSgEHT — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.2` recGhn3SxcJjP1tBB — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.3` recR2aBbJixu3N8Og — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.4` recUTyFrMyfSnGqqw — public_profile_stabilization_field_gate
+  - POST `overview.featured_application` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.portfolio_context` rech15A06Sl0JJTHF — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.1` rec2g2ivio2AILVNS — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.2` recAEFJZwQUdSy8So — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.3` rech5EgbBeAmKOKRz — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.4` recFryr4MXMXWqzOT — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.5` recitItVWWeVPO5js — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.6` recuHMUiZLTDBqDEe — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` recXbpPvVDGsJzGTM — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` rectqry1EZtI19lfd — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` receyExZj6DhajQFQ — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recyJIVKRy7HDVaSR — quarantine_extra_portfolio_mix_chip
+  - PATCH `operations.model.primary_model` rec0q4e4ZnKF91Ni0 — public_profile_stabilization_field_gate
+  - PATCH `operations.model.management_option` reccjW4Dtuv6NceJ1 — public_profile_stabilization_field_gate
+  - PATCH `operations.model.typical_ownership` recFQetR1mfVZevcv — public_profile_stabilization_field_gate
+  - PATCH `operations.model.pre_opening` recMrpSjCcxEboCTZ — public_profile_stabilization_field_gate
+  - PATCH `operations.model.staffing_intensity` recplHS0dT8PRh5Ae — public_profile_stabilization_field_gate
+  - PATCH `operations.model.fb_complexity` recq7ASBFtvEbKrlu — public_profile_stabilization_field_gate
+  - PATCH `operations.model.training` rec7wSFS7lDOV5Mg2 — public_profile_stabilization_field_gate
+  - PATCH `operations.model.reporting_discipline` recSmF3wZmAlqwrY5 — public_profile_stabilization_field_gate
+  - PATCH `operations.model.qa_rhythm` recPSeYijG9F6iXoH — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.summary` rec7wZQkzZgb7jyKQ — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.tags` recoGQL6Xi3mtak7I — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.qa_cadence` recNGl6hrG9UFVvQF — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.training_rigor` recB9ClcEdokfuDcy — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.reporting` recb0V8ScvvTgE0p3 — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.brand_interaction` rec3wXZLRiHlkt9OU — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.1` recgSzDGbYA7FGJDi — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.2` recD8yL9WJH853OfX — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.3` recXx6ykhuk8rfGAe — public_profile_stabilization_field_gate
+  - … +2 more
+
+### Kimpton Hotels (`kimpton`)
+- Before failFindings=26 empty=0 auditPass=false
+- Patches: 30 · Blocked: false
+  - PATCH `overview.scenario.1` recxkJON3tcYDqQwE — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.2` reclLakYWtJkmh18h — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.3` recvNvCgfu2b2oJOA — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.1` recYnafDatF6shmAm — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.2` recC5F4wQZb9pvPpt — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.3` recvKMqlB6WoDJ1jN — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.4` recfSLnvfOe5lb4rh — public_profile_stabilization_field_gate
+  - POST `overview.featured_application` (create) — public_profile_stabilization_create_slot
+  - PATCH `valueOwners.lifecycle.1` recRkC8y8uWLV7G3Y — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.2` rec3xRNL8BPZHTLVI — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.3` recpOP8HFTDNrf6Qi — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.4` recUnQvIgYCStpoH8 — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.5` recKIxORQNd0bPO0Y — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.6` rec3LGt9BY3LUVuIv — public_profile_stabilization_field_gate
+  - PATCH `footprint.growth_fit` rec8a6N8UFKaHItjG — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` recDcVvFeaEK9mGwj — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` recSG1Q3GBpmgwHI4 — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recA4aftZysu6hZrW — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recyxOHpAel9hrGoZ — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recZloR6IhA4jWX8D — quarantine_extra_portfolio_mix_chip
+  - PATCH `operations.operator_compat.tags` recl7xgbU9Si8KItA — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.training_rigor` recSUYwXMJk0bdl2u — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.reporting` recWxd4RGIkW7Ro1k — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.brand_interaction` recKwHLeq047NSwty — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.1` recr5yZry4JqZPiGT — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.2` receT1e4bxZojMRSl — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.3` recvUKZ9VIfsZ2efC — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.4` recp94s3X8EsJ6aZ3 — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.5` recDgsPqLIuMEoRJM — public_profile_stabilization_field_gate
+  - PATCH `insight.similar` recsTElyoCypckSA9 — public_profile_stabilization_field_gate
+
+### Design Hotels (`design-hotels`)
+- Before failFindings=41 empty=0 auditPass=false
+- Patches: 44 · Blocked: false
+  - POST `overview.relative_positioning` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.scenario.1` reckiLJXDBEQEpspo — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.2` recfxEGrnDvEMxxm4 — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.3` rec9PlBl4Segs37M0 — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.1` recjYwx5e5hxK7kq6 — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.2` rec3JDakCyWAsCeC6 — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.3` rectIXc95u5iTzBZh — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.4` recEfqMEoxvG3sAKQ — public_profile_stabilization_field_gate
+  - POST `overview.featured_application` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.portfolio_context` recyoJYcGj7sshNTk — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.1` rect04h2SrUNnlHJI — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.2` recngPbO5XuMX81pz — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.3` recoKDP1lVdclnDfl — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.4` rec8HqShEHLh4DD1S — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.5` rec6AAhirOaWNEO5e — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.6` recI7wt427g9w3y3n — public_profile_stabilization_field_gate
+  - PATCH `footprint.geo_intro` reczffCQjBAdDWbWC — public_profile_stabilization_field_gate
+  - PATCH `footprint.growth_editorial` recUv7GkesrQ0thGG — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` recswZAHlbnPAM7P8 — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` receM25UrEf5jU1jg — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recYoqHFJGLjNP5l3 — quarantine_extra_portfolio_mix_chip
+  - POST `operations.model.typical_ownership` (create) — public_profile_stabilization_create_slot
+  - POST `operations.model.pre_opening` (create) — public_profile_stabilization_create_slot
+  - PATCH `operations.model.staffing_intensity` receXQe5dCTkCwbnK — public_profile_stabilization_field_gate
+  - PATCH `operations.model.fb_complexity` recF2okNRaRJwSXKJ — public_profile_stabilization_field_gate
+  - PATCH `operations.model.training` recEdSZKKNvp1SYnI — public_profile_stabilization_field_gate
+  - PATCH `operations.model.reporting_discipline` reckCKcS89DnukaTf — public_profile_stabilization_field_gate
+  - PATCH `operations.standards_philosophy` reck78sSEqS3kBTFv — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.fit` rec8rB1oOoCJob1eU — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.qa_cadence` recbFerUZGbi6qtQh — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.training_rigor` recRtIHkKHX7RdGeS — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.reporting` recX7o3LXSO7MvmsJ — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.brand_interaction` rec9XqQhMja2hpAb9 — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.1` recDCKla5VVHGVj8t — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.2` recRofRE7HUFJXr9T — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.3` recEtdKNmHSAtjnUe — public_profile_stabilization_field_gate
+  - POST `economics.opening.step.4` (create) — public_profile_stabilization_create_slot
+  - POST `economics.opening.step.5` (create) — public_profile_stabilization_create_slot
+  - PATCH `standards.requirement` recy14agUHx4ZLRq8 — public_profile_stabilization_field_gate
+  - PATCH `standards.requirement` recFC3p9RPZmJEbWh — public_profile_stabilization_field_gate
+  - … +4 more
+
+### Ascend Hotel Collection (`ascend`)
+- Before failFindings=46 empty=1 auditPass=false
+- Patches: 107 · Blocked: false
+  - PATCH `overview.typical_use_case` recJWsfyy4FckvQ8f — public_profile_stabilization_field_gate
+  - PATCH `overview.development_model` recUiLvU5alNRCQ4T — public_profile_stabilization_field_gate
+  - POST `overview.relative_positioning` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.scenario.1` reczaIQyxEkR91R5e — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.2` recNbV8qjMtygnS3d — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.3` reccrXlbIkP5BPkMP — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.1` recK2mhN2gw60WWhC — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.2` recSSgBY9SvWUP27l — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.3` reclx4FXvGruxvisI — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.4` rec5rK7d3haBtkPRY — public_profile_stabilization_field_gate
+  - POST `overview.featured_application` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.bestAt.1` rec1w40KSmQ1xy1wQ — public_profile_stabilization_field_gate
+  - PATCH `overview.portfolio_context` recTobSyhUkP2gSct — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.1` rectV3Zuc2926sb1Z — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.2` recljap7BlGlu525B — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.3` recEfdYouQNZ7XEPQ — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.4` reciqDY7PBAZtHpxY — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.5` recPHz41Qg1xUNLW8 — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.6` recgmfZMhBg4zygfK — public_profile_stabilization_field_gate
+  - PATCH `footprint.growth_fit` rec5xPQQv2M7stzrV — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` reccCixRmCoEfctRm — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` reccQCgbf6I1adRZS — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recLWasmLRk1p6AAx — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recBa1u13MKcLoPSI — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recpyGda2vL5jJhGK — quarantine_extra_portfolio_mix_chip
+  - PATCH `operations.model.primary_model` rec3IptWxnxv4blhS — public_profile_stabilization_field_gate
+  - PATCH `operations.model.management_option` recNsLw3xpz4wT92D — public_profile_stabilization_field_gate
+  - PATCH `operations.model.typical_ownership` recZ6AHdJGtpYph3w — public_profile_stabilization_field_gate
+  - PATCH `operations.model.systems_integration` recG0TYqneus7qK5y — public_profile_stabilization_field_gate
+  - PATCH `operations.model.pre_opening` rech6sL1F04OfZJQ6 — public_profile_stabilization_field_gate
+  - PATCH `operations.model.staffing_intensity` recjY0WpEi8VTvnaK — public_profile_stabilization_field_gate
+  - PATCH `operations.model.fb_complexity` rectQPvMJy7AZCMct — public_profile_stabilization_field_gate
+  - PATCH `operations.model.training` rec2Bql8KQc5EDWc3 — public_profile_stabilization_field_gate
+  - PATCH `operations.model.reporting_discipline` recjPK5R1kOes6nkZ — public_profile_stabilization_field_gate
+  - PATCH `operations.model.qa_rhythm` reciO7wxJQrUjwuoa — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.summary` recoBj8d4yX1hwvjl — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.tags` recCwNv8aK2uojeey — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.qa_cadence` recgAwrEHqxENTiEa — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.training_rigor` rec8RGZO1AJGlYMGV — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.reporting` rec8Gfr9XKUoALsv6 — public_profile_stabilization_field_gate
+  - … +67 more
+
+### Comfort Inn & Suites (`comfort-inn-suites`)
+- Before failFindings=41 empty=1 auditPass=false
+- Patches: 92 · Blocked: false
+  - POST `overview.relative_positioning` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.scenario.1` recQiTFKklq9ikgDA — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.2` recCz2fpcpAey34Y0 — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.3` recruIu5h98CJTDTW — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.1` recZ1fROHepDz3N8S — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.2` recmI6HTmsKFCd0r5 — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.3` recFQMbyMp1BFmJHM — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.4` recnfXU8NOjrALggM — public_profile_stabilization_field_gate
+  - POST `overview.featured_application` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.differentiators.identity` recAwRy6LUCz0caQI — public_profile_stabilization_field_gate
+  - PATCH `overview.portfolio_context` reczlK1ipRx15yQxu — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.1` rec1QprKnuVptbIkm — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.2` rec3pBXBK816bdX1K — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.3` recHaa6mpn0GyDLfA — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.4` recqxmzUz9xVTytPN — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.5` rec6vPvkUetZJYLLz — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.6` recJyTsF92eKm6j1S — public_profile_stabilization_field_gate
+  - PATCH `footprint.growth_fit` recZOP0YujifmSw0s — public_profile_stabilization_field_gate
+  - PATCH `operations.model.primary_model` recXGVjnnKIR38mwW — public_profile_stabilization_field_gate
+  - PATCH `operations.model.management_option` recJiX8zrdAwf8wcK — public_profile_stabilization_field_gate
+  - PATCH `operations.model.typical_ownership` recvCXrfbwjqX2DIy — public_profile_stabilization_field_gate
+  - PATCH `operations.model.systems_integration` recDM2HCgfybXJPdp — public_profile_stabilization_field_gate
+  - PATCH `operations.model.pre_opening` recggVPiPMP15g9QZ — public_profile_stabilization_field_gate
+  - PATCH `operations.model.staffing_intensity` recKSr6DjMydRUddU — public_profile_stabilization_field_gate
+  - PATCH `operations.model.fb_complexity` rectI2UxzFiJQXMx6 — public_profile_stabilization_field_gate
+  - PATCH `operations.model.training` recv0PhFow4q0neTw — public_profile_stabilization_field_gate
+  - PATCH `operations.model.reporting_discipline` recVV6hnmWqLKeLez — public_profile_stabilization_field_gate
+  - PATCH `operations.model.qa_rhythm` recgRbW92n1O5Z9KQ — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.tags` reccQoGjzuDwAAkkG — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.qa_cadence` recYzWIRZUD7Sh9Dh — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.training_rigor` recSwmRzE6pIMMSL8 — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.reporting` recGPhWDW4cmcBnse — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.brand_interaction` recSXLIgi5eHOFpvd — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.1` recxj2rCqWtS1ia9K — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.2` reckrKJbycRgCG3Mj — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.3` rec94891y6vsGbEIC — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.4` rec7ob28K58gmMmkZ — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.5` rec2KE3l7ZOIsX3Hc — public_profile_stabilization_field_gate
+  - PATCH `operations.standards_philosophy` rec2HWAOmT0YsovXY — public_profile_stabilization_residual_scrub
+  - PATCH `overview.differentiators.commercial` rec3b00oOASH3RaIT — public_profile_stabilization_residual_scrub
+  - … +52 more
+
+### Curio Collection by Hilton (`curio-collection`)
+- Before failFindings=24 empty=0 auditPass=false
+- Patches: 91 · Blocked: false
+  - PATCH `overview.scenario.1` recIqcWPPScQpDU4o — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.2` recI5LBgS2agAnKHf — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.3` recz6UmyDJQfdcxmI — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.1` recUde5WHmxNKNbr6 — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.2` recg5IQxexbrfTvfh — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.3` recHhzOCaDRd89YnF — public_profile_stabilization_field_gate
+  - PATCH `overview.proof.4` recTGNpS5TekPabxM — public_profile_stabilization_field_gate
+  - POST `overview.featured_application` (create) — public_profile_stabilization_create_slot
+  - PATCH `valueOwners.lifecycle.1` rec9O8tPQAr1AQO50 — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.2` recm3fW0uIfhm3HG4 — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.3` recxzXVaHZmTO5Q1q — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.4` recczgLvniD3oTvam — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.5` recrixUPw8dIDzF9L — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.6` recxkS2Vkt9PTwtyl — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` rec7bGGNlsU2BK3f7 — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` recz3Tu7CDq9gXk0q — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` receZgLp6yeedNi5F — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recqIWRuxXSUQzBKD — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` rectR4wQd5q0lm8PR — quarantine_extra_portfolio_mix_chip
+  - PATCH `operations.operator_compat.summary` recmDknc28vd22Gfe — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.tags` recqIT6VDnPfiEB9N — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.reporting` recJrMqMhmjJPy4wf — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.brand_interaction` rec7bqptPIBLJr0tq — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.2` rechacofhLsc6H4hy — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.3` rec8IdDhjSiQ1aZeu — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.4` rec6vHPwDzMzT9eSA — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.5` reccam3jy412X5CLM — public_profile_stabilization_field_gate
+  - PATCH `overview.differentiators.commercial` rec1HTCpewVSJedty — public_profile_stabilization_residual_scrub
+  - PATCH `overview.owner_experience` rec1SaARVBMtoucWT — public_profile_stabilization_residual_scrub
+  - PATCH `economics.performance_exit` rec8UH5V0VayJghxM — public_profile_stabilization_residual_scrub
+  - PATCH `hero.benefit_zones` recaRb1R7oqz3JRVE — public_profile_stabilization_residual_scrub
+  - PATCH `commercial.kpi.lens` recDP3Rdj2Y0o24MM — public_profile_stabilization_residual_scrub
+  - PATCH `economics.opening.financials` recdtf1n2ORobrQCY — public_profile_stabilization_residual_scrub
+  - PATCH `overview.development_model` recfO7JsRevbEINJU — public_profile_stabilization_residual_scrub
+  - PATCH `footprint.openings` recg818yNxj1yjA3E — public_profile_stabilization_residual_scrub
+  - PATCH `operations.standards_philosophy` rechJ9sg3bXb4HLMC — public_profile_stabilization_residual_scrub
+  - PATCH `overview.bestAt.2` recJS1lt2mnfSaojG — public_profile_stabilization_residual_scrub
+  - PATCH `valueOwners.scenarios` reclRHaXAQhiVnXAM — public_profile_stabilization_residual_scrub
+  - PATCH `overview.why_value` recn9WpJ9zLmwbID3 — public_profile_stabilization_residual_scrub
+  - PATCH `loyalty.owner_lens` recOEZ5uNFeTj550H — public_profile_stabilization_residual_scrub
+  - … +51 more
+
+### Tribute Portfolio (`tribute-portfolio`)
+- Before failFindings=29 empty=0 auditPass=false
+- Patches: 78 · Blocked: false
+  - PATCH `overview.scenario.1` recqiRkN3W7j1lGMT — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.2` recOf4qCi4acHhxPc — public_profile_stabilization_field_gate
+  - PATCH `overview.scenario.3` receMhyKEl5yQGSKJ — public_profile_stabilization_field_gate
+  - POST `overview.proof.1` (create) — public_profile_stabilization_create_slot
+  - POST `overview.proof.2` (create) — public_profile_stabilization_create_slot
+  - POST `overview.proof.3` (create) — public_profile_stabilization_create_slot
+  - POST `overview.proof.4` (create) — public_profile_stabilization_create_slot
+  - PATCH `overview.featured_application` reci9AYIlZIw83eRd — public_profile_stabilization_field_gate
+  - PATCH `overview.differentiators.identity` recUTWOpoyhHoGS9p — public_profile_stabilization_field_gate
+  - PATCH `overview.differentiators.commercial` recylGZZREiPCrqhm — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.1` rec5HERfFAL1EdwWq — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.2` rec6NSxFAQqdObcax — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.3` recioITLsuOzpVIGo — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.4` recz6yo768nskMjaF — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.5` recI1supDQSpy3JOH — public_profile_stabilization_field_gate
+  - PATCH `valueOwners.lifecycle.6` recgXBSgwCYqAj0lm — public_profile_stabilization_field_gate
+  - PATCH `footprint.growth_editorial` rec8xakM0mo8AGM4b — public_profile_stabilization_field_gate
+  - PATCH `footprint.growth_fit` rec0AWSWsWF5tex6w — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` recWhwmEANR3R38KR — public_profile_stabilization_field_gate
+  - PATCH `footprint.portfolio_mix` reccw6Qw4MQNRrYXs — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recq4lP7r68tw8TUq — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recMC3g0pTtuIhN1g — quarantine_extra_portfolio_mix_chip
+  - PATCH `footprint.portfolio_mix` recouCwdRiCZ6gfRI — quarantine_extra_portfolio_mix_chip
+  - PATCH `operations.standards_philosophy` recrZ5MpVtbZuroi5 — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.summary` reca6KuXejg7nsmCB — public_profile_stabilization_field_gate
+  - PATCH `operations.operator_compat.fit` rectYB4yghnFHl83V — public_profile_stabilization_field_gate
+  - PATCH `operations.compliance.reporting` recWU6C8aFrB3Ks63 — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.1` recGA0SMQOx8YnbOE — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.2` recIj9CK3vXQd7gh0 — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.3` rec6YEv4TyB0mbeY9 — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.4` rechlWiTED2chXbvT — public_profile_stabilization_field_gate
+  - PATCH `economics.opening.step.5` recV66J2guK3I1gF5 — public_profile_stabilization_field_gate
+  - PATCH `overview.portfolio_context` rec03qcBLx0q6LLDT — public_profile_stabilization_residual_scrub
+  - PATCH `valueOwners.scenarios` rec0uvkA0gXyhKxYN — public_profile_stabilization_residual_scrub
+  - PATCH `commercial.lever.international` rec65q81fQObTF4oj — public_profile_stabilization_residual_scrub
+  - PATCH `commercial.kpi.lens` rec6PaoOsOQPEO0jC — public_profile_stabilization_residual_scrub
+  - PATCH `footprint.openings` recA64mOFrKJk91dg — public_profile_stabilization_residual_scrub
+  - PATCH `overview.scenarios` recA6BoBqxzCruvXt — public_profile_stabilization_residual_scrub
+  - PATCH `footprint.region.am` recah9ILLxcXHwmOa — public_profile_stabilization_residual_scrub
+  - PATCH `commercial.theme` recAPdS6x7AiCXhUP — public_profile_stabilization_residual_scrub
+  - … +38 more

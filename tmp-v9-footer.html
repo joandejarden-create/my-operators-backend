@@ -1,0 +1,498 @@
+<script>
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is Dealality a broker?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Dealality is a software platform — not a broker, advisor, or intermediary. We facilitate the structure and workflow of the evaluation process. We do not advise on brand choice, represent either party, or earn commissions from transactions. Our role ends at LOI."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who sees my project?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only the parties you select. There are no public listings on Dealality and no open browsing capability. Owners control who sees their project at every stage. You can start with a blind teaser to protect your identity and remove any party from the process at any point."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is confidentiality handled?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Confidentiality is the foundation of how the platform works — not a feature added on top. All projects are private by default. Confidential materials are stored in NDA-gated deal rooms accessible only after NDAs are executed digitally. No information is shared across parties outside the specific deal it was submitted for."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens at LOI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dealality's role ends at LOI. Once the owner selects a preferred brand or operator and the parties are ready to proceed, they move offline for MA/FA drafting, franchise agreement negotiation, and legal documentation. Our success-based fee for owners applies at the LOI milestone."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are brands and operators selected for the platform?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Membership on the brand and operator side is by application and approval. We do not list every brand — only those actively engaged in development and willing to participate in a structured, responsive process."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does AI support the process?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AI is used as a supporting capability — not the core product. It generates structured deal summaries from owner submissions, helping reduce preliminary qualification time. It does not make decisions, recommend brands, or substitute for professional judgment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the private beta include?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "During private beta, owners can submit a project at no cost and receive a deal readiness summary, access Brand Explorer and Operator Explorer, and review a matched partner shortlist. Full pricing details are discussed during onboarding."
+      }
+    }
+  ]
+}
+
+if(new URLSearchParams(location.search).get("embed")==="1")document.documentElement.classList.add("dl-embed-shell");
+
+const nav=document.getElementById('nav');
+const mnav=document.getElementById('mnav');
+const nmenu=document.getElementById('nmenu');
+function setMnav(open){
+  if(!mnav||!nmenu)return;
+  mnav.classList.toggle('open',open);
+  mnav.setAttribute('aria-hidden',open?'false':'true');
+  nmenu.setAttribute('aria-expanded',open?'true':'false');
+  document.body.style.overflow=open?'hidden':'';
+}
+if(nmenu)nmenu.addEventListener('click',()=>setMnav(!mnav.classList.contains('open')));
+document.querySelectorAll('.mnav-link').forEach(a=>a.addEventListener('click',()=>setMnav(false)));
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>60),{passive:true});
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.07,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.fu').forEach(el=>io.observe(el));
+(function(){
+  const hero=document.getElementById('hero');
+  const canvas=document.getElementById('hero-mesh');
+  if(!hero||!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CONNECT=148;
+  const DOT='rgba(155,160,255,.88)';
+  const DRIFT=.22;
+  let w=0,h=0,splitX=0,splitY=0,pts=[],raf=null,visible=true;
+  function count(){return window.innerWidth<768?40:58;}
+  function updateSplit(){
+    const hr=hero.getBoundingClientRect();
+    if(hero.classList.contains('hero--center')){
+      splitX=hr.width*.46;
+      splitY=hr.height*.42;
+      hero.style.setProperty('--hero-split','46%');
+      hero.style.setProperty('--hero-split-y','42%');
+      return;
+    }
+    const left=hero.querySelector('.hleft');
+    const video=hero.querySelector('.hero-video');
+    if(window.innerWidth>1024&&left&&video){
+      const lr=left.getBoundingClientRect(),vr=video.getBoundingClientRect();
+      splitX=Math.max(hr.width*.42,Math.min(hr.width*.58,(lr.right+vr.left)/2-hr.left));
+      hero.style.setProperty('--hero-split',(splitX/hr.width*100).toFixed(2)+'%');
+    }else{
+      splitX=hr.width*.5;
+      hero.style.setProperty('--hero-split','50%');
+    }
+    if(left){
+      const lr=left.getBoundingClientRect();
+      splitY=Math.max(hr.height*.35,Math.min(hr.height*.65,lr.bottom-hr.top+24));
+      hero.style.setProperty('--hero-split-y',(splitY/hr.height*100).toFixed(2)+'%');
+    }else{
+      splitY=hr.height*.52;
+      hero.style.setProperty('--hero-split-y','52%');
+    }
+  }
+  function mkPt(){
+    const centered=hero.classList.contains('hero--center');
+    const zoneX=centered?Math.max(splitX*1.05,w*.48):(window.innerWidth>1024?Math.max(splitX*1.08,w*.55):w);
+    const zoneY=centered?(window.innerWidth<=960?Math.max(splitY*1.05,h*.44):h):(window.innerWidth>1024?h:Math.max(splitY*1.05,h*.58));
+    return{
+      x:Math.random()*zoneX,y:Math.random()*zoneY,
+      vx:(Math.random()-.5)*DRIFT,vy:(Math.random()-.5)*DRIFT,
+      r:2+Math.random()*1.2
+    };
+  }
+  function resize(){
+    const r=hero.getBoundingClientRect();
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    w=Math.max(1,Math.round(r.width));
+    h=Math.max(1,Math.round(r.height));
+    updateSplit();
+    canvas.width=Math.round(w*dpr);
+    canvas.height=Math.round(h*dpr);
+    canvas.style.width=w+'px';
+    canvas.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=count();
+    while(pts.length<n)pts.push(mkPt());
+    while(pts.length>n)pts.pop();
+    pts.forEach(p=>{p.x=Math.min(w,Math.max(0,p.x));p.y=Math.min(h,Math.max(0,p.y));});
+  }
+  function draw(move){
+    ctx.clearRect(0,0,w,h);
+    if(move){
+      pts.forEach(p=>{
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<-16){p.x=w+16;}else if(p.x>w+16){p.x=-16;}
+        if(p.y<-16){p.y=h+16;}else if(p.y>h+16){p.y=-16;}
+      });
+    }
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+        if(d<CONNECT){
+          const a=(1-d/CONNECT)*.5;
+          ctx.strokeStyle='rgba(108,114,255,'+a.toFixed(3)+')';
+          ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();
+        }
+      }
+    }
+    pts.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=DOT;ctx.fill();
+    });
+  }
+  function loop(){if(!visible)return;draw(true);raf=requestAnimationFrame(loop);}
+  function boot(){resize();draw(false);}
+  boot();
+  requestAnimationFrame(boot);
+  window.addEventListener('load',boot,{once:true});
+  if(!reduceMotion){
+    const mIo=new IntersectionObserver(e=>{e.forEach(x=>{visible=x.isIntersecting;if(visible&&!raf)raf=requestAnimationFrame(loop);else if(!visible&&raf){cancelAnimationFrame(raf);raf=null;}});},{threshold:0});
+    mIo.observe(hero);
+    raf=requestAnimationFrame(loop);
+  }
+  window.addEventListener('resize',boot,{passive:true});
+})();
+const rot=document.getElementById('rotator');
+if(rot){
+  const words=[...rot.children];
+  const wrap=rot.parentElement;
+  const start=2;
+  const suffixBuffer=2;
+  const loopEnd=words.length-suffixBuffer-1;
+  let ri=start;
+  const h1=rot.closest('.h1wrap');
+  const centerSlot=()=>window.matchMedia('(max-width:960px)').matches?1:2;
+  const gh=()=>{
+    const probe=words[start]||words[0];
+    const hadOn=probe.classList.contains('on');
+    probe.classList.add('on');
+    const h=probe.offsetHeight||48;
+    if(!hadOn)probe.classList.remove('on');
+    return h;
+  };
+  const setWidth=()=>{
+    if(!wrap)return;
+    let mx=0;
+    words.forEach(w=>{
+      w.classList.add('on');
+      mx=Math.max(mx,w.scrollWidth);
+      w.classList.remove('on');
+    });
+    const mobile=window.matchMedia('(max-width:960px)').matches;
+    const cap=h1?h1.clientWidth:wrap.parentElement?wrap.parentElement.clientWidth:0;
+    if(mobile&&cap>0)mx=Math.min(mx,cap);
+    wrap.style.setProperty('--hr-w',mx+'px');
+  };
+  const paint=(animate)=>{
+    const h=gh(),c=centerSlot();
+    if(h1)h1.style.setProperty('--hr-lh',h+'px');
+    rot.style.transition=animate?'transform .65s cubic-bezier(.77,0,.18,1)':'none';
+    rot.style.transform='translateY('+((c-ri)*h)+'px)';
+    words.forEach((w,i)=>{
+      w.style.transition=animate?'opacity .45s ease':'none';
+      const dist=Math.abs(i-ri);
+      w.classList.toggle('on',dist===0);
+      w.classList.toggle('near',dist===1);
+      w.classList.toggle('far',dist===2);
+    });
+  };
+  setWidth();
+  paint(false);
+  const rotMs=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:3400;
+  if(rotMs>0){
+    setInterval(()=>{
+      ri++;
+      paint(true);
+      if(ri>=loopEnd)setTimeout(()=>{ri=start;paint(false);},700);
+    },rotMs);
+    window.addEventListener('resize',()=>{setWidth();paint(false);},{passive:true});
+  }
+}
+(function(){
+  const learn=document.getElementById('hero-learn-more');
+  const panel=document.getElementById('hero-overview-wrap');
+  const video=document.getElementById('hero-overview-video');
+  const closeBtn=document.getElementById('hero-overview-close');
+  if(!learn||!panel||!video)return;
+  const notifyResize=()=>{window.dispatchEvent(new Event('resize'));};
+  let videoStartedAt=0;
+  const openOverview=()=>{
+    if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackVideoOpen();
+    videoStartedAt=Date.now();
+    panel.hidden=false;
+    panel.classList.add('is-open');
+    learn.setAttribute('aria-expanded','true');
+    learn.textContent='Hide Overview';
+    video.load();
+    globalThis.requestAnimationFrame(()=>{
+      panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+      video.play().catch(()=>{});
+      notifyResize();
+      globalThis.setTimeout(notifyResize,400);
+    });
+  };
+  const closeOverview=()=>{
+    if(window.DealalityLandingAnalytics){
+      const watched=videoStartedAt?Math.round((Date.now()-videoStartedAt)/1000):0;
+      window.DealalityLandingAnalytics.trackVideoClose(watched);
+    }
+    video.pause();
+    panel.hidden=true;
+    panel.classList.remove('is-open');
+    learn.setAttribute('aria-expanded','false');
+    learn.textContent='Watch Overview';
+    notifyResize();
+  };
+  learn.addEventListener('click',()=>{panel.hidden?openOverview():closeOverview();});
+  if(closeBtn)closeBtn.addEventListener('click',closeOverview);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)closeOverview();});
+})();
+const stageTabs=document.querySelectorAll('#how .fbt');
+const stagePanels=document.querySelectorAll('#how .fbp');
+const platformSection=document.getElementById('how');
+const fbtabsWrap=document.getElementById('fbtabs-wrap');
+const fbtabsScroll=document.getElementById('fbtabs-scroll');
+const fbprogressFill=document.getElementById('fbprogress-fill');
+const fbtourPause=document.getElementById('fbtour-pause');
+let currentStage=0;
+let stageTourTimer=null;
+let stageTourIdleTimer=null;
+let stageTourPaused=false;
+let drAnimated=false;
+function animateReadiness(){
+  if(drAnimated)return;
+  drAnimated=true;
+  const target=74;
+  const C=2*Math.PI*58;
+  const ring=document.getElementById('drring');
+  const dv=document.getElementById('drval');
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(ring)ring.style.strokeDashoffset=String(C-C*target/100);
+  if(dv){
+    if(reduceMotion)dv.textContent=target+'%';
+    else{let n=0;const ti=setInterval(()=>{n=Math.min(n+2,target);dv.textContent=n+'%';if(n>=target)clearInterval(ti);},30);}
+  }
+  document.querySelectorAll('#drwrap .drm-bar').forEach(b=>{b.style.width=b.dataset.v+'%';});
+}
+function updateProgress(idx){
+  if(!fbprogressFill||!stageTabs.length)return;
+  const pct=stageTabs.length>1?(idx/(stageTabs.length-1))*100:0;
+  fbprogressFill.style.width=pct+'%';
+}
+function scrollStageTabIntoView(idx){
+  const tab=stageTabs[idx];
+  if(!tab||!fbtabsScroll)return;
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  tab.scrollIntoView({behavior:reduceMotion?'auto':'smooth',inline:'center',block:'nearest'});
+}
+function updateTourUI(){
+  if(!fbtabsWrap)return;
+  fbtabsWrap.classList.toggle('is-playing',!!stageTourTimer&&!stageTourPaused);
+  fbtabsWrap.classList.toggle('is-paused',stageTourPaused);
+  if(fbtourPause){
+    fbtourPause.textContent=stageTourPaused?'Resume tour':'Pause tour';
+  }
+}
+function activateStage(idx,source){
+  currentStage=idx;
+  if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackStageTab(idx,source||'manual');
+  stageTabs.forEach((t,i)=>{
+    const on=i===idx;
+    t.classList.toggle('on',on);
+    t.classList.toggle('is-done',i<idx);
+    t.setAttribute('aria-selected',on?'true':'false');
+  });
+  stagePanels.forEach((p,i)=>{const on=i===idx;p.classList.toggle('on',on);p.hidden=!on;});
+  updateProgress(idx);
+  scrollStageTabIntoView(idx);
+  if(idx===1)animateReadiness();
+}
+function startStageTour(){
+  if(stageTourPaused||stageTourTimer)return;
+  const ms=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:8000;
+  if(!ms)return;
+  if(stageTourIdleTimer){clearTimeout(stageTourIdleTimer);stageTourIdleTimer=null;}
+  stageTourTimer=setInterval(()=>{
+    if(stageTourPaused)return;
+    activateStage((currentStage+1)%stageTabs.length,'auto');
+  },ms);
+  updateTourUI();
+}
+function stopStageTour(){
+  if(stageTourTimer){clearInterval(stageTourTimer);stageTourTimer=null;}
+  updateTourUI();
+}
+function scheduleStageTour(){
+  if(stageTourPaused||stageTourTimer||stageTourIdleTimer)return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  updateTourUI();
+  stageTourIdleTimer=setTimeout(()=>{
+    stageTourIdleTimer=null;
+    if(!stageTourPaused)startStageTour();
+    else updateTourUI();
+  },3000);
+}
+function clearStageTourIdle(){
+  if(stageTourIdleTimer){clearTimeout(stageTourIdleTimer);stageTourIdleTimer=null;}
+  updateTourUI();
+}
+function userPauseStageTour(){
+  stageTourPaused=true;
+  stopStageTour();
+  clearStageTourIdle();
+  updateTourUI();
+}
+if(platformSection){
+  const tourIo=new IntersectionObserver(e=>{
+    e.forEach(x=>{
+      if(x.isIntersecting&&!stageTourPaused)scheduleStageTour();
+      else{stopStageTour();clearStageTourIdle();}
+    });
+  },{threshold:.25});
+  tourIo.observe(platformSection);
+}
+if(fbtabsScroll){
+  fbtabsScroll.addEventListener('mouseenter',()=>{stopStageTour();clearStageTourIdle();});
+  fbtabsScroll.addEventListener('mouseleave',()=>{if(!stageTourPaused)scheduleStageTour();});
+  fbtabsScroll.addEventListener('focusin',()=>{stopStageTour();clearStageTourIdle();});
+}
+if(fbtourPause){
+  fbtourPause.addEventListener('click',()=>{
+    if(stageTourPaused){
+      stageTourPaused=false;
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackStageTourPause(true);
+      scheduleStageTour();
+    }else{
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackStageTourPause(false);
+      userPauseStageTour();
+    }
+  });
+}
+stageTabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{userPauseStageTour();activateStage(+tab.dataset.p);});
+  tab.addEventListener('keydown',e=>{
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+    e.preventDefault();
+    const i=+tab.dataset.p;
+    const next=e.key==='ArrowRight'?(i+1)%stageTabs.length:(i-1+stageTabs.length)%stageTabs.length;
+    userPauseStageTour();
+    activateStage(next);
+    stageTabs[next].focus();
+  });
+});
+updateProgress(0);
+updateTourUI();
+const audTabs=document.querySelectorAll('#audiences .audt');
+const audPanels=document.querySelectorAll('#audiences .audp');
+const audSlugs=['owners','brands','partners'];
+const audHashMap={owners:0,brands:1,partners:2,persona:0,audiences:0};
+function activateAudience(idx,updateHash){
+  audTabs.forEach((t,i)=>{t.classList.toggle('on',i===idx);t.setAttribute('aria-selected',i===idx?'true':'false');});
+  audPanels.forEach((p,i)=>{const on=i===idx;p.classList.toggle('on',on);p.hidden=!on;});
+  if(updateHash!==false)history.replaceState(null,'','#'+audSlugs[idx]);
+}
+function audienceFromHash(){
+  const key=location.hash.replace('#','');
+  return key in audHashMap?audHashMap[key]:null;
+}
+audTabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackAudienceTab(+tab.dataset.a);
+    activateAudience(+tab.dataset.a);
+  });
+  tab.addEventListener('keydown',e=>{
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+    e.preventDefault();
+    const i=+tab.dataset.a;
+    const next=e.key==='ArrowRight'?(i+1)%audTabs.length:(i-1+audTabs.length)%audTabs.length;
+    activateAudience(next);
+    audTabs[next].focus();
+  });
+});
+function syncAudienceHash(scroll){
+  const idx=audienceFromHash();
+  if(idx===null)return;
+  activateAudience(idx,false);
+  if(scroll){
+    requestAnimationFrame(()=>setTimeout(()=>{
+      const el=document.getElementById('audiences');
+      if(el)el.scrollIntoView({block:'start',behavior:'smooth'});
+    },60));
+  }
+}
+syncAudienceHash(!!location.hash);
+window.addEventListener('hashchange',()=>syncAudienceHash(true));
+document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.parentElement;const a=item.querySelector('.faq-a');const open=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');i.querySelector('.faq-a').style.maxHeight='0';});if(!open){item.classList.add('open');btn.setAttribute('aria-expanded','true');a.style.maxHeight=a.querySelector('.faq-ai').scrollHeight+'px';}});btn.setAttribute('aria-expanded','false');});
+(function(){
+  const input=document.getElementById('hero-notify-email');
+  const btn=document.getElementById('hero-notify-submit');
+  const note=document.getElementById('hero-notify-note');
+  if(!input||!btn||!note)return;
+  const defaultNote=note.textContent;
+  const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let busy=false;
+  function setNote(text,kind){
+    note.textContent=text;
+    note.classList.remove('is-ok','is-err');
+    if(kind)note.classList.add(kind==='ok'?'is-ok':'is-err');
+  }
+  async function submit(){
+    if(busy)return;
+    const email=(input.value||'').trim();
+    if(!emailRe.test(email)){
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackEmailCapture('invalid');
+      setNote('Enter a valid email address.','err');input.focus();return;
+    }
+    busy=true;
+    input.disabled=true;
+    btn.disabled=true;
+    setNote('Saving…');
+    try{
+      const res=await fetch('/api/marketing/beta-notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok)throw new Error(data.error||data.details||'Request failed');
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackEmailCapture('success');
+      setNote("You're on the list — we'll reach out when your market opens.",'ok');
+      btn.textContent='Subscribed';
+    }catch(e){
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackEmailCapture('error');
+      setNote((e&&e.message)||'Something went wrong. Try again.','err');
+      input.disabled=false;
+      btn.disabled=false;
+    }finally{
+      busy=false;
+    }
+  }
+  btn.addEventListener('click',submit);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submit();}});
+})();
+</script>

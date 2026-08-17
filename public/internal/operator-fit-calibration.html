@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Operator Alignment — Calibration Review</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/support-runbook.css">
+  <link rel="stylesheet" href="/css/operator-fit-v2.css">
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css">
+  <style>
+    .cal-wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .cal-card { border: 1px solid var(--runbook-border); background: var(--runbook-surface); padding: 16px 18px; margin-bottom: 12px; }
+    .cal-card h3 { margin: 0 0 8px; color: var(--runbook-heading); }
+    .cal-meta { display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 13px; color: var(--runbook-muted); }
+    .cal-label { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--runbook-muted); }
+    .cal-pill { display: inline-block; padding: 2px 8px; border: 1px solid var(--runbook-border); font-size: 12px; }
+    .cal-pill.verified { border-color: #14ca74; color: #14ca74; }
+    .cal-pill.reported { border-color: #fdb52a; color: #fdb52a; }
+    .cal-pill.unknown { border-color: #7e89ac; color: #7e89ac; }
+    details { margin-top: 8px; }
+    select { background: var(--runbook-bg); color: var(--runbook-heading); border: 1px solid var(--runbook-border); padding: 8px; }
+  </style>
+</head>
+<body class="support-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>Internal/admin calibration review only. Not an owner production surface.</p>
+  </div>
+  <div class="support-page-shell" id="supportGateContent" hidden>
+    <div class="cal-wrap">
+      <h1 style="color:#fff;margin:0 0 8px">Operator Alignment — Calibration Cohort</h1>
+      <p class="ofr-muted" style="color:var(--runbook-muted)">Local enrichment overlay · My Deals blocked · No “best operator / winner / guaranteed” language</p>
+      <label style="color:var(--runbook-muted);font-size:12px">Scenario
+        <select id="scenarioSelect"></select>
+      </label>
+      <div id="projectSummary" style="margin:16px 0;color:var(--runbook-text)"></div>
+      <div id="rankList"></div>
+      <p id="gen" style="color:var(--runbook-muted);font-size:12px"></p>
+    </div>
+  </div>
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script>
+  (function () {
+    if (window.SupportAdminGate) SupportAdminGate.showPageLoading('supportGateLoading', 'Verifying access…');
+    var payload = null;
+
+    function evidencePill(conf) {
+      if (/Strong|Verified|Independent/i.test(conf||'')) return '<span class="cal-pill verified">Independently supported</span>';
+      if (/Limited|Operator/i.test(conf||'')) return '<span class="cal-pill reported">Limited evidence</span>';
+      return '<span class="cal-pill unknown">Unknown / research</span>';
+    }
+
+    function render() {
+      var sid = document.getElementById('scenarioSelect').value;
+      var scen = (payload.scenarios || []).find(function (s) { return s.scenarioId === sid; }) || payload.scenarios[0];
+      var ranked = (scen.ranked || []).slice();
+      var readyRows = ranked.filter(function (r) { return /Ranking Ready/i.test(r.readiness || ''); });
+      var researchRows = ranked.filter(function (r) { return !/Ranking Ready/i.test(r.readiness || ''); });
+      var nReady = readyRows.length;
+
+      var banner = '';
+      if (nReady >= 5) {
+        banner = '<div class="cal-card" style="border-color:#14ca74"><p style="margin:0;color:var(--runbook-text)">Showing Top 5 operators that meet Dealality’s alignment and evidence requirements.</p></div>';
+      } else if (nReady >= 2 && nReady <= 4) {
+        banner = '<div class="cal-card"><p style="margin:0;color:#fff"><strong>' + nReady + ' operators</strong> currently meet Dealality’s alignment and evidence requirements.</p><p style="margin:8px 0 0;color:var(--runbook-muted);font-size:13px">Remaining slots are not filled with lower-evidence operators.</p></div>';
+      } else if (nReady === 1) {
+        banner = '<div class="cal-card"><p style="margin:0;color:#fff">One operator currently meets ranking requirements.</p><p style="margin:8px 0 0;color:var(--runbook-muted);font-size:13px">Additional operators require further validation before they can be ranked.</p></div>';
+      } else {
+        banner = '<div class="cal-card" style="border-color:#fdb52a"><p style="margin:0;color:#fff"><strong>No operators currently meet Dealality’s minimum alignment and evidence requirements for this project.</strong></p>' +
+          '<ul style="margin:10px 0 0;padding-left:18px;color:var(--runbook-muted);font-size:13px">' +
+          '<li>This can be a valid result when geography or evidence is constrained.</li>' +
+          '<li>Unresolved requirements often include qualifying Market Presence and project-specific confirmation.</li>' +
+          '<li>Additional operators may be under research (see research list below).</li>' +
+          '<li>Dealality’s next step is targeted presence validation — not lowering thresholds.</li>' +
+          '</ul></div>';
+      }
+
+      document.getElementById('projectSummary').innerHTML =
+        '<div class="cal-label">Project context</div><strong style="color:#fff">' + (scen.label || scen.scenarioId) + '</strong>' +
+        '<div style="margin-top:6px;font-size:13px;color:var(--runbook-muted)">Project-specific alignment — not a universal winner. Evidence Confidence and eligibility matter as much as the score.</div>' +
+        '<div style="margin-top:12px">' + banner + '</div>';
+
+      function card(r, opts) {
+        opts = opts || {};
+        var ready = r.readiness || '—';
+        var lang = /Ranking Ready/i.test(ready) ? 'Meets ranking requirements for this project' :
+          /Conditional/i.test(ready) ? 'Potential alignment — validation required' :
+          'Additional research required';
+        var scoreLine = opts.demoteScore
+          ? '<span class="cal-label">Alignment score (secondary)</span> <span style="color:var(--runbook-muted)">' + (r.displayedAlignment != null ? r.displayedAlignment : '—') + '</span>'
+          : '<span>Alignment: <strong style="color:#fff">' + (r.displayedAlignment != null ? r.displayedAlignment : '—') + '</strong></span>';
+        return '<div class="cal-card">' +
+          '<h3>' + (opts.prefix || '') + (r.operatorName || r.operatorId) + '</h3>' +
+          '<div class="cal-meta">' +
+          '<span>' + evidencePill(r.confidence) + '</span>' +
+          '<span>Eligibility: <strong style="color:#fff">' + (r.eligibility || '—') + '</strong></span>' +
+          '<span>Readiness: <strong style="color:#fff">' + ready + '</strong></span>' +
+          '<span>Evidence Confidence: ' + (r.confidence || '—') + '</span>' +
+          '<span>Data Coverage: ' + (r.coverage != null ? r.coverage + '%' : '—') + '</span>' +
+          scoreLine +
+          '</div>' +
+          '<p style="margin:10px 0 0;color:var(--runbook-text)">' + lang + '</p>' +
+          '<p style="margin:6px 0 0;font-size:12px;color:var(--runbook-muted)">Unknowns are missing information — not poor performance.</p>' +
+          '<details><summary>Why it fits / concerns / what to validate</summary>' +
+          '<p><strong>Why fit:</strong> ' + ((r.topReasons||[]).join('; ') || '—') + '</p>' +
+          '<p><strong>Concerns (decision context, not a blacklist):</strong> ' + ((r.concerns||[]).join('; ') || '—') + '</p>' +
+          '<p><strong>Unknowns:</strong> ' + ((r.unknowns||[]).join('; ') || '—') + '</p>' +
+          '<p><strong>Validate next:</strong> ' + ((r.validationQuestions||[]).join('; ') || '—') + '</p>' +
+          '</details></div>';
+      }
+
+      var html = '';
+      if (nReady > 0) {
+        html += '<div class="cal-label" style="margin:16px 0 8px">Ranked candidates</div>';
+        readyRows.slice(0, 5).forEach(function (r, i) {
+          html += card(Object.assign({}, r, { rank: i + 1 }), { prefix: '#' + (i + 1) + ' ', demoteScore: true });
+        });
+      }
+      if (researchRows.length) {
+        html += '<div class="cal-label" style="margin:20px 0 8px">Additional candidates requiring research</div>';
+        researchRows.slice(0, 8).forEach(function (r) {
+          html += card(r, { demoteScore: true });
+        });
+      }
+      document.getElementById('rankList').innerHTML = html || banner;
+    }
+
+    async function init() {
+      var allowed = await SupportAdminGate.requireInternalRunbook({ contentId: 'supportGateContent' });
+      if (!allowed) return;
+      SupportAdminGate.setPageLoadingMessage(document.getElementById('supportGateLoading'), 'Loading calibration…');
+      var res = await DealalityMemberstackAuth.authFetch('/api/support/operator-intelligence-calibration', { maxWaitMs: 20000 });
+      SupportAdminGate.hidePageLoading(document.getElementById('supportGateLoading'));
+      if (!res.ok) {
+        document.getElementById('rankList').textContent = 'Failed to load payload. Run operator-intelligence-calibration-evaluate.';
+        return;
+      }
+      payload = await res.json();
+      var sel = document.getElementById('scenarioSelect');
+      (payload.scenarios || []).forEach(function (s) {
+        var o = document.createElement('option');
+        o.value = s.scenarioId; o.textContent = s.label || s.scenarioId;
+        sel.appendChild(o);
+      });
+      sel.addEventListener('change', render);
+      document.getElementById('gen').textContent = 'Generated: ' + (payload.generatedAt || '—') + ' · read-only';
+      render();
+    }
+    init();
+  })();
+  </script>
+</body>
+</html>

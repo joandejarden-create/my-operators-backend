@@ -1,6 +1,8 @@
 /**
  * Step 2 — Read-only inventory of STR Excel files (no Airtable changes).
  *
+ * Excel columns STR Market / STR Submarket are matched to Hotel Census Market / Submarket on apply.
+ *
  * Usage:
  *   node scripts/inventory-str-excel-files.mjs
  *   node scripts/inventory-str-excel-files.mjs --dir="C:/path/to/folder"

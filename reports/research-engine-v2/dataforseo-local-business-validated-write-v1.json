@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "status": "production_census_dataforseo_local_business_validated_write_v1_complete",
+  "objective": "dataforseo-local-business-validated-write-v1",
+  "version": "dataforseo-local-business-validated-write-v1",
+  "generated_at": "2026-08-07T22:38:49.428Z",
+  "gates": {
+    "ok": true,
+    "blockers": [],
+    "dataforseo_is_source_of_truth": false,
+    "website_writes": true,
+    "address_writes": true,
+    "phone_writes": false,
+    "coordinate_writes": false,
+    "rooms_from_maps": false,
+    "inserts": false,
+    "match_high_only": true
+  },
+  "candidates_path": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T22-22-14_CALA-dataforseo-local-business-enrichment-v1\\enrichment-candidates.json",
+  "match_high_reviewed": 19,
+  "website_writes": 0,
+  "address_writes": 19,
+  "records_updated": 19,
+  "records_proposed": 19,
+  "fields_written": [
+    "Address",
+    "Address Confidence",
+    "Last Reviewed Date",
+    "Enrichment Status",
+    "Address Source URL"
+  ],
+  "rejected_reasons": {
+    "phone_local_policy_not_approved": 19,
+    "coordinate_local_policy_not_approved": 19,
+    "existing_brand_official_url_preserved": 19
+  },
+  "address_conflicts": 0,
+  "website_conflicts": 19,
+  "phone_candidates_held": 19,
+  "coordinate_candidates_held": 19,
+  "new_hotel_candidates_queued": 35,
+  "census_writes": 19,
+  "inserts": 0,
+  "brand_setup_writes": 0,
+  "brand_explorer_writes": 0,
+  "rooms_writes": 0,
+  "write_errors": [],
+  "next_policy_decision": "Spot-check address Medium writes; decide phone/coordinate approvals separately; keep new-hotel insert queue held until growth mode + duplicate review.",
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T22-38-44_CALA-dataforseo-local-business-validated-write-v1",
+  "enable_production_writes": true
+}

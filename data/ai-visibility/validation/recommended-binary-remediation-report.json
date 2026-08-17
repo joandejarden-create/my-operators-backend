@@ -1,0 +1,537 @@
+{
+  "phase": "RECOMMENDED_BINARY_CLASSIFIER_REMEDIATION_COMPLETE",
+  "auditedAt": "2026-08-15T18:27:26.427Z",
+  "classifier": {
+    "VERSION": "ai_visibility_recommended_binary_v1",
+    "RULE_VERSION": "ai_visibility_recommended_binary_rules_v1_3",
+    "definitionVersion": "ai_signal_recommended_definition_lock_v1",
+    "regressionSuiteVersion": "ai_visibility_recommended_binary_regression_v1"
+  },
+  "hardGuards": {
+    "PRESENCE_CHANGES": 0,
+    "PRESENCE_RESCORE": 0,
+    "GROUND_TRUTH_WRITES": 0,
+    "HUMAN_LABEL_WRITES": 0,
+    "AMBIGUOUS_CASES_FORCED": 0,
+    "NEW_RECOMMENDED_HOLDOUT": 0,
+    "PROVIDER_CALLS": 0,
+    "RECOMMENDATION_SHARE_ENABLE": 0,
+    "FIRST_RECOMMENDATION_WORK": 0,
+    "AIRTABLE_WRITES": 0,
+    "DEPLOYS": 0
+  },
+  "DEV_BEFORE": {
+    "N": 273,
+    "TP": 49,
+    "TN": 150,
+    "FP": 3,
+    "FN": 71,
+    "PRECISION": 0.9423076923076923,
+    "RECALL": 0.4083333333333333,
+    "F1": 0.569767441860465,
+    "PRECISION_PCT": "94.23%",
+    "RECALL_PCT": "40.83%",
+    "F1_PCT": "56.98%",
+    "note": "v4.1 positive-role mapping vs locked proposed labels"
+  },
+  "DEV_AFTER": {
+    "N": 273,
+    "TP": 72,
+    "TN": 137,
+    "FP": 16,
+    "FN": 48,
+    "PRECISION": 0.8181818181818182,
+    "RECALL": 0.6,
+    "F1": 0.6923076923076923,
+    "SPECIFICITY": 0.8954248366013072,
+    "PRECISION_PCT": "81.82%",
+    "RECALL_PCT": "60.00%",
+    "F1_PCT": "69.23%",
+    "SPECIFICITY_PCT": "89.54%",
+    "note": "recommended_binary_v1 vs locked proposed labels; not certified"
+  },
+  "remainingErrors": {
+    "counts": {
+      "shortlist_wording": 0,
+      "scope_inheritance": 0,
+      "table_list_inheritance": 9,
+      "multi_entity_structure": 4,
+      "implicit_recommendation": 0,
+      "qualified_recommendation": 0,
+      "comparator": 0,
+      "descriptive_mention": 0,
+      "negative_exclusion": 0,
+      "prompt_intent_error": 0,
+      "other": 51
+    },
+    "sample": [
+      {
+        "caseId": "v1_g012",
+        "entity": "Curio Collection by Hilton",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v1_g015",
+        "entity": "Kimpton Hotels",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v1_g016",
+        "entity": "Hotel Indigo",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v1_g023",
+        "entity": "Aimbridge Hospitality (LATAM)",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v1_g024",
+        "entity": "GHL Hoteles (GHL Holding)",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_0091dfff",
+        "entity": "Hotel Indigo",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_024fcf9c",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "category": "multi_entity_structure",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_035ffe13",
+        "entity": "Small Luxury Hotels of the World",
+        "errorType": "FN",
+        "category": "table_list_inheritance",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_07cbcda0",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "category": "table_list_inheritance",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_090e59ac",
+        "entity": "Ascend Hotel Collection",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_0ac8f8ef",
+        "entity": "Autograph Collection",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_0cfea0d4",
+        "entity": "Tapestry Collection by Hilton",
+        "errorType": "FP",
+        "category": "other",
+        "reason": "v41_positive_role:ranked_recommendation",
+        "proposed": false,
+        "pred": true
+      },
+      {
+        "caseId": "v2_cand_1046965f",
+        "entity": "Hotel Indigo",
+        "errorType": "FN",
+        "category": "table_list_inheritance",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_141a99e1",
+        "entity": "Fairmont",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_1550f44a",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_17e09529",
+        "entity": "Westin",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_198ab403",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_198f2e2c",
+        "entity": "Fairmont",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_224ba464",
+        "entity": "Curio Collection by Hilton",
+        "errorType": "FP",
+        "category": "other",
+        "reason": "entity_local_affirmative_cue",
+        "proposed": false,
+        "pred": true
+      },
+      {
+        "caseId": "v2_cand_25520887",
+        "entity": "Fairmont",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_2cad5049",
+        "entity": "Sheraton",
+        "errorType": "FN",
+        "category": "table_list_inheritance",
+        "reason": "comparator_only_override",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_2e0a4ca6",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_3468ce7e",
+        "entity": "Design Hotels",
+        "errorType": "FN",
+        "category": "other",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_37210b41",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "category": "table_list_inheritance",
+        "reason": "no_affirmative_decision_set_evidence",
+        "proposed": true,
+        "pred": false
+      },
+      {
+        "caseId": "v2_cand_3a457626",
+        "entity": "Autograph Collection",
+        "errorType": "FP",
+        "category": "other",
+        "reason": "v41_positive_role:ranked_recommendation",
+        "proposed": false,
+        "pred": true
+      }
+    ],
+    "total": 64
+  },
+  "regression": {
+    "version": "ai_visibility_recommended_binary_regression_v1",
+    "POSITIVE_CASES": 10,
+    "NEGATIVE_CASES": 8,
+    "pass": 18,
+    "fail": 0,
+    "status": "PASS",
+    "results": [
+      {
+        "id": "pos_explicit",
+        "expect": true,
+        "got": true,
+        "reason": "v41_positive_role:explicit_recommendation",
+        "ok": true
+      },
+      {
+        "id": "pos_shortlist",
+        "expect": true,
+        "got": true,
+        "reason": "entity_local_affirmative_cue",
+        "ok": true
+      },
+      {
+        "id": "pos_brands_to_consider",
+        "expect": true,
+        "got": true,
+        "reason": "entity_local_affirmative_cue",
+        "ok": true
+      },
+      {
+        "id": "pos_bullet_inherit",
+        "expect": true,
+        "got": true,
+        "reason": "v41_positive_role:explicit_recommendation",
+        "ok": true
+      },
+      {
+        "id": "pos_ranked",
+        "expect": true,
+        "got": true,
+        "reason": "v41_positive_role:ranked_recommendation",
+        "ok": true
+      },
+      {
+        "id": "pos_table",
+        "expect": true,
+        "got": true,
+        "reason": "entity_local_affirmative_cue",
+        "ok": true
+      },
+      {
+        "id": "pos_multi_entity",
+        "expect": true,
+        "got": true,
+        "reason": "entity_local_affirmative_cue",
+        "ok": true
+      },
+      {
+        "id": "pos_qualified",
+        "expect": true,
+        "got": true,
+        "reason": "v41_positive_role:explicit_recommendation",
+        "ok": true
+      },
+      {
+        "id": "pos_spanish",
+        "expect": true,
+        "got": true,
+        "reason": "entity_local_affirmative_cue",
+        "ok": true
+      },
+      {
+        "id": "pos_worth_considering",
+        "expect": true,
+        "got": true,
+        "reason": "qualified_affirmative",
+        "ok": true
+      },
+      {
+        "id": "neg_descriptive",
+        "expect": false,
+        "got": false,
+        "reason": "descriptive_or_market_context_only",
+        "ok": true
+      },
+      {
+        "id": "neg_market",
+        "expect": false,
+        "got": false,
+        "reason": "descriptive_or_market_context_only",
+        "ok": true
+      },
+      {
+        "id": "neg_comparator",
+        "expect": false,
+        "got": false,
+        "reason": "comparator_only_override",
+        "ok": true
+      },
+      {
+        "id": "neg_exclusion",
+        "expect": false,
+        "got": false,
+        "reason": "negative_exclusion_override",
+        "ok": true
+      },
+      {
+        "id": "neg_historical",
+        "expect": false,
+        "got": false,
+        "reason": "no_affirmative_decision_set_evidence",
+        "ok": true
+      },
+      {
+        "id": "neg_parent",
+        "expect": false,
+        "got": false,
+        "reason": "no_affirmative_decision_set_evidence",
+        "ok": true
+      },
+      {
+        "id": "neg_non_decision_list",
+        "expect": false,
+        "got": false,
+        "reason": "no_affirmative_decision_set_evidence",
+        "ok": true
+      },
+      {
+        "id": "neg_source_only",
+        "expect": false,
+        "got": false,
+        "reason": "no_affirmative_decision_set_evidence",
+        "ok": true
+      }
+    ]
+  },
+  "ambiguousQueue": {
+    "N": 17,
+    "CLASSIFIER_TRUE": 9,
+    "CLASSIFIER_FALSE": 8,
+    "USED_FOR_GATE": "NO",
+    "samples": [
+      {
+        "caseId": "v1_g021",
+        "entity": "Aimbridge Hospitality (LATAM)",
+        "classifier": false,
+        "reason": "no_affirmative_decision_set_evidence"
+      },
+      {
+        "caseId": "v1_g022",
+        "entity": "GHL Hoteles (GHL Holding)",
+        "classifier": false,
+        "reason": "no_affirmative_decision_set_evidence"
+      },
+      {
+        "caseId": "v2_cand_39c4b049",
+        "entity": "Westin",
+        "classifier": false,
+        "reason": "no_affirmative_decision_set_evidence"
+      },
+      {
+        "caseId": "v2_cand_415f17f0",
+        "entity": "Tapestry Collection by Hilton",
+        "classifier": true,
+        "reason": "v41_positive_role:explicit_recommendation"
+      },
+      {
+        "caseId": "v2_cand_47174009",
+        "entity": "Four Points by Sheraton",
+        "classifier": true,
+        "reason": "entity_local_affirmative_cue"
+      },
+      {
+        "caseId": "v2_cand_4c7fd94c",
+        "entity": "Kimpton Hotels",
+        "classifier": true,
+        "reason": "entity_local_affirmative_cue"
+      },
+      {
+        "caseId": "v2_cand_524ac279",
+        "entity": "Novotel",
+        "classifier": false,
+        "reason": "no_affirmative_decision_set_evidence"
+      },
+      {
+        "caseId": "v2_cand_58eb51df",
+        "entity": "Autograph Collection",
+        "classifier": true,
+        "reason": "entity_local_affirmative_cue"
+      },
+      {
+        "caseId": "v2_cand_84eb9207",
+        "entity": "Autograph Collection",
+        "classifier": false,
+        "reason": "no_affirmative_decision_set_evidence"
+      },
+      {
+        "caseId": "v2_cand_85350e7d",
+        "entity": "Preferred Hotels & Resorts",
+        "classifier": false,
+        "reason": "no_affirmative_decision_set_evidence"
+      },
+      {
+        "caseId": "v2_cand_8ff4f422",
+        "entity": "Canopy by Hilton",
+        "classifier": true,
+        "reason": "entity_local_affirmative_cue"
+      },
+      {
+        "caseId": "v2_cand_955a9776",
+        "entity": "Small Luxury Hotels of the World",
+        "classifier": true,
+        "reason": "entity_local_affirmative_cue"
+      }
+    ]
+  },
+  "reserve": {
+    "AVAILABLE": "NO",
+    "RECOMMENDED_RESERVE_AVAILABLE": "NO",
+    "N": null,
+    "PRECISION": null,
+    "RECALL": null,
+    "F1": null,
+    "note": "No eligible Recommended reserve found; do not manufacture from holdout."
+  },
+  "productionGate": {
+    "PRECISION_THRESHOLD": "98%",
+    "RECALL_THRESHOLD": "98%",
+    "DEV_GATE": "FAIL"
+  },
+  "presence": {
+    "STATUS": "PRODUCTION_VALIDATED",
+    "CHANGED": "NO"
+  },
+  "recommended": {
+    "STATUS": "NOT_PRODUCTION_CERTIFIED",
+    "INTERNAL_VALIDATION_ONLY": true,
+    "RECOMMENDATION_SHARE": "BLOCKED"
+  },
+  "nextStep": "RECOMMENDED_BINARY_CLASSIFIER_REMEDIATION_CONTINUE",
+  "finalStatus": "RECOMMENDED_BINARY_CLASSIFIER_REMEDIATION_REVIEW_REQUIRED"
+}

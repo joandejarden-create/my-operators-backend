@@ -1,0 +1,156 @@
+{
+  "ok": true,
+  "version": "census-data-quality-gate-v1",
+  "core_identity_version": "census-core-identity-quality-v1",
+  "queue_id": "core_identity_quality",
+  "generated_at": "2026-08-07T17:05:38.467Z",
+  "status": "production_census_core_identity_quality_gate_partial_steward_remaining",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "counters": {
+    "records_scanned": 1224,
+    "quality_pass": 1207,
+    "autofix_high": 0,
+    "source_lookup_needed": 0,
+    "steward_review_required": 9,
+    "duplicate_risk": 0,
+    "blocked_identity_conflict": 0,
+    "blocked_dirty_core_identity": 8,
+    "unknown_city": 6,
+    "descriptor_city": 0,
+    "city_state_mixed": 2,
+    "case_or_accent_normalized": 0,
+    "city_state_split": 0,
+    "canonical_blank": 3,
+    "canonical_conflict": 6,
+    "canonical_fixes": 0,
+    "safe_autofix_proposals": 0,
+    "coordinate_blocked_dirty_identity": 17
+  },
+  "by_readiness": {
+    "Census Ready": 223,
+    "Needs Steward Review": 181,
+    "Needs Enrichment": 818,
+    "Blocked": 2
+  },
+  "exact_fields_written": [
+    "City",
+    "State / Region",
+    "Canonical Property Name"
+  ],
+  "proposals": [],
+  "steward_review": [
+    {
+      "record_id": "rec9gAZZzQOvgzcBy",
+      "reason": "human_review_required,canonical_steward_review_required",
+      "city_class": "city_steward",
+      "canonical_status": "steward_review_required"
+    },
+    {
+      "record_id": "recCjXwlr7eBZu3Pn",
+      "reason": "steward_review_required",
+      "city_class": "city_steward",
+      "canonical_status": "complete_clean"
+    },
+    {
+      "record_id": "recClyVxmPwDndCcx",
+      "reason": "canonical_populated_conflict_needs_review",
+      "city_class": "city_clean",
+      "canonical_status": "populated_conflict_needs_review"
+    },
+    {
+      "record_id": "recCrOmuncVJsA2qs",
+      "reason": "canonical_populated_conflict_needs_review",
+      "city_class": "city_clean",
+      "canonical_status": "populated_conflict_needs_review"
+    },
+    {
+      "record_id": "recMQviaEwRWWCFYN",
+      "reason": "steward_review_required",
+      "city_class": "city_steward",
+      "canonical_status": "complete_clean"
+    },
+    {
+      "record_id": "recmHhHstI1XY1tI0",
+      "reason": "canonical_populated_conflict_needs_review",
+      "city_class": "city_clean",
+      "canonical_status": "populated_conflict_needs_review"
+    },
+    {
+      "record_id": "reco7guOJ29TMdlAQ",
+      "reason": "canonical_populated_conflict_needs_review",
+      "city_class": "city_clean",
+      "canonical_status": "populated_conflict_needs_review"
+    },
+    {
+      "record_id": "recsvqDrPlUINlj8n",
+      "reason": "canonical_populated_conflict_needs_review",
+      "city_class": "city_clean",
+      "canonical_status": "populated_conflict_needs_review"
+    },
+    {
+      "record_id": "rectmFdQjVlrRcylq",
+      "reason": "canonical_populated_conflict_needs_review",
+      "city_class": "city_clean",
+      "canonical_status": "populated_conflict_needs_review"
+    }
+  ],
+  "blocked": [
+    {
+      "record_id": "rec02wJ8dk7HtjPjx",
+      "reason": "human_review_required,city_city_unknown,canonical_steward_review_required",
+      "city_class": "city_unknown",
+      "canonical_status": "steward_review_required"
+    },
+    {
+      "record_id": "rec3iIZHWQ28nkGOW",
+      "reason": "city_city_state_mixed_unresolved",
+      "city_class": "city_state_mixed_unresolved",
+      "canonical_status": "complete_clean"
+    },
+    {
+      "record_id": "recCBwyTopFYX8wir",
+      "reason": "city_city_unknown,canonical_blank_not_derivable",
+      "city_class": "city_unknown",
+      "canonical_status": "missing_source_support"
+    },
+    {
+      "record_id": "recLhLP8DUuz5StEA",
+      "reason": "city_city_state_mixed_unresolved",
+      "city_class": "city_state_mixed_unresolved",
+      "canonical_status": "complete_clean"
+    },
+    {
+      "record_id": "recMmMDnAc2Q687ug",
+      "reason": "city_city_unknown,canonical_blank_not_derivable",
+      "city_class": "city_unknown",
+      "canonical_status": "missing_source_support"
+    },
+    {
+      "record_id": "recNx55qHaDlu1SGJ",
+      "reason": "city_city_unknown,canonical_blank_not_derivable",
+      "city_class": "city_unknown",
+      "canonical_status": "missing_source_support"
+    },
+    {
+      "record_id": "recWY3fHxShu6xFLv",
+      "reason": "human_review_required,city_city_unknown,canonical_steward_review_required",
+      "city_class": "city_unknown",
+      "canonical_status": "steward_review_required"
+    },
+    {
+      "record_id": "recrNPNLZ8rZds5F9",
+      "reason": "human_review_required,city_city_unknown,canonical_steward_review_required",
+      "city_class": "city_unknown",
+      "canonical_status": "steward_review_required"
+    }
+  ],
+  "before_after_examples": [],
+  "high_proposals": 0
+}

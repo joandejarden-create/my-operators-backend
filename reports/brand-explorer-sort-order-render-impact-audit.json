@@ -1,0 +1,1203 @@
+{
+  "auditVersion": "24D",
+  "generatedAt": "2026-07-09T10:20:35.875Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "companyValidatedUntouched": true,
+  "companyValidationDateUntouched": true,
+  "brand": {
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-presentation-sort-order-audit.md",
+    "reports/brand-explorer-presentation-sort-order-audit.json",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "reports/brand-explorer-screenshot-seeded-remediation-review-package.md",
+    "reports/brand-explorer-screenshot-seeded-remediation-review-package.json",
+    "reports/brand-explorer-visual-minimums-backfill-writer.md",
+    "reports/brand-explorer-visual-minimums-backfill-writer.json",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "live Tribute Brand Explorer Presentation rows",
+    "live Curio/Kimpton/Radisson/Ascend presentation rows"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-sort-order-render-impact-audit.js",
+    "scripts/brand-explorer-sort-order-render-impact-audit.mjs",
+    "docs/data-intelligence/brand-explorer-sort-order-render-impact-audit-v24D.md",
+    "reports/brand-explorer-sort-order-render-impact-audit.md",
+    "reports/brand-explorer-sort-order-render-impact-audit.json",
+    "package.json"
+  ],
+  "v24DSortOrderRenderImpactAuditExists": true,
+  "totalTributeRowsReviewed": 105,
+  "rowsWithWriterDefaultSortOrder": 85,
+  "referenceBrandsInspected": [
+    {
+      "name": "Curio Collection by Hilton",
+      "recordId": "receQkxgjlezsc1xg",
+      "readable": true,
+      "rowCount": 206
+    },
+    {
+      "name": "Kimpton Hotels",
+      "recordId": "recCKuXCmGvxHPfb3",
+      "readable": true,
+      "rowCount": 192
+    },
+    {
+      "name": "Radisson Blu by Choice",
+      "recordId": "recWPEvxBQxVVzSq3",
+      "readable": true,
+      "rowCount": 218
+    },
+    {
+      "name": "Radisson by Choice",
+      "recordId": "recywbx1YQSTCPqW1",
+      "readable": true,
+      "rowCount": 200
+    },
+    {
+      "name": "Ascend Hotel Collection",
+      "recordId": "reclkgOzvAcBheUSo",
+      "readable": true,
+      "rowCount": 206
+    }
+  ],
+  "sectionAssessments": [
+    {
+      "section": "Geographic Footprint",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "footprint.geo_intro",
+        "footprint.region.am",
+        "footprint.region.cala",
+        "footprint.region.eu",
+        "footprint.region.mea",
+        "footprint.region.apac"
+      ],
+      "rowsExist": true,
+      "rowCount": 6,
+      "rowsHaveImageOrContent": 6,
+      "tributeSortOrderValues": [
+        {
+          "recordId": "recetC6uE222siizH",
+          "slotKey": "footprint.geo_intro",
+          "sortOrder": 10
+        },
+        {
+          "recordId": "recah9ILLxcXHwmOa",
+          "slotKey": "footprint.region.am",
+          "sortOrder": 260
+        },
+        {
+          "recordId": "recUMmwVFf3V3or7j",
+          "slotKey": "footprint.region.apac",
+          "sortOrder": 270
+        },
+        {
+          "recordId": "recMxUaZjR2Q2c1fP",
+          "slotKey": "footprint.region.cala",
+          "sortOrder": 280
+        },
+        {
+          "recordId": "recnQuk93grWDJl38",
+          "slotKey": "footprint.region.eu",
+          "sortOrder": 290
+        },
+        {
+          "recordId": "recLyiJs6OapVhrLU",
+          "slotKey": "footprint.region.mea",
+          "sortOrder": 300
+        }
+      ],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "footprint.geo_intro",
+          "modeSortOrder": 10,
+          "uniqueSortOrders": [
+            10
+          ]
+        },
+        {
+          "slotKey": "footprint.region.am",
+          "modeSortOrder": 11,
+          "uniqueSortOrders": [
+            11
+          ]
+        },
+        {
+          "slotKey": "footprint.region.cala",
+          "modeSortOrder": 12,
+          "uniqueSortOrders": [
+            12
+          ]
+        },
+        {
+          "slotKey": "footprint.region.eu",
+          "modeSortOrder": 13,
+          "uniqueSortOrders": [
+            13
+          ]
+        },
+        {
+          "slotKey": "footprint.region.mea",
+          "modeSortOrder": 14,
+          "uniqueSortOrders": [
+            14
+          ]
+        },
+        {
+          "slotKey": "footprint.region.apac",
+          "modeSortOrder": 15,
+          "uniqueSortOrders": [
+            15
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": true,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": true,
+      "classification": "sort_order_only_affects_ordering",
+      "recommendedAction": "Optional ordering normalization only",
+      "writerDefaultSortRowCount": 6,
+      "sortOrderMismatchCount": 1,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Openings / Examples / Properties",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "footprint.openings"
+      ],
+      "rowsExist": false,
+      "rowCount": 0,
+      "rowsHaveImageOrContent": 0,
+      "tributeSortOrderValues": [],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "footprint.openings",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            6
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": true,
+        "takeFirstN": true
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_missing_row",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 0,
+      "sortOrderMismatchCount": 0,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Recent Momentum",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "footprint.momentum"
+      ],
+      "rowsExist": false,
+      "rowCount": 0,
+      "rowsHaveImageOrContent": 0,
+      "tributeSortOrderValues": [],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "footprint.momentum",
+          "modeSortOrder": 1,
+          "uniqueSortOrders": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            41,
+            42,
+            43,
+            44,
+            45
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": false,
+        "takeFirstN": true
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_missing_row",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 0,
+      "sortOrderMismatchCount": 0,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Portfolio Mix",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "footprint.portfolio_mix"
+      ],
+      "rowsExist": true,
+      "rowCount": 1,
+      "rowsHaveImageOrContent": 1,
+      "tributeSortOrderValues": [
+        {
+          "recordId": "recVGnezQQUg1d9OE",
+          "slotKey": "footprint.portfolio_mix",
+          "sortOrder": 250
+        }
+      ],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "footprint.portfolio_mix",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": true,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_source_evidence",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 1,
+      "sortOrderMismatchCount": 1,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Portfolio Context",
+      "visibleIssue": "missing_peer_portfolio_context, generic_placeholder_copy",
+      "relevantSlotKeys": [
+        "overview.portfolio_context"
+      ],
+      "rowsExist": false,
+      "rowCount": 0,
+      "rowsHaveImageOrContent": 0,
+      "tributeSortOrderValues": [],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "overview.portfolio_context",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": false,
+      "frontendSortBehavior": {
+        "rowSelection": false,
+        "cardOrdering": false,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": false,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_missing_row",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 0,
+      "sortOrderMismatchCount": 0,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Standard Detail / Where Available",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "standards.requirement"
+      ],
+      "rowsExist": false,
+      "rowCount": 0,
+      "rowsHaveImageOrContent": 0,
+      "tributeSortOrderValues": [],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "standards.requirement",
+          "modeSortOrder": 10,
+          "uniqueSortOrders": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": true,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_missing_row",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 0,
+      "sortOrderMismatchCount": 0,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Demand Scenario View",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "commercial.demand"
+      ],
+      "rowsExist": true,
+      "rowCount": 1,
+      "rowsHaveImageOrContent": 1,
+      "tributeSortOrderValues": [
+        {
+          "recordId": "recKbyC6vr05rrnzS",
+          "slotKey": "commercial.demand",
+          "sortOrder": 0
+        }
+      ],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "commercial.demand",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": true,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_missing_image",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 0,
+      "sortOrderMismatchCount": 0,
+      "missingImageCount": 1,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Loyalty Program",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "loyalty.proof",
+        "loyalty.elite",
+        "loyalty.earn",
+        "loyalty.redeem",
+        "loyalty.kpi.members",
+        "loyalty.kpi.hotels",
+        "loyalty.kpi.markets",
+        "loyalty.kpi.mix"
+      ],
+      "rowsExist": false,
+      "rowCount": 0,
+      "rowsHaveImageOrContent": 0,
+      "tributeSortOrderValues": [],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "loyalty.proof",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "slotKey": "loyalty.elite",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "slotKey": "loyalty.earn",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        },
+        {
+          "slotKey": "loyalty.redeem",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        },
+        {
+          "slotKey": "loyalty.kpi.members",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        },
+        {
+          "slotKey": "loyalty.kpi.hotels",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        },
+        {
+          "slotKey": "loyalty.kpi.markets",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        },
+        {
+          "slotKey": "loyalty.kpi.mix",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": true,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_missing_row",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 0,
+      "sortOrderMismatchCount": 0,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Where This Brand Creates the Most Value",
+      "visibleIssue": "missing_card_image, blank_image_placeholder",
+      "relevantSlotKeys": [
+        "overview.scenario.1",
+        "overview.scenario.2",
+        "overview.scenario.3"
+      ],
+      "rowsExist": true,
+      "rowCount": 3,
+      "rowsHaveImageOrContent": 3,
+      "tributeSortOrderValues": [
+        {
+          "recordId": "receMhyKEl5yQGSKJ",
+          "slotKey": "overview.scenario.3",
+          "sortOrder": 0
+        },
+        {
+          "recordId": "recOf4qCi4acHhxPc",
+          "slotKey": "overview.scenario.2",
+          "sortOrder": 0
+        },
+        {
+          "recordId": "recqiRkN3W7j1lGMT",
+          "slotKey": "overview.scenario.1",
+          "sortOrder": 0
+        }
+      ],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "overview.scenario.1",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        },
+        {
+          "slotKey": "overview.scenario.2",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        },
+        {
+          "slotKey": "overview.scenario.3",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": true,
+        "multiRowGrouping": false,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "sort_order_unlikely_related",
+      "recommendedAction": "No sort-order action",
+      "writerDefaultSortRowCount": 0,
+      "sortOrderMismatchCount": 0,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Image Gallery",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "materials.gallery.1",
+        "materials.gallery.2",
+        "materials.gallery.3",
+        "materials.gallery.4",
+        "materials.gallery.5",
+        "materials.gallery.6"
+      ],
+      "rowsExist": true,
+      "rowCount": 6,
+      "rowsHaveImageOrContent": 5,
+      "tributeSortOrderValues": [
+        {
+          "recordId": "rec66EQgSd6vnMZoy",
+          "slotKey": "materials.gallery.5",
+          "sortOrder": 0
+        },
+        {
+          "recordId": "recb7ZgWf6s1IzGaj",
+          "slotKey": "materials.gallery.2",
+          "sortOrder": 0
+        },
+        {
+          "recordId": "recFjJ444WHSE9A6b",
+          "slotKey": "materials.gallery.4",
+          "sortOrder": 0
+        },
+        {
+          "recordId": "recHn6N3Z77lv6wxR",
+          "slotKey": "materials.gallery.6",
+          "sortOrder": 0
+        },
+        {
+          "recordId": "reciNKaL1zf5KEvtn",
+          "slotKey": "materials.gallery.1",
+          "sortOrder": 0
+        },
+        {
+          "recordId": "recDCNmWcRNLZ8Aag",
+          "slotKey": "materials.gallery.3",
+          "sortOrder": 10
+        }
+      ],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "materials.gallery.1",
+          "modeSortOrder": 1,
+          "uniqueSortOrders": [
+            1
+          ]
+        },
+        {
+          "slotKey": "materials.gallery.2",
+          "modeSortOrder": 2,
+          "uniqueSortOrders": [
+            2
+          ]
+        },
+        {
+          "slotKey": "materials.gallery.3",
+          "modeSortOrder": 3,
+          "uniqueSortOrders": [
+            3
+          ]
+        },
+        {
+          "slotKey": "materials.gallery.4",
+          "modeSortOrder": 4,
+          "uniqueSortOrders": [
+            4
+          ]
+        },
+        {
+          "slotKey": "materials.gallery.5",
+          "modeSortOrder": 5,
+          "uniqueSortOrders": [
+            5
+          ]
+        },
+        {
+          "slotKey": "materials.gallery.6",
+          "modeSortOrder": 6,
+          "uniqueSortOrders": [
+            6
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": false,
+      "frontendSortBehavior": {
+        "rowSelection": false,
+        "cardOrdering": false,
+        "firstSecondThirdCardMapping": true,
+        "multiRowGrouping": false,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_missing_image",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 1,
+      "sortOrderMismatchCount": 1,
+      "missingImageCount": 1,
+      "missingContentCount": 1
+    },
+    {
+      "section": "Value Creation Scenarios",
+      "visibleIssue": "title_only_card, title_only_card, title_only_card, title_only_card",
+      "relevantSlotKeys": [
+        "valueOwners.scenario.1",
+        "valueOwners.scenario.2",
+        "valueOwners.scenario.3",
+        "valueOwners.scenario.4"
+      ],
+      "rowsExist": false,
+      "rowCount": 0,
+      "rowsHaveImageOrContent": 0,
+      "tributeSortOrderValues": [],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "valueOwners.scenario.1",
+          "modeSortOrder": null,
+          "uniqueSortOrders": []
+        },
+        {
+          "slotKey": "valueOwners.scenario.2",
+          "modeSortOrder": null,
+          "uniqueSortOrders": []
+        },
+        {
+          "slotKey": "valueOwners.scenario.3",
+          "modeSortOrder": null,
+          "uniqueSortOrders": []
+        },
+        {
+          "slotKey": "valueOwners.scenario.4",
+          "modeSortOrder": null,
+          "uniqueSortOrders": []
+        }
+      ],
+      "frontendUsesSortOrder": true,
+      "frontendSortBehavior": {
+        "rowSelection": true,
+        "cardOrdering": true,
+        "firstSecondThirdCardMapping": true,
+        "multiRowGrouping": false,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "not_sort_order_related_missing_row",
+      "recommendedAction": "Address row/content/image/mapping first; do not apply global sort changes",
+      "writerDefaultSortRowCount": 0,
+      "sortOrderMismatchCount": 0,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Key Watchouts",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "valueOwners.watchouts"
+      ],
+      "rowsExist": true,
+      "rowCount": 1,
+      "rowsHaveImageOrContent": 1,
+      "tributeSortOrderValues": [
+        {
+          "recordId": "recSylIVEltQjQAaW",
+          "slotKey": "valueOwners.watchouts",
+          "sortOrder": 700
+        }
+      ],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "valueOwners.watchouts",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": false,
+      "frontendSortBehavior": {
+        "rowSelection": false,
+        "cardOrdering": false,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": false,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "sort_order_unlikely_related",
+      "recommendedAction": "No sort-order action",
+      "writerDefaultSortRowCount": 1,
+      "sortOrderMismatchCount": 1,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Why Value Is Strongest",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "overview.why_value"
+      ],
+      "rowsExist": true,
+      "rowCount": 1,
+      "rowsHaveImageOrContent": 1,
+      "tributeSortOrderValues": [
+        {
+          "recordId": "recSFXWoFbjZ1mv5e",
+          "slotKey": "overview.why_value",
+          "sortOrder": 100
+        }
+      ],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "overview.why_value",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": false,
+      "frontendSortBehavior": {
+        "rowSelection": false,
+        "cardOrdering": false,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": false,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "sort_order_unlikely_related",
+      "recommendedAction": "No sort-order action",
+      "writerDefaultSortRowCount": 1,
+      "sortOrderMismatchCount": 1,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    },
+    {
+      "section": "Differentiators",
+      "visibleIssue": "no explicit defect in v24 audit",
+      "relevantSlotKeys": [
+        "overview.differentiators.identity",
+        "overview.differentiators.commercial"
+      ],
+      "rowsExist": true,
+      "rowCount": 2,
+      "rowsHaveImageOrContent": 2,
+      "tributeSortOrderValues": [
+        {
+          "recordId": "recylGZZREiPCrqhm",
+          "slotKey": "overview.differentiators.commercial",
+          "sortOrder": 60
+        },
+        {
+          "recordId": "recUTWOpoyhHoGS9p",
+          "slotKey": "overview.differentiators.identity",
+          "sortOrder": 70
+        }
+      ],
+      "referenceSortOrderPattern": [
+        {
+          "slotKey": "overview.differentiators.identity",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        },
+        {
+          "slotKey": "overview.differentiators.commercial",
+          "modeSortOrder": 0,
+          "uniqueSortOrders": [
+            0
+          ]
+        }
+      ],
+      "frontendUsesSortOrder": false,
+      "frontendSortBehavior": {
+        "rowSelection": false,
+        "cardOrdering": false,
+        "firstSecondThirdCardMapping": false,
+        "multiRowGrouping": false,
+        "takeFirstN": false
+      },
+      "sortOrderCouldCauseIssue": false,
+      "classification": "sort_order_unlikely_related",
+      "recommendedAction": "No sort-order action",
+      "writerDefaultSortRowCount": 2,
+      "sortOrderMismatchCount": 1,
+      "missingImageCount": 0,
+      "missingContentCount": 0
+    }
+  ],
+  "sectionsLikelyAffectedBySortOrder": [],
+  "sectionsNotAffectedBySortOrder": [
+    "Openings / Examples / Properties",
+    "Recent Momentum",
+    "Portfolio Mix",
+    "Portfolio Context",
+    "Standard Detail / Where Available",
+    "Demand Scenario View",
+    "Loyalty Program",
+    "Where This Brand Creates the Most Value",
+    "Image Gallery",
+    "Value Creation Scenarios",
+    "Key Watchouts",
+    "Why Value Is Strongest",
+    "Differentiators"
+  ],
+  "issuesCausedByMissingRows": [
+    "Openings / Examples / Properties",
+    "Recent Momentum",
+    "Portfolio Context",
+    "Standard Detail / Where Available",
+    "Loyalty Program",
+    "Value Creation Scenarios"
+  ],
+  "issuesCausedByMissingImages": [
+    "Demand Scenario View",
+    "Image Gallery"
+  ],
+  "issuesCausedBySourceEvidenceGaps": [
+    "Portfolio Mix"
+  ],
+  "issuesCausedByFrontendMappingSuppressionGaps": [],
+  "highConfidenceSortOrderCorrections": [
+    {
+      "recordId": "recah9ILLxcXHwmOa",
+      "slotKey": "footprint.region.am",
+      "currentSortOrder": 260,
+      "proposedSortOrder": 11,
+      "section": "Geographic Footprint"
+    },
+    {
+      "recordId": "recUMmwVFf3V3or7j",
+      "slotKey": "footprint.region.apac",
+      "currentSortOrder": 270,
+      "proposedSortOrder": 15,
+      "section": "Geographic Footprint"
+    },
+    {
+      "recordId": "recMxUaZjR2Q2c1fP",
+      "slotKey": "footprint.region.cala",
+      "currentSortOrder": 280,
+      "proposedSortOrder": 12,
+      "section": "Geographic Footprint"
+    },
+    {
+      "recordId": "recnQuk93grWDJl38",
+      "slotKey": "footprint.region.eu",
+      "currentSortOrder": 290,
+      "proposedSortOrder": 13,
+      "section": "Geographic Footprint"
+    },
+    {
+      "recordId": "recLyiJs6OapVhrLU",
+      "slotKey": "footprint.region.mea",
+      "currentSortOrder": 300,
+      "proposedSortOrder": 14,
+      "section": "Geographic Footprint"
+    }
+  ],
+  "mediumConfidenceSortOrderCorrections": [],
+  "rowsShouldNotBeChanged": [
+    {
+      "recordId": "recVGnezQQUg1d9OE",
+      "slotKey": "footprint.portfolio_mix",
+      "sortOrder": 250,
+      "section": "Portfolio Mix"
+    },
+    {
+      "recordId": "recKbyC6vr05rrnzS",
+      "slotKey": "commercial.demand",
+      "sortOrder": 0,
+      "section": "Demand Scenario View"
+    },
+    {
+      "recordId": "receMhyKEl5yQGSKJ",
+      "slotKey": "overview.scenario.3",
+      "sortOrder": 0,
+      "section": "Where This Brand Creates the Most Value"
+    },
+    {
+      "recordId": "recOf4qCi4acHhxPc",
+      "slotKey": "overview.scenario.2",
+      "sortOrder": 0,
+      "section": "Where This Brand Creates the Most Value"
+    },
+    {
+      "recordId": "recqiRkN3W7j1lGMT",
+      "slotKey": "overview.scenario.1",
+      "sortOrder": 0,
+      "section": "Where This Brand Creates the Most Value"
+    },
+    {
+      "recordId": "rec66EQgSd6vnMZoy",
+      "slotKey": "materials.gallery.5",
+      "sortOrder": 0,
+      "section": "Image Gallery"
+    },
+    {
+      "recordId": "recb7ZgWf6s1IzGaj",
+      "slotKey": "materials.gallery.2",
+      "sortOrder": 0,
+      "section": "Image Gallery"
+    },
+    {
+      "recordId": "recFjJ444WHSE9A6b",
+      "slotKey": "materials.gallery.4",
+      "sortOrder": 0,
+      "section": "Image Gallery"
+    },
+    {
+      "recordId": "recHn6N3Z77lv6wxR",
+      "slotKey": "materials.gallery.6",
+      "sortOrder": 0,
+      "section": "Image Gallery"
+    },
+    {
+      "recordId": "reciNKaL1zf5KEvtn",
+      "slotKey": "materials.gallery.1",
+      "sortOrder": 0,
+      "section": "Image Gallery"
+    },
+    {
+      "recordId": "recDCNmWcRNLZ8Aag",
+      "slotKey": "materials.gallery.3",
+      "sortOrder": 10,
+      "section": "Image Gallery"
+    },
+    {
+      "recordId": "recSylIVEltQjQAaW",
+      "slotKey": "valueOwners.watchouts",
+      "sortOrder": 700,
+      "section": "Key Watchouts"
+    },
+    {
+      "recordId": "recSFXWoFbjZ1mv5e",
+      "slotKey": "overview.why_value",
+      "sortOrder": 100,
+      "section": "Why Value Is Strongest"
+    },
+    {
+      "recordId": "recylGZZREiPCrqhm",
+      "slotKey": "overview.differentiators.commercial",
+      "sortOrder": 60,
+      "section": "Differentiators"
+    },
+    {
+      "recordId": "recUTWOpoyhHoGS9p",
+      "slotKey": "overview.differentiators.identity",
+      "sortOrder": 70,
+      "section": "Differentiators"
+    }
+  ],
+  "rowsNotSortOrderRelated": [
+    {
+      "recordId": "recVGnezQQUg1d9OE",
+      "slotKey": "footprint.portfolio_mix",
+      "sortOrder": 250,
+      "section": "Portfolio Mix",
+      "reason": "not_sort_order_related_source_evidence"
+    },
+    {
+      "recordId": "recKbyC6vr05rrnzS",
+      "slotKey": "commercial.demand",
+      "sortOrder": 0,
+      "section": "Demand Scenario View",
+      "reason": "not_sort_order_related_missing_image"
+    },
+    {
+      "recordId": "receMhyKEl5yQGSKJ",
+      "slotKey": "overview.scenario.3",
+      "sortOrder": 0,
+      "section": "Where This Brand Creates the Most Value",
+      "reason": "sort_order_unlikely_related"
+    },
+    {
+      "recordId": "recOf4qCi4acHhxPc",
+      "slotKey": "overview.scenario.2",
+      "sortOrder": 0,
+      "section": "Where This Brand Creates the Most Value",
+      "reason": "sort_order_unlikely_related"
+    },
+    {
+      "recordId": "recqiRkN3W7j1lGMT",
+      "slotKey": "overview.scenario.1",
+      "sortOrder": 0,
+      "section": "Where This Brand Creates the Most Value",
+      "reason": "sort_order_unlikely_related"
+    },
+    {
+      "recordId": "rec66EQgSd6vnMZoy",
+      "slotKey": "materials.gallery.5",
+      "sortOrder": 0,
+      "section": "Image Gallery",
+      "reason": "not_sort_order_related_missing_image"
+    },
+    {
+      "recordId": "recb7ZgWf6s1IzGaj",
+      "slotKey": "materials.gallery.2",
+      "sortOrder": 0,
+      "section": "Image Gallery",
+      "reason": "not_sort_order_related_missing_image"
+    },
+    {
+      "recordId": "recFjJ444WHSE9A6b",
+      "slotKey": "materials.gallery.4",
+      "sortOrder": 0,
+      "section": "Image Gallery",
+      "reason": "not_sort_order_related_missing_image"
+    },
+    {
+      "recordId": "recHn6N3Z77lv6wxR",
+      "slotKey": "materials.gallery.6",
+      "sortOrder": 0,
+      "section": "Image Gallery",
+      "reason": "not_sort_order_related_missing_image"
+    },
+    {
+      "recordId": "reciNKaL1zf5KEvtn",
+      "slotKey": "materials.gallery.1",
+      "sortOrder": 0,
+      "section": "Image Gallery",
+      "reason": "not_sort_order_related_missing_image"
+    },
+    {
+      "recordId": "recDCNmWcRNLZ8Aag",
+      "slotKey": "materials.gallery.3",
+      "sortOrder": 10,
+      "section": "Image Gallery",
+      "reason": "not_sort_order_related_missing_image"
+    },
+    {
+      "recordId": "recSylIVEltQjQAaW",
+      "slotKey": "valueOwners.watchouts",
+      "sortOrder": 700,
+      "section": "Key Watchouts",
+      "reason": "sort_order_unlikely_related"
+    },
+    {
+      "recordId": "recSFXWoFbjZ1mv5e",
+      "slotKey": "overview.why_value",
+      "sortOrder": 100,
+      "section": "Why Value Is Strongest",
+      "reason": "sort_order_unlikely_related"
+    },
+    {
+      "recordId": "recylGZZREiPCrqhm",
+      "slotKey": "overview.differentiators.commercial",
+      "sortOrder": 60,
+      "section": "Differentiators",
+      "reason": "sort_order_unlikely_related"
+    },
+    {
+      "recordId": "recUTWOpoyhHoGS9p",
+      "slotKey": "overview.differentiators.identity",
+      "sortOrder": 70,
+      "section": "Differentiators",
+      "reason": "sort_order_unlikely_related"
+    }
+  ],
+  "v24DSortOrderCorrectionWriterShouldBeBuilt": true,
+  "exactRecommendedCorrectionListIfSafe": [
+    {
+      "recordId": "recah9ILLxcXHwmOa",
+      "slotKey": "footprint.region.am",
+      "currentSortOrder": 260,
+      "proposedSortOrder": 11,
+      "section": "Geographic Footprint"
+    },
+    {
+      "recordId": "recUMmwVFf3V3or7j",
+      "slotKey": "footprint.region.apac",
+      "currentSortOrder": 270,
+      "proposedSortOrder": 15,
+      "section": "Geographic Footprint"
+    },
+    {
+      "recordId": "recMxUaZjR2Q2c1fP",
+      "slotKey": "footprint.region.cala",
+      "currentSortOrder": 280,
+      "proposedSortOrder": 12,
+      "section": "Geographic Footprint"
+    },
+    {
+      "recordId": "recnQuk93grWDJl38",
+      "slotKey": "footprint.region.eu",
+      "currentSortOrder": 290,
+      "proposedSortOrder": 13,
+      "section": "Geographic Footprint"
+    },
+    {
+      "recordId": "recLyiJs6OapVhrLU",
+      "slotKey": "footprint.region.mea",
+      "currentSortOrder": 300,
+      "proposedSortOrder": 14,
+      "section": "Geographic Footprint"
+    }
+  ],
+  "exactNextCommand": "npm run brand-explorer-sort-order-render-impact-audit -- --brand tribute-portfolio --dry-run"
+}

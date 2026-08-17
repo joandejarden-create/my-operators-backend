@@ -1,0 +1,52 @@
+{
+  "field": "Phone",
+  "answers": {
+    "1_researched": "NO — not present on V2.3 freeze physical / not derived into pilot object",
+    "2_staging_nonblank_count": 0,
+    "3_primary_source": "none_in_staging",
+    "4_match_confidence": "High (identity); geography submarket_confidence Medium|No Match when present",
+    "5_source_rights_status": "BLOCKED for SerpApi-class persistence; official exception NOT applied in writer",
+    "6_write_class": "BLOCKED_RIGHTS",
+    "7_in_phase1_mutation_manifest": false,
+    "8_why_not_if_not": "No phone on V2.3 freeze physical for any of 150; also listed in blocked_rights (blanket SerpApi-class block). Phone not in INSERT_ALLOWED_FIELDS.",
+    "9_airtable_field_mapping": true,
+    "10_type_select_blocked": false,
+    "11_writer_intentionally_suppressed": true,
+    "12_expected_or_bug": "EXPECTED"
+  },
+  "staging_nonblank_count": 0,
+  "dry_run_mutation_count": 0,
+  "tx_written_count": 0,
+  "post_write_inserted": {
+    "inserted_records": 115,
+    "blank": 115,
+    "nonblank": 0
+  },
+  "schema": {
+    "name": "Phone",
+    "type": "singleLineText",
+    "id": "fld7XMCOo0nsOwbhj"
+  },
+  "mapping": {
+    "golden_census_field": "Phone",
+    "airtable_field": "Phone",
+    "type": "singleLineText",
+    "exists_on_live_schema": true,
+    "write_class": "BLOCKED_RIGHTS",
+    "source_requirement": "serpapi_blocked_unless_official",
+    "current_write_support": true,
+    "in_autopilot_allowlist": true,
+    "in_insert_allowlist": false,
+    "forbidden": false
+  },
+  "policy": {
+    "inAuto": false,
+    "inCorr": false,
+    "inBlocked": true,
+    "inInsertAllow": false,
+    "classifierAdds": false
+  },
+  "blank_reason_code": "A. RESEARCH VALUE NOT FOUND",
+  "expected_or_bug": "EXPECTED",
+  "staging_keys_sample": []
+}

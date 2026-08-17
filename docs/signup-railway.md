@@ -52,7 +52,7 @@ On `npm start`, the server logs e.g. `Memberstack Admin API: sandbox` or `live`.
 | `SIGNUP_AIRTABLE_SET_PENDING_STATUS` | Set `false` to skip pending status on create. |
 | `SIGNUP_AIRTABLE_APPROVED_STATUS` | Default `Active` when approved plan detected on webhook. |
 | `AIRTABLE_USERS_INACTIVE_STATUS_VALUES` | Add `pending` here to block `/app` until approved (optional; Memberstack plan also gates). |
-| `SIGNUP_NOTIFY_EMAIL` or `SUPPORT_EMAIL` | Admin alert on new signup. |
+| `SIGNUP_NOTIFY_EMAIL` or `SUPPORT_EMAIL` | Admin alert on new signup / Request a Demo / Opportunity Review. Canonical: `hello@aohospitalityadvisors.com`. |
 | `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` | Required for admin notify (and optional duplicate welcome). |
 | `SIGNUP_SEND_WELCOME_EMAIL` | `true` only if you want Railway SMTP welcome **in addition to** Memberstack. Default: off. |
 | `MEMBERSTACK_CF_*` | Optional overrides for Memberstack custom field **API keys** (defaults slugify dashboard names, e.g. `First Name` → `first-name`, `AirTable User ID` → `air-table-user-id`). If columns stay empty after signup, run `node scripts/inspect-memberstack-custom-fields.mjs --email <email>` and set env vars to match the keys printed on the member. |
@@ -110,6 +110,28 @@ If the URL looks like `https://dealality.com/verify?member={"verified":true}&for
 2. **Deploy** — Ensure latest `server.js` includes `GET /verify` (not only static `verify.html`).
 3. **Memberstack** — **Plans → Basic → Redirects** → On Verification / On Signup: use `https://<railway-host>/verify` while testing; update production when DNS/proxy routes `/verify` to Railway.
 4. After deploy, hard-refresh the verify link; you should see **Your email is verified** and the pending-approval note.
+
+## Test → Live member migration
+
+Memberstack does **not** move members between Test and Live. To bring one person to Live:
+
+1. Set **Live** `MEMBERSTACK_SECRET_KEY` (`sk_…`) and **Test** `MEMBERSTACK_TEST_SECRET_KEY` (`sk_sb_…`).
+2. Set **Live** `MEMBERSTACK_SIGNUP_PENDING_PLAN_ID` (plan ids differ from Test).
+3. Dry-run:
+
+   ```bash
+   node scripts/migrate-memberstack-test-to-live.mjs --email user@example.com
+   ```
+
+4. Apply:
+
+   ```bash
+   node scripts/migrate-memberstack-test-to-live.mjs --email user@example.com --execute
+   ```
+
+The script relinks **Airtable** `Unique Webflow ID` only — **not** Workspace Access or Company Profile. The user must **verify email again** in Live and use a **new password** (temp password printed on create). Update Webflow to the **Live** App ID.
+
+Alternatively: have the user sign up again on Live with the same email after you switch keys (simplest for one-off testers).
 
 ## Disable Zapier
 

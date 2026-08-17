@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-07-23T00:25:00.000Z",
+  "recoveryBatch": {
+    "websitePropertyIdApplied": 9,
+    "amenitiesApplied": 5,
+    "amenitiesEmptyOrBlocked": 4
+  },
+  "cumulative": {
+    "websitePropertyIdApplied": 252,
+    "amenitiesApplied": 241,
+    "unmatchedCensus": 76,
+    "directoryHotels": 304,
+    "calaIhgCensusRows": 328
+  },
+  "priorBatch": {
+    "websitePropertyIdApplied": 243,
+    "amenitiesApplied": 236,
+    "unmatchedCensus": 83
+  },
+  "topGapReasons": [
+    "Six Senses / alliance brands not listed on ihg.com directories",
+    "Missing destination pages for several Caribbean islands (St Kitts, Belize, Saint Lucia, etc.)",
+    "Census duplicate rows where Property ID already assigned to another record",
+    "Pipeline / unopened properties absent from public IHG listings",
+    "Brand/name variants without safe medium+ match (e.g. Buenavista vs Zona Centro)"
+  ],
+  "commandsRun": [
+    "node scripts/extract-ihg-cala-directory.mjs --merge-sitemap --harvest-city-pages --enrich-gap-slugs --delay-ms=150",
+    "node scripts/sync-ihg-census-from-directory.mjs",
+    "node scripts/sync-ihg-census-from-directory.mjs --apply",
+    "node scripts/backfill-ihg-census-amenities.mjs --urls=3",
+    "node scripts/backfill-ihg-census-amenities.mjs --apply",
+    "node scripts/sync-ihg-census-from-directory.mjs"
+  ],
+  "filesChanged": [
+    "lib/ihg-brand-directory-extract.js",
+    "lib/hotel-census/plan-ihg-census-directory-match.js",
+    "scripts/extract-ihg-cala-directory.mjs",
+    "reports/ihg-cala-directory-extract.json",
+    "reports/ihg-cala-directory-extract.csv",
+    "reports/ihg-census-directory-match-plan.json",
+    "reports/ihg-census-unmatched-steward.csv",
+    "reports/ihg-census-steward-review.csv",
+    "reports/ihg-census-apply-dry-run.json",
+    "reports/ihg-census-enrichment-apply-log.json",
+    "reports/ihg-census-enrichment-apply-log.csv",
+    "reports/ihg-census-amenities-apply-log.json",
+    "reports/ihg-census-amenities-backfill-plan.json",
+    "reports/ihg-census-enrichment-summary.md",
+    "reports/ihg-census-enrichment-recovery-summary.json"
+  ]
+}

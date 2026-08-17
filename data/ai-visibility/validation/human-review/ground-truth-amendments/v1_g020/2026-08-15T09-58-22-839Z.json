@@ -1,0 +1,50 @@
+{
+  "version": "ai_intelligence_golden_set_ground_truth_amendment_v1",
+  "caseId": "v1_g020",
+  "action": "CORRECT_HUMAN_LABEL",
+  "AMENDMENT_ACTION": "CORRECT_HUMAN_LABEL",
+  "ORIGINAL_HUMAN_LABEL": {
+    "expectedEntityPresent": null,
+    "expectedRecommendationRole": "first_recommendation",
+    "expectedRecommendationClass": "first_recommendation",
+    "expectedFirstRecommendation": true,
+    "expectedQuestionStatus": null,
+    "expectedCitationAssociation": null,
+    "candidateEntity": "Hotel Equities (CALA)",
+    "canonicalEntityId": null,
+    "reviewStatus": null,
+    "groundTruthInvalidated": false,
+    "reviewer": "phase2c_human_review",
+    "reviewedAt": "2026-08-13"
+  },
+  "ORIGINAL_CANDIDATE_SUBJECT": "Hotel Equities (CALA)",
+  "ORIGINAL_CANONICAL_ID": null,
+  "AMENDED_HUMAN_LABEL": {
+    "expectedEntityPresent": true,
+    "expectedRecommendationRole": "explicit_recommendation",
+    "expectedRecommendationClass": "explicit_recommendation",
+    "expectedFirstRecommendation": false,
+    "expectedQuestionStatus": "RECOMMENDED",
+    "expectedCitationAssociation": null,
+    "candidateEntity": "Hotel Equities (CALA)",
+    "canonicalEntityId": null,
+    "reviewStatus": null,
+    "groundTruthInvalidated": false,
+    "reviewer": "phase2c_human_review",
+    "reviewedAt": "2026-08-13"
+  },
+  "AMENDMENT_REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation | taxonomyRuleApplied=RULE_1_POSITIVE_NOT_FIRST",
+  "REVIEWER": "Joan (authorized taxonomy Rules 1–5 via AI Intelligence Taxonomy Resolution)",
+  "AMENDED_AT": "2026-08-15T09:58:22.839Z",
+  "ORIGINAL_REVIEW_AUDIT": {
+    "reviewer": "phase2c_human_review",
+    "reviewedAt": "2026-08-13",
+    "reviewStatus": null,
+    "notes": "Imported from Phase 2C human-labelled golden; provider/geo/lang unspecified in source.",
+    "source": "phase2c_human_labelled",
+    "systemSuggestionPreserved": null
+  },
+  "CLASSIFIER_LOGIC_CHANGE": false,
+  "AUTO_LABEL_CHANGES": false,
+  "HOLDOUT_ACCESSED": false
+}

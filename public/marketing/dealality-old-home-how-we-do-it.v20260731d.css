@@ -1,0 +1,490 @@
+/* How We Do It — compact one-screen step switcher (v20260731a)
+   Namespace: dealality-process_*
+   8-step journey: platform + dedicated offline relationship steps.
+   Click left nav to swap right panel in place. No scroll runway. */
+#oh-how-we-do-it.dealality-process_section,
+#oh-how-we-do-it{
+  position:relative!important;
+  overflow:hidden!important;
+  padding:52px 1.5rem 44px!important;
+  background:#080F25!important;
+  color:#e8ecf5!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+  min-height:0!important;
+}
+#oh-how-we-do-it .dealality-process_glow{
+  position:absolute!important;left:50%!important;top:18%!important;
+  width:min(92vw,900px)!important;height:280px!important;
+  transform:translate(-50%,-50%)!important;border-radius:50%!important;
+  background:radial-gradient(ellipse at center,rgba(108,114,255,.14) 0%,rgba(108,114,255,.04) 46%,transparent 72%)!important;
+  filter:blur(36px)!important;pointer-events:none!important;z-index:0!important;
+}
+#oh-how-we-do-it .dealality-process_inner{
+  position:relative!important;z-index:1!important;max-width:1120px!important;margin:0 auto!important;
+  display:flex!important;flex-direction:column!important;gap:0!important;
+}
+#oh-how-we-do-it .dealality-process_intro{margin:0 0 20px!important;max-width:760px!important}
+#oh-how-we-do-it .dealality-process_eyebrow{
+  display:inline-flex!important;
+  align-items:center!important;
+  overflow:hidden!important;
+  border-radius:999px!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  background:rgba(8,15,37,.92)!important;
+  padding:4px 12px 4px 4px!important;
+  box-shadow:0 0 0 1px rgba(109,92,216,.1),0 0 28px rgba(109,92,216,.18)!important;
+  margin:0 0 12px!important;
+  gap:0!important;
+  flex-wrap:nowrap!important;
+  max-width:100%!important;
+}
+#oh-how-we-do-it .dealality-process_eyebrow-pill{
+  display:inline-flex!important;
+  align-items:center!important;
+  padding:0 10px!important;
+  height:32px!important;
+  min-height:32px!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:#343259!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:1rem!important;
+  font-weight:500!important;
+  letter-spacing:normal!important;
+  line-height:1!important;
+  text-transform:capitalize!important;
+  white-space:nowrap!important;
+  color:#fff!important;
+  flex:0 0 auto!important;
+}
+#oh-how-we-do-it .dealality-process_eyebrow-right{
+  display:inline-flex!important;
+  align-items:center!important;
+  margin-left:15px!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:1rem!important;
+  font-weight:500!important;
+  line-height:1!important;
+  text-transform:none!important;
+  white-space:nowrap!important;
+  color:#fff!important;
+}
+@media(max-width:900px){
+  #oh-how-we-do-it .dealality-process_eyebrow{flex-wrap:wrap!important;padding:4px 10px 4px 4px!important}
+  #oh-how-we-do-it .dealality-process_eyebrow-right{
+    white-space:normal!important;margin:6px 2px 2px 8px!important;
+  }
+}
+#oh-how-we-do-it .dealality-process_h2{
+  margin:0 0 8px!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:clamp(26px,3.5vw,44px)!important;font-weight:800!important;
+  line-height:1.15!important;letter-spacing:-.03em!important;color:#fff!important;
+  text-transform:none!important;white-space:normal!important;
+}
+#oh-how-we-do-it .dealality-process_lead{
+  margin:0!important;max-width:42rem!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:1.05rem!important;font-weight:500!important;line-height:1.65!important;
+  color:rgba(255,255,255,.62)!important;
+}
+
+/* Compact stage — no tall scroll track */
+#oh-how-we-do-it .dealality-process_stage-track{
+  position:relative!important;
+  height:auto!important;
+  margin:0 0 18px!important;
+}
+#oh-how-we-do-it .dealality-process_stage-pin{
+  position:relative!important;
+  top:auto!important;
+  height:auto!important;
+  max-height:none!important;
+  display:block!important;
+  overflow:visible!important;
+}
+#oh-how-we-do-it .dealality-process_layout{
+  display:grid!important;
+  grid-template-columns:minmax(200px,.28fr) minmax(0,.72fr)!important;
+  gap:18px 28px!important;
+  align-items:start!important;
+  width:100%!important;
+  min-height:0!important;
+}
+#oh-how-we-do-it .dealality-process_nav-col{
+  position:relative!important;min-width:0!important;
+  display:block!important;
+}
+#oh-how-we-do-it .dealality-process_nav{
+  position:relative!important;
+  display:flex!important;flex-direction:column!important;gap:4px!important;padding:2px 0 2px 16px!important;
+  width:100%!important;
+}
+#oh-how-we-do-it .dealality-process_progress{
+  position:absolute!important;left:4px!important;top:8px!important;bottom:8px!important;width:2px!important;
+  background:rgba(255,255,255,.1)!important;border-radius:2px!important;overflow:hidden!important;
+}
+#oh-how-we-do-it .dealality-process_progress > span{
+  display:block!important;width:100%!important;height:0%;background:linear-gradient(180deg,#8B90FF,#6C72FF)!important;
+  transition:height .22s ease!important;
+}
+#oh-how-we-do-it .dealality-process_nav-item{
+  appearance:none!important;-webkit-appearance:none!important;border:0!important;background:transparent!important;
+  color:rgba(255,255,255,.48)!important;text-align:left!important;cursor:pointer!important;
+  display:grid!important;grid-template-columns:auto 1fr!important;gap:8px!important;align-items:start!important;
+  padding:8px 8px!important;border-radius:10px!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  transition:color .2s ease,background .2s ease!important;
+}
+#oh-how-we-do-it .dealality-process_nav-item:hover{color:rgba(255,255,255,.78)!important;background:rgba(255,255,255,.03)!important}
+#oh-how-we-do-it .dealality-process_nav-item:focus-visible{outline:2px solid #6C72FF!important;outline-offset:2px!important}
+#oh-how-we-do-it .dealality-process_nav-item.is-active{color:#fff!important;background:rgba(108,114,255,.12)!important}
+#oh-how-we-do-it .dealality-process_nav-item.is-done{color:rgba(255,255,255,.7)!important}
+#oh-how-we-do-it .dealality-process_nav-num{
+  font-size:.74rem!important;font-weight:700!important;letter-spacing:.04em!important;color:#8B90FF!important;min-width:1.5em!important;
+}
+#oh-how-we-do-it .dealality-process_nav-item.is-active .dealality-process_nav-num{color:#B8BCFF!important}
+#oh-how-we-do-it .dealality-process_nav-label{
+  font-size:.86rem!important;font-weight:650!important;line-height:1.3!important;
+}
+#oh-how-we-do-it .dealality-process_content{
+  position:relative!important;min-width:0!important;min-height:0!important;
+  height:auto!important;
+  max-height:min(52vh,520px)!important;
+  overflow:auto!important;
+  scrollbar-width:thin!important;
+  border-radius:14px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(10,16,36,.35)!important;
+  padding:14px 16px 14px!important;
+}
+#oh-how-we-do-it .dealality-process_step{
+  display:none!important;
+  opacity:0!important;
+  position:relative!important;
+  min-height:0!important;
+  padding:0!important;margin:0!important;
+}
+#oh-how-we-do-it .dealality-process_step.is-active{
+  display:block!important;
+  opacity:1!important;
+  animation:ohProcessStepIn .28s ease both!important;
+}
+#oh-how-we-do-it .dealality-process_step[hidden]{display:none!important}
+@keyframes ohProcessStepIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+#oh-how-we-do-it .dealality-process_kicker{
+  margin:0 0 4px!important;font-size:.7rem!important;font-weight:700!important;letter-spacing:.08em!important;
+  text-transform:uppercase!important;color:#8B90FF!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+}
+#oh-how-we-do-it .dealality-process_step-title{
+  margin:0 0 6px!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:clamp(1.1rem,1.7vw,1.4rem)!important;font-weight:800!important;line-height:1.2!important;color:#fff!important;
+}
+#oh-how-we-do-it .dealality-process_primary{
+  margin:0 0 6px!important;font-size:.92rem!important;font-weight:600!important;line-height:1.4!important;color:rgba(255,255,255,.88)!important;
+}
+#oh-how-we-do-it .dealality-process_support{
+  margin:0 0 10px!important;font-size:.84rem!important;line-height:1.45!important;color:rgba(255,255,255,.55)!important;max-width:40rem!important;
+}
+#oh-how-we-do-it .dealality-process_visual{
+  position:relative!important;border-radius:12px!important;border:1px solid rgba(255,255,255,.12)!important;
+  background:linear-gradient(180deg,rgba(17,27,58,.98),rgba(10,16,36,.99))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 28px rgba(0,0,0,.28)!important;
+  overflow:hidden!important;min-height:0!important;margin:0 0 10px!important;
+}
+#oh-how-we-do-it .dealality-process_visual.is-large,
+#oh-how-we-do-it .dealality-process_visual.is-compare{min-height:0!important}
+#oh-how-we-do-it .dealality-process_chrome{
+  display:flex!important;align-items:center!important;gap:6px!important;
+  padding:7px 10px!important;border-bottom:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(8,15,37,.65)!important;
+}
+#oh-how-we-do-it .dealality-process_chrome span{
+  width:7px!important;height:7px!important;border-radius:50%!important;background:rgba(255,255,255,.22)!important;
+}
+#oh-how-we-do-it .dealality-process_chrome span:nth-child(1){background:#ff5f57!important}
+#oh-how-we-do-it .dealality-process_chrome span:nth-child(2){background:#febc2e!important}
+#oh-how-we-do-it .dealality-process_chrome span:nth-child(3){background:#28c840!important}
+#oh-how-we-do-it .dealality-process_chrome em{
+  margin-left:6px!important;font-style:normal!important;font-size:.68rem!important;
+  letter-spacing:.04em!important;color:rgba(255,255,255,.45)!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+}
+#oh-how-we-do-it .dealality-process_shot{
+  max-height:96px!important;overflow:hidden!important;border-bottom:1px solid rgba(255,255,255,.06)!important;
+}
+#oh-how-we-do-it .dealality-process_shot.is-compare-shot{max-height:110px!important}
+#oh-how-we-do-it .dealality-process_visual img,
+#oh-how-we-do-it .dealality-process_shot img{
+  display:block!important;width:100%!important;height:100%!important;max-height:110px!important;
+  object-fit:cover!important;object-position:top left!important;
+}
+#oh-how-we-do-it .dealality-process_panel{padding:10px 12px 10px!important;display:grid!important;gap:8px!important}
+#oh-how-we-do-it .dealality-process_panel-head{
+  display:flex!important;justify-content:space-between!important;gap:10px!important;align-items:center!important;flex-wrap:wrap!important;
+}
+#oh-how-we-do-it .dealality-process_chip{
+  display:inline-flex!important;align-items:center!important;padding:3px 8px!important;border-radius:999px!important;
+  border:1px solid rgba(108,114,255,.28)!important;background:rgba(108,114,255,.12)!important;
+  color:#B8BCFF!important;font-size:.68rem!important;font-weight:700!important;
+}
+#oh-how-we-do-it .dealality-process_meta{font-size:.72rem!important;color:rgba(255,255,255,.5)!important}
+#oh-how-we-do-it .dealality-process_hero-stat{
+  display:flex!important;flex-direction:column!important;gap:2px!important;
+  padding:10px 11px!important;border-radius:10px!important;
+  border:1px solid rgba(108,114,255,.22)!important;
+  background:linear-gradient(135deg,rgba(108,114,255,.16),rgba(255,255,255,.03))!important;
+}
+#oh-how-we-do-it .dealality-process_hero-stat strong{font-size:1.1rem!important;color:#fff!important;letter-spacing:-.02em!important}
+#oh-how-we-do-it .dealality-process_hero-stat span{font-size:.74rem!important;color:rgba(255,255,255,.55)!important}
+#oh-how-we-do-it .dealality-process_progress-bar{
+  height:5px!important;border-radius:999px!important;background:rgba(255,255,255,.08)!important;overflow:hidden!important;
+}
+#oh-how-we-do-it .dealality-process_progress-bar i{
+  display:block!important;height:100%!important;border-radius:inherit!important;
+  background:linear-gradient(90deg,#8B90FF,#6C72FF)!important;
+}
+#oh-how-we-do-it .dealality-process_rows{display:grid!important;gap:5px!important}
+#oh-how-we-do-it .dealality-process_row{
+  display:grid!important;grid-template-columns:1.1fr 1fr!important;gap:8px!important;align-items:center!important;
+  padding:7px 9px!important;border-radius:8px!important;border:1px solid rgba(255,255,255,.07)!important;
+  background:rgba(255,255,255,.025)!important;
+}
+#oh-how-we-do-it .dealality-process_row strong{font-size:.78rem!important;font-weight:650!important;color:#fff!important}
+#oh-how-we-do-it .dealality-process_row span{font-size:.72rem!important;color:rgba(255,255,255,.55)!important;text-align:right!important}
+#oh-how-we-do-it .dealality-process_paths{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+#oh-how-we-do-it .dealality-process_path{
+  padding:10px!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(8,15,37,.55)!important;min-height:0!important;
+}
+#oh-how-we-do-it .dealality-process_path strong{display:block!important;color:#fff!important;font-size:.78rem!important;margin:0 0 4px!important}
+#oh-how-we-do-it .dealality-process_path span{display:block!important;color:rgba(255,255,255,.5)!important;font-size:.7rem!important;line-height:1.35!important}
+#oh-how-we-do-it .dealality-process_compare{
+  display:grid!important;grid-template-columns:1.1fr repeat(3,minmax(0,1fr))!important;gap:1px!important;
+  background:rgba(255,255,255,.08)!important;border-radius:10px!important;overflow:hidden!important;
+}
+#oh-how-we-do-it .dealality-process_compare > *{
+  background:#0d1530!important;padding:7px 8px!important;font-size:.7rem!important;color:rgba(255,255,255,.7)!important;
+}
+#oh-how-we-do-it .dealality-process_compare .is-head{color:#fff!important;font-weight:700!important;background:#111b3a!important}
+#oh-how-we-do-it .dealality-process_compare .is-gap{color:#D78E2C!important}
+#oh-how-we-do-it .dealality-process_labels{
+  display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin:0!important;padding:0!important;list-style:none!important;
+}
+#oh-how-we-do-it .dealality-process_labels li{
+  padding:4px 8px!important;border-radius:999px!important;border:1px solid rgba(255,255,255,.1)!important;
+  background:rgba(255,255,255,.03)!important;font-size:.68rem!important;font-weight:600!important;color:rgba(255,255,255,.68)!important;
+}
+
+/* Slim CTA bar — stays in the same screen */
+#oh-how-we-do-it .dealality-process_cta{
+  margin-top:0!important;padding:16px 18px!important;border-radius:14px!important;
+  border:1px solid rgba(255,255,255,.1)!important;
+  background:linear-gradient(135deg,rgba(108,114,255,.12),rgba(17,27,58,.4) 55%,rgba(8,15,37,.2))!important;
+  text-align:left!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.2fr) auto!important;
+  gap:12px 20px!important;
+  align-items:center!important;
+}
+#oh-how-we-do-it .dealality-process_cta h3{
+  margin:0 0 4px!important;font-size:clamp(1.05rem,1.6vw,1.25rem)!important;font-weight:800!important;color:#fff!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+}
+#oh-how-we-do-it .dealality-process_cta p{
+  margin:0!important;max-width:36rem!important;font-size:.84rem!important;line-height:1.45!important;color:rgba(255,255,255,.58)!important;
+}
+#oh-how-we-do-it .dealality-process_cta-row{
+  display:flex!important;flex-wrap:wrap!important;gap:10px!important;justify-content:flex-end!important;
+}
+#oh-how-we-do-it .dealality-process_btn{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-height:40px!important;padding:0 14px!important;border-radius:10px!important;border:0!important;cursor:pointer!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;font-size:.86rem!important;font-weight:700!important;
+  text-decoration:none!important;
+}
+#oh-how-we-do-it .dealality-process_btn-primary{background:#6C72FF!important;color:#fff!important}
+#oh-how-we-do-it .dealality-process_btn-primary:hover{background:#7B80FF!important}
+#oh-how-we-do-it .dealality-process_btn-secondary{
+  background:transparent!important;color:#fff!important;border:1px solid rgba(255,255,255,.18)!important;
+}
+/* See Dealality in Action → Hero Request a Demo yellow + demo iframe */
+#oh-how-we-do-it .dealality-process_btn[data-dealality-process-cta="demo"],
+#oh-how-we-do-it .dealality-process_btn-secondary[data-dealality-process-cta="demo"]{
+  background:#D78E2C!important;
+  border:1px solid #D78E2C!important;
+  color:#0b1220!important;
+  border-radius:999px!important;
+  font-weight:600!important;
+  box-shadow:0 8px 18px rgba(215,142,44,.28)!important;
+}
+#oh-how-we-do-it .dealality-process_btn[data-dealality-process-cta="demo"]:hover,
+#oh-how-we-do-it .dealality-process_btn-secondary[data-dealality-process-cta="demo"]:hover{
+  background:#E09A3A!important;
+  border-color:#E09A3A!important;
+  filter:brightness(1.03)!important;
+  transform:translateY(-1px)!important;
+}
+#oh-how-we-do-it .dealality-process_sr{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;border:0!important;
+}
+
+@media(max-width:960px){
+  #oh-how-we-do-it{padding:44px 1.25rem 40px!important}
+  #oh-how-we-do-it .dealality-process_layout{
+    display:flex!important;flex-direction:column!important;gap:14px!important;
+  }
+  #oh-how-we-do-it .dealality-process_nav{
+    flex-direction:row!important;flex-wrap:wrap!important;padding:0!important;gap:6px!important;
+  }
+  #oh-how-we-do-it .dealality-process_progress{display:none!important}
+  #oh-how-we-do-it .dealality-process_nav-item{padding:7px 9px!important;border:1px solid rgba(255,255,255,.08)!important}
+  #oh-how-we-do-it .dealality-process_content{max-height:none!important}
+  #oh-how-we-do-it .dealality-process_cta{
+    grid-template-columns:1fr!important;
+  }
+  #oh-how-we-do-it .dealality-process_cta-row{justify-content:flex-start!important}
+  #oh-how-we-do-it .dealality-process_paths{grid-template-columns:1fr!important}
+  #oh-how-we-do-it .dealality-process_row{grid-template-columns:1fr!important}
+  #oh-how-we-do-it .dealality-process_row span{text-align:left!important}
+}
+@media(max-width:640px){
+  #oh-how-we-do-it .dealality-process_compare{display:block!important}
+  #oh-how-we-do-it .dealality-process_compare > *{border-bottom:1px solid rgba(255,255,255,.06)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #oh-how-we-do-it .dealality-process_step.is-active{animation:none!important}
+  #oh-how-we-do-it .dealality-process_progress > span,
+  #oh-how-we-do-it .dealality-process_nav-item{transition:none!important}
+}
+
+/* Hide long label chips on short viewports to keep one-screen feel */
+@media(max-height:820px){
+  #oh-how-we-do-it .dealality-process_labels{display:none!important}
+  #oh-how-we-do-it .dealality-process_content{max-height:min(48vh,460px)!important}
+}
+@media(max-height:740px){
+  #oh-how-we-do-it{padding:36px 1.5rem 28px!important}
+  #oh-how-we-do-it .dealality-process_support{display:none!important}
+  #oh-how-we-do-it .dealality-process_cta p{display:none!important}
+  #oh-how-we-do-it .dealality-process_content{max-height:min(44vh,400px)!important}
+}
+
+/* v20260731a — relationship / offline journey additions */
+#oh-how-we-do-it .dealality-process_principle{
+  display:flex!important;gap:12px!important;align-items:flex-start!important;
+  margin:12px 0 0!important;max-width:42rem!important;padding:11px 13px!important;
+  border-radius:12px!important;border:1px solid rgba(215,142,44,.35)!important;
+  background:linear-gradient(135deg,rgba(215,142,44,.14),rgba(215,142,44,.04))!important;
+}
+#oh-how-we-do-it .dealality-process_principle-mark{
+  flex:0 0 auto!important;margin-top:3px!important;width:3px!important;height:1.55em!important;
+  border-radius:2px!important;background:linear-gradient(180deg,#F0B86A 0%,#D78E2C 100%)!important;
+  box-shadow:none!important;
+}
+#oh-how-we-do-it .dealality-process_principle p{
+  margin:0!important;font-size:.84rem!important;line-height:1.45!important;color:rgba(255,255,255,.82)!important;
+}
+#oh-how-we-do-it .dealality-process_principle strong{color:#F0B86A!important;font-weight:700!important}
+#oh-how-we-do-it .dealality-process_lead em{font-style:normal!important;color:rgba(240,184,106,.92)!important}
+
+#oh-how-we-do-it .dealality-process_nav-wrap{display:flex!important;flex-direction:column!important;gap:0!important;padding:0!important}
+#oh-how-we-do-it .dealality-process_nav-legend{
+  display:flex!important;flex-wrap:wrap!important;gap:10px 14px!important;
+  margin:0 0 8px!important;padding:0 0 0 4px!important;
+}
+#oh-how-we-do-it .dealality-process_nav-legend-item{
+  display:inline-flex!important;align-items:center!important;gap:6px!important;
+  font-size:.68rem!important;font-weight:650!important;letter-spacing:.02em!important;color:rgba(255,255,255,.55)!important;
+}
+#oh-how-we-do-it .dealality-process_nav-legend-swatch{
+  width:8px!important;height:8px!important;border-radius:50%!important;flex:0 0 auto!important;
+}
+#oh-how-we-do-it .dealality-process_nav-legend-swatch.is-platform{
+  background:#8b90ff!important;box-shadow:0 0 0 3px rgba(108,114,255,.2)!important;
+}
+#oh-how-we-do-it .dealality-process_nav-legend-swatch.is-offline{
+  background:#E8A84A!important;box-shadow:0 0 0 3px rgba(215,142,44,.22)!important;
+}
+#oh-how-we-do-it .dealality-process_nav-rail{position:relative!important;padding:2px 0 2px 16px!important}
+#oh-how-we-do-it .dealality-process_nav{gap:2px!important;padding:0!important}
+#oh-how-we-do-it .dealality-process_nav-item{padding:6px 8px!important}
+#oh-how-we-do-it .dealality-process_nav-item.is-offline .dealality-process_nav-num{color:#D78E2C!important}
+#oh-how-we-do-it .dealality-process_nav-item.is-offline.is-active{
+  background:rgba(215,142,44,.14)!important;
+}
+#oh-how-we-do-it .dealality-process_nav-item.is-offline.is-active .dealality-process_nav-num{color:#F0B86A!important}
+#oh-how-we-do-it .dealality-process_progress > span{
+  background:linear-gradient(180deg,#8b90ff 0%,#D78E2C 100%)!important;
+}
+#oh-how-we-do-it .dealality-process_nav-label{font-size:.8rem!important}
+
+#oh-how-we-do-it .dealality-process_mode-pill{
+  display:inline-flex!important;align-items:center!important;gap:6px!important;
+  margin:0 0 10px!important;padding:4px 9px!important;border-radius:999px!important;
+  font-size:.68rem!important;font-weight:700!important;letter-spacing:.03em!important;text-transform:uppercase!important;
+}
+#oh-how-we-do-it .dealality-process_mode-pill i{
+  width:7px!important;height:7px!important;border-radius:50%!important;display:inline-block!important;
+}
+#oh-how-we-do-it .dealality-process_mode-pill.is-platform{
+  background:rgba(108,114,255,.16)!important;color:#c8cbff!important;border:1px solid rgba(108,114,255,.28)!important;
+}
+#oh-how-we-do-it .dealality-process_mode-pill.is-platform i{background:#8b90ff!important}
+#oh-how-we-do-it .dealality-process_mode-pill.is-offline{
+  background:rgba(215,142,44,.16)!important;color:#F0B86A!important;border:1px solid rgba(215,142,44,.4)!important;
+}
+#oh-how-we-do-it .dealality-process_mode-pill.is-offline i{background:#E8A84A!important}
+#oh-how-we-do-it .dealality-process_step.is-offline-step .dealality-process_kicker{color:#E8A84A!important}
+#oh-how-we-do-it .dealality-process_bridge{
+  margin:0 0 10px!important;padding:8px 10px!important;border-radius:10px!important;
+  font-size:.76rem!important;line-height:1.4!important;color:rgba(255,255,255,.58)!important;
+  border:1px dashed rgba(255,255,255,.14)!important;background:rgba(255,255,255,.02)!important;max-width:38rem!important;
+}
+#oh-how-we-do-it .dealality-process_bridge strong{color:rgba(255,255,255,.85)!important}
+#oh-how-we-do-it .dealality-process_step.is-offline-step .dealality-process_bridge{
+  border-color:rgba(215,142,44,.28)!important;background:rgba(215,142,44,.06)!important;color:rgba(240,184,106,.78)!important;
+}
+#oh-how-we-do-it .dealality-process_step.is-offline-step .dealality-process_bridge strong{color:#F0B86A!important}
+#oh-how-we-do-it .dealality-process_step.is-offline-step .dealality-process_visual{
+  border-color:rgba(215,142,44,.28)!important;
+  background:linear-gradient(180deg,rgba(32,26,18,.55),rgba(10,16,36,.99))!important;
+}
+#oh-how-we-do-it .dealality-process_step.is-offline-step .dealality-process_chip{
+  background:rgba(215,142,44,.22)!important;color:#F0B86A!important;border-color:rgba(215,142,44,.35)!important;
+}
+#oh-how-we-do-it .dealality-process_moments{
+  display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;
+}
+#oh-how-we-do-it .dealality-process_moment{
+  padding:10px!important;border-radius:10px!important;
+  border:1px solid rgba(215,142,44,.28)!important;background:rgba(215,142,44,.08)!important;
+}
+#oh-how-we-do-it .dealality-process_moment strong{
+  display:block!important;margin:0 0 4px!important;font-size:.78rem!important;color:#F0B86A!important;
+}
+#oh-how-we-do-it .dealality-process_moment p{
+  margin:0!important;font-size:.7rem!important;line-height:1.35!important;color:rgba(255,255,255,.58)!important;
+}
+#oh-how-we-do-it .dealality-process_row.is-human{
+  border-color:rgba(215,142,44,.3)!important;background:rgba(215,142,44,.09)!important;
+}
+#oh-how-we-do-it .dealality-process_row.is-human strong{color:#E8A84A!important}
+#oh-how-we-do-it .dealality-process_step.is-offline-step .dealality-process_labels li{
+  border-color:rgba(215,142,44,.22)!important;color:rgba(240,184,106,.78)!important;
+}
+@media(max-width:960px){
+  #oh-how-we-do-it .dealality-process_nav-rail{padding:0!important}
+  #oh-how-we-do-it .dealality-process_moments{grid-template-columns:1fr!important}
+}
+@media(max-height:820px){
+  #oh-how-we-do-it .dealality-process_principle{display:none!important}
+  #oh-how-we-do-it .dealality-process_bridge{display:none!important}
+}

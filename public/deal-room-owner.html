@@ -242,12 +242,23 @@
       text-decoration: underline;
       padding: 0 4px;
     }
+    html.embed-mode body { padding: 12px; }
+    html.marketing-embed h1,
+    html.marketing-embed .subtitle,
+    html.marketing-embed .container > .panel { display: none !important; }
+    html.marketing-embed #ownerContent > .panel:first-of-type { display: none !important; }
+    html.marketing-embed #ownerContent { margin-top: 0; }
   </style>
+  <script>(function(){var p=new URLSearchParams(window.location.search||'');if(p.get('embed')==='1'||window!==window.top){document.documentElement.classList.add('embed-mode');}if(p.get('marketingEmbed')==='1'){document.documentElement.classList.add('marketing-embed');}})();</script>
 </head>
 <body>
   <div class="container">
     <h1>Deal Room</h1>
     <p class="subtitle">Owner view: pick a deal, then use Owner / Brand / Operator / Shared folders like File Explorer. Drag files onto a folder to upload; drag rows between folders to move.</p>
+
+    <div class="fa-beta-notice" role="status" style="padding:10px 16px;margin-bottom:20px;background:rgba(253,181,42,0.12);border:1px solid #fdb52a;border-radius:8px;color:#ffffff;font-size:0.8125rem;line-height:1.45;">
+      <strong>In Development</strong> &mdash; Deal Room is being redesigned. This section is currently used to explore how documents, review access, and controlled sharing should work inside Dealality. For the owner pilot, please rely on My Deals, Deal Readiness, Brand Alignment, and Operator Alignment as the primary workflow.
+    </div>
 
     <div id="dealRoomOwnerBanner" class="banner info" role="status" aria-live="polite"></div>
 

@@ -1,0 +1,159 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const dir = path.dirname(fileURLToPath(import.meta.url));
+
+const prompt = `DEALALITY WEBHOUND TEST 5 — OUTREACH READINESS BENCHMARK (NOT DISCOVERY)
+
+Budget: exactly $5. Success = 1–3 relationship-ready outreach packages for already-identified owners — NOT new discovery, NOT re-running SEMARNAT scans, NOT broad ownership re-research from scratch.
+
+CORE QUESTION
+Can Webhound convert already-identified Dealality owner opportunities into relationship-ready outreach packages?
+OWNER INTELLIGENCE → RELATIONSHIP INTELLIGENCE → OUTREACH READINESS
+
+The objective is NOT to find an email. The objective is to answer:
+IF JOAN WERE GOING TO APPROACH THIS OWNER NEXT WEEK, WHAT IS THE BEST WAY TO DO IT?
+
+THIS IS NOT: another discovery test; another ownership-resolution-from-scratch test; Brand Explorer / Operator Explorer / hotel census validation; new Mexico project scout.
+
+PRIORITY TARGETS (research in this order; ONE ROW PER OWNER OPPORTUNITY)
+1) Proyecto Venado / Residencial Punta Venado — Punta Venado–Paamul, Los Cabos corridor / Quintana Roo; promovente Residencial Punta Venado, S.A. de C.V.; Tortuga Resorts platform (KSL Capital Partners + Rodina); Leo Schlesinger CEO known from prior work. SEMARNAT MIA authorized ~2026.
+2) Punta Colorada / Artibus Opus — Predio Nuevas Palmas, La Ribera, East Cape, BCS; ARTIBUS OPUS, S.A. DE C.V. (Querétaro residential builder); MIA Regional 03BS2025U0020; ~60-key boutique hotel + residences; no public brand/operator in prior work.
+3) Oleum Joint Ventures — Complejo Ecoturístico Riviera Maya / Oleum Joint Venture, S. de R.L. de C.V.; Luis Francisco Serrano Lluch (founder/legal rep) + Isidro Anguiano Campos; SEMARNAT-authorized ~572 keys; no verified direct contact in prior work.
+4) ONLY IF #1–#3 reach strong outreach-package completion AND meaningful budget remains: pick the single strongest remaining prior candidate (e.g. Parks Hospitality capital-partner signal OR Murano unnamed Baja) — do NOT invent a new discovery campaign.
+
+Do NOT discover unrelated projects. Do NOT repeat broad government-record discovery. Do NOT repeat exhaustive ownership tracing already done — build on known facts; deepen RELATIONSHIP and OUTREACH layers.
+
+RESEARCH PRIORITIES (budget order)
+1) Decision structure — who influences hotel strategy, brand selection, operator selection, mixed-use planning, capital, development. Distinguish: ultimate owner; project sponsor; development executive; hospitality executive; investment executive; legal representative; public spokesperson; advisor.
+2) Ranked decision-makers (1 / 2 / 3) with WHY each matters — do NOT default to CEO if someone closer owns the hotel/project decision.
+3) Organization / relationship map: Owner → Parent → Development Co → Project Co/SPV → Hospitality team → Decision-makers → Known advisors → Capital partners → Architects/consultants → Potential introduction paths.
+4) Documented industry relationships ONLY (no inference): brands; operators; architects; designers; asset managers; consultants; capital providers; brokers; lawyers; hospitality advisors; industry orgs; conferences; public speaking; boards.
+5) Outreach routes — evaluate practical routes (direct executive; development/hospitality/investment/corporate development; LinkedIn; conference speaker; association; architect/capital/JV partner/consultant/lawyer/broker introductions; other documented pathway). Assign High | Medium | Low probability per route.
+6) Contact info (secondary): verified public business email/phone; professional profile; corporate/development/investment/hospitality contact routes. Do NOT burn budget forcing emails — relationship intelligence > email.
+7) Outreach recommendation for Joan: who first and why; alternatives; if no direct route, most realistic introduction pathway.
+8) Dealality usefulness — long-term relationship value: one / several / portfolio / regional / repeat / branded residences / mixed-use / acquisitions — explain.
+9) Outreach readiness classification (NOT Yes/No): Ready Now | Needs personalization | Needs introduction | Needs more ownership research | Needs better contacts | Research only.
+
+OUTPUT SHAPE (per owner row)
+Executive summary; organization structure; decision structure; key decision-makers (ranked); relationship map; documented industry relationships; best outreach route; alternative routes; introduction opportunities; professional profiles; company contact routes; evidence; unknowns; recommended Dealality strategy; outreach_readiness.
+
+Fill the schema. Preserve provenance. Candidate intelligence only — do not invent facts, emails, phones, or undocumented relationships.
+`;
+
+const attributes = [
+  { name: "package_id", type: "string", is_primary: true, required: true, description: "VENADO-OUTREACH-001 | COLORADA-OUTREACH-001 | OLEUM-OUTREACH-001 or similar." },
+  { name: "owner_opportunity_name", type: "string", required: true },
+  { name: "primary_project_or_site", type: "string", required: true },
+  { name: "geography", type: "string" },
+  { name: "executive_summary", type: "string", required: true, description: "How Joan should approach this owner next week — concise." },
+  { name: "organization_structure", type: "string", required: true },
+  { name: "decision_structure", type: "string", required: true, description: "Who influences hotel strategy/brand/operator/mixed-use/capital/development; role distinctions." },
+  { name: "decision_maker_1_name", type: "string", required: true },
+  { name: "decision_maker_1_title_role", type: "string", required: true },
+  { name: "decision_maker_1_why_matters", type: "string", required: true },
+  { name: "decision_maker_1_profile", type: "string" },
+  { name: "decision_maker_2_name", type: "string" },
+  { name: "decision_maker_2_title_role", type: "string" },
+  { name: "decision_maker_2_why_matters", type: "string" },
+  { name: "decision_maker_2_profile", type: "string" },
+  { name: "decision_maker_3_name", type: "string" },
+  { name: "decision_maker_3_title_role", type: "string" },
+  { name: "decision_maker_3_why_matters", type: "string" },
+  { name: "decision_maker_3_profile", type: "string" },
+  { name: "relationship_map", type: "string", required: true, description: "Owner→Parent→DevCo→ProjectCo→Hospitality→DMs→Advisors→Capital→Architects→Intro paths." },
+  { name: "documented_industry_relationships", type: "string", required: true, description: "Documented only — brands, operators, architects, capital, advisors, orgs, conferences, boards. No inference." },
+  { name: "best_outreach_route", type: "string", required: true },
+  { name: "best_outreach_route_probability", type: "string", required: true, description: "High | Medium | Low" },
+  { name: "alternative_outreach_routes", type: "string", required: true, description: "List routes with High/Medium/Low each." },
+  { name: "introduction_opportunities", type: "string" },
+  { name: "who_joan_should_approach_first", type: "string", required: true },
+  { name: "why_approach_first", type: "string", required: true },
+  { name: "who_else_to_approach", type: "string" },
+  { name: "why_approach_alternates", type: "string" },
+  { name: "most_realistic_introduction_pathway", type: "string" },
+  { name: "verified_public_emails", type: "string", description: "Verified only; else none found." },
+  { name: "verified_public_phones", type: "string" },
+  { name: "professional_profiles", type: "string" },
+  { name: "company_contact_routes", type: "string" },
+  { name: "development_investment_hospitality_contacts", type: "string" },
+  { name: "dealality_relationship_value", type: "string", required: true, description: "One / several / portfolio / regional / repeat / residences / mixed-use / acquisitions — explain." },
+  { name: "outreach_readiness", type: "string", required: true, description: "Ready Now | Needs personalization | Needs introduction | Needs more ownership research | Needs better contacts | Research only" },
+  { name: "recommended_dealality_strategy", type: "string", required: true },
+  { name: "confirmed_facts", type: "string" },
+  { name: "research_inferences", type: "string" },
+  { name: "unknowns_and_evidence_gaps", type: "string" },
+  { name: "evidence_sources", type: "string", is_array: true },
+  { name: "last_verified", type: "string" },
+  { name: "evidence_confidence", type: "string", description: "High | Medium | Low" },
+  { name: "prior_test_seed_notes", type: "string", description: "What was already known from Tests 1–4 vs newly added in Test 5." },
+];
+
+const schema = {
+  entity_name: "Dealality Outreach-Ready Owner Package",
+  entity_description:
+    "One relationship/outreach package per already-identified owner opportunity (Venado/Tortuga, Punta Colorada/Artibus Opus, Oleum). Not discovery. Focus: decision structure, ranked DMs, org/relationship map, documented intro paths, outreach recommendation for Joan, readiness class.",
+  entity_criteria: [
+    "Only priority targets: Venado/Residencial Punta Venado/Tortuga; Punta Colorada/Artibus Opus; Oleum Joint Ventures; optional fourth only if budget remains",
+    "Do not discover new projects; do not SEMARNAT-first rediscovery; do not Brand/Operator Explorer validation",
+    "Relationship intelligence > forcing emails; no invented contacts or undocumented relationships",
+    "Rank decision-makers 1–3 with why; do not default to CEO without justification",
+    "Outreach readiness must be one of: Ready Now | Needs personalization | Needs introduction | Needs more ownership research | Needs better contacts | Research only",
+    "Prefer depth on 1–3 packages over thin fourth row",
+  ],
+  attributes,
+};
+
+const title =
+  "Dealality Mexico Owner Intelligence — Test 5 Outreach Readiness Benchmark (Venado + Colorada + Oleum)";
+
+fs.writeFileSync(path.join(dir, "test5-prompt.txt"), prompt);
+fs.writeFileSync(path.join(dir, "test5-schema.json"), JSON.stringify(schema, null, 2));
+fs.writeFileSync(
+  path.join(dir, "test5-mcp-args.json"),
+  JSON.stringify(
+    {
+      title,
+      budget: 5,
+      use_free_run_when_available: false,
+      prompt,
+      schema,
+    },
+    null,
+    2
+  )
+);
+fs.writeFileSync(
+  path.join(dir, "test5-payload-preview.json"),
+  JSON.stringify(
+    {
+      title,
+      budget: 5,
+      use_free_run_when_available: false,
+      prompt_chars: prompt.length,
+      attribute_count: attributes.length,
+      test_type: "outreach_readiness_benchmark_not_discovery",
+      targets: ["Venado/Tortuga", "Punta Colorada/Artibus Opus", "Oleum Joint Ventures"],
+      discovery_disabled: true,
+      semarnat_first_disabled: true,
+      brand_operator_explorer_disabled: true,
+      not_launched: true,
+      field_names: attributes.map((a) => a.name),
+    },
+    null,
+    2
+  )
+);
+
+console.log(
+  JSON.stringify(
+    {
+      prompt_chars: prompt.length,
+      attribute_count: attributes.length,
+      under_12k: prompt.length < 12000,
+    },
+    null,
+    2
+  )
+);

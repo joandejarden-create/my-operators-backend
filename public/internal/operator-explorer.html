@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Operator Explorer — Internal Preview</title>
+  <style>
+    :root { --ink:#1b1b1b; --muted:#5a5a5a; --line:#d8d2c8; --bg:#f6f3ee; --card:#fff; --chip:#ece7de; --accent:#2c584c; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Georgia, "Times New Roman", serif; background: var(--bg); color: var(--ink); }
+    header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #fff, #f1ebe1); }
+    h1 { margin: 0; font-size: 1.55rem; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); font-size: 0.9rem; font-family: system-ui, sans-serif; }
+    .layout { display: grid; grid-template-columns: 320px 1fr; min-height: calc(100vh - 74px); }
+    .list { border-right: 1px solid var(--line); overflow: auto; background: #faf8f4; font-family: system-ui, sans-serif; }
+    .filters { padding: 0.75rem; border-bottom: 1px solid var(--line); display: grid; gap: 0.4rem; }
+    .filters input, .filters select { width: 100%; padding: 0.4rem; border: 1px solid var(--line); }
+    .item { padding: 0.75rem 1rem; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .item:hover, .item.active { background: #fff; }
+    .item b { display: block; font-size: 0.92rem; }
+    .meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .detail { padding: 1.25rem 1.5rem 2rem; overflow: auto; }
+    .chip { display: inline-block; background: var(--chip); border: 1px solid var(--line); padding: 0.15rem 0.4rem; margin: 0.1rem 0.25rem 0.1rem 0; font-size: 0.72rem; font-family: system-ui, sans-serif; }
+    section { margin: 1.1rem 0; }
+    section h2 { font-size: 1.05rem; margin: 0 0 0.4rem; border-bottom: 1px solid var(--line); padding-bottom: 0.25rem; }
+    ul { margin: 0.3rem 0; padding-left: 1.1rem; }
+    .empty { color: var(--muted); font-style: italic; }
+    .admin { font-family: system-ui, sans-serif; font-size: 0.78rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Operator Explorer</h1>
+    <div class="sub">Internal preview · Airtable-backed · Not owner-facing</div>
+  </header>
+  <div class="layout">
+    <aside class="list">
+      <div class="filters">
+        <input id="q" placeholder="Search operators" />
+        <select id="purpose">
+          <option value="">All purposes</option>
+          <option>Production</option>
+          <option>Research</option>
+        </select>
+        <select id="pub">
+          <option value="">Any publishable</option>
+          <option value="yes">Publishable only</option>
+          <option value="no">Not publishable</option>
+        </select>
+      </div>
+      <div id="list"></div>
+    </aside>
+    <main class="detail" id="detail"><p class="empty">Select an operator</p></main>
+  </div>
+  <script>
+    let DATA = { operators: [], payloads: {} };
+    async function boot() {
+      const res = await fetch("./operator-explorer-data.json");
+      DATA = await res.json();
+      document.querySelector(".sub").textContent =
+        "Internal preview · Airtable-backed · Not owner-facing · " + (DATA.generatedAt || "");
+      renderList();
+    }
+    function filtered() {
+      const q = document.getElementById("q").value.toLowerCase();
+      const purpose = document.getElementById("purpose").value;
+      const pub = document.getElementById("pub").value;
+      return (DATA.operators || []).filter((o) => {
+        if (q && !String(o.canonicalName || "").toLowerCase().includes(q)) return false;
+        if (purpose && o.recordPurpose !== purpose) return false;
+        if (pub === "yes" && !o.explorerPublishable) return false;
+        if (pub === "no" && o.explorerPublishable) return false;
+        return true;
+      });
+    }
+    function renderList() {
+      const rows = filtered();
+      document.getElementById("list").innerHTML = rows
+        .map(
+          (o) =>
+            `<div class="item" data-id="${o.masterId}"><b>${o.canonicalName}</b><div class="meta">${o.operatingModel || "—"} · ${o.managementAvailability || "—"} · ${o.usefulness}${o.explorerPublishable ? " · Publishable" : ""}</div></div>`
+        )
+        .join("");
+    }
+    function show(id) {
+      [...document.querySelectorAll(".item")].forEach((el) => el.classList.toggle("active", el.dataset.id === id));
+      const o = (DATA.operators || []).find((x) => x.masterId === id);
+      const payload = (DATA.payloads || {})[id] || {};
+      const s = payload.sections || {};
+      const asg = s.selectedAssignments || [];
+      document.getElementById("detail").innerHTML = `
+        <div class="admin">Admin: ${o.recordPurpose} · ${o.usefulness} · asg ${o.counts?.namedAssignments ?? 0}</div>
+        <h1 style="margin:.4rem 0 0;font-size:1.8rem">${o.canonicalName}</h1>
+        <div>${[o.operatingModel, o.managementAvailability].filter(Boolean).map((x) => `<span class="chip">${x}</span>`).join("")}</div>
+        <section><h2>Overview</h2><p>${s.overview?.parent ? "Parent: " + s.overview.parent + ". " : ""}${s.overview?.website ? `<a href="${s.overview.website}" target="_blank" rel="noopener">Website</a>` : ""}</p></section>
+        <section><h2>Operating Footprint</h2><p>${(s.operatingFootprint?.countries || []).join(", ") || '<span class="empty">No countries yet</span>'}</p></section>
+        <section><h2>Portfolio Profile</h2><p>Named assignments: <b>${o.counts?.namedAssignments ?? 0}</b></p></section>
+        <section><h2>Experience</h2><p>${(s.experience?.developmentContexts || []).join(", ") || '<span class="empty">—</span>'} · ${(s.experience?.urbanResort || []).join(", ")}</p></section>
+        <section><h2>Brand Relationships</h2><ul>${(s.brandRelationships || []).slice(0, 12).map((b) => `<li>${b.brand} (${b.type})</li>`).join("") || '<li class="empty">None</li>'}</ul></section>
+        <section><h2>Selected Assignments</h2><ul>${asg.map((a) => `<li><b>${a.property}</b> — ${a.city ? a.city + ", " : ""}${a.country || ""}${a.brand ? " · " + a.brand : ""}</li>`).join("") || '<li class="empty">No named assignments</li>'}</ul></section>
+        <section><h2>Operating Structures</h2><p>${(s.operatingStructures || []).join(", ") || '<span class="empty">—</span>'}</p></section>
+        <section><h2>Differentiating Capabilities</h2><p>${(s.differentiatingCapabilities || []).join(", ") || '<span class="empty">—</span>'}</p></section>
+        <section><h2>Market Presence</h2><ul>${(s.marketPresence || []).slice(0, 12).map((m) => `<li>${m.country} — ${m.type} (${m.current || ""})</li>`).join("") || '<li class="empty">None</li>'}</ul></section>
+        <section><h2>Recent Momentum</h2><p class="empty">Claims-driven momentum not emphasized in Wave 01</p></section>
+        <section><h2>Evidence / Last Verified</h2><p class="admin">Assignments ${o.counts?.namedAssignments ?? 0} · Brand rel ${o.counts?.brandRelationships ?? 0} · Presence ${o.counts?.marketPresence ?? 0}</p></section>
+      `;
+    }
+    document.getElementById("list").onclick = (e) => {
+      const item = e.target.closest(".item");
+      if (item) show(item.dataset.id);
+    };
+    ["q", "purpose", "pub"].forEach((id) => document.getElementById(id).addEventListener("input", renderList));
+    boot();
+  </script>
+</body>
+</html>

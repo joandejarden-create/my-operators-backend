@@ -1,0 +1,71 @@
+{
+  "report": "operator-setup-demo-readiness-execution-checklist",
+  "generatedAt": "2026-06-02",
+  "scope": "execution_only",
+  "deploymentEnvConfirmation": {
+    "required": {
+      "NODE_ENV": "production",
+      "OPERATOR_SETUP_WRITE_MODE": "canonical",
+      "OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD": "0",
+      "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "0",
+      "OPERATOR_SETUP_USE_NEW_BASE_WRITER": "1",
+      "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE": "0",
+      "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN": "0",
+      "OPERATOR_SETUP_CONTRACT_DIAGNOSTICS": "0"
+    },
+    "checks": [
+      "Capture env snapshot before demo run",
+      "Confirm no temporary local overrides are active"
+    ]
+  },
+  "preDemoQASteps": [
+    "My Operator create/update save in canonical mode",
+    "reload/prefill includes serviceModelsSupported",
+    "detail readback confirms new_base",
+    "Explorer detail confirms canonical serviceModelsSupported",
+    "non-rec operator request remains mock-blocked",
+    "deal-linked OAS companies validation for exact demo pair",
+    "score breakdown stable across duplicate runs",
+    "no shadow/fail-open behavior in logs",
+    "authenticated OAS UI/API smoke pass",
+    "sparse-data completeness scan for selected demo operators"
+  ],
+  "demoDataChecklistTemplate": {
+    "fieldsPerPair": [
+      "demoDealId",
+      "linkedOperatorIds",
+      "operatorNames",
+      "hasLogo",
+      "completeProfileContent",
+      "oasWorksForPair",
+      "scoreWorksForPair",
+      "explorerProfilePresentable",
+      "notes",
+      "owner"
+    ]
+  },
+  "goNoGoDecisionTable": [
+    {
+      "status": "Ready",
+      "criteria": "All env checks pass, all QA steps pass, demo data complete",
+      "action": "Proceed with demo"
+    },
+    {
+      "status": "Ready with cleanup",
+      "criteria": "Core flows pass; only minor non-blocking demo data cleanup remains",
+      "action": "Proceed after listed cleanup is completed"
+    },
+    {
+      "status": "Hold",
+      "criteria": "Any env mismatch, canonical/save/read regression, unstable score, mock leak, or broken deal-linked OAS pair",
+      "action": "Do not demo; resolve blockers first"
+    }
+  ],
+  "explicitlyDeferred": [
+    "explorerProfileJson browser-only mirror diagnostics",
+    "legacy/alias cleanup",
+    "Batch 4 select/multi-select normalization",
+    "scoring methodology changes",
+    "Airtable schema changes"
+  ]
+}

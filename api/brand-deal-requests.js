@@ -9,6 +9,11 @@
 
 import Airtable from "airtable";
 import {
+  filterDealIdsWithAirtable,
+  ownerMustEnforceDealAccess,
+} from "../lib/dealality/owner-deal-id-access.js";
+import { assertOwnerBdrRequestIdsAccess } from "../lib/dealality/target-list-batch-access.js";
+import {
   DEALS_STATUS_FIELD,
   MARKET_PERFORMANCE_LINK_FIELD,
   MARKET_PERFORMANCE_TABLE,
@@ -248,7 +253,10 @@ export async function createRequest(req, res) {
       "Created At": now,
       "Last Updated": now,
     };
-    if (matchScore != null) fields["Match Score"] = Number(matchScore);
+    if (matchScore != null) {
+      // Snapshot at outreach — Contacted UI shows this as "Score at request" (does not auto-update).
+      fields["Match Score"] = Number(matchScore);
+    }
 
     const [record] = await base(BDR_TABLE).create([{ fields }]);
     const messageSummary = typeof body === "string" && body.length > 0 ? (body.length > 200 ? body.slice(0, 200) + "…" : body) : "";
@@ -304,6 +312,14 @@ export async function listForDealRoom(req, res) {
  * List ALL brand deal requests (no brand filter). For Brand Development Dashboard when showing all contacted projects.
  */
 export async function listAll(req, res) {
+  const u = req.dealalityUser;
+  if (!u?.isAdmin) {
+    return res.status(403).json({
+      success: false,
+      error: "forbidden",
+      message: "Admin access required for listAll.",
+    });
+  }
   try {
     const base = getAirtableBase();
     const records = [];
@@ -412,7 +428,15 @@ export async function listForDeals(req, res) {
     return res.json({ success: true, contacted: [] });
   }
 
-  const idSet = new Set(ids);
+  let allowedIds = ids;
+  if (req.dealalityUser && ownerMustEnforceDealAccess(req.dealalityUser)) {
+    allowedIds = await filterDealIdsWithAirtable(req.dealalityUser, ids);
+    if (!allowedIds.length) {
+      return res.json({ success: true, contacted: [] });
+    }
+  }
+
+  const idSet = new Set(allowedIds);
 
   try {
     const base = getAirtableBase();
@@ -445,8 +469,11 @@ export async function listForDeals(req, res) {
  */
 export async function listForDealsPost(req, res) {
   const { dealIds: rawIds } = req.body;
-  const ids = Array.isArray(rawIds) ? rawIds : (typeof rawIds === "string" ? rawIds.split(",") : []);
-  const trimmed = ids.map((s) => String(s).trim()).filter(Boolean);
+  let ids = Array.isArray(rawIds) ? rawIds : (typeof rawIds === "string" ? rawIds.split(",") : []);
+  let trimmed = ids.map((s) => String(s).trim()).filter(Boolean);
+  if (req.dealalityUser && ownerMustEnforceDealAccess(req.dealalityUser)) {
+    trimmed = await filterDealIdsWithAirtable(req.dealalityUser, trimmed);
+  }
   if (trimmed.length === 0) {
     return res.json({ success: true, contacted: [] });
   }
@@ -459,6 +486,9 @@ export async function listForDealsPost(req, res) {
  * Lightweight project titles for Deal Room (brand) picker — reads Deals table.
  */
 export async function getDealMetaBatch(req, res) {
+  if (req.ownerBdrDealMetaEmpty) {
+    return res.json({ success: true, deals: [] });
+  }
   const raw = req.query.ids ?? req.query.dealIds ?? "";
   const ids = String(raw)
     .split(",")
@@ -804,6 +834,8 @@ export function mapBdrToResponse(r) {
     responseDate: r.fields["Response Date"] || "",
     responseNotes: r.fields["Response Notes"] || "",
     matchScore: r.fields["Match Score"] ?? null,
+    /** Alias: frozen Brand Match Score stored when outreach was sent (Contacted history). */
+    matchScoreAtRequest: r.fields["Match Score"] ?? null,
     createdAt: r.fields["Created At"] || "",
     lastUpdated: r.fields["Last Updated"] || "",
     ownerNotes: r.fields["Owner Notes"] || "",
@@ -1191,6 +1223,18 @@ export async function bulkUpdateStatus(req, res) {
     }
   }
 
+  if (req.dealalityUser) {
+    const requestIds = updates.map((u) => u.requestId).filter(Boolean);
+    const access = await assertOwnerBdrRequestIdsAccess(req.dealalityUser, requestIds);
+    if (!access.ok) {
+      return res.status(access.status).json({
+        success: false,
+        error: access.error,
+        message: access.message,
+      });
+    }
+  }
+
   try {
     const base = getAirtableBase();
     const now = new Date().toISOString();
@@ -1236,6 +1280,9 @@ export async function bulkUpdateStatus(req, res) {
  * dealIds: comma-separated deal IDs for "all projects user is dealing with" (Deal Log).
  */
 export async function getActivityLog(req, res) {
+  if (req.ownerBdrActivityEmpty) {
+    return res.json({ success: true, entries: [] });
+  }
   const q = req.query || {};
   const brand = q.brand;
   const dealId = q.dealId;

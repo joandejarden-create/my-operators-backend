@@ -1,0 +1,90 @@
+{
+  "families_used": [
+    "Hilton",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [
+    "Choice",
+    "Marriott",
+    "IHG",
+    "Accor",
+    "Wyndham",
+    "Preferred"
+  ],
+  "adapter_errors": [
+    {
+      "family": "Marriott",
+      "error": "no_ready_marriott_countries_in_scope",
+      "note": "Marriott country hotel-sitemap adapter ready for mapped CALA slugs; check country filter"
+    },
+    {
+      "family": "IHG",
+      "error": "no_ready_ihg_countries_in_scope"
+    },
+    {
+      "family": "Accor",
+      "error": "no_ready_accor_countries_in_scope"
+    },
+    {
+      "family": "Wyndham",
+      "error": "no_ready_wyndham_countries_in_scope"
+    },
+    {
+      "family": "Preferred",
+      "error": "no_ready_preferred_countries_in_scope"
+    }
+  ],
+  "vic_evidence_rows": 666,
+  "discover_all_official_parents": true,
+  "parent_scoped_discovery": true,
+  "require_brand_match": false,
+  "control_list_purpose": "official_parent_inventory_discovery",
+  "hilton_discovery": {
+    "source": {
+      "type": "official_hilton_locations_directory",
+      "country_url_template": "https://www.hilton.com/en/locations/{country-slug}/",
+      "mexico_brand_url_template": "https://www.hilton.com/en/locations/mexico/{brand-slug}/",
+      "property_id_field": "ctyhocn"
+    },
+    "countries": [
+      "Dominican Republic"
+    ],
+    "meta": {
+      "version": "census-autopilot-hilton-cala-discovery-v1",
+      "source": {
+        "type": "official_hilton_locations_directory",
+        "country_url_template": "https://www.hilton.com/en/locations/{country-slug}/",
+        "mexico_brand_url_template": "https://www.hilton.com/en/locations/mexico/{brand-slug}/",
+        "property_id_field": "ctyhocn"
+      },
+      "countries": [
+        "Dominican Republic"
+      ],
+      "country_stats": [
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.hilton.com/en/locations/dominican-republic/",
+          "hotel_count": 10,
+          "ok": true,
+          "mode": "country_locations"
+        }
+      ],
+      "errors": [],
+      "loaded_at": "2026-08-07T14:09:11.780Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v2-wave-2",
+    "loaded_at": null,
+    "hilton_count": 0,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 10,
+  "brand_governance_counts": {
+    "active_brand_setup": 10
+  },
+  "owner_facing_eligible_count": 10,
+  "promotion_candidate_count": 0
+}

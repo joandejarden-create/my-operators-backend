@@ -1,0 +1,922 @@
+{
+  "ok": true,
+  "version": "census-clean-core-identity-repair-v1",
+  "generated_at": "2026-08-07T15:22:16.769Z",
+  "status": "production_census_clean_core_identity_repair_partial_source_lookup_remaining",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "inserts_applied": 0,
+  "cleanup_existing_only": true,
+  "paused_queues": [
+    "source_discovery_inserts",
+    "address_confirmation",
+    "coordinate_completion",
+    "phone_number_enrichment",
+    "rooms_keys",
+    "description_extraction",
+    "amenities_extraction"
+  ],
+  "queues_executed": [
+    "clean_core_classification"
+  ],
+  "before": {
+    "total_records": 1224,
+    "clean_core": 1023,
+    "below_clean_core": 201,
+    "canonical_blank": 3,
+    "canonical_dirty": 0,
+    "canonical_conflict": 6,
+    "canonical_safe_autofill": 0,
+    "canonical_duplicate_risk": 170,
+    "unknown_city": 6,
+    "blank_city": 0,
+    "descriptor_city": 0,
+    "all_caps_city": 3,
+    "all_lowercase_city": 0,
+    "city_state_combined": 2,
+    "city_safe_normalization": 0,
+    "state_region_complete": 1018,
+    "state_blank": 206,
+    "source_url_complete": 1224,
+    "source_url_missing": 0,
+    "human_review_required": 170,
+    "coordinate_blocked_dirty_identity": 17,
+    "by_class": {
+      "Clean Core": 1023,
+      "Needs Source Lookup": 5,
+      "Needs Steward Review": 26,
+      "Duplicate Risk": 170,
+      "Not Usable Yet": 0
+    },
+    "by_parent": {
+      "Hilton": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Accor": {
+        "below_clean_core": 40,
+        "unknown_city": 3,
+        "canonical_blank": 0
+      },
+      "Marriott International": {
+        "below_clean_core": 5,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "SLH": {
+        "below_clean_core": 30,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice Hotels International": {
+        "below_clean_core": 5,
+        "unknown_city": 3,
+        "canonical_blank": 3
+      },
+      "Wyndham Hotels & Resorts": {
+        "below_clean_core": 5,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "IHG": {
+        "below_clean_core": 8,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "RIU": {
+        "below_clean_core": 11,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Preferred Hotels & Resorts": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Be Live": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Bahía Príncipe": {
+        "below_clean_core": 12,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Hyatt": {
+        "below_clean_core": 22,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Catalonia": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Sirenis Hotels & Resorts": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Majestic Resorts": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Hard Rock Hotels": {
+        "below_clean_core": 2,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Barceló": {
+        "below_clean_core": 12,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Unknown": {
+        "below_clean_core": 14,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Excellence Resorts": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Meliá": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Hodelpa": {
+        "below_clean_core": 9,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Karisma Hotels": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Amhsa Marina Hotels": {
+        "below_clean_core": 2,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Lopesan": {
+        "below_clean_core": 2,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Blau Hotels": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "SuperClubs": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      }
+    }
+  },
+  "after": null,
+  "applied": {
+    "records_fixed": 0,
+    "fields_written": [],
+    "examples": []
+  },
+  "classification": {
+    "Clean Core": 1023,
+    "Needs Source Lookup": 5,
+    "Needs Steward Review": 26,
+    "Duplicate Risk": 170,
+    "Not Usable Yet": 0
+  },
+  "top_remaining_source_gaps_by_parent": [
+    {
+      "parent": "Accor",
+      "below_clean_core": 40,
+      "unknown_city": 3,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "SLH",
+      "below_clean_core": 30,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Hyatt",
+      "below_clean_core": 22,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Unknown",
+      "below_clean_core": 14,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Bahía Príncipe",
+      "below_clean_core": 12,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Barceló",
+      "below_clean_core": 12,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "RIU",
+      "below_clean_core": 11,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Hodelpa",
+      "below_clean_core": 9,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "IHG",
+      "below_clean_core": 8,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Marriott International",
+      "below_clean_core": 5,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Choice Hotels International",
+      "below_clean_core": 5,
+      "unknown_city": 3,
+      "canonical_blank": 3
+    },
+    {
+      "parent": "Wyndham Hotels & Resorts",
+      "below_clean_core": 5,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Be Live",
+      "below_clean_core": 3,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Catalonia",
+      "below_clean_core": 3,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Majestic Resorts",
+      "below_clean_core": 3,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    }
+  ],
+  "examples_before_after": [],
+  "steward_remaining": [
+    {
+      "record_id": "rec02pPY8kVklN6mK",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_steward_review_required",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec02wJ8dk7HtjPjx",
+      "class": "Duplicate Risk",
+      "city_class": "city_unknown",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "city_city_unknown",
+        "canonical_steward_review_required",
+        "human_review_required",
+        "blocked_dirty_core_identity"
+      ]
+    },
+    {
+      "record_id": "rec0IqAQQtjvBvstj",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec0P2XU4LWSkAMKm",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1XdpdiXxT2K18C",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1f0W6zwB9lA50p",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1fjvAKLJPb7AzI",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_steward_review_required",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2gjht94CaFSfNX",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2lIoIR5zP8K3XZ",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2vGUV97V68xHMp",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown"
+      ]
+    },
+    {
+      "record_id": "rec2wRckl0EfhiNyY",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec30eORcGKDSQKhJ",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3NdKlsDqp9AWpc",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_steward_review_required",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3QgXCAUGHlVw6c",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3bK7fOFBnEsJwM",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3iIZHWQ28nkGOW",
+      "class": "Needs Source Lookup",
+      "city_class": "city_state_mixed_unresolved",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "city_city_state_mixed_unresolved",
+        "blocked_dirty_core_identity"
+      ]
+    },
+    {
+      "record_id": "rec3mB3ge6kVK6CnF",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown"
+      ]
+    },
+    {
+      "record_id": "rec4GtL5puDoZLBNv",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec5CCtHKvyBnvC1C",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec5HytFhKHHeQ8Kj",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec5b4Cscv9AfHspt",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec61aOhNCTEqGAkE",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec65prcyn44MACE4",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec6trraPa03RhrKl",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec6ztnByQ5yYKq72",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec7hWWFWbfTddlEg",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec7uzw6WAJQwjnd8",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [
+        "Source Family",
+        "Parent Company"
+      ],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec80isZs41AC5dqE",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_source_conflict",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec8XBNPHAStPoWJM",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9SQXzPOOsjPTqc",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9VgXqFtb8cVmBX",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9Zrzfk7FQBeE4s",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9cNh7gyRpmSadT",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9gAZZzQOvgzcBy",
+      "class": "Duplicate Risk",
+      "city_class": "city_steward",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_steward_review_required",
+        "city_city_steward",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9i1dsU1KdqN9Kj",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9t2dO5jv5587EH",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recAC9Q00238hGRwR",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown"
+      ]
+    },
+    {
+      "record_id": "recALDbIJGJItgYBG",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recAsOCSrAEx7I137",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recBD32oUc1X93GYg",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recBeTGjePfteqabP",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown"
+      ]
+    },
+    {
+      "record_id": "recBvkvMZewtONyB2",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recCBwyTopFYX8wir",
+      "class": "Needs Source Lookup",
+      "city_class": "city_unknown",
+      "canonical_status": "missing_source_support",
+      "missing": [
+        "Canonical Property Name"
+      ],
+      "blockers": [
+        "city_city_unknown",
+        "canonical_missing_source_support",
+        "blocked_dirty_core_identity"
+      ]
+    },
+    {
+      "record_id": "recCWs5oRz4Eji2No",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [
+        "Source Family",
+        "Parent Company"
+      ],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recCZ3QNBu2kkksi8",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recCjXwlr7eBZu3Pn",
+      "class": "Needs Steward Review",
+      "city_class": "city_steward",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "city_city_steward"
+      ]
+    },
+    {
+      "record_id": "recClyVxmPwDndCcx",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "populated_conflict_needs_review",
+      "missing": [],
+      "blockers": [
+        "canonical_populated_conflict_needs_review"
+      ]
+    },
+    {
+      "record_id": "recCrOmuncVJsA2qs",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "populated_conflict_needs_review",
+      "missing": [],
+      "blockers": [
+        "canonical_populated_conflict_needs_review"
+      ]
+    },
+    {
+      "record_id": "recDVZWiVOf2baoOS",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [
+        "Source Family",
+        "Parent Company"
+      ],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_normalization_needed",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recEPcVyK0do4xAdo",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "parent_unknown",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    }
+  ],
+  "next_recommended_action": "Continue official source lookup for Unknown/descriptor cities and blank Canonical; steward duplicate risks. Keep address/Mapbox paused."
+}

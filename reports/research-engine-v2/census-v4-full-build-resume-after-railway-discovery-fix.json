@@ -1,0 +1,75 @@
+{
+  "status": [
+    "production_census_v4_full_build_resumed_after_railway_discovery_fix_complete",
+    "production_census_v4_full_build_partial_source_remaining",
+    "production_census_v4_full_build_partial_network_remaining"
+  ],
+  "generated_at": "2026-08-09T09:26:00.000Z",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "discovery": {
+    "railway_deploy_prior": "fd355c6c",
+    "railway_safe": true,
+    "discovered_count": 1245,
+    "timed_out_units": 1,
+    "failed_units": 0,
+    "timed_out_example": "Hilton/Mexico",
+    "resume_from_unit_cache": true,
+    "force_refresh": false,
+    "skip_on_timeout": true,
+    "handoff": "OFFICIAL_DIRECTORY exhausted after railway_safe_done partial → MISSING_FIELD_SOURCE_STRATEGY"
+  },
+  "controller_changes": {
+    "lane_added": "MISSING_FIELD_SOURCE_STRATEGY",
+    "objective": "census-missing-field-source-strategy-controller-v1",
+    "directory_exhaust_on_partial": true,
+    "persist_directory_wave_exhausted": true,
+    "field_strategy_clears_each_process": true
+  },
+  "railway_env": {
+    "ENABLE_CENSUS_V4_WORKER": "1",
+    "ENABLE_CENSUS_AUTOPILOT_V4": "1",
+    "ENABLE_VERIFIED_CENSUS_WRITES": "1",
+    "ENABLE_CENSUS_POLICY_CONTROLLER": "1",
+    "ENABLE_CENSUS_INTERNAL_MEDIUM_COMPLETION": "1",
+    "ENABLE_DATAFORSEO_VALIDATED_WRITES": "1",
+    "ENABLE_DATAFORSEO_LOCAL_ADDRESS_WRITES": "1",
+    "ENABLE_DATAFORSEO_LOCAL_WEBSITE_WRITES": "1",
+    "ENABLE_DATAFORSEO_LOCAL_PHONE_WRITES": "1",
+    "ENABLE_DATAFORSEO_LOCAL_COORDINATE_WRITES": "0",
+    "ENABLE_MAPBOX_AFTER_VALIDATED_ADDRESS": "1",
+    "ENABLE_MAPBOX_AFTER_MEDIUM_MATCH_HIGH_ADDRESS": "1",
+    "MAPBOX_PERMANENT_GEOCODING": "1",
+    "ENABLE_DATAFORSEO_LOCAL_INSERTS": "1",
+    "ENABLE_HIGH_CONFIDENCE_INSERTS": "1",
+    "DATAFORSEO_WRITE_CANDIDATES_ONLY": "0",
+    "CENSUS_DISCOVERY_RAILWAY_SAFE_MODE": "1",
+    "CENSUS_DISCOVERY_SKIP_ON_TIMEOUT": "1",
+    "CENSUS_DISCOVERY_RESUME": "1",
+    "CENSUS_DISCOVERY_FORCE_REFRESH": "0"
+  },
+  "held_writes": [
+    "owner",
+    "operator",
+    "developer",
+    "opening/renovation/affiliation dates",
+    "Recent Momentum",
+    "Company Validated",
+    "Brand Verified",
+    "Brand Status",
+    "direct DataForSEO coordinates",
+    "Brand Explorer",
+    "Brand Setup",
+    "old Census / VIC"
+  ],
+  "validation": {
+    "test:census-autopilot": "pass",
+    "test:dataforseo-discovery-pilot": "pass",
+    "test:census-brand-governance-scope": "pass",
+    "dealality:batch-learning-audit": "pass"
+  },
+  "next_source_investment": "Hilton Mexico brand crawl and Choice regional fetches remain Railway egress partials — keep skip-on-timeout; seed offline caches if needed. Continue Mapbox-after-address + DFS match_high address/website/phone Medium internal + rooms from approved underlying sources."
+}

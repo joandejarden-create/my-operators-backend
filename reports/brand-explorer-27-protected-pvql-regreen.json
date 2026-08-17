@@ -1,0 +1,590 @@
+{
+  "version": "27-protected-pvql-regreen-v1",
+  "generatedAt": "2026-07-24T12:18:20.434Z",
+  "dryRun": false,
+  "targets": [
+    "preferred-hotels-and-resorts",
+    "radisson-individuals-by-choice",
+    "small-luxury-hotels-of-the-world"
+  ],
+  "extractSummary": {
+    "brands": 3,
+    "failureRows": 6,
+    "brandsNeedingFix": 3
+  },
+  "failures": [
+    {
+      "brand": "Preferred Hotels & Resorts",
+      "slug": "preferred-hotels-and-resorts",
+      "tab": "Overview",
+      "section": "Brand Positioning / Audience",
+      "recordId": "recwl5JOYxlChuCAr",
+      "field": "Target Guest Segments",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "generic_copy_scan / generic_audience_prose",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound",
+      "currentRendered": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound Independent-minded luxury and upscale travelers who choose hotels for distinctive chara",
+      "whyItFails": "Rendered Audience joins multi-select as \"Luxury / Discerning, Leisure…\", which matches golden GENERIC_AUDIENCE_PROSE and fails PVQL generic_copy_scan. Tab Factory also fails because golden_content_quality is a hard gate (failFindings may still be 0).",
+      "proposedFix": "Replace Target Guest Segments with: Experience-Oriented, Leisure, International Inbound (drop Luxury / Discerning while keeping Leisure / Experience-Oriented / International Inbound as applicable).",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ]
+    },
+    {
+      "brand": "Preferred Hotels & Resorts",
+      "slug": "preferred-hotels-and-resorts",
+      "tab": "Tab Factory (aggregate)",
+      "section": "golden_content_quality gate",
+      "recordId": "recwl5JOYxlChuCAr",
+      "field": "Target Guest Segments (via rendered Audience)",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "tab_factory_audit",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound",
+      "currentRendered": "auditPass=false; failFindings=0; golden.pass=false",
+      "whyItFails": "tab_factory_audit.pass requires golden_content_quality.pass. Completeness failFindings can be 0 while audit still fails on generic_audience_prose.",
+      "proposedFix": "Same Target Guest Segments adjacency remediation clears the golden gate and re-greens tab_factory_audit.",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ]
+    },
+    {
+      "brand": "Radisson Individuals by Choice",
+      "slug": "radisson-individuals-by-choice",
+      "tab": "Overview",
+      "section": "Brand Positioning / Audience",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "field": "Target Guest Segments",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "generic_copy_scan / generic_audience_prose",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented",
+      "currentRendered": "Luxury / Discerning, Leisure, Experience-Oriented Curious, experience-led travelers who seek independent and boutique hotels with local story and design—willing",
+      "whyItFails": "Rendered Audience joins multi-select as \"Luxury / Discerning, Leisure…\", which matches golden GENERIC_AUDIENCE_PROSE and fails PVQL generic_copy_scan. Tab Factory also fails because golden_content_quality is a hard gate (failFindings may still be 0).",
+      "proposedFix": "Replace Target Guest Segments with: Experience-Oriented, Leisure (drop Luxury / Discerning while keeping Leisure / Experience-Oriented / International Inbound as applicable).",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure"
+      ]
+    },
+    {
+      "brand": "Radisson Individuals by Choice",
+      "slug": "radisson-individuals-by-choice",
+      "tab": "Tab Factory (aggregate)",
+      "section": "golden_content_quality gate",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "field": "Target Guest Segments (via rendered Audience)",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "tab_factory_audit",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented",
+      "currentRendered": "auditPass=false; failFindings=0; golden.pass=false",
+      "whyItFails": "tab_factory_audit.pass requires golden_content_quality.pass. Completeness failFindings can be 0 while audit still fails on generic_audience_prose.",
+      "proposedFix": "Same Target Guest Segments adjacency remediation clears the golden gate and re-greens tab_factory_audit.",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure"
+      ]
+    },
+    {
+      "brand": "Small Luxury Hotels of the World",
+      "slug": "small-luxury-hotels-of-the-world",
+      "tab": "Overview",
+      "section": "Brand Positioning / Audience",
+      "recordId": "recjjSnY2opb8P4DG",
+      "field": "Target Guest Segments",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "generic_copy_scan / generic_audience_prose",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound",
+      "currentRendered": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound Luxury leisure travelers seeking individual hotels, experience-led guests, and traveler",
+      "whyItFails": "Rendered Audience joins multi-select as \"Luxury / Discerning, Leisure…\", which matches golden GENERIC_AUDIENCE_PROSE and fails PVQL generic_copy_scan. Tab Factory also fails because golden_content_quality is a hard gate (failFindings may still be 0).",
+      "proposedFix": "Replace Target Guest Segments with: Experience-Oriented, Leisure, International Inbound (drop Luxury / Discerning while keeping Leisure / Experience-Oriented / International Inbound as applicable).",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ]
+    },
+    {
+      "brand": "Small Luxury Hotels of the World",
+      "slug": "small-luxury-hotels-of-the-world",
+      "tab": "Tab Factory (aggregate)",
+      "section": "golden_content_quality gate",
+      "recordId": "recjjSnY2opb8P4DG",
+      "field": "Target Guest Segments (via rendered Audience)",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "tab_factory_audit",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound",
+      "currentRendered": "auditPass=false; failFindings=0; golden.pass=false",
+      "whyItFails": "tab_factory_audit.pass requires golden_content_quality.pass. Completeness failFindings can be 0 while audit still fails on generic_audience_prose.",
+      "proposedFix": "Same Target Guest Segments adjacency remediation clears the golden gate and re-greens tab_factory_audit.",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ]
+    }
+  ],
+  "brands": [
+    {
+      "slug": "preferred-hotels-and-resorts",
+      "name": "Preferred Hotels & Resorts",
+      "recordId": "recwl5JOYxlChuCAr",
+      "needsFix": true,
+      "segmentsBefore": [
+        "Luxury / Discerning",
+        "Leisure",
+        "Experience-Oriented",
+        "International Inbound"
+      ],
+      "segmentsAfter": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ],
+      "before": {
+        "goldenPass": false,
+        "goldenFailures": [
+          "generic_audience_prose"
+        ],
+        "tabFactoryAuditPass": false
+      },
+      "projected": {
+        "goldenPass": true,
+        "goldenFailures": [],
+        "tabFactoryAuditPass": true
+      },
+      "patch": {
+        "table": "Brand Setup - Brand Basics",
+        "action": "PATCH",
+        "recordId": "recwl5JOYxlChuCAr",
+        "brandSlug": "preferred-hotels-and-resorts",
+        "brandName": "Preferred Hotels & Resorts",
+        "reason": "golden_generic_audience_prose_segment_adjacency",
+        "fields": {
+          "Target Guest Segments": [
+            "Experience-Oriented",
+            "Leisure",
+            "International Inbound"
+          ]
+        },
+        "fieldMapping": {
+          "Target Guest Segments": "Brand Basics.Target Guest Segments"
+        },
+        "sanitizedPayloadPreview": {
+          "Target Guest Segments": [
+            "Experience-Oriented",
+            "Leisure",
+            "International Inbound"
+          ]
+        },
+        "before": {
+          "Target Guest Segments": [
+            "Luxury / Discerning",
+            "Leisure",
+            "Experience-Oriented",
+            "International Inbound"
+          ]
+        },
+        "validation": {
+          "pass": true,
+          "checks": [
+            "target_brand_only",
+            "allowed_field_only",
+            "no_company_validation",
+            "no_source_library",
+            "no_registry",
+            "no_brand_status",
+            "no_release",
+            "no_images",
+            "no_presentation_broad_rewrite"
+          ],
+          "failedChecks": []
+        }
+      }
+    },
+    {
+      "slug": "radisson-individuals-by-choice",
+      "name": "Radisson Individuals by Choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "needsFix": true,
+      "segmentsBefore": [
+        "Luxury / Discerning",
+        "Leisure",
+        "Experience-Oriented"
+      ],
+      "segmentsAfter": [
+        "Experience-Oriented",
+        "Leisure"
+      ],
+      "before": {
+        "goldenPass": false,
+        "goldenFailures": [
+          "generic_audience_prose"
+        ],
+        "tabFactoryAuditPass": false
+      },
+      "projected": {
+        "goldenPass": true,
+        "goldenFailures": [],
+        "tabFactoryAuditPass": true
+      },
+      "patch": {
+        "table": "Brand Setup - Brand Basics",
+        "action": "PATCH",
+        "recordId": "recRyvM8OmLlDj9G7",
+        "brandSlug": "radisson-individuals-by-choice",
+        "brandName": "Radisson Individuals by Choice",
+        "reason": "golden_generic_audience_prose_segment_adjacency",
+        "fields": {
+          "Target Guest Segments": [
+            "Experience-Oriented",
+            "Leisure"
+          ]
+        },
+        "fieldMapping": {
+          "Target Guest Segments": "Brand Basics.Target Guest Segments"
+        },
+        "sanitizedPayloadPreview": {
+          "Target Guest Segments": [
+            "Experience-Oriented",
+            "Leisure"
+          ]
+        },
+        "before": {
+          "Target Guest Segments": [
+            "Luxury / Discerning",
+            "Leisure",
+            "Experience-Oriented"
+          ]
+        },
+        "validation": {
+          "pass": true,
+          "checks": [
+            "target_brand_only",
+            "allowed_field_only",
+            "no_company_validation",
+            "no_source_library",
+            "no_registry",
+            "no_brand_status",
+            "no_release",
+            "no_images",
+            "no_presentation_broad_rewrite"
+          ],
+          "failedChecks": []
+        }
+      }
+    },
+    {
+      "slug": "small-luxury-hotels-of-the-world",
+      "name": "Small Luxury Hotels of the World",
+      "recordId": "recjjSnY2opb8P4DG",
+      "needsFix": true,
+      "segmentsBefore": [
+        "Luxury / Discerning",
+        "Leisure",
+        "Experience-Oriented",
+        "International Inbound"
+      ],
+      "segmentsAfter": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ],
+      "before": {
+        "goldenPass": false,
+        "goldenFailures": [
+          "generic_audience_prose"
+        ],
+        "tabFactoryAuditPass": false
+      },
+      "projected": {
+        "goldenPass": true,
+        "goldenFailures": [],
+        "tabFactoryAuditPass": true
+      },
+      "patch": {
+        "table": "Brand Setup - Brand Basics",
+        "action": "PATCH",
+        "recordId": "recjjSnY2opb8P4DG",
+        "brandSlug": "small-luxury-hotels-of-the-world",
+        "brandName": "Small Luxury Hotels of the World",
+        "reason": "golden_generic_audience_prose_segment_adjacency",
+        "fields": {
+          "Target Guest Segments": [
+            "Experience-Oriented",
+            "Leisure",
+            "International Inbound"
+          ]
+        },
+        "fieldMapping": {
+          "Target Guest Segments": "Brand Basics.Target Guest Segments"
+        },
+        "sanitizedPayloadPreview": {
+          "Target Guest Segments": [
+            "Experience-Oriented",
+            "Leisure",
+            "International Inbound"
+          ]
+        },
+        "before": {
+          "Target Guest Segments": [
+            "Luxury / Discerning",
+            "Leisure",
+            "Experience-Oriented",
+            "International Inbound"
+          ]
+        },
+        "validation": {
+          "pass": true,
+          "checks": [
+            "target_brand_only",
+            "allowed_field_only",
+            "no_company_validation",
+            "no_source_library",
+            "no_registry",
+            "no_brand_status",
+            "no_release",
+            "no_images",
+            "no_presentation_broad_rewrite"
+          ],
+          "failedChecks": []
+        }
+      }
+    }
+  ],
+  "patches": [
+    {
+      "table": "Brand Setup - Brand Basics",
+      "action": "PATCH",
+      "recordId": "recwl5JOYxlChuCAr",
+      "brandSlug": "preferred-hotels-and-resorts",
+      "brandName": "Preferred Hotels & Resorts",
+      "reason": "golden_generic_audience_prose_segment_adjacency",
+      "fields": {
+        "Target Guest Segments": [
+          "Experience-Oriented",
+          "Leisure",
+          "International Inbound"
+        ]
+      },
+      "fieldMapping": {
+        "Target Guest Segments": "Brand Basics.Target Guest Segments"
+      },
+      "sanitizedPayloadPreview": {
+        "Target Guest Segments": [
+          "Experience-Oriented",
+          "Leisure",
+          "International Inbound"
+        ]
+      },
+      "before": {
+        "Target Guest Segments": [
+          "Luxury / Discerning",
+          "Leisure",
+          "Experience-Oriented",
+          "International Inbound"
+        ]
+      },
+      "validation": {
+        "pass": true,
+        "checks": [
+          "target_brand_only",
+          "allowed_field_only",
+          "no_company_validation",
+          "no_source_library",
+          "no_registry",
+          "no_brand_status",
+          "no_release",
+          "no_images",
+          "no_presentation_broad_rewrite"
+        ],
+        "failedChecks": []
+      }
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "action": "PATCH",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "brandSlug": "radisson-individuals-by-choice",
+      "brandName": "Radisson Individuals by Choice",
+      "reason": "golden_generic_audience_prose_segment_adjacency",
+      "fields": {
+        "Target Guest Segments": [
+          "Experience-Oriented",
+          "Leisure"
+        ]
+      },
+      "fieldMapping": {
+        "Target Guest Segments": "Brand Basics.Target Guest Segments"
+      },
+      "sanitizedPayloadPreview": {
+        "Target Guest Segments": [
+          "Experience-Oriented",
+          "Leisure"
+        ]
+      },
+      "before": {
+        "Target Guest Segments": [
+          "Luxury / Discerning",
+          "Leisure",
+          "Experience-Oriented"
+        ]
+      },
+      "validation": {
+        "pass": true,
+        "checks": [
+          "target_brand_only",
+          "allowed_field_only",
+          "no_company_validation",
+          "no_source_library",
+          "no_registry",
+          "no_brand_status",
+          "no_release",
+          "no_images",
+          "no_presentation_broad_rewrite"
+        ],
+        "failedChecks": []
+      }
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "action": "PATCH",
+      "recordId": "recjjSnY2opb8P4DG",
+      "brandSlug": "small-luxury-hotels-of-the-world",
+      "brandName": "Small Luxury Hotels of the World",
+      "reason": "golden_generic_audience_prose_segment_adjacency",
+      "fields": {
+        "Target Guest Segments": [
+          "Experience-Oriented",
+          "Leisure",
+          "International Inbound"
+        ]
+      },
+      "fieldMapping": {
+        "Target Guest Segments": "Brand Basics.Target Guest Segments"
+      },
+      "sanitizedPayloadPreview": {
+        "Target Guest Segments": [
+          "Experience-Oriented",
+          "Leisure",
+          "International Inbound"
+        ]
+      },
+      "before": {
+        "Target Guest Segments": [
+          "Luxury / Discerning",
+          "Leisure",
+          "Experience-Oriented",
+          "International Inbound"
+        ]
+      },
+      "validation": {
+        "pass": true,
+        "checks": [
+          "target_brand_only",
+          "allowed_field_only",
+          "no_company_validation",
+          "no_source_library",
+          "no_registry",
+          "no_brand_status",
+          "no_release",
+          "no_images",
+          "no_presentation_broad_rewrite"
+        ],
+        "failedChecks": []
+      }
+    }
+  ],
+  "summary": {
+    "brands": 3,
+    "needingFix": 3,
+    "patches": 3,
+    "projectedClean": true
+  },
+  "validation": {
+    "pass": true,
+    "failedChecks": []
+  },
+  "protections": {
+    "companyValidatedUntouched": true,
+    "sourceLibraryUntouched": true,
+    "registryUntouched": true,
+    "brandStatusUntouched": true,
+    "releaseFieldsUntouched": true,
+    "imageFieldsUntouched": true,
+    "wave12Untouched": true,
+    "presentationBroadRewrite": false
+  },
+  "wave12ResumeGate": "Wave 12 may resume at Stage 3 (source packs). Protected 27 PVQL re-green complete.",
+  "applyResult": {
+    "applied": true,
+    "results": [
+      {
+        "recordId": "recwl5JOYxlChuCAr",
+        "brandSlug": "preferred-hotels-and-resorts",
+        "applied": true,
+        "action": "PATCH",
+        "table": "Brand Setup - Brand Basics",
+        "fields": [
+          "Target Guest Segments"
+        ],
+        "reason": "golden_generic_audience_prose_segment_adjacency"
+      },
+      {
+        "recordId": "recRyvM8OmLlDj9G7",
+        "brandSlug": "radisson-individuals-by-choice",
+        "applied": true,
+        "action": "PATCH",
+        "table": "Brand Setup - Brand Basics",
+        "fields": [
+          "Target Guest Segments"
+        ],
+        "reason": "golden_generic_audience_prose_segment_adjacency"
+      },
+      {
+        "recordId": "recjjSnY2opb8P4DG",
+        "brandSlug": "small-luxury-hotels-of-the-world",
+        "applied": true,
+        "action": "PATCH",
+        "table": "Brand Setup - Brand Basics",
+        "fields": [
+          "Target Guest Segments"
+        ],
+        "reason": "golden_generic_audience_prose_segment_adjacency"
+      }
+    ],
+    "companyValidatedUntouched": true,
+    "sourceLibraryUntouched": true,
+    "registryUntouched": true,
+    "brandStatusUntouched": true,
+    "releaseFieldsUntouched": true,
+    "imageFieldsUntouched": true,
+    "wave12Untouched": true
+  },
+  "postApplyValidation": {
+    "generatedAt": "2026-07-24T13:57:09.701Z",
+    "pvqlPublicFullOnly": {
+      "overallPass": true,
+      "publicFullProfileCount": 27
+    },
+    "targetBrandsPvqlPass": [
+      "preferred-hotels-and-resorts",
+      "radisson-individuals-by-choice",
+      "small-luxury-hotels-of-the-world"
+    ],
+    "tabSectionQualityAudit": true,
+    "recentMomentumEvidenceQuality": true,
+    "mandatoryReleaseGates": true,
+    "osReleaseReadiness": true,
+    "baseline27Regression": true,
+    "wave12Preflight": {
+      "pass": true,
+      "protectedBaselineClean": true,
+      "activeUniverseIs27": true,
+      "noWave12ActiveDrift": true
+    },
+    "wave12MayResumeAtStage3": true
+  }
+}

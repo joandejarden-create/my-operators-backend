@@ -1,0 +1,45 @@
+{
+  "marker": "HOTEL_INTELLIGENCE_PROVIDER_AUDIT_COMPLETE",
+  "table": [
+    {
+      "provider": "Hotelbeds",
+      "existing_code": true,
+      "path": "lib/hotel-intelligence/providers/hotelbeds.js + lib/research-engine-v2/hbx-*",
+      "credentials_configured": true,
+      "mcp_connection": "via Hotel Intelligence MCP (hotelbeds provider)",
+      "used_by_hotel_intelligence": true,
+      "tests": "test:hotel-intelligence; hbx inventory scripts",
+      "reachable_at_last_cala_run": "quota_exhausted (TEST_DAILY_QUOTA_EXHAUSTED)"
+    },
+    {
+      "provider": "StayingAPI",
+      "existing_code": true,
+      "path": "lib/research-engine-v2/providers/staying-api/* + lib/hotel-intelligence/providers/stayingapi.js",
+      "credentials_configured": true,
+      "mcp_connection": "via Hotel Intelligence MCP (stayingapi provider); no Cursor StayingAPI MCP",
+      "used_by_hotel_intelligence": true,
+      "tests": "test:hotel-intelligence-stayingapi; stayingapi:benchmark-v1",
+      "reachable_at_last_run": "yes (Free/Sandbox; rate limits + weak identity)"
+    },
+    {
+      "provider": "SerpApi",
+      "existing_code": true,
+      "path": "lib/research-engine-v2/providers/serpapi-google-hotels/* + lib/hotel-intelligence/providers/serpapi.js",
+      "credentials_configured": true,
+      "mcp_connection": "via Hotel Intelligence MCP (serpapi provider); no Cursor SerpApi MCP",
+      "used_by_hotel_intelligence": true,
+      "tests": "test:hotel-intelligence-serpapi; serpapi:benchmark-v1; test:serpapi-key-env-canonical",
+      "reachable_at_last_run": "yes (Production Plan)"
+    },
+    {
+      "provider": "HotelAPI.co",
+      "existing_code": false,
+      "path": null,
+      "credentials_configured": false,
+      "mcp_connection": "none",
+      "used_by_hotel_intelligence": false,
+      "tests": "none",
+      "reachable_at_last_run": "docs-only audit"
+    }
+  ]
+}

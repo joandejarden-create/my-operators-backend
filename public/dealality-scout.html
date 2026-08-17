@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <link rel="stylesheet" href="/dealality-scout.css">
+  <link rel="stylesheet" href="/css/travel-infrastructure-radar-filters.css">
 </head>
 <body>
   <div id="systemStatus" class="system-status" style="display:none;" aria-live="polite">
@@ -112,6 +113,19 @@
               <span class="toggle-slider"></span>
               <span class="toggle-label">Travel Infrastructure</span>
             </label>
+            <div id="infrastructureFilterWrap" class="infra-filter-wrap" style="display: none;">
+              <div id="infrastructureFilterChips" class="infra-filter-chips" role="group" aria-label="Travel Infrastructure point type filters"></div>
+              <p id="infrastructureEmptyState" class="infra-empty-state" style="display: none;">No travel infrastructure points found for this filter.</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleDemandAnchors">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Demand Anchors</span>
+            </label>
+            <div id="demandAnchorsFilterWrap" class="infra-filter-wrap" style="display: none;">
+              <div id="demandAnchorsFilterChips" class="infra-filter-chips" role="group" aria-label="Demand Anchors point type filters"></div>
+              <p id="demandAnchorsEmptyState" class="infra-empty-state" style="display: none;">No demand anchor points found for this filter.</p>
+            </div>
             <label class="toggle-switch">
               <input type="checkbox" id="toggleLayerSourceReview">
               <span class="toggle-slider"></span>
@@ -162,11 +176,25 @@
           <div class="legend-item"><span class="dot lime"></span>Medium Penetration</div>
           <div class="legend-item"><span class="dot mint"></span>Low Penetration</div>
         </div>
-        <div id="legendInfrastructureGroup">
+        <div id="legendInfrastructureGroup" style="display:none;">
           <h4>TRAVEL INFRASTRUCTURE</h4>
-          <div class="legend-item"><span class="diamond magenta"></span>Airports</div>
-          <div class="legend-item"><span class="diamond pink"></span>Cruise Ports</div>
-          <div class="legend-item"><span class="diamond teal"></span>Convention Centers</div>
+          <div class="legend-item"><span class="pentagon magenta"></span>Airports</div>
+          <div class="legend-item"><span class="pentagon pink"></span>Cruise Ports</div>
+          <div class="legend-item"><span class="pentagon teal"></span>Convention Centers</div>
+          <div class="legend-item"><span class="pentagon ferry"></span>Ferry Terminals</div>
+          <div class="legend-item"><span class="pentagon port"></span>Ports / Maritime</div>
+          <div class="legend-item"><span class="pentagon highway"></span>Highway Access</div>
+          <div class="legend-item"><span class="pentagon bus"></span>Bus Terminals</div>
+        </div>
+        <div id="legendDemandAnchorsGroup" style="display:none;">
+          <h4>DEMAND ANCHORS</h4>
+          <div class="legend-item"><span class="diamond beach"></span>Beaches &amp; Waterfront</div>
+          <div class="legend-item"><span class="diamond attraction"></span>Tourist Attractions</div>
+          <div class="legend-item"><span class="diamond entertainment"></span>Entertainment Districts</div>
+          <div class="legend-item"><span class="diamond institutional"></span>Medical / University</div>
+          <div class="legend-item"><span class="diamond sports"></span>Sports Venues</div>
+          <div class="legend-item"><span class="diamond business"></span>Business &amp; Civic</div>
+          <div class="legend-item"><span class="diamond industrial"></span>Industrial / Mixed-Use / Growth</div>
         </div>
         <div id="legendDemandCentersGroup" style="display:none;">
           <h4>DEMAND CENTERS</h4>
@@ -188,6 +216,8 @@
     </main>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="/js/travel-infrastructure-radar-layer.js"></script>
+  <script src="/js/demand-anchors-radar-layer.js"></script>
   <script src="/dealality-scout.js"></script>
 </body>
 </html>

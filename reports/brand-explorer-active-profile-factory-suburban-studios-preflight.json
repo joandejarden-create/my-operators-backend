@@ -1,0 +1,945 @@
+{
+  "factoryVersion": "v34C",
+  "brandConfigVersion": "v34B",
+  "stage": "preflight",
+  "generatedAt": "2026-07-14T11:03:57.721Z",
+  "brand": {
+    "slug": "suburban-studios",
+    "recordId": "reclcjg5Foa9Vs5TC",
+    "name": "Suburban Studios",
+    "parentCompany": "Choice Hotels International",
+    "consumerUrl": "https://www.choicehotels.com/suburban-studios"
+  },
+  "activeProfileConfig": {
+    "slug": "suburban-studios",
+    "recordId": "reclcjg5Foa9Vs5TC",
+    "brandFamily": "choice-extended-stay",
+    "propertyExampleStrategy": "us_labeled_property_examples",
+    "galleryMinimum": 6
+  },
+  "mode": "dry-run",
+  "guardrails": {
+    "companyValidatedNeverAuto": true,
+    "imageApprovalNotCompanyValidation": true,
+    "noSummaryUrlWrites": true,
+    "registryOnlyNotVisibleReadiness": true,
+    "founderVisualReviewRequiredForApply": true,
+    "galleryMinimum": 6
+  },
+  "factoryRules": {
+    "factoryVersion": "v34C",
+    "pass": false,
+    "rules": {
+      "gallery": {
+        "ruleId": "gallery_minimum_six_visible",
+        "pass": false,
+        "minimum": 6,
+        "visibleInApi": 6,
+        "withImageUrl": 0,
+        "missingImageUrl": [
+          "materials.gallery.1",
+          "materials.gallery.2",
+          "materials.gallery.3",
+          "materials.gallery.4",
+          "materials.gallery.5",
+          "materials.gallery.6"
+        ],
+        "logoOrGenericSlots": [],
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_0",
+          "missing_imageUrl:materials.gallery.1",
+          "missing_imageUrl:materials.gallery.2",
+          "missing_imageUrl:materials.gallery.3",
+          "missing_imageUrl:materials.gallery.4",
+          "missing_imageUrl:materials.gallery.5",
+          "missing_imageUrl:materials.gallery.6"
+        ]
+      },
+      "propertyExamples": {
+        "ruleId": "property_example_real_hotel_images",
+        "pass": false,
+        "visibleOpeningCards": 0,
+        "defects": [],
+        "blockers": []
+      },
+      "scenarioImages": {
+        "ruleId": "scenario_no_image_placeholder",
+        "pass": true,
+        "visibleScenarioCards": 3,
+        "placeholderSlots": [],
+        "staleFallbackTitles": false,
+        "blockers": []
+      },
+      "registryTraceability": {
+        "ruleId": "registry_traceability",
+        "pass": false,
+        "visualSlotsChecked": 9,
+        "gaps": [
+          {
+            "slotKey": "overview.scenario.2",
+            "recordId": "recAYnvsEmxKm4x5j",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "recordId": "recDRlKbGsd2QbIQf",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "overview.scenario.1",
+            "recordId": "recly6pRUmrU97XhB",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.1",
+            "recordId": "recwluFMHUcUbOkjl",
+            "issue": "missing_api_imageUrl"
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "recordId": "recCwR9hx72tfMUp1",
+            "issue": "missing_api_imageUrl"
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "recordId": "recr4Lb4pcVH8MMfF",
+            "issue": "missing_api_imageUrl"
+          },
+          {
+            "slotKey": "materials.gallery.4",
+            "recordId": "recvXAx8VYsx2hwGt",
+            "issue": "missing_api_imageUrl"
+          },
+          {
+            "slotKey": "materials.gallery.5",
+            "recordId": "recMojLeVV4cUcJxY",
+            "issue": "missing_api_imageUrl"
+          },
+          {
+            "slotKey": "materials.gallery.6",
+            "recordId": "recvVHj7qLxPgepZ7",
+            "issue": "missing_api_imageUrl"
+          }
+        ],
+        "blockers": [
+          "missing_registry_row:overview.scenario.2",
+          "missing_registry_row:overview.scenario.3",
+          "missing_registry_row:overview.scenario.1",
+          "missing_api_imageUrl:materials.gallery.1",
+          "missing_api_imageUrl:materials.gallery.2",
+          "missing_api_imageUrl:materials.gallery.3",
+          "missing_api_imageUrl:materials.gallery.4",
+          "missing_api_imageUrl:materials.gallery.5",
+          "missing_api_imageUrl:materials.gallery.6"
+        ]
+      },
+      "uiFallback": {
+        "ruleId": "ui_fallback_preference",
+        "pass": true,
+        "risks": [],
+        "blockers": []
+      },
+      "copySafety": {
+        "ruleId": "copy_safety",
+        "pass": false,
+        "findings": [
+          {
+            "slotKey": "operations.operator_compat.fit",
+            "recordId": "rec0USpMxbntM2JF1",
+            "patternId": "fdd",
+            "excerpt": "\nStrong fit when operator has extended-stay economy depth, can meet prototype/PIP, and models net contribution after 6.0",
+            "severity": "high"
+          },
+          {
+            "slotKey": "operations.operator_compat.fit",
+            "recordId": "rec0USpMxbntM2JF1",
+            "patternId": "net_contribution",
+            "excerpt": "\nStrong fit when operator has extended-stay economy depth, can meet prototype/PIP, and models net contribution after 6.0",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.fee",
+            "recordId": "rec3mNc8nZL72tYjN",
+            "patternId": "fdd",
+            "excerpt": "Royalty / brand fee\nOngoing compensation for extended-stay economy standards, QA, and portfolio access—6.0% royalty on g",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.ecosystem",
+            "recordId": "rec81cGCerAIBk3fX",
+            "patternId": "fdd",
+            "excerpt": "\n7,100+ hotels worldwide across 20+ brands; earn up to 10 points per $1 on eligible direct stays; reward nights from 8,0",
+            "severity": "high"
+          },
+          {
+            "slotKey": "commercial.kpi.lens",
+            "recordId": "rec99c4RCxvsQG04z",
+            "patternId": "net_contribution",
+            "excerpt": "Owner Underwriting Lens\nNet contribution after fees and channel costs",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.opening.financials",
+            "recordId": "recAGBgGgv2hT0Ux1",
+            "patternId": "fee_stack",
+            "excerpt": "\nFinancial planning themes (no deal-specific amounts):\n\nFront-loaded standards, FF&E, and technology\n\nWorking capital th",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.proof.3",
+            "recordId": "recARhIhZtw0DQEnC",
+            "patternId": "adr",
+            "excerpt": "Economy-Extended ADR\nLower guest spend than MainStay; compare Everhome for newest extended brand and prototype.",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.systems_integration",
+            "recordId": "recBg5gPVVVSRZoTo",
+            "patternId": "fdd",
+            "excerpt": "\nMandatory Choice PMS/CRS/loyalty stack per FDD.",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.fee.operate",
+            "recordId": "recBueD9GxRcuioMz",
+            "patternId": "fdd",
+            "excerpt": "To Operate\nSteady-state: 6.0% royalty on gross room revenues (Suburban FDD); plus marketing, technology, loyalty, and di",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.fee.operate",
+            "recordId": "recBueD9GxRcuioMz",
+            "patternId": "net_contribution",
+            "excerpt": "To Operate\nSteady-state: 6.0% royalty on gross room revenues (Suburban FDD); plus marketing, technology, loyalty, and di",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.fee.operate",
+            "recordId": "recBueD9GxRcuioMz",
+            "patternId": "revpar",
+            "excerpt": "To Operate\nSteady-state: 6.0% royalty on gross room revenues (Suburban FDD); plus marketing, technology, loyalty, and di",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.fee.join",
+            "recordId": "recC36rw9clCSh5ls",
+            "patternId": "fdd",
+            "excerpt": "To Join\nApplication and entry fees; training and opening support; initial franchise fee; technology implementation; plan",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.fee.join",
+            "recordId": "recC36rw9clCSh5ls",
+            "patternId": "fdd",
+            "excerpt": "To Join\nApplication and entry fees; training and opening support; initial franchise fee; technology implementation; plan",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.fee.join",
+            "recordId": "recC36rw9clCSh5ls",
+            "patternId": "franchise_disclosure_long",
+            "excerpt": "To Join\nApplication and entry fees; training and opening support; initial franchise fee; technology implementation; plan",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.proof_operator",
+            "recordId": "recCld2KPx78qehp2",
+            "patternId": "adr",
+            "excerpt": "\nExtended-stay operators who manage kitchenettes, weekly billing, and lean staffing at economy-extended ADR.",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "recordId": "recDRlKbGsd2QbIQf",
+            "patternId": "fdd",
+            "excerpt": "Kitchenette Conversion\nConversions of older studio product needing Choice systems; Item 19 ~44.9% loyalty / ~61.6% enter",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "recordId": "recDRlKbGsd2QbIQf",
+            "patternId": "item_19",
+            "excerpt": "Kitchenette Conversion\nConversions of older studio product needing Choice systems; Item 19 ~44.9% loyalty / ~61.6% enter",
+            "severity": "high"
+          },
+          {
+            "slotKey": "insight.similar",
+            "recordId": "recHnpkJMbV1A1qCV",
+            "patternId": "ihg",
+            "excerpt": "Candlewood Suites\n(IHG · extended-stay limited service)",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.redeem",
+            "recordId": "recLzKOKpc6Sq6x3a",
+            "patternId": "fdd",
+            "excerpt": "\nReward nights from 8,000 points (property and date dependent; demand-responsive pricing).\nPoints + cash where offered o",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.implications.pnl",
+            "recordId": "recMGfrHsMz4FqwsE",
+            "patternId": "fdd",
+            "excerpt": "\nModel net after distribution, member discounts, and redemption—strongest when direct/member mix supports your brand tie",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.implications.pnl",
+            "recordId": "recMGfrHsMz4FqwsE",
+            "patternId": "item_19",
+            "excerpt": "\nModel net after distribution, member discounts, and redemption—strongest when direct/member mix supports your brand tie",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.implications.pnl",
+            "recordId": "recMGfrHsMz4FqwsE",
+            "patternId": "adr",
+            "excerpt": "\nModel net after distribution, member discounts, and redemption—strongest when direct/member mix supports your brand tie",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.kpi.mix",
+            "recordId": "recU8R1WXLcSvs2QC",
+            "patternId": "rooms_from_loyalty",
+            "excerpt": "\n~44.9% of rooms from loyalty (est.)",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "hero.benefit_zones",
+            "recordId": "recUb4ZkqWWZgA8KD",
+            "patternId": "fdd",
+            "excerpt": "\nExtended-stay studios for weekly and monthly guests. · extended-stay economy · Item 19 FY 2025: ~44.9% loyalty; ~61.6% ",
+            "severity": "high"
+          },
+          {
+            "slotKey": "hero.benefit_zones",
+            "recordId": "recUb4ZkqWWZgA8KD",
+            "patternId": "fdd",
+            "excerpt": "\nExtended-stay studios for weekly and monthly guests. · extended-stay economy · Item 19 FY 2025: ~44.9% loyalty; ~61.6% ",
+            "severity": "high"
+          },
+          {
+            "slotKey": "hero.benefit_zones",
+            "recordId": "recUb4ZkqWWZgA8KD",
+            "patternId": "item_19",
+            "excerpt": "\nExtended-stay studios for weekly and monthly guests. · extended-stay economy · Item 19 FY 2025: ~44.9% loyalty; ~61.6% ",
+            "severity": "high"
+          },
+          {
+            "slotKey": "insight.summary",
+            "recordId": "recUcpSrTVpHVDRVV",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios fits when you want extended-stay economy Choice distribution with clear prototype economics and Choice",
+            "severity": "high"
+          },
+          {
+            "slotKey": "insight.summary",
+            "recordId": "recUcpSrTVpHVDRVV",
+            "patternId": "adr",
+            "excerpt": "\nSuburban Studios fits when you want extended-stay economy Choice distribution with clear prototype economics and Choice",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "insight.summary",
+            "recordId": "recUcpSrTVpHVDRVV",
+            "patternId": "fee_stack",
+            "excerpt": "\nSuburban Studios fits when you want extended-stay economy Choice distribution with clear prototype economics and Choice",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.proof.4",
+            "recordId": "recUlSKh8i2HnIZv9",
+            "patternId": "revpar",
+            "excerpt": "Kitchen Wear & Utilities\nReturns driven by housekeeping cadence, appliance wear, and utility economics—not headline RevP",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.differentiators.commercial",
+            "recordId": "recUuZWYkuk8BDj8m",
+            "patternId": "fdd",
+            "excerpt": "\n6.0% royalty on gross room revenues.\nItem 19: ~44.9% loyalty; ~61.6% enterprise (FY 2025).\nWeekly/monthly mix drives re",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.differentiators.commercial",
+            "recordId": "recUuZWYkuk8BDj8m",
+            "patternId": "item_19",
+            "excerpt": "\n6.0% royalty on gross room revenues.\nItem 19: ~44.9% loyalty; ~61.6% enterprise (FY 2025).\nWeekly/monthly mix drives re",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.differentiators.commercial",
+            "recordId": "recUuZWYkuk8BDj8m",
+            "patternId": "adr",
+            "excerpt": "\n6.0% royalty on gross room revenues.\nItem 19: ~44.9% loyalty; ~61.6% enterprise (FY 2025).\nWeekly/monthly mix drives re",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.intro",
+            "recordId": "recWlt3dBdFSaW9sb",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios (extended-stay economy) economics are illustrative only—not a quote or substitute for the FDD, LOI, or",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.proof.5",
+            "recordId": "recXS04FjYQ5hzxJx",
+            "patternId": "fdd",
+            "excerpt": "Choice Privileges®\nSystem program: 7,100+ hotels worldwide; earn up to 10 points per $1 on eligible direct stays; reward",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.proof.5",
+            "recordId": "recXS04FjYQ5hzxJx",
+            "patternId": "fdd",
+            "excerpt": "Choice Privileges®\nSystem program: 7,100+ hotels worldwide; earn up to 10 points per $1 on eligible direct stays; reward",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.proof.5",
+            "recordId": "recXS04FjYQ5hzxJx",
+            "patternId": "item_19",
+            "excerpt": "Choice Privileges®\nSystem program: 7,100+ hotels worldwide; earn up to 10 points per $1 on eligible direct stays; reward",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.scenarios",
+            "recordId": "reccJfLlAtyJ7AmFA",
+            "patternId": "fdd",
+            "excerpt": "\nExtended-stay studios at economy-extended price versus MainStay residential upscale extended—kitchenette FF&E and weekl",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.scenarios",
+            "recordId": "reccJfLlAtyJ7AmFA",
+            "patternId": "item_19",
+            "excerpt": "\nExtended-stay studios at economy-extended price versus MainStay residential upscale extended—kitchenette FF&E and weekl",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.growth.narrative",
+            "recordId": "recfIzDRwZBkWHYhz",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.growth.narrative",
+            "recordId": "recfIzDRwZBkWHYhz",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.growth.narrative",
+            "recordId": "recfIzDRwZBkWHYhz",
+            "patternId": "item_19",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.growth.narrative",
+            "recordId": "recfIzDRwZBkWHYhz",
+            "patternId": "franchise_disclosure_long",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "valueOwners.watchouts",
+            "recordId": "recgCuvvQROhGGYgW",
+            "patternId": "adr",
+            "excerpt": "\nMarkets that cannot support extended-stay economy ADR or required amenity stack.\nHeavy conversion PIP misaligned with b",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "standards.intro",
+            "recordId": "reciANbFvywYcjlBY",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios standards vary by prototype, conversion path, and agreement vintage. Use the table as a planning check",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.growth_editorial",
+            "recordId": "recjryNsdDHllqGZz",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.growth_editorial",
+            "recordId": "recjryNsdDHllqGZz",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.growth_editorial",
+            "recordId": "recjryNsdDHllqGZz",
+            "patternId": "item_19",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.growth_editorial",
+            "recordId": "recjryNsdDHllqGZz",
+            "patternId": "franchise_disclosure_long",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.owner_lens",
+            "recordId": "recnJYDYTx74eFMcz",
+            "patternId": "fdd",
+            "excerpt": "\nModel loyalty as net contribution—member discounts, fulfillment, and ~44.9% room mix from Choice Privileges in Item 19 ",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.owner_lens",
+            "recordId": "recnJYDYTx74eFMcz",
+            "patternId": "item_19",
+            "excerpt": "\nModel loyalty as net contribution—member discounts, fulfillment, and ~44.9% room mix from Choice Privileges in Item 19 ",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.owner_lens",
+            "recordId": "recnJYDYTx74eFMcz",
+            "patternId": "net_contribution",
+            "excerpt": "\nModel loyalty as net contribution—member discounts, fulfillment, and ~44.9% room mix from Choice Privileges in Item 19 ",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.owner_lens",
+            "recordId": "recnJYDYTx74eFMcz",
+            "patternId": "revpar",
+            "excerpt": "\nModel loyalty as net contribution—member discounts, fulfillment, and ~44.9% room mix from Choice Privileges in Item 19 ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.cash.steadystate",
+            "recordId": "recoUjSTHMQ3qHH37",
+            "patternId": "fee_stack",
+            "excerpt": "\nOwner funds: recurring fee stack (extended-stay economy) plus program participation once stabilized.\n\nBrand provides: C",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.data_analytics",
+            "recordId": "recosfOivGwyDQ1Ni",
+            "patternId": "fdd",
+            "excerpt": "Data, Analytics & Experimentation\nPortfolio benchmarks, test-and-learn, and guest insights to refine offers, room types,",
+            "severity": "high"
+          },
+          {
+            "slotKey": "commercial.lever.data_analytics",
+            "recordId": "recosfOivGwyDQ1Ni",
+            "patternId": "item_19",
+            "excerpt": "Data, Analytics & Experimentation\nPortfolio benchmarks, test-and-learn, and guest insights to refine offers, room types,",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recrBGpiZPeqvEJNr",
+            "patternId": "fdd",
+            "excerpt": "Repeat Guest Capture\nFDD Item 19 (2025 sample): ~44.9% of rooms from Choice Privileges contribution.",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recrBGpiZPeqvEJNr",
+            "patternId": "fdd",
+            "excerpt": "Repeat Guest Capture\nFDD Item 19 (2025 sample): ~44.9% of rooms from Choice Privileges contribution.",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recrBGpiZPeqvEJNr",
+            "patternId": "item_19",
+            "excerpt": "Repeat Guest Capture\nFDD Item 19 (2025 sample): ~44.9% of rooms from Choice Privileges contribution.",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.why_value",
+            "recordId": "rectVmpVrwddeaZSi",
+            "patternId": "adr",
+            "excerpt": "\nWhy owners choose Suburban: affordable extended stay with kitchenettes.\nGuest promise: studio space for weekly and mont",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recwkEX8j5Ks2uPSI",
+            "patternId": "consumer_site",
+            "excerpt": "Campaign Scale\nU.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recwkEX8j5Ks2uPSI",
+            "patternId": "source_metadata",
+            "excerpt": "Campaign Scale\nU.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.kpi.fee_stack",
+            "recordId": "recxBZsspachVGwJ7",
+            "patternId": "fdd",
+            "excerpt": "\nConfirm in your franchise disclosure document: Application · Royalty · Marketing · Technology · Loyalty · Reservation ·",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.kpi.fee_stack",
+            "recordId": "recxBZsspachVGwJ7",
+            "patternId": "fdd",
+            "excerpt": "\nConfirm in your franchise disclosure document: Application · Royalty · Marketing · Technology · Loyalty · Reservation ·",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.kpi.fee_stack",
+            "recordId": "recxBZsspachVGwJ7",
+            "patternId": "franchise_disclosure_long",
+            "excerpt": "\nConfirm in your franchise disclosure document: Application · Royalty · Marketing · Technology · Loyalty · Reservation ·",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.editorial",
+            "recordId": "recypcrhVi0CZCFKm",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.editorial",
+            "recordId": "recypcrhVi0CZCFKm",
+            "patternId": "fdd",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.editorial",
+            "recordId": "recypcrhVi0CZCFKm",
+            "patternId": "item_19",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.editorial",
+            "recordId": "recypcrhVi0CZCFKm",
+            "patternId": "franchise_disclosure_long",
+            "excerpt": "\nSuburban Studios bridges economy and extended-stay—Item 19 shows moderate enterprise participation (~62%) versus midsca",
+            "severity": "high"
+          },
+          {
+            "slotKey": "materials.file",
+            "recordId": "reczqK8XaUHQo3PhU",
+            "patternId": "fdd",
+            "excerpt": "Franchise Disclosure Document\nPDF · 9.7 MB · Suburban Studios FDD 2026.pdf\nBadge: Unverified by Brand",
+            "severity": "high"
+          },
+          {
+            "slotKey": "materials.file",
+            "recordId": "reczqK8XaUHQo3PhU",
+            "patternId": "fdd",
+            "excerpt": "Franchise Disclosure Document\nPDF · 9.7 MB · Suburban Studios FDD 2026.pdf\nBadge: Unverified by Brand",
+            "severity": "high"
+          },
+          {
+            "slotKey": "materials.file",
+            "recordId": "reczqK8XaUHQo3PhU",
+            "patternId": "franchise_disclosure_long",
+            "excerpt": "Franchise Disclosure Document\nPDF · 9.7 MB · Suburban Studios FDD 2026.pdf\nBadge: Unverified by Brand",
+            "severity": "high"
+          }
+        ],
+        "highCount": 55,
+        "blockers": [
+          "risky_copy:fdd:operations.operator_compat.fit",
+          "risky_copy:net_contribution:operations.operator_compat.fit",
+          "risky_copy:fdd:economics.fee",
+          "risky_copy:fdd:loyalty.ecosystem",
+          "risky_copy:net_contribution:commercial.kpi.lens",
+          "risky_copy:fdd:operations.model.systems_integration",
+          "risky_copy:fdd:economics.fee.operate",
+          "risky_copy:net_contribution:economics.fee.operate",
+          "risky_copy:fdd:economics.fee.join",
+          "risky_copy:fdd:economics.fee.join",
+          "risky_copy:franchise_disclosure_long:economics.fee.join",
+          "risky_copy:fdd:overview.scenario.3",
+          "risky_copy:item_19:overview.scenario.3",
+          "risky_copy:fdd:loyalty.redeem",
+          "risky_copy:fdd:loyalty.implications.pnl",
+          "risky_copy:item_19:loyalty.implications.pnl",
+          "risky_copy:fdd:hero.benefit_zones",
+          "risky_copy:fdd:hero.benefit_zones",
+          "risky_copy:item_19:hero.benefit_zones",
+          "risky_copy:fdd:insight.summary",
+          "risky_copy:fdd:overview.differentiators.commercial",
+          "risky_copy:item_19:overview.differentiators.commercial",
+          "risky_copy:fdd:economics.intro",
+          "risky_copy:fdd:overview.proof.5",
+          "risky_copy:fdd:overview.proof.5",
+          "risky_copy:item_19:overview.proof.5",
+          "risky_copy:fdd:overview.scenarios",
+          "risky_copy:item_19:overview.scenarios",
+          "risky_copy:fdd:footprint.growth.narrative",
+          "risky_copy:fdd:footprint.growth.narrative",
+          "risky_copy:item_19:footprint.growth.narrative",
+          "risky_copy:franchise_disclosure_long:footprint.growth.narrative",
+          "risky_copy:fdd:standards.intro",
+          "risky_copy:fdd:footprint.growth_editorial",
+          "risky_copy:fdd:footprint.growth_editorial",
+          "risky_copy:item_19:footprint.growth_editorial",
+          "risky_copy:franchise_disclosure_long:footprint.growth_editorial",
+          "risky_copy:fdd:loyalty.owner_lens",
+          "risky_copy:item_19:loyalty.owner_lens",
+          "risky_copy:net_contribution:loyalty.owner_lens",
+          "risky_copy:fdd:commercial.lever.data_analytics",
+          "risky_copy:item_19:commercial.lever.data_analytics",
+          "risky_copy:fdd:loyalty.proof",
+          "risky_copy:fdd:loyalty.proof",
+          "risky_copy:item_19:loyalty.proof",
+          "risky_copy:fdd:economics.kpi.fee_stack",
+          "risky_copy:fdd:economics.kpi.fee_stack",
+          "risky_copy:franchise_disclosure_long:economics.kpi.fee_stack",
+          "risky_copy:fdd:footprint.editorial",
+          "risky_copy:fdd:footprint.editorial",
+          "risky_copy:item_19:footprint.editorial",
+          "risky_copy:franchise_disclosure_long:footprint.editorial",
+          "risky_copy:fdd:materials.file",
+          "risky_copy:fdd:materials.file",
+          "risky_copy:franchise_disclosure_long:materials.file"
+        ]
+      },
+      "standardDetail": {
+        "ruleId": "standard_detail_governance",
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false,
+        "blockers": []
+      }
+    },
+    "imageGovernanceDefects": [],
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_0",
+      "missing_imageUrl:materials.gallery.1",
+      "missing_imageUrl:materials.gallery.2",
+      "missing_imageUrl:materials.gallery.3",
+      "missing_imageUrl:materials.gallery.4",
+      "missing_imageUrl:materials.gallery.5",
+      "missing_imageUrl:materials.gallery.6",
+      "missing_registry_row:overview.scenario.2",
+      "missing_registry_row:overview.scenario.3",
+      "missing_registry_row:overview.scenario.1",
+      "missing_api_imageUrl:materials.gallery.1",
+      "missing_api_imageUrl:materials.gallery.2",
+      "missing_api_imageUrl:materials.gallery.3",
+      "missing_api_imageUrl:materials.gallery.4",
+      "missing_api_imageUrl:materials.gallery.5",
+      "missing_api_imageUrl:materials.gallery.6",
+      "risky_copy:fdd:operations.operator_compat.fit",
+      "risky_copy:net_contribution:operations.operator_compat.fit",
+      "risky_copy:fdd:economics.fee",
+      "risky_copy:fdd:loyalty.ecosystem",
+      "risky_copy:net_contribution:commercial.kpi.lens",
+      "risky_copy:fdd:operations.model.systems_integration",
+      "risky_copy:fdd:economics.fee.operate",
+      "risky_copy:net_contribution:economics.fee.operate",
+      "risky_copy:fdd:economics.fee.join",
+      "risky_copy:franchise_disclosure_long:economics.fee.join",
+      "risky_copy:fdd:overview.scenario.3",
+      "risky_copy:item_19:overview.scenario.3",
+      "risky_copy:fdd:loyalty.redeem",
+      "risky_copy:fdd:loyalty.implications.pnl",
+      "risky_copy:item_19:loyalty.implications.pnl",
+      "risky_copy:fdd:hero.benefit_zones",
+      "risky_copy:item_19:hero.benefit_zones",
+      "risky_copy:fdd:insight.summary",
+      "risky_copy:fdd:overview.differentiators.commercial",
+      "risky_copy:item_19:overview.differentiators.commercial",
+      "risky_copy:fdd:economics.intro",
+      "risky_copy:fdd:overview.proof.5",
+      "risky_copy:item_19:overview.proof.5",
+      "risky_copy:fdd:overview.scenarios",
+      "risky_copy:item_19:overview.scenarios",
+      "risky_copy:fdd:footprint.growth.narrative",
+      "risky_copy:item_19:footprint.growth.narrative",
+      "risky_copy:franchise_disclosure_long:footprint.growth.narrative",
+      "risky_copy:fdd:standards.intro",
+      "risky_copy:fdd:footprint.growth_editorial",
+      "risky_copy:item_19:footprint.growth_editorial",
+      "risky_copy:franchise_disclosure_long:footprint.growth_editorial",
+      "risky_copy:fdd:loyalty.owner_lens",
+      "risky_copy:item_19:loyalty.owner_lens",
+      "risky_copy:net_contribution:loyalty.owner_lens",
+      "risky_copy:fdd:commercial.lever.data_analytics",
+      "risky_copy:item_19:commercial.lever.data_analytics",
+      "risky_copy:fdd:loyalty.proof",
+      "risky_copy:item_19:loyalty.proof",
+      "risky_copy:fdd:economics.kpi.fee_stack",
+      "risky_copy:franchise_disclosure_long:economics.kpi.fee_stack",
+      "risky_copy:fdd:footprint.editorial",
+      "risky_copy:item_19:footprint.editorial",
+      "risky_copy:franchise_disclosure_long:footprint.editorial",
+      "risky_copy:fdd:materials.file",
+      "risky_copy:franchise_disclosure_long:materials.file"
+    ],
+    "galleryMinimum": 6,
+    "visibleGalleryCount": 0
+  },
+  "assetPack": null,
+  "draftPlan": null,
+  "copyGovernancePlan": null,
+  "approvedSourcesCount": 0,
+  "applyResult": null,
+  "legacyWriterChainReference": [
+    "brand-explorer-choice-extended-stay-source-capture-writer",
+    "brand-explorer-choice-expansion-partial-profile-backfill-writer"
+  ],
+  "finalQa": {
+    "readiness": "not_ready",
+    "numeric": 50,
+    "defectCount": 31
+  },
+  "visualDefects": null,
+  "completeBuild": {
+    "readyForActiveProfile": false,
+    "readinessBand": "not_ready"
+  },
+  "suburbanReadiness": {
+    "recommendation": "run_asset_pack_and_build_draft_stages",
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_0",
+      "missing_imageUrl:materials.gallery.1",
+      "missing_imageUrl:materials.gallery.2",
+      "missing_imageUrl:materials.gallery.3",
+      "missing_imageUrl:materials.gallery.4",
+      "missing_imageUrl:materials.gallery.5",
+      "missing_imageUrl:materials.gallery.6",
+      "missing_registry_row:overview.scenario.2",
+      "missing_registry_row:overview.scenario.3",
+      "missing_registry_row:overview.scenario.1",
+      "missing_api_imageUrl:materials.gallery.1",
+      "missing_api_imageUrl:materials.gallery.2",
+      "missing_api_imageUrl:materials.gallery.3",
+      "missing_api_imageUrl:materials.gallery.4",
+      "missing_api_imageUrl:materials.gallery.5",
+      "missing_api_imageUrl:materials.gallery.6",
+      "risky_copy:fdd:operations.operator_compat.fit",
+      "risky_copy:net_contribution:operations.operator_compat.fit",
+      "risky_copy:fdd:economics.fee",
+      "risky_copy:fdd:loyalty.ecosystem",
+      "risky_copy:net_contribution:commercial.kpi.lens",
+      "risky_copy:fdd:operations.model.systems_integration",
+      "risky_copy:fdd:economics.fee.operate",
+      "risky_copy:net_contribution:economics.fee.operate",
+      "risky_copy:fdd:economics.fee.join",
+      "risky_copy:franchise_disclosure_long:economics.fee.join",
+      "risky_copy:fdd:overview.scenario.3",
+      "risky_copy:item_19:overview.scenario.3",
+      "risky_copy:fdd:loyalty.redeem",
+      "risky_copy:fdd:loyalty.implications.pnl",
+      "risky_copy:item_19:loyalty.implications.pnl",
+      "risky_copy:fdd:hero.benefit_zones",
+      "risky_copy:item_19:hero.benefit_zones",
+      "risky_copy:fdd:insight.summary",
+      "risky_copy:fdd:overview.differentiators.commercial",
+      "risky_copy:item_19:overview.differentiators.commercial",
+      "risky_copy:fdd:economics.intro",
+      "risky_copy:fdd:overview.proof.5",
+      "risky_copy:item_19:overview.proof.5",
+      "risky_copy:fdd:overview.scenarios",
+      "risky_copy:item_19:overview.scenarios",
+      "risky_copy:fdd:footprint.growth.narrative",
+      "risky_copy:item_19:footprint.growth.narrative",
+      "risky_copy:franchise_disclosure_long:footprint.growth.narrative",
+      "risky_copy:fdd:standards.intro",
+      "risky_copy:fdd:footprint.growth_editorial",
+      "risky_copy:item_19:footprint.growth_editorial",
+      "risky_copy:franchise_disclosure_long:footprint.growth_editorial",
+      "risky_copy:fdd:loyalty.owner_lens",
+      "risky_copy:item_19:loyalty.owner_lens",
+      "risky_copy:net_contribution:loyalty.owner_lens",
+      "risky_copy:fdd:commercial.lever.data_analytics",
+      "risky_copy:item_19:commercial.lever.data_analytics",
+      "risky_copy:fdd:loyalty.proof",
+      "risky_copy:item_19:loyalty.proof",
+      "risky_copy:fdd:economics.kpi.fee_stack",
+      "risky_copy:franchise_disclosure_long:economics.kpi.fee_stack",
+      "risky_copy:fdd:footprint.editorial",
+      "risky_copy:item_19:footprint.editorial",
+      "risky_copy:franchise_disclosure_long:footprint.editorial",
+      "risky_copy:fdd:materials.file",
+      "risky_copy:franchise_disclosure_long:materials.file"
+    ]
+  },
+  "applyApproved": {
+    "allowed": false,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-approved -- --brand suburban-studios --apply --approve-brand-explorer-active-profile --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed --approve-brand-explorer-active-profile-copy-governance",
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_0",
+      "missing_imageUrl:materials.gallery.1",
+      "missing_imageUrl:materials.gallery.2",
+      "missing_imageUrl:materials.gallery.3",
+      "missing_imageUrl:materials.gallery.4",
+      "missing_imageUrl:materials.gallery.5",
+      "missing_imageUrl:materials.gallery.6",
+      "missing_registry_row:overview.scenario.2",
+      "missing_registry_row:overview.scenario.3",
+      "missing_registry_row:overview.scenario.1",
+      "missing_api_imageUrl:materials.gallery.1",
+      "missing_api_imageUrl:materials.gallery.2",
+      "missing_api_imageUrl:materials.gallery.3",
+      "missing_api_imageUrl:materials.gallery.4",
+      "missing_api_imageUrl:materials.gallery.5",
+      "missing_api_imageUrl:materials.gallery.6",
+      "risky_copy:fdd:operations.operator_compat.fit",
+      "risky_copy:net_contribution:operations.operator_compat.fit",
+      "risky_copy:fdd:economics.fee",
+      "risky_copy:fdd:loyalty.ecosystem",
+      "risky_copy:net_contribution:commercial.kpi.lens",
+      "risky_copy:fdd:operations.model.systems_integration",
+      "risky_copy:fdd:economics.fee.operate",
+      "risky_copy:net_contribution:economics.fee.operate",
+      "risky_copy:fdd:economics.fee.join",
+      "risky_copy:franchise_disclosure_long:economics.fee.join",
+      "risky_copy:fdd:overview.scenario.3",
+      "risky_copy:item_19:overview.scenario.3",
+      "risky_copy:fdd:loyalty.redeem",
+      "risky_copy:fdd:loyalty.implications.pnl",
+      "risky_copy:item_19:loyalty.implications.pnl",
+      "risky_copy:fdd:hero.benefit_zones",
+      "risky_copy:item_19:hero.benefit_zones",
+      "risky_copy:fdd:insight.summary",
+      "risky_copy:fdd:overview.differentiators.commercial",
+      "risky_copy:item_19:overview.differentiators.commercial",
+      "risky_copy:fdd:economics.intro",
+      "risky_copy:fdd:overview.proof.5",
+      "risky_copy:item_19:overview.proof.5",
+      "risky_copy:fdd:overview.scenarios",
+      "risky_copy:item_19:overview.scenarios",
+      "risky_copy:fdd:footprint.growth.narrative",
+      "risky_copy:item_19:footprint.growth.narrative",
+      "risky_copy:franchise_disclosure_long:footprint.growth.narrative",
+      "risky_copy:fdd:standards.intro",
+      "risky_copy:fdd:footprint.growth_editorial",
+      "risky_copy:item_19:footprint.growth_editorial",
+      "risky_copy:franchise_disclosure_long:footprint.growth_editorial",
+      "risky_copy:fdd:loyalty.owner_lens",
+      "risky_copy:item_19:loyalty.owner_lens",
+      "risky_copy:net_contribution:loyalty.owner_lens",
+      "risky_copy:fdd:commercial.lever.data_analytics",
+      "risky_copy:item_19:commercial.lever.data_analytics",
+      "risky_copy:fdd:loyalty.proof",
+      "risky_copy:item_19:loyalty.proof",
+      "risky_copy:fdd:economics.kpi.fee_stack",
+      "risky_copy:franchise_disclosure_long:economics.kpi.fee_stack",
+      "risky_copy:fdd:footprint.editorial",
+      "risky_copy:item_19:footprint.editorial",
+      "risky_copy:franchise_disclosure_long:footprint.editorial",
+      "risky_copy:fdd:materials.file",
+      "risky_copy:franchise_disclosure_long:materials.file"
+    ]
+  },
+  "markdown": "# Brand Explorer Active Profile Founder Review v34C\n\n- Brand: **Suburban Studios** (`suburban-studios`)\n- Generated: 2026-07-14T11:03:57.723Z\n- Factory pass: **no**\n\n## Visual readiness\n- Gallery (6 visible + imageUrl): **FAIL** (0/6)\n- Property examples: **FAIL**\n- Scenario cards (no IMAGE placeholder): **PASS**\n- Registry traceability: **FAIL**\n- UI fallback risk: **PASS**\n- Copy safety: **FAIL**\n- Standard Detail governance: **PASS**\n\n## Property cards (asset pack)\n\n## Gallery image pack\n\n## Scenario cards\n\n## Proof cards\n\n## What will be applied (dry-run draft)\n- Presentation patches: **0**\n- Registry creates: **0**\n- Sections: (none)\n\n## Remains human-reviewed\n\n## Blockers\n- need_6_visible_gallery_imageUrl_got_0\n- missing_imageUrl:materials.gallery.1\n- missing_imageUrl:materials.gallery.2\n- missing_imageUrl:materials.gallery.3\n- missing_imageUrl:materials.gallery.4\n- missing_imageUrl:materials.gallery.5\n- missing_imageUrl:materials.gallery.6\n- missing_registry_row:overview.scenario.2\n- missing_registry_row:overview.scenario.3\n- missing_registry_row:overview.scenario.1\n- missing_api_imageUrl:materials.gallery.1\n- missing_api_imageUrl:materials.gallery.2\n- missing_api_imageUrl:materials.gallery.3\n- missing_api_imageUrl:materials.gallery.4\n- missing_api_imageUrl:materials.gallery.5\n- missing_api_imageUrl:materials.gallery.6\n- risky_copy:fdd:operations.operator_compat.fit\n- risky_copy:net_contribution:operations.operator_compat.fit\n- risky_copy:fdd:economics.fee\n- risky_copy:fdd:loyalty.ecosystem\n- risky_copy:net_contribution:commercial.kpi.lens\n- risky_copy:fdd:operations.model.systems_integration\n- risky_copy:fdd:economics.fee.operate\n- risky_copy:net_contribution:economics.fee.operate\n- risky_copy:fdd:economics.fee.join\n- risky_copy:franchise_disclosure_long:economics.fee.join\n- risky_copy:fdd:overview.scenario.3\n- risky_copy:item_19:overview.scenario.3\n- risky_copy:fdd:loyalty.redeem\n- risky_copy:fdd:loyalty.implications.pnl\n- risky_copy:item_19:loyalty.implications.pnl\n- risky_copy:fdd:hero.benefit_zones\n- risky_copy:item_19:hero.benefit_zones\n- risky_copy:fdd:insight.summary\n- risky_copy:fdd:overview.differentiators.commercial\n- risky_copy:item_19:overview.differentiators.commercial\n- risky_copy:fdd:economics.intro\n- risky_copy:fdd:overview.proof.5\n- risky_copy:item_19:overview.proof.5\n- risky_copy:fdd:overview.scenarios\n- risky_copy:item_19:overview.scenarios\n- risky_copy:fdd:footprint.growth.narrative\n- risky_copy:item_19:footprint.growth.narrative\n- risky_copy:franchise_disclosure_long:footprint.growth.narrative\n- risky_copy:fdd:standards.intro\n- risky_copy:fdd:footprint.growth_editorial\n- risky_copy:item_19:footprint.growth_editorial\n- risky_copy:franchise_disclosure_long:footprint.growth_editorial\n- risky_copy:fdd:loyalty.owner_lens\n- risky_copy:item_19:loyalty.owner_lens\n- risky_copy:net_contribution:loyalty.owner_lens\n- risky_copy:fdd:commercial.lever.data_analytics\n- risky_copy:item_19:commercial.lever.data_analytics\n- risky_copy:fdd:loyalty.proof\n- risky_copy:item_19:loyalty.proof\n- risky_copy:fdd:economics.kpi.fee_stack\n- risky_copy:franchise_disclosure_long:economics.kpi.fee_stack\n- risky_copy:fdd:footprint.editorial\n- risky_copy:item_19:footprint.editorial\n- risky_copy:franchise_disclosure_long:footprint.editorial\n- risky_copy:fdd:materials.file\n- risky_copy:franchise_disclosure_long:materials.file\n\n## Exact apply command\n_Blocked until founder review passes and dry-runs are clean._",
+  "assetPackMarkdown": null,
+  "draftMarkdown": null,
+  "copyGovernanceMarkdown": null,
+  "founderQueueAuditMarkdown": null
+}

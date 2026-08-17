@@ -1,0 +1,110 @@
+{
+  "correctionVersion": "v2.1-steward-plan",
+  "generatedAt": "2026-07-06T15:33:50.814Z",
+  "entity": {
+    "name": "GHL Hoteles (GHL Holding)",
+    "type": "operator",
+    "targetRecId": "reciI2tYQBfMoMK9G"
+  },
+  "destination": {
+    "table": "Operator Setup - Platform & Markets",
+    "field": "specificMarkets",
+    "fieldKey": "specificMarkets",
+    "recordId": "recbY3IGCh2LZQ3Mi"
+  },
+  "values": {
+    "currentLive": "Latin America, Colombia, Peru, Chile, Guatemala",
+    "recommendedCorrected": "Colombia, Chile, Guatemala, Peru",
+    "priorControlledPublishValue": "Latin America, Colombia, Peru, Chile, Guatemala"
+  },
+  "correction": {
+    "reason": "Destinations page lists specific markets as Colombia, Chile, Guatemala, and Peru; Latin America is regional context.",
+    "whyNotBlindControlledPublish": "Controlled publish v2 requires a blank destination; field is now populated after first publish.",
+    "whyStewardReviewRequired": "Overwrite of populated allowlisted field requires explicit steward approval and correction mode."
+  },
+  "evidence": {
+    "primarySource": {
+      "sourceId": "reckrUB2WmnSm02g3",
+      "title": "GHL Hoteles destinations",
+      "url": "https://www.ghlhoteles.com/en/destinations/"
+    },
+    "destinationsListed": [
+      "Colombia",
+      "Chile",
+      "Guatemala",
+      "Peru"
+    ],
+    "regionalFraming": "Destinations in Latin America",
+    "regionalFramingNote": "Regional label is evidence/context only — not written to specificMarkets."
+  },
+  "priorPublish": {
+    "sourceFactId": "reccszsLnWjA5fPnp",
+    "sourceFactKey": "op.markets.regionsSupported",
+    "originalSourceId": "recoOcRjSD3VZb3qt",
+    "originalSourceTitle": "GHL Hoteles events",
+    "originalSourceUrl": "https://www.ghlhoteles.com/en/events/"
+  },
+  "safety": {
+    "isGovernanceCorrection": false,
+    "companyValidatedUntouched": true,
+    "piFactsUntouched": true,
+    "sourcesUntouched": true,
+    "scoringUntouched": true,
+    "requiresStewardApproval": true,
+    "approvalFlag": "--approve-controlled-field-correction"
+  },
+  "commands": {
+    "dryRun": "npm run controlled-platform-field-publishing -- --entity-type operator --target-rec-id reciI2tYQBfMoMK9G --destination-field specificMarkets --correct-value \"Colombia, Chile, Guatemala, Peru\" --reason \"Destinations page lists specific markets as Colombia, Chile, Guatemala, and Peru; Latin America is regional context.\" --dry-run",
+    "applyWhenApproved": "npm run controlled-platform-field-publishing -- --entity-type operator --target-rec-id reciI2tYQBfMoMK9G --destination-field specificMarkets --correct-value \"Colombia, Chile, Guatemala, Peru\" --reason \"Destinations page lists specific markets as Colombia, Chile, Guatemala, and Peru; Latin America is regional context.\" --apply --approve-controlled-field-correction",
+    "applyNote": "Run apply only after founder/steward approves dry-run correction plan."
+  },
+  "stewardContext": {
+    "entityName": "GHL Hoteles (GHL Holding)",
+    "entityType": "operator",
+    "targetRecId": "reciI2tYQBfMoMK9G",
+    "destinationTable": "Operator Setup - Platform & Markets",
+    "destinationField": "specificMarkets",
+    "destinationFieldKey": "specificMarkets",
+    "destinationRecordId": "recbY3IGCh2LZQ3Mi",
+    "sourceFactId": "reccszsLnWjA5fPnp",
+    "sourceFactKey": "op.markets.regionsSupported",
+    "originalPublishSourceId": "recoOcRjSD3VZb3qt",
+    "originalPublishSourceTitle": "GHL Hoteles events",
+    "originalPublishSourceUrl": "https://www.ghlhoteles.com/en/events/",
+    "evidenceSource": {
+      "sourceId": "reckrUB2WmnSm02g3",
+      "title": "GHL Hoteles destinations",
+      "url": "https://www.ghlhoteles.com/en/destinations/"
+    },
+    "recommendedCorrectedValue": "Colombia, Chile, Guatemala, Peru",
+    "correctionReason": "Destinations page lists specific markets as Colombia, Chile, Guatemala, and Peru; Latin America is regional context.",
+    "regionalContextNote": "\"Latin America\" appears on the official destinations page as regional framing (\"Destinations in Latin America\") but `specificMarkets` should store the four country names only. Keep regional scope in PI evidence and fact context — not in this platform field unless the field definition is explicitly regional.",
+    "isGovernanceCorrection": false,
+    "companyValidatedUntouched": true,
+    "requiresStewardApproval": true,
+    "destinationsListed": [
+      "Colombia",
+      "Chile",
+      "Guatemala",
+      "Peru"
+    ]
+  },
+  "correctionDryRun": {
+    "ok": true,
+    "failures": [],
+    "mode": "correction-dry-run",
+    "plan": {
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "destinationTable": "Operator Setup - Platform & Markets",
+      "destinationField": "specificMarkets",
+      "destinationFieldKey": "specificMarkets",
+      "previousValue": "Latin America, Colombia, Peru, Chile, Guatemala",
+      "newValue": "Colombia, Chile, Guatemala, Peru",
+      "correctionReason": "Destinations page lists specific markets as Colombia, Chile, Guatemala, and Peru; Latin America is regional context.",
+      "mode": "correction-dry-run"
+    },
+    "runReportJson": "controlled-platform-field-publishing-correction-run-reciI2tYQBfMoMK9G.json",
+    "runReportMd": "controlled-platform-field-publishing-correction-run-reciI2tYQBfMoMK9G.md"
+  }
+}

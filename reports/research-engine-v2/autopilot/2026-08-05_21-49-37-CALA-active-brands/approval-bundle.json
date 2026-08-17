@@ -1,0 +1,3683 @@
+{
+  "version": "census-autopilot-queue-orchestrator-v1",
+  "status": "awaiting_founder_approval",
+  "stop_before_writes": true,
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "run_id": "2026-08-05_21-49-37-CALA-active-brands",
+  "mode": "controlled",
+  "scope": "active-brand-setup",
+  "region": "CALA",
+  "strategy": "fastest-safe",
+  "queues_executed": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_name_cleanup",
+    "property_type_asset_context",
+    "rooms_keys"
+  ],
+  "queues_skipped": [],
+  "queues_soft_deferred": [
+    "coordinate_resolution"
+  ],
+  "records_proposed": 108,
+  "fields_proposed": [
+    "Address",
+    "Address Confidence",
+    "Address Source URL",
+    "Asset Context"
+  ],
+  "proposed_writes_by_queue": {
+    "address_confirmation": [
+      {
+        "record_id": "rec3GpfVNmODtyEoT",
+        "identity_key": "ind_choice_mx_mx165",
+        "property_name": "El Cid El Moro Beach Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av Camaron Sabalo 811",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "rec3VtNHyHrW0xDk8",
+        "identity_key": "ind_choice_mx_mx184",
+        "property_name": "Radisson Hotel Tapatio Guadalajara",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera Chapala Km 6.5",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "rec4WX7MfEUKPZz0H",
+        "identity_key": "ind_choice_mx_mx159",
+        "property_name": "Comfort Inn Delicias",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Ave Jessica Jurado Oriente 4",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "rec8OP2d0vaQxvlmP",
+        "identity_key": "ind_choice_mx_mx056",
+        "property_name": "Comfort Inn Tampico",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Hidalgo 3408-A",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "rec8OtmFD9eqKORYs",
+        "identity_key": "ind_choice_mx_mx226",
+        "property_name": "Comfort Inn Queretaro Tecnologico",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Prol Tecnologico 1001-Norte",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "rec8WiNOFyLPqC0Sv",
+        "identity_key": "ind_choice_mx_mx240",
+        "property_name": "Radisson San Luis Potosi Aeropuerto",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Camino al aeropuerto 590",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "rec8p3hHGuNLdbHlz",
+        "identity_key": "ind_choice_mx_mx089",
+        "property_name": "Comfort Inn San Luis Potosi",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "J. Guadalupe Torres No. 158.",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recEeZzrgtKP3QgT6",
+        "identity_key": "ind_choice_mx_mx178",
+        "property_name": "Radisson Hotel Cuernavaca",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Avenida Francisco I. Madero  25",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recFtm0joBzzPpLcn",
+        "identity_key": "ind_choice_mx_mx109",
+        "property_name": "Comfort Inn Ciudad Juarez",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Paseo de la Victoria No 3715",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recJmRWXMaR3PLXLF",
+        "identity_key": "ind_choice_mx_mx224",
+        "property_name": "Comfort Inn Puebla Centro Histórico",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Juárez 1309 Centro",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recMIflS6ZUd7TlZZ",
+        "identity_key": "ind_choice_mx_mx075",
+        "property_name": "Quality Inn Monterrey La Fe",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera Miguel Aleman 238",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recMkLNDFTYCSvlV4",
+        "identity_key": "ind_choice_mx_mx168",
+        "property_name": "Ventus at Marina El Cid Spa & Beach Resort (Riviera Maya)",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. El Cid MZ. 20 Lote 1-01 Unidad 11",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recOyzLQATwUVnc17",
+        "identity_key": "ind_choice_mx_mx227",
+        "property_name": "Radisson Puebla Angelopolis",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd del Nino Poblano 3120",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recP5C9bsYWRS4NCM",
+        "identity_key": "ind_choice_mx_mx087",
+        "property_name": "Comfort Inn Morelia",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Periodismo Jose Tocaven Lavin 2111",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recTgBmnQVsOpF0mC",
+        "identity_key": "ind_choice_mx_mx098",
+        "property_name": "Comfort Inn Hermosillo Airport",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "567A Blvd. J. Garcia Col. El Llano",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recVmMllItEE5sM8r",
+        "identity_key": "ind_choice_mx_mx248",
+        "property_name": "Radisson Hotel Chapala",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Hidalgo No. 227",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recXkhmSxdzqhiyyQ",
+        "identity_key": "ind_choice_mx_mx185",
+        "property_name": "Radisson Hotel & Convention Center Toluca",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera Mexico-Toluca km 63.5",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recamZJUape5BZylI",
+        "identity_key": "ind_choice_mx_mx063",
+        "property_name": "Quality Inn Aguascalientes",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Nieto No. 102",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recazuQ3B3xjMYmWo",
+        "identity_key": "ind_choice_mx_mx169",
+        "property_name": "El Cid La Ceiba Beach Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carreretera A Chankanaab KM 4.5",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recfwU24wZgzJgISr",
+        "identity_key": "ind_choice_mx_mx071",
+        "property_name": "Quality Inn Mazatlan",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Bugambilias 100,",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recgybHF0cPT7UqbK",
+        "identity_key": "ind_choice_mx_mx241",
+        "property_name": "Comfort Inn Hermosillo Pitic",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Fco. Eusebio Kino 800, Pitic",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "reciEZyXVMr9bjwct",
+        "identity_key": "ind_choice_mx_mx058",
+        "property_name": "Quality Inn Piedras Negras",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera 57 S N",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recjnviYSgItpjQqf",
+        "identity_key": "ind_choice_mx_mx167",
+        "property_name": "Hotel Marina El Cid Spa & Beach Resort (Riviera Maya)",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Boulevard El Cid MZA 20 L1-01 SM 03",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recoGI3BaW8xQXvUU",
+        "identity_key": "ind_choice_mx_mx080",
+        "property_name": "Comfort Inn Monterrey Norte",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Lopez Mateos 251, Colonia",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recodiZIwEYLg73z0",
+        "identity_key": "ind_choice_mx_mx050",
+        "property_name": "Comfort Inn Cordoba",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Ave 1 No. 2623",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recs7RZQfcP4Hzisr",
+        "identity_key": "ind_choice_mx_mx164",
+        "property_name": "El Cid Castilla Beach Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Camaron Sabalo 326",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recvR2BdCxtEu6wvr",
+        "identity_key": "ind_choice_mx_mx077",
+        "property_name": "Comfort Inn Chihuahua",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "III Etapa, Circuito Universitario 15110",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recxjhraXKAz0BaVH",
+        "identity_key": "ind_choice_mx_mx228",
+        "property_name": "Amberes 64, an Ascend Collection Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "C Amberes 64 Juarez",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "recxx94Ij6YdZlXop",
+        "identity_key": "ind_choice_mx_mx051",
+        "property_name": "Comfort Inn Monterrey Valle",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Lazaro Cardenas No. 1009",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+        }
+      },
+      {
+        "record_id": "rec0kSLXMjjavq3cG",
+        "identity_key": "ind_hilton_mx_qrohwhw",
+        "property_name": "Homewood Suites by Hilton Queretaro",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Gasa de Inc. a Carr. QRO-SLP  681",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/homewood-suites/"
+        }
+      },
+      {
+        "record_id": "rec0zU2ZRAUKqZ6cE",
+        "identity_key": "ind_hilton_mx_mexsahh",
+        "property_name": "Hilton Mexico City Santa Fe",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Antonio Dovali Jaime No. 70",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "rec3MHAXsWlTUz2gY",
+        "identity_key": "ind_hilton_mx_sjdtlup",
+        "property_name": "Tropicana Los Cabos, Tapestry Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Antonio Mijares 30",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+        }
+      },
+      {
+        "record_id": "rec44wo1i6V5LLer8",
+        "identity_key": "ind_hilton_mx_gdlapgi",
+        "property_name": "Hilton Garden Inn Guadalajara Airport",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carr. Guadalajara Chapala Km 17.5",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "rec5afEO52m7Fco2Y",
+        "identity_key": "ind_hilton_mx_agugigi",
+        "property_name": "Hilton Garden Inn Aguascalientes",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Luis Donaldo Colosio 404",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "rec5nwcu4iXeCfKA6",
+        "identity_key": "ind_hilton_mx_gdldtdt",
+        "property_name": "DoubleTree by Hilton Guadalajara Centro Historico",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle Colon 73, Zona Centro",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+        }
+      },
+      {
+        "record_id": "rec6H5cip8HG3iYrw",
+        "identity_key": "ind_hilton_mx_agumxhx",
+        "property_name": "Hampton by Hilton Aguascalientes Downtown",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Jose Maria Chavez 1512",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "rec6HAxrtlnFPjcq8",
+        "identity_key": "ind_hilton_mx_slphhhh",
+        "property_name": "Hilton San Luis Potosi",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Avenida Real de Lomas No. 1000",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "rec7UGlO9CEWEaidU",
+        "identity_key": "ind_hilton_mx_pbcgigi",
+        "property_name": "Hilton Garden Inn Puebla Angelópolis",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd Atlixcayotl 2528 Reserva",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "rec7iTdvMe9OZzQcv",
+        "identity_key": "ind_hilton_mx_mztdtdt",
+        "property_name": "DoubleTree by Hilton Mazatlan",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av Camaron Sabalo 905, El Encanto",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+        }
+      },
+      {
+        "record_id": "rec82p7iMFXOLgUk5",
+        "identity_key": "ind_hilton_mx_qrosahx",
+        "property_name": "Hampton Inn & Suites by Hilton Salamanca Bajio",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera Federal 45 Tramo",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "rec8CPl1Os1erMyKX",
+        "identity_key": "ind_hilton_mx_qrohthx",
+        "property_name": "Hampton Inn by Hilton Queretaro Tecnologico",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Bernardo Quintana 4100-1",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "rec8sLVu4riGQiM0R",
+        "identity_key": "ind_hilton_mx_mtymehw",
+        "property_name": "Homewood Suites by Hilton Monterrey Apodaca",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. del Telefono, No. 4498,",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/homewood-suites/"
+        }
+      },
+      {
+        "record_id": "recAOcdRmpKmEKPD2",
+        "identity_key": "ind_hilton_mx_gdlchua",
+        "property_name": "Motto by Hilton Guadalajara Centro Historico",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Pedro Moreno #156 Colonia Centro.  Guadalajara, Jalisco.",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/motto-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recBvkvMZewtONyB2",
+        "identity_key": "ind_hilton_mx_mexpdlx",
+        "property_name": "Hacienda Pena Pobre, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Camino a Sta Teresa 480 2",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "recC32s7cUfGvM0pa",
+        "identity_key": "ind_hilton_mx_mexperu",
+        "property_name": "Tru by Hilton Mexico City Airport",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Boulevard Puerto Aereo 75",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recCAr8uQUImZrIDp",
+        "identity_key": "ind_hilton_mx_cunhihh",
+        "property_name": "Hilton Tulum Riviera Maya All-Inclusive Resort",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera Cancun Tulum 307",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "recDUWhVwbn6BF1ge",
+        "identity_key": "ind_hilton_mx_cuucmgi",
+        "property_name": "Hilton Garden Inn Chihuahua",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. de La Juventud 5915",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recE5U0zi3vwYpqQq",
+        "identity_key": "ind_hilton_mx_qrosjhx",
+        "property_name": "Hampton Inn by Hilton San Juan del Rio",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Central  239 esq. Calle 8 Pte.",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recF8YdqFwQU8dV3x",
+        "identity_key": "ind_hilton_mx_gdlgmhh",
+        "property_name": "Hilton Guadalajara Midtown",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Adolfo Lopez Mateos 2405  300",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "recFuJKGY1ouU3K0U",
+        "identity_key": "ind_hilton_mx_cunwhlx",
+        "property_name": "Wakax Hacienda - Cenote and Boutique Hotel, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carr Cancun Tulum Km 239, Playa del Carmen",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "recG7GEqswAepVQAo",
+        "identity_key": "ind_hilton_mx_cunlvlx",
+        "property_name": "La Valise Tulum, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carr Tulum Boca Paila Km 8.7",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "recGR6ooM81OOyalh",
+        "identity_key": "ind_hilton_mx_pvrpahh",
+        "property_name": "Hilton Vallarta Riviera All-Inclusive Resort",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carr Barra de Navidad km4.5",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "recGw9eK99HHFMCGK",
+        "identity_key": "ind_hilton_mx_slpcvru",
+        "property_name": "Tru by Hilton Ciudad Valles",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Mexico - Laredo 934",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recHTxyrpUCINtjrJ",
+        "identity_key": "ind_hilton_mx_bjxsghx",
+        "property_name": "Hampton Inn by Hilton Silao-Aeropuerto Bajio",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carr. 45 Silao-Leon km. 152 550",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recHYZVQlZMEFs3Eo",
+        "identity_key": "ind_hilton_mx_qrojqhx",
+        "property_name": "Hampton by Hilton Queretaro Juriquilla",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Boulevard Jurica la Campana 914",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recHndu31JvizcigV",
+        "identity_key": "ind_hilton_mx_gdlhahx",
+        "property_name": "Hampton Inn by Hilton Guadalajara-Aeropuerto",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera a Chapala No. 7012 las P",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recIiCKNLxFJDL02K",
+        "identity_key": "ind_hilton_mx_cunmchh",
+        "property_name": "Hilton Cancun Mar Caribe All-Inclusive Resort",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Kukulcan Km 17, Zona Hotelera",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "recK4csCkvjuYMKCf",
+        "identity_key": "ind_hilton_mx_mtymmqq",
+        "property_name": "MS Milenium Monterrey, Curio Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Jose Vasconcelos 300",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+        }
+      },
+      {
+        "record_id": "recKSV4DdTGtvw2Xk",
+        "identity_key": "ind_hilton_mx_cywcmhx",
+        "property_name": "Hampton Inn by Hilton Celaya",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "AV. EJE NOR-ORIENTE No. 223",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recKlf7EvrtijIWmb",
+        "identity_key": "ind_hilton_mx_verachx",
+        "property_name": "Hampton by Hilton Veracruz Boca Del Rio",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Adolfo Ruíz Cortines 3533,",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recL0OCaMJwc8ljrM",
+        "identity_key": "ind_hilton_mx_tamzdhx",
+        "property_name": "Hampton Inn by Hilton Tampico Zona Dorada",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Ave. Hidalgo 2700",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recLdSTYD2AYd2oVo",
+        "identity_key": "ind_hilton_mx_mexubqq",
+        "property_name": "Umbral, Curio Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle de Venustiano Carranza 69",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+        }
+      },
+      {
+        "record_id": "recMF7wBV5NoOBmI7",
+        "identity_key": "ind_hilton_mx_zclhxhx",
+        "property_name": "Hampton Inn by Hilton Zacatecas",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Heroes de Chapultepec 1702-B",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recPY2YmZJ6uD64aR",
+        "identity_key": "ind_hilton_mx_midvmqq",
+        "property_name": "Villa Mercedes Merida, Curio Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Avenida Colon 500",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+        }
+      },
+      {
+        "record_id": "recQdFC6Tkye542YA",
+        "identity_key": "ind_hilton_mx_slphxhx",
+        "property_name": "Hampton Inn by Hilton San Luis Potosi",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Salvador Nava Martinez 3105",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recR0ZScn5FMGqZwL",
+        "identity_key": "ind_hilton_mx_aguhxhx",
+        "property_name": "Hampton Inn & Suites by Hilton Aguascalientes Airport",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera PanamericanaKM 11.1 Ejido",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recR3omiGGJPRfaLf",
+        "identity_key": "ind_hilton_mx_safgigi",
+        "property_name": "Hilton Garden Inn Mexico City Santa Fe",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle 3  55 Col. Lomas de Santa Fe",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recSUqn2KQ4dU5Ubl",
+        "identity_key": "ind_hilton_mx_mtygigi",
+        "property_name": "Hilton Garden Inn Monterrey Obispado",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Avenida Constitucion 2050",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recTzbWYmSpipGXjt",
+        "identity_key": "ind_hilton_mx_mexbhlx",
+        "property_name": "Brick Hotel, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle Orizaba 95, Roma Norte",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "recUanvpOQZBXVNNk",
+        "identity_key": "ind_hilton_mx_mexrhlx",
+        "property_name": "Roso Guest House, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Tabasco 79, Cuauhtemoc",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "recV916hOKKpXcWUz",
+        "identity_key": "ind_hilton_mx_mexchhx",
+        "property_name": "Hampton Inn & Suites Mexico City - Centro Historico",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle 5 de Febrero, No. 24",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recVwbFITnCVVJFUl",
+        "identity_key": "ind_hilton_mx_gdlexhx",
+        "property_name": "Hampton Inn by Hilton Guadalajara/Expo",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Avenida De las Rosas 3030",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recWq1l6mB8ulFHMH",
+        "identity_key": "ind_hilton_mx_tgzgigi",
+        "property_name": "Hilton Garden Inn Tuxtla Gutierrez",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Boulevard Belisario Dominguez 1641",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recXRQC5vDqxN9INx",
+        "identity_key": "ind_hilton_mx_mexrfhh",
+        "property_name": "Hilton Mexico City Reforma",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Juarez  70. Colonia Centro",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "recY9Cxxo1iAbJgOt",
+        "identity_key": "ind_hilton_mx_czmpdup",
+        "property_name": "The Yucatan Playa del Carmen, Tapestry Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Avenida 1 Norte, entre 30 y 32",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+        }
+      },
+      {
+        "record_id": "recYKhIgdDZJt0CYa",
+        "identity_key": "ind_hilton_mx_mtymaru",
+        "property_name": "Tru by Hilton Monterrey Fundidora",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Madero 2427 Oriente",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recZ6FQXTTC9uhxZn",
+        "identity_key": "ind_hilton_mx_lapitup",
+        "property_name": "Perla La Paz, Tapestry Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Paseo Alvaro Obregon 1570",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+        }
+      },
+      {
+        "record_id": "recZ6GImsI2nrR7Wm",
+        "identity_key": "ind_hilton_mx_bjxbagi",
+        "property_name": "Hilton Garden Inn Silao Aeropuerto Bajio",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Libramiento Nte 3350 Col. La Joya",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recZQY1XbMejpSDHf",
+        "identity_key": "ind_hilton_mx_sjdvclx",
+        "property_name": "La Valise Los Cabos, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Camino Costero 65 km",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "recZdz5TqVAEGwnqb",
+        "identity_key": "ind_hilton_mx_mexstdt",
+        "property_name": "DoubleTree by Hilton Hotel México City Santa Fe",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle 3  55 Col Lomas de Santa Fe",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recZsHk6KWmYVTTZt",
+        "identity_key": "ind_hilton_mx_mtyvohh",
+        "property_name": "Hilton Monterrey Valle",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Ave. Fundadores No. 1000,",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "recZylIYekWe2kbTH",
+        "identity_key": "ind_hilton_mx_cunrogi",
+        "property_name": "Hilton Garden Inn Cancun Airport",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carr. Cancun-Chetumal KM. 22,",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recb1ioSL6IhKXZSb",
+        "identity_key": "ind_hilton_mx_czmttlx",
+        "property_name": "TAGO Tulum, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carretera Tulum Boca Paila Km 6",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "recbkMtpNWDTdCd1V",
+        "identity_key": "ind_hilton_mx_cunqrhh",
+        "property_name": "Hilton Cancun, an All-Inclusive Resort",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Carr Federal Libre 307 Cancun-Tulum",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "recbxG5HBOFyKuGvk",
+        "identity_key": "ind_hilton_mx_slwruru",
+        "property_name": "Tru by Hilton Saltillo",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Venustiano Carranza 4100",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+        }
+      },
+      {
+        "record_id": "reccSW4gAhFdBFAnM",
+        "identity_key": "ind_hilton_mx_cunaaqq",
+        "property_name": "Amare Cancun Adults Only All-Inclusive Resort, Curio by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Kukulcan Km. 4.5",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+        }
+      },
+      {
+        "record_id": "reccxyVraKH33KpBd",
+        "identity_key": "ind_hilton_mx_slwsmhw",
+        "property_name": "Homewood Suites by Hilton Saltillo",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Venustiano Carranza 4100",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/homewood-suites/"
+        }
+      },
+      {
+        "record_id": "recdn7A9xenbN5QCj",
+        "identity_key": "ind_hilton_mx_mexahhf",
+        "property_name": "Hilton México City Airport",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Capitan Carlos Leon SN International Mexico City Airport Term 1,Rm G,2nd Fl",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+        }
+      },
+      {
+        "record_id": "receo6nPommsrPpLX",
+        "identity_key": "ind_hilton_mx_pbcagru",
+        "property_name": "Tru by Hilton Puebla Angelopolis",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Atlixcayotl 2528",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recfhMPMLZZaFGu43",
+        "identity_key": "ind_hilton_mx_qrodtdt",
+        "property_name": "DoubleTree by Hilton Hotel Queretaro",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Luis Vega y Monroy 410",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recilyM8vTTrd94aB",
+        "identity_key": "ind_hilton_mx_middmlx",
+        "property_name": "Decu Downtown, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle 56 No. 468",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "reck5iVaNkCOb0io3",
+        "identity_key": "ind_hilton_mx_vermadt",
+        "property_name": "DoubleTree by Hilton Hotel Veracruz",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Manuel Avila Camacho 707",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recmcwOG8vDSwowNR",
+        "identity_key": "ind_hilton_mx_tlctldt",
+        "property_name": "DoubleTree by Hilton Toluca",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle Industria Minera 503",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recnYE8SNeM2QE6wK",
+        "identity_key": "ind_hilton_mx_cdjvchx",
+        "property_name": "Hampton Inn by Hilton Ciudad Victoria",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Tamaulipas 2539",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recq1L0McPXA3WNKs",
+        "identity_key": "ind_hilton_mx_pbcmmup",
+        "property_name": "MM Grand Hotel Puebla, Tapestry Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle Boulevard Atlixco Numero 4303",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+        }
+      },
+      {
+        "record_id": "recrGQ14hIsU5fXLj",
+        "identity_key": "ind_hilton_mx_mtyaigi",
+        "property_name": "Hilton Garden Inn Monterrey Airport",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "av. Miguel aleman Km 24",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recrWuTgMITKMtxU6",
+        "identity_key": "ind_hilton_mx_tijotgi",
+        "property_name": "Hilton Garden Inn Tijuana Airport",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd Tijuana no. 17226 Col Norte,",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recsOKVsV4V1wA8G2",
+        "identity_key": "ind_hilton_mx_bjxadgi",
+        "property_name": "Hilton Garden Inn Leon",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Blvd. Adolfo Lopez Mateos 2126",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "rect1ih9Yuuw5T00T",
+        "identity_key": "ind_hilton_mx_cuncuqq",
+        "property_name": "The Fives Downtown Hotel & Residences, Curio Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Avenida 10 Norte   Calle 2",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+        }
+      },
+      {
+        "record_id": "rectp73xoOzgnT5iS",
+        "identity_key": "ind_hilton_mx_tamhshx",
+        "property_name": "Hampton Inn by Hilton Tampico Aeropuerto",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Hidalgo  6602",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recv4H7O6ENbUMDhM",
+        "identity_key": "ind_hilton_mx_bjxupup",
+        "property_name": "Albor San Miguel de Allende, Tapestry Collection by Hilton",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Camino 3 Cruces # 149",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+        }
+      },
+      {
+        "record_id": "recvMr9l5A6Ju4mVj",
+        "identity_key": "ind_hilton_mx_cunlipy",
+        "property_name": "Canopy by Hilton Cancun La Isla",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Boulevard Kukulcan S N Km. 12.5,",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/canopy-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recvYTAOLSqVtAwlp",
+        "identity_key": "ind_hilton_mx_pbchxhx",
+        "property_name": "Hampton Inn & Suites by Hilton Puebla",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "2do. Retorno Osa Menor No.4",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+        }
+      },
+      {
+        "record_id": "recw1AOGCJNfMKkcz",
+        "identity_key": "ind_hilton_mx_bjxsagi",
+        "property_name": "Hilton Garden Inn Salamanca",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Av. Jose Ma. Morelos No. 2500",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "recyry5FiwPqHy7Ez",
+        "identity_key": "ind_hilton_mx_cunbelx",
+        "property_name": "Bespoke Tulum, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Tankah 3 M3 L 1 y 2, Ciudad Chemuyil",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      },
+      {
+        "record_id": "reczPGWGBZ2Zn5H4U",
+        "identity_key": "ind_hilton_mx_qropigi",
+        "property_name": "Hilton Garden Inn Queretaro",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Prol Ignacio Zaragoza 99",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+        }
+      },
+      {
+        "record_id": "reczuuEr7dpPpy1je",
+        "identity_key": "ind_hilton_mx_midddlx",
+        "property_name": "Diez Diez Collection, an SLH Hotel",
+        "confidence": "High",
+        "patch_fields": [
+          "Address",
+          "Address Confidence",
+          "Address Source URL"
+        ],
+        "patch": {
+          "Address": "Calle 37 No 487",
+          "Address Confidence": "High",
+          "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+        }
+      }
+    ],
+    "property_type_asset_context": [
+      {
+        "record_id": "reco7guOJ29TMdlAQ",
+        "identity_key": "ind_ihg_mx_qroav",
+        "property_name": "avid hotels Queretaro Centro Sur",
+        "confidence": "High",
+        "patch_fields": [
+          "Asset Context"
+        ],
+        "patch": {
+          "Asset Context": "Urban"
+        }
+      }
+    ]
+  },
+  "proposed_writes": [
+    {
+      "record_id": "rec3GpfVNmODtyEoT",
+      "identity_key": "ind_choice_mx_mx165",
+      "property_name": "El Cid El Moro Beach Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av Camaron Sabalo 811",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec3VtNHyHrW0xDk8",
+      "identity_key": "ind_choice_mx_mx184",
+      "property_name": "Radisson Hotel Tapatio Guadalajara",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera Chapala Km 6.5",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec4WX7MfEUKPZz0H",
+      "identity_key": "ind_choice_mx_mx159",
+      "property_name": "Comfort Inn Delicias",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Ave Jessica Jurado Oriente 4",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec8OP2d0vaQxvlmP",
+      "identity_key": "ind_choice_mx_mx056",
+      "property_name": "Comfort Inn Tampico",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Hidalgo 3408-A",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec8OtmFD9eqKORYs",
+      "identity_key": "ind_choice_mx_mx226",
+      "property_name": "Comfort Inn Queretaro Tecnologico",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Prol Tecnologico 1001-Norte",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec8WiNOFyLPqC0Sv",
+      "identity_key": "ind_choice_mx_mx240",
+      "property_name": "Radisson San Luis Potosi Aeropuerto",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Camino al aeropuerto 590",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec8p3hHGuNLdbHlz",
+      "identity_key": "ind_choice_mx_mx089",
+      "property_name": "Comfort Inn San Luis Potosi",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "J. Guadalupe Torres No. 158.",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recEeZzrgtKP3QgT6",
+      "identity_key": "ind_choice_mx_mx178",
+      "property_name": "Radisson Hotel Cuernavaca",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Avenida Francisco I. Madero  25",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recFtm0joBzzPpLcn",
+      "identity_key": "ind_choice_mx_mx109",
+      "property_name": "Comfort Inn Ciudad Juarez",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Paseo de la Victoria No 3715",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recJmRWXMaR3PLXLF",
+      "identity_key": "ind_choice_mx_mx224",
+      "property_name": "Comfort Inn Puebla Centro Histórico",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Juárez 1309 Centro",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recMIflS6ZUd7TlZZ",
+      "identity_key": "ind_choice_mx_mx075",
+      "property_name": "Quality Inn Monterrey La Fe",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera Miguel Aleman 238",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recMkLNDFTYCSvlV4",
+      "identity_key": "ind_choice_mx_mx168",
+      "property_name": "Ventus at Marina El Cid Spa & Beach Resort (Riviera Maya)",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. El Cid MZ. 20 Lote 1-01 Unidad 11",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recOyzLQATwUVnc17",
+      "identity_key": "ind_choice_mx_mx227",
+      "property_name": "Radisson Puebla Angelopolis",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd del Nino Poblano 3120",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recP5C9bsYWRS4NCM",
+      "identity_key": "ind_choice_mx_mx087",
+      "property_name": "Comfort Inn Morelia",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Periodismo Jose Tocaven Lavin 2111",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recTgBmnQVsOpF0mC",
+      "identity_key": "ind_choice_mx_mx098",
+      "property_name": "Comfort Inn Hermosillo Airport",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "567A Blvd. J. Garcia Col. El Llano",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recVmMllItEE5sM8r",
+      "identity_key": "ind_choice_mx_mx248",
+      "property_name": "Radisson Hotel Chapala",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Hidalgo No. 227",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recXkhmSxdzqhiyyQ",
+      "identity_key": "ind_choice_mx_mx185",
+      "property_name": "Radisson Hotel & Convention Center Toluca",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera Mexico-Toluca km 63.5",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recamZJUape5BZylI",
+      "identity_key": "ind_choice_mx_mx063",
+      "property_name": "Quality Inn Aguascalientes",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Nieto No. 102",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recazuQ3B3xjMYmWo",
+      "identity_key": "ind_choice_mx_mx169",
+      "property_name": "El Cid La Ceiba Beach Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carreretera A Chankanaab KM 4.5",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recfwU24wZgzJgISr",
+      "identity_key": "ind_choice_mx_mx071",
+      "property_name": "Quality Inn Mazatlan",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Bugambilias 100,",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recgybHF0cPT7UqbK",
+      "identity_key": "ind_choice_mx_mx241",
+      "property_name": "Comfort Inn Hermosillo Pitic",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Fco. Eusebio Kino 800, Pitic",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "reciEZyXVMr9bjwct",
+      "identity_key": "ind_choice_mx_mx058",
+      "property_name": "Quality Inn Piedras Negras",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera 57 S N",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recjnviYSgItpjQqf",
+      "identity_key": "ind_choice_mx_mx167",
+      "property_name": "Hotel Marina El Cid Spa & Beach Resort (Riviera Maya)",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Boulevard El Cid MZA 20 L1-01 SM 03",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recoGI3BaW8xQXvUU",
+      "identity_key": "ind_choice_mx_mx080",
+      "property_name": "Comfort Inn Monterrey Norte",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Lopez Mateos 251, Colonia",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recodiZIwEYLg73z0",
+      "identity_key": "ind_choice_mx_mx050",
+      "property_name": "Comfort Inn Cordoba",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Ave 1 No. 2623",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recs7RZQfcP4Hzisr",
+      "identity_key": "ind_choice_mx_mx164",
+      "property_name": "El Cid Castilla Beach Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Camaron Sabalo 326",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recvR2BdCxtEu6wvr",
+      "identity_key": "ind_choice_mx_mx077",
+      "property_name": "Comfort Inn Chihuahua",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "III Etapa, Circuito Universitario 15110",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recxjhraXKAz0BaVH",
+      "identity_key": "ind_choice_mx_mx228",
+      "property_name": "Amberes 64, an Ascend Collection Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "C Amberes 64 Juarez",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recxx94Ij6YdZlXop",
+      "identity_key": "ind_choice_mx_mx051",
+      "property_name": "Comfort Inn Monterrey Valle",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Lazaro Cardenas No. 1009",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec0kSLXMjjavq3cG",
+      "identity_key": "ind_hilton_mx_qrohwhw",
+      "property_name": "Homewood Suites by Hilton Queretaro",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Gasa de Inc. a Carr. QRO-SLP  681",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/homewood-suites/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec0zU2ZRAUKqZ6cE",
+      "identity_key": "ind_hilton_mx_mexsahh",
+      "property_name": "Hilton Mexico City Santa Fe",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Antonio Dovali Jaime No. 70",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec3MHAXsWlTUz2gY",
+      "identity_key": "ind_hilton_mx_sjdtlup",
+      "property_name": "Tropicana Los Cabos, Tapestry Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Antonio Mijares 30",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec44wo1i6V5LLer8",
+      "identity_key": "ind_hilton_mx_gdlapgi",
+      "property_name": "Hilton Garden Inn Guadalajara Airport",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carr. Guadalajara Chapala Km 17.5",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec5afEO52m7Fco2Y",
+      "identity_key": "ind_hilton_mx_agugigi",
+      "property_name": "Hilton Garden Inn Aguascalientes",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Luis Donaldo Colosio 404",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec5nwcu4iXeCfKA6",
+      "identity_key": "ind_hilton_mx_gdldtdt",
+      "property_name": "DoubleTree by Hilton Guadalajara Centro Historico",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle Colon 73, Zona Centro",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec6H5cip8HG3iYrw",
+      "identity_key": "ind_hilton_mx_agumxhx",
+      "property_name": "Hampton by Hilton Aguascalientes Downtown",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Jose Maria Chavez 1512",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec6HAxrtlnFPjcq8",
+      "identity_key": "ind_hilton_mx_slphhhh",
+      "property_name": "Hilton San Luis Potosi",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Avenida Real de Lomas No. 1000",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec7UGlO9CEWEaidU",
+      "identity_key": "ind_hilton_mx_pbcgigi",
+      "property_name": "Hilton Garden Inn Puebla Angelópolis",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd Atlixcayotl 2528 Reserva",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec7iTdvMe9OZzQcv",
+      "identity_key": "ind_hilton_mx_mztdtdt",
+      "property_name": "DoubleTree by Hilton Mazatlan",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av Camaron Sabalo 905, El Encanto",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec82p7iMFXOLgUk5",
+      "identity_key": "ind_hilton_mx_qrosahx",
+      "property_name": "Hampton Inn & Suites by Hilton Salamanca Bajio",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera Federal 45 Tramo",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec8CPl1Os1erMyKX",
+      "identity_key": "ind_hilton_mx_qrohthx",
+      "property_name": "Hampton Inn by Hilton Queretaro Tecnologico",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Bernardo Quintana 4100-1",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rec8sLVu4riGQiM0R",
+      "identity_key": "ind_hilton_mx_mtymehw",
+      "property_name": "Homewood Suites by Hilton Monterrey Apodaca",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. del Telefono, No. 4498,",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/homewood-suites/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recAOcdRmpKmEKPD2",
+      "identity_key": "ind_hilton_mx_gdlchua",
+      "property_name": "Motto by Hilton Guadalajara Centro Historico",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Pedro Moreno #156 Colonia Centro.  Guadalajara, Jalisco.",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/motto-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recBvkvMZewtONyB2",
+      "identity_key": "ind_hilton_mx_mexpdlx",
+      "property_name": "Hacienda Pena Pobre, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Camino a Sta Teresa 480 2",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recC32s7cUfGvM0pa",
+      "identity_key": "ind_hilton_mx_mexperu",
+      "property_name": "Tru by Hilton Mexico City Airport",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Boulevard Puerto Aereo 75",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recCAr8uQUImZrIDp",
+      "identity_key": "ind_hilton_mx_cunhihh",
+      "property_name": "Hilton Tulum Riviera Maya All-Inclusive Resort",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera Cancun Tulum 307",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recDUWhVwbn6BF1ge",
+      "identity_key": "ind_hilton_mx_cuucmgi",
+      "property_name": "Hilton Garden Inn Chihuahua",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. de La Juventud 5915",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recE5U0zi3vwYpqQq",
+      "identity_key": "ind_hilton_mx_qrosjhx",
+      "property_name": "Hampton Inn by Hilton San Juan del Rio",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Central  239 esq. Calle 8 Pte.",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recF8YdqFwQU8dV3x",
+      "identity_key": "ind_hilton_mx_gdlgmhh",
+      "property_name": "Hilton Guadalajara Midtown",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Adolfo Lopez Mateos 2405  300",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recFuJKGY1ouU3K0U",
+      "identity_key": "ind_hilton_mx_cunwhlx",
+      "property_name": "Wakax Hacienda - Cenote and Boutique Hotel, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carr Cancun Tulum Km 239, Playa del Carmen",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recG7GEqswAepVQAo",
+      "identity_key": "ind_hilton_mx_cunlvlx",
+      "property_name": "La Valise Tulum, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carr Tulum Boca Paila Km 8.7",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recGR6ooM81OOyalh",
+      "identity_key": "ind_hilton_mx_pvrpahh",
+      "property_name": "Hilton Vallarta Riviera All-Inclusive Resort",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carr Barra de Navidad km4.5",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recGw9eK99HHFMCGK",
+      "identity_key": "ind_hilton_mx_slpcvru",
+      "property_name": "Tru by Hilton Ciudad Valles",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Mexico - Laredo 934",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recHTxyrpUCINtjrJ",
+      "identity_key": "ind_hilton_mx_bjxsghx",
+      "property_name": "Hampton Inn by Hilton Silao-Aeropuerto Bajio",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carr. 45 Silao-Leon km. 152 550",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recHYZVQlZMEFs3Eo",
+      "identity_key": "ind_hilton_mx_qrojqhx",
+      "property_name": "Hampton by Hilton Queretaro Juriquilla",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Boulevard Jurica la Campana 914",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recHndu31JvizcigV",
+      "identity_key": "ind_hilton_mx_gdlhahx",
+      "property_name": "Hampton Inn by Hilton Guadalajara-Aeropuerto",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera a Chapala No. 7012 las P",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recIiCKNLxFJDL02K",
+      "identity_key": "ind_hilton_mx_cunmchh",
+      "property_name": "Hilton Cancun Mar Caribe All-Inclusive Resort",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Kukulcan Km 17, Zona Hotelera",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recK4csCkvjuYMKCf",
+      "identity_key": "ind_hilton_mx_mtymmqq",
+      "property_name": "MS Milenium Monterrey, Curio Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Jose Vasconcelos 300",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recKSV4DdTGtvw2Xk",
+      "identity_key": "ind_hilton_mx_cywcmhx",
+      "property_name": "Hampton Inn by Hilton Celaya",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "AV. EJE NOR-ORIENTE No. 223",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recKlf7EvrtijIWmb",
+      "identity_key": "ind_hilton_mx_verachx",
+      "property_name": "Hampton by Hilton Veracruz Boca Del Rio",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Adolfo Ruíz Cortines 3533,",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recL0OCaMJwc8ljrM",
+      "identity_key": "ind_hilton_mx_tamzdhx",
+      "property_name": "Hampton Inn by Hilton Tampico Zona Dorada",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Ave. Hidalgo 2700",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recLdSTYD2AYd2oVo",
+      "identity_key": "ind_hilton_mx_mexubqq",
+      "property_name": "Umbral, Curio Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle de Venustiano Carranza 69",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recMF7wBV5NoOBmI7",
+      "identity_key": "ind_hilton_mx_zclhxhx",
+      "property_name": "Hampton Inn by Hilton Zacatecas",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Heroes de Chapultepec 1702-B",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recPY2YmZJ6uD64aR",
+      "identity_key": "ind_hilton_mx_midvmqq",
+      "property_name": "Villa Mercedes Merida, Curio Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Avenida Colon 500",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recQdFC6Tkye542YA",
+      "identity_key": "ind_hilton_mx_slphxhx",
+      "property_name": "Hampton Inn by Hilton San Luis Potosi",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Salvador Nava Martinez 3105",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recR0ZScn5FMGqZwL",
+      "identity_key": "ind_hilton_mx_aguhxhx",
+      "property_name": "Hampton Inn & Suites by Hilton Aguascalientes Airport",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera PanamericanaKM 11.1 Ejido",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recR3omiGGJPRfaLf",
+      "identity_key": "ind_hilton_mx_safgigi",
+      "property_name": "Hilton Garden Inn Mexico City Santa Fe",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle 3  55 Col. Lomas de Santa Fe",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recSUqn2KQ4dU5Ubl",
+      "identity_key": "ind_hilton_mx_mtygigi",
+      "property_name": "Hilton Garden Inn Monterrey Obispado",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Avenida Constitucion 2050",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recTzbWYmSpipGXjt",
+      "identity_key": "ind_hilton_mx_mexbhlx",
+      "property_name": "Brick Hotel, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle Orizaba 95, Roma Norte",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recUanvpOQZBXVNNk",
+      "identity_key": "ind_hilton_mx_mexrhlx",
+      "property_name": "Roso Guest House, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Tabasco 79, Cuauhtemoc",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recV916hOKKpXcWUz",
+      "identity_key": "ind_hilton_mx_mexchhx",
+      "property_name": "Hampton Inn & Suites Mexico City - Centro Historico",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle 5 de Febrero, No. 24",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recVwbFITnCVVJFUl",
+      "identity_key": "ind_hilton_mx_gdlexhx",
+      "property_name": "Hampton Inn by Hilton Guadalajara/Expo",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Avenida De las Rosas 3030",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recWq1l6mB8ulFHMH",
+      "identity_key": "ind_hilton_mx_tgzgigi",
+      "property_name": "Hilton Garden Inn Tuxtla Gutierrez",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Boulevard Belisario Dominguez 1641",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recXRQC5vDqxN9INx",
+      "identity_key": "ind_hilton_mx_mexrfhh",
+      "property_name": "Hilton Mexico City Reforma",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Juarez  70. Colonia Centro",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recY9Cxxo1iAbJgOt",
+      "identity_key": "ind_hilton_mx_czmpdup",
+      "property_name": "The Yucatan Playa del Carmen, Tapestry Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Avenida 1 Norte, entre 30 y 32",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recYKhIgdDZJt0CYa",
+      "identity_key": "ind_hilton_mx_mtymaru",
+      "property_name": "Tru by Hilton Monterrey Fundidora",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Madero 2427 Oriente",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recZ6FQXTTC9uhxZn",
+      "identity_key": "ind_hilton_mx_lapitup",
+      "property_name": "Perla La Paz, Tapestry Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Paseo Alvaro Obregon 1570",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recZ6GImsI2nrR7Wm",
+      "identity_key": "ind_hilton_mx_bjxbagi",
+      "property_name": "Hilton Garden Inn Silao Aeropuerto Bajio",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Libramiento Nte 3350 Col. La Joya",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recZQY1XbMejpSDHf",
+      "identity_key": "ind_hilton_mx_sjdvclx",
+      "property_name": "La Valise Los Cabos, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Camino Costero 65 km",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recZdz5TqVAEGwnqb",
+      "identity_key": "ind_hilton_mx_mexstdt",
+      "property_name": "DoubleTree by Hilton Hotel México City Santa Fe",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle 3  55 Col Lomas de Santa Fe",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recZsHk6KWmYVTTZt",
+      "identity_key": "ind_hilton_mx_mtyvohh",
+      "property_name": "Hilton Monterrey Valle",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Ave. Fundadores No. 1000,",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recZylIYekWe2kbTH",
+      "identity_key": "ind_hilton_mx_cunrogi",
+      "property_name": "Hilton Garden Inn Cancun Airport",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carr. Cancun-Chetumal KM. 22,",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recb1ioSL6IhKXZSb",
+      "identity_key": "ind_hilton_mx_czmttlx",
+      "property_name": "TAGO Tulum, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carretera Tulum Boca Paila Km 6",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recbkMtpNWDTdCd1V",
+      "identity_key": "ind_hilton_mx_cunqrhh",
+      "property_name": "Hilton Cancun, an All-Inclusive Resort",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Carr Federal Libre 307 Cancun-Tulum",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recbxG5HBOFyKuGvk",
+      "identity_key": "ind_hilton_mx_slwruru",
+      "property_name": "Tru by Hilton Saltillo",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Venustiano Carranza 4100",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "reccSW4gAhFdBFAnM",
+      "identity_key": "ind_hilton_mx_cunaaqq",
+      "property_name": "Amare Cancun Adults Only All-Inclusive Resort, Curio by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Kukulcan Km. 4.5",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "reccxyVraKH33KpBd",
+      "identity_key": "ind_hilton_mx_slwsmhw",
+      "property_name": "Homewood Suites by Hilton Saltillo",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Venustiano Carranza 4100",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/homewood-suites/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recdn7A9xenbN5QCj",
+      "identity_key": "ind_hilton_mx_mexahhf",
+      "property_name": "Hilton México City Airport",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Capitan Carlos Leon SN International Mexico City Airport Term 1,Rm G,2nd Fl",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-hotels/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "receo6nPommsrPpLX",
+      "identity_key": "ind_hilton_mx_pbcagru",
+      "property_name": "Tru by Hilton Puebla Angelopolis",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Atlixcayotl 2528",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tru-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recfhMPMLZZaFGu43",
+      "identity_key": "ind_hilton_mx_qrodtdt",
+      "property_name": "DoubleTree by Hilton Hotel Queretaro",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Luis Vega y Monroy 410",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recilyM8vTTrd94aB",
+      "identity_key": "ind_hilton_mx_middmlx",
+      "property_name": "Decu Downtown, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle 56 No. 468",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "reck5iVaNkCOb0io3",
+      "identity_key": "ind_hilton_mx_vermadt",
+      "property_name": "DoubleTree by Hilton Hotel Veracruz",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Manuel Avila Camacho 707",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recmcwOG8vDSwowNR",
+      "identity_key": "ind_hilton_mx_tlctldt",
+      "property_name": "DoubleTree by Hilton Toluca",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle Industria Minera 503",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recnYE8SNeM2QE6wK",
+      "identity_key": "ind_hilton_mx_cdjvchx",
+      "property_name": "Hampton Inn by Hilton Ciudad Victoria",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Tamaulipas 2539",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recq1L0McPXA3WNKs",
+      "identity_key": "ind_hilton_mx_pbcmmup",
+      "property_name": "MM Grand Hotel Puebla, Tapestry Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle Boulevard Atlixco Numero 4303",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recrGQ14hIsU5fXLj",
+      "identity_key": "ind_hilton_mx_mtyaigi",
+      "property_name": "Hilton Garden Inn Monterrey Airport",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "av. Miguel aleman Km 24",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recrWuTgMITKMtxU6",
+      "identity_key": "ind_hilton_mx_tijotgi",
+      "property_name": "Hilton Garden Inn Tijuana Airport",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd Tijuana no. 17226 Col Norte,",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recsOKVsV4V1wA8G2",
+      "identity_key": "ind_hilton_mx_bjxadgi",
+      "property_name": "Hilton Garden Inn Leon",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Blvd. Adolfo Lopez Mateos 2126",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rect1ih9Yuuw5T00T",
+      "identity_key": "ind_hilton_mx_cuncuqq",
+      "property_name": "The Fives Downtown Hotel & Residences, Curio Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Avenida 10 Norte   Calle 2",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/curio-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "rectp73xoOzgnT5iS",
+      "identity_key": "ind_hilton_mx_tamhshx",
+      "property_name": "Hampton Inn by Hilton Tampico Aeropuerto",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Hidalgo  6602",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recv4H7O6ENbUMDhM",
+      "identity_key": "ind_hilton_mx_bjxupup",
+      "property_name": "Albor San Miguel de Allende, Tapestry Collection by Hilton",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Camino 3 Cruces # 149",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/tapestry-collection/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recvMr9l5A6Ju4mVj",
+      "identity_key": "ind_hilton_mx_cunlipy",
+      "property_name": "Canopy by Hilton Cancun La Isla",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Boulevard Kukulcan S N Km. 12.5,",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/canopy-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recvYTAOLSqVtAwlp",
+      "identity_key": "ind_hilton_mx_pbchxhx",
+      "property_name": "Hampton Inn & Suites by Hilton Puebla",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "2do. Retorno Osa Menor No.4",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hampton-by-hilton/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recw1AOGCJNfMKkcz",
+      "identity_key": "ind_hilton_mx_bjxsagi",
+      "property_name": "Hilton Garden Inn Salamanca",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Av. Jose Ma. Morelos No. 2500",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "recyry5FiwPqHy7Ez",
+      "identity_key": "ind_hilton_mx_cunbelx",
+      "property_name": "Bespoke Tulum, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Tankah 3 M3 L 1 y 2, Ciudad Chemuyil",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "reczPGWGBZ2Zn5H4U",
+      "identity_key": "ind_hilton_mx_qropigi",
+      "property_name": "Hilton Garden Inn Queretaro",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Prol Ignacio Zaragoza 99",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "reczuuEr7dpPpy1je",
+      "identity_key": "ind_hilton_mx_midddlx",
+      "property_name": "Diez Diez Collection, an SLH Hotel",
+      "queue": "address_confirmation",
+      "confidence": "High",
+      "patch": {
+        "Address": "Calle 37 No 487",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/"
+      },
+      "patch_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL"
+      ]
+    },
+    {
+      "record_id": "reco7guOJ29TMdlAQ",
+      "identity_key": "ind_ihg_mx_qroav",
+      "property_name": "avid hotels Queretaro Centro Sur",
+      "queue": "property_type_asset_context",
+      "confidence": "High",
+      "patch": {
+        "Asset Context": "Urban"
+      },
+      "patch_fields": [
+        "Asset Context"
+      ]
+    }
+  ],
+  "blocked_records_by_reason": {},
+  "steward_review_cases": [],
+  "webhound_candidates": {
+    "candidates": [],
+    "capped_at": 25
+  },
+  "safety_status": {
+    "controlled_mode": true,
+    "production_writes": false,
+    "owner_operator_date_blocked": true,
+    "company_validated_blocked": true,
+    "brand_verified_blocked": true,
+    "recent_momentum_blocked": true,
+    "brand_explorer_untouched": true,
+    "brand_setup_read_only": true
+  },
+  "apply_recommendation": {
+    "recommend_apply": true,
+    "reason": "high_proposals_meet_threshold",
+    "message": "High proposals ≥ 10 and safety checks pass — recommend approval-bundle-bound apply after founder review.",
+    "bundle_too_small": false,
+    "threshold": 10,
+    "high_proposals": 108
+  },
+  "recommended_apply_command": "npm run census:autopilot -- --region CALA --scope active-brand-setup --mode apply --strategy fastest-safe --run-until-complete --batch-size 250 --approval-bundle reports/research-engine-v2/autopilot/2026-08-05_21-49-37-CALA-active-brands/approval-bundle.json --confirm-safe-writes --confirm-write-to-production-census --confirm-no-brand-explorer-writes --confirm-no-owner-operator --confirm-no-date-writes --confirm-no-recent-momentum --confirm-no-company-validation --confirm-webhound-not-production-source --confirm-approval-bundle-bound --enable-production-writes",
+  "apply_would_require": [
+    "--mode apply",
+    "--run-until-complete",
+    "--confirm-safe-writes",
+    "--confirm-write-to-production-census",
+    "--confirm-no-brand-explorer-writes",
+    "--confirm-no-owner-operator",
+    "--confirm-no-date-writes",
+    "--confirm-no-recent-momentum",
+    "--confirm-no-company-validation",
+    "--confirm-webhound-not-production-source",
+    "--confirm-approval-bundle-bound",
+    "ALLOW_CENSUS_AUTOPILOT_APPLY=1",
+    "CONFIRM_WRITE_TO_PRODUCTION_CENSUS=1",
+    "CONFIRM_NO_BRAND_EXPLORER_WRITES=1",
+    "CONFIRM_NO_OWNER_OPERATOR_WRITES=1"
+  ],
+  "forbidden_fields_note": "Owner/operator/developer/date, Recent Momentum, Company Validated, Brand Verified blocked",
+  "allowed_fields": [
+    "Address",
+    "Latitude",
+    "Longitude",
+    "Address Confidence",
+    "Address Source URL",
+    "Coordinate Source Type",
+    "Coordinate Confidence",
+    "Geocode Provider",
+    "Geocode Method",
+    "Geocode Reviewed Date",
+    "Radar Display Status",
+    "Radar Display Reason",
+    "Radar Geography Status",
+    "Public Census Eligibility",
+    "Public Display Confidence",
+    "Public Display Review Status",
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary",
+    "Amenities - Source Text",
+    "Amenities - Structured Tags",
+    "Property Name",
+    "Property Type",
+    "Asset Context",
+    "Market",
+    "Submarket",
+    "Market / Submarket",
+    "F&B Flag",
+    "Meeting Space Flag",
+    "Resort / Leisure Flag",
+    "Extended Stay Flag",
+    "Mixed-Use Flag",
+    "Branded Residences Flag",
+    "Rooms / Keys",
+    "Rooms Confidence",
+    "Rooms Source URL",
+    "Rooms Source Type",
+    "Rooms Reviewed Date",
+    "Rooms Notes",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Last Reviewed Date"
+  ]
+}

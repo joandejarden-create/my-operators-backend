@@ -1,0 +1,45 @@
+{
+  "version": "bunkhouse-remediation-lock-resolution-v1",
+  "generatedAt": "2026-07-27T16:38:26.002Z",
+  "brandSlug": "bunkhouse-hotels",
+  "recordId": "recGv268Wda31PlSZ",
+  "priorPvqlSnapshot": {
+    "publicDisplayState": "active_profile_ready",
+    "publicFullProfile": true,
+    "cohort": "restored_legacy_public",
+    "remediationLocked": false,
+    "publicFullProfileCount": 39
+  },
+  "liveDiagnosis": {
+    "brandStatus": "Active",
+    "activeProfileApproved": true,
+    "founderVisualReviewPass": true,
+    "companyValidated": false,
+    "presentationRowCount": 107,
+    "imageUniquenessPass": true,
+    "imageRoleMatchPass": true,
+    "displayState": "active_profile_ready",
+    "shouldRenderFullProfile": true,
+    "galleryDistinct": 6,
+    "scenarioDistinct": 3,
+    "propertyDistinct": 3
+  },
+  "classification": "A_stale_report_or_transient_resolver_state",
+  "rootCause": "Prior PVQL captured bunkhouse as draft_applied_with_defects / remediation_locked while live Basics + Presentation now resolve to active_profile_ready with uniqueness and role-match PASS. No Bunkhouse writes required.",
+  "allowedWritesPerformed": [],
+  "airtableWrites": false,
+  "safeToProceedWithoutWrites": true,
+  "acceptance": {
+    "bunkhouseNotRemediationLockedLive": true,
+    "requiresFreshPvqlConfirm": false,
+    "freshPvqlConfirmed": {
+      "publicFullProfileCount": 39,
+      "overallPass": true,
+      "bunkhouseRemediationLocked": false,
+      "bunkhouseCohort": "restored_legacy_public",
+      "confirmedAt": "2026-07-27T16:38:06.364Z"
+    },
+    "strict39BaselinePass": true
+  }
+}
+

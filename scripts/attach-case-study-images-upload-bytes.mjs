@@ -30,7 +30,7 @@ function extFromContentType(ct) {
 }
 
 async function uploadBytesToAirtable(baseId, recordId, buffer, contentType, filename) {
-  const endpoint = `https://api.airtable.com/v0/${baseId}/${recordId}/${FIELD}/uploadAttachment`;
+  const endpoint = `https://content.airtable.com/v0/${baseId}/${recordId}/${FIELD}/uploadAttachment`;
   const res = await fetch(endpoint, {
     method: "POST",
     headers: {

@@ -1,0 +1,57 @@
+{
+  "exact_root_cause": "resolveDealalityMarket returned COUNTRY_DEFAULT_MARKET[country] || country — deliberately mapping every Country string onto Market. canonical-geography and geography-expansion also used market || country fallbacks.",
+  "module": "lib/research-engine-v2/census-autopilot-v2-2/geography-expansion.js",
+  "function": "resolveDealalityMarket",
+  "secondary": [
+    "lib/research-engine-v2/census-autopilot-v3/geography/canonical-geography.js (market || country) — REMOVED",
+    "geography-expansion proposeGeographyTaxonomyExpansion (market || country) — REMOVED"
+  ],
+  "patterns_found": [
+    {
+      "pattern": "COUNTRY_DEFAULT_MARKET[c] || c",
+      "classification": "BUG",
+      "status": "REMOVED — replaced by resolveDealalityMarketStrict"
+    },
+    {
+      "pattern": "market || country / geo.market || h.country",
+      "classification": "BUG",
+      "status": "REMOVED"
+    },
+    {
+      "pattern": "single_market_country taxonomy (island)",
+      "classification": "SAFE",
+      "status": "ALLOWLIST only"
+    }
+  ],
+  "legacy_map_preserved_for_forensics_only": {
+    "Mexico": "Mexico",
+    "Dominican Republic": "Dominican Republic",
+    "Jamaica": "Jamaica",
+    "Puerto Rico": "Puerto Rico",
+    "Bahamas": "Bahamas",
+    "Barbados": "Barbados",
+    "Aruba": "Aruba",
+    "Costa Rica": "Costa Rica",
+    "Panama": "Panama",
+    "Guatemala": "Guatemala",
+    "Belize": "Belize",
+    "Honduras": "Honduras",
+    "Nicaragua": "Nicaragua",
+    "El Salvador": "El Salvador",
+    "Brazil": "Brazil",
+    "Argentina": "Argentina",
+    "Colombia": "Colombia",
+    "Chile": "Chile",
+    "Peru": "Peru",
+    "Ecuador": "Ecuador",
+    "Paraguay": "Paraguay",
+    "Uruguay": "Uruguay",
+    "Bolivia": "Bolivia",
+    "Trinidad and Tobago": "Trinidad and Tobago",
+    "Saint Lucia": "Saint Lucia",
+    "Cayman Islands": "Cayman Islands",
+    "Curaçao": "Curaçao",
+    "Curacao": "Curaçao"
+  },
+  "country_can_auto_populate_market_after_fix": false
+}

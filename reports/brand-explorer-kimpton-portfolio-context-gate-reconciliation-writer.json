@@ -1,0 +1,163 @@
+{
+  "writerVersion": "30A-R2",
+  "v30AR2WriterExists": true,
+  "generatedAt": "2026-07-10T12:25:04.096Z",
+  "mode": "dry-run",
+  "brand": {
+    "slug": "kimpton",
+    "recordId": "recCKuXCmGvxHPfb3",
+    "name": "Kimpton Hotels",
+    "parentCompany": "IHG Hotels & Resorts"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-kimpton-context-sort-idempotency-repair-writer.md",
+    "reports/brand-explorer-kimpton-context-sort-idempotency-repair-writer.json",
+    "reports/brand-explorer-ihg-family-active-profile-repair-writer.md",
+    "reports/brand-explorer-ihg-family-active-profile-repair-writer.json",
+    "reports/brand-explorer-ihg-family-pending-fact-stewardship-writer.md",
+    "reports/brand-explorer-ihg-family-pending-fact-stewardship-writer.json",
+    "reports/brand-explorer-kimpton-branded-residences-conflict-writer.md",
+    "reports/brand-explorer-kimpton-branded-residences-conflict-writer.json",
+    "reports/brand-explorer-final-qa-auditor.md",
+    "reports/brand-explorer-final-qa-auditor.json",
+    "reports/brand-explorer-complete-build-kimpton.md",
+    "reports/brand-explorer-complete-build-kimpton.json",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "lib/partner-intelligence/brand-explorer-portfolio-ladder-mapping.js",
+    "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+    "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "live Kimpton API response",
+    "live Kimpton presentation rows"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer.js",
+    "scripts/brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer.mjs",
+    "docs/data-intelligence/brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer-v30A-R2.md",
+    "reports/brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer.md",
+    "reports/brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer.json",
+    "lib/partner-intelligence/brand-explorer-portfolio-ladder-mapping.js",
+    "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+    "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+    "package.json"
+  ],
+  "rootCause": "resolved_after_v30A_R2",
+  "issueClass": "resolved",
+  "rowContentMissing": false,
+  "auditLogicStale": false,
+  "portfolioContextDiagnosis": {
+    "recordId": "rec2VtIIPtFfX605Q",
+    "slotKey": "overview.portfolio_context",
+    "title": "3",
+    "bodyPreview": "Luxury & lifestyle flagship within IHG—Kimpton sits with InterContinental, Regent, and Six Senses at the experiential apex; above Hotel Indigo, voco, and Crowne",
+    "wordCount": 34,
+    "parentCompanyFromApi": "InterContinental Hotels Group",
+    "copyIsGood": true,
+    "tierIndex": 3,
+    "ladderCells": [
+      {
+        "tierIndex": 0,
+        "active": false,
+        "label": "avid hotels, Candlewood Suites, Holiday Inn Express, Staybridge Suites",
+        "fallbackOnly": false,
+        "usesGenericFallback": false
+      },
+      {
+        "tierIndex": 1,
+        "active": false,
+        "label": "Holiday Inn, Garner Hotels, Atwell Suites",
+        "fallbackOnly": false,
+        "usesGenericFallback": false
+      },
+      {
+        "tierIndex": 2,
+        "active": false,
+        "label": "Crowne Plaza, Hotel Indigo, voco, EVEN Hotels, HUALUXE",
+        "fallbackOnly": false,
+        "usesGenericFallback": false
+      },
+      {
+        "tierIndex": 3,
+        "active": true,
+        "label": "Kimpton Hotels",
+        "fallbackOnly": false,
+        "usesGenericFallback": false
+      }
+    ]
+  },
+  "gateComparison": {
+    "ladderMapping": {
+      "parentCompany": "InterContinental Hotels Group",
+      "portfolioContextRowExists": true,
+      "narrativeRenders": true,
+      "ihgSiblingLabelsRender": true,
+      "parentPortfolioReady": true,
+      "portfolioContextReady": true,
+      "missingPeerDefect": false,
+      "rootCause": "resolved_after_v30A_R1"
+    },
+    "visualDefectAudit": {
+      "defectCount": 0,
+      "highDefectCount": 0,
+      "missingPeerPresent": false,
+      "ihgLadderMappingReady": true,
+      "usesParentStaticLadder": true
+    },
+    "finalQaAuditor": {
+      "overallNumeric": 100,
+      "readiness": "ready",
+      "highDefectCount": 0,
+      "missingPeerPresent": false
+    },
+    "completeBuild": {
+      "readyForActiveProfile": false,
+      "readinessBand": "ready",
+      "portfolioContextBlocker": false,
+      "blockerMessage": null
+    },
+    "gatesAgree": true
+  },
+  "codeRepairs": [
+    "isIhgParent() recognizes InterContinental Hotels Group (aligns with atelier isIhgParentCompanyKey)",
+    "evaluatePortfolioContextGate() shared across visual audit reconstruct + defect gate",
+    "Final QA visual audit call prefers recordId over slug"
+  ],
+  "codeFixDeployed": true,
+  "rowsWouldCreate": [],
+  "rowsWouldUpdate": [],
+  "applyBlockers": [
+    "no_airtable_changes_needed_code_reconciliation_only"
+  ],
+  "dryRunClean": true,
+  "canApply": false,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedAfter": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedUntouched": true,
+  "ihgValidationImplied": false,
+  "airtableModified": false,
+  "applyResults": null,
+  "expectedFinalQaAfterFix": {
+    "overallNumeric": 99,
+    "overallActiveProfileReadiness": "ready",
+    "highDefectsAfter": 0,
+    "portfolioContextDefectCleared": true
+  },
+  "expectedCompleteBuildAfterFix": {
+    "readyForActiveProfile": true,
+    "readinessBand": "ready",
+    "portfolioContextBlocker": false
+  },
+  "exactDryRunCommand": "npm run brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer -- --brand kimpton --dry-run",
+  "exactApplyCommand": "npm run brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer -- --brand kimpton --apply --approve-brand-explorer-v30A-R2-kimpton-portfolio-context-gate-reconciliation --confirm-no-company-validation-claim",
+  "markdown": "# Brand Explorer Kimpton Portfolio Context Gate Reconciliation v30A-R2\n\n- Generated: 2026-07-10T12:25:04.096Z\n- Brand: **Kimpton Hotels** (`kimpton`)\n- v30A-R2 exists: **yes**\n- Mode: **dry-run**\n- Root cause: **resolved_after_v30A_R2**\n- Issue class: **resolved**\n- Row content missing: **no**\n- Audit logic stale: **no**\n- Code fix deployed: **yes**\n- Gates agree: **yes**\n- Airtable modified: **no**\n- Company Validated untouched: **yes**\n\n## Portfolio context row\n- Record: `rec2VtIIPtFfX605Q`\n- Parent (API): **InterContinental Hotels Group**\n- Copy is good: **yes**\n- Body preview: Luxury & lifestyle flagship within IHG—Kimpton sits with InterContinental, Regent, and Six Senses at the experiential apex; above Hotel Indigo, voco, and Crowne\n\n## Gate comparison\n- Ladder parentPortfolioReady: **true**\n- Visual missing_peer: **false**\n- Final QA missing_peer: **false**\n- Complete Build blocker: **false**\n\n## Expected after fix\n- Final QA: **99** (ready)\n- Complete Build ready: **yes**\n\n## Code repairs\n- isIhgParent() recognizes InterContinental Hotels Group (aligns with atelier isIhgParentCompanyKey)\n- evaluatePortfolioContextGate() shared across visual audit reconstruct + defect gate\n- Final QA visual audit call prefers recordId over slug\n\n## Apply command\n`npm run brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer -- --brand kimpton --apply --approve-brand-explorer-v30A-R2-kimpton-portfolio-context-gate-reconciliation --confirm-no-company-validation-claim`"
+}

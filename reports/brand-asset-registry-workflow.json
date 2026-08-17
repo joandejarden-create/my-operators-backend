@@ -1,0 +1,672 @@
+{
+  "workflowVersion": "2",
+  "generatedAt": "2026-07-07T20:02:32.491Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "brandSetupMediaUntouched": true,
+  "brand": {
+    "key": "tribute-portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio",
+    "parentCompany": "Marriott International, Inc.",
+    "resolved": true
+  },
+  "governedProfileStatus": {
+    "textGovernancePlatformReady": true,
+    "validationStatus": "Company Published",
+    "usagePermission": "Platform Display Allowed",
+    "externalDisplayStatus": "Show Trust Label",
+    "displayLabel": null,
+    "sourceBasis": "Company Materials",
+    "companyValidated": null,
+    "companyValidationDate": null,
+    "approvedSources": 6,
+    "approvedFacts": 7,
+    "explorerActive": true
+  },
+  "governanceReportSource": "cached-report",
+  "existingInfrastructure": {
+    "registryTable": {
+      "exists": true,
+      "tableId": "tblwNaf9DZt8Lth4t",
+      "fieldCount": 37,
+      "fields": [
+        "Asset Name",
+        "Brand",
+        "Brand Record ID",
+        "Parent Company",
+        "Asset Type",
+        "Asset Status",
+        "Source Basis",
+        "Source URL",
+        "Source Page URL",
+        "Local File Path",
+        "Attachment",
+        "Usage Review Status",
+        "Explorer Use Permission",
+        "Recommended Explorer Slot",
+        "Is Primary Candidate",
+        "Source Notes",
+        "Review Notes",
+        "Reviewed By",
+        "Last Reviewed Date",
+        "Company Validated",
+        "Company Validation Date",
+        "Do Not Use Reason",
+        "Staging Run ID",
+        "Source Library Link",
+        "Explorer Section",
+        "Slot Purpose",
+        "Related Value Driver",
+        "Related Property Name",
+        "Related Opening / PR",
+        "Country / Region",
+        "CALA Relevant?",
+        "Hotel / Property Confirmed?",
+        "Brand Confirmed?",
+        "Source Page Confirms Image Context?",
+        "Use Case Match",
+        "Visual Slot Validation Status",
+        "Visual Slot Validation Notes"
+      ]
+    },
+    "sourceLibrary": {
+      "exists": true,
+      "tableId": "tbl8iR7AtkUe0uctp",
+      "relevantFields": [
+        {
+          "field": "Source URL",
+          "exists": true,
+          "type": "url"
+        },
+        {
+          "field": "Source File",
+          "exists": true,
+          "type": "multipleAttachments"
+        },
+        {
+          "field": "Local File Path",
+          "exists": true,
+          "type": "singleLineText"
+        },
+        {
+          "field": "Approved for Explorer Use?",
+          "exists": true,
+          "type": "singleSelect"
+        },
+        {
+          "field": "File Type",
+          "exists": true,
+          "type": "singleSelect"
+        }
+      ],
+      "suitableForAssetGovernance": false,
+      "reason": "Source Library tracks document/source provenance for text extraction. It lacks asset-type, usage-review, Explorer-slot, and rights-governance fields required for visual asset approval workflow."
+    },
+    "brandBasicsMedia": [
+      {
+        "field": "Logo",
+        "exists": true,
+        "type": "multipleAttachments"
+      },
+      {
+        "field": "Explorer Hero Data Source",
+        "exists": true,
+        "type": "singleLineText"
+      },
+      {
+        "field": "Explorer Hero Verification",
+        "exists": true,
+        "type": "singleLineText"
+      }
+    ],
+    "presentationTables": [
+      {
+        "name": "Brand Setup - Brand Explorer Presentation",
+        "exists": true,
+        "tableId": "tblZyZF4JsRkNeCbU",
+        "imageFields": [
+          {
+            "name": "Image",
+            "type": "multipleAttachments"
+          }
+        ]
+      },
+      {
+        "name": "Brand Setup - Brand Explorer Materials",
+        "exists": false,
+        "imageFields": []
+      },
+      {
+        "name": "Brand Setup - Brand Explorer Footprint",
+        "exists": false,
+        "imageFields": []
+      }
+    ],
+    "brandBasicsId": "tbl1x6S7I7JwTcRdV",
+    "sourceLibraryId": "tbl8iR7AtkUe0uctp",
+    "newRegistryRecommended": false
+  },
+  "sourceLibraryAssessment": {
+    "canSupportAssetGovernance": false,
+    "recommendation": "Use dedicated Brand Asset Registry table — Source Library is for document/source provenance, not visual asset approval workflow.",
+    "linkStrategy": "Optional Source Library Link field on registry rows when asset derives from a registered source."
+  },
+  "newRegistryRecommended": false,
+  "proposedSchema": {
+    "tableName": "Partner Intelligence - Brand Asset Registry",
+    "fieldCount": 24,
+    "fields": [
+      "Asset Name",
+      "Brand",
+      "Brand Record ID",
+      "Parent Company",
+      "Asset Type",
+      "Asset Status",
+      "Source Basis",
+      "Source URL",
+      "Source Page URL",
+      "Local File Path",
+      "Attachment",
+      "Usage Review Status",
+      "Explorer Use Permission",
+      "Recommended Explorer Slot",
+      "Is Primary Candidate",
+      "Source Notes",
+      "Review Notes",
+      "Reviewed By",
+      "Last Reviewed Date",
+      "Company Validated",
+      "Company Validation Date",
+      "Do Not Use Reason",
+      "Staging Run ID",
+      "Source Library Link"
+    ],
+    "enums": {
+      "assetStatus": [
+        "Candidate",
+        "Source-Confirmed",
+        "Approved For Explorer Use",
+        "Needs Usage Review",
+        "Do Not Use",
+        "Mock/Demo",
+        "Missing"
+      ],
+      "assetType": [
+        "Logo",
+        "Hero Image",
+        "Exterior / Property",
+        "Guestroom",
+        "Lobby / Public Space",
+        "Restaurant / Bar / Lifestyle",
+        "PR / Opening Image",
+        "PDF / Brochure",
+        "Press Link",
+        "Recent Opening Link"
+      ],
+      "sourceBasis": [
+        "Company Materials",
+        "Marriott-Controlled Source",
+        "Rendered Official Source",
+        "Local Reference Material",
+        "Third-Party Context",
+        "Unknown / Do Not Use"
+      ],
+      "usageReviewStatus": [
+        "Not Reviewed",
+        "Pending Review",
+        "Usage Review Complete",
+        "Blocked"
+      ],
+      "explorerUsePermission": [
+        "Not Reviewed",
+        "Candidate Only",
+        "Approved For Explorer",
+        "Internal Only",
+        "Do Not Use"
+      ],
+      "recommendedExplorerSlot": [
+        "Brand Setup — Logo",
+        "Brand Setup — Explorer Hero",
+        "materials.gallery.1",
+        "materials.gallery.2",
+        "materials.gallery.3",
+        "materials.gallery.4",
+        "materials.gallery.5",
+        "materials.gallery.6",
+        "overview.hero",
+        "footprint.openings",
+        "PR / Recent Openings",
+        "Source Library Reference",
+        "None"
+      ]
+    }
+  },
+  "schemaApplyResult": null,
+  "recordWriter": {
+    "registryTableStatus": {
+      "exists": true,
+      "tableId": "tblwNaf9DZt8Lth4t"
+    },
+    "existingRecordsFound": 27,
+    "recordsProposed": 0,
+    "recordsCreated": 0,
+    "recordsSkippedDuplicates": [
+      {
+        "assetName": "Brand Setup — existing logo (unconfirmed)",
+        "dedupeKey": "recCvV0PuZOi8c3hC|Logo|Brand Setup — existing logo (unconfirmed)|Brand Setup — Logo",
+        "reason": "existing-registry-record"
+      },
+      {
+        "assetName": "Tribute Portfolio logo — tribute-black.svg (preferred confirmation candidate)",
+        "dedupeKey": "recCvV0PuZOi8c3hC|Logo|https://tribute-portfolio.marriott.com/wp-content/uploads/2025/03/tribute-black.svg|Brand Setup — Logo",
+        "reason": "existing-registry-record"
+      },
+      {
+        "assetName": "Tribute Portfolio hero — consumer property wide (preferred)",
+        "dedupeKey": "recCvV0PuZOi8c3hC|Hero Image|https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-2560x1024.jpg|Brand Setup — Explorer Hero",
+        "reason": "existing-registry-record"
+      },
+      {
+        "assetName": "Tribute property/design image 1",
+        "dedupeKey": "recCvV0PuZOi8c3hC|Exterior / Property|https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-1536x614.jpg|materials.gallery.1",
+        "reason": "existing-registry-record"
+      },
+      {
+        "assetName": "Tribute property/design image 2",
+        "dedupeKey": "recCvV0PuZOi8c3hC|Exterior / Property|https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152.jpg|materials.gallery.2",
+        "reason": "existing-registry-record"
+      },
+      {
+        "assetName": "Tribute property/design image 3",
+        "dedupeKey": "recCvV0PuZOi8c3hC|Exterior / Property|https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-1136x454.jpg|materials.gallery.3",
+        "reason": "existing-registry-record"
+      },
+      {
+        "assetName": "2026 Tribute Portfolio FDD (reference)",
+        "dedupeKey": "recCvV0PuZOi8c3hC|PDF / Brochure|2026 Tribute Portfolio FDD (reference)|Source Library Reference",
+        "reason": "existing-registry-record"
+      },
+      {
+        "assetName": "Marriott newsroom — Tribute Portfolio PR/openings (placeholder)",
+        "dedupeKey": "recCvV0PuZOi8c3hC|Press Link|https://news.marriott.com/brands/tribute-portfolio|PR / Recent Openings",
+        "reason": "existing-registry-record"
+      },
+      {
+        "assetName": "Brand Setup — Mock/Demo hero (do not replace)",
+        "dedupeKey": "recCvV0PuZOi8c3hC|Hero Image|Brand Setup — Mock/Demo hero (do not replace)|Brand Setup — Explorer Hero",
+        "reason": "existing-registry-record"
+      }
+    ],
+    "created": [],
+    "brandSetupMediaUntouched": true
+  },
+  "staging": {
+    "brandRecordId": "recCvV0PuZOi8c3hC",
+    "brandName": "Tribute Portfolio",
+    "parentCompany": "Marriott International, Inc.",
+    "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+    "totalStaged": 9,
+    "stagedAssets": [
+      {
+        "assetName": "Brand Setup — existing logo (unconfirmed)",
+        "assetType": "Logo",
+        "assetStatus": "Needs Usage Review",
+        "sourceBasis": "Company Materials",
+        "sourceUrl": null,
+        "sourcePageUrl": "https://tribute-portfolio.marriott.com/",
+        "localFilePath": null,
+        "recommendedExplorerSlot": "Brand Setup — Logo",
+        "isPrimaryCandidate": false,
+        "sourceNotes": "Logo attachment present in Brand Setup — source/rights not confirmed; do not treat as Source-Confirmed without review.",
+        "doNotUseReason": null,
+        "needsUsageReview": true,
+        "safeMetadataOnly": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "explorerUsePermission": "Candidate Only",
+        "usageReviewStatus": "Not Reviewed",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "requiresFutureTooling": false
+      },
+      {
+        "assetName": "Tribute Portfolio logo — tribute-black.svg (preferred confirmation candidate)",
+        "assetType": "Logo",
+        "assetStatus": "Candidate",
+        "sourceBasis": "Marriott-Controlled Source",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2025/03/tribute-black.svg",
+        "sourcePageUrl": "https://tribute-portfolio.marriott.com/",
+        "localFilePath": null,
+        "recommendedExplorerSlot": "Brand Setup — Logo",
+        "isPrimaryCandidate": true,
+        "sourceNotes": "Official Marriott-controlled logo candidate from Official Tribute Portfolio consumer brand site. Confirm matches Brand Setup attachment before promotion.",
+        "needsUsageReview": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "explorerUsePermission": "Candidate Only",
+        "usageReviewStatus": "Not Reviewed",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "safeMetadataOnly": true,
+        "requiresFutureTooling": false
+      },
+      {
+        "assetName": "Tribute Portfolio hero — consumer property wide (preferred)",
+        "assetType": "Hero Image",
+        "assetStatus": "Candidate",
+        "sourceBasis": "Marriott-Controlled Source",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-2560x1024.jpg",
+        "sourcePageUrl": "https://tribute-portfolio.marriott.com/",
+        "localFilePath": null,
+        "recommendedExplorerSlot": "Brand Setup — Explorer Hero",
+        "isPrimaryCandidate": true,
+        "sourceNotes": "Preferred hero candidate. Current Brand Setup hero is Mock/Demo — do NOT overwrite until usage review + staged promotion workflow.",
+        "reviewNotes": "Mock/Demo hero must remain until explicit promotion gate.",
+        "needsUsageReview": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "explorerUsePermission": "Candidate Only",
+        "usageReviewStatus": "Not Reviewed",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "safeMetadataOnly": true,
+        "requiresFutureTooling": false
+      },
+      {
+        "assetName": "Tribute property/design image 1",
+        "assetType": "Exterior / Property",
+        "assetStatus": "Candidate",
+        "sourceBasis": "Marriott-Controlled Source",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-1536x614.jpg",
+        "sourcePageUrl": "https://tribute-portfolio.marriott.com/",
+        "localFilePath": null,
+        "recommendedExplorerSlot": "materials.gallery.1",
+        "isPrimaryCandidate": true,
+        "sourceNotes": "Property/design candidate from Official Tribute Portfolio consumer brand site. Usage review required before Explorer gallery slot.",
+        "needsUsageReview": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "explorerUsePermission": "Candidate Only",
+        "usageReviewStatus": "Not Reviewed",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "safeMetadataOnly": true,
+        "requiresFutureTooling": false
+      },
+      {
+        "assetName": "Tribute property/design image 2",
+        "assetType": "Exterior / Property",
+        "assetStatus": "Candidate",
+        "sourceBasis": "Marriott-Controlled Source",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152.jpg",
+        "sourcePageUrl": "https://tribute-portfolio.marriott.com/",
+        "localFilePath": null,
+        "recommendedExplorerSlot": "materials.gallery.2",
+        "isPrimaryCandidate": false,
+        "sourceNotes": "Property/design candidate from Official Tribute Portfolio consumer brand site. Usage review required before Explorer gallery slot.",
+        "needsUsageReview": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "explorerUsePermission": "Candidate Only",
+        "usageReviewStatus": "Not Reviewed",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "safeMetadataOnly": true,
+        "requiresFutureTooling": false
+      },
+      {
+        "assetName": "Tribute property/design image 3",
+        "assetType": "Exterior / Property",
+        "assetStatus": "Candidate",
+        "sourceBasis": "Marriott-Controlled Source",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-1136x454.jpg",
+        "sourcePageUrl": "https://tribute-portfolio.marriott.com/",
+        "localFilePath": null,
+        "recommendedExplorerSlot": "materials.gallery.3",
+        "isPrimaryCandidate": false,
+        "sourceNotes": "Property/design candidate from Official Tribute Portfolio consumer brand site. Usage review required before Explorer gallery slot.",
+        "needsUsageReview": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "explorerUsePermission": "Candidate Only",
+        "usageReviewStatus": "Not Reviewed",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "safeMetadataOnly": true,
+        "requiresFutureTooling": false
+      },
+      {
+        "assetName": "2026 Tribute Portfolio FDD (reference)",
+        "assetType": "PDF / Brochure",
+        "assetStatus": "Source-Confirmed",
+        "sourceBasis": "Local Reference Material",
+        "sourceUrl": null,
+        "sourcePageUrl": null,
+        "localFilePath": "Marriott International/fdd/Tribute Portfolio/2026-tribute-portfolio-fdd-3-31-2026.pdf",
+        "recommendedExplorerSlot": "Source Library Reference",
+        "isPrimaryCandidate": true,
+        "sourceNotes": "FDD already registered in PI Source Library — text/factual reference only; not Explorer hero/logo.",
+        "explorerUsePermission": "Internal Only",
+        "needsUsageReview": false,
+        "safeMetadataOnly": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "usageReviewStatus": "Not Reviewed",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "requiresFutureTooling": false
+      },
+      {
+        "assetName": "Marriott newsroom — Tribute Portfolio PR/openings (placeholder)",
+        "assetType": "Press Link",
+        "assetStatus": "Do Not Use",
+        "sourceBasis": "Rendered Official Source",
+        "sourceUrl": "https://news.marriott.com/brands/tribute-portfolio",
+        "sourcePageUrl": "https://news.marriott.com/brands/tribute-portfolio",
+        "localFilePath": null,
+        "recommendedExplorerSlot": "PR / Recent Openings",
+        "isPrimaryCandidate": true,
+        "sourceNotes": "JS-shell / near-zero extractable text — provenance only; needs Rendered Source Capture v1.",
+        "doNotUseReason": "news.marriott.com requires Rendered Source Capture v1 before PR links or press imagery can be governed.",
+        "explorerUsePermission": "Do Not Use",
+        "usageReviewStatus": "Blocked",
+        "needsUsageReview": true,
+        "requiresFutureTooling": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "safeMetadataOnly": true
+      },
+      {
+        "assetName": "Brand Setup — Mock/Demo hero (do not replace)",
+        "assetType": "Hero Image",
+        "assetStatus": "Mock/Demo",
+        "sourceBasis": "Unknown / Do Not Use",
+        "sourceUrl": null,
+        "sourcePageUrl": null,
+        "localFilePath": null,
+        "recommendedExplorerSlot": "Brand Setup — Explorer Hero",
+        "isPrimaryCandidate": false,
+        "sourceNotes": "Hero is Mock/Demo — must not be used as governed Explorer hero.",
+        "explorerUsePermission": "Do Not Use",
+        "doNotUseReason": "Mock/Demo placeholder — not brand-verified.",
+        "needsUsageReview": false,
+        "safeMetadataOnly": true,
+        "stagingRunId": "brand-asset-staging-tribute-portfolio-1783454551556",
+        "usageReviewStatus": "Not Reviewed",
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "attachment": null,
+        "metadataOnly": true,
+        "requiresFutureTooling": false
+      }
+    ],
+    "summary": {
+      "preferredLogo": "https://tribute-portfolio.marriott.com/wp-content/uploads/2025/03/tribute-black.svg",
+      "preferredHero": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-2560x1024.jpg",
+      "propertyCount": 3,
+      "fddReference": "Marriott International/fdd/Tribute Portfolio/2026-tribute-portfolio-fdd-3-31-2026.pdf",
+      "prPlaceholder": "https://news.marriott.com/brands/tribute-portfolio"
+    }
+  },
+  "approvalPlan": {
+    "metadataOnlySafe": [
+      {
+        "assetName": "Brand Setup — existing logo (unconfirmed)",
+        "assetType": "Logo",
+        "assetStatus": "Needs Usage Review",
+        "reason": "Logo attachment present in Brand Setup — source/rights not confirmed; do not treat as Source-Confirmed without review."
+      },
+      {
+        "assetName": "Tribute Portfolio logo — tribute-black.svg (preferred confirmation candidate)",
+        "assetType": "Logo",
+        "assetStatus": "Candidate",
+        "reason": "Official Marriott-controlled logo candidate from Official Tribute Portfolio consumer brand site. Confirm matches Brand Setup attachment before promotion."
+      },
+      {
+        "assetName": "Tribute Portfolio hero — consumer property wide (preferred)",
+        "assetType": "Hero Image",
+        "assetStatus": "Candidate",
+        "reason": "Preferred hero candidate. Current Brand Setup hero is Mock/Demo — do NOT overwrite until usage review + staged promotion workflow."
+      },
+      {
+        "assetName": "Tribute property/design image 1",
+        "assetType": "Exterior / Property",
+        "assetStatus": "Candidate",
+        "reason": "Property/design candidate from Official Tribute Portfolio consumer brand site. Usage review required before Explorer gallery slot."
+      },
+      {
+        "assetName": "Tribute property/design image 2",
+        "assetType": "Exterior / Property",
+        "assetStatus": "Candidate",
+        "reason": "Property/design candidate from Official Tribute Portfolio consumer brand site. Usage review required before Explorer gallery slot."
+      },
+      {
+        "assetName": "Tribute property/design image 3",
+        "assetType": "Exterior / Property",
+        "assetStatus": "Candidate",
+        "reason": "Property/design candidate from Official Tribute Portfolio consumer brand site. Usage review required before Explorer gallery slot."
+      },
+      {
+        "assetName": "2026 Tribute Portfolio FDD (reference)",
+        "assetType": "PDF / Brochure",
+        "assetStatus": "Source-Confirmed",
+        "reason": "FDD already registered in PI Source Library — text/factual reference only; not Explorer hero/logo."
+      },
+      {
+        "assetName": "Brand Setup — Mock/Demo hero (do not replace)",
+        "assetType": "Hero Image",
+        "assetStatus": "Mock/Demo",
+        "reason": "Hero is Mock/Demo — must not be used as governed Explorer hero."
+      }
+    ],
+    "needsUsageReview": [
+      {
+        "assetName": "Brand Setup — existing logo (unconfirmed)",
+        "assetType": "Logo",
+        "sourceUrl": null,
+        "recommendedExplorerSlot": "Brand Setup — Logo"
+      },
+      {
+        "assetName": "Tribute Portfolio logo — tribute-black.svg (preferred confirmation candidate)",
+        "assetType": "Logo",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2025/03/tribute-black.svg",
+        "recommendedExplorerSlot": "Brand Setup — Logo"
+      },
+      {
+        "assetName": "Tribute Portfolio hero — consumer property wide (preferred)",
+        "assetType": "Hero Image",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-2560x1024.jpg",
+        "recommendedExplorerSlot": "Brand Setup — Explorer Hero"
+      },
+      {
+        "assetName": "Tribute property/design image 1",
+        "assetType": "Exterior / Property",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-1536x614.jpg",
+        "recommendedExplorerSlot": "materials.gallery.1"
+      },
+      {
+        "assetName": "Tribute property/design image 2",
+        "assetType": "Exterior / Property",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152.jpg",
+        "recommendedExplorerSlot": "materials.gallery.2"
+      },
+      {
+        "assetName": "Tribute property/design image 3",
+        "assetType": "Exterior / Property",
+        "sourceUrl": "https://tribute-portfolio.marriott.com/wp-content/uploads/2023/07/trbcl.1256725ws2880-1152-1136x454.jpg",
+        "recommendedExplorerSlot": "materials.gallery.3"
+      },
+      {
+        "assetName": "Marriott newsroom — Tribute Portfolio PR/openings (placeholder)",
+        "assetType": "Press Link",
+        "sourceUrl": "https://news.marriott.com/brands/tribute-portfolio",
+        "recommendedExplorerSlot": "PR / Recent Openings"
+      }
+    ],
+    "doNotUse": [
+      {
+        "assetName": "Marriott newsroom — Tribute Portfolio PR/openings (placeholder)",
+        "assetType": "Press Link",
+        "assetStatus": "Do Not Use",
+        "reason": "news.marriott.com requires Rendered Source Capture v1 before PR links or press imagery can be governed."
+      },
+      {
+        "assetName": "Brand Setup — Mock/Demo hero (do not replace)",
+        "assetType": "Hero Image",
+        "assetStatus": "Mock/Demo",
+        "reason": "Mock/Demo placeholder — not brand-verified."
+      }
+    ],
+    "requiresFutureTooling": [
+      {
+        "assetName": "Marriott newsroom — Tribute Portfolio PR/openings (placeholder)",
+        "assetType": "Press Link",
+        "reason": "news.marriott.com requires Rendered Source Capture v1 before PR links or press imagery can be governed."
+      }
+    ],
+    "autoApproveBlocked": true,
+    "autoApproveReason": "v2 never marks assets Approved For Explorer Use automatically."
+  },
+  "visualParityGap": {
+    "kimptonRadissonTarget": "Verified logo, hero, 3–6 property/design images, PR/recent-opening links, governed asset statuses",
+    "tributeCurrent": "Text/governance Platform Ready; hero Mock/Demo; logo unconfirmed; no governed image package; PR not captured",
+    "remainingWork": [
+      "Confirm logo source and usage rights",
+      "Replace Mock/Demo hero with Marriott-controlled candidate",
+      "Capture 3–6 property/design/lifestyle images with rights metadata",
+      "Rendered capture of Marriott newsroom for PR/recent openings",
+      "Future v2: asset status fields + Explorer field writer with staging"
+    ]
+  },
+  "renderedSourceCaptureNeeded": true,
+  "remainingWorkBeforePromotion": [
+    "Human usage review on logo, hero, and gallery candidates in registry",
+    "Confirm tribute-black.svg matches Brand Setup logo attachment",
+    "Approve hero replacement only after rights review — Mock/Demo hero stays until promotion gate",
+    "Rendered Source Capture v1 for Marriott newsroom PR",
+    "Future v3: asset download + Explorer hero/logo promotion writer"
+  ],
+  "doesNotDo": [
+    "Download images or attach binary files",
+    "Overwrite Brand Setup logo, hero, image, or attachment fields",
+    "Replace Mock/Demo hero",
+    "Mark assets Approved For Explorer Use automatically",
+    "Set Company Validated or Company Validation Date",
+    "Imply Marriott validated assets or profile"
+  ],
+  "schemaApplyCommand": null,
+  "recordsApplyCommand": null,
+  "nextCommandAfterRecords": "npm run brand-asset-registry-workflow -- --brand tribute-portfolio --dry-run",
+  "nextCommand": "npm run brand-asset-registry-workflow -- --brand tribute-portfolio --dry-run"
+}

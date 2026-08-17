@@ -23,7 +23,10 @@ if (!rows.length) {
   console.log("recordId:", rows[0].id);
   console.log("name:", [f["First Name"], f["Last Name"]].filter(Boolean).join(" "));
   console.log("role:", f["Platform Role"] || f["User Type"] || f.Role);
-  console.log("memberstackId:", f[MS_FIELD] || f.slug || "(empty)");
+  console.log(
+    "memberstackId:",
+    f["Unique Webflow ID"] || f["Unique_Webflow_ID"] || f[MS_FIELD] || f.Slug || f.slug || "(empty)"
+  );
   console.log("companyProfile:", Array.isArray(f["Company Profile"]) ? f["Company Profile"].length : 0);
 }
 

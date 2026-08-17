@@ -1,0 +1,100 @@
+{
+  "families_used": [
+    "Wyndham",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [
+    "Choice",
+    "Marriott",
+    "IHG",
+    "Accor",
+    "Preferred"
+  ],
+  "adapter_errors": [
+    {
+      "family": "Marriott",
+      "error": "no_ready_marriott_countries_in_scope",
+      "note": "Marriott country hotel-sitemap adapter ready for mapped CALA slugs; check country filter"
+    },
+    {
+      "family": "IHG",
+      "error": "no_ready_ihg_countries_in_scope"
+    },
+    {
+      "family": "Accor",
+      "error": "no_ready_accor_countries_in_scope"
+    },
+    {
+      "family": "Preferred",
+      "error": "no_ready_preferred_countries_in_scope"
+    }
+  ],
+  "vic_evidence_rows": 666,
+  "discover_all_official_parents": true,
+  "parent_scoped_discovery": true,
+  "require_brand_match": false,
+  "control_list_purpose": "official_parent_inventory_discovery",
+  "wyndham_discovery": {
+    "source": {
+      "type": "official_wyndham_property_sitemap",
+      "origin": "https://www.wyndhamhotels.com",
+      "sitemap_index": "https://www.wyndhamhotels.com/sitemap.xml",
+      "property_url_pattern": "https://www.wyndhamhotels.com/{brand}/{region}/{property}/overview",
+      "cala_filter": "json_ld_addressCountry_metadata",
+      "blocked_patterns": [
+        "path_keyword_cala_guesses",
+        "OTA listings"
+      ]
+    },
+    "countries": [
+      "Dominican Republic"
+    ],
+    "meta": {
+      "version": "census-autopilot-wyndham-cala-discovery-adapter-v1",
+      "source": {
+        "type": "official_wyndham_property_sitemap",
+        "origin": "https://www.wyndhamhotels.com",
+        "sitemap_index": "https://www.wyndhamhotels.com/sitemap.xml",
+        "property_url_pattern": "https://www.wyndhamhotels.com/{brand}/{region}/{property}/overview",
+        "cala_filter": "json_ld_addressCountry_metadata",
+        "blocked_patterns": [
+          "path_keyword_cala_guesses",
+          "OTA listings"
+        ]
+      },
+      "countries": [
+        "Dominican Republic"
+      ],
+      "country_stats": [
+        {
+          "country": "Dominican Republic",
+          "hotel_count": 31,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        }
+      ],
+      "extract_ok": true,
+      "seed_used": true,
+      "seed_path": "C:\\Dev\\deal-capture-proxy\\reports\\wyndham-property-directory-extract.json",
+      "candidate_overview_urls": 46462,
+      "metadata_fetched": 723,
+      "errors": [],
+      "loaded_at": "2026-08-07T14:09:28.631Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v2-wave-2",
+    "loaded_at": null,
+    "hilton_count": 0,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 10,
+  "brand_governance_counts": {
+    "active_brand_setup": 9,
+    "brand_code_unresolved": 1
+  },
+  "owner_facing_eligible_count": 9,
+  "promotion_candidate_count": 0
+}

@@ -1,0 +1,17 @@
+{
+  "lane_priority_build_mode": [
+    "VERIFIED_READY_INSERT",
+    "CITY_PROPER_CASE_REMEDIATION",
+    "OFFICIAL_DIRECTORY_DISCOVERY",
+    "INDEPENDENT_REDISCOVERY",
+    "SERPAPI_IDENTITY_RESEARCH",
+    "EXISTING_RECORD_REMEDIATION",
+    "ADAPTER_NEEDED_ENGINEERING"
+  ],
+  "replenishment": {
+    "when_verified_ready_low": "OFFICIAL_DIRECTORY_DISCOVERY then INDEPENDENT_REDISCOVERY",
+    "when_directory_exhausted": "INDEPENDENT_REDISCOVERY then SERPAPI if EV",
+    "when_serpapi_exhausted": "continue free/native lanes only; WAITING_FOR_PAID_BUDGET_RESET if paid-only"
+  },
+  "joan_selects_lane": false
+}

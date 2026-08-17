@@ -1,0 +1,55 @@
+{
+  "version": "wyndham-factory-promotion-v1",
+  "stage": "status-promotion",
+  "generatedAt": "2026-07-23T23:57:00.627Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "dryRun": false,
+  "flagCheck": {
+    "apply": true,
+    "ok": true,
+    "missing": [],
+    "required": [
+      "--approve-wyndham-brand-status-promotion",
+      "--confirm-brand-status-only",
+      "--confirm-active-target",
+      "--confirm-single-brand",
+      "--confirm-no-company-validation-changes",
+      "--confirm-no-source-library-status-changes",
+      "--confirm-no-registry-approval-changes",
+      "--confirm-no-presentation-writes"
+    ]
+  },
+  "brand": {
+    "slug": "dazzler-by-wyndham",
+    "name": "Dazzler by Wyndham",
+    "recordId": "rec5CNMM4ZUD7ZHlM",
+    "currentBrandStatus": "Under Review",
+    "targetBrandStatus": "Active"
+  },
+  "plannedPatch": {
+    "table": "Brand Setup - Brand Basics",
+    "recordId": "rec5CNMM4ZUD7ZHlM",
+    "from": "Under Review",
+    "to": "Active",
+    "fields": {
+      "Brand Status": "Active"
+    }
+  },
+  "applyResult": {
+    "applied": true,
+    "writePerformed": true,
+    "table": "Brand Setup - Brand Basics",
+    "recordId": "rec5CNMM4ZUD7ZHlM",
+    "payload": {
+      "Brand Status": "Active"
+    },
+    "response": {
+      "id": "rec5CNMM4ZUD7ZHlM",
+      "fieldsPatched": [
+        "Brand Status"
+      ]
+    }
+  }
+}

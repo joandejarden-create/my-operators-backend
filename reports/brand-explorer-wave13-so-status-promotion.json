@@ -1,0 +1,107 @@
+{
+  "version": "wave13-so-status-promotion-v1",
+  "waveVersion": "brand-explorer-wave13-factory-v1",
+  "stage": "so-status-promotion",
+  "generatedAt": "2026-07-28T07:15:19.216Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "targetBrandStatus": "Active",
+  "founderAcceptance": {
+    "founder_accepts_cleanly_unavailable_steward_posture": true,
+    "promotion_recommendation": "approve_for_status_promotion_and_public_release",
+    "readyStatement": "so_founder_acceptance_recorded_ready_for_status_promotion"
+  },
+  "brand": {
+    "slug": "so-hotels-and-resorts",
+    "name": "SO/ Hotels & Resorts",
+    "recordId": "recTJdPlr4mDs9app",
+    "from": "Under Review",
+    "to": "Active",
+    "needsWrite": true,
+    "plannedFields": [
+      "Brand Status"
+    ],
+    "sanitizedPayloadPreview": {
+      "Brand Status": "Active"
+    }
+  },
+  "universeBefore": {
+    "totalCount": 45,
+    "expected": 45,
+    "soIncluded": false
+  },
+  "universeAfter": {
+    "totalCount": 46,
+    "expected": 46,
+    "soIncluded": true
+  },
+  "preflight": {
+    "issues": [],
+    "baseline45": {
+      "ok": true,
+      "liveUniverseCount": 45,
+      "pvqlSource": "fresh_report",
+      "failures": []
+    },
+    "statusGateOk": true,
+    "soOnly": true
+  },
+  "preflightOk": true,
+  "flagCheck": {
+    "apply": true,
+    "ok": true,
+    "missing": []
+  },
+  "applyResults": [
+    {
+      "slug": "so-hotels-and-resorts",
+      "recordId": "recTJdPlr4mDs9app",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recTJdPlr4mDs9app",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    }
+  ],
+  "guardrails": {
+    "soOnly": true,
+    "brandStatusOnly": true,
+    "noContentWrites": true,
+    "noImageWrites": true,
+    "noReleaseFieldWrites": true,
+    "noCompanyValidationChanges": true,
+    "noSourceLibraryStatusChanges": true,
+    "noRegistryApprovalChanges": true,
+    "noActive45Writes": true,
+    "noHouseOfOriginalsWrites": true,
+    "noMorgansOriginalsWrites": true,
+    "noRadissonCollectionChanges": true,
+    "excludedSlugs": [
+      "the-house-of-originals",
+      "morgans-originals",
+      "radisson-collection"
+    ],
+    "neverWriteFields": [
+      "Company Validated",
+      "Company Validation Date",
+      "Source Library status",
+      "Registry approval/status",
+      "Source Library Status",
+      "Registry Approval",
+      "Registry Status"
+    ],
+    "priorPartialActiveCount": 45
+  },
+  "readyStatement": "wave13_so_status_promotion_complete_ready_for_public_release"
+}

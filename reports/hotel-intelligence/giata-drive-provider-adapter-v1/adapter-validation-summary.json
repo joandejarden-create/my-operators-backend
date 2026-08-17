@@ -1,0 +1,1073 @@
+{
+  "marker": "DEALALITY_GIATA_DRIVE_PROVIDER_ADAPTER_COMPLETE",
+  "generated_at": "2026-08-10T11:46:21.638Z",
+  "safety": {
+    "Airtable_writes": 0,
+    "Census_writes": 0,
+    "Brand_Explorer_writes": 0,
+    "Automatic_merges": 0,
+    "Schema_changes": 0,
+    "Migrations": 0,
+    "Secrets_exposed": false,
+    "flags": {
+      "ENABLE_HOTEL_INTELLIGENCE_AIRTABLE_WRITES": "0",
+      "ENABLE_HBX_CENSUS_WRITES": "0",
+      "HOTEL_INTELLIGENCE_GIATA_DRIVE": "1",
+      "GIATA_DRIVE_API_KEY": "present",
+      "GIATA_DRIVE_USERNAME": "present",
+      "GIATA_DRIVE_PASSWORD": "present"
+    }
+  },
+  "provider_adapter": {
+    "provider_registered": true,
+    "credential_status": "present",
+    "availability": {
+      "provider": "giata_drive",
+      "status": "ok",
+      "retryable": false,
+      "message": "rooms=SUPPORTED_BUT_NOT_ENTITLED;supplier=NOT_ENTITLED",
+      "http_status": null
+    },
+    "capabilities": {
+      "provider": "giata_drive",
+      "role": "COMPLEMENTARY_IDENTITY_GEO_BRAND_ENRICHMENT",
+      "supported_fields": [
+        "giata_id",
+        "name",
+        "city",
+        "destination",
+        "country",
+        "country_code",
+        "address",
+        "postal_code",
+        "latitude",
+        "longitude",
+        "brand_name",
+        "star_rating",
+        "website",
+        "phone",
+        "description",
+        "amenities",
+        "images",
+        "incremental_update_feed"
+      ],
+      "unsupported_fields": [
+        "room_count",
+        "hotelbeds_id",
+        "booking_id",
+        "expedia_id",
+        "supplier_crosswalk",
+        "primary_cala_universe_discovery"
+      ],
+      "rooms_capability": {
+        "status": "SUPPORTED_BUT_NOT_ENTITLED",
+        "maps_room_types_to_room_count": false,
+        "note": "Open Content exposes roomTypes catalog only; no total property keys field."
+      },
+      "supplier_mapping": {
+        "status": "NOT_ENTITLED",
+        "note": "MultiCodes/supplier crosswalk not available on Drive Open Content."
+      },
+      "production_roles": [
+        "SECONDARY_UNIVERSE_DISCOVERY",
+        "IDENTITY_VALIDATION",
+        "EXTERNAL_ID_GRAPH",
+        "GEO_ENRICHMENT",
+        "BRAND_ENRICHMENT"
+      ]
+    },
+    "mcp_tools_affected": [
+      "hotel_enrich",
+      "hotel_search",
+      "hotel_intelligence_meta"
+    ]
+  },
+  "existing_hotel_test": {
+    "target": 25,
+    "sampled": 24,
+    "giata_matches": 6,
+    "giata_ids_linked_locally": 6,
+    "addresses_recovered": 4,
+    "coords_recovered": 4,
+    "brands_recovered": 4,
+    "phones_recovered": 3,
+    "websites_recovered": 3,
+    "conflicts": 0,
+    "review_required": 0,
+    "room_count_ever_staged": false,
+    "rows": [
+      {
+        "country": "Brazil",
+        "iso": "BR",
+        "giata_id": "47446",
+        "name": "Meliá Brasil 21",
+        "match_class": "AMBIGUOUS",
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "SHS Quadra 6",
+          "city": "Brasilia",
+          "lat": -15.792883325696,
+          "lng": -47.893577814102,
+          "brand": "MELIÁ Hotels & Resorts",
+          "phone": "+55 61 32184700",
+          "website": "https://www.melia.com/en/hotels/brazil/brasilia/melia-brasil-21"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Brazil",
+        "iso": "BR",
+        "giata_id": "63908",
+        "name": "Iberostar Waves Bahia",
+        "match_class": "EXISTING_STRONG",
+        "match_status": "strong",
+        "hotel_id": "dhl_06FYPZN334PA6YPJDRZD4WM41Y",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Rodovia BA 099",
+          "city": "Praia do Forte",
+          "lat": -12.550070871109,
+          "lng": -37.988920211792,
+          "brand": "Iberostar Hotels & Resorts (Parent)",
+          "phone": null,
+          "website": "https://www.iberostar.com/hoteles/praia-do-forte/iberostar-bahia"
+        },
+        "enrich": {
+          "fields_found": [
+            "address_line_1",
+            "latitude",
+            "longitude",
+            "brand_name",
+            "website"
+          ],
+          "review_required": false,
+          "airtable_written": false,
+          "room_count_staged": false
+        }
+      },
+      {
+        "country": "Brazil",
+        "iso": "BR",
+        "giata_id": "68577",
+        "name": "Meliá Campinas",
+        "match_class": "AMBIGUOUS",
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Rua Severo Penteado 140",
+          "city": "Campinas",
+          "lat": -22.897438,
+          "lng": -47.054578,
+          "brand": "MELIÁ Hotels & Resorts",
+          "phone": "+55 19 37538000",
+          "website": "https://www.melia.com/en/hotels/brazil/campinas/melia-campinas"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Brazil",
+        "iso": "BR",
+        "giata_id": "68603",
+        "name": "São Paulo Tatuapé, Affiliated by Meliá",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZN4N0ZQPM3ZY6BKZXFA85",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Rua Serra de Juréa 351",
+          "city": "Sao Paulo",
+          "lat": -23.5471046,
+          "lng": -46.5711885,
+          "brand": "Affiliated by Meliá",
+          "phone": "+55 11 29424900",
+          "website": "https://www.melia.com/en/hotels/brazil/sao-paulo/hotel-sao-paulo-tatuape-by-melia"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Brazil",
+        "iso": "BR",
+        "giata_id": "68606",
+        "name": "São Paulo Nações Unidas, Affiliated by Meliá",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZN55GZF1ZT5K5ATAPKQQX",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Rua Fernandes Moreira 1264",
+          "city": "Sao Paulo",
+          "lat": -23.6298,
+          "lng": -46.7063,
+          "brand": "Affiliated by Meliá",
+          "phone": "+55 11 51809700",
+          "website": "https://www.melia.com/en/hotels/brazil/sao-paulo/hotel-sao-paulo-nacoes-unidas-by-melia"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Brazil",
+        "iso": "BR",
+        "giata_id": "68607",
+        "name": "INNSiDE São Paulo Itaim",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZN5JCB0PG9W81854FDSDP",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Rua Jesuino Arruda 806",
+          "city": "Sao Paulo",
+          "lat": -23.582971,
+          "lng": -46.6781053,
+          "brand": "INNSiDE by Meliá",
+          "phone": "+55 11 37044400",
+          "website": "https://www.melia.com/en/hotels/brazil/sao-paulo/innside-sao-paulo-itaim"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Brazil",
+        "iso": "BR",
+        "giata_id": "68610",
+        "name": "INNSiDE São Paulo Iguatemi",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZN5Z8DWXZKT8JH77CAFWP",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Rua Iguatemi 150",
+          "city": "Sao Paulo",
+          "lat": -23.5849456,
+          "lng": -46.6815684,
+          "brand": "INNSiDE by Meliá",
+          "phone": "+55 11 37045100",
+          "website": "https://www.melia.com/en/hotels/brazil/sao-paulo/innside-sao-paulo-iguatemi"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Brazil",
+        "iso": "BR",
+        "giata_id": "68614",
+        "name": "Meliá Jardim Europa",
+        "match_class": "AMBIGUOUS",
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Rua João Cachoeira 107",
+          "city": "Sao Paulo",
+          "lat": -23.5810729,
+          "lng": -46.6784835,
+          "brand": "MELIÁ Hotels & Resorts",
+          "phone": "+55 11 37029600",
+          "website": "https://www.melia.com/en/hotels/brazil/sao-paulo/melia-jardim-europa"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Mexico",
+        "iso": "MX",
+        "giata_id": "1977",
+        "name": "Paradisus Los Cabos - Adults Only",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZNA8CJEHCR8EDVEFFGTH6",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Carretera Transpeninsular",
+          "city": "San Jose del Cabo",
+          "lat": 22.980482,
+          "lng": -109.76646,
+          "brand": "Paradisus by Meliá",
+          "phone": "+52 624 1440000",
+          "website": "https://www.melia.com/en/hotels/mexico/los-cabos/paradisus-los-cabos"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Mexico",
+        "iso": "MX",
+        "giata_id": "1978",
+        "name": "ME Cabo - Adults Only",
+        "match_class": "EXISTING_STRONG",
+        "match_status": "strong",
+        "hotel_id": "dhl_06FYPZNAK4RPXH7YAKH1GCYM0M",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "El Médano Beach, 23410 Cabo San Lucas, Baja California Sur",
+          "city": "Cabo San Lucas",
+          "lat": 22.88928,
+          "lng": -109.904,
+          "brand": "ME by Meliá",
+          "phone": "+52 624 1457800",
+          "website": "https://www.melia.com/en/hotels/mexico/los-cabos/me-cabo"
+        },
+        "enrich": {
+          "fields_found": [
+            "address_line_1",
+            "latitude",
+            "longitude",
+            "brand_name",
+            "website",
+            "phone"
+          ],
+          "review_required": false,
+          "airtable_written": false,
+          "room_count_staged": false
+        }
+      },
+      {
+        "country": "Mexico",
+        "iso": "MX",
+        "giata_id": "1982",
+        "name": "All Ritmo Cancún Resort & Waterpark",
+        "match_class": "EXISTING_STRONG",
+        "match_status": "strong",
+        "hotel_id": "dhl_06FYPZNBHWNK0YEKVXB33BH2SF",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Carretera a Puerto Juárez - Punta Sam",
+          "city": "Cancun",
+          "lat": 21.2017975,
+          "lng": -86.8052444,
+          "brand": "AlSol Hotels & Resorts (Mexico)",
+          "phone": "+52 998 4785052",
+          "website": "https://allritmocancun.com"
+        },
+        "enrich": {
+          "fields_found": [
+            "address_line_1",
+            "latitude",
+            "longitude",
+            "brand_name",
+            "website",
+            "phone"
+          ],
+          "review_required": false,
+          "airtable_written": false,
+          "room_count_staged": false
+        }
+      },
+      {
+        "country": "Mexico",
+        "iso": "MX",
+        "giata_id": "1996",
+        "name": "Paradisus Cancún",
+        "match_class": "AMBIGUOUS",
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Boulevard Kukulcan",
+          "city": "Cancun",
+          "lat": 21.083589120674,
+          "lng": -86.772122383118,
+          "brand": "Paradisus by Meliá",
+          "phone": "+52 998 8811100",
+          "website": "https://www.melia.com/en/hotels/mexico/cancun/paradisus-cancun"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Mexico",
+        "iso": "MX",
+        "giata_id": "2028",
+        "name": "Iberostar Waves Tucán",
+        "match_class": "AMBIGUOUS",
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Avenida Xaman-Ha",
+          "city": "Playa del Carmen",
+          "lat": 20.604577,
+          "lng": -87.09387,
+          "brand": "Iberostar Hotels & Resorts (Parent)",
+          "phone": "+52 984 8772000",
+          "website": "https://www.iberostar.com/hoteles/riviera-maya/iberostar-tucan"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Mexico",
+        "iso": "MX",
+        "giata_id": "2033",
+        "name": "Iberostar Waves Quetzal",
+        "match_class": "EXISTING_STRONG",
+        "match_status": "strong",
+        "hotel_id": "dhl_06FYPZN33W1W6PQX24MRJRTTDS",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Avenida Xaman-Ha",
+          "city": "Playa del Carmen",
+          "lat": 20.604649978739,
+          "lng": -87.094091565641,
+          "brand": "Iberostar Hotels & Resorts (Parent)",
+          "phone": "+52 984 8772000",
+          "website": "https://www.iberostar.com/hoteles/riviera-maya/iberostar-quetzal"
+        },
+        "enrich": {
+          "fields_found": [
+            "address_line_1",
+            "latitude",
+            "longitude",
+            "brand_name",
+            "website",
+            "phone"
+          ],
+          "review_required": false,
+          "airtable_written": false,
+          "room_count_staged": false
+        }
+      },
+      {
+        "country": "Mexico",
+        "iso": "MX",
+        "giata_id": "2037",
+        "name": "Decameron Los Cocos, Ramada All Inclusive Resort",
+        "match_class": "PROBABLE_EXISTING",
+        "match_status": "probable",
+        "hotel_id": "dhl_06FYPZNE8RBAG1GBS67VJ6PPH7",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Avenida Sol Nuevo",
+          "city": "Guayabitos",
+          "lat": 21.0218031,
+          "lng": -105.2766285,
+          "brand": "Decameron All Inclusive Hotels & Resorts",
+          "phone": "+52 327 2740190",
+          "website": "https://www.decameron.com/es/hoteles/rincon-de-guayabitos/decameron-los-cocos"
+        },
+        "enrich": {
+          "fields_found": [
+            "address_line_1",
+            "latitude",
+            "longitude",
+            "brand_name",
+            "website",
+            "phone"
+          ],
+          "review_required": false,
+          "airtable_written": false,
+          "room_count_staged": false
+        }
+      },
+      {
+        "country": "Dominican Republic",
+        "iso": "DO",
+        "giata_id": "329",
+        "name": "Iberostar Selection Bávaro Suites",
+        "match_class": "AMBIGUOUS",
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Carretera Arena Gorda",
+          "city": "Playa Bavaro",
+          "lat": 18.714977777778,
+          "lng": -68.449233333333,
+          "brand": "Iberostar Hotels & Resorts (Parent)",
+          "phone": "+1 809 221 6500",
+          "website": "https://www.iberostar.com/hoteles/punta-cana/iberostar-bavaro"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Dominican Republic",
+        "iso": "DO",
+        "giata_id": "330",
+        "name": "Iberostar Waves Punta Cana",
+        "match_class": "AMBIGUOUS",
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Carretera Arena Gorda",
+          "city": "Playa Bavaro",
+          "lat": 18.715794670792,
+          "lng": -68.45277428627,
+          "brand": "Iberostar Hotels & Resorts (Parent)",
+          "phone": "+1 809 221 6500",
+          "website": "https://www.iberostar.com/hoteles/punta-cana/iberostar-punta-cana"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Dominican Republic",
+        "iso": "DO",
+        "giata_id": "331",
+        "name": "Grand Bavaro Princess",
+        "match_class": "PROBABLE_EXISTING",
+        "match_status": "probable",
+        "hotel_id": "dhl_06FYPZNJA07N797M6QP9A01DSZ",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "23000 Playa Bávaro, Punta Cana, Higüey",
+          "city": "Playa Bavaro",
+          "lat": 18.6945938,
+          "lng": -68.4391966,
+          "brand": "Princess Hotels & Resorts",
+          "phone": "+1 809 221 2311",
+          "website": "https://www.princess-hotels.com/en/punta-cana/grand-bavaro-princess"
+        },
+        "enrich": {
+          "fields_found": [
+            "address_line_1",
+            "latitude",
+            "longitude",
+            "brand_name",
+            "website",
+            "phone"
+          ],
+          "review_required": false,
+          "airtable_written": false,
+          "room_count_staged": false
+        }
+      },
+      {
+        "country": "Dominican Republic",
+        "iso": "DO",
+        "giata_id": "358",
+        "name": "Caribe Deluxe Princess",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZNK8GYX701RXWE6N1QMZV",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Playa Bávaro, 23000 Bávaro, Punta Cana",
+          "city": "Playa Bavaro",
+          "lat": 18.699974904658,
+          "lng": -68.444597696117,
+          "brand": "Princess Hotels & Resorts",
+          "phone": "+1 809 687 7788",
+          "website": "https://www.princess-hotels.com/en/punta-cana/caribe-deluxe-princess"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Dominican Republic",
+        "iso": "DO",
+        "giata_id": "359",
+        "name": "Iberostar Waves Dominicana",
+        "match_class": "AMBIGUOUS",
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Carretera Arena Gorda",
+          "city": "Playa Bavaro",
+          "lat": 18.715065580509,
+          "lng": -68.45291107893,
+          "brand": "Iberostar Hotels & Resorts (Parent)",
+          "phone": "+1 809 221 6500",
+          "website": "https://www.iberostar.com/hoteles/punta-cana/iberostar-dominicana"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Bonaire",
+        "iso": "BQ",
+        "giata_id": "286278",
+        "name": "Boutique Hotel Sonrisa Bonaire",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZNMS04XZT0GEZ0TP8FY8A",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Kaya Finlandia 3",
+          "city": "Kralendijk",
+          "lat": 12.1442623,
+          "lng": -68.2736938,
+          "brand": null,
+          "phone": "+599 777 7855",
+          "website": "https://sonrisa-bonaire.com/suites/"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Turks and Caicos Islands",
+        "iso": "TC",
+        "giata_id": "8648",
+        "name": "Beaches Turks & Caicos",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZNPPWJVFNS5F8TMBWS5QJ",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Lower Bight Road",
+          "city": "Providenciales",
+          "lat": 21.787942790947,
+          "lng": -72.196845675927,
+          "brand": "Beaches",
+          "phone": "+1 649 946 8000",
+          "website": "https://www.beaches.com/resorts/turks-caicos"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Turks and Caicos Islands",
+        "iso": "TC",
+        "giata_id": "201655",
+        "name": "Wymara Resort + Villas",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZNQ30DN6SZ5A6STCZSN7A",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Grace Bay Beach, Providenciales TKCA 1ZZ",
+          "city": "Providenciales",
+          "lat": 21.782180821414,
+          "lng": -72.209740134918,
+          "brand": "The Leading Hotels of the World",
+          "phone": null,
+          "website": "https://www.wymara.com"
+        },
+        "enrich": null
+      },
+      {
+        "country": "Turks and Caicos Islands",
+        "iso": "TC",
+        "giata_id": "368088",
+        "name": "Kokomo Botanical Resort",
+        "match_class": "NEW_CANDIDATE",
+        "match_status": "new",
+        "hotel_id": "dhl_06FYPZNQFGBMW2TGP5675FW691",
+        "room_count_from_giata": null,
+        "fields": {
+          "address": "Downwind Drive 31",
+          "city": "Venetian Road Settlement",
+          "lat": 21.776525213051,
+          "lng": -72.215620626587,
+          "brand": null,
+          "phone": "+1 649 9413121",
+          "website": "https://kokomobotanicalresort.com"
+        },
+        "enrich": null
+      }
+    ]
+  },
+  "zero_coverage_discovery": [
+    {
+      "country": "Bonaire",
+      "iso": "BQ",
+      "tier": "ZERO",
+      "giata_properties": 1,
+      "index_count": 1,
+      "existing_matches": 0,
+      "new_candidates": 1,
+      "ambiguous": 0,
+      "potential_coverage_gain": 1,
+      "staged_sample": [
+        {
+          "hotel_id": "dhl_06FYPZNRNMS01359QXDH941CZE",
+          "giata_id": "286278",
+          "name": "Boutique Hotel Sonrisa Bonaire"
+        }
+      ]
+    },
+    {
+      "country": "Turks and Caicos Islands",
+      "iso": "TC",
+      "tier": "ZERO",
+      "giata_properties": 3,
+      "index_count": 3,
+      "existing_matches": 0,
+      "new_candidates": 3,
+      "ambiguous": 0,
+      "potential_coverage_gain": 3,
+      "staged_sample": [
+        {
+          "hotel_id": "dhl_06FYPZNTQM22TZH8EZ8HQQ2M9P",
+          "giata_id": "8648",
+          "name": "Beaches Turks & Caicos"
+        },
+        {
+          "hotel_id": "dhl_06FYPZNV4G5AGFV9VPRMQ6BYMT",
+          "giata_id": "201655",
+          "name": "Wymara Resort + Villas"
+        },
+        {
+          "hotel_id": "dhl_06FYPZNVHW9C895VXKY4D3ZBPY",
+          "giata_id": "368088",
+          "name": "Kokomo Botanical Resort"
+        }
+      ]
+    },
+    {
+      "country": "Anguilla",
+      "iso": "AI",
+      "tier": "ZERO",
+      "giata_properties": 1,
+      "index_count": 1,
+      "existing_matches": 0,
+      "new_candidates": 1,
+      "ambiguous": 0,
+      "potential_coverage_gain": 1,
+      "staged_sample": [
+        {
+          "hotel_id": "dhl_06FYPZNWNGKHBJCG619M0X0K4B",
+          "giata_id": "16729",
+          "name": "Malliouhana Resort"
+        }
+      ]
+    },
+    {
+      "country": "Saint Vincent and the Grenadines",
+      "iso": "VC",
+      "tier": "ZERO",
+      "giata_properties": 1,
+      "index_count": 1,
+      "existing_matches": 0,
+      "new_candidates": 1,
+      "ambiguous": 0,
+      "potential_coverage_gain": 1,
+      "staged_sample": [
+        {
+          "hotel_id": "dhl_06FYPZNXWWH40VXFNVYSRZX5SC",
+          "giata_id": "238156",
+          "name": "Sandals Saint Vincent and the Grenadines"
+        }
+      ]
+    },
+    {
+      "country": "Venezuela",
+      "iso": "VE",
+      "tier": "ZERO",
+      "giata_properties": 1,
+      "index_count": 1,
+      "existing_matches": 0,
+      "new_candidates": 0,
+      "ambiguous": 1,
+      "potential_coverage_gain": 0,
+      "staged_sample": []
+    }
+  ],
+  "cvent_corroboration": {
+    "sampled": 25,
+    "giata_match_rate": 0,
+    "identity_corroboration": 0,
+    "city_corroboration": 0,
+    "coordinate_recovery": 0,
+    "brand_recovery": 0,
+    "confidence_improvements": 0,
+    "note": "No automatic REVIEW_REQUIRED→READY_FOR_IMPORT transitions",
+    "rows": [
+      {
+        "cvent_name": "hotel fazenda galo vermelho",
+        "cvent_city": "Vassouras",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "linx galeao",
+        "cvent_city": "Rio de Janeiro",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "nannai beach resort",
+        "cvent_city": "Ipojuca",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "refugio cheiro de mato",
+        "cvent_city": "Mairipora",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "obba coema village hotel",
+        "cvent_city": "Capitolio",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "hotel fazenda caluje",
+        "cvent_city": "Engenheiro Paulo de Frontin",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "grand palladium imbassai all inclusive resort spa",
+        "cvent_city": "Imbassai",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "harbor querencia hotel",
+        "cvent_city": "Cascavel",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "bristol pampulha lieu",
+        "cvent_city": "Belo Horizonte",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "beach class resort muro alto",
+        "cvent_city": "Ipojuca",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "pousada do arvoredo",
+        "cvent_city": "Bombinhas",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "transamerica executive faria lima",
+        "cvent_city": "São Paulo",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "hotel colonial iguacu",
+        "cvent_city": "Foz do Iguacu",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "granminas hotel",
+        "cvent_city": "Vespasiano",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "foz presidente comfort",
+        "cvent_city": "Foz do Iguacu",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "tulip inn campos",
+        "cvent_city": "Campos dos Goytacazes",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "hotel da costa",
+        "cvent_city": "Aracaju",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "plaza inn flat araxa",
+        "cvent_city": "Araxa",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "charrua hotel",
+        "cvent_city": "Santa Cruz do Sul",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "hotel matiz jaguariuna",
+        "cvent_city": "Jaguariuna",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "hyatt place macae",
+        "cvent_city": "Macae",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "hotel aquarios",
+        "cvent_city": "Aracaju",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "prodigy serrano gramado hotel",
+        "cvent_city": "Gramado",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "tropico de capricornio",
+        "cvent_city": "Armacao dos Buzios",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      },
+      {
+        "cvent_name": "armacao resort",
+        "cvent_city": "Ipojuca",
+        "giata_match": false,
+        "giata_id": null,
+        "giata_corroborated": false,
+        "city_corroborated": false,
+        "coords_recovered": false,
+        "brand_recovered": false,
+        "confidence_note": null
+      }
+    ]
+  },
+  "api_efficiency": {
+    "index_calls": 29,
+    "detail_calls": 52,
+    "records_returned": 112,
+    "successful_details": 52,
+    "useful_missing_fields_recovered": {
+      "address": 4,
+      "coords": 4,
+      "brand": 4,
+      "phone": 3,
+      "website": 3
+    },
+    "detail_calls_per_enriched_hotel": 8.67,
+    "useful_fields_per_detail_call": 0.346,
+    "serpapi_call_saving_potential": {
+      "method": "If GIATA returns address+coords+phone, skip SerpApi for those fields (1–2 searches each).",
+      "hotels_with_giata_address": 24,
+      "hotels_with_giata_coords": 24,
+      "hotels_with_giata_phone": 22,
+      "estimated_serpapi_calls_avoided_low": 24,
+      "estimated_serpapi_calls_avoided_high": 70
+    }
+  },
+  "incremental_feed": {
+    "latestRevision": null,
+    "new": 15,
+    "changed": 0,
+    "deleted_open_content_urls": 0,
+    "hotel_status_auto_changed": false
+  },
+  "production_role": [
+    "SECONDARY_UNIVERSE_DISCOVERY",
+    "IDENTITY_VALIDATION",
+    "EXTERNAL_ID_GRAPH",
+    "GEO_ENRICHMENT",
+    "BRAND_ENRICHMENT"
+  ],
+  "highest_value_next_step": "RUN_GIATA_EXISTING_CENSUS_ENRICHMENT"
+}

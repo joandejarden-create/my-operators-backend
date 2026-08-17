@@ -1,0 +1,75 @@
+{
+  "phase": "PRESENCE_HOLDOUT_V2_SELECTION_AND_FREEZE_COMPLETE",
+  "status": "PRESENCE_HOLDOUT_V2_SELECTION_AND_FREEZE_PASS",
+  "DRY_RUN": false,
+  "VERSION": "ai_intelligence_presence_holdout_v2",
+  "PAIR_N": 100,
+  "UNIQUE_RESPONSE_N": 74,
+  "PRESENT": 75,
+  "NOT_PRESENT": 25,
+  "PROVIDERS": {
+    "claude": 28,
+    "gemini": 26,
+    "openai": 27,
+    "perplexity": 19
+  },
+  "LANGUAGES": {
+    "en": 73,
+    "es": 27
+  },
+  "GEOGRAPHIES": {
+    "CALA": 30,
+    "Europe": 15,
+    "Global": 15,
+    "Mexico": 28,
+    "North America": 12
+  },
+  "NEGATIVE_CONTROLS": {
+    "PARENT_CHILD": 1,
+    "SIBLING": 15,
+    "GENERIC_COLLECTION": 5,
+    "GEOGRAPHIC_PLAYA": 4,
+    "SIMILAR_NAME": 0,
+    "OTHER": 0
+  },
+  "SELECTION": {
+    "ALGORITHM": "selectHoldoutV2WithResponseGovernance — stratified PRESENT/NOT_PRESENT by provider|language|geography; response-atomic; caseId lexicographic tie-break",
+    "VERSION": "presence_holdout_v2_response_governed_select_v1",
+    "SEED": "presence_holdout_v2_freeze_20260815_readiness_pass"
+  },
+  "RESPONSE_LEVEL_ATOMICITY": "PASS",
+  "MAX_PAIRS_PER_RESPONSE": 2,
+  "SEAL": {
+    "MANIFEST": "data/ai-visibility/validation/ai-intelligence-presence-holdout-v2.json",
+    "MANIFEST_HASH": "ef45678fb550b5d702dd06e597e6b1cb67d5cc52533b6db2737db07adf567090",
+    "CONTENT_HASH": "cbcc3003ad6a43171e33c68a887b73811a75e3b1c777cdaeee9a90bb2e734cf6",
+    "UNTOUCHED": true,
+    "SCORED": false,
+    "USED_FOR_TUNING": false,
+    "PREDICTIONS_EXPOSED": false,
+    "HOLDOUT_V2_SEALED": true
+  },
+  "RESERVE": {
+    "PAIR_N": 43,
+    "UNIQUE_RESPONSE_N": 22,
+    "PRESENT": 21,
+    "NOT_PRESENT": 22,
+    "HOLDOUT_SAME_RESPONSE_REMAINDER": 49
+  },
+  "SCORECARD": {
+    "PRESENCE_DEV": "PASS",
+    "HOLDOUT_V1": "INSPECTED_DIAGNOSTIC",
+    "HOLDOUT_V2": "READY_UNSCORED",
+    "PRESENCE_PRODUCTION_READINESS": "NOT_READY",
+    "RECOMMENDED": "NOT_READY",
+    "FIRST_RECOMMENDATION": "NOT_READY",
+    "NEGATIVE": "NOT_READY",
+    "COMPARATOR": "NOT_READY"
+  },
+  "REGIONALIZATION": {
+    "STATUS": "PLANNED_AFTER_PRESENCE_CERTIFICATION",
+    "EXECUTED": false,
+    "PROVIDER_CALLS": 0
+  },
+  "NEXT_STEP": "READY_FOR_ONE_TIME_PRESENCE_HOLDOUT_V2_SCORE"
+}

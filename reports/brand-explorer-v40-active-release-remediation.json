@@ -1,0 +1,2833 @@
+{
+  "version": "v40",
+  "patchPlanVersion": "v40",
+  "generatedAt": "2026-07-21T10:58:19.583Z",
+  "dryRun": false,
+  "applyRequested": true,
+  "applyExecuted": true,
+  "applyBlocked": false,
+  "applyGateCheck": {
+    "allowed": true,
+    "blockers": [],
+    "missingFlags": []
+  },
+  "brands": [
+    "everhome-suites",
+    "kimpton",
+    "radisson-individuals-by-choice"
+  ],
+  "brandResults": [
+    {
+      "brandSlug": "everhome-suites",
+      "recordId": "recqkkrsevi4r9ibj",
+      "brandName": "Everhome Suites",
+      "dryRun": false,
+      "displayState": "draft_applied_with_defects",
+      "shouldRenderFullProfile": false,
+      "v39Outcome": "release_remediation_required",
+      "v39FailedGates": [
+        "external_owner_copy_rules",
+        "founder_visual_review_passed",
+        "active_profile_approval_set",
+        "should_render_full_profile",
+        "display_state_release_ready",
+        "render_contract_pass"
+      ],
+      "patchPlan": {
+        "version": "v40",
+        "brandSlug": "everhome-suites",
+        "blockers": [
+          {
+            "brand": "everhome-suites",
+            "type": "founder_review_missing",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "high",
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "proposedRemediation": "Founder visual review must pass after copy remediation; not patched in v40",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": true
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "active_approval_missing",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "high",
+            "sourceOfTruth": "Brand Basics Active Profile Approved",
+            "proposedRemediation": "Blocked until gated active-release apply — not in v40",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": true
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "render_contract_issue",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "medium",
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "proposedRemediation": "Re-evaluate after owner-copy scrub; may clear if copy was polluting readiness",
+            "airtableWriteRequired": false,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "net_contribution_language",
+            "tab": "loyalty",
+            "slot": "loyalty.owner_lens",
+            "recordId": "rec0Y4xmaV0kvGoig",
+            "currentTitle": "",
+            "currentBody": "Model loyalty as net contribution—member discounts, fulfillment, and disclosed room mix from Choice Privileges.",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "fee_stack_language",
+            "tab": "economics",
+            "slot": "economics.opening.financials",
+            "recordId": "rec0cQbTo7drQs6c8",
+            "currentTitle": "",
+            "currentBody": "Financial planning themes (no deal-specific amounts):\n\nFront-loaded standards, FF&E, and technology\n\nWorking capital through ramp\n\nFee stack stepping from opening-weighted to stabilized\n\nPotential inc",
+            "forbiddenPhrase": "Fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "fee_stack_language",
+            "tab": "economics",
+            "slot": "economics.kpi.fee_stack",
+            "recordId": "rec3bOVNqdlPo6KSc",
+            "currentTitle": "Fee Stack Diligence",
+            "currentBody": "Owners should map franchise, marketing, and technology fees during underwriting. Dealality summarizes considerations only—confirm fee stack details with Choice development representatives.",
+            "forbiddenPhrase": "Fee Stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "fee_stack_language",
+            "tab": "economics",
+            "slot": "economics.cash.steadystate",
+            "recordId": "rec8VUQKpFUwbNgPE",
+            "currentTitle": "",
+            "currentBody": "Owner funds: recurring fee stack (midscale extended-stay) plus program participation once stabilized.\n\nBrand provides: Choice distribution, QA cadence, and benchmarks—not property payroll or routine F",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "loi_language",
+            "tab": "economics",
+            "slot": "economics.legal",
+            "recordId": "recG1ZdbAq7YhxmYe",
+            "currentTitle": "LOI & process",
+            "currentBody": "Clarify binding vs exploratory LOI terms and design approval gates early.",
+            "forbiddenPhrase": "LOI",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "loi"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "net_contribution_language",
+            "tab": "commercial",
+            "slot": "commercial.kpi.lens",
+            "recordId": "recJPrv6m4Ij2gIbn",
+            "currentTitle": "Owner Underwriting Lens",
+            "currentBody": "Net contribution after fees and channel costs",
+            "forbiddenPhrase": "Net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "fee_stack_language",
+            "tab": "insight",
+            "slot": "insight.summary",
+            "recordId": "recOefkiB0zPhOSfZ",
+            "currentTitle": "",
+            "currentBody": "Everhome Suites fits when you want midscale extended-stay Choice distribution with purpose-built prototype economics and Choice Privileges participation—not a mismatched tier (e.g., MainStay vs Everho",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "net_contribution_language",
+            "tab": "footprint",
+            "slot": "footprint.geo_intro",
+            "recordId": "recXdqCz2oV87JUhr",
+            "currentTitle": "",
+            "currentBody": "Everhome Suites is Choice's midscale extended-stay brand—introduced in 2020 as the first new core midscale brand in nearly a decade. U.S. development is the primary growth story in published materials",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "fee_stack_language",
+            "tab": "footprint",
+            "slot": "footprint.growth_fit",
+            "recordId": "recfR4dX74ajXYjqd",
+            "currentTitle": "",
+            "currentBody": "employment and medical-corridor greenfield or conversion\nsuburban extended-stay with project and relocation demand\noperators using professional third-party management\nowners comparing MainStay and Sub",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "fee_stack_language",
+            "tab": "footprint",
+            "slot": "footprint.openings",
+            "recordId": "recl7HK2wkO08l3vA",
+            "currentTitle": "Everhome Suites Somerset - South Brunswick",
+            "currentBody": "Suburban, New Jersey, U.S., Extended stay\n\nA New York metro extended-stay example that illustrates Everhome's apartment-style prototype in a suburban market context, useful for owners evaluating new-c",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "everhome-suites",
+            "type": "net_contribution_language",
+            "tab": "operations",
+            "slot": "operations.operator_compat.fit",
+            "recordId": "recs7bynFUCej1kd9",
+            "currentTitle": "",
+            "currentBody": "Strong fit when operator has midscale extended-stay depth, can meet prototype/PIP, works with professional third-party management, and models net contribution after 6% royalty on room revenue. Weak fi",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          }
+        ],
+        "blockerTypeCounts": {
+          "founder_review_missing": 1,
+          "active_approval_missing": 1,
+          "render_contract_issue": 1,
+          "net_contribution_language": 4,
+          "fee_stack_language": 6,
+          "loi_language": 1
+        },
+        "patches": [
+          {
+            "brand": "everhome-suites",
+            "recordId": "rec0Y4xmaV0kvGoig",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "loyalty.owner_lens",
+            "field": "Body",
+            "before": "Model loyalty as net contribution—member discounts, fulfillment, and disclosed room mix from Choice Privileges.",
+            "after": "Model loyalty as owner economics—member discounts, fulfillment, and disclosed room mix from Choice Privileges.",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "rec0cQbTo7drQs6c8",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.opening.financials",
+            "field": "Body",
+            "before": "Financial planning themes (no deal-specific amounts):\n\nFront-loaded standards, FF&E, and technology\n\nWorking capital through ramp\n\nFee stack stepping from opening-weighted to stabilized\n\nPotential incentive credits or ramps\n\nRenewal PIP reserves even if opening PIP is lighter\n\nSeparate owner capex, brand fees, and operator pass-throughs",
+            "after": "Financial planning themes (no deal-specific amounts):\nFront-loaded standards, FF&E, and technology\nWorking capital through ramp\nparticipation cost categories stepping from opening-weighted to stabilized\nPotential incentive credits or ramps\nRenewal PIP reserves even if opening PIP is lighter\nSeparate owner capex, brand fees, and operator pass-throughs",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "rec3bOVNqdlPo6KSc",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.kpi.fee_stack",
+            "field": "Title",
+            "before": "Fee Stack Diligence",
+            "after": "participation cost categories Diligence",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "rec3bOVNqdlPo6KSc",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.kpi.fee_stack",
+            "field": "Body",
+            "before": "Owners should map franchise, marketing, and technology fees during underwriting. Dealality summarizes considerations only—confirm fee stack details with Choice development representatives.",
+            "after": "Owners should map franchise, marketing, and technology fees during underwriting. Dealality summarizes considerations only—confirm participation cost categories details with Choice development representatives.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "rec8VUQKpFUwbNgPE",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.cash.steadystate",
+            "field": "Body",
+            "before": "Owner funds: recurring fee stack (midscale extended-stay) plus program participation once stabilized.\n\nBrand provides: Choice distribution, QA cadence, and benchmarks—not property payroll or routine FF&E.",
+            "after": "Owner funds: recurring participation cost categories (midscale extended-stay) plus program participation once stabilized.\nBrand provides: Choice distribution, QA cadence, and benchmarks—not property payroll or routine FF&E.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recG1ZdbAq7YhxmYe",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.legal",
+            "field": "Title",
+            "before": "LOI & process",
+            "after": "letter of intent or commercial proposal & process",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recG1ZdbAq7YhxmYe",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.legal",
+            "field": "Body",
+            "before": "Clarify binding vs exploratory LOI terms and design approval gates early.",
+            "after": "Clarify binding vs exploratory letter of intent or commercial proposal terms and design approval gates early.",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recJPrv6m4Ij2gIbn",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "commercial.kpi.lens",
+            "field": "Body",
+            "before": "Net contribution after fees and channel costs",
+            "after": "owner economics after fees and channel costs",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recOefkiB0zPhOSfZ",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "insight.summary",
+            "field": "Body",
+            "before": "Everhome Suites fits when you want midscale extended-stay Choice distribution with purpose-built prototype economics and Choice Privileges participation—not a mismatched tier (e.g., MainStay vs Everhome without comparing fee stack and amenity requirements). Best with professional third-party management, honest ramp plan, and weekly-stay market study. Weaker where market ADR cannot support required product or PIP exceeds conversion ROI.",
+            "after": "Everhome Suites fits when you want midscale extended-stay Choice distribution with purpose-built prototype economics and Choice Privileges participation—not a mismatched tier (e.g., MainStay vs Everhome without comparing participation cost categories and amenity requirements). Best with professional third-party management, honest ramp plan, and weekly-stay market study. Weaker where market average daily rate cannot support required product or PIP exceeds conversion ROI.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recXdqCz2oV87JUhr",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.geo_intro",
+            "field": "Body",
+            "before": "Everhome Suites is Choice's midscale extended-stay brand—introduced in 2020 as the first new core midscale brand in nearly a decade. U.S. development is the primary growth story in published materials today; CALA owners should confirm market authorization with Choice development before underwriting. Evaluate fit on weekly-stay demand, prototype scope, professional third-party management capability, and net contribution after fees—not generic upscale or economy assumptions.",
+            "after": "Everhome Suites is Choice's midscale extended-stay brand—introduced in 2020 as the first new core midscale brand in nearly a decade. U.S. development is the primary growth story in published materials today; CALA owners should confirm market authorization with Choice development before underwriting. Evaluate fit on weekly-stay demand, prototype scope, professional third-party management capability, and owner economics after fees—not generic upscale or economy assumptions.",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recfR4dX74ajXYjqd",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.growth_fit",
+            "field": "Body",
+            "before": "employment and medical-corridor greenfield or conversion\nsuburban extended-stay with project and relocation demand\noperators using professional third-party management\nowners comparing MainStay and Suburban on prototype vintage and fee stack\nmulti-unit sponsors using area development model",
+            "after": "employment and medical-corridor greenfield or conversion\nsuburban extended-stay with project and relocation demand\noperators using professional third-party management\nowners comparing MainStay and Suburban on prototype vintage and participation cost categories\nmulti-unit sponsors using area development model",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recl7HK2wkO08l3vA",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.openings",
+            "field": "Body",
+            "before": "Suburban, New Jersey, U.S., Extended stay\n\nA New York metro extended-stay example that illustrates Everhome's apartment-style prototype in a suburban market context, useful for owners evaluating new-construction positioning for corporate, relocation, project-based demand.\n\nhttps://www.choicehotels.com/NJ468",
+            "after": "Suburban, New Jersey, U.S., Extended stay\nA New York metro extended-stay example that illustrates Everhome's apartment-style prototype in a suburban market context, useful for owners evaluating new-construction positioning for corporate, relocation, project-based demand.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recl7HK2wkO08l3vA",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.openings",
+            "field": "Case Summary Interpretation",
+            "before": "Metro access and weekly corporate demand mix drive performance—validate fee stack and parking/utility costs locally.",
+            "after": "Metro access and weekly corporate demand mix drive performance—validate participation cost categories and parking/utility costs locally.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "everhome-suites",
+            "recordId": "recs7bynFUCej1kd9",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "operations.operator_compat.fit",
+            "field": "Body",
+            "before": "Strong fit when operator has midscale extended-stay depth, can meet prototype/PIP, works with professional third-party management, and models net contribution after 6% royalty on room revenue. Weak fit when market cannot support required amenity stack or operator lacks extended-stay experience.",
+            "after": "Strong fit when operator has midscale extended-stay depth, can meet prototype/PIP, works with professional third-party management, and models owner economics after 6% royalty on room revenue. Weak fit when market cannot support required amenity stack or operator lacks extended-stay experience.",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          }
+        ],
+        "propertyReview": {
+          "brandSlug": "everhome-suites",
+          "policy": {
+            "minimum": 3,
+            "exactRequired": false,
+            "extrasAllowed": true,
+            "hideExtrasIfDuplicates": true
+          },
+          "totalOpeningsRows": 4,
+          "visibleWithImageCount": 4,
+          "duplicates": [],
+          "recommendation": "extras_acceptable_founder_confirm",
+          "note": "4 visible examples exceed minimum 3; UI should handle extras. Founder confirm sort order is clean. No hide required.",
+          "hidePatches": [],
+          "visibleExamples": [
+            {
+              "recordId": "recLVtsXtbbwc5Tlk",
+              "title": "Everhome Suites Georgetown - Austin",
+              "sortOrder": 0
+            },
+            {
+              "recordId": "recKCCqh6DL47gjcN",
+              "title": "Everhome Suites Panama City Beach",
+              "sortOrder": 1
+            },
+            {
+              "recordId": "recl7HK2wkO08l3vA",
+              "title": "Everhome Suites Somerset - South Brunswick",
+              "sortOrder": 2
+            },
+            {
+              "recordId": "recp3SDwEelBFVJyB",
+              "title": "Everhome Suites Ontario",
+              "sortOrder": 3
+            }
+          ]
+        },
+        "summary": {
+          "blockerCount": 14,
+          "patchCount": 14,
+          "copyPatchCount": 14,
+          "hidePatchCount": 0,
+          "safeForGenericApplyCount": 14,
+          "founderReviewRequiredCount": 0
+        }
+      },
+      "projection": {
+        "forbiddenStringsBefore": 14,
+        "forbiddenStringsAfter": 0,
+        "visibleUrlsBefore": 0,
+        "visibleUrlsAfter": 0,
+        "internalNotesBefore": 0,
+        "internalNotesAfter": 0,
+        "emptyCardsBefore": 0,
+        "emptyCardsAfter": 0,
+        "externalOwnerRulePassBefore": false,
+        "externalOwnerRulePassAfter": true,
+        "liveDomQualityLockPass": true,
+        "expectedDisplayStateAfter": "draft_applied_with_defects",
+        "stillBlockedByFounderReview": true,
+        "stillBlockedByActiveApproval": true,
+        "unlockInV40": false,
+        "ownerCopyBlockersProjectedZero": true,
+        "afterBlockers": []
+      },
+      "unlockInV40": false,
+      "readyForActiveApproval": false,
+      "companyValidatedUntouched": true,
+      "applyResult": {
+        "patched": [
+          {
+            "recordId": "rec0Y4xmaV0kvGoig",
+            "slotKey": "loyalty.owner_lens",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "rec0cQbTo7drQs6c8",
+            "slotKey": "economics.opening.financials",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "rec3bOVNqdlPo6KSc",
+            "slotKey": "economics.kpi.fee_stack",
+            "fields": [
+              "Title",
+              "Body"
+            ]
+          },
+          {
+            "recordId": "rec8VUQKpFUwbNgPE",
+            "slotKey": "economics.cash.steadystate",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recG1ZdbAq7YhxmYe",
+            "slotKey": "economics.legal",
+            "fields": [
+              "Title",
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recJPrv6m4Ij2gIbn",
+            "slotKey": "commercial.kpi.lens",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recOefkiB0zPhOSfZ",
+            "slotKey": "insight.summary",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recXdqCz2oV87JUhr",
+            "slotKey": "footprint.geo_intro",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recfR4dX74ajXYjqd",
+            "slotKey": "footprint.growth_fit",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recl7HK2wkO08l3vA",
+            "slotKey": "footprint.openings",
+            "fields": [
+              "Body",
+              "Case Summary Interpretation"
+            ]
+          },
+          {
+            "recordId": "recs7bynFUCej1kd9",
+            "slotKey": "operations.operator_compat.fit",
+            "fields": [
+              "Body"
+            ]
+          }
+        ],
+        "errors": [],
+        "recordsTouched": 11
+      }
+    },
+    {
+      "brandSlug": "kimpton",
+      "recordId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "dryRun": false,
+      "displayState": "draft_applied_with_defects",
+      "shouldRenderFullProfile": false,
+      "v39Outcome": "release_remediation_required",
+      "v39FailedGates": [
+        "external_owner_copy_rules",
+        "founder_visual_review_passed",
+        "active_profile_approval_set",
+        "should_render_full_profile",
+        "display_state_release_ready",
+        "render_contract_pass"
+      ],
+      "patchPlan": {
+        "version": "v40",
+        "brandSlug": "kimpton",
+        "blockers": [
+          {
+            "brand": "kimpton",
+            "type": "founder_review_missing",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "high",
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "proposedRemediation": "Founder visual review must pass after copy remediation; not patched in v40",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": true
+          },
+          {
+            "brand": "kimpton",
+            "type": "active_approval_missing",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "high",
+            "sourceOfTruth": "Brand Basics Active Profile Approved",
+            "proposedRemediation": "Blocked until gated active-release apply — not in v40",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": true
+          },
+          {
+            "brand": "kimpton",
+            "type": "render_contract_issue",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "medium",
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "proposedRemediation": "Re-evaluate after owner-copy scrub; may clear if copy was polluting readiness",
+            "airtableWriteRequired": false,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false
+          },
+          {
+            "brand": "kimpton",
+            "type": "fee_stack_language",
+            "tab": "footprint",
+            "slot": "footprint.openings",
+            "recordId": "rec5FqPlYHgQ0LiFZ",
+            "currentTitle": "Kimpton Virgilio",
+            "currentBody": "Urban, Mexico, CALA, Polanco, Lifestyle boutique\n\nMexico City, Mexico (Polanquito / Polanco)\n\nAdaptive reuse · 48-room boutique · restaurant-forward\n\nMexico City debut · Polanquito lifestyle\n\nKimpton ",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "kimpton",
+            "type": "loi_language",
+            "tab": "standards",
+            "slot": "standards.intro",
+            "recordId": "rec7WfKylobSTpvaH",
+            "currentTitle": "",
+            "currentBody": "Kimpton Hotels standards vary by conversion path, F&B program, and agreement vintage. Use the table as a planning checklist—confirm every row in the FDD, design manual, and LOI before capital commitme",
+            "forbiddenPhrase": "LOI",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "loi"
+          },
+          {
+            "brand": "kimpton",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "rec9kV27xSumrl3Ul",
+            "currentTitle": "Kimpton Mas Olas Resort & Spa",
+            "currentBody": "Resort, Mexico, CALA, Baja Sur, Beachfront lifestyle\n\nTodos Santos, Baja California Sur, Mexico (Pacific coast)\n\nResort lifestyle · adults-oriented · spa and F&B forward\n\nKimpton Mas Olas opened April",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fdd_item19_language",
+            "tab": "footprint",
+            "slot": "footprint.region.mea",
+            "recordId": "recCv4rrMam4T3qOX",
+            "currentTitle": "MEA",
+            "currentBody": "MEA\n\nLimited direct Kimpton footprint—confirm counts in your franchise disclosure document if evaluating international portfolio context.",
+            "forbiddenPhrase": "franchise disclosure",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "franchise_disclosure"
+          },
+          {
+            "brand": "kimpton",
+            "type": "forbidden_owner_copy",
+            "tab": "footprint",
+            "slot": "footprint.region.mea",
+            "recordId": "recCv4rrMam4T3qOX",
+            "currentTitle": "MEA",
+            "currentBody": "MEA\n\nLimited direct Kimpton footprint—confirm counts in your franchise disclosure document if evaluating international portfolio context.",
+            "forbiddenPhrase": "disclosure document",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "disclosure_document"
+          },
+          {
+            "brand": "kimpton",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "recKWkDTNvLxknx8H",
+            "currentTitle": "Kimpton Grand Roatán Resort & Spa",
+            "currentBody": "Resort, Honduras, CALA, Western Caribbean, Beach repositioning\n\nRoatán, Bay Islands, Honduras (West Bay Beach)\n\nConversion repositioning · 119 keys · reef-access leisure\n\nKimpton Grand Roatán opened O",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "kimpton",
+            "type": "net_contribution_language",
+            "tab": "overview",
+            "slot": "overview.bestAt.3",
+            "recordId": "recL1VdG6HPNYQpJs",
+            "currentTitle": "IHG Loyalty & Distribution",
+            "currentBody": "IHG One Rewards and enterprise demand participation—model net contribution after ~6% royalty and mandatory IHG programs.",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "kimpton",
+            "type": "net_contribution_language",
+            "tab": "overview",
+            "slot": "overview.owner_experience",
+            "recordId": "recLaMkNyMJhMrtg5",
+            "currentTitle": "",
+            "currentBody": "Typical guest: experience-led leisure and business travelers who value design, F&B, and neighborhood authenticity.\nOwner journey: feasibility on conversion PIP → design narrative and F&B plan → IHG sy",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "kimpton",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "recLdg63DjmKPhTPZ",
+            "currentTitle": "Kimpton Las Mercedes Santo Domingo",
+            "currentBody": "Urban, Dominican Republic, CALA, Colonial City, Lifestyle boutique\n\nSanto Domingo, Dominican Republic (Colonial City / Zona Colonial)\n\nHistoric conversion · lifestyle boutique · restaurant-forward urb",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "kimpton",
+            "type": "net_contribution_language",
+            "tab": "commercial",
+            "slot": "commercial.kpi.lens",
+            "recordId": "recOTNxvfyg40LqHa",
+            "currentTitle": "Owner Underwriting Lens",
+            "currentBody": "Net contribution after fees and channel costs",
+            "forbiddenPhrase": "Net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "kimpton",
+            "type": "loi_language",
+            "tab": "economics",
+            "slot": "economics.intro",
+            "recordId": "recSiHoaLhA2eecAp",
+            "currentTitle": "",
+            "currentBody": "Kimpton Hotels (upper-upscale lifestyle, IHG) economics below reflect typical disclosed ranges for diligence—not a quote or substitute for your franchise disclosure document, LOI, or advisors.",
+            "forbiddenPhrase": "LOI",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "loi"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fdd_item19_language",
+            "tab": "economics",
+            "slot": "economics.intro",
+            "recordId": "recSiHoaLhA2eecAp",
+            "currentTitle": "",
+            "currentBody": "Kimpton Hotels (upper-upscale lifestyle, IHG) economics below reflect typical disclosed ranges for diligence—not a quote or substitute for your franchise disclosure document, LOI, or advisors.",
+            "forbiddenPhrase": "franchise disclosure",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "franchise_disclosure"
+          },
+          {
+            "brand": "kimpton",
+            "type": "forbidden_owner_copy",
+            "tab": "economics",
+            "slot": "economics.intro",
+            "recordId": "recSiHoaLhA2eecAp",
+            "currentTitle": "",
+            "currentBody": "Kimpton Hotels (upper-upscale lifestyle, IHG) economics below reflect typical disclosed ranges for diligence—not a quote or substitute for your franchise disclosure document, LOI, or advisors.",
+            "forbiddenPhrase": "disclosure document",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "disclosure_document"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fee_stack_language",
+            "tab": "footprint",
+            "slot": "footprint.openings",
+            "recordId": "recTDYl3FNT1WEVxD",
+            "currentTitle": "Kimpton Seafire Resort + Spa",
+            "currentBody": "Resort, Cayman Islands, CALA, Seven Mile Beach, Flagship Caribbean\n\nGrand Cayman, Cayman Islands (Seven Mile Beach)\n\nNew-build resort · 266 rooms · spa and signature F&B\n\nCaribbean flagship · Seven Mi",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fdd_item19_language",
+            "tab": "loyalty",
+            "slot": "loyalty.owner_lens",
+            "recordId": "recUJ0HZQzWrdV00t",
+            "currentTitle": "",
+            "currentBody": "Model loyalty as net contribution after member discounts, elite benefits, and IHG program chargebacks — not headline ADR.\nIHG One Rewards generated an average of 50.8% of Kimpton Hotels bookings (2025",
+            "forbiddenPhrase": "Item 19",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "item_19"
+          },
+          {
+            "brand": "kimpton",
+            "type": "net_contribution_language",
+            "tab": "loyalty",
+            "slot": "loyalty.owner_lens",
+            "recordId": "recUJ0HZQzWrdV00t",
+            "currentTitle": "",
+            "currentBody": "Model loyalty as net contribution after member discounts, elite benefits, and IHG program chargebacks — not headline ADR.\nIHG One Rewards generated an average of 50.8% of Kimpton Hotels bookings (2025",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fdd_item19_language",
+            "tab": "overview",
+            "slot": "overview.proof.5",
+            "recordId": "recVt5GnSWF0g8Tkv",
+            "currentTitle": "IHG One Rewards®",
+            "currentBody": "IHG One Rewards spans 6,600+ hotels worldwide; member pricing, elite tiers, and partner ecosystem. Model this brand's loyalty contribution from your FDD Item 19 sample and local comp set—not system-wi",
+            "forbiddenPhrase": "Item 19",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "item_19"
+          },
+          {
+            "brand": "kimpton",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "recedp8GnlNvtBPon",
+            "currentTitle": "Kimpton Virgilio",
+            "currentBody": "Urban, Mexico, CALA, Polanco, Lifestyle boutique\n\nMexico City, Mexico (Polanquito / Polanco)\n\nAdaptive reuse · 48-room boutique · restaurant-forward\n\nKimpton Virgilio debuted in February 2024 as Kimpt",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fee_stack_language",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "recedp8GnlNvtBPon",
+            "currentTitle": "Kimpton Virgilio",
+            "currentBody": "Urban, Mexico, CALA, Polanco, Lifestyle boutique\n\nMexico City, Mexico (Polanquito / Polanco)\n\nAdaptive reuse · 48-room boutique · restaurant-forward\n\nKimpton Virgilio debuted in February 2024 as Kimpt",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fee_stack_language",
+            "tab": "economics",
+            "slot": "economics.opening.financials",
+            "recordId": "recfBDGMX6qznYg2T",
+            "currentTitle": "",
+            "currentBody": "Illustrative 200-room total investment $65.1M–$91.5M ($325,352–$457,585/key, excluding land). Amounts paid to IHG/affiliates before opening often $607,000–$1.1M in the same illustration.\n\nFront-loaded",
+            "forbiddenPhrase": "Fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fdd_item19_language",
+            "tab": "materials",
+            "slot": "materials.file",
+            "recordId": "rechkudwBN5UEKRCM",
+            "currentTitle": "Kimpton Franchise Disclosure Document 2024",
+            "currentBody": "PDF · 826 KB · Updated May 15, 2026\nBadge: Unverified by Brand",
+            "forbiddenPhrase": "Franchise Disclosure",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "franchise_disclosure"
+          },
+          {
+            "brand": "kimpton",
+            "type": "forbidden_owner_copy",
+            "tab": "materials",
+            "slot": "materials.file",
+            "recordId": "rechkudwBN5UEKRCM",
+            "currentTitle": "Kimpton Franchise Disclosure Document 2024",
+            "currentBody": "PDF · 826 KB · Updated May 15, 2026\nBadge: Unverified by Brand",
+            "forbiddenPhrase": "Disclosure Document",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "disclosure_document"
+          },
+          {
+            "brand": "kimpton",
+            "type": "net_contribution_language",
+            "tab": "economics",
+            "slot": "economics.fee",
+            "recordId": "recigE6uLsEdqKhxC",
+            "currentTitle": "Loyalty / program participation",
+            "currentBody": "IHG One Rewards: 4.55% full folio · 1.36% room/meeting. Model net contribution after member benefits and chargebacks.",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "kimpton",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "reclkcJvUo6zeJatB",
+            "currentTitle": "Kimpton Seafire Resort + Spa",
+            "currentBody": "Resort, Cayman Islands, CALA, Seven Mile Beach, Flagship Caribbean\n\nGrand Cayman, Cayman Islands (Seven Mile Beach)\n\nNew-build resort · 266 rooms · spa and signature F&B\n\nKimpton Seafire on Seven Mile",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fee_stack_language",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "reclkcJvUo6zeJatB",
+            "currentTitle": "Kimpton Seafire Resort + Spa",
+            "currentBody": "Resort, Cayman Islands, CALA, Seven Mile Beach, Flagship Caribbean\n\nGrand Cayman, Cayman Islands (Seven Mile Beach)\n\nNew-build resort · 266 rooms · spa and signature F&B\n\nKimpton Seafire on Seven Mile",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "kimpton",
+            "type": "fee_stack_language",
+            "tab": "insight",
+            "slot": "insight.summary",
+            "recordId": "recua78ks1je9Ixas",
+            "currentTitle": "",
+            "currentBody": "Kimpton Hotels fits when you want upper-upscale lifestyle positioning with IHG distribution, IHG One Rewards, and conversion-friendly design narrative—not a mismatched tier (e.g. Hotel Indigo vs Kimpt",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          }
+        ],
+        "blockerTypeCounts": {
+          "founder_review_missing": 1,
+          "active_approval_missing": 1,
+          "render_contract_issue": 1,
+          "fee_stack_language": 6,
+          "loi_language": 2,
+          "visible_url": 5,
+          "fdd_item19_language": 5,
+          "forbidden_owner_copy": 3,
+          "net_contribution_language": 5
+        },
+        "patches": [
+          {
+            "brand": "kimpton",
+            "recordId": "rec5FqPlYHgQ0LiFZ",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.openings",
+            "field": "Body",
+            "before": "Urban, Mexico, CALA, Polanco, Lifestyle boutique\n\nMexico City, Mexico (Polanquito / Polanco)\n\nAdaptive reuse · 48-room boutique · restaurant-forward\n\nMexico City debut · Polanquito lifestyle\n\nKimpton Virgilio debuted in February 2024 as Kimpton's first boutique hotel in Mexico City—a converted 1940s residential building with Pepe: Mesa Española restaurant and rooftop pool.\n\nGateway urban Kimpton needs operator strength on F&B and design QA—confirm IHG fee stack and loyalty contribution in your market comp set.\n\nhttps://www.kimptonhotels.com/stay/kimpton-virgilio",
+            "after": "Urban, Mexico, CALA, Polanco, Lifestyle boutique\nMexico City, Mexico (Polanquito / Polanco)\nAdaptive reuse · 48-room boutique · restaurant-forward\nMexico City debut · Polanquito lifestyle\nKimpton Virgilio debuted in February 2024 as Kimpton's first boutique hotel in Mexico City—a converted 1940s residential building with Pepe: Mesa Española restaurant and rooftop pool.\nGateway urban Kimpton needs operator strength on F&B and design QA—confirm IHG participation cost categories and loyalty contribution in your market comp set.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "rec5FqPlYHgQ0LiFZ",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.openings",
+            "field": "Case Summary Interpretation",
+            "before": "Small-key boutiques live on ADR and F&B margin—match Polanco-style demand and operator capability to your building before signing.",
+            "after": "Small-key boutiques live on average daily rate and F&B margin—match Polanco-style demand and operator capability to your building before signing.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "rec7WfKylobSTpvaH",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "standards.intro",
+            "field": "Body",
+            "before": "Kimpton Hotels standards vary by conversion path, F&B program, and agreement vintage. Use the table as a planning checklist—confirm every row in the FDD, design manual, and LOI before capital commitments.",
+            "after": "Kimpton Hotels standards vary by conversion path, F&B program, and agreement vintage. Use the table as a planning checklist—confirm every row in the commercial agreement review materials, design manual, and letter of intent or commercial proposal before capital commitments.",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "rec9kV27xSumrl3Ul",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Resort, Mexico, CALA, Baja Sur, Beachfront lifestyle\n\nTodos Santos, Baja California Sur, Mexico (Pacific coast)\n\nResort lifestyle · adults-oriented · spa and F&B forward\n\nKimpton Mas Olas opened April 2024 on Baja Sur’s Pacific coast—103 rooms including oceanfront villas, Botánica Spa, multiple pools, and desert-to-ocean positioning an hour from Cabo.\n\nResort lifestyle Kimpton in CALA means spa, F&B, and sustainability-driven capex—stress-test seasonality and net fees versus select-service assumptions.\n\nBaja Pacific resorts swing on leisure seasonality and F&B staffing—budget wellness and dining for peak and shoulder months, not only opening photos.\n\nhttps://www.masolasresort.com/",
+            "after": "Resort, Mexico, CALA, Baja Sur, Beachfront lifestyle\nTodos Santos, Baja California Sur, Mexico (Pacific coast)\nResort lifestyle · adults-oriented · spa and F&B forward\nKimpton Mas Olas opened April 2024 on Baja Sur’s Pacific coast—103 rooms including oceanfront villas, Botánica Spa, multiple pools, and desert-to-ocean positioning an hour from Cabo.\nResort lifestyle Kimpton in CALA means spa, F&B, and sustainability-driven capex—stress-test seasonality and net fees versus select-service assumptions.\nBaja Pacific resorts swing on leisure seasonality and F&B staffing—budget wellness and dining for peak and shoulder months, not only opening photos.",
+            "reason": "Owner-copy scrub: visible_url",
+            "blockerResolved": [
+              "visible_url"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recCv4rrMam4T3qOX",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.region.mea",
+            "field": "Body",
+            "before": "MEA\n\nLimited direct Kimpton footprint—confirm counts in your franchise disclosure document if evaluating international portfolio context.",
+            "after": "MEA\nLimited direct Kimpton footprint—confirm counts in your commercial agreement materials if evaluating international portfolio context.",
+            "reason": "Owner-copy scrub: fdd_item19_language, forbidden_owner_copy",
+            "blockerResolved": [
+              "fdd_item19_language",
+              "forbidden_owner_copy"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recKWkDTNvLxknx8H",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Resort, Honduras, CALA, Western Caribbean, Beach repositioning\n\nRoatán, Bay Islands, Honduras (West Bay Beach)\n\nConversion repositioning · 119 keys · reef-access leisure\n\nKimpton Grand Roatán opened October 2023 on West Bay Beach—the first internationally branded resort on Roatán, repositioning a former island resort with four F&B outlets, Kao Kamasa spa, and meetings space.\n\nIllustrates CALA conversion-to-lifestyle at resort scale: confirm PIP scope, air-lift leisure mix, and operator resort capability—not urban Kimpton templates.\n\nIsland resort economics depend on air access and leisure seasonality—model fees and ramp from local comp set, not mainland gateway averages.\n\nhttps://www.kimptongrandroatan.com/",
+            "after": "Resort, Honduras, CALA, Western Caribbean, Beach repositioning\nRoatán, Bay Islands, Honduras (West Bay Beach)\nConversion repositioning · 119 keys · reef-access leisure\nKimpton Grand Roatán opened October 2023 on West Bay Beach—the first internationally branded resort on Roatán, repositioning a former island resort with four F&B outlets, Kao Kamasa spa, and meetings space.\nIllustrates CALA conversion-to-lifestyle at resort scale: confirm PIP scope, air-lift leisure mix, and operator resort capability—not urban Kimpton templates.\nIsland resort economics depend on air access and leisure seasonality—model fees and ramp from local comp set, not mainland gateway averages.",
+            "reason": "Owner-copy scrub: visible_url",
+            "blockerResolved": [
+              "visible_url"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recL1VdG6HPNYQpJs",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "overview.bestAt.3",
+            "field": "Body",
+            "before": "IHG One Rewards and enterprise demand participation—model net contribution after ~6% royalty and mandatory IHG programs.",
+            "after": "IHG One Rewards and enterprise demand participation—model owner economics after ~6% royalty and mandatory IHG programs.",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recLaMkNyMJhMrtg5",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "overview.owner_experience",
+            "field": "Body",
+            "before": "Typical guest: experience-led leisure and business travelers who value design, F&B, and neighborhood authenticity.\nOwner journey: feasibility on conversion PIP → design narrative and F&B plan → IHG systems cutover → opening QA on service and restaurant execution.\nRamp: loyalty and enterprise mix build over 12–24 months—model net contribution after IHG One Rewards chargebacks.\nOngoing: lifestyle standards require sustained design, F&B, and service investment through PIP and QA cycles.",
+            "after": "Typical guest: experience-led leisure and business travelers who value design, F&B, and neighborhood authenticity.\nOwner journey: feasibility on conversion PIP → design narrative and F&B plan → IHG systems cutover → opening QA on service and restaurant execution.\nRamp: loyalty and enterprise mix build over 12–24 months—model owner economics after IHG One Rewards chargebacks.\nOngoing: lifestyle standards require sustained design, F&B, and service investment through PIP and QA cycles.",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recLdg63DjmKPhTPZ",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Urban, Dominican Republic, CALA, Colonial City, Lifestyle boutique\n\nSanto Domingo, Dominican Republic (Colonial City / Zona Colonial)\n\nHistoric conversion · lifestyle boutique · restaurant-forward urban\n\nKimpton Las Mercedes opened in 2024 in Santo Domingo’s Colonial City—130 rooms in a revitalized 16th-century complex with rooftop pool, courtyard, and Iberostar-operated F&B. IHG positioned it as Kimpton’s first hotel in the Dominican Republic.\n\nCompare this format if you are underwriting a historic urban conversion in CALA: design narrative, F&B complexity, and lifestyle operating load—not select-service reflag economics.\n\nColonial-zone lifestyle hotels reward authentic public spaces and operator F&B discipline—confirm fees, incentives, and conversion PIP before you model from U.S. gateway prototypes.\n\nhttps://www.ihg.com/kimptonhotels/hotels/us/en/las-mercedes-santo-domingo/sdqlm/hoteldetail",
+            "after": "Urban, Dominican Republic, CALA, Colonial City, Lifestyle boutique\nSanto Domingo, Dominican Republic (Colonial City / Zona Colonial)\nHistoric conversion · lifestyle boutique · restaurant-forward urban\nKimpton Las Mercedes opened in 2024 in Santo Domingo’s Colonial City—130 rooms in a revitalized 16th-century complex with rooftop pool, courtyard, and Iberostar-operated F&B. IHG positioned it as Kimpton’s first hotel in the Dominican Republic.\nCompare this format if you are underwriting a historic urban conversion in CALA: design narrative, F&B complexity, and lifestyle operating load—not select-service reflag economics.\nColonial-zone lifestyle hotels reward authentic public spaces and operator F&B discipline—confirm fees, incentives, and conversion PIP before you model from U.S. gateway prototypes.",
+            "reason": "Owner-copy scrub: visible_url",
+            "blockerResolved": [
+              "visible_url"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recLdg63DjmKPhTPZ",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Case Summary Interpretation",
+            "before": "Colonial-city assets need F&B and design capex matched to local ADR—do not assume U.S. urban Kimpton ramp from one opening headline.",
+            "after": "Colonial-city assets need F&B and design capex matched to local average daily rate—do not assume U.S. urban Kimpton ramp from one opening headline.",
+            "reason": "Owner-copy scrub: visible_url",
+            "blockerResolved": [
+              "visible_url"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recOTNxvfyg40LqHa",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "commercial.kpi.lens",
+            "field": "Body",
+            "before": "Net contribution after fees and channel costs",
+            "after": "owner economics after fees and channel costs",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recSiHoaLhA2eecAp",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.intro",
+            "field": "Body",
+            "before": "Kimpton Hotels (upper-upscale lifestyle, IHG) economics below reflect typical disclosed ranges for diligence—not a quote or substitute for your franchise disclosure document, LOI, or advisors.",
+            "after": "Kimpton Hotels (upper-upscale lifestyle, IHG) economics below reflect typical disclosed ranges for diligence—not a quote or substitute for your commercial agreement materials, letter of intent or commercial proposal, or advisors.",
+            "reason": "Owner-copy scrub: loi_language, fdd_item19_language, forbidden_owner_copy",
+            "blockerResolved": [
+              "loi_language",
+              "fdd_item19_language",
+              "forbidden_owner_copy"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recTDYl3FNT1WEVxD",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.openings",
+            "field": "Body",
+            "before": "Resort, Cayman Islands, CALA, Seven Mile Beach, Flagship Caribbean\n\nGrand Cayman, Cayman Islands (Seven Mile Beach)\n\nNew-build resort · 266 rooms · spa and signature F&B\n\nCaribbean flagship · Seven Mile Beach leisure\n\nKimpton Seafire on Seven Mile Beach is Kimpton's flagship Caribbean resort—opened 2016 as Grand Cayman's first major new resort in more than a decade, with spa and multiple dining venues.\n\nSeven Mile Beach competes on leisure retail and fee stack—use local comps and operator track record before you assume Seafire-scale economics on a smaller parcel.\n\nhttps://www.seafireresortandspa.com/",
+            "after": "Resort, Cayman Islands, CALA, Seven Mile Beach, Flagship Caribbean\nGrand Cayman, Cayman Islands (Seven Mile Beach)\nNew-build resort · 266 rooms · spa and signature F&B\nCaribbean flagship · Seven Mile Beach leisure\nKimpton Seafire on Seven Mile Beach is Kimpton's flagship Caribbean resort—opened 2016 as Grand Cayman's first major new resort in more than a decade, with spa and multiple dining venues.\nSeven Mile Beach competes on leisure retail and participation cost categories—use local comps and operator track record before you assume Seafire-scale economics on a smaller parcel.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recUJ0HZQzWrdV00t",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "loyalty.owner_lens",
+            "field": "Body",
+            "before": "Model loyalty as net contribution after member discounts, elite benefits, and IHG program chargebacks — not headline ADR.\nIHG One Rewards generated an average of 50.8% of Kimpton Hotels bookings (2025 U.S. comparable hotels per Kimpton development brochure / FDD source note). IHG booking channels represented an average of 88.5% of Kimpton reservations in the same period.\nIHG One Rewards reports 100M+ members globally (Kimpton development web capture).\nConfirm Kimpton-specific loyalty P&L in your FDD Item 19 sample and IHG program fee schedule.",
+            "after": "Model loyalty as owner economics after member discounts, elite benefits, and IHG program chargebacks — not headline average daily rate.\nIHG One Rewards generated an average of 50.8% of Kimpton Hotels bookings (2025 U.S. comparable hotels per Kimpton development brochure / commercial agreement review materials source note). IHG booking channels represented an average of 88.5% of Kimpton reservations in the same period.\nIHG One Rewards reports 100M+ members globally (Kimpton development web capture).\nConfirm Kimpton-specific loyalty P&L in your commercial agreement review materials public franchise performance disclosures (where applicable) sample and IHG program fee schedule.",
+            "reason": "Owner-copy scrub: fdd_item19_language, net_contribution_language",
+            "blockerResolved": [
+              "fdd_item19_language",
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recVt5GnSWF0g8Tkv",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "overview.proof.5",
+            "field": "Body",
+            "before": "IHG One Rewards spans 6,600+ hotels worldwide; member pricing, elite tiers, and partner ecosystem. Model this brand's loyalty contribution from your FDD Item 19 sample and local comp set—not system-wide averages alone.",
+            "after": "IHG One Rewards spans 6,600+ hotels worldwide; member pricing, elite tiers, and partner ecosystem. Model this brand's loyalty contribution from your commercial agreement review materials public franchise performance disclosures (where applicable) sample and local comp set—not system-wide averages alone.",
+            "reason": "Owner-copy scrub: fdd_item19_language",
+            "blockerResolved": [
+              "fdd_item19_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recedp8GnlNvtBPon",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Urban, Mexico, CALA, Polanco, Lifestyle boutique\n\nMexico City, Mexico (Polanquito / Polanco)\n\nAdaptive reuse · 48-room boutique · restaurant-forward\n\nKimpton Virgilio debuted in February 2024 as Kimpton’s first boutique hotel in Mexico City—a converted 1940s residential building with Pepe: Mesa Española restaurant, rooftop pool, and Polanquito neighborhood positioning.\n\nIf you are evaluating urban lifestyle conversion in Mexico, plan for small-room-count boutique economics, local design narrative, and F&B labor—not mainstream upscale conversion scope.\n\nGateway urban Kimpton needs operator strength on F&B and design QA—confirm IHG fee stack and loyalty contribution in your market comp set.\n\nhttps://www.kimptonhotels.com/stay/kimpton-virgilio",
+            "after": "Urban, Mexico, CALA, Polanco, Lifestyle boutique\nMexico City, Mexico (Polanquito / Polanco)\nAdaptive reuse · 48-room boutique · restaurant-forward\nKimpton Virgilio debuted in February 2024 as Kimpton’s first boutique hotel in Mexico City—a converted 1940s residential building with Pepe: Mesa Española restaurant, rooftop pool, and Polanquito neighborhood positioning.\nIf you are evaluating urban lifestyle conversion in Mexico, plan for small-room-count boutique economics, local design narrative, and F&B labor—not mainstream upscale conversion scope.\nGateway urban Kimpton needs operator strength on F&B and design QA—confirm IHG participation cost categories and loyalty contribution in your market comp set.",
+            "reason": "Owner-copy scrub: visible_url, fee_stack_language",
+            "blockerResolved": [
+              "visible_url",
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recedp8GnlNvtBPon",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Case Summary Interpretation",
+            "before": "Small-key boutiques live on ADR and F&B margin—match Polanco-style demand and operator capability to your building before signing.",
+            "after": "Small-key boutiques live on average daily rate and F&B margin—match Polanco-style demand and operator capability to your building before signing.",
+            "reason": "Owner-copy scrub: visible_url, fee_stack_language",
+            "blockerResolved": [
+              "visible_url",
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recfBDGMX6qznYg2T",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.opening.financials",
+            "field": "Body",
+            "before": "Illustrative 200-room total investment $65.1M–$91.5M ($325,352–$457,585/key, excluding land). Amounts paid to IHG/affiliates before opening often $607,000–$1.1M in the same illustration.\n\nFront-loaded standards, FF&E, F&B, and technology\n\nWorking capital through ramp (3-month initial phase often $1.5M+ hotel operating funds)\n\nFee stack stepping from opening-weighted to stabilized\n\nRenewal PIP reserves even if opening PIP is lighter",
+            "after": "Illustrative 200-room total investment $65.1M–$91.5M ($325,352–$457,585/key, excluding land). Amounts paid to IHG/affiliates before opening often $607,000–$1.1M in the same illustration.\nFront-loaded standards, FF&E, F&B, and technology\nWorking capital through ramp (3-month initial phase often $1.5M+ hotel operating funds)\nparticipation cost categories stepping from opening-weighted to stabilized\nRenewal PIP reserves even if opening PIP is lighter",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "rechkudwBN5UEKRCM",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.file",
+            "field": "Title",
+            "before": "Kimpton Franchise Disclosure Document 2024",
+            "after": "Kimpton commercial agreement materials 2024",
+            "reason": "Owner-copy scrub: fdd_item19_language, forbidden_owner_copy",
+            "blockerResolved": [
+              "fdd_item19_language",
+              "forbidden_owner_copy"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recigE6uLsEdqKhxC",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.fee",
+            "field": "Body",
+            "before": "IHG One Rewards: 4.55% full folio · 1.36% room/meeting. Model net contribution after member benefits and chargebacks.",
+            "after": "IHG One Rewards: 4.55% full folio · 1.36% room/meeting. Model owner economics after member benefits and chargebacks.",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "reclkcJvUo6zeJatB",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Resort, Cayman Islands, CALA, Seven Mile Beach, Flagship Caribbean\n\nGrand Cayman, Cayman Islands (Seven Mile Beach)\n\nNew-build resort · 266 rooms · spa and signature F&B\n\nKimpton Seafire on Seven Mile Beach is Kimpton’s flagship Caribbean resort—opened 2016 as Grand Cayman’s first major new resort in more than a decade, with spa, multiple dining venues, and IHG One Rewards at scale.\n\nBenchmark for large-key CALA resort lifestyle: public-space investment, spa operations, and multi-outlet F&B—not limited-service or economy reflag paths.\n\nSeven Mile Beach competes on leisure retail and fee stack—use local comps and operator track record before you assume Seafire-scale economics on a smaller parcel.\n\nhttps://www.seafireresortandspa.com/",
+            "after": "Resort, Cayman Islands, CALA, Seven Mile Beach, Flagship Caribbean\nGrand Cayman, Cayman Islands (Seven Mile Beach)\nNew-build resort · 266 rooms · spa and signature F&B\nKimpton Seafire on Seven Mile Beach is Kimpton’s flagship Caribbean resort—opened 2016 as Grand Cayman’s first major new resort in more than a decade, with spa, multiple dining venues, and IHG One Rewards at scale.\nBenchmark for large-key CALA resort lifestyle: public-space investment, spa operations, and multi-outlet F&B—not limited-service or economy reflag paths.\nSeven Mile Beach competes on leisure retail and participation cost categories—use local comps and operator track record before you assume Seafire-scale economics on a smaller parcel.",
+            "reason": "Owner-copy scrub: visible_url, fee_stack_language",
+            "blockerResolved": [
+              "visible_url",
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "kimpton",
+            "recordId": "recua78ks1je9Ixas",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "insight.summary",
+            "field": "Body",
+            "before": "Kimpton Hotels fits when you want upper-upscale lifestyle positioning with IHG distribution, IHG One Rewards, and conversion-friendly design narrative—not a mismatched tier (e.g. Hotel Indigo vs Kimpton without comparing F&B requirements and fee stack). Best with lifestyle operator experience, honest ramp plan, and FDD-backed channel mix. Weaker where market ADR cannot support F&B and design PIP or conversion ROI does not clear hurdle.",
+            "after": "Kimpton Hotels fits when you want upper-upscale lifestyle positioning with IHG distribution, IHG One Rewards, and conversion-friendly design narrative—not a mismatched tier (e.g. Hotel Indigo vs Kimpton without comparing F&B requirements and participation cost categories). Best with lifestyle operator experience, honest ramp plan, and commercial agreement review materials-backed channel mix. Weaker where market average daily rate cannot support F&B and design PIP or conversion ROI does not clear hurdle.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          }
+        ],
+        "propertyReview": {
+          "brandSlug": "kimpton",
+          "policy": {
+            "minimum": 3,
+            "exactRequired": false,
+            "extrasAllowed": true,
+            "hideExtrasIfDuplicates": true
+          },
+          "totalOpeningsRows": 5,
+          "visibleWithImageCount": 5,
+          "duplicates": [],
+          "recommendation": "extras_acceptable_founder_confirm",
+          "note": "5 visible examples exceed minimum 3; UI should handle extras. Founder confirm sort order is clean. No hide required.",
+          "hidePatches": [],
+          "visibleExamples": [
+            {
+              "recordId": "recttOTrQuiqEip4Z",
+              "title": "Kimpton Las Mercedes Santo Domingo",
+              "sortOrder": 0
+            },
+            {
+              "recordId": "rec5FqPlYHgQ0LiFZ",
+              "title": "Kimpton Virgilio",
+              "sortOrder": 1
+            },
+            {
+              "recordId": "recYOSVJXXqkGjN6m",
+              "title": "Kimpton Mas Olas Resort & Spa",
+              "sortOrder": 2
+            },
+            {
+              "recordId": "recJijTLQdBZCZQsQ",
+              "title": "Kimpton Grand Roatán Resort & Spa",
+              "sortOrder": 3
+            },
+            {
+              "recordId": "recTDYl3FNT1WEVxD",
+              "title": "Kimpton Seafire Resort + Spa",
+              "sortOrder": 4
+            }
+          ]
+        },
+        "summary": {
+          "blockerCount": 29,
+          "patchCount": 22,
+          "copyPatchCount": 22,
+          "hidePatchCount": 0,
+          "safeForGenericApplyCount": 22,
+          "founderReviewRequiredCount": 0
+        }
+      },
+      "projection": {
+        "forbiddenStringsBefore": 24,
+        "forbiddenStringsAfter": 0,
+        "visibleUrlsBefore": 5,
+        "visibleUrlsAfter": 0,
+        "internalNotesBefore": 0,
+        "internalNotesAfter": 0,
+        "emptyCardsBefore": 0,
+        "emptyCardsAfter": 0,
+        "externalOwnerRulePassBefore": false,
+        "externalOwnerRulePassAfter": true,
+        "liveDomQualityLockPass": true,
+        "expectedDisplayStateAfter": "draft_applied_with_defects",
+        "stillBlockedByFounderReview": true,
+        "stillBlockedByActiveApproval": true,
+        "unlockInV40": false,
+        "ownerCopyBlockersProjectedZero": true,
+        "afterBlockers": []
+      },
+      "unlockInV40": false,
+      "readyForActiveApproval": false,
+      "companyValidatedUntouched": true,
+      "applyResult": {
+        "patched": [
+          {
+            "recordId": "rec5FqPlYHgQ0LiFZ",
+            "slotKey": "footprint.openings",
+            "fields": [
+              "Body",
+              "Case Summary Interpretation"
+            ]
+          },
+          {
+            "recordId": "rec7WfKylobSTpvaH",
+            "slotKey": "standards.intro",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "rec9kV27xSumrl3Ul",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recCv4rrMam4T3qOX",
+            "slotKey": "footprint.region.mea",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recKWkDTNvLxknx8H",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recL1VdG6HPNYQpJs",
+            "slotKey": "overview.bestAt.3",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recLaMkNyMJhMrtg5",
+            "slotKey": "overview.owner_experience",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recLdg63DjmKPhTPZ",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body",
+              "Case Summary Interpretation"
+            ]
+          },
+          {
+            "recordId": "recOTNxvfyg40LqHa",
+            "slotKey": "commercial.kpi.lens",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recSiHoaLhA2eecAp",
+            "slotKey": "economics.intro",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recTDYl3FNT1WEVxD",
+            "slotKey": "footprint.openings",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recUJ0HZQzWrdV00t",
+            "slotKey": "loyalty.owner_lens",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recVt5GnSWF0g8Tkv",
+            "slotKey": "overview.proof.5",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recedp8GnlNvtBPon",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body",
+              "Case Summary Interpretation"
+            ]
+          },
+          {
+            "recordId": "recfBDGMX6qznYg2T",
+            "slotKey": "economics.opening.financials",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "rechkudwBN5UEKRCM",
+            "slotKey": "materials.file",
+            "fields": [
+              "Title"
+            ]
+          },
+          {
+            "recordId": "recigE6uLsEdqKhxC",
+            "slotKey": "economics.fee",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "reclkcJvUo6zeJatB",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recua78ks1je9Ixas",
+            "slotKey": "insight.summary",
+            "fields": [
+              "Body"
+            ]
+          }
+        ],
+        "errors": [],
+        "recordsTouched": 19
+      }
+    },
+    {
+      "brandSlug": "radisson-individuals-by-choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "dryRun": false,
+      "displayState": "draft_applied_with_defects",
+      "shouldRenderFullProfile": false,
+      "v39Outcome": "release_remediation_required",
+      "v39FailedGates": [
+        "external_owner_copy_rules",
+        "founder_visual_review_passed",
+        "active_profile_approval_set",
+        "should_render_full_profile",
+        "display_state_release_ready",
+        "render_contract_pass"
+      ],
+      "patchPlan": {
+        "version": "v40",
+        "brandSlug": "radisson-individuals-by-choice",
+        "blockers": [
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "founder_review_missing",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "high",
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "proposedRemediation": "Founder visual review must pass after copy remediation; not patched in v40",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "active_approval_missing",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "high",
+            "sourceOfTruth": "Brand Basics Active Profile Approved",
+            "proposedRemediation": "Blocked until gated active-release apply — not in v40",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "render_contract_issue",
+            "tab": null,
+            "slot": null,
+            "recordId": null,
+            "currentTitle": null,
+            "currentBody": null,
+            "forbiddenPhrase": null,
+            "ownerVisible": false,
+            "severity": "medium",
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "proposedRemediation": "Re-evaluate after owner-copy scrub; may clear if copy was polluting readiness",
+            "airtableWriteRequired": false,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "loi_language",
+            "tab": "economics",
+            "slot": "economics.fee.join",
+            "recordId": "rec0ev2ZO9ZgVL1DY",
+            "currentTitle": "To Join",
+            "currentBody": "Application and entry fees; training and opening support; initial franchise fee; technology implementation; plan review and inspection. Basis varies by keys, market, and new build vs. conversion—confi",
+            "forbiddenPhrase": "LOI",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "loi"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "net_contribution_language",
+            "tab": "commercial",
+            "slot": "commercial.kpi.lens",
+            "recordId": "rec0poafahDnIeDoG",
+            "currentTitle": "Owner Underwriting Lens",
+            "currentBody": "Net contribution after fees and channel costs",
+            "forbiddenPhrase": "Net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "rec27BNoxQUZm86k7",
+            "currentTitle": "Radisson Individuals Medellín, Colombia",
+            "currentBody": "Urban, Colombia, CALA, Soft collection\n\nMedellín, Colombia (El Poblado context)\n\nUpper-upscale collection · lifestyle\n\nCALA urban lifestyle\n\nV Grand / Individuals Medellín cited in Choice press—collec",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "net_contribution_language",
+            "tab": "operations",
+            "slot": "operations.operator_compat.fit",
+            "recordId": "rec7bMWfw1feB77Fw",
+            "currentTitle": "",
+            "currentBody": "Strong fit when operator has upper-upscale soft collection depth, can meet prototype/PIP, and models net contribution after 6.0% royalty on gross room revenues (Radisson-family CHI franchise terms. We",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "recIV2MhFScfuUoOn",
+            "currentTitle": "Radisson Individuals Medellín, Colombia",
+            "currentBody": "Urban, Colombia, CALA, Soft collection\n\nMedellín, Colombia (El Poblado context)\n\nUpper-upscale collection · lifestyle\n\nCALA urban lifestyle\n\nV Grand / Individuals Medellín cited in Choice press—collec",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "fee_stack_language",
+            "tab": "economics",
+            "slot": "economics.cash.steadystate",
+            "recordId": "recNVQ41VqdxZ2Ddl",
+            "currentTitle": "",
+            "currentBody": "Owner funds: recurring fee stack (upper-upscale soft collection) plus program participation once stabilized.\n\nBrand provides: Choice distribution, QA cadence, and benchmarks—not property payroll or ro",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "loi_language",
+            "tab": "economics",
+            "slot": "economics.legal",
+            "recordId": "recV9vvghknIzsRQB",
+            "currentTitle": "LOI & process",
+            "currentBody": "Clarify binding vs exploratory LOI terms and design approval gates early.",
+            "forbiddenPhrase": "LOI",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "loi"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "fee_stack_language",
+            "tab": "insight",
+            "slot": "insight.summary",
+            "recordId": "recXgUmzgCJNLHrEa",
+            "currentTitle": "",
+            "currentBody": "Radisson Individual (Choice) fits when you want upper-upscale soft collection Choice distribution with clear prototype economics and Choice Privileges participation—not a mismatched tier (e.g., Ascend",
+            "forbiddenPhrase": "fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "loi_language",
+            "tab": "economics",
+            "slot": "economics.intro",
+            "recordId": "recYz8HoVymxGSM5G",
+            "currentTitle": "",
+            "currentBody": "Radisson Individual (Choice) (upper-upscale soft collection) economics are illustrative only—not a quote or substitute for the franchise terms, LOI, or advisors.",
+            "forbiddenPhrase": "LOI",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "loi"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "recag9AjmqFvKe8cN",
+            "currentTitle": "Radisson Individuals Medellín, Colombia",
+            "currentBody": "Urban, Colombia, CALA, Soft collection\n\nMedellín, Colombia (El Poblado context)\n\nUpper-upscale collection · lifestyle\n\nCALA urban lifestyle\n\nV Grand / Individuals Medellín cited in Choice press—collec",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "net_contribution_language",
+            "tab": "loyalty",
+            "slot": "loyalty.owner_lens",
+            "recordId": "receHFqVaro9K9p2B",
+            "currentTitle": "",
+            "currentBody": "Model loyalty as net contribution—member discounts, fulfillment, and franchise terms-reported room mix from Choice Privileges in",
+            "forbiddenPhrase": "net contribution",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "net_contribution"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "loi_language",
+            "tab": "footprint",
+            "slot": "footprint.geo.summary",
+            "recordId": "recgzgae0RkrAyrQo",
+            "currentTitle": "",
+            "currentBody": "Radisson Individual (Choice): upper-upscale soft collection · Choice Americas focus · confirm international authorization in LOI",
+            "forbiddenPhrase": "LOI",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "loi"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "fee_stack_language",
+            "tab": "economics",
+            "slot": "economics.opening.financials",
+            "recordId": "recilN5DRafMLI6IN",
+            "currentTitle": "",
+            "currentBody": "Financial planning themes (no deal-specific amounts):\n\nFront-loaded standards, FF&E, and technology\n\nWorking capital through ramp\n\nFee stack stepping from opening-weighted to stabilized\n\nPotential inc",
+            "forbiddenPhrase": "Fee stack",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "fee_stack"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "visible_url",
+            "tab": "materials",
+            "slot": "materials.caseStudy",
+            "recordId": "recrFHKf76tznXSEd",
+            "currentTitle": "Radisson Individuals Medellín, Colombia",
+            "currentBody": "Urban, Colombia, CALA, Soft collection\n\nMedellín, Colombia (El Poblado context)\n\nUpper-upscale collection · lifestyle\n\nCALA urban lifestyle\n\nV Grand / Individuals Medellín cited in Choice press—collec",
+            "forbiddenPhrase": "https://",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "http_url"
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "type": "loi_language",
+            "tab": "standards",
+            "slot": "standards.intro",
+            "recordId": "recv7mXA15GHiMEmo",
+            "currentTitle": "",
+            "currentBody": "Radisson Individual (Choice) standards vary by prototype, conversion path, and agreement vintage. Use the table as a planning checklist—confirm every row in the franchise terms, design manual, and LOI",
+            "forbiddenPhrase": "LOI",
+            "ownerVisible": true,
+            "severity": "high",
+            "sourceOfTruth": "live Brand Explorer Presentation + auditExternalOwnerPhrase",
+            "proposedRemediation": "Scrub owner-facing Title/Body into diligence-safe language",
+            "airtableWriteRequired": true,
+            "rendererPatchRequired": false,
+            "founderJudgmentRequired": false,
+            "patternId": "loi"
+          }
+        ],
+        "blockerTypeCounts": {
+          "founder_review_missing": 1,
+          "active_approval_missing": 1,
+          "render_contract_issue": 1,
+          "loi_language": 5,
+          "net_contribution_language": 3,
+          "visible_url": 4,
+          "fee_stack_language": 3
+        },
+        "patches": [
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "rec0ev2ZO9ZgVL1DY",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.fee.join",
+            "field": "Body",
+            "before": "Application and entry fees; training and opening support; initial franchise fee; technology implementation; plan review and inspection. Basis varies by keys, market, and new build vs. conversion—confirm in your franchise terms and LOI.",
+            "after": "Application and entry fees; training and opening support; initial franchise fee; technology implementation; plan review and inspection. Basis varies by keys, market, and new build vs. conversion—confirm in your franchise terms and letter of intent or commercial proposal.",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "rec0poafahDnIeDoG",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "commercial.kpi.lens",
+            "field": "Body",
+            "before": "Net contribution after fees and channel costs",
+            "after": "owner economics after fees and channel costs",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "rec27BNoxQUZm86k7",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Urban, Colombia, CALA, Soft collection\n\nMedellín, Colombia (El Poblado context)\n\nUpper-upscale collection · lifestyle\n\nCALA urban lifestyle\n\nV Grand / Individuals Medellín cited in Choice press—collection-tier CALA growth in trendy El Poblado.\n\nhttps://www.choicehotels.com/colombia/medellin/radisson-individuals-hotels/cb030",
+            "after": "Urban, Colombia, CALA, Soft collection\nMedellín, Colombia (El Poblado context)\nUpper-upscale collection · lifestyle\nCALA urban lifestyle\nV Grand / Individuals Medellín cited in Choice press—collection-tier CALA growth in trendy El Poblado.",
+            "reason": "Owner-copy scrub: visible_url",
+            "blockerResolved": [
+              "visible_url"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "rec7bMWfw1feB77Fw",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "operations.operator_compat.fit",
+            "field": "Body",
+            "before": "Strong fit when operator has upper-upscale soft collection depth, can meet prototype/PIP, and models net contribution after 6.0% royalty on gross room revenues (Radisson-family CHI franchise terms. Weak fit when market cannot support required amenity stack or operator lacks tier experience.",
+            "after": "Strong fit when operator has upper-upscale soft collection depth, can meet prototype/PIP, and models owner economics after 6.0% royalty on gross room revenues (Radisson-family CHI franchise terms. Weak fit when market cannot support required amenity stack or operator lacks tier experience.",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recIV2MhFScfuUoOn",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Urban, Colombia, CALA, Soft collection\n\nMedellín, Colombia (El Poblado context)\n\nUpper-upscale collection · lifestyle\n\nCALA urban lifestyle\n\nV Grand / Individuals Medellín cited in Choice press—collection-tier CALA growth in trendy El Poblado.\n\nhttps://www.choicehotels.com/colombia/medellin/radisson-individuals-hotels/cb030",
+            "after": "Urban, Colombia, CALA, Soft collection\nMedellín, Colombia (El Poblado context)\nUpper-upscale collection · lifestyle\nCALA urban lifestyle\nV Grand / Individuals Medellín cited in Choice press—collection-tier CALA growth in trendy El Poblado.",
+            "reason": "Owner-copy scrub: visible_url",
+            "blockerResolved": [
+              "visible_url"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recNVQ41VqdxZ2Ddl",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.cash.steadystate",
+            "field": "Body",
+            "before": "Owner funds: recurring fee stack (upper-upscale soft collection) plus program participation once stabilized.\n\nBrand provides: Choice distribution, QA cadence, and benchmarks—not property payroll or routine FF&E.",
+            "after": "Owner funds: recurring participation cost categories (upper-upscale soft collection) plus program participation once stabilized.\nBrand provides: Choice distribution, QA cadence, and benchmarks—not property payroll or routine FF&E.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recV9vvghknIzsRQB",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.legal",
+            "field": "Title",
+            "before": "LOI & process",
+            "after": "letter of intent or commercial proposal & process",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recV9vvghknIzsRQB",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.legal",
+            "field": "Body",
+            "before": "Clarify binding vs exploratory LOI terms and design approval gates early.",
+            "after": "Clarify binding vs exploratory letter of intent or commercial proposal terms and design approval gates early.",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recXgUmzgCJNLHrEa",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "insight.summary",
+            "field": "Body",
+            "before": "Radisson Individual (Choice) fits when you want upper-upscale soft collection Choice distribution with clear prototype economics and Choice Privileges participation—not a mismatched tier (e.g., Ascend Hotel Collection vs Radisson Individual (Choice) without comparing fee stack and amenity requirements). Best with operator tier experience, honest ramp plan, and franchise terms-backed channel mix. Weaker where market ADR cannot support required product or PIP exceeds conversion ROI.",
+            "after": "Radisson Individual (Choice) fits when you want upper-upscale soft collection Choice distribution with clear prototype economics and Choice Privileges participation—not a mismatched tier (e.g., Ascend Hotel Collection vs Radisson Individual (Choice) without comparing participation cost categories and amenity requirements). Best with operator tier experience, honest ramp plan, and franchise terms-backed channel mix. Weaker where market average daily rate cannot support required product or PIP exceeds conversion ROI.",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recYz8HoVymxGSM5G",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.intro",
+            "field": "Body",
+            "before": "Radisson Individual (Choice) (upper-upscale soft collection) economics are illustrative only—not a quote or substitute for the franchise terms, LOI, or advisors.",
+            "after": "Radisson Individual (Choice) (upper-upscale soft collection) economics are illustrative only—not a quote or substitute for the franchise terms, letter of intent or commercial proposal, or advisors.",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recag9AjmqFvKe8cN",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Urban, Colombia, CALA, Soft collection\n\nMedellín, Colombia (El Poblado context)\n\nUpper-upscale collection · lifestyle\n\nCALA urban lifestyle\n\nV Grand / Individuals Medellín cited in Choice press—collection-tier CALA growth in trendy El Poblado.\n\nhttps://www.choicehotels.com/colombia/medellin/radisson-individuals-hotels/cb030",
+            "after": "Urban, Colombia, CALA, Soft collection\nMedellín, Colombia (El Poblado context)\nUpper-upscale collection · lifestyle\nCALA urban lifestyle\nV Grand / Individuals Medellín cited in Choice press—collection-tier CALA growth in trendy El Poblado.",
+            "reason": "Owner-copy scrub: visible_url",
+            "blockerResolved": [
+              "visible_url"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "receHFqVaro9K9p2B",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "loyalty.owner_lens",
+            "field": "Body",
+            "before": "Model loyalty as net contribution—member discounts, fulfillment, and franchise terms-reported room mix from Choice Privileges in",
+            "after": "Model loyalty as owner economics—member discounts, fulfillment, and franchise terms-reported room mix from Choice Privileges in",
+            "reason": "Owner-copy scrub: net_contribution_language",
+            "blockerResolved": [
+              "net_contribution_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recgzgae0RkrAyrQo",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "footprint.geo.summary",
+            "field": "Body",
+            "before": "Radisson Individual (Choice): upper-upscale soft collection · Choice Americas focus · confirm international authorization in LOI",
+            "after": "Radisson Individual (Choice): upper-upscale soft collection · Choice Americas focus · confirm international authorization in letter of intent or commercial proposal",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recilN5DRafMLI6IN",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "economics.opening.financials",
+            "field": "Body",
+            "before": "Financial planning themes (no deal-specific amounts):\n\nFront-loaded standards, FF&E, and technology\n\nWorking capital through ramp\n\nFee stack stepping from opening-weighted to stabilized\n\nPotential incentive credits or ramps\n\nRenewal PIP reserves even if opening PIP is lighter\n\nSeparate owner capex, brand fees, and operator pass-throughs",
+            "after": "Financial planning themes (no deal-specific amounts):\nFront-loaded standards, FF&E, and technology\nWorking capital through ramp\nparticipation cost categories stepping from opening-weighted to stabilized\nPotential incentive credits or ramps\nRenewal PIP reserves even if opening PIP is lighter\nSeparate owner capex, brand fees, and operator pass-throughs",
+            "reason": "Owner-copy scrub: fee_stack_language",
+            "blockerResolved": [
+              "fee_stack_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recrFHKf76tznXSEd",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "materials.caseStudy",
+            "field": "Body",
+            "before": "Urban, Colombia, CALA, Soft collection\n\nMedellín, Colombia (El Poblado context)\n\nUpper-upscale collection · lifestyle\n\nCALA urban lifestyle\n\nV Grand / Individuals Medellín cited in Choice press—collection-tier CALA growth in trendy El Poblado.\n\nhttps://www.choicehotels.com/colombia/medellin/radisson-individuals-hotels/cb030",
+            "after": "Urban, Colombia, CALA, Soft collection\nMedellín, Colombia (El Poblado context)\nUpper-upscale collection · lifestyle\nCALA urban lifestyle\nV Grand / Individuals Medellín cited in Choice press—collection-tier CALA growth in trendy El Poblado.",
+            "reason": "Owner-copy scrub: visible_url",
+            "blockerResolved": [
+              "visible_url"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          },
+          {
+            "brand": "radisson-individuals-by-choice",
+            "recordId": "recv7mXA15GHiMEmo",
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "slotKey": "standards.intro",
+            "field": "Body",
+            "before": "Radisson Individual (Choice) standards vary by prototype, conversion path, and agreement vintage. Use the table as a planning checklist—confirm every row in the franchise terms, design manual, and LOI before capital commitments.",
+            "after": "Radisson Individual (Choice) standards vary by prototype, conversion path, and agreement vintage. Use the table as a planning checklist—confirm every row in the franchise terms, design manual, and letter of intent or commercial proposal before capital commitments.",
+            "reason": "Owner-copy scrub: loi_language",
+            "blockerResolved": [
+              "loi_language"
+            ],
+            "sourceSupportRetained": false,
+            "externalOwnerCopyCheck": "pass",
+            "brandModelFitCheck": "pass",
+            "forbiddenTermCheck": "pass",
+            "founderReviewRequired": false,
+            "safeForGenericApply": true
+          }
+        ],
+        "propertyReview": {
+          "brandSlug": "radisson-individuals-by-choice",
+          "policy": {
+            "minimum": 3,
+            "exactRequired": false,
+            "extrasAllowed": true,
+            "hideExtrasIfDuplicates": true
+          },
+          "totalOpeningsRows": 8,
+          "visibleWithImageCount": 3,
+          "duplicates": [],
+          "recommendation": "keep_all_visible_extras",
+          "note": "3 visible property examples with imageUrl (minimum 3; extras allowed).",
+          "hidePatches": [],
+          "visibleExamples": [
+            {
+              "recordId": "rec0uiWsD44ePqr6M",
+              "title": "Radisson Individual — Barranquilla, Colombia",
+              "sortOrder": 4
+            },
+            {
+              "recordId": "recto7QMu58eMf5jV",
+              "title": "Radisson Individual — Bogota, Colombia",
+              "sortOrder": 5
+            },
+            {
+              "recordId": "recVtiPqVGo8gUtpO",
+              "title": "Radisson Individual — Cucuta, Colombia",
+              "sortOrder": 7
+            }
+          ]
+        },
+        "summary": {
+          "blockerCount": 18,
+          "patchCount": 16,
+          "copyPatchCount": 16,
+          "hidePatchCount": 0,
+          "safeForGenericApplyCount": 16,
+          "founderReviewRequiredCount": 0
+        }
+      },
+      "projection": {
+        "forbiddenStringsBefore": 20,
+        "forbiddenStringsAfter": 0,
+        "visibleUrlsBefore": 4,
+        "visibleUrlsAfter": 0,
+        "internalNotesBefore": 0,
+        "internalNotesAfter": 0,
+        "emptyCardsBefore": 0,
+        "emptyCardsAfter": 0,
+        "externalOwnerRulePassBefore": false,
+        "externalOwnerRulePassAfter": true,
+        "liveDomQualityLockPass": true,
+        "expectedDisplayStateAfter": "draft_applied_with_defects",
+        "stillBlockedByFounderReview": true,
+        "stillBlockedByActiveApproval": true,
+        "unlockInV40": false,
+        "ownerCopyBlockersProjectedZero": true,
+        "afterBlockers": []
+      },
+      "unlockInV40": false,
+      "readyForActiveApproval": false,
+      "companyValidatedUntouched": true,
+      "applyResult": {
+        "patched": [
+          {
+            "recordId": "rec0ev2ZO9ZgVL1DY",
+            "slotKey": "economics.fee.join",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "rec0poafahDnIeDoG",
+            "slotKey": "commercial.kpi.lens",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "rec27BNoxQUZm86k7",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "rec7bMWfw1feB77Fw",
+            "slotKey": "operations.operator_compat.fit",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recIV2MhFScfuUoOn",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recNVQ41VqdxZ2Ddl",
+            "slotKey": "economics.cash.steadystate",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recV9vvghknIzsRQB",
+            "slotKey": "economics.legal",
+            "fields": [
+              "Title",
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recXgUmzgCJNLHrEa",
+            "slotKey": "insight.summary",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recYz8HoVymxGSM5G",
+            "slotKey": "economics.intro",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recag9AjmqFvKe8cN",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "receHFqVaro9K9p2B",
+            "slotKey": "loyalty.owner_lens",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recgzgae0RkrAyrQo",
+            "slotKey": "footprint.geo.summary",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recilN5DRafMLI6IN",
+            "slotKey": "economics.opening.financials",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recrFHKf76tznXSEd",
+            "slotKey": "materials.caseStudy",
+            "fields": [
+              "Body"
+            ]
+          },
+          {
+            "recordId": "recv7mXA15GHiMEmo",
+            "slotKey": "standards.intro",
+            "fields": [
+              "Body"
+            ]
+          }
+        ],
+        "errors": [],
+        "recordsTouched": 15
+      }
+    }
+  ],
+  "incompleteControl": {
+    "allControlPass": true,
+    "rows": [
+      {
+        "brandSlug": "hotel-indigo",
+        "shouldRenderFullProfile": false,
+        "displayState": "hidden_incomplete",
+        "profileInPreparation": true,
+        "forbiddenStringsFound": 0,
+        "externalQualityLockPass": true,
+        "noActiveApprovalPath": true,
+        "controlPass": true
+      },
+      {
+        "brandSlug": "mgallery-collection",
+        "shouldRenderFullProfile": false,
+        "displayState": "hidden_incomplete",
+        "profileInPreparation": true,
+        "forbiddenStringsFound": 0,
+        "externalQualityLockPass": true,
+        "noActiveApprovalPath": true,
+        "controlPass": true
+      },
+      {
+        "brandSlug": "design-hotels",
+        "shouldRenderFullProfile": false,
+        "displayState": "draft_applied_with_defects",
+        "profileInPreparation": true,
+        "forbiddenStringsFound": 0,
+        "externalQualityLockPass": true,
+        "noActiveApprovalPath": true,
+        "controlPass": true
+      },
+      {
+        "brandSlug": "small-luxury-hotels-of-the-world",
+        "shouldRenderFullProfile": false,
+        "displayState": "hidden_incomplete",
+        "profileInPreparation": true,
+        "forbiddenStringsFound": 0,
+        "externalQualityLockPass": true,
+        "noActiveApprovalPath": true,
+        "controlPass": true
+      }
+    ]
+  },
+  "applyDesign": {
+    "command": "npm run brand-explorer-v40-active-release-remediation -- --brands everhome-suites,kimpton,radisson-individuals-by-choice --apply --approve-brand-explorer-v40-active-release-remediation --confirm-no-company-validation-claim --confirm-no-active-profile-approval --confirm-no-source-library-changes --confirm-no-registry-changes --confirm-external-owner-copy-clean --confirm-brand-only",
+    "allowedWrites": [
+      "Brand Explorer Presentation Title/Body/Case Summary fields",
+      "External Display Status (hide duplicates only)"
+    ],
+    "forbiddenWrites": [
+      "Company Validated",
+      "Ready for Active Profile",
+      "Active Profile Approved",
+      "Source Library",
+      "Brand Asset Registry",
+      "Image / Scenario Image fields"
+    ],
+    "status": "designed_not_executed"
+  },
+  "summary": {
+    "brandsRemediated": 3,
+    "totalPatches": 52,
+    "totalBlockers": 61,
+    "ownerCopyProjectedCleanCount": 3,
+    "recordsPatched": 45,
+    "applyErrors": 0,
+    "incompleteControlPass": true,
+    "anyUnlock": false,
+    "activeApprovalTouched": false,
+    "companyValidatedTouched": false
+  },
+  "guardrails": {
+    "airtableWrites": true,
+    "presentationWrites": true,
+    "registryWrites": false,
+    "sourceLibraryWrites": false,
+    "imageFieldWrites": false,
+    "companyValidatedChanges": false,
+    "activeProfileApproval": false,
+    "activeReleaseApply": false
+  }
+}

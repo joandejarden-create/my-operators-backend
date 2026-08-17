@@ -1,0 +1,1072 @@
+{
+  "version": "clean_dev_hardening_4_resume_v1",
+  "generatedAt": "2026-08-15T00:46:50.878Z",
+  "CLASSIFIER_VERSION_AFTER": "ai_visibility_recommendation_classifier_v3_3",
+  "cleanDev": {
+    "DEV_N": 290,
+    "GROUND_TRUTH_AMENDMENTS": 52,
+    "INVALIDATED_EXCLUDED": 12,
+    "DEFERRED_EXCLUDED": 0,
+    "HOLDOUT_N": 93
+  },
+  "groundTruthEffectOnly": {
+    "CLASSIFIER_VERSION_BEFORE": "ai_visibility_recommendation_classifier_v3_2",
+    "ACCURACY": 0.8344827586206897,
+    "PRECISION": 0.8344827586206897,
+    "RECALL": 0.8344827586206897,
+    "F1": 0.8344827586206898,
+    "MACRO_P": 0.8631368497310526,
+    "MACRO_R": 0.9122884872068175,
+    "MACRO_F1": 0.872059034019804,
+    "FIRST_REC": 0.9758620689655172,
+    "QUESTION_STATUS": 0.8008298755186722,
+    "ENTITY_F1": 1,
+    "CLASSIFIER_LOGIC_CHANGE": 0
+  },
+  "trueClassifierErrorsBeforeHardening": {
+    "TOTAL": 49,
+    "BY_PAIR": [
+      {
+        "pattern": "discussed => explicit_recommendation",
+        "count": 21
+      },
+      {
+        "pattern": "discussed => associated_option",
+        "count": 11
+      },
+      {
+        "pattern": "discussed => ranked_recommendation",
+        "count": 5
+      },
+      {
+        "pattern": "discussed => first_recommendation",
+        "count": 3
+      },
+      {
+        "pattern": "explicit_recommendation => first_recommendation",
+        "count": 2
+      },
+      {
+        "pattern": "associated_option => ranked_recommendation",
+        "count": 2
+      },
+      {
+        "pattern": "negative_or_qualified => discussed",
+        "count": 1
+      },
+      {
+        "pattern": "associated_option => discussed",
+        "count": 1
+      },
+      {
+        "pattern": "associated_option => first_recommendation",
+        "count": 1
+      },
+      {
+        "pattern": "comparator => explicit_recommendation",
+        "count": 1
+      },
+      {
+        "pattern": "first_recommendation => discussed",
+        "count": 1
+      }
+    ]
+  },
+  "before": {
+    "ACCURACY": 0.8344827586206897,
+    "PRECISION": 0.8344827586206897,
+    "RECALL": 0.8344827586206897,
+    "F1": 0.8344827586206898,
+    "MACRO_P": 0.8631368497310526,
+    "MACRO_R": 0.9122884872068175,
+    "MACRO_F1": 0.872059034019804,
+    "FIRST_REC": 0.9758620689655172,
+    "QUESTION_STATUS": 0.8008298755186722
+  },
+  "after": {
+    "ACCURACY": 0.8379310344827586,
+    "PRECISION": 0.8379310344827586,
+    "RECALL": 0.8379310344827586,
+    "F1": 0.8379310344827586,
+    "MACRO_P": 0.8291134628853927,
+    "MACRO_R": 0.8898162145712054,
+    "MACRO_F1": 0.851712511959564,
+    "FIRST_REC": 0.9551724137931035,
+    "QUESTION_STATUS": 0.8215767634854771,
+    "ENTITY_F1": 1
+  },
+  "FIXED_ERRORS": 7,
+  "NEW_ERRORS": 6,
+  "classMetrics": {
+    "first_recommendation": {
+      "precision": 0.8245614035087719,
+      "recall": 0.94,
+      "f1": 0.8785046728971964,
+      "tp": 47,
+      "fp": 10,
+      "fn": 3
+    },
+    "ranked_recommendation": {
+      "precision": 0.7083333333333334,
+      "recall": 1,
+      "f1": 0.8292682926829268,
+      "tp": 17,
+      "fp": 7,
+      "fn": 0
+    },
+    "explicit_recommendation": {
+      "precision": 0.5909090909090909,
+      "recall": 0.6842105263157895,
+      "f1": 0.6341463414634148,
+      "tp": 13,
+      "fp": 9,
+      "fn": 6
+    },
+    "associated_option": {
+      "precision": 0.7142857142857143,
+      "recall": 0.8974358974358975,
+      "f1": 0.7954545454545455,
+      "tp": 35,
+      "fp": 14,
+      "fn": 4
+    },
+    "comparator": {
+      "precision": 0.6666666666666666,
+      "recall": 0.8571428571428571,
+      "f1": 0.75,
+      "tp": 6,
+      "fp": 3,
+      "fn": 1
+    },
+    "discussed": {
+      "precision": 0.9572649572649573,
+      "recall": 0.7724137931034483,
+      "f1": 0.8549618320610687,
+      "tp": 112,
+      "fp": 5,
+      "fn": 33
+    },
+    "passing_mention": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0
+    },
+    "negative_or_qualified": {
+      "precision": 1,
+      "recall": 0.8571428571428571,
+      "f1": 0.923076923076923,
+      "tp": 6,
+      "fp": 0,
+      "fn": 1
+    },
+    "source_only": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    "no_mention": {
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0
+    }
+  },
+  "confusionMatrix": {
+    "first_recommendation": {
+      "first_recommendation": 47,
+      "ranked_recommendation": 0,
+      "explicit_recommendation": 0,
+      "associated_option": 1,
+      "comparator": 0,
+      "discussed": 2,
+      "passing_mention": 0,
+      "negative_or_qualified": 0,
+      "source_only": 0,
+      "no_mention": 0
+    },
+    "ranked_recommendation": {
+      "first_recommendation": 0,
+      "ranked_recommendation": 17,
+      "explicit_recommendation": 0,
+      "associated_option": 0,
+      "comparator": 0,
+      "discussed": 0,
+      "passing_mention": 0,
+      "negative_or_qualified": 0,
+      "source_only": 0,
+      "no_mention": 0
+    },
+    "explicit_recommendation": {
+      "first_recommendation": 6,
+      "ranked_recommendation": 0,
+      "explicit_recommendation": 13,
+      "associated_option": 0,
+      "comparator": 0,
+      "discussed": 0,
+      "passing_mention": 0,
+      "negative_or_qualified": 0,
+      "source_only": 0,
+      "no_mention": 0
+    },
+    "associated_option": {
+      "first_recommendation": 1,
+      "ranked_recommendation": 2,
+      "explicit_recommendation": 0,
+      "associated_option": 35,
+      "comparator": 0,
+      "discussed": 1,
+      "passing_mention": 0,
+      "negative_or_qualified": 0,
+      "source_only": 0,
+      "no_mention": 0
+    },
+    "comparator": {
+      "first_recommendation": 0,
+      "ranked_recommendation": 0,
+      "explicit_recommendation": 0,
+      "associated_option": 0,
+      "comparator": 6,
+      "discussed": 1,
+      "passing_mention": 0,
+      "negative_or_qualified": 0,
+      "source_only": 0,
+      "no_mention": 0
+    },
+    "discussed": {
+      "first_recommendation": 3,
+      "ranked_recommendation": 5,
+      "explicit_recommendation": 9,
+      "associated_option": 13,
+      "comparator": 3,
+      "discussed": 112,
+      "passing_mention": 0,
+      "negative_or_qualified": 0,
+      "source_only": 0,
+      "no_mention": 0
+    },
+    "passing_mention": {
+      "first_recommendation": 0,
+      "ranked_recommendation": 0,
+      "explicit_recommendation": 0,
+      "associated_option": 0,
+      "comparator": 0,
+      "discussed": 0,
+      "passing_mention": 5,
+      "negative_or_qualified": 0,
+      "source_only": 0,
+      "no_mention": 0
+    },
+    "negative_or_qualified": {
+      "first_recommendation": 0,
+      "ranked_recommendation": 0,
+      "explicit_recommendation": 0,
+      "associated_option": 0,
+      "comparator": 0,
+      "discussed": 1,
+      "passing_mention": 0,
+      "negative_or_qualified": 6,
+      "source_only": 0,
+      "no_mention": 0
+    },
+    "source_only": {
+      "first_recommendation": 0,
+      "ranked_recommendation": 0,
+      "explicit_recommendation": 0,
+      "associated_option": 0,
+      "comparator": 0,
+      "discussed": 0,
+      "passing_mention": 0,
+      "negative_or_qualified": 0,
+      "source_only": 1,
+      "no_mention": 0
+    },
+    "no_mention": {
+      "first_recommendation": 0,
+      "ranked_recommendation": 0,
+      "explicit_recommendation": 0,
+      "associated_option": 0,
+      "comparator": 0,
+      "discussed": 0,
+      "passing_mention": 0,
+      "negative_or_qualified": 0,
+      "source_only": 0,
+      "no_mention": 0
+    }
+  },
+  "subgroups": {
+    "PROVIDER": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ACCURACY": 1
+      },
+      "claude": {
+        "CASE_COUNT": 67,
+        "ACCURACY": 0.746268656716418
+      },
+      "gemini": {
+        "CASE_COUNT": 71,
+        "ACCURACY": 0.8028169014084507
+      },
+      "perplexity": {
+        "CASE_COUNT": 64,
+        "ACCURACY": 0.90625
+      },
+      "openai": {
+        "CASE_COUNT": 38,
+        "ACCURACY": 0.7105263157894737
+      }
+    },
+    "LANGUAGE": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ACCURACY": 1
+      },
+      "es": {
+        "CASE_COUNT": 118,
+        "ACCURACY": 0.8135593220338984
+      },
+      "en": {
+        "CASE_COUNT": 122,
+        "ACCURACY": 0.7868852459016393
+      }
+    },
+    "GEOGRAPHY": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ACCURACY": 1
+      },
+      "CALA": {
+        "CASE_COUNT": 80,
+        "ACCURACY": 0.75
+      },
+      "MEXICO": {
+        "CASE_COUNT": 85,
+        "ACCURACY": 0.8470588235294118
+      },
+      "EUROPE": {
+        "CASE_COUNT": 21,
+        "ACCURACY": 0.8095238095238095
+      },
+      "GLOBAL": {
+        "CASE_COUNT": 30,
+        "ACCURACY": 0.6666666666666666
+      },
+      "NORTH_AMERICA": {
+        "CASE_COUNT": 24,
+        "ACCURACY": 0.9583333333333334
+      }
+    }
+  },
+  "remainingErrors": {
+    "TOTAL": 48,
+    "BY_PAIR": [
+      {
+        "pattern": "discussed => associated_option",
+        "count": 13
+      },
+      {
+        "pattern": "discussed => explicit_recommendation",
+        "count": 9
+      },
+      {
+        "pattern": "explicit_recommendation => first_recommendation",
+        "count": 6
+      },
+      {
+        "pattern": "discussed => ranked_recommendation",
+        "count": 5
+      },
+      {
+        "pattern": "discussed => comparator",
+        "count": 3
+      },
+      {
+        "pattern": "discussed => first_recommendation",
+        "count": 3
+      },
+      {
+        "pattern": "first_recommendation => discussed",
+        "count": 2
+      },
+      {
+        "pattern": "associated_option => ranked_recommendation",
+        "count": 2
+      },
+      {
+        "pattern": "negative_or_qualified => discussed",
+        "count": 1
+      },
+      {
+        "pattern": "first_recommendation => associated_option",
+        "count": 1
+      },
+      {
+        "pattern": "associated_option => discussed",
+        "count": 1
+      },
+      {
+        "pattern": "associated_option => first_recommendation",
+        "count": 1
+      },
+      {
+        "pattern": "comparator => discussed",
+        "count": 1
+      }
+    ],
+    "BY_PATTERN": [
+      {
+        "pattern": "recommendation_section",
+        "count": 8
+      },
+      {
+        "pattern": "consideration_catalog",
+        "count": 7
+      },
+      {
+        "pattern": "positive_recommendation_cue",
+        "count": 7
+      },
+      {
+        "pattern": "numbered_brand_catalog",
+        "count": 6
+      },
+      {
+        "pattern": "default_discussed",
+        "count": 5
+      },
+      {
+        "pattern": "rank_marker_gt_1_in_shortlist",
+        "count": 4
+      },
+      {
+        "pattern": "shortlist_structural_position",
+        "count": 4
+      },
+      {
+        "pattern": "comparison_section",
+        "count": 2
+      },
+      {
+        "pattern": "rank_marker_1_in_shortlist",
+        "count": 2
+      },
+      {
+        "pattern": "comparator_object",
+        "count": 1
+      },
+      {
+        "pattern": "association_language",
+        "count": 1
+      },
+      {
+        "pattern": "shortlist_position_1",
+        "count": 1
+      }
+    ],
+    "BY_CLASS": {
+      "discussed": 33,
+      "first_recommendation": 3,
+      "negative_or_qualified": 1,
+      "explicit_recommendation": 6,
+      "associated_option": 4,
+      "comparator": 1
+    },
+    "ERRORS": [
+      {
+        "CASE_ID": "v2_cand_030739d6",
+        "ENTITY": "Curio Collection by Hilton",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Conversion",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "comparator",
+        "REASON": "comparator_object",
+        "ROOT_CAUSE": "discussed => comparator"
+      },
+      {
+        "CASE_ID": "v2_cand_035ffe13",
+        "ENTITY": "Small Luxury Hotels of the World",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "EUROPE",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "first_recommendation",
+        "CLASSIFIER_LABEL": "discussed",
+        "REASON": "default_discussed",
+        "ROOT_CAUSE": "first_recommendation => discussed"
+      },
+      {
+        "CASE_ID": "v2_cand_0cfea0d4",
+        "ENTITY": "Tapestry Collection by Hilton",
+        "PROVIDER": "perplexity",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "ranked_recommendation",
+        "REASON": "rank_marker_gt_1_in_shortlist",
+        "ROOT_CAUSE": "discussed => ranked_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_160cbb3c",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Conversion",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "consideration_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_1756c36a",
+        "ENTITY": "Curio Collection by Hilton",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Conversion",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "consideration_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_186c03b8",
+        "ENTITY": "Moxy Hotels",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "numbered_brand_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_1a571607",
+        "ENTITY": "Sheraton",
+        "PROVIDER": "openai",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "showcase_upper_upscale_shortlist",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "ranked_recommendation",
+        "REASON": "shortlist_structural_position",
+        "ROOT_CAUSE": "discussed => ranked_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_1d0e7663",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "EUROPE",
+        "PROMPT_FAMILY": "Upper-Upscale Positioning",
+        "HUMAN_LABEL": "negative_or_qualified",
+        "CLASSIFIER_LABEL": "discussed",
+        "REASON": "default_discussed",
+        "ROOT_CAUSE": "negative_or_qualified => discussed"
+      },
+      {
+        "CASE_ID": "v2_cand_20fc4534",
+        "ENTITY": "Tribute Portfolio",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "numbered_brand_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_2906f0b5",
+        "ENTITY": "Tapestry Collection by Hilton",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "comparator",
+        "REASON": "comparison_section",
+        "ROOT_CAUSE": "discussed => comparator"
+      },
+      {
+        "CASE_ID": "v2_cand_350eddb9",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "openai",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "showcase_collection_soft_affiliation",
+        "HUMAN_LABEL": "explicit_recommendation",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "rank_marker_1_in_shortlist",
+        "ROOT_CAUSE": "explicit_recommendation => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_37595e51",
+        "ENTITY": "Small Luxury Hotels of the World",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "consideration_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_3a457626",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "perplexity",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "ranked_recommendation",
+        "REASON": "rank_marker_gt_1_in_shortlist",
+        "ROOT_CAUSE": "discussed => ranked_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_3b6fce74",
+        "ENTITY": "Tribute Portfolio",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Conversion",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "consideration_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_3c28453a",
+        "ENTITY": "Handwritten Collection",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "first_recommendation",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "association_language",
+        "ROOT_CAUSE": "first_recommendation => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_415f17f0",
+        "ENTITY": "Tapestry Collection by Hilton",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "positive_recommendation_cue",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_4c7fd94c",
+        "ENTITY": "Kimpton Hotels",
+        "PROVIDER": "perplexity",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "recommendation_section",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_508203f8",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "consideration_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_5cac205e",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "numbered_brand_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_6514603c",
+        "ENTITY": "Small Luxury Hotels of the World",
+        "PROVIDER": "claude",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Conversion",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "recommendation_section",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_653af768",
+        "ENTITY": "Tribute Portfolio",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "consideration_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_69234a57",
+        "ENTITY": "Kimpton Hotels",
+        "PROVIDER": "openai",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "showcase_lifestyle_positioning_strategy",
+        "HUMAN_LABEL": "explicit_recommendation",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "positive_recommendation_cue",
+        "ROOT_CAUSE": "explicit_recommendation => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_6fb4d85e",
+        "ENTITY": "Ascend Hotel Collection",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "numbered_brand_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_72152a7a",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "comparator",
+        "REASON": "comparison_section",
+        "ROOT_CAUSE": "discussed => comparator"
+      },
+      {
+        "CASE_ID": "v2_cand_7555e9c3",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "openai",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "showcase_soft_brand_individuality",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "recommendation_section",
+        "ROOT_CAUSE": "discussed => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_75f7cc02",
+        "ENTITY": "Preferred Hotels & Resorts",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "explicit_recommendation",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "positive_recommendation_cue",
+        "ROOT_CAUSE": "explicit_recommendation => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_786bec95",
+        "ENTITY": "Preferred Hotels & Resorts",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "explicit_recommendation",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "positive_recommendation_cue",
+        "ROOT_CAUSE": "explicit_recommendation => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_78a00e14",
+        "ENTITY": "Tribute Portfolio",
+        "PROVIDER": "claude",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "numbered_brand_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_81b6acd1",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "NORTH_AMERICA",
+        "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+        "HUMAN_LABEL": "associated_option",
+        "CLASSIFIER_LABEL": "discussed",
+        "REASON": "default_discussed",
+        "ROOT_CAUSE": "associated_option => discussed"
+      },
+      {
+        "CASE_ID": "v2_cand_8ff4f422",
+        "ENTITY": "Canopy by Hilton",
+        "PROVIDER": "perplexity",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "recommendation_section",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_935f6696",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "openai",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "showcase_lifestyle_design_character",
+        "HUMAN_LABEL": "associated_option",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "rank_marker_1_in_shortlist",
+        "ROOT_CAUSE": "associated_option => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_955a9776",
+        "ENTITY": "Small Luxury Hotels of the World",
+        "PROVIDER": "perplexity",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "GLOBAL",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "recommendation_section",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_96f04629",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Upper-Upscale Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "shortlist_structural_position",
+        "ROOT_CAUSE": "discussed => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_98c0b04a",
+        "ENTITY": "Vignette Collection",
+        "PROVIDER": "perplexity",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "positive_recommendation_cue",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_a16a0bd3",
+        "ENTITY": "Preferred Hotels & Resorts",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "EUROPE",
+        "PROMPT_FAMILY": "Collection / Soft Brand",
+        "HUMAN_LABEL": "explicit_recommendation",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "positive_recommendation_cue",
+        "ROOT_CAUSE": "explicit_recommendation => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_a25aefe1",
+        "ENTITY": "Curio Collection by Hilton",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Upper-Upscale Positioning",
+        "HUMAN_LABEL": "comparator",
+        "CLASSIFIER_LABEL": "discussed",
+        "REASON": "default_discussed",
+        "ROOT_CAUSE": "comparator => discussed"
+      },
+      {
+        "CASE_ID": "v2_cand_a3a809a4",
+        "ENTITY": "Kimpton Hotels",
+        "PROVIDER": "claude",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "numbered_brand_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_ac788b6c",
+        "ENTITY": "Tribute Portfolio",
+        "PROVIDER": "openai",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "showcase_soft_brand_individuality",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "recommendation_section",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_b6ce5d3b",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "openai",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "showcase_lifestyle_design_character",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "ranked_recommendation",
+        "REASON": "shortlist_structural_position",
+        "ROOT_CAUSE": "discussed => ranked_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_c02e1b19",
+        "ENTITY": "Curio Collection by Hilton",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "associated_option",
+        "REASON": "consideration_catalog",
+        "ROOT_CAUSE": "discussed => associated_option"
+      },
+      {
+        "CASE_ID": "v2_cand_c133e47a",
+        "ENTITY": "Sheraton",
+        "PROVIDER": "claude",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Upper-Upscale Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "recommendation_section",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_c1bc5a0b",
+        "ENTITY": "Preferred Hotels & Resorts",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "EUROPE",
+        "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+        "HUMAN_LABEL": "explicit_recommendation",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "positive_recommendation_cue",
+        "ROOT_CAUSE": "explicit_recommendation => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_c964ea2b",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "openai",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "showcase_soft_brand_individuality",
+        "HUMAN_LABEL": "associated_option",
+        "CLASSIFIER_LABEL": "ranked_recommendation",
+        "REASON": "shortlist_structural_position",
+        "ROOT_CAUSE": "associated_option => ranked_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_d72d9741",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "claude",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "Lifestyle Positioning",
+        "HUMAN_LABEL": "first_recommendation",
+        "CLASSIFIER_LABEL": "discussed",
+        "REASON": "default_discussed",
+        "ROOT_CAUSE": "first_recommendation => discussed"
+      },
+      {
+        "CASE_ID": "v2_cand_d837af7f",
+        "ENTITY": "Tribute Portfolio",
+        "PROVIDER": "openai",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "showcase_lifestyle_design_character",
+        "HUMAN_LABEL": "associated_option",
+        "CLASSIFIER_LABEL": "ranked_recommendation",
+        "REASON": "rank_marker_gt_1_in_shortlist",
+        "ROOT_CAUSE": "associated_option => ranked_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_d9246fa5",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "claude",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "MEXICO",
+        "PROMPT_FAMILY": "Upper-Upscale Positioning",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "explicit_recommendation",
+        "REASON": "recommendation_section",
+        "ROOT_CAUSE": "discussed => explicit_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_e006943b",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "openai",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "showcase_collection_soft_shortlist",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "first_recommendation",
+        "REASON": "shortlist_position_1",
+        "ROOT_CAUSE": "discussed => first_recommendation"
+      },
+      {
+        "CASE_ID": "v2_cand_e1446adf",
+        "ENTITY": "Autograph Collection",
+        "PROVIDER": "openai",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "PROMPT_FAMILY": "showcase_lifestyle_design_character",
+        "HUMAN_LABEL": "discussed",
+        "CLASSIFIER_LABEL": "ranked_recommendation",
+        "REASON": "rank_marker_gt_1_in_shortlist",
+        "ROOT_CAUSE": "discussed => ranked_recommendation"
+      }
+    ]
+  },
+  "gates": {
+    "ENTITY_GATE": "PASS",
+    "RECOMMENDATION_GATE": "FAIL",
+    "FIRST_REC_GATE": "FAIL",
+    "CLASS_BALANCE_STATUS": "REVIEW",
+    "QUESTION_STATUS_STATUS": "BELOW_TARGET"
+  },
+  "HOLDOUT_ACCESSED": false,
+  "HOLDOUT_CASES_INSPECTED": 0,
+  "HOLDOUT_METRICS_RUN": false,
+  "NEXT_STEP": "MORE_DEVELOPMENT_HARDENING_REQUIRED"
+}

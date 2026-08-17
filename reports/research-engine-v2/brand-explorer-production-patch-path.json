@@ -1,0 +1,57 @@
+{
+  "plan_version": "production-census-and-be-patch-plan-v1",
+  "execute": false,
+  "brand_explorer_production_patch_run_now": false,
+  "brand_explorer_production_patch_remains_blocked": true,
+  "operator_explorer": "paused",
+  "sandbox_source": {
+    "slot_namespace": "vic.pilot.medium.*",
+    "rows": 28,
+    "brands": 7,
+    "brand_slugs": [
+      "hotel-indigo",
+      "ascend",
+      "curio-collection",
+      "holiday-inn-express",
+      "voco-hotels",
+      "kimpton",
+      "avid-hotels"
+    ],
+    "founder_review": "medium_sandbox_founder_review_approved_pause_vic_lane",
+    "lane_closure_status": "vic_be_sandbox_lane_paused_ready_for_operator_explorer"
+  },
+  "options": {
+    "A": {
+      "name": "Non-rendering production rows",
+      "slot_namespace": "vic.production.pilot.medium.*",
+      "description": "Create non-rendering production Presentation rows under vic.production.pilot.medium.* so approved evidence is stored without changing owner-facing UI",
+      "risk": "low",
+      "recommended": true
+    },
+    "B": {
+      "name": "Patch real rendered Brand Explorer slots",
+      "description": "Write into live rendered slots — higher risk; requires founder approval + visual review",
+      "risk": "high",
+      "recommended": false
+    }
+  },
+  "default_recommendation": "Option A",
+  "must_not_touch": [
+    "Brand Status",
+    "release fields",
+    "Company Validated",
+    "Brand Verified",
+    "Recent Momentum",
+    "owner / operator / rooms / open-date / affiliation-start-date fields",
+    "frozen_62 baseline artifacts"
+  ],
+  "production_dry_run_only": true,
+  "next_step": "After Census schema + VIC census write path is approved, run a separate BE Option A dry-run (no execute) for founder approval",
+  "frozen_62": {
+    "decision": "frozen_62_active_public_full_baseline_semantic_clean_flex_held",
+    "mutated": false,
+    "bulk_public_patch": false
+  },
+  "acceptance_status": "production_census_dry_run_ready_for_founder_approval",
+  "generated_at": "2026-08-05T08:20:31.738Z"
+}

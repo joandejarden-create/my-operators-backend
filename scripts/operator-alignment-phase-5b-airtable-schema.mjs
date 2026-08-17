@@ -41,6 +41,12 @@ import {
   OAS_OPERATOR_SCOPE_OPTIONS,
   OAS_DEAL_SI_FIELD_NAMES,
   OAS_DEAL_DEALS_FIELD_NAMES,
+  OAS_YES_NO_CASE_BY_CASE_OPTIONS,
+  OAS_BRANDED_RESIDENCE_PROGRAM_MODEL_OPTIONS,
+  OAS_CONDO_RENTAL_PROGRAM_MODEL_OPTIONS,
+  OAS_HOA_CONDO_INTERFACE_OPTIONS,
+  OAS_RESIDENCE_SALES_SUPPORT_OPTIONS,
+  OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES,
 } from "../lib/operator-alignment-field-options.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -140,6 +146,72 @@ const FIELD_SPECS = [
   // Deals P1/P2
   { table: "deals", ...single(OAS_DEAL_DEALS_FIELD_NAMES.fbComplexity, OAS_FB_CAPABILITY_OPTIONS) },
   { table: "deals", ...single(OAS_DEAL_DEALS_FIELD_NAMES.openingTimeline, OAS_OPENING_TIMELINE_OPTIONS) },
+  // Operator branded residence / mixed-use (Commercial Fit + Platform + Governance)
+  {
+    table: "commercial",
+    ...single(
+      OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.brandedResidencesAllowed,
+      OAS_YES_NO_CASE_BY_CASE_OPTIONS
+    ),
+  },
+  {
+    table: "commercial",
+    ...single(
+      OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.mixedUseAllowed,
+      OAS_YES_NO_CASE_BY_CASE_OPTIONS
+    ),
+  },
+  {
+    table: "commercial",
+    ...single("Co-Branding Allowed", OAS_YES_NO_CASE_BY_CASE_OPTIONS),
+  },
+  {
+    table: "commercial",
+    ...single(
+      OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.brandedResidenceExperienceLevel,
+      OAS_EXPERIENCE_LEVEL_OPTIONS
+    ),
+  },
+  {
+    table: "commercial",
+    ...multi(
+      OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.brandedResidenceProgramModelsSupported,
+      OAS_BRANDED_RESIDENCE_PROGRAM_MODEL_OPTIONS
+    ),
+  },
+  {
+    table: "commercial",
+    ...multi(
+      OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.condoRentalProgramModelsSupported,
+      OAS_CONDO_RENTAL_PROGRAM_MODEL_OPTIONS
+    ),
+  },
+  {
+    table: "commercial",
+    ...longText(OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.brandedResidenceFitSignal),
+  },
+  {
+    table: "platform",
+    ...numberField(OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.brandedResidencePropertiesManaged),
+  },
+  {
+    table: "platform",
+    ...numberField(OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.mixedUseHospitalityExperience),
+  },
+  {
+    table: "governance",
+    ...single(
+      OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.hoaCondoAssociationInterface,
+      OAS_HOA_CONDO_INTERFACE_OPTIONS
+    ),
+  },
+  {
+    table: "governance",
+    ...single(
+      OAS_OPERATOR_BRANDED_RESIDENCE_FIELD_NAMES.residenceSalesClosingSupport,
+      OAS_RESIDENCE_SALES_SUPPORT_OPTIONS
+    ),
+  },
 ];
 
 const REUSED_FIELDS = [

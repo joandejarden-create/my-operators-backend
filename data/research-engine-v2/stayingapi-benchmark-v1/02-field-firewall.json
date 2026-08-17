@@ -1,0 +1,75 @@
+{
+  "version": "stayingapi-field-firewall-v1",
+  "STAYINGAPI_ROOMS_CAPABILITY": "NOT_SUPPORTED",
+  "allowed_candidate_fields": [
+    "Property Name",
+    "Address",
+    "City",
+    "State / Region",
+    "Country",
+    "Postal Code",
+    "Latitude",
+    "Longitude",
+    "Property Type",
+    "Amenities",
+    "external_platform_property_id",
+    "external_property_url",
+    "image_urls_reference_only"
+  ],
+  "prohibited_mappings": [
+    {
+      "from": "bedrooms",
+      "to": "Rooms / Keys",
+      "reason": "bedrooms_are_not_hotel_keys"
+    },
+    {
+      "from": "maxOccupancy",
+      "to": "Rooms / Keys",
+      "reason": "occupancy_is_not_hotel_keys"
+    },
+    {
+      "from": "room_types",
+      "to": "Rooms / Keys",
+      "reason": "room_types_are_not_hotel_keys"
+    },
+    {
+      "from": "listing_inventory",
+      "to": "Rooms / Keys",
+      "reason": "inventory_is_not_hotel_keys"
+    },
+    {
+      "from": "starRating|guestRating",
+      "to": "Dealality Segment / Positioning",
+      "reason": "ratings_are_not_segment"
+    },
+    {
+      "from": "OTA category",
+      "to": "Market|Submarket",
+      "reason": "ota_taxonomy_not_dealality_geo"
+    },
+    {
+      "from": "host",
+      "to": "Owner Name|Operator / Management Company",
+      "reason": "host_is_not_owner_or_operator"
+    },
+    {
+      "from": "platform",
+      "to": "Operator / Management Company",
+      "reason": "platform_is_not_operator"
+    }
+  ],
+  "never_infer": [
+    "Owner Name",
+    "Developer Name",
+    "Operator / Management Company",
+    "Opening Date",
+    "Renovation Date",
+    "Floors",
+    "Rooms / Keys",
+    "Restaurant Count",
+    "Total Meeting Space",
+    "Number of Meeting Rooms"
+  ],
+  "bedrooms_mapped_to_rooms_keys": false,
+  "note": "bedrooms / maxOccupancy MUST NEVER map to Rooms / Keys"
+}

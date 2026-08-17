@@ -1,0 +1,254 @@
+{
+  "generatedAt": "2026-07-14T07:12:01.629Z",
+  "mode": "dry-run",
+  "orchestratorVersion": "2",
+  "brand": {
+    "slug": "woodspring-suites",
+    "recordId": "recsOd51NzRPYsMko",
+    "name": "WoodSpring Suites",
+    "resolution": {
+      "inputTarget": "woodspring-suites",
+      "resolvedBrandName": "WoodSpring Suites",
+      "resolvedRecordId": "recsOd51NzRPYsMko",
+      "resolvedSlug": "woodspring-suites",
+      "resolutionSource": "expansion_backlog",
+      "parentCompany": "Choice Hotels International",
+      "parentFamily": "Choice (source-confirmed)",
+      "wave": 6,
+      "ambiguous": false,
+      "error": null,
+      "suggestedMatches": []
+    }
+  },
+  "resolution": {
+    "inputTarget": "woodspring-suites",
+    "resolvedBrandName": "WoodSpring Suites",
+    "resolvedRecordId": "recsOd51NzRPYsMko",
+    "resolvedSlug": "woodspring-suites",
+    "resolutionSource": "expansion_backlog",
+    "parentCompany": "Choice Hotels International",
+    "parentFamily": "Choice (source-confirmed)",
+    "wave": 6,
+    "ambiguous": false,
+    "error": null,
+    "suggestedMatches": []
+  },
+  "targetQuality": "active-profile",
+  "halted": false,
+  "haltReason": "",
+  "completedBatches": [],
+  "stageResults": [
+    {
+      "stage": "profile_inspection",
+      "status": "complete",
+      "summary": {
+        "brandName": "WoodSpring Suites",
+        "recordId": "recsOd51NzRPYsMko",
+        "companyValidated": null,
+        "companyValidationDate": null
+      }
+    },
+    {
+      "stage": "source_inventory",
+      "status": "complete",
+      "summary": {
+        "sourceCount": 5,
+        "approvedForExplorer": 5
+      }
+    },
+    {
+      "stage": "fact_inventory",
+      "status": "complete",
+      "summary": {
+        "factCount": 0,
+        "approved": 0,
+        "pending": 0
+      }
+    },
+    {
+      "stage": "brand_residences_legacy_migration",
+      "status": "complete",
+      "summary": {
+        "alreadySynced": 1,
+        "migrateFromLegacy": 0,
+        "conflicts": 0,
+        "noDataDefault": 0,
+        "sourceBackedPreserved": 0,
+        "wouldUpdate": 0
+      },
+      "command": "npm run brand-residences-legacy-migration-writer -- --brand woodspring-suites --dry-run",
+      "futureSetupWritesToBrandBasicsOnly": true
+    },
+    {
+      "stage": "required_section_contract",
+      "status": "complete",
+      "summary": {
+        "readinessScore": 100,
+        "ready": true,
+        "sectionsReady": 8,
+        "sectionsTotal": 8,
+        "nextWriters": []
+      },
+      "command": "npm run brand-explorer-required-section-population-contract -- --brand woodspring-suites --dry-run"
+    },
+    {
+      "stage": "visual_defect_audit",
+      "status": "complete",
+      "summary": {
+        "defects": {
+          "total": 5,
+          "critical": 0,
+          "high": 4,
+          "medium": 1,
+          "low": 0,
+          "missingImage": 2,
+          "emptyBullet": 0,
+          "titleOnlyOrThin": 1,
+          "placeholderGeneric": 0,
+          "sortOrder": 1
+        },
+        "comparableToCurio": false,
+        "nextBatch": "v24B_media_asset_fix"
+      },
+      "command": "npm run brand-explorer-visual-display-defect-audit -- --brand woodspring-suites --dry-run"
+    },
+    {
+      "stage": "brand-explorer-required-section-source-capture-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-required-section-source-capture-package -- --brand recsOd51NzRPYsMko --dry-run"
+    },
+    {
+      "stage": "brand-explorer-evidence-fact-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-evidence-fact-review-package -- --brand recsOd51NzRPYsMko --dry-run"
+    },
+    {
+      "stage": "brand-explorer-openings-momentum-row-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-openings-momentum-row-review-package -- --brand recsOd51NzRPYsMko --dry-run"
+    },
+    {
+      "stage": "final_qa_auditor",
+      "status": "blocked",
+      "summary": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 65,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 100,
+        "visualCompletenessScore": 65,
+        "overallNumeric": 84,
+        "overallActiveProfileReadiness": "almost_ready"
+      },
+      "command": "npm run brand-explorer-final-qa-auditor -- --brand woodspring-suites --dry-run"
+    }
+  ],
+  "blockers": [
+    {
+      "type": "visual_defect",
+      "section": "Where This Brand Creates the Most Value",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Where This Brand Creates the Most Value",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Where This Brand Creates the Most Value",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Brand Materials",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    }
+  ],
+  "tributeExpectedRemaining": [],
+  "stagedApplyCommands": [],
+  "nextRequiredWriter": "v24B_media_asset_fix",
+  "finalQaScores": {
+    "requiredSectionReadinessScore": 100,
+    "presentationQualityScore": 65,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 100,
+    "visualCompletenessScore": 65,
+    "overallNumeric": 84,
+    "overallActiveProfileReadiness": "almost_ready"
+  },
+  "contractReadinessScore": 100,
+  "requiredSectionStatus": {
+    "score": 100,
+    "ready": true,
+    "sectionsReady": 8,
+    "sectionsTotal": 8
+  },
+  "visualQaStatus": {
+    "score": 65,
+    "comparableToReference": false,
+    "defectCounts": {
+      "total": 5,
+      "critical": 0,
+      "high": 4,
+      "medium": 1,
+      "low": 0,
+      "missingImage": 2,
+      "emptyBullet": 0,
+      "titleOnlyOrThin": 1,
+      "placeholderGeneric": 0,
+      "sortOrder": 1
+    },
+    "recommendedNextBatch": "v24B_media_asset_fix"
+  },
+  "governanceStatus": {
+    "governedPlatformReady": true,
+    "sourceCount": 5,
+    "approvedExplorerSources": 5,
+    "explorerFactCount": 0,
+    "pendingFacts": 0,
+    "sourceEvidenceNeeded": true,
+    "factApprovalNeeded": false,
+    "founderReviewNeeded": false
+  },
+  "governedPlatformReady": true,
+  "readyForActiveProfile": false,
+  "readinessBand": "almost_ready",
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "companyValidationDateSnapshot": null,
+  "exactDryRunCommand": "npm run brand-explorer-complete-build -- --brand woodspring-suites --dry-run --target-quality active-profile",
+  "exactApplyCommand": "npm run brand-explorer-complete-build -- --brand woodspring-suites --apply-approved --approve-brand-explorer-complete-build --target-quality active-profile",
+  "reportBasename": "brand-explorer-complete-build-woodspring-suites",
+  "applySafety": {
+    "safeForApplyApproved": false,
+    "applyBlockReasons": [
+      "Required image slots are still missing"
+    ],
+    "applySkippedReasons": [
+      "Required image slots are still missing"
+    ],
+    "applyCommandsEligible": [],
+    "governanceSnapshot": {
+      "companyValidated": null,
+      "governedPlatformReady": true,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": false,
+      "pendingFacts": 0,
+      "internalFacts": 0,
+      "fddFacts": 0
+    }
+  },
+  "applyExecutionLog": [],
+  "airtableModified": false
+}

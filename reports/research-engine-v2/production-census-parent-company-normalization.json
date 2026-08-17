@@ -1,0 +1,2084 @@
+{
+  "version": "census-parent-company-normalization-v1",
+  "queue": "parent_company_normalization",
+  "canonical_field": "Brand Family",
+  "schema_note": "Hotel Property Census has Brand Family (canonical parent rollup) and Family / Source Family (source lineage). No Parent Company column.",
+  "canonical_parents": [
+    "Marriott International",
+    "Hilton",
+    "IHG",
+    "Choice Hotels International",
+    "Accor",
+    "Wyndham Hotels & Resorts",
+    "Preferred Hotels & Resorts",
+    "BWH Hotels",
+    "Small Luxury Hotels of the World",
+    "Bunkhouse"
+  ],
+  "status": "production_census_parent_company_normalization_partial_steward_remaining",
+  "counters": {
+    "records_scanned": 1224,
+    "parent_valid": 1036,
+    "parent_blank": 0,
+    "parent_alias_normalizable": 0,
+    "parent_brand_mismatch": 0,
+    "parent_source_mismatch": 0,
+    "parent_unknown": 18,
+    "steward_review_required": 340,
+    "high_proposals": 0
+  },
+  "proposals": [],
+  "steward_cases": [
+    {
+      "record_id": "rec02pPY8kVklN6mK",
+      "identity_key": "ind_accor_mx_c4p4",
+      "property_name": "Club Regina Los Cabos managed by Accor",
+      "brand": "SAM",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec02wJ8dk7HtjPjx",
+      "identity_key": "ind_marriott_mx_bjxds",
+      "property_name": "Elena de Cobre, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec0IqAQQtjvBvstj",
+      "identity_key": "ind_hilton_mx_cunmelx",
+      "property_name": "Mezzanine, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec0P2XU4LWSkAMKm",
+      "identity_key": "ind_hilton_pa_ptyatlx",
+      "property_name": "American Trade Hotel, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1XdpdiXxT2K18C",
+      "identity_key": "ind_hilton_cr_lirrplx",
+      "property_name": "Rio Perdido, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1f0W6zwB9lA50p",
+      "identity_key": "ind_marriott_mx_pbcds",
+      "property_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1fjvAKLJPb7AzI",
+      "identity_key": "osm_do_relation_1922795",
+      "property_name": "Hotel Riu Palace Bavaro",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2gjht94CaFSfNX",
+      "identity_key": "osm_do_node_302771929",
+      "property_name": "Be Live Grand Bavaro",
+      "brand": "Be Live",
+      "parent": "Be Live",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2lIoIR5zP8K3XZ",
+      "identity_key": "osm_do_way_539003044",
+      "property_name": "Bahía Príncipe Bouganville",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec2wRckl0EfhiNyY",
+      "identity_key": "osm_do_way_253123206",
+      "property_name": "Catalonia Royal La Romana",
+      "brand": "Catalonia",
+      "parent": "Catalonia",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec30eORcGKDSQKhJ",
+      "identity_key": "ind_marriott_mx_pxmtr",
+      "property_name": "Terrestre, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3NdKlsDqp9AWpc",
+      "identity_key": "osm_do_way_142306645",
+      "property_name": "Hotel Riu Naiboa",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3QgXCAUGHlVw6c",
+      "identity_key": "ind_marriott_mx_lapbc",
+      "property_name": "Baja Club Hotel, La Paz, Baja California Sur, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3bK7fOFBnEsJwM",
+      "identity_key": "ind_accor_mx_c280",
+      "property_name": "Marival Distinct All-Suites & World Spa  Handwritten Collection",
+      "brand": "Handwritten Collection",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec4GtL5puDoZLBNv",
+      "identity_key": "osm_do_way_175357851",
+      "property_name": "Gran Bahia Principe Cayacoa",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec5CCtHKvyBnvC1C",
+      "identity_key": "osm_do_way_310075723",
+      "property_name": "Grand Sirenis Punta Cana Resort",
+      "brand": "Sirenis Hotels & Resorts",
+      "parent": "Sirenis Hotels & Resorts",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec5HytFhKHHeQ8Kj",
+      "identity_key": "ind_marriott_mx_midds",
+      "property_name": "Rosas & Xocolate, Mérida, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec5b4Cscv9AfHspt",
+      "identity_key": "ind_ihg_mx_midsr",
+      "property_name": "2026 Best Vacation Destinations",
+      "brand": "IHG Partner / Spnd",
+      "parent": "IHG",
+      "expected_parent": "IHG",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec61aOhNCTEqGAkE",
+      "identity_key": "ind_choice_mx_mx197",
+      "property_name": "Choice property MX197",
+      "brand": "Choice Hotels",
+      "parent": "Choice Hotels International",
+      "expected_parent": "Choice Hotels International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec65prcyn44MACE4",
+      "identity_key": "osm_do_way_309228608",
+      "property_name": "Majestic Colonial Hotel",
+      "brand": "Majestic Resorts",
+      "parent": "Majestic Resorts",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec6trraPa03RhrKl",
+      "identity_key": "ind_marriott_co_mdewt",
+      "property_name": "Wake BioHotel, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec6ztnByQ5yYKq72",
+      "identity_key": "osm_do_way_255788067",
+      "property_name": "Hard Rock Hotel",
+      "brand": "Hard Rock Hotels",
+      "parent": "Hard Rock Hotels",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec7hWWFWbfTddlEg",
+      "identity_key": "osm_do_way_153864150",
+      "property_name": "Hotel Barceló Santo Domingo",
+      "brand": "Barceló",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec7uzw6WAJQwjnd8",
+      "identity_key": "osm_do_way_379027094",
+      "property_name": "Hotel BQ;Vent W&P Santo Domingo",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec80isZs41AC5dqE",
+      "identity_key": "ind_marriott_mx_mexds",
+      "property_name": "CONDESA df, Mexico City, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec8XBNPHAStPoWJM",
+      "identity_key": "osm_do_node_1207422127",
+      "property_name": "Be Live Grand Marien Hotel",
+      "brand": "Be Live",
+      "parent": "Be Live",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9SQXzPOOsjPTqc",
+      "identity_key": "ind_marriott_mx_pbcde",
+      "property_name": "Gran Hotel de Puebla by HNF",
+      "brand": "Marriott Bonvoy — Brand Unconfirmed",
+      "parent": "Marriott International",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9VgXqFtb8cVmBX",
+      "identity_key": "osm_do_node_302771860",
+      "property_name": "Catalonia Punta Cana",
+      "brand": "Catalonia",
+      "parent": "Catalonia",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9Zrzfk7FQBeE4s",
+      "identity_key": "osm_do_way_310436422",
+      "property_name": "Occidental Grand Punta Cana Hotel",
+      "brand": "Occidental",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9cNh7gyRpmSadT",
+      "identity_key": "osm_do_way_471926026",
+      "property_name": "Grand Bahia Principe Turquesa",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9gAZZzQOvgzcBy",
+      "identity_key": "ind_accor_mx_c0d9",
+      "property_name": "The Paragon Hotel Mexico City Santa Fe By Accor",
+      "brand": "SAM",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9i1dsU1KdqN9Kj",
+      "identity_key": "ind_hilton_mx_qrolvlx",
+      "property_name": "La Valise San Miguel de Allende, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec9t2dO5jv5587EH",
+      "identity_key": "osm_do_way_659053800",
+      "property_name": "Viva Wyndham Tangerine",
+      "brand": "Wyndham",
+      "parent": "Wyndham Hotels & Resorts",
+      "expected_parent": "Wyndham Hotels & Resorts",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recALDbIJGJItgYBG",
+      "identity_key": "osm_do_way_975017774",
+      "property_name": "Viva Wyndham V Samana",
+      "brand": "Wyndham",
+      "parent": "Wyndham Hotels & Resorts",
+      "expected_parent": "Wyndham Hotels & Resorts",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recAsOCSrAEx7I137",
+      "identity_key": "osm_do_way_33120922",
+      "property_name": "Hotel Occidental Allegro Playa Dorada",
+      "brand": "Occidental",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recBD32oUc1X93GYg",
+      "identity_key": "osm_do_node_4023347101",
+      "property_name": "Excellence El Carmen",
+      "brand": "Excellence Resorts",
+      "parent": "Excellence Resorts",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recBvkvMZewtONyB2",
+      "identity_key": "ind_hilton_mx_mexpdlx",
+      "property_name": "Hacienda Pena Pobre, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recCWs5oRz4Eji2No",
+      "identity_key": "osm_do_node_11035653720",
+      "property_name": "Hotel Casa Coco",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recCZ3QNBu2kkksi8",
+      "identity_key": "osm_do_way_272974124",
+      "property_name": "Melia Santo Domingo Hotel",
+      "brand": "Meliá",
+      "parent": "Meliá",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recDVZWiVOf2baoOS",
+      "identity_key": "osm_do_node_373851323",
+      "property_name": "Hotel Europa",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recEPcVyK0do4xAdo",
+      "identity_key": "osm_do_way_335856652",
+      "property_name": "Hotel Breathless Punta Cana",
+      "brand": "Breathless (Hyatt Inclusive Collection)",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recEtl07tpuEDPpRi",
+      "identity_key": "ind_hilton_cr_sjotrlx",
+      "property_name": "The Retreat Costa Rica - Wellness Resort and Spa, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recFFDCFeouXJQkft",
+      "identity_key": "ind_accor_mx_c4t7",
+      "property_name": "Club Regina Puerto Vallarta managed by Accor",
+      "brand": "SAM",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recFT63Mw6DOL8LWo",
+      "identity_key": "osm_do_node_354627440",
+      "property_name": "Hotel RIU Merengue",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recFePITe3R03edAY",
+      "identity_key": "ind_choice_mx_mx210",
+      "property_name": "Choice property MX210",
+      "brand": "Choice Hotels",
+      "parent": "Choice Hotels International",
+      "expected_parent": "Choice Hotels International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recFqGC5xs7t0eMke",
+      "identity_key": "ind_marriott_co_mdewm",
+      "property_name": "Wake Medellin, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recFuJKGY1ouU3K0U",
+      "identity_key": "ind_hilton_mx_cunwhlx",
+      "property_name": "Wakax Hacienda - Cenote and Boutique Hotel, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recG7GEqswAepVQAo",
+      "identity_key": "ind_hilton_mx_cunlvlx",
+      "property_name": "La Valise Tulum, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recHCDAVoKuXEDRVx",
+      "identity_key": "osm_do_way_406649862",
+      "property_name": "Hodelpa Caribe Colonial",
+      "brand": "Hodelpa",
+      "parent": "Hodelpa",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recHMTL77yTJGPT6P",
+      "identity_key": "osm_do_way_310076079",
+      "property_name": "Excellence Punta Cana Hotel",
+      "brand": "Excellence Resorts",
+      "parent": "Excellence Resorts",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recJ6ZaG52F5m8a3r",
+      "identity_key": "ind_hilton_mx_oaxvmlx",
+      "property_name": "La Valise Mazunte, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recJ7feOXGO5Dx8Hl",
+      "identity_key": "ind_hilton_cr_lirnblx",
+      "property_name": "Hotel Nantipa, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recJHwImimVQ5yOf4",
+      "identity_key": "ind_marriott_mx_czmde",
+      "property_name": "Papaya Playa Project, Tulum, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recJR1Kh1s4pkAenT",
+      "identity_key": "ind_marriott_mx_mexdd",
+      "property_name": "Downtown Mexico, a Member of Design Hotels",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recJwwvSbW0cqkDco",
+      "identity_key": "osm_do_way_476739407",
+      "property_name": "Hotel Riu Republica",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recKI0UUutwks5d3N",
+      "identity_key": "ind_hilton_do_sdqsrlx",
+      "property_name": "Sublime Samana Hotel & Residences, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recKO2Pg7GNayjVgx",
+      "identity_key": "osm_do_way_34879211",
+      "property_name": "Barcelo Punta Cana Hotel",
+      "brand": "Barceló",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recL6BP5Nry222uwu",
+      "identity_key": "osm_do_node_349129742",
+      "property_name": "Hotel RIU Mambo",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recLBPK2Cp08ZBPkz",
+      "identity_key": "osm_do_node_4660748808",
+      "property_name": "Grand Bahia Principe Aquamarine",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recLY7AFZZMwXXJ8p",
+      "identity_key": "osm_do_node_1653013577",
+      "property_name": "Secrets Royal Beach Punta Cana",
+      "brand": "Hyatt",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recLad6Tv8Qo38pBQ",
+      "identity_key": "ind_accor_mx_c4n9",
+      "property_name": "Park Royal Huatulco managed by Accor",
+      "brand": "SAM",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recLm7zcsifLZBU0i",
+      "identity_key": "osm_do_way_711650078",
+      "property_name": "Nickelodeon Hotels & Resorts Punta Cana",
+      "brand": "Karisma Hotels",
+      "parent": "Karisma Hotels",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recLy2yuOsLu2KI6x",
+      "identity_key": "ind_accor_mx_c4q4",
+      "property_name": "Park Royal Home Stay Los Tules managed by Accor",
+      "brand": "SAM",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recMaSyam2xqqyvYG",
+      "identity_key": "osm_do_way_164232205",
+      "property_name": "Hodelpa Centro Plaza Hotel",
+      "brand": "Hodelpa",
+      "parent": "Hodelpa",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recMmhI7VgyVUkQMd",
+      "identity_key": "ind_hilton_mx_lapvslx",
+      "property_name": "Villa Santa Cruz, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recOQvYsDo2dUqaM0",
+      "identity_key": "osm_do_way_255806141",
+      "property_name": "Barceló Dominican Beach",
+      "brand": "Barceló",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recOY6gmMrTQLhWxO",
+      "identity_key": "ind_hilton_pa_boclclx",
+      "property_name": "La Coralina Island House, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recOywDeph44Kucae",
+      "identity_key": "osm_do_node_5181801658",
+      "property_name": "Amhsa Marina Grand Paradise Playa Dorada",
+      "brand": "Amhsa Marina Hotels",
+      "parent": "Amhsa Marina Hotels",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recPEhDXYOmH34H4U",
+      "identity_key": "osm_do_node_11216277399",
+      "property_name": "Marriott Miches Beach, An All-Inclusive Resort",
+      "brand": "Marriott",
+      "parent": "Marriott International",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recPkFAT74wlK1LN6",
+      "identity_key": "osm_do_way_1040966966",
+      "property_name": "Hodelpa Garden Suites Golf & Convention Center",
+      "brand": "Hodelpa",
+      "parent": "Hodelpa",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recQ1KXPNkrde3N9U",
+      "identity_key": "osm_do_node_354627549",
+      "property_name": "Hotel RIU Bachata",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recQ4d3piVkZcKj8L",
+      "identity_key": "osm_do_node_5029505780",
+      "property_name": "Santo Domingo Bed & Breakfast",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recR1YUsKDkIs7iks",
+      "identity_key": "ind_marriott_mx_slwak",
+      "property_name": "CASA MAYOR Saltillo, Hotel Hacienda",
+      "brand": "Marriott Bonvoy — Brand Unconfirmed",
+      "parent": "Marriott International",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recSIWNZPm43EkTSc",
+      "identity_key": "osm_do_way_1134831880",
+      "property_name": "Villas CODEVI",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recSXXbWhcNcsSyHc",
+      "identity_key": "ind_marriott_mx_mexhd",
+      "property_name": "Habita, Mexico City, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recSbz3vsbjS4Mw04",
+      "identity_key": "ind_marriott_mx_pxmhh",
+      "property_name": "Hotel Humano, a Member of Design Hotels",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recSdv3q472kmlSlA",
+      "identity_key": "ind_marriott_mx_oaxoo",
+      "property_name": "Otro Oaxaca, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recTcqcgldWYEJ388",
+      "identity_key": "osm_do_node_6468314516",
+      "property_name": "Hotel Emotions by Hodelpa",
+      "brand": "Hodelpa",
+      "parent": "Hodelpa",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recTzbWYmSpipGXjt",
+      "identity_key": "ind_hilton_mx_mexbhlx",
+      "property_name": "Brick Hotel, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recUDiUFUCnYMnqBT",
+      "identity_key": "osm_do_way_233446403",
+      "property_name": "Hodelpa Gran Almirante",
+      "brand": "Hodelpa",
+      "parent": "Hodelpa",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recUanvpOQZBXVNNk",
+      "identity_key": "ind_hilton_mx_mexrhlx",
+      "property_name": "Roso Guest House, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recUbyoBfFBrCY1Gc",
+      "identity_key": "osm_do_node_3287789561",
+      "property_name": "Breathless Resort",
+      "brand": "Breathless (Hyatt Inclusive Collection)",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recV47DDYGTqvSLAK",
+      "identity_key": "ind_marriott_mx_pxmds",
+      "property_name": "Hotel Escondido, Puerto Escondido, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recVXiQ9eboTgBzHR",
+      "identity_key": "osm_do_way_309228614",
+      "property_name": "Majestic Elegance Punta Cana",
+      "brand": "Majestic Resorts",
+      "parent": "Majestic Resorts",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recVuDIjyW6HWs3ud",
+      "identity_key": "osm_do_way_312593390",
+      "property_name": "Hodelpa Garden Court Hotel",
+      "brand": "Hodelpa",
+      "parent": "Hodelpa",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recW36Mc2SfxCdbuC",
+      "identity_key": "ind_marriott_mx_pazds",
+      "property_name": "Azucar, Monte Gordo, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recW7sPeknxZ04GBg",
+      "identity_key": "ind_marriott_mx_mtyds",
+      "property_name": "Habita Monterrey, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recWAt9joUREf4H41",
+      "identity_key": "osm_do_way_342786288",
+      "property_name": "Bahía Príncipe Playa Nueva La Romana",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recWY3fHxShu6xFLv",
+      "identity_key": "ind_marriott_mx_bjxhm",
+      "property_name": "Hotel Matilda, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recX4vzUp7AeGkmci",
+      "identity_key": "ind_marriott_mx_mtyjd",
+      "property_name": "SJ Grand Hotel Monterrey",
+      "brand": "Marriott Bonvoy — Brand Unconfirmed",
+      "parent": "Marriott International",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recYCJLcB7FYCmcB4",
+      "identity_key": "ind_marriott_mx_gdlds",
+      "property_name": "Casa Habita, Guadalajara, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recYLnedWeUzwcF2m",
+      "identity_key": "osm_do_node_3354152914",
+      "property_name": "Bungalows of Las Galeras",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recZLjtpujQoNcqaO",
+      "identity_key": "ind_hilton_cr_sjoallx",
+      "property_name": "Alta Las Palomas, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recZMlOblXnJv1kWL",
+      "identity_key": "osm_do_way_204089278",
+      "property_name": "Casa Marina Beach & Reef",
+      "brand": "Amhsa Marina Hotels",
+      "parent": "Amhsa Marina Hotels",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recZQY1XbMejpSDHf",
+      "identity_key": "ind_hilton_mx_sjdvclx",
+      "property_name": "La Valise Los Cabos, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recZltQOovCTa9L8Q",
+      "identity_key": "ind_accor_mx_c4p3",
+      "property_name": "Club Regina Cancun managed by Accor",
+      "brand": "SAM",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recahOzZ5uFfZ1MFl",
+      "identity_key": "osm_do_node_3469337532",
+      "property_name": "Jarabacua River Club & Resort",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recazCEnMYzUaPGvy",
+      "identity_key": "ind_hilton_do_popcclx",
+      "property_name": "Casa Colonial Beach and Spa, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recb1ioSL6IhKXZSb",
+      "identity_key": "ind_hilton_mx_czmttlx",
+      "property_name": "TAGO Tulum, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recbAIe2bnUwWAjmr",
+      "identity_key": "ind_hilton_mx_mexlvlx",
+      "property_name": "La Valise Mexico City, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recbjqHrIy5DZ3PnC",
+      "identity_key": "osm_do_node_2106184527",
+      "property_name": "Hard Rock Hotel & Casino Punta Cana - All inclusive",
+      "brand": "Hard Rock Hotels",
+      "parent": "Hard Rock Hotels",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recc2XfadodFUJJwL",
+      "identity_key": "osm_do_node_5688089045",
+      "property_name": "Lopesan Costa Bávaro Resort, Spa & Casino",
+      "brand": "Lopesan",
+      "parent": "Lopesan",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reccWs5qn7SnvbrSf",
+      "identity_key": "osm_do_node_8026710897",
+      "property_name": "Hyatt Zilara Cap Cana",
+      "brand": "Hyatt Zilara",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reccXulO4ALRMYSsF",
+      "identity_key": "osm_do_node_13081433749",
+      "property_name": "Viva Dominicus Beach by Wyndham",
+      "brand": "Wyndham",
+      "parent": "Wyndham Hotels & Resorts",
+      "expected_parent": "Wyndham Hotels & Resorts",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reccZpotXHhOMH7Ym",
+      "identity_key": "osm_do_way_104646167",
+      "property_name": "Barceló Bávaro Beach – Adults only",
+      "brand": "Barceló",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reccax9nT5J90Sc0Y",
+      "identity_key": "osm_do_node_302800763",
+      "property_name": "Wyndham Alltra Punta Cana",
+      "brand": "Wyndham",
+      "parent": "Wyndham Hotels & Resorts",
+      "expected_parent": "Wyndham Hotels & Resorts",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recch55pV5iICbr2h",
+      "identity_key": "osm_do_node_3523794277",
+      "property_name": "Bella Vista",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recd7XAM6tLjzQhaI",
+      "identity_key": "osm_do_way_677625141",
+      "property_name": "Secrets Cap Cana Resort & Spa",
+      "brand": "Secrets (Hyatt Inclusive Collection)",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recd8C3YOCYvk5uib",
+      "identity_key": "ind_marriott_mx_pazdr",
+      "property_name": "Maison Couturier, San Rafael, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recdA09CjsCpegQl8",
+      "identity_key": "ind_marriott_mx_mexul",
+      "property_name": "Circulo Mexicano, Mexico, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recdKQ82YtyUMx9g7",
+      "identity_key": "osm_do_way_759223343",
+      "property_name": "Sunscapes Dominicus La Romana",
+      "brand": "Be Live",
+      "parent": "Be Live",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "receb9kXfXpygywj3",
+      "identity_key": "osm_do_node_3145204521",
+      "property_name": "Occidental Caribe (former Barcelo Punta Cana)",
+      "brand": "Barceló",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recebn4aVyrF12JZK",
+      "identity_key": "osm_do_way_540475898",
+      "property_name": "Dreams Dominicus La Romana",
+      "brand": "Dreams (Hyatt Inclusive Collection)",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recejqysZwwkbtuEP",
+      "identity_key": "ind_hilton_cr_sjottlx",
+      "property_name": "Tabacon Thermal Resort and Spa, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "receuHkILQ7gmM3WV",
+      "identity_key": "osm_do_way_711650079",
+      "property_name": "Nickelodeon Hotels & Resorts Punta Cana",
+      "brand": "Karisma Hotels",
+      "parent": "Karisma Hotels",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recf0a8MEj0IgvGDu",
+      "identity_key": "ind_marriott_mx_tqoxt",
+      "property_name": "XELA Tulum, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recfitqtBIOWnqUTl",
+      "identity_key": "ind_hilton_cr_sjolclx",
+      "property_name": "Los Altos Resort, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recgMcYTKJG8N5QAa",
+      "identity_key": "ind_marriott_mx_sjddh",
+      "property_name": "Drift San Jose del Cabo, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recgOUzd274WEGOjI",
+      "identity_key": "osm_do_node_2262714721",
+      "property_name": "Dreams Royal Beach Punta Cana",
+      "brand": "Dreams (Hyatt Inclusive Collection)",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recgxvDmi47qXWo1s",
+      "identity_key": "ind_hilton_mx_cunlzlx",
+      "property_name": "La Zebra, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rech8ZXjwbFFZ279x",
+      "identity_key": "osm_do_way_335856784",
+      "property_name": "Dreams Punta Cana Resort & Spa",
+      "brand": "Dreams (Hyatt Inclusive Collection)",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rechOPfauOueqvCpN",
+      "identity_key": "osm_do_node_431025349",
+      "property_name": "Barceló Bávaro Palace Deluxe",
+      "brand": "Barceló",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rechdCDxCzO8QaYpo",
+      "identity_key": "osm_do_node_2998191668",
+      "property_name": "Barceló Puerto Plata",
+      "brand": "Barceló",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rechwkmQG4ZpCkiFI",
+      "identity_key": "ind_ihg_mx_midsj",
+      "property_name": "2026 Best Vacation Destinations",
+      "brand": "IHG Partner / Spnd",
+      "parent": "IHG",
+      "expected_parent": "IHG",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reciOiZj4wH9QrpqI",
+      "identity_key": "osm_do_node_11628073769",
+      "property_name": "Melia caribe beach resort",
+      "brand": "Meliá",
+      "parent": "Meliá",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recilyM8vTTrd94aB",
+      "identity_key": "ind_hilton_mx_middmlx",
+      "property_name": "Decu Downtown, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recj0jZi9Fc4buWNC",
+      "identity_key": "osm_do_node_4268870091",
+      "property_name": "Melia Caribe Tropical",
+      "brand": "Meliá",
+      "parent": "Meliá",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recjGU5ultPG6SACs",
+      "identity_key": "osm_do_node_8116547995",
+      "property_name": "Majestic Mirage Punta Cana - All-Suite Resort",
+      "brand": "Majestic Resorts",
+      "parent": "Majestic Resorts",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reckB9liXcRVxzKtL",
+      "identity_key": "osm_do_node_287032841",
+      "property_name": "Dreams Palm Beach Resort",
+      "brand": "Dreams (Hyatt Inclusive Collection)",
+      "parent": "Hyatt",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reckMIRG4Fjc7I78g",
+      "identity_key": "osm_do_node_13165874914",
+      "property_name": "Casa Barbara Las Terrenas",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recl9hDZhWtLWBRsd",
+      "identity_key": "osm_do_way_545028233",
+      "property_name": "Hotel Casa Hemingway",
+      "brand": "Starfish Resorts",
+      "parent": "Karisma Hotels",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reclNE7U1OcrA01ip",
+      "identity_key": "osm_do_node_597456591",
+      "property_name": "Hodelpa Novus Plaza",
+      "brand": "Hodelpa",
+      "parent": "Hodelpa",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recmNuuhEj2EBFaHo",
+      "identity_key": "osm_do_node_12798112370",
+      "property_name": "Hotel & Apartments Buchen",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recn6DaNp82QqWvIS",
+      "identity_key": "osm_do_node_302771731",
+      "property_name": "Natura Park Beach Eco Resort & Spa",
+      "brand": "Blau Hotels",
+      "parent": "Blau Hotels",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recogsmJEcIhrnGVO",
+      "identity_key": "ind_hilton_mx_laptslx",
+      "property_name": "Todos Santos Boutique Hotel, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recolbLdfdFAoEBUh",
+      "identity_key": "osm_do_node_3501119758",
+      "property_name": "Viva Dominicus Palace by Wyndham",
+      "brand": "Wyndham",
+      "parent": "Wyndham Hotels & Resorts",
+      "expected_parent": "Wyndham Hotels & Resorts",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recp96oLzcJooK5Xe",
+      "identity_key": "osm_do_node_270997923",
+      "property_name": "Breezes",
+      "brand": "Breezes (SuperClubs)",
+      "parent": "SuperClubs",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recpCAanftQJ77ZE1",
+      "identity_key": "osm_do_way_236000172",
+      "property_name": "Luxury Bahia Principe Samana",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recpHdCixkfSA2Yq4",
+      "identity_key": "osm_do_node_3154070396",
+      "property_name": "Excellence Punta Cana",
+      "brand": "Excellence Resorts",
+      "parent": "Excellence Resorts",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recpSuHbxYi676qzU",
+      "identity_key": "ind_hilton_cr_sjotslx",
+      "property_name": "Hotel Three Sixty, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recphoovHH4WDE2bV",
+      "identity_key": "osm_do_node_5037222222",
+      "property_name": "Hotel Tropicana Deluxe",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recq0434fssNkRo5q",
+      "identity_key": "osm_do_node_6314999313",
+      "property_name": "Catalonia Bavaro Royal",
+      "brand": "Catalonia",
+      "parent": "Catalonia",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recqdS8SI6QrXAbcB",
+      "identity_key": "osm_do_node_1234382123",
+      "property_name": "Emotion By Hodelpa.",
+      "brand": "Hodelpa",
+      "parent": "Hodelpa",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recr7TUtB8U7aXseY",
+      "identity_key": "osm_do_node_3145261362",
+      "property_name": "Riu Palace Punta Cana",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recrJCf3qwho6h7PS",
+      "identity_key": "ind_marriott_mx_czmds",
+      "property_name": "Hotel La Semilla, Playa del Carmen, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recrNPNLZ8rZds5F9",
+      "identity_key": "ind_marriott_mx_sjdnb",
+      "property_name": "NEST Baja, a Member of Design Hotels",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recrlWTSZuLc0j9U3",
+      "identity_key": "osm_do_node_4901959222",
+      "property_name": "Hotel Riu República",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recsPbfC0ndxnCAiX",
+      "identity_key": "osm_do_node_2998189889",
+      "property_name": "Hotel Occidental Allegro Playa Dorada",
+      "brand": "Occidental",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recsnXHzjLQqaoxTe",
+      "identity_key": "ind_hilton_mx_cunmalx",
+      "property_name": "Mi Amor, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recsobF81dKCojMEd",
+      "identity_key": "osm_do_way_597361865",
+      "property_name": "Lopesan Costa Bávaro Resort & Spa",
+      "brand": "Lopesan",
+      "parent": "Lopesan",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recsyu2FVdBYSAq9P",
+      "identity_key": "ind_accor_mx_c4n7",
+      "property_name": "Park Royal Mazatlan managed by AccorHotels",
+      "brand": "SAM",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rectm2mIwRb6iOtjS",
+      "identity_key": "osm_do_node_3015649822",
+      "property_name": "Occidental Caribe (former Barcelo Punta Cana)",
+      "brand": "Barceló",
+      "parent": "Barceló",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rectpyNDGNelhWeZx",
+      "identity_key": "ind_marriott_mx_tijme",
+      "property_name": "MIRA Earth Studios Valle de Guadalupe, a Member of Design Hotels",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recu03WyEkh3gnlQR",
+      "identity_key": "ind_marriott_mx_pxmhe",
+      "property_name": "Hotel Escondido Oaxaca , Oaxaca, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recuSXr9EfWBgDv8z",
+      "identity_key": "osm_do_node_4214843120",
+      "property_name": "El Pelicano Apart-Hotel",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recvEmuueLa76XCec",
+      "identity_key": "osm_do_way_27957139",
+      "property_name": "Hotel Riu Palace Macao",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recvZHXZItHJ97G1i",
+      "identity_key": "osm_do_way_199921835",
+      "property_name": "Gran Bahia Principe El Portillo",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recvkqoeciYzLbpkQ",
+      "identity_key": "osm_do_node_4419741355",
+      "property_name": "Villa Ibiscus",
+      "brand": "ibis",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recwMvQQUjb4jGbyB",
+      "identity_key": "ind_accor_co_a232",
+      "property_name": "Hotel Boutique Bovedas de Santa Clara By Accor",
+      "brand": "SAM",
+      "parent": "Accor",
+      "expected_parent": "Accor",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recwarbxUcNdl2pJP",
+      "identity_key": "osm_do_node_9856719770",
+      "property_name": "Hotel Villa La Plantacion",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recxPNcFlxwDhxPNj",
+      "identity_key": "osm_do_node_4660748798",
+      "property_name": "Grand Bahia Principe Bavaro",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recxUDNWzT62SWpXr",
+      "identity_key": "ind_marriott_mx_gdlcc",
+      "property_name": "Hotel Guadalajara Country Club by HNF",
+      "brand": "Marriott Bonvoy — Brand Unconfirmed",
+      "parent": "Marriott International",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recy1nDBZaZvZFksB",
+      "identity_key": "ind_marriott_mx_midhs",
+      "property_name": "Hotel Sevilla, a Member of Design Hotels™",
+      "brand": "Design Hotels",
+      "parent": "Accor",
+      "expected_parent": "Marriott International",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recyfY1mVVexDwCpU",
+      "identity_key": "osm_do_node_3145252104",
+      "property_name": "Grand Bahia Principe Punta Cana",
+      "brand": "Bahía Príncipe",
+      "parent": "Bahía Príncipe",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recyry5FiwPqHy7Ez",
+      "identity_key": "ind_hilton_mx_cunbelx",
+      "property_name": "Bespoke Tulum, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "recyxRT2TKLn3xRC6",
+      "identity_key": "ind_hilton_cr_sjosmlx",
+      "property_name": "Senda Monteverde Hotel, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reczSnlkZDAOoyv78",
+      "identity_key": "osm_do_way_53581002",
+      "property_name": "Hotel Riu Bambu",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reczUF3babrrxzn5C",
+      "identity_key": "osm_do_way_1486163951",
+      "property_name": "Hotel Anselmo",
+      "brand": "Independent",
+      "parent": null,
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reczi9Zml45XSVCA1",
+      "identity_key": "osm_do_way_142306646",
+      "property_name": "Hotel Riu Palace Punta Cana",
+      "brand": "RIU",
+      "parent": "RIU",
+      "expected_parent": null,
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "reczuuEr7dpPpy1je",
+      "identity_key": "ind_hilton_mx_midddlx",
+      "property_name": "Diez Diez Collection, an SLH Hotel",
+      "brand": "Small Luxury Hotels of the World",
+      "parent": "SLH",
+      "expected_parent": "Hilton",
+      "classification": "steward_review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    }
+  ],
+  "examples_before_after": [],
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "airtable_writes": false,
+  "mode": "controlled_orchestrator",
+  "generated_at": "2026-08-07T17:05:38.384Z"
+}

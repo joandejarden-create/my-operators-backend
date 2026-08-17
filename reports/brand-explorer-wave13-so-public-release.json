@@ -1,0 +1,132 @@
+{
+  "version": "wave13-so-public-release-v1",
+  "waveVersion": "brand-explorer-wave13-factory-v1",
+  "stage": "so-public-release",
+  "generatedAt": "2026-07-28T07:15:57.514Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "founderAcceptance": {
+    "founder_accepts_cleanly_unavailable_steward_posture": true,
+    "source": "reports/brand-explorer-wave13-so-founder-acceptance.json",
+    "promotion_recommendation": "approve_for_status_promotion_and_public_release"
+  },
+  "brand": {
+    "slug": "so-hotels-and-resorts",
+    "name": "SO/ Hotels & Resorts",
+    "recordId": "recTJdPlr4mDs9app",
+    "brandStatus": "Active",
+    "isActiveOrLive": true,
+    "needsWrite": true,
+    "already": {
+      "alreadyApproved": false,
+      "alreadyReady": false,
+      "alreadyFounder": false
+    },
+    "sanitizedPayloadPreview": {
+      "Active Profile Approved": true,
+      "Ready for Active Profile": true,
+      "Active Profile Approved Date": "2026-07-28",
+      "Founder Visual Review Pass": true
+    },
+    "plannedFields": [
+      "Active Profile Approved",
+      "Ready for Active Profile",
+      "Active Profile Approved Date",
+      "Founder Visual Review Pass"
+    ]
+  },
+  "plannedReleaseFields": [
+    "Active Profile Approved",
+    "Ready for Active Profile",
+    "Active Profile Approved Date",
+    "Founder Visual Review Pass"
+  ],
+  "universe": {
+    "totalCount": 46,
+    "expected": 46,
+    "soIncluded": true,
+    "beforePromotion": 45,
+    "afterRelease": 46
+  },
+  "intentionalRegistry": {
+    "updated": true,
+    "beforeCount": 35,
+    "afterCount": 36,
+    "soAdded": true,
+    "soAlreadyInRegistry": false,
+    "path": "data/brand-explorer-public-restore-intentional.json",
+    "note": "SO/ added for intentional public restore; no content/CV/Source/Registry-approval writes."
+  },
+  "preflight": {
+    "issues": [],
+    "ok": true
+  },
+  "flagCheck": {
+    "apply": true,
+    "ok": true,
+    "missing": []
+  },
+  "applyOutcome": {
+    "applied": true,
+    "results": [
+      {
+        "slug": "so-hotels-and-resorts",
+        "recordId": "recTJdPlr4mDs9app",
+        "applied": true,
+        "writePerformed": true,
+        "table": "Brand Setup - Brand Basics",
+        "fieldMapping": {
+          "activeProfileApproved": "Active Profile Approved",
+          "readyForActiveProfile": "Ready for Active Profile",
+          "activeProfileApprovedDate": "Active Profile Approved Date",
+          "founderVisualReviewPass": "Founder Visual Review Pass"
+        },
+        "sanitizedPayloadPreview": {
+          "Active Profile Approved": true,
+          "Ready for Active Profile": true,
+          "Active Profile Approved Date": "2026-07-28",
+          "Founder Visual Review Pass": true
+        },
+        "response": {
+          "id": "recTJdPlr4mDs9app",
+          "fieldsPatched": [
+            "Active Profile Approved",
+            "Ready for Active Profile",
+            "Active Profile Approved Date",
+            "Founder Visual Review Pass"
+          ]
+        }
+      }
+    ],
+    "intentionalRegistry": {
+      "updated": true,
+      "beforeCount": 35,
+      "afterCount": 36,
+      "soAdded": true,
+      "soAlreadyInRegistry": false,
+      "path": "data/brand-explorer-public-restore-intentional.json",
+      "note": "SO/ added for intentional public restore; no content/CV/Source/Registry-approval writes."
+    }
+  },
+  "baselineFreezeNote": "Active universe is 46 after SO/ release fields. Protected 45 freeze remains historical. PVQL public-full-only still fails SO/ tab_factory section_pattern_parity — do not freeze 46 until that passes.",
+  "postReleaseValidation": {
+    "activeUniverseCount": 46,
+    "shouldRenderFullProfile": true,
+    "pvqlPublicFullOnly": {
+      "count": 46,
+      "allPass": false,
+      "soFailure": "tab_factory_audit / section_pattern_parity"
+    },
+    "soDirectGates": {
+      "completeness": "PASS",
+      "golden": "PASS",
+      "evidence": "PASS",
+      "imageUniqueness": "PASS",
+      "imageRoleMatch": "PASS",
+      "noEmpty": "PASS"
+    },
+    "presentationBrandNameAliasFix": true
+  },
+  "readyStatement": "wave13_so_status_and_release_fields_applied_universe_46_pvql_blocked_on_section_pattern_parity"
+}

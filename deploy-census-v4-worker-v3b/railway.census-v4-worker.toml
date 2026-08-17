@@ -1,0 +1,27 @@
+# Dealality Census V4 Worker — dedicated Railway service (NOT the web server)
+#
+# Create a second Railway service from this repo with:
+#   Start command: npm run census:v4-full-build-worker
+#   Restart policy: ON_FAILURE / ALWAYS (Railway default restart on crash)
+#
+# Required env (set in Railway service variables — never commit secrets):
+#   ENABLE_CENSUS_V4_WORKER=1
+#   ENABLE_CENSUS_AUTOPILOT_V4=1
+#   ENABLE_VERIFIED_CENSUS_WRITES=1
+#   AIRTABLE_PAT / AIRTABLE_BASE_ID (same production base as Census)
+#   SERPAPI_KEY (optional; free/native work continues without it)
+#
+# Recommended: attach a Railway Volume mounted at:
+#   /app/data/research-engine-v2/census-autopilot-v4-full-universe
+# so checkpoints/locks survive deploys.
+
+[build]
+builder = "NIXPACKS"
+# Node 22 pin: see nixpacks.toml / NIXPACKS_NODE_VERSION=22 (undici File global).
+
+[deploy]
+startCommand = "npm run census:v4-full-build-worker"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 100
+healthcheckPath = ""
+healthcheckTimeout = 30

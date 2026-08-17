@@ -1,0 +1,179 @@
+{
+  "version": "wave12-post-release-freeze-cleanup-v1",
+  "waveVersion": "wave12-factory-v1",
+  "stage": "post-release-freeze-cleanup",
+  "generatedAt": "2026-07-25T00:57:18.159Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "dryRun": false,
+  "flagCheck": {
+    "apply": true,
+    "ok": true,
+    "missing": [],
+    "required": [
+      "--approve-wave12-post-release-freeze-cleanup",
+      "--confirm-target-brands-only",
+      "--confirm-targeted-field-fixes-only",
+      "--confirm-no-company-validation-changes",
+      "--confirm-no-source-library-status-changes",
+      "--confirm-no-registry-approval-changes",
+      "--confirm-no-brand-status-changes",
+      "--confirm-no-release-field-changes",
+      "--confirm-no-public-restore-registry-changes",
+      "--confirm-no-image-writes-except-caption-only-if-flagged",
+      "--confirm-no-other-active-brand-changes",
+      "--confirm-no-radisson-collection-changes",
+      "--confirm-no-broad-rewrites"
+    ]
+  },
+  "requiredApplyFlags": [
+    "--approve-wave12-post-release-freeze-cleanup",
+    "--confirm-target-brands-only",
+    "--confirm-targeted-field-fixes-only",
+    "--confirm-no-company-validation-changes",
+    "--confirm-no-source-library-status-changes",
+    "--confirm-no-registry-approval-changes",
+    "--confirm-no-brand-status-changes",
+    "--confirm-no-release-field-changes",
+    "--confirm-no-public-restore-registry-changes",
+    "--confirm-no-image-writes-except-caption-only-if-flagged",
+    "--confirm-no-other-active-brand-changes",
+    "--confirm-no-radisson-collection-changes",
+    "--confirm-no-broad-rewrites"
+  ],
+  "targets": [
+    "bunkhouse-hotels",
+    "moxy-hotels",
+    "voco-hotels"
+  ],
+  "plannedPatchCount": 2,
+  "basicsPatches": [],
+  "brands": {
+    "bunkhouse-hotels": {
+      "slug": "bunkhouse-hotels",
+      "name": "Bunkhouse Hotels",
+      "recordId": "recGv268Wda31PlSZ",
+      "rowCount": 103,
+      "plannedCount": 1,
+      "basicsPlannedCount": 0,
+      "allowlistOnly": false,
+      "patches": [
+        {
+          "brandSlug": "bunkhouse-hotels",
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "recordId": "recWkWeSdOVfNPtcX",
+          "slotKey": "operations.operator_compat.tags",
+          "fields": {
+            "Body": "Bunkhouse\nlifestyle boutique\nplacemaking\ndesign-led\nHyatt parent-platform context\noperator and market selectivity"
+          },
+          "before": {
+            "body": "Bunkhouse\nlifestyle boutique\nplacemaking\ndesign-led\nHyatt parent-platform context",
+            "title": ""
+          },
+          "after": {
+            "body": "Bunkhouse\nlifestyle boutique\nplacemaking\ndesign-led\nHyatt parent-platform context\noperator and market selectivity",
+            "title": ""
+          },
+          "reason": "thicken_operator_compat_tags_newline_chips"
+        }
+      ],
+      "appliedCount": 1,
+      "applyResults": [
+        {
+          "recordId": "recWkWeSdOVfNPtcX",
+          "slotKey": "operations.operator_compat.tags",
+          "applied": true,
+          "fields": [
+            "Body"
+          ]
+        }
+      ]
+    },
+    "moxy-hotels": {
+      "slug": "moxy-hotels",
+      "name": "Moxy Hotels",
+      "recordId": "recahVIW4aCx0Ao84",
+      "rowCount": 102,
+      "plannedCount": 0,
+      "basicsPlannedCount": 0,
+      "allowlistOnly": true,
+      "patches": [],
+      "appliedCount": 0,
+      "applyResults": []
+    },
+    "voco-hotels": {
+      "slug": "voco-hotels",
+      "name": "Voco Hotels",
+      "recordId": "recwONQTqGU1jHCsM",
+      "rowCount": 103,
+      "plannedCount": 1,
+      "basicsPlannedCount": 0,
+      "allowlistOnly": false,
+      "patches": [
+        {
+          "brandSlug": "voco-hotels",
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "recordId": "receGPJdMXP4IZ714",
+          "slotKey": "operations.operator_compat.tags",
+          "fields": {
+            "Body": "voco\npremium soft brand\nconversion-oriented\nIHG platform discipline\nretained character\nMexico City Reforma pipeline evidence"
+          },
+          "before": {
+            "body": "voco\npremium soft brand\nconversion-oriented\nIHG platform discipline\nretained character",
+            "title": ""
+          },
+          "after": {
+            "body": "voco\npremium soft brand\nconversion-oriented\nIHG platform discipline\nretained character\nMexico City Reforma pipeline evidence",
+            "title": ""
+          },
+          "reason": "thicken_operator_compat_tags_newline_chips"
+        }
+      ],
+      "appliedCount": 1,
+      "applyResults": [
+        {
+          "recordId": "receGPJdMXP4IZ714",
+          "slotKey": "operations.operator_compat.tags",
+          "applied": true,
+          "fields": [
+            "Body"
+          ]
+        }
+      ]
+    }
+  },
+  "moxyDiagnosis": "B_false_positive_parent_platform_allowlist",
+  "allowlistCodeChange": "lib/partner-intelligence/brand-explorer-24-tab-section-quality-audit.js — moxy + parentCompanyIncludes for Marriott Bonvoy",
+  "guardrails": {
+    "targetBrandsOnly": true,
+    "companyValidatedWrites": false,
+    "sourceLibraryWrites": false,
+    "registryWrites": false,
+    "brandStatusWrites": false,
+    "releaseFieldWrites": false,
+    "publicRestoreRegistryWrites": false,
+    "imageWrites": false,
+    "otherActiveBrandChanges": false,
+    "radissonCollectionChanges": false,
+    "neverWriteFields": [
+      "Company Validated",
+      "Company Validation Date",
+      "Source Library status",
+      "Registry approval/status"
+    ]
+  },
+  "readyStatement": "not_ready_to_freeze_39_active_public_full_baseline",
+  "freezeReadiness": {
+    "readyToFreeze39": false,
+    "bunkhouse": "approve_for_baseline_freeze_copy_cleared",
+    "moxy": "approve_for_baseline_freeze_allowlist_cleared",
+    "voco": "remediation_required_gallery_scene7_aspect_variants",
+    "latestQualityAudit": {
+      "generatedAt": "2026-07-25T00:49:16.113Z",
+      "approve": 31,
+      "remediation": 8
+    },
+    "nextStep": "wave12 gallery rematerialization for uniqueness failures + optional ADR scrub outside target scope"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "version": "tripadvisor-hotel-profile-intelligence-v1",
+  "production_writes": false,
+  "inventoried_from": [
+    "data/hotel-intelligence/tripadvisor-apify-benchmark-v1/ta-pool.json",
+    "data/hotel-intelligence/giata-tripadvisor-room-decision-v1/ta-decision-pool.json"
+  ],
+  "fields_inventoried": 80,
+  "classification_summary": {
+    "STORE_NORMALIZED": [
+      "id", "type", "category", "name", "localName", "webUrl", "website",
+      "email", "phone", "address", "addressObj", "locationString",
+      "latitude", "longitude", "numberOfRooms", "hotelClass",
+      "numberOfReviews", "rating", "ratingHistogram", "categoryReviewScores",
+      "rankingPosition", "rankingDenominator", "rankingString",
+      "amenities", "subcategories", "priceLevel", "priceRange",
+      "photoCount", "travelerChoiceAward"
+    ],
+    "STORE_RAW_ONLY": [
+      "hotelClassAttribution", "rankingSource", "rawRanking",
+      "ancestorLocations", "neighborhoodLocations", "nearestMetroStations",
+      "localAddress", "localLangCode"
+    ],
+    "DERIVE_FROM": [
+      "rankingPosition+rankingDenominator→competitive_rank_percentile",
+      "ratingHistogram→share_4_5/share_1_2",
+      "amenities→amenity_gaps/differentiators",
+      "categoryReviewScores→category_vs_comp_set",
+      "rating+comps→rating_vs_comp_set",
+      "numberOfReviews+comps→review_volume_vs_comp_set",
+      "monthly snaps→reputation_trajectory/ranking_trajectory",
+      "reviewTags→theme flags (when populated)"
+    ],
+    "TRANSIENT": [
+      "offers", "checkInDate", "checkOutDate",
+      "description (research input)", "roomTips (research input)"
+    ],
+    "IGNORE": [
+      "isNearbyResult", "cuisines", "dishes", "dietaryRestrictions",
+      "establishmentTypes", "features", "mealTypes", "hours",
+      "openNowText", "menuWebUrl", "orderOnline", "isClosed",
+      "isLongClosed", "isClaimedIcon", "isClaimedText"
+    ],
+    "REQUIRES_RIGHTS_REVIEW": [
+      "description", "roomTips", "aiReviewsSummary",
+      "image", "photos", "ownersTopReasons"
+    ]
+  },
+  "decision_pool_presence_rich_fields": {
+    "rating": 1.0,
+    "rankingPosition": 1.0,
+    "amenities": 1.0,
+    "categoryReviewScores": 1.0,
+    "priceLevel": 1.0,
+    "numberOfRooms": 0.97
+  },
+  "competitive_rank_percentile_formula": "100 * (rankingDenominator - rankingPosition + 1) / rankingDenominator",
+  "recommended_role": "CORE_HOTEL_AND_MARKET_MONITORING_SOURCE",
+  "cost_per_hotel_profile_usd_estimate": "0.003-0.01"
+}

@@ -8,6 +8,7 @@
  *
  * Headshots: official `hotelequities.com/files/6564/…` URLs from meet-our-team.htm where listed;
  * Michael Register uses a ui-avatars placeholder (not on HE team page).
+ * Summary/bio copy must not repeat job titles (title + role line render on the Explorer card).
  *
  * **Limitation:** Airtable does not retain deleted child rows in this repo. This JSON is a **rebuild**
  * centered on published HE **Caribbean & Latin America** roles (incl. Marilia Pergola, Martin Larralde,

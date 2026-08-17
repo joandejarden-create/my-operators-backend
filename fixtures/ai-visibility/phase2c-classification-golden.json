@@ -1,0 +1,467 @@
+{
+  "goldenSetId": "ai_visibility_phase2c_classification_golden_v1",
+  "version": "1",
+  "notes": [
+    "Human-assigned expected roles from Phase 2A live answer patterns (synthetic equivalents).",
+    "Not model-generated labels.",
+    "associated_option is intentional for market-association language."
+  ],
+  "cases": [
+    {
+      "id": "g001",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "## Recommended shortlist\n\n1. Curio Collection by Hilton\n2. Autograph Collection\n3. Hotel Indigo\n",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g002",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "## Recommended shortlist\n\n1. Curio Collection by Hilton\n2. Autograph Collection\n3. Hotel Indigo\n",
+      "entityName": "Autograph Collection",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g003",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "## Recommended shortlist\n\n1. Curio Collection by Hilton\n2. Autograph Collection\n3. Hotel Indigo\n",
+      "entityName": "Hotel Indigo",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g004",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Autograph Collection would be my first call for a design-led property.",
+      "entityName": "Autograph Collection",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g005",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "I would shortlist Hotel Indigo as the best value engineering option.",
+      "entityName": "Hotel Indigo",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g006",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Curio Collection by Hilton is a strong alternative to Autograph Collection for conversions.",
+      "entityName": "Autograph Collection",
+      "expectedRole": "comparator"
+    },
+    {
+      "id": "g007",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Curio Collection by Hilton is a strong alternative to Autograph Collection for conversions.",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g008",
+      "promptIntentTerritory": "Conversion",
+      "text": "I would solicit proposals from:\n1. Curio Collection by Hilton\n2. Autograph Collection\n3. Tribute Portfolio\n",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g009",
+      "promptIntentTerritory": "Conversion",
+      "text": "I would solicit proposals from:\n1. Curio Collection by Hilton\n2. Autograph Collection\n3. Tribute Portfolio\n",
+      "entityName": "Tribute Portfolio",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g010",
+      "promptIntentTerritory": "Branded Residences",
+      "text": "Brands commonly associated with branded residence development in Mexico include Autograph Collection and Kimpton Hotels.",
+      "entityName": "Autograph Collection",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g011",
+      "promptIntentTerritory": "Branded Residences",
+      "text": "Brands commonly associated with branded residence development in Mexico include Autograph Collection and Kimpton Hotels.",
+      "entityName": "Kimpton Hotels",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g012",
+      "promptIntentTerritory": "Branded Residences",
+      "text": "Curio Collection by Hilton is frequently associated with distinctive urban residences.",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g013",
+      "promptIntentTerritory": "Chain Scale / Positioning",
+      "text": "Luxury and upper-upscale brands commonly considered for Caribbean resorts include Westin and Autograph Collection.",
+      "entityName": "Westin",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g014",
+      "promptIntentTerritory": "Chain Scale / Positioning",
+      "text": "Luxury and upper-upscale brands commonly considered for Caribbean resorts include Westin and Autograph Collection.",
+      "entityName": "Autograph Collection",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g015",
+      "promptIntentTerritory": "Mixed Use",
+      "text": "Examples include:\n- Kimpton Hotels\n- Autograph Collection\n- Hotel Indigo\n",
+      "entityName": "Kimpton Hotels",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g016",
+      "promptIntentTerritory": "Mixed Use",
+      "text": "Examples include:\n- Kimpton Hotels\n- Autograph Collection\n- Hotel Indigo\n",
+      "entityName": "Hotel Indigo",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g017",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Start with:\n1. Aimbridge Hospitality (LATAM)\n2. Hotel Equities (CALA)\n3. Highgate\n",
+      "entityName": "Aimbridge Hospitality (LATAM)",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g018",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Start with:\n1. Aimbridge Hospitality (LATAM)\n2. Hotel Equities (CALA)\n3. Highgate\n",
+      "entityName": "Hotel Equities (CALA)",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g019",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Start with:\n1. Aimbridge Hospitality (LATAM)\n2. Hotel Equities (CALA)\n3. Highgate\n",
+      "entityName": "Highgate",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g020",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Hotel Equities CALA is a strong candidate for lifestyle operations.",
+      "entityName": "Hotel Equities (CALA)",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g021",
+      "promptIntentTerritory": "HMA vs Franchise",
+      "text": "Independent operators such as Aimbridge, GHL, and Highgate are often mentioned for HMAs.",
+      "entityName": "Aimbridge Hospitality (LATAM)",
+      "expectedRole": "passing_mention"
+    },
+    {
+      "id": "g022",
+      "promptIntentTerritory": "HMA vs Franchise",
+      "text": "Independent operators such as Aimbridge, GHL, and Highgate are often mentioned for HMAs.",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "expectedRole": "passing_mention"
+    },
+    {
+      "id": "g023",
+      "promptIntentTerritory": "HMA vs Franchise",
+      "text": "## Operators to consider\n\n1. Aimbridge Hospitality (LATAM)\n2. GHL Operador\n",
+      "entityName": "Aimbridge Hospitality (LATAM)",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g024",
+      "promptIntentTerritory": "HMA vs Franchise",
+      "text": "## Operators to consider\n\n1. Aimbridge Hospitality (LATAM)\n2. GHL Operador\n",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g025",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Hotel Indigo is not recommended for this resort site.",
+      "entityName": "Hotel Indigo",
+      "expectedRole": "negative_or_qualified"
+    },
+    {
+      "id": "g026",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Autograph Collection is less suitable unless the PIP budget is high.",
+      "entityName": "Autograph Collection",
+      "expectedRole": "negative_or_qualified"
+    },
+    {
+      "id": "g027",
+      "promptIntentTerritory": "Conversion",
+      "text": "Curio Collection by Hilton may be considered only if the architecture is distinctive.",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "negative_or_qualified"
+    },
+    {
+      "id": "g028",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Westin is better suited to standardized full-service urban assets than conversions.",
+      "entityName": "Westin",
+      "expectedRole": "negative_or_qualified"
+    },
+    {
+      "id": "g029",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Design Hotels may work but would require a strong local narrative.",
+      "entityName": "Design Hotels",
+      "expectedRole": "negative_or_qualified"
+    },
+    {
+      "id": "g030",
+      "promptIntentTerritory": "Conversion",
+      "text": "| Priority | Brand |\n|---|---|\n| **1** | **Autograph Collection** |\n| **2** | **Curio Collection by Hilton** |\n",
+      "entityName": "Autograph Collection",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g031",
+      "promptIntentTerritory": "Conversion",
+      "text": "| Priority | Brand |\n|---|---|\n| **1** | **Autograph Collection** |\n| **2** | **Curio Collection by Hilton** |\n",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g032",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Recommended shortlist:\n1. Curio Collection by Hilton — distinctive urban\nCurio Collection by Hilton currently has representation in Mexico City.\nCurio Collection by Hilton loyalty contribution is competitive.\n",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "first_recommendation",
+      "notes": "Multiple mentions; only one should be first_recommendation after de-dupe"
+    },
+    {
+      "id": "g033",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Compared with Highgate, Hotel Equities (CALA) is more lifestyle-oriented.",
+      "entityName": "Highgate",
+      "expectedRole": "comparator"
+    },
+    {
+      "id": "g034",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "I would shortlist Hotel Equities (CALA) for lifestyle hotels.",
+      "entityName": "Hotel Equities (CALA)",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g035",
+      "promptIntentTerritory": "Development Strategy",
+      "text": "Top options for select-service new builds:\n1. AC Hotels by Marriott\n",
+      "entityName": "AC Hotels by Marriott",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g036",
+      "promptIntentTerritory": "Conversion",
+      "text": "Soft-brand shortlist:\n1. Autograph Collection\n2. Tribute Portfolio\n3. Ascend Hotel Collection\n",
+      "entityName": "Ascend Hotel Collection",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g037",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Background: Marriott Hotels and Hilton Hotels & Resorts are large full-service systems.",
+      "entityName": "Marriott Hotels",
+      "expectedRole": "discussed"
+    },
+    {
+      "id": "g038",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Background: Marriott Hotels and Hilton Hotels & Resorts are large full-service systems.",
+      "entityName": "Hilton Hotels & Resorts",
+      "expectedRole": "discussed"
+    },
+    {
+      "id": "g039",
+      "promptIntentTerritory": "Mixed Use",
+      "text": "Kimpton Hotels is often associated with mixed-use lifestyle developments.",
+      "entityName": "Kimpton Hotels",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g040",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "According to Hilton development materials, Curio Collection by Hilton targets distinctive assets.",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "source_only"
+    },
+    {
+      "id": "g041",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Issue an RFP to Aimbridge Hospitality (LATAM) and Highgate.",
+      "entityName": "Aimbridge Hospitality (LATAM)",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g042",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Issue an RFP to Aimbridge Hospitality (LATAM) and Highgate.",
+      "entityName": "Highgate",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g043",
+      "promptIntentTerritory": "Conversion",
+      "text": "Tapestry Collection by Hilton is a weaker fit for this upper-upscale conversion.",
+      "entityName": "Tapestry Collection by Hilton",
+      "expectedRole": "negative_or_qualified"
+    },
+    {
+      "id": "g044",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Canopy by Hilton is not ideal for a 180-room resort conversion.",
+      "entityName": "Canopy by Hilton",
+      "expectedRole": "negative_or_qualified"
+    },
+    {
+      "id": "g045",
+      "promptIntentTerritory": "Conversion",
+      "text": "## Brands to consider\n\n1. Tribute Portfolio\n2. Curio Collection\n3. Autograph\n",
+      "entityName": "Tribute Portfolio",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g046",
+      "promptIntentTerritory": "Conversion",
+      "text": "## Brands to consider\n\n1. Tribute Portfolio\n2. Curio Collection\n3. Autograph\n",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g047",
+      "promptIntentTerritory": "Conversion",
+      "text": "## Brands to consider\n\n1. Tribute Portfolio\n2. Curio Collection\n3. Autograph\n",
+      "entityName": "Autograph Collection",
+      "expectedRole": "ranked_recommendation"
+    },
+    {
+      "id": "g048",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Other alternatives include local operators; Highgate remains institutional scale.",
+      "entityName": "Highgate",
+      "expectedRole": "discussed"
+    },
+    {
+      "id": "g049",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Primary option: Autograph Collection for flexible affiliation.",
+      "entityName": "Autograph Collection",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g050",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Leading candidate for the urban site is Hotel Indigo.",
+      "entityName": "Hotel Indigo",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g051",
+      "promptIntentTerritory": "HMA vs Franchise",
+      "text": "GHL Operador is particularly suitable for Andean multi-brand portfolios.",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g052",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Begin with Aimbridge Hospitality (LATAM) for branded Caribbean resorts.",
+      "entityName": "Aimbridge Hospitality (LATAM)",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g053",
+      "promptIntentTerritory": "Mixed Use",
+      "text": "Among others, Design Hotels appears in lifestyle mixed-use discussions.",
+      "entityName": "Design Hotels",
+      "expectedRole": "passing_mention"
+    },
+    {
+      "id": "g054",
+      "promptIntentTerritory": "Branded Residences",
+      "text": "Westin is typically associated with branded residences in resort markets.",
+      "entityName": "Westin",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g055",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Unlike Hilton Hotels & Resorts, Curio Collection by Hilton allows more design flexibility.",
+      "entityName": "Hilton Hotels & Resorts",
+      "expectedRole": "comparator"
+    },
+    {
+      "id": "g056",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Unlike Hilton Hotels & Resorts, Curio Collection by Hilton allows more design flexibility.",
+      "entityName": "Curio Collection by Hilton",
+      "expectedRole": "discussed"
+    },
+    {
+      "id": "g057",
+      "promptIntentTerritory": "Conversion",
+      "text": "I would consider Ascend Hotel Collection for conversion-friendly soft branding.",
+      "entityName": "Ascend Hotel Collection",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g058",
+      "promptIntentTerritory": "Development Strategy",
+      "text": "AC Hotels by Marriott is preferred for upper-midscale urban new builds.",
+      "entityName": "AC Hotels by Marriott",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g059",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Hotel Equities (CALA) versus Aimbridge Hospitality (LATAM) depends on lifestyle depth.",
+      "entityName": "Aimbridge Hospitality (LATAM)",
+      "expectedRole": "comparator"
+    },
+    {
+      "id": "g060",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Kimpton Hotels is a good option for lifestyle urban hotels in Mexico City.",
+      "entityName": "Kimpton Hotels",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g061",
+      "promptIntentTerritory": "Conversion",
+      "text": "Canopy by Hilton would require a denser urban walkable site.",
+      "entityName": "Canopy by Hilton",
+      "expectedRole": "negative_or_qualified"
+    },
+    {
+      "id": "g062",
+      "promptIntentTerritory": "Brand Selection",
+      "text": "Top choice for this conversion is Tribute Portfolio.",
+      "entityName": "Tribute Portfolio",
+      "expectedRole": "first_recommendation"
+    },
+    {
+      "id": "g063",
+      "promptIntentTerritory": "HMA vs Franchise",
+      "text": "See also Highgate corporate materials for institutional capability.",
+      "entityName": "Highgate",
+      "expectedRole": "source_only"
+    },
+    {
+      "id": "g064",
+      "promptIntentTerritory": "Mixed Use",
+      "text": "Brands associated with mixed-use hotel developments include Autograph Collection and Kimpton Hotels.",
+      "entityName": "Autograph Collection",
+      "expectedRole": "associated_option"
+    },
+    {
+      "id": "g065",
+      "promptIntentTerritory": "Operator Selection",
+      "text": "Candidate set:\n1. Highgate\n2. Aimbridge Hospitality (LATAM)\n",
+      "entityName": "Highgate",
+      "expectedRole": "first_recommendation"
+    }
+  ]
+}

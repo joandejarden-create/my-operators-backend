@@ -1,0 +1,68 @@
+{
+  "total_runtime_ms": 968,
+  "runtime_per_batch": [
+    {
+      "batch": 1,
+      "queue": "phone_number_enrichment",
+      "ms": 966
+    }
+  ],
+  "runtime_per_queue": {
+    "phone_number_enrichment": {
+      "ms": 966,
+      "records": 1,
+      "writes": 1,
+      "fetches_ok": 0,
+      "fetches_fail": 0
+    }
+  },
+  "average_seconds_per_record": 0.968,
+  "average_seconds_per_successful_write": 0.968,
+  "fetch_success_rate": null,
+  "extraction_success_rate": null,
+  "write_success_rate": 1,
+  "blocked_source_count": 0,
+  "blocked_sources_by_family": {},
+  "steward_review_count": 0,
+  "webhound_candidate_count": 0,
+  "estimated_time_remaining_ms": 0,
+  "targets": {
+    "plan_mode_parent_region_minutes": 2,
+    "queue_build_per_5k_records_minutes": 5,
+    "cached_dry_run_per_1k_minutes": 10,
+    "live_fetch_dry_run_per_250_minutes": {
+      "min": 5,
+      "max": 20
+    },
+    "apply_per_100_minutes": {
+      "min": 2,
+      "max": 8
+    },
+    "parent_company_estimates": {
+      "small_100": {
+        "min_minutes": 15,
+        "max_minutes": 30
+      },
+      "medium_500": {
+        "min_minutes": 45,
+        "max_minutes": 90
+      },
+      "large_1000": {
+        "min_minutes": 60,
+        "max_minutes": 180
+      },
+      "very_large_4000": {
+        "min_minutes": 240,
+        "max_minutes": 600
+      }
+    }
+  },
+  "guardrails": {
+    "max_retries_per_source": 2,
+    "batch_runtime_overage_multiplier": 3,
+    "repeated_source_block_threshold": 8,
+    "rate_limit_failure_threshold": 3,
+    "write_success_floor": 0.15,
+    "confidence_high_floor_for_extractor_health": 0.05
+  }
+}

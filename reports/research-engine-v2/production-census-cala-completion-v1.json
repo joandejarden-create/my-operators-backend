@@ -1,0 +1,306 @@
+{
+  "ok": true,
+  "version": "cala-census-completion-v1",
+  "status": "production_census_cala_completion_v1_partial_source_remaining",
+  "mode": "mission",
+  "objective": "cala-census-completion-v1",
+  "generated_at": "2026-08-07T17:29:26.229Z",
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T17-05-05_CALA-cala-census-completion-v1-mission",
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "inserts_applied": 0,
+  "updates_applied": 0,
+  "fields_written": [],
+  "queues_executed": [
+    "brand_normalization",
+    "parent_company_normalization",
+    "core_identity_quality",
+    "core_identity_source_lookup",
+    "key_field_completion",
+    "clean_core_classification",
+    "market_geography_completion",
+    "address_confirmation",
+    "coordinate_completion",
+    "phone_number_enrichment",
+    "rooms_keys"
+  ],
+  "phases": [
+    {
+      "phase_id": "phase_2_reconfirm_brand_core",
+      "label": "Reconfirm Brand / Core Identity",
+      "updates_applied": 0,
+      "inserts_applied": 0,
+      "steward_cases": 0,
+      "status": "production_census_autopilot_production_cycle_complete",
+      "queues_executed": [
+        "brand_normalization",
+        "parent_company_normalization",
+        "core_identity_quality",
+        "core_identity_source_lookup",
+        "key_field_completion"
+      ],
+      "soft_deferred": [
+        "brand_normalization",
+        "parent_company_normalization",
+        "core_identity_quality",
+        "core_identity_source_lookup"
+      ],
+      "safety_stop": null,
+      "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T17-05-05_CALA-cala-census-completion-v1-mission\\phases\\phase_2_reconfirm_brand_core"
+    },
+    {
+      "phase_id": "phase_3_clean_core_classification",
+      "label": "Clean Core Classification",
+      "read_only": true,
+      "updates_applied": 0,
+      "inserts_applied": 0,
+      "status": "production_census_autopilot_production_cycle_complete",
+      "queues_executed": [
+        "clean_core_classification"
+      ]
+    },
+    {
+      "phase_id": "phase_4_market_geography",
+      "label": "Market Geography",
+      "updates_applied": 0,
+      "inserts_applied": 0,
+      "steward_cases": 0,
+      "status": "production_census_autopilot_production_cycle_complete",
+      "queues_executed": [
+        "market_geography_completion"
+      ],
+      "soft_deferred": [
+        "market_geography_completion"
+      ],
+      "safety_stop": null,
+      "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T17-05-05_CALA-cala-census-completion-v1-mission\\phases\\phase_4_market_geography"
+    },
+    {
+      "phase_id": "phase_5_address",
+      "label": "Address Completion (Clean Core)",
+      "updates_applied": 0,
+      "inserts_applied": 0,
+      "steward_cases": 0,
+      "status": "production_census_autopilot_production_cycle_complete",
+      "queues_executed": [
+        "address_confirmation"
+      ],
+      "soft_deferred": [
+        "address_confirmation"
+      ],
+      "safety_stop": null,
+      "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T17-05-05_CALA-cala-census-completion-v1-mission\\phases\\phase_5_address"
+    },
+    {
+      "phase_id": "phase_6_coordinates",
+      "label": "Coordinate Completion (Clean Core + High Address)",
+      "updates_applied": 0,
+      "inserts_applied": 0,
+      "steward_cases": 0,
+      "status": "production_census_autopilot_production_cycle_complete",
+      "queues_executed": [
+        "coordinate_completion"
+      ],
+      "soft_deferred": [],
+      "safety_stop": null,
+      "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T17-05-05_CALA-cala-census-completion-v1-mission\\phases\\phase_6_coordinates"
+    },
+    {
+      "phase_id": "phase_7_phone",
+      "label": "Phone Completion (Clean Core / official only)",
+      "updates_applied": 0,
+      "inserts_applied": 0,
+      "steward_cases": 0,
+      "status": "production_census_autopilot_production_cycle_complete",
+      "queues_executed": [
+        "phone_number_enrichment"
+      ],
+      "soft_deferred": [
+        "phone_number_enrichment"
+      ],
+      "safety_stop": null,
+      "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T17-05-05_CALA-cala-census-completion-v1-mission\\phases\\phase_7_phone"
+    },
+    {
+      "phase_id": "phase_8_rooms",
+      "label": "Rooms Completion (Clean Core / official only)",
+      "updates_applied": 0,
+      "inserts_applied": 0,
+      "steward_cases": 0,
+      "status": "production_census_autopilot_production_cycle_complete",
+      "queues_executed": [
+        "rooms_keys"
+      ],
+      "soft_deferred": [
+        "rooms_keys"
+      ],
+      "safety_stop": null,
+      "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T17-05-05_CALA-cala-census-completion-v1-mission\\phases\\phase_8_rooms"
+    },
+    {
+      "phase_id": "phase_9_final_readiness",
+      "label": "Final Readiness Classification",
+      "read_only": true,
+      "updates_applied": 0,
+      "inserts_applied": 0,
+      "status": "production_census_autopilot_production_cycle_complete",
+      "queues_executed": [
+        "clean_core_classification"
+      ]
+    }
+  ],
+  "before": {
+    "total_records": 1224,
+    "clean_core": 1003,
+    "below_clean_core": 221,
+    "unknown_city": 6,
+    "descriptor_city": 0,
+    "canonical_blank": 3,
+    "state_region_complete": 1018,
+    "address_complete": 400,
+    "address_confidence_high": 324,
+    "address_source_url_complete": 325,
+    "lat_long_complete": 379,
+    "mapbox_eligible": 89,
+    "phone_complete": 350,
+    "rooms_complete": 116,
+    "continent_complete": 1224,
+    "subcontinent_complete": 1224,
+    "market_complete": 780,
+    "submarket_complete": 200,
+    "complete_census_v1": 14,
+    "map_ready": 203,
+    "contact_ready": 223,
+    "size_ready": 79,
+    "blocked_missing_address": 711,
+    "blocked_dirty_identity": 199,
+    "blocked_source_access": 0,
+    "mapbox_provider_ready": false,
+    "estimated_mapbox_requests": 89,
+    "estimated_mapbox_cost_usd": 0.445,
+    "coordinate_blocked_dirty_identity": 17,
+    "by_class": {
+      "Clean Core": 1003,
+      "Needs Source Lookup": 5,
+      "Needs Steward Review": 46,
+      "Duplicate Risk": 170,
+      "Not Usable Yet": 0
+    },
+    "source_lookup_remaining": 5,
+    "steward_remaining": 46,
+    "duplicate_risk_remaining": 170,
+    "unknown_brands": 113,
+    "dirty_partner_labels": 16,
+    "human_review": 170,
+    "excluded_from_clean_core": 221
+  },
+  "after": {
+    "total_records": 1224,
+    "clean_core": 1003,
+    "below_clean_core": 221,
+    "unknown_city": 6,
+    "descriptor_city": 0,
+    "canonical_blank": 3,
+    "state_region_complete": 1018,
+    "address_complete": 400,
+    "address_confidence_high": 324,
+    "address_source_url_complete": 325,
+    "lat_long_complete": 379,
+    "mapbox_eligible": 89,
+    "phone_complete": 350,
+    "rooms_complete": 116,
+    "continent_complete": 1224,
+    "subcontinent_complete": 1224,
+    "market_complete": 780,
+    "submarket_complete": 200,
+    "complete_census_v1": 14,
+    "map_ready": 203,
+    "contact_ready": 223,
+    "size_ready": 79,
+    "blocked_missing_address": 711,
+    "blocked_dirty_identity": 199,
+    "blocked_source_access": 0,
+    "mapbox_provider_ready": false,
+    "estimated_mapbox_requests": 89,
+    "estimated_mapbox_cost_usd": 0.445,
+    "coordinate_blocked_dirty_identity": 17,
+    "by_class": {
+      "Clean Core": 1003,
+      "Needs Source Lookup": 5,
+      "Needs Steward Review": 46,
+      "Duplicate Risk": 170,
+      "Not Usable Yet": 0
+    },
+    "source_lookup_remaining": 5,
+    "steward_remaining": 46,
+    "duplicate_risk_remaining": 170,
+    "unknown_brands": 113,
+    "dirty_partner_labels": 16,
+    "human_review": 170,
+    "excluded_from_clean_core": 221
+  },
+  "soft_targets": {
+    "address_complete_min": 400,
+    "lat_long_complete_min": 350,
+    "phone_complete_min": 100,
+    "rooms_complete_min": 100,
+    "complete_census_v1_min": 100,
+    "clean_core_min": 875
+  },
+  "soft_targets_met": {
+    "address_complete": true,
+    "lat_long_complete": true,
+    "phone_complete": true,
+    "rooms_complete": true,
+    "complete_census_v1": false
+  },
+  "safety_stops": [],
+  "steward_remaining": 26,
+  "source_lookup_remaining": 5,
+  "duplicate_risk_remaining": 170,
+  "runtime_ms": 1525151,
+  "next_recommended_action": "Official sources exhausted for some Level 2 fields — dirty partner labels remain parked; do not invent address/phone/rooms/coords or promote Brand Setup automatically.",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "dirty_partner_park": {
+    "proposals_planned": 0,
+    "updates_applied": 0,
+    "write_errors": [],
+    "classification": "dirty_partner_label",
+    "excluded_from_clean_core": true,
+    "steward_review_required": true,
+    "brand_setup_writes": false
+  },
+  "brand_setup_promotion_pack": {
+    "brand_setup_writes": false,
+    "brand_explorer_writes": false,
+    "candidates": [
+      {
+        "proposed_brand_name": "Test Brand X",
+        "parent_company": "Accor",
+        "governance_status": "brand_setup_promotion_candidate",
+        "official_source_evidence": true,
+        "appears_in_official_parent_inventory": true,
+        "in_active_brand_setup": false,
+        "census_records_affected": 3,
+        "countries_affected": [],
+        "source_url_examples": [],
+        "property_examples": [],
+        "recommended_action": "steward_review_for_brand_setup_promotion"
+      }
+    ],
+    "source": "reports/research-engine-v2/production-census-brand-setup-promotion-candidates.json"
+  },
+  "source_of_truth_guard": {
+    "ok": true,
+    "hotel_property_census_only": true,
+    "brand_setup_read_only": true,
+    "brand_explorer_read_only": true,
+    "old_census_blocked": true,
+    "vic_read_only": true
+  }
+}

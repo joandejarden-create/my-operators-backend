@@ -1,0 +1,96 @@
+{
+  "tripadvisor_writes_paused": true,
+  "mapping": [
+    {
+      "ta_concept": "Official Property URL",
+      "tier": "A",
+      "destination_after": "Official Property URL",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Phone",
+      "tier": "A",
+      "destination_after": "Phone (+ Phone Confidence/Source companions)",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Address",
+      "tier": "A",
+      "destination_after": "Address",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Latitude",
+      "tier": "A",
+      "destination_after": "Latitude",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Longitude",
+      "tier": "A",
+      "destination_after": "Longitude",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Hotel Class / Segment",
+      "tier": "B",
+      "destination_after": "Hotel Class / Segment",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Property Type",
+      "tier": "B",
+      "destination_after": "Property Type",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "City",
+      "tier": "B",
+      "destination_after": "City",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "State / Region",
+      "tier": "B",
+      "destination_after": "State / Region",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Amenities tags",
+      "tier": "B",
+      "destination_after": "Amenities - Structured Tags (or HI if moved)",
+      "disposition_of_destination": "KEEP_SUPPORTING",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Email",
+      "tier": "B",
+      "destination_after": "DO NOT add Email census column yet — HI/evidence until lean schema approved; only then Phone-parity Email suite OR skip",
+      "disposition_of_destination": null,
+      "needs_new_column": false,
+      "note": "Prefer NOT adding during rationalization; store in evidence/HI"
+    },
+    {
+      "ta_concept": "Rooms / Keys",
+      "tier": "C",
+      "destination_after": "Authoritative Rooms / Keys unchanged; Tripadvisor rooms → evidence/candidate only",
+      "disposition_of_destination": "KEEP_CORE",
+      "needs_new_column": false
+    },
+    {
+      "ta_concept": "Profile Pack dynamic fields",
+      "tier": "HI",
+      "destination_after": "Hotel Intelligence Profile Pack + evidence store",
+      "needs_new_column": false
+    }
+  ]
+}

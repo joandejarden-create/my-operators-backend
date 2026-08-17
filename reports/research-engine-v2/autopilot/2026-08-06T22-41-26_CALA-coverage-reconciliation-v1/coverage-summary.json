@@ -1,0 +1,125 @@
+{
+  "ok": true,
+  "version": "census-autopilot-coverage-reconciliation-v1",
+  "objective": "coverage-reconciliation-v1",
+  "region": "CALA",
+  "parent_company": "Marriott",
+  "brand": "Sheraton",
+  "mode": "controlled",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "official_inventory_count": 3,
+  "census_inventory_count": 1,
+  "census_inventory_count_before": 1,
+  "census_inventory_count_after": 1,
+  "census_total_records": 2,
+  "coverage_counts": {
+    "existing_exact_match": 1,
+    "existing_probable_match": 0,
+    "missing_high_confidence": 1,
+    "missing_needs_steward": 1,
+    "duplicate_risk": 0,
+    "source_blocked": 0,
+    "source_insufficient": 0
+  },
+  "brand_rollups": [
+    {
+      "brand": "Sheraton",
+      "official_inventory_count": 3,
+      "census_inventory_count": 1,
+      "existing_exact": 1,
+      "existing_probable": 0,
+      "missing_high_confidence": 1,
+      "missing_needs_steward": 1,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "missing_official_property_urls": [
+        "https://www.marriott.com/en-us/hotels/bogsh-sheraton-bogota/overview/"
+      ],
+      "recommended_action": "insert_high_confidence_missing",
+      "missing_count": 2,
+      "coverage_percentage": 33.3
+    }
+  ],
+  "missing_hotels": [
+    {
+      "property_name": "Sheraton Missing High",
+      "brand": "Sheraton",
+      "city": "Bogotá",
+      "country": "Colombia",
+      "official_property_id": "BOGSH",
+      "official_property_url": "https://www.marriott.com/en-us/hotels/bogsh-sheraton-bogota/overview/",
+      "official_directory_url": "https://example.marriott/sitemap",
+      "coverage_class": "missing_high_confidence",
+      "identity_confidence": "High",
+      "identity_key": "ind_marriott_co_bogsh"
+    },
+    {
+      "property_name": "Sheraton Weak",
+      "brand": "Sheraton",
+      "city": null,
+      "country": "Mexico",
+      "official_property_id": "WEAK1",
+      "official_property_url": null,
+      "coverage_class": "missing_needs_steward",
+      "identity_confidence": "Medium",
+      "identity_key": "ind_marriott_mx_weak1"
+    }
+  ],
+  "inserted_hotels": [],
+  "inserted_count": 0,
+  "stewarded_count": 1,
+  "stewarded_hotels": [
+    {
+      "property_name": "Sheraton Weak",
+      "brand": "Sheraton",
+      "coverage_class": "missing_needs_steward",
+      "reason": "identity_below_high_for_insert",
+      "official_property_url": null
+    }
+  ],
+  "duplicate_risks": [],
+  "source_blockers": [],
+  "official_sources": [
+    {
+      "family": "Marriott",
+      "source": {
+        "type": "official_country_hotel_sitemap",
+        "origin": "https://www.marriott.com",
+        "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+        "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+        "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+        "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+        "hqv_required_for_discovery": false,
+        "deprecated_blocked_patterns": [
+          "/en/hotels/{country}.sitemap-hotels.xml",
+          "*.sitemap-hotels.xml"
+        ]
+      },
+      "note": "Official country hotel-sitemaps (MARSHA + property URL); HQV not used for discovery",
+      "adapter": "marriott_cala_country_sitemap"
+    }
+  ],
+  "proposed_insert_count": 1,
+  "insert_apply": null,
+  "airtable_writes": false,
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T22-41-26_CALA-coverage-reconciliation-v1",
+  "parent_framework": [
+    "Marriott",
+    "Hilton",
+    "IHG",
+    "Choice",
+    "Accor",
+    "Wyndham",
+    "Preferred"
+  ],
+  "next_recommended_action": "review_steward_and_insert_remaining_high_or_expand_sources",
+  "blocked_hard": false,
+  "status": "production_census_coverage_reconciliation_v1_partial_missing_remaining"
+}

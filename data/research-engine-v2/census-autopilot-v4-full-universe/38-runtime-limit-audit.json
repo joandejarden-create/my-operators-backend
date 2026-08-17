@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-08-08T21:15:00.000Z",
+  "audit_scope": [
+    "scripts/v4-full-universe-continue-build.mjs",
+    "scripts/v4-full-universe-next-discovery-wave.mjs",
+    "scripts/v4-pass1-continuation-inserts.mjs",
+    "scripts/v4-full-build-controller.mjs",
+    "lib/research-engine-v2/census-autopilot-v4/full-build-controller.js"
+  ],
+  "limits": [
+    {
+      "symbol": "SESSION_CAP / V4_DISCOVERY_INSERT_CAP",
+      "module": "scripts/v4-full-universe-next-discovery-wave.mjs",
+      "default": 500,
+      "class": "ACCIDENTAL_AUTOPILOT_STOP_BEFORE_FIX",
+      "after_fix": "SAFETY_BATCH — controller continues next lane/wave"
+    },
+    {
+      "symbol": "staged.length drain once",
+      "module": "scripts/v4-full-universe-continue-build.mjs",
+      "class": "ACCIDENTAL_AUTOPILOT_STOP_BEFORE_FIX",
+      "after_fix": "replaced by outer controller loop"
+    },
+    {
+      "symbol": "main() return after checkpoint",
+      "module": "scripts/v4-full-universe-continue-build.mjs",
+      "class": "ACCIDENTAL_AUTOPILOT_STOP_BEFORE_FIX",
+      "after_fix": "checkpoint is persistence; supervisor auto-resumes"
+    },
+    {
+      "symbol": "process.exit(5) on circuit",
+      "module": "v4 scripts",
+      "class": "SAFETY_LIMIT",
+      "keep": true
+    },
+    {
+      "symbol": "V4_WAVE_BATCH_SIZE",
+      "module": "full-build-controller",
+      "default": 100,
+      "class": "SAFETY_LIMIT",
+      "behavior": "validate → checkpoint → next lane/iteration"
+    },
+    {
+      "symbol": "V4_MAX_ITERATIONS",
+      "module": "full-build-controller",
+      "default": 8,
+      "class": "SAFETY_LIMIT / INFRASTRUCTURE_RUNTIME_BOUNDARY",
+      "behavior": "write auto-resume ticket; NOT BUILD COMPLETE"
+    },
+    {
+      "symbol": "V4_MAX_RUNTIME_MS",
+      "module": "full-build-controller",
+      "default": 1200000,
+      "class": "SAFETY_LIMIT / INFRASTRUCTURE_RUNTIME_BOUNDARY",
+      "behavior": "checkpoint + schedule resume"
+    },
+    {
+      "symbol": "Airtable pageSize 100",
+      "class": "SAFETY_LIMIT",
+      "note": "pagination only; not a stop"
+    },
+    {
+      "symbol": "write_delay_ms 110",
+      "class": "SAFETY_LIMIT",
+      "note": "rate-limit courtesy"
+    }
+  ]
+}

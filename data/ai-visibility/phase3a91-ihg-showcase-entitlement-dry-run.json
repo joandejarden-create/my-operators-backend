@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-08-14T00:28:27.136Z",
+  "IHG_DEMO_ENTITLEMENT_PLAN": {
+    "architecture": "One centrally monitored peer-v2 dataset + separate deep Brand entitlements per showcase company (Marriott/Hilton/Choice/IHG) via Phase 2F. Showcase config is not an auth bypass.",
+    "ihgDeepBrandIds": [
+      "recegXrqaPiSLGCIe",
+      "recCKuXCmGvxHPfb3",
+      "recwONQTqGU1jHCsM",
+      "recvvmiyReHhiKdoK",
+      "recDwzv86TWnz2gGB"
+    ],
+    "peerBenchmarkSetId": "peers_uu_collection_lifestyle_owner_decision_v2",
+    "duplicateProviderRunsRequired": false,
+    "productionClientWrites": false
+  },
+  "RECOMMENDED_DEMO_ENTITLEMENT_ARCHITECTURE": "Same monitored peer v2 cohort + separate deep Brand entitlements per showcase company (Phase 2F). Prefer dedicated Dealality showcase-demo Company Profiles (or demo-only context) linking only that company's portfolio brand IDs. Do not write production client Company Profiles.",
+  "APPLIED": false,
+  "AIRTABLE_WRITES": 0,
+  "PRODUCTION_CLIENT_ENTITLEMENT_WRITES": 0,
+  "currentDemoPortfolio": {
+    "TABLE": "Company Profile",
+    "RECORD": "reciQEtqmxz6ZroVc",
+    "FIELD": "Brands You Operate / Support",
+    "BEFORE": [
+      "reclkgOzvAcBheUSo",
+      "recEJCTDj1zrsjPM6",
+      "receQkxgjlezsc1xg",
+      "recCvV0PuZOi8c3hC",
+      "recegXrqaPiSLGCIe",
+      "rec02zPClpWUTCyXM",
+      "recIPuBC50fv13zRR"
+    ],
+    "AFTER": "UNCHANGED — cross-parent validation portfolio retained",
+    "SHOWCASE_ONLY": true,
+    "PRODUCTION_CLIENT_IMPACT": "NONE"
+  },
+  "proposedShowcaseEntitlements": [
+    {
+      "TABLE": "Company Profile",
+      "RECORD": "FUTURE_SHOWCASE_DEMO_MARRIOTT_OR_CONTEXT",
+      "FIELD": "Brands You Operate / Support",
+      "BEFORE": "(no showcase-specific Company Profile yet)",
+      "AFTER": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "recIPuBC50fv13zRR",
+        "rec9aZp7GHtzUEg0c"
+      ],
+      "SHOWCASE_ONLY": true,
+      "PRODUCTION_CLIENT_IMPACT": "NONE",
+      "canonicalCompanyName": "Marriott International",
+      "brandCount": 5,
+      "note": "Do not apply to production client profiles. Prefer new demo CP rows or demo-only context switch."
+    },
+    {
+      "TABLE": "Company Profile",
+      "RECORD": "FUTURE_SHOWCASE_DEMO_HILTON_OR_CONTEXT",
+      "FIELD": "Brands You Operate / Support",
+      "BEFORE": "(no showcase-specific Company Profile yet)",
+      "AFTER": [
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recsggfbKlJbjeRP9",
+        "recqiHq3GHKMj8Meo"
+      ],
+      "SHOWCASE_ONLY": true,
+      "PRODUCTION_CLIENT_IMPACT": "NONE",
+      "canonicalCompanyName": "Hilton",
+      "brandCount": 4,
+      "note": "Do not apply to production client profiles. Prefer new demo CP rows or demo-only context switch."
+    },
+    {
+      "TABLE": "Company Profile",
+      "RECORD": "FUTURE_SHOWCASE_DEMO_CHOICE_OR_CONTEXT",
+      "FIELD": "Brands You Operate / Support",
+      "BEFORE": "(no showcase-specific Company Profile yet)",
+      "AFTER": [
+        "reclkgOzvAcBheUSo",
+        "recRyvM8OmLlDj9G7",
+        "recWPEvxBQxVVzSq3",
+        "recmKqo7M7mLZgRqQ"
+      ],
+      "SHOWCASE_ONLY": true,
+      "PRODUCTION_CLIENT_IMPACT": "NONE",
+      "canonicalCompanyName": "Choice Hotels",
+      "brandCount": 4,
+      "note": "Do not apply to production client profiles. Prefer new demo CP rows or demo-only context switch."
+    },
+    {
+      "TABLE": "Company Profile",
+      "RECORD": "FUTURE_SHOWCASE_DEMO_IHG_OR_CONTEXT",
+      "FIELD": "Brands You Operate / Support",
+      "BEFORE": "(no showcase-specific Company Profile yet)",
+      "AFTER": [
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "recwONQTqGU1jHCsM",
+        "recvvmiyReHhiKdoK",
+        "recDwzv86TWnz2gGB"
+      ],
+      "SHOWCASE_ONLY": true,
+      "PRODUCTION_CLIENT_IMPACT": "NONE",
+      "canonicalCompanyName": "IHG",
+      "brandCount": 5,
+      "note": "Do not apply to production client profiles. Prefer new demo CP rows or demo-only context switch."
+    }
+  ]
+}

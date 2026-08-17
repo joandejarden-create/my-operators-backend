@@ -1,0 +1,227 @@
+{
+  "entity_name": "Dealality Outreach-Ready Owner Package",
+  "entity_description": "One relationship/outreach package per already-identified owner opportunity (Venado/Tortuga, Punta Colorada/Artibus Opus, Oleum). Not discovery. Focus: decision structure, ranked DMs, org/relationship map, documented intro paths, outreach recommendation for Joan, readiness class.",
+  "entity_criteria": [
+    "Only priority targets: Venado/Residencial Punta Venado/Tortuga; Punta Colorada/Artibus Opus; Oleum Joint Ventures; optional fourth only if budget remains",
+    "Do not discover new projects; do not SEMARNAT-first rediscovery; do not Brand/Operator Explorer validation",
+    "Relationship intelligence > forcing emails; no invented contacts or undocumented relationships",
+    "Rank decision-makers 1–3 with why; do not default to CEO without justification",
+    "Outreach readiness must be one of: Ready Now | Needs personalization | Needs introduction | Needs more ownership research | Needs better contacts | Research only",
+    "Prefer depth on 1–3 packages over thin fourth row"
+  ],
+  "attributes": [
+    {
+      "name": "package_id",
+      "type": "string",
+      "is_primary": true,
+      "required": true,
+      "description": "VENADO-OUTREACH-001 | COLORADA-OUTREACH-001 | OLEUM-OUTREACH-001 or similar."
+    },
+    {
+      "name": "owner_opportunity_name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "primary_project_or_site",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "geography",
+      "type": "string"
+    },
+    {
+      "name": "executive_summary",
+      "type": "string",
+      "required": true,
+      "description": "How Joan should approach this owner next week — concise."
+    },
+    {
+      "name": "organization_structure",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "decision_structure",
+      "type": "string",
+      "required": true,
+      "description": "Who influences hotel strategy/brand/operator/mixed-use/capital/development; role distinctions."
+    },
+    {
+      "name": "decision_maker_1_name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "decision_maker_1_title_role",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "decision_maker_1_why_matters",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "decision_maker_1_profile",
+      "type": "string"
+    },
+    {
+      "name": "decision_maker_2_name",
+      "type": "string"
+    },
+    {
+      "name": "decision_maker_2_title_role",
+      "type": "string"
+    },
+    {
+      "name": "decision_maker_2_why_matters",
+      "type": "string"
+    },
+    {
+      "name": "decision_maker_2_profile",
+      "type": "string"
+    },
+    {
+      "name": "decision_maker_3_name",
+      "type": "string"
+    },
+    {
+      "name": "decision_maker_3_title_role",
+      "type": "string"
+    },
+    {
+      "name": "decision_maker_3_why_matters",
+      "type": "string"
+    },
+    {
+      "name": "decision_maker_3_profile",
+      "type": "string"
+    },
+    {
+      "name": "relationship_map",
+      "type": "string",
+      "required": true,
+      "description": "Owner→Parent→DevCo→ProjectCo→Hospitality→DMs→Advisors→Capital→Architects→Intro paths."
+    },
+    {
+      "name": "documented_industry_relationships",
+      "type": "string",
+      "required": true,
+      "description": "Documented only — brands, operators, architects, capital, advisors, orgs, conferences, boards. No inference."
+    },
+    {
+      "name": "best_outreach_route",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "best_outreach_route_probability",
+      "type": "string",
+      "required": true,
+      "description": "High | Medium | Low"
+    },
+    {
+      "name": "alternative_outreach_routes",
+      "type": "string",
+      "required": true,
+      "description": "List routes with High/Medium/Low each."
+    },
+    {
+      "name": "introduction_opportunities",
+      "type": "string"
+    },
+    {
+      "name": "who_joan_should_approach_first",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "why_approach_first",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "who_else_to_approach",
+      "type": "string"
+    },
+    {
+      "name": "why_approach_alternates",
+      "type": "string"
+    },
+    {
+      "name": "most_realistic_introduction_pathway",
+      "type": "string"
+    },
+    {
+      "name": "verified_public_emails",
+      "type": "string",
+      "description": "Verified only; else none found."
+    },
+    {
+      "name": "verified_public_phones",
+      "type": "string"
+    },
+    {
+      "name": "professional_profiles",
+      "type": "string"
+    },
+    {
+      "name": "company_contact_routes",
+      "type": "string"
+    },
+    {
+      "name": "development_investment_hospitality_contacts",
+      "type": "string"
+    },
+    {
+      "name": "dealality_relationship_value",
+      "type": "string",
+      "required": true,
+      "description": "One / several / portfolio / regional / repeat / residences / mixed-use / acquisitions — explain."
+    },
+    {
+      "name": "outreach_readiness",
+      "type": "string",
+      "required": true,
+      "description": "Ready Now | Needs personalization | Needs introduction | Needs more ownership research | Needs better contacts | Research only"
+    },
+    {
+      "name": "recommended_dealality_strategy",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "confirmed_facts",
+      "type": "string"
+    },
+    {
+      "name": "research_inferences",
+      "type": "string"
+    },
+    {
+      "name": "unknowns_and_evidence_gaps",
+      "type": "string"
+    },
+    {
+      "name": "evidence_sources",
+      "type": "string",
+      "is_array": true
+    },
+    {
+      "name": "last_verified",
+      "type": "string"
+    },
+    {
+      "name": "evidence_confidence",
+      "type": "string",
+      "description": "High | Medium | Low"
+    },
+    {
+      "name": "prior_test_seed_notes",
+      "type": "string",
+      "description": "What was already known from Tests 1–4 vs newly added in Test 5."
+    }
+  ]
+}

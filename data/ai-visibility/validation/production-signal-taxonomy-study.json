@@ -1,0 +1,1038 @@
+{
+  "phase": "AI_INTELLIGENCE_PRODUCTION_SIGNAL_TAXONOMY_STUDY_COMPLETE",
+  "status": "AI_INTELLIGENCE_PRODUCTION_SIGNAL_TAXONOMY_STUDY_REVIEW_REQUIRED",
+  "recommendation": "ADOPT_SIGNAL_AND_FLAG_ARCHITECTURE",
+  "DEV_N": 290,
+  "candidateD": {
+    "definition": {
+      "id": "D_3_STATE_SIGNAL",
+      "name": "Three-state production signal taxonomy",
+      "states": [
+        "RECOMMENDED",
+        "MENTIONED",
+        "NOT_MENTIONED"
+      ],
+      "mapping": {
+        "first_recommendation": "RECOMMENDED",
+        "ranked_recommendation": "RECOMMENDED",
+        "explicit_recommendation": "RECOMMENDED",
+        "associated_option": "MENTIONED",
+        "comparator": "MENTIONED",
+        "discussed": "MENTIONED",
+        "passing_mention": "MENTIONED",
+        "negative_or_qualified": "MENTIONED",
+        "source_only": "MENTIONED",
+        "no_mention": "NOT_MENTIONED"
+      },
+      "firstRecommendationSeparate": true,
+      "safeCopy": {
+        "RECOMMENDED": "AI responses explicitly recommended the brand.",
+        "MENTIONED": "The brand appeared in the response without a governed recommendation claim.",
+        "NOT_MENTIONED": "The brand did not appear in the monitored response.",
+        "FIRST_RECOMMENDATION": "The brand was the first recommendation."
+      }
+    },
+    "safeCopy": {
+      "RECOMMENDED": "AI responses explicitly recommended the brand.",
+      "MENTIONED": "The brand appeared in the response without a governed recommendation claim.",
+      "NOT_MENTIONED": "The brand did not appear in the monitored response.",
+      "FIRST_RECOMMENDATION": "The brand was the first recommendation."
+    },
+    "benchmarks": {
+      "v3.3": {
+        "excluded": 0,
+        "N": 290,
+        "ACCURACY": 0.9241379310344827,
+        "PRECISION": 0.9241379310344827,
+        "RECALL": 0.9241379310344827,
+        "F1": 0.9241379310344827,
+        "MACRO_P": 0.9035437832607643,
+        "MACRO_R": 0.9035437832607643,
+        "MACRO_F1": 0.9035437832607643,
+        "classMetrics": {
+          "RECOMMENDED": {
+            "precision": 0.8589743589743589,
+            "recall": 0.8589743589743589,
+            "f1": 0.8589743589743589,
+            "tp": 67,
+            "fp": 11,
+            "fn": 11
+          },
+          "MENTIONED": {
+            "precision": 0.9481132075471698,
+            "recall": 0.9481132075471698,
+            "f1": 0.9481132075471698,
+            "tp": 201,
+            "fp": 11,
+            "fn": 11
+          },
+          "NOT_MENTIONED": {
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0
+          }
+        },
+        "confusion": [
+          {
+            "pair": "MENTIONED => MENTIONED",
+            "count": 201
+          },
+          {
+            "pair": "RECOMMENDED => RECOMMENDED",
+            "count": 67
+          },
+          {
+            "pair": "MENTIONED => RECOMMENDED",
+            "count": 11
+          },
+          {
+            "pair": "RECOMMENDED => MENTIONED",
+            "count": 11
+          }
+        ]
+      },
+      "v4": {
+        "excluded": 0,
+        "N": 290,
+        "ACCURACY": 0.8758620689655172,
+        "PRECISION": 0.8758620689655172,
+        "RECALL": 0.8758620689655172,
+        "F1": 0.8758620689655172,
+        "MACRO_P": 0.866304347826087,
+        "MACRO_R": 0.8056966618287373,
+        "MACRO_F1": 0.8288412354908519,
+        "classMetrics": {
+          "RECOMMENDED": {
+            "precision": 0.85,
+            "recall": 0.6538461538461539,
+            "f1": 0.7391304347826088,
+            "tp": 51,
+            "fp": 9,
+            "fn": 27
+          },
+          "MENTIONED": {
+            "precision": 0.8826086956521739,
+            "recall": 0.9575471698113207,
+            "f1": 0.918552036199095,
+            "tp": 203,
+            "fp": 27,
+            "fn": 9
+          },
+          "NOT_MENTIONED": {
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0
+          }
+        },
+        "confusion": [
+          {
+            "pair": "MENTIONED => MENTIONED",
+            "count": 203
+          },
+          {
+            "pair": "RECOMMENDED => RECOMMENDED",
+            "count": 51
+          },
+          {
+            "pair": "RECOMMENDED => MENTIONED",
+            "count": 27
+          },
+          {
+            "pair": "MENTIONED => RECOMMENDED",
+            "count": 9
+          }
+        ]
+      },
+      "v4.1": {
+        "excluded": 0,
+        "N": 290,
+        "ACCURACY": 0.8896551724137931,
+        "PRECISION": 0.8896551724137931,
+        "RECALL": 0.8896551724137931,
+        "F1": 0.8896551724137931,
+        "MACRO_P": 0.9255337465564738,
+        "MACRO_R": 0.7989235607160134,
+        "MACRO_F1": 0.8377735822669743,
+        "classMetrics": {
+          "RECOMMENDED": {
+            "precision": 0.9791666666666666,
+            "recall": 0.6025641025641025,
+            "f1": 0.7460317460317459,
+            "tp": 47,
+            "fp": 1,
+            "fn": 31
+          },
+          "MENTIONED": {
+            "precision": 0.871900826446281,
+            "recall": 0.9952830188679245,
+            "f1": 0.9295154185022025,
+            "tp": 211,
+            "fp": 31,
+            "fn": 1
+          },
+          "NOT_MENTIONED": {
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0
+          }
+        },
+        "confusion": [
+          {
+            "pair": "MENTIONED => MENTIONED",
+            "count": 211
+          },
+          {
+            "pair": "RECOMMENDED => RECOMMENDED",
+            "count": 47
+          },
+          {
+            "pair": "RECOMMENDED => MENTIONED",
+            "count": 31
+          },
+          {
+            "pair": "MENTIONED => RECOMMENDED",
+            "count": 1
+          }
+        ]
+      },
+      "hybrid": {
+        "excluded": 35,
+        "N": 255,
+        "ACCURACY": 0.8823529411764706,
+        "PRECISION": 0.8823529411764706,
+        "RECALL": 0.8823529411764706,
+        "F1": 0.8823529411764706,
+        "MACRO_P": 0.9199159844894442,
+        "MACRO_R": 0.7958788706739526,
+        "MACRO_F1": 0.8326185891825661,
+        "classMetrics": {
+          "RECOMMENDED": {
+            "precision": 0.9772727272727273,
+            "recall": 0.5972222222222222,
+            "f1": 0.7413793103448277,
+            "tp": 43,
+            "fp": 1,
+            "fn": 29
+          },
+          "MENTIONED": {
+            "precision": 0.8625592417061612,
+            "recall": 0.994535519125683,
+            "f1": 0.9238578680203046,
+            "tp": 182,
+            "fp": 29,
+            "fn": 1
+          },
+          "NOT_MENTIONED": {
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0
+          }
+        },
+        "confusion": [
+          {
+            "pair": "MENTIONED => MENTIONED",
+            "count": 182
+          },
+          {
+            "pair": "RECOMMENDED => RECOMMENDED",
+            "count": 43
+          },
+          {
+            "pair": "RECOMMENDED => MENTIONED",
+            "count": 29
+          },
+          {
+            "pair": "MENTIONED => RECOMMENDED",
+            "count": 1
+          }
+        ]
+      },
+      "hierarchical": {
+        "excluded": 240,
+        "N": 50,
+        "ACCURACY": 0.64,
+        "PRECISION": 0.64,
+        "RECALL": 0.64,
+        "F1": 0.64,
+        "MACRO_P": 0.64,
+        "MACRO_R": 0.5,
+        "MACRO_F1": 0.7804878048780487,
+        "classMetrics": {
+          "RECOMMENDED": {
+            "precision": null,
+            "recall": 0,
+            "f1": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 18
+          },
+          "MENTIONED": {
+            "precision": 0.64,
+            "recall": 1,
+            "f1": 0.7804878048780487,
+            "tp": 32,
+            "fp": 18,
+            "fn": 0
+          },
+          "NOT_MENTIONED": {
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0
+          }
+        },
+        "confusion": [
+          {
+            "pair": "MENTIONED => MENTIONED",
+            "count": 32
+          },
+          {
+            "pair": "RECOMMENDED => MENTIONED",
+            "count": 18
+          }
+        ]
+      }
+    },
+    "best": {
+      "c": "v3.3",
+      "acc": 0.9241379310344827,
+      "n": 290,
+      "excluded": 0
+    },
+    "primary": {
+      "excluded": 0,
+      "N": 290,
+      "ACCURACY": 0.8896551724137931,
+      "PRECISION": 0.8896551724137931,
+      "RECALL": 0.8896551724137931,
+      "F1": 0.8896551724137931,
+      "MACRO_P": 0.9255337465564738,
+      "MACRO_R": 0.7989235607160134,
+      "MACRO_F1": 0.8377735822669743,
+      "classMetrics": {
+        "RECOMMENDED": {
+          "precision": 0.9791666666666666,
+          "recall": 0.6025641025641025,
+          "f1": 0.7460317460317459,
+          "tp": 47,
+          "fp": 1,
+          "fn": 31
+        },
+        "MENTIONED": {
+          "precision": 0.871900826446281,
+          "recall": 0.9952830188679245,
+          "f1": 0.9295154185022025,
+          "tp": 211,
+          "fp": 31,
+          "fn": 1
+        },
+        "NOT_MENTIONED": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "confusion": [
+        {
+          "pair": "MENTIONED => MENTIONED",
+          "count": 211
+        },
+        {
+          "pair": "RECOMMENDED => RECOMMENDED",
+          "count": 47
+        },
+        {
+          "pair": "RECOMMENDED => MENTIONED",
+          "count": 31
+        },
+        {
+          "pair": "MENTIONED => RECOMMENDED",
+          "count": 1
+        }
+      ]
+    },
+    "byClassifier": {
+      "v3.3": {
+        "acc": 0.9241379310344827,
+        "macroF1": 0.9035437832607643,
+        "n": 290,
+        "excl": 0
+      },
+      "v4": {
+        "acc": 0.8758620689655172,
+        "macroF1": 0.8288412354908519,
+        "n": 290,
+        "excl": 0
+      },
+      "v4.1": {
+        "acc": 0.8896551724137931,
+        "macroF1": 0.8377735822669743,
+        "n": 290,
+        "excl": 0
+      },
+      "hybrid": {
+        "acc": 0.8823529411764706,
+        "macroF1": 0.8326185891825661,
+        "n": 255,
+        "excl": 35
+      },
+      "hierarchical": {
+        "acc": 0.64,
+        "macroF1": 0.7804878048780487,
+        "n": 50,
+        "excl": 240
+      }
+    }
+  },
+  "candidateE": {
+    "definition": {
+      "id": "E_SIGNAL_AND_FLAGS",
+      "name": "Presence plus independent evidence flags",
+      "presenceStates": [
+        "PRESENT",
+        "NOT_PRESENT"
+      ],
+      "flags": [
+        "RECOMMENDED",
+        "FIRST_RECOMMENDATION",
+        "NEGATIVE_OR_QUALIFIED",
+        "COMPARATOR"
+      ]
+    },
+    "benchmarks": {
+      "v3.3": {
+        "excluded": 0,
+        "PRESENCE": {
+          "N": 290,
+          "ACCURACY": 1,
+          "PRECISION": 1,
+          "RECALL": 1,
+          "F1": 1,
+          "MACRO_P": 1,
+          "MACRO_R": 1,
+          "MACRO_F1": 1,
+          "classMetrics": {
+            "PRESENT": {
+              "precision": 1,
+              "recall": 1,
+              "f1": 1,
+              "tp": 290,
+              "fp": 0,
+              "fn": 0
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "PRESENT => PRESENT",
+              "count": 290
+            }
+          ]
+        },
+        "RECOMMENDED_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.9241379310344827,
+          "precision": 0.8589743589743589,
+          "recall": 0.8589743589743589,
+          "f1": 0.8589743589743589,
+          "tp": 67,
+          "fp": 11,
+          "fn": 11,
+          "tn": 201,
+          "prevalence": 0.2689655172413793
+        },
+        "FIRST_RECOMMENDATION_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.9137931034482759,
+          "precision": 0.7272727272727273,
+          "recall": 0.26666666666666666,
+          "f1": 0.3902439024390244,
+          "tp": 8,
+          "fp": 3,
+          "fn": 22,
+          "tn": 257,
+          "prevalence": 0.10344827586206896
+        },
+        "NEGATIVE_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.996551724137931,
+          "precision": 1,
+          "recall": 0.8571428571428571,
+          "f1": 0.923076923076923,
+          "tp": 6,
+          "fp": 0,
+          "fn": 1,
+          "tn": 283,
+          "prevalence": 0.02413793103448276
+        },
+        "COMPARATOR_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.9862068965517241,
+          "precision": 1,
+          "recall": 0.42857142857142855,
+          "f1": 0.6,
+          "tp": 3,
+          "fp": 0,
+          "fn": 4,
+          "tn": 283,
+          "prevalence": 0.02413793103448276
+        }
+      },
+      "v4": {
+        "excluded": 0,
+        "PRESENCE": {
+          "N": 290,
+          "ACCURACY": 1,
+          "PRECISION": 1,
+          "RECALL": 1,
+          "F1": 1,
+          "MACRO_P": 1,
+          "MACRO_R": 1,
+          "MACRO_F1": 1,
+          "classMetrics": {
+            "PRESENT": {
+              "precision": 1,
+              "recall": 1,
+              "f1": 1,
+              "tp": 290,
+              "fp": 0,
+              "fn": 0
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "PRESENT => PRESENT",
+              "count": 290
+            }
+          ]
+        },
+        "RECOMMENDED_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.8758620689655172,
+          "precision": 0.85,
+          "recall": 0.6538461538461539,
+          "f1": 0.7391304347826088,
+          "tp": 51,
+          "fp": 9,
+          "fn": 27,
+          "tn": 203,
+          "prevalence": 0.2689655172413793
+        },
+        "FIRST_RECOMMENDATION_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.9344827586206896,
+          "precision": 0.8235294117647058,
+          "recall": 0.4666666666666667,
+          "f1": 0.5957446808510638,
+          "tp": 14,
+          "fp": 3,
+          "fn": 16,
+          "tn": 257,
+          "prevalence": 0.10344827586206896
+        },
+        "NEGATIVE_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.9862068965517241,
+          "precision": 1,
+          "recall": 0.42857142857142855,
+          "f1": 0.6,
+          "tp": 3,
+          "fp": 0,
+          "fn": 4,
+          "tn": 283,
+          "prevalence": 0.02413793103448276
+        },
+        "COMPARATOR_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.9827586206896551,
+          "precision": 1,
+          "recall": 0.2857142857142857,
+          "f1": 0.4444444444444445,
+          "tp": 2,
+          "fp": 0,
+          "fn": 5,
+          "tn": 283,
+          "prevalence": 0.02413793103448276
+        }
+      },
+      "v4.1": {
+        "excluded": 0,
+        "PRESENCE": {
+          "N": 290,
+          "ACCURACY": 1,
+          "PRECISION": 1,
+          "RECALL": 1,
+          "F1": 1,
+          "MACRO_P": 1,
+          "MACRO_R": 1,
+          "MACRO_F1": 1,
+          "classMetrics": {
+            "PRESENT": {
+              "precision": 1,
+              "recall": 1,
+              "f1": 1,
+              "tp": 290,
+              "fp": 0,
+              "fn": 0
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "PRESENT => PRESENT",
+              "count": 290
+            }
+          ]
+        },
+        "RECOMMENDED_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.8896551724137931,
+          "precision": 0.9791666666666666,
+          "recall": 0.6025641025641025,
+          "f1": 0.7460317460317459,
+          "tp": 47,
+          "fp": 1,
+          "fn": 31,
+          "tn": 211,
+          "prevalence": 0.2689655172413793
+        },
+        "FIRST_RECOMMENDATION_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.9413793103448276,
+          "precision": 1,
+          "recall": 0.43333333333333335,
+          "f1": 0.6046511627906976,
+          "tp": 13,
+          "fp": 0,
+          "fn": 17,
+          "tn": 260,
+          "prevalence": 0.10344827586206896
+        },
+        "NEGATIVE_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.996551724137931,
+          "precision": 1,
+          "recall": 0.8571428571428571,
+          "f1": 0.923076923076923,
+          "tp": 6,
+          "fp": 0,
+          "fn": 1,
+          "tn": 283,
+          "prevalence": 0.02413793103448276
+        },
+        "COMPARATOR_FLAG": {
+          "N": 290,
+          "ACCURACY": 0.9862068965517241,
+          "precision": 1,
+          "recall": 0.42857142857142855,
+          "f1": 0.6,
+          "tp": 3,
+          "fp": 0,
+          "fn": 4,
+          "tn": 283,
+          "prevalence": 0.02413793103448276
+        }
+      },
+      "hybrid": {
+        "excluded": 35,
+        "PRESENCE": {
+          "N": 255,
+          "ACCURACY": 1,
+          "PRECISION": 1,
+          "RECALL": 1,
+          "F1": 1,
+          "MACRO_P": 1,
+          "MACRO_R": 1,
+          "MACRO_F1": 1,
+          "classMetrics": {
+            "PRESENT": {
+              "precision": 1,
+              "recall": 1,
+              "f1": 1,
+              "tp": 255,
+              "fp": 0,
+              "fn": 0
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "PRESENT => PRESENT",
+              "count": 255
+            }
+          ]
+        },
+        "RECOMMENDED_FLAG": {
+          "N": 255,
+          "ACCURACY": 0.8823529411764706,
+          "precision": 0.9772727272727273,
+          "recall": 0.5972222222222222,
+          "f1": 0.7413793103448277,
+          "tp": 43,
+          "fp": 1,
+          "fn": 29,
+          "tn": 182,
+          "prevalence": 0.2823529411764706
+        },
+        "FIRST_RECOMMENDATION_FLAG": {
+          "N": 255,
+          "ACCURACY": 0.9294117647058824,
+          "precision": 1,
+          "recall": 0.3076923076923077,
+          "f1": 0.47058823529411764,
+          "tp": 8,
+          "fp": 0,
+          "fn": 18,
+          "tn": 229,
+          "prevalence": 0.10196078431372549
+        },
+        "NEGATIVE_FLAG": {
+          "N": 255,
+          "ACCURACY": 0.996078431372549,
+          "precision": 1,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1,
+          "tn": 249,
+          "prevalence": 0.023529411764705882
+        },
+        "COMPARATOR_FLAG": {
+          "N": 255,
+          "ACCURACY": 0.984313725490196,
+          "precision": 1,
+          "recall": 0.42857142857142855,
+          "f1": 0.6,
+          "tp": 3,
+          "fp": 0,
+          "fn": 4,
+          "tn": 248,
+          "prevalence": 0.027450980392156862
+        }
+      },
+      "hierarchical": {
+        "excluded": 240,
+        "PRESENCE": {
+          "N": 50,
+          "ACCURACY": 1,
+          "PRECISION": 1,
+          "RECALL": 1,
+          "F1": 1,
+          "MACRO_P": 1,
+          "MACRO_R": 1,
+          "MACRO_F1": 1,
+          "classMetrics": {
+            "PRESENT": {
+              "precision": 1,
+              "recall": 1,
+              "f1": 1,
+              "tp": 50,
+              "fp": 0,
+              "fn": 0
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "PRESENT => PRESENT",
+              "count": 50
+            }
+          ]
+        },
+        "RECOMMENDED_FLAG": {
+          "N": 50,
+          "ACCURACY": 0.64,
+          "precision": null,
+          "recall": 0,
+          "f1": null,
+          "tp": 0,
+          "fp": 0,
+          "fn": 18,
+          "tn": 32,
+          "prevalence": 0.36
+        },
+        "FIRST_RECOMMENDATION_FLAG": {
+          "N": 50,
+          "ACCURACY": 0.84,
+          "precision": null,
+          "recall": 0,
+          "f1": null,
+          "tp": 0,
+          "fp": 0,
+          "fn": 8,
+          "tn": 42,
+          "prevalence": 0.16
+        },
+        "NEGATIVE_FLAG": {
+          "N": 50,
+          "ACCURACY": 0.98,
+          "precision": null,
+          "recall": 0,
+          "f1": null,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "tn": 49,
+          "prevalence": 0.02
+        },
+        "COMPARATOR_FLAG": {
+          "N": 50,
+          "ACCURACY": 1,
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "tn": 50,
+          "prevalence": 0
+        }
+      }
+    },
+    "primary": {
+      "excluded": 0,
+      "PRESENCE": {
+        "N": 290,
+        "ACCURACY": 1,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1,
+        "MACRO_P": 1,
+        "MACRO_R": 1,
+        "MACRO_F1": 1,
+        "classMetrics": {
+          "PRESENT": {
+            "precision": 1,
+            "recall": 1,
+            "f1": 1,
+            "tp": 290,
+            "fp": 0,
+            "fn": 0
+          },
+          "NOT_PRESENT": {
+            "precision": null,
+            "recall": null,
+            "f1": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0
+          }
+        },
+        "confusion": [
+          {
+            "pair": "PRESENT => PRESENT",
+            "count": 290
+          }
+        ]
+      },
+      "RECOMMENDED_FLAG": {
+        "N": 290,
+        "ACCURACY": 0.8896551724137931,
+        "precision": 0.9791666666666666,
+        "recall": 0.6025641025641025,
+        "f1": 0.7460317460317459,
+        "tp": 47,
+        "fp": 1,
+        "fn": 31,
+        "tn": 211,
+        "prevalence": 0.2689655172413793
+      },
+      "FIRST_RECOMMENDATION_FLAG": {
+        "N": 290,
+        "ACCURACY": 0.9413793103448276,
+        "precision": 1,
+        "recall": 0.43333333333333335,
+        "f1": 0.6046511627906976,
+        "tp": 13,
+        "fp": 0,
+        "fn": 17,
+        "tn": 260,
+        "prevalence": 0.10344827586206896
+      },
+      "NEGATIVE_FLAG": {
+        "N": 290,
+        "ACCURACY": 0.996551724137931,
+        "precision": 1,
+        "recall": 0.8571428571428571,
+        "f1": 0.923076923076923,
+        "tp": 6,
+        "fp": 0,
+        "fn": 1,
+        "tn": 283,
+        "prevalence": 0.02413793103448276
+      },
+      "COMPARATOR_FLAG": {
+        "N": 290,
+        "ACCURACY": 0.9862068965517241,
+        "precision": 1,
+        "recall": 0.42857142857142855,
+        "f1": 0.6,
+        "tp": 3,
+        "fp": 0,
+        "fn": 4,
+        "tn": 283,
+        "prevalence": 0.02413793103448276
+      }
+    }
+  },
+  "errorElimination": {
+    "ASSOCIATED_DISCUSSION_ORIGINAL": 39,
+    "REMAINING_D": 0,
+    "REMAINING_E": 0,
+    "FIRST_VS_RANKED": {
+      "ORIGINAL": 0,
+      "REMAINING_D": 0,
+      "REMAINING_E_FIRST_FLAG": 0
+    },
+    "RANKED_VS_EXPLICIT": {
+      "ORIGINAL": 0,
+      "REMAINING_D": 0,
+      "REMAINING_E": 0
+    },
+    "EXPLICIT_VS_ASSOCIATED": {
+      "ORIGINAL": 1,
+      "REMAINING_D": 1,
+      "REMAINING_E": 1
+    },
+    "COMPARATOR": {
+      "ORIGINAL": 4,
+      "REMAINING_D": 0,
+      "REMAINING_E": 4
+    },
+    "NEGATIVE": {
+      "ORIGINAL": 1,
+      "REMAINING_D": 0,
+      "REMAINING_E": 1
+    },
+    "ALL_V41_ERRORS": {
+      "ORIGINAL": 79,
+      "REMAINING_D": 32,
+      "REMAINING_E_ANY_SIGNAL": 37,
+      "REMAINING_E_RECOMMENDED_ONLY": 32,
+      "REMAINING_E_PRESENCE_ONLY": 0
+    },
+    "OTHER_ERRORS_REMOVED": {
+      "D": 8,
+      "note": "See band breakdowns; associated/discussed fully removed under D and E."
+    },
+    "OTHER_ERRORS_REMAINING": {
+      "D": 32,
+      "E_ANY_SIGNAL": 37
+    }
+  },
+  "metricContracts": {
+    "AI_PRESENCE": "UNCHANGED — entity appeared / successful eligible responses",
+    "RECOMMENDATION_SHARE": "UNCHANGED — first|ranked|explicit only; associated_option NOT included (aligns with D RECOMMENDED and E RECOMMENDED flag)",
+    "FIRST_RECOMMENDATION": "UNCHANGED — separate strict evidence-backed flag/metric; NOT a D production role",
+    "QUESTIONS_WON": "UNCHANGED — sole first-recommendation leader",
+    "QUESTIONS_MISSING": "UNCHANGED — entity absent",
+    "COMPETITIVE_POSITION": "UNCHANGED — AI Presence rank",
+    "confirmedUnchanged": true
+  },
+  "productAssessment": {
+    "D": {
+      "CLIENT_VALUE": "High — answers recommended / mentioned / absent; first-rec as separate metric.",
+      "INTERPRETABILITY": "Very high with provided safe copy.",
+      "OVERCLAIM_RISK": "Low-medium — RECOMMENDED only from explicit positive roles; MENTIONED absorbs associated without calling it recommended.",
+      "AUDITABILITY": "High — maps cleanly onto immutable 10-class internal labels.",
+      "OPERATIONAL_COMPLEXITY": "Low"
+    },
+    "E": {
+      "CLIENT_VALUE": "Highest — matches real client questions as independent signals; avoids forced mutual exclusion.",
+      "INTERPRETABILITY": "Highest if each flag has exact copy and evidence trace.",
+      "OVERCLAIM_RISK": "Lowest for presence; recommended/first still require evidence discipline.",
+      "AUDITABILITY": "Highest — each flag maps to internal role evidence; admin can still show 10-class.",
+      "OPERATIONAL_COMPLEXITY": "Medium — multiple gates, but each is independently shippable."
+    }
+  },
+  "gates": {
+    "PRESENCE_GATE": "PASS",
+    "RECOMMENDED_GATE": "FAIL",
+    "FIRST_REC_GATE": "FAIL",
+    "NEGATIVE_GATE": "FAIL",
+    "COMPARATOR_GATE": "FAIL",
+    "CANDIDATE_D_BEST_ACCURACY": 0.9241379310344827,
+    "CANDIDATE_D_MEETS_98": "NO"
+  },
+  "holdout": {
+    "HOLDOUT_ACCESSED": "NO",
+    "HOLDOUT_CASES_INSPECTED": 0,
+    "HOLDOUT_METRICS_RUN": "NO"
+  },
+  "hardGuards": {
+    "PROVIDER_CALLS": 0,
+    "SEMANTIC_ADJUDICATOR_CALLS": 0,
+    "HOLDOUT_ACCESS": 0,
+    "AUTO_GT_CHANGES": 0,
+    "AIRTABLE_WRITES": 0,
+    "DEPLOYS": 0,
+    "CLASSIFIER_TUNING": 0
+  },
+  "notes": [
+    "Hierarchical metrics are error-sample-only (not comparable).",
+    "Hybrid excludes unknown adjudicator outcomes.",
+    "Primary decision numbers use v4.1 full DEV (n=290)."
+  ],
+  "stagedReadiness": {
+    "PRESENCE": "PRODUCTION_READY",
+    "RECOMMENDED": "NOT_READY_RECALL_GAP",
+    "FIRST_RECOMMENDATION": "NOT_READY_RECALL_GAP",
+    "NEGATIVE": "NEAR_READY_SPARSE",
+    "COMPARATOR": "NOT_READY_RECALL_GAP",
+    "note": "Adopt E as architecture; ship Presence now; do not claim Recommended/First production-ready until flag gates pass independently."
+  }
+}

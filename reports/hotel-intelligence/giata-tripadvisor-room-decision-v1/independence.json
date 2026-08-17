@@ -1,0 +1,17 @@
+{
+  "assessment": "INDEPENDENCE_UNCERTAIN",
+  "rationale": [
+    "Tripadvisor hotelClassAttribution referencing Giata documents star/class provenance, not room inventory.",
+    "In this decision TA pool, 29/31 hotels (~94%) show Giata class attribution — deep Tripadvisor↔Giata coupling for classification raises (but does not prove) shared-upstream risk for inventory fields.",
+    "No Tripadvisor schema field or GIATA entitlement doc in this repo proves numberOfRooms ← MHG num_rooms_total.",
+    "TA↔GIATA room conflicts on high-confidence matches show fields are not always identical (freshness/definition divergence possible even under partial shared upstream).",
+    "Therefore TA+GIATA agreement must NOT auto-qualify as VERIFIED_MULTI_SOURCE / VERIFIED_TA_GIATA without additional independent primary evidence."
+  ],
+  "evidence_notes": {
+    "ta_pool_hotelClassAttribution_giata_mentions": 29,
+    "ta_pool_size": 31,
+    "literature": "Tripadvisor star/class often attributed to Giata in Europe; rooms field is separate in scraper schemas.",
+    "dealality_identity_matches": 4,
+    "dealality_trusted_room_matches": 0
+  }
+}

@@ -1,0 +1,3114 @@
+{
+  "version": "brand-explorer-62-safe-text-cleanup-batch-1-v1",
+  "generatedAt": "2026-08-05T14:28:49.802Z",
+  "dryRun": true,
+  "airtableWrites": false,
+  "status": "brand_explorer_62_safe_text_cleanup_batch_1_ready_for_founder_review",
+  "executiveSummary": {
+    "brandsInBatch1": 34,
+    "patchCount": 68,
+    "batch1A": 36,
+    "batch1B": 32,
+    "propertyExampleRefreshes": 1,
+    "mgalleryIncluded": false,
+    "mgalleryHeld": true,
+    "heldCount": 7,
+    "founderDecisionCount": 7,
+    "termsRemoved": {
+      "census": 31,
+      "consumer_site": 6,
+      "listed_on_choice": 13,
+      "census_property_url": 3,
+      "active_property_page": 3,
+      "choicehotels_domain_prose": 6,
+      "census_url": 7,
+      "item_19_tables": 1,
+      "chd_brand_page": 1,
+      "chd": 4,
+      "chd_everhome": 1,
+      "source_pack": 4
+    },
+    "gates": {
+      "activeCount": 62,
+      "semanticCHM": {
+        "critical": 0,
+        "high": 0,
+        "medium": 0,
+        "low": 0
+      },
+      "pvqlPass": true,
+      "pvqlCount": 62,
+      "footnotePass": true,
+      "momentumPass": true,
+      "mandatoryPass": true,
+      "quality": {
+        "freezeDecision": "freeze_after_minor_cleanup_pass",
+        "recommendationCounts": {
+          "approve_for_baseline_freeze": 61,
+          "approve_after_minor_cleanup": 1
+        },
+        "minor": [
+          "mgallery-collection"
+        ]
+      },
+      "semanticFreeze": "ready_to_freeze_62_semantic_qa_clean",
+      "footnoteSummary": {
+        "activeCount": 62,
+        "previewCount": 0,
+        "totalRows": 62,
+        "pass": 62,
+        "fail": 0,
+        "footnoteVisibleCount": 62,
+        "footnoteMissingCount": 0
+      },
+      "lighterGatesRevalidatedAt": "2026-08-05T14:30:54.320Z",
+      "note": "Post-batch-prep gate revalidation complete",
+      "revalidatedAt": "2026-08-05T15:22:56.081Z"
+    }
+  },
+  "scope": {
+    "includedCategories": [
+      "safe_text_cleanup",
+      "property_example_update"
+    ],
+    "excluded": [
+      "Recent Momentum",
+      "hotel count / global footprint from Mexico Census",
+      "Company Validated / Brand Verified / Brand Status / release fields",
+      "Census writes",
+      "owner/operator/rooms/date claims",
+      "wrong-property Census fuzzy swaps",
+      "MGallery major slot fills"
+    ]
+  },
+  "brandsIncluded": [
+    "aloft-hotels",
+    "ascend",
+    "comfort-inn-suites",
+    "country-inn-suites",
+    "design-hotels",
+    "doubletree-by-hilton",
+    "everhome-suites",
+    "fairmont",
+    "hampton-by-hilton",
+    "hilton-garden-inn",
+    "hilton-hotels-and-resorts",
+    "home2-suites-by-hilton",
+    "homewood-suites-by-hilton",
+    "ibis",
+    "kimpton",
+    "mama-shelter",
+    "marriott-hotels",
+    "mercure",
+    "novotel",
+    "pullman",
+    "quality-inn",
+    "radisson-individuals-by-choice",
+    "radisson-red",
+    "residence-inn-by-marriott",
+    "sheraton",
+    "spark-by-hilton",
+    "springhill-suites-by-marriott",
+    "studiores",
+    "suburban-studios",
+    "tapestry-collection-by-hilton",
+    "towneplace-suites-by-marriott",
+    "trademark-collection-by-wyndham",
+    "tru-by-hilton",
+    "westin"
+  ],
+  "fieldsIncluded": [
+    "footprint.editorial.Body",
+    "footprint.editorial_bullets.Body",
+    "footprint.geo_intro.Body",
+    "footprint.momentum.Body",
+    "footprint.openings.Body",
+    "footprint.openings.Case Summary Interpretation",
+    "footprint.openings.Case Summary Overview",
+    "footprint.openings.Title",
+    "footprint.portfolio_mix.Body",
+    "footprint.region.apac.Body",
+    "footprint.region.cala.Body",
+    "loyalty.proof.Body",
+    "materials.caseStudy.Body",
+    "materials.caseStudy.Case Summary Overview"
+  ],
+  "forbiddenLanguageRemoved": {
+    "census": 31,
+    "consumer_site": 6,
+    "listed_on_choice": 13,
+    "census_property_url": 3,
+    "active_property_page": 3,
+    "choicehotels_domain_prose": 6,
+    "census_url": 7,
+    "item_19_tables": 1,
+    "chd_brand_page": 1,
+    "chd": 4,
+    "chd_everhome": 1,
+    "source_pack": 4
+  },
+  "propertyExamplesRefreshed": [
+    {
+      "brand": "Kimpton Hotels",
+      "brandSlug": "kimpton",
+      "airtableRecordId": "recYOSVJXXqkGjN6m",
+      "fieldName": "Title",
+      "slotKey": "footprint.openings",
+      "patchCategory": "property_example_update",
+      "batchLane": "1B",
+      "currentText": "Kimpton Mas Olas Resort & Spa Kimpton Hotels — Todos Santos",
+      "proposedText": "Kimpton Mas Olas Resort & Spa — Todos Santos, Mexico",
+      "reason": "Same-property Census confirmation — refresh location framing only",
+      "sourceSupport": "census_source_url_present",
+      "censusSupport": {
+        "censusRecordId": "rec5ipKwCzFMSjwck",
+        "propertyName": "Kimpton Mas Olas Resort and Spa",
+        "city": "Mas Olas Resort Spa Todos Santos",
+        "country": "Mexico",
+        "affiliationStatus": "Branded",
+        "humanReviewRequired": false
+      },
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1"
+    }
+  ],
+  "mgalleryRenderFixProposal": {
+    "brand": "MGallery Collection",
+    "brandSlug": "mgallery-collection",
+    "airtableRecordId": null,
+    "fieldName": "quality_audit_minor_cleanup",
+    "slotKey": null,
+    "patchCategory": "Webflow_render_fix",
+    "batchLane": null,
+    "currentText": "approve_after_minor_cleanup (majors: missing Guest Psychographics, valueOwners.overview, valueOwners.watchouts; minors: thin portfolio_mix + caption roles)",
+    "proposedText": "Hold for a dedicated MGallery cleanup packet — missing major slots are not a Low-risk Batch 1 text rewrite. Optional later: thicken footprint.portfolio_mix (rec8JMqWvldhwE1xn) without factual invention.",
+    "reason": "Quality quiet minor is not Low-risk factual-safe for Batch 1; majors require content additions",
+    "sourceSupport": "quality_audit_quiet",
+    "censusSupport": null,
+    "riskLevel": "Medium",
+    "founderApprovalRequired": true,
+    "applyRecommendation": "hold_for_later"
+  },
+  "batch1A": [
+    {
+      "brand": "Ascend Hotel Collection",
+      "brandSlug": "ascend",
+      "airtableRecordId": "rec7PrxITi7IfVQmF",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "materials.caseStudy",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Quito, Ecuador: Ascend Hotel Collection member on Choice consumer site—Andean capital soft-brand listing.",
+      "proposedText": "Quito, Ecuador: Ascend Hotel Collection member on Choice brand website—Andean capital soft-brand listing.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "rec7Jv3rCy7fhVjwR",
+      "fieldName": "Body",
+      "slotKey": "loyalty.proof",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "U.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "proposedText": "U.S. News #1 hotel rewards program (brand website, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recL0gIhmwYjCFTgU",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "CALA, Puerto Rico, Urban / corridor\nLevittown, Puerto Rico\nChoice-affiliated · listed on choicehotels.com\nCALA footprint · census property URL\nActive Choice Hotels property page in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "proposedText": "CALA, Puerto Rico, Urban / corridor\nLevittown, Puerto Rico\nChoice-affiliated · listed on the brand website\nCALA footprint · property listing URL\nActive Choice Hotels property listing in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, census_property_url, active_property_page",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "census_property_url",
+        "active_property_page"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recL0gIhmwYjCFTgU",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Levittown, Puerto Rico: property listed under Comfort Inn & Suites on choicehotels.com (Dealality census URL extract, CALA).",
+      "proposedText": "Levittown, Puerto Rico: property listed under Comfort Inn & Suites on the brand website (Dealality property listing link extract, CALA).",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recL0gIhmwYjCFTgU",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Validate levittown economics locally; census URL is a directory anchor, not public performance materials performance.",
+      "proposedText": "Validate levittown economics locally; property listing link is a directory anchor, not public performance materials performance.",
+      "reason": "Remove/replace owner-facing leakage: census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recUIddvqwapbrYEB",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "CALA, El Salvador, Urban / corridor\nLa Union, El Salvador\nChoice-affiliated · listed on choicehotels.com\nCALA footprint · census property URL\nActive Choice Hotels property page in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "proposedText": "CALA, El Salvador, Urban / corridor\nLa Union, El Salvador\nChoice-affiliated · listed on the brand website\nCALA footprint · property listing URL\nActive Choice Hotels property listing in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, census_property_url, active_property_page",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "census_property_url",
+        "active_property_page"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recUIddvqwapbrYEB",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "La Union, El Salvador: property listed under Comfort Inn & Suites on choicehotels.com (Dealality census URL extract, CALA).",
+      "proposedText": "La Union, El Salvador: property listed under Comfort Inn & Suites on the brand website (Dealality property listing link extract, CALA).",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recUIddvqwapbrYEB",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Validate la-union economics locally; census URL is a directory anchor, not public performance materials performance.",
+      "proposedText": "Validate la-union economics locally; property listing link is a directory anchor, not public performance materials performance.",
+      "reason": "Remove/replace owner-facing leakage: census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recmKn7c5HeeR8MTY",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nListed on choicehotels.com as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "proposedText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nlisted on the brand website as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recmKn7c5HeeR8MTY",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Validate Costa Rica authorization and Item 19 tables in disclosure.",
+      "proposedText": "Validate Costa Rica authorization and brand performance tables in disclosure.",
+      "reason": "Remove/replace owner-facing leakage: item_19_tables",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "item_19_tables"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "rec3sp9baczWMuiU4",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nListed on choicehotels.com as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "proposedText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nlisted on the brand website as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recIKiCdhD8f2uoYt",
+      "fieldName": "Body",
+      "slotKey": "materials.caseStudy",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Urban, Costa Rica, CALA, Corporate transient\nSan José–Heredia corridor, Costa Rica\nUpper-midscale · breakfast-led\nCentral America hub\nCountry Inn property listed on choicehotels.com in Costa Rica—upper-midscale Radisson-family CALA footprint.",
+      "proposedText": "Urban, Costa Rica, CALA, Corporate transient\nSan José–Heredia corridor, Costa Rica\nUpper-midscale · breakfast-led\nCentral America hub\nCountry Inn property listed on the brand website in Costa Rica—upper-midscale Radisson-family CALA footprint.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recLZMXC9NkyW7nR4",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Hoffman Estates, IL: Country Inn & Suites by Radisson listed on choicehotels.com and cited among recent U.S. openings on the CHD brand page.",
+      "proposedText": "Hoffman Estates, IL: Country Inn & Suites by Radisson listed on the brand website and cited among recent U.S. openings on the brand directory page.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, chd_brand_page",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "chd_brand_page"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recLZMXC9NkyW7nR4",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Treat CHD recent-opening placement as positioning—underwrite fees, breakfast cost, and local supply before using as a performance proxy.",
+      "proposedText": "Treat brand directory recent-opening placement as positioning—underwrite fees, breakfast cost, and local supply before using as a performance proxy.",
+      "reason": "Remove/replace owner-facing leakage: chd",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "chd"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recWrYO39O7mcoe8q",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nListed on choicehotels.com as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "proposedText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nlisted on the brand website as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recKCCqh6DL47gjcN",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Leisure, Florida, U.S., Extended stay\n\nPanama City Beach, Florida\n\nMidscale extended-stay · outdoor living · weekly stays\n\nGulf Coast project and leisure overflow\n\nListed on choicehotels.com and featured on the CHD Everhome recent-openings list—extended-stay product for longer coastal stays with kitchen-equipped suites.\n\nhttps://www.choicehotels.com/FLJ19",
+      "proposedText": "Leisure, Florida, U.S., Extended stay\n\nPanama City Beach, Florida\n\nMidscale extended-stay · outdoor living · weekly stays\n\nGulf Coast project and leisure overflow\n\nlisted on the brand website and featured on the brand directory Everhome recent-openings list—extended-stay product for longer coastal stays with kitchen-equipped suites.\n\nhttps://www.choicehotels.com/FLJ19",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, chd",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "chd"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recKCCqh6DL47gjcN",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Panama City Beach, FL: Everhome Suites on choicehotels.com—Gulf Coast proof point from CHD recent openings.",
+      "proposedText": "Panama City Beach, FL: Everhome Suites on the brand website—Gulf Coast proof point from brand directory recent openings.",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, chd",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "chd"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recLVtsXtbbwc5Tlk",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Georgetown, TX: Everhome Suites Georgetown - Austin on choicehotels.com—recent U.S. opening cited on CHD Everhome page.",
+      "proposedText": "Georgetown, TX: Everhome Suites Georgetown - Austin on the brand website—recent U.S. opening cited on the brand directory Everhome page.",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, chd_everhome",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "chd_everhome"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recLVtsXtbbwc5Tlk",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Treat CHD recent-opening placement as positioning—underwrite weekly average daily rate, kitchen opex, and local extended-stay supply before using as a performance proxy.",
+      "proposedText": "Treat brand directory recent-opening placement as positioning—underwrite weekly average daily rate, kitchen opex, and local extended-stay supply before using as a performance proxy.",
+      "reason": "Remove/replace owner-facing leakage: chd",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "chd"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recp3SDwEelBFVJyB",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Suburban, California, U.S., Extended stay\n\nOntario, California (Inland Empire)\n\nMidscale extended-stay · Southern California logistics corridor\n\nProject, relocation, and Inland Empire demand\n\nListed on choicehotels.com and featured among recent Everhome openings—California extended-stay node near the brand's first hotel market (Corona, CA).\n\nhttps://www.choicehotels.com/CAJ38",
+      "proposedText": "Suburban, California, U.S., Extended stay\n\nOntario, California (Inland Empire)\n\nMidscale extended-stay · Southern California logistics corridor\n\nProject, relocation, and Inland Empire demand\n\nlisted on the brand website and featured among recent Everhome openings—California extended-stay node near the brand's first hotel market (Corona, CA).\n\nhttps://www.choicehotels.com/CAJ38",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recp3SDwEelBFVJyB",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Ontario, CA: Everhome Suites on choicehotels.com—Inland Empire proof point near brand origin market.",
+      "proposedText": "Ontario, CA: Everhome Suites on the brand website—Inland Empire proof point near brand origin market.",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "rec48kZo8p94OJjCD",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "CALA, Mexico, Urban / corridor\nResville, Mexico\nChoice-affiliated · listed on choicehotels.com\nCALA footprint · census property URL\nActive Choice Hotels property page in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "proposedText": "CALA, Mexico, Urban / corridor\nResville, Mexico\nChoice-affiliated · listed on the brand website\nCALA footprint · property listing URL\nActive Choice Hotels property listing in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, census_property_url, active_property_page",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "census_property_url",
+        "active_property_page"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "rec48kZo8p94OJjCD",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Resville, Mexico: property listed under Quality Inn on choicehotels.com (Dealality census URL extract, CALA).",
+      "proposedText": "Resville, Mexico: property listed under Quality Inn on the brand website (Dealality property listing link extract, CALA).",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "rec48kZo8p94OJjCD",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Validate resville economics locally; census URL is a directory anchor, not public performance materials performance.",
+      "proposedText": "Validate resville economics locally; property listing link is a directory anchor, not public performance materials performance.",
+      "reason": "Remove/replace owner-facing leakage: census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "rec6kYf6EyktlUY3w",
+      "fieldName": "Body",
+      "slotKey": "materials.caseStudy",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Urban, Costa Rica, CALA, Corporate transient\nSan José, Costa Rica\nMidscale · airport/city access\nCentral America hub\nQuality Inn San José corridor property on Choice consumer site.",
+      "proposedText": "Urban, Costa Rica, CALA, Corporate transient\nSan José, Costa Rica\nMidscale · airport/city access\nCentral America hub\nQuality Inn San José corridor property on Choice brand website.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "recWKBmkJhgwYhTJe",
+      "fieldName": "Body",
+      "slotKey": "loyalty.proof",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "U.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "proposedText": "U.S. News #1 hotel rewards program (brand website, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "recqLW7iLzcQLyCK3",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Santo Domingo: Quality Inn listed on choicehotels.com in Dominican capital.",
+      "proposedText": "Santo Domingo: Quality Inn listed on the brand website in Dominican capital.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Radisson Individuals by Choice",
+      "brandSlug": "radisson-individuals-by-choice",
+      "airtableRecordId": "rec0uiWsD44ePqr6M",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "El Poblado, Medellín: V Grand Hotel listed on choicehotels.com as a Radisson Individuals member—distinct from Faranda Collection Medellín (cb030) in the same city.",
+      "proposedText": "El Poblado, Medellín: V Grand Hotel listed on the brand website as a Radisson Individuals member—distinct from Faranda Collection Medellín (cb030) in the same city.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recOYwOvbyVf7oLDP",
+      "fieldName": "Body",
+      "slotKey": "loyalty.proof",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "U.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "proposedText": "U.S. News #1 hotel rewards program (brand website, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recwwj72f5mpHeX3w",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Urban, Argentina, CALA, Social F&B\n\nRosario, Santa Fe, Argentina\n\nUpscale select-service · urban social hub\n\nCALA urban · Lounge RØD personality\n\nRadisson RED listed on choicehotels.com in Rosario—CALA urban social-hotel pattern under Choice-affiliated distribution.\n\nhttps://www.choicehotels.com/argentina/rosario/radisson-red-hotels/aa024",
+      "proposedText": "Urban, Argentina, CALA, Social F&B\n\nRosario, Santa Fe, Argentina\n\nUpscale select-service · urban social hub\n\nCALA urban · Lounge RØD personality\n\nRadisson RED listed on the brand website in Rosario—CALA urban social-hotel pattern under Choice-affiliated distribution.\n\nhttps://www.choicehotels.com/argentina/rosario/radisson-red-hotels/aa024",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recwwj72f5mpHeX3w",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Confirm Argentina fees and PIP in commercial proposal; census URL is directory anchor.",
+      "proposedText": "Confirm Argentina fees and PIP in commercial proposal; property listing link is directory anchor.",
+      "reason": "Remove/replace owner-facing leakage: census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Suburban Studios",
+      "brandSlug": "suburban-studios",
+      "airtableRecordId": "recwkEX8j5Ks2uPSI",
+      "fieldName": "Body",
+      "slotKey": "loyalty.proof",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "U.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "proposedText": "U.S. News #1 hotel rewards program (brand website, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Tapestry Collection by Hilton",
+      "brandSlug": "tapestry-collection-by-hilton",
+      "airtableRecordId": "recDMehAwd12aDaPL",
+      "fieldName": "Body",
+      "slotKey": "footprint.momentum",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Directory\n\nOfficial Hilton property page for The Burgundy Hotel, Tapestry Collection by Hilton in Little Rock — an International Reference urban soft-brand example for owners comparing Tapestry's accessible upscale path and Hilton Honors participation when CALA examples are not yet available in the source pack.\n\nhttps://www.hilton.com/en/hotels/litemup-the-burgundy-hotel/",
+      "proposedText": "Directory\n\nOfficial Hilton property page for The Burgundy Hotel, Tapestry Collection by Hilton in Little Rock — an International Reference urban soft-brand example for owners comparing Tapestry's accessible upscale path and Hilton Honors participation when CALA examples are not yet available in the brand materials.\n\nhttps://www.hilton.com/en/hotels/litemup-the-burgundy-hotel/",
+      "reason": "Remove/replace owner-facing leakage: source_pack",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "source_pack"
+      ]
+    },
+    {
+      "brand": "Tapestry Collection by Hilton",
+      "brandSlug": "tapestry-collection-by-hilton",
+      "airtableRecordId": "recrxbPte6gRPLuBE",
+      "fieldName": "Body",
+      "slotKey": "footprint.momentum",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Directory\n\nOfficial Hilton property page for The Burgundy Hotel, Tapestry Collection by Hilton in Little Rock — an International Reference urban soft-brand example for owners comparing Tapestry's accessible upscale path and Hilton Honors participation when CALA examples are not yet available in the source pack.\n\nhttps://www.hilton.com/en/hotels/litemup-the-burgundy-hotel/",
+      "proposedText": "Directory\n\nOfficial Hilton property page for The Burgundy Hotel, Tapestry Collection by Hilton in Little Rock — an International Reference urban soft-brand example for owners comparing Tapestry's accessible upscale path and Hilton Honors participation when CALA examples are not yet available in the brand materials.\n\nhttps://www.hilton.com/en/hotels/litemup-the-burgundy-hotel/",
+      "reason": "Remove/replace owner-facing leakage: source_pack",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "source_pack"
+      ]
+    },
+    {
+      "brand": "Trademark Collection by Wyndham",
+      "brandSlug": "trademark-collection-by-wyndham",
+      "airtableRecordId": "rec1Qjh1toq8wcZ1C",
+      "fieldName": "Body",
+      "slotKey": "footprint.momentum",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Directory\n\nOfficial Wyndham property page for Chula Vista Resort, Trademark Collection by Wyndham in Wisconsin Dells — an International Reference destination-leisure example for owners evaluating property-specific guest experience retention under Wyndham systems when CALA examples are not yet available in the source pack.\n\nhttps://www.wyndhamhotels.com/trademark/wisconsin-dells-wisconsin/chula-vista-resort-trademark/overview",
+      "proposedText": "Directory\n\nOfficial Wyndham property page for Chula Vista Resort, Trademark Collection by Wyndham in Wisconsin Dells — an International Reference destination-leisure example for owners evaluating property-specific guest experience retention under Wyndham systems when CALA examples are not yet available in the brand materials.\n\nhttps://www.wyndhamhotels.com/trademark/wisconsin-dells-wisconsin/chula-vista-resort-trademark/overview",
+      "reason": "Remove/replace owner-facing leakage: source_pack",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "source_pack"
+      ]
+    },
+    {
+      "brand": "Trademark Collection by Wyndham",
+      "brandSlug": "trademark-collection-by-wyndham",
+      "airtableRecordId": "recZhZImjK9MiaCgz",
+      "fieldName": "Body",
+      "slotKey": "footprint.momentum",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Directory\n\nOfficial Wyndham property page for MB Hotel, Trademark Collection by Wyndham in Miami Beach — an International Reference soft-brand example for owners underwriting independent identity retention, design-review scope, and Wyndham platform access when CALA examples are not yet in the source pack.\n\nhttps://www.wyndhamhotels.com/trademark/miami-beach-florida/mb-hotel-trademark-collection-by-wyndham/overview",
+      "proposedText": "Directory\n\nOfficial Wyndham property page for MB Hotel, Trademark Collection by Wyndham in Miami Beach — an International Reference soft-brand example for owners underwriting independent identity retention, design-review scope, and Wyndham platform access when CALA examples are not yet in the brand materials.\n\nhttps://www.wyndhamhotels.com/trademark/miami-beach-florida/mb-hotel-trademark-collection-by-wyndham/overview",
+      "reason": "Remove/replace owner-facing leakage: source_pack",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "source_pack"
+      ]
+    }
+  ],
+  "batch1B": [
+    {
+      "brand": "Aloft Hotels",
+      "brandSlug": "aloft-hotels",
+      "airtableRecordId": "recMnixEXB4g5NszI",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Lifestyle: 45%\nAirport / Mixed-Use: 25%\nSuburban / Secondary: 20%\nResort / Destination: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Lifestyle: 45%\nAirport / Mixed-Use: 25%\nSuburban / Secondary: 20%\nResort / Destination: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recETqUDzeQNpm4sg",
+      "fieldName": "Body",
+      "slotKey": "footprint.geo_intro",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Country Inn & Suites by Choice is a U.S.-anchored, breakfast-led upper-midscale flag in the Radisson family under Choice—suburban corridors, airport markets, and highway nodes rather than resort or urban lifestyle plays. Selective CALA presence exists (e.g., Costa Rica airport-corridor context on census paths); owner underwriting should weight domestic supply and refreshed prototype economics first. Confirm international authorization before using other Radisson-family CALA openings as analogues.",
+      "proposedText": "Country Inn & Suites by Choice is a U.S.-anchored, breakfast-led upper-midscale flag in the Radisson family under Choice—suburban corridors, airport markets, and highway nodes rather than resort or urban lifestyle plays. Selective CALA presence exists (e.g., Costa Rica airport-corridor context on property inventory paths); owner underwriting should weight domestic supply and refreshed prototype economics first. Confirm international authorization before using other Radisson-family CALA openings as analogues.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recMkeOgApIOwgSQl",
+      "fieldName": "Body",
+      "slotKey": "footprint.editorial_bullets",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "strongest relevance in U.S. suburban, airport, and highway corridors\nselective CALA proof point (Costa Rica airport node)—not a multi-country CALA growth flag\ncredible Radisson-family warmth versus Park Inn functional positioning\nmore compelling where public performance materials enterprise mix and breakfast execution already align\nlimited direct MEA/APAC inventory on census—do not import other Radisson regional ramp curves",
+      "proposedText": "strongest relevance in U.S. suburban, airport, and highway corridors\nselective CALA proof point (Costa Rica airport node)—not a multi-country CALA growth flag\ncredible Radisson-family warmth versus Park Inn functional positioning\nmore compelling where public performance materials enterprise mix and breakfast execution already align\nlimited direct MEA/APAC inventory on property inventory—do not import other Radisson regional ramp curves",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recWzGtbks0JrEc6V",
+      "fieldName": "Body",
+      "slotKey": "footprint.region.cala",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "CALA Country Inn presence is selective—census-backed paths include a Costa Rica San José–Heredia airport corridor node rather than a broad multi-country resort expansion story. Confirm authorization geography and local comps before importing U.S. suburban ramp curves into CALA underwriting.",
+      "proposedText": "CALA Country Inn presence is selective—property inventory-backed paths include a Costa Rica San José–Heredia airport corridor node rather than a broad multi-country resort expansion story. Confirm authorization geography and local comps before importing U.S. suburban ramp curves into CALA underwriting.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recZcXGbfYzXY61WX",
+      "fieldName": "Body",
+      "slotKey": "footprint.region.apac",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "APAC Country Inn presence is thin on census-backed Americas diligence paths. Domestic U.S. corridor economics and prototype residuals should drive feasibility—not APAC Radisson network density assumptions.",
+      "proposedText": "APAC Country Inn presence is thin on property inventory-backed Americas diligence paths. Domestic U.S. corridor economics and prototype residuals should drive feasibility—not APAC Radisson network density assumptions.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Design Hotels",
+      "brandSlug": "design-hotels",
+      "airtableRecordId": "rec6FYIJFqiRSN7ZT",
+      "fieldName": "Body",
+      "slotKey": "footprint.editorial",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Design Hotels is best understood as a global design-led member collection with selective Marriott Bonvoy context—not a uniform chain rollout. Footprint on this Explorer profile combines directional regional directory presence with CALA census-backed open and pipeline counts where verified. Owners should evaluate curation fit, operating autonomy, and property-level participation terms against other Marriott affiliation paths.",
+      "proposedText": "Design Hotels is best understood as a global design-led member collection with selective Marriott Bonvoy context—not a uniform chain rollout. Footprint on this Explorer profile combines directional regional directory presence with CALA property inventory-backed open and pipeline counts where verified. Owners should evaluate curation fit, operating autonomy, and property-level participation terms against other Marriott affiliation paths.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Design Hotels",
+      "brandSlug": "design-hotels",
+      "airtableRecordId": "reciqYc93roV29pYN",
+      "fieldName": "Body",
+      "slotKey": "footprint.editorial_bullets",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Global directory breadth does not imply uniform commercial or loyalty participation\nCALA census metrics are region-specific—not global open/pipeline totals\nRegional cards are directional directory context only\nDesign-led assets benefit most when local identity is already a guest-facing strength\nConfirm membership scope and Bonvoy participation directly with brand representatives",
+      "proposedText": "Global directory breadth does not imply uniform commercial or loyalty participation\nCALA property inventory metrics are region-specific—not global open/pipeline totals\nRegional cards are directional directory context only\nDesign-led assets benefit most when local identity is already a guest-facing strength\nConfirm membership scope and Bonvoy participation directly with brand representatives",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "DoubleTree by Hilton",
+      "brandSlug": "doubletree-by-hilton",
+      "airtableRecordId": "recS00wfzH6m7n4bg",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nResort / Destination: 25%\nAirport / Convention: 20%\nSuburban / Secondary: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nResort / Destination: 25%\nAirport / Convention: 20%\nSuburban / Secondary: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recXbpPvVDGsJzGTM",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Highway corridor: 45%\nSecondary / Regional: 25%\nUrban fringe / Employment: 20%\nConversion / Adaptive: 10%\nCurated sample mix based on brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Highway corridor: 45%\nSecondary / Regional: 25%\nUrban fringe / Employment: 20%\nConversion / Adaptive: 10%\nCurated sample mix based on brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Fairmont",
+      "brandSlug": "fairmont",
+      "airtableRecordId": "recMPXpx4ZGaAth4J",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nResort / Leisure: 35%\nMixed-use / Landmark: 15%\nSecondary destination: 10%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nResort / Leisure: 35%\nMixed-use / Landmark: 15%\nSecondary destination: 10%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Hampton by Hilton",
+      "brandSlug": "hampton-by-hilton",
+      "airtableRecordId": "rec9RTEeQ1B3J0hrz",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Highway / Airport: 35%\nSuburban / Secondary: 35%\nUrban / Secondary: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Highway / Airport: 35%\nSuburban / Secondary: 35%\nUrban / Secondary: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Hilton Garden Inn",
+      "brandSlug": "hilton-garden-inn",
+      "airtableRecordId": "recd72wCtnrXVhfeE",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Commercial: 40%\nUrban / Mixed-Use: 30%\nAirport / Convention: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Commercial: 40%\nUrban / Mixed-Use: 30%\nAirport / Convention: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Hilton Hotels & Resorts",
+      "brandSlug": "hilton-hotels-and-resorts",
+      "airtableRecordId": "rec0vJNoMGAaZdoDE",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nResort / Leisure: 30%\nAirport / Convention: 20%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nResort / Leisure: 30%\nAirport / Convention: 20%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Home2 Suites by Hilton",
+      "brandSlug": "home2-suites-by-hilton",
+      "airtableRecordId": "recMBFVhrz7ayWnuf",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Employment: 50%\nHighway / Infrastructure: 25%\nUrban / Mixed-Use: 15%\nAirport / Highway: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Employment: 50%\nHighway / Infrastructure: 25%\nUrban / Mixed-Use: 15%\nAirport / Highway: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Homewood Suites by Hilton",
+      "brandSlug": "homewood-suites-by-hilton",
+      "airtableRecordId": "recLi7HGMAFrpUXOV",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Employment: 45%\nUrban / Mixed-Use: 25%\nAirport / Highway: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Employment: 45%\nUrban / Mixed-Use: 25%\nAirport / Highway: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "ibis",
+      "brandSlug": "ibis",
+      "airtableRecordId": "rec0PXM5ZtKj0QYEw",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 35%\nAirport / Highway: 30%\nSecondary / Regional: 25%\nSuburban: 10%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 35%\nAirport / Highway: 30%\nSecondary / Regional: 25%\nSuburban: 10%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Mama Shelter",
+      "brandSlug": "mama-shelter",
+      "airtableRecordId": "recfuYW1irNN2mXUk",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Lifestyle district: 55%\nGateway / Secondary city: 25%\nResort-adjacent / Leisure: 10%\nOther: 10%\nCurated sample mix based on brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Lifestyle district: 55%\nGateway / Secondary city: 25%\nResort-adjacent / Leisure: 10%\nOther: 10%\nCurated sample mix based on brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Marriott Hotels",
+      "brandSlug": "marriott-hotels",
+      "airtableRecordId": "reckcgha8l3a4d4eP",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 45%\nResort / Destination: 25%\nAirport / Convention: 20%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 45%\nResort / Destination: 25%\nAirport / Convention: 20%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Mercure",
+      "brandSlug": "mercure",
+      "airtableRecordId": "rec5WlFQZCDFbTpbZ",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nSecondary / Regional: 25%\nAirport / Highway: 20%\nResort / Leisure: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nSecondary / Regional: 25%\nAirport / Highway: 20%\nResort / Leisure: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Novotel",
+      "brandSlug": "novotel",
+      "airtableRecordId": "recFKjgnj6BA0bD8V",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nAirport / Convention: 25%\nResort / Leisure: 20%\nSecondary / Regional: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nAirport / Convention: 25%\nResort / Leisure: 20%\nSecondary / Regional: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Pullman",
+      "brandSlug": "pullman",
+      "airtableRecordId": "recMk6tglZqbM9BSt",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 45%\nResort / Destination: 25%\nAirport / Convention: 15%\nSecondary / Mixed-use: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 45%\nResort / Destination: 25%\nAirport / Convention: 15%\nSecondary / Mixed-use: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recLDFEH4hIVvWqu0",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban, Peru, CALA, Coastal gateway\n\nMiraflores, Lima, Peru\n\nUpscale select-service · leisure + corporate\n\nCALA coastal urban · design-led\n\nMiraflores RED in Lima's primary leisure and business district—census-backed Choice-affiliated RED in Peru for urban lifestyle positioning.\n\nhttps://www.choicehotels.com/peru/lima/radisson-red-hotels",
+      "proposedText": "Urban, Peru, CALA, Coastal gateway\n\nMiraflores, Lima, Peru\n\nUpscale select-service · leisure + corporate\n\nCALA coastal urban · design-led\n\nMiraflores RED in Lima's primary leisure and business district—property inventory-backed Choice-affiliated RED in Peru for urban lifestyle positioning.\n\nhttps://www.choicehotels.com/peru/lima/radisson-red-hotels",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recLDFEH4hIVvWqu0",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Miraflores, Lima: Peru urban RED in a premier coastal business/leisure district—Dealality census tracks Radisson RED by Choice affiliation.",
+      "proposedText": "Miraflores, Lima: Peru urban RED in a premier coastal business/leisure district—Dealality property inventory tracks Radisson RED by Choice affiliation.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Residence Inn by Marriott",
+      "brandSlug": "residence-inn-by-marriott",
+      "airtableRecordId": "recakUDlVBPAm7tUa",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Corporate: 45%\nUrban / Mixed-Use: 25%\nAirport / Highway: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Corporate: 45%\nUrban / Mixed-Use: 25%\nAirport / Highway: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Sheraton",
+      "brandSlug": "sheraton",
+      "airtableRecordId": "recduPfXL712lcZxS",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 35%\nResort / Destination: 30%\nAirport / Convention: 20%\nSuburban / Secondary: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 35%\nResort / Destination: 30%\nAirport / Convention: 20%\nSuburban / Secondary: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Spark by Hilton",
+      "brandSlug": "spark-by-hilton",
+      "airtableRecordId": "recIZs4kI9xOQZOss",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Highway / Conversion: 40%\nSuburban / Secondary: 30%\nUrban / Value: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Highway / Conversion: 40%\nSuburban / Secondary: 30%\nUrban / Value: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "SpringHill Suites by Marriott",
+      "brandSlug": "springhill-suites-by-marriott",
+      "airtableRecordId": "recasOBYdnKsl8CGo",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Mixed-Use: 40%\nAirport / Highway: 25%\nUrban / Downtown: 20%\nDestination / Leisure: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Mixed-Use: 40%\nAirport / Highway: 25%\nUrban / Downtown: 20%\nDestination / Leisure: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "StudioRes",
+      "brandSlug": "studiores",
+      "airtableRecordId": "recVv10RNYg1Lx6YQ",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Employment: 50%\nHighway / Infrastructure: 25%\nUrban / Mixed-Use: 15%\nAirport / Medical: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Employment: 50%\nHighway / Infrastructure: 25%\nUrban / Mixed-Use: 15%\nAirport / Medical: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "TownePlace Suites by Marriott",
+      "brandSlug": "towneplace-suites-by-marriott",
+      "airtableRecordId": "recrzcIoRDpvua9wj",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Employment: 45%\nHighway / Infrastructure: 25%\nAirport / Medical: 20%\nUrban / Mixed-Use: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Employment: 45%\nHighway / Infrastructure: 25%\nAirport / Medical: 20%\nUrban / Mixed-Use: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Tru by Hilton",
+      "brandSlug": "tru-by-hilton",
+      "airtableRecordId": "recBnjOsLLcczck3g",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Highway: 40%\nUrban / Secondary: 30%\nAirport / Mixed-Use: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Highway: 40%\nUrban / Secondary: 30%\nAirport / Mixed-Use: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Westin",
+      "brandSlug": "westin",
+      "airtableRecordId": "recMBJHt0TedNBq3c",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Resort / Destination: 40%\nUrban / Gateway: 35%\nAirport / Convention: 15%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Resort / Destination: 40%\nUrban / Gateway: 35%\nAirport / Convention: 15%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Kimpton Hotels",
+      "brandSlug": "kimpton",
+      "airtableRecordId": "recYOSVJXXqkGjN6m",
+      "fieldName": "Title",
+      "slotKey": "footprint.openings",
+      "patchCategory": "property_example_update",
+      "batchLane": "1B",
+      "currentText": "Kimpton Mas Olas Resort & Spa Kimpton Hotels — Todos Santos",
+      "proposedText": "Kimpton Mas Olas Resort & Spa — Todos Santos, Mexico",
+      "reason": "Same-property Census confirmation — refresh location framing only",
+      "sourceSupport": "census_source_url_present",
+      "censusSupport": {
+        "censusRecordId": "rec5ipKwCzFMSjwck",
+        "propertyName": "Kimpton Mas Olas Resort and Spa",
+        "city": "Mas Olas Resort Spa Todos Santos",
+        "country": "Mexico",
+        "affiliationStatus": "Branded",
+        "humanReviewRequired": false
+      },
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1"
+    }
+  ],
+  "patches": [
+    {
+      "brand": "Aloft Hotels",
+      "brandSlug": "aloft-hotels",
+      "airtableRecordId": "recMnixEXB4g5NszI",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Lifestyle: 45%\nAirport / Mixed-Use: 25%\nSuburban / Secondary: 20%\nResort / Destination: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Lifestyle: 45%\nAirport / Mixed-Use: 25%\nSuburban / Secondary: 20%\nResort / Destination: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Ascend Hotel Collection",
+      "brandSlug": "ascend",
+      "airtableRecordId": "rec7PrxITi7IfVQmF",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "materials.caseStudy",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Quito, Ecuador: Ascend Hotel Collection member on Choice consumer site—Andean capital soft-brand listing.",
+      "proposedText": "Quito, Ecuador: Ascend Hotel Collection member on Choice brand website—Andean capital soft-brand listing.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "rec7Jv3rCy7fhVjwR",
+      "fieldName": "Body",
+      "slotKey": "loyalty.proof",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "U.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "proposedText": "U.S. News #1 hotel rewards program (brand website, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recL0gIhmwYjCFTgU",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "CALA, Puerto Rico, Urban / corridor\nLevittown, Puerto Rico\nChoice-affiliated · listed on choicehotels.com\nCALA footprint · census property URL\nActive Choice Hotels property page in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "proposedText": "CALA, Puerto Rico, Urban / corridor\nLevittown, Puerto Rico\nChoice-affiliated · listed on the brand website\nCALA footprint · property listing URL\nActive Choice Hotels property listing in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, census_property_url, active_property_page",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "census_property_url",
+        "active_property_page"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recL0gIhmwYjCFTgU",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Levittown, Puerto Rico: property listed under Comfort Inn & Suites on choicehotels.com (Dealality census URL extract, CALA).",
+      "proposedText": "Levittown, Puerto Rico: property listed under Comfort Inn & Suites on the brand website (Dealality property listing link extract, CALA).",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recL0gIhmwYjCFTgU",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Validate levittown economics locally; census URL is a directory anchor, not public performance materials performance.",
+      "proposedText": "Validate levittown economics locally; property listing link is a directory anchor, not public performance materials performance.",
+      "reason": "Remove/replace owner-facing leakage: census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recUIddvqwapbrYEB",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "CALA, El Salvador, Urban / corridor\nLa Union, El Salvador\nChoice-affiliated · listed on choicehotels.com\nCALA footprint · census property URL\nActive Choice Hotels property page in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "proposedText": "CALA, El Salvador, Urban / corridor\nLa Union, El Salvador\nChoice-affiliated · listed on the brand website\nCALA footprint · property listing URL\nActive Choice Hotels property listing in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, census_property_url, active_property_page",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "census_property_url",
+        "active_property_page"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recUIddvqwapbrYEB",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "La Union, El Salvador: property listed under Comfort Inn & Suites on choicehotels.com (Dealality census URL extract, CALA).",
+      "proposedText": "La Union, El Salvador: property listed under Comfort Inn & Suites on the brand website (Dealality property listing link extract, CALA).",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Comfort Inn & Suites",
+      "brandSlug": "comfort-inn-suites",
+      "airtableRecordId": "recUIddvqwapbrYEB",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Validate la-union economics locally; census URL is a directory anchor, not public performance materials performance.",
+      "proposedText": "Validate la-union economics locally; property listing link is a directory anchor, not public performance materials performance.",
+      "reason": "Remove/replace owner-facing leakage: census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recmKn7c5HeeR8MTY",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nListed on choicehotels.com as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "proposedText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nlisted on the brand website as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recmKn7c5HeeR8MTY",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Validate Costa Rica authorization and Item 19 tables in disclosure.",
+      "proposedText": "Validate Costa Rica authorization and brand performance tables in disclosure.",
+      "reason": "Remove/replace owner-facing leakage: item_19_tables",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "item_19_tables"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "rec3sp9baczWMuiU4",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nListed on choicehotels.com as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "proposedText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nlisted on the brand website as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recETqUDzeQNpm4sg",
+      "fieldName": "Body",
+      "slotKey": "footprint.geo_intro",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Country Inn & Suites by Choice is a U.S.-anchored, breakfast-led upper-midscale flag in the Radisson family under Choice—suburban corridors, airport markets, and highway nodes rather than resort or urban lifestyle plays. Selective CALA presence exists (e.g., Costa Rica airport-corridor context on census paths); owner underwriting should weight domestic supply and refreshed prototype economics first. Confirm international authorization before using other Radisson-family CALA openings as analogues.",
+      "proposedText": "Country Inn & Suites by Choice is a U.S.-anchored, breakfast-led upper-midscale flag in the Radisson family under Choice—suburban corridors, airport markets, and highway nodes rather than resort or urban lifestyle plays. Selective CALA presence exists (e.g., Costa Rica airport-corridor context on property inventory paths); owner underwriting should weight domestic supply and refreshed prototype economics first. Confirm international authorization before using other Radisson-family CALA openings as analogues.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recIKiCdhD8f2uoYt",
+      "fieldName": "Body",
+      "slotKey": "materials.caseStudy",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Urban, Costa Rica, CALA, Corporate transient\nSan José–Heredia corridor, Costa Rica\nUpper-midscale · breakfast-led\nCentral America hub\nCountry Inn property listed on choicehotels.com in Costa Rica—upper-midscale Radisson-family CALA footprint.",
+      "proposedText": "Urban, Costa Rica, CALA, Corporate transient\nSan José–Heredia corridor, Costa Rica\nUpper-midscale · breakfast-led\nCentral America hub\nCountry Inn property listed on the brand website in Costa Rica—upper-midscale Radisson-family CALA footprint.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recLZMXC9NkyW7nR4",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Hoffman Estates, IL: Country Inn & Suites by Radisson listed on choicehotels.com and cited among recent U.S. openings on the CHD brand page.",
+      "proposedText": "Hoffman Estates, IL: Country Inn & Suites by Radisson listed on the brand website and cited among recent U.S. openings on the brand directory page.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, chd_brand_page",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "chd_brand_page"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recLZMXC9NkyW7nR4",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Treat CHD recent-opening placement as positioning—underwrite fees, breakfast cost, and local supply before using as a performance proxy.",
+      "proposedText": "Treat brand directory recent-opening placement as positioning—underwrite fees, breakfast cost, and local supply before using as a performance proxy.",
+      "reason": "Remove/replace owner-facing leakage: chd",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "chd"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recMkeOgApIOwgSQl",
+      "fieldName": "Body",
+      "slotKey": "footprint.editorial_bullets",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "strongest relevance in U.S. suburban, airport, and highway corridors\nselective CALA proof point (Costa Rica airport node)—not a multi-country CALA growth flag\ncredible Radisson-family warmth versus Park Inn functional positioning\nmore compelling where public performance materials enterprise mix and breakfast execution already align\nlimited direct MEA/APAC inventory on census—do not import other Radisson regional ramp curves",
+      "proposedText": "strongest relevance in U.S. suburban, airport, and highway corridors\nselective CALA proof point (Costa Rica airport node)—not a multi-country CALA growth flag\ncredible Radisson-family warmth versus Park Inn functional positioning\nmore compelling where public performance materials enterprise mix and breakfast execution already align\nlimited direct MEA/APAC inventory on property inventory—do not import other Radisson regional ramp curves",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recWrYO39O7mcoe8q",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nListed on choicehotels.com as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "proposedText": "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nlisted on the brand website as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recWzGtbks0JrEc6V",
+      "fieldName": "Body",
+      "slotKey": "footprint.region.cala",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "CALA Country Inn presence is selective—census-backed paths include a Costa Rica San José–Heredia airport corridor node rather than a broad multi-country resort expansion story. Confirm authorization geography and local comps before importing U.S. suburban ramp curves into CALA underwriting.",
+      "proposedText": "CALA Country Inn presence is selective—property inventory-backed paths include a Costa Rica San José–Heredia airport corridor node rather than a broad multi-country resort expansion story. Confirm authorization geography and local comps before importing U.S. suburban ramp curves into CALA underwriting.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Country Inn & Suites by Choice",
+      "brandSlug": "country-inn-suites",
+      "airtableRecordId": "recZcXGbfYzXY61WX",
+      "fieldName": "Body",
+      "slotKey": "footprint.region.apac",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "APAC Country Inn presence is thin on census-backed Americas diligence paths. Domestic U.S. corridor economics and prototype residuals should drive feasibility—not APAC Radisson network density assumptions.",
+      "proposedText": "APAC Country Inn presence is thin on property inventory-backed Americas diligence paths. Domestic U.S. corridor economics and prototype residuals should drive feasibility—not APAC Radisson network density assumptions.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Design Hotels",
+      "brandSlug": "design-hotels",
+      "airtableRecordId": "rec6FYIJFqiRSN7ZT",
+      "fieldName": "Body",
+      "slotKey": "footprint.editorial",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Design Hotels is best understood as a global design-led member collection with selective Marriott Bonvoy context—not a uniform chain rollout. Footprint on this Explorer profile combines directional regional directory presence with CALA census-backed open and pipeline counts where verified. Owners should evaluate curation fit, operating autonomy, and property-level participation terms against other Marriott affiliation paths.",
+      "proposedText": "Design Hotels is best understood as a global design-led member collection with selective Marriott Bonvoy context—not a uniform chain rollout. Footprint on this Explorer profile combines directional regional directory presence with CALA property inventory-backed open and pipeline counts where verified. Owners should evaluate curation fit, operating autonomy, and property-level participation terms against other Marriott affiliation paths.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Design Hotels",
+      "brandSlug": "design-hotels",
+      "airtableRecordId": "reciqYc93roV29pYN",
+      "fieldName": "Body",
+      "slotKey": "footprint.editorial_bullets",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Global directory breadth does not imply uniform commercial or loyalty participation\nCALA census metrics are region-specific—not global open/pipeline totals\nRegional cards are directional directory context only\nDesign-led assets benefit most when local identity is already a guest-facing strength\nConfirm membership scope and Bonvoy participation directly with brand representatives",
+      "proposedText": "Global directory breadth does not imply uniform commercial or loyalty participation\nCALA property inventory metrics are region-specific—not global open/pipeline totals\nRegional cards are directional directory context only\nDesign-led assets benefit most when local identity is already a guest-facing strength\nConfirm membership scope and Bonvoy participation directly with brand representatives",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "DoubleTree by Hilton",
+      "brandSlug": "doubletree-by-hilton",
+      "airtableRecordId": "recS00wfzH6m7n4bg",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nResort / Destination: 25%\nAirport / Convention: 20%\nSuburban / Secondary: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nResort / Destination: 25%\nAirport / Convention: 20%\nSuburban / Secondary: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recKCCqh6DL47gjcN",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Leisure, Florida, U.S., Extended stay\n\nPanama City Beach, Florida\n\nMidscale extended-stay · outdoor living · weekly stays\n\nGulf Coast project and leisure overflow\n\nListed on choicehotels.com and featured on the CHD Everhome recent-openings list—extended-stay product for longer coastal stays with kitchen-equipped suites.\n\nhttps://www.choicehotels.com/FLJ19",
+      "proposedText": "Leisure, Florida, U.S., Extended stay\n\nPanama City Beach, Florida\n\nMidscale extended-stay · outdoor living · weekly stays\n\nGulf Coast project and leisure overflow\n\nlisted on the brand website and featured on the brand directory Everhome recent-openings list—extended-stay product for longer coastal stays with kitchen-equipped suites.\n\nhttps://www.choicehotels.com/FLJ19",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, chd",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "chd"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recKCCqh6DL47gjcN",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Panama City Beach, FL: Everhome Suites on choicehotels.com—Gulf Coast proof point from CHD recent openings.",
+      "proposedText": "Panama City Beach, FL: Everhome Suites on the brand website—Gulf Coast proof point from brand directory recent openings.",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, chd",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "chd"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recLVtsXtbbwc5Tlk",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Georgetown, TX: Everhome Suites Georgetown - Austin on choicehotels.com—recent U.S. opening cited on CHD Everhome page.",
+      "proposedText": "Georgetown, TX: Everhome Suites Georgetown - Austin on the brand website—recent U.S. opening cited on the brand directory Everhome page.",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, chd_everhome",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "chd_everhome"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recLVtsXtbbwc5Tlk",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Treat CHD recent-opening placement as positioning—underwrite weekly average daily rate, kitchen opex, and local extended-stay supply before using as a performance proxy.",
+      "proposedText": "Treat brand directory recent-opening placement as positioning—underwrite weekly average daily rate, kitchen opex, and local extended-stay supply before using as a performance proxy.",
+      "reason": "Remove/replace owner-facing leakage: chd",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "chd"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recXbpPvVDGsJzGTM",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Highway corridor: 45%\nSecondary / Regional: 25%\nUrban fringe / Employment: 20%\nConversion / Adaptive: 10%\nCurated sample mix based on brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Highway corridor: 45%\nSecondary / Regional: 25%\nUrban fringe / Employment: 20%\nConversion / Adaptive: 10%\nCurated sample mix based on brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recp3SDwEelBFVJyB",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Suburban, California, U.S., Extended stay\n\nOntario, California (Inland Empire)\n\nMidscale extended-stay · Southern California logistics corridor\n\nProject, relocation, and Inland Empire demand\n\nListed on choicehotels.com and featured among recent Everhome openings—California extended-stay node near the brand's first hotel market (Corona, CA).\n\nhttps://www.choicehotels.com/CAJ38",
+      "proposedText": "Suburban, California, U.S., Extended stay\n\nOntario, California (Inland Empire)\n\nMidscale extended-stay · Southern California logistics corridor\n\nProject, relocation, and Inland Empire demand\n\nlisted on the brand website and featured among recent Everhome openings—California extended-stay node near the brand's first hotel market (Corona, CA).\n\nhttps://www.choicehotels.com/CAJ38",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Everhome Suites",
+      "brandSlug": "everhome-suites",
+      "airtableRecordId": "recp3SDwEelBFVJyB",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Ontario, CA: Everhome Suites on choicehotels.com—Inland Empire proof point near brand origin market.",
+      "proposedText": "Ontario, CA: Everhome Suites on the brand website—Inland Empire proof point near brand origin market.",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose"
+      ]
+    },
+    {
+      "brand": "Fairmont",
+      "brandSlug": "fairmont",
+      "airtableRecordId": "recMPXpx4ZGaAth4J",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nResort / Leisure: 35%\nMixed-use / Landmark: 15%\nSecondary destination: 10%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nResort / Leisure: 35%\nMixed-use / Landmark: 15%\nSecondary destination: 10%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Hampton by Hilton",
+      "brandSlug": "hampton-by-hilton",
+      "airtableRecordId": "rec9RTEeQ1B3J0hrz",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Highway / Airport: 35%\nSuburban / Secondary: 35%\nUrban / Secondary: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Highway / Airport: 35%\nSuburban / Secondary: 35%\nUrban / Secondary: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Hilton Garden Inn",
+      "brandSlug": "hilton-garden-inn",
+      "airtableRecordId": "recd72wCtnrXVhfeE",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Commercial: 40%\nUrban / Mixed-Use: 30%\nAirport / Convention: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Commercial: 40%\nUrban / Mixed-Use: 30%\nAirport / Convention: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Hilton Hotels & Resorts",
+      "brandSlug": "hilton-hotels-and-resorts",
+      "airtableRecordId": "rec0vJNoMGAaZdoDE",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nResort / Leisure: 30%\nAirport / Convention: 20%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nResort / Leisure: 30%\nAirport / Convention: 20%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Home2 Suites by Hilton",
+      "brandSlug": "home2-suites-by-hilton",
+      "airtableRecordId": "recMBFVhrz7ayWnuf",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Employment: 50%\nHighway / Infrastructure: 25%\nUrban / Mixed-Use: 15%\nAirport / Highway: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Employment: 50%\nHighway / Infrastructure: 25%\nUrban / Mixed-Use: 15%\nAirport / Highway: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Homewood Suites by Hilton",
+      "brandSlug": "homewood-suites-by-hilton",
+      "airtableRecordId": "recLi7HGMAFrpUXOV",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Employment: 45%\nUrban / Mixed-Use: 25%\nAirport / Highway: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Employment: 45%\nUrban / Mixed-Use: 25%\nAirport / Highway: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "ibis",
+      "brandSlug": "ibis",
+      "airtableRecordId": "rec0PXM5ZtKj0QYEw",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 35%\nAirport / Highway: 30%\nSecondary / Regional: 25%\nSuburban: 10%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 35%\nAirport / Highway: 30%\nSecondary / Regional: 25%\nSuburban: 10%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Mama Shelter",
+      "brandSlug": "mama-shelter",
+      "airtableRecordId": "recfuYW1irNN2mXUk",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Lifestyle district: 55%\nGateway / Secondary city: 25%\nResort-adjacent / Leisure: 10%\nOther: 10%\nCurated sample mix based on brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Lifestyle district: 55%\nGateway / Secondary city: 25%\nResort-adjacent / Leisure: 10%\nOther: 10%\nCurated sample mix based on brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Marriott Hotels",
+      "brandSlug": "marriott-hotels",
+      "airtableRecordId": "reckcgha8l3a4d4eP",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 45%\nResort / Destination: 25%\nAirport / Convention: 20%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 45%\nResort / Destination: 25%\nAirport / Convention: 20%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Mercure",
+      "brandSlug": "mercure",
+      "airtableRecordId": "rec5WlFQZCDFbTpbZ",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nSecondary / Regional: 25%\nAirport / Highway: 20%\nResort / Leisure: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nSecondary / Regional: 25%\nAirport / Highway: 20%\nResort / Leisure: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Novotel",
+      "brandSlug": "novotel",
+      "airtableRecordId": "recFKjgnj6BA0bD8V",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 40%\nAirport / Convention: 25%\nResort / Leisure: 20%\nSecondary / Regional: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 40%\nAirport / Convention: 25%\nResort / Leisure: 20%\nSecondary / Regional: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Pullman",
+      "brandSlug": "pullman",
+      "airtableRecordId": "recMk6tglZqbM9BSt",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 45%\nResort / Destination: 25%\nAirport / Convention: 15%\nSecondary / Mixed-use: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 45%\nResort / Destination: 25%\nAirport / Convention: 15%\nSecondary / Mixed-use: 15%\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "rec48kZo8p94OJjCD",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "CALA, Mexico, Urban / corridor\nResville, Mexico\nChoice-affiliated · listed on choicehotels.com\nCALA footprint · census property URL\nActive Choice Hotels property page in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "proposedText": "CALA, Mexico, Urban / corridor\nResville, Mexico\nChoice-affiliated · listed on the brand website\nCALA footprint · property listing URL\nActive Choice Hotels property listing in the CALA corridor—use for market and distribution context; confirm flag, fees, and opening status in your commercial proposal and commercial agreement materials.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice, census_property_url, active_property_page",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice",
+        "census_property_url",
+        "active_property_page"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "rec48kZo8p94OJjCD",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Resville, Mexico: property listed under Quality Inn on choicehotels.com (Dealality census URL extract, CALA).",
+      "proposedText": "Resville, Mexico: property listed under Quality Inn on the brand website (Dealality property listing link extract, CALA).",
+      "reason": "Remove/replace owner-facing leakage: choicehotels_domain_prose, census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "choicehotels_domain_prose",
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "rec48kZo8p94OJjCD",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Validate resville economics locally; census URL is a directory anchor, not public performance materials performance.",
+      "proposedText": "Validate resville economics locally; property listing link is a directory anchor, not public performance materials performance.",
+      "reason": "Remove/replace owner-facing leakage: census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "rec6kYf6EyktlUY3w",
+      "fieldName": "Body",
+      "slotKey": "materials.caseStudy",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Urban, Costa Rica, CALA, Corporate transient\nSan José, Costa Rica\nMidscale · airport/city access\nCentral America hub\nQuality Inn San José corridor property on Choice consumer site.",
+      "proposedText": "Urban, Costa Rica, CALA, Corporate transient\nSan José, Costa Rica\nMidscale · airport/city access\nCentral America hub\nQuality Inn San José corridor property on Choice brand website.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "recWKBmkJhgwYhTJe",
+      "fieldName": "Body",
+      "slotKey": "loyalty.proof",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "U.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "proposedText": "U.S. News #1 hotel rewards program (brand website, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Quality Inn",
+      "brandSlug": "quality-inn",
+      "airtableRecordId": "recqLW7iLzcQLyCK3",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Santo Domingo: Quality Inn listed on choicehotels.com in Dominican capital.",
+      "proposedText": "Santo Domingo: Quality Inn listed on the brand website in Dominican capital.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Radisson Individuals by Choice",
+      "brandSlug": "radisson-individuals-by-choice",
+      "airtableRecordId": "rec0uiWsD44ePqr6M",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "El Poblado, Medellín: V Grand Hotel listed on choicehotels.com as a Radisson Individuals member—distinct from Faranda Collection Medellín (cb030) in the same city.",
+      "proposedText": "El Poblado, Medellín: V Grand Hotel listed on the brand website as a Radisson Individuals member—distinct from Faranda Collection Medellín (cb030) in the same city.",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recLDFEH4hIVvWqu0",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban, Peru, CALA, Coastal gateway\n\nMiraflores, Lima, Peru\n\nUpscale select-service · leisure + corporate\n\nCALA coastal urban · design-led\n\nMiraflores RED in Lima's primary leisure and business district—census-backed Choice-affiliated RED in Peru for urban lifestyle positioning.\n\nhttps://www.choicehotels.com/peru/lima/radisson-red-hotels",
+      "proposedText": "Urban, Peru, CALA, Coastal gateway\n\nMiraflores, Lima, Peru\n\nUpscale select-service · leisure + corporate\n\nCALA coastal urban · design-led\n\nMiraflores RED in Lima's primary leisure and business district—property inventory-backed Choice-affiliated RED in Peru for urban lifestyle positioning.\n\nhttps://www.choicehotels.com/peru/lima/radisson-red-hotels",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recLDFEH4hIVvWqu0",
+      "fieldName": "Case Summary Overview",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Miraflores, Lima: Peru urban RED in a premier coastal business/leisure district—Dealality census tracks Radisson RED by Choice affiliation.",
+      "proposedText": "Miraflores, Lima: Peru urban RED in a premier coastal business/leisure district—Dealality property inventory tracks Radisson RED by Choice affiliation.",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recOYwOvbyVf7oLDP",
+      "fieldName": "Body",
+      "slotKey": "loyalty.proof",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "U.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "proposedText": "U.S. News #1 hotel rewards program (brand website, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recwwj72f5mpHeX3w",
+      "fieldName": "Body",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Urban, Argentina, CALA, Social F&B\n\nRosario, Santa Fe, Argentina\n\nUpscale select-service · urban social hub\n\nCALA urban · Lounge RØD personality\n\nRadisson RED listed on choicehotels.com in Rosario—CALA urban social-hotel pattern under Choice-affiliated distribution.\n\nhttps://www.choicehotels.com/argentina/rosario/radisson-red-hotels/aa024",
+      "proposedText": "Urban, Argentina, CALA, Social F&B\n\nRosario, Santa Fe, Argentina\n\nUpscale select-service · urban social hub\n\nCALA urban · Lounge RØD personality\n\nRadisson RED listed on the brand website in Rosario—CALA urban social-hotel pattern under Choice-affiliated distribution.\n\nhttps://www.choicehotels.com/argentina/rosario/radisson-red-hotels/aa024",
+      "reason": "Remove/replace owner-facing leakage: listed_on_choice",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "listed_on_choice"
+      ]
+    },
+    {
+      "brand": "Radisson RED by Choice",
+      "brandSlug": "radisson-red",
+      "airtableRecordId": "recwwj72f5mpHeX3w",
+      "fieldName": "Case Summary Interpretation",
+      "slotKey": "footprint.openings",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Confirm Argentina fees and PIP in commercial proposal; census URL is directory anchor.",
+      "proposedText": "Confirm Argentina fees and PIP in commercial proposal; property listing link is directory anchor.",
+      "reason": "Remove/replace owner-facing leakage: census_url",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census_url"
+      ]
+    },
+    {
+      "brand": "Residence Inn by Marriott",
+      "brandSlug": "residence-inn-by-marriott",
+      "airtableRecordId": "recakUDlVBPAm7tUa",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Corporate: 45%\nUrban / Mixed-Use: 25%\nAirport / Highway: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Corporate: 45%\nUrban / Mixed-Use: 25%\nAirport / Highway: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Sheraton",
+      "brandSlug": "sheraton",
+      "airtableRecordId": "recduPfXL712lcZxS",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Urban / Gateway: 35%\nResort / Destination: 30%\nAirport / Convention: 20%\nSuburban / Secondary: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Urban / Gateway: 35%\nResort / Destination: 30%\nAirport / Convention: 20%\nSuburban / Secondary: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Spark by Hilton",
+      "brandSlug": "spark-by-hilton",
+      "airtableRecordId": "recIZs4kI9xOQZOss",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Highway / Conversion: 40%\nSuburban / Secondary: 30%\nUrban / Value: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Highway / Conversion: 40%\nSuburban / Secondary: 30%\nUrban / Value: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "SpringHill Suites by Marriott",
+      "brandSlug": "springhill-suites-by-marriott",
+      "airtableRecordId": "recasOBYdnKsl8CGo",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Mixed-Use: 40%\nAirport / Highway: 25%\nUrban / Downtown: 20%\nDestination / Leisure: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Mixed-Use: 40%\nAirport / Highway: 25%\nUrban / Downtown: 20%\nDestination / Leisure: 15% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "StudioRes",
+      "brandSlug": "studiores",
+      "airtableRecordId": "recVv10RNYg1Lx6YQ",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Employment: 50%\nHighway / Infrastructure: 25%\nUrban / Mixed-Use: 15%\nAirport / Medical: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Employment: 50%\nHighway / Infrastructure: 25%\nUrban / Mixed-Use: 15%\nAirport / Medical: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Suburban Studios",
+      "brandSlug": "suburban-studios",
+      "airtableRecordId": "recwkEX8j5Ks2uPSI",
+      "fieldName": "Body",
+      "slotKey": "loyalty.proof",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "U.S. News #1 hotel rewards program (consumer site, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "proposedText": "U.S. News #1 hotel rewards program (brand website, 14 programs evaluated); Return & Earn (1,000 pts after 2nd & 3rd qualifying stays/year)—pair with property execution.",
+      "reason": "Remove/replace owner-facing leakage: consumer_site",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "consumer_site"
+      ]
+    },
+    {
+      "brand": "Tapestry Collection by Hilton",
+      "brandSlug": "tapestry-collection-by-hilton",
+      "airtableRecordId": "recDMehAwd12aDaPL",
+      "fieldName": "Body",
+      "slotKey": "footprint.momentum",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Directory\n\nOfficial Hilton property page for The Burgundy Hotel, Tapestry Collection by Hilton in Little Rock — an International Reference urban soft-brand example for owners comparing Tapestry's accessible upscale path and Hilton Honors participation when CALA examples are not yet available in the source pack.\n\nhttps://www.hilton.com/en/hotels/litemup-the-burgundy-hotel/",
+      "proposedText": "Directory\n\nOfficial Hilton property page for The Burgundy Hotel, Tapestry Collection by Hilton in Little Rock — an International Reference urban soft-brand example for owners comparing Tapestry's accessible upscale path and Hilton Honors participation when CALA examples are not yet available in the brand materials.\n\nhttps://www.hilton.com/en/hotels/litemup-the-burgundy-hotel/",
+      "reason": "Remove/replace owner-facing leakage: source_pack",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "source_pack"
+      ]
+    },
+    {
+      "brand": "Tapestry Collection by Hilton",
+      "brandSlug": "tapestry-collection-by-hilton",
+      "airtableRecordId": "recrxbPte6gRPLuBE",
+      "fieldName": "Body",
+      "slotKey": "footprint.momentum",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Directory\n\nOfficial Hilton property page for The Burgundy Hotel, Tapestry Collection by Hilton in Little Rock — an International Reference urban soft-brand example for owners comparing Tapestry's accessible upscale path and Hilton Honors participation when CALA examples are not yet available in the source pack.\n\nhttps://www.hilton.com/en/hotels/litemup-the-burgundy-hotel/",
+      "proposedText": "Directory\n\nOfficial Hilton property page for The Burgundy Hotel, Tapestry Collection by Hilton in Little Rock — an International Reference urban soft-brand example for owners comparing Tapestry's accessible upscale path and Hilton Honors participation when CALA examples are not yet available in the brand materials.\n\nhttps://www.hilton.com/en/hotels/litemup-the-burgundy-hotel/",
+      "reason": "Remove/replace owner-facing leakage: source_pack",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "source_pack"
+      ]
+    },
+    {
+      "brand": "TownePlace Suites by Marriott",
+      "brandSlug": "towneplace-suites-by-marriott",
+      "airtableRecordId": "recrzcIoRDpvua9wj",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Employment: 45%\nHighway / Infrastructure: 25%\nAirport / Medical: 20%\nUrban / Mixed-Use: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Employment: 45%\nHighway / Infrastructure: 25%\nAirport / Medical: 20%\nUrban / Mixed-Use: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Trademark Collection by Wyndham",
+      "brandSlug": "trademark-collection-by-wyndham",
+      "airtableRecordId": "rec1Qjh1toq8wcZ1C",
+      "fieldName": "Body",
+      "slotKey": "footprint.momentum",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Directory\n\nOfficial Wyndham property page for Chula Vista Resort, Trademark Collection by Wyndham in Wisconsin Dells — an International Reference destination-leisure example for owners evaluating property-specific guest experience retention under Wyndham systems when CALA examples are not yet available in the source pack.\n\nhttps://www.wyndhamhotels.com/trademark/wisconsin-dells-wisconsin/chula-vista-resort-trademark/overview",
+      "proposedText": "Directory\n\nOfficial Wyndham property page for Chula Vista Resort, Trademark Collection by Wyndham in Wisconsin Dells — an International Reference destination-leisure example for owners evaluating property-specific guest experience retention under Wyndham systems when CALA examples are not yet available in the brand materials.\n\nhttps://www.wyndhamhotels.com/trademark/wisconsin-dells-wisconsin/chula-vista-resort-trademark/overview",
+      "reason": "Remove/replace owner-facing leakage: source_pack",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "source_pack"
+      ]
+    },
+    {
+      "brand": "Trademark Collection by Wyndham",
+      "brandSlug": "trademark-collection-by-wyndham",
+      "airtableRecordId": "recZhZImjK9MiaCgz",
+      "fieldName": "Body",
+      "slotKey": "footprint.momentum",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1A",
+      "currentText": "Directory\n\nOfficial Wyndham property page for MB Hotel, Trademark Collection by Wyndham in Miami Beach — an International Reference soft-brand example for owners underwriting independent identity retention, design-review scope, and Wyndham platform access when CALA examples are not yet in the source pack.\n\nhttps://www.wyndhamhotels.com/trademark/miami-beach-florida/mb-hotel-trademark-collection-by-wyndham/overview",
+      "proposedText": "Directory\n\nOfficial Wyndham property page for MB Hotel, Trademark Collection by Wyndham in Miami Beach — an International Reference soft-brand example for owners underwriting independent identity retention, design-review scope, and Wyndham platform access when CALA examples are not yet in the brand materials.\n\nhttps://www.wyndhamhotels.com/trademark/miami-beach-florida/mb-hotel-trademark-collection-by-wyndham/overview",
+      "reason": "Remove/replace owner-facing leakage: source_pack",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "source_pack"
+      ]
+    },
+    {
+      "brand": "Tru by Hilton",
+      "brandSlug": "tru-by-hilton",
+      "airtableRecordId": "recBnjOsLLcczck3g",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Suburban / Highway: 40%\nUrban / Secondary: 30%\nAirport / Mixed-Use: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Suburban / Highway: 40%\nUrban / Secondary: 30%\nAirport / Mixed-Use: 20%\nDestination / Leisure: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Westin",
+      "brandSlug": "westin",
+      "airtableRecordId": "recMBJHt0TedNBq3c",
+      "fieldName": "Body",
+      "slotKey": "footprint.portfolio_mix",
+      "patchCategory": "safe_text_cleanup",
+      "batchLane": "1B",
+      "currentText": "Resort / Destination: 40%\nUrban / Gateway: 35%\nAirport / Convention: 15%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+      "proposedText": "Resort / Destination: 40%\nUrban / Gateway: 35%\nAirport / Convention: 15%\nSuburban / Secondary: 10% Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio property inventory).",
+      "reason": "Remove/replace owner-facing leakage: census",
+      "sourceSupport": "validation_forbidden_language_scan",
+      "censusSupport": null,
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1",
+      "termsRemoved": [
+        "census"
+      ]
+    },
+    {
+      "brand": "Kimpton Hotels",
+      "brandSlug": "kimpton",
+      "airtableRecordId": "recYOSVJXXqkGjN6m",
+      "fieldName": "Title",
+      "slotKey": "footprint.openings",
+      "patchCategory": "property_example_update",
+      "batchLane": "1B",
+      "currentText": "Kimpton Mas Olas Resort & Spa Kimpton Hotels — Todos Santos",
+      "proposedText": "Kimpton Mas Olas Resort & Spa — Todos Santos, Mexico",
+      "reason": "Same-property Census confirmation — refresh location framing only",
+      "sourceSupport": "census_source_url_present",
+      "censusSupport": {
+        "censusRecordId": "rec5ipKwCzFMSjwck",
+        "propertyName": "Kimpton Mas Olas Resort and Spa",
+        "city": "Mas Olas Resort Spa Todos Santos",
+        "country": "Mexico",
+        "affiliationStatus": "Branded",
+        "humanReviewRequired": false
+      },
+      "riskLevel": "Low",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "include_in_batch_1"
+    }
+  ],
+  "heldForLater": [
+    {
+      "brand": "courtyard-by-marriott",
+      "category": "property_example_update",
+      "currentTitle": "Courtyard by Marriott Bogota Airport — Bogotá",
+      "censusCandidate": "Courtyard by Marriott Monterrey Airport",
+      "reason": "fuzzy_census_match_is_different_property — do not rewrite BE example to a different hotel",
+      "applyRecommendation": "hold_for_later",
+      "riskLevel": "High"
+    },
+    {
+      "brand": "curio-collection",
+      "category": "property_example_update",
+      "currentTitle": "Nacar Hotel Cartagena Curio Collection by Hilton — Cartagena",
+      "censusCandidate": "MS Milenium Monterrey, Curio Collection by Hilton",
+      "reason": "fuzzy_census_match_is_different_property — do not rewrite BE example to a different hotel",
+      "applyRecommendation": "hold_for_later",
+      "riskLevel": "High"
+    },
+    {
+      "brand": "hilton-garden-inn",
+      "category": "property_example_update",
+      "currentTitle": "Hilton Garden Inn Bogota Airport — Bogotá",
+      "censusCandidate": "Hilton Garden Inn Guadalajara Airport",
+      "reason": "fuzzy_census_match_is_different_property — do not rewrite BE example to a different hotel",
+      "applyRecommendation": "hold_for_later",
+      "riskLevel": "High"
+    },
+    {
+      "brand": "hilton-garden-inn",
+      "category": "property_example_update",
+      "currentTitle": "Hilton Garden Inn Guanacaste Airport — CALA",
+      "censusCandidate": "Hilton Garden Inn Guadalajara Airport",
+      "reason": "fuzzy_census_match_is_different_property — do not rewrite BE example to a different hotel",
+      "applyRecommendation": "hold_for_later",
+      "riskLevel": "High"
+    },
+    {
+      "brand": "holiday-inn-express",
+      "category": "property_example_update",
+      "currentTitle": "Holiday Inn Express & Suites Bogota DC — Bogotá",
+      "censusCandidate": "Holiday Inn Express Tapachula",
+      "reason": "fuzzy_census_match_is_different_property — do not rewrite BE example to a different hotel",
+      "applyRecommendation": "hold_for_later",
+      "riskLevel": "High"
+    },
+    {
+      "brand": "motto-by-hilton",
+      "category": "property_example_update",
+      "currentTitle": "Motto by Hilton Cusco — Cusco",
+      "censusCandidate": "Motto by Hilton Tulum",
+      "reason": "fuzzy_census_match_is_different_property — do not rewrite BE example to a different hotel",
+      "applyRecommendation": "hold_for_later",
+      "riskLevel": "High"
+    },
+    {
+      "brand": "MGallery Collection",
+      "brandSlug": "mgallery-collection",
+      "airtableRecordId": null,
+      "fieldName": "quality_audit_minor_cleanup",
+      "slotKey": null,
+      "patchCategory": "Webflow_render_fix",
+      "batchLane": null,
+      "currentText": "approve_after_minor_cleanup (majors: missing Guest Psychographics, valueOwners.overview, valueOwners.watchouts; minors: thin portfolio_mix + caption roles)",
+      "proposedText": "Hold for a dedicated MGallery cleanup packet — missing major slots are not a Low-risk Batch 1 text rewrite. Optional later: thicken footprint.portfolio_mix (rec8JMqWvldhwE1xn) without factual invention.",
+      "reason": "Quality quiet minor is not Low-risk factual-safe for Batch 1; majors require content additions",
+      "sourceSupport": "quality_audit_quiet",
+      "censusSupport": null,
+      "riskLevel": "Medium",
+      "founderApprovalRequired": true,
+      "applyRecommendation": "hold_for_later"
+    }
+  ],
+  "founderDecisionsNeeded": [
+    {
+      "brand": "courtyard-by-marriott",
+      "topic": "property_example_false_match",
+      "reason": "\"Courtyard by Marriott Bogota Airport — Bogotá\" was loosely matched to Census \"Courtyard by Marriott Monterrey Airport\" — keep International/CALA example; do not swap"
+    },
+    {
+      "brand": "curio-collection",
+      "topic": "property_example_false_match",
+      "reason": "\"Nacar Hotel Cartagena Curio Collection by Hilton — Cartagena\" was loosely matched to Census \"MS Milenium Monterrey, Curio Collection by Hilton\" — keep International/CALA example; do not swap"
+    },
+    {
+      "brand": "hilton-garden-inn",
+      "topic": "property_example_false_match",
+      "reason": "\"Hilton Garden Inn Bogota Airport — Bogotá\" was loosely matched to Census \"Hilton Garden Inn Guadalajara Airport\" — keep International/CALA example; do not swap"
+    },
+    {
+      "brand": "hilton-garden-inn",
+      "topic": "property_example_false_match",
+      "reason": "\"Hilton Garden Inn Guanacaste Airport — CALA\" was loosely matched to Census \"Hilton Garden Inn Guadalajara Airport\" — keep International/CALA example; do not swap"
+    },
+    {
+      "brand": "holiday-inn-express",
+      "topic": "property_example_false_match",
+      "reason": "\"Holiday Inn Express & Suites Bogota DC — Bogotá\" was loosely matched to Census \"Holiday Inn Express Tapachula\" — keep International/CALA example; do not swap"
+    },
+    {
+      "brand": "motto-by-hilton",
+      "topic": "property_example_false_match",
+      "reason": "\"Motto by Hilton Cusco — Cusco\" was loosely matched to Census \"Motto by Hilton Tulum\" — keep International/CALA example; do not swap"
+    },
+    {
+      "brand": "mgallery-collection",
+      "topic": "webflow_render_minor",
+      "recommendation": "hold_for_later",
+      "reason": "MGallery needs dedicated cleanup for missing major slots; not include_in_batch_1"
+    }
+  ],
+  "validationGateResults": {
+    "activeCount": 62,
+    "semanticCHM": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "pvqlPass": true,
+    "pvqlCount": 62,
+    "footnotePass": true,
+    "momentumPass": true,
+    "mandatoryPass": true,
+    "quality": {
+      "freezeDecision": "freeze_after_minor_cleanup_pass",
+      "recommendationCounts": {
+        "approve_for_baseline_freeze": 61,
+        "approve_after_minor_cleanup": 1
+      },
+      "minor": [
+        "mgallery-collection"
+      ]
+    },
+    "semanticFreeze": "ready_to_freeze_62_semantic_qa_clean",
+    "footnoteSummary": {
+      "activeCount": 62,
+      "previewCount": 0,
+      "totalRows": 62,
+      "pass": 62,
+      "fail": 0,
+      "footnoteVisibleCount": 62,
+      "footnoteMissingCount": 0
+    },
+    "lighterGatesRevalidatedAt": "2026-08-05T14:30:54.320Z",
+    "note": "Post-batch-prep gate revalidation complete",
+    "revalidatedAt": "2026-08-05T15:22:56.081Z"
+  },
+  "applyCommandForLater": {
+    "note": "Do not run until founder approval",
+    "suggested": "node scripts/brand-explorer-62-safe-text-cleanup-batch-1-apply.mjs --dry-run  # (not created until approved) then --apply with confirm flags",
+    "forbiddenNow": true
+  },
+  "hardRulesHonored": [
+    "No production Brand Explorer patches applied",
+    "No Census writes",
+    "No Recent Momentum patches",
+    "No Company Validated / Brand Verified / Brand Status writes",
+    "Wrong Census fuzzy matches held — not swapped",
+    "MGallery majors held out of Batch 1"
+  ]
+}

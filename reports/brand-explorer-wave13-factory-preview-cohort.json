@@ -1,0 +1,166 @@
+{
+  "version": "brand-explorer-wave13-factory-preview-cohort-v1",
+  "stage": "factory-preview-cohort",
+  "displayState": "factory_preview_internal",
+  "bannerText": "Factory Preview — Not Public / Not Active Baseline",
+  "candidateSlugs": [
+    "mama-shelter",
+    "mercure",
+    "ibis",
+    "novotel",
+    "pullman",
+    "so-hotels-and-resorts",
+    "fairmont-hotels-and-resorts",
+    "the-house-of-originals"
+  ],
+  "identities": {
+    "mama-shelter": {
+      "slug": "mama-shelter",
+      "name": "Mama Shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Accor",
+      "wave": "wave13",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "mercure": {
+      "slug": "mercure",
+      "name": "Mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Accor",
+      "wave": "wave13",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "ibis": {
+      "slug": "ibis",
+      "name": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Accor",
+      "wave": "wave13",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "novotel": {
+      "slug": "novotel",
+      "name": "Novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Accor",
+      "wave": "wave13",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "pullman": {
+      "slug": "pullman",
+      "name": "Pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Accor",
+      "wave": "wave13",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "so-hotels-and-resorts": {
+      "slug": "so-hotels-and-resorts",
+      "name": "SO/ Hotels & Resorts",
+      "recordId": null,
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Accor",
+      "wave": "wave13",
+      "classification": "missing_brand_basics_record",
+      "brandStatus": null,
+      "missingBasics": true
+    },
+    "fairmont-hotels-and-resorts": {
+      "slug": "fairmont-hotels-and-resorts",
+      "name": "Fairmont",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Accor",
+      "wave": "wave13",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "the-house-of-originals": {
+      "slug": "the-house-of-originals",
+      "name": "The House of Originals",
+      "recordId": "rec7ZPOVYsldGmNfx",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Accor",
+      "wave": "wave13",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    }
+  },
+  "priorCandidatesPreservedNote": "Wave 12 factory preview cohort brands are now in the protected 39 Active/Live baseline — Wave 13 replaces the factory preview allowlist.",
+  "affectsActiveUniverse": false,
+  "airtableWrites": false,
+  "protectedBaselineCount": 39,
+  "generatedAt": "2026-07-26T19:23:10.272Z",
+  "dryRun": false,
+  "applyRequested": true,
+  "applyFlagsOk": true,
+  "missingFlags": [],
+  "modulePath": "lib/partner-intelligence/brand-explorer-factory-preview-candidates.js",
+  "priorCandidateSlugs": [
+    "even-hotels",
+    "voco-hotels",
+    "avid-hotels",
+    "holiday-inn-express",
+    "courtyard-by-marriott",
+    "ac-hotels-by-marriott",
+    "city-express-by-marriott",
+    "moxy-hotels",
+    "canopy-by-hilton",
+    "motto-by-hilton",
+    "tempo-by-hilton",
+    "bunkhouse-hotels"
+  ],
+  "protectedActiveCount": 39,
+  "expectedProtectedCount": 39,
+  "activeUniverseDrift": [],
+  "openItems": {
+    "missingBrandBasics": [
+      "so-hotels-and-resorts"
+    ]
+  },
+  "invariant": {
+    "ok": true,
+    "errors": [],
+    "activeUniverseSource": {
+      "name": "Brand Basics Brand Status Active/Live",
+      "table": "Brand Setup - Brand Basics",
+      "file": "lib/brand-status-active.js",
+      "formula": "OR({Brand Status}='Active', {Brand Status}='Live')",
+      "filterCriteria": "OR({Brand Status}='Active', {Brand Status}='Live')",
+      "apis": [
+        "GET /api/brand-library/brands",
+        "GET /api/brand-explorer/brands"
+      ],
+      "note": "Canonical Brand Explorer active universe. Code cohort lists are operational overlays, not this universe."
+    },
+    "candidateCount": 12
+  },
+  "wroteModule": true,
+  "brandStatusWrites": false,
+  "releaseFieldWrites": false,
+  "protectedBaselineWrites": false,
+  "presentationWrites": false,
+  "companyValidatedWrites": false,
+  "sourceLibraryWrites": false,
+  "registryWrites": false,
+  "pass": true,
+  "stopRecommended": false,
+  "readyStatement": "wave13_factory_preview_cohort_applied"
+}

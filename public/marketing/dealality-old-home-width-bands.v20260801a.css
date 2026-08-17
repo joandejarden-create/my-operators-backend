@@ -1,0 +1,73 @@
+/* Old Home — width bands SoT (v20260801a)
+ *
+ * Two rails only:
+ *   Content  --oh-band-content: 1120px  (narrative sections)
+ *   Wide     --oh-band-wide:    1320px  (Insights/learn, CTA band, footer)
+ *
+ * Do NOT reintroduce 1040 / 1070 / 1100 / 1180 / 1232 / 1360 section rails.
+ * Hero text column is intentionally narrower over the globe — leave #hero-inner alone.
+ */
+:root{
+  --oh-band-content:1120px;
+  --oh-band-wide:1320px;
+}
+
+/* === Content band (1120) === */
+#modules-inner,
+#about-inner,
+.oh-about-inner,
+#testimonials-inner,
+#testimonials-carousel,
+#trust-inner,
+.oh-trust-inner,
+#faq-inner,
+.oh-faq-inner,
+#faq-list,
+.oh-faq-list,
+#eco-inner,
+.oh-eco-inner,
+.oh-eco-inner.oh-eco-inner--wide,
+#pricing-inner,
+.oh-pricing-inner,
+.dealality-process_inner,
+.dmp-inner,
+.many-futures-container,
+#dealality-many-futures,
+#persp-inner,
+.oh-persp-inner,
+#engagement-inner,
+#features-inner{
+  max-width:var(--oh-band-content)!important;
+  width:100%;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+
+/* === Wide band (1320) — learn / CTA / footer === */
+#insights-inner,
+.oh-insights-inner,
+#cta-band-inner,
+.oh-cta-band-inner,
+#footer-inner,
+#footer-inner-new{
+  max-width:var(--oh-band-wide)!important;
+  width:100%!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+
+/* Nav horizontal padding aligns to content band (matches freeform-head) */
+#nav.oh-nav,
+#nav{
+  padding-left:calc((100% - var(--oh-band-content)) / 2 + clamp(1.5rem,4vw,3rem))!important;
+  padding-right:calc((100% - var(--oh-band-content)) / 2 + clamp(1.5rem,4vw,3rem))!important;
+}
+@media(max-width:1180px){
+  #nav.oh-nav,
+  #nav{
+    padding-left:clamp(1.5rem,4vw,3rem)!important;
+    padding-right:clamp(1.5rem,4vw,3rem)!important;
+  }
+}

@@ -1,0 +1,1056 @@
+{
+  "packageVersion": "25C-2C",
+  "packageExists": true,
+  "generatedAt": "2026-07-09T15:02:28.659Z",
+  "mode": "dry-run",
+  "brand": {
+    "name": "Tribute Portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "slug": "tribute-portfolio"
+  },
+  "marriottValidationImplied": false,
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-loyalty-fact-approval-writer.md",
+    "reports/brand-explorer-loyalty-fact-approval-writer.json",
+    "reports/brand-explorer-required-section-source-capture-package.md",
+    "reports/brand-explorer-required-section-source-capture-package.json",
+    "reports/brand-explorer-required-section-population-contract.md",
+    "reports/brand-explorer-required-section-population-contract.json",
+    "reports/brand-explorer-evidence-fact-review-package.md",
+    "reports/brand-explorer-evidence-fact-review-package.json",
+    "reports/tribute-portfolio-targeted-extract.md",
+    "reports/tribute-portfolio-targeted-extract.json",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "lib/partner-intelligence/brand-explorer-loyalty-fact-approval-writer.js"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-loyalty-row-review-package.js",
+    "scripts/brand-explorer-loyalty-row-review-package.mjs",
+    "docs/data-intelligence/brand-explorer-loyalty-row-review-package-v25C-2C.md",
+    "reports/brand-explorer-loyalty-row-review-package.md",
+    "reports/brand-explorer-loyalty-row-review-package.json",
+    "package.json"
+  ],
+  "approvedLoyaltyFactsUsed": [
+    {
+      "fieldKey": "be.loyalty.eliteTierLadder",
+      "factRecordId": "recONga3XhpRyHpP0",
+      "approvedValue": "Member Silver Elite Gold Elite Platinum Elite Titanium Elite Ambassador Elite",
+      "humanReviewStatus": "Approved",
+      "targetExplorerSlots": [
+        "loyalty.elite"
+      ]
+    },
+    {
+      "fieldKey": "be.loyalty.programScaleStatement",
+      "factRecordId": "recRtIx8ycmSQ1Z1E",
+      "approvedValue": "Rewards You at 7,000+ Hotels Worldwide.",
+      "humanReviewStatus": "Approved",
+      "targetExplorerSlots": [
+        "loyalty.proof"
+      ]
+    },
+    {
+      "fieldKey": "be.loyalty.redeemMechanics",
+      "factRecordId": "recbA0yIo4Xh3yuMq",
+      "approvedValue": "Earn and redeem points that take you everywhere you want to go.",
+      "humanReviewStatus": "Approved",
+      "targetExplorerSlots": [
+        "loyalty.redeem"
+      ]
+    },
+    {
+      "fieldKey": "be.loyalty.earnMechanics",
+      "factRecordId": "recmIY5Kteqv1BK5Q",
+      "approvedValue": "Earn and redeem points that take you everywhere you want to go.",
+      "humanReviewStatus": "Approved",
+      "targetExplorerSlots": [
+        "loyalty.earn"
+      ]
+    },
+    {
+      "fieldKey": "be.loyalty.memberRatesBenefit",
+      "factRecordId": "recnPbySxNiw0RKun",
+      "approvedValue": "Enjoy exclusive discounted rates for Marriott Bonvoy Members.",
+      "humanReviewStatus": "Approved",
+      "targetExplorerSlots": [
+        "loyalty.earn",
+        "loyalty.proof"
+      ]
+    }
+  ],
+  "factsExcluded": [
+    {
+      "fieldKey": "be.loyalty.programName",
+      "factRecordId": "rec0A81EEy3wcwmy6",
+      "reason": "non_allowlisted_loyalty_fact"
+    },
+    {
+      "fieldKey": "be.meta.fddDocumentVintage",
+      "factRecordId": "rec6mXPxMqMQw2Um2",
+      "reason": "internal_or_fdd_fact"
+    },
+    {
+      "fieldKey": "be.loyalty.roomContributionPct",
+      "factRecordId": "recLK90q2JRGUF4r8",
+      "reason": "non_allowlisted_loyalty_fact"
+    },
+    {
+      "fieldKey": "be.standards.qualityAssuranceTheme",
+      "factRecordId": "recYAnV9ScBGVw3CK",
+      "reason": "internal_or_fdd_fact"
+    },
+    {
+      "fieldKey": "be.loyalty.memberCount",
+      "factRecordId": "recdZ6TfrHYorD5ov",
+      "reason": "non_allowlisted_loyalty_fact"
+    },
+    {
+      "fieldKey": "be.loyalty.enterpriseBookingPct",
+      "factRecordId": "receqWeo9nvkeuLB9",
+      "reason": "non_allowlisted_loyalty_fact"
+    },
+    {
+      "fieldKey": "be.loyalty.programName",
+      "factRecordId": "reci2PHv0EjkWDqzZ",
+      "reason": "non_allowlisted_loyalty_fact"
+    }
+  ],
+  "existingLoyaltyRowsFound": [
+    {
+      "recordId": "recDHR5pOBS4DRtlb",
+      "slotKey": "loyalty.hero_title",
+      "titlePreview": "",
+      "bodyPreview": "Marriott Bonvoy — Loyalty at a Glance"
+    }
+  ],
+  "loyaltyHeroTitleExists": true,
+  "targetSlots": [
+    "loyalty.earn",
+    "loyalty.redeem",
+    "loyalty.elite",
+    "loyalty.proof"
+  ],
+  "slotReviews": [
+    {
+      "slotKey": "loyalty.earn",
+      "existingRowStatus": "missing",
+      "existingRecordIds": [],
+      "existingRowCount": 0,
+      "existingTitle": "",
+      "existingBodyPreview": "",
+      "sourceFactKeys": [
+        "be.loyalty.earnMechanics",
+        "be.loyalty.memberRatesBenefit"
+      ],
+      "sourceFactsUsed": [
+        {
+          "fieldKey": "be.loyalty.earnMechanics",
+          "factRecordId": "recmIY5Kteqv1BK5Q",
+          "approvedValue": "Earn and redeem points that take you everywhere you want to go.",
+          "humanReviewStatus": "Approved",
+          "sourceRecordId": "recu6AFRZBBBNiCQn"
+        },
+        {
+          "fieldKey": "be.loyalty.memberRatesBenefit",
+          "factRecordId": "recnPbySxNiw0RKun",
+          "approvedValue": "Enjoy exclusive discounted rates for Marriott Bonvoy Members.",
+          "humanReviewStatus": "Approved",
+          "sourceRecordId": "recu6AFRZBBBNiCQn"
+        }
+      ],
+      "approvedValuesUsed": [
+        "Earn and redeem points that take you everywhere you want to go.",
+        "Enjoy exclusive discounted rates for Marriott Bonvoy Members."
+      ],
+      "missingApprovedFacts": [],
+      "proposedTitle": "Earning & Member Rates",
+      "proposedBody": "Marriott Bonvoy gives guests a familiar rewards path for earning points at participating hotels, with member-rate incentives that can support direct booking behavior.",
+      "proposedRows": [],
+      "proposedRowPayloads": [
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.earn",
+            "Title": "Earning & Member Rates",
+            "Body": "Marriott Bonvoy gives guests a familiar rewards path for earning points at participating hotels, with member-rate incentives that can support direct booking behavior.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 0
+          }
+        }
+      ],
+      "rowCreationRequired": true,
+      "rowUpdateRequired": false,
+      "v25C2DAction": "create",
+      "founderReviewStatus": "AI-assembled from approved source facts; Pending founder review; Not company-validated; Not Marriott-validated",
+      "governanceLabels": [
+        "AI-assembled from approved source facts",
+        "Pending founder review",
+        "Not company-validated",
+        "Not Marriott-validated"
+      ],
+      "riskLevel": "low",
+      "blocked": false,
+      "blockerReason": ""
+    },
+    {
+      "slotKey": "loyalty.redeem",
+      "existingRowStatus": "missing",
+      "existingRecordIds": [],
+      "existingRowCount": 0,
+      "existingTitle": "",
+      "existingBodyPreview": "",
+      "sourceFactKeys": [
+        "be.loyalty.redeemMechanics"
+      ],
+      "sourceFactsUsed": [
+        {
+          "fieldKey": "be.loyalty.redeemMechanics",
+          "factRecordId": "recbA0yIo4Xh3yuMq",
+          "approvedValue": "Earn and redeem points that take you everywhere you want to go.",
+          "humanReviewStatus": "Approved",
+          "sourceRecordId": "recu6AFRZBBBNiCQn"
+        }
+      ],
+      "approvedValuesUsed": [
+        "Earn and redeem points that take you everywhere you want to go."
+      ],
+      "missingApprovedFacts": [],
+      "proposedTitle": "Redeeming Through Bonvoy",
+      "proposedBody": "Bonvoy participation gives guests a redemption pathway through Marriott's loyalty ecosystem, adding a consumer-facing reason to consider the property within the broader Marriott network.",
+      "proposedRows": [],
+      "proposedRowPayloads": [
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.redeem",
+            "Title": "Redeeming Through Bonvoy",
+            "Body": "Bonvoy participation gives guests a redemption pathway through Marriott's loyalty ecosystem, adding a consumer-facing reason to consider the property within the broader Marriott network.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 0
+          }
+        }
+      ],
+      "rowCreationRequired": true,
+      "rowUpdateRequired": false,
+      "v25C2DAction": "create",
+      "founderReviewStatus": "AI-assembled from approved source facts; Pending founder review; Not company-validated; Not Marriott-validated",
+      "governanceLabels": [
+        "AI-assembled from approved source facts",
+        "Pending founder review",
+        "Not company-validated",
+        "Not Marriott-validated"
+      ],
+      "riskLevel": "low",
+      "blocked": false,
+      "blockerReason": ""
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "existingRowStatus": "missing",
+      "existingRecordIds": [],
+      "existingRowCount": 0,
+      "existingTitle": "",
+      "existingBodyPreview": "",
+      "sourceFactKeys": [
+        "be.loyalty.eliteTierLadder"
+      ],
+      "sourceFactsUsed": [
+        {
+          "fieldKey": "be.loyalty.eliteTierLadder",
+          "factRecordId": "recONga3XhpRyHpP0",
+          "approvedValue": "Member Silver Elite Gold Elite Platinum Elite Titanium Elite Ambassador Elite",
+          "humanReviewStatus": "Approved",
+          "sourceRecordId": "recu6AFRZBBBNiCQn"
+        }
+      ],
+      "approvedValuesUsed": [
+        "Member Silver Elite Gold Elite Platinum Elite Titanium Elite Ambassador Elite"
+      ],
+      "missingApprovedFacts": [],
+      "proposedTitle": "(multiple tier rows)",
+      "proposedBody": "Member: Entry tier in the Marriott Bonvoy member ladder.\n\nSilver Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nGold Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nPlatinum Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nTitanium Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nAmbassador Elite: Highest named elite tier in the Marriott Bonvoy member ladder.",
+      "proposedRows": [
+        {
+          "title": "Member",
+          "body": "Entry tier in the Marriott Bonvoy member ladder.",
+          "sort": 0
+        },
+        {
+          "title": "Silver Elite",
+          "body": "Elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 1
+        },
+        {
+          "title": "Gold Elite",
+          "body": "Elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 2
+        },
+        {
+          "title": "Platinum Elite",
+          "body": "Elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 3
+        },
+        {
+          "title": "Titanium Elite",
+          "body": "Elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 4
+        },
+        {
+          "title": "Ambassador Elite",
+          "body": "Highest named elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 5
+        }
+      ],
+      "proposedRowPayloads": [
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.elite",
+            "Title": "Member",
+            "Body": "Entry tier in the Marriott Bonvoy member ladder.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 0
+          }
+        },
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.elite",
+            "Title": "Silver Elite",
+            "Body": "Elite tier in the Marriott Bonvoy member ladder.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 1
+          }
+        },
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.elite",
+            "Title": "Gold Elite",
+            "Body": "Elite tier in the Marriott Bonvoy member ladder.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 2
+          }
+        },
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.elite",
+            "Title": "Platinum Elite",
+            "Body": "Elite tier in the Marriott Bonvoy member ladder.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 3
+          }
+        },
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.elite",
+            "Title": "Titanium Elite",
+            "Body": "Elite tier in the Marriott Bonvoy member ladder.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 4
+          }
+        },
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.elite",
+            "Title": "Ambassador Elite",
+            "Body": "Highest named elite tier in the Marriott Bonvoy member ladder.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 5
+          }
+        }
+      ],
+      "rowCreationRequired": true,
+      "rowUpdateRequired": false,
+      "v25C2DAction": "create",
+      "founderReviewStatus": "AI-assembled from approved source facts; Pending founder review; Not company-validated; Not Marriott-validated",
+      "governanceLabels": [
+        "AI-assembled from approved source facts",
+        "Pending founder review",
+        "Not company-validated",
+        "Not Marriott-validated"
+      ],
+      "riskLevel": "low",
+      "blocked": false,
+      "blockerReason": ""
+    },
+    {
+      "slotKey": "loyalty.proof",
+      "existingRowStatus": "missing",
+      "existingRecordIds": [],
+      "existingRowCount": 0,
+      "existingTitle": "",
+      "existingBodyPreview": "",
+      "sourceFactKeys": [
+        "be.loyalty.programScaleStatement",
+        "be.loyalty.memberRatesBenefit"
+      ],
+      "sourceFactsUsed": [
+        {
+          "fieldKey": "be.loyalty.programScaleStatement",
+          "factRecordId": "recRtIx8ycmSQ1Z1E",
+          "approvedValue": "Rewards You at 7,000+ Hotels Worldwide.",
+          "humanReviewStatus": "Approved",
+          "sourceRecordId": "recu6AFRZBBBNiCQn"
+        },
+        {
+          "fieldKey": "be.loyalty.memberRatesBenefit",
+          "factRecordId": "recnPbySxNiw0RKun",
+          "approvedValue": "Enjoy exclusive discounted rates for Marriott Bonvoy Members.",
+          "humanReviewStatus": "Approved",
+          "sourceRecordId": "recu6AFRZBBBNiCQn"
+        }
+      ],
+      "approvedValuesUsed": [
+        "Rewards You at 7,000+ Hotels Worldwide.",
+        "Enjoy exclusive discounted rates for Marriott Bonvoy Members."
+      ],
+      "missingApprovedFacts": [],
+      "proposedTitle": "(multiple proof rows)",
+      "proposedBody": "Global Program Scale: Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.\n\nMember Rate Incentive: Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+      "proposedRows": [
+        {
+          "title": "Global Program Scale",
+          "body": "Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.",
+          "sort": 0
+        },
+        {
+          "title": "Member Rate Incentive",
+          "body": "Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+          "sort": 1
+        }
+      ],
+      "proposedRowPayloads": [
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.proof",
+            "Title": "Global Program Scale",
+            "Body": "Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 0
+          }
+        },
+        {
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "fields": {
+            "Slot Key": "loyalty.proof",
+            "Title": "Member Rate Incentive",
+            "Body": "Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+            "Brand": [
+              "recCvV0PuZOi8c3hC"
+            ],
+            "Brand Name": "Tribute Portfolio",
+            "Active": true,
+            "Sort Order": 1
+          }
+        }
+      ],
+      "rowCreationRequired": true,
+      "rowUpdateRequired": false,
+      "v25C2DAction": "create",
+      "founderReviewStatus": "AI-assembled from approved source facts; Pending founder review; Not company-validated; Not Marriott-validated",
+      "governanceLabels": [
+        "AI-assembled from approved source facts",
+        "Pending founder review",
+        "Not company-validated",
+        "Not Marriott-validated"
+      ],
+      "riskLevel": "low",
+      "blocked": false,
+      "blockerReason": ""
+    }
+  ],
+  "proposedCopyBySlot": {
+    "loyalty.earn": {
+      "proposedTitle": "Earning & Member Rates",
+      "proposedBody": "Marriott Bonvoy gives guests a familiar rewards path for earning points at participating hotels, with member-rate incentives that can support direct booking behavior.",
+      "proposedRows": [],
+      "governanceLabels": [
+        "AI-assembled from approved source facts",
+        "Pending founder review",
+        "Not company-validated",
+        "Not Marriott-validated"
+      ]
+    },
+    "loyalty.redeem": {
+      "proposedTitle": "Redeeming Through Bonvoy",
+      "proposedBody": "Bonvoy participation gives guests a redemption pathway through Marriott's loyalty ecosystem, adding a consumer-facing reason to consider the property within the broader Marriott network.",
+      "proposedRows": [],
+      "governanceLabels": [
+        "AI-assembled from approved source facts",
+        "Pending founder review",
+        "Not company-validated",
+        "Not Marriott-validated"
+      ]
+    },
+    "loyalty.elite": {
+      "proposedTitle": "(multiple tier rows)",
+      "proposedBody": "Member: Entry tier in the Marriott Bonvoy member ladder.\n\nSilver Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nGold Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nPlatinum Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nTitanium Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nAmbassador Elite: Highest named elite tier in the Marriott Bonvoy member ladder.",
+      "proposedRows": [
+        {
+          "title": "Member",
+          "body": "Entry tier in the Marriott Bonvoy member ladder.",
+          "sort": 0
+        },
+        {
+          "title": "Silver Elite",
+          "body": "Elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 1
+        },
+        {
+          "title": "Gold Elite",
+          "body": "Elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 2
+        },
+        {
+          "title": "Platinum Elite",
+          "body": "Elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 3
+        },
+        {
+          "title": "Titanium Elite",
+          "body": "Elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 4
+        },
+        {
+          "title": "Ambassador Elite",
+          "body": "Highest named elite tier in the Marriott Bonvoy member ladder.",
+          "sort": 5
+        }
+      ],
+      "governanceLabels": [
+        "AI-assembled from approved source facts",
+        "Pending founder review",
+        "Not company-validated",
+        "Not Marriott-validated"
+      ]
+    },
+    "loyalty.proof": {
+      "proposedTitle": "(multiple proof rows)",
+      "proposedBody": "Global Program Scale: Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.\n\nMember Rate Incentive: Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+      "proposedRows": [
+        {
+          "title": "Global Program Scale",
+          "body": "Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.",
+          "sort": 0
+        },
+        {
+          "title": "Member Rate Incentive",
+          "body": "Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+          "sort": 1
+        }
+      ],
+      "governanceLabels": [
+        "AI-assembled from approved source facts",
+        "Pending founder review",
+        "Not company-validated",
+        "Not Marriott-validated"
+      ]
+    }
+  },
+  "proposedLoyaltyEarnCopy": {
+    "proposedTitle": "Earning & Member Rates",
+    "proposedBody": "Marriott Bonvoy gives guests a familiar rewards path for earning points at participating hotels, with member-rate incentives that can support direct booking behavior.",
+    "proposedRows": [],
+    "governanceLabels": [
+      "AI-assembled from approved source facts",
+      "Pending founder review",
+      "Not company-validated",
+      "Not Marriott-validated"
+    ]
+  },
+  "proposedLoyaltyRedeemCopy": {
+    "proposedTitle": "Redeeming Through Bonvoy",
+    "proposedBody": "Bonvoy participation gives guests a redemption pathway through Marriott's loyalty ecosystem, adding a consumer-facing reason to consider the property within the broader Marriott network.",
+    "proposedRows": [],
+    "governanceLabels": [
+      "AI-assembled from approved source facts",
+      "Pending founder review",
+      "Not company-validated",
+      "Not Marriott-validated"
+    ]
+  },
+  "proposedLoyaltyEliteCopy": {
+    "proposedTitle": "(multiple tier rows)",
+    "proposedBody": "Member: Entry tier in the Marriott Bonvoy member ladder.\n\nSilver Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nGold Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nPlatinum Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nTitanium Elite: Elite tier in the Marriott Bonvoy member ladder.\n\nAmbassador Elite: Highest named elite tier in the Marriott Bonvoy member ladder.",
+    "proposedRows": [
+      {
+        "title": "Member",
+        "body": "Entry tier in the Marriott Bonvoy member ladder.",
+        "sort": 0
+      },
+      {
+        "title": "Silver Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder.",
+        "sort": 1
+      },
+      {
+        "title": "Gold Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder.",
+        "sort": 2
+      },
+      {
+        "title": "Platinum Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder.",
+        "sort": 3
+      },
+      {
+        "title": "Titanium Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder.",
+        "sort": 4
+      },
+      {
+        "title": "Ambassador Elite",
+        "body": "Highest named elite tier in the Marriott Bonvoy member ladder.",
+        "sort": 5
+      }
+    ],
+    "governanceLabels": [
+      "AI-assembled from approved source facts",
+      "Pending founder review",
+      "Not company-validated",
+      "Not Marriott-validated"
+    ]
+  },
+  "proposedLoyaltyProofCopy": {
+    "proposedTitle": "(multiple proof rows)",
+    "proposedBody": "Global Program Scale: Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.\n\nMember Rate Incentive: Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+    "proposedRows": [
+      {
+        "title": "Global Program Scale",
+        "body": "Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.",
+        "sort": 0
+      },
+      {
+        "title": "Member Rate Incentive",
+        "body": "Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+        "sort": 1
+      }
+    ],
+    "governanceLabels": [
+      "AI-assembled from approved source facts",
+      "Pending founder review",
+      "Not company-validated",
+      "Not Marriott-validated"
+    ]
+  },
+  "kpiCountsExcluded": true,
+  "excludedKpiSlots": [
+    "loyalty.kpi.hotels",
+    "loyalty.kpi.markets",
+    "loyalty.kpi.members",
+    "loyalty.kpi.mix"
+  ],
+  "kpiRowsFound": [],
+  "internalOrFddFactsExcluded": true,
+  "nonLoyaltyFactsLeakedIntoPlan": [
+    {
+      "fieldKey": "be.meta.fddDocumentVintage",
+      "factRecordId": "rec6mXPxMqMQw2Um2",
+      "reason": "internal_or_fdd_fact"
+    },
+    {
+      "fieldKey": "be.standards.qualityAssuranceTheme",
+      "factRecordId": "recYAnV9ScBGVw3CK",
+      "reason": "internal_or_fdd_fact"
+    }
+  ],
+  "rowsNeedingCreationV25C2D": [
+    "loyalty.earn",
+    "loyalty.redeem",
+    "loyalty.elite",
+    "loyalty.proof"
+  ],
+  "rowsNeedingUpdateV25C2D": [],
+  "v25C2DSummary": {
+    "create": [
+      {
+        "slotKey": "loyalty.earn",
+        "rowCount": 1,
+        "payloads": [
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.earn",
+              "Title": "Earning & Member Rates",
+              "Body": "Marriott Bonvoy gives guests a familiar rewards path for earning points at participating hotels, with member-rate incentives that can support direct booking behavior.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 0
+            }
+          }
+        ]
+      },
+      {
+        "slotKey": "loyalty.redeem",
+        "rowCount": 1,
+        "payloads": [
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.redeem",
+              "Title": "Redeeming Through Bonvoy",
+              "Body": "Bonvoy participation gives guests a redemption pathway through Marriott's loyalty ecosystem, adding a consumer-facing reason to consider the property within the broader Marriott network.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 0
+            }
+          }
+        ]
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "rowCount": 6,
+        "payloads": [
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.elite",
+              "Title": "Member",
+              "Body": "Entry tier in the Marriott Bonvoy member ladder.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 0
+            }
+          },
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.elite",
+              "Title": "Silver Elite",
+              "Body": "Elite tier in the Marriott Bonvoy member ladder.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 1
+            }
+          },
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.elite",
+              "Title": "Gold Elite",
+              "Body": "Elite tier in the Marriott Bonvoy member ladder.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 2
+            }
+          },
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.elite",
+              "Title": "Platinum Elite",
+              "Body": "Elite tier in the Marriott Bonvoy member ladder.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 3
+            }
+          },
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.elite",
+              "Title": "Titanium Elite",
+              "Body": "Elite tier in the Marriott Bonvoy member ladder.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 4
+            }
+          },
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.elite",
+              "Title": "Ambassador Elite",
+              "Body": "Highest named elite tier in the Marriott Bonvoy member ladder.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 5
+            }
+          }
+        ]
+      },
+      {
+        "slotKey": "loyalty.proof",
+        "rowCount": 2,
+        "payloads": [
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.proof",
+              "Title": "Global Program Scale",
+              "Body": "Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 0
+            }
+          },
+          {
+            "table": "Brand Setup - Brand Explorer Presentation",
+            "fields": {
+              "Slot Key": "loyalty.proof",
+              "Title": "Member Rate Incentive",
+              "Body": "Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+              "Brand": [
+                "recCvV0PuZOi8c3hC"
+              ],
+              "Brand Name": "Tribute Portfolio",
+              "Active": true,
+              "Sort Order": 1
+            }
+          }
+        ]
+      }
+    ],
+    "update": [],
+    "blocked": [],
+    "rowCreationCounts": {
+      "loyalty.earn": 1,
+      "loyalty.redeem": 1,
+      "loyalty.elite": 6,
+      "loyalty.proof": 2
+    },
+    "totalRowCreations": 10
+  },
+  "copyPolishPatch": "v25C-2C-owner-facing-copy",
+  "duplicateEarnRedeemCopyFixed": true,
+  "approvedSourceExcerptRemoved": true,
+  "v25C2DTotalRowCreations": 10,
+  "v25C2DRowCreationCounts": {
+    "loyalty.earn": 1,
+    "loyalty.redeem": 1,
+    "loyalty.elite": 6,
+    "loyalty.proof": 2
+  },
+  "loyaltyProgramMeetsMinimumAfterV25C2D": true,
+  "loyaltyCoverageProjection": {
+    "heroTitle": true,
+    "earn": true,
+    "redeem": true,
+    "elite": true,
+    "proof": true,
+    "projectedCount": 5,
+    "requiredMinimum": 5
+  },
+  "referenceBrandLoyaltyPatterns": [
+    {
+      "brandName": "Curio Collection by Hilton",
+      "brandId": "receQkxgjlezsc1xg",
+      "fixture": "fixtures/brand-explorer-presentation-curio-full.json",
+      "loyaltyEliteCount": 0,
+      "loyaltyProofCount": 0,
+      "earnBodyPreview": "",
+      "redeemBodyPreview": ""
+    },
+    {
+      "brandName": "Kimpton Hotels",
+      "brandId": "recCKuXCmGvxHPfb3",
+      "fixture": "fixtures/brand-explorer-presentation-kimpton-full.json",
+      "loyaltyEliteCount": 0,
+      "loyaltyProofCount": 0,
+      "earnBodyPreview": "",
+      "redeemBodyPreview": ""
+    },
+    {
+      "brandName": "Radisson Blu by Choice",
+      "brandId": "recWPEvxBQxVVzSq3",
+      "fixture": "fixtures/brand-explorer-presentation-radisson-blu.example.json",
+      "loyaltyEliteCount": 0,
+      "loyaltyProofCount": 0,
+      "earnBodyPreview": "",
+      "redeemBodyPreview": ""
+    },
+    {
+      "brandName": "Ascend Hotel Collection",
+      "brandId": "reclkgOzvAcBheUSo",
+      "fixture": "fixtures/brand-explorer-presentation-ascend-hotel-collection-full.json",
+      "loyaltyEliteCount": 0,
+      "loyaltyProofCount": 0,
+      "earnBodyPreview": "",
+      "redeemBodyPreview": ""
+    }
+  ],
+  "liveReferenceBrandRows": [
+    {
+      "brandName": "Curio Collection by Hilton",
+      "brandId": "receQkxgjlezsc1xg",
+      "slots": {
+        "loyalty.earn": {
+          "rowCount": 1,
+          "hasContent": true
+        },
+        "loyalty.redeem": {
+          "rowCount": 1,
+          "hasContent": true
+        },
+        "loyalty.elite": {
+          "rowCount": 5,
+          "hasContent": true
+        },
+        "loyalty.proof": {
+          "rowCount": 6,
+          "hasContent": true
+        }
+      }
+    },
+    {
+      "brandName": "Kimpton Hotels",
+      "brandId": "recCKuXCmGvxHPfb3",
+      "slots": {
+        "loyalty.earn": {
+          "rowCount": 1,
+          "hasContent": true
+        },
+        "loyalty.redeem": {
+          "rowCount": 1,
+          "hasContent": true
+        },
+        "loyalty.elite": {
+          "rowCount": 5,
+          "hasContent": true
+        },
+        "loyalty.proof": {
+          "rowCount": 6,
+          "hasContent": true
+        }
+      }
+    },
+    {
+      "brandName": "Radisson Blu by Choice",
+      "brandId": "recWPEvxBQxVVzSq3",
+      "slots": {
+        "loyalty.earn": {
+          "rowCount": 1,
+          "hasContent": true
+        },
+        "loyalty.redeem": {
+          "rowCount": 1,
+          "hasContent": true
+        },
+        "loyalty.elite": {
+          "rowCount": 5,
+          "hasContent": true
+        },
+        "loyalty.proof": {
+          "rowCount": 6,
+          "hasContent": true
+        }
+      }
+    },
+    {
+      "brandName": "Ascend Hotel Collection",
+      "brandId": "reclkgOzvAcBheUSo",
+      "slots": {
+        "loyalty.earn": {
+          "rowCount": 1,
+          "hasContent": true
+        },
+        "loyalty.redeem": {
+          "rowCount": 1,
+          "hasContent": true
+        },
+        "loyalty.elite": {
+          "rowCount": 5,
+          "hasContent": true
+        },
+        "loyalty.proof": {
+          "rowCount": 6,
+          "hasContent": true
+        }
+      }
+    }
+  ],
+  "presentationRowsUntouched": true,
+  "imagesUntouched": true,
+  "sortOrderUntouched": true,
+  "brandBasicsUntouched": true,
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "airtableModified": false,
+  "readinessBlocked": false,
+  "exactNextWriter": "brand-explorer-loyalty-row-creation-writer",
+  "exactNextWriterVersion": "25C-2D",
+  "exactNextWriterCommand": "npm run brand-explorer-loyalty-row-creation-writer -- --brand tribute-portfolio --dry-run",
+  "doesNotDo": [
+    "Write Airtable or create/update Brand Explorer Presentation rows",
+    "Change images, Sort Order, Brand Basics, or Company Validated",
+    "Populate loyalty.kpi.* without verified KPI facts",
+    "Use pending, FDD, or internal-only facts",
+    "Imply Marriott validated anything"
+  ]
+}

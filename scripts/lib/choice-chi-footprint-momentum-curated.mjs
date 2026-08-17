@@ -13,8 +13,12 @@ const PRESS_CATALOG = path.join(ROOT, "fixtures/choice-cala-footprint-momentum-p
 
 /** Airtable Brand Basics name → hand-maintained fixture (full momentum block) */
 const FIXTURE_BY_AIRTABLE_BRAND = {
+  "Ascend Hotel Collection": "fixtures/brand-explorer-presentation-ascend-hotel-collection-footprint-momentum.json",
   "Radisson by Choice": "fixtures/brand-explorer-presentation-radisson-footprint-momentum.json",
   "Radisson Blu by Choice": "fixtures/brand-explorer-presentation-radisson-blu-footprint-momentum.json",
+  "Radisson RED  (Choice)": "fixtures/brand-explorer-presentation-radisson-red-choice-footprint-momentum.json",
+  "Radisson RED by Choice": "fixtures/brand-explorer-presentation-radisson-red-choice-footprint-momentum.json",
+  "Country Inn & Suites by Radisson": "fixtures/brand-explorer-presentation-country-inn-footprint-momentum.json",
 };
 
 /** Press / media-center announcement URLs (not consumer property pages). */

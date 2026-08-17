@@ -1,0 +1,2549 @@
+{
+  "generatedAt": "2026-07-04T22:18:00.706Z",
+  "filters": {
+    "minScore": 25,
+    "country": "Dominican Republic",
+    "outreachReadyOnly": true,
+    "preDecisionOnly": false,
+    "brandDecisionOnly": false
+  },
+  "config": {
+    "typicalFranchiseTermYears": 20,
+    "renewalWindowMonthsAhead": 36,
+    "conversionAgeYears": 22,
+    "recentRenovationYears": 8,
+    "newBuildRecentYears": 3,
+    "outreachReadyMinScore": 45,
+    "verifiedContactBonus": 15,
+    "reachableContactBonus": 5,
+    "verifiedPhoneBonus": 8
+  },
+  "dataLimits": [
+    "Franchise contract expiry dates are NOT in CoStar — brand_renewal_window is heuristic.",
+    "Land purchase / pre-permit hotel sites need news, permits, or advisor intel (Phase 2)."
+  ],
+  "summary": {
+    "total": 21,
+    "outreachReady": 21,
+    "withVerifiedContact": 14,
+    "byDealTrigger": {
+      "independent_unbranded": 14,
+      "development_pipeline": 1,
+      "brand_renewal_window": 3,
+      "reflag": 3
+    },
+    "byConfidence": {
+      "high": 12,
+      "medium": 9
+    },
+    "byOutreachTrack": {
+      "asset_owner": 6,
+      "third_party_brand_decision": 13,
+      "integrated_operator_mixed": 2
+    }
+  },
+  "items": [
+    {
+      "ownerName": "Globalia Corporacion Empresarial",
+      "intentScore": 98,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 4,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 2,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 2,
+          "examples": [
+            "Santo Domingo Bay Convention Resort & Casino",
+            "Marien Puerto Plata"
+          ]
+        },
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Apple Leisure Group)",
+          "propertyCount": 2,
+          "examples": [
+            "Sunscape Coco Punta Cana",
+            "Sunscape Dominicus La Romana"
+          ]
+        },
+        {
+          "id": "operator_rfp_proxy",
+          "dealTrigger": "operator_rfp",
+          "label": "Third-party operator on asset — operator selection proxy",
+          "weight": 16,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Operator field: Apple Leisure Group",
+          "propertyCount": 2,
+          "examples": [
+            "Sunscape Coco Punta Cana",
+            "Sunscape Dominicus La Romana"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "high",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1989 (37y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Marien Puerto Plata"
+          ]
+        }
+      ],
+      "independentPropertyCount": 2,
+      "brandedPropertyCount": 2,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Marien Puerto Plata",
+          "city": "Puerto Plata",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Sunscape Coco Punta Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Sunscape Resorts & Spas",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 40,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        },
+        {
+          "buildingName": "Sunscape Dominicus La Romana",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Sunscape Resorts & Spas",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 40,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        },
+        {
+          "buildingName": "Santo Domingo Bay Convention Resort & Casino",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Globalia Corporacion Empresarial",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "recXTT5z1EkZnNK1A",
+      "priorityTier": "A",
+      "icpSegment": "asset_owner",
+      "calaPropertyCount": 4,
+      "countriesSummary": "Dominican Republic",
+      "outreachScore": 100,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Javier Blanco",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/javier-blanco-6228055a",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Marien Puerto Plata\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Delveccio Investments Ltd.",
+      "intentScore": 74,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "mixed",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 1,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "Soft collection / independent-spirited brand: Curio Collection by Hilton",
+          "propertyCount": 1,
+          "examples": [
+            "Hotel Santiago, Curio Collection by Hilton"
+          ]
+        },
+        {
+          "id": "recent_open_branded",
+          "dealTrigger": "recent_open_branded",
+          "label": "Recently opened / UC with brand already chosen (late for brand RFP)",
+          "weight": 6,
+          "confidence": "high",
+          "decisionTiming": "post_decision",
+          "reason": "Brand already on record: Curio Collection by Hilton (Hospitality)",
+          "propertyCount": 1,
+          "examples": [
+            "Hotel Santiago, Curio Collection by Hilton"
+          ]
+        },
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Highgate Hotels L.P.)",
+          "propertyCount": 1,
+          "examples": [
+            "Hotel Santiago, Curio Collection by Hilton"
+          ]
+        },
+        {
+          "id": "operator_rfp_proxy",
+          "dealTrigger": "operator_rfp",
+          "label": "Third-party operator on asset — operator selection proxy",
+          "weight": 16,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Operator field: Highgate Hotels L.P.",
+          "propertyCount": 1,
+          "examples": [
+            "Hotel Santiago, Curio Collection by Hilton"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 1,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Hotel Santiago, Curio Collection by Hilton",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Curio Collection by Hilton",
+          "hotelOperator": "Highgate Hotels L.P.",
+          "brandDecisionEligible": true,
+          "propertyScore": 74,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Recently opened / UC with brand already chosen (late for brand RFP)",
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        }
+      ],
+      "ownerTargetId": "recMRHH3Gjs0FEyGm",
+      "priorityTier": "C",
+      "icpSegment": "regional_operator",
+      "calaPropertyCount": 1,
+      "countriesSummary": "Dominican Republic",
+      "outreachScore": 89,
+      "outreachReady": true,
+      "dealalityFit": "portfolio_mixed_timing",
+      "contact": {
+        "name": "Miguel Barletta",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/miguel-barletta-274bb05",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Hotel Santiago, Curio Collection by Hilton\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Irawadi Corp S.A.",
+      "intentScore": 70,
+      "confidence": "high",
+      "primaryDealTrigger": "development_pipeline",
+      "brandDecisionTiming": "mixed",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 3,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 2,
+      "signals": [
+        {
+          "id": "brand_renewal_window",
+          "dealTrigger": "brand_renewal_window",
+          "label": "Estimated brand/management renewal window (heuristic)",
+          "weight": 20,
+          "confidence": "low",
+          "decisionTiming": "pre_decision",
+          "reason": "Heuristic renewal ~2029 (20y from 2009) — NOT contract date",
+          "propertyCount": 1,
+          "examples": [
+            "Hard Rock Hotel & Casino Punta Cana"
+          ]
+        },
+        {
+          "id": "recent_open_branded",
+          "dealTrigger": "recent_open_branded",
+          "label": "Recently opened / UC with brand already chosen (late for brand RFP)",
+          "weight": 6,
+          "confidence": "high",
+          "decisionTiming": "post_decision",
+          "reason": "Brand already on record: aloft Hotel (Hospitality)",
+          "propertyCount": 2,
+          "examples": [
+            "Aloft by Marriott Santo Domingo Piantini",
+            "Santo Domingo Marriott Hotel Piantini"
+          ]
+        },
+        {
+          "id": "development_pipeline",
+          "dealTrigger": "development_pipeline",
+          "label": "Owner development pipeline (CoStar profile / property type)",
+          "weight": 26,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "4 asset(s) under development in CoStar company profile",
+          "propertyCount": 4,
+          "examples": []
+        },
+        {
+          "id": "portfolio_mixed_brands",
+          "dealTrigger": "portfolio_standardization",
+          "label": "Mixed brands across portfolio — standardization opportunity",
+          "weight": 18,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "3 distinct brands across CALA portfolio",
+          "propertyCount": 3,
+          "examples": [
+            "Hard Rock",
+            "aloft Hotel",
+            "Marriott"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 3,
+      "distinctBrandCount": 3,
+      "topProperties": [
+        {
+          "buildingName": "Hard Rock Hotel & Casino Punta Cana",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Hard Rock",
+          "hotelOperator": "Irawadi Corp S.A.",
+          "brandDecisionEligible": true,
+          "propertyScore": 20,
+          "primaryDealTrigger": "brand_renewal_window",
+          "signalLabels": [
+            "Estimated brand/management renewal window (heuristic)"
+          ]
+        },
+        {
+          "buildingName": "Aloft by Marriott Santo Domingo Piantini",
+          "city": "Santo Domingo",
+          "country": "Dominican Republic",
+          "brandAffiliation": "aloft Hotel",
+          "hotelOperator": "Irawadi Corp S.A.",
+          "brandDecisionEligible": true,
+          "propertyScore": 6,
+          "primaryDealTrigger": "recent_open_branded",
+          "signalLabels": [
+            "Recently opened / UC with brand already chosen (late for brand RFP)"
+          ]
+        },
+        {
+          "buildingName": "Santo Domingo Marriott Hotel Piantini",
+          "city": "Santo Domingo",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Marriott",
+          "hotelOperator": "Irawadi Corp S.A.",
+          "brandDecisionEligible": true,
+          "propertyScore": 6,
+          "primaryDealTrigger": "recent_open_branded",
+          "signalLabels": [
+            "Recently opened / UC with brand already chosen (late for brand RFP)"
+          ]
+        }
+      ],
+      "ownerTargetId": "recHOIk9MWXBw8B5b",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 13,
+      "countriesSummary": "Dominican Republic; Mexico",
+      "outreachScore": 85,
+      "outreachReady": true,
+      "dealalityFit": "portfolio_mixed_timing",
+      "contact": {
+        "name": "Philipp Hofer",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/philipp-hofer-0b9720201",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Active development pipeline — multi-project brand strategy and deal workspace.",
+      "dataGaps": [
+        "Franchise expiry date unknown — renewal window is heuristic only"
+      ]
+    },
+    {
+      "ownerName": "Servicios Corporativos Piñero S.L.",
+      "intentScore": 66,
+      "confidence": "medium",
+      "primaryDealTrigger": "brand_renewal_window",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 11,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 2004 (22y) without recent major renov",
+          "propertyCount": 3,
+          "examples": [
+            "Bahia Principe Explore Turquesa",
+            "Bahia Principe Grand El Portillo",
+            "Bahia Principe Explore La Romana"
+          ]
+        },
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Hyatt Corporation)",
+          "propertyCount": 11,
+          "examples": [
+            "Bahia Principe Explore Turquesa",
+            "Bahia Principe Grand El Portillo",
+            "Bahia Principe Escape Ambar"
+          ]
+        },
+        {
+          "id": "brand_renewal_window",
+          "dealTrigger": "brand_renewal_window",
+          "label": "Estimated brand/management renewal window (heuristic)",
+          "weight": 20,
+          "confidence": "low",
+          "decisionTiming": "pre_decision",
+          "reason": "Heuristic renewal ~2028 (20y from 2008) — NOT contract date",
+          "propertyCount": 1,
+          "examples": [
+            "Bahia Principe Grand El Portillo"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 11,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Bahia Principe Grand El Portillo",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Bahia Principe",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 66,
+          "primaryDealTrigger": "brand_renewal_window",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate",
+            "Owner ≠ operator — potential reflag or operator change",
+            "Estimated brand/management renewal window (heuristic)"
+          ]
+        },
+        {
+          "buildingName": "Bahia Principe Explore Turquesa",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Bahia Principe",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 46,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate",
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Bahia Principe Explore La Romana",
+          "city": "La Romana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Bahia Principe",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 46,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate",
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Bahia Principe Escape Ambar",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Bahia Principe",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Bahia Principe Explore Punta Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Bahia Principe",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        }
+      ],
+      "ownerTargetId": "recuuSDdQC4NGfmaR",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 17,
+      "countriesSummary": "Dominican Republic; Jamaica; Mexico",
+      "outreachScore": 81,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Encarna Piñero",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/encarnapi%C3%B1ero",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Approaching estimated brand/management renewal window — evaluate alternatives before recommit.",
+      "dataGaps": [
+        "Franchise expiry date unknown — renewal window is heuristic only",
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Palladium Hotel Group",
+      "intentScore": 76,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "integrated_operator_mixed",
+      "brandDecisionEligiblePropertyCount": 2,
+      "houseBrandPropertyCount": 2,
+      "preDecisionPropertyCount": 1,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 1,
+          "examples": [
+            "TRS Turquesa Hotel"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "high",
+          "decisionTiming": "uncertain",
+          "reason": "Built 2004 (22y) without recent major renov",
+          "propertyCount": 2,
+          "examples": [
+            "TRS Turquesa Hotel",
+            "Dominican Fiesta Hotel"
+          ]
+        },
+        {
+          "id": "development_pipeline",
+          "dealTrigger": "development_pipeline",
+          "label": "Owner development pipeline (CoStar profile / property type)",
+          "weight": 26,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "1 asset(s) under development in CoStar company profile",
+          "propertyCount": 1,
+          "examples": []
+        }
+      ],
+      "independentPropertyCount": 1,
+      "brandedPropertyCount": 3,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "TRS Turquesa Hotel",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Palladium Hotel Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Dominican Fiesta Hotel",
+          "city": "Santo Domingo",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Fiesta",
+          "hotelOperator": "Palladium Hotel Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 22,
+          "primaryDealTrigger": "conversion",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate"
+          ]
+        }
+      ],
+      "ownerTargetId": "recYdWz22zuxBqXVf",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 14,
+      "countriesSummary": "Brazil; Dominican Republic; Jamaica; Mexico",
+      "outreachScore": 81,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Raul Benito",
+        "email": "raul.benito@palladiumgroup.com",
+        "phone": "971 31 38 11",
+        "businessPhone": "971 31 38 11",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 971 31 38 11 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Mixed portfolio — brand/franchise evaluation on third-party-flag and unbranded assets (lead: \"TRS Turquesa Hotel\").",
+      "dataGaps": []
+    },
+    {
+      "ownerName": "Hodelpa Hotels",
+      "intentScore": 58,
+      "confidence": "medium",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 8,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 6,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "Soft collection / independent-spirited brand: Ascend Collection",
+          "propertyCount": 8,
+          "examples": [
+            "Emotions All Inclusive Puerto Plata, Ascend Hotel Collection",
+            "Hodelpa Caribe Colonial",
+            "Novus Plaza Hodelpa"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1992 (34y) without recent major renov",
+          "propertyCount": 7,
+          "examples": [
+            "Emotions All Inclusive Puerto Plata, Ascend Hotel Collection",
+            "Hodelpa Caribe Colonial",
+            "Novus Plaza Hodelpa"
+          ]
+        }
+      ],
+      "independentPropertyCount": 6,
+      "brandedPropertyCount": 2,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Emotions All Inclusive Puerto Plata, Ascend Hotel Collection",
+          "city": "Puerto Plata",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Ascend Collection",
+          "hotelOperator": "Hodelpa Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Hodelpa Caribe Colonial",
+          "city": "Santo Domingo",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Hodelpa Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Novus Plaza Hodelpa",
+          "city": "Santo Domingo",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Hodelpa Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Hodelpa Garden Suites Golf & Convention Center",
+          "city": "Juan Dolio",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Hodelpa Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Hodepa Gran Almirante",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Hodelpa Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        }
+      ],
+      "ownerTargetId": "recgYY2ewSAPx5OFP",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 8,
+      "countriesSummary": "Dominican Republic",
+      "outreachScore": 73,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Angel Hernandez Rojas",
+        "email": "",
+        "phone": "00 1 809-683-3636",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "00 1 809-683-3636",
+        "linkedIn": "https://www.linkedin.com/in/angelhernandezrojas",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Emotions All Inclusive Puerto Plata, Ascend Hotel Collection\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Grupo Martinon Grumasa S.L.",
+      "intentScore": 58,
+      "confidence": "medium",
+      "primaryDealTrigger": "reflag",
+      "brandDecisionTiming": "uncertain",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 4,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Apple Leisure Group)",
+          "propertyCount": 4,
+          "examples": [
+            "Secrets Royal Beach Punta Cana - All Inclusive, Adults Only",
+            "Breathless Punta Cana Resort & Spa",
+            "Dreams Royal Beach Punta Cana"
+          ]
+        },
+        {
+          "id": "operator_rfp_proxy",
+          "dealTrigger": "operator_rfp",
+          "label": "Third-party operator on asset — operator selection proxy",
+          "weight": 16,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Operator field: Apple Leisure Group",
+          "propertyCount": 4,
+          "examples": [
+            "Secrets Royal Beach Punta Cana - All Inclusive, Adults Only",
+            "Breathless Punta Cana Resort & Spa",
+            "Dreams Royal Beach Punta Cana"
+          ]
+        },
+        {
+          "id": "portfolio_mixed_brands",
+          "dealTrigger": "portfolio_standardization",
+          "label": "Mixed brands across portfolio — standardization opportunity",
+          "weight": 18,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "3 distinct brands across CALA portfolio",
+          "propertyCount": 4,
+          "examples": [
+            "Secrets Resorts & Spas",
+            "Breathless Resorts & Spas",
+            "Dreams Resorts & Spas"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 4,
+      "distinctBrandCount": 3,
+      "topProperties": [
+        {
+          "buildingName": "Secrets Royal Beach Punta Cana - All Inclusive, Adults Only",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Secrets Resorts & Spas",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 40,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        },
+        {
+          "buildingName": "Breathless Punta Cana Resort & Spa",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Breathless Resorts & Spas",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 40,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        },
+        {
+          "buildingName": "Dreams Royal Beach Punta Cana",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Dreams Resorts & Spas",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 40,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        },
+        {
+          "buildingName": "Dreams Onyx Resorts & Spa",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Dreams Resorts & Spas",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 40,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        }
+      ],
+      "ownerTargetId": "recP8j0Ju9i2dhpOJ",
+      "priorityTier": "A",
+      "icpSegment": "regional_operator",
+      "calaPropertyCount": 6,
+      "countriesSummary": "Aruba; Dominican Republic; Mexico",
+      "outreachScore": 73,
+      "outreachReady": true,
+      "dealalityFit": "uncertain",
+      "contact": {
+        "name": "Alicia Martinón García",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/alicia-martin%C3%B3n-418a6b166",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Owner-operator separation on CALA assets — reflag/operator RFP decision support.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Impressive Resorts & Spas",
+      "intentScore": 58,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 2,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 2,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 2,
+          "examples": [
+            "Impressive Premium Punta Cana",
+            "Impressive Punta Cana"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "high",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1992 (34y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Impressive Punta Cana"
+          ]
+        }
+      ],
+      "independentPropertyCount": 2,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Impressive Punta Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Impressive Resorts & Spas",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Impressive Premium Punta Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Impressive Resorts & Spas",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "rec8n5XCwP6bmXqut",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 2,
+      "countriesSummary": "Dominican Republic",
+      "outreachScore": 73,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Oscar Martinez Carrascosa",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/oscar-martinez-carrrascosa-7b72336b",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Impressive Punta Cana\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Zemi Hotels & Resorts, S.R.L.",
+      "intentScore": 58,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "mixed",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 1,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "Soft collection / independent-spirited brand: Curio Collection by Hilton",
+          "propertyCount": 1,
+          "examples": [
+            "Zemi Miches Punta Cana All-Inclusive Resort, Curio Collection by Hilton"
+          ]
+        },
+        {
+          "id": "recent_open_branded",
+          "dealTrigger": "recent_open_branded",
+          "label": "Recently opened / UC with brand already chosen (late for brand RFP)",
+          "weight": 6,
+          "confidence": "high",
+          "decisionTiming": "post_decision",
+          "reason": "Brand already on record: Curio Collection by Hilton (Hospitality)",
+          "propertyCount": 1,
+          "examples": [
+            "Zemi Miches Punta Cana All-Inclusive Resort, Curio Collection by Hilton"
+          ]
+        },
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Hilton Worldwide)",
+          "propertyCount": 1,
+          "examples": [
+            "Zemi Miches Punta Cana All-Inclusive Resort, Curio Collection by Hilton"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 1,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Zemi Miches Punta Cana All-Inclusive Resort, Curio Collection by Hilton",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Curio Collection by Hilton",
+          "hotelOperator": "Hilton Worldwide",
+          "brandDecisionEligible": true,
+          "propertyScore": 58,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Recently opened / UC with brand already chosen (late for brand RFP)",
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        }
+      ],
+      "ownerTargetId": "recoODIcQn3x9ioaZ",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 1,
+      "countriesSummary": "Dominican Republic",
+      "outreachScore": 73,
+      "outreachReady": true,
+      "dealalityFit": "portfolio_mixed_timing",
+      "contact": {
+        "name": "Frank Elias Rainieri",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/frank-elias-rainieri-240a932a",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Zemi Miches Punta Cana All-Inclusive Resort, Curio Collection by Hilton\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Grupo Hotusa",
+      "intentScore": 66,
+      "confidence": "medium",
+      "primaryDealTrigger": "brand_renewal_window",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1974 (52y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Eurostars Grand Cayacoa"
+          ]
+        },
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Eurostars Hotel Company S.L.)",
+          "propertyCount": 1,
+          "examples": [
+            "Eurostars Grand Cayacoa"
+          ]
+        },
+        {
+          "id": "brand_renewal_window",
+          "dealTrigger": "brand_renewal_window",
+          "label": "Estimated brand/management renewal window (heuristic)",
+          "weight": 20,
+          "confidence": "low",
+          "decisionTiming": "pre_decision",
+          "reason": "Heuristic renewal ~2026 (20y from 2006) — NOT contract date",
+          "propertyCount": 1,
+          "examples": [
+            "Eurostars Grand Cayacoa"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 1,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Eurostars Grand Cayacoa",
+          "city": "Samana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Eurostars",
+          "hotelOperator": "Eurostars Hotel Company S.L.",
+          "brandDecisionEligible": true,
+          "propertyScore": 66,
+          "primaryDealTrigger": "brand_renewal_window",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate",
+            "Owner ≠ operator — potential reflag or operator change",
+            "Estimated brand/management renewal window (heuristic)"
+          ]
+        }
+      ],
+      "ownerTargetId": "reciyS1JIOR3ofJ4L",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 2,
+      "countriesSummary": "Colombia; Dominican Republic",
+      "outreachScore": 71,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Amancio López Seijas",
+        "email": "amancio.lopez@hotusa.es",
+        "phone": "913 34 21 96",
+        "businessPhone": "913 34 21 96",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 913 34 21 96 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Approaching estimated brand/management renewal window — evaluate alternatives before recommit.",
+      "dataGaps": [
+        "Franchise expiry date unknown — renewal window is heuristic only",
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Karisma Hotels & Resorts",
+      "intentScore": 54,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 1,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 1,
+          "examples": [
+            "Nickelodeon Resort Punta Cana"
+          ]
+        },
+        {
+          "id": "development_pipeline",
+          "dealTrigger": "development_pipeline",
+          "label": "Owner development pipeline (CoStar profile / property type)",
+          "weight": 26,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "1 asset(s) under development in CoStar company profile",
+          "propertyCount": 1,
+          "examples": []
+        }
+      ],
+      "independentPropertyCount": 1,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Nickelodeon Resort Punta Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Premier Worldwide Marketing",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "recZuJQx4Qu2HfNTA",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 6,
+      "countriesSummary": "Belize; Dominican Republic; Jamaica; Mexico",
+      "outreachScore": 69,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Miguel Ortiz Millán",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/miguelo1",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Nickelodeon Resort Punta Cana\" and portfolio.",
+      "dataGaps": []
+    },
+    {
+      "ownerName": "The Excellence Collection",
+      "intentScore": 62,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 3,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 3,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 3,
+          "examples": [
+            "Finest Punta Cana",
+            "Excellence El Carmen",
+            "Excellence Punta Cana"
+          ]
+        },
+        {
+          "id": "development_pipeline",
+          "dealTrigger": "development_pipeline",
+          "label": "Owner development pipeline (CoStar profile / property type)",
+          "weight": 26,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "375 asset(s) under development in CoStar company profile",
+          "propertyCount": 375,
+          "examples": []
+        }
+      ],
+      "independentPropertyCount": 3,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Finest Punta Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "The Excellence Collection",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Excellence El Carmen",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "The Excellence Collection",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Excellence Punta Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "The Excellence Collection",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "recumzko8MYdukrXC",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 9,
+      "countriesSummary": "Dominican Republic; Jamaica; Mexico",
+      "outreachScore": 67,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Domingo Aznar",
+        "email": "daznar@theexcellencecollection.com",
+        "phone": "00 1 866-211-6223",
+        "businessPhone": "00 1 866-211-6223",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 00 1 866-211-6223 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Finest Punta Cana\" and portfolio.",
+      "dataGaps": []
+    },
+    {
+      "ownerName": "Club Viva International Inc",
+      "intentScore": 50,
+      "confidence": "medium",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 4,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "Soft collection / independent-spirited brand: Trademark Collection by Wyndham",
+          "propertyCount": 4,
+          "examples": [
+            "Viva Tangerine by Wyndham, A Trademark All Inclusive",
+            "Viva V Samana by Wyndham, A Trademark Adults All Inclusive",
+            "Viva Dominicus Palace by Wyndham, A Trademark All Inclusive"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 2003 (23y) without recent major renov",
+          "propertyCount": 2,
+          "examples": [
+            "Viva Tangerine by Wyndham, A Trademark All Inclusive",
+            "Puerto Plata, Dominican Republic"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 4,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Viva Tangerine by Wyndham, A Trademark All Inclusive",
+          "city": "Cabarete",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Trademark Collection by Wyndham",
+          "hotelOperator": "",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Puerto Plata, Dominican Republic",
+          "city": "Puerto Plata",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Trademark Collection by Wyndham",
+          "hotelOperator": "",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Viva V Samana by Wyndham, A Trademark Adults All Inclusive",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Trademark Collection by Wyndham",
+          "hotelOperator": "",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Viva Dominicus Palace by Wyndham, A Trademark All Inclusive",
+          "city": "La Romana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Trademark Collection by Wyndham",
+          "hotelOperator": "",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "reche2pLCN2Gm75Mu",
+      "priorityTier": "A",
+      "icpSegment": "regional_operator",
+      "calaPropertyCount": 7,
+      "countriesSummary": "Bahamas; Dominican Republic; Mexico",
+      "outreachScore": 65,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Amanda Santana",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/amanda-santana-2ba71634",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Viva Tangerine by Wyndham, A Trademark All Inclusive\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "VH Hotels & Resorts",
+      "intentScore": 50,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 1,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 1,
+          "examples": [
+            "Gran Ventana Beach Resort"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "high",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1996 (30y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Gran Ventana Beach Resort"
+          ]
+        }
+      ],
+      "independentPropertyCount": 1,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Gran Ventana Beach Resort",
+          "city": "Puerto Plata",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "VH Hotels & Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        }
+      ],
+      "ownerTargetId": "recAoKBDcTz7rT1W6",
+      "priorityTier": "B",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 1,
+      "countriesSummary": "Dominican Republic",
+      "outreachScore": 65,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Roberto Casoni",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/roberto-casoni-70257539",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Gran Ventana Beach Resort\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Central Romana Corporation",
+      "intentScore": 50,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 1,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 1,
+          "examples": [
+            "Casa de Campo Resort & Villas"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "high",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1973 (53y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Casa de Campo Resort & Villas"
+          ]
+        }
+      ],
+      "independentPropertyCount": 1,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Casa de Campo Resort & Villas",
+          "city": "La Romana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Costasur Dominicana / Division Casa de Campo Hotel",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        }
+      ],
+      "ownerTargetId": "reciTWCiMtYlZsNxf",
+      "priorityTier": "B",
+      "icpSegment": "individual",
+      "calaPropertyCount": 1,
+      "countriesSummary": "Dominican Republic",
+      "outreachScore": 65,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Andres A Pichardo Rosenberg",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/apichardo",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Casa de Campo Resort & Villas\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Lifestyle Holidays Vacation Club",
+      "intentScore": 58,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 3,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 3,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 3,
+          "examples": [
+            "Cofresi Palm Beach & Spa Resort",
+            "Lifestyle Tropical Beach Resort & Spa",
+            "Presidential Suites By Lifestyle Puerto Plata"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "high",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1996 (30y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Lifestyle Tropical Beach Resort & Spa"
+          ]
+        }
+      ],
+      "independentPropertyCount": 3,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Lifestyle Tropical Beach Resort & Spa",
+          "city": "Puerto Plata",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Lifestyle Holidays Vacation Club",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Cofresi Palm Beach & Spa Resort",
+          "city": "Puerto Plata",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Lifestyle Holidays Vacation Club",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Presidential Suites By Lifestyle Puerto Plata",
+          "city": "Puerto Plata",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Lifestyle Holidays Vacation Club",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "recQ9HYb8SzzwUWea",
+      "priorityTier": "B",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 3,
+      "countriesSummary": "Dominican Republic",
+      "outreachScore": 63,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Markus Wischenbart",
+        "email": "wischenbart@lifestyleholidaysvc.com",
+        "phone": "00 1 809-970-7777",
+        "businessPhone": "00 1 809-970-7777",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 00 1 809-970-7777 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Lifestyle Tropical Beach Resort & Spa\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Royalton Hotels & Resorts",
+      "intentScore": 54,
+      "confidence": "medium",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 5,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "Soft collection / independent-spirited brand: Autograph Collection",
+          "propertyCount": 5,
+          "examples": [
+            "Royalton CHIC Punta Cana, An Autograph Collection All-Inclusive Resort & Casino - Adults Only",
+            "Royalton Punta Cana, An Autograph Collection All-Inclusive Resort & Casino",
+            "Royalton Hideaway Punta Cana, An Autograph Collection All-Inclusive Resort & Casino – Adults Only"
+          ]
+        },
+        {
+          "id": "development_pipeline",
+          "dealTrigger": "development_pipeline",
+          "label": "Owner development pipeline (CoStar profile / property type)",
+          "weight": 26,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "1 asset(s) under development in CoStar company profile",
+          "propertyCount": 1,
+          "examples": []
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 5,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Royalton CHIC Punta Cana, An Autograph Collection All-Inclusive Resort & Casino - Adults Only",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Autograph Collection",
+          "hotelOperator": "Royalton Hotels & Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Royalton Punta Cana, An Autograph Collection All-Inclusive Resort & Casino",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Autograph Collection",
+          "hotelOperator": "Royalton Hotels & Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Royalton Hideaway Punta Cana, An Autograph Collection All-Inclusive Resort & Casino – Adults Only",
+          "city": "",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Autograph Collection",
+          "hotelOperator": "Royalton Hotels & Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Royalton Bavaro, An Autograph Collection All-Inclusive Resort & Casino",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Autograph Collection",
+          "hotelOperator": "Royalton Hotels & Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Royalton Splash Punta Cana, An Autograph Collection All-Inclusive Resort & Casino",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Autograph Collection",
+          "hotelOperator": "Royalton Hotels & Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "reciCLtenXkoktzzB",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 19,
+      "countriesSummary": "Antigua and Barbuda; Barbados; Costa Rica; Dominican Republic; Grenada; Jamaica; Mexico; Saint Lucia",
+      "outreachScore": 59,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Jordi Pelfort",
+        "email": "JPelfort@BlueDiamondResorts.com",
+        "phone": "00 1 855-744-8371",
+        "businessPhone": "00 1 855-744-8371",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 00 1 855-744-8371 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Royalton CHIC Punta Cana, An Autograph Collection All-Inclusive Resort & Casino - Adults Only\" and portfolio.",
+      "dataGaps": []
+    },
+    {
+      "ownerName": "Mullen Real Estate Capital",
+      "intentScore": 40,
+      "confidence": "medium",
+      "primaryDealTrigger": "reflag",
+      "brandDecisionTiming": "uncertain",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Apple Leisure Group)",
+          "propertyCount": 1,
+          "examples": [
+            "Secrets Cap Cana Resorts & Spa"
+          ]
+        },
+        {
+          "id": "operator_rfp_proxy",
+          "dealTrigger": "operator_rfp",
+          "label": "Third-party operator on asset — operator selection proxy",
+          "weight": 16,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Operator field: Apple Leisure Group",
+          "propertyCount": 1,
+          "examples": [
+            "Secrets Cap Cana Resorts & Spa"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 1,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Secrets Cap Cana Resorts & Spa",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Secrets Resorts & Spas",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 40,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        }
+      ],
+      "ownerTargetId": "recInM1cvhNyluaOW",
+      "priorityTier": "A",
+      "icpSegment": "institutional",
+      "calaPropertyCount": 2,
+      "countriesSummary": "Costa Rica; Dominican Republic",
+      "outreachScore": 55,
+      "outreachReady": true,
+      "dealalityFit": "uncertain",
+      "contact": {
+        "name": "Jeff Mullen",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/jeffmmullen",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Owner-operator separation on CALA assets — reflag/operator RFP decision support.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Majestic Resorts",
+      "intentScore": 36,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 3,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 3,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 3,
+          "examples": [
+            "Majestic Colonial Punta Cana",
+            "Majestic Elegance Punta Cana",
+            "Majestic Mirage Punta Cana"
+          ]
+        }
+      ],
+      "independentPropertyCount": 3,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Majestic Colonial Punta Cana",
+          "city": "Higuey",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Majestic Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Majestic Elegance Punta Cana",
+          "city": "Higuey",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Majestic Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Majestic Mirage Punta Cana",
+          "city": "Higuey",
+          "country": "Dominican Republic",
+          "brandAffiliation": "",
+          "hotelOperator": "Majestic Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "recmx5AqgkBgH72Vr",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 5,
+      "countriesSummary": "Dominican Republic; Mexico",
+      "outreachScore": 51,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Amil Maleck",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/amil-maleck-84356b9a",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Majestic Colonial Punta Cana\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Barcelo Gestion Hotelera S.L.",
+      "intentScore": 42,
+      "confidence": "medium",
+      "primaryDealTrigger": "brand_renewal_window",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "integrated_operator_mixed",
+      "brandDecisionEligiblePropertyCount": 3,
+      "houseBrandPropertyCount": 3,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1956 (70y) without recent major renov",
+          "propertyCount": 3,
+          "examples": [
+            "El Embajador a Royal Hideaway Hotel",
+            "Occidental Punta Cana",
+            "Occidental Caribe"
+          ]
+        },
+        {
+          "id": "brand_renewal_window",
+          "dealTrigger": "brand_renewal_window",
+          "label": "Estimated brand/management renewal window (heuristic)",
+          "weight": 20,
+          "confidence": "low",
+          "decisionTiming": "pre_decision",
+          "reason": "Heuristic renewal ~2027 (20y from 2007) — NOT contract date",
+          "propertyCount": 1,
+          "examples": [
+            "Occidental Caribe"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 6,
+      "distinctBrandCount": 2,
+      "topProperties": [
+        {
+          "buildingName": "Occidental Caribe",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Occidental",
+          "hotelOperator": "Barcelo Gestion Hotelera S.L.",
+          "brandDecisionEligible": true,
+          "propertyScore": 42,
+          "primaryDealTrigger": "brand_renewal_window",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate",
+            "Estimated brand/management renewal window (heuristic)"
+          ]
+        },
+        {
+          "buildingName": "El Embajador a Royal Hideaway Hotel",
+          "city": "Santo Domingo",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Royal Hideaway",
+          "hotelOperator": "Barcelo Gestion Hotelera S.L.",
+          "brandDecisionEligible": true,
+          "propertyScore": 22,
+          "primaryDealTrigger": "conversion",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Occidental Punta Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Occidental",
+          "hotelOperator": "Barcelo Gestion Hotelera S.L.",
+          "brandDecisionEligible": true,
+          "propertyScore": 22,
+          "primaryDealTrigger": "conversion",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate"
+          ]
+        }
+      ],
+      "ownerTargetId": "recz4sXU8JnsGFHiA",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 36,
+      "countriesSummary": "Aruba; Costa Rica; Cuba; Dominican Republic; El Salvador; Guatemala; Mexico; Nicaragua",
+      "outreachScore": 47,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Simón Pedro Barceló Vadell",
+        "email": "sp.barcelo@barcelo.com",
+        "phone": "971 77 17 00",
+        "businessPhone": "971 77 17 00",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 971 77 17 00 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Mixed portfolio — brand/franchise evaluation on third-party-flag and unbranded assets (lead: \"Occidental Caribe\").",
+      "dataGaps": [
+        "Franchise expiry date unknown — renewal window is heuristic only",
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Tortuga Resorts",
+      "intentScore": 42,
+      "confidence": "medium",
+      "primaryDealTrigger": "reflag",
+      "brandDecisionTiming": "uncertain",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 4,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Hyatt Corporation)",
+          "propertyCount": 4,
+          "examples": [
+            "Secrets La Romana Resort & Spa",
+            "Hyatt Zilara Cap Cana",
+            "Hyatt Ziva Cap Cana"
+          ]
+        },
+        {
+          "id": "portfolio_mixed_brands",
+          "dealTrigger": "portfolio_standardization",
+          "label": "Mixed brands across portfolio — standardization opportunity",
+          "weight": 18,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "4 distinct brands across CALA portfolio",
+          "propertyCount": 4,
+          "examples": [
+            "Secrets Resorts & Spas",
+            "Hyatt Zilara",
+            "Hyatt Ziva"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 4,
+      "distinctBrandCount": 4,
+      "topProperties": [
+        {
+          "buildingName": "Secrets La Romana Resort & Spa",
+          "city": "La Romana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Secrets Resorts & Spas",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Hyatt Zilara Cap Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Hyatt Zilara",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Hyatt Ziva Cap Cana",
+          "city": "Punta Cana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Hyatt Ziva",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Dreams La Romana Resort & Spa",
+          "city": "La Romana",
+          "country": "Dominican Republic",
+          "brandAffiliation": "Dreams Resorts & Spas",
+          "hotelOperator": "Hyatt Corporation",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        }
+      ],
+      "ownerTargetId": "recTKF1JCEHQAQsJz",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 13,
+      "countriesSummary": "Dominican Republic; Mexico",
+      "outreachScore": 47,
+      "outreachReady": true,
+      "dealalityFit": "uncertain",
+      "contact": {
+        "name": "Gerardo Valdes",
+        "email": "gerardo.valdes@tortugaresorts.com.mx",
+        "phone": "00 52 55 8995 7886",
+        "businessPhone": "00 52 55 8995 7886",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 00 52 55 8995 7886 (?)",
+        "linkedIn": "https://linkedin.com/in/v2gerardo",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Owner-operator separation on CALA assets — reflag/operator RFP decision support.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    }
+  ]
+}

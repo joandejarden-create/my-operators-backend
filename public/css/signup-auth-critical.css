@@ -1,0 +1,38 @@
+/**
+ * First-paint auth pages (signup / login / verify) — load before Webflow shared CSS.
+ */
+html,
+body {
+  background: #080f25 !important;
+  color: #aeb9e1 !important;
+}
+
+.page-loader,
+.loading-bar-wrapper {
+  display: none !important;
+}
+
+html.dl-auth-landing-skin .coming-soon-overlay {
+  display: none !important;
+}
+
+/* Form column always paints before eligibility copy when stacked */
+html.dl-auth-landing-skin .signup-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+html.dl-auth-landing-skin .signup-left {
+  order: 1;
+}
+
+html.dl-auth-landing-skin .signup-right {
+  order: 2;
+}
+
+@media (min-width: 992px) {
+  html.dl-auth-landing-skin .signup-wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}

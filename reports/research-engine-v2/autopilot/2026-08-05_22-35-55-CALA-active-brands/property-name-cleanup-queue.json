@@ -1,0 +1,107 @@
+{
+  "version": "production-census-property-name-cleanup-queue-v1",
+  "extractor_version": "production-census-property-name-cleanup-extractor-v1",
+  "generated_at": "2026-08-05T22:35:17.721Z",
+  "mode": "dry-run",
+  "queue": "property_name_cleanup",
+  "status": "production_census_property_name_cleanup_blocked",
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "allowed_fields": [
+    "Property Name",
+    "Last Reviewed Date",
+    "Enrichment Status",
+    "Enrichment Priority"
+  ],
+  "summary": {
+    "total_records_scanned": 666,
+    "records_flagged_malformed_eligible": 2,
+    "records_blocked_prefilter": 664,
+    "queue_limit": 10000,
+    "processed": 2,
+    "deferred_over_limit": 0,
+    "official_sources_fetched": 2,
+    "pages_ok": 0,
+    "pages_blocked": 2,
+    "pages_failed": 0,
+    "high_confidence_proposals": 0,
+    "medium_confidence_candidates": 0,
+    "hold_records": 0,
+    "low_confidence_blocked": 2,
+    "exact_airtable_update_count_if_applied": 0,
+    "avid_rows_in_proposals": 0,
+    "avid_high_writes": 0,
+    "block_reasons": {
+      "name_appears_valid_already": 423,
+      "not_in_active_universe": 237,
+      "human_review_required": 4,
+      "official_page_blocked": 2
+    }
+  },
+  "sample_high": [],
+  "sample_medium": [],
+  "sample_hold": [],
+  "proposals": [
+    {
+      "record_id": "rec8aCl84KcJdhl9k",
+      "identity_key": "ind_marriott_mx_cunpa",
+      "family": "Marriott",
+      "brand": "Autograph Collection",
+      "city": "- Adults",
+      "action": "blocked",
+      "current_property_name": "Planet Hollywood Cancun Adult Scene by Royalton, Autograph Collection All-Inclusive Resort - Adults",
+      "proposed_property_name": null,
+      "confidence": "Low",
+      "method": null,
+      "source_url": "https://www.marriott.com/en-us/hotels/cunpa-planet-hollywood-cancun-adult-scene-by-royalton-autograph-collection-all-inclusive-resort-adults/overview",
+      "reason": "official_page_blocked",
+      "name_problems": [
+        "overly_long"
+      ],
+      "write_allowed_now": false,
+      "patch_fields": [],
+      "patch": {},
+      "queue": "property_name_cleanup",
+      "current_fields": {}
+    },
+    {
+      "record_id": "reciuu1Klz5yU7KKh",
+      "identity_key": "ind_marriott_mx_cunhv",
+      "family": "Marriott",
+      "brand": "Autograph Collection",
+      "city": "An - Adults Only",
+      "action": "blocked",
+      "current_property_name": "Royalton Hideaway Riviera Cancun, An Autograph Collection All-Inclusive Resort - Adults Only",
+      "proposed_property_name": null,
+      "confidence": "Low",
+      "method": null,
+      "source_url": "https://www.marriott.com/en-us/hotels/cunhv-royalton-hideaway-riviera-cancun-an-autograph-collection-all-inclusive-resort-adults-only/overview",
+      "reason": "official_page_blocked",
+      "name_problems": [
+        "overly_long"
+      ],
+      "write_allowed_now": false,
+      "patch_fields": [],
+      "patch": {},
+      "queue": "property_name_cleanup",
+      "current_fields": {}
+    }
+  ],
+  "next_step": "Investigate blocked status before apply.",
+  "autopilot_run_id": "2026-08-05_22-35-55-CALA-active-brands",
+  "autopilot_run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-05_22-35-55-CALA-active-brands",
+  "controlled_mode": true,
+  "validation": {
+    "airtable_writes": false,
+    "brand_explorer_writes": false,
+    "brand_setup_writes": false,
+    "protected_fields": false,
+    "owner_operator_date_writes": false,
+    "coordinates_changed": false,
+    "rooms_changed": false,
+    "descriptions_changed": false,
+    "held_records_included": false,
+    "brand_unconfirmed_included": false
+  }
+}

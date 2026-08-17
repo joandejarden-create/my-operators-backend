@@ -7,6 +7,8 @@
  * plan names or a single Memberstack custom field alone.
  *
  * App shell workspace switching uses dealality_active_workspace (public/app.js).
+ * Demo stakeholder context is sent as X-Dealality-Active-Workspace on authFetch
+ * (Owner|Operator|Brand only; server accepts for demo constellation / Demo WA).
  * Command Center dashboard preview uses dc_dashboard_role_view — do not conflate the two keys.
  */
 (function (global) {
@@ -439,6 +441,28 @@
     return getMemberstackJwt();
   }
 
+  function readActiveWorkspaceForApi() {
+    try {
+      var ws = (global.localStorage && global.localStorage.getItem('dealality_active_workspace')) || '';
+      if (ws === 'Owner' || ws === 'Operator' || ws === 'Brand') return ws;
+    } catch (_) {}
+    return '';
+  }
+
+  function readDemoBrandPortfolioForApi() {
+    try {
+      var key =
+        (global.localStorage && global.localStorage.getItem('dealality_demo_brand_portfolio')) || '';
+      key = String(key || '').trim().toLowerCase();
+      if (key === 'marriott' || key === 'hilton' || key === 'choice' || key === 'ihg') return key;
+      // Brand-Side founder/demo coherence: default Marriott when workspace is Brand and
+      // storage is empty. Server still ignores this header for production Brand clients.
+      var ws = readActiveWorkspaceForApi();
+      if (ws === 'Brand') return 'marriott';
+    } catch (_) {}
+    return '';
+  }
+
   /**
    * @param {Record<string, string>} [extra]
    * @returns {Promise<{ headers: Record<string, string> }|{ error: string }>}
@@ -456,6 +480,14 @@
       { Authorization: 'Bearer ' + jwt, Accept: 'application/json' },
       extra || {}
     );
+    var activeWs = readActiveWorkspaceForApi();
+    if (activeWs && !headers['X-Dealality-Active-Workspace']) {
+      headers['X-Dealality-Active-Workspace'] = activeWs;
+    }
+    var demoPortfolio = readDemoBrandPortfolioForApi();
+    if (demoPortfolio && !headers['X-Dealality-Demo-Brand-Portfolio']) {
+      headers['X-Dealality-Demo-Brand-Portfolio'] = demoPortfolio;
+    }
     return { headers: headers };
   }
 

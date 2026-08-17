@@ -1,0 +1,1521 @@
+{
+  "generatedAt": "2026-08-17T10:31:47.631Z",
+  "phase": "P0D-A",
+  "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+  "truthSources": {
+    "BRAND_BASICS": "PRODUCTION_VALIDATED",
+    "BRAND_EXPLORER": "READ_ONLY_STRUCTURED_AUDIT",
+    "HOTEL_CENSUS": "DEFERRED_INCOMPLETE_CENSUS"
+  },
+  "brandBasicsAudit": [
+    {
+      "field": "Brand Name",
+      "presentCount": 15,
+      "missingCount": 0,
+      "conflictCount": 0,
+      "governanceState": "STRUCTURED_GOVERNED_FACT",
+      "safeForTruthLayer": "ELIGIBLE"
+    },
+    {
+      "field": "Parent Company",
+      "presentCount": 15,
+      "missingCount": 0,
+      "conflictCount": 10,
+      "governanceState": "COMPANY_PUBLISHED",
+      "safeForTruthLayer": "ELIGIBLE"
+    },
+    {
+      "field": "Hotel Chain Scale",
+      "presentCount": 15,
+      "missingCount": 0,
+      "conflictCount": 0,
+      "governanceState": "STRUCTURED_GOVERNED_FACT",
+      "safeForTruthLayer": "ELIGIBLE"
+    },
+    {
+      "field": "Brand Model",
+      "presentCount": 15,
+      "missingCount": 0,
+      "conflictCount": 0,
+      "governanceState": "STRUCTURED_GOVERNED_FACT",
+      "safeForTruthLayer": "ELIGIBLE"
+    },
+    {
+      "field": "Brand Architecture",
+      "presentCount": 9,
+      "missingCount": 6,
+      "conflictCount": 0,
+      "governanceState": "STRUCTURED_GOVERNED_FACT",
+      "safeForTruthLayer": "ELIGIBLE"
+    }
+  ],
+  "brandExplorerAudit": [
+    {
+      "field": "positioning",
+      "sourceTable": "Brand Explorer presentation slots",
+      "structured": "NO",
+      "governanceState": "AI_ASSISTED",
+      "completeness": "NARRATIVE_ONLY",
+      "safeForTruthLayer": "NO"
+    },
+    {
+      "field": "conversion_orientation",
+      "sourceTable": "Brand Explorer presentation slots",
+      "structured": "NO",
+      "governanceState": "CURATED_INTERPRETATION",
+      "completeness": "NARRATIVE_ONLY",
+      "safeForTruthLayer": "NO"
+    },
+    {
+      "field": "soft_brand_status",
+      "sourceTable": "Brand Setup - Brand Basics · Brand Architecture / Brand Model",
+      "structured": "YES",
+      "governanceState": "STRUCTURED_GOVERNED_FACT",
+      "completeness": "BRAND_BASICS_DUPLICATE",
+      "safeForTruthLayer": "YES"
+    },
+    {
+      "field": "owner_positioning_tags",
+      "sourceTable": "Brand Explorer presentation slots",
+      "structured": "NO",
+      "governanceState": "AI_ASSISTED",
+      "completeness": "MISSING",
+      "safeForTruthLayer": "NO"
+    }
+  ],
+  "truthDimensions": {
+    "PARENT_COMPANY": "PRODUCTION_VALIDATED",
+    "CHAIN_SCALE": "CONDITIONAL",
+    "BRAND_MODEL": "PRODUCTION_VALIDATED",
+    "STRUCTURED_POSITIONING": "DEFERRED",
+    "CONVERSION_ORIENTATION": "DEFERRED",
+    "SOFT_BRAND_COLLECTION": "PRODUCTION_VALIDATED",
+    "BRAND_FAMILY": "PRODUCTION_VALIDATED",
+    "COUNTRY_PRESENCE": "DEFERRED",
+    "GEOGRAPHIC_FOOTPRINT": "DEFERRED",
+    "OPEN_HOTEL_COUNT": "DEFERRED",
+    "PIPELINE": "DEFERRED"
+  },
+  "claimValidation": {
+    "totalCases": 120,
+    "evaluatedTotal": 120,
+    "CLAIM_TYPE_PRECISION": 1,
+    "CLAIM_VALUE_PRECISION": 1,
+    "ENTITY_BINDING_ERROR_RATE": 0,
+    "SPAN_VALIDITY": 1,
+    "FALSE_CONFLICT_RATE": 0,
+    "FALSE_ALIGNMENT_RATE": 0
+  },
+  "goldenSet": {
+    "totalCases": 120,
+    "meetsTarget": true
+  },
+  "marriottSample": [
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "dimensions": {
+        "PARENT_COMPANY": {
+          "CLAIMS_EVALUATED": 5,
+          "ALIGNED": 5,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CHAIN_SCALE": {
+          "CLAIMS_EVALUATED": 512,
+          "ALIGNED": 511,
+          "POTENTIAL_PERCEPTION_GAP": 1,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_MODEL": {
+          "CLAIMS_EVALUATED": 105,
+          "ALIGNED": 98,
+          "POTENTIAL_PERCEPTION_GAP": 7,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "SOFT_BRAND_COLLECTION": {
+          "CLAIMS_EVALUATED": 74,
+          "ALIGNED": 74,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_FAMILY": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "POSITIONING": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CONVERSION_ORIENTATION": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        }
+      }
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "dimensions": {
+        "PARENT_COMPANY": {
+          "CLAIMS_EVALUATED": 5,
+          "ALIGNED": 4,
+          "POTENTIAL_PERCEPTION_GAP": 1,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CHAIN_SCALE": {
+          "CLAIMS_EVALUATED": 369,
+          "ALIGNED": 367,
+          "POTENTIAL_PERCEPTION_GAP": 2,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_MODEL": {
+          "CLAIMS_EVALUATED": 67,
+          "ALIGNED": 63,
+          "POTENTIAL_PERCEPTION_GAP": 4,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "SOFT_BRAND_COLLECTION": {
+          "CLAIMS_EVALUATED": 47,
+          "ALIGNED": 47,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_FAMILY": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "POSITIONING": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CONVERSION_ORIENTATION": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        }
+      }
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "dimensions": {
+        "PARENT_COMPANY": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CHAIN_SCALE": {
+          "CLAIMS_EVALUATED": 3,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 3,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_MODEL": {
+          "CLAIMS_EVALUATED": 1,
+          "ALIGNED": 1,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "SOFT_BRAND_COLLECTION": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_FAMILY": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "POSITIONING": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CONVERSION_ORIENTATION": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        }
+      }
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "dimensions": {
+        "PARENT_COMPANY": {
+          "CLAIMS_EVALUATED": 3,
+          "ALIGNED": 2,
+          "POTENTIAL_PERCEPTION_GAP": 1,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CHAIN_SCALE": {
+          "CLAIMS_EVALUATED": 81,
+          "ALIGNED": 80,
+          "POTENTIAL_PERCEPTION_GAP": 1,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_MODEL": {
+          "CLAIMS_EVALUATED": 25,
+          "ALIGNED": 24,
+          "POTENTIAL_PERCEPTION_GAP": 1,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "SOFT_BRAND_COLLECTION": {
+          "CLAIMS_EVALUATED": 16,
+          "ALIGNED": 16,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_FAMILY": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "POSITIONING": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CONVERSION_ORIENTATION": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        }
+      }
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "dimensions": {
+        "PARENT_COMPANY": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CHAIN_SCALE": {
+          "CLAIMS_EVALUATED": 130,
+          "ALIGNED": 130,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_MODEL": {
+          "CLAIMS_EVALUATED": 17,
+          "ALIGNED": 8,
+          "POTENTIAL_PERCEPTION_GAP": 9,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "SOFT_BRAND_COLLECTION": {
+          "CLAIMS_EVALUATED": 2,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 2,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "BRAND_FAMILY": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "POSITIONING": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        },
+        "CONVERSION_ORIENTATION": {
+          "CLAIMS_EVALUATED": 0,
+          "ALIGNED": 0,
+          "POTENTIAL_PERCEPTION_GAP": 0,
+          "INSUFFICIENT": 0,
+          "NOT_EVALUATED": 0
+        }
+      }
+    }
+  ],
+  "comparisons": {
+    "ALIGNED": 1430,
+    "POTENTIAL_PERCEPTION_GAP": 32,
+    "INSUFFICIENT_DEALALITY_EVIDENCE": 0,
+    "NOT_EVALUATED": 0
+  },
+  "sampleFindings": [
+    {
+      "subjectBrandId": "recEJCTDj1zrsjPM6",
+      "subjectBrandName": "Autograph Collection",
+      "aiClaimType": "BRAND_MODEL",
+      "aiClaimValue": "Hard Brand",
+      "dealalityFactValue": "Collection Brand",
+      "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+      "comparisonReason": "brand_model_mismatch",
+      "span": "- **Autograph Collection or Tribute Portfolio** — useful when Marriott Bonvoy distribution is important but a hard brand",
+      "provider": "openai",
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1"
+    },
+    {
+      "subjectBrandId": "recEJCTDj1zrsjPM6",
+      "subjectBrandName": "Autograph Collection",
+      "aiClaimType": "BRAND_MODEL",
+      "aiClaimValue": "Lifestyle Brand",
+      "dealalityFactValue": "Collection Brand",
+      "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+      "comparisonReason": "brand_model_mismatch",
+      "span": "Owners commonly consider **design-forward / distinctive-character lifestyle brands** such as **W Hotels, EDITION, Moxy, ",
+      "provider": "perplexity",
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1"
+    },
+    {
+      "subjectBrandId": "recEJCTDj1zrsjPM6",
+      "subjectBrandName": "Autograph Collection",
+      "aiClaimType": "BRAND_MODEL",
+      "aiClaimValue": "Lifestyle Brand",
+      "dealalityFactValue": "Collection Brand",
+      "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+      "comparisonReason": "brand_model_mismatch",
+      "span": "For a North America hotel positioned around **differentiated guest experience** and **local character**, the strongest l",
+      "provider": "perplexity",
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1"
+    },
+    {
+      "subjectBrandId": "recEJCTDj1zrsjPM6",
+      "subjectBrandName": "Autograph Collection",
+      "aiClaimType": "BRAND_MODEL",
+      "aiClaimValue": "Hard Brand",
+      "dealalityFactValue": "Collection Brand",
+      "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+      "comparisonReason": "brand_model_mismatch",
+      "span": "If the owner’s priority is *maximum independence with strong brand support*, the most commonly cited starting points in ",
+      "provider": "perplexity",
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1"
+    },
+    {
+      "subjectBrandId": "recEJCTDj1zrsjPM6",
+      "subjectBrandName": "Autograph Collection",
+      "aiClaimType": "BRAND_MODEL",
+      "aiClaimValue": "Lifestyle Brand",
+      "dealalityFactValue": "Collection Brand",
+      "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+      "comparisonReason": "brand_model_mismatch",
+      "span": "Marriott's lifestyle brands — which include W Hotels, Edition, and Autograph Collection — are some of the best known in ",
+      "provider": "claude",
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1"
+    }
+  ],
+  "p0cClassD": {
+    "PRODUCTION_D_GAPS": 32,
+    "BLOCKED_D_GAPS": 5,
+    "productionGaps": [
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recEJCTDj1zrsjPM6",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_mx_lifestyle_strategy_v1",
+        "provider": "openai",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Hard Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_835bc6bd107c37b9",
+        "evidenceIds": [
+          "ev_98612029f65e4389"
+        ],
+        "createdAt": "2026-08-17T10:31:17.875Z",
+        "gapId": "gap_608be1009025caa3",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_835bc6bd107c37b9",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recEJCTDj1zrsjPM6",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_global_design_local_character_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "Global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Lifestyle Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_b664cb00fca1a5ab",
+        "evidenceIds": [
+          "ev_16fbd98178d147c8"
+        ],
+        "createdAt": "2026-08-17T10:31:17.933Z",
+        "gapId": "gap_8a1d62d528a7ce56",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_b664cb00fca1a5ab",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recEJCTDj1zrsjPM6",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_na_lifestyle_strategy_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "North America",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Lifestyle Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_f2685e1b0394f932",
+        "evidenceIds": [
+          "ev_4f24e2b3a1944748"
+        ],
+        "createdAt": "2026-08-17T10:31:17.938Z",
+        "gapId": "gap_1d595dd2a038f945",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_f2685e1b0394f932",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recEJCTDj1zrsjPM6",
+        "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+        "promptId": "p_na_collection_affiliation_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "North America",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Hard Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_ce35f9ba1251f5cf",
+        "evidenceIds": [
+          "ev_7b6b433117fb41b1"
+        ],
+        "createdAt": "2026-08-17T10:31:17.940Z",
+        "gapId": "gap_1fae4c753974ea78",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_ce35f9ba1251f5cf",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recEJCTDj1zrsjPM6",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_europe_lifestyle_strategy_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "Europe",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Lifestyle Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_68cc0f9723e40608",
+        "evidenceIds": [
+          "ev_1eef605e25d1450d"
+        ],
+        "createdAt": "2026-08-17T10:31:17.956Z",
+        "gapId": "gap_367860f30d38d75a",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_68cc0f9723e40608",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recEJCTDj1zrsjPM6",
+        "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+        "promptId": "p_mx_soft_brand_shortlist_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "CHAIN_SCALE",
+        "aiClaimValue": "Midscale",
+        "dealalityFactType": "CHAIN_SCALE",
+        "dealalityFactValue": "Upper Upscale",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "chain_scale_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_02ebf8c014f11808",
+        "evidenceIds": [
+          "ev_d76e3aa7dd6c485e"
+        ],
+        "createdAt": "2026-08-17T10:31:17.980Z",
+        "gapId": "gap_5989b3db4cd5436d",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_02ebf8c014f11808",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recEJCTDj1zrsjPM6",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_mx_individuality_preservation_es_v1",
+        "provider": "claude",
+        "language": "es",
+        "geography": "CALA",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Hard Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_84898c0479bbba7b",
+        "evidenceIds": [
+          "ev_f398d3816817427f"
+        ],
+        "createdAt": "2026-08-17T10:31:17.987Z",
+        "gapId": "gap_9a9692a7810f513e",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_84898c0479bbba7b",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recEJCTDj1zrsjPM6",
+        "scenarioId": "scenario_conversion_suitability_v1",
+        "promptId": "p_global_existing_asset_reposition_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "Global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Conversion Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_d9e85ab3b9cbf384",
+        "evidenceIds": [
+          "ev_fc08fd50063d4e50"
+        ],
+        "createdAt": "2026-08-17T10:31:17.989Z",
+        "gapId": "gap_aed5e99d64ac022c",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_d9e85ab3b9cbf384",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recCvV0PuZOi8c3hC",
+        "scenarioId": "scenario_independent_uu_conversion_v1",
+        "promptId": "p_global_independent_affiliation_v1",
+        "provider": "openai",
+        "language": "en",
+        "geography": "global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Hard Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_6c2c42a3dfef57d6",
+        "evidenceIds": [
+          "ev_462d6e79076f483c"
+        ],
+        "createdAt": "2026-08-17T10:31:18.005Z",
+        "gapId": "gap_5553e25b30c49d78",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_6c2c42a3dfef57d6",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recCvV0PuZOi8c3hC",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_mx_lifestyle_strategy_v1",
+        "provider": "openai",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Hard Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_448885e20efddb35",
+        "evidenceIds": [
+          "ev_98612029f65e4389"
+        ],
+        "createdAt": "2026-08-17T10:31:18.017Z",
+        "gapId": "gap_d6e6edfa39911cd8",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_448885e20efddb35",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recCvV0PuZOi8c3hC",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_europe_individuality_preservation_v1",
+        "provider": "gemini",
+        "language": "en",
+        "geography": "Europe",
+        "aiClaimType": "CHAIN_SCALE",
+        "aiClaimValue": "Midscale",
+        "dealalityFactType": "CHAIN_SCALE",
+        "dealalityFactValue": "Upper Upscale",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "chain_scale_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_f301ae8bc43cf971",
+        "evidenceIds": [
+          "ev_c22bbe6bcc174106"
+        ],
+        "createdAt": "2026-08-17T10:31:18.044Z",
+        "gapId": "gap_35819c4eade1d842",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_f301ae8bc43cf971",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recCvV0PuZOi8c3hC",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_global_design_local_character_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "Global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Lifestyle Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_c6fff2da66371dfa",
+        "evidenceIds": [
+          "ev_16fbd98178d147c8"
+        ],
+        "createdAt": "2026-08-17T10:31:18.049Z",
+        "gapId": "gap_36fd61b01271b750",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_c6fff2da66371dfa",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recCvV0PuZOi8c3hC",
+        "scenarioId": "scenario_conversion_suitability_v1",
+        "promptId": "p_europe_existing_asset_reposition_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "Europe",
+        "aiClaimType": "PARENT_COMPANY",
+        "aiClaimValue": "A softer entry point into Marriott",
+        "dealalityFactType": "PARENT_COMPANY",
+        "dealalityFactValue": "Marriott International",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "parent_company_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_4b3dfdc3cc918e35",
+        "evidenceIds": [
+          "ev_d23642a9ff774ffc"
+        ],
+        "createdAt": "2026-08-17T10:31:18.073Z",
+        "gapId": "gap_404b6faf2a9d28d1",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_4b3dfdc3cc918e35",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "COMPANY_PUBLISHED"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recCvV0PuZOi8c3hC",
+        "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+        "promptId": "p_mx_soft_brand_shortlist_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "CHAIN_SCALE",
+        "aiClaimValue": "Midscale",
+        "dealalityFactType": "CHAIN_SCALE",
+        "dealalityFactValue": "Upper Upscale",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "chain_scale_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_42b6c5571bdb6c90",
+        "evidenceIds": [
+          "ev_d76e3aa7dd6c485e"
+        ],
+        "createdAt": "2026-08-17T10:31:18.074Z",
+        "gapId": "gap_e93cb2f99b053bd4",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_42b6c5571bdb6c90",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recCvV0PuZOi8c3hC",
+        "scenarioId": "scenario_conversion_suitability_v1",
+        "promptId": "p_global_existing_asset_reposition_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "Global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Conversion Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_9f978d37af2184a6",
+        "evidenceIds": [
+          "ev_fc08fd50063d4e50"
+        ],
+        "createdAt": "2026-08-17T10:31:18.080Z",
+        "gapId": "gap_fff4fafe99101a56",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_9f978d37af2184a6",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "rec9aZp7GHtzUEg0c",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_cala_design_local_character_v1",
+        "provider": "gemini",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "CHAIN_SCALE",
+        "aiClaimValue": "Lifestyle / Boutique",
+        "dealalityFactType": "CHAIN_SCALE",
+        "dealalityFactValue": "Upscale",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "chain_scale_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_fdaa51eaf64b1bba",
+        "evidenceIds": [
+          "ev_5d31ccef3150452b"
+        ],
+        "createdAt": "2026-08-17T10:31:18.083Z",
+        "gapId": "gap_5389beaf8cf7854c",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_fdaa51eaf64b1bba",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "rec9aZp7GHtzUEg0c",
+        "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+        "promptId": "p_europe_soft_brand_shortlist_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "Europe",
+        "aiClaimType": "CHAIN_SCALE",
+        "aiClaimValue": "Luxury",
+        "dealalityFactType": "CHAIN_SCALE",
+        "dealalityFactValue": "Upscale",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "chain_scale_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_5e5c1e1aa0353049",
+        "evidenceIds": [
+          "ev_7c92761cdeb048dd"
+        ],
+        "createdAt": "2026-08-17T10:31:18.084Z",
+        "gapId": "gap_2eff3169a0cb084c",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_5e5c1e1aa0353049",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "rec9aZp7GHtzUEg0c",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_mx_design_local_character_es_v1",
+        "provider": "perplexity",
+        "language": "es",
+        "geography": "CALA",
+        "aiClaimType": "CHAIN_SCALE",
+        "aiClaimValue": "Lifestyle / Boutique",
+        "dealalityFactType": "CHAIN_SCALE",
+        "dealalityFactValue": "Upscale",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "chain_scale_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_3eb5029b68e09d86",
+        "evidenceIds": [
+          "ev_f4899a843c91492b"
+        ],
+        "createdAt": "2026-08-17T10:31:18.084Z",
+        "gapId": "gap_6df51bed95d90286",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_3eb5029b68e09d86",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "rec02zPClpWUTCyXM",
+        "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+        "promptId": "p_global_design_local_character_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "Global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Lifestyle Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Collection Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_2fb192a483389aca",
+        "evidenceIds": [
+          "ev_16fbd98178d147c8"
+        ],
+        "createdAt": "2026-08-17T10:31:18.122Z",
+        "gapId": "gap_5734fc69623796be",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_2fb192a483389aca",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "rec02zPClpWUTCyXM",
+        "scenarioId": "scenario_owner_flexibility_control_v1",
+        "promptId": "p_europe_affiliation_flexibility_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "Europe",
+        "aiClaimType": "PARENT_COMPANY",
+        "aiClaimValue": "the Marriott",
+        "dealalityFactType": "PARENT_COMPANY",
+        "dealalityFactValue": "Marriott International",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "parent_company_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_0888a5fa403f42f2",
+        "evidenceIds": [
+          "ev_9e960088a7064ef3"
+        ],
+        "createdAt": "2026-08-17T10:31:18.131Z",
+        "gapId": "gap_d66f90fcff930864",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_0888a5fa403f42f2",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "COMPANY_PUBLISHED"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "rec02zPClpWUTCyXM",
+        "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+        "promptId": "p_mx_soft_brand_shortlist_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "CHAIN_SCALE",
+        "aiClaimValue": "Midscale",
+        "dealalityFactType": "CHAIN_SCALE",
+        "dealalityFactValue": "Upper Upscale",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "chain_scale_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_43b984ee25c3f849",
+        "evidenceIds": [
+          "ev_d76e3aa7dd6c485e"
+        ],
+        "createdAt": "2026-08-17T10:31:18.133Z",
+        "gapId": "gap_b492045d6ff83465",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_43b984ee25c3f849",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_newbuild_uu_brand_selection_v1",
+        "promptId": "p_mx_uu_owner_shortlist_v1",
+        "provider": "openai",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Collection Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_be75a17eb6891358",
+        "evidenceIds": [
+          "ev_14b02346767448a0"
+        ],
+        "createdAt": "2026-08-17T10:31:18.137Z",
+        "gapId": "gap_2a0625afa73cf789",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_be75a17eb6891358",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_chainscale_positioning_fit_v1",
+        "promptId": "p_na_uu_positioning_strategy_v1",
+        "provider": "openai",
+        "language": "en",
+        "geography": "North America",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Collection Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_97ab2a77c5cbb8b3",
+        "evidenceIds": [
+          "ev_f0876dfcf2fc4a26"
+        ],
+        "createdAt": "2026-08-17T10:31:18.145Z",
+        "gapId": "gap_32720047e7854ab9",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_97ab2a77c5cbb8b3",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_chainscale_positioning_fit_v1",
+        "promptId": "p_global_uu_positioning_strategy_v1",
+        "provider": "openai",
+        "language": "en",
+        "geography": "global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Collection Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_5cc109443e223d56",
+        "evidenceIds": [
+          "ev_faa0eed4223e4507"
+        ],
+        "createdAt": "2026-08-17T10:31:18.146Z",
+        "gapId": "gap_3759263dd2034e86",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_5cc109443e223d56",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_chainscale_positioning_fit_v1",
+        "promptId": "p_global_uu_positioning_strategy_v1",
+        "provider": "openai",
+        "language": "en",
+        "geography": "global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Collection Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_fa314391e099aad9",
+        "evidenceIds": [
+          "ev_faa0eed4223e4507"
+        ],
+        "createdAt": "2026-08-17T10:31:18.146Z",
+        "gapId": "gap_564104a39d37e88d",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_fa314391e099aad9",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_newbuild_uu_brand_selection_v1",
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "provider": "gemini",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Soft Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_ee40d186f8ed359d",
+        "evidenceIds": [
+          "ev_17167395fb3d42fa"
+        ],
+        "createdAt": "2026-08-17T10:31:18.148Z",
+        "gapId": "gap_d4e4407885e12384",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_ee40d186f8ed359d",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+        "promptId": "p_mx_soft_brand_shortlist_v1",
+        "provider": "gemini",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Soft Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_7ea3a4c9eef47e45",
+        "evidenceIds": [
+          "ev_c2282dcfc0f54fcc"
+        ],
+        "createdAt": "2026-08-17T10:31:18.152Z",
+        "gapId": "gap_8455fb52dd1ef77b",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_7ea3a4c9eef47e45",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_newbuild_uu_brand_selection_v1",
+        "promptId": "p_cala_uu_owner_shortlist_es_v1",
+        "provider": "gemini",
+        "language": "es",
+        "geography": "CALA",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Soft Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_a60d633bf614bebf",
+        "evidenceIds": [
+          "ev_d560995f8d0f4453"
+        ],
+        "createdAt": "2026-08-17T10:31:18.152Z",
+        "gapId": "gap_9fcb320549390841",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_a60d633bf614bebf",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_conversion_suitability_v1",
+        "promptId": "p_mx_existing_asset_reposition_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "CALA",
+        "aiClaimType": "SOFT_BRAND_COLLECTION",
+        "aiClaimValue": "Soft/Collection Brand",
+        "dealalityFactType": "SOFT_BRAND_COLLECTION",
+        "dealalityFactValue": "Standalone Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "collection_status_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_463dddd2b05ca652",
+        "evidenceIds": [
+          "ev_32a38ff8099d49c6"
+        ],
+        "createdAt": "2026-08-17T10:31:18.156Z",
+        "gapId": "gap_bf5ba973f124c194",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_463dddd2b05ca652",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_chainscale_positioning_fit_v1",
+        "promptId": "p_global_uu_positioning_strategy_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "Global",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Soft Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_9741f4850c64184f",
+        "evidenceIds": [
+          "ev_397ffc141c1946fd"
+        ],
+        "createdAt": "2026-08-17T10:31:18.156Z",
+        "gapId": "gap_559a57b9f4b199d0",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_9741f4850c64184f",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_conversion_suitability_v1",
+        "promptId": "p_global_existing_asset_reposition_v1",
+        "provider": "perplexity",
+        "language": "en",
+        "geography": "Global",
+        "aiClaimType": "SOFT_BRAND_COLLECTION",
+        "aiClaimValue": "Soft/Collection Brand",
+        "dealalityFactType": "SOFT_BRAND_COLLECTION",
+        "dealalityFactValue": "Standalone Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "collection_status_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_cd0bbfddb00ffe9c",
+        "evidenceIds": [
+          "ev_75b68a8911054280"
+        ],
+        "createdAt": "2026-08-17T10:31:18.157Z",
+        "gapId": "gap_eb6cd3c42ca30fbe",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_cd0bbfddb00ffe9c",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      },
+      {
+        "gapClass": "AI_PERCEPTION_VS_DEALALITY_FACT_GAP",
+        "subjectBrandId": "recIPuBC50fv13zRR",
+        "scenarioId": "scenario_chainscale_positioning_fit_v1",
+        "promptId": "p_europe_uu_positioning_strategy_v1",
+        "provider": "claude",
+        "language": "en",
+        "geography": "Europe",
+        "aiClaimType": "BRAND_MODEL",
+        "aiClaimValue": "Soft Brand",
+        "dealalityFactType": "BRAND_MODEL",
+        "dealalityFactValue": "Hard Brand",
+        "comparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+        "comparisonReason": "brand_model_mismatch",
+        "productionEligible": true,
+        "lifecycleStatus": "ACTIVE",
+        "classification": "REVIEW",
+        "ruleVersion": "ai_visibility_competitive_gap_engine_v1",
+        "truthRuleVersion": "ai_visibility_truth_layer_v1_non_census",
+        "truthComparisonId": "tcmp_e8f2b82257cd1976",
+        "evidenceIds": [
+          "ev_4b77bf5fe1ea4048"
+        ],
+        "createdAt": "2026-08-17T10:31:18.163Z",
+        "gapId": "gap_412442cd5ceff7f8",
+        "truthLayer": {
+          "dealalityTruthRef": "tcmp_e8f2b82257cd1976",
+          "truthComparisonStatus": "POTENTIAL_PERCEPTION_GAP",
+          "dealalitySource": "Brand Setup - Brand Basics",
+          "dealalityGovernanceState": "STRUCTURED_GOVERNED_FACT"
+        }
+      }
+    ]
+  },
+  "census": {
+    "status": "DEFERRED_INCOMPLETE_CENSUS",
+    "CENSUS_READS_FOR_TRUTH_COMPARISON": 0,
+    "CENSUS_TRUTH_COMPARISONS": 0,
+    "deferredDimensions": [
+      "COUNTRY_PRESENCE",
+      "GEOGRAPHIC_FOOTPRINT",
+      "OPEN_HOTEL_COUNT",
+      "PIPELINE"
+    ],
+    "note": "Hotel Property Census incomplete — Census-backed Truth Layer deferred to P0D-B."
+  },
+  "safety": {
+    "CENSUS_READS_FOR_TRUTH": 0,
+    "FUZZY_MATCHES": 0,
+    "CANONICAL_MUTATIONS": 0,
+    "AIRTABLE_WRITES": 0,
+    "PROVIDER_CALLS": 0,
+    "NEW_PROVIDER_CALLS": 0
+  },
+  "certifiedLayer": {
+    "PRESENCE_DIFF": 0,
+    "QM_DIFF": 0,
+    "ALL_PROVIDERS_DIFF": 0,
+    "CITATION_DIFF": 0,
+    "ASSOCIATION_DIFF": 0,
+    "P0C_A_B_GAP_DIFF": 0
+  },
+  "productionReadiness": {
+    "status": "P0DA_NON_CENSUS_TRUTH_LAYER_PRODUCTION_READY",
+    "finalToken": "HOTEL_BRAND_AI_INTELLIGENCE_P0DA_PASS",
+    "next": "READY_FOR_P0E_EXECUTIVE_INTELLIGENCE"
+  }
+}

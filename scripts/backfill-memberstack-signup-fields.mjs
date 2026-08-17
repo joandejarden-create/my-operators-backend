@@ -5,11 +5,17 @@
  *   node scripts/backfill-memberstack-signup-fields.mjs --email joandejarden@gmail.com
  *   node scripts/backfill-memberstack-signup-fields.mjs --email x@y.com --dry-run
  */
-import "dotenv/config";
+import "../load-env.js";
 import axios from "axios";
 import Airtable from "airtable";
 import { patchMemberstackAfterAirtable } from "../lib/memberstack/signup-member.js";
 import { USERS_SIGNUP } from "../lib/signup-airtable-upsert.js";
+import {
+  readMemberstackIdsFromUserFields,
+  isTestMemberstackId,
+  isLiveMemberstackId,
+} from "../lib/pilot-provisioning/pilot-validators.js";
+import { memberstackIdLabel } from "../lib/pilot-provisioning/pilot-field-registry.js";
 
 const BASE = (process.env.MEMBERSTACK_BASE_URL || "https://admin.memberstack.com").replace(/\/$/, "");
 
@@ -22,11 +28,12 @@ function parseArgs() {
   return {
     email: process.argv[emailIdx + 1].trim().toLowerCase(),
     dryRun: process.argv.includes("--dry-run"),
+    allowTestMemberstackId: process.argv.includes("--allow-test-memberstack-id"),
   };
 }
 
 async function main() {
-  const { email, dryRun } = parseArgs();
+  const { email, dryRun, allowTestMemberstackId } = parseArgs();
   const key = (process.env.MEMBERSTACK_SECRET_KEY || "").trim();
   const apiKey = (process.env.AIRTABLE_API_KEY || "").trim();
   const baseId = (process.env.AIRTABLE_BASE_ID || "").trim();
@@ -56,6 +63,46 @@ async function main() {
     process.exit(1);
   }
   const f = rows[0].fields;
+  const msIds = readMemberstackIdsFromUserFields(f);
+
+  if (isTestMemberstackId(member.id) && !allowTestMemberstackId) {
+    console.error(`
+ERROR: Memberstack member is Test Mode (${member.id}).
+For production pilots, use live mem_ member and ensure Airtable ${memberstackIdLabel()} is live mem_.
+Re-run with --allow-test-memberstack-id only for localhost sandbox.
+`);
+    process.exit(1);
+  }
+
+  if (!allowTestMemberstackId && msIds.primary && isTestMemberstackId(msIds.primary)) {
+    console.error(`
+ERROR: Airtable Users row has Test Mode id (${msIds.primary}). Fix Airtable before MS custom-field backfill.
+Never paste mem_sb_ into production Airtable Users rows.
+`);
+    process.exit(1);
+  }
+
+  if (!msIds.primary || !isLiveMemberstackId(msIds.primary)) {
+    console.warn(
+      `WARNING: Airtable missing live ${memberstackIdLabel()} — link with link-airtable-user-memberstack.mjs first.`
+    );
+  } else if (member.id !== msIds.primary) {
+    console.warn(
+      `WARNING: Memberstack id (${member.id}) differs from Airtable (${msIds.primary}) — reconcile before backfill.`
+    );
+  }
+
+  const custom = member.customFields || member.custom_fields || {};
+  const staleDemo =
+    custom["unique-webflow-id"] &&
+    isTestMemberstackId(String(custom["unique-webflow-id"])) &&
+    isLiveMemberstackId(member.id);
+  if (staleDemo) {
+    console.warn(
+      "WARNING: Memberstack custom field unique-webflow-id still has mem_sb_ while member is live — backfill will overwrite."
+    );
+  }
+
   const body = {
     email,
     firstName: f[USERS_SIGNUP.firstName] || f["First Name"] || "",

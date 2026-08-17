@@ -1,0 +1,117 @@
+{
+  "version": "tapestry-factory-promotion-v1",
+  "stage": "image-visual-audit",
+  "generatedAt": "2026-07-23T23:33:00.324Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "dryRun": false,
+  "flagCheck": {
+    "ok": true,
+    "missing": []
+  },
+  "tapestry": {
+    "slug": "tapestry-collection-by-hilton",
+    "recordId": "reccXxMHEh7NNRhIE",
+    "name": "Tapestry Collection by Hilton"
+  },
+  "imageSnapshot": {
+    "galleryDistinct": 6,
+    "scenarioDistinct": 3,
+    "propertyDistinct": 3,
+    "uniquenessPass": true,
+    "roleMatchPass": true,
+    "repeatedRoleHeuristicHit": true,
+    "alreadyPasses": true,
+    "duplicateGroups": 0
+  },
+  "scenarioRoles": [
+    {
+      "slotKey": "overview.scenario.1",
+      "title": "independent upscale conversion",
+      "roleBucket": "unknown"
+    },
+    {
+      "slotKey": "overview.scenario.2",
+      "title": "boutique repositioning at moderate capital",
+      "roleBucket": "unknown"
+    },
+    {
+      "slotKey": "overview.scenario.3",
+      "title": "value-conscious independent-character hotel",
+      "roleBucket": "unknown"
+    }
+  ],
+  "plannedTitlePatches": [
+    {
+      "recordId": "recr8ZaKGQo9BLTbh",
+      "slotKey": "overview.scenario.2",
+      "reason": "scenario_retitle_for_role_diversity",
+      "fields": [
+        "Title"
+      ],
+      "before": {
+        "title": "Boutique Repositioning At Moderate Capital"
+      }
+    },
+    {
+      "recordId": "rec5n9zh2hyUvHZWY",
+      "slotKey": "overview.scenario.3",
+      "reason": "scenario_retitle_for_role_diversity",
+      "fields": [
+        "Title"
+      ],
+      "before": {
+        "title": "Value-Conscious Independent-Character Hotel"
+      }
+    }
+  ],
+  "applyResults": [
+    {
+      "recordId": "recr8ZaKGQo9BLTbh",
+      "slotKey": "overview.scenario.2",
+      "ok": true
+    },
+    {
+      "recordId": "rec5n9zh2hyUvHZWY",
+      "slotKey": "overview.scenario.3",
+      "ok": true
+    }
+  ],
+  "materialization": {
+    "attempted": false,
+    "reason": "deferred_no_opt_in_or_gates_pass",
+    "counts": {
+      "galleryDistinct": 6,
+      "scenarioDistinct": 3,
+      "propertyDistinct": 3
+    }
+  },
+  "guardrails": {
+    "tapestryOnly": true,
+    "titleOnlyPreferred": true,
+    "protectedBaselineUntouched": true,
+    "companyValidatedWrites": false,
+    "sourceLibraryWrites": false,
+    "registryWrites": false,
+    "brandStatusWrites": false,
+    "releaseFieldWrites": false,
+    "neverWriteFields": [
+      "Company Validated",
+      "Company Validation Date",
+      "Source Library status",
+      "Registry approval/status"
+    ]
+  },
+  "requiredApplyFlags": [
+    "--approve-tapestry-image-cleanup",
+    "--confirm-tapestry-only",
+    "--confirm-image-issues-only",
+    "--confirm-no-company-validation-changes",
+    "--confirm-no-source-library-status-changes",
+    "--confirm-no-registry-approval-changes",
+    "--confirm-no-brand-status-changes",
+    "--confirm-no-release-field-writes",
+    "--confirm-no-protected-baseline-brand-changes"
+  ]
+}

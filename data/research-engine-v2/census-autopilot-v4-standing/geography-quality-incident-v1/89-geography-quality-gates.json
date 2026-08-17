@@ -1,0 +1,32 @@
+{
+  "market_gate": {
+    "requires_registry": true,
+    "belongs_to_country": true,
+    "coherent_with_city_state_coords": true,
+    "record_assignment_method": true,
+    "confidence_threshold": "High|Medium with steward for Medium",
+    "country_fallback": false,
+    "state_fallback_without_registry": false,
+    "city_fallback_without_registry": false,
+    "explicit_state_to_market_allowed": true,
+    "coordinate_centroid_when_city_weak": true
+  },
+  "submarket_gate": {
+    "parent_market_confirmed": true,
+    "belongs_to_market": true,
+    "or_status_not_applicable": true,
+    "no_arbitrary_fill": true
+  },
+  "latam_caribbean_expansion_pattern": {
+    "steps": [
+      "property_geography",
+      "spatial_admin_clustering",
+      "candidate_market",
+      "business_rule_validation",
+      "canonical_registry",
+      "deterministic_future_resolution"
+    ],
+    "country_needs_engineering_signal": "registry_coverage_pct < 85 OR unresolved clusters with named cities >= 3 hotels",
+    "do_not_manually_build_all_48_now": true
+  }
+}

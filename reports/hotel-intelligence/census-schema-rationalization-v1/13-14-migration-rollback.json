@@ -1,0 +1,49 @@
+{
+  "airtable_burden": {
+    "long_text_fields": [
+      "Hotel Description - Source Text",
+      "Hotel Description - AI Summary",
+      "Short Property Summary",
+      "Property Positioning",
+      "Amenities - Source Text",
+      "Building / Asset Notes",
+      "Notes for Steward",
+      "Candidate Brand Text",
+      "Rooms Notes",
+      "Phone Notes"
+    ],
+    "boolean_flag_fields": [
+      "F&B Flag",
+      "Meeting Space Flag",
+      "Resort / Leisure Flag",
+      "Extended Stay Flag",
+      "Branded Residences Flag",
+      "Mixed-Use Flag",
+      "Fitness Flag",
+      "Pool Flag",
+      "Parking Flag",
+      "Airport Shuttle Flag",
+      "Spa Flag",
+      "Beach / Waterfront Flag",
+      "Independent Hotel Flag",
+      "Future Opening Flag"
+    ],
+    "provider_specific_hbx_fields": 10,
+    "shell_ingest_metadata_fields": 8,
+    "duplicate_geography_fields": ["Market / Submarket", "Continent", "Sub-Continent"],
+    "ban_pattern": "Do not add provider_x / provider_x_source / provider_x_confidence columns to census"
+  },
+  "migration_requirements": {
+    "before_any_delete": "Export record_id, field_id, field_name, field_type, value for populated affected fields",
+    "hbx": "Move HBX Hotel Code / Chain Code to external-ids; other HBX* to evidence",
+    "owner_operator": "Move to Owner Intelligence; freeze census columns",
+    "shell_metadata": "Archive then deprecate",
+    "geo_consolidate": "Market/Submarket combo + Continent* validation before drop"
+  },
+  "rollback_strategy": {
+    "schema_snapshot": "data/hotel-intelligence/census-schema-rationalization-v1/schema-before.json",
+    "population_snapshot": "data/hotel-intelligence/census-schema-rationalization-v1/population-by-field.json",
+    "data_export": "PENDING_PER_WAVE_BEFORE_DESTRUCTIVE_CHANGES",
+    "tripadvisor": "Remains paused until Wave 6"
+  }
+}

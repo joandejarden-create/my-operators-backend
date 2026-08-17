@@ -14,6 +14,7 @@
  */
 
 import Airtable from "airtable";
+import { assertOwnerTargetIdsAccess } from "../lib/dealality/target-list-batch-access.js";
 
 const TARGET_LIST_TABLE = process.env.AIRTABLE_TABLE_TARGET_LIST || "Target List";
 const NOTES_FIELD = process.env.AIRTABLE_TARGET_LIST_NOTES_FIELD || "Notes";
@@ -372,6 +373,17 @@ export async function batchRemoveFromTargetList(req, res) {
 
   if (!Array.isArray(targetIds) || targetIds.length === 0) {
     return res.status(400).json({ success: false, error: 'targetIds array is required' });
+  }
+
+  if (req.dealalityUser) {
+    const access = await assertOwnerTargetIdsAccess(req.dealalityUser, targetIds);
+    if (!access.ok) {
+      return res.status(access.status).json({
+        success: false,
+        error: access.error,
+        message: access.message,
+      });
+    }
   }
 
   try {

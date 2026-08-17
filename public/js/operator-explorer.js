@@ -38,6 +38,24 @@ document.addEventListener("DOMContentLoaded", function () {
   /** Legend-only chain scale filter (normalized, e.g. "luxury", "upper upscale"). */
   let selectedChainScaleNorm = "";
 
+  /** Canonical Asset Type labels (case study hotel_type) — keep in sync with lib/operator-explorer/operator-case-study-hotel-type-normalize.js */
+  var OPERATOR_ASSET_TYPE_OPTIONS = [
+    "Full-Service",
+    "Select-Service",
+    "Resort",
+    "Boutique",
+    "Lifestyle",
+  ];
+
+  function mergeFilterOptionLists(catalog, observed) {
+    var seen = {};
+    (catalog || []).concat(observed || []).forEach(function (v) {
+      var s = String(v || "").trim();
+      if (s) seen[s] = true;
+    });
+    return Object.keys(seen).sort();
+  }
+
   function normChainScaleLabel(s) {
     return String(s || "")
       .toLowerCase()
@@ -47,6 +65,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function splitCsv(input) {
     if (!input) return [];
+    if (Array.isArray(input)) {
+      return input
+        .map(function (s) {
+          return String(s || "").trim();
+        })
+        .filter(Boolean);
+    }
     return String(input)
       .split(",")
       .map(function (s) {
@@ -55,12 +80,33 @@ document.addEventListener("DOMContentLoaded", function () {
       .filter(Boolean);
   }
 
+  /** Prefer Platform chainScale; fall back / union with Profile chainScalesSupported for list stripe + legend. */
+  function mergeChainScalesForDisplay(platformScales, supportedScales) {
+    var out = [];
+    var seen = {};
+    function push(s) {
+      var t = String(s || "").trim();
+      if (!t) return;
+      var key = normChainScaleLabel(t);
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      out.push(t);
+    }
+    (platformScales || []).forEach(push);
+    (supportedScales || []).forEach(push);
+    return out;
+  }
+
   function normalizeOperator(row) {
     const companyName = row.companyName || row.operator_name || "Unknown Operator";
     const regions = splitCsv(row.regionsSupported || row.geography || "");
-    const scales = splitCsv(row.chainScale || "");
     const brands = splitCsv(row.brandsManaged || "");
     const serviceModels = splitCsv(row.primaryServiceModel || "");
+    const serviceModelsSupported = splitCsv(row.serviceModelsSupported || "");
+    const chainScalesSupported = splitCsv(row.chainScalesSupported || "");
+    const scales = mergeChainScalesForDisplay(splitCsv(row.chainScale || ""), chainScalesSupported);
+    const activeCountries = splitCsv(row.activeCountries || "");
+    const brandedResidentialCapable = row.brandedResidentialCapable === true;
     const caseStudies = Array.isArray(row.caseStudiesDetail) ? row.caseStudiesDetail : [];
     const assetClasses = [
       ...new Set(
@@ -85,6 +131,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const independentExperience = brands.some(function (b) {
       return /independent/i.test(b);
     });
+    // Independent is brand affiliation (brandsManaged), not an STR chain scale.
+    // Surface it on the card legend/stripe when brands include Independent.
+    if (
+      independentExperience &&
+      !scales.some(function (s) {
+        return normChainScaleLabel(s) === "independent";
+      })
+    ) {
+      scales.push("Independent");
+    }
     return {
       id: row.id,
       operator_name: companyName,
@@ -111,6 +167,10 @@ document.addEventListener("DOMContentLoaded", function () {
       independent_experience: independentExperience,
       operating_situations: situations,
       service_models: serviceModels,
+      service_models_supported: serviceModelsSupported,
+      chain_scales_supported: chainScalesSupported,
+      active_countries: activeCountries,
+      branded_residential_capable: brandedResidentialCapable,
       capability_tags: capabilityTags,
       brands_managed: brands,
       parent_company: row.primaryServiceModel || row.parent_company || "",
@@ -141,11 +201,38 @@ document.addEventListener("DOMContentLoaded", function () {
         [...new Set(allOperators.flatMap(function (o) { return o.geography || []; }))].sort()
       );
       populateAssetTypeFilter(
-        [...new Set(allOperators.flatMap(function (o) { return o.asset_classes || []; }))].sort()
+        mergeFilterOptionLists(
+          OPERATOR_ASSET_TYPE_OPTIONS,
+          [...new Set(allOperators.flatMap(function (o) { return o.asset_classes || []; }))]
+        )
       );
       populateExperienceTypeFilter(
         [...new Set(allOperators.flatMap(function (o) { return o.operating_situations || []; }))].sort()
       );
+
+      var fo = data.filterOptions || {};
+      populateSelectFilter(
+        "serviceModelSupportedFilter",
+        fo.serviceModelsSupported && fo.serviceModelsSupported.length
+          ? fo.serviceModelsSupported.slice()
+          : [...new Set(allOperators.flatMap(function (o) { return o.service_models_supported || []; }))].sort(),
+        "All Models"
+      );
+      populateSelectFilter(
+        "chainScalesSupportedFilter",
+        fo.chainScalesSupported && fo.chainScalesSupported.length
+          ? fo.chainScalesSupported.slice()
+          : [...new Set(allOperators.flatMap(function (o) { return o.chain_scales_supported || []; }))].sort(),
+        "All Scales"
+      );
+      populateSelectFilter(
+        "activeCountryFilter",
+        fo.activeCountries && fo.activeCountries.length
+          ? fo.activeCountries.slice()
+          : [...new Set(allOperators.flatMap(function (o) { return o.active_countries || []; }))].sort(),
+        "All Countries"
+      );
+
       updateTabCounts();
       updateChainScaleQuickFilterStates();
       var favReady =
@@ -196,13 +283,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function populateExperienceTypeFilter(options) {
-    const select = document.getElementById("experienceTypeFilter");
+    populateSelectFilter("experienceTypeFilter", options || [], "All");
+  }
+
+  function populateSelectFilter(id, options, placeholder) {
+    const select = document.getElementById(id);
     if (!select) return;
-    select.innerHTML = '<option value="">All</option>';
-    (options || []).forEach(function (e) {
+    select.innerHTML = '<option value="">' + escapeHtml(placeholder || "All") + "</option>";
+    (options || []).forEach(function (value) {
       const opt = document.createElement("option");
-      opt.value = e;
-      opt.textContent = e;
+      opt.value = value;
+      opt.textContent = value;
       select.appendChild(opt);
     });
   }
@@ -216,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (scale.includes("upper midscale")) return "chain-scale-upper-midscale";
     if (scale.includes("midscale")) return "chain-scale-midscale";
     if (scale.includes("economy")) return "chain-scale-economy";
+    if (scale.includes("independent")) return "chain-scale-independent";
     return "";
   }
 
@@ -228,6 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (scale.includes("upper midscale")) return "#2ecc71";
     if (scale.includes("midscale")) return "#1abc9c";
     if (scale.includes("economy")) return "#e67e22";
+    if (scale.includes("independent")) return "#94a3b8";
     return null;
   }
 
@@ -262,6 +355,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!url) return "";
     return String(url)
       .replace(/^https?:\/\//i, "")
+      .replace(/^www\./i, "")
       .replace(/\/$/, "");
   }
 
@@ -292,14 +386,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       if (op.reviewBeforeOutreach) badges.push("Review Availability Before Outreach");
     }
-    if (!badges.length) return "";
+    // Always render the badges row so tile height stays aligned with Brand Explorer cards
+    // (empty slot still reserves one line via CSS min-height).
     var tooltip =
       uiLabels && typeof uiLabels.getOperatorExplorerCardBadgesTooltip === "function"
         ? uiLabels.getOperatorExplorerCardBadgesTooltip()
         : "Owner-Operator means this company owns or controls hotel assets and also operates hotels. Availability for third-party management may vary by market and deal type.";
     return (
       '<div class="operator-card__badges" title="' +
-      escapeHtml(tooltip) +
+      escapeHtml(badges.length ? tooltip : "") +
       '">' +
       badges
         .slice(0, 3)
@@ -330,7 +425,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const initial = (op.operator_name || "O").charAt(0).toUpperCase();
     const typeLabel = operatorTypeLabel(op);
     const badgesHtml = buildOperatorBadgesHtml(op);
-    const regionText = (op.geography || []).slice(0, 2).join(", ").toUpperCase();
     const stripeBackground = getChainScaleStripeBackground(chainScales);
     const websiteUrl = normalizeWebsiteUrl(op.website);
     const websiteText = websiteLabel(websiteUrl);
@@ -371,9 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
       escapeHtml(typeLabel) +
       "</div>" +
       badgesHtml +
-      '<div class="brand-card__meta">' +
-      escapeHtml(regionText) +
-      "</div>" +
       "</div></div>" +
       '<div class="brand-card__description">' +
       escapeHtml(summary) +
@@ -499,6 +590,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (selectedChainScaleNorm) n++;
     if (document.getElementById("brandedIndependentFilter").value) n++;
     if (document.getElementById("experienceTypeFilter").value) n++;
+    if (document.getElementById("serviceModelSupportedFilter").value) n++;
+    if (document.getElementById("brandedResidentialFilter").value) n++;
+    if (document.getElementById("chainScalesSupportedFilter").value) n++;
+    if (document.getElementById("activeCountryFilter").value) n++;
     return n;
   }
 
@@ -506,6 +601,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const count = getActiveFilterCount();
     filterCountBadge.textContent = String(count);
     filterCountBadge.style.display = count > 0 ? "inline-flex" : "none";
+    if (window.__operatorExplorerFilterDrawer && window.__operatorExplorerFilterDrawer.updateBadge) {
+      window.__operatorExplorerFilterDrawer.updateBadge();
+    }
   }
 
   function updateChainScaleQuickFilterActive() {
@@ -547,6 +645,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const assetType = document.getElementById("assetTypeFilter").value;
     const brandedIndependent = document.getElementById("brandedIndependentFilter").value;
     const experienceType = document.getElementById("experienceTypeFilter").value;
+    const serviceModelSupported = document.getElementById("serviceModelSupportedFilter").value;
+    const brandedResidential = document.getElementById("brandedResidentialFilter").value;
+    const chainScalesSupported = document.getElementById("chainScalesSupportedFilter").value;
+    const activeCountry = document.getElementById("activeCountryFilter").value;
     const favSet = activeListTab === "favorites" ? favoriteIdsSet() : null;
 
     filteredOperators = allOperators.filter(function (op) {
@@ -556,6 +658,8 @@ document.addEventListener("DOMContentLoaded", function () {
         (op.geography || []).join(" "),
         (op.brands_managed || []).join(" "),
         (op.chain_scales || []).join(" "),
+        (op.active_countries || []).join(" "),
+        (op.service_models_supported || []).join(" "),
         op.overview_short,
       ]
         .join(" ")
@@ -585,6 +689,32 @@ document.addEventListener("DOMContentLoaded", function () {
         })
       )
         return false;
+      if (
+        serviceModelSupported &&
+        !(op.service_models_supported || []).some(function (s) {
+          return String(s).toLowerCase() === serviceModelSupported.toLowerCase();
+        })
+      )
+        return false;
+      if (brandedResidential === "Yes" && !op.branded_residential_capable) return false;
+      if (brandedResidential === "No" && op.branded_residential_capable) return false;
+      if (
+        chainScalesSupported &&
+        !(op.chain_scales_supported || []).some(function (s) {
+          return String(s).toLowerCase() === chainScalesSupported.toLowerCase();
+        }) &&
+        !(op.chain_scales || []).some(function (s) {
+          return String(s).toLowerCase() === chainScalesSupported.toLowerCase();
+        })
+      )
+        return false;
+      if (
+        activeCountry &&
+        !(op.active_countries || []).some(function (c) {
+          return String(c).toLowerCase() === activeCountry.toLowerCase();
+        })
+      )
+        return false;
       return true;
     });
 
@@ -601,6 +731,10 @@ document.addEventListener("DOMContentLoaded", function () {
     selectedChainScaleNorm = "";
     document.getElementById("brandedIndependentFilter").value = "";
     document.getElementById("experienceTypeFilter").value = "";
+    document.getElementById("serviceModelSupportedFilter").value = "";
+    document.getElementById("brandedResidentialFilter").value = "";
+    document.getElementById("chainScalesSupportedFilter").value = "";
+    document.getElementById("activeCountryFilter").value = "";
     sortSelect.value = "name-asc";
     filterOperators();
   }
@@ -735,9 +869,18 @@ document.addEventListener("DOMContentLoaded", function () {
     this._t = setTimeout(filterOperators, 200);
   });
   document.getElementById("regionFilter").addEventListener("change", filterOperators);
-  document.getElementById("assetTypeFilter").addEventListener("change", filterOperators);
-  document.getElementById("brandedIndependentFilter").addEventListener("change", filterOperators);
-  document.getElementById("experienceTypeFilter").addEventListener("change", filterOperators);
+  [
+    "assetTypeFilter",
+    "brandedIndependentFilter",
+    "experienceTypeFilter",
+    "serviceModelSupportedFilter",
+    "brandedResidentialFilter",
+    "chainScalesSupportedFilter",
+    "activeCountryFilter",
+  ].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("change", filterOperators);
+  });
   sortSelect.addEventListener("change", filterOperators);
   document.getElementById("chainScaleLegend").addEventListener("click", function (e) {
     const btn = e.target && e.target.closest && e.target.closest(".chain-scale-legend-item");
@@ -765,6 +908,32 @@ document.addEventListener("DOMContentLoaded", function () {
   if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.ready) {
     void window.OperatorExplorerFavorites.ready();
   }
+
+  function initOperatorExplorerFilterDrawer() {
+    if (window.__operatorExplorerFilterDrawer || !window.ExplorerFilterDrawer) return;
+    window.__operatorExplorerFilterDrawer = window.ExplorerFilterDrawer.init({
+      overlayId: "operatorExplorerFilterDrawerOverlay",
+      drawerId: "operatorExplorerFilterDrawer",
+      openBtnId: "operatorExplorerFilterOpenBtn",
+      closeBtnId: "operatorExplorerFilterDrawerClose",
+      doneBtnId: "operatorExplorerFilterDoneBtn",
+      resetBtnId: "operatorExplorerFilterResetBtn",
+      drawerBadgeId: "operatorExplorerDrawerFilterBadge",
+      mainBadgeId: "filterCountBadge",
+      filterIds: [
+        "serviceModelSupportedFilter",
+        "brandedResidentialFilter",
+        "chainScalesSupportedFilter",
+        "activeCountryFilter",
+      ],
+      onFilterChange: filterOperators,
+      onReset: clearFilters,
+      countActiveFilters: getActiveFilterCount,
+    });
+  }
+
+  initOperatorExplorerFilterDrawer();
+  window.addEventListener("load", initOperatorExplorerFilterDrawer);
 
   fetchOperators();
 });

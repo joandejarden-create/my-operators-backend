@@ -1,0 +1,23 @@
+import fs from "fs";
+
+const meta = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+const filePath = process.argv[3];
+const fileName = process.argv[4];
+const bytes = fs.readFileSync(filePath);
+const d = meta.uploadDetails;
+const form = new FormData();
+form.append("acl", d.acl);
+form.append("bucket", d.bucket);
+form.append("X-Amz-Algorithm", d.xAmzAlgorithm);
+form.append("X-Amz-Credential", d.xAmzCredential);
+form.append("X-Amz-Date", d.xAmzDate);
+form.append("key", d.key);
+form.append("Policy", d.policy);
+form.append("X-Amz-Signature", d.xAmzSignature);
+form.append("success_action_status", d.successActionStatus);
+form.append("Content-Type", d.contentType);
+form.append("Cache-Control", d.cacheControl);
+form.append("file", new Blob([bytes], { type: d.contentType }), fileName);
+const res = await fetch(meta.uploadUrl, { method: "POST", body: form });
+console.log("status", res.status);
+console.log(await res.text());

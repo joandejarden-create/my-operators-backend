@@ -378,25 +378,25 @@ const BRAND_PROOF = {
   ],
   "Everhome Suites": [
     {
-      title: "No Item 19 Averages",
-      body: "FDD Item 19: no financial performance representations—underwrite from local extended-stay comps only.",
+      title: "2020 Midscale Launch",
+      body: "Introduced in 2020 as the first new core midscale brand in nearly a decade; first hotel opened in Corona, CA.",
     },
     {
-      title: "Newest Extended Platform",
-      body: "Newest Choice extended-stay brand—confirm open count in Item 20 and development materials.",
+      title: "Purpose-Built Prototype",
+      body: "Designed with extended-stay developers and operators; ready-to-build prototype typically delivers in 10–12 months.",
     },
     {
       title: "Residential Weekly Suites",
-      body: "Kitchen-equipped residential suites for weekly stays—not nightly midscale or upscale F&B.",
+      body: "Fully equipped in-suite kitchens with dishware and appliances; guest profile averages about 15 nights.",
     },
     {
       title: "6% Room Revenue Royalty",
-      body: "Six percent of room revenue for agreement duration (FDD)—compare MainStay and Suburban prototypes.",
+      body: "Six percent of room revenue for agreement duration—compare MainStay and Suburban prototypes in diligence.",
     },
     null,
     {
-      title: "Feasibility-Led Underwriting",
-      body: "Extended-stay operators comfortable without system Item 19 tables—strong market study required.",
+      title: "Extended-Stay Expert Bench",
+      body: "70+ dedicated extended-stay experts support openings, standards, and the proven extended-stay operating model.",
     },
   ],
 };

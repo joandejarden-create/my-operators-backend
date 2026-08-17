@@ -1,0 +1,26 @@
+{
+  "overall": "SCALE_SELECTED_FIELDS",
+  "by_field": {
+    "Address": "SCALE",
+    "Latitude": "SCALE",
+    "Longitude": "SCALE",
+    "Official Property URL": "SCALE",
+    "Phone": "SCALE",
+    "State / Region": "CONDITIONAL",
+    "City": "CONDITIONAL",
+    "Hotel Class / Segment": "CONDITIONAL",
+    "Property Type": "CONDITIONAL",
+    "Amenities - Structured Tags": "CONDITIONAL",
+    "Email": "CONDITIONAL_AFTER_SCHEMA",
+    "Current Brand": "DO_NOT_SCALE_FROM_TRIPADVISOR",
+    "Rooms / Keys": "CANDIDATE_ONLY",
+    "Country": "DO_NOT_WRITE",
+    "rating / ranking / reviews / price / traveler_choice": "HOTEL_INTELLIGENCE_ONLY"
+  },
+  "rationale": {
+    "SCALE": "High match confidence on pilot; factual; Tier A null-fill only; strong owner + matching value; Tripadvisor recovery high for lat/lng/address/phone/website when matched.",
+    "CONDITIONAL": "Methodology or option-mapping risk; keep attribution; validate before write.",
+    "CANDIDATE_ONLY": "Rooms never auto-authoritative from Tripadvisor.",
+    "DO_NOT_SCALE_FROM_TRIPADVISOR": "Brand inference from TA name conflicts with Brand Resolver; Country never overwritten."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "serpapi_allowed_fields": [
+    "Property Name",
+    "Address",
+    "City",
+    "State / Region",
+    "Country",
+    "Postal Code",
+    "Latitude",
+    "Longitude",
+    "Phone",
+    "Official Property URL",
+    "Amenities",
+    "Hotel Class (raw)",
+    "Property Type (input)",
+    "Google property_token"
+  ],
+  "serpapi_prohibited_fields": [
+    "Rooms / Keys",
+    "Owner Name",
+    "Operator / Management Company",
+    "Opening Date",
+    "Renovation Date",
+    "Market",
+    "Submarket",
+    "production images"
+  ],
+  "match_gate": "EXACT_OR_HIGH_ONLY",
+  "production_rights": "PENDING — technically eligible ≠ rights eligible",
+  "new_candidates_needing_confirmation": 12180,
+  "existing_estimated_gap_calls": 267,
+  "estimated_serpapi_calls_full_universe": 14301,
+  "estimated_breakdown": {
+    "new_independent_confirmation": 14007,
+    "existing_gap_enrichment": 294
+  },
+  "do_not_call_when": [
+    "already verified + SerpApi-allowed fields complete",
+    "insufficient identity",
+    "identity conflict pending review",
+    "rights blocked for persistence (research may still run in shadow)"
+  ]
+}

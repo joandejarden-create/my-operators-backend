@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-07-06T08:45:00.000Z",
+  "summary": "Regional browse pages for Jamaica, Bolivia, and US Virgin Islands return ~2.8MB shell HTML with zero embedded Hotel JSON. Sitemap-only fallback applies where property URLs exist.",
+  "countries": [
+    {
+      "country": "Jamaica",
+      "censusChoiceRows": 0,
+      "regionalPage": "https://www.choicehotels.com/en-uk/jamaica/regional-hotels",
+      "regionalHotelJsonCount": 0,
+      "sitemapCountryProperties": 0,
+      "notes": "Choice sitemap has no /jamaica/ country segment — only Jamaica, NY (US) city slug. No Choice census rows with Choice parent company at audit time."
+    },
+    {
+      "country": "Bolivia",
+      "censusChoiceRows": 1,
+      "regionalPage": "https://www.choicehotels.com/en-uk/bolivia/regional-hotels",
+      "regionalHotelJsonCount": 0,
+      "sitemapCountryProperties": 1,
+      "sitemapMatches": [
+        {
+          "propertyId": "BO001",
+          "propertyUrl": "https://www.choicehotels.com/bolivia/santa-cruz-de-la-sierra/radisson-hotels/bo001",
+          "censusName": "Radisson Hotel Santa Cruz",
+          "censusRecordId": "recYq8Xdh6uHvdjsU"
+        }
+      ],
+      "notes": "Use sitemap-only enrichment path (no regional JSON). Official name not on regional page; match by Radisson + Santa Cruz city slug."
+    },
+    {
+      "country": "US Virgin Islands",
+      "censusChoiceRows": 1,
+      "regionalPage": "https://www.choicehotels.com/en-uk/virgin-islands-us/regional-hotels",
+      "regionalHotelJsonCount": 0,
+      "sitemapCountryProperties": 0,
+      "censusRow": {
+        "censusRecordId": "recM6H22waiVJHUGk",
+        "censusName": "The Mangrove, An Ascend Hotel Collection Member",
+        "city": "St. Thomas"
+      },
+      "notes": "Not in Choice property sitemap (no VI### URL). 2019 Choice press release describes Comfort Inn & Suites St. Thomas by same ownership — property may be pipeline / not live on choicehotels.com. Steward URL required when live."
+    }
+  ],
+  "amenitiesProbe": {
+    "propertyPagePlainFetch": "HTTP 403 / Access Denied",
+    "propertyPagePuppeteerDirect": "~342 bytes Access Denied",
+    "propertyPagePuppeteerAfterRegionalWarmup": "~342 bytes Access Denied",
+    "regionalPageInlineAmenities": false,
+    "recommendation": "Amenities require manual steward pass or residential browser until Akamai allows property-page fetch from this environment."
+  }
+}

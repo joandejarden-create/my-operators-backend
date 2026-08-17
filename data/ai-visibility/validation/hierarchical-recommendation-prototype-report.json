@@ -1,0 +1,2281 @@
+{
+  "phase": "AI_INTELLIGENCE_HIERARCHICAL_RECOMMENDATION_PROTOTYPE_COMPLETE",
+  "status": "AI_INTELLIGENCE_HIERARCHICAL_RECOMMENDATION_PROTOTYPE_REVIEW_REQUIRED",
+  "classifierVersion": "ai_visibility_recommendation_classifier_v5_hierarchical",
+  "groundTruthCleanup": {
+    "TOTAL": 3,
+    "KEEP": 2,
+    "AMEND": 0,
+    "DEFER": 1,
+    "cases": [
+      {
+        "CASE_ID": "v1_g034",
+        "ENTITY": "Hotel Equities (CALA)",
+        "CURRENT_HUMAN_LABEL": "first_recommendation",
+        "CURRENT_PREDICTION": "explicit_recommendation",
+        "FULL_RELEVANT_CONTEXT": "I would shortlist Hotel Equities (CALA) for lifestyle hotels.",
+        "TAXONOMY_CONFLICT": "human=first_recommendation vs pred=explicit_recommendation; lead=true pos=true cons=false",
+        "STRUCTURAL": {
+          "hasLead": true,
+          "hasPos": true,
+          "inCons": false,
+          "leadCue": true,
+          "directPositiveCue": true,
+          "considerationSetCue": false
+        },
+        "DECISION": "KEEP",
+        "FINAL_PROPOSED_ROLE": "first_recommendation",
+        "REASON": "RULE4: lead evidence supports first_recommendation — keep human",
+        "taxonomyRuleApplied": [
+          "RULE_4_LEAD_OVERRIDE"
+        ],
+        "holdoutSplit": "development"
+      },
+      {
+        "CASE_ID": "v1_g041",
+        "ENTITY": "Aimbridge Hospitality (LATAM)",
+        "CURRENT_HUMAN_LABEL": "first_recommendation",
+        "CURRENT_PREDICTION": "explicit_recommendation",
+        "FULL_RELEVANT_CONTEXT": "Issue an RFP to Aimbridge Hospitality (LATAM) and Highgate.",
+        "TAXONOMY_CONFLICT": "human=first_recommendation vs pred=explicit_recommendation; lead=true pos=true cons=false",
+        "STRUCTURAL": {
+          "hasLead": true,
+          "hasPos": true,
+          "inCons": false,
+          "leadCue": true,
+          "directPositiveCue": true,
+          "considerationSetCue": false
+        },
+        "DECISION": "KEEP",
+        "FINAL_PROPOSED_ROLE": "first_recommendation",
+        "REASON": "RULE4: lead evidence supports first_recommendation — keep human",
+        "taxonomyRuleApplied": [
+          "RULE_4_LEAD_OVERRIDE"
+        ],
+        "holdoutSplit": "development"
+      },
+      {
+        "CASE_ID": "v2_cand_035ffe13",
+        "ENTITY": "Small Luxury Hotels of the World",
+        "CURRENT_HUMAN_LABEL": "first_recommendation",
+        "CURRENT_PREDICTION": "associated_option",
+        "FULL_RELEVANT_CONTEXT": "in May 2025, becoming the first Curio hotel in Vienna. - **Tapestry Collection** (Upper-Upscale): Tapestry in particular is growing in high-barrier-to-entry markets in Europe where small boutique properties are looking for an engine to help them grow. - **LXR Hotels & Resorts** (Luxury): Hilton maintains LXR Hotels & Resorts for the luxury end, and in 2024, also announced a partnership with **Small Luxury Hotels of the World (SLH)**. --- ### 🟣 Hyatt Hotels Corporation Hyatt has three soft-brand offerings: **The Unbound Collection by Hyatt** (upper-upscale to luxury), **Destination by Hyatt** (upper-upscale to luxury), and **JdV by Hyatt** (upscale to upper-upscale). - **Unbound Collection**: Half of the Unbound Collection's properties are in Asia and Europe. - **JdV by Hyatt*",
+        "TAXONOMY_CONFLICT": "human=first_recommendation vs pred=associated_option; lead=false pos=false cons=false",
+        "STRUCTURAL": {
+          "hasLead": false,
+          "hasPos": false,
+          "inCons": false,
+          "leadCue": false,
+          "directPositiveCue": false,
+          "considerationSetCue": false
+        },
+        "DECISION": "DEFER",
+        "FINAL_PROPOSED_ROLE": null,
+        "REASON": "Ambiguous under Rules 1–5",
+        "taxonomyRuleApplied": [],
+        "holdoutSplit": "development"
+      }
+    ]
+  },
+  "nodeBenchmarks": {
+    "Q3_N": 277,
+    "Q3_ACCURACY": 0.7545126353790613,
+    "Q3_DET": 0.8160377358490566,
+    "Q3_SEM": 0.5538461538461539,
+    "Q4_N": 125,
+    "Q4_ACCURACY": 0.512,
+    "Q4_DET": 0.9130434782608695,
+    "Q4_SEM": 1,
+    "Q5_N": 78,
+    "Q5_ACCURACY": 0.6666666666666666,
+    "Q5_DET": 0.6842105263157895,
+    "Q5_SEM": null,
+    "Q6_N": 46,
+    "Q6_ACCURACY": 0.43478260869565216,
+    "Q6_DET": 1,
+    "Q6_SEM": null,
+    "detail": {
+      "Q3": {
+        "N": 277,
+        "DETERMINISTIC_N": 212,
+        "DETERMINISTIC_ACCURACY": 0.8160377358490566,
+        "NEED_ADJUDICATOR": 65,
+        "SEMANTIC_N": 65,
+        "SEMANTIC_ACCURACY": 0.5538461538461539,
+        "OVERALL_ACCURACY": 0.7545126353790613,
+        "correctSoFar": 209
+      },
+      "Q4": {
+        "N": 125,
+        "DETERMINISTIC_N": 69,
+        "DETERMINISTIC_ACCURACY": 0.9130434782608695,
+        "NEED_ADJUDICATOR": 56,
+        "SEMANTIC_N": 1,
+        "SEMANTIC_ACCURACY": 1,
+        "OVERALL_ACCURACY": 0.512,
+        "correctSoFar": 64
+      },
+      "Q5": {
+        "N": 78,
+        "DETERMINISTIC_N": 76,
+        "DETERMINISTIC_ACCURACY": 0.6842105263157895,
+        "NEED_ADJUDICATOR": 2,
+        "SEMANTIC_N": 0,
+        "SEMANTIC_ACCURACY": null,
+        "OVERALL_ACCURACY": 0.6666666666666666,
+        "correctSoFar": 52
+      },
+      "Q6": {
+        "N": 46,
+        "DETERMINISTIC_N": 20,
+        "DETERMINISTIC_ACCURACY": 1,
+        "NEED_ADJUDICATOR": 26,
+        "SEMANTIC_N": 0,
+        "SEMANTIC_ACCURACY": null,
+        "OVERALL_ACCURACY": 0.43478260869565216,
+        "correctSoFar": 20
+      }
+    }
+  },
+  "routing": {
+    "DEV_N": 290,
+    "ZERO_CALL_CASES": 216,
+    "ONE_CALL_CASES": 54,
+    "MULTI_CALL_CASES": 20,
+    "TOTAL_SEMANTIC_CALLS": 166,
+    "CALL_RATE_PER_CASE": 0.5724137931034483
+  },
+  "costs": {
+    "ACTUAL_COST": 4.98,
+    "PROJECTED_PER_1000": 17.1724,
+    "CAP": 5,
+    "PROVIDER": "claude",
+    "MODEL": "claude-sonnet-4-6"
+  },
+  "providerCompare": {
+    "claude": {
+      "n": 3,
+      "ok": 3
+    },
+    "gemini": {
+      "n": 0,
+      "ok": 0
+    }
+  },
+  "baselines": {
+    "DETERMINISTIC": 0.7,
+    "OLD_HYBRID": 0.7137931034482758,
+    "HIERARCHICAL": 0.675
+  },
+  "hierarchical": {
+    "ACCURACY": 0.675,
+    "PRECISION": 0.675,
+    "RECALL": 0.675,
+    "F1": 0.675,
+    "MACRO_P": 0.8153656379462831,
+    "MACRO_R": 0.678236579717934,
+    "MACRO_F1": 0.6820277492320503,
+    "FIRST_REC": 0.9464285714285714,
+    "QUESTION_STATUS": 0.6964285714285714,
+    "SCORED": 280,
+    "ABSTAINED": 10
+  },
+  "classMetrics": {
+    "first_recommendation": {
+      "precision": 1,
+      "recall": 0.4444444444444444,
+      "f1": 0.6153846153846153,
+      "tp": 12,
+      "fp": 0,
+      "fn": 15
+    },
+    "ranked_recommendation": {
+      "precision": 1,
+      "recall": 0.125,
+      "f1": 0.2222222222222222,
+      "tp": 2,
+      "fp": 0,
+      "fn": 14
+    },
+    "explicit_recommendation": {
+      "precision": 0.9032258064516129,
+      "recall": 0.9032258064516129,
+      "f1": 0.9032258064516129,
+      "tp": 28,
+      "fp": 3,
+      "fn": 3
+    },
+    "associated_option": {
+      "precision": 0.36363636363636365,
+      "recall": 0.5957446808510638,
+      "f1": 0.4516129032258065,
+      "tp": 28,
+      "fp": 49,
+      "fn": 19
+    },
+    "comparator": {
+      "precision": 0.75,
+      "recall": 0.42857142857142855,
+      "f1": 0.5454545454545454,
+      "tp": 3,
+      "fp": 1,
+      "fn": 4
+    },
+    "discussed": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "tp": 105,
+      "fp": 35,
+      "fn": 35
+    },
+    "passing_mention": {
+      "precision": 0.5714285714285714,
+      "recall": 1,
+      "f1": 0.7272727272727273,
+      "tp": 4,
+      "fp": 3,
+      "fn": 0
+    },
+    "negative_or_qualified": {
+      "precision": 1,
+      "recall": 0.8571428571428571,
+      "f1": 0.923076923076923,
+      "tp": 6,
+      "fp": 0,
+      "fn": 1
+    },
+    "source_only": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    }
+  },
+  "errorLocalization": {
+    "DETERMINISTIC_EVIDENCE_ERROR": 4,
+    "Q3_ERROR": 70,
+    "Q4_ERROR": 13,
+    "Q5_ERROR": 0,
+    "Q6_ERROR": 4,
+    "FINAL_COMPOSITION_ERROR": 10,
+    "GROUND_TRUTH_REVIEW_REQUIRED": 0
+  },
+  "errorSamples": [
+    {
+      "caseId": "v1_g009",
+      "entity": "Tribute Portfolio",
+      "human": "ranked_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q4_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v1_g018",
+      "entity": "Hotel Equities (CALA)",
+      "human": "ranked_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q4_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v1_g019",
+      "entity": "Highgate",
+      "human": "ranked_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q4_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v1_g030",
+      "entity": "Autograph Collection",
+      "human": "first_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q6_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v1_g031",
+      "entity": "Curio Collection by Hilton",
+      "human": "ranked_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q4_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v1_g036",
+      "entity": "Ascend Hotel Collection",
+      "human": "ranked_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q4_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v1_g048",
+      "entity": "Highgate",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_0091dfff",
+      "entity": "Hotel Indigo",
+      "human": "associated_option",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "NEUTRAL_DISCUSSION",
+          "ADJ": null,
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_024fcf9c",
+      "entity": "Preferred Hotels & Resorts",
+      "human": "first_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q6_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_035ffe13",
+      "entity": "Small Luxury Hotels of the World",
+      "human": "first_recommendation",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "NEUTRAL_DISCUSSION",
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_07cbcda0",
+      "entity": "Preferred Hotels & Resorts",
+      "human": "first_recommendation",
+      "pred": "passing_mention",
+      "bucket": "DETERMINISTIC_EVIDENCE_ERROR",
+      "path": {
+        "Q1": "INCIDENTAL"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "INCIDENTAL",
+          "ADJ": null,
+          "FINAL": "INCIDENTAL",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_090e59ac",
+      "entity": "Ascend Hotel Collection",
+      "human": "ranked_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q4_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_0a8cfa16",
+      "entity": "DoubleTree by Hilton",
+      "human": "ranked_recommendation",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "NEUTRAL_DISCUSSION",
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_0ac8f8ef",
+      "entity": "Autograph Collection",
+      "human": "associated_option",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "NEUTRAL_DISCUSSION",
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_0cfea0d4",
+      "entity": "Tapestry Collection by Hilton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_0e2e5bd2",
+      "entity": "Autograph Collection",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_141a99e1",
+      "entity": "Fairmont",
+      "human": "associated_option",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "NEUTRAL_DISCUSSION",
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_14651e14",
+      "entity": "Hilton Hotels & Resorts",
+      "human": "associated_option",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "NEUTRAL_DISCUSSION",
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_14cb6324",
+      "entity": "Curio Collection by Hilton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_1550f44a",
+      "entity": "Preferred Hotels & Resorts",
+      "human": "first_recommendation",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "NEUTRAL_DISCUSSION",
+          "ADJ": null,
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_160cbb3c",
+      "entity": "Autograph Collection",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_1741501b",
+      "entity": "Autograph Collection",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_1756c36a",
+      "entity": "Curio Collection by Hilton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_17be10b8",
+      "entity": "Westin",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_17d13a6b",
+      "entity": "Sheraton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_17e09529",
+      "entity": "Westin",
+      "human": "associated_option",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "NEUTRAL_DISCUSSION",
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_198ab403",
+      "entity": "Preferred Hotels & Resorts",
+      "human": "first_recommendation",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "NEUTRAL_DISCUSSION",
+          "ADJ": null,
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_1a3443e6",
+      "entity": "Tapestry Collection by Hilton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_1c01c709",
+      "entity": "Fairmont",
+      "human": "associated_option",
+      "pred": "passing_mention",
+      "bucket": "DETERMINISTIC_EVIDENCE_ERROR",
+      "path": {
+        "Q1": "INCIDENTAL"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "INCIDENTAL",
+          "ADJ": null,
+          "FINAL": "INCIDENTAL",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_1c5b0f67",
+      "entity": "Vignette Collection",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_1d0e7663",
+      "entity": "Autograph Collection",
+      "human": "negative_or_qualified",
+      "pred": "discussed",
+      "bucket": "DETERMINISTIC_EVIDENCE_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "NEUTRAL_DISCUSSION",
+          "ADJ": null,
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_224ba464",
+      "entity": "Curio Collection by Hilton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_25520887",
+      "entity": "Fairmont",
+      "human": "associated_option",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "NEUTRAL_DISCUSSION",
+          "ADJ": null,
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_29967276",
+      "entity": "Curio Collection by Hilton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_2cad5049",
+      "entity": "Sheraton",
+      "human": "ranked_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q4_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_2dec8d90",
+      "entity": "BW Signature Collection",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_3468ce7e",
+      "entity": "Design Hotels",
+      "human": "ranked_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q4_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_35a63d8e",
+      "entity": "Trademark Collection by Wyndham",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_37210b41",
+      "entity": "Preferred Hotels & Resorts",
+      "human": "first_recommendation",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "NEUTRAL_DISCUSSION",
+          "ADJ": null,
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_39c4b049",
+      "entity": "Westin",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_3a457626",
+      "entity": "Autograph Collection",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_3bea5bb6",
+      "entity": "Sheraton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_43f183de",
+      "entity": "Westin",
+      "human": "first_recommendation",
+      "pred": "associated_option",
+      "bucket": "Q6_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "DECISION_OPTION",
+          "FINAL": "DECISION_OPTION",
+          "needed": true
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_45ad67a6",
+      "entity": "Autograph Collection",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_48fefca2",
+      "entity": "Tribute Portfolio",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": null,
+          "ADJ": "CONSIDERATION_SET",
+          "FINAL": "CONSIDERATION_SET",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_4c7fd94c",
+      "entity": "Kimpton Hotels",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_4e014498",
+      "entity": "Vignette Collection",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_529f405a",
+      "entity": "Westin",
+      "human": "associated_option",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": null,
+          "ADJ": "NEUTRAL_DISCUSSION",
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": true
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_53e95635",
+      "entity": "Marriott Hotels",
+      "human": "ranked_recommendation",
+      "pred": "discussed",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "NEUTRAL_DISCUSSION"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "NEUTRAL_DISCUSSION",
+          "ADJ": null,
+          "FINAL": "NEUTRAL_DISCUSSION",
+          "needed": false
+        }
+      ]
+    },
+    {
+      "caseId": "v2_cand_548dde0e",
+      "entity": "Curio Collection by Hilton",
+      "human": "discussed",
+      "pred": "associated_option",
+      "bucket": "Q3_ERROR",
+      "path": {
+        "Q1": "SUBSTANTIVE",
+        "Q2": "NO_NEGATIVE",
+        "Q3": "DECISION_OPTION",
+        "Q4": "CONSIDERATION_SET"
+      },
+      "nodeTrace": [
+        {
+          "NODE": "Q1",
+          "DET": "SUBSTANTIVE",
+          "ADJ": null,
+          "FINAL": "SUBSTANTIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q2",
+          "DET": "NO_NEGATIVE",
+          "ADJ": null,
+          "FINAL": "NO_NEGATIVE",
+          "needed": false
+        },
+        {
+          "NODE": "Q3",
+          "DET": "DECISION_OPTION",
+          "ADJ": null,
+          "FINAL": "DECISION_OPTION",
+          "needed": false
+        },
+        {
+          "NODE": "Q4",
+          "DET": "CONSIDERATION_SET",
+          "ADJ": null,
+          "FINAL": "CONSIDERATION_SET",
+          "needed": false
+        }
+      ]
+    }
+  ],
+  "gates": {
+    "ENTITY_GATE": "PASS",
+    "RECOMMENDATION_GATE": "FAIL",
+    "FIRST_REC_GATE": "FAIL",
+    "CLASS_BALANCE_STATUS": "WEAK"
+  },
+  "holdout": {
+    "HOLDOUT_ACCESSED": "NO",
+    "HOLDOUT_CASES_INSPECTED": 0,
+    "HOLDOUT_METRICS_RUN": "NO"
+  },
+  "recommendation": "SEMANTIC_TAXONOMY_REDESIGN_REQUIRED",
+  "hardGuards": {
+    "NEW_MONITORING": 0,
+    "PUBLIC_CRAWL": 0,
+    "HOLDOUT_ACCESS": 0,
+    "AUTO_GT_CHANGES": 0,
+    "AIRTABLE_WRITES": 0,
+    "SCHEMA_CHANGES": 0,
+    "DEPLOYS": 0,
+    "THRESHOLD_LOWERING": 0,
+    "CASE_SPECIFIC_RULES": 0
+  }
+}

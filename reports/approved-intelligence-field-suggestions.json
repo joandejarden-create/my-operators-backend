@@ -1,0 +1,512 @@
+{
+  "suggestionsVersion": "v1",
+  "generatedAt": "2026-07-06T15:47:55.288Z",
+  "mode": "suggestions",
+  "entityType": "operator",
+  "targetRecId": "reciI2tYQBfMoMK9G",
+  "entityName": "GHL Hoteles (GHL Holding)",
+  "governance": {
+    "validationStatus": "Company Published",
+    "externalDisplayStatus": "Show Trust Label",
+    "companyValidated": false,
+    "displayAllowed": true
+  },
+  "summary": {
+    "totalSuggestions": 5,
+    "controlledPublishCandidates": 0,
+    "suggestedOnlyUpdates": 5,
+    "excludedMappings": 0,
+    "excludedFacts": 2,
+    "riskCounts": {
+      "low": 0,
+      "medium": 4,
+      "high": 1
+    },
+    "byStatus": {
+      "proposed": 0,
+      "needsReview": 5
+    }
+  },
+  "suggestions": [
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:rec9wfIL6Ym3jlEl6:op.snapshot.companyName",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "rec9wfIL6Ym3jlEl6",
+      "sourceId": "recoOcRjSD3VZb3qt",
+      "factKey": "op.snapshot.companyName",
+      "displayLabel": "Company Name",
+      "approvedValue": "GHL Hoteles",
+      "destinationTable": "Operator Setup - Platform & Markets",
+      "destinationField": "company_name",
+      "destinationFieldType": "singleLineText",
+      "consumptionPath": "prefill.companyName",
+      "currentLiveValue": "GHL Hoteles (GHL Holding)",
+      "liveValuePopulated": true,
+      "proposedValue": "GHL Hoteles",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "High",
+      "riskReasons": [
+        "identity_field_risk"
+      ],
+      "recommendation": "Do not auto-publish; steward must explicitly approve any overwrite.",
+      "evidenceSummary": {
+        "evidenceText": "Events GHL Hotels in Latin America",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles events.html",
+        "confidenceLevel": "High",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recoOcRjSD3VZb3qt",
+        "sourceTitle": "GHL Hoteles events",
+        "sourceUrl": "https://www.ghlhoteles.com/en/events/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "identity_field_populated_no_overwrite"
+      ],
+      "policyNotes": "Suggest only when destination blank; never overwrite curated identity."
+    },
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:recNoTunGHDh0kxBr:op.platform.offeredServices",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "recNoTunGHDh0kxBr",
+      "sourceId": "recoOcRjSD3VZb3qt",
+      "factKey": "op.platform.offeredServices",
+      "displayLabel": "Offered Services",
+      "approvedValue": "Events and celebrations (meetings and group events at GHL hotels)",
+      "destinationTable": "Operator Setup - Governance, Delivery & Diligence",
+      "destinationField": "Offered Services",
+      "destinationFieldType": "multipleSelects",
+      "consumptionPath": "prefill.offeredServices",
+      "currentLiveValue": null,
+      "liveValuePopulated": false,
+      "proposedValue": "Events and celebrations (meetings and group events at GHL hotels)",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "Medium",
+      "riskReasons": [
+        "select_option_validation"
+      ],
+      "recommendation": "Validate select options against Airtable allowed values before publish.",
+      "evidenceSummary": {
+        "evidenceText": "guarantee success in all your celebrations and events thanks to their well-equipped facilities, superior category services, and expert advice from our team of qualified professionals.",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles events.html",
+        "confidenceLevel": "Medium",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recoOcRjSD3VZb3qt",
+        "sourceTitle": "GHL Hoteles events",
+        "sourceUrl": "https://www.ghlhoteles.com/en/events/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "select_option_validation_required"
+      ],
+      "policyNotes": "multipleSelects — map tokens carefully; prefer suggested review."
+    },
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:recNzLKr826ycKR7k:op.snapshot.companyDescription",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "recNzLKr826ycKR7k",
+      "sourceId": "recvjfaDa9AnCJkNx",
+      "factKey": "op.snapshot.companyDescription",
+      "displayLabel": "Company Description",
+      "approvedValue": "With presence in 35 hotels, 4 countries, 18 destinations, 3.433 rooms and 2.000 collaborators, GHL operates hotels across Latin America.",
+      "destinationTable": "Operator Setup - Profile & Positioning",
+      "destinationField": "companyDescription",
+      "destinationFieldType": "longText",
+      "consumptionPath": "prefill.companyDescription",
+      "currentLiveValue": "GHL Hoteles is a Latin American hospitality operator that manages a multi-brand portfolio spanning proprietary GHL brands and international affiliations. The company supports owners and investors with end-to-end hotel operations—commercial, revenue, F&B, and property-level execution—across diverse markets in Central America, the Andean region, and the Southern Cone. GHL emphasizes scalable operating processes, brand-standard coordination, and locally relevant guest experiences while maintaining portfolio discipline across urban, resort, and mixed-demand environments.",
+      "liveValuePopulated": true,
+      "proposedValue": "With presence in 35 hotels, 4 countries, 18 destinations, 3.433 rooms and 2.000 collaborators, GHL operates hotels across Latin America.",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "Medium",
+      "riskReasons": [
+        "destination_populated"
+      ],
+      "recommendation": "Compare proposed vs live value; approve only if proposed is clearly better.",
+      "evidenceSummary": {
+        "evidenceText": "With presence in 35 hotels, 4 countries, 18 destinations, 3.433 rooms and 2.000 collaborators",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles home EN.html",
+        "confidenceLevel": "High",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recvjfaDa9AnCJkNx",
+        "sourceTitle": "GHL Hoteles home EN",
+        "sourceUrl": "https://www.ghlhoteles.com/en/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "destination_field_populated"
+      ],
+      "policyNotes": "Profile summary staging; suggested update when live field populated."
+    },
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:reccszsLnWjA5fPnp:op.markets.regionsSupported",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "reccszsLnWjA5fPnp",
+      "sourceId": "recoOcRjSD3VZb3qt",
+      "factKey": "op.markets.regionsSupported",
+      "displayLabel": "Regions Supported",
+      "approvedValue": "Colombia, Chile, Guatemala, Peru",
+      "destinationTable": "Operator Setup - Platform & Markets",
+      "destinationField": "specificMarkets",
+      "destinationFieldType": "longText",
+      "consumptionPath": "prefill.regions",
+      "currentLiveValue": "Colombia, Chile, Guatemala, Peru",
+      "liveValuePopulated": true,
+      "proposedValue": "Colombia, Chile, Guatemala, Peru",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "Medium",
+      "riskReasons": [
+        "destination_populated"
+      ],
+      "recommendation": "Compare proposed vs live value; approve only if proposed is clearly better.",
+      "evidenceSummary": {
+        "evidenceText": "Destinations in Latin America",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles events.html",
+        "confidenceLevel": "High",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recoOcRjSD3VZb3qt",
+        "sourceTitle": "GHL Hoteles events",
+        "sourceUrl": "https://www.ghlhoteles.com/en/events/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "destination_field_populated"
+      ],
+      "policyNotes": "Regional presence text; validate against select options if normalized later."
+    },
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:rectvfFz6E0gt8KeC:op.brand.familiesOperated",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "rectvfFz6E0gt8KeC",
+      "sourceId": "recqLGiIQAEP1I1Hv",
+      "factKey": "op.brand.familiesOperated",
+      "displayLabel": "Brand Families Operated",
+      "approvedValue": "Geotel, GHL Collection, GHL Relax, GHL Style, Irotama Resort, Latam Hotel Corporation, GHL",
+      "destinationTable": "Operator Setup - Profile & Positioning",
+      "destinationField": "Brand Families Operated",
+      "destinationFieldType": "multipleSelects",
+      "consumptionPath": "prefill.brandFamiliesOperated",
+      "currentLiveValue": null,
+      "liveValuePopulated": false,
+      "proposedValue": "Geotel, GHL Collection, GHL Relax, GHL Style, Irotama Resort, Latam Hotel Corporation, GHL",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "Medium",
+      "riskReasons": [
+        "select_option_validation"
+      ],
+      "recommendation": "Validate select options against Airtable allowed values before publish.",
+      "evidenceSummary": {
+        "evidenceText": "GHL hotels offer",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles brand GHL.html",
+        "confidenceLevel": "High",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recqLGiIQAEP1I1Hv",
+        "sourceTitle": "GHL Hoteles brand GHL",
+        "sourceUrl": "https://www.ghlhoteles.com/en/brands/ghl/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "select_option_validation_required"
+      ],
+      "policyNotes": "multipleSelects destination — requires option validation before controlled publish."
+    }
+  ],
+  "controlledPublishCandidates": [],
+  "suggestedOnlyUpdates": [
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:rec9wfIL6Ym3jlEl6:op.snapshot.companyName",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "rec9wfIL6Ym3jlEl6",
+      "sourceId": "recoOcRjSD3VZb3qt",
+      "factKey": "op.snapshot.companyName",
+      "displayLabel": "Company Name",
+      "approvedValue": "GHL Hoteles",
+      "destinationTable": "Operator Setup - Platform & Markets",
+      "destinationField": "company_name",
+      "destinationFieldType": "singleLineText",
+      "consumptionPath": "prefill.companyName",
+      "currentLiveValue": "GHL Hoteles (GHL Holding)",
+      "liveValuePopulated": true,
+      "proposedValue": "GHL Hoteles",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "High",
+      "riskReasons": [
+        "identity_field_risk"
+      ],
+      "recommendation": "Do not auto-publish; steward must explicitly approve any overwrite.",
+      "evidenceSummary": {
+        "evidenceText": "Events GHL Hotels in Latin America",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles events.html",
+        "confidenceLevel": "High",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recoOcRjSD3VZb3qt",
+        "sourceTitle": "GHL Hoteles events",
+        "sourceUrl": "https://www.ghlhoteles.com/en/events/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "identity_field_populated_no_overwrite"
+      ],
+      "policyNotes": "Suggest only when destination blank; never overwrite curated identity."
+    },
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:recNoTunGHDh0kxBr:op.platform.offeredServices",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "recNoTunGHDh0kxBr",
+      "sourceId": "recoOcRjSD3VZb3qt",
+      "factKey": "op.platform.offeredServices",
+      "displayLabel": "Offered Services",
+      "approvedValue": "Events and celebrations (meetings and group events at GHL hotels)",
+      "destinationTable": "Operator Setup - Governance, Delivery & Diligence",
+      "destinationField": "Offered Services",
+      "destinationFieldType": "multipleSelects",
+      "consumptionPath": "prefill.offeredServices",
+      "currentLiveValue": null,
+      "liveValuePopulated": false,
+      "proposedValue": "Events and celebrations (meetings and group events at GHL hotels)",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "Medium",
+      "riskReasons": [
+        "select_option_validation"
+      ],
+      "recommendation": "Validate select options against Airtable allowed values before publish.",
+      "evidenceSummary": {
+        "evidenceText": "guarantee success in all your celebrations and events thanks to their well-equipped facilities, superior category services, and expert advice from our team of qualified professionals.",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles events.html",
+        "confidenceLevel": "Medium",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recoOcRjSD3VZb3qt",
+        "sourceTitle": "GHL Hoteles events",
+        "sourceUrl": "https://www.ghlhoteles.com/en/events/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "select_option_validation_required"
+      ],
+      "policyNotes": "multipleSelects — map tokens carefully; prefer suggested review."
+    },
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:recNzLKr826ycKR7k:op.snapshot.companyDescription",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "recNzLKr826ycKR7k",
+      "sourceId": "recvjfaDa9AnCJkNx",
+      "factKey": "op.snapshot.companyDescription",
+      "displayLabel": "Company Description",
+      "approvedValue": "With presence in 35 hotels, 4 countries, 18 destinations, 3.433 rooms and 2.000 collaborators, GHL operates hotels across Latin America.",
+      "destinationTable": "Operator Setup - Profile & Positioning",
+      "destinationField": "companyDescription",
+      "destinationFieldType": "longText",
+      "consumptionPath": "prefill.companyDescription",
+      "currentLiveValue": "GHL Hoteles is a Latin American hospitality operator that manages a multi-brand portfolio spanning proprietary GHL brands and international affiliations. The company supports owners and investors with end-to-end hotel operations—commercial, revenue, F&B, and property-level execution—across diverse markets in Central America, the Andean region, and the Southern Cone. GHL emphasizes scalable operating processes, brand-standard coordination, and locally relevant guest experiences while maintaining portfolio discipline across urban, resort, and mixed-demand environments.",
+      "liveValuePopulated": true,
+      "proposedValue": "With presence in 35 hotels, 4 countries, 18 destinations, 3.433 rooms and 2.000 collaborators, GHL operates hotels across Latin America.",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "Medium",
+      "riskReasons": [
+        "destination_populated"
+      ],
+      "recommendation": "Compare proposed vs live value; approve only if proposed is clearly better.",
+      "evidenceSummary": {
+        "evidenceText": "With presence in 35 hotels, 4 countries, 18 destinations, 3.433 rooms and 2.000 collaborators",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles home EN.html",
+        "confidenceLevel": "High",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recvjfaDa9AnCJkNx",
+        "sourceTitle": "GHL Hoteles home EN",
+        "sourceUrl": "https://www.ghlhoteles.com/en/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "destination_field_populated"
+      ],
+      "policyNotes": "Profile summary staging; suggested update when live field populated."
+    },
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:reccszsLnWjA5fPnp:op.markets.regionsSupported",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "reccszsLnWjA5fPnp",
+      "sourceId": "recoOcRjSD3VZb3qt",
+      "factKey": "op.markets.regionsSupported",
+      "displayLabel": "Regions Supported",
+      "approvedValue": "Colombia, Chile, Guatemala, Peru",
+      "destinationTable": "Operator Setup - Platform & Markets",
+      "destinationField": "specificMarkets",
+      "destinationFieldType": "longText",
+      "consumptionPath": "prefill.regions",
+      "currentLiveValue": "Colombia, Chile, Guatemala, Peru",
+      "liveValuePopulated": true,
+      "proposedValue": "Colombia, Chile, Guatemala, Peru",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "Medium",
+      "riskReasons": [
+        "destination_populated"
+      ],
+      "recommendation": "Compare proposed vs live value; approve only if proposed is clearly better.",
+      "evidenceSummary": {
+        "evidenceText": "Destinations in Latin America",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles events.html",
+        "confidenceLevel": "High",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recoOcRjSD3VZb3qt",
+        "sourceTitle": "GHL Hoteles events",
+        "sourceUrl": "https://www.ghlhoteles.com/en/events/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "destination_field_populated"
+      ],
+      "policyNotes": "Regional presence text; validate against select options if normalized later."
+    },
+    {
+      "suggestionId": "reciI2tYQBfMoMK9G:rectvfFz6E0gt8KeC:op.brand.familiesOperated",
+      "status": "Needs Review",
+      "entityType": "operator",
+      "targetRecId": "reciI2tYQBfMoMK9G",
+      "entityName": "GHL Hoteles (GHL Holding)",
+      "sourceFactId": "rectvfFz6E0gt8KeC",
+      "sourceId": "recqLGiIQAEP1I1Hv",
+      "factKey": "op.brand.familiesOperated",
+      "displayLabel": "Brand Families Operated",
+      "approvedValue": "Geotel, GHL Collection, GHL Relax, GHL Style, Irotama Resort, Latam Hotel Corporation, GHL",
+      "destinationTable": "Operator Setup - Profile & Positioning",
+      "destinationField": "Brand Families Operated",
+      "destinationFieldType": "multipleSelects",
+      "consumptionPath": "prefill.brandFamiliesOperated",
+      "currentLiveValue": null,
+      "liveValuePopulated": false,
+      "proposedValue": "Geotel, GHL Collection, GHL Relax, GHL Style, Irotama Resort, Latam Hotel Corporation, GHL",
+      "classification": "suggested_field_update",
+      "publishMode": "suggested_field_update",
+      "riskLevel": "Medium",
+      "riskReasons": [
+        "select_option_validation"
+      ],
+      "recommendation": "Validate select options against Airtable allowed values before publish.",
+      "evidenceSummary": {
+        "evidenceText": "GHL hotels offer",
+        "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles brand GHL.html",
+        "confidenceLevel": "High",
+        "extractionType": "Directly Stated"
+      },
+      "sourceSummary": {
+        "sourceId": "recqLGiIQAEP1I1Hv",
+        "sourceTitle": "GHL Hoteles brand GHL",
+        "sourceUrl": "https://www.ghlhoteles.com/en/brands/ghl/",
+        "sourceType": "Website Capture",
+        "sourceOrigin": "Public Web",
+        "approvedForExplorerUse": "Yes",
+        "status": "Extracted"
+      },
+      "blockers": [
+        "select_option_validation_required"
+      ],
+      "policyNotes": "multipleSelects destination — requires option validation before controlled publish."
+    }
+  ],
+  "excludedMappings": [],
+  "excludedFacts": [
+    {
+      "factId": "rechcJoigQ02F2gpF",
+      "fieldKey": "op.platform.offeredServices",
+      "humanReviewStatus": "Pending",
+      "reason": "not_approved"
+    },
+    {
+      "factId": "reciPyc10XmJt5EVT",
+      "fieldKey": "op.snapshot.primaryServiceModel",
+      "humanReviewStatus": "Pending",
+      "reason": "not_approved"
+    }
+  ],
+  "nextRecommendedAction": "Review suggested-only updates; no blank-field auto-publish candidates.",
+  "safety": {
+    "readOnly": true,
+    "applyEnabled": false,
+    "noPlatformWrites": true,
+    "noGovernanceWrites": true,
+    "noCompanyValidatedWrites": true
+  },
+  "sourceAudit": {
+    "auditVersion": "v1",
+    "generatedAt": "2026-07-06T15:47:55.285Z"
+  }
+}

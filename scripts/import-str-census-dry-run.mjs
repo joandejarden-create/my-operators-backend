@@ -1,6 +1,9 @@
 /**
  * Step 3 — STR Excel → Hotel Census dry-run matcher (read-only, no Airtable updates).
  *
+ * Geography mapping: Excel STR Market → Hotel Census Market; Excel STR Submarket → Submarket.
+ * No separate STR Market / STR Submarket Airtable fields are created or expected.
+ *
  * Prerequisite: run inventory scripts first.
  *
  * Usage:

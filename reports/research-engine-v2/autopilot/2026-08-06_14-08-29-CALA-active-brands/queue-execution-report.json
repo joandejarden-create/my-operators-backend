@@ -1,0 +1,49 @@
+{
+  "version": "census-autopilot-queue-orchestrator-v2",
+  "mode": "controlled",
+  "strategy": "fastest-safe",
+  "targeted_queue": "core_identity_quality",
+  "queues_planned": [
+    "core_identity_quality"
+  ],
+  "queues_executed": [
+    "core_identity_quality"
+  ],
+  "queues_skipped": [],
+  "queues_soft_deferred": [],
+  "queues_exhausted": [
+    "core_identity_quality"
+  ],
+  "queue_results": [
+    {
+      "queue_id": "core_identity_quality",
+      "status": "executed_exhausted",
+      "high_proposals": 0,
+      "eligible_scanned": 907,
+      "notes": [
+        "status=production_census_core_identity_quality_gate_partial_steward_remaining",
+        "autofix=0",
+        "unknown_city=104",
+        "descriptor_city=2",
+        "coord_blocked=326",
+        "steward=220",
+        "no_high_confidence_proposals"
+      ]
+    }
+  ],
+  "total_high_proposals": 0,
+  "runtime_ms": 9278,
+  "airtable_writes": false,
+  "fetch_limit_description": 20,
+  "reports_attached": {
+    "description": false,
+    "lane2": false,
+    "rooms": false,
+    "property_name_cleanup": false,
+    "address": false,
+    "source_discovery": false
+  },
+  "run_id": "2026-08-06_14-08-29-CALA-active-brands",
+  "scope": "active-brand-setup",
+  "region": "CALA"
+}

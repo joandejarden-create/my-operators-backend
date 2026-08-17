@@ -31,6 +31,8 @@ import {
 import { applyTeamExperienceMarketsFromLeadJson } from "./lib/operator-leadership-explorer-map.js";
 import { normalizeOperatorSetupSelectPrefill } from "./lib/third-party-operator-select-prefill-normalize.js";
 import { pickExplorerHeroLabelsFromMasterFields } from "../lib/operator-explorer-hero-labels.js";
+import { normalizeProfileGovernance } from "../lib/profile-governance/normalize-profile-governance.js";
+import { applyOperatorExplorerTrustFootnote } from "../lib/partner-intelligence/operator-explorer-trust-footnote.js";
 import { normalizeOperatorExplorerPresentationRecords } from "./lib/operator-materials-explorer-presentation-map.js";
 import { applyLeadershipTeamToExecPrefill } from "./lib/operator-leadership-member-map.js";
 import {
@@ -208,10 +210,44 @@ export default async function getThirdPartyOperatorDetail(req, res) {
       normalizeOperatorSetupSelectPrefill(prefill);
       const heroLabels = pickExplorerHeroLabelsFromMasterFields(master.fields);
 
+      const profileGovernance = normalizeProfileGovernance(master.fields, {
+        entityType: "operator",
+        sourceTable: "Operator Setup - Master",
+        fallbackFields: master.fields,
+      });
+
       const { applyPartnerIntelligenceOperatorOverlay } = await import(
         "../lib/partner-intelligence/publish-overlay.js"
       );
       const overlay = await applyPartnerIntelligenceOperatorOverlay(prefill, master.id);
+
+      const operatorPayload = {
+        id: master.id,
+        fields,
+        caseStudiesDetail,
+        ownerDiligenceQa,
+        brandProfiles: Array.isArray(brandProfiles) ? brandProfiles : [],
+        representativeProperties: [],
+        leadershipTeam,
+        leadershipPlatform: leadershipPlatformDetail,
+        infrastructurePlatform: infrastructurePlatformDetail,
+        engagementReporting: engagementReportingDetail,
+        engagementPlatform: engagementReportingDetail,
+        operatingPlatform: operatingPlatformDetail,
+        brandRelationships: brandRelationshipsDetail,
+        operatorExplorerMaterials,
+        explorerHeroVerification: heroLabels.explorerHeroVerification,
+        explorerHeroDataSource: heroLabels.explorerHeroDataSource,
+        governance: profileGovernance,
+        censusFootprint,
+        prefill,
+      };
+      applyOperatorExplorerTrustFootnote(operatorPayload, {
+        masterId: master.id,
+        masterFields: master.fields,
+        companyName: master.fields?.company_name || prefill?.company_name || "",
+        operatingModel: master.fields?.["Operating Model"] || "",
+      });
 
       logOperatorReadPath("third_party_operator_detail", {
         read_path: "new_base",
@@ -226,26 +262,7 @@ export default async function getThirdPartyOperatorDetail(req, res) {
           footprintPortfolioSource,
           partnerIntelligenceOverlay: overlay.applied > 0 ? overlay : undefined,
         },
-        operator: {
-          id: master.id,
-          fields,
-          caseStudiesDetail,
-          ownerDiligenceQa,
-          brandProfiles: Array.isArray(brandProfiles) ? brandProfiles : [],
-          representativeProperties: [],
-          leadershipTeam,
-          leadershipPlatform: leadershipPlatformDetail,
-          infrastructurePlatform: infrastructurePlatformDetail,
-          engagementReporting: engagementReportingDetail,
-          engagementPlatform: engagementReportingDetail,
-          operatingPlatform: operatingPlatformDetail,
-          brandRelationships: brandRelationshipsDetail,
-          operatorExplorerMaterials,
-          explorerHeroVerification: heroLabels.explorerHeroVerification,
-          explorerHeroDataSource: heroLabels.explorerHeroDataSource,
-          censusFootprint,
-          prefill,
-        },
+        operator: operatorPayload,
       });
     }
 

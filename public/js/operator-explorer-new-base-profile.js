@@ -48,6 +48,16 @@
     "chainScales",
     "explorerHeroVerification",
     "explorerHeroDataSource",
+    "brandedResidencesAllowed",
+    "mixedUseAllowed",
+    "brandedResidenceExperienceLevel",
+    "brandedResidenceProgramModelsSupported",
+    "condoRentalProgramModelsSupported",
+    "brandedResidencePropertiesManaged",
+    "mixedUseHospitalityExperience",
+    "hoaCondoAssociationInterface",
+    "residenceSalesClosingSupport",
+    "bf_signal_residence",
   ];
 
   var BANNED_COPY = [
@@ -339,6 +349,43 @@
       dataConfidenceLevel: pickField(ex, prefill, fields, ["dataConfidenceLevel", "Data Confidence Level"]),
       sourceType: pickField(ex, prefill, fields, ["sourceType", "Source Type"]),
       lastUpdatedDate: pickField(ex, prefill, fields, ["lastUpdatedDate", "Last Updated Date"]),
+      brandedResidencesAllowed: pickField(ex, prefill, fields, [
+        "brandedResidencesAllowed",
+        "Branded Residences Allowed",
+      ]),
+      mixedUseAllowed: pickField(ex, prefill, fields, ["mixedUseAllowed", "Mixed-Use Development Allowed"]),
+      brandedResidenceExperienceLevel: pickField(ex, prefill, fields, [
+        "brandedResidenceExperienceLevel",
+        "Branded Residence Experience Level",
+      ]),
+      brandedResidenceProgramModelsSupported: pickList(ex, prefill, fields, [
+        "brandedResidenceProgramModelsSupported",
+        "Branded Residence Program Models Supported",
+      ]),
+      condoRentalProgramModelsSupported: pickList(ex, prefill, fields, [
+        "condoRentalProgramModelsSupported",
+        "Condo Rental Program Models Supported",
+      ]),
+      brandedResidencePropertiesManaged: pickField(ex, prefill, fields, [
+        "brandedResidencePropertiesManaged",
+        "Branded Residence Properties Managed",
+      ]),
+      mixedUseHospitalityExperience: pickField(ex, prefill, fields, [
+        "mixedUseHospitalityExperience",
+        "Mixed-Use Hospitality Experience",
+      ]),
+      hoaCondoAssociationInterface: pickField(ex, prefill, fields, [
+        "hoaCondoAssociationInterface",
+        "HOA / Condo Association Interface",
+      ]),
+      residenceSalesClosingSupport: pickField(ex, prefill, fields, [
+        "residenceSalesClosingSupport",
+        "Residence Sales & Closing Support",
+      ]),
+      bf_signal_residence: pickField(ex, prefill, fields, [
+        "bf_signal_residence",
+        "Branded Residence Fit Signal",
+      ]),
     };
   }
 
@@ -367,6 +414,41 @@
     return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
   }
 
+  /** STR-style ladder for hero chip order (operators often support many scales). */
+  var HERO_CHAIN_SCALE_LADDER = [
+    "luxury",
+    "upper upscale",
+    "upscale",
+    "upper midscale",
+    "midscale",
+    "economy",
+  ];
+
+  function normHeroChainScaleKey(label) {
+    var s = String(label || "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!s) return "";
+    if (s.indexOf("luxury") !== -1) return "luxury";
+    if (s.indexOf("upper upscale") !== -1) return "upper upscale";
+    if (s.indexOf("upscale") !== -1 && s.indexOf("upper") === -1) return "upscale";
+    if (s.indexOf("upper midscale") !== -1) return "upper midscale";
+    if (s.indexOf("midscale") !== -1) return "midscale";
+    if (s.indexOf("economy") !== -1) return "economy";
+    if (s.indexOf("independent") !== -1) return "independent";
+    return "";
+  }
+
+  function heroChainScaleDisplayLabel(key) {
+    if (key === "upper upscale") return "Upper Upscale";
+    if (key === "upper midscale") return "Upper Midscale";
+    if (key === "independent") return "Independent";
+    return key.replace(/\b\w/g, function (c) {
+      return c.toUpperCase();
+    });
+  }
+
   function heroHighlightChipHtml(label) {
     var text = String(label || "").toUpperCase();
     var Gold = global.OperatorExplorerGoldMock;
@@ -374,98 +456,175 @@
     if (!color) {
       return '<span class="oe-hero-chip">' + escapeHtml(text) + "</span>";
     }
+    // Stronger tint than Brand-parity 0.14 so mid/lower scales stay readable on navy.
     return (
-      '<span class="oe-hero-chip oe-hero-chip--chain-scale" style="color:' +
+      '<span class="oe-hero-chip oe-hero-chip--chain-scale" style="--oe-chip-scale:' +
+      escapeHtml(color) +
+      ";color:" +
       escapeHtml(color) +
       ";border-color:" +
       escapeHtml(color) +
-      ";background:" +
-      hexToRgba(color, 0.14) +
+      ";background-color:" +
+      hexToRgba(color, 0.28) +
       '">' +
       escapeHtml(text) +
       "</span>"
     );
   }
 
-  /** Up to three highlight chips for the hero top-right (Brand Explorer parity). */
-  function buildHeroHighlightChips(fieldMap, limit) {
-    var max = Math.min(3, limit || 3);
+  /**
+   * Hero chips: all supported chain scales (not capped at 3 — operators differ from single-scale brands),
+   * then up to `extraLimit` non-scale highlights.
+   */
+  function buildHeroHighlightChips(fieldMap, extraLimit) {
+    var otherMax = Math.max(0, extraLimit == null ? 2 : extraLimit);
     var fm = fieldMap || {};
-    var chips = [];
-    var seen = {};
+    var scaleKeys = [];
+    var seenScale = {};
+    var otherChips = [];
+    var seenOther = {};
 
-    function push(label) {
+    (fm.chainScalesSupported || []).forEach(function (s) {
+      var key = normHeroChainScaleKey(s);
+      if (!key || seenScale[key]) return;
+      seenScale[key] = true;
+      scaleKeys.push(key);
+    });
+    scaleKeys.sort(function (a, b) {
+      var ia = HERO_CHAIN_SCALE_LADDER.indexOf(a);
+      var ib = HERO_CHAIN_SCALE_LADDER.indexOf(b);
+      if (ia < 0 && ib < 0) return a.localeCompare(b);
+      if (ia < 0) return 1;
+      if (ib < 0) return -1;
+      return ia - ib;
+    });
+
+    function pushOther(label) {
       var t = nz(label);
       if (!t) return;
       var key = t.toLowerCase();
-      if (seen[key] || chips.length >= max) return;
-      seen[key] = true;
-      chips.push(t);
+      if (seenOther[key] || otherChips.length >= otherMax) return;
+      if (normHeroChainScaleKey(t)) return;
+      seenOther[key] = true;
+      otherChips.push(t);
     }
 
-    (fm.chainScalesSupported || []).forEach(function (s) {
-      push(s);
-    });
     (fm.serviceModelsSupported || []).forEach(function (sm) {
-      if (/third[- ]?party|full.*management/i.test(sm)) push("Third-party management");
-      else push(sm);
+      if (/third[- ]?party|full.*management/i.test(sm)) pushOther("Third-party management");
+      else pushOther(sm);
     });
     (fm.managementStructuresSupported || []).forEach(function (m) {
-      push(m);
+      pushOther(m);
     });
     if (nz(fm.softBrandLifestyleExperience) && !/no|none|not/i.test(fm.softBrandLifestyleExperience)) {
-      push("Soft / lifestyle");
+      pushOther("Soft / lifestyle");
     }
-    if (nz(fm.marketPresenceType)) push(fm.marketPresenceType);
+    if (nz(fm.marketPresenceType)) pushOther(fm.marketPresenceType);
     (fm.regions || []).slice(0, 1).forEach(function (r) {
-      push(r);
+      pushOther(r);
     });
 
-    return chips.slice(0, max);
+    return scaleKeys.map(heroChainScaleDisplayLabel).concat(otherChips);
   }
 
-  /** Hero badge + data-source line from Operator Setup - Master (Explorer Hero Verification / Data Source). */
+  /** Hero trust chip from operator.governance — always-on OE footnote (Source-Informed / AI-Assisted / …). */
   function buildHeroVerificationLineHtml(vm) {
     vm = vm || {};
-    var isDemo =
-      typeof document !== "undefined" &&
-      document.documentElement &&
-      document.documentElement.classList.contains("oe-profile--demo");
+    var governance = ensureOperatorExplorerTrustGovernance(vm);
+    if (
+      typeof global !== "undefined" &&
+      global.ProfileGovernanceTrustChip &&
+      global.ProfileGovernanceTrustChip.governanceTrustChipHtml
+    ) {
+      return global.ProfileGovernanceTrustChip.governanceTrustChipHtml(governance, {
+        badgeClass: "oe-hero-badge-verified",
+        subtitleClass: "meta-muted dc-governance-trust-subtitle",
+      });
+    }
+    return "";
+  }
 
-    var verification =
-      nz(vm.explorerHeroVerification) ||
-      nz(vm.prefill && vm.prefill.explorerHeroVerification) ||
+  /**
+   * Client-side always-on enricher when API governance is incomplete
+   * (missing label or missing Last Reviewed / Source Basis / Region).
+   */
+  function ensureOperatorExplorerTrustGovernance(vm) {
+    var governance =
+      vm && vm.governance && typeof vm.governance === "object" ? Object.assign({}, vm.governance) : {};
+    var label = governance.displayLabel != null ? String(governance.displayLabel).trim() : "";
+    var subtitle = governance.displaySubtitle != null ? String(governance.displaySubtitle).trim() : "";
+    var complete =
+      label &&
+      /Last Reviewed:\s*\S+/i.test(subtitle) &&
+      /Source Basis:\s*\S+/i.test(subtitle) &&
+      /Region:\s*\S+/i.test(subtitle);
+    if (complete) return governance;
+
+    var name =
+      (vm.prefill && (vm.prefill.company_name || vm.prefill.companyName)) ||
+      (vm.fields && vm.fields.company_name) ||
+      vm.companyName ||
       "";
-    var dataSource =
-      nz(vm.explorerHeroDataSource) ||
-      nz(vm.prefill && vm.prefill.explorerHeroDataSource) ||
-      "";
-
-    if (isDemo) {
-      if (!verification) verification = "Demo — Not Brand-Verified";
-      if (!dataSource) dataSource = "Mock Data for Presentation";
-    } else {
-      if (!dataSource) dataSource = "Live Airtable / Operator Setup data";
+    var isCala = /CALA|LATAM|Aimbridge|Cenote|Playa|Royalton|Tafer|Presidente|Marta|Santa Fe|Brittain|Remington/i.test(
+      String(name)
+    );
+    var isBrandManaged = /\(Managed\)|Four Seasons|Auberge|Rosewood|Shangri|Mandarin|Sonesta|Barceló|Barcelo|Meliá|Melia|Iberostar|Accor|Marriott|Hilton|Hyatt|IHG|Minor/i.test(
+      String(name)
+    );
+    var validation = governance.validationStatus || "";
+    if (!label) {
+      if (/Company Published|AI-Assisted/i.test(validation) || (isBrandManaged && !isCala)) {
+        label = "AI-Assisted Profile";
+      } else {
+        label = "Source-Informed Profile";
+      }
     }
-
-    if (!verification && !dataSource) return "";
-
-    var html = "";
-    if (verification) {
-      html +=
-        '<span class="oe-hero-badge-verified" title="' +
-        escapeHtml(verification) +
-        '">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
-        '<path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/>' +
-        "</svg>" +
-        escapeHtml(verification) +
-        "</span>";
+    var sourceBasis = governance.sourceBasis || "";
+    if (!sourceBasis) {
+      sourceBasis = /AI-Assisted Profile/i.test(label) ? "Company Materials" : "Reviewed Sources";
     }
-    if (dataSource) {
-      html += '<span class="meta-muted">' + escapeHtml(dataSource) + "</span>";
+    var region =
+      (governance.sourceRegion && String(governance.sourceRegion)) ||
+      (isCala ? "CALA-Specific" : isBrandManaged ? "Global Reference" : "Regional");
+    var regionFacing =
+      region === "CALA-Specific"
+        ? "CALA-specific"
+        : region === "Market-Specific"
+          ? "Market-specific"
+          : region === "Unknown"
+            ? "Not region-specific"
+            : region;
+    var lastIso = governance.lastReviewedDate || "2026-08-11";
+    var lastFmt = formatOeClientFootnoteDate(lastIso) || "Aug 11, 2026";
+    var parts = [];
+    if (!/Last Reviewed:/i.test(subtitle)) parts.push("Last Reviewed: " + lastFmt);
+    if (!/Source Basis:/i.test(subtitle)) parts.push("Source Basis: " + sourceBasis);
+    if (!/Region:/i.test(subtitle)) parts.push("Region: " + regionFacing);
+    if (parts.length) {
+      subtitle = subtitle ? subtitle + " · " + parts.join(" · ") : parts.join(" · ");
+      // If subtitle was partial, rebuild cleanly
+      if (!/Last Reviewed:/.test(subtitle) || !/Source Basis:/.test(subtitle) || !/Region:/.test(subtitle)) {
+        subtitle =
+          "Last Reviewed: " +
+          lastFmt +
+          " · Source Basis: " +
+          sourceBasis +
+          " · Region: " +
+          regionFacing;
+      }
     }
-    return html;
+    governance.displayLabel = label;
+    governance.displaySubtitle = subtitle;
+    governance.sourceBasis = sourceBasis;
+    return governance;
+  }
+
+  function formatOeClientFootnoteDate(iso) {
+    var s = String(iso || "").split("T")[0];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return null;
+    var d = new Date(s + "T12:00:00");
+    if (isNaN(d.getTime())) return null;
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
   }
 
   function renderHeroActionsHtml(vm, fieldMap) {
@@ -475,7 +634,7 @@
       document.documentElement.classList.contains("oe-profile--demo");
     var chips = isDemo
       ? ["Upscale", "Third-party management", "Regional footprint"]
-      : buildHeroHighlightChips(fieldMap, 3);
+      : buildHeroHighlightChips(fieldMap, 2);
     var chipHtml = chips.map(heroHighlightChipHtml).join("");
     var opId = (fieldMap && fieldMap.operatorId) || (vm && vm.operatorId) || "";
     var saveBtn =
@@ -532,7 +691,25 @@
       if (/third[- ]?party|full.*management/i.test(sm)) {
         badges.push({ label: "Full third-party management", kind: "capability" });
       }
+      if (/branded residential|mixed-use/i.test(sm)) {
+        badges.push({ label: "Branded residence capable", kind: "capability" });
+      }
     });
+
+    if (nz(fm.brandedResidencesAllowed) === "Yes") {
+      badges.push({ label: "Branded residences allowed", kind: "capability" });
+    } else if (/case-by-case/i.test(nz(fm.brandedResidencesAllowed))) {
+      badges.push({ label: "Branded residences (Case-by-Case)", kind: "capability" });
+    }
+    if (
+      nz(fm.brandedResidenceExperienceLevel) &&
+      !/none documented|unknown/i.test(nz(fm.brandedResidenceExperienceLevel))
+    ) {
+      badges.push({
+        label: "Branded residence experience: " + fm.brandedResidenceExperienceLevel,
+        kind: "capability",
+      });
+    }
 
     if (nz(fm.preOpeningSupportCapability) && !/no|none|not/i.test(fm.preOpeningSupportCapability)) {
       badges.push({ label: "Pre-opening support", kind: "capability" });
@@ -677,6 +854,22 @@
         snapshotRow("New-build opening experience", fm.newBuildOpeningExperience) +
           snapshotRow("Conversion / reflag experience", fm.conversionReflagExperience) +
           snapshotRow("Pre-opening support capability", fm.preOpeningSupportCapability)
+      )
+    );
+
+    sections.push(
+      snapshotSection(
+        "Branded Residence & Mixed-Use",
+        snapshotRow("Branded residences allowed", fm.brandedResidencesAllowed) +
+          snapshotRow("Mixed-use development allowed", fm.mixedUseAllowed) +
+          snapshotRow("Residence experience level", fm.brandedResidenceExperienceLevel) +
+          snapshotRow("Program models supported", fm.brandedResidenceProgramModelsSupported) +
+          snapshotRow("Rental pool models supported", fm.condoRentalProgramModelsSupported) +
+          snapshotRow("Residence properties managed", fm.brandedResidencePropertiesManaged) +
+          snapshotRow("Mixed-use hospitality projects", fm.mixedUseHospitalityExperience) +
+          snapshotRow("HOA / condo interface", fm.hoaCondoAssociationInterface) +
+          snapshotRow("Sales & closing support", fm.residenceSalesClosingSupport) +
+          snapshotRow("Fit signal", fm.bf_signal_residence)
       )
     );
 

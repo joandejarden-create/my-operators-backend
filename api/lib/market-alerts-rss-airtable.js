@@ -1,10 +1,12 @@
 import crypto from "crypto";
 import Airtable from "airtable";
-import {
-  decodeHtmlEntities,
-  decodeHtmlEntitiesPreserveWhitespace,
-} from "../../lib/decode-html-entities.js";
 import { inferCategoryFromText } from "../../lib/market-alerts-category-infer.js";
+import {
+  canonicalizeSourceUrl,
+  normalizeAlertTitle,
+} from "../../lib/market-alerts-dedupe.js";
+import { sanitizeMarketAlertPlainText } from "../../lib/market-alerts-plain-text.js";
+import { assessMarketAlertPublishReady } from "../../lib/market-alerts-publish-gate.js";
 import { REGION_GEO_REGEX } from "../../lib/market-alerts-geo-keywords.js";
 
 /** @typedef {import("../market-alerts-news.js").fetchMarketAlertsRssItems} fetchMarketAlertsRssItems */
@@ -48,12 +50,12 @@ export const ALLOWED_PRIORITIES = ["Low", "Medium", "High"];
 const GLOBAL_SIGNAL_RE =
   /\b(global (?:hotel|hospitality|travel|tourism|market|trend|outlook|industry|revpar|demand|supply|pipeline|shift|survey|report|study|index|workforce)|world(?:'s|wide)|world-wide|around the world|across (?:the )?(?:world|regions|markets)|all regions|multi-?region|pan-?regional|cross-?border|international (?:hotel|hospitality|chain|group)|industry-?wide|world hotel|hotel industry(?: as a whole)?|regions besides|every region|no single market|world's boutique|world's hotel)\b/i;
 
-/** SHA-256 of canonical source URL (matches existing MarketAlerts rows). */
+/** SHA-256 of canonical source URL (stable Airtable Dedupe ID). */
 export function rssItemDedupeId(item) {
-  const url = (item.link || item.sourceUrl || "").trim();
+  const url = canonicalizeSourceUrl(item.link || item.sourceUrl || "");
   if (url) return crypto.createHash("sha256").update(url).digest("hex");
-  const title = (item.title || "").trim().toLowerCase();
-  return crypto.createHash("sha256").update(title).digest("hex");
+  const title = normalizeAlertTitle(item.title || "");
+  return crypto.createHash("sha256").update(title || "untitled").digest("hex");
 }
 
 export function inferCategory(item) {
@@ -73,11 +75,11 @@ export function inferRegionGroup(item) {
   }
   if (GLOBAL_SIGNAL_RE.test(text)) return "Global";
 
-  if (/\b(middle east|africa|mena)\b/i.test(source)) {
-    return "Other";
-  }
-  if (/\basia\s*pacific\b/i.test(source)) {
-    return "Asia Pacific";
+  // Source-based hints only after text/geo fail.
+  if (/\b(middle east|africa|mena)\b/i.test(source)) return "Other";
+  if (/\b(asia|hospitalityworld|et hospitality)\b/i.test(source)) return "Asia Pacific";
+  if (/\b(hotel dive|hotel management|lodging magazine)\b/i.test(source)) {
+    return "North America";
   }
 
   return "Global";
@@ -120,11 +122,10 @@ export function parsePublishedAtIso(pubDate) {
 
 /** Normalize display text before Airtable write or publish. */
 export function sanitizeMarketAlertText(text, { preserveWhitespace = false } = {}) {
-  const raw = (text || "").trim();
-  if (!raw) return "";
-  return preserveWhitespace
-    ? decodeHtmlEntitiesPreserveWhitespace(raw)
-    : decodeHtmlEntities(raw);
+  return sanitizeMarketAlertPlainText(text, {
+    preserveWhitespace,
+    maxLen: preserveWhitespace ? 10000 : 2000,
+  });
 }
 
 export function patchMarketAlertTextFields(fields) {
@@ -152,9 +153,11 @@ export function mapRssItemToAirtableFields(item) {
     [MAP_ALERT.sourceUrl]: sourceUrl.slice(0, 1000),
     [MAP_ALERT.publishedAt]: parsePublishedAtIso(item.pubDate),
     [MAP_ALERT.category]: inferCategory(item),
-    [MAP_ALERT.regionGroup]: inferRegionGroup(item),
+    [MAP_ALERT.regionGroup]: item.regionGroup || inferRegionGroup(item),
     [MAP_ALERT.priority]: "Medium",
-    [MAP_ALERT.tags]: ["RSS"],
+    [MAP_ALERT.tags]: Array.isArray(item.airtableTags) && item.airtableTags.length
+      ? item.airtableTags
+      : ["RSS"],
   };
   return fields;
 }
@@ -186,27 +189,61 @@ function getBase() {
   return new Airtable({ apiKey }).base(baseId);
 }
 
+/** @deprecated Prefer loadExistingDedupeIndex — kept for scripts that only need IDs. */
 export async function loadExistingDedupeIds(tableName) {
+  const index = await loadExistingDedupeIndex(tableName);
+  return index.dedupeIds;
+}
+
+/**
+ * Load existing URL dedupe IDs + soft title keys for cross-feed duplicate suppression.
+ * @returns {Promise<{ dedupeIds: Set<string>, titleKeys: Set<string>, urlKeys: Set<string> }>}
+ */
+export async function loadExistingDedupeIndex(tableName) {
   const base = getBase();
   if (!base) throw new Error("AIRTABLE_API_KEY and AIRTABLE_BASE_ID are required");
 
-  const ids = new Set();
+  const dedupeIds = new Set();
+  const titleKeys = new Set();
+  const urlKeys = new Set();
+
   await base(tableName)
     .select({
-      fields: [MAP_ALERT.dedupeId],
+      fields: [MAP_ALERT.dedupeId, MAP_ALERT.title, MAP_ALERT.sourceUrl],
       pageSize: 100,
     })
     .eachPage((records, next) => {
       records.forEach((r) => {
-        const v = r.fields[MAP_ALERT.dedupeId];
-        if (v) ids.add(String(v));
+        const id = r.fields[MAP_ALERT.dedupeId];
+        if (id) dedupeIds.add(String(id));
+        const titleKey = normalizeAlertTitle(r.fields[MAP_ALERT.title] || "");
+        if (titleKey && titleKey.length >= 24) titleKeys.add(titleKey);
+        const urlKey = canonicalizeSourceUrl(r.fields[MAP_ALERT.sourceUrl] || "");
+        if (urlKey) urlKeys.add(urlKey);
       });
       next();
     });
-  return ids;
+
+  return { dedupeIds, titleKeys, urlKeys };
 }
 
 const AIRTABLE_CREATE_BATCH = 10;
+
+async function loadKnownMarketAlertsFieldNames(baseId, token, tableName) {
+  try {
+    const res = await fetch(`https://api.airtable.com/v0/meta/bases/${baseId}/tables`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const json = await res.json();
+    if (!res.ok) return null;
+    const table = (json.tables || []).find((t) => t.name === tableName);
+    if (!table) return null;
+    return new Set((table.fields || []).map((f) => f.name));
+  } catch (err) {
+    console.warn("[market-alerts-rss-sync] could not load field schema:", err.message || err);
+    return null;
+  }
+}
 
 /**
  * @param {object} opts
@@ -225,23 +262,59 @@ export async function syncRssItemsToAirtable({ items, dryRun = false, tableName 
     };
   }
 
-  const existingDedupe = await loadExistingDedupeIds(table);
+  const existing = await loadExistingDedupeIndex(table);
   const toCreate = [];
   const skipped = [];
   const invalid = [];
+  let skippedByTitle = 0;
+  let skippedByUrl = 0;
+  let skippedIrrelevant = 0;
+  let skippedPublishGate = 0;
 
   for (const item of items) {
-    const fields = mapRssItemToAirtableFields(item);
+    const gate = assessMarketAlertPublishReady(item);
+    if (!gate.ok) {
+      skippedPublishGate += 1;
+      if (gate.reasons.some((r) => r.startsWith("irrelevant:"))) skippedIrrelevant += 1;
+      skipped.push({
+        title: item.title,
+        reason: "publish_gate",
+        details: gate.reasons,
+      });
+      continue;
+    }
+    const cleanedItem = {
+      ...item,
+      title: gate.cleaned.title,
+      summary: gate.cleaned.summary,
+      source: gate.cleaned.source || item.source,
+      link: gate.cleaned.link || item.link,
+    };
+    const fields = mapRssItemToAirtableFields(cleanedItem);
     const validation = validateAlertFields(fields);
     if (!validation.ok) {
       invalid.push({ title: fields[MAP_ALERT.title], errors: validation.errors });
       continue;
     }
-    if (existingDedupe.has(fields[MAP_ALERT.dedupeId])) {
-      skipped.push({ title: fields[MAP_ALERT.title], dedupeId: fields[MAP_ALERT.dedupeId] });
+
+    const dedupeId = fields[MAP_ALERT.dedupeId];
+    const titleKey = normalizeAlertTitle(fields[MAP_ALERT.title] || "");
+    const urlKey = canonicalizeSourceUrl(fields[MAP_ALERT.sourceUrl] || "");
+
+    if (existing.dedupeIds.has(dedupeId) || (urlKey && existing.urlKeys.has(urlKey))) {
+      skippedByUrl += 1;
+      skipped.push({ title: fields[MAP_ALERT.title], dedupeId, reason: "url" });
       continue;
     }
-    existingDedupe.add(fields[MAP_ALERT.dedupeId]);
+    if (titleKey && titleKey.length >= 24 && existing.titleKeys.has(titleKey)) {
+      skippedByTitle += 1;
+      skipped.push({ title: fields[MAP_ALERT.title], dedupeId, reason: "title" });
+      continue;
+    }
+
+    existing.dedupeIds.add(dedupeId);
+    if (urlKey) existing.urlKeys.add(urlKey);
+    if (titleKey && titleKey.length >= 24) existing.titleKeys.add(titleKey);
     toCreate.push(fields);
   }
 
@@ -253,11 +326,16 @@ export async function syncRssItemsToAirtable({ items, dryRun = false, tableName 
       fetched: items.length,
       wouldCreate: toCreate.length,
       skipped: skipped.length,
+      skippedByUrl,
+      skippedByTitle,
+      skippedIrrelevant,
+      skippedPublishGate,
       invalid: invalid.length,
-      preview: toCreate.slice(0, 5).map((f) => ({
+      preview: toCreate.slice(0, 8).map((f) => ({
         title: f[MAP_ALERT.title],
         category: f[MAP_ALERT.category],
         regionGroup: f[MAP_ALERT.regionGroup],
+        sourceName: f[MAP_ALERT.sourceName],
         publishedAt: f[MAP_ALERT.publishedAt],
         sourceUrl: f[MAP_ALERT.sourceUrl],
       })),
@@ -267,14 +345,53 @@ export async function syncRssItemsToAirtable({ items, dryRun = false, tableName 
 
   const created = [];
   const createErrors = [];
+  let intelligenceEnriched = 0;
+  let intelligenceErrors = 0;
+
+  const knownFieldNames = await loadKnownMarketAlertsFieldNames(
+    process.env.AIRTABLE_BASE_ID,
+    process.env.AIRTABLE_API_KEY,
+    table
+  );
+
+  let enrichMarketAlertIntelligence = null;
+  try {
+    ({ enrichMarketAlertIntelligence } = await import(
+      "../../lib/market-alerts-intelligence.js"
+    ));
+  } catch (err) {
+    console.warn(
+      "[market-alerts-rss-sync] intelligence module unavailable:",
+      err.message || err
+    );
+  }
 
   for (let i = 0; i < toCreate.length; i += AIRTABLE_CREATE_BATCH) {
-    const batch = toCreate.slice(i, i + AIRTABLE_CREATE_BATCH).map((fields) => ({ fields }));
+    const batchFields = toCreate.slice(i, i + AIRTABLE_CREATE_BATCH);
+    const batch = batchFields.map((fields) => ({ fields }));
     try {
       const records = await base(table).create(batch, { typecast: true });
-      records.forEach((r) => {
+      for (let j = 0; j < records.length; j++) {
+        const r = records[j];
         created.push({ id: r.id, title: r.fields[MAP_ALERT.title] });
-      });
+        if (typeof enrichMarketAlertIntelligence === "function") {
+          try {
+            const enrichResult = await enrichMarketAlertIntelligence(
+              r.id,
+              batchFields[j] || r.fields,
+              { tableName: table, knownFieldNames }
+            );
+            if (enrichResult?.ok) intelligenceEnriched += 1;
+            else intelligenceErrors += 1;
+          } catch (enrichErr) {
+            intelligenceErrors += 1;
+            console.error(
+              "[market-alerts-rss-sync] intelligence enrich failed (non-fatal):",
+              enrichErr.message || enrichErr
+            );
+          }
+        }
+      }
     } catch (err) {
       createErrors.push({
         batchStart: i,
@@ -293,9 +410,15 @@ export async function syncRssItemsToAirtable({ items, dryRun = false, tableName 
     fetched: items.length,
     created: created.length,
     skipped: skipped.length,
+    skippedByUrl,
+    skippedByTitle,
+    skippedIrrelevant,
+    skippedPublishGate,
     invalid: invalid.length,
     createErrors,
     createdSample: created.slice(0, 5),
+    intelligenceEnriched,
+    intelligenceErrors,
     fieldMapping: MAP_ALERT,
   };
 }

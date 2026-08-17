@@ -16,7 +16,7 @@
 
 | Capability | Status | Notes |
 |------------|--------|--------|
-| **Server-side Match Score New** | **Production-ready** | `api/match-score-server.js` — 12 weighted factors, `getBreakdownNewDetails()`, pre-filters |
+| **Server-side Match Score v2** | **Production-ready** | `api/match-score-server.js` — 9 soft factors + preferred bonus + hard gates; config in `lib/brand-match-scoring-weight-config.js` |
 | **Deal + linked record load** | **Exists** | `fetchDealWithMergedLinkedRecords()` in `api/my-deals.js` (same pattern as Deal Readiness) |
 | **Owner-selected brands** | **Strategic Intent** | `Preferred Brands` / `Preferred Brands (up to 4)` on linked SI record |
 | **Owner shortlist (pipeline)** | **Target List table** | `api/target-list.js` — per-deal brands with status, match score, breakdown JSON |
@@ -36,34 +36,34 @@
 
 | File | Role | Reuse |
 |------|------|--------|
-| `api/match-score-server.js` | **Match Score New** (0–100): 12 factors with weights; legacy 19-factor score also present | **Core engine** — call `computeMatchScoreForDealBrand()` |
+| `api/match-score-server.js` | **Match Score v2** (0–100): 9 soft factors + preferred bonus + hard gates; legacy 19-factor helpers unused on product path | **Core engine** — call `computeMatchScoreForDealBrand()` |
 | `api/my-deals.js` | Loads deal + Location, Market Performance, Strategic Intent; `refreshDealBrandCacheForRecordId`; `getMatchScoreBreakdown`; `getAlternativeBrands`; `addRecommendedBrand` | **Data orchestration** — mirror `deal-readiness-review` load path |
 | `api/deal-readiness-review.js` | `POST /api/ai/deal-readiness-review` → `buildReadinessFromFields` | **Pattern** for new `brand-alignment-snapshot` endpoint |
 
-**Match Score New factors** (`NEW_WEIGHTS`, sum 100%):
+**Match Score v2 soft factors** (`BRAND_MATCH_NEW_WEIGHTS` in `lib/brand-match-scoring-weight-config.js`, sum 100%):
 
 | Factor key | Weight % |
 |------------|----------|
-| chainScaleProximity | 10 |
-| serviceModelAlignment | 5 |
-| preferredBrand | 8 |
-| projectTypeCompatibility | 10 |
-| buildingTypeCompatibility | 5 |
-| projectStageCompatibility | 5 |
-| brandStandardsCompatibility | 10 |
-| agreementsTypeCompatibility | 10 |
-| roomRangeFitCompatibility | 10 |
-| keyMoneyWillingnessCompatibility | 12 |
-| incentivesMatchCompatibility | 5 |
-| feesToleranceCompatibility | 10 |
+| geographyPriority | 18 |
+| chainScaleProximity | 14 |
+| brandStandardsCompatibility | 14 |
+| feesToleranceCompatibility | 12 |
+| serviceModelAlignment | 10 |
+| keyMoneyWillingnessCompatibility | 10 |
+| softHardPreference | 8 |
+| incentivesMatchCompatibility | 8 |
+| agreementsTypeCompatibility | 6 |
+
+**Also:** preferred brand = **+4 bonus** after base (cap 100). Hard gates (key money, agreement type, chain scale 2+, rooms, project type, markets to avoid) → overall **0**. Building type + project stage are breakdown-only.
 
 **Exports used today:**
 
 - `computeMatchScoreForDealBrand(dealFields, locationData, mpData, siData, brandName, baseId, apiKey)` → `{ scoreNew, breakdownNewDetails, … }`
 - `getBreakdownNewDetails(...)` → per-factor `label`, `weight`, `brandValue`, `dealValue`, `note`, `score`
-- `computeRecommendedBrand(...)` → highest score among **catalog** candidates (excludes preferred); used for “add recommended brand”
+- `computeRecommendedBrand(...)` → highest score among **catalog** candidates (excludes preferred); used for cache / “add recommended brand” (internal; not presented as final answer)
 - `computeTopAlternativeBrands(...)` → top N non-preferred brands
-- `passesStrictPreFilters(...)` → hard gates before scoring (chain scale tier, project type, rooms, service model, deal structure, key-money filter, etc.)
+
+**Not used (retired):** `passesStrictPreFilters` was deleted in Match Score cleanup P3 — recommendations use chain-scale candidate ordering + Match Score New only (plus key-money hard gate inside scoring).
 
 **Brand data loaded per score** (inside `computeMatchScoreForDealBrand`): Brand Basics, Project Fit (`brandFit`), Footprint, Brand Standards, Fee Structure, Deal Terms, Operational Support — same tables as Brand Setup.
 
@@ -73,7 +73,7 @@
 |------|------|-----------|
 | `api/brand-explorer.js` | `POST /api/brand-explorer/fit-to-deal` — 5 heuristic dimensions (project_fit, economics, …), scores ~65–100 | Different model; not aligned with My Deals breakdown UI |
 | `api/brand-fit-analyzer.js` | `POST /api/brand-fit-analyzer` — ranks all brands, `generateRecommendations()` with “prioritize”, “excellent fit” | **Advisory language**; hardcoded legacy Deals table id; separate product |
-| `api/my-deals.js` `calculateMatchScoreFromDealData` | Lightweight fallback when no SI / no cache | Heuristic placeholder, not full breakdown |
+| Former `calculateMatchScoreFromDealData` / client 19-factor calculators | Heuristic / dashboard-side legacy | **Retired** in Match Score cleanup P1–P3 — product uses Match Score New only |
 
 ### Scripts / batch (not Output 2 runtime)
 
@@ -128,7 +128,7 @@ Deal fields used in readiness and deal setup (available to alignment narrative):
 |----------|---------|
 | Per-brand numeric score (Match Score New) | Yes |
 | Per-factor score + brand/deal values + notes | Yes — `breakdownNewDetails` |
-| Pre-filter exclusion (no score) | Yes — brands failing `passesStrictPreFilters` may not appear in recommended/alternatives batch |
+| Pre-filter exclusion (no score) | No — `passesStrictPreFilters` retired (P3). Key-money gate still forces score 0 when filter=Yes and brand does not offer key money |
 | Natural-language “fit signals” separate from factors | **No** — must be **derived** from factor scores + deal/SI context |
 | Persisted Alignment Snapshot on deal | **No** |
 

@@ -1,0 +1,165 @@
+<script>(function(){
+var root=document.getElementById("insights");
+var ctaBtn=document.getElementById("cta-band-btn");
+if(!root&&!ctaBtn)return;
+function isArticleUrl(href){
+  try{
+    var u=new URL(href,window.location.href);
+    return /\/insights-posts\//i.test(u.pathname);
+  }catch(err){return false;}
+}
+function isOpportunityUrl(href){
+  try{
+    var u=new URL(href,window.location.href);
+    return /\/opportunity-review\/?$/i.test(u.pathname);
+  }catch(err){return false;}
+}
+function ensureModal(){
+  var el=document.getElementById("oh-article-reader");
+  if(el)return el;
+  el=document.createElement("div");
+  el.id="oh-article-reader";
+  el.setAttribute("hidden","");
+  el.setAttribute("aria-hidden","true");
+  el.innerHTML='<div id="oh-ar-dialog" role="dialog" aria-modal="true" aria-labelledby="oh-ar-title">'+
+    '<div id="oh-ar-bar">'+
+      '<p id="oh-ar-title">Article</p>'+
+      '<div id="oh-ar-actions">'+
+        '<a id="oh-ar-open" href="#" target="_blank" rel="noopener noreferrer">Open full page</a>'+
+        '<button type="button" id="oh-ar-close" aria-label="Close">×</button>'+
+      '</div>'+
+    '</div>'+
+    '<div id="oh-ar-body">'+
+      '<div id="oh-ar-loading" class="is-on" role="status">Loading…</div>'+
+      '<div id="oh-ar-error" role="alert">This page could not be loaded in the reader. <a id="oh-ar-error-link" href="#" target="_blank" rel="noopener noreferrer">Open it in a new tab</a>.</div>'+
+      '<iframe id="oh-ar-frame" title="Embedded page reader" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(el);
+  return el;
+}
+var modal=ensureModal();
+var dialog=document.getElementById("oh-ar-dialog");
+var frame=document.getElementById("oh-ar-frame");
+var titleEl=document.getElementById("oh-ar-title");
+var openEl=document.getElementById("oh-ar-open");
+var closeEl=document.getElementById("oh-ar-close");
+var loadingEl=document.getElementById("oh-ar-loading");
+var errorEl=document.getElementById("oh-ar-error");
+var errorLink=document.getElementById("oh-ar-error-link");
+var lastFocus=null;
+var loadTimer=null;
+
+function setLoading(on,label){
+  if(loadingEl){
+    loadingEl.classList.toggle("is-on",!!on);
+    if(on)loadingEl.textContent=label||"Loading…";
+  }
+}
+function setError(on){
+  if(errorEl)errorEl.classList.toggle("is-on",!!on);
+}
+function hideEmbedChrome(doc){
+  if(!doc)return;
+  try{
+    var links=doc.querySelectorAll(".insights-back-link,a.insights-back-link");
+    links.forEach(function(link){
+      link.style.setProperty("display","none","important");
+      link.setAttribute("aria-hidden","true");
+      link.setAttribute("hidden","");
+    });
+    if(!doc.getElementById("oh-embed-hide-back")){
+      var style=doc.createElement("style");
+      style.id="oh-embed-hide-back";
+      style.textContent=".insights-back-link{display:none!important;}";
+      (doc.head||doc.documentElement).appendChild(style);
+    }
+  }catch(err){}
+}
+function closeReader(){
+  if(loadTimer){clearTimeout(loadTimer);loadTimer=null;}
+  modal.classList.remove("is-open");
+  modal.setAttribute("hidden","");
+  modal.setAttribute("aria-hidden","true");
+  document.documentElement.style.overflow="";
+  document.body.style.overflow="";
+  if(frame){frame.removeAttribute("src");frame.src="about:blank";}
+  setLoading(false);
+  setError(false);
+  if(lastFocus&&typeof lastFocus.focus==="function")lastFocus.focus();
+  lastFocus=null;
+}
+function openReader(url,label,opts){
+  opts=opts||{};
+  lastFocus=document.activeElement;
+  titleEl.textContent=label||"Dealality";
+  openEl.href=url;
+  if(errorLink)errorLink.href=url;
+  setError(false);
+  setLoading(true,opts.loadingText||"Loading…");
+  modal.removeAttribute("hidden");
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden","false");
+  document.documentElement.style.overflow="hidden";
+  document.body.style.overflow="hidden";
+  if(loadTimer)clearTimeout(loadTimer);
+  loadTimer=setTimeout(function(){
+    if(loadingEl&&loadingEl.classList.contains("is-on")){
+      setLoading(false);
+      setError(true);
+    }
+  },12000);
+  frame.onload=function(){
+    if(loadTimer){clearTimeout(loadTimer);loadTimer=null;}
+    setLoading(false);
+    setError(false);
+    try{hideEmbedChrome(frame.contentDocument);}catch(err){}
+  };
+  frame.onerror=function(){
+    if(loadTimer){clearTimeout(loadTimer);loadTimer=null;}
+    setLoading(false);
+    setError(true);
+  };
+  frame.src=url;
+  if(closeEl)closeEl.focus();
+}
+if(root){
+  root.addEventListener("click",function(e){
+    var a=e.target&&e.target.closest?e.target.closest("a[href]"):null;
+    if(!a||!root.contains(a))return;
+    var href=a.getAttribute("href")||"";
+    if(!isArticleUrl(href))return;
+    e.preventDefault();
+    var label="";
+    var card=a.closest("article");
+    if(card){
+      var t=card.querySelector("h3,h3 a,#ins-1-title,#ins-2-title");
+      if(t)label=(t.textContent||"").trim();
+    }
+    if(!label)label=(a.textContent||"").trim()||"Article";
+    openReader(a.href,label,{loadingText:"Loading article…"});
+  });
+}
+if(ctaBtn){
+  ctaBtn.addEventListener("click",function(e){
+    var href=ctaBtn.getAttribute("href")||"https://www.dealality.com/opportunity-review";
+    if(!isOpportunityUrl(href)&&!/opportunity-review/i.test(href))return;
+    e.preventDefault();
+    var label=(document.getElementById("cta-band-btn-text")&&document.getElementById("cta-band-btn-text").textContent||ctaBtn.textContent||"Explore Your Hotel Opportunity").trim();
+    openReader(ctaBtn.href||href,label,{loadingText:"Loading opportunity review…"});
+  });
+}
+closeEl.addEventListener("click",function(e){e.preventDefault();closeReader();});
+modal.addEventListener("click",function(e){
+  if(e.target===modal)closeReader();
+});
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"&&modal.classList.contains("is-open")){
+    e.preventDefault();
+    closeReader();
+  }
+});
+if(dialog){
+  dialog.addEventListener("click",function(e){e.stopPropagation();});
+}
+})();</script>

@@ -300,7 +300,16 @@
   function applyAuthPageEarlySkin() {
     if (!isAuthMarketingPage() || !global.document) return;
     var doc = global.document;
-    doc.documentElement.classList.add("dl-auth-landing-skin");
+    doc.documentElement.classList.add("dl-auth-landing-skin", "signup-page-paint");
+    doc.documentElement.style.backgroundColor = LANDING_BG;
+    if (!doc.getElementById("signup-auth-critical-css")) {
+      var base = resolveRailwayScriptBase() || "https://my-operators-backend-staging.up.railway.app";
+      var link = doc.createElement("link");
+      link.id = "signup-auth-critical-css";
+      link.rel = "stylesheet";
+      link.href = base + "/css/signup-auth-critical.css";
+      (doc.head || doc.documentElement).appendChild(link);
+    }
     if (doc.getElementById(AUTH_BG_EARLY_STYLE_ID)) return;
     var style = doc.createElement("style");
     style.id = AUTH_BG_EARLY_STYLE_ID;

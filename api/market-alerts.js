@@ -1,5 +1,11 @@
 import Airtable from "airtable";
 import { sanitizeMarketAlertText } from "./lib/market-alerts-rss-airtable.js";
+import { audienceWorthField, MAP_INTEL, worthReviewingAnyFormula } from "./lib/market-alerts-intelligence-map.js";
+import { intelligencePayloadForAudience } from "../lib/market-alerts-intelligence.js";
+import { resolveMarketAlertsAudience } from "../lib/market-alerts-audience-resolve.js";
+import { dedupeFeedItemsByEntityKey } from "../lib/market-alerts-correlation.js";
+import { sanitizeUserFacingTags } from "../lib/market-alerts-user-tags.js";
+import { getUserFacingSourceName } from "../lib/market-alerts-user-facing.js";
 
 // Airtable table + field configuration – MUST match contract in spec
 const TABLE_ALERTS = process.env.AIRTABLE_TABLE_MARKET_ALERTS || "MarketAlerts";
@@ -62,8 +68,20 @@ function parseTimeWindowParam(value) {
   }
 }
 
-function buildAlertsFilterFormula({ category, regionGroup, days, search }) {
+function buildAlertsFilterFormula({
+  category,
+  regionGroup,
+  days,
+  search,
+  worthReviewing,
+  actionable,
+  audience,
+}) {
   let formulaParts = [];
+
+  formulaParts.push(
+    `OR(BLANK({${MAP_INTEL.intelligenceTreatment}}), {${MAP_INTEL.intelligenceTreatment}} != 'IGNORE')`
+  );
 
   // Time window: include if Published At is within last N days, OR if Published At is blank (e.g. manually added records)
   if (days) {
@@ -87,6 +105,19 @@ function buildAlertsFilterFormula({ category, regionGroup, days, search }) {
     const concat = `LOWER({${F_ALERT.title}} & ' ' & {${F_ALERT.summary}} & ' ' & {${F_ALERT.sourceName}})`;
     formulaParts.push(`SEARCH('${term}', ${concat}) > 0`);
   }
+
+  if (worthReviewing && audience) {
+    if (audience === "all") {
+      formulaParts.push(worthReviewingAnyFormula());
+    } else {
+      const worthField = audienceWorthField(audience);
+      if (worthField) {
+        formulaParts.push(`{${worthField}} = TRUE()`);
+      }
+    }
+  }
+
+  // Actionable uses Worth Reviewing as Airtable superset; actionable is enforced in JS.
 
   if (!formulaParts.length) return "";
   if (formulaParts.length === 1) return formulaParts[0];
@@ -178,6 +209,37 @@ async function upsertUserStatus(base, userId, alertId, changes) {
   }
 }
 
+function mapAlertListItem(r, userStatusMap, audience) {
+  const fields = r.fields;
+  const status = userStatusMap[r.id] || null;
+  const intelligence = intelligencePayloadForAudience(fields, audience);
+  const userTags = sanitizeUserFacingTags(fields[F_ALERT.tags] || []);
+  return {
+    id: r.id,
+    fields: {
+      [F_ALERT.title]: sanitizeMarketAlertText(fields[F_ALERT.title] || ""),
+      [F_ALERT.summary]: sanitizeMarketAlertText(fields[F_ALERT.summary] || "", {
+        preserveWhitespace: true,
+      }),
+      [F_ALERT.sourceName]: getUserFacingSourceName(
+        sanitizeMarketAlertText(fields[F_ALERT.sourceName] || "")
+      ),
+      [F_ALERT.sourceUrl]: fields[F_ALERT.sourceUrl] || "",
+      [F_ALERT.publishedAt]: fields[F_ALERT.publishedAt] || null,
+      [F_ALERT.category]: fields[F_ALERT.category] || "",
+      [F_ALERT.regionGroup]: fields[F_ALERT.regionGroup] || "Global",
+      [F_ALERT.priority]: fields[F_ALERT.priority] || "",
+      [F_ALERT.tags]: userTags,
+    },
+    intelligence,
+    userStatus: status,
+  };
+}
+
+function isIgnoredAlertItem(item) {
+  return item?.intelligence?.treatment === "IGNORE";
+}
+
 // GET /api/market-alerts
 export async function listMarketAlerts(req, res) {
   try {
@@ -193,18 +255,31 @@ export async function listMarketAlerts(req, res) {
       search,
       includeDismissed,
       limit = "100",
+      worthReviewing,
+      actionable,
     } = req.query || {};
 
     const days = parseTimeWindowParam(timeWindow);
     const max = Math.min(Math.max(parseInt(String(limit), 10) || 100, 1), 200);
     const currentUserId = getCurrentUserId(req);
     const includeDismissedBool = String(includeDismissed).toLowerCase() === "true";
+    const actionableBool =
+      String(actionable || "").toLowerCase() === "1" ||
+      String(actionable || "").toLowerCase() === "true";
+    const worthReviewingBool =
+      !actionableBool &&
+      (String(worthReviewing || "").toLowerCase() === "1" ||
+        String(worthReviewing || "").toLowerCase() === "true");
+
+    const { audience, source: audienceSource } = await resolveMarketAlertsAudience(req);
 
     const filterByFormula = buildAlertsFilterFormula({
       category,
       regionGroup,
       days,
       search,
+      worthReviewing: worthReviewingBool || actionableBool,
+      audience,
     });
 
     const selectParams = {
@@ -232,30 +307,23 @@ export async function listMarketAlerts(req, res) {
       ? await fetchUserStatusForAlerts(base, currentUserId, alertIds)
       : {};
 
-    let items = records.map((r) => {
-      const fields = r.fields;
-      const status = userStatusMap[r.id] || null;
-      return {
-        id: r.id,
-        fields: {
-          [F_ALERT.title]: sanitizeMarketAlertText(fields[F_ALERT.title] || ""),
-          [F_ALERT.summary]: sanitizeMarketAlertText(fields[F_ALERT.summary] || "", {
-            preserveWhitespace: true,
-          }),
-          [F_ALERT.sourceName]: sanitizeMarketAlertText(fields[F_ALERT.sourceName] || ""),
-          [F_ALERT.sourceUrl]: fields[F_ALERT.sourceUrl] || "",
-          [F_ALERT.publishedAt]: fields[F_ALERT.publishedAt] || null,
-          [F_ALERT.category]: fields[F_ALERT.category] || "",
-          [F_ALERT.regionGroup]: fields[F_ALERT.regionGroup] || "Global",
-          [F_ALERT.priority]: fields[F_ALERT.priority] || "",
-          [F_ALERT.tags]: fields[F_ALERT.tags] || [],
-        },
-        userStatus: status,
-      };
-    });
+    let items = records.map((r) => mapAlertListItem(r, userStatusMap, audience));
+    items = items.filter((item) => !isIgnoredAlertItem(item));
 
     if (currentUserId && !includeDismissedBool) {
       items = items.filter((item) => !(item.userStatus && item.userStatus.dismissed));
+    }
+
+    if (worthReviewingBool) {
+      items = items.filter(
+        (item) => item.intelligence?.worthReviewing && !item.intelligence?.actionable
+      );
+      items = dedupeFeedItemsByEntityKey(items, { windowDays: 14 });
+    }
+
+    if (actionableBool) {
+      items = items.filter((item) => item.intelligence?.actionable);
+      items = dedupeFeedItemsByEntityKey(items, { windowDays: 14 });
     }
 
     return res.json({
@@ -266,11 +334,94 @@ export async function listMarketAlerts(req, res) {
         category: category || "all",
         regionGroup: regionGroup || "all",
         search: search || "",
+        worthReviewing: worthReviewingBool,
+        actionable: actionableBool,
+        audience,
+        audienceSource,
       },
     });
   } catch (err) {
     console.error("Error in listMarketAlerts:", err);
     return res.status(500).json({ error: "Failed to load market alerts" });
+  }
+}
+
+async function fetchWorthRecords(base, audience, ignoreFilter) {
+  const worthFormula =
+    audience === "all"
+      ? worthReviewingAnyFormula()
+      : audienceWorthField(audience)
+        ? `{${audienceWorthField(audience)}} = TRUE()`
+        : null;
+  if (!worthFormula) return [];
+  try {
+    return await base(TABLE_ALERTS)
+      .select({
+        filterByFormula: `AND(${ignoreFilter}, ${worthFormula})`,
+        sort: [{ field: F_ALERT.publishedAt, direction: "desc" }],
+        maxRecords: 40,
+      })
+      .all();
+  } catch (err) {
+    console.warn(
+      "[market-alerts] worth reviewing rail query failed (fields may be missing):",
+      err.message || err
+    );
+    return [];
+  }
+}
+
+/**
+ * Top Read = MarketAlerts with the most UserAlertStatus Read=true rows.
+ * Not an alias of Latest Market Activity.
+ */
+async function fetchTopReadItems(base, userStatusMap, audience) {
+  try {
+    const statusRecords = await base(TABLE_USER_STATUS)
+      .select({
+        filterByFormula: `{${F_STATUS.read}} = TRUE()`,
+        fields: [F_STATUS.alert, F_STATUS.read],
+        maxRecords: 500,
+      })
+      .all();
+
+    const counts = new Map();
+    for (const r of statusRecords) {
+      const linked = r.fields[F_STATUS.alert];
+      const id = Array.isArray(linked) ? linked[0] : linked;
+      if (!id) continue;
+      counts.set(id, (counts.get(id) || 0) + 1);
+    }
+
+    const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 24);
+    if (!ranked.length) return [];
+
+    const orParts = ranked.map(
+      ([id]) => `RECORD_ID() = '${escapeAirtableString(id)}'`
+    );
+    const records = await base(TABLE_ALERTS)
+      .select({
+        filterByFormula: `OR(${orParts.join(",")})`,
+        maxRecords: 24,
+      })
+      .all();
+    const byId = Object.fromEntries(records.map((r) => [r.id, r]));
+
+    const mapped = ranked
+      .map(([id, readCount]) => {
+        const rec = byId[id];
+        if (!rec) return null;
+        const item = mapAlertListItem(rec, userStatusMap, audience);
+        item.readCount = readCount;
+        return item;
+      })
+      .filter(Boolean)
+      .filter((item) => !isIgnoredAlertItem(item));
+
+    return dedupeFeedItemsByEntityKey(mapped, { windowDays: 14 }).slice(0, 5);
+  } catch (err) {
+    console.warn("[market-alerts] topRead query failed:", err?.message || err);
+    return [];
   }
 }
 
@@ -283,15 +434,21 @@ export async function getMarketAlertsRail(req, res) {
     }
 
     const currentUserId = getCurrentUserId(req);
+    const { audience, source: audienceSource } = await resolveMarketAlertsAudience(req);
 
-    const records = await base(TABLE_ALERTS)
+    const ignoreFilter = `OR(BLANK({${MAP_INTEL.intelligenceTreatment}}), {${MAP_INTEL.intelligenceTreatment}} != 'IGNORE')`;
+
+    const latestRecords = await base(TABLE_ALERTS)
       .select({
+        filterByFormula: ignoreFilter,
         sort: [{ field: F_ALERT.publishedAt, direction: "desc" }],
         maxRecords: 10,
       })
       .all();
 
-    if (records.length === 0) {
+    const worthRecords = await fetchWorthRecords(base, audience, ignoreFilter);
+
+    if (latestRecords.length === 0) {
       console.warn(
         "[market-alerts] getMarketAlertsRail returned 0 items. No filterByFormula (rail uses sort by Published At only)."
       );
@@ -300,36 +457,54 @@ export async function getMarketAlertsRail(req, res) {
       );
     }
 
-    const alertIds = records.map((r) => r.id);
+    const allForStatus = [...worthRecords, ...latestRecords];
+    const alertIds = [...new Set(allForStatus.map((r) => r.id))];
     const userStatusMap = currentUserId
       ? await fetchUserStatusForAlerts(base, currentUserId, alertIds)
       : {};
 
-    const baseItems = records.map((r) => {
-      const fields = r.fields;
-      const status = userStatusMap[r.id] || null;
-      return {
-        id: r.id,
-        fields: {
-          [F_ALERT.title]: sanitizeMarketAlertText(fields[F_ALERT.title] || ""),
-          [F_ALERT.summary]: sanitizeMarketAlertText(fields[F_ALERT.summary] || "", {
-            preserveWhitespace: true,
-          }),
-          [F_ALERT.sourceName]: sanitizeMarketAlertText(fields[F_ALERT.sourceName] || ""),
-          [F_ALERT.sourceUrl]: fields[F_ALERT.sourceUrl] || "",
-          [F_ALERT.publishedAt]: fields[F_ALERT.publishedAt] || null,
-          [F_ALERT.category]: fields[F_ALERT.category] || "",
-          [F_ALERT.regionGroup]: fields[F_ALERT.regionGroup] || "Global",
-          [F_ALERT.priority]: fields[F_ALERT.priority] || "",
-        },
-        userStatus: status,
-      };
+    const mappedWorth = worthRecords.map((r) => mapAlertListItem(r, userStatusMap, audience));
+
+    const actionableNow = dedupeFeedItemsByEntityKey(
+      mappedWorth.filter((item) => item.intelligence?.actionable),
+      { windowDays: 14 }
+    )
+      .filter((item) => !isIgnoredAlertItem(item))
+      .slice(0, 5);
+
+    const actionableIds = new Set(actionableNow.map((i) => i.id));
+
+    const worthReviewing = dedupeFeedItemsByEntityKey(mappedWorth, { windowDays: 14 })
+      .filter(
+        (item) =>
+          !isIgnoredAlertItem(item) &&
+          !actionableIds.has(item.id) &&
+          item.intelligence?.worthReviewing &&
+          !item.intelligence?.actionable
+      )
+      .slice(0, 5);
+
+    const liveFeed = latestRecords
+      .map((r) => mapAlertListItem(r, userStatusMap, audience))
+      .filter((item) => !isIgnoredAlertItem(item));
+    const latestMarketActivity = liveFeed.slice(0, 5);
+
+    const topRead = await fetchTopReadItems(base, userStatusMap, audience);
+
+    return res.json({
+      actionableNow,
+      worthReviewing,
+      topRead,
+      latestMarketActivity,
+      liveFeed,
+      meta: {
+        audience,
+        audienceSource,
+        topReadSource: "user_alert_status_read_count",
+        railExclusivity:
+          "Actionable Now excludes Worth Reviewing. Top Read is independent readership; UI may hide duplicate IDs already shown above.",
+      },
     });
-
-    const topRead = baseItems.slice(0, 5);
-    const liveFeed = baseItems.slice(0, 10);
-
-    return res.json({ topRead, liveFeed });
   } catch (err) {
     console.error("Error in getMarketAlertsRail:", err);
     return res.status(500).json({ error: "Failed to load rail data" });

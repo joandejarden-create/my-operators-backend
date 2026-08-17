@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup — How Dealality Works (Dedicated Offline Steps)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter+Tight:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080f25;
+      --text: #e8ecf5;
+      --muted: rgba(255, 255, 255, 0.58);
+      --accent: #6c72ff;
+      --accent-soft: #8b90ff;
+      --accent-pale: #b8bcff;
+      --panel: rgba(14, 22, 48, 0.92);
+      --line: rgba(255, 255, 255, 0.1);
+      --offline: #D78E2C;
+      --offline-soft: rgba(215, 142, 44, 0.16);
+      --font: "Plus Jakarta Sans", "Inter Tight", system-ui, sans-serif;
+      --font-tight: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: #050814;
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .mock-banner {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: #12182e;
+      border-bottom: 1px solid rgba(215, 142, 44, 0.35);
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+    .mock-banner strong { color: #F0B86A; font-weight: 700; }
+    .mock-banner .hint { color: rgba(255, 255, 255, 0.5); }
+    .mock-banner code {
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #c9d0ea;
+    }
+
+    .section {
+      position: relative;
+      overflow: hidden;
+      padding: 48px 1.5rem 40px;
+      background: var(--bg);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .glow {
+      position: absolute;
+      left: 50%;
+      top: 16%;
+      width: min(92vw, 900px);
+      height: 280px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(108, 114, 255, 0.12) 0%, rgba(215, 142, 44, 0.06) 40%, transparent 72%);
+      filter: blur(36px);
+      pointer-events: none;
+    }
+    .inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .intro { margin: 0 0 18px; max-width: 780px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(8, 15, 37, 0.92);
+      padding: 4px 12px 4px 4px;
+      box-shadow: 0 0 0 1px rgba(109, 92, 216, 0.1), 0 0 28px rgba(109, 92, 216, 0.18);
+      margin: 0 0 12px;
+      max-width: 100%;
+    }
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      height: 28px;
+      border-radius: 10px;
+      background: #343259;
+      font-family: var(--font-tight);
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .eyebrow-right {
+      margin-left: 12px;
+      font-family: var(--font-tight);
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.25;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      color: #fff;
+    }
+    .lead {
+      margin: 0;
+      max-width: 42rem;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .lead em {
+      font-style: normal;
+      color: rgba(240, 215, 164, 0.92);
+    }
+    .principle {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin: 14px 0 0;
+      max-width: 42rem;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(215, 142, 44, 0.35);
+      background: linear-gradient(135deg, rgba(215, 142, 44, 0.14), rgba(215, 142, 44, 0.04));
+    }
+    .principle-mark {
+      flex: 0 0 auto;
+      margin-top: 3px;
+      width: 3px;
+      height: 1.55em;
+      border-radius: 2px;
+      background: linear-gradient(180deg, #F0B86A 0%, #D78E2C 100%);
+      box-shadow: none;
+    }
+    .principle p {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: rgba(255, 255, 255, 0.82);
+    }
+    .principle strong { color: #F0B86A; font-weight: 700; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.3fr) minmax(0, 0.7fr);
+      gap: 16px 26px;
+      align-items: start;
+      margin: 0 0 18px;
+    }
+    .nav {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 0;
+    }
+    .progress {
+      position: absolute;
+      left: 4px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress > span {
+      display: block;
+      width: 100%;
+      background: linear-gradient(180deg, #8b90ff 0%, #D78E2C 100%);
+      transition: height 0.22s ease;
+    }
+    .nav-item {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.48);
+      text-align: left;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+      align-items: start;
+      padding: 7px 8px;
+      border-radius: 10px;
+      font-family: inherit;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+    .nav-item:hover { color: rgba(255, 255, 255, 0.78); background: rgba(255, 255, 255, 0.03); }
+    .nav-item.is-active { color: #fff; background: rgba(108, 114, 255, 0.12); }
+    .nav-item.is-offline.is-active {
+      background: rgba(215, 142, 44, 0.14);
+    }
+    .nav-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--accent-soft);
+      min-width: 1.5em;
+      margin-top: 1px;
+    }
+    .nav-item.is-offline .nav-num { color: #D78E2C; }
+    .nav-item.is-active .nav-num { color: var(--accent-pale); }
+    .nav-item.is-offline.is-active .nav-num { color: #F0B86A; }
+    .nav-label { font-size: 0.82rem; font-weight: 650; line-height: 1.3; }
+    .nav-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      margin: 0 0 10px;
+      padding: 0 0 0 4px;
+    }
+    .nav-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      color: rgba(255, 255, 255, 0.55);
+    }
+    .nav-legend-swatch {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+    }
+    .nav-legend-swatch.is-platform {
+      background: #8b90ff;
+      box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.2);
+    }
+    .nav-legend-swatch.is-offline {
+      background: #E8A84A;
+      box-shadow: 0 0 0 3px rgba(215, 142, 44, 0.22);
+    }
+    .nav-rail {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 2px 0 2px 16px;
+    }
+
+    .step { display: none; }
+    .step.is-active { display: block; }
+    .kicker {
+      margin: 0 0 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+    }
+    .step.is-offline-step .kicker { color: #E8A84A; }
+    .step-title {
+      margin: 0 0 6px;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .primary {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      font-weight: 650;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .support {
+      margin: 0 0 14px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 38rem;
+    }
+
+    .mode-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0 0 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .mode-pill.is-platform {
+      background: rgba(108, 114, 255, 0.16);
+      color: #c8cbff;
+      border: 1px solid rgba(108, 114, 255, 0.28);
+    }
+    .mode-pill.is-offline {
+      background: rgba(215, 142, 44, 0.16);
+      color: #F0B86A;
+      border: 1px solid rgba(215, 142, 44, 0.4);
+    }
+    .mode-pill i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .mode-pill.is-platform i { background: #8b90ff; }
+    .mode-pill.is-offline i { background: #E8A84A; }
+
+    .bridge {
+      margin: 0 0 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.62);
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.02);
+      max-width: 38rem;
+    }
+    .bridge strong { color: rgba(255, 255, 255, 0.85); }
+    .step.is-offline-step .bridge {
+      border-color: rgba(215, 142, 44, 0.28);
+      background: rgba(215, 142, 44, 0.06);
+      color: rgba(240, 215, 164, 0.78);
+    }
+    .step.is-offline-step .bridge strong { color: #F0B86A; }
+
+    .visual {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--panel);
+      overflow: hidden;
+      margin: 0 0 14px;
+    }
+    .step.is-offline-step .visual {
+      border-color: rgba(215, 142, 44, 0.28);
+      background: linear-gradient(180deg, rgba(32, 26, 18, 0.55), rgba(14, 22, 48, 0.92));
+    }
+    .chrome {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.55);
+    }
+    .chrome i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .chrome i:nth-child(1) { background: #ff5f57; }
+    .chrome i:nth-child(2) { background: #febc2e; }
+    .chrome i:nth-child(3) { background: #28c840; }
+    .chrome em { margin-left: 8px; font-style: normal; }
+    .panel { padding: 14px; }
+    .panel-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 12px;
+    }
+    .panel-chip {
+      display: inline-flex;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(108, 114, 255, 0.2);
+      color: var(--accent-pale);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .step.is-offline-step .panel-chip {
+      background: rgba(215, 142, 44, 0.22);
+      color: #F0B86A;
+    }
+    .panel-meta {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .rows { display: flex; flex-direction: column; gap: 8px; }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+    }
+    .row strong { font-weight: 650; color: rgba(255, 255, 255, 0.85); }
+    .row span { color: rgba(255, 255, 255, 0.55); }
+    .row.is-human {
+      border-color: rgba(215, 142, 44, 0.3);
+      background: rgba(215, 142, 44, 0.09);
+    }
+    .row.is-human strong { color: #E8A84A; }
+    .compare {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1fr;
+      gap: 1px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 0.75rem;
+    }
+    .compare > div {
+      background: rgba(10, 16, 36, 0.95);
+      padding: 8px 9px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .compare .is-head {
+      color: rgba(255, 255, 255, 0.45);
+      font-weight: 700;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .compare .is-gap { color: #F0B86A; }
+
+    .moments {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .moment {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(215, 142, 44, 0.28);
+      background: rgba(215, 142, 44, 0.08);
+    }
+    .moment strong {
+      display: block;
+      margin: 0 0 4px;
+      font-size: 0.84rem;
+      color: #F0B86A;
+    }
+    .moment p {
+      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.58);
+    }
+
+    .labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .labels li {
+      padding: 5px 9px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.62);
+    }
+    .step.is-offline-step .labels li {
+      border-color: rgba(215, 142, 44, 0.22);
+      color: rgba(240, 215, 164, 0.78);
+    }
+
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .cta h3 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      font-weight: 750;
+      color: #fff;
+    }
+    .cta p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: var(--muted);
+      max-width: 36rem;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: default;
+    }
+    .btn-primary { background: #6c72ff; color: #fff; }
+    .btn-secondary {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .legend {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem 40px;
+    }
+    .legend-card {
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.02);
+      padding: 14px 16px;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.45;
+    }
+    .legend-card strong { color: rgba(255, 255, 255, 0.85); }
+    .swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+    .swatch.in { background: #6c72ff; }
+    .swatch.off { background: #D78E2C; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .moments { grid-template-columns: 1fr; }
+      .eyebrow { flex-wrap: wrap; }
+      .eyebrow-right { margin: 6px 2px 2px 8px; }
+      .row { grid-template-columns: 1fr; gap: 2px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mock-banner">
+    <div>
+      <strong>Design mockup only</strong> — 5 platform + 3 offline steps. Legend at top of nav; color marks step type (not words beside each step).
+    </div>
+    <div class="hint">Proposed for <code>How Dealality Works</code></div>
+  </div>
+
+  <section class="section" aria-labelledby="mock-h2">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="inner">
+      <header class="intro">
+        <div class="eyebrow">
+          <span class="eyebrow-pill">How Dealality Works</span>
+          <span class="eyebrow-right">A Connected Process From Opportunity to Agreement.</span>
+        </div>
+        <h1 id="mock-h2">Turn One Hotel Opportunity Into a Structured Decision Process.</h1>
+        <p class="lead">
+          Dealality organizes the opportunity on platform—and
+          <em>facilitates the offline conversations that actually close deals</em>.
+          People meet in person or on a call; Dealality keeps those moments prepared, tracked, and connected to the process.
+        </p>
+        <div class="principle">
+          <span class="principle-mark" aria-hidden="true"></span>
+          <p><strong>People meet offline. Dealality stays with them.</strong> Introduction, diligence, and final alignment happen between people—prepared, facilitated, and tracked in the platform so nothing falls out of the process.</p>
+        </div>
+      </header>
+
+      <div class="layout">
+        <nav class="nav" aria-label="Process steps" id="nav"></nav>
+        <div id="content"></div>
+      </div>
+
+      <div class="cta">
+        <div>
+          <h3>One Opportunity. One Connected Process.</h3>
+          <p>From the first question to the selected direction, Dealality keeps the opportunity, participants, proposals, and decision criteria connected.</p>
+        </div>
+        <div class="cta-row">
+          <button type="button" class="btn btn-primary">Explore Your Opportunity</button>
+          <button type="button" class="btn btn-secondary">See Dealality in Action</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="legend">
+    <div class="legend-card">
+      <strong>Journey shape (8 steps):</strong>
+      <span class="swatch in"></span>01 Define → 02 Explore → 03 Prepare &amp; Engage →
+      <span class="swatch off"></span>04 Meet &amp; Align →
+      <span class="swatch in"></span>05 Compare →
+      <span class="swatch off"></span>06 Collaborate &amp; Review →
+      <span class="swatch in"></span>07 Pursue →
+      <span class="swatch off"></span>08 Align &amp; Hand Off.
+      Offline steps are first-class in the nav. <strong>Platform / Offline</strong> appear once as a legend; step type is shown by number color (blue vs gold), not labels beside each title.
+    </div>
+  </div>
+
+  <script>
+    const STEPS = [
+      {
+        n: "01",
+        mode: "platform",
+        title: "Define the Opportunity",
+        primary: "Clarify what the owner wants before any relationship starts shaping the answer.",
+        support: "Bring the hotel, market context, objectives, constraints, and decision criteria into one brief—so later conversations start from clarity.",
+        bridge: "Prepares the first offline conversations with a shared opportunity story.",
+        labels: ["Asset Context", "Owner Objectives", "Commercial Priorities", "Control Preferences", "Timing", "Decision Criteria"],
+        visual: "define",
+      },
+      {
+        n: "02",
+        mode: "platform",
+        title: "Explore Credible Paths",
+        primary: "See more than the first available option.",
+        support: "Identify the brand, operator, conversion, and partner paths worth evaluating—so the owner chooses who to meet with intention.",
+        bridge: "Shortlists who is worth meeting before outreach begins.",
+        labels: ["Brand Paths", "Operator Paths", "Conversion", "Operating Models", "Capital", "Alternatives"],
+        visual: "paths",
+      },
+      {
+        n: "03",
+        mode: "platform",
+        title: "Prepare & Engage",
+        primary: "Open the right conversations—without losing control of the story.",
+        support: "Select participants, manage confidentiality, coordinate outreach, and capture responses so introduction calls start ready—not cold.",
+        bridge: "Hands a clean brief and status into the first relationship step.",
+        labels: ["Opportunity Brief", "Participants", "Confidentiality", "Outreach", "Questions", "Responses"],
+        visual: "engage",
+      },
+      {
+        n: "04",
+        mode: "offline",
+        title: "Meet & Align",
+        primary: "Put people in the room—where trust actually begins.",
+        support: "Introduction and clarification happen offline between people. Dealality prepares both sides and tracks outcomes so the conversation stays part of the process—not a side channel.",
+        bridge: "Met offline. Facilitated by Dealality · tracked in Dealality.",
+        labels: ["Introduction Call", "Clarification Call", "Fit Discussion", "Open Questions", "Tracked Outcome"],
+        visual: "meet",
+      },
+      {
+        n: "05",
+        mode: "platform",
+        title: "Compare What Matters",
+        primary: "Give every proposal a shared basis—so the next conversation can go deeper.",
+        support: "Compare economics, control, requirements, support, timing, and gaps side by side. The numbers do not replace judgment; they prepare it.",
+        bridge: "Creates a shared comparison for facilitated offline diligence.",
+        labels: ["Fees", "Owner Control", "Capital Support", "Requirements", "Timing", "Gaps"],
+        visual: "compare",
+      },
+      {
+        n: "06",
+        mode: "offline",
+        title: "Collaborate & Review",
+        primary: "Take the comparison into the real world—calls, walkthroughs, and technical review.",
+        support: "Collaboration calls and site or tech review happen offline. Dealality facilitates scheduling and context, then tracks what was covered so judgment stays connected to the deal record.",
+        bridge: "Met offline. Facilitated by Dealality · tracked in Dealality.",
+        labels: ["Collaboration Calls", "Site Visit", "Tech Review", "Trade-offs", "Tracked Notes"],
+        visual: "diligence",
+      },
+      {
+        n: "07",
+        mode: "platform",
+        title: "Pursue the Selected Direction",
+        primary: "Hold finalists, materials, and feasibility in one place while conversations continue.",
+        support: "Confirm finalists, open the Deal Room, and sync feasibility—so momentum does not disappear between facilitated offline alignment moments.",
+        bridge: "Keeps the record ready for final alignment—still tracked in Dealality.",
+        labels: ["Finalists", "Deal Room", "Feasibility", "Conditions", "Decision Record"],
+        visual: "pursue",
+      },
+      {
+        n: "08",
+        mode: "offline",
+        title: "Align & Hand Off",
+        primary: "Close alignment between people—then hand into legal with a clean, tracked exit.",
+        support: "Final alignment on vision, cost, and ops stays human and offline. Dealality tracks readiness through LOI intent, then supports a clean handoff into legal drafting.",
+        bridge: "Aligned offline. Tracked in Dealality through handoff.",
+        labels: ["Final Alignment Call", "LOI Intent", "Legal Start", "MA / FA Drafting", "Tracked Handoff"],
+        visual: "handoff",
+      },
+    ];
+
+    function esc(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function visualHtml(step) {
+      if (step.visual === "define") {
+        return panel("Opportunity Review · Brief", "Opportunity Brief", "Clarity before the first conversation", [
+          ["Opportunity Type", "Brand + operator review"],
+          ["Owner Objectives", "Stabilize NOI · Preserve control"],
+          ["Constraints", "Capex limited · 18-month horizon"],
+          ["Decision Criteria", "Control · fees · timeline · support"],
+        ]);
+      }
+      if (step.visual === "paths") {
+        return panel("Brand Explorer · Path Map", "Credible Paths", "Choose who is worth meeting", [
+          ["Soft Brand", "Fit rationale · Capex moderate"],
+          ["Operator Partner", "Operating model lift · Control trade-offs"],
+          ["Conversion", "Positioning shift · Evidence pack"],
+        ]);
+      }
+      if (step.visual === "engage") {
+        return panel("Controlled Outreach · Workspace", "Controlled Outreach", "Ready for the first meeting", [
+          ["Selected Participants", "3 brands · 2 operators"],
+          ["Confidentiality", "NDA active · gated materials"],
+          ["Outreach Status", "2 contacted · 1 ready"],
+          ["Next Step", "Introduction call · offline"],
+        ]);
+      }
+      if (step.visual === "meet") {
+        return (
+          '<div class="visual"><div class="chrome"><i></i><i></i><i></i><em>Offline · Relationship Moments</em></div>' +
+          '<div class="panel"><div class="panel-head"><span class="panel-chip">Meet &amp; Align</span><span class="panel-meta">Where trust begins</span></div>' +
+          '<div class="moments">' +
+          '<div class="moment"><strong>Introduction Call</strong><p>Owner and brand/operator meet. Fit, intent, and chemistry—not a form submission.</p></div>' +
+          '<div class="moment"><strong>Clarification Call</strong><p>Questions get answered live before commercial terms harden.</p></div>' +
+          "</div>" +
+          '<div class="rows">' +
+          '<div class="row is-human"><strong>People meet</strong><span>Calls · video · in person</span></div>' +
+          '<div class="row"><strong>Dealality role</strong><span>Prepared · facilitated · outcome tracked</span></div>' +
+          "</div></div></div>"
+        );
+      }
+      if (step.visual === "compare") {
+        return (
+          '<div class="visual"><div class="chrome"><i></i><i></i><i></i><em>Shared Comparison · Strongest View</em></div>' +
+          '<div class="panel"><div class="panel-head"><span class="panel-chip">Shared Comparison</span><span class="panel-meta">Prepares the next offline diligence</span></div>' +
+          '<div class="compare">' +
+          '<div class="is-head">Category</div><div class="is-head">Path A</div><div class="is-head">Path B</div><div class="is-head">Path C</div>' +
+          "<div>Fees</div><div>4.5% + 2%</div><div>5.0% + 1%</div><div>3.8% + 3%</div>" +
+          "<div>Owner Control</div><div>High</div><div>Medium</div><div>Shared</div>" +
+          '<div>Missing Terms</div><div class="is-gap">Capex TBD</div><div>—</div><div class="is-gap">Exit TBD</div>' +
+          "</div></div></div>"
+        );
+      }
+      if (step.visual === "diligence") {
+        return (
+          '<div class="visual"><div class="chrome"><i></i><i></i><i></i><em>Offline · Human Diligence</em></div>' +
+          '<div class="panel"><div class="panel-head"><span class="panel-chip">Collaborate &amp; Review</span><span class="panel-meta">Where judgment happens</span></div>' +
+          '<div class="moments">' +
+          '<div class="moment"><strong>Collaboration Calls</strong><p>Walk economics, support models, and strategic fit together—live.</p></div>' +
+          '<div class="moment"><strong>Site / Tech Review</strong><p>Property walkthrough or remote technical review. Human diligence.</p></div>' +
+          "</div>" +
+          '<div class="rows">' +
+          '<div class="row is-human"><strong>People meet</strong><span>Calls · site visit · tech review</span></div>' +
+          '<div class="row"><strong>Dealality role</strong><span>Context ready · coverage tracked</span></div>' +
+          "</div></div></div>"
+        );
+      }
+      if (step.visual === "pursue") {
+        return panel("Preferred Direction · Decision Record", "Preferred Direction", "Momentum between conversations", [
+          ["Preferred Direction", "Soft brand + operator support"],
+          ["Deal Room", "Open for finalists"],
+          ["Feasibility Sync", "Docs + checklist tracked"],
+          ["Next Step", "Final alignment call · offline"],
+        ]);
+      }
+      return (
+        '<div class="visual"><div class="chrome"><i></i><i></i><i></i><em>Offline · Align &amp; Platform Exit</em></div>' +
+        '<div class="panel"><div class="panel-head"><span class="panel-chip">Align &amp; Hand Off</span><span class="panel-meta">Where the deal closes</span></div>' +
+        '<div class="moments">' +
+        '<div class="moment"><strong>Final Alignment Call</strong><p>Vision, cost, and ops confirmed between people—last strategic discussion.</p></div>' +
+        '<div class="moment"><strong>Legal Start</strong><p>MA / FA drafting and signature move offline. Clean platform exit.</p></div>' +
+        "</div>" +
+        '<div class="rows">' +
+        '<div class="row is-human"><strong>People meet</strong><span>Alignment · counsel · signing path</span></div>' +
+        '<div class="row"><strong>Dealality role</strong><span>LOI readiness tracked · clean handoff</span></div>' +
+        "</div></div></div>"
+      );
+    }
+
+    function panel(chrome, chip, meta, rows) {
+      return (
+        '<div class="visual"><div class="chrome"><i></i><i></i><i></i><em>' +
+        esc(chrome) +
+        "</em></div>" +
+        '<div class="panel"><div class="panel-head"><span class="panel-chip">' +
+        esc(chip) +
+        '</span><span class="panel-meta">' +
+        esc(meta) +
+        "</span></div>" +
+        '<div class="rows">' +
+        rows
+          .map(function (r) {
+            return (
+              '<div class="row"><strong>' +
+              esc(r[0]) +
+              "</strong><span>" +
+              esc(r[1]) +
+              "</span></div>"
+            );
+          })
+          .join("") +
+        "</div></div></div>"
+      );
+    }
+
+    function stepHtml(step, i) {
+      const offline = step.mode === "offline";
+      return (
+        '<article class="step' +
+        (offline ? " is-offline-step" : "") +
+        (i === 3 ? " is-active" : "") +
+        '" data-step="' +
+        i +
+        '">' +
+        '<p class="kicker">Step ' +
+        esc(step.n) +
+        "</p>" +
+        '<h2 class="step-title">' +
+        esc(step.title) +
+        "</h2>" +
+        '<div class="mode-pill ' +
+        (offline ? "is-offline" : "is-platform") +
+        '"><i></i>' +
+        (offline ? "Offline · Facilitated by Dealality" : "In Platform · Structure") +
+        "</div>" +
+        '<p class="primary">' +
+        esc(step.primary) +
+        "</p>" +
+        '<p class="support">' +
+        esc(step.support) +
+        "</p>" +
+        '<p class="bridge"><strong>' +
+        (offline ? "Where people meet:" : "Leads into:") +
+        "</strong> " +
+        esc(step.bridge) +
+        "</p>" +
+        visualHtml(step) +
+        '<ul class="labels">' +
+        step.labels.map((l) => "<li>" + esc(l) + "</li>").join("") +
+        "</ul></article>"
+      );
+    }
+
+    const nav = document.getElementById("nav");
+    const content = document.getElementById("content");
+    let active = 3; // open on first offline step
+
+    nav.innerHTML =
+      '<div class="nav-legend" aria-label="Step type legend">' +
+      '<span class="nav-legend-item"><span class="nav-legend-swatch is-platform" aria-hidden="true"></span>Platform</span>' +
+      '<span class="nav-legend-item"><span class="nav-legend-swatch is-offline" aria-hidden="true"></span>Offline</span>' +
+      "</div>" +
+      '<div class="nav-rail">' +
+      '<div class="progress" aria-hidden="true"><span id="progress"></span></div>' +
+      STEPS.map(function (step, i) {
+        const offline = step.mode === "offline";
+        return (
+          '<button type="button" class="nav-item' +
+          (i === active ? " is-active" : "") +
+          (offline ? " is-offline" : "") +
+          '" data-nav="' +
+          i +
+          '" aria-label="' +
+          esc(step.n) +
+          " " +
+          esc(step.title) +
+          ", " +
+          (offline ? "Offline" : "Platform") +
+          '">' +
+          '<span class="nav-num">' +
+          esc(step.n) +
+          "</span>" +
+          '<span class="nav-label">' +
+          esc(step.title) +
+          "</span></button>"
+        );
+      }).join("") +
+      "</div>";
+
+    content.innerHTML = STEPS.map(stepHtml).join("");
+
+    function setActive(i) {
+      active = i;
+      document.getElementById("progress").style.height =
+        ((i + 1) / STEPS.length) * 100 + "%";
+      document.querySelectorAll(".nav-item").forEach(function (el, idx) {
+        el.classList.toggle("is-active", idx === i);
+      });
+      document.querySelectorAll(".step").forEach(function (el, idx) {
+        el.classList.toggle("is-active", idx === i);
+      });
+    }
+
+    nav.addEventListener("click", function (e) {
+      const btn = e.target.closest("[data-nav]");
+      if (!btn) return;
+      setActive(Number(btn.getAttribute("data-nav")));
+    });
+
+    setActive(active);
+  </script>
+</body>
+</html>

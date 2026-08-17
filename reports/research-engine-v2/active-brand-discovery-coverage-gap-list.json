@@ -1,0 +1,1115 @@
+{
+  "run_type": "active_brand_discovery_coverage_gap_list",
+  "generated_at": "2026-08-05T23:57:35.743Z",
+  "production_writes": false,
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "active_brands_total": 62,
+  "parent_companies": [
+    "Accor",
+    "BWH Hotels",
+    "Bunkhouse",
+    "Choice",
+    "Hilton",
+    "IHG",
+    "Marriott",
+    "Preferred Hotels & Resorts",
+    "SLH",
+    "Wyndham"
+  ],
+  "excluded_from_webhound": [
+    "Marriott",
+    "IHG",
+    "Hilton",
+    "Choice"
+  ],
+  "exclusion_reason": "Multi-parent CALA discovery adapters already wired (supported)",
+  "brand_setup_parent_field_gap": "Many Active/Live Brand Setup rows lack Parent Company; Autopilot Active Setup discovery may skip IHG/Accor/etc. unless parent is inferred from slug.",
+  "by_parent": {
+    "Marriott": {
+      "brands": [
+        "ac-hotels-by-marriott",
+        "aloft-hotels",
+        "autograph-collection",
+        "city-express-by-marriott",
+        "courtyard-by-marriott",
+        "marriott-hotels",
+        "moxy-hotels",
+        "residence-inn-by-marriott",
+        "sheraton",
+        "springhill-suites-by-marriott",
+        "studiores",
+        "towneplace-suites-by-marriott",
+        "tribute-portfolio",
+        "westin"
+      ],
+      "status": "supported",
+      "webhound_needed": false,
+      "module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js"
+    },
+    "Choice": {
+      "brands": [
+        "ascend",
+        "comfort-inn-suites",
+        "country-inn-suites",
+        "quality-inn",
+        "radisson-blu",
+        "radisson",
+        "radisson-individuals-by-choice",
+        "radisson-red",
+        "suburban-studios"
+      ],
+      "status": "supported",
+      "webhound_needed": false,
+      "module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js"
+    },
+    "IHG": {
+      "brands": [
+        "avid-hotels",
+        "even-hotels",
+        "handwritten-collection",
+        "holiday-inn-express",
+        "hotel-indigo",
+        "kimpton",
+        "vignette-collection",
+        "voco-hotels"
+      ],
+      "status": "supported",
+      "webhound_needed": false,
+      "module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js"
+    },
+    "Bunkhouse": {
+      "brands": [
+        "bunkhouse-hotels"
+      ],
+      "status": "missing",
+      "webhound_needed": true,
+      "module": null
+    },
+    "BWH Hotels": {
+      "brands": [
+        "bw-premier-collection",
+        "bw-signature-collection"
+      ],
+      "status": "partial",
+      "webhound_needed": true,
+      "module": "lib/bwh-brand-directory-extract.js"
+    },
+    "Hilton": {
+      "brands": [
+        "canopy-by-hilton",
+        "curio-collection",
+        "doubletree-by-hilton",
+        "hampton-by-hilton",
+        "hilton-garden-inn",
+        "hilton-hotels-and-resorts",
+        "home2-suites-by-hilton",
+        "homewood-suites-by-hilton",
+        "motto-by-hilton",
+        "spark-by-hilton",
+        "tapestry-collection-by-hilton",
+        "tempo-by-hilton",
+        "tru-by-hilton"
+      ],
+      "status": "supported",
+      "webhound_needed": false,
+      "module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js"
+    },
+    "Wyndham": {
+      "brands": [
+        "dazzler-by-wyndham",
+        "everhome-suites",
+        "trademark-collection-by-wyndham",
+        "woodspring-suites"
+      ],
+      "status": "partial",
+      "webhound_needed": true,
+      "module": "lib/wyndham-brand-directory-extract.js"
+    },
+    "Accor": {
+      "brands": [
+        "design-hotels",
+        "fairmont-hotels-and-resorts",
+        "ibis",
+        "mama-shelter",
+        "mercure",
+        "mgallery-collection",
+        "novotel",
+        "pullman",
+        "so-hotels-and-resorts"
+      ],
+      "status": "partial",
+      "webhound_needed": true,
+      "module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js"
+    },
+    "Preferred Hotels & Resorts": {
+      "brands": [
+        "preferred-hotels-and-resorts"
+      ],
+      "status": "missing",
+      "webhound_needed": true,
+      "module": null
+    },
+    "SLH": {
+      "brands": [
+        "small-luxury-hotels-of-the-world"
+      ],
+      "status": "missing",
+      "webhound_needed": true,
+      "module": null
+    }
+  },
+  "brands": [
+    {
+      "brand_name": "AC Hotels by Marriott",
+      "brand_slug": "ac-hotels-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": "Marriott",
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Aloft Hotels",
+      "brand_slug": "aloft-hotels",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Ascend Hotel Collection",
+      "brand_slug": "ascend",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Autograph Collection",
+      "brand_slug": "autograph-collection",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "avid hotels",
+      "brand_slug": "avid-hotels",
+      "parent_company": "IHG",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "IHG",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "IHG",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Bunkhouse Hotels",
+      "brand_slug": "bunkhouse-hotels",
+      "parent_company": "Bunkhouse",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Bunkhouse",
+      "discovery_adapter_status": "missing",
+      "region_relevance": "CALA",
+      "source_family": "Bunkhouse",
+      "existing_code_module": null,
+      "webhound_needed": true,
+      "notes": "Small portfolio; lower CALA inventory priority"
+    },
+    {
+      "brand_name": "BW Premier Collection",
+      "brand_slug": "bw-premier-collection",
+      "parent_company": "BWH Hotels",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "BWH Hotels",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "BWH Hotels",
+      "existing_code_module": "lib/bwh-brand-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "BW Signature Collection",
+      "brand_slug": "bw-signature-collection",
+      "parent_company": "BWH Hotels",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "BWH Hotels",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "BWH Hotels",
+      "existing_code_module": "lib/bwh-brand-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Canopy by Hilton",
+      "brand_slug": "canopy-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "City Express by Marriott",
+      "brand_slug": "city-express-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": "Marriott",
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Comfort Inn & Suites",
+      "brand_slug": "comfort-inn-suites",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Country Inn & Suites by Choice",
+      "brand_slug": "country-inn-suites",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Courtyard by Marriott",
+      "brand_slug": "courtyard-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": "Marriott",
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Curio Collection by Hilton",
+      "brand_slug": "curio-collection",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Dazzler by Wyndham",
+      "brand_slug": "dazzler-by-wyndham",
+      "parent_company": "Wyndham",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Wyndham",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Wyndham",
+      "existing_code_module": "lib/wyndham-brand-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Design Hotels",
+      "brand_slug": "design-hotels",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "DoubleTree by Hilton",
+      "brand_slug": "doubletree-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Even Hotels",
+      "brand_slug": "even-hotels",
+      "parent_company": "IHG",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "IHG",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "IHG",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Everhome Suites",
+      "brand_slug": "everhome-suites",
+      "parent_company": "Wyndham",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Wyndham",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Wyndham",
+      "existing_code_module": "lib/wyndham-brand-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Fairmont",
+      "brand_slug": "fairmont-hotels-and-resorts",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Hampton by Hilton",
+      "brand_slug": "hampton-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Handwritten Collection",
+      "brand_slug": "handwritten-collection",
+      "parent_company": "IHG",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "IHG",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "IHG",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Hilton Garden Inn",
+      "brand_slug": "hilton-garden-inn",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Hilton Hotels & Resorts",
+      "brand_slug": "hilton-hotels-and-resorts",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Holiday Inn Express",
+      "brand_slug": "holiday-inn-express",
+      "parent_company": "IHG",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "IHG",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "IHG",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Home2 Suites by Hilton",
+      "brand_slug": "home2-suites-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Homewood Suites by Hilton",
+      "brand_slug": "homewood-suites-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Hotel Indigo",
+      "brand_slug": "hotel-indigo",
+      "parent_company": "IHG",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "IHG",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "IHG",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "ibis",
+      "brand_slug": "ibis",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Kimpton Hotels",
+      "brand_slug": "kimpton",
+      "parent_company": "IHG",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "IHG",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "IHG",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Mama Shelter",
+      "brand_slug": "mama-shelter",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Marriott Hotels",
+      "brand_slug": "marriott-hotels",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": "Marriott",
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Mercure",
+      "brand_slug": "mercure",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "MGallery Collection",
+      "brand_slug": "mgallery-collection",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Motto by Hilton",
+      "brand_slug": "motto-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Moxy Hotels",
+      "brand_slug": "moxy-hotels",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Novotel",
+      "brand_slug": "novotel",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Preferred Hotels & Resorts",
+      "brand_slug": "preferred-hotels-and-resorts",
+      "parent_company": "Preferred Hotels & Resorts",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Preferred Hotels & Resorts",
+      "discovery_adapter_status": "missing",
+      "region_relevance": "CALA",
+      "source_family": "Preferred Hotels & Resorts",
+      "existing_code_module": null,
+      "webhound_needed": true,
+      "notes": "Soft-brand / collection — may need distinct discovery handling"
+    },
+    {
+      "brand_name": "Pullman",
+      "brand_slug": "pullman",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Quality Inn",
+      "brand_slug": "quality-inn",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Radisson Blu by Choice",
+      "brand_slug": "radisson-blu",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Radisson by Choice",
+      "brand_slug": "radisson",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Radisson Individuals by Choice",
+      "brand_slug": "radisson-individuals-by-choice",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": "Choice",
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Radisson RED by Choice",
+      "brand_slug": "radisson-red",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Residence Inn by Marriott",
+      "brand_slug": "residence-inn-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": "Marriott",
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Sheraton",
+      "brand_slug": "sheraton",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Small Luxury Hotels of the World",
+      "brand_slug": "small-luxury-hotels-of-the-world",
+      "parent_company": "SLH",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "SLH",
+      "discovery_adapter_status": "missing",
+      "region_relevance": "CALA",
+      "source_family": "SLH",
+      "existing_code_module": null,
+      "webhound_needed": true,
+      "notes": "Soft-brand / collection — may need distinct discovery handling"
+    },
+    {
+      "brand_name": "SO/",
+      "brand_slug": "so-hotels-and-resorts",
+      "parent_company": "Accor",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Accor",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Accor",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Spark by Hilton",
+      "brand_slug": "spark-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "SpringHill Suites by Marriott",
+      "brand_slug": "springhill-suites-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": "Marriott",
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "StudioRes",
+      "brand_slug": "studiores",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Suburban Studios",
+      "brand_slug": "suburban-studios",
+      "parent_company": "Choice",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Choice",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Choice",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-choice-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Tapestry Collection by Hilton",
+      "brand_slug": "tapestry-collection-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Tempo by Hilton",
+      "brand_slug": "tempo-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "TownePlace Suites by Marriott",
+      "brand_slug": "towneplace-suites-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": "Marriott",
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Trademark Collection by Wyndham",
+      "brand_slug": "trademark-collection-by-wyndham",
+      "parent_company": "Wyndham",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Wyndham",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Wyndham",
+      "existing_code_module": "lib/wyndham-brand-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    },
+    {
+      "brand_name": "Tribute Portfolio",
+      "brand_slug": "tribute-portfolio",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Tru by Hilton",
+      "brand_slug": "tru-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_brand_setup_raw": "Hilton",
+      "brand_family": "Hilton",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Hilton",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-hilton-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Vignette Collection",
+      "brand_slug": "vignette-collection",
+      "parent_company": "IHG",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "IHG",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "IHG",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Voco Hotels",
+      "brand_slug": "voco-hotels",
+      "parent_company": "IHG",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "IHG",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "IHG",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-ihg-cala-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "Westin",
+      "brand_slug": "westin",
+      "parent_company": "Marriott",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Marriott",
+      "discovery_adapter_status": "supported",
+      "region_relevance": "CALA",
+      "source_family": "Marriott",
+      "existing_code_module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+      "webhound_needed": false,
+      "notes": "Excluded from Webhound — multi-parent CALA Autopilot adapters wired"
+    },
+    {
+      "brand_name": "WoodSpring Suites",
+      "brand_slug": "woodspring-suites",
+      "parent_company": "Wyndham",
+      "parent_company_brand_setup_raw": null,
+      "brand_family": "Wyndham",
+      "discovery_adapter_status": "partial",
+      "region_relevance": "CALA",
+      "source_family": "Wyndham",
+      "existing_code_module": "lib/wyndham-brand-directory-extract.js",
+      "webhound_needed": true,
+      "notes": "Directory extractors exist but not wired into Autopilot source_discovery"
+    }
+  ],
+  "webhound_gap_parents": [
+    {
+      "parent_company": "Bunkhouse",
+      "brand_count": 1,
+      "brands": [
+        "bunkhouse-hotels"
+      ],
+      "discovery_adapter_status": "missing",
+      "existing_code_module": null,
+      "webhound_needed": true,
+      "representative_brands": [
+        "bunkhouse-hotels"
+      ],
+      "priority_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ]
+    },
+    {
+      "parent_company": "BWH Hotels",
+      "brand_count": 2,
+      "brands": [
+        "bw-premier-collection",
+        "bw-signature-collection"
+      ],
+      "discovery_adapter_status": "partial",
+      "existing_code_module": "lib/bwh-brand-directory-extract.js",
+      "webhound_needed": true,
+      "representative_brands": [
+        "bw-premier-collection",
+        "bw-signature-collection"
+      ],
+      "priority_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ]
+    },
+    {
+      "parent_company": "Wyndham",
+      "brand_count": 4,
+      "brands": [
+        "dazzler-by-wyndham",
+        "everhome-suites",
+        "trademark-collection-by-wyndham",
+        "woodspring-suites"
+      ],
+      "discovery_adapter_status": "partial",
+      "existing_code_module": "lib/wyndham-brand-directory-extract.js",
+      "webhound_needed": true,
+      "representative_brands": [
+        "dazzler-by-wyndham",
+        "everhome-suites",
+        "trademark-collection-by-wyndham"
+      ],
+      "priority_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ]
+    },
+    {
+      "parent_company": "Accor",
+      "brand_count": 9,
+      "brands": [
+        "design-hotels",
+        "fairmont-hotels-and-resorts",
+        "ibis",
+        "mama-shelter",
+        "mercure",
+        "mgallery-collection",
+        "novotel",
+        "pullman",
+        "so-hotels-and-resorts"
+      ],
+      "discovery_adapter_status": "partial",
+      "existing_code_module": "lib/accor-brand-directory-extract.js; lib/accor-continent-directory-extract.js",
+      "webhound_needed": true,
+      "representative_brands": [
+        "design-hotels",
+        "fairmont-hotels-and-resorts",
+        "ibis"
+      ],
+      "priority_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ]
+    },
+    {
+      "parent_company": "Preferred Hotels & Resorts",
+      "brand_count": 1,
+      "brands": [
+        "preferred-hotels-and-resorts"
+      ],
+      "discovery_adapter_status": "missing",
+      "existing_code_module": null,
+      "webhound_needed": true,
+      "representative_brands": [
+        "preferred-hotels-and-resorts"
+      ],
+      "priority_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ]
+    },
+    {
+      "parent_company": "SLH",
+      "brand_count": 1,
+      "brands": [
+        "small-luxury-hotels-of-the-world"
+      ],
+      "discovery_adapter_status": "missing",
+      "existing_code_module": null,
+      "webhound_needed": true,
+      "representative_brands": [
+        "small-luxury-hotels-of-the-world"
+      ],
+      "priority_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ]
+    }
+  ],
+  "webhound_case_budget": {
+    "max_cases": 40,
+    "planned_cases_estimate": 33,
+    "note": "Prefer parent/source-family patterns × priority countries; not property population"
+  }
+}

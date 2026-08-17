@@ -1,0 +1,426 @@
+{
+  "run_type": "production_census_multi_parent_cala_discovery_adapters",
+  "generated_at": "2026-08-05T23:53:38.419Z",
+  "final_status": "production_census_multi_parent_cala_discovery_adapters_ready_for_insert_review",
+  "production_writes": false,
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "webhound_invoked": false,
+  "webhound_used_as": "learning_input_only",
+  "hqv_required_for_discovery": false,
+  "production_target": {
+    "baseName": "Deal Capture Platform",
+    "tableName": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam"
+  },
+  "adapters": {
+    "Marriott": {
+      "module": "census-autopilot-marriott-discovery-adapter.js",
+      "status": "wired"
+    },
+    "IHG": {
+      "module": "census-autopilot-ihg-cala-discovery-adapter.js",
+      "status": "wired"
+    },
+    "Hilton": {
+      "module": "census-autopilot-hilton-cala-discovery-adapter.js",
+      "status": "wired_mexico_plus_non_mexico"
+    },
+    "Choice": {
+      "module": "census-autopilot-choice-cala-discovery-adapter.js",
+      "status": "wired_mexico_plus_non_mexico"
+    }
+  },
+  "priority_countries": [
+    "Mexico",
+    "Dominican Republic",
+    "Costa Rica",
+    "Colombia",
+    "Panama"
+  ],
+  "parent_country_matrix_summary": {
+    "supported": 20,
+    "needs_adapter": 0,
+    "blocked": 0
+  },
+  "controlled_runs": {
+    "marriott": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-05T23-51-33_CALA-source-discovery",
+      "discovered": 398,
+      "existing": 301,
+      "new": 93,
+      "inserts": 93,
+      "dup": 0,
+      "steward": 4,
+      "families": [
+        "Marriott",
+        "VIC_evidence"
+      ],
+      "blocked": [],
+      "marriott_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "marriott_stats": [
+        {
+          "country": "Mexico",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "hotel_count": 301,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "hotel_count": 30,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+          "hotel_count": 17,
+          "ok": true
+        }
+      ]
+    },
+    "ihg": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-05T23-51-50_CALA-source-discovery",
+      "discovered": 231,
+      "existing": 194,
+      "new": 37,
+      "inserts": 37,
+      "dup": 0,
+      "steward": 0,
+      "families": [
+        "IHG",
+        "VIC_evidence"
+      ],
+      "blocked": [],
+      "ihg_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "ihg_pages": [
+        {
+          "country": "Mexico",
+          "url": "https://www.ihg.com/destinations/us/en/mexico-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/mexico",
+          "cards": 194,
+          "added": 194,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "url": "https://www.ihg.com/destinations/us/en/dominican-republic-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/dominican-republic",
+          "cards": 12,
+          "added": 12,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "url": "https://www.ihg.com/destinations/us/en/costa-rica-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/costa-rica",
+          "cards": 5,
+          "added": 5,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "url": "https://www.ihg.com/destinations/us/en/colombia-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/colombia",
+          "cards": 15,
+          "added": 15,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "url": "https://www.ihg.com/destinations/us/en/panama-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/panama",
+          "cards": 5,
+          "added": 5,
+          "ok": true
+        }
+      ]
+    },
+    "hilton": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-05T23-52-06_CALA-source-discovery",
+      "discovered": 158,
+      "existing": 102,
+      "new": 56,
+      "inserts": 56,
+      "dup": 0,
+      "steward": 0,
+      "families": [
+        "Hilton",
+        "VIC_evidence"
+      ],
+      "blocked": [],
+      "hilton_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "hilton_stats": [
+        {
+          "country": "Mexico",
+          "hotel_count": 102,
+          "ok": true,
+          "mode": "brand_locations"
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.hilton.com/en/locations/dominican-republic/",
+          "hotel_count": 10,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.hilton.com/en/locations/costa-rica/",
+          "hotel_count": 20,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.hilton.com/en/locations/colombia/",
+          "hotel_count": 20,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.hilton.com/en/locations/panama/",
+          "hotel_count": 6,
+          "ok": true,
+          "mode": "country_locations"
+        }
+      ]
+    },
+    "choice": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-05T23-52-31_CALA-source-discovery",
+      "discovered": 78,
+      "existing": 50,
+      "new": 28,
+      "inserts": 28,
+      "dup": 0,
+      "steward": 0,
+      "families": [
+        "Choice",
+        "VIC_evidence"
+      ],
+      "blocked": [],
+      "choice_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "choice_stats": [
+        {
+          "country": "Mexico",
+          "url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "hotel_count": 50,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "url": "https://www.choicehotels.com/en-uk/dominican-republic/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "url": "https://www.choicehotels.com/en-uk/costa-rica/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "url": "https://www.choicehotels.com/en-uk/colombia/regional-hotels",
+          "hotel_count": 15,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "url": "https://www.choicehotels.com/en-uk/panama/regional-hotels",
+          "hotel_count": 7,
+          "ok": true
+        }
+      ]
+    },
+    "active": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-05T23-52-53_CALA-source-discovery",
+      "discovered": 353,
+      "existing": 262,
+      "new": 91,
+      "inserts": 91,
+      "dup": 0,
+      "steward": 0,
+      "families": [
+        "Hilton",
+        "Choice",
+        "Marriott",
+        "VIC_evidence"
+      ],
+      "blocked": [],
+      "marriott_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "hilton_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "choice_countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "hilton_stats": [
+        {
+          "country": "Mexico",
+          "hotel_count": 102,
+          "ok": true,
+          "mode": "brand_locations"
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.hilton.com/en/locations/dominican-republic/",
+          "hotel_count": 10,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.hilton.com/en/locations/costa-rica/",
+          "hotel_count": 20,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.hilton.com/en/locations/colombia/",
+          "hotel_count": 20,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.hilton.com/en/locations/panama/",
+          "hotel_count": 6,
+          "ok": true,
+          "mode": "country_locations"
+        }
+      ],
+      "choice_stats": [
+        {
+          "country": "Mexico",
+          "url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "hotel_count": 50,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "url": "https://www.choicehotels.com/en-uk/dominican-republic/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "url": "https://www.choicehotels.com/en-uk/costa-rica/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "url": "https://www.choicehotels.com/en-uk/colombia/regional-hotels",
+          "hotel_count": 15,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "url": "https://www.choicehotels.com/en-uk/panama/regional-hotels",
+          "hotel_count": 7,
+          "ok": true
+        }
+      ],
+      "marriott_stats": [
+        {
+          "country": "Mexico",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "hotel_count": 301,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "hotel_count": 30,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+          "hotel_count": 17,
+          "ok": true
+        }
+      ]
+    }
+  },
+  "totals": {
+    "parent_runs_insert_candidates": 214,
+    "active_brand_setup_inserts": 91
+  },
+  "recommended_next_action": "Founder review approval bundles (Active Setup 91 High inserts, or per-parent bundles). Apply only with confirms. Expand beyond priority five only after Jamaica/sitemap-only Choice gaps are handled.",
+  "still_partial_outside_priority": [
+    "Choice Jamaica/Bolivia/USVI sitemap-only (no regional JSON)",
+    "Broader CALA countries unprobed live beyond priority five"
+  ]
+}

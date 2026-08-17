@@ -1,0 +1,1235 @@
+{
+  "baseline_status": "mexico_vic_4family_baseline_locked_staging_ready",
+  "locked_at": "2026-08-04T23:13:45.164Z",
+  "staging_only": true,
+  "airtable_writes": false,
+  "brand_explorer_activation": false,
+  "webhound_used": false,
+  "legacy_used_as_research_evidence": false,
+  "production_overwrite": false,
+  "geography": "Mexico",
+  "families": [
+    "IHG",
+    "Hilton",
+    "Choice",
+    "Marriott"
+  ],
+  "total_independent_hotel_records": 666,
+  "reconciliation": {
+    "ihg": 195,
+    "hilton": 102,
+    "choice": 68,
+    "marriott": 301,
+    "sum": 666,
+    "ok": true
+  },
+  "prior_3family_baseline": {
+    "status": "mexico_vic_baseline_locked_ready_for_marriott_wave1d",
+    "combined_freeze_hash_sha256": "cd7887e30418a9df1a91d275ec9c358ced113e6e8e9368b3ec8d0bcb1c8f574e",
+    "total": 365
+  },
+  "marriott_steward_review": {
+    "status": "wave1d_marriott_steward_review_minor_holds_ready_for_4_family_baseline_lock",
+    "reviewed_at": "2026-08-04T23:09:12.505Z",
+    "freeze_artifacts_modified": false,
+    "overlay_only": true
+  },
+  "combined_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+  "combined_record_fingerprint_sha256": "d6089b875c4d6c896a74b3d4113093e34482d0e352098f33ab94925f9bb926cd",
+  "wave_freeze_hashes": {
+    "IHG": "41302100efa86713ae27c0cefdf3e2071dc0a779c876b73f8d6d07f68e4b0403",
+    "Hilton": "8397b19357f29dfe19d2ebc7ec1c1ba936ff84b5aaa7a439fe02d2b9edb4683c",
+    "Choice": "6f72bf60713dc3a103479d293d1f62ecef8a0b888f63be1bc9bb0d64e74d750f",
+    "Marriott": "b26c6fe5bf97b101c69d30402c27fbbec6c79e61cbff9d050d4eb9f3a1e925d3"
+  },
+  "cross_family_fuzzy_auto_merges": 0,
+  "fake_temporal_start_dates": 0,
+  "fake_room_counts": 0,
+  "fake_owners_operators": 0,
+  "missing_coordinates_remain_unknown": true,
+  "number_null_coords_guard": "property-identity.js rejects Number(null)===0 false 0,0 coords",
+  "executive_summary": {
+    "statement": "Mexico VIC 4-family baseline locked: IHG 195 + Hilton 102 + Choice 68 + Marriott 301 = 666 independent hotel records. Staging-only. Marriott steward overlay included. No Airtable, no BE activation, no Webhound, no production overwrite, no cross-family auto-merge.",
+    "combined_records": 666,
+    "data_eligible_total": 580,
+    "cross_family_fuzzy_auto_merges": 0
+  },
+  "family_comparison": [
+    {
+      "family": "IHG",
+      "wave": "wave1_ihg_mexico_all",
+      "records": 195,
+      "unique_physical": 195,
+      "unique_physical_note": "family-scoped unique physical = record count (no intra-family auto-collapse)",
+      "core_completeness_pct": 100,
+      "material_completeness_pct": 56,
+      "data_eligible": 191,
+      "primary_source": "Official IHG Mexico directory / hoteldetail",
+      "notes": "Wave 1A locked; strong rooms coverage relative to later waves",
+      "freeze_hash_sha256": "41302100efa86713ae27c0cefdf3e2071dc0a779c876b73f8d6d07f68e4b0403",
+      "frozen_at": "2026-08-04T22:23:25.411Z",
+      "firewall_pre_freeze_blocked": true,
+      "exact_legacy_matches": 151,
+      "probable_legacy_matches": null,
+      "independent_only": 29,
+      "legacy_only": 63,
+      "source_artifacts": {
+        "full_records": "data/research-engine-v2/verified-independent-census-v1/08-expanded-benchmark-full-records.json",
+        "freeze": "data/research-engine-v2/verified-independent-census-v1/09-expanded-benchmark-freeze.json",
+        "summary": "data/research-engine-v2/verified-independent-census-v1/12-vic-run-summary.json"
+      }
+    },
+    {
+      "family": "Hilton",
+      "wave": "wave1b_hilton_mexico",
+      "records": 102,
+      "unique_physical": 102,
+      "unique_physical_note": "family-scoped unique physical = record count (no intra-family auto-collapse)",
+      "core_completeness_pct": 100,
+      "material_completeness_pct": 71,
+      "data_eligible": 102,
+      "primary_source": "Official Hilton Mexico brand location pages (+ structured GraphQL)",
+      "notes": "Wave 1B locked; strong openDate; rooms mostly Unknown",
+      "freeze_hash_sha256": "8397b19357f29dfe19d2ebc7ec1c1ba936ff84b5aaa7a439fe02d2b9edb4683c",
+      "frozen_at": "2026-08-04T22:34:33.640Z",
+      "firewall_pre_freeze_blocked": true,
+      "exact_legacy_matches": 0,
+      "probable_legacy_matches": 2,
+      "independent_only": 100,
+      "legacy_only": 24,
+      "source_artifacts": {
+        "full_records": "data/research-engine-v2/verified-independent-census-wave1b-hilton/02-hilton-full-records.json",
+        "freeze": "data/research-engine-v2/verified-independent-census-wave1b-hilton/04-hilton-freeze.json",
+        "summary": "data/research-engine-v2/verified-independent-census-wave1b-hilton/00-wave1b-run-summary.json"
+      }
+    },
+    {
+      "family": "Choice",
+      "wave": "wave1c_choice_mexico",
+      "records": 68,
+      "unique_physical": 68,
+      "unique_physical_note": "family-scoped unique physical = record count (no intra-family auto-collapse)",
+      "core_completeness_pct": 97,
+      "material_completeness_pct": 56,
+      "data_eligible": 50,
+      "primary_source": "Official Choice Mexico regional JSON-LD + MX* sitemap union",
+      "notes": "Wave 1C locked; 50 regional-complete data-eligible + 18 sitemap-only union",
+      "freeze_hash_sha256": "6f72bf60713dc3a103479d293d1f62ecef8a0b888f63be1bc9bb0d64e74d750f",
+      "frozen_at": "2026-08-04T22:51:54.885Z",
+      "firewall_pre_freeze_blocked": true,
+      "exact_legacy_matches": 29,
+      "probable_legacy_matches": 11,
+      "independent_only": 28,
+      "legacy_only": 13,
+      "source_artifacts": {
+        "full_records": "data/research-engine-v2/verified-independent-census-wave1c-choice/02-choice-full-records.json",
+        "freeze": "data/research-engine-v2/verified-independent-census-wave1c-choice/06-choice-freeze.json",
+        "summary": "data/research-engine-v2/verified-independent-census-wave1c-choice/00-wave1c-run-summary.json"
+      }
+    },
+    {
+      "family": "Marriott",
+      "wave": "wave1d_marriott_mexico",
+      "records": 301,
+      "unique_physical": 301,
+      "unique_physical_note": "source-unique / identity-safe staging count (301 unique MARSHA) — not fully coordinate-verified physical count",
+      "core_completeness_pct": 97,
+      "material_completeness_pct": 40,
+      "data_eligible": 237,
+      "primary_source": "Official Marriott Mexico country hotel-sitemap (sitemap-heavy)",
+      "notes": "Wave 1D locked after steward review; sitemap-heavy; material 40%; staging census safe, not production-ready; 5 Brand Unconfirmed overlay decisions",
+      "freeze_hash_sha256": "b26c6fe5bf97b101c69d30402c27fbbec6c79e61cbff9d050d4eb9f3a1e925d3",
+      "frozen_at": "2026-08-04T23:03:31.855Z",
+      "firewall_pre_freeze_blocked": true,
+      "exact_legacy_matches": 1,
+      "probable_legacy_matches": 6,
+      "independent_only": 294,
+      "legacy_only": 17,
+      "source_artifacts": {
+        "full_records": "data/research-engine-v2/verified-independent-census-wave1d-marriott/02-marriott-full-records.json",
+        "freeze": "data/research-engine-v2/verified-independent-census-wave1d-marriott/08-marriott-freeze.json",
+        "summary": "data/research-engine-v2/verified-independent-census-wave1d-marriott/00-wave1d-run-summary.json"
+      }
+    }
+  ],
+  "marriott_steward_review_summary": {
+    "status": "wave1d_marriott_steward_review_minor_holds_ready_for_4_family_baseline_lock",
+    "identity_safe": true,
+    "four_points_sheraton_verified": true,
+    "city_express_verified": true,
+    "blocking_issues": [],
+    "minor_holds": [
+      "5 Brand Unconfirmed (1 confirm_brand overlay candidate)",
+      "9 campus/high-sim physical steward pairs (no merge)",
+      "All 301 records missing coordinates (sitemap limitation) — staging OK",
+      "Material completeness 40% — census identity only; not production-ready"
+    ]
+  },
+  "brand_unconfirmed_overlay": [
+    {
+      "independent_record_id": "ind_marriott_mx_mexmc",
+      "property_name": "Mexico City Marriott Reforma Hotel",
+      "action": "confirm_brand",
+      "brand": "Marriott Hotels",
+      "note": "map miss, overlay only"
+    },
+    {
+      "independent_record_id": "ind_marriott_mx_pbcde",
+      "property_name": "Gran Hotel de Puebla by HNF",
+      "action": "exclude_from_brand_completion"
+    },
+    {
+      "independent_record_id": "ind_marriott_mx_gdlcc",
+      "property_name": "Hotel Guadalajara Country Club by HNF",
+      "action": "exclude_from_brand_completion"
+    },
+    {
+      "independent_record_id": "ind_marriott_mx_slwak",
+      "property_name": "CASA MAYOR Saltillo",
+      "action": "steward_manual_review_required"
+    },
+    {
+      "independent_record_id": "ind_marriott_mx_mtyjd",
+      "property_name": "SJ Grand Hotel Monterrey",
+      "action": "steward_manual_review_required"
+    }
+  ],
+  "brand_coverage": [
+    {
+      "family": "IHG",
+      "brand": "Holiday Inn Express",
+      "count": 62,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "count": 60,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "count": 11,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Iberostar",
+      "count": 11,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Crowne Plaza",
+      "count": 8,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "voco",
+      "count": 8,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "InterContinental",
+      "count": 7,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Hotel Indigo",
+      "count": 5,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "avid hotels",
+      "count": 5,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Kimpton",
+      "count": 4,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Holiday Inn Club Vacations",
+      "count": 4,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Candlewood Suites",
+      "count": 3,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Holiday Inn Resort",
+      "count": 3,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "IHG Partner / Spnd",
+      "count": 2,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "JOIA Iberostar",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "IHG",
+      "brand": "Garner",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Hampton by Hilton",
+      "count": 20,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Small Luxury Hotels of the World",
+      "count": 18,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Hilton Garden Inn",
+      "count": 17,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Hilton Hotels & Resorts",
+      "count": 12,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "DoubleTree by Hilton",
+      "count": 7,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Curio Collection by Hilton",
+      "count": 5,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Tapestry by Hilton",
+      "count": 5,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Tru by Hilton",
+      "count": 5,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Hilton Grand Vacations",
+      "count": 3,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Homewood Suites by Hilton",
+      "count": 3,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Conrad Hotels & Resorts",
+      "count": 2,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Motto by Hilton",
+      "count": 2,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Waldorf Astoria",
+      "count": 2,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "Hilton",
+      "brand": "Canopy by Hilton",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "Choice",
+      "brand": "Comfort Inn",
+      "count": 19,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Choice",
+      "brand": "Sleep Inn",
+      "count": 16,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Choice",
+      "brand": "Ascend Hotel Collection",
+      "count": 12,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Choice",
+      "brand": "Radisson",
+      "count": 11,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Choice",
+      "brand": "Quality Inn",
+      "count": 7,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_ready",
+      "notes": ""
+    },
+    {
+      "family": "Choice",
+      "brand": "Choice Hotels",
+      "count": 2,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "Choice",
+      "brand": "Comfort Suites",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": ""
+    },
+    {
+      "family": "Marriott",
+      "brand": "City Express by Marriott",
+      "count": 89,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Courtyard by Marriott",
+      "count": 29,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Design Hotels",
+      "count": 25,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "City Express Plus by Marriott",
+      "count": 24,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "City Express Junior by Marriott",
+      "count": 21,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Fairfield by Marriott",
+      "count": 12,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Four Points by Sheraton",
+      "count": 11,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Autograph Collection",
+      "count": 10,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Marriott Hotels",
+      "count": 10,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Includes overlay confirm_brand candidate Mexico City Marriott Reforma Hotel (freeze unchanged; effective brand for BE = Marriott Hotels if steward accepts)"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Westin",
+      "count": 9,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "AC Hotels by Marriott",
+      "count": 8,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "JW Marriott",
+      "count": 7,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "The Luxury Collection",
+      "count": 5,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Marriott Bonvoy — Brand Unconfirmed",
+      "count": 5,
+      "parsing_confidence": "Hold — Brand Unconfirmed",
+      "completion_readiness": "excluded_from_brand_completion",
+      "notes": "Soft/ambiguous Bonvoy rows; see Marriott steward overlay"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Sheraton",
+      "count": 5,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "St. Regis",
+      "count": 4,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Aloft Hotels",
+      "count": 4,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "City Express Suites by Marriott",
+      "count": 4,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Residence Inn by Marriott",
+      "count": 4,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Delta Hotels",
+      "count": 3,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "City Centro by Marriott",
+      "count": 3,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_partial",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "W Hotels",
+      "count": 2,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Tribute Portfolio",
+      "count": 2,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "EDITION",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Le Méridien",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Renaissance Hotels",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Moxy Hotels",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    },
+    {
+      "family": "Marriott",
+      "brand": "Apartments by Marriott Bonvoy",
+      "count": 1,
+      "parsing_confidence": "High",
+      "completion_readiness": "completion_hold",
+      "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+    }
+  ],
+  "completeness": {
+    "by_family": {
+      "IHG": {
+        "core": 100,
+        "material": 56
+      },
+      "Hilton": {
+        "core": 100,
+        "material": 71
+      },
+      "Choice": {
+        "core": 97,
+        "material": 56
+      },
+      "Marriott": {
+        "core": 97,
+        "material": 40
+      }
+    },
+    "data_eligible_total": 580
+  },
+  "brand_explorer_completion_readiness": {
+    "activation": "NONE",
+    "do_not_activate": true,
+    "brand_status_changes": false,
+    "airtable_writes": false,
+    "production_overwrite": false,
+    "small_be_completion_pilot_ready": true,
+    "pilot_scope": "Small pilot only — prefer IHG/Hilton/Choice brands with stronger material completeness; Marriott sitemap brands are completion_partial/hold until rooms/coords/open date enrichment",
+    "suitable_pilot_candidates": [
+      {
+        "family": "IHG",
+        "brand": "Holiday Inn Express",
+        "count": 62,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Holiday Inn",
+        "count": 60,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Staybridge Suites",
+        "count": 11,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Iberostar",
+        "count": 11,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Crowne Plaza",
+        "count": 8,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "voco",
+        "count": 8,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "InterContinental",
+        "count": 7,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Hotel Indigo",
+        "count": 5,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "avid hotels",
+        "count": 5,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Kimpton",
+        "count": 4,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Holiday Inn Club Vacations",
+        "count": 4,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Candlewood Suites",
+        "count": 3,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": ""
+      },
+      {
+        "family": "IHG",
+        "brand": "Holiday Inn Resort",
+        "count": 3,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": ""
+      },
+      {
+        "family": "Hilton",
+        "brand": "Hampton by Hilton",
+        "count": 20,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "Hilton",
+        "brand": "Small Luxury Hotels of the World",
+        "count": 18,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "Hilton",
+        "brand": "Hilton Garden Inn",
+        "count": 17,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "Hilton",
+        "brand": "Hilton Hotels & Resorts",
+        "count": 12,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "Hilton",
+        "brand": "DoubleTree by Hilton",
+        "count": 7,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "Hilton",
+        "brand": "Curio Collection by Hilton",
+        "count": 5,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      },
+      {
+        "family": "Hilton",
+        "brand": "Tapestry by Hilton",
+        "count": 5,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_ready",
+        "notes": ""
+      }
+    ],
+    "marriott_brands": [
+      {
+        "family": "Marriott",
+        "brand": "City Express by Marriott",
+        "count": 89,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Courtyard by Marriott",
+        "count": 29,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Design Hotels",
+        "count": 25,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "City Express Plus by Marriott",
+        "count": 24,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "City Express Junior by Marriott",
+        "count": 21,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Fairfield by Marriott",
+        "count": 12,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Four Points by Sheraton",
+        "count": 11,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Autograph Collection",
+        "count": 10,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Marriott Hotels",
+        "count": 10,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Includes overlay confirm_brand candidate Mexico City Marriott Reforma Hotel (freeze unchanged; effective brand for BE = Marriott Hotels if steward accepts)"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Westin",
+        "count": 9,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "AC Hotels by Marriott",
+        "count": 8,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "JW Marriott",
+        "count": 7,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "The Luxury Collection",
+        "count": 5,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Marriott Bonvoy — Brand Unconfirmed",
+        "count": 5,
+        "parsing_confidence": "Hold — Brand Unconfirmed",
+        "completion_readiness": "excluded_from_brand_completion",
+        "notes": "Soft/ambiguous Bonvoy rows; see Marriott steward overlay"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Sheraton",
+        "count": 5,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "St. Regis",
+        "count": 4,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Aloft Hotels",
+        "count": 4,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "City Express Suites by Marriott",
+        "count": 4,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Residence Inn by Marriott",
+        "count": 4,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Delta Hotels",
+        "count": 3,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "City Centro by Marriott",
+        "count": 3,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_partial",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "W Hotels",
+        "count": 2,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_hold",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Tribute Portfolio",
+        "count": 2,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_hold",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "EDITION",
+        "count": 1,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_hold",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Le Méridien",
+        "count": 1,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_hold",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Renaissance Hotels",
+        "count": 1,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_hold",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Moxy Hotels",
+        "count": 1,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_hold",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      },
+      {
+        "family": "Marriott",
+        "brand": "Apartments by Marriott Bonvoy",
+        "count": 1,
+        "parsing_confidence": "High",
+        "completion_readiness": "completion_hold",
+        "notes": "Sitemap identity strong; material fields mostly Unknown — BE completion partial/hold"
+      }
+    ],
+    "hold_categories": [
+      "Marriott sitemap-only material gaps (rooms, coords, owner, open date)",
+      "Brand Unconfirmed exclude_from_brand_completion / steward_manual_review_required",
+      "Design Hotels / soft brands until FP enrichment"
+    ],
+    "required_steward_review_before_production_migration": [
+      "Accept or reject Mexico City Marriott Reforma confirm_brand overlay",
+      "Resolve CASA MAYOR Saltillo + SJ Grand Monterrey brand cues",
+      "Campus annex pairs remain distinct until address/coords proof",
+      "No production overwrite of legacy Hotel Census"
+    ],
+    "classifications_used": [
+      "completion_ready",
+      "completion_partial",
+      "completion_hold",
+      "excluded_from_brand_completion",
+      "steward_review_required"
+    ]
+  },
+  "staging_migration_readiness": {
+    "staging_migration_ready": true,
+    "production_overwrite_ready": false,
+    "required_steward_review_before_production": [
+      "Marriott Brand Unconfirmed overlay decisions",
+      "Cross-family rejected fuzzy / insufficient pairs",
+      "Campus annex distinctness",
+      "Field mapping validation for staging table only"
+    ],
+    "fields_safe_to_migrate": [
+      "family",
+      "brand",
+      "property name",
+      "canonical name",
+      "city",
+      "state / region",
+      "country",
+      "source URL",
+      "source type",
+      "source lineage",
+      "as-of discovery date",
+      "identity key",
+      "confidence classification",
+      "Property ID / MARSHA / ctyhocn where present"
+    ],
+    "fields_unsafe_to_migrate": [
+      "rooms where missing",
+      "owner",
+      "operator",
+      "open date",
+      "coordinates where missing",
+      "brand-unconfirmed records without overlay confirmation",
+      "temporal start dates",
+      "images / first-party media"
+    ],
+    "overlay_brand_exception": {
+      "independent_record_id": "ind_marriott_mx_mexmc",
+      "freeze_brand": "Marriott Bonvoy — Brand Unconfirmed",
+      "overlay_brand": "Marriott Hotels",
+      "note": "Staging may use overlay brand if steward accepts; freeze row unchanged"
+    },
+    "posture": "staging migration only — no production overwrite"
+  },
+  "property_identity_v1": {
+    "property_identity_version": "property-identity-v1",
+    "total_combined_records": 666,
+    "unique_physical_by_family": {
+      "IHG": 195,
+      "Hilton": 102,
+      "Choice": 68,
+      "Marriott": 301
+    },
+    "marriott_unique_physical_clarification": "Marriott unique physical properties = 301 means source-unique / identity-safe staging count (unique MARSHA; campus annexes kept distinct). It is NOT a fully coordinate-verified physical count — all Marriott Wave 1D coords are Unknown (sitemap limitation).",
+    "duplicate_handling_by_family": {
+      "IHG": "Directory property-id dedupe within Wave 1A",
+      "Hilton": "ctyhocn / location-page identity within Wave 1B",
+      "Choice": "Property Identity V1 + regional/sitemap union",
+      "Marriott": "MARSHA dedupe in sitemap; Property Identity V1; Number(null)===0 coords guard applied"
+    },
+    "cross_family_auto_merges": 0,
+    "rejected_fuzzy_matches": 6,
+    "campus_sibling_high_sim_kept_distinct": 9,
+    "marriott_coordinate_limitation": "All 301 Marriott records missing coordinates — Unknown preserved; never 0,0",
+    "number_null_equals_zero_issue": {
+      "fixed": true,
+      "guarded_in": "lib/research-engine-v2/clean-census/property-identity.js",
+      "note": "Missing latitude/longitude no longer coerce via Number(null)===0"
+    }
+  },
+  "temporal_affiliation_v1": {
+    "temporal_affiliation_version": "temporal-affiliation-v1",
+    "current_affiliation": "As of discovery date per wave",
+    "fake_affiliation_start_dates": 0,
+    "fake_opening_dates": 0,
+    "prior_affiliations": "Unknown unless independently sourced",
+    "blocked_unavailable_source_cases_preserved": true,
+    "current_affiliation_from_legacy": false,
+    "policy": "exact | as_of | before | unknown — no fabricated start dates",
+    "module": "lib/research-engine-v2/clean-census/temporal-affiliation.js"
+  }
+}

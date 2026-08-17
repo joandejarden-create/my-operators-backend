@@ -1,0 +1,1091 @@
+{
+  "version": "post-visibility-reconciliation-sanity-audit-v1",
+  "generatedAt": "2026-07-22T17:48:32.030Z",
+  "dryRun": true,
+  "auditOnly": true,
+  "guardrails": {
+    "companyValidatedWrites": false,
+    "sourceLibraryWrites": false,
+    "registryWrites": false,
+    "ownerFacingContentWrites": false,
+    "imageWrites": false,
+    "releaseFieldWrites": false
+  },
+  "cohortDefinitions": {
+    "primaryActiveReleaseCohort": {
+      "definition": "PRIMARY_RELEASE_SLUGS — OS release-readiness + default external quality lock complete cohort",
+      "slugs": [
+        "everhome-suites",
+        "kimpton",
+        "radisson-individuals-by-choice",
+        "design-hotels",
+        "hotel-indigo",
+        "mgallery-collection",
+        "small-luxury-hotels-of-the-world"
+      ],
+      "testedByExternalQualityLock": true,
+      "testedByGoldenReleaseSuiteDefault": true
+    },
+    "restoredLegacyApprovedCohort": {
+      "definition": "VISIBILITY_RESTORED_RELEASE_SLUGS — historically approved profiles restored to public full-profile visibility after visibility fix. Transitional: publicly visible but NOT in default external quality lock (7/7).",
+      "slugs": [
+        "ascend",
+        "comfort-inn-suites",
+        "curio-collection",
+        "tribute-portfolio"
+      ],
+      "testedByExternalQualityLock": false,
+      "recommendedNext": "Add dedicated legacy-restored quality lock OR expand EXTERNAL_QUALITY_LOCK_COHORT once image role-match / uniqueness gates are accepted for these brands."
+    },
+    "remediationCohort": {
+      "definition": "Profiles with presentation content (or historical approval) that remain externally locked due to image/content gates",
+      "slugsDynamic": true
+    },
+    "founderPreviewOnlyCohort": {
+      "definition": "Externally locked but full tabs available with ?beInternalPreview=1 when presentation rows exist",
+      "slugsDynamic": true
+    },
+    "externalQualityLockCohort": {
+      "definition": "DEFAULT_BRANDS in brand-explorer-v38-display-quality-lock-audit = INCOMPLETE_CONTROL + PRIMARY_RELEASE (currently 7 primary; incomplete empty)",
+      "slugs": [
+        "everhome-suites",
+        "kimpton",
+        "radisson-individuals-by-choice",
+        "design-hotels",
+        "hotel-indigo",
+        "mgallery-collection",
+        "small-luxury-hotels-of-the-world"
+      ],
+      "incomplete": [],
+      "complete": [
+        "everhome-suites",
+        "kimpton",
+        "radisson-individuals-by-choice",
+        "design-hotels",
+        "hotel-indigo",
+        "mgallery-collection",
+        "small-luxury-hotels-of-the-world"
+      ],
+      "note": "7/7 after legacy restore is expected: restored Ascend/Comfort/Curio/Tribute are outside this cohort by design until explicitly added."
+    },
+    "goldenReleaseSuiteCohort": {
+      "definition": "test:brand-explorer-golden-release-suite defaults to PRIMARY_RELEASE_SLUGS; OS regression uses everhome, kimpton, radisson-individuals-by-choice",
+      "defaultSlugs": [
+        "everhome-suites",
+        "kimpton",
+        "radisson-individuals-by-choice",
+        "design-hotels",
+        "hotel-indigo",
+        "mgallery-collection",
+        "small-luxury-hotels-of-the-world"
+      ],
+      "osRegressionFocus": [
+        "everhome-suites",
+        "kimpton",
+        "radisson-individuals-by-choice"
+      ],
+      "originalGoldenFour": [
+        "everhome-suites",
+        "kimpton",
+        "radisson-individuals-by-choice",
+        "design-hotels"
+      ]
+    },
+    "legacyMigrationSeedCohort": {
+      "definition": "LEGACY_SEED_BRANDS — founder-named historically finished profiles",
+      "slugs": [
+        "autograph-collection",
+        "ascend",
+        "comfort-inn-suites",
+        "country-inn-suites",
+        "curio-collection",
+        "tribute-portfolio",
+        "vignette-collection",
+        "handwritten-collection",
+        "woodspring-suites",
+        "suburban-studios"
+      ]
+    }
+  },
+  "brandResults": [
+    {
+      "brandName": "Ascend Hotel Collection",
+      "slug": "ascend",
+      "brandBasicsRecordId": "reclkgOzvAcBheUSo",
+      "currentOsState": "display:draft_applied_with_defects",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "draft_applied_with_defects",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": true,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "restored_legacy_approved_cohort",
+      "expectedStatus": "restored_legacy_approved_public_visible_transitional",
+      "mismatchIssues": [
+        "restored_legacy_publicly_visible_but_not_in_external_quality_lock_cohort_transitional"
+      ]
+    },
+    {
+      "brandName": "Autograph Collection",
+      "slug": "autograph-collection",
+      "brandBasicsRecordId": "recEJCTDj1zrsjPM6",
+      "currentOsState": "display:hidden_incomplete",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "hidden_incomplete",
+      "founderPreviewDisplayState": "profile_in_preparation_or_empty",
+      "shouldRenderFullProfile": false,
+      "liveApiShouldRenderFullProfile": false,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": false,
+      "founderVisualReviewPass": false,
+      "readyForActiveProfile": false,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": false,
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "currentGateFailures": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_not_approved",
+        "founder_visual_review_not_passed"
+      ],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "remediation_cohort",
+      "expectedStatus": "legacy_seed_locked_other",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Comfort Inn & Suites",
+      "slug": "comfort-inn-suites",
+      "brandBasicsRecordId": "recOzH5iAE1xEjyD0",
+      "currentOsState": "display:draft_applied_with_defects",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "draft_applied_with_defects",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": true,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "restored_legacy_approved_cohort",
+      "expectedStatus": "restored_legacy_approved_public_visible_transitional",
+      "mismatchIssues": [
+        "restored_legacy_publicly_visible_but_not_in_external_quality_lock_cohort_transitional"
+      ]
+    },
+    {
+      "brandName": "Country Inn & Suites by Choice",
+      "slug": "country-inn-suites",
+      "brandBasicsRecordId": "recaayt9u7YYg8h7Y",
+      "currentOsState": "display:legacy_approved_pending_migration",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "legacy_approved_pending_migration",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": false,
+      "liveApiShouldRenderFullProfile": false,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": false,
+      "founderVisualReviewPass": false,
+      "readyForActiveProfile": false,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 9,
+      "currentGateFailures": [
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_not_approved",
+        "founder_visual_review_not_passed"
+      ],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "founder_preview_only_cohort",
+      "expectedStatus": "legacy_seed_locked_other",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Curio Collection by Hilton",
+      "slug": "curio-collection",
+      "brandBasicsRecordId": "receQkxgjlezsc1xg",
+      "currentOsState": "display:draft_applied_with_defects",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "draft_applied_with_defects",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": true,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "restored_legacy_approved_cohort",
+      "expectedStatus": "restored_legacy_approved_public_visible_transitional",
+      "mismatchIssues": [
+        "restored_legacy_publicly_visible_but_not_in_external_quality_lock_cohort_transitional"
+      ]
+    },
+    {
+      "brandName": "Design Hotels",
+      "slug": "design-hotels",
+      "brandBasicsRecordId": "rec02zPClpWUTCyXM",
+      "currentOsState": "asset_ready",
+      "currentOsAction": "image_remediation",
+      "currentPublicDisplayState": "active_profile_ready",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": false,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": true,
+      "inLegacySeedCohort": false,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": true,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": true,
+      "inOriginalGoldenFour": true,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [
+        "visual_asset_pack_ready",
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "image_distinctiveness",
+        "golden_content_quality"
+      ],
+      "osFailedGates": [
+        "visual_asset_pack_ready",
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "image_distinctiveness",
+        "golden_content_quality"
+      ],
+      "osTrueBlockers": [
+        "visual_asset_pack_ready",
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "image_distinctiveness",
+        "golden_content_quality"
+      ],
+      "liveBucket": "other_visible",
+      "expectedStatus": "primary_release_visible_with_gate_debt",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Everhome Suites",
+      "slug": "everhome-suites",
+      "brandBasicsRecordId": "recqkkrsevi4r9ibj",
+      "currentOsState": "draft_applied_with_defects",
+      "currentOsAction": "apply_remediation",
+      "currentPublicDisplayState": "active_profile_ready",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": false,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": true,
+      "inLegacySeedCohort": false,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": true,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": true,
+      "inOriginalGoldenFour": true,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "golden_content_quality"
+      ],
+      "osFailedGates": [
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "golden_content_quality"
+      ],
+      "osTrueBlockers": [
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "golden_content_quality"
+      ],
+      "liveBucket": "other_visible",
+      "expectedStatus": "primary_release_visible_with_gate_debt",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Handwritten Collection",
+      "slug": "handwritten-collection",
+      "brandBasicsRecordId": "rec7hTXwMRC81EPqz",
+      "currentOsState": "display:hidden_incomplete",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "hidden_incomplete",
+      "founderPreviewDisplayState": "profile_in_preparation_or_empty",
+      "shouldRenderFullProfile": false,
+      "liveApiShouldRenderFullProfile": false,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": false,
+      "founderVisualReviewPass": false,
+      "readyForActiveProfile": false,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": false,
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "currentGateFailures": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_not_approved",
+        "founder_visual_review_not_passed"
+      ],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "remediation_cohort",
+      "expectedStatus": "legacy_seed_locked_other",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Hotel Indigo",
+      "slug": "hotel-indigo",
+      "brandBasicsRecordId": "recegXrqaPiSLGCIe",
+      "currentOsState": "active_profile_ready",
+      "currentOsAction": "no_action",
+      "currentPublicDisplayState": "active_profile_ready",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": false,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": true,
+      "inLegacySeedCohort": false,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": true,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": true,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "other_visible",
+      "expectedStatus": "primary_release_visible_with_gate_debt",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Kimpton Hotels",
+      "slug": "kimpton",
+      "brandBasicsRecordId": "recCKuXCmGvxHPfb3",
+      "currentOsState": "draft_applied_with_defects",
+      "currentOsAction": "apply_remediation",
+      "currentPublicDisplayState": "active_profile_ready",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": false,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": true,
+      "inLegacySeedCohort": false,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": true,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": true,
+      "inOriginalGoldenFour": true,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "golden_content_quality"
+      ],
+      "osFailedGates": [
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "golden_content_quality"
+      ],
+      "osTrueBlockers": [
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "golden_content_quality"
+      ],
+      "liveBucket": "other_visible",
+      "expectedStatus": "primary_release_visible_with_gate_debt",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "MGallery Collection",
+      "slug": "mgallery-collection",
+      "brandBasicsRecordId": "recrWCD1LMqu864oU",
+      "currentOsState": "active_profile_ready",
+      "currentOsAction": "no_action",
+      "currentPublicDisplayState": "active_profile_ready",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": false,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": true,
+      "inLegacySeedCohort": false,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": true,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": true,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "other_visible",
+      "expectedStatus": "primary_release_visible_with_gate_debt",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Radisson Individuals by Choice",
+      "slug": "radisson-individuals-by-choice",
+      "brandBasicsRecordId": "recRyvM8OmLlDj9G7",
+      "currentOsState": "internal_preview_blocked",
+      "currentOsAction": "image_remediation",
+      "currentPublicDisplayState": "draft_applied_with_defects",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": false,
+      "liveApiShouldRenderFullProfile": false,
+      "legacyHistoricalApproved": false,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": true,
+      "inLegacySeedCohort": false,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": true,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": true,
+      "inOriginalGoldenFour": true,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [
+        "image_uniqueness",
+        "visual_asset_pack_ready",
+        "property_examples_three_imageurl",
+        "no_visible_source_urls",
+        "no_forbidden_copy_presentation",
+        "internal_preview_owner_copy_live",
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "image_distinctiveness",
+        "image_role_match",
+        "golden_content_quality"
+      ],
+      "osFailedGates": [
+        "visual_asset_pack_ready",
+        "property_examples_three_imageurl",
+        "no_visible_source_urls",
+        "no_forbidden_copy_presentation",
+        "internal_preview_owner_copy_live",
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "image_distinctiveness",
+        "image_role_match",
+        "golden_content_quality"
+      ],
+      "osTrueBlockers": [
+        "visual_asset_pack_ready",
+        "property_examples_three_imageurl",
+        "no_visible_source_urls",
+        "no_forbidden_copy_presentation",
+        "internal_preview_owner_copy_live",
+        "tab_factory_audit",
+        "rendered_field_completeness_audit",
+        "rendered_field_completeness_remediation",
+        "image_distinctiveness",
+        "image_role_match",
+        "golden_content_quality"
+      ],
+      "liveBucket": "remediation_cohort_primary",
+      "expectedStatus": "primary_release_locked_needs_remediation",
+      "mismatchIssues": [
+        "radisson_individuals_in_primary_release_but_not_active_profile_ready_live_image_or_copy_debt"
+      ]
+    },
+    {
+      "brandName": "Small Luxury Hotels of the World",
+      "slug": "small-luxury-hotels-of-the-world",
+      "brandBasicsRecordId": "recjjSnY2opb8P4DG",
+      "currentOsState": "active_profile_ready",
+      "currentOsAction": "no_action",
+      "currentPublicDisplayState": "active_profile_ready",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": false,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": true,
+      "inLegacySeedCohort": false,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": true,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": true,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "other_visible",
+      "expectedStatus": "primary_release_visible_with_gate_debt",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Suburban Studios",
+      "slug": "suburban-studios",
+      "brandBasicsRecordId": "reclcjg5Foa9Vs5TC",
+      "currentOsState": "display:legacy_approved_pending_migration",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "legacy_approved_pending_migration",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": false,
+      "liveApiShouldRenderFullProfile": false,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": false,
+      "founderVisualReviewPass": false,
+      "readyForActiveProfile": false,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "currentGateFailures": [
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_not_approved",
+        "founder_visual_review_not_passed"
+      ],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "founder_preview_only_cohort",
+      "expectedStatus": "legacy_seed_locked_other",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "Tribute Portfolio",
+      "slug": "tribute-portfolio",
+      "brandBasicsRecordId": "recCvV0PuZOi8c3hC",
+      "currentOsState": "display:draft_applied_with_defects",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "draft_applied_with_defects",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": true,
+      "liveApiShouldRenderFullProfile": true,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "readyForActiveProfile": true,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": true,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "currentGateFailures": [],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "restored_legacy_approved_cohort",
+      "expectedStatus": "restored_legacy_approved_public_visible_transitional",
+      "mismatchIssues": [
+        "restored_legacy_publicly_visible_but_not_in_external_quality_lock_cohort_transitional"
+      ]
+    },
+    {
+      "brandName": "Vignette Collection",
+      "slug": "vignette-collection",
+      "brandBasicsRecordId": "recDwzv86TWnz2gGB",
+      "currentOsState": "display:hidden_incomplete",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "hidden_incomplete",
+      "founderPreviewDisplayState": "profile_in_preparation_or_empty",
+      "shouldRenderFullProfile": false,
+      "liveApiShouldRenderFullProfile": false,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": false,
+      "founderVisualReviewPass": false,
+      "readyForActiveProfile": false,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": false,
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "currentGateFailures": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_not_approved",
+        "founder_visual_review_not_passed"
+      ],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "remediation_cohort",
+      "expectedStatus": "legacy_seed_locked_other",
+      "mismatchIssues": []
+    },
+    {
+      "brandName": "WoodSpring Suites",
+      "slug": "woodspring-suites",
+      "brandBasicsRecordId": "recsOd51NzRPYsMko",
+      "currentOsState": "display:legacy_approved_pending_migration",
+      "currentOsAction": "not_in_os_default_cohort",
+      "currentPublicDisplayState": "legacy_approved_pending_migration",
+      "founderPreviewDisplayState": "full_tabs_with_banner_if_externally_locked",
+      "shouldRenderFullProfile": false,
+      "liveApiShouldRenderFullProfile": false,
+      "legacyHistoricalApproved": true,
+      "activeProfileApproved": false,
+      "founderVisualReviewPass": false,
+      "readyForActiveProfile": false,
+      "inPrimaryReleaseSlugs": false,
+      "inLegacySeedCohort": true,
+      "inVisibilityRestoredCohort": false,
+      "inExternalQualityLockCohort": false,
+      "inIncompleteControlCohort": false,
+      "inGoldenReleaseSuiteCohort": false,
+      "inOriginalGoldenFour": false,
+      "hasPresentationRows": true,
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 3,
+      "currentGateFailures": [
+        "missing_scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_not_approved",
+        "founder_visual_review_not_passed"
+      ],
+      "osFailedGates": [],
+      "osTrueBlockers": [],
+      "liveBucket": "founder_preview_only_cohort",
+      "expectedStatus": "legacy_seed_locked_other",
+      "mismatchIssues": []
+    }
+  ],
+  "summary": {
+    "brandCount": 17,
+    "byLiveBucket": {
+      "restored_legacy_approved_cohort": 4,
+      "remediation_cohort": 3,
+      "founder_preview_only_cohort": 3,
+      "other_visible": 6,
+      "remediation_cohort_primary": 1
+    },
+    "mismatchCount": 5,
+    "primaryVisible": 6,
+    "primaryLocked": 1,
+    "restoredLegacyVisible": 4,
+    "externalQualityLockCohortSize": 7,
+    "whyExternalQualityLockStillSevenOfSeven": "External quality lock defaults to PRIMARY_RELEASE_SLUGS only (7 brands). Restored legacy Ascend/Comfort/Curio/Tribute are publicly visible via transitional legacy unlock but are not members of that test cohort yet."
+  },
+  "radissonIndividualsConflict": {
+    "configuredCanonical": {
+      "slug": "radisson-individuals-by-choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "name": "Radisson Individuals by Choice",
+      "inLegacySeed": false,
+      "inPrimaryRelease": true,
+      "inActiveProfileConfig": false
+    },
+    "nameLookups": [
+      {
+        "probedName": "Radisson Individuals by Choice",
+        "found": true,
+        "brandName": "Radisson Individuals by Choice",
+        "recordId": "recRyvM8OmLlDj9G7",
+        "slug": "Radisson Individuals by Choice",
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "legacyHistoricalApproved": false
+      },
+      {
+        "probedName": "Radisson Individuals",
+        "found": false,
+        "brandName": null,
+        "recordId": null,
+        "slug": null,
+        "displayState": null,
+        "shouldRenderFullProfile": null,
+        "legacyHistoricalApproved": false
+      },
+      {
+        "probedName": "Radisson by Choice",
+        "found": true,
+        "brandName": "Radisson by Choice",
+        "recordId": "recywbx1YQSTCPqW1",
+        "slug": "Radisson by Choice",
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "legacyHistoricalApproved": false
+      },
+      {
+        "probedName": "Radisson Blu by Choice",
+        "found": true,
+        "brandName": "Radisson Blu by Choice",
+        "recordId": "recWPEvxBQxVVzSq3",
+        "slug": "Radisson Blu by Choice",
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "legacyHistoricalApproved": false
+      },
+      {
+        "probedName": "Radisson Blu",
+        "found": true,
+        "brandName": "Radisson Blu",
+        "recordId": "recUX55vdDCcMHkDg",
+        "slug": "Radisson Blu",
+        "displayState": "hidden_incomplete",
+        "shouldRenderFullProfile": false,
+        "legacyHistoricalApproved": false
+      },
+      {
+        "probedName": "Radisson RED",
+        "found": true,
+        "brandName": "Radisson RED",
+        "recordId": "recFLwYLMKLbXZFM6",
+        "slug": "Radisson RED",
+        "displayState": "hidden_incomplete",
+        "shouldRenderFullProfile": false,
+        "legacyHistoricalApproved": false
+      },
+      {
+        "probedName": "Radisson Collection",
+        "found": true,
+        "brandName": "Radisson Collection",
+        "recordId": "rec2DDyPu38C6zDBC",
+        "slug": "Radisson Collection",
+        "displayState": "hidden_incomplete",
+        "shouldRenderFullProfile": false,
+        "legacyHistoricalApproved": false
+      }
+    ],
+    "formulaSearchHits": [
+      {
+        "recordId": "rec1sizeL0DhslQL8",
+        "brandName": "Radisson Inn & Suites"
+      },
+      {
+        "recordId": "rec2DDyPu38C6zDBC",
+        "brandName": "Radisson Collection"
+      },
+      {
+        "recordId": "rec3nyARnkn97W9w6",
+        "brandName": "Country Inn & Suites by Radisson"
+      },
+      {
+        "recordId": "recFLwYLMKLbXZFM6",
+        "brandName": "Radisson RED"
+      },
+      {
+        "recordId": "recNrxgX2wRIZeKJ2",
+        "brandName": "Prize by Radisson"
+      },
+      {
+        "recordId": "recPAB0PgJyKE2v09",
+        "brandName": "Radisson Collection by Choice"
+      },
+      {
+        "recordId": "recRyvM8OmLlDj9G7",
+        "brandName": "Radisson Individuals by Choice"
+      },
+      {
+        "recordId": "recUX55vdDCcMHkDg",
+        "brandName": "Radisson Blu"
+      },
+      {
+        "recordId": "recWPEvxBQxVVzSq3",
+        "brandName": "Radisson Blu by Choice"
+      },
+      {
+        "recordId": "recXYvwtNQGUzFZcn",
+        "brandName": "Radisson"
+      },
+      {
+        "recordId": "recmKqo7M7mLZgRqQ",
+        "brandName": "Radisson RED by Choice"
+      },
+      {
+        "recordId": "recyI1O61Or7LXwXl",
+        "brandName": "Park Inn by Radisson"
+      },
+      {
+        "recordId": "recywbx1YQSTCPqW1",
+        "brandName": "Radisson by Choice"
+      }
+    ],
+    "duplicateRisk": false,
+    "conclusion": "Single canonical Brand Basics record for Radisson Individuals by Choice (recRyvM8OmLlDj9G7). 12 other Radisson* Brand Basics rows are sibling Choice brands, not duplicate Individuals profiles. No separate “Radisson Individuals” (without by Choice) record exists. image_remediation / internal_preview_blocked on radisson-individuals-by-choice refers to this same record’s live image-uniqueness / OS debt — not a wrong legacy seed.",
+    "uniqueRecordIds": [
+      "recRyvM8OmLlDj9G7",
+      "recywbx1YQSTCPqW1",
+      "recWPEvxBQxVVzSq3",
+      "recUX55vdDCcMHkDg",
+      "recFLwYLMKLbXZFM6",
+      "rec2DDyPu38C6zDBC",
+      "rec1sizeL0DhslQL8",
+      "rec3nyARnkn97W9w6",
+      "recNrxgX2wRIZeKJ2",
+      "recPAB0PgJyKE2v09",
+      "recXYvwtNQGUzFZcn",
+      "recmKqo7M7mLZgRqQ",
+      "recyI1O61Or7LXwXl"
+    ],
+    "individualsByChoiceMatch": {
+      "recordId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice"
+    },
+    "individualsNameVariants": [
+      {
+        "recordId": "recRyvM8OmLlDj9G7",
+        "brandName": "Radisson Individuals by Choice"
+      }
+    ],
+    "otherRadissonBrands": [
+      {
+        "recordId": "rec1sizeL0DhslQL8",
+        "brandName": "Radisson Inn & Suites"
+      },
+      {
+        "recordId": "rec2DDyPu38C6zDBC",
+        "brandName": "Radisson Collection"
+      },
+      {
+        "recordId": "rec3nyARnkn97W9w6",
+        "brandName": "Country Inn & Suites by Radisson"
+      },
+      {
+        "recordId": "recFLwYLMKLbXZFM6",
+        "brandName": "Radisson RED"
+      },
+      {
+        "recordId": "recNrxgX2wRIZeKJ2",
+        "brandName": "Prize by Radisson"
+      },
+      {
+        "recordId": "recPAB0PgJyKE2v09",
+        "brandName": "Radisson Collection by Choice"
+      },
+      {
+        "recordId": "recUX55vdDCcMHkDg",
+        "brandName": "Radisson Blu"
+      },
+      {
+        "recordId": "recWPEvxBQxVVzSq3",
+        "brandName": "Radisson Blu by Choice"
+      },
+      {
+        "recordId": "recXYvwtNQGUzFZcn",
+        "brandName": "Radisson"
+      },
+      {
+        "recordId": "recmKqo7M7mLZgRqQ",
+        "brandName": "Radisson RED by Choice"
+      },
+      {
+        "recordId": "recyI1O61Or7LXwXl",
+        "brandName": "Park Inn by Radisson"
+      },
+      {
+        "recordId": "recywbx1YQSTCPqW1",
+        "brandName": "Radisson by Choice"
+      }
+    ],
+    "duplicateIndividualsRisk": false,
+    "siblingRadissonBrandCount": 12
+  },
+  "internalPreviewCopyInvestigation": {
+    "focusBrands": [
+      "everhome-suites",
+      "kimpton",
+      "radisson-individuals-by-choice"
+    ],
+    "results": {
+      "everhome-suites": {
+        "liveInternalPreviewHits": [],
+        "projectedInternalPreviewHits": [],
+        "publicExternalHits": [],
+        "residualPatchCount": 0,
+        "publicAffected": false,
+        "blocksReleaseBaseline": false,
+        "founderBannerFalsePositive": false,
+        "note": "clean_on_live_internal_preview"
+      },
+      "kimpton": {
+        "liveInternalPreviewHits": [],
+        "projectedInternalPreviewHits": [],
+        "publicExternalHits": [],
+        "residualPatchCount": 0,
+        "publicAffected": false,
+        "blocksReleaseBaseline": false,
+        "founderBannerFalsePositive": false,
+        "note": "clean_on_live_internal_preview"
+      },
+      "radisson-individuals-by-choice": {
+        "liveInternalPreviewHits": [
+          {
+            "id": "internal_review",
+            "label": "internal review",
+            "snippet": "internal review"
+          }
+        ],
+        "projectedInternalPreviewHits": [
+          {
+            "id": "internal_review",
+            "label": "internal review",
+            "snippet": "internal review"
+          }
+        ],
+        "publicExternalHits": [],
+        "residualPatchCount": 0,
+        "publicAffected": false,
+        "blocksReleaseBaseline": false,
+        "founderBannerFalsePositive": true,
+        "note": "founder_preview_banner_phrase_internal_review_false_positive_on_locked_brand_public_unaffected"
+      }
+    },
+    "osRegressionCommand": "npm run test:brand-explorer-internal-preview-owner-copy -- --brands everhome-suites,kimpton,radisson-individuals-by-choice",
+    "note": "Do not patch in this audit. Classify whether hits are public-visible defects or founder-preview hygiene."
+  },
+  "recommendations": [
+    "Treat VISIBILITY_RESTORED_RELEASE_SLUGS as a documented transitional public cohort until a legacy quality lock (or cohort expansion) is approved.",
+    "Do not interpret image_remediation on radisson-individuals-by-choice as a duplicate-record problem unless radissonIndividualsConflict.duplicateRisk shows conflicting Individuals record IDs.",
+    "Resolve internal-preview-owner-copy hits on Everhome/Kimpton/Radisson before treating OS release-readiness as fully green; external quality lock PASS alone is insufficient for founder path."
+  ],
+  "osStateBackfill": {
+    "source": "reports/brand-explorer-v41-os-consolidation.json",
+    "patchedCount": 7,
+    "note": "OS states merged from latest v41 consolidation after --skip-os-eval refresh for Radisson/owner-copy accuracy."
+  }
+}

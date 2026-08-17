@@ -1,0 +1,41 @@
+{
+  "version": "cvent-venue-census-extractable-fields-v1",
+  "source": "https://www.cvent.com/venues/{city}/{type}/{slug}/venue-{uuid}",
+  "probed": "2026-08-08",
+  "notes": [
+    "Homepage /venues is a search UI — extract per venue UUID pages only.",
+    "guestRooms = Total guest rooms / sleeping rooms only. Never map Meeting rooms → Rooms / Keys.",
+    "Cvent lat/lng are present in basicProfile but Latitude/Longitude source policy does not approve cvent yet — steward note only.",
+    "Phone is usually empty on JSON-LD telephone."
+  ],
+  "extractable": {
+    "write_to_census_when_blank_medium": [
+      { "cvent": "address1 / JSON-LD streetAddress", "census": "Address + Address Confidence Medium + Address Source URL" },
+      { "cvent": "Total guest rooms", "census": "Rooms / Keys + Rooms Confidence Medium + Rooms Source URL" },
+      { "cvent": "website (non-cvent host)", "census": "Official Property URL" },
+      { "cvent": "listingText", "census": "Hotel Description - Source Text" },
+      { "cvent": "meeting rooms / total meeting space / listing meeting mention", "census": "Meeting Space Flag" },
+      { "cvent": "venueTypeId HOTEL|RESORT", "census": "Property Type" },
+      { "cvent": "airportDistance <= 3 mi", "census": "Asset Context = Airport" },
+      { "cvent": "telephone (rare)", "census": "Phone" }
+    ],
+    "steward_note_only": [
+      "postalCode",
+      "latitude/longitude (pending Latitude source approval)",
+      "airportDistance when > 3 mi",
+      "meetingRoomsCount",
+      "totalMeetingSpace raw + unit",
+      "suites",
+      "sourceId (e.g. MX092)"
+    ],
+    "do_not_write": [
+      "Meeting rooms count → Rooms / Keys",
+      "Largest room / capacity → Rooms / Keys",
+      "Built / Renovated → Opening Date (forbidden)",
+      "Cvent page URL as Official Property URL"
+    ]
+  },
+  "parser": "lib/research-engine-v2/census-cvent-venue-client.js (v3)",
+  "matcher": "lib/research-engine-v2/census-cvent-choice-matcher.js (v2)",
+  "test": "npm run test:census-cvent-venue-parse"
+}

@@ -1,0 +1,137 @@
+{
+  "ok": true,
+  "status": "production_census_universal_record_resolver_v1_partial_source_remaining",
+  "version": "universal-record-resolver-v1",
+  "objective": "universal-record-resolver-v1",
+  "census_mode": "field-completion-only",
+  "secondary_enabled": false,
+  "webhound_as_census_sot": false,
+  "airtable_writes": true,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "records_inserted": 0,
+  "records_updated": 1,
+  "incomplete_scanned": 1,
+  "records_resolved": 0,
+  "records_partial": 1,
+  "records_unresolved": 0,
+  "field_counts": {
+    "hotel_url": 0,
+    "state": 0,
+    "market": 1,
+    "submarket": 0,
+    "address": 0,
+    "phone": 0,
+    "rooms": 0,
+    "coordinates": 0,
+    "canonical": 1
+  },
+  "secondary_opportunities_count": 0,
+  "secondary_writes": 0,
+  "mx043": {
+    "record_id": "recmWNlAbpgMinyLt",
+    "before": {
+      "Canonical Property Name": "Choice property MX043",
+      "Property Name": "Choice property MX043",
+      "Address": null,
+      "Phone": null,
+      "Rooms / Keys": null,
+      "Market": null,
+      "Submarket": null,
+      "Latitude": null,
+      "Official": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+    },
+    "after": {
+      "Canonical Property Name": "Quality Inn Chihuahua",
+      "Property Name": "Quality Inn Chihuahua",
+      "Address": null,
+      "Phone": null,
+      "Rooms / Keys": null,
+      "Market": "Chihuahua",
+      "Submarket": null,
+      "Latitude": null,
+      "Official": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+    },
+    "patch_keys": [
+      "Canonical Property Name",
+      "Property Name",
+      "Market",
+      "Last Reviewed Date",
+      "Enrichment Status"
+    ],
+    "blockers": [
+      {
+        "field": "directory",
+        "reason": "not_in_choice_cala_regional",
+        "property_id": "MX043"
+      },
+      {
+        "field": "property_page",
+        "reason": "bot_blocked",
+        "url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+      },
+      {
+        "field": "property_page",
+        "reason": "choice_property_page_unavailable"
+      },
+      {
+        "field": "Submarket",
+        "reason": "submarket_not_high"
+      },
+      {
+        "field": "property_page",
+        "reason": "timeout",
+        "url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+      },
+      {
+        "field": "Submarket",
+        "reason": "submarket_not_high"
+      },
+      {
+        "field": "Latitude/Longitude",
+        "reason": "mapbox_waiting_for_high_address"
+      }
+    ],
+    "status": "partial"
+  },
+  "top_unresolved": [
+    {
+      "record_id": "recmWNlAbpgMinyLt",
+      "family": "Choice",
+      "unresolved_keys": [
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX043"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Submarket",
+          "reason": "submarket_not_high"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+        }
+      ]
+    }
+  ],
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T18-09-05_CALA-universal-record-resolver-v1",
+  "generated_at": "2026-08-07T18:10:24.207Z"
+}

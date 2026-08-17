@@ -1,0 +1,278 @@
+{
+  "version": "24-pre-baseline-minor-cleanup-v1",
+  "generatedAt": "2026-07-23T17:55:30.000Z",
+  "dryRun": false,
+  "apply": true,
+  "writePerformed": true,
+  "activeUniverseSource": {
+    "name": "Brand Basics Brand Status Active/Live",
+    "table": "Brand Setup - Brand Basics",
+    "file": "lib/brand-status-active.js",
+    "formula": "OR({Brand Status}='Active', {Brand Status}='Live')",
+    "note": "Canonical Brand Explorer active universe. Code cohort lists are operational overlays, not this universe."
+  },
+  "targetBrands": [
+    "autograph-collection",
+    "bw-premier-collection",
+    "bw-signature-collection",
+    "comfort-inn-suites",
+    "curio-collection",
+    "hotel-indigo",
+    "kimpton",
+    "preferred-hotels-and-resorts",
+    "radisson-blu",
+    "small-luxury-hotels-of-the-world",
+    "tribute-portfolio"
+  ],
+  "excludedFromUniverse": [
+    { "slug": "radisson-collection", "reason": "Not Active/Live — excluded" },
+    { "slug": "tapestry-collection-by-hilton", "reason": "Not Active/Live — excluded" }
+  ],
+  "waves": [
+    {
+      "wave": 1,
+      "appliedAt": "2026-07-23T17:14:43.369Z",
+      "totalPatches": 97,
+      "totalImageActions": 46,
+      "note": "Primary targeted cleanup for all 11 approve_after_minor_cleanup brands"
+    },
+    {
+      "wave": 2,
+      "appliedAt": "2026-07-23T17:29:20.374Z",
+      "totalPatches": 3,
+      "totalImageActions": 0,
+      "note": "Preferred residual: thicken overview.proof.2 (≥35 words) and operator_compat.tags after Wave 1 shortened proof Body under PVQL gate"
+    }
+  ],
+  "brandResults": [
+    {
+      "slug": "autograph-collection",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 8,
+      "imageActionCount": 3,
+      "findingSources": [
+        "repeated_visual_role",
+        "caption_mismatch",
+        "missing:valueOwners.overview",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.operator_compat.tags",
+        "thin:footprint.portfolio_mix"
+      ]
+    },
+    {
+      "slug": "bw-premier-collection",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 4,
+      "imageActionCount": 2,
+      "findingSources": [
+        "repeated_visual_role",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations"
+      ]
+    },
+    {
+      "slug": "bw-signature-collection",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 5,
+      "imageActionCount": 2,
+      "findingSources": [
+        "repeated_visual_role",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.operator_compat.tags"
+      ]
+    },
+    {
+      "slug": "comfort-inn-suites",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 10,
+      "imageActionCount": 6,
+      "findingSources": [
+        "caption_mismatch",
+        "missing:Guest Psychographics Description",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.model.brand_involvement"
+      ]
+    },
+    {
+      "slug": "curio-collection",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 12,
+      "imageActionCount": 6,
+      "findingSources": [
+        "repeated_visual_role",
+        "caption_mismatch",
+        "missing:Guest Psychographics Description",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.operator_compat.tags",
+        "thin:operations.model.management_option",
+        "thin:operations.model.staffing_intensity"
+      ]
+    },
+    {
+      "slug": "hotel-indigo",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 11,
+      "imageActionCount": 4,
+      "findingSources": [
+        "caption_mismatch",
+        "missing:valueOwners.overview",
+        "missing:valueOwners.watchouts",
+        "missing:Guest Psychographics Description",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.operator_compat.tags",
+        "thin:footprint.portfolio_mix"
+      ]
+    },
+    {
+      "slug": "kimpton",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 11,
+      "imageActionCount": 6,
+      "findingSources": [
+        "caption_mismatch",
+        "missing:Guest Psychographics Description",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.model.management_option",
+        "thin:operations.model.staffing_intensity"
+      ]
+    },
+    {
+      "slug": "preferred-hotels-and-resorts",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 10,
+      "imageActionCount": 2,
+      "findingSources": [
+        "repeated_visual_role",
+        "missing:valueOwners.overview",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.operator_compat.tags",
+        "wrong_brand:overview.proof.2",
+        "thin:overview.proof.2"
+      ],
+      "residualWave2Patches": [
+        {
+          "findingSource": "thin:operations.operator_compat.tags",
+          "recordId": "recNHUmpe7xkWWIW5",
+          "field": "Body",
+          "currentIssue": "Thin Body (9 words) on operations.operator_compat.tags",
+          "patchApplied": true
+        },
+        {
+          "findingSource": "thin:overview.proof.2",
+          "recordId": "recRha8AHJaGPXtsc",
+          "field": "Title+Body",
+          "currentIssue": "Thin proof.2 Body (30 words; need ≥35 for PVQL/golden)",
+          "patchApplied": true
+        }
+      ]
+    },
+    {
+      "slug": "radisson-blu",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 9,
+      "imageActionCount": 6,
+      "findingSources": [
+        "caption_mismatch",
+        "missing:Guest Psychographics Description",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations"
+      ]
+    },
+    {
+      "slug": "small-luxury-hotels-of-the-world",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 10,
+      "imageActionCount": 3,
+      "findingSources": [
+        "repeated_visual_role",
+        "missing:valueOwners.overview",
+        "missing:valueOwners.watchouts",
+        "missing:Guest Psychographics Description",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.operator_compat.tags",
+        "thin:footprint.portfolio_mix"
+      ]
+    },
+    {
+      "slug": "tribute-portfolio",
+      "beforeRecommendation": "approve_after_minor_cleanup",
+      "afterRecommendation": "approve_for_baseline_freeze",
+      "patchCount": 10,
+      "imageActionCount": 6,
+      "findingSources": [
+        "repeated_visual_role",
+        "caption_mismatch",
+        "missing:Guest Psychographics Description",
+        "missing:standards.similar",
+        "missing:standards.owner_considerations",
+        "thin:operations.operator_compat.tags"
+      ]
+    }
+  ],
+  "summary": {
+    "brands": 11,
+    "totalPatchesWave1": 97,
+    "totalPatchesWave2": 3,
+    "totalPatches": 100,
+    "totalImageActions": 46,
+    "postAuditApproveForBaselineFreeze": 24,
+    "postAuditRemediationRequired": 0,
+    "postAuditBlockers": 0,
+    "crossBrandImageReuse": 0
+  },
+  "postValidation": {
+    "qualityAudit": {
+      "command": "npm run brand-explorer-24-tab-section-quality-audit -- --dry-run",
+      "baselineFreezeDecision": "ready_to_freeze_24_brand_baseline",
+      "recommendationCounts": { "approve_for_baseline_freeze": 24 },
+      "crossBrandImageIssues": 0
+    },
+    "pvql": {
+      "command": "npm run test:brand-explorer-public-visibility-quality-lock -- --public-full-only",
+      "publicFull": 24,
+      "allPass": true,
+      "companyValidatedUntouched": true
+    },
+    "os": {
+      "command": "npm run brand-explorer-os -- --stage release-readiness --dry-run --skip-regression",
+      "states": { "active_profile_ready": 7 },
+      "actions": { "no_action": 7 },
+      "pass": true
+    },
+    "mandatoryReleaseGates": {
+      "command": "npm run test:brand-explorer-mandatory-release-gates",
+      "pass": true
+    }
+  },
+  "guardrails": {
+    "companyValidatedUntouched": true,
+    "sourceLibraryUntouched": true,
+    "registryUntouched": true,
+    "brandStatusUntouched": true,
+    "releaseFieldsUntouched": true,
+    "publicRestoreUntouched": true,
+    "freezeApprovedBrandsUntouched": true,
+    "radissonCollectionExcluded": true,
+    "tapestryExcluded": true
+  },
+  "protectedBaselineCanFreeze": true,
+  "protectedBaselineFreezeDecision": "ready_to_freeze_24_brand_baseline"
+}

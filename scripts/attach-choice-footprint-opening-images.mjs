@@ -9,20 +9,32 @@ import "../load-env.js";
 import Airtable from "airtable";
 import { extractPropertyUrlFromBody } from "./lib/choice-hotel-page-image.mjs";
 import { resolveFootprintOpeningImageUrl } from "./lib/choice-footprint-opening-image-map.mjs";
-import { downloadHoteldamImage } from "./lib/choice-hoteldam-download.mjs";
+import { resolveRadissonChoiceImageDownloadUrl } from "./lib/radisson-choice-image-resolve.mjs";
+import { fetchHoteldamImageBytes } from "./lib/choice-hoteldam-download.mjs";
+import {
+  extFromImageContentType,
+  MAX_AIRTABLE_ATTACHMENT_BYTES,
+  uploadImageBytesToAirtable,
+} from "./lib/choice-airtable-upload-attachment.mjs";
 
 const TABLE = "Brand Setup - Brand Explorer Presentation";
 const FIELD = "Image";
 const SLOT = "footprint.openings";
-const MAX_BYTES = 5 * 1024 * 1024;
+const MAX_BYTES = MAX_AIRTABLE_ATTACHMENT_BYTES;
 
-const BROWSER_HEADERS = {
-  "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-  Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
-  "Accept-Language": "en-US,en;q=0.9",
-  Referer: "https://www.choicehotels.com/",
-};
+function extFromContentType(ct) {
+  return extFromImageContentType(ct);
+}
+
+async function uploadBytesToAirtable(baseId, recordId, buffer, contentType, filename) {
+  return uploadImageBytesToAirtable({
+    baseId,
+    recordId,
+    buffer,
+    contentType,
+    filename,
+  });
+}
 
 function parseArgs(argv) {
   const i = argv.indexOf("--brand");
@@ -31,35 +43,6 @@ function parseArgs(argv) {
     brandFilter: i >= 0 ? String(argv[i + 1] || "").trim() : "",
     force: argv.includes("--force"),
   };
-}
-
-function extFromContentType(ct) {
-  if (/png/i.test(ct)) return "png";
-  if (/webp/i.test(ct)) return "webp";
-  if (/gif/i.test(ct)) return "gif";
-  return "jpg";
-}
-
-async function uploadBytesToAirtable(baseId, recordId, buffer, contentType, filename) {
-  const endpoint = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(TABLE)}/${recordId}/${encodeURIComponent(
-    FIELD
-  )}/uploadAttachment`;
-  const res = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      contentType,
-      file: buffer.toString("base64"),
-      filename,
-    }),
-  });
-  const text = await res.text();
-  if (!res.ok) throw new Error(`uploadAttachment ${res.status}: ${text.slice(0, 300)}`);
-  const json = text ? JSON.parse(text) : {};
-  return json?.fields?.[FIELD] || json?.records?.[0]?.fields?.[FIELD];
 }
 
 async function listOpeningRows(base, brandFilter) {
@@ -99,7 +82,10 @@ async function main() {
       skippedNoUrl += 1;
       continue;
     }
-    const imageUrl = resolveFootprintOpeningImageUrl(pageUrl);
+    const imageUrl =
+      brand === "Radisson by Choice"
+        ? resolveRadissonChoiceImageDownloadUrl(pageUrl)
+        : resolveFootprintOpeningImageUrl(pageUrl);
     if (!imageUrl) {
       console.log(`- ${brand}: skip "${title}" (no hoteldam mapping for ${pageUrl})`);
       skippedNoMap += 1;
@@ -115,7 +101,7 @@ async function main() {
     }
 
     try {
-      const downloaded = await downloadHoteldamImage(imageUrl, pageUrl);
+      const downloaded = await fetchHoteldamImageBytes(imageUrl, pageUrl, { usePuppeteer: true });
       if (downloaded) {
         const { buffer, contentType } = downloaded;
         if (buffer.length > MAX_BYTES) {
@@ -124,14 +110,17 @@ async function main() {
           continue;
         }
         const ext = extFromContentType(contentType);
-        await uploadBytesToAirtable(baseId, row.id, buffer, contentType, `${row.id}.${ext}`);
-        updated += 1;
-        continue;
+        try {
+          await uploadBytesToAirtable(baseId, row.id, buffer, contentType, `${row.id}.${ext}`);
+          updated += 1;
+          continue;
+        } catch (uploadErr) {
+          console.log(`  upload bytes failed: ${uploadErr.message}`);
+        }
       }
 
-      console.log(`  fallback: Airtable fetch from URL`);
-      await base(TABLE).update(row.id, { [FIELD]: [{ url: imageUrl }] });
-      updated += 1;
+      console.log(`  skip: could not download or upload image`);
+      skippedDownload += 1;
     } catch (err) {
       console.log(`  error: ${err.message}`);
       skippedDownload += 1;

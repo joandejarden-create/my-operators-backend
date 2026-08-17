@@ -1,0 +1,214 @@
+{
+  "version": "census-autopilot-mission-clean-census-v1",
+  "mode": "mission",
+  "objective": "clean-census-v1",
+  "region": "CALA",
+  "scope": "active-brand-setup",
+  "strategy": "fastest-safe",
+  "cleanup_existing_only": true,
+  "skip_inserts": true,
+  "max_passes_budget": 6,
+  "max_passes_semantics": "per_phase_cap",
+  "batch_size": 100,
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "soft_targets": {
+    "clean_core_min": 875,
+    "unknown_city_max": 10,
+    "canonical_blank_max": 10,
+    "coordinate_blocked_dirty_max": 40
+  },
+  "founder_approval": "mission_cli_command",
+  "per_phase_chatgpt_approval": false,
+  "phases": [
+    {
+      "order": 1,
+      "id": "phase_1_core_identity",
+      "label": "Core Identity",
+      "queues": [
+        "core_identity_quality",
+        "core_identity_source_lookup",
+        "canonical_property_name_completion",
+        "city_state_normalization",
+        "market_geography_completion",
+        "key_field_completion"
+      ],
+      "require_clean_core": false,
+      "read_only": false,
+      "max_passes": 3,
+      "allowed_fields": [
+        "Property Name",
+        "Canonical Property Name",
+        "Current Brand",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Source URL",
+        "Official Property URL",
+        "Family / Source Family",
+        "Source Type",
+        "Source Confidence",
+        "Identity Confidence",
+        "Data Confidence Tier",
+        "Production Use Status",
+        "Human Review Required",
+        "Enrichment Status",
+        "Enrichment Priority",
+        "Last Reviewed Date"
+      ]
+    },
+    {
+      "order": 2,
+      "id": "phase_2_classification",
+      "label": "Clean Core Classification",
+      "queues": [
+        "clean_core_classification"
+      ],
+      "require_clean_core": false,
+      "read_only": true,
+      "max_passes": 1,
+      "allowed_fields": []
+    },
+    {
+      "order": 3,
+      "id": "phase_3_address",
+      "label": "Address Completion (Clean Core only)",
+      "queues": [
+        "address_confirmation"
+      ],
+      "require_clean_core": true,
+      "read_only": false,
+      "max_passes": 2,
+      "allowed_fields": [
+        "Address",
+        "Address Confidence",
+        "Address Source URL",
+        "City",
+        "State / Region",
+        "Country"
+      ]
+    },
+    {
+      "order": 4,
+      "id": "phase_4_coordinates",
+      "label": "Coordinate Completion (Clean Core + High Address)",
+      "queues": [
+        "coordinate_completion"
+      ],
+      "require_clean_core": true,
+      "read_only": false,
+      "max_passes": 2,
+      "allowed_fields": [
+        "Latitude",
+        "Longitude",
+        "Coordinate Source Type",
+        "Coordinate Confidence",
+        "Geocode Provider",
+        "Geocode Method",
+        "Geocode Reviewed Date"
+      ]
+    },
+    {
+      "order": 5,
+      "id": "phase_5_contact_size",
+      "label": "Phone + Rooms (Clean Core only)",
+      "queues": [
+        "phone_number_enrichment",
+        "rooms_keys"
+      ],
+      "require_clean_core": true,
+      "read_only": false,
+      "max_passes": 2,
+      "allowed_fields": [
+        "Phone",
+        "Rooms / Keys",
+        "Rooms Confidence",
+        "Rooms Source URL",
+        "Rooms Source Type",
+        "Rooms Reviewed Date",
+        "Rooms Notes"
+      ]
+    },
+    {
+      "order": 6,
+      "id": "phase_6_rich_enrichment",
+      "label": "Rich Enrichment",
+      "queues": [
+        "property_type_asset_context",
+        "description_extraction",
+        "amenities_extraction",
+        "radar_public_readiness"
+      ],
+      "require_clean_core": false,
+      "read_only": false,
+      "max_passes": 2,
+      "allowed_fields": [
+        "Property Type",
+        "Asset Context",
+        "Market",
+        "Submarket",
+        "Market / Submarket",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "F&B Flag",
+        "Meeting Space Flag",
+        "Resort / Leisure Flag",
+        "Extended Stay Flag",
+        "Mixed-Use Flag",
+        "Branded Residences Flag",
+        "Radar Display Status",
+        "Radar Display Reason",
+        "Radar Geography Status",
+        "Public Census Eligibility",
+        "Public Display Confidence",
+        "Public Display Review Status",
+        "Enrichment Status",
+        "Enrichment Priority",
+        "Last Reviewed Date"
+      ]
+    },
+    {
+      "order": 7,
+      "id": "phase_7_final_classification",
+      "label": "Final Classification",
+      "queues": [
+        "clean_core_classification"
+      ],
+      "require_clean_core": false,
+      "read_only": true,
+      "max_passes": 1,
+      "allowed_fields": []
+    }
+  ],
+  "hard_stop_conditions": [
+    "wrong_census_table",
+    "protected_field",
+    "brand_setup_write",
+    "brand_explorer_write",
+    "legacy_census_or_vic_write",
+    "owner_operator_date_field",
+    "systemic_duplicate_insert_risk",
+    "repeated_airtable_write_failure",
+    "schema_conflict"
+  ],
+  "soft_continue_conditions": [
+    "unknown_city",
+    "blank_canonical",
+    "blocked_property_pages",
+    "no_high_proposals_in_queue",
+    "mapbox_not_eligible",
+    "missing_phone_source",
+    "missing_room_source",
+    "steward_cases",
+    "source_insufficient"
+  ]
+}

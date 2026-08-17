@@ -280,8 +280,10 @@ async function main() {
   for (const [role, field] of Object.entries(mapping)) {
     console.log(`  ${role}: ${field || "(not detected)"}`);
   }
-  console.log(`\nSTR Market field exists: ${strMarketExists}`);
-  console.log(`STR Submarket field exists: ${strSubmarketExists}`);
+  console.log(`\nCensus STR geography mapping (no separate STR Market/STR Submarket columns):`);
+  console.log(`  Excel STR Market    → Hotel Census ${mapping.strMarket || "(not detected)"}`);
+  console.log(`  Excel STR Submarket → Hotel Census ${mapping.strSubmarket || "(not detected)"}`);
+  console.log(`  Market field ready: ${strMarketExists} | Submarket field ready: ${strSubmarketExists}`);
   console.log("\n--- Recommendations ---");
   recommendations.forEach((r) => console.log(`  • ${r}`));
   console.log("\n--- Data quality (high level) ---");

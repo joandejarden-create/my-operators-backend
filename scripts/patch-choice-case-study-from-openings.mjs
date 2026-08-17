@@ -9,15 +9,30 @@
  * Usage:
  *   node scripts/patch-choice-case-study-from-openings.mjs --dry-run
  *   node scripts/patch-choice-case-study-from-openings.mjs
+ *   node scripts/patch-choice-case-study-from-openings.mjs --brand "Comfort Inn & Suites"
  */
 import "../load-env.js";
 import Airtable from "airtable";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { resolveProfileForAirtableName } from "./lib/choice-chi-brand-resolve.mjs";
 import { buildCalaOpeningsForProfile } from "./lib/choice-cala-openings-from-census.mjs";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, "..");
+
 const BASICS = "Brand Setup - Brand Basics";
 const PRESENTATION = "Brand Setup - Brand Explorer Presentation";
-const SKIP_BRANDS = new Set(["Radisson by Choice", "Radisson Blu by Choice"]);
+
+/** Brands with hand-curated materials.caseStudy split fixtures — never auto-patch. */
+const SKIP_BRANDS = new Set([
+  "Radisson by Choice",
+  "Radisson Blu by Choice",
+  "Ascend Hotel Collection",
+  "Radisson RED by Choice",
+  "Radisson RED  (Choice)",
+]);
 
 function normalizeHotelStyleTitle(raw) {
   let s = String(raw || "").trim();
@@ -29,7 +44,19 @@ function normalizeHotelStyleTitle(raw) {
 }
 
 function parseArgs(argv) {
-  return { dryRun: argv.includes("--dry-run") };
+  const i = argv.indexOf("--brand");
+  return {
+    dryRun: argv.includes("--dry-run"),
+    brandFilter: i >= 0 ? String(argv[i + 1] || "").trim() : "",
+  };
+}
+
+function hasCaseStudySplitFixture(airtableBrandName) {
+  const profile = resolveProfileForAirtableName(airtableBrandName);
+  const slug = profile.slug || "";
+  if (!slug) return false;
+  const p = path.join(ROOT, "fixtures", `brand-explorer-presentation-${slug}-case-studies.json`);
+  return fs.existsSync(p);
 }
 
 async function listChiBrands(base) {
@@ -116,13 +143,26 @@ function caseStudyRows(records) {
 }
 
 async function main() {
-  const { dryRun } = parseArgs(process.argv);
+  const { dryRun, brandFilter } = parseArgs(process.argv);
   const key = process.env.AIRTABLE_API_KEY;
   const baseId = process.env.AIRTABLE_BASE_ID;
   if (!key || !baseId) throw new Error("Set AIRTABLE_API_KEY and AIRTABLE_BASE_ID");
   const base = new Airtable({ apiKey: key }).base(baseId);
 
-  const brands = (await listChiBrands(base)).filter((b) => !SKIP_BRANDS.has(b));
+  let brands = (await listChiBrands(base)).filter((b) => !SKIP_BRANDS.has(b));
+  brands = brands.filter((b) => !hasCaseStudySplitFixture(b));
+  if (brandFilter) {
+    const q = brandFilter.toLowerCase();
+    brands = brands.filter(
+      (b) =>
+        b.toLowerCase() === q ||
+        resolveProfileForAirtableName(b).name.toLowerCase() === q
+    );
+    if (!brands.length) {
+      console.log(`No patchable brands matched --brand "${brandFilter}" (skipped or has case-studies fixture).`);
+      return;
+    }
+  }
   console.log(`${dryRun ? "[dry-run] " : ""}Patching materials.caseStudy from footprint.openings for ${brands.length} brand(s)…`);
 
   let updates = 0;

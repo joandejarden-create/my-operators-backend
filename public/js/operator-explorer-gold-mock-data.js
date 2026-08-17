@@ -158,6 +158,7 @@
     if (s.indexOf("upper midscale") !== -1) return "#2ecc71";
     if (s.indexOf("midscale") !== -1) return "#1abc9c";
     if (s.indexOf("economy") !== -1) return "#e67e22";
+    if (s.indexOf("independent") !== -1) return "#94a3b8";
     return null;
   }
 
@@ -1246,7 +1247,7 @@
     "Avg. Hotel Size",
     "Management Style",
     "Typical Agreement",
-    "Data Status",
+    "Data Confidence",
   ];
 
   function looksLikeFourDigitYear(v) {
@@ -1300,7 +1301,7 @@
   function websiteDisplayText(raw) {
     var u = nz(raw);
     if (!u) return "";
-    return u.replace(/^https?:\/\//i, "").replace(/\/+$/, "");
+    return u.replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/+$/, "");
   }
 
   function kpiCompanyWebsite(label, rawUrl) {
@@ -1414,7 +1415,7 @@
       ["Avg. Hotel Size", resolveAvgHotelSize(vm)],
       ["Management Style", resolveManagementStyle(vm)],
       ["Typical Agreement", resolveTypicalAgreement(vm)],
-      ["Data Status", resolveDataStatus(vm)],
+      ["Data Confidence", resolveDataStatus(vm)],
     ];
   }
 
@@ -2731,6 +2732,7 @@
         nz(detailPayload.explorerHeroDataSource) ||
         nz(prefill.explorerHeroDataSource) ||
         nz(listRow && listRow.explorerHeroDataSource),
+      governance: detailPayload.governance || null,
     };
   }
 
@@ -2811,7 +2813,7 @@
     ["Operator Action", "operatorAction"],
     ["Outcome", "outcome"],
     ["Why It Matters", "whyItMatters"],
-    ["Data Status", "dataStatus"],
+    ["Data Confidence", "dataStatus"],
   ];
 
   function proofCardFivePart(img, title, meta, fivePart) {
@@ -4085,13 +4087,23 @@
     if (id) {
       try {
         var bundle = await fetchOperatorBundle(id);
-        var scalesStr = (bundle.listRow && bundle.listRow.chainScale) || "";
+        var scalesStr =
+          (bundle.listRow && bundle.listRow.chainScale) ||
+          (bundle.listRow && bundle.listRow.chainScalesSupported) ||
+          "";
         var scales = String(scalesStr)
           .split(",")
           .map(function (s) {
             return s.trim();
           })
           .filter(Boolean);
+        if (!scales.length && bundle.detail && Array.isArray(bundle.detail.chainScalesSupported)) {
+          scales = bundle.detail.chainScalesSupported
+            .map(function (s) {
+              return String(s || "").trim();
+            })
+            .filter(Boolean);
+        }
         if (scales.length) {
           applyHeroStripeFromChainScales(scales);
         } else if (/^[0-9a-fA-F]{6}$/.test(accentParam)) {

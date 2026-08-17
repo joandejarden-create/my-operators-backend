@@ -5,6 +5,25 @@
  */
 
 import { isOperatorInScopeFromFields } from "../../lib/operator-capability-inputs.js";
+import { OAS_DEAL_MP_FIELD_NAMES, OAS_DEAL_SI_FIELD_NAMES } from "../../lib/operator-alignment-field-options.js";
+import {
+  MIXED_USE_INTAKE_FIELD_NAMES,
+  isMixedUseIntakeInScopeFromFields,
+  mixedUseIntakeConditionalRequiredFields,
+  coerceMixedUseMpFieldForWrite,
+  coerceMixedUseMpFieldForRead,
+  coerceMixedUseSelectForWrite,
+  coerceMixedUseSelectForRead,
+} from "../../lib/mixed-use-intake-field-options.js";
+
+export {
+  isMixedUseIntakeInScopeFromFields,
+  mixedUseIntakeConditionalRequiredFields,
+  coerceMixedUseMpFieldForWrite,
+  coerceMixedUseMpFieldForRead,
+  coerceMixedUseSelectForWrite,
+  coerceMixedUseSelectForRead,
+} from "../../lib/mixed-use-intake-field-options.js";
 
 // ---------------------------------------------------------------------------
 // Table names (env or default)
@@ -69,6 +88,56 @@ export function extractDealReadinessListFields(airtableFields) {
       out.dealReadinessLastReviewed =
         typeof rawL === "string" ? rawL : rawL instanceof Date ? rawL.toISOString() : String(rawL);
     }
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------------------
+// Commercial Readiness Snapshot — persisted on Deals table (env-overridable)
+// ---------------------------------------------------------------------------
+export const COMMERCIAL_READINESS_STATUS_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_STATUS_FIELD || "Commercial Readiness Status";
+export const COMMERCIAL_READINESS_INPUTS_JSON_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_INPUTS_JSON_FIELD || "Commercial Readiness Inputs JSON";
+export const COMMERCIAL_READINESS_SNAPSHOT_JSON_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_SNAPSHOT_JSON_FIELD || "Commercial Readiness Snapshot JSON";
+export const COMMERCIAL_READINESS_NARRATIVE_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_NARRATIVE_FIELD || "Commercial Readiness Narrative";
+export const COMMERCIAL_READINESS_LEVEL_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_LEVEL_FIELD || "Commercial Readiness Level";
+export const COMMERCIAL_READINESS_EVIDENCE_CONFIDENCE_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_EVIDENCE_CONFIDENCE_FIELD || "Commercial Readiness Evidence Confidence";
+export const COMMERCIAL_READINESS_OTA_RISK_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_OTA_RISK_FIELD || "Commercial OTA Dependency Risk";
+export const COMMERCIAL_READINESS_DIRECT_CAPABILITY_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_DIRECT_CAPABILITY_FIELD || "Commercial Direct Booking Capability";
+export const COMMERCIAL_READINESS_BRAND_NEED_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_BRAND_NEED_FIELD || "Commercial Brand Distribution Need";
+export const COMMERCIAL_READINESS_OPERATOR_NEED_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_OPERATOR_NEED_FIELD || "Commercial Operator Capability Need";
+export const COMMERCIAL_READINESS_LAST_GENERATED_AT_AIRTABLE_FIELD =
+  process.env.COMMERCIAL_READINESS_LAST_GENERATED_AT_FIELD || "Commercial Readiness Last Generated At";
+
+/** Map Airtable Deals fields -> My Deals list/commercial readiness badges. */
+export function extractCommercialReadinessListFields(airtableFields) {
+  const f = airtableFields || {};
+  const out = {};
+  const status = f[COMMERCIAL_READINESS_STATUS_AIRTABLE_FIELD];
+  if (status != null && String(status).trim() !== "") {
+    out.commercialReadinessStatus = String(status).trim();
+  }
+  const level = f[COMMERCIAL_READINESS_LEVEL_AIRTABLE_FIELD];
+  if (level != null && String(level).trim() !== "") {
+    out.commercialReadinessLevel = String(level).trim();
+  }
+  const confidence = f[COMMERCIAL_READINESS_EVIDENCE_CONFIDENCE_AIRTABLE_FIELD];
+  if (confidence != null && String(confidence).trim() !== "") {
+    out.commercialReadinessEvidenceConfidence = String(confidence).trim();
+  }
+  const rawLast = f[COMMERCIAL_READINESS_LAST_GENERATED_AT_AIRTABLE_FIELD];
+  if (rawLast != null && String(rawLast).trim() !== "") {
+    out.commercialReadinessLastGeneratedAt =
+      typeof rawLast === "string" ? rawLast : rawLast instanceof Date ? rawLast.toISOString() : String(rawLast);
   }
   return out;
 }
@@ -257,7 +326,7 @@ export const LOCATION_FORM_TO_AIRTABLE = {
   "Company Executive Summary": "Company Executive Summary",
   "Zoned for Hotel Development": "Zoned for Hotel Development",
   "Site/Development Restrictions?": "Site/Development Restrictions?",
-  "Site/Development Restrictions Description": "Site/Development Restrictions Description",
+  "Site/Development Restrictions Description": "Site Restrictions Describe",
   "Total Site Size": "Total Site Size",
   "Total Site Size Unit": LOCATION_TOTAL_SITE_SIZE_UNIT_AIRTABLE,
   "Max height Allowed By Zoning": "Max Height Allowed By Zoning",
@@ -292,6 +361,7 @@ export const LOCATION_FORM_TO_AIRTABLE = {
   "Demand Mix Targets": "Demand Mix Targets",
   "Operational Complexity Profile": "Operational Complexity Profile",
   "Primary Market Region": "Primary Market Region",
+  [MIXED_USE_INTAKE_FIELD_NAMES.numberOfCondoUnits]: MIXED_USE_INTAKE_FIELD_NAMES.numberOfCondoUnits,
 };
 
 /** Form field names that belong to Location & Property (used to route and delete from deal fields). */
@@ -312,6 +382,7 @@ export const DEALS_ONLY_FORM_FIELDS = new Set([
   "Stage of Development",
   "Expected Opening or Rebranding Date",
   "F&B Complexity",
+  MIXED_USE_INTAKE_FIELD_NAMES.fbOperatingModel,
   "Opening Timeline",
   ...DEALS_OPERATOR_CAPABILITY_FORM_FIELDS,
   "Has there ever been a franchise, branded management, affiliation or similar agreement pertaining to the proposed hotel or site?",
@@ -407,6 +478,9 @@ export const MARKET_PERFORMANCE_FIELD_NAMES = new Set([
   "Incentive Requirement Level",
   "Primary Incentive Type",
   "CapEx Tolerance Band",
+  OAS_DEAL_MP_FIELD_NAMES.preferredOperatorManagementStructure,
+  MIXED_USE_INTAKE_FIELD_NAMES.stabilizedAdrUsd,
+  MIXED_USE_INTAKE_FIELD_NAMES.stabilizedOccupancyPct,
 ]);
 
 /** Exact Airtable column names on "Market - Performance - Deal & Capital Structure" for the three fee-expectation selects.
@@ -470,6 +544,7 @@ export const STRATEGIC_INTENT_FORM_FIELDS = [
   "Operator Strategy Status",
   "Operator Review Status",
   "Preferred Management Structure",
+  OAS_DEAL_SI_FIELD_NAMES.operatorStructureIntent,
   "Required Operator Services",
   "Must-Have Operator Services",
   "Nice-to-Have Operator Services",
@@ -525,7 +600,9 @@ export const STRATEGIC_INTENT_FORM_FIELDS = [
   "Must-haves From Brand or Operator",
   "Must-haves From Brand or Operator Other",
   "Incentive Types Interested In",
-  "Incentive Types Interested In Other"
+  "Incentive Types Interested In Other",
+  MIXED_USE_INTAKE_FIELD_NAMES.brandedResidenceProgramModel,
+  MIXED_USE_INTAKE_FIELD_NAMES.condoRentalProgramModel,
 ];
 
 export const SI_FORM_TO_AIRTABLE = {
@@ -579,6 +656,7 @@ export const SI_MULTI_SELECT_FORM_KEYS = new Set([
   "Incentive Types Interested In",
   "Preferred Chain Scales",
   "Preferred Brands (up to 4)",
+  "Target Guest Segment",
 ]);
 
 export const SI_AIRTABLE_TO_FORM = {
@@ -618,6 +696,7 @@ export const CONTACT_UPLOADS_FORM_FIELDS = [
   "Would you like to meet consultants?",
   "Legal Support Needed?",
   "Financial Model Available?",
+  MIXED_USE_INTAKE_FIELD_NAMES.developmentProformaAvailable,
   "Proposal Deadline",
   "Would you like to receive regular updates?",
   "Working with Broker/Advisor?",
@@ -641,6 +720,8 @@ export const CU_FORM_TO_AIRTABLE = {
   "Would you like to filter out brands without key money?": "Would You Like to Filter Out Brands Without Key Money?",
   "Would you like to meet consultants?": "Would You Like to Meet Consultants?",
   "Would you like to receive regular updates?": "Would You Like to Receive Regular Updates?",
+  /** Live split: contract/details text; firm name uses `Broker/Firm Name` when form adds separate input. */
+  "Broker/Advisor Company and Contract Details": "Working with Broker/Advisor? Text",
 };
 
 // ---------------------------------------------------------------------------

@@ -1,0 +1,77 @@
+{
+  "version": "tapestry-factory-promotion-v1",
+  "stage": "status-promotion",
+  "generatedAt": "2026-07-23T23:43:12.451Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "dryRun": false,
+  "flagCheck": {
+    "ok": true,
+    "missing": []
+  },
+  "tapestry": {
+    "slug": "tapestry-collection-by-hilton",
+    "recordId": "reccXxMHEh7NNRhIE",
+    "name": "Tapestry Collection by Hilton",
+    "currentBrandStatus": "Under Review",
+    "targetBrandStatus": "Active"
+  },
+  "identityIssues": [],
+  "plannedPatch": {
+    "table": "Brand Setup - Brand Basics",
+    "recordId": "reccXxMHEh7NNRhIE",
+    "from": "Under Review",
+    "to": "Active",
+    "fields": [
+      "Brand Status"
+    ],
+    "sanitizedPayloadPreview": {
+      "Brand Status": "Active"
+    }
+  },
+  "applyResult": {
+    "applied": true,
+    "table": "Brand Setup - Brand Basics",
+    "recordId": "reccXxMHEh7NNRhIE",
+    "payload": {
+      "Brand Status": "Active"
+    },
+    "response": {
+      "id": "reccXxMHEh7NNRhIE",
+      "fieldsPatched": [
+        "Brand Status"
+      ]
+    },
+    "writePerformed": true
+  },
+  "guardrails": {
+    "tapestryOnly": true,
+    "singleFieldPayload": true,
+    "companyValidatedWrites": false,
+    "sourceLibraryWrites": false,
+    "registryWrites": false,
+    "contentWrites": false,
+    "imageWrites": false,
+    "otherBrandStatusWrites": false,
+    "protectedBaselineUntouched": true,
+    "neverWriteFields": [
+      "Company Validated",
+      "Company Validation Date",
+      "Source Library status",
+      "Registry approval/status"
+    ]
+  },
+  "requiredApplyFlags": [
+    "--approve-tapestry-brand-status-promotion",
+    "--confirm-founder-approval",
+    "--confirm-tapestry-only",
+    "--confirm-status-from-under-review-to-active-or-live",
+    "--confirm-no-company-validation-changes",
+    "--confirm-no-source-library-status-changes",
+    "--confirm-no-registry-approval-changes",
+    "--confirm-no-content-writes",
+    "--confirm-no-image-writes",
+    "--confirm-no-other-brand-status-changes"
+  ]
+}

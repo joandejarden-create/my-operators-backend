@@ -25,18 +25,30 @@
             </div>
             <nav class="sidebar-nav" id="shellNav" aria-label="Main navigation"></nav>
 
-            <div class="dev-workspace-wrap" id="devWorkspaceWrap" hidden>
-                <label for="devWorkspaceSelect" class="dev-workspace-label">Dev Workspace</label>
-                <select id="devWorkspaceSelect" class="dev-workspace-select" aria-label="Select developer workspace">
-                    <option value="owner">Owner</option>
-                    <option value="brand">Brand</option>
-                    <option value="operator">Operator</option>
-                    <option value="admin">Admin</option>
-                    <option value="all">All</option>
+            <div class="dev-workspace-wrap workspace-switcher-wrap" id="devWorkspaceWrap" hidden>
+                <label for="devWorkspaceSelect" class="dev-workspace-label workspace-switcher-label">Workspace</label>
+                <select id="devWorkspaceSelect" class="dev-workspace-select workspace-switcher-select" aria-label="Select active workspace">
                 </select>
-                <a href="/webflow-preview.html" target="_blank" rel="noopener noreferrer" class="dev-workspace-preview-btn">
-                    Open Webflow Preview
-                </a>
+                <div class="workspace-demo-brand-portfolio" id="workspaceDemoBrandPortfolio" hidden>
+                    <label for="devBrandPortfolioSelect" class="dev-workspace-label">Brand Portfolio</label>
+                    <select id="devBrandPortfolioSelect" class="dev-workspace-select workspace-switcher-select" aria-label="Select demo Brand portfolio">
+                    </select>
+                    <p class="workspace-demo-helper">Founder/demo QA only — simulates entitled Brand company portfolio.</p>
+                </div>
+                <div class="workspace-demo-context" id="workspaceDemoContext" hidden>
+                    <span class="workspace-demo-badge">Demo Mode</span>
+                    <p class="workspace-demo-helper">Preview workspace views without production permissions.</p>
+                </div>
+                <div class="workspace-dev-tools" id="workspaceDevTools" hidden>
+                    <select id="devNavOverrideSelect" class="dev-workspace-select workspace-dev-override-select" aria-label="Local dev navigation override">
+                        <option value="">— Production nav —</option>
+                        <option value="admin">Admin</option>
+                        <option value="all">All Workspaces</option>
+                    </select>
+                    <a href="/webflow-preview.html" target="_blank" rel="noopener noreferrer" class="dev-workspace-preview-btn">
+                        Open Webflow Preview
+                    </a>
+                </div>
             </div>
 
             <div class="sidebar-footer" id="accountDropdownWrap">
@@ -97,7 +109,10 @@
     </script>
     <script src="/js/dealality-memberstack-auth.js"></script>
     <script src="/js/dealality-webflow-embed-parent.js"></script>
+    <script src="/js/dealality-webflow-user-chrome.js"></script>
     <script src="/js/dealality-app-shell-auth.js"></script>
-    <script src="/app.js" defer></script>
+    <script src="/js/dealality-ui-labels.js"></script>
+    <script src="/js/dealality-stakeholder-nav.js"></script>
+    <script src="/app.js?v=ma-1.3.4" defer></script>
 </body>
 </html>

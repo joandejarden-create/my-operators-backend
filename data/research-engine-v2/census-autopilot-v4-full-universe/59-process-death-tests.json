@@ -1,0 +1,46 @@
+{
+  "tests": [
+    {
+      "id": "A",
+      "name": "controller_normal_exit_session_cap",
+      "expected": "supervisor_restarts_controller",
+      "status": "EXECUTED_IN_THREE_BOUNDARY_DEMO"
+    },
+    {
+      "id": "B",
+      "name": "controller_crash",
+      "expected": "supervisor_backoff_retry_from_checkpoint",
+      "status": "COVERED_BY_EXIT_CONTRACT_CODE_1"
+    },
+    {
+      "id": "C",
+      "name": "supervisor_crash",
+      "expected": "railway_ON_FAILURE_restarts_supervisor",
+      "status": "CONFIGURED_AWAITING_RAILWAY_LINK"
+    },
+    {
+      "id": "D",
+      "name": "deployment_restart",
+      "expected": "SIGTERM_then_new_lease_resume",
+      "status": "IMPLEMENTED_IN_SUPERVISOR"
+    },
+    {
+      "id": "E",
+      "name": "duplicate_supervisor",
+      "expected": "only_one_lease_holder_writes",
+      "status": "IMPLEMENTED_FILE_LOCK"
+    },
+    {
+      "id": "F",
+      "name": "temporary_api_failure",
+      "expected": "sleep_then_retry",
+      "status": "IMPLEMENTED_EXIT_20_BACKOFF"
+    },
+    {
+      "id": "G",
+      "name": "hard_circuit",
+      "expected": "HARD_BLOCKED_no_bypass",
+      "status": "IMPLEMENTED_EXIT_30"
+    }
+  ]
+}

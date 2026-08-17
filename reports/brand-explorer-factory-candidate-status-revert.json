@@ -1,0 +1,99 @@
+{
+  "version": "factory-candidate-status-revert-v1",
+  "generatedAt": "2026-07-23T23:27:56.203Z",
+  "dryRun": false,
+  "airtableWrites": true,
+  "brandStatusWrites": true,
+  "companyValidatedWrites": false,
+  "sourceLibraryWrites": false,
+  "registryWrites": false,
+  "presentationWrites": false,
+  "targetStatus": "Under Review",
+  "candidates": [
+    {
+      "slug": "tapestry-collection-by-hilton",
+      "name": "Tapestry Collection by Hilton",
+      "recordId": "reccXxMHEh7NNRhIE",
+      "currentBrandStatus": "Active",
+      "targetBrandStatus": "Under Review",
+      "needsRevert": true,
+      "alreadyUnderReview": false
+    },
+    {
+      "slug": "dazzler-by-wyndham",
+      "name": "Dazzler by Wyndham",
+      "recordId": "rec5CNMM4ZUD7ZHlM",
+      "currentBrandStatus": "Active",
+      "targetBrandStatus": "Under Review",
+      "needsRevert": true,
+      "alreadyUnderReview": false
+    },
+    {
+      "slug": "trademark-collection-by-wyndham",
+      "name": "Trademark Collection by Wyndham",
+      "recordId": "recob7tgHRryRSbeO",
+      "currentBrandStatus": "Active",
+      "targetBrandStatus": "Under Review",
+      "needsRevert": true,
+      "alreadyUnderReview": false
+    }
+  ],
+  "plannedPatches": [
+    {
+      "table": "Brand Setup - Brand Basics",
+      "recordId": "reccXxMHEh7NNRhIE",
+      "slug": "tapestry-collection-by-hilton",
+      "from": "Active",
+      "to": "Under Review",
+      "fields": {
+        "Brand Status": "Under Review"
+      }
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "recordId": "rec5CNMM4ZUD7ZHlM",
+      "slug": "dazzler-by-wyndham",
+      "from": "Active",
+      "to": "Under Review",
+      "fields": {
+        "Brand Status": "Under Review"
+      }
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "recordId": "recob7tgHRryRSbeO",
+      "slug": "trademark-collection-by-wyndham",
+      "from": "Active",
+      "to": "Under Review",
+      "fields": {
+        "Brand Status": "Under Review"
+      }
+    }
+  ],
+  "applied": [
+    {
+      "slug": "tapestry-collection-by-hilton",
+      "recordId": "reccXxMHEh7NNRhIE",
+      "from": "Active",
+      "to": "Under Review"
+    },
+    {
+      "slug": "dazzler-by-wyndham",
+      "recordId": "rec5CNMM4ZUD7ZHlM",
+      "from": "Active",
+      "to": "Under Review"
+    },
+    {
+      "slug": "trademark-collection-by-wyndham",
+      "recordId": "recob7tgHRryRSbeO",
+      "from": "Active",
+      "to": "Under Review"
+    }
+  ],
+  "errors": [],
+  "nextSteps": [
+    "npm run test:brand-explorer-24-active-public-full-baseline",
+    "Use Factory Preview for visual QA: ?beInternalPreview=1&factoryPreview=1",
+    "Finish Tapestry factory → founder approve → Active → baseline 24→25"
+  ]
+}

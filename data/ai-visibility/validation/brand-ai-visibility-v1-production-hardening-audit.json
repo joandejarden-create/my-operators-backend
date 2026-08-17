@@ -1,0 +1,177 @@
+{
+  "phase": "BRAND_AI_VISIBILITY_V1_PRODUCTION_HARDENING_AUDIT_COMPLETE",
+  "date": "2026-08-15",
+  "auditScope": "Presence-led Brand AI Visibility v1 — read-only production readiness",
+  "hardGuards": {
+    "PRESENCE_DEFINITION_CHANGES": 0,
+    "RECOMMENDED_RESEARCH": 0,
+    "NEW_SIGNAL_CREATION": 0,
+    "ARBITRARY_SCORE_CREATION": 0,
+    "PROVIDER_CALLS": 0,
+    "DEPLOYS": 0
+  },
+  "readiness": {
+    "DATA_INTEGRITY": "PARTIAL",
+    "CROSS_PROVIDER": "PARTIAL",
+    "EXECUTIVE_SUMMARY": "PARTIAL",
+    "DETAILED_VIEW": "PARTIAL",
+    "LANGUAGE_SAFETY": "FAIL",
+    "TRENDS": "PARTIAL",
+    "FAILURE_STATES": "PARTIAL",
+    "INSIGHT_TRACEABILITY": "PASS",
+    "PERFORMANCE": "PARTIAL",
+    "AUTHORIZATION": "PASS",
+    "MONITORING_DURABILITY": "PARTIAL"
+  },
+  "blockingIssues": [
+    {
+      "id": "LANG_001",
+      "area": "LANGUAGE_SAFETY",
+      "severity": "Brand client UI/HTML still exposes Recommendation Rate, Recommendation Share, Top-3 Rec, First Rec Rate, and Questions Won column labels, tooltips, KPI cards, and question-tab copy that imply recommendation semantics not certified for Brand v1.",
+      "refs": [
+        "public/ai-visibility-brand.html",
+        "public/js/ai-visibility/ai-visibility-brand.js"
+      ]
+    },
+    {
+      "id": "XP_001",
+      "area": "CROSS_PROVIDER",
+      "severity": "All Providers mode scaffolds primary portfolio/overview metrics from a single measured provider (scaffoldProvider) while only attaching derived cross-provider Presence for the top brand. Primary KPIs are therefore not a pure derived All Providers view.",
+      "refs": [
+        "lib/ai-visibility/brand-read-service.js",
+        "lib/ai-visibility/brand-executive-summary.js"
+      ]
+    },
+    {
+      "id": "EXEC_001",
+      "area": "EXECUTIVE_SUMMARY",
+      "severity": "Executive Portfolio Snapshot still renders a Questions Won KPI tile (blocked First-driven metric), competing with Presence-led narrative even when publication-gated to unavailable.",
+      "refs": [
+        "public/js/ai-visibility/ai-visibility-brand.js#renderExecutive"
+      ]
+    },
+    {
+      "id": "FAIL_001",
+      "area": "FAILURE_STATES",
+      "severity": "Client/read availability taxonomy does not distinctly surface Provider Error vs Unavailable vs Not Monitored; provider execution errors exist in adapters but collapse on Brand read surfaces.",
+      "refs": [
+        "lib/ai-visibility/availability-states.js",
+        "lib/ai-visibility/providers/provider-errors.js"
+      ]
+    },
+    {
+      "id": "MON_001",
+      "area": "MONITORING_DURABILITY",
+      "severity": "Recurring monitoring scheduler is disabled (SCHEDULER_ENABLED=false). Checkpoint/idempotency foundations exist, but production biweekly durability, automated retry, and ops status for client trust are not live.",
+      "refs": [
+        "lib/ai-visibility/recurring-monitoring-config.js",
+        "lib/ai-visibility/recurring-period-orchestrator.js"
+      ]
+    }
+  ],
+  "nonBlockingIssues": [
+    {
+      "id": "INS_001",
+      "area": "INSIGHT_TRACEABILITY",
+      "severity": "Insight evidenceRefs are string keys, not clickable drilldowns to metric→evidence chains."
+    },
+    {
+      "id": "DET_001",
+      "area": "DETAILED_VIEW",
+      "severity": "Detail insight boxes are partially client-synthesized; responseId is in drilldownTrace but not primary drawer meta."
+    },
+    {
+      "id": "TRD_001",
+      "area": "TRENDS",
+      "severity": "Trend points filtered by provider/geo/language at query time; consecutive points are not pairwise validated via compareTrendObservations (promptFamily/methodology only when both sides populated)."
+    },
+    {
+      "id": "XP_002",
+      "area": "CROSS_PROVIDER",
+      "severity": "Cross-provider comparability currently stamps synthetic promptFamily=portfolio_presence, which can overstate cohort comparability across provider windows."
+    },
+    {
+      "id": "PERF_001",
+      "area": "PERFORMANCE",
+      "severity": "Executive summary performs brand×geography monitoring resolves plus per-provider presence loops; WeakMap summary cache helps but no pagination on questions/evidence lists."
+    },
+    {
+      "id": "UI_001",
+      "area": "LANGUAGE_SAFETY",
+      "severity": "Publication gate correctly nulls blocked metric values (not zero), but unavailable recommendation columns remain visible clutter."
+    },
+    {
+      "id": "DATA_001",
+      "area": "DATA_INTEGRITY",
+      "severity": "NOT_COMPARABLE and INSUFFICIENT_COMPARABLE_HISTORY exist in libraries; All Providers / portfolio UI does not always elevate these states as first-class banners beside KPIs."
+    }
+  ],
+  "dimensionNotes": {
+    "DATA_INTEGRITY": "Observed/Zero/Not Monitored/Unavailable/Partial exist; publication gate prevents blocked→0. Gaps: All Providers scaffold bleed; NOT_COMPARABLE not always UI-primary.",
+    "CROSS_PROVIDER": "Derived measures + no arbitrary scores implemented. Gaps: scaffold primary metrics; synthetic promptFamily; top-brand-only XP block.",
+    "EXECUTIVE_SUMMARY": "Insights cover strongest/weakest/missing/change/watch; competitive gap and provider disagreement when evidence exists. Gaps: Questions Won tile; recommendation table columns.",
+    "DETAILED_VIEW": "Evidence drawer + drilldownTrace cover metric→provider→prompt→response→entity→citations. Gaps: responseId prominence; recommendation-centric question tabs.",
+    "LANGUAGE_SAFETY": "FAIL — recommendation vocabulary dominant in Brand client chrome despite blocked signals.",
+    "TRENDS": "INSUFFICIENT_COMPARABLE_HISTORY and language/provider/geo filters present; pairwise methodology/prompt cohort checks incomplete.",
+    "FAILURE_STATES": "Partial/Not Monitored/Unavailable/Zero/NOT_COMPARABLE/Insufficient History exist; Provider Error not client-distinct.",
+    "INSIGHT_TRACEABILITY": "Deterministic boxes include Finding/Evidence/So What/What to Watch + evidenceRefs; no freeform LLM.",
+    "PERFORMANCE": "Parallel loads + summary cache; N+1 and payload size remain hardening items.",
+    "AUTHORIZATION": "Entitlement graph + resolveAiIntelligenceAccess on every brandId; DEEP vs COMPARATIVE; API is read-only.",
+    "MONITORING_DURABILITY": "Orchestrator checkpoint/unique-key foundations; scheduler off; not production-ops ready."
+  },
+  "productionRecommendation": "BRAND_V1_HARDENING_REQUIRED",
+  "nextStep": "RETURN_PRIORITIZED_HARDENING_PLAN",
+  "prioritizedHardeningPlan": [
+    {
+      "priority": 1,
+      "title": "Presence-led UI chrome purge",
+      "actions": [
+        "Remove or Future-Ready-hide Recommendation Rate/Share/Top-3/First/Questions Won columns, KPIs, tooltips, and Won-tab framing from Brand client",
+        "Keep publication gate as fail-closed backstop",
+        "Rewrite question help copy to Presence/Missing language"
+      ]
+    },
+    {
+      "priority": 2,
+      "title": "All Providers pure derived mode",
+      "actions": [
+        "When provider=all, do not present scaffoldProvider metrics as primary KPIs",
+        "Surface PROVIDER_PRESENCE_BREAKDOWN + NOT_COMPARABLE explicitly",
+        "Tighten comparability keys (real prompt family + monitoring window)"
+      ]
+    },
+    {
+      "priority": 3,
+      "title": "Client failure-state grammar",
+      "actions": [
+        "Map Provider Error / Partial Monitoring / Not Comparable / Insufficient History as distinct from Zero Presence",
+        "Banner these states on Exec + Detail"
+      ]
+    },
+    {
+      "priority": 4,
+      "title": "Trend pairwise comparability",
+      "actions": [
+        "Apply compareTrendObservations between consecutive points before charting deltas",
+        "Return INSUFFICIENT_COMPARABLE_HISTORY when methodology/prompt cohort diverge"
+      ]
+    },
+    {
+      "priority": 5,
+      "title": "Monitoring durability for client release",
+      "actions": [
+        "Define controlled-release monitoring SOP (even if scheduler stays manual)",
+        "Document retry/idempotency/cost logging/status for ops",
+        "Do not claim automated biweekly until SCHEDULER_ENABLED with gates"
+      ]
+    },
+    {
+      "priority": 6,
+      "title": "Performance pass",
+      "actions": [
+        "Cap executive N+1 resolves; paginate questions/evidence",
+        "Defer secondary panels (already partial) + trim payload fields"
+      ]
+    }
+  ]
+}

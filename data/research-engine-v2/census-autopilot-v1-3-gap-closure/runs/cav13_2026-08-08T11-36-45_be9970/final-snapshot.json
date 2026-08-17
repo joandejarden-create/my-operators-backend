@@ -1,0 +1,2017 @@
+{
+  "result": {
+    "run_id": "cav13_2026-08-08T11-36-45_be9970",
+    "version": "census-autopilot-v1.3-gap-closure",
+    "elapsed_ms": 25685,
+    "external_cost_usd": 0,
+    "webhound_calls": 0,
+    "airtable_writes": 0,
+    "freeze_v12": {
+      "avg": 86.8,
+      "hotels_ge_95": 8.5,
+      "rooms_pct": 4.4,
+      "address_pct": 36.4,
+      "lat_pct": 41.9
+    },
+    "passes": {
+      "rebuilt_baseline": 86,
+      "pass1_structured": 89,
+      "pass2_official_pages": 95.1,
+      "pass3_rooms_retry": 95.1,
+      "pass4_geocode": 95.1
+    },
+    "final": {
+      "hotels": 5,
+      "average_raw_priority_completeness_pct": 95.1,
+      "average_material_weighted_completeness_pct": 94.6,
+      "hotels_at_or_above_95_pct": 3,
+      "hotels_at_or_above_95_share_pct": 60,
+      "buckets": {
+        "100%": 0,
+        "95–99.9%": 3,
+        "90–94.9%": 2,
+        "80–89.9%": 0,
+        "<80%": 0
+      }
+    },
+    "rooms_pct": 0,
+    "address_pct": 100,
+    "lat_pct": 100,
+    "lng_pct": 100,
+    "rooms_by_family": {
+      "IHG": {
+        "hotels": 5,
+        "with_rooms": 0,
+        "pct": 0
+      },
+      "Hilton": {
+        "hotels": 0,
+        "with_rooms": 0,
+        "pct": 0
+      },
+      "Choice": {
+        "hotels": 0,
+        "with_rooms": 0,
+        "pct": 0
+      }
+    },
+    "provider_status": "PROVIDER_READY",
+    "geocode_calls": 0,
+    "learning": {
+      "hilton_graphql_address_coords": false,
+      "ihg_mexico_filtered_address": true
+    },
+    "firewall": {
+      "cvent": false,
+      "legacy": false,
+      "unsupported": 0
+    }
+  },
+  "perHotel": [
+    {
+      "independent_record_id": "ind_ihg_mx_ghprm",
+      "name": "JOIA Paraíso by Iberostar",
+      "family": "IHG",
+      "brand": "JOIA Iberostar",
+      "city": "Riviera Maya",
+      "raw_priority_completeness_pct": 97,
+      "material_weighted_completeness_pct": 95.7,
+      "applicable_count": 33,
+      "supported_count": 32,
+      "unknown_count": 1,
+      "not_applicable_count": 2,
+      "applicable_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Rooms / Keys",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Beach / Beachfront",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "supported_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Beach / Beachfront",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "unknown_fields": [
+        "Rooms / Keys"
+      ],
+      "not_applicable": [
+        {
+          "field": "All-Suite Flag",
+          "reason": "not_all_suite_brand"
+        },
+        {
+          "field": "Ski",
+          "reason": "ski_not_applicable_mexico_benchmark"
+        }
+      ],
+      "optional_report": [
+        {
+          "field": "Postal Code",
+          "supported": true,
+          "value": "v12_supported:Postal Code"
+        },
+        {
+          "field": "Floors",
+          "supported": true,
+          "value": "v12_supported:Floors"
+        },
+        {
+          "field": "Boutique Flag",
+          "supported": true,
+          "value": "v12_supported:Boutique Flag"
+        },
+        {
+          "field": "Mixed-Use Flag",
+          "supported": true,
+          "value": "v12_supported:Mixed-Use Flag"
+        },
+        {
+          "field": "Branded Residences Flag",
+          "supported": true,
+          "value": "v12_supported:Branded Residences Flag"
+        },
+        {
+          "field": "Pool",
+          "supported": true,
+          "value": "v12_supported:Pool"
+        },
+        {
+          "field": "Spa",
+          "supported": true,
+          "value": "v12_supported:Spa"
+        },
+        {
+          "field": "Fitness",
+          "supported": true,
+          "value": "v12_supported:Fitness"
+        },
+        {
+          "field": "Golf",
+          "supported": true,
+          "value": "v12_supported:Golf"
+        },
+        {
+          "field": "Beach Club",
+          "supported": true,
+          "value": "v12_supported:Beach Club"
+        },
+        {
+          "field": "Casino",
+          "supported": true,
+          "value": "v12_supported:Casino"
+        },
+        {
+          "field": "Kids Club",
+          "supported": true,
+          "value": "v12_supported:Kids Club"
+        },
+        {
+          "field": "Club Lounge",
+          "supported": true,
+          "value": "v12_supported:Club Lounge"
+        },
+        {
+          "field": "All-Inclusive",
+          "supported": true,
+          "value": "v12_supported:All-Inclusive"
+        },
+        {
+          "field": "Parking",
+          "supported": true,
+          "value": "v12_supported:Parking"
+        },
+        {
+          "field": "Airport Shuttle",
+          "supported": true,
+          "value": "v12_supported:Airport Shuttle"
+        },
+        {
+          "field": "Residences Amenity",
+          "supported": true,
+          "value": "v12_supported:Residences Amenity"
+        },
+        {
+          "field": "Restaurant Names",
+          "supported": true,
+          "value": "v12_supported:Restaurant Names"
+        },
+        {
+          "field": "Bars / Lounges",
+          "supported": true,
+          "value": "v12_supported:Bars / Lounges"
+        },
+        {
+          "field": "Rooftop F&B",
+          "supported": true,
+          "value": "v12_supported:Rooftop F&B"
+        },
+        {
+          "field": "Signature / Third-Party Restaurant",
+          "supported": true,
+          "value": "v12_supported:Signature / Third-Party Restaurant"
+        },
+        {
+          "field": "Room Service",
+          "supported": true,
+          "value": "v12_supported:Room Service"
+        },
+        {
+          "field": "Ballroom",
+          "supported": true,
+          "value": "v12_supported:Ballroom"
+        },
+        {
+          "field": "Convention Hotel",
+          "supported": true,
+          "value": "v12_supported:Convention Hotel"
+        }
+      ],
+      "meets_95": true,
+      "meets_100": false,
+      "rooms": null,
+      "address": "Carretera Chetumal - P. Juarez Km 309",
+      "latitude": 20.7547781968,
+      "longitude": -86.9605121816
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_oaxmx",
+      "name": "Holiday Inn Express Oaxaca-Centro Historico",
+      "family": "IHG",
+      "brand": "Holiday Inn Express",
+      "city": "Oaxaca",
+      "raw_priority_completeness_pct": 96.9,
+      "material_weighted_completeness_pct": 95.6,
+      "applicable_count": 32,
+      "supported_count": 31,
+      "unknown_count": 1,
+      "not_applicable_count": 3,
+      "applicable_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Rooms / Keys",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "supported_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "unknown_fields": [
+        "Rooms / Keys"
+      ],
+      "not_applicable": [
+        {
+          "field": "All-Suite Flag",
+          "reason": "not_all_suite_brand"
+        },
+        {
+          "field": "Beach / Beachfront",
+          "reason": "non_coastal_market"
+        },
+        {
+          "field": "Ski",
+          "reason": "ski_not_applicable_mexico_benchmark"
+        }
+      ],
+      "optional_report": [
+        {
+          "field": "Postal Code",
+          "supported": true,
+          "value": "v12_supported:Postal Code"
+        },
+        {
+          "field": "Floors",
+          "supported": true,
+          "value": "v12_supported:Floors"
+        },
+        {
+          "field": "Boutique Flag",
+          "supported": true,
+          "value": "v12_supported:Boutique Flag"
+        },
+        {
+          "field": "Mixed-Use Flag",
+          "supported": true,
+          "value": "v12_supported:Mixed-Use Flag"
+        },
+        {
+          "field": "Branded Residences Flag",
+          "supported": true,
+          "value": "v12_supported:Branded Residences Flag"
+        },
+        {
+          "field": "Pool",
+          "supported": true,
+          "value": "v12_supported:Pool"
+        },
+        {
+          "field": "Spa",
+          "supported": true,
+          "value": "v12_supported:Spa"
+        },
+        {
+          "field": "Fitness",
+          "supported": true,
+          "value": "v12_supported:Fitness"
+        },
+        {
+          "field": "Golf",
+          "supported": true,
+          "value": "v12_supported:Golf"
+        },
+        {
+          "field": "Beach Club",
+          "supported": true,
+          "value": "v12_supported:Beach Club"
+        },
+        {
+          "field": "Casino",
+          "supported": true,
+          "value": "v12_supported:Casino"
+        },
+        {
+          "field": "Kids Club",
+          "supported": true,
+          "value": "v12_supported:Kids Club"
+        },
+        {
+          "field": "Club Lounge",
+          "supported": true,
+          "value": "v12_supported:Club Lounge"
+        },
+        {
+          "field": "All-Inclusive",
+          "supported": true,
+          "value": "v12_supported:All-Inclusive"
+        },
+        {
+          "field": "Parking",
+          "supported": true,
+          "value": "v12_supported:Parking"
+        },
+        {
+          "field": "Airport Shuttle",
+          "supported": true,
+          "value": "v12_supported:Airport Shuttle"
+        },
+        {
+          "field": "Residences Amenity",
+          "supported": true,
+          "value": "v12_supported:Residences Amenity"
+        },
+        {
+          "field": "Restaurant Names",
+          "supported": true,
+          "value": "v12_supported:Restaurant Names"
+        },
+        {
+          "field": "Bars / Lounges",
+          "supported": true,
+          "value": "v12_supported:Bars / Lounges"
+        },
+        {
+          "field": "Rooftop F&B",
+          "supported": true,
+          "value": "v12_supported:Rooftop F&B"
+        },
+        {
+          "field": "Signature / Third-Party Restaurant",
+          "supported": true,
+          "value": "v12_supported:Signature / Third-Party Restaurant"
+        },
+        {
+          "field": "Room Service",
+          "supported": true,
+          "value": "v12_supported:Room Service"
+        },
+        {
+          "field": "Ballroom",
+          "supported": true,
+          "value": "v12_supported:Ballroom"
+        },
+        {
+          "field": "Convention Hotel",
+          "supported": true,
+          "value": "v12_supported:Convention Hotel"
+        }
+      ],
+      "meets_95": true,
+      "meets_100": false,
+      "rooms": null,
+      "address": "Diaz Quintas : 115",
+      "latitude": 17.070763,
+      "longitude": -96.72206
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_pueaa",
+      "name": "Staybridge Suites Puebla",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "city": "Puebla",
+      "raw_priority_completeness_pct": 90.9,
+      "material_weighted_completeness_pct": 92.4,
+      "applicable_count": 33,
+      "supported_count": 30,
+      "unknown_count": 3,
+      "not_applicable_count": 2,
+      "applicable_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Rooms / Keys",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "All-Suite Flag",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "supported_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "unknown_fields": [
+        "Rooms / Keys",
+        "Suites",
+        "All-Suite Flag"
+      ],
+      "not_applicable": [
+        {
+          "field": "Beach / Beachfront",
+          "reason": "non_coastal_market"
+        },
+        {
+          "field": "Ski",
+          "reason": "ski_not_applicable_mexico_benchmark"
+        }
+      ],
+      "optional_report": [
+        {
+          "field": "Postal Code",
+          "supported": true,
+          "value": "v12_supported:Postal Code"
+        },
+        {
+          "field": "Floors",
+          "supported": true,
+          "value": "v12_supported:Floors"
+        },
+        {
+          "field": "Boutique Flag",
+          "supported": true,
+          "value": "v12_supported:Boutique Flag"
+        },
+        {
+          "field": "Mixed-Use Flag",
+          "supported": true,
+          "value": "v12_supported:Mixed-Use Flag"
+        },
+        {
+          "field": "Branded Residences Flag",
+          "supported": true,
+          "value": "v12_supported:Branded Residences Flag"
+        },
+        {
+          "field": "Pool",
+          "supported": true,
+          "value": "v12_supported:Pool"
+        },
+        {
+          "field": "Spa",
+          "supported": true,
+          "value": "v12_supported:Spa"
+        },
+        {
+          "field": "Fitness",
+          "supported": true,
+          "value": "v12_supported:Fitness"
+        },
+        {
+          "field": "Golf",
+          "supported": true,
+          "value": "v12_supported:Golf"
+        },
+        {
+          "field": "Beach Club",
+          "supported": true,
+          "value": "v12_supported:Beach Club"
+        },
+        {
+          "field": "Casino",
+          "supported": true,
+          "value": "v12_supported:Casino"
+        },
+        {
+          "field": "Kids Club",
+          "supported": true,
+          "value": "v12_supported:Kids Club"
+        },
+        {
+          "field": "Club Lounge",
+          "supported": true,
+          "value": "v12_supported:Club Lounge"
+        },
+        {
+          "field": "All-Inclusive",
+          "supported": true,
+          "value": "v12_supported:All-Inclusive"
+        },
+        {
+          "field": "Parking",
+          "supported": true,
+          "value": "v12_supported:Parking"
+        },
+        {
+          "field": "Airport Shuttle",
+          "supported": true,
+          "value": "v12_supported:Airport Shuttle"
+        },
+        {
+          "field": "Residences Amenity",
+          "supported": true,
+          "value": "v12_supported:Residences Amenity"
+        },
+        {
+          "field": "Restaurant Names",
+          "supported": true,
+          "value": "v12_supported:Restaurant Names"
+        },
+        {
+          "field": "Bars / Lounges",
+          "supported": true,
+          "value": "v12_supported:Bars / Lounges"
+        },
+        {
+          "field": "Rooftop F&B",
+          "supported": true,
+          "value": "v12_supported:Rooftop F&B"
+        },
+        {
+          "field": "Signature / Third-Party Restaurant",
+          "supported": true,
+          "value": "v12_supported:Signature / Third-Party Restaurant"
+        },
+        {
+          "field": "Room Service",
+          "supported": true,
+          "value": "v12_supported:Room Service"
+        },
+        {
+          "field": "Ballroom",
+          "supported": true,
+          "value": "v12_supported:Ballroom"
+        },
+        {
+          "field": "Convention Hotel",
+          "supported": true,
+          "value": "v12_supported:Convention Hotel"
+        }
+      ],
+      "meets_95": false,
+      "meets_100": false,
+      "rooms": null,
+      "address": "Boulevard. Hermanos Serdán 810",
+      "latitude": 19.093477,
+      "longitude": -98.228224
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_acago",
+      "name": "Holiday Inn Chilpancingo",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "city": "Chilpancingo",
+      "raw_priority_completeness_pct": 93.9,
+      "material_weighted_completeness_pct": 93.5,
+      "applicable_count": 33,
+      "supported_count": 31,
+      "unknown_count": 2,
+      "not_applicable_count": 2,
+      "applicable_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Rooms / Keys",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Beach / Beachfront",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "supported_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "unknown_fields": [
+        "Rooms / Keys",
+        "Beach / Beachfront"
+      ],
+      "not_applicable": [
+        {
+          "field": "All-Suite Flag",
+          "reason": "not_all_suite_brand"
+        },
+        {
+          "field": "Ski",
+          "reason": "ski_not_applicable_mexico_benchmark"
+        }
+      ],
+      "optional_report": [
+        {
+          "field": "Postal Code",
+          "supported": true,
+          "value": "v12_supported:Postal Code"
+        },
+        {
+          "field": "Floors",
+          "supported": true,
+          "value": "v12_supported:Floors"
+        },
+        {
+          "field": "Boutique Flag",
+          "supported": true,
+          "value": "v12_supported:Boutique Flag"
+        },
+        {
+          "field": "Mixed-Use Flag",
+          "supported": true,
+          "value": "v12_supported:Mixed-Use Flag"
+        },
+        {
+          "field": "Branded Residences Flag",
+          "supported": true,
+          "value": "v12_supported:Branded Residences Flag"
+        },
+        {
+          "field": "Pool",
+          "supported": true,
+          "value": "v12_supported:Pool"
+        },
+        {
+          "field": "Spa",
+          "supported": true,
+          "value": "v12_supported:Spa"
+        },
+        {
+          "field": "Fitness",
+          "supported": true,
+          "value": "v12_supported:Fitness"
+        },
+        {
+          "field": "Golf",
+          "supported": true,
+          "value": "v12_supported:Golf"
+        },
+        {
+          "field": "Beach Club",
+          "supported": true,
+          "value": "v12_supported:Beach Club"
+        },
+        {
+          "field": "Casino",
+          "supported": true,
+          "value": "v12_supported:Casino"
+        },
+        {
+          "field": "Kids Club",
+          "supported": true,
+          "value": "v12_supported:Kids Club"
+        },
+        {
+          "field": "Club Lounge",
+          "supported": true,
+          "value": "v12_supported:Club Lounge"
+        },
+        {
+          "field": "All-Inclusive",
+          "supported": true,
+          "value": "v12_supported:All-Inclusive"
+        },
+        {
+          "field": "Parking",
+          "supported": true,
+          "value": "v12_supported:Parking"
+        },
+        {
+          "field": "Airport Shuttle",
+          "supported": true,
+          "value": "v12_supported:Airport Shuttle"
+        },
+        {
+          "field": "Residences Amenity",
+          "supported": true,
+          "value": "v12_supported:Residences Amenity"
+        },
+        {
+          "field": "Restaurant Names",
+          "supported": true,
+          "value": "v12_supported:Restaurant Names"
+        },
+        {
+          "field": "Bars / Lounges",
+          "supported": true,
+          "value": "v12_supported:Bars / Lounges"
+        },
+        {
+          "field": "Rooftop F&B",
+          "supported": true,
+          "value": "v12_supported:Rooftop F&B"
+        },
+        {
+          "field": "Signature / Third-Party Restaurant",
+          "supported": true,
+          "value": "v12_supported:Signature / Third-Party Restaurant"
+        },
+        {
+          "field": "Room Service",
+          "supported": true,
+          "value": "v12_supported:Room Service"
+        },
+        {
+          "field": "Ballroom",
+          "supported": true,
+          "value": "v12_supported:Ballroom"
+        },
+        {
+          "field": "Convention Hotel",
+          "supported": true,
+          "value": "v12_supported:Convention Hotel"
+        }
+      ],
+      "meets_95": false,
+      "meets_100": false,
+      "rooms": null,
+      "address": "Boulevard. Vicente Guerrero No. 148",
+      "latitude": 17.525416,
+      "longitude": -99.488768
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_pmypm",
+      "name": "Iberostar Selection​ Paraíso Maya Suites",
+      "family": "IHG",
+      "brand": "Iberostar",
+      "city": "Riviera Maya",
+      "raw_priority_completeness_pct": 97,
+      "material_weighted_completeness_pct": 95.7,
+      "applicable_count": 33,
+      "supported_count": 32,
+      "unknown_count": 1,
+      "not_applicable_count": 2,
+      "applicable_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Rooms / Keys",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Beach / Beachfront",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "supported_fields": [
+        "Property Name",
+        "Current Brand",
+        "Brand Family",
+        "Official Property ID",
+        "Official Property URL",
+        "Address",
+        "City",
+        "State / Region",
+        "Country",
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Suites",
+        "Property Type",
+        "Asset Context",
+        "Resort / Urban",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Beach / Beachfront",
+        "Restaurant Count",
+        "F&B Flag",
+        "Meeting / Event Space",
+        "Total Meeting Space",
+        "Largest Meeting Room / Ballroom",
+        "Number of Meeting Rooms",
+        "Dealality Segment / Positioning",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "unknown_fields": [
+        "Rooms / Keys"
+      ],
+      "not_applicable": [
+        {
+          "field": "All-Suite Flag",
+          "reason": "not_all_suite_brand"
+        },
+        {
+          "field": "Ski",
+          "reason": "ski_not_applicable_mexico_benchmark"
+        }
+      ],
+      "optional_report": [
+        {
+          "field": "Postal Code",
+          "supported": true,
+          "value": "v12_supported:Postal Code"
+        },
+        {
+          "field": "Floors",
+          "supported": true,
+          "value": "v12_supported:Floors"
+        },
+        {
+          "field": "Boutique Flag",
+          "supported": true,
+          "value": "v12_supported:Boutique Flag"
+        },
+        {
+          "field": "Mixed-Use Flag",
+          "supported": true,
+          "value": "v12_supported:Mixed-Use Flag"
+        },
+        {
+          "field": "Branded Residences Flag",
+          "supported": true,
+          "value": "v12_supported:Branded Residences Flag"
+        },
+        {
+          "field": "Pool",
+          "supported": true,
+          "value": "v12_supported:Pool"
+        },
+        {
+          "field": "Spa",
+          "supported": true,
+          "value": "v12_supported:Spa"
+        },
+        {
+          "field": "Fitness",
+          "supported": true,
+          "value": "v12_supported:Fitness"
+        },
+        {
+          "field": "Golf",
+          "supported": true,
+          "value": "v12_supported:Golf"
+        },
+        {
+          "field": "Beach Club",
+          "supported": true,
+          "value": "v12_supported:Beach Club"
+        },
+        {
+          "field": "Casino",
+          "supported": true,
+          "value": "v12_supported:Casino"
+        },
+        {
+          "field": "Kids Club",
+          "supported": true,
+          "value": "v12_supported:Kids Club"
+        },
+        {
+          "field": "Club Lounge",
+          "supported": true,
+          "value": "v12_supported:Club Lounge"
+        },
+        {
+          "field": "All-Inclusive",
+          "supported": true,
+          "value": "v12_supported:All-Inclusive"
+        },
+        {
+          "field": "Parking",
+          "supported": true,
+          "value": "v12_supported:Parking"
+        },
+        {
+          "field": "Airport Shuttle",
+          "supported": true,
+          "value": "v12_supported:Airport Shuttle"
+        },
+        {
+          "field": "Residences Amenity",
+          "supported": true,
+          "value": "v12_supported:Residences Amenity"
+        },
+        {
+          "field": "Restaurant Names",
+          "supported": true,
+          "value": "v12_supported:Restaurant Names"
+        },
+        {
+          "field": "Bars / Lounges",
+          "supported": true,
+          "value": "v12_supported:Bars / Lounges"
+        },
+        {
+          "field": "Rooftop F&B",
+          "supported": true,
+          "value": "v12_supported:Rooftop F&B"
+        },
+        {
+          "field": "Signature / Third-Party Restaurant",
+          "supported": true,
+          "value": "v12_supported:Signature / Third-Party Restaurant"
+        },
+        {
+          "field": "Room Service",
+          "supported": true,
+          "value": "v12_supported:Room Service"
+        },
+        {
+          "field": "Ballroom",
+          "supported": true,
+          "value": "v12_supported:Ballroom"
+        },
+        {
+          "field": "Convention Hotel",
+          "supported": true,
+          "value": "v12_supported:Convention Hotel"
+        }
+      ],
+      "meets_95": true,
+      "meets_100": false,
+      "rooms": null,
+      "address": "Carretera Chetumal Puerto Juárez Km309,",
+      "latitude": 20.757934,
+      "longitude": -86.964929
+    }
+  ],
+  "missingness": [
+    {
+      "field": "Rooms / Keys",
+      "group": "G2_Physical_Profile",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 0,
+      "hotels_unknown": 5,
+      "hotels_na": 0,
+      "hotels_missing": 5,
+      "completion_pct": 0,
+      "total_completeness_impact": 20
+    },
+    {
+      "field": "Suites",
+      "group": "G2_Physical_Profile",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 5,
+      "hotels_supported": 4,
+      "hotels_unknown": 1,
+      "hotels_na": 0,
+      "hotels_missing": 1,
+      "completion_pct": 80,
+      "total_completeness_impact": 2
+    },
+    {
+      "field": "Beach / Beachfront",
+      "group": "G3_Amenities",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 3,
+      "hotels_supported": 2,
+      "hotels_unknown": 1,
+      "hotels_na": 2,
+      "hotels_missing": 1,
+      "completion_pct": 66.7,
+      "total_completeness_impact": 2
+    },
+    {
+      "field": "All-Suite Flag",
+      "group": "G2_Physical_Profile",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 1,
+      "hotels_supported": 0,
+      "hotels_unknown": 1,
+      "hotels_na": 4,
+      "hotels_missing": 1,
+      "completion_pct": 0,
+      "total_completeness_impact": 1
+    },
+    {
+      "field": "Property Name",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Current Brand",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Brand Family",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Official Property ID",
+      "group": "G1_Identity_Geography",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Official Property URL",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Address",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "City",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "State / Region",
+      "group": "G1_Identity_Geography",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Country",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Continent",
+      "group": "G1_Identity_Geography",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Sub-Continent",
+      "group": "G1_Identity_Geography",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Market",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Submarket",
+      "group": "G1_Identity_Geography",
+      "weight": 4,
+      "weight_band": "CRITICAL",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Postal Code",
+      "group": "G1_Identity_Geography",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Latitude",
+      "group": "G1_Identity_Geography",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Longitude",
+      "group": "G1_Identity_Geography",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Phone",
+      "group": "G1_Identity_Geography",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Floors",
+      "group": "G2_Physical_Profile",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Property Type",
+      "group": "G2_Physical_Profile",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Asset Context",
+      "group": "G2_Physical_Profile",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Resort / Urban",
+      "group": "G2_Physical_Profile",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Boutique Flag",
+      "group": "G2_Physical_Profile",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Mixed-Use Flag",
+      "group": "G2_Physical_Profile",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Branded Residences Flag",
+      "group": "G2_Physical_Profile",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Amenities - Source Text",
+      "group": "G3_Amenities",
+      "weight": 3,
+      "weight_band": "HIGH",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Amenities - Structured Tags",
+      "group": "G3_Amenities",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Pool",
+      "group": "G3_Amenities",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Spa",
+      "group": "G3_Amenities",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Fitness",
+      "group": "G3_Amenities",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Golf",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Beach Club",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Casino",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Kids Club",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Club Lounge",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "All-Inclusive",
+      "group": "G3_Amenities",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Parking",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Airport Shuttle",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Ski",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Residences Amenity",
+      "group": "G3_Amenities",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Restaurant Count",
+      "group": "G4_FB",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Restaurant Names",
+      "group": "G4_FB",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Bars / Lounges",
+      "group": "G4_FB",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Rooftop F&B",
+      "group": "G4_FB",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Signature / Third-Party Restaurant",
+      "group": "G4_FB",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Room Service",
+      "group": "G4_FB",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "F&B Flag",
+      "group": "G4_FB",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Meeting / Event Space",
+      "group": "G5_Meetings",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Total Meeting Space",
+      "group": "G5_Meetings",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Largest Meeting Room / Ballroom",
+      "group": "G5_Meetings",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Number of Meeting Rooms",
+      "group": "G5_Meetings",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Ballroom",
+      "group": "G5_Meetings",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Convention Hotel",
+      "group": "G5_Meetings",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "OPTIONAL",
+      "hotels_applicable": 0,
+      "hotels_supported": 0,
+      "hotels_unknown": 0,
+      "hotels_na": 5,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Dealality Segment / Positioning",
+      "group": "G6_Dealality_Classification",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Hotel Description - Source Text",
+      "group": "G7_Content",
+      "weight": 2,
+      "weight_band": "MEDIUM",
+      "applicability": "REQUIRED",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    },
+    {
+      "field": "Hotel Description - AI Summary",
+      "group": "G7_Content",
+      "weight": 1,
+      "weight_band": "LOW",
+      "applicability": "CONDITIONAL",
+      "hotels_applicable": 5,
+      "hotels_supported": 5,
+      "hotels_unknown": 0,
+      "hotels_na": 0,
+      "hotels_missing": 0,
+      "completion_pct": 100,
+      "total_completeness_impact": 0
+    }
+  ]
+}

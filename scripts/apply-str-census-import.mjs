@@ -2,7 +2,8 @@
  * Apply STR Excel enrichment to Hotel Census for "Matched by STR ID" rows only.
  *
  * Full sync for Matched by STR ID:
- *   Market ← STR Market | Submarket ← STR Submarket | city | country | name
+ *   Market ← Excel STR Market | Submarket ← Excel STR Submarket | city | country | name
+ *   (Hotel Census Market/Submarket are the official STR geography fields — no separate STR columns.)
  * Default: writes every non-empty Excel value (use --only-changed for diff-only).
  * Does NOT touch Radar, Brand Explorer, or Brand Alias Mapping.
  *

@@ -42,6 +42,8 @@ import {
 
 } from "./lib/choice-chi-footprint-momentum-curated.mjs";
 
+import { resolveChiBrandBasicsName } from "./lib/choice-chi-brand-resolve.mjs";
+
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -240,9 +242,14 @@ async function main() {
 
   if (brandFilter) {
 
-    brands = brands.filter((b) => b.name === brandFilter);
+    const resolved = resolveChiBrandBasicsName(
+      brandFilter,
+      brands.map((b) => b.name)
+    );
 
-    if (!brands.length) throw new Error(`No matching CHI brand: ${brandFilter}`);
+    if (!resolved) throw new Error(`No matching CHI brand: ${brandFilter}`);
+
+    brands = brands.filter((b) => b.name === resolved);
 
   }
 

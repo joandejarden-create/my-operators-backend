@@ -1,0 +1,258 @@
+{
+  "generatedAt": "2026-07-10T13:43:47.962Z",
+  "mode": "dry-run",
+  "orchestratorVersion": "2",
+  "brand": {
+    "slug": "curio-collection",
+    "recordId": "receQkxgjlezsc1xg",
+    "name": "Curio Collection by Hilton",
+    "resolution": {
+      "inputTarget": "curio-collection",
+      "resolvedBrandName": "Curio Collection by Hilton",
+      "resolvedRecordId": "receQkxgjlezsc1xg",
+      "resolvedSlug": "curio-collection",
+      "resolutionSource": "active_registry",
+      "parentCompany": "Hilton Worldwide",
+      "parentFamily": null,
+      "wave": null,
+      "ambiguous": false,
+      "error": null,
+      "suggestedMatches": []
+    }
+  },
+  "resolution": {
+    "inputTarget": "curio-collection",
+    "resolvedBrandName": "Curio Collection by Hilton",
+    "resolvedRecordId": "receQkxgjlezsc1xg",
+    "resolvedSlug": "curio-collection",
+    "resolutionSource": "active_registry",
+    "parentCompany": "Hilton Worldwide",
+    "parentFamily": null,
+    "wave": null,
+    "ambiguous": false,
+    "error": null,
+    "suggestedMatches": []
+  },
+  "targetQuality": "active-profile",
+  "halted": false,
+  "haltReason": "",
+  "completedBatches": [],
+  "stageResults": [
+    {
+      "stage": "profile_inspection",
+      "status": "complete",
+      "summary": {
+        "brandName": "Curio Collection by Hilton",
+        "recordId": "receQkxgjlezsc1xg",
+        "companyValidated": null,
+        "companyValidationDate": null
+      }
+    },
+    {
+      "stage": "source_inventory",
+      "status": "complete",
+      "summary": {
+        "sourceCount": 15,
+        "approvedForExplorer": 1
+      }
+    },
+    {
+      "stage": "fact_inventory",
+      "status": "complete",
+      "summary": {
+        "factCount": 149,
+        "approved": 2,
+        "pending": 123
+      }
+    },
+    {
+      "stage": "brand_residences_legacy_migration",
+      "status": "blocked",
+      "summary": {
+        "alreadySynced": 0,
+        "migrateFromLegacy": 0,
+        "conflicts": 1,
+        "noDataDefault": 0,
+        "sourceBackedPreserved": 0,
+        "wouldUpdate": 0
+      },
+      "command": "npm run brand-residences-legacy-migration-writer -- --brand curio-collection --dry-run",
+      "futureSetupWritesToBrandBasicsOnly": true
+    },
+    {
+      "stage": "required_section_contract",
+      "status": "complete",
+      "summary": {
+        "readinessScore": 100,
+        "ready": true,
+        "sectionsReady": 8,
+        "sectionsTotal": 8,
+        "nextWriters": []
+      },
+      "command": "npm run brand-explorer-required-section-population-contract -- --brand curio-collection --dry-run"
+    },
+    {
+      "stage": "visual_defect_audit",
+      "status": "complete",
+      "summary": {
+        "defects": {
+          "total": 6,
+          "critical": 0,
+          "high": 4,
+          "medium": 2,
+          "low": 0,
+          "missingImage": 0,
+          "emptyBullet": 0,
+          "titleOnlyOrThin": 5,
+          "placeholderGeneric": 0,
+          "sortOrder": 1
+        },
+        "comparableToCurio": false,
+        "nextBatch": "v24C_source_evidence_work"
+      },
+      "command": "npm run brand-explorer-visual-display-defect-audit -- --brand curio-collection --dry-run"
+    },
+    {
+      "stage": "brand-explorer-required-section-source-capture-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-required-section-source-capture-package -- --brand receQkxgjlezsc1xg --dry-run"
+    },
+    {
+      "stage": "brand-explorer-evidence-fact-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-evidence-fact-review-package -- --brand receQkxgjlezsc1xg --dry-run"
+    },
+    {
+      "stage": "brand-explorer-openings-momentum-row-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-openings-momentum-row-review-package -- --brand receQkxgjlezsc1xg --dry-run"
+    },
+    {
+      "stage": "final_qa_auditor",
+      "status": "blocked",
+      "summary": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 58,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 0,
+        "visualCompletenessScore": 68,
+        "overallNumeric": 69,
+        "overallActiveProfileReadiness": "not_ready"
+      },
+      "command": "npm run brand-explorer-final-qa-auditor -- --brand curio-collection --dry-run"
+    }
+  ],
+  "blockers": [
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24C_source_evidence_work"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24C_source_evidence_work"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24C_source_evidence_work"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24C_source_evidence_work"
+    }
+  ],
+  "tributeExpectedRemaining": [],
+  "stagedApplyCommands": [],
+  "nextRequiredWriter": "v24C_source_evidence_work",
+  "finalQaScores": {
+    "requiredSectionReadinessScore": 100,
+    "presentationQualityScore": 58,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 0,
+    "visualCompletenessScore": 68,
+    "overallNumeric": 69,
+    "overallActiveProfileReadiness": "not_ready"
+  },
+  "contractReadinessScore": 100,
+  "requiredSectionStatus": {
+    "score": 100,
+    "ready": true,
+    "sectionsReady": 8,
+    "sectionsTotal": 8
+  },
+  "visualQaStatus": {
+    "score": 62,
+    "comparableToReference": false,
+    "defectCounts": {
+      "total": 6,
+      "critical": 0,
+      "high": 4,
+      "medium": 2,
+      "low": 0,
+      "missingImage": 0,
+      "emptyBullet": 0,
+      "titleOnlyOrThin": 5,
+      "placeholderGeneric": 0,
+      "sortOrder": 1
+    },
+    "recommendedNextBatch": "v24C_source_evidence_work"
+  },
+  "governanceStatus": {
+    "governedPlatformReady": false,
+    "sourceCount": 15,
+    "approvedExplorerSources": 1,
+    "explorerFactCount": 149,
+    "pendingFacts": 123,
+    "sourceEvidenceNeeded": true,
+    "factApprovalNeeded": true,
+    "founderReviewNeeded": false
+  },
+  "governedPlatformReady": false,
+  "readyForActiveProfile": false,
+  "readinessBand": "not_ready",
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "companyValidationDateSnapshot": null,
+  "exactDryRunCommand": "npm run brand-explorer-complete-build -- --brand curio-collection --dry-run --target-quality active-profile",
+  "exactApplyCommand": "npm run brand-explorer-complete-build -- --brand curio-collection --apply-approved --approve-brand-explorer-complete-build --target-quality active-profile",
+  "reportBasename": "brand-explorer-complete-build-curio-collection",
+  "applySafety": {
+    "safeForApplyApproved": false,
+    "applyBlockReasons": [
+      "123 pending explorer fact(s) would need approval before apply",
+      "99 FDD-sensitive fact(s) in scope",
+      "Source governance is insufficient for governed apply"
+    ],
+    "applySkippedReasons": [
+      "123 pending explorer fact(s) would need approval before apply",
+      "99 FDD-sensitive fact(s) in scope",
+      "Source governance is insufficient for governed apply"
+    ],
+    "applyCommandsEligible": [],
+    "governanceSnapshot": {
+      "companyValidated": null,
+      "governedPlatformReady": false,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": true,
+      "pendingFacts": 123,
+      "internalFacts": 0,
+      "fddFacts": 99
+    }
+  },
+  "applyExecutionLog": [],
+  "airtableModified": false
+}

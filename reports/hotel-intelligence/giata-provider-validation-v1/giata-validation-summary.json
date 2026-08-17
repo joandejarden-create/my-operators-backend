@@ -1,0 +1,366 @@
+{
+  "marker": "DEALALITY_GIATA_PROVIDER_VALIDATION_COMPLETE",
+  "safety": {
+    "Airtable_writes": 0,
+    "Census_writes": 0,
+    "Brand_Explorer_writes": 0,
+    "Automatic_merges": 0,
+    "Schema_changes": 0,
+    "Migrations": 0,
+    "Secrets_exposed": 0
+  },
+  "existing_integration_audit": {
+    "marker": "GIATA_EXISTING_INTEGRATION_AUDIT_COMPLETE",
+    "credential_variables_present": [
+      "GIATA_DRIVE_API_KEY",
+      "GIATA_DRIVE_USERNAME",
+      "GIATA_DRIVE_PASSWORD"
+    ],
+    "existing_GIATA_client": false,
+    "existing_provider_adapter": false,
+    "existing_MCP_integration": false,
+    "existing_scripts": false,
+    "existing_tests": false,
+    "existing_documentation": "lib/research-engine-v2/external-hotel-source-registry.js references GIATA MultiCodes/Hotel Guide as licensed stub only"
+  },
+  "product": {
+    "GIATA_PRODUCT": "GIATA Drive — Open Content Link (Hotel Directory subset)",
+    "GIATA_BASE_ENDPOINT": "https://giatadrive.com/api/v1",
+    "AUTH_METHOD": "Bearer API key (Authorization: Bearer <GIATA_DRIVE_API_KEY>)",
+    "note": "GIATA_DRIVE_USERNAME/PASSWORD present but Basic auth rejected on Drive API; MultiCodes/MHG returned 401 with these credentials"
+  },
+  "connectivity": {
+    "credentials_present": true,
+    "reachable": true,
+    "HTTP_status": 200,
+    "authenticated": true,
+    "entitlement_status": "GIATA_DRIVE_OPEN_CONTENT_LINK_OK",
+    "response_format": "application/json",
+    "sanitized_error": null
+  },
+  "global_open_content_properties": 4604,
+  "incremental": {
+    "GIATA_INCREMENTAL_UPDATE_SUPPORTED": "YES",
+    "evidence": "GET /properties?after=0 returns urls + deletedUrls + latestRevision",
+    "after_probe": {
+      "status": 200,
+      "urls": 4604,
+      "deletedUrls": 31515,
+      "has_latestRevision": true
+    }
+  },
+  "country_discovery": {
+    "GIATA_COUNTRY_DISCOVERY_SUPPORTED": "YES",
+    "filters_confirmed": [
+      "countryCode (ISO alpha-2)",
+      "after (incremental)",
+      "property id"
+    ],
+    "filters_not_seen_in_entitlement": [
+      "city filter on list",
+      "destination filter on list",
+      "supplier ID filter"
+    ]
+  },
+  "capability_matrix": {
+    "giata_hotel_id": "CONFIRMED_SUPPORTED",
+    "hotel_name": "CONFIRMED_SUPPORTED",
+    "alternate_names": "NOT_SUPPORTED",
+    "former_names": "NOT_SUPPORTED",
+    "city": "CONFIRMED_SUPPORTED",
+    "destination": "CONFIRMED_SUPPORTED",
+    "state_region": "CONFIRMED_SUPPORTED",
+    "country": "CONFIRMED_SUPPORTED",
+    "country_iso": "CONFIRMED_SUPPORTED",
+    "street_address": "CONFIRMED_SUPPORTED",
+    "postal_code": "CONFIRMED_SUPPORTED",
+    "latitude": "CONFIRMED_SUPPORTED",
+    "longitude": "CONFIRMED_SUPPORTED",
+    "chain_brand": "CONFIRMED_SUPPORTED",
+    "parent_company": "NOT_SUPPORTED",
+    "hotel_category_star": "CONFIRMED_SUPPORTED",
+    "property_type": "NOT_SUPPORTED",
+    "active_inactive_status": "NOT_SUPPORTED",
+    "website": "CONFIRMED_SUPPORTED",
+    "phone": "CONFIRMED_SUPPORTED",
+    "total_property_room_count": "SUPPORTED_BUT_NOT_ENTITLED",
+    "room_types": "CONFIRMED_SUPPORTED",
+    "construction_year": "NOT_SUPPORTED",
+    "renovation_year": "NOT_SUPPORTED",
+    "supplier_ids": "SUPPORTED_BUT_NOT_ENTITLED",
+    "booking_id": "SUPPORTED_BUT_NOT_ENTITLED",
+    "hotelbeds_id": "SUPPORTED_BUT_NOT_ENTITLED",
+    "expedia_id": "SUPPORTED_BUT_NOT_ENTITLED",
+    "other_provider_ids": "NOT_SUPPORTED",
+    "descriptions": "CONFIRMED_SUPPORTED",
+    "facts_amenities": "CONFIRMED_SUPPORTED",
+    "images": "CONFIRMED_SUPPORTED"
+  },
+  "room_count_verdict": {
+    "GIATA_TOTAL_PROPERTY_ROOM_COUNT": "SUPPORTED_BUT_NOT_ENTITLED",
+    "semantics": "roomTypes[] = catalog of room type names/codes/views — NOT total physical keys. No roomCount/totalRooms field in Open Content property payload."
+  },
+  "supplier_mapping": {
+    "GIATA_SUPPLIER_MAPPING_AVAILABLE": "NO",
+    "note": "No supplier/channel mapping objects in Drive Open Content property payloads. MultiCodes (mapping product) not entitled (401)."
+  },
+  "controlled_countries": [
+    {
+      "country": "Brazil",
+      "iso": "BR",
+      "giata_records": 15,
+      "dealality_hotels": 494,
+      "match_classes": {
+        "EXISTING_EXACT": 0,
+        "EXISTING_STRONG": 1,
+        "PROBABLE_EXISTING": 0,
+        "AMBIGUOUS": 0,
+        "NEW_CANDIDATE": 14,
+        "INACTIVE": 0
+      },
+      "existing_matches": 1,
+      "likely_new": 14,
+      "ambiguous": 0,
+      "city_pct": 100,
+      "coords_pct": 100,
+      "api_calls": 16,
+      "latency_ms_total": 3692
+    },
+    {
+      "country": "Mexico",
+      "iso": "MX",
+      "giata_records": 42,
+      "dealality_hotels": 2181,
+      "match_classes": {
+        "EXISTING_EXACT": 1,
+        "EXISTING_STRONG": 9,
+        "PROBABLE_EXISTING": 4,
+        "AMBIGUOUS": 9,
+        "NEW_CANDIDATE": 19,
+        "INACTIVE": 0
+      },
+      "existing_matches": 14,
+      "likely_new": 19,
+      "ambiguous": 9,
+      "city_pct": 100,
+      "coords_pct": 100,
+      "api_calls": 43,
+      "latency_ms_total": 10510
+    },
+    {
+      "country": "Dominican Republic",
+      "iso": "DO",
+      "giata_records": 22,
+      "dealality_hotels": 654,
+      "match_classes": {
+        "EXISTING_EXACT": 0,
+        "EXISTING_STRONG": 9,
+        "PROBABLE_EXISTING": 3,
+        "AMBIGUOUS": 8,
+        "NEW_CANDIDATE": 2,
+        "INACTIVE": 0
+      },
+      "existing_matches": 12,
+      "likely_new": 2,
+      "ambiguous": 8,
+      "city_pct": 100,
+      "coords_pct": 95.5,
+      "api_calls": 23,
+      "latency_ms_total": 5377
+    },
+    {
+      "country": "Paraguay",
+      "iso": "PY",
+      "giata_records": 0,
+      "dealality_hotels": 0,
+      "match_classes": {
+        "EXISTING_EXACT": 0,
+        "EXISTING_STRONG": 0,
+        "PROBABLE_EXISTING": 0,
+        "AMBIGUOUS": 0,
+        "NEW_CANDIDATE": 0,
+        "INACTIVE": 0
+      },
+      "existing_matches": 0,
+      "likely_new": 0,
+      "ambiguous": 0,
+      "city_pct": null,
+      "coords_pct": null,
+      "api_calls": 1,
+      "latency_ms_total": 84
+    },
+    {
+      "country": "Turks and Caicos Islands",
+      "iso": "TC",
+      "giata_records": 3,
+      "dealality_hotels": 0,
+      "match_classes": {
+        "EXISTING_EXACT": 0,
+        "EXISTING_STRONG": 0,
+        "PROBABLE_EXISTING": 0,
+        "AMBIGUOUS": 0,
+        "NEW_CANDIDATE": 3,
+        "INACTIVE": 0
+      },
+      "existing_matches": 0,
+      "likely_new": 3,
+      "ambiguous": 0,
+      "city_pct": 100,
+      "coords_pct": 100,
+      "api_calls": 4,
+      "latency_ms_total": 674
+    },
+    {
+      "country": "Bonaire",
+      "iso": "BQ",
+      "giata_records": 1,
+      "dealality_hotels": 0,
+      "match_classes": {
+        "EXISTING_EXACT": 0,
+        "EXISTING_STRONG": 0,
+        "PROBABLE_EXISTING": 0,
+        "AMBIGUOUS": 0,
+        "NEW_CANDIDATE": 1,
+        "INACTIVE": 0
+      },
+      "existing_matches": 0,
+      "likely_new": 1,
+      "ambiguous": 0,
+      "city_pct": 100,
+      "coords_pct": 100,
+      "api_calls": 2,
+      "latency_ms_total": 271
+    }
+  ],
+  "brazil_opportunity": {
+    "dealality": 494,
+    "estimated_known_universe": 5336,
+    "giata_brazil_active": 15,
+    "already_in_dealality": 1,
+    "probable_new": 14,
+    "ambiguous": 0,
+    "cvent_hold_pool": 5165,
+    "verdict": "GIATA Open Content Brazil set is tiny vs Cvent hold pool — cannot replace Cvent for Brazil scale; useful as high-quality identity anchors for the few branded properties present."
+  },
+  "zero_coverage_opportunity": [
+    {
+      "country": "Paraguay",
+      "dealality": 0,
+      "giata_active": 0,
+      "existing": 0,
+      "new_candidates": 0,
+      "potential_coverage_note": "No Open Content properties for this ISO in entitlement"
+    },
+    {
+      "country": "Turks and Caicos Islands",
+      "dealality": 0,
+      "giata_active": 3,
+      "existing": 0,
+      "new_candidates": 3,
+      "potential_coverage_note": "Could seed 3 high-quality shells (still far from full national universe)"
+    },
+    {
+      "country": "Bonaire",
+      "dealality": 0,
+      "giata_active": 1,
+      "existing": 0,
+      "new_candidates": 1,
+      "potential_coverage_note": "Could seed 1 high-quality shells (still far from full national universe)"
+    }
+  ],
+  "cvent_vs_giata": [
+    {
+      "country": "Brazil",
+      "giata_total": 15,
+      "cvent_total": 5165,
+      "note": "Overlap vs Cvent not ID-joinable; GIATA has stable giataId, Cvent inventory is URL-derived shells",
+      "giata_explicit_city_pct": 100,
+      "giata_coords_pct": 100,
+      "giata_stable_id_pct": 100,
+      "giata_new_vs_census": 14
+    },
+    {
+      "country": "Mexico",
+      "giata_total": 42,
+      "cvent_total": 3614,
+      "note": "Overlap vs Cvent not ID-joinable; GIATA has stable giataId, Cvent inventory is URL-derived shells",
+      "giata_explicit_city_pct": 100,
+      "giata_coords_pct": 100,
+      "giata_stable_id_pct": 100,
+      "giata_new_vs_census": 19
+    },
+    {
+      "country": "Dominican Republic",
+      "giata_total": 22,
+      "cvent_total": 279,
+      "note": "Overlap vs Cvent not ID-joinable; GIATA has stable giataId, Cvent inventory is URL-derived shells",
+      "giata_explicit_city_pct": 100,
+      "giata_coords_pct": 95.5,
+      "giata_stable_id_pct": 100,
+      "giata_new_vs_census": 2
+    },
+    {
+      "country": "Paraguay",
+      "giata_total": 0,
+      "cvent_total": 102,
+      "note": "Overlap vs Cvent not ID-joinable; GIATA has stable giataId, Cvent inventory is URL-derived shells",
+      "giata_explicit_city_pct": null,
+      "giata_coords_pct": null,
+      "giata_stable_id_pct": 100,
+      "giata_new_vs_census": 0
+    },
+    {
+      "country": "Turks and Caicos Islands",
+      "giata_total": 3,
+      "cvent_total": 57,
+      "note": "Overlap vs Cvent not ID-joinable; GIATA has stable giataId, Cvent inventory is URL-derived shells",
+      "giata_explicit_city_pct": 100,
+      "giata_coords_pct": 100,
+      "giata_stable_id_pct": 100,
+      "giata_new_vs_census": 3
+    },
+    {
+      "country": "Bonaire",
+      "giata_total": 1,
+      "cvent_total": 51,
+      "note": "Overlap vs Cvent not ID-joinable; GIATA has stable giataId, Cvent inventory is URL-derived shells",
+      "giata_explicit_city_pct": 100,
+      "giata_coords_pct": 100,
+      "giata_stable_id_pct": 100,
+      "giata_new_vs_census": 1
+    }
+  ],
+  "api_efficiency": {
+    "api_calls": 91,
+    "controlled_records": 83,
+    "global_list_size": 4604,
+    "hotels_per_list_call": 4604,
+    "detail_calls_required": true,
+    "avg_country_latency_note": "list ~80–800ms; detail ~100–700ms each",
+    "quota_signals_observed": "none in response headers",
+    "candidate_new_per_detail_call": 0.46987951807228917
+  },
+  "recommended_roles": [
+    "SECONDARY_UNIVERSE_DISCOVERY",
+    "IDENTITY_VALIDATION",
+    "EXTERNAL_ID_GRAPH",
+    "GEO_ENRICHMENT",
+    "BRAND_ENRICHMENT"
+  ],
+  "not_roles": [
+    "PRIMARY_UNIVERSE_DISCOVERY",
+    "ROOM_COUNT",
+    "DEDUPLICATION"
+  ],
+  "overall_verdict": "GIATA_HIGH_VALUE_COMPLEMENTARY_PROVIDER",
+  "highest_value_next_step": "Add a read-only Hotel Intelligence provider adapter for GIATA Drive Open Content that attaches giataId + geo/address/brand evidence to existing dhl_ hotels and stages NEW_CANDIDATE shells only for zero/near-zero countries where Open Content returns rows — do not treat Drive as CALA universe SoT.",
+  "census_total": 5956,
+  "census_by_country_sample": {
+    "Brazil": 494,
+    "Mexico": 2181,
+    "Dominican Republic": 654,
+    "Paraguay": 0,
+    "Turks and Caicos Islands": 0,
+    "Bonaire": 0
+  }
+}

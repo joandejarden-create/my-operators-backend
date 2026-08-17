@@ -1,0 +1,544 @@
+{
+  "version": "census-autopilot-planner-v2",
+  "generated_at": "2026-08-06T21:46:22.991Z",
+  "parent_company": null,
+  "parent_family": "generic",
+  "region": "CALA",
+  "country": null,
+  "mode": "controlled",
+  "batch_size": 250,
+  "max_records": null,
+  "run_until_complete": true,
+  "legacy_limit": null,
+  "confidence_threshold": "High",
+  "provider": "mapbox",
+  "provider_readiness": {
+    "approved_for_geocode_apply": true,
+    "block_reason": null,
+    "preferred": "mapbox_permanent",
+    "note": "Missing provider decision skips geocode only; other queues continue"
+  },
+  "schema_v114": {
+    "ready": true,
+    "note": "Rooms provenance fields present"
+  },
+  "records_scanned": 666,
+  "records_eligible": 666,
+  "queue_order": [
+    "source_discovery",
+    "core_identity_quality",
+    "city_state_normalization",
+    "core_identity_source_lookup",
+    "clean_core_classification",
+    "canonical_property_name_completion",
+    "market_geography_completion",
+    "key_field_completion",
+    "property_name_cleanup",
+    "address_confirmation",
+    "coordinate_completion",
+    "phone_number_enrichment",
+    "coordinate_resolution",
+    "radar_public_readiness",
+    "description_extraction",
+    "amenities_extraction",
+    "property_type_asset_context",
+    "rooms_keys",
+    "steward_webhound_hard_cases"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "queue_id": "source_discovery",
+      "letter": "A",
+      "label": "Source discovery / record matching",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Source URL",
+        "Official Website",
+        "Official Property URL"
+      ],
+      "writes": "propose_inserts_only",
+      "existing_module": "census-autopilot-source-discovery",
+      "queue_engine_id": null,
+      "note": "Find official directories; match Hotel Property Census; propose High inserts only"
+    },
+    {
+      "step": 2,
+      "queue_id": "core_identity_quality",
+      "letter": "A0",
+      "label": "Core identity quality gate",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Property Name",
+        "Canonical Property Name",
+        "Current Brand",
+        "City",
+        "State / Region",
+        "Country"
+      ],
+      "writes": "high_normalize_only",
+      "existing_module": "census-data-quality-gate",
+      "queue_engine_id": null,
+      "note": "Normalize City/State/Canonical; block dirty identity from coords/public; steward Unknown/descriptor cities"
+    },
+    {
+      "step": 3,
+      "queue_id": "city_state_normalization",
+      "letter": "A0b",
+      "label": "City / State normalization",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "City",
+        "State / Region"
+      ],
+      "writes": "high_normalize_only",
+      "existing_module": "census-city-state-normalizer",
+      "queue_engine_id": null,
+      "note": "Alias path — executed via core_identity_quality gate"
+    },
+    {
+      "step": 4,
+      "queue_id": "core_identity_source_lookup",
+      "letter": "A0c",
+      "label": "Core identity source lookup",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Source URL",
+        "Official Property URL",
+        "City",
+        "Canonical Property Name"
+      ],
+      "writes": "none_routing_only",
+      "existing_module": "census-map-contact-size-readiness",
+      "queue_engine_id": null,
+      "note": "Route dirty-identity rows with official URLs to source lookup; no Airtable writes"
+    },
+    {
+      "step": 5,
+      "queue_id": "clean_core_classification",
+      "letter": "A0d",
+      "label": "Clean Core classification",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Property Name",
+        "Canonical Property Name",
+        "Current Brand",
+        "City",
+        "Country",
+        "Source URL",
+        "Family / Source Family"
+      ],
+      "writes": "none_classification_only",
+      "existing_module": "census-map-contact-size-readiness",
+      "queue_engine_id": null,
+      "note": "Level 1 Clean Core vs Level 2 Map/Contact/Size; does not block on lat/long/phone/rooms"
+    },
+    {
+      "step": 6,
+      "queue_id": "canonical_property_name_completion",
+      "letter": "A0e",
+      "label": "Canonical Property Name completion",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Canonical Property Name"
+      ],
+      "writes": "high_autofill_cleanup_only",
+      "existing_module": "census-canonical-property-name",
+      "queue_engine_id": null,
+      "note": "Alias — executed via key_field_completion / core_identity_quality during identity repair"
+    },
+    {
+      "step": 7,
+      "queue_id": "market_geography_completion",
+      "letter": "A0f",
+      "label": "Market geography completion",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Continent",
+        "Sub-Continent",
+        "Market",
+        "Submarket"
+      ],
+      "writes": "high_country_city_map_only",
+      "existing_module": "census-market-submarket-classifier",
+      "queue_engine_id": null,
+      "note": "Continent/Sub-Continent from Country map; Market from clean City; Submarket High-only; no Mapbox/Google"
+    },
+    {
+      "step": 8,
+      "queue_id": "key_field_completion",
+      "letter": "A1",
+      "label": "Key field completion",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Property Name",
+        "Canonical Property Name",
+        "Current Brand",
+        "City",
+        "State / Region",
+        "Country",
+        "Source URL",
+        "Family / Source Family",
+        "Source Confidence",
+        "Production Use Status",
+        "Address",
+        "Latitude",
+        "Longitude"
+      ],
+      "writes": "high_autofill_only",
+      "existing_module": "census-autopilot-key-field-completion",
+      "queue_engine_id": null,
+      "note": "Matrix + High autofill for foundational gaps including Canonical Property Name; geocode soft-blocked without provider"
+    },
+    {
+      "step": 9,
+      "queue_id": "property_name_cleanup",
+      "letter": "A2",
+      "label": "Property Name cleanup",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Property Name"
+      ],
+      "writes": "high_official_clean_name_only",
+      "existing_module": "production-census-property-name-cleanup-queue",
+      "queue_engine_id": null,
+      "note": "Replace marketing/tagline Property Name with official clean hotel name; High only"
+    },
+    {
+      "step": 10,
+      "queue_id": "address_confirmation",
+      "letter": "B",
+      "label": "Address confirmation",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Address",
+        "Street Address",
+        "City",
+        "State / Province",
+        "Postal Code",
+        "Country"
+      ],
+      "writes": "high_official_only",
+      "existing_module": "production-census-address-geocode-resolver",
+      "queue_engine_id": null,
+      "note": "Official hotel address only when High confidence"
+    },
+    {
+      "step": 11,
+      "queue_id": "coordinate_completion",
+      "letter": "C",
+      "label": "Coordinate completion (Mapbox Permanent)",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Latitude",
+        "Longitude",
+        "Coordinate Source Type",
+        "Coordinate Confidence",
+        "Geocode Provider",
+        "Geocode Method",
+        "Geocode Reviewed Date"
+      ],
+      "writes": "high_mapbox_permanent_official_address_only",
+      "existing_module": "census-coordinate-completion",
+      "queue_engine_id": null,
+      "note": "Mapbox Permanent Geocoding for High official addresses only; no temporary/Nominatim/centroids/0,0"
+    },
+    {
+      "step": 12,
+      "queue_id": "phone_number_enrichment",
+      "letter": "C1",
+      "label": "Phone number enrichment",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Phone"
+      ],
+      "writes": "high_official_only",
+      "existing_module": "census-phone-number-enrichment",
+      "queue_engine_id": null,
+      "note": "Official property/directory/JSON-LD phone only after Clean Core; never OTA/Google/Mapbox"
+    },
+    {
+      "step": 13,
+      "queue_id": "coordinate_resolution",
+      "letter": "C2",
+      "label": "Coordinate resolution (legacy soft-defer)",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Latitude",
+        "Longitude",
+        "Coordinate Provenance",
+        "Coordinate Confidence",
+        "Coordinate Source URL"
+      ],
+      "writes": "high_official_or_approved_geocode",
+      "existing_module": "production-census-coordinate-resolver",
+      "queue_engine_id": null,
+      "note": "Legacy alias — prefer coordinate_completion for Mapbox Permanent Autopilot writes"
+    },
+    {
+      "step": 14,
+      "queue_id": "radar_public_readiness",
+      "letter": "D",
+      "label": "Radar / public readiness",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Radar Display Status",
+        "Radar Geography Status",
+        "Public Census Eligibility",
+        "Public Display Confidence",
+        "Public Display Review Status"
+      ],
+      "writes": "high_identity_clear",
+      "existing_module": "production-census-population-lane-2",
+      "queue_engine_id": null,
+      "note": "No public eligibility for held / brand-unconfirmed"
+    },
+    {
+      "step": 15,
+      "queue_id": "description_extraction",
+      "letter": "E",
+      "label": "Description extraction",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "writes": "high_grounded_only",
+      "existing_module": "production-census-description-extraction",
+      "queue_engine_id": null,
+      "note": "Grounded official/public source only"
+    },
+    {
+      "step": 16,
+      "queue_id": "amenities_extraction",
+      "letter": "F",
+      "label": "Amenities extraction",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Amenities - Source Text",
+        "Amenities - Structured Tags"
+      ],
+      "writes": "high_explicit_only",
+      "existing_module": "production-census-population-lane-2",
+      "queue_engine_id": null,
+      "note": "Strategic flags only; explicit support required"
+    },
+    {
+      "step": 17,
+      "queue_id": "property_type_asset_context",
+      "letter": "G",
+      "label": "Property type / asset context",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Property Type",
+        "Asset Context",
+        "Market",
+        "Submarket"
+      ],
+      "writes": "high_only",
+      "existing_module": "production-census-population-lane-2",
+      "queue_engine_id": null,
+      "note": "Dealality Market/Submarket; Property Type / Asset Context"
+    },
+    {
+      "step": 18,
+      "queue_id": "rooms_keys",
+      "letter": "H",
+      "label": "Rooms / Keys",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Rooms / Keys",
+        "Rooms Confidence",
+        "Rooms Source URL"
+      ],
+      "writes": "high_official_hotel_rooms_only",
+      "existing_module": "production-census-rooms-keys-queue",
+      "queue_engine_id": "rooms_keys_missing",
+      "note": "Early queue; Medium/Low/Hold → steward; needs v1.1.4 provenance fields"
+    },
+    {
+      "step": 19,
+      "queue_id": "steward_webhound_hard_cases",
+      "letter": "I",
+      "label": "Steward / Webhound hard cases",
+      "status": "learning_only",
+      "blockers": [],
+      "target_fields": [],
+      "writes": "never_direct_airtable",
+      "existing_module": null,
+      "queue_engine_id": null,
+      "note": "Unresolved hard cases only; Webhound sample 10–25; never writes Airtable"
+    }
+  ],
+  "existing_queue_engine": [
+    {
+      "id": "rooms_keys_missing",
+      "name": "Rooms / Keys missing",
+      "purpose": "Find and populate hotel room/key counts when supported by strong official source evidence",
+      "early": true
+    }
+  ],
+  "blocked_production_lanes": [
+    "Owner Name",
+    "Developer",
+    "Operator / Management Company",
+    "Opening Date",
+    "Renovation Date",
+    "Affiliation Start Date",
+    "Recent Momentum",
+    "Brand Explorer fields",
+    "Company Validated",
+    "Brand Verified"
+  ],
+  "allowed_write_fields": [
+    "Property Name",
+    "Canonical Property Name",
+    "Current Brand",
+    "City",
+    "State / Region",
+    "Country",
+    "Source URL",
+    "Official Property URL",
+    "Family / Source Family",
+    "Source Type",
+    "Source Confidence",
+    "Identity Confidence",
+    "Production Use Status",
+    "Phone",
+    "Address",
+    "Latitude",
+    "Longitude",
+    "Address Confidence",
+    "Address Source URL",
+    "Coordinate Source Type",
+    "Coordinate Confidence",
+    "Geocode Provider",
+    "Geocode Method",
+    "Geocode Reviewed Date",
+    "Radar Display Status",
+    "Radar Display Reason",
+    "Radar Geography Status",
+    "Public Census Eligibility",
+    "Public Display Confidence",
+    "Public Display Review Status",
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary",
+    "Amenities - Source Text",
+    "Amenities - Structured Tags",
+    "Property Type",
+    "Asset Context",
+    "Continent",
+    "Sub-Continent",
+    "Market",
+    "Submarket",
+    "Market / Submarket",
+    "Data Confidence Tier",
+    "F&B Flag",
+    "Meeting Space Flag",
+    "Resort / Leisure Flag",
+    "Extended Stay Flag",
+    "Mixed-Use Flag",
+    "Branded Residences Flag",
+    "Rooms / Keys",
+    "Rooms Confidence",
+    "Rooms Source URL",
+    "Rooms Source Type",
+    "Rooms Reviewed Date",
+    "Rooms Notes",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Last Reviewed Date"
+  ],
+  "processing_gates": {
+    "no_city_centroid": true,
+    "no_zero_zero_coords": true,
+    "no_owner_operator_writes": true,
+    "no_date_writes": true,
+    "no_brand_explorer_writes": true,
+    "no_company_validated": true,
+    "no_brand_verified": true,
+    "no_recent_momentum": true,
+    "no_webhound_direct_writes": true,
+    "high_confidence_only_on_apply": true,
+    "held_records_excluded_from_writes": true,
+    "brand_unconfirmed_excluded_from_writes": true
+  },
+  "batch_sizes": {
+    "dry-run": {
+      "min": 25,
+      "max": 250,
+      "default": 250
+    },
+    "apply": {
+      "min": 25,
+      "max": 100,
+      "default": 100
+    },
+    "webhound_candidates": {
+      "min": 10,
+      "max": 25,
+      "default": 25
+    }
+  },
+  "extractor_family": {
+    "label": null,
+    "family": "generic"
+  },
+  "speed_rules": [
+    "batch_size_is_chunk_only",
+    "run_until_complete_for_full_parent_region",
+    "max_records_for_sample_test_only",
+    "checkpoint_after_each_batch",
+    "re_read_before_write",
+    "idempotent_blank_or_match_only",
+    "provider_soft_route_does_not_stop_run",
+    "no_full_be_gates_on_census_dry_run"
+  ],
+  "recommended_commands": {
+    "plan": "npm run census:autopilot -- --region CALA --parent-company IHG --mode plan",
+    "dry_run": "npm run census:autopilot -- --region CALA --parent-company IHG --mode dry-run --run-until-complete --batch-size 250",
+    "controlled": "npm run census:autopilot -- --region CALA --parent-company IHG --mode controlled --run-until-complete --batch-size 250",
+    "apply": "npm run census:autopilot -- --region CALA --parent-company IHG --mode apply --run-until-complete --batch-size 100 --confirm-safe-writes --confirm-write-to-production-census --confirm-no-brand-explorer-writes --confirm-no-owner-operator --confirm-no-date-writes --confirm-no-recent-momentum --confirm-no-company-validation --confirm-webhound-not-production-source",
+    "sample": "npm run census:autopilot -- --region CALA --parent-company IHG --mode dry-run --max-records 50 --batch-size 25"
+  },
+  "recommended_next": "npm run census:autopilot -- --region CALA --parent-company IHG --mode dry-run --run-until-complete --batch-size 250",
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "scope": "active-brand-setup",
+  "strategy": "fastest-safe",
+  "active_brands_in_scope": 62,
+  "parent_companies_in_scope": [
+    "Accor",
+    "BWH Hotels",
+    "Bunkhouse",
+    "Choice",
+    "Hilton",
+    "IHG",
+    "Marriott",
+    "Preferred Hotels & Resorts",
+    "SLH",
+    "Wyndham"
+  ],
+  "processing_order": [
+    "market_geography_completion"
+  ],
+  "processing_order_why": "Targeted queue run (--queue market_geography_completion); fastest-safe order overridden."
+}

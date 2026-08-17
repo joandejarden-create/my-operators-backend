@@ -854,7 +854,7 @@
     <div id="brochureError" class="brochure-error" style="display: none;"></div>
 
     <script src="/js/dealality-memberstack-auth.js"></script>
-    <script src="/js/deal-brief-v2.js"></script>
+    <script src="/js/deal-brief-v2.js?v=20260724-unbranded-parent"></script>
     <script>
         (function() {
             function getParam(name) {
@@ -933,39 +933,65 @@
             }
 
             /* Detail columns: 1 = Executive Summary + Project Info + Property, 2 = Market + Deal, 3 = Strategic */
+            function isYesField(fields, key) {
+                return /^yes$/i.test(String(fields[key] == null ? '' : fields[key]).trim());
+            }
+            function isMixedUseSectionVisible(fields) {
+                var V2 = window.DealBriefV2;
+                return V2 ? V2.isMixedUseBriefSection(fields) : (/mixed.?use/i.test(String(fields['Project Type'] || '')) || isYesField(fields, 'Condo Residences?'));
+            }
+            function formatPercentDisplay(val) {
+                if (val == null || val === '') return '';
+                var s = String(val).trim();
+                if (!s) return '';
+                if (/%/.test(s)) return s;
+                var n = Number(s);
+                if (!Number.isNaN(n) && n > 0 && n <= 1) return Math.round(n * 100) + '%';
+                if (!Number.isNaN(n)) return n + '%';
+                return s;
+            }
+
             var detailSections = [
                 /* Project Information: omit Full Address & Submarket (in Opportunity card) */
                 { title: 'Project Information', col: 1, rows: [
-                    ['Currently branded?', ['Is the hotel currently branded?']],
-                    ['Current brand/operator', ['Parent Company Name', 'Current Brand Affiliation', 'Operator Name Current']],
+                    ['Currently Branded?', ['Is the hotel currently branded?']],
+                    ['Current Brand/Operator', ['Parent Company Name', 'Current Brand Affiliation', 'Operator Name Current']],
                     ['Chain Scale', ['Hotel Chain Scale']],
                     ['Hotel Type', ['Hotel Type', 'Property Type']],
-                    ['Service Model', ['Hotel Service Model']]
+                    ['Service / Operating Model', ['Hotel Service Model']]
                 ]},
                 { title: 'Property Details', col: 1, rows: [
-                    ['Hotel Chain Scale', ['Hotel Chain Scale', 'Chain Scale', 'Preferred Chain Scales']],
+                    ['Chain Scale', ['Hotel Chain Scale', 'Chain Scale', 'Preferred Chain Scales']],
                     ['Property Type', ['Property Type', 'Hotel Type', 'Asset Type']],
-                    ['Hotel Service Model', ['Hotel Service Model', 'Service Model']],
-                    ['Room breakdown', ['Number of Standard Rooms', 'Number of Suites']],
+                    ['Service / Operating Model', ['Hotel Service Model', 'Service Model']],
+                    ['Room Breakdown', ['Number of Standard Rooms', 'Number of Suites']],
                     ['Building Type', ['Building Type']],
                     ['Stories', ['Number of Stories']],
                     ['Meeting Space', ['Meeting Space', 'Meeting Space Unit']],
                     ['F&B Outlets?', ['F&B Outlets?']],
                     ['F&B Concept', ['Outlet Names / Concepts']],
+                    ['F&B Operating Model', ['F&B Operating Model']],
                     ['Parking', ['Parking Amenities?']],
                     ['Additional Amenities', ['Additional Amenities']]
                 ]},
+                { title: 'Mixed-Use & Residences', col: 1, showWhen: isMixedUseSectionVisible, rows: [
+                    ['Condo Residences?', ['Condo Residences?']],
+                    ['Hotel Rental Program?', ['Hotel Rental Program?']],
+                    ['Condo / Residence Units', ['Number of Condo / Residence Units']],
+                    ['Branded Residence Model', ['Branded Residence Program Model']],
+                    ['Condo Rental Program', ['Condo Rental Program Model']],
+                    ['Development Proforma Available?', ['Development Proforma Available?']]
+                ]},
                 { title: 'Market & Ownership', col: 2, rows: [
                     ['Demand Drivers', ['Primary Demand Drivers']],
+                    ['Estimated RevPAR', ['Estimated or Actual RevPAR']],
                     ['Key Competitors', ['Key Competitors']],
-                    ['Regulatory Issues?', ['Regulatory or Permitting Issues?']],
-                    ['Preferred Brands', ['Preferred Brands (up to 4)']],
-                    ['Preferred Chain Scales', ['Preferred Chain Scales']]
+                    ['Regulatory / Permitting Issues?', ['Regulatory or Permitting Issues?']]
                 ]},
                 { title: 'Deal & Capital Structure', col: 2, rows: [
                     ['Ownership Structure', ['Ownership Structure']],
                     ['Preferred Deal Structure', ['Preferred Deal Structure']],
-                    ['PIP/CapEx Status', ['PIP / CapEx Status']],
+                    ['PIP / CapEx Status', ['PIP / CapEx Status']],
                     ['Lease Type', ['Lease Type']],
                     ['Initial Lease Term', ['Initial Lease Term (years)']],
                     ['Lease Start Date', ['Lease Start Date (or Availability)']],
@@ -980,28 +1006,28 @@
                     ['Lease Structure Notes', ['Lease Structure Notes']],
                     ['Total Project Cost Range', ['Total Project Cost Range']],
                     ['Equity vs Debt Split', ['Equity vs Debt Split']],
-                    ['PIP Budget (if conversion)', ['PIP Budget Range (if conversion)']],
-                    ['IRR/Yield Goals', ['IRR/Yield Goals']],
+                    ['PIP Budget (If Conversion)', ['PIP Budget Range (if conversion)']],
+                    ['IRR / Yield Goals', ['IRR/Yield Goals']],
                     ['Soft vs Hard Brand', ['Soft vs Hard Brand Preference']],
-                    ['Plan to Self-Manage or Third Party?', ['Plan to Self-Manage or Hire Third Party?']]
+                    ['Self-Manage or Third Party?', ['Plan to Self-Manage or Hire Third Party?']]
                 ]},
                 { title: 'Brand / Operator Review Path', col: 3, rows: [
-                    ['Who receives bids', ['Who should receive bids for this project?']],
-                    ['Preferred brands', ['Preferred Brands (up to 4)']],
-                    ['Preferred chain scales', ['Preferred Chain Scales']],
-                    ['Franchise vs management', ['Franchise vs Management Preference']]
+                    ['Who Receives Bids', ['Who should receive bids for this project?']],
+                    ['Preferred Brands', ['Preferred Brands (up to 4)']],
+                    ['Preferred Chain Scales', ['Preferred Chain Scales']],
+                    ['Franchise vs. Management', ['Franchise vs Management Preference', 'Preferred Deal Structure']]
                 ]},
                 { title: 'Strategic Priorities', col: 3, rows: [
                     ['Top Success Metrics', ['Top 3 Success Metrics']],
                     ['Top Priorities', ['Top Priorities for Project']],
                     ['Top Concerns', ['Top Concerns for this Project']],
-                    ['Deal breakers', ['Top 3 Deal Breakers']],
-                    ['Must-haves from brand/operator', ['Must-haves From Brand or Operator']],
-                    ['Must-haves (other)', ['Must-haves From Brand or Operator Other']],
+                    ['Deal Breakers', ['Top 3 Deal Breakers']],
+                    ['Must-Haves From Brand/Operator', ['Must-haves From Brand or Operator']],
+                    ['Must-Haves (Other)', ['Must-haves From Brand or Operator Other']],
                     ['Planned Hold Period', ['Planned Hold Period']],
                     ['Primary Goal for the Hotel', ['Primary Goal for the Hotel']],
-                    ['Brand Flexibility vs Prestige', ['Brand Flexibility vs Prestige']],
-                    ['Target opening', ['Expected Opening or Rebranding Date', 'Target Opening Date']],
+                    ['Brand Flexibility vs. Prestige', ['Brand Flexibility vs Prestige']],
+                    ['Target Opening', ['Expected Opening or Rebranding Date', 'Target Opening Date']],
                     ['Decision Timeline', ['Decision Timeline for Brand/Operator']],
                     ['Proposal Deadline', ['Proposal Deadline']]
                 ]},
@@ -1023,6 +1049,7 @@
                 ctx = ctx || {};
                 var V2 = window.DealBriefV2;
                 var ownerDraft = isOwnerDraftMode(ctx);
+                if (typeof section.showWhen === 'function' && !section.showWhen(fields, ctx)) return '';
                 var visible = [];
                 section.rows.forEach(function(r) {
                     var label = r[0], keys = r[1];
@@ -1030,25 +1057,26 @@
                     if (V2 && !V2.isFieldShownInBrief(airtableKey, fields, ctx.readiness)) return;
                     var val = getField(fields, keys);
                     if (val === 'Franchise + Third-Party Management') val = 'Franchise + 3rd Party Mgmt.';
-                    if (label === 'Current brand/operator') {
-                        var parent = (fields['Parent Company Name'] != null && fields['Parent Company Name'] !== '') ? String(fields['Parent Company Name']).trim() : '';
-                        var brand = (fields['Current Brand Affiliation'] != null && fields['Current Brand Affiliation'] !== '') ? String(fields['Current Brand Affiliation']).trim() : '';
-                        var op = (fields['Operator Name Current'] != null && fields['Operator Name Current'] !== '') ? String(fields['Operator Name Current']).trim() : '';
-                        val = [parent && ('Parent: ' + parent), brand && ('Brand: ' + brand), op && ('Operator: ' + op)].filter(Boolean).join(' · ') || '';
+                    if (label === 'Current Brand/Operator') {
+                        val = (V2 && typeof V2.formatCurrentBrandOperator === 'function')
+                            ? V2.formatCurrentBrandOperator(fields)
+                            : '';
                     }
-                    if (label === 'Room breakdown') {
+                    if (label === 'Room Breakdown') {
                         var std = (fields['Number of Standard Rooms'] != null && fields['Number of Standard Rooms'] !== '') ? String(fields['Number of Standard Rooms']) : '';
                         var suite = (fields['Number of Suites'] != null && fields['Number of Suites'] !== '') ? String(fields['Number of Suites']) : '';
                         val = [std && (std + ' Standard'), suite && (suite + ' Suites')].filter(Boolean).join(', ') || '';
                     }
                     if (label === 'Meeting Space') {
-                        val = (fields['Meeting Space'] != null && fields['Meeting Space'] !== '') ? (String(fields['Meeting Space']) + (fields['Meeting Space Unit'] ? ' ' + formatFieldValue(fields['Meeting Space Unit']) : '')) : '';
+                        var msRaw = fields['Meeting Space'];
+                        if (msRaw == null || msRaw === '' || Number(msRaw) === 0) return;
+                        val = String(msRaw) + (fields['Meeting Space Unit'] ? ' ' + formatFieldValue(fields['Meeting Space Unit']) : '');
                     }
                     if (!hasValue(val)) {
                         if (!ownerDraft) return;
                         val = 'Not provided';
                     }
-                    var displayLabel = V2 ? V2.executiveFieldLabel(airtableKey || label) : label;
+                    var displayLabel = label;
                     visible.push({ label: displayLabel, val: val });
                 });
                 if (visible.length === 0) return '';
@@ -1144,10 +1172,12 @@
                 document.getElementById('hlDealType').textContent = projectType;
                 document.getElementById('hlBids').textContent = dealBidDisplay;
 
-                var execSummaryInCard = getField(fields, ['Company Executive Summary']);
-                if (!execSummaryInCard) {
-                  execSummaryInCard = ownerDraft ? buildOwnerOpportunitySummary() : buildRecipientOpportunitySummary();
-                }
+                var execSummaryInCard =
+                  V2 && V2.buildOpportunityCardSummary
+                    ? V2.buildOpportunityCardSummary(fields, normalized, ctx.mode)
+                    : ownerDraft
+                      ? buildOwnerOpportunitySummary()
+                      : buildRecipientOpportunitySummary();
                 var oppLines = [];
                 if (execSummaryInCard) oppLines.push('<div class="card-line">' + escapeHtml(execSummaryInCard) + '</div>');
                 document.getElementById('cardOpportunity').innerHTML = oppLines.length ? oppLines.join('') : '<div class="card-line">See Project Information below.</div>';
@@ -1184,7 +1214,7 @@
                 var propLines = [];
                 if (propParts.length) propLines.push('<div class="card-line"><span class="card-label">Amenities:</span> <span class="stat">' + escapeHtml(propParts.join(' · ')) + '</span></div>');
                 if (roomBreakdown) propLines.push('<div class="card-line"><span class="card-label">Rooms:</span> <span class="stat">' + escapeHtml(roomBreakdown) + '</span></div>');
-                if (hotelServiceModel) propLines.push('<div class="card-line"><span class="card-label">Service model:</span> <span class="stat">' + escapeHtml(hotelServiceModel) + '</span></div>');
+                if (hotelServiceModel) propLines.push('<div class="card-line"><span class="card-label">Service / Operating Model:</span> <span class="stat">' + escapeHtml(hotelServiceModel) + '</span></div>');
                 if (stories) propLines.push('<div class="card-line"><span class="card-label">Stories:</span> <span class="stat">' + escapeHtml(stories) + '</span></div>');
                 if (meetingSpace) propLines.push('<div class="card-line"><span class="card-label">Meeting:</span> <span class="stat">' + escapeHtml(meetingSpace) + '</span></div>');
                 document.getElementById('cardProperty').innerHTML = propLines.length ? propLines.join('') : '<div class="card-line">See Property Details column below.</div>';
@@ -1204,8 +1234,8 @@
                 var dealLines = [];
                 if (dealStruct) dealLines.push('<div class="card-line"><span class="stat">' + escapeHtml(dealStruct) + '</span></div>');
                 if (leaseType) dealLines.push('<div class="card-line"><span class="card-label">Lease:</span> ' + escapeHtml(leaseType) + '</div>');
-                if (isLeaseDeal && leaseTerm) dealLines.push('<div class="card-line"><span class="card-label">Lease term:</span> ' + escapeHtml(leaseTerm) + '</div>');
-                if (isLeaseDeal && baseRent) dealLines.push('<div class="card-line"><span class="card-label">Base rent:</span> ' + escapeHtml(baseRent) + '</div>');
+                if (isLeaseDeal && leaseTerm) dealLines.push('<div class="card-line"><span class="card-label">Lease Term:</span> ' + escapeHtml(leaseTerm) + '</div>');
+                if (isLeaseDeal && baseRent) dealLines.push('<div class="card-line"><span class="card-label">Base Rent:</span> ' + escapeHtml(baseRent) + '</div>');
                 if (isLeaseDeal && renewalOpts) dealLines.push('<div class="card-line"><span class="card-label">Renewal:</span> ' + escapeHtml(renewalOpts) + '</div>');
                 document.getElementById('cardDeal').innerHTML = dealLines.length ? dealLines.join('') : '<div class="card-line">See Deal & Capital Structure column below.</div>';
 

@@ -1,0 +1,77 @@
+{
+  "status": "wave1d_marriott_steward_review_minor_holds_ready_for_4_family_baseline_lock",
+  "reviewed_at": "2026-08-04T23:09:12.505Z",
+  "wave1d_status": "wave1d_marriott_mexico_vic_complete_ready_for_combined_4_family_baseline",
+  "records_reviewed": 301,
+  "identity_risk_pass": true,
+  "brand_count": 28,
+  "four_points_count": 11,
+  "sheraton_count": 5,
+  "four_points_sheraton_verified": true,
+  "city_express_family": {
+    "City Express by Marriott": 89,
+    "City Express Plus by Marriott": 24,
+    "City Express Junior by Marriott": 21,
+    "City Express Suites by Marriott": 4,
+    "City Centro by Marriott": 3
+  },
+  "city_express_misparse_count": 0,
+  "brand_unconfirmed_count": 5,
+  "brand_unconfirmed_classifications": {
+    "steward_manual_review_required": 2,
+    "exclude_from_brand_completion": 2,
+    "confirm_brand": 1
+  },
+  "physical": {
+    "unique_physical_reported": 301,
+    "records": 301,
+    "marsha_unique": 301,
+    "marsha_duplicate_rows": 0,
+    "near_duplicate_pairs_reviewed": 103,
+    "campus_or_high_sim_steward_pairs": 9,
+    "confirmed_same_physical_merges": 0,
+    "auto_merges_applied": 0,
+    "staging_identity_count_safe": true,
+    "verdict": "301 unique MARSHA / 301 records — staging identity count SAFE (campus annexes kept distinct)"
+  },
+  "cross_family": {
+    "baseline_locked_total": 365,
+    "pairs_flagged": 14,
+    "exact_physical_match_requires_steward_review": 0,
+    "probable_physical_match_requires_steward_review": 0,
+    "rejected_fuzzy_match": 6,
+    "insufficient_evidence_no_merge": 8,
+    "auto_merges": 0,
+    "note": "Name/city/address used; missing Marriott coords do not invent 0,0 matches. City-corridor brand hotels classified rejected_fuzzy / insufficient — not merges."
+  },
+  "completeness_migration": {
+    "data_eligible": 237,
+    "data_ineligible": 64,
+    "missing_address": 301,
+    "missing_coordinates": 301,
+    "missing_rooms": 301,
+    "missing_owner_operator": 301,
+    "missing_open_date": 301,
+    "sitemap_only": 301,
+    "property_page_enriched": 0,
+    "suitable_for_be_completion_support": 204,
+    "suitable_only_for_census_identity": 301,
+    "requiring_steward_before_migration": 8,
+    "staging_migration_ready": true,
+    "production_overwrite_ready": false,
+    "fake_fields_created": 0
+  },
+  "blocking_issues": [],
+  "minor_holds": [
+    "5 Brand Unconfirmed (1 confirm_brand overlay candidate)",
+    "9 campus/high-sim physical steward pairs (no merge)",
+    "All 301 records missing coordinates (sitemap limitation) — staging OK",
+    "Material completeness 40% — census identity only; not production-ready"
+  ],
+  "auto_merges": 0,
+  "airtable_writes": false,
+  "webhound_used": false,
+  "brand_explorer_activation": false,
+  "production_overwrite": false,
+  "fake_rooms_owners_open_dates_created": false
+}

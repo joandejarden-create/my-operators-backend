@@ -1,0 +1,26 @@
+{
+  "version": "submarket-taxonomy-improvements-v3.0.1",
+  "proposals": [
+    {
+      "id": "normalize_postal_city_labels",
+      "action": "Prefer locality name from official address/URL slug over CEP/postal as City before corridor match",
+      "affects_approx": 14
+    },
+    {
+      "id": "mexico_state_as_city_alias",
+      "action": "When City equals Mexican state and Market is country-default, map via MARKET_TO_STATE / known metros before No Match",
+      "affects_approx": 24
+    },
+    {
+      "id": "market_level_only_allowlist",
+      "action": "Allow Submarket=Market or Not Applicable where corridor segmentation has no business meaning",
+      "note": "Do not invent corridors"
+    },
+    {
+      "id": "brazil_metro_aliases",
+      "action": "Expand São Paulo / Rio / Belo Horizonte / Curitiba city aliases for corridor rules"
+    }
+  ],
+  "target": "≥95% where meaningful Dealality Submarket exists",
+  "str_cvent_legacy": false
+}

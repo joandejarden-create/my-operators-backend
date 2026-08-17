@@ -1,0 +1,114 @@
+{
+  "auditedAt": "2026-06-24T13:41:24.655Z",
+  "country": "Curaçao",
+  "market": "Curaçao Countrywide",
+  "keywords": [
+    "curacao",
+    "curacao",
+    "willemstad",
+    "punda",
+    "otrobanda",
+    "mambo beach",
+    "seaquarium",
+    "jan thiel",
+    "piscadera",
+    "blue bay",
+    "hato",
+    "spanish water",
+    "caracasbaai",
+    "westpunt",
+    "banda abou",
+    "mega pier",
+    "cruise",
+    "bullenbaai",
+    "schottegat",
+    "mathey",
+    "christoffel",
+    "kenepa",
+    "kalki"
+  ],
+  "summary": {
+    "countryTravelInfrastructureTotal": 2,
+    "marketMatchedRecords": 2,
+    "existingExpectedNodes": 3,
+    "likelyMissingNodes": 8,
+    "duplicateCandidates": 0,
+    "weakSubmarketRecords": 2,
+    "governanceBackfillCandidates": 0,
+    "additionalFixtureRecommended": true,
+    "mexicoTravelInfrastructureTotal": 2
+  },
+  "existingMatchingRecords": [
+    {
+      "name": "Willemstad Hato Airport",
+      "pointType": "Airport",
+      "city": "Willemstad",
+      "submarket": "",
+      "latitude": 12.1889,
+      "longitude": -68.9598,
+      "sourceReference": "https://en.wikipedia.org/wiki/Hato_International_Airport",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "Willemstad Cruise Port",
+      "pointType": "Cruise Port",
+      "city": "Willemstad",
+      "submarket": "",
+      "latitude": 12.1084,
+      "longitude": -68.9335,
+      "sourceReference": "https://www.openstreetmap.org/?mlat=12.1084&mlon=-68.9335&zoom=13",
+      "dataConfidence": "High"
+    }
+  ],
+  "expectedNodeCoverage": [
+    {
+      "label": "Curaçao International Airport / CUR",
+      "name": "Willemstad Hato Airport",
+      "city": "Willemstad",
+      "submarket": "",
+      "pointType": "Airport"
+    },
+    {
+      "label": "Willemstad cruise terminal",
+      "name": "Willemstad Cruise Port",
+      "city": "Willemstad",
+      "submarket": "",
+      "pointType": "Cruise Port"
+    },
+    {
+      "label": "Airport-to-Willemstad corridor access",
+      "name": "Willemstad Hato Airport",
+      "city": "Willemstad",
+      "submarket": "",
+      "pointType": "Airport"
+    }
+  ],
+  "likelyMissingRecords": [
+    "Mega Pier cruise terminal",
+    "Curaçao Ports Authority / port access",
+    "Mambo Beach / Seaquarium corridor access",
+    "Jan Thiel corridor access",
+    "Piscadera / Blue Bay access",
+    "Spanish Water / Caracasbaai access",
+    "Westpunt / Banda Abou access",
+    "Marina / ferry island access"
+  ],
+  "duplicateCandidates": [],
+  "weakSubmarketRecords": [
+    {
+      "name": "Willemstad Hato Airport",
+      "city": "Willemstad",
+      "submarket": ""
+    },
+    {
+      "name": "Willemstad Cruise Port",
+      "city": "Willemstad",
+      "submarket": ""
+    }
+  ],
+  "governanceBackfillCandidates": [],
+  "notes": [
+    "Demand anchors should not duplicate TI airports/ferries unless explicitly DA-relevant.",
+    "Do not import TI from this audit unless gaps are confirmed and fixture is prepared."
+  ]
+}

@@ -257,7 +257,7 @@
     ["Operator Action", "operatorAction"],
     ["Outcome", "outcome"],
     ["Why It Matters", "whyItMatters"],
-    ["Data Status", "dataStatus"],
+    ["Data Confidence", "dataStatus"],
   ];
 
   function caseStudyPayloadFivePart(payload) {

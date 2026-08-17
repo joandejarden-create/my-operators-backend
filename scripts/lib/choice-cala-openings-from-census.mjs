@@ -227,9 +227,49 @@ const CURATED_BY_PROFILE = {
 
 CURATED_BY_PROFILE["Radisson RED  (Choice)"] = [
   {
+    title: "Radisson RED Minneapolis",
+    body: "Urban, United States, North America, OUIBar + KTCHN\n\nMinneapolis, Minnesota\n\nUpscale select-service · urban social hub\n\nReference property · flex F&B & design\n\nFlagship North American RED with OUIBar + KTCHN communal bar-food space and bold lobby experience—illustrative of playful urban positioning under Choice in the Americas.\n\nUrban RED economics hinge on flex F&B labor and social-lobby activation—not full-service kitchen capex. Model Minneapolis-style urban ADR and event/leisure mix for your market.\n\nhttps://www.choicehotels.com/minnesota/minneapolis/radisson-red-hotels/mn290",
+    sort: 0,
+    caseSummaryOverview:
+      "Minneapolis: North American RED reference with OUIBar + KTCHN and urban social lobby—press-kit photography market.",
+    caseSummaryOwnerObjective:
+      "Benchmark flex deli-bar F&B and informal service model for U.S. urban conversion or NC.",
+    caseSummaryBrandRelevance:
+      "Shows RED playful upscale select-service in a major U.S. city—not Radisson core full-service.",
+    caseSummaryInterpretation:
+      "One urban reference does not replace your comp set—confirm fees, PIP, and flex F&B operating plan locally.",
+    caseSummaryTags: "United States, Urban, OUIBar, Reference",
+  },
+  {
+    title: "Radisson RED Miami Airport",
+    body: "Urban gateway, United States, North America, Airport\n\nMiami, Florida (airport corridor)\n\nUpscale select-service · transient + leisure\n\nGateway urban · social lobby\n\nAirport-adjacent RED with lobby and urban design personality—illustrative of gateway transient and bleisure demand under RED informal service standards.\n\nAirport urban sites need strong lobby throughput, 24/7 fitness, and Wi-Fi infrastructure—stress-test fee stack and OTA versus member mix.\n\nhttps://www.choicehotels.com/florida/miami/radisson-red-hotels/flj13",
+    sort: 1,
+    caseSummaryOverview:
+      "Miami Airport corridor: RED upscale select-service at a gateway—lobby-led social experience for transient guests.",
+    caseSummaryOwnerObjective:
+      "Compare airport urban RED against conventional upscale select-service flags on flex F&B and design PIP.",
+    caseSummaryBrandRelevance: "Gateway urban fit for RED—not resort Blu or Individuals soft collection.",
+    caseSummaryInterpretation:
+      "Airport compression varies by season and airline mix—underwrite from local airport comps, not press photos alone.",
+    caseSummaryTags: "United States, Airport, Urban gateway",
+  },
+  {
+    title: "Radisson RED Campinas",
+    body: "Urban, Brazil, CALA, Social F&B\n\nCampinas, São Paulo state, Brazil\n\nUpscale select-service · CALA growth\n\nLounge RØD Grainne's · urban culture\n\nCampinas RED with Lounge RØD Grainne's and local F&B personality—illustrative CALA urban social hub under Choice-affiliated Radisson RED in Brazil.\n\nCALA urban RED requires flex F&B execution and design PIP aligned to brand playfulness—confirm Choice agreement scope and RHG ownership outside Americas.\n\nhttps://www.choicehotels.com/brazil/campinas/radisson-red-hotels/br157",
+    sort: 2,
+    caseSummaryOverview:
+      "Campinas, Brazil: CALA RED with lounge-led social F&B—press-kit imagery for Brazil urban lifestyle positioning.",
+    caseSummaryOwnerObjective:
+      "Reference for Brazilian urban conversion economics and RED flex F&B versus core Radisson full-service.",
+    caseSummaryBrandRelevance:
+      "CALA pipeline context alongside 4 open / 5 development Americas scale cited in press materials.",
+    caseSummaryInterpretation: "Brazil fees, labor, and FX differ from U.S. references—local counsel and comp set required.",
+    caseSummaryTags: "Brazil, CALA, Urban, Social F&B",
+  },
+  {
     title: "Radisson RED — Rosario, Argentina",
     body: "Urban, Argentina, CALA, Social F&B\n\nRosario, Santa Fe, Argentina\n\nUpscale select-service · urban social hub\n\nCALA urban · Lounge RØD personality\n\nRadisson RED listed on choicehotels.com in Rosario—CALA urban social-hotel pattern under Choice-affiliated distribution.\n\nhttps://www.choicehotels.com/argentina/rosario/radisson-red-hotels/aa024",
-    sort: 0,
+    sort: 3,
     caseSummaryOverview: "Rosario: Radisson RED property page on Choice CALA consumer paths.",
     caseSummaryOwnerObjective: "Benchmark CALA urban RED flex F&B and lobby activation economics.",
     caseSummaryBrandRelevance: "Real RED CALA listing—not a US-only reference card.",
@@ -238,8 +278,8 @@ CURATED_BY_PROFILE["Radisson RED  (Choice)"] = [
   },
   {
     title: "Radisson RED — Miraflores, Peru",
-    body: "Urban, Peru, CALA, Coastal business & leisure\n\nMiraflores, Lima, Peru\n\nUpscale select-service · Pacific urban\n\nLima metro CALA\n\nRED property in Miraflores corridor on choicehotels.com—Andean Pacific urban upscale select-service.\n\nhttps://www.choicehotels.com/peru/miraflores/radisson-red-hotels/pe012",
-    sort: 1,
+    body: "Urban, Peru, CALA, Coastal business & leisure\n\nMiraflores, Lima, Peru\n\nUpscale select-service · Pacific urban\n\nLima metro CALA\n\nRED property in Miraflores corridor on choicehotels.com—Andean Pacific urban upscale select-service named in Jul 2023 Choice integration press.\n\nhttps://www.choicehotels.com/peru/miraflores/radisson-red-hotels/pe012",
+    sort: 4,
     caseSummaryOverview: "Miraflores, Lima: Radisson RED on choicehotels.com in Peru.",
     caseSummaryOwnerObjective: "Andean metro upscale select-service CALA reference for RED conversions.",
     caseSummaryBrandRelevance: "Published RED CALA inventory for owner diligence.",
@@ -281,14 +321,58 @@ CURATED_BY_PROFILE["Radisson Individual (Choice)"] = [
 ];
 CURATED_BY_PROFILE["Country Inn & Suites by Radisson (Choice)"] = [
   {
-    title: "Country Inn & Suites — San José / Heredia, Costa Rica",
-    body: "Urban, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica\n\nUpper-midscale · breakfast-led\n\nCentral America hub\n\nCountry Inn property listed on choicehotels.com in Costa Rica—upper-midscale Radisson-family CALA footprint.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
+    title: "Country Inn & Suites by Radisson, San Jose Aeropuerto, Costa Rica",
+    body: "Airport, Costa Rica, CALA, Corporate transient\n\nSan José–Heredia corridor, Costa Rica (near Juan Santamaría International Airport)\n\nUpper-midscale · breakfast-led · Radisson family\n\nCentral America gateway · airport capture\n\nListed on choicehotels.com as Country Inn & Suites by Radisson, San Jose Aeropuerto—upper-midscale Radisson-family CALA footprint serving business and leisure travelers in Costa Rica's capital corridor.\n\nhttps://www.choicehotels.com/costa-rica/san-jose-heredia/country-hotels/cr022",
     sort: 0,
-    caseSummaryOverview: "Costa Rica: Country Inn & Suites by Radisson on Choice CALA paths.",
-    caseSummaryOwnerObjective: "Upper-midscale CALA breakfast-led economics under Radisson family flag.",
+    caseSummaryOverview: "Heredia corridor, Costa Rica: Country Inn & Suites by Radisson, San Jose Aeropuerto on Choice CALA consumer paths.",
+    caseSummaryOwnerObjective: "Shows how Country Inn anchors a CALA airport/corporate-transient node under Choice distribution.",
     caseSummaryBrandRelevance: "Real Country Inn CALA listing—not Comfort Inn comp placeholder.",
     caseSummaryInterpretation: "Validate Costa Rica authorization and Item 19 tables in disclosure.",
-    caseSummaryTags: "Costa Rica, CALA, Country Inn",
+    caseSummaryTags: "Costa Rica, CALA, Airport, Country Inn",
+  },
+];
+CURATED_BY_PROFILE["Ascend Hotel Collection"] = [
+  {
+    title: "Amberes 64 Ascend Hotel Collection — Mexico City",
+    body: "Urban boutique, Mexico, CALA, Conversion, Zona Rosa\n\nMexico City, Mexico (Zona Rosa)\n\nConversion · 64 suites · kitchenettes, restaurant, bar\n\nChoice Hotels CALA inaugurated Amberes Seis Cuatro in July 2024—boutique soft-collection conversion minutes from Ángel de la Independencia with gym, steam, and social spaces.\n\nhttps://www.choicehotels.com/mexico/mexico-city/ascend-hotels/mx228",
+    sort: 0,
+    caseSummaryOverview:
+      "Zona Rosa, Mexico City: Amberes 64 Ascend—inaugurated Jul 2024 per Choice Hotels CALA press; 64-suite boutique conversion on choicehotels.com.",
+    caseSummaryOwnerObjective:
+      "Independent boutique conversion with local F&B and design character under Ascend collection standards—not a rigid prototype.",
+    caseSummaryBrandRelevance: "Flagship CALA Ascend inauguration story—soft brand with kitchenette suites and urban social spaces.",
+    caseSummaryInterpretation: "Validate conversion PIP, Zona Rosa comp set, and fee stack locally—press is positioning, not audited results.",
+    caseSummaryTags: "Mexico, CALA, Mexico City, Boutique, Conversion, Zona Rosa",
+  },
+  {
+    title: "Grand Hotel Guayaquil Ascend Hotel Collection — Guayaquil",
+    body: "Historic, Ecuador, CALA, Urban full-service, Waterfront\n\nGuayaquil, Ecuador\n\nLandmark conversion · meetings and F&B\n\nWaterfront historic hotel operating as Ascend member—Ecuador gateway full-service character with Choice distribution.\n\nhttps://www.choicehotels.com/ecuador/guayaquil/ascend-hotels/ec002",
+    sort: 1,
+    caseSummaryOverview: "Guayaquil: Grand Hotel Guayaquil Ascend—historic waterfront member on choicehotels.com.",
+    caseSummaryOwnerObjective: "Landmark full-service identity with collection membership and loyalty retail.",
+    caseSummaryBrandRelevance: "CALA Ascend historic urban conversion—not Cambria or hard-brand prototype.",
+    caseSummaryInterpretation: "Heritage preservation and F&B complexity drive economics—model locally.",
+    caseSummaryTags: "Ecuador, CALA, Guayaquil, Historic, Full-service",
+  },
+  {
+    title: "Ascend Hotel Collection — Quito, Ecuador",
+    body: "Urban heritage, Ecuador, CALA, Capital gateway\n\nQuito, Ecuador\n\nSoft collection · Andean capital\n\nAscend member in Ecuador's capital—local character with Choice consumer distribution.\n\nhttps://www.choicehotels.com/ecuador/quito/ascend-hotels/ec001",
+    sort: 2,
+    caseSummaryOverview: "Quito: Ascend Hotel Collection member on Choice CALA consumer paths.",
+    caseSummaryOwnerObjective: "Capital gateway boutique or independent upscale with collection backing.",
+    caseSummaryBrandRelevance: "Ecuador Ascend inventory alongside Guayaquil landmark—CALA soft-collection depth.",
+    caseSummaryInterpretation: "Altitude-market seasonality and access patterns require local comps.",
+    caseSummaryTags: "Ecuador, CALA, Quito, Capital gateway",
+  },
+  {
+    title: "Ascend Hotel Collection — Juan Dolio Beach, Dominican Republic",
+    body: "Resort, Dominican Republic, CALA, Beach leisure\n\nJuan Dolio Beach, Dominican Republic\n\nSoft collection · beach resort\n\nCaribbean leisure Ascend listing—lifestyle resort character with Choice distribution.\n\nhttps://www.choicehotels.com/dominican-republic/juan-dolio-beach/ascend-hotels/do012",
+    sort: 3,
+    caseSummaryOverview: "Juan Dolio Beach: Ascend CALA resort property on choicehotels.com.",
+    caseSummaryOwnerObjective: "Beach leisure independent or conversion with collection flexibility versus hard-brand resort capex.",
+    caseSummaryBrandRelevance: "Caribbean Ascend leisure proof point—soft collection in resort markets.",
+    caseSummaryInterpretation: "Resort seasonality and amenity stack differ from urban boutique conversions.",
+    caseSummaryTags: "Dominican Republic, CALA, Beach, Resort, Leisure",
   },
 ];
 CURATED_BY_PROFILE["Radisson (Choice)"] = loadFixtureRows(
@@ -501,6 +585,14 @@ export function buildCalaOpeningsForProfile(profileName) {
     if (out.length >= MAX_OPENINGS) break;
     if (!urlMatchesBrandSlug(key, url)) continue;
     if (seenUrls.has(url)) continue;
+    const { city, country } = parseUrl(url);
+    const placeKey = `${city}|${country}`.toLowerCase();
+    if (out.some((card) => {
+      const u = extractUrlFromBody(card.body);
+      if (!u) return false;
+      const p = parseUrl(u);
+      return `${p.city}|${p.country}`.toLowerCase() === placeKey;
+    })) continue;
     seenUrls.add(url);
     out.push(cardFromUrl(url, key, out.length));
   }

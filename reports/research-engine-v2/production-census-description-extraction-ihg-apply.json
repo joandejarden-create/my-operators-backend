@@ -1,0 +1,190 @@
+{
+  "version": "production-census-description-extraction-v1",
+  "extractor_version": "production-census-description-extractor-v1",
+  "generated_at": "2026-08-05T18:29:04.255Z",
+  "mode": "apply",
+  "apply_executed": true,
+  "status": "production_census_ihg_descriptions_applied_ready_for_next_family",
+  "batch_name": "ihg_description_extraction_apply",
+  "family": "IHG",
+  "preflight": {
+    "census_record_count": 666,
+    "approved_ihg_proposals": 84,
+    "held_in_approved": 0,
+    "brand_unconfirmed_in_approved": 0,
+    "geocode_fields_planned": 0,
+    "forbidden_planned": []
+  },
+  "approved_from_dry_run": 84,
+  "rebuilt_for_apply": 84,
+  "updates_written": 84,
+  "airtable_errors": [],
+  "excluded_count": 0,
+  "excluded": [],
+  "source_methods": {
+    "json_ld_hotel_description": 18,
+    "official_page_amenities_factual_assembly": 5,
+    "html_paragraph": 61
+  },
+  "brands_updated": {
+    "Hotel Indigo": 5,
+    "Holiday Inn Express": 62,
+    "Kimpton": 4,
+    "voco": 8,
+    "avid hotels": 5
+  },
+  "fields_updated": [
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Last Reviewed Date"
+  ],
+  "examples": [
+    {
+      "record_id": "rec0pT…5MKA",
+      "identity_key": "ind_ihg_mx_tijgc",
+      "property_name": "Hotel Indigo Tijuana Downtown",
+      "brand": "Hotel Indigo",
+      "method": "json_ld_hotel_description",
+      "confidence": "High",
+      "source_url": "https://www.ihg.com/hotelindigo/hotels/us/en/tijuana/tijgc/hoteldetail",
+      "source_text_preview": "Discover comfort and luxury at our Downtown Tijuana hotel near Tijuana International Airport with premium rooms, an on-site restaurant, and complimentary Wi-Fi.",
+      "ai_summary_preview": "Discover comfort and luxury at our Downtown Tijuana hotel near Tijuana International Airport with premium rooms, an on-site restaurant, and complimentary Wi-Fi."
+    },
+    {
+      "record_id": "rec3Nc…LaeR",
+      "identity_key": "ind_ihg_mx_mexan",
+      "property_name": "Holiday Inn Express Mexico City - Toreo",
+      "brand": "Holiday Inn Express",
+      "method": "official_page_amenities_factual_assembly",
+      "confidence": "Medium",
+      "source_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/naucalpan/mexan/hoteldetail",
+      "source_text_preview": "Holiday Inn Express Mexico City - Toreo (official property page). Facilities listed: Fitness Center; Housekeeping; On-site Parking; Smoke-free Hotel; Wi-fi; Free breakfast; Breakfa",
+      "ai_summary_preview": "Holiday Inn Express Mexico City - Toreo (official property page). Facilities listed: Fitness Center; Housekeeping; On-site Parking; Smoke-free Hotel; Wi-fi; Free breakfast; Breakfa"
+    },
+    {
+      "record_id": "rec4HI…ZCbT",
+      "identity_key": "ind_ihg_mx_mexca",
+      "property_name": "Holiday Inn Express Mexico City Satelite",
+      "brand": "Holiday Inn Express",
+      "method": "html_paragraph",
+      "confidence": "Medium",
+      "source_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/mexico-city/mexca/hoteldetail",
+      "source_text_preview": "Holiday Inn Express México City Satelite offers complimentary buffet breakfast, complimentary high-speed internet, high standards of cleanliness and the necessary amenities to cont",
+      "ai_summary_preview": "Holiday Inn Express México City Satelite offers complimentary buffet breakfast, complimentary high-speed internet, high standards of cleanliness and the necessary amenities to cont"
+    },
+    {
+      "record_id": "rec4Tk…ggnD",
+      "identity_key": "ind_ihg_mx_cuugt",
+      "property_name": "Holiday Inn Express & Suites Chihuahua Juventud",
+      "brand": "Holiday Inn Express",
+      "method": "html_paragraph",
+      "confidence": "Medium",
+      "source_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/chihuahua/cuugt/hoteldetail",
+      "source_text_preview": "Located near a variety of shops and restaurants, the Holiday Inn Express and Suites ® Chihuahua Juventud hotel has everything you need to enjoy your days in this city. For those wh",
+      "ai_summary_preview": "Located near a variety of shops and restaurants, the Holiday Inn Express and Suites ® Chihuahua Juventud hotel has everything you need to enjoy your days in this city. For those wh"
+    },
+    {
+      "record_id": "rec5ip…jwck",
+      "identity_key": "ind_ihg_mx_sjdtd",
+      "property_name": "Kimpton Mas Olas Resort and Spa",
+      "brand": "Kimpton",
+      "method": "json_ld_hotel_description",
+      "confidence": "High",
+      "source_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/mas-olas-resort-spa-todos-santos/sjdtd/hoteldetail",
+      "source_text_preview": "Stay at Kimpton Mas Olas hotel in Todos Santos, featuring an outdoor pool, room service for an additional fee, and meeting rooms available for booking.",
+      "ai_summary_preview": "Stay at Kimpton Mas Olas hotel in Todos Santos, featuring an outdoor pool, room service for an additional fee, and meeting rooms available for booking."
+    }
+  ],
+  "geocode_lane": {
+    "count": 34,
+    "applied": false,
+    "blocked": true,
+    "note": "Provider/storage decision still required — no geocode writes in this batch"
+  },
+  "forbidden_fields_untouched": {
+    "fields": [
+      "Owner Name",
+      "Developer Name",
+      "Developer",
+      "Operator / Management Company",
+      "Rooms / Keys",
+      "Opening Date",
+      "Renovation / Conversion Date",
+      "Renovation Date",
+      "Affiliation Start Date",
+      "Company Validated",
+      "Brand Verified",
+      "Recent Momentum",
+      "Latitude",
+      "Longitude",
+      "Address Confidence",
+      "Coordinate Source Type",
+      "Geocode Provider",
+      "Geocode Method"
+    ],
+    "ok": true
+  },
+  "post_apply_validation": {
+    "record_count": 666,
+    "duplicate_identity_keys": 0,
+    "updates_attempted": 84,
+    "updates_written": 84,
+    "ihg_descriptions_filled_total": 84,
+    "approved_batch_filled": 84,
+    "coords_filled": 132,
+    "zero_zero": 0,
+    "held_public_eligible": 0,
+    "owner_filled": 0,
+    "operator_filled": 0,
+    "rooms_filled": 0,
+    "opening_filled": 0,
+    "renovation_filled": 0,
+    "affiliation_start_filled": 0,
+    "geocode_provider_still_blank_or_unchanged": true,
+    "airtable_errors": 0,
+    "pass": true
+  },
+  "next_step": "Next family description lane (Choice/Hilton/Marriott) after safe fetch strategy; or Mapbox Permanent for 34 geocodes.",
+  "brand_explorer_safety": {
+    "touched": false,
+    "writes": 0,
+    "gates": [
+      {
+        "label": "active_universe_sot",
+        "ok": true,
+        "exit_code": 0
+      },
+      {
+        "label": "global_active_semantic",
+        "ok": true,
+        "exit_code": 0,
+        "note": "Ready: global_active_semantic_audit_complete_review_freeze_decision"
+      },
+      {
+        "label": "pvql_quiet",
+        "ok": true,
+        "exit_code": 0,
+        "note": "overallPass=true publicFull=62"
+      },
+      {
+        "label": "momentum_evidence",
+        "ok": true,
+        "exit_code": 0
+      },
+      {
+        "label": "mandatory_release_gates",
+        "ok": true,
+        "exit_code": 0
+      }
+    ],
+    "all_pass": true
+  },
+  "learning_ledger_update": {
+    "entry_id": "census-ihg-description-extraction-apply",
+    "ledger_entries": 28,
+    "audit_status": "dealality_batch_learning_system_ready",
+    "process_actually_learned": true
+  }
+}

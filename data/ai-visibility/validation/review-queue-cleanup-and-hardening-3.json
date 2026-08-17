@@ -1,0 +1,263 @@
+{
+  "version": "ai_intelligence_review_queue_cleanup_and_hardening_3_v1",
+  "generatedAt": "2026-08-15T00:16:53.978Z",
+  "classifierVersion": "ai_visibility_recommendation_classifier_v3_2",
+  "reviewQueue": {
+    "ACTIVE": 0,
+    "COMPLETED": 318,
+    "INVALIDATED": 12,
+    "SUPERSEDED": 75,
+    "TOTAL_HISTORICAL": 405,
+    "DEFAULT_VIEW": "ACTIVE_REVIEW",
+    "ZERO_ACTIVE_COMPLETE_STATE": true
+  },
+  "HOLDOUT_ACCESSED": false,
+  "HOLDOUT_CASES_INSPECTED": 0,
+  "HOLDOUT_METRICS_RUN": false,
+  "LIVE_PROVIDER_CALLS": 0,
+  "NEW_MONITORING": 0,
+  "PUBLIC_CRAWL": 0,
+  "HOLDOUT_TUNING": 0,
+  "UNAUTHORIZED_GOLDEN_LABEL_CHANGES": 0,
+  "AIRTABLE_WRITES": 0,
+  "DEPLOYS": 0,
+  "recommendationBefore": {
+    "ACCURACY": 0.731,
+    "PRECISION": 0.731,
+    "RECALL": 0.731,
+    "F1": 0.731,
+    "FIRST_REC": 0.952,
+    "QUESTION_STATUS": 0.808
+  },
+  "recommendationAfter": {
+    "ACCURACY": 0.7448275862068966,
+    "PRECISION": 0.7448275862068966,
+    "RECALL": 0.7448275862068966,
+    "F1": 0.7448275862068966,
+    "FIRST_REC": 0.9517241379310345,
+    "QUESTION_STATUS": 0.7666666666666667
+  },
+  "entity": {
+    "PRECISION": 1,
+    "RECALL": 1,
+    "F1": 1,
+    "GATE": "PASS"
+  },
+  "classMetrics": {
+    "first_recommendation": {
+      "precision": 0.8909090909090909,
+      "recall": 0.8596491228070176,
+      "f1": 0.875,
+      "tp": 49,
+      "fp": 6,
+      "fn": 8
+    },
+    "ranked_recommendation": {
+      "precision": 0.7083333333333334,
+      "recall": 0.4146341463414634,
+      "f1": 0.523076923076923,
+      "tp": 17,
+      "fp": 7,
+      "fn": 24
+    },
+    "explicit_recommendation": {
+      "precision": 0.3076923076923077,
+      "recall": 0.8,
+      "f1": 0.4444444444444444,
+      "tp": 12,
+      "fp": 27,
+      "fn": 3
+    },
+    "associated_option": {
+      "precision": 0.6956521739130435,
+      "recall": 0.6274509803921569,
+      "f1": 0.6597938144329897,
+      "tp": 32,
+      "fp": 14,
+      "fn": 19
+    },
+    "comparator": {
+      "precision": 1,
+      "recall": 0.8571428571428571,
+      "f1": 0.923076923076923,
+      "tp": 6,
+      "fp": 0,
+      "fn": 1
+    },
+    "discussed": {
+      "precision": 0.8055555555555556,
+      "recall": 0.8207547169811321,
+      "f1": 0.8130841121495328,
+      "tp": 87,
+      "fp": 21,
+      "fn": 19
+    },
+    "passing_mention": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0
+    },
+    "negative_or_qualified": {
+      "precision": 1,
+      "recall": 0.8571428571428571,
+      "f1": 0.923076923076923,
+      "tp": 6,
+      "fp": 0,
+      "fn": 1
+    },
+    "source_only": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    }
+  },
+  "subgroups": {
+    "PROVIDER": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ACCURACY": 0.98
+      },
+      "claude": {
+        "CASE_COUNT": 67,
+        "ACCURACY": 0.6417910447761194
+      },
+      "gemini": {
+        "CASE_COUNT": 71,
+        "ACCURACY": 0.704225352112676
+      },
+      "perplexity": {
+        "CASE_COUNT": 64,
+        "ACCURACY": 0.765625
+      },
+      "openai": {
+        "CASE_COUNT": 38,
+        "ACCURACY": 0.631578947368421
+      }
+    },
+    "LANGUAGE": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ACCURACY": 0.98
+      },
+      "es": {
+        "CASE_COUNT": 118,
+        "ACCURACY": 0.7372881355932204
+      },
+      "en": {
+        "CASE_COUNT": 122,
+        "ACCURACY": 0.6475409836065574
+      }
+    },
+    "GEOGRAPHY": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ACCURACY": 0.98
+      },
+      "CALA": {
+        "CASE_COUNT": 80,
+        "ACCURACY": 0.7125
+      },
+      "MEXICO": {
+        "CASE_COUNT": 85,
+        "ACCURACY": 0.7294117647058823
+      },
+      "EUROPE": {
+        "CASE_COUNT": 21,
+        "ACCURACY": 0.5238095238095238
+      },
+      "GLOBAL": {
+        "CASE_COUNT": 30,
+        "ACCURACY": 0.6666666666666666
+      },
+      "NORTH_AMERICA": {
+        "CASE_COUNT": 24,
+        "ACCURACY": 0.6666666666666666
+      }
+    }
+  },
+  "remainingErrors": {
+    "TOTAL": 74,
+    "BY_CONFUSION_PAIR": [
+      {
+        "pattern": "ranked_recommendation => explicit_recommendation",
+        "count": 18
+      },
+      {
+        "pattern": "discussed => associated_option",
+        "count": 12
+      },
+      {
+        "pattern": "associated_option => discussed",
+        "count": 11
+      },
+      {
+        "pattern": "ranked_recommendation => discussed",
+        "count": 5
+      },
+      {
+        "pattern": "associated_option => ranked_recommendation",
+        "count": 4
+      },
+      {
+        "pattern": "discussed => explicit_recommendation",
+        "count": 4
+      },
+      {
+        "pattern": "discussed => ranked_recommendation",
+        "count": 3
+      },
+      {
+        "pattern": "associated_option => first_recommendation",
+        "count": 3
+      },
+      {
+        "pattern": "first_recommendation => explicit_recommendation",
+        "count": 3
+      },
+      {
+        "pattern": "first_recommendation => discussed",
+        "count": 3
+      },
+      {
+        "pattern": "first_recommendation => associated_option",
+        "count": 2
+      },
+      {
+        "pattern": "explicit_recommendation => first_recommendation",
+        "count": 2
+      },
+      {
+        "pattern": "explicit_recommendation => discussed",
+        "count": 1
+      },
+      {
+        "pattern": "comparator => explicit_recommendation",
+        "count": 1
+      },
+      {
+        "pattern": "ranked_recommendation => first_recommendation",
+        "count": 1
+      },
+      {
+        "pattern": "associated_option => explicit_recommendation",
+        "count": 1
+      }
+    ],
+    "MEXICO": 23,
+    "EUROPE": 10
+  },
+  "gates": {
+    "ENTITY_GATE": "PASS",
+    "RECOMMENDATION_GATE": "FAIL",
+    "FIRST_REC_GATE": "FAIL",
+    "QUESTION_STATUS_STATUS": 0.7666666666666667
+  },
+  "nextStep": "MORE_DEVELOPMENT_HARDENING_REQUIRED",
+  "status": "AI_INTELLIGENCE_REVIEW_QUEUE_CLEANUP_AND_HARDENING_3_REVIEW_REQUIRED"
+}

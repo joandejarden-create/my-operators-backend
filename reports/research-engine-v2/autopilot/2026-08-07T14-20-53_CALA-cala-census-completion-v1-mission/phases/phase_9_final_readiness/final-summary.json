@@ -1,0 +1,227 @@
+{
+  "version": "census-autopilot-production-cycle-v1",
+  "generated_at": "2026-08-07T14:51:52.786Z",
+  "status": "production_census_autopilot_production_cycle_complete",
+  "ok": true,
+  "run_id": "2026-08-07T14-20-53_CALA-cala-census-completion-v1-mission/phases/phase_9_final_readiness",
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T14-20-53_CALA-cala-census-completion-v1-mission\\phases\\phase_9_final_readiness",
+  "mode": "production-cycle",
+  "region": "CALA",
+  "scope": "official-parent-inventory",
+  "strategy": "fastest-safe",
+  "cleanup_existing_only": true,
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "vic_writes": false,
+  "per_bundle_chatgpt_approval": false,
+  "records_before": 1224,
+  "records_after": 1224,
+  "inserts_applied": 0,
+  "updates_applied": 0,
+  "fields_written": [],
+  "queues_executed": [
+    "clean_core_classification"
+  ],
+  "queues_exhausted": [
+    "clean_core_classification"
+  ],
+  "queues_blocked": [],
+  "steward_cases": 0,
+  "provider_decision_cases": 0,
+  "webhound_candidates": 0,
+  "runtime_ms": 50224,
+  "passes": [
+    {
+      "pass": 1,
+      "high_update_proposals": 0,
+      "updates_applied": 0,
+      "inserts_raw": 0,
+      "inserts_auto": 0,
+      "inserts_steward": 0,
+      "inserts_created": 0,
+      "queues_executed": [
+        "clean_core_classification"
+      ],
+      "queues_soft_deferred": [],
+      "marriott_counters": null,
+      "marriott_examples": null
+    }
+  ],
+  "safety_stops": [],
+  "target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam"
+  },
+  "next_recommended_action": "Continue official source lookup for Unknown/descriptor cities and blank Canonical; keep address/Mapbox paused.",
+  "clean_core_identity_repair_status": "production_census_clean_core_identity_repair_partial_source_lookup_remaining",
+  "clean_core_before": {
+    "total_records": 1224,
+    "clean_core": 1022,
+    "below_clean_core": 202,
+    "canonical_blank": 3,
+    "canonical_dirty": 0,
+    "canonical_conflict": 6,
+    "canonical_safe_autofill": 0,
+    "canonical_duplicate_risk": 170,
+    "unknown_city": 6,
+    "blank_city": 0,
+    "descriptor_city": 0,
+    "all_caps_city": 3,
+    "all_lowercase_city": 0,
+    "city_state_combined": 2,
+    "city_safe_normalization": 0,
+    "state_region_complete": 250,
+    "state_blank": 974,
+    "source_url_complete": 1224,
+    "source_url_missing": 0,
+    "human_review_required": 170,
+    "coordinate_blocked_dirty_identity": 17,
+    "by_class": {
+      "Clean Core": 1022,
+      "Needs Source Lookup": 5,
+      "Needs Steward Review": 27,
+      "Duplicate Risk": 170,
+      "Not Usable Yet": 0
+    },
+    "by_parent": {
+      "Hilton": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Accor": {
+        "below_clean_core": 40,
+        "unknown_city": 3,
+        "canonical_blank": 0
+      },
+      "Marriott International": {
+        "below_clean_core": 5,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "SLH": {
+        "below_clean_core": 30,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice Hotels International": {
+        "below_clean_core": 5,
+        "unknown_city": 3,
+        "canonical_blank": 3
+      },
+      "Wyndham Hotels & Resorts": {
+        "below_clean_core": 5,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "IHG": {
+        "below_clean_core": 8,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "RIU": {
+        "below_clean_core": 11,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Preferred Hotels & Resorts": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Be Live": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Bahía Príncipe": {
+        "below_clean_core": 12,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Hyatt": {
+        "below_clean_core": 22,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Catalonia": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Sirenis Hotels & Resorts": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Majestic Resorts": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Hard Rock Hotels": {
+        "below_clean_core": 2,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Barceló": {
+        "below_clean_core": 12,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Unknown": {
+        "below_clean_core": 14,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Excellence Resorts": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Meliá": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Hodelpa": {
+        "below_clean_core": 9,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Karisma Hotels": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Amhsa Marina Hotels": {
+        "below_clean_core": 2,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Lopesan": {
+        "below_clean_core": 2,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Blau Hotels": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "SuperClubs": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      }
+    }
+  },
+  "clean_core_after": null
+}

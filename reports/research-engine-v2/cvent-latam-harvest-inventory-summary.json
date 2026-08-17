@@ -1,0 +1,54 @@
+{
+  "version": "cvent-latam-harvest-inventory-summary-v1",
+  "generated_at": "2026-08-08T09:52:33.160Z",
+  "status": "dry_run_inventory_complete_no_airtable_writes",
+  "coverage_note": "Cvent is a meetings/event venue inventory — not a complete national hotel census.",
+  "probe": {
+    "countries_seeded": 49,
+    "viable_countries": 48,
+    "excluded": ["Cuba (no totalCount / empty)"],
+    "total_venues_reported_by_cvent": 14175
+  },
+  "inventory": {
+    "hotel_resort_boutique_urls_harvested": 13369,
+    "non_hotel_filtered_approx": 806,
+    "incomplete_countries": []
+  },
+  "sample_parse_dominican_republic": {
+    "parsed": 3,
+    "insert_proposals_census_only_hold": 3,
+    "examples": [
+      {
+        "title": "Paradisus Palma Real Resort - All Inclusive",
+        "guestRooms": 600,
+        "builtYear": 2005,
+        "renovatedYear": 2022,
+        "website": "melia.com"
+      },
+      {
+        "title": "Secrets Cap Cana Resort & Spa, Adults All-Inclusive",
+        "guestRooms": 457,
+        "builtYear": 2016
+      }
+    ]
+  },
+  "apply_gates": {
+    "default": "dry-run",
+    "updates": "ENABLE_CVENT_LATAM_UPDATES=1 + --apply --enable-production-writes + intake confirms",
+    "inserts": "ENABLE_CVENT_LATAM_INSERTS=1 + --apply --enable-production-writes + intake confirms",
+    "insert_mode": "Census Only / Not Owner-Facing + Human Review Required"
+  },
+  "commands": {
+    "probe": "npm run census:cvent-latam-harvest -- --probe-only",
+    "inventory": "npm run census:cvent-latam-harvest -- --inventory-only",
+    "sample_parse": "npm run census:cvent-latam-harvest -- --countries \"Dominican Republic\" --sample-per-country 3 --limit-venues 20",
+    "parse_all_match": "npm run census:cvent-latam-harvest -- --parse-all",
+    "test": "npm run test:census-cvent-latam-harvest"
+  },
+  "hard_rules": [
+    "Never write Opening Date / Renovation Date (Built/Renovated → Notes only)",
+    "Never map meeting rooms → Rooms / Keys",
+    "Never write Cvent lat/lng to Latitude/Longitude",
+    "Inserts are Census Only + Human Review Required"
+  ]
+}

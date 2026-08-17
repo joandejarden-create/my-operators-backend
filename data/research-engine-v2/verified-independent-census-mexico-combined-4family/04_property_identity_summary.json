@@ -1,0 +1,26 @@
+{
+  "property_identity_version": "property-identity-v1",
+  "total_combined_records": 666,
+  "unique_physical_by_family": {
+    "IHG": 195,
+    "Hilton": 102,
+    "Choice": 68,
+    "Marriott": 301
+  },
+  "marriott_unique_physical_clarification": "Marriott unique physical properties = 301 means source-unique / identity-safe staging count (unique MARSHA; campus annexes kept distinct). It is NOT a fully coordinate-verified physical count — all Marriott Wave 1D coords are Unknown (sitemap limitation).",
+  "duplicate_handling_by_family": {
+    "IHG": "Directory property-id dedupe within Wave 1A",
+    "Hilton": "ctyhocn / location-page identity within Wave 1B",
+    "Choice": "Property Identity V1 + regional/sitemap union",
+    "Marriott": "MARSHA dedupe in sitemap; Property Identity V1; Number(null)===0 coords guard applied"
+  },
+  "cross_family_auto_merges": 0,
+  "rejected_fuzzy_matches": 6,
+  "campus_sibling_high_sim_kept_distinct": 9,
+  "marriott_coordinate_limitation": "All 301 Marriott records missing coordinates — Unknown preserved; never 0,0",
+  "number_null_equals_zero_issue": {
+    "fixed": true,
+    "guarded_in": "lib/research-engine-v2/clean-census/property-identity.js",
+    "note": "Missing latitude/longitude no longer coerce via Number(null)===0"
+  }
+}

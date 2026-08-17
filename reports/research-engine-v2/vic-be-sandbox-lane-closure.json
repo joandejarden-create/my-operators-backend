@@ -1,0 +1,154 @@
+{
+  "status": "vic_be_sandbox_lane_paused_ready_for_operator_explorer",
+  "generated_at": "2026-08-05T07:55:35.962Z",
+  "decision": "pause_vic_be_sandbox_expansion_return_to_operator_explorer",
+  "founder_review_input": "medium_sandbox_founder_review_approved_pause_vic_lane",
+  "production_patch": {
+    "recommended": false,
+    "allowed": false,
+    "note": "Do not run production patch unless separately requested."
+  },
+  "baselines": {
+    "brand_explorer_62": {
+      "decision": "frozen_62_active_public_full_baseline_semantic_clean_flex_held",
+      "active_universe": 62,
+      "semantic_c_h_m": "0/0/0",
+      "artifacts": [
+        "reports/brand-explorer-62-active-public-full-baseline.json",
+        "reports/brand-explorer-62-active-public-full-baseline.md",
+        "docs/data-intelligence/brand-explorer-62-active-public-full-baseline.md",
+        "lib/partner-intelligence/brand-explorer-62-active-public-full-baseline.js"
+      ],
+      "mutated_by_this_lane": false
+    },
+    "vic_4family_mexico": {
+      "status": "mexico_vic_4family_baseline_locked_staging_ready",
+      "freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+      "path": "data/research-engine-v2/verified-independent-census-mexico-combined-4family/",
+      "mutated_by_this_lane": false
+    }
+  },
+  "sandbox": {
+    "base_name": "Deal Capture MVP — Sandbox",
+    "base_id_masked": "appRbW…2ch1",
+    "keep_for_future_staging": true,
+    "env_required": [
+      "AIRTABLE_ENV=sandbox",
+      "AIRTABLE_BASE_ID_SANDBOX=<sandbox_base_id>",
+      "BE_PILOT_SANDBOX_CONFIRMED=1"
+    ],
+    "token_note": "Prefer AIRTABLE_PAT (or AIRTABLE_SANDBOX_API_KEY) when AIRTABLE_API_KEY is production-only",
+    "small_pilot": {
+      "slot_prefix": "vic.pilot.",
+      "exact_slots": [
+        "vic.pilot.property_examples",
+        "vic.pilot.geographic_footprint_mexico",
+        "vic.pilot.portfolio_context",
+        "vic.pilot.owner_facing_copy"
+      ],
+      "rows": 16,
+      "brands": [
+        "hotel-indigo",
+        "ascend",
+        "curio-collection",
+        "holiday-inn-express"
+      ],
+      "properties": 10,
+      "review_status": "vic_be_small_pilot_sandbox_review_approved_continue_expanded_sandbox"
+    },
+    "medium_pilot": {
+      "slot_prefix": "vic.pilot.medium.",
+      "rows": 28,
+      "brands": [
+        "hotel-indigo",
+        "ascend",
+        "curio-collection",
+        "holiday-inn-express",
+        "voco-hotels",
+        "kimpton",
+        "avid-hotels"
+      ],
+      "properties": 25,
+      "review_status": "medium_sandbox_founder_review_approved_pause_vic_lane",
+      "copy_rejects": 0,
+      "rulings": "PASS"
+    },
+    "fields_written_in_sandbox_only": [
+      "Title",
+      "Body",
+      "Slot Key",
+      "Brand"
+    ]
+  },
+  "proven": [
+    "Sandbox isolation with dedicated base + env guardrails",
+    "VIC freeze-hash lineage into owner-facing Presentation copy",
+    "Property examples + Mexico/CALA footprint + portfolio context + property-proof framing",
+    "Steward rulings for El Cid soft-brand, Amberes proof-only, MS Milenium San Pedro Garza García",
+    "Small and medium pilots coexist without overwrite (vic.pilot.* vs vic.pilot.medium.*)",
+    "No Brand Status / release / CV / Brand Verified / Recent Momentum mutations from VIC pilots",
+    "Production Active 62 + semantic C/H/M 0/0/0 remained clean after sandbox writes"
+  ],
+  "unproven": [
+    "Production Brand Explorer Presentation apply of VIC-derived copy",
+    "Scaled multi-country VIC → BE automation beyond Mexico 4-family sandbox",
+    "Automatic mapping of every medium/large candidate brand without steward review",
+    "Image / gallery enrichment from VIC",
+    "Recent Momentum generation from VIC (intentionally forbidden)",
+    "Owner / operator / rooms / open-date / affiliation-start enrichment from VIC (intentionally forbidden)"
+  ],
+  "vic_allowed_uses": [
+    "property examples",
+    "Mexico / CALA footprint support",
+    "portfolio context",
+    "property proof"
+  ],
+  "vic_forbidden_auto_writes": [
+    "Recent Momentum from property existence",
+    "owner",
+    "operator",
+    "rooms",
+    "opening date",
+    "affiliation start date",
+    "Company Validated",
+    "Brand Verified",
+    "Brand Status",
+    "release fields"
+  ],
+  "key_commands": {
+    "validate_sandbox": "npm run research-engine-v2:validate-airtable-sandbox",
+    "small_pilot_review": "npm run research-engine-v2:mexico-vic-be-small-pilot-sandbox-review",
+    "medium_pilot_execute": "npm run research-engine-v2:mexico-vic-be-expanded-sandbox-pilot -- --execute",
+    "medium_founder_review": "npm run research-engine-v2:mexico-vic-be-medium-sandbox-founder-review"
+  },
+  "key_artifacts": {
+    "small_pilot_review": "reports/research-engine-v2/mexico-vic-be-small-pilot-sandbox-review.json",
+    "medium_pilot_execution": "reports/research-engine-v2/mexico-vic-be-expanded-sandbox-pilot.json",
+    "medium_founder_review": "reports/research-engine-v2/mexico-vic-be-medium-sandbox-founder-review.json",
+    "candidates": "reports/research-engine-v2/mexico-vic-brand-explorer-completion-pilot-candidates.json"
+  },
+  "resume_instructions": [
+    "Re-read this closure packet and medium founder review",
+    "Confirm frozen 62 still clean (SoT / semantic / gates as needed)",
+    "Confirm VIC freeze hash still c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3 unless a new VIC freeze is explicitly approved",
+    "npm run research-engine-v2:validate-airtable-sandbox must return airtable_sandbox_validated_ready_for_vic_be_patch",
+    "Do not overwrite existing vic.pilot.* / vic.pilot.medium.* without explicit replace mode",
+    "Production patch requires a separate explicit task — not implied by this pause"
+  ],
+  "next_priority": {
+    "lane": "Operator Explorer",
+    "checklist": "docs/data-intelligence/operator-explorer-ready-for-next-operator.md",
+    "queue_head_note": "When npm run operator-explorer-os -- --dry-run reports canStartNextOperatorExplorer=true — see AGENTS.md (GHL Hoteles / factory queue)",
+    "gates": [
+      "npm run test:operator-explorer-os",
+      "npm run operator-explorer-os -- --source=merged --dry-run"
+    ]
+  },
+  "constraints": {
+    "airtable_writes_this_closure": false,
+    "sandbox_rows_mutated": false,
+    "frozen_62_mutated": false,
+    "frozen_vic_mutated": false,
+    "webhound_used": false
+  }
+}

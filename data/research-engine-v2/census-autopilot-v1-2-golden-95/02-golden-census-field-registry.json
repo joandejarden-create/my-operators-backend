@@ -1,0 +1,756 @@
+{
+  "version": "census-autopilot-v1.2-golden-schema",
+  "fields": [
+    {
+      "field": "Property Name",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Current Brand",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Brand Family",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": "Parent company / family (IHG, Hilton, Choice)"
+    },
+    {
+      "field": "Official Property ID",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": "Applicable when brand directory issues property codes"
+    },
+    {
+      "field": "Official Property URL",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Address",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "City",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "State / Region",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Country",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Continent",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": "Dealality: Americas for Mexico/CALA"
+    },
+    {
+      "field": "Sub-Continent",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": "Mexico → North America (Dealality CALA subdivision)"
+    },
+    {
+      "field": "Market",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": "Dealality commercial market — not STR"
+    },
+    {
+      "field": "Submarket",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": "Dealality corridor — not STR"
+    },
+    {
+      "field": "Postal Code",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Latitude",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Longitude",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Phone",
+      "group": "G1_Identity_Geography",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Rooms / Keys",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Suites",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": "N/A when source ecosystem does not disclose suite counts"
+    },
+    {
+      "field": "Floors",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Property Type",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Asset Context",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Resort / Urban",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Boutique Flag",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "All-Suite Flag",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Mixed-Use Flag",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Branded Residences Flag",
+      "group": "G2_Physical_Profile",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Amenities - Source Text",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Amenities - Structured Tags",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Pool",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": "Yes | Unknown — never infer No from absence; OPTIONAL for Priority denominator (Source Text + Tags are REQUIRED)"
+    },
+    {
+      "field": "Spa",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Fitness",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Golf",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Beach / Beachfront",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Beach Club",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Casino",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Kids Club",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Club Lounge",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "All-Inclusive",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": "Researched when coastal/AI-brand; OPTIONAL for Priority denominator — Unknown must not fail select-service coastal hotels"
+    },
+    {
+      "field": "Parking",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Airport Shuttle",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Ski",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": "N/A for most Mexico coastal/urban properties"
+    },
+    {
+      "field": "Residences Amenity",
+      "group": "G3_Amenities",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Restaurant Count",
+      "group": "G4_FB",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": "Only when defensible count exists"
+    },
+    {
+      "field": "Restaurant Names",
+      "group": "G4_FB",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Bars / Lounges",
+      "group": "G4_FB",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Rooftop F&B",
+      "group": "G4_FB",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Signature / Third-Party Restaurant",
+      "group": "G4_FB",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Room Service",
+      "group": "G4_FB",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "F&B Flag",
+      "group": "G4_FB",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Meeting / Event Space",
+      "group": "G5_Meetings",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Total Meeting Space",
+      "group": "G5_Meetings",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Largest Meeting Room / Ballroom",
+      "group": "G5_Meetings",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Number of Meeting Rooms",
+      "group": "G5_Meetings",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": "Never map to Rooms / Keys"
+    },
+    {
+      "field": "Ballroom",
+      "group": "G5_Meetings",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Convention Hotel",
+      "group": "G5_Meetings",
+      "track": "PRIORITY",
+      "applicability": "OPTIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Dealality Segment / Positioning",
+      "group": "G6_Dealality_Classification",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": "Derived Dealality taxonomy — not STR Chain Scale"
+    },
+    {
+      "field": "Hotel Description - Source Text",
+      "group": "G7_Content",
+      "track": "PRIORITY",
+      "applicability": "REQUIRED",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": true,
+      "notes": ""
+    },
+    {
+      "field": "Hotel Description - AI Summary",
+      "group": "G7_Content",
+      "track": "PRIORITY",
+      "applicability": "CONDITIONAL",
+      "weight_band": "LOW",
+      "weight": 1,
+      "counts_toward_priority": true,
+      "notes": "Dealality-original from verified facts — conditional until source text exists"
+    },
+    {
+      "field": "Hero Image",
+      "group": "Image",
+      "track": "IMAGE",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Image Rights Status",
+      "group": "Image",
+      "track": "IMAGE",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Affiliation Status",
+      "group": "Lifecycle",
+      "track": "LIFECYCLE",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Opening Date",
+      "group": "Lifecycle",
+      "track": "LIFECYCLE",
+      "applicability": "OPTIONAL",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Expected Opening Date",
+      "group": "Lifecycle",
+      "track": "LIFECYCLE",
+      "applicability": "CONDITIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Renovation Date",
+      "group": "Lifecycle",
+      "track": "LIFECYCLE",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Conversion / Reflag Date",
+      "group": "Lifecycle",
+      "track": "LIFECYCLE",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Owner Name",
+      "group": "Ownership_Operation",
+      "track": "OWNERSHIP_OPERATION",
+      "applicability": "OPTIONAL",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Developer Name",
+      "group": "Ownership_Operation",
+      "track": "OWNERSHIP_OPERATION",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Operator / Management Company",
+      "group": "Ownership_Operation",
+      "track": "OWNERSHIP_OPERATION",
+      "applicability": "OPTIONAL",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Operation Type",
+      "group": "Ownership_Operation",
+      "track": "OWNERSHIP_OPERATION",
+      "applicability": "OPTIONAL",
+      "weight_band": "MEDIUM",
+      "weight": 2,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Source URL",
+      "group": "Governance",
+      "track": "GOVERNANCE",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Source Type",
+      "group": "Governance",
+      "track": "GOVERNANCE",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Data Confidence Tier",
+      "group": "Governance",
+      "track": "GOVERNANCE",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Production Use Status",
+      "group": "Governance",
+      "track": "GOVERNANCE",
+      "applicability": "REQUIRED",
+      "weight_band": "CRITICAL",
+      "weight": 4,
+      "counts_toward_priority": false,
+      "notes": ""
+    },
+    {
+      "field": "Last Verified",
+      "group": "Governance",
+      "track": "GOVERNANCE",
+      "applicability": "REQUIRED",
+      "weight_band": "HIGH",
+      "weight": 3,
+      "counts_toward_priority": false,
+      "notes": ""
+    }
+  ],
+  "priority_field_count": 59
+}

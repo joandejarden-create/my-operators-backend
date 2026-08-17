@@ -1,0 +1,171 @@
+{
+  "status": "FDD_WEBHOUND_POC_COMPLETE",
+  "readyForFounderReview": "FDD_WEBHOUND_POC_READY_FOR_FOUNDER_REVIEW",
+  "generatedAt": "2026-08-11T20:20:00.000Z",
+  "safety": {
+    "airtableWrites": false,
+    "productionChanges": false,
+    "fddFilesMovedOrDeleted": false,
+    "outputsOnlyUnder": ["reports/fdd-intelligence/", "data/fdd-test/"]
+  },
+  "executiveConclusion": "Proceed hybrid: Webhound for public franchisor PDF discovery/verification + assisted extraction; Dealality owns download/SHA256/registry/deterministic parse. Not sole discovery for IHG/Choice.",
+  "maturity": {
+    "existingFddSystem": 55,
+    "webhoundSuitabilityAsSidecar": 68,
+    "fiveBrandAverageScore": 21.8,
+    "classification": "FEASIBLE_BUT_REQUIRES_PIPELINE_WORK"
+  },
+  "webhoundSessions": {
+    "discovery": {
+      "session_id": "de3d5b36-7efa-4c9f-868a-827ac5d6178e",
+      "cost_usd": 2.436696,
+      "budget_usd": 8,
+      "rows": 5
+    },
+    "extraction": {
+      "session_id": "8c2c6570-4842-4e8e-834b-3fa66a4ca830",
+      "cost_usd": 2.263038,
+      "budget_usd": 5,
+      "rows": 2
+    },
+    "total_poc_cost_usd": 4.699734
+  },
+  "brandScores": [
+    {
+      "brand": "Curio Collection by Hilton",
+      "scores": {
+        "documentDiscovery": 5,
+        "correctIdentification": 5,
+        "directPdfAccess": 5,
+        "downloadSuccess": 5,
+        "metadataQuality": 4,
+        "existingParserReuse": 5,
+        "webhoundExtractionQuality": 5,
+        "sourceProvenance": 5
+      },
+      "total": 39,
+      "class": "VERY_EASY_TO_SCALE"
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "scores": {
+        "documentDiscovery": 3,
+        "correctIdentification": 5,
+        "directPdfAccess": 4,
+        "downloadSuccess": 5,
+        "metadataQuality": 4,
+        "existingParserReuse": 2,
+        "webhoundExtractionQuality": 4,
+        "sourceProvenance": 4
+      },
+      "total": 31,
+      "class": "FEASIBLE_WITH_MODEST_WORK",
+      "note": "Public PDF is 2022; Dealality Drive already has 2026"
+    },
+    {
+      "brand": "Kimpton Hotels & Restaurants",
+      "scores": {
+        "documentDiscovery": 3,
+        "correctIdentification": 4,
+        "directPdfAccess": 1,
+        "downloadSuccess": 0,
+        "metadataQuality": 3,
+        "existingParserReuse": 0,
+        "webhoundExtractionQuality": 0,
+        "sourceProvenance": 2
+      },
+      "total": 13,
+      "class": "HIGH_FRICTION",
+      "note": "Missed MN CARDS direct URL; Dealality harvest already has it"
+    },
+    {
+      "brand": "Radisson",
+      "scores": {
+        "documentDiscovery": 3,
+        "correctIdentification": 4,
+        "directPdfAccess": 1,
+        "downloadSuccess": 0,
+        "metadataQuality": 3,
+        "existingParserReuse": 0,
+        "webhoundExtractionQuality": 0,
+        "sourceProvenance": 2
+      },
+      "total": 13,
+      "class": "HIGH_FRICTION"
+    },
+    {
+      "brand": "Hotel Indigo",
+      "scores": {
+        "documentDiscovery": 3,
+        "correctIdentification": 4,
+        "directPdfAccess": 1,
+        "downloadSuccess": 0,
+        "metadataQuality": 3,
+        "existingParserReuse": 0,
+        "webhoundExtractionQuality": 0,
+        "sourceProvenance": 2
+      },
+      "total": 13,
+      "class": "HIGH_FRICTION",
+      "note": "Missed MN CARDS direct URL; Dealality harvest already has it"
+    }
+  ],
+  "downloads": {
+    "successful": ["Curio Collection by Hilton", "Tribute Portfolio"],
+    "failedNoDirectUrl": ["Kimpton Hotels & Restaurants", "Radisson", "Hotel Indigo"]
+  },
+  "curioValidation": {
+    "principalTest": "PASS",
+    "fieldsMatched": [
+      "royaltyRoomPct",
+      "programFeePct",
+      "applicationFeeNewDevBase",
+      "totalInvestmentMin",
+      "totalInvestmentMax",
+      "termNewDevelopmentYears",
+      "honorsEligibleFolioPct"
+    ]
+  },
+  "existingCodeReusePct": 45,
+  "mvpEffortWeeks": { "low": 8, "high": 12 },
+  "costEstimatesUsd": {
+    "pocActual": 4.7,
+    "perDirectPdfDiscoveryApprox": 1.22,
+    "perExtractionApprox": 1.13,
+    "library25": { "webhoundLow": 40, "webhoundHigh": 120 },
+    "library75": { "webhoundLow": 120, "webhoundHigh": 400 },
+    "library150": { "webhoundLow": 250, "webhoundHigh": 800 },
+    "library150x3Years": { "webhoundLow": 500, "webhoundHigh": 1500 },
+    "notes": "Engineering dominates; Webhound assist only. Do not invent finer costs."
+  },
+  "answers": {
+    "A_howMuchExists": "About 55% — strong library and partial parsers; weak registry/generalization",
+    "B_webhoundReliableDiscovery": "Sometimes — excellent for franchisor-public PDFs; weak for IHG/Choice direct public PDFs in this test",
+    "C_canDownloadRetain": true,
+    "D_existingParsersUseful": "Yes for Curio/Kimpton/Choice; not yet for Tribute/Indigo",
+    "E_webhoundVsHandBuilt": "Complementary — better open franchisor discovery; worse than Dealality MN harvest for IHG PDFs this run",
+    "F_hardness": "Moderate — 8-12 weeks hybrid MVP",
+    "G_cost": "PoC ~$5; MVP API low hundreds; engineering is main cost",
+    "H_shouldProceed": true,
+    "proceedMode": "hybrid"
+  },
+  "nextStep": "Build data/fdd-library registry MVP indexing Drive + PoC downloads with SHA256/provenance; hybrid discoverer (Webhound URL intake + MN CARDS adapter); Curio-style validation gate before any Airtable apply",
+  "keepGeneralizeRetire": {
+    "KEEP": [
+      "decode-fdd-plain-text",
+      "extract-pdf-text.py",
+      "MN CARDS harvest",
+      "Choice Item6/17/19",
+      "Brand Setup apply scripts",
+      "Financial Term Library (separate)"
+    ],
+    "GENERALIZE": [
+      "Curio/Kimpton parser skeletons",
+      "portal harvest adapters",
+      "fee Min/Max/Basis mapping"
+    ],
+    "RETIRE_AS_AUTHORITY": [
+      "Franchimp/FranCloud as authoritative FDD source"
+    ]
+  }
+}

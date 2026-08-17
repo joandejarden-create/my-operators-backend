@@ -1,0 +1,138 @@
+{
+  "version": "webhound-coordinate-learning-sidecar-closed-v1",
+  "generated_at": "2026-08-05T14:15:00.000Z",
+  "final_status": "production_census_coordinate_resolver_needs_code_improvement",
+  "summary": {
+    "webhound_lifecycle": "already_complete",
+    "stopped_or_capped": "budget_complete_capped_no_new_searches",
+    "session_id": "bbaa85f9-3d19-4b05-a53c-4bc4e44fde02",
+    "session_url": "https://webhound.ai/session/bbaa85f9-3d19-4b05-a53c-4bc4e44fde02",
+    "session_title": "Marriott Mexico hotel page coordinate extraction patterns",
+    "budget_usd": 4.86,
+    "final_spend_usd": 4.8906079999999985,
+    "budget_exceeded_warning": true,
+    "page_visits": 29,
+    "searches": 19,
+    "operations": 148,
+    "records_inspected_note": "Pattern research only — not a full Census sweep. ~29 page visits across Marriott Mexico sitemap/overview/search docs; not 666 Census records.",
+    "census_records_processed_by_webhound": 0,
+    "production_writes_from_webhound": 0,
+    "airtable_writes_from_webhound": 0,
+    "coordinates_applied_from_webhound": 0,
+    "new_webhound_searches_started_this_task": 0,
+    "broad_full_census_webhound_path": false
+  },
+  "hard_rules_honored": [
+    "Do not use Webhound to process all 666 records",
+    "Do not continue broad Webhound coordinate research",
+    "Do not write Airtable from Webhound results",
+    "Do not apply new coordinates from Webhound output",
+    "Do not patch Brand Explorer",
+    "Do not write owner/operator/developer/rooms/dates",
+    "Do not fabricate coordinates / city centroids / 0,0"
+  ],
+  "code_patterns_converted": [
+    {
+      "family": "Marriott",
+      "rule": "mexico_sitemap_marsha_then_hqv_graphql",
+      "module": "lib/research-engine-v2/marriott-hqv-coordinate-client.js",
+      "reproducible_without_webhound": true,
+      "becomes_crawler_rule": true,
+      "steward_until": "MARRIOTT_GRAPHQL_OPERATION_SIGNATURE harvest + Akamai-safe fetch"
+    },
+    {
+      "family": "Marriott",
+      "rule": "overview_html_usually_negative_for_coords",
+      "module": "lib/research-engine-v2/production-census-coordinate-extractor.js",
+      "reproducible_without_webhound": true,
+      "becomes_crawler_rule": true,
+      "note": "Keep JSON-LD/meta/map probes as fast fail; do not deep-parse overview HTML first"
+    },
+    {
+      "family": "Hilton|Choice|IHG",
+      "rule": "html_json_ld_family_payload_extractors",
+      "module": "lib/research-engine-v2/production-census-coordinate-extractor.js",
+      "reproducible_without_webhound": true,
+      "becomes_crawler_rule": true,
+      "learning_source": "first-pass VIC freeze + existing directory patterns (not Webhound)"
+    }
+  ],
+  "sampled_property_learnings": [
+    {
+      "property_name": "Marriott Cancun, An All-Inclusive Resort",
+      "brand": "Marriott Hotels",
+      "source_family": "Marriott",
+      "existing_source_url": "https://www.marriott.com/en-us/hotels/cunmx-marriott-cancun-an-all-inclusive-resort/overview/",
+      "official_property_page_found": true,
+      "official_address_found": false,
+      "coordinates_found": false,
+      "source_pattern_discovered": "MARSHA CUNMX from /hotels/{marsha}-{slug}/overview/; coords via GraphQL HQV basicInformation, not overview HTML",
+      "page_structure_discovered": "Overview: no JSON-LD, no __NEXT_DATA__, no geo meta, no map iframe. Sitemap + HQV GraphQL are viable.",
+      "extraction_method_suggested": "extractMarshaCode → phoenixShopHQVPropertyInfoCall → data.property.basicInformation.latitude/longitude",
+      "confidence": "High (pattern); Medium until HQV succeeds in production env",
+      "code_can_reproduce_without_webhound": true,
+      "become_crawler_extractor_rule": true,
+      "stay_steward_manual_review": "Only if HQV/Akamai blocked or signature missing"
+    },
+    {
+      "property_name": "JW Marriott Hotel Mexico City Polanco",
+      "brand": "JW Marriott",
+      "source_family": "Marriott",
+      "existing_source_url": "https://www.marriott.com/en-us/hotels/mexjw-jw-marriott-hotel-mexico-city-polanco/overview/",
+      "official_property_page_found": true,
+      "official_address_found": false,
+      "coordinates_found": false,
+      "source_pattern_discovered": "Same Marriott Mexico overview-negative + MARSHA MEXJW + HQV path",
+      "page_structure_discovered": "Identical negative HTML pattern to CUNMX overview",
+      "extraction_method_suggested": "MARSHA MEXJW → HQV GraphQL",
+      "confidence": "High (pattern)",
+      "code_can_reproduce_without_webhound": true,
+      "become_crawler_extractor_rule": true,
+      "stay_steward_manual_review": "If Akamai blocks Node fetch"
+    },
+    {
+      "property_name": "Mexico hotel sitemap (directory seed)",
+      "brand": "Marriott Bonvoy (directory)",
+      "source_family": "Marriott",
+      "existing_source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+      "official_property_page_found": true,
+      "official_address_found": false,
+      "coordinates_found": false,
+      "source_pattern_discovered": "Static HTML enumeration of property URLs; regex /hotels/([A-Z0-9]{5})-",
+      "page_structure_discovered": "Sitemap lists overview URLs with embedded MARSHA codes (CUNMX, MEXJW, CUNJW, MEXXR, MEXMC observed)",
+      "extraction_method_suggested": "Stage-1 seed for Stage-2 HQV enrichment",
+      "confidence": "High",
+      "code_can_reproduce_without_webhound": true,
+      "become_crawler_extractor_rule": true,
+      "stay_steward_manual_review": false
+    },
+    {
+      "property_name": "Cancun InCity search bootstrap",
+      "brand": "Marriott Bonvoy (search)",
+      "source_family": "Marriott",
+      "existing_source_url": "https://www.marriott.com/search/findHotels.mi?searchType=InCity&destinationAddress.destination=Cancun,%20Mexico",
+      "official_property_page_found": false,
+      "official_address_found": false,
+      "coordinates_found": "Via GraphQL batch when browser/XHR available (phoenixShopDatedSearchByDestinationQuery)",
+      "source_pattern_discovered": "__NEXT_DATA__.props.pageProps.operationSignatures[] for safelist signature harvest; robots.txt disallows /search/",
+      "page_structure_discovered": "JS-rendered search; not a production HTML scrape target",
+      "extraction_method_suggested": "One-time signature harvest only; prefer per-property HQV for Census",
+      "confidence": "Medium (bootstrap only)",
+      "code_can_reproduce_without_webhound": true,
+      "become_crawler_extractor_rule": "Signature harvest helper only — not full-census search scrapes",
+      "stay_steward_manual_review": "Operational: browser/XHR + robots/Akamai constraints"
+    }
+  ],
+  "anti_patterns": [
+    "Do not deep-parse Marriott Mexico overview HTML expecting JSON-LD / map embeds",
+    "Do not treat /map/ or /location/ Marriott suffixes as coordinate pages",
+    "Do not geocode city-only / brand-only / country-only",
+    "Do not use Webhound as production coordinate writer",
+    "Do not over-dedupe shared campuses (SJDJW/SJDJC etc.) — mark co-located"
+  ],
+  "brand_explorer_safety": {
+    "touched": false,
+    "writes": 0,
+    "note": "Webhound closed as learning sidecar only; Brand Explorer untouched"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-08-11T22:06:24.012Z",
+  "realCsvFoundInWorkspace": false,
+  "note": "No real LinkedIn Connections.csv found on disk. Use /internal/acquisition-intelligence.html while signed in as admin to preview/import Joan's export. Do not commit the file.",
+  "checks": [
+    {
+      "name": "metadata_header_detection",
+      "ok": true,
+      "detail": "headerRowIndex=3"
+    },
+    {
+      "name": "preferred_columns",
+      "ok": true,
+      "detail": "URL,Email Address,Company,Position,Connected On"
+    },
+    {
+      "name": "preview_stats",
+      "ok": true,
+      "detail": "detected=8 dups=1 invalid=1"
+    },
+    {
+      "name": "import_plan",
+      "ok": true,
+      "detail": "{\"createContacts\":8,\"updateContacts\":0,\"createRelationships\":8,\"updateRelationships\":0,\"skipped\":0,\"invalid\":0}"
+    },
+    {
+      "name": "reimport_parse",
+      "ok": true,
+      "detail": "rows=2"
+    },
+    {
+      "name": "synthetic_classification_relevant",
+      "ok": true,
+      "detail": "3/8 relevant on synthetic fixture"
+    },
+    {
+      "name": "review_sample",
+      "ok": true,
+      "detail": "direct=8 connector=8"
+    }
+  ],
+  "syntheticPreview": {
+    "fileName": "Connections.csv",
+    "metadataRowsBeforeHeader": 3,
+    "connectionsDetected": 8,
+    "rawDataRows": 9,
+    "recordsWithCompany": 7,
+    "recordsWithPosition": 7,
+    "recordsWithLinkedInUrl": 6,
+    "recordsWithEmail": 2,
+    "earliestConnection": "2016-05-05",
+    "latestConnection": "2021-06-12",
+    "potentialDuplicates": 1,
+    "invalidRows": 1,
+    "malformedConnectedOn": 1,
+    "nameCollisionsWithoutLinkedIn": 2
+  },
+  "importPlanSummary": {
+    "createContacts": 8,
+    "updateContacts": 0,
+    "createRelationships": 8,
+    "updateRelationships": 0,
+    "skipped": 0,
+    "invalid": 0
+  },
+  "classificationRelevantCount": 3,
+  "apiReady": {
+    "preview": "POST /api/acquisition-intelligence/connections/preview",
+    "import": "POST /api/acquisition-intelligence/connections/import",
+    "classify": "POST /api/acquisition-intelligence/classify",
+    "ui": "/internal/acquisition-intelligence.html"
+  }
+}

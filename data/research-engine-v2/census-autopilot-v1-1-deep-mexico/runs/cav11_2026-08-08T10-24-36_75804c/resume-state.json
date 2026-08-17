@@ -1,0 +1,80 @@
+{
+  "version": "census-autopilot-v1-resume-state",
+  "autopilot_version": "census-autopilot-v1.0.0",
+  "updated_at": "2026-08-08T10:25:47.617Z",
+  "run_id": "cav11_2026-08-08T10-24-36_75804c",
+  "mode": "live_deep_mexico",
+  "group": "IHG,Hilton,Choice",
+  "brand": null,
+  "country": "Mexico",
+  "region": null,
+  "priority": null,
+  "max_records": null,
+  "dry_run": true,
+  "progress": {
+    "total_in_scope": 365,
+    "completed": 5,
+    "failed": 0,
+    "remaining": 0,
+    "pct": 1
+  },
+  "completed_entity_ids": [
+    "ind_choice_mx_mx043",
+    "ind_choice_mx_mx070",
+    "ind_choice_mx_mx180",
+    "ind_choice_mx_mx086",
+    "ind_choice_mx_mx197"
+  ],
+  "failed_entities": [],
+  "retry_state": {},
+  "source_failures": [],
+  "research_checkpoints": [
+    {
+      "at": "2026-08-08T10:25:44.884Z",
+      "completed": 5,
+      "failed": 0
+    }
+  ],
+  "observability_snapshot": {
+    "run_id": "cav11_2026-08-08T10-24-36_75804c",
+    "hotels_discovered": 365,
+    "hotels_deeply_researched": 5,
+    "hotels_failed": 0,
+    "material_completeness_avg_before": 60,
+    "material_completeness_avg_after": 41,
+    "production_candidates": 0,
+    "material_remediation": 0,
+    "partial": 0,
+    "deep_research": 5,
+    "output_class_counts": {
+      "DEEP RESEARCH REQUIRED": 5
+    },
+    "page_ok_count": 0,
+    "lane_b_ok_count": 0,
+    "source_blocked_count": 5,
+    "operator_resolved": 0,
+    "owner_resolved": 0,
+    "rooms_resolved": 0,
+    "external_cost_usd": 0,
+    "runtime_ms": 71082,
+    "constraints": {
+      "no_webhound": true,
+      "no_credit_spend": true,
+      "no_airtable_writes": true,
+      "legacy_used_as_source": false,
+      "cvent_used_as_source": false,
+      "no_automatic_brand_activation": true,
+      "no_automatic_image_rehost": true,
+      "unknown_is_acceptable": true,
+      "preserve_clean_room_firewall": true,
+      "preserve_source_rights": true,
+      "preserve_steward_governance": true
+    }
+  },
+  "resume_command": "npm run census:autopilot-v1 -- --resume cav11_2026-08-08T10-24-36_75804c",
+  "constraints": {
+    "no_webhound": true,
+    "no_airtable_writes": true,
+    "no_credit_spend": true
+  }
+}

@@ -1,0 +1,345 @@
+openapi: 3.1.0
+info:
+  title: Dealality GTM Airtable API
+  version: 1.0.0
+  description: |
+    Read, create, update, and summarize records on allowed Dealality GTM Airtable tables.
+    No delete endpoints. Base ID is fixed server-side (Owner Targets / GTM).
+servers:
+  - url: https://YOUR_PUBLIC_HOST
+    description: Railway or public proxy URL
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: DEALALITY_AIRTABLE_CHATGPT_SECRET
+
+  schemas:
+    AirtableFieldsObject:
+      type: object
+      additionalProperties: true
+      description: >
+        Flexible Airtable fields object. Keys are Airtable field names and values are
+        Airtable-compatible field values (strings, numbers, booleans, ISO dates, linked record ID arrays).
+
+    CreateRecordInput:
+      type: object
+      required: [fields]
+      properties:
+        fields:
+          $ref: "#/components/schemas/AirtableFieldsObject"
+
+    UpdateRecordInput:
+      type: object
+      required: [id, fields]
+      properties:
+        id:
+          type: string
+        fields:
+          $ref: "#/components/schemas/AirtableFieldsObject"
+
+    AirtableRecord:
+      type: object
+      properties:
+        id:
+          type: string
+        createdTime:
+          type: string
+        fields:
+          $ref: "#/components/schemas/AirtableFieldsObject"
+
+    SortSpec:
+      type: object
+      required: [field]
+      properties:
+        field:
+          type: string
+        direction:
+          type: string
+          enum: [asc, desc]
+
+security:
+  - BearerAuth: []
+
+paths:
+  /api/dealality-airtable/listDealalityTables:
+    post:
+      operationId: listDealalityTables
+      summary: List allowed Dealality tables and field schemas
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+      responses:
+        "200":
+          description: Allowed tables
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tables:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        fields:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                              type:
+                                type: string
+
+  /api/dealality-airtable/listRecordsByTableId:
+    post:
+      operationId: listRecordsByTableId
+      summary: List records from an allowed table
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tableId]
+              properties:
+                tableId:
+                  type: string
+                maxRecords:
+                  type: number
+                  default: 20
+                  maximum: 100
+                view:
+                  type: string
+                filterByFormula:
+                  type: string
+                fields:
+                  type: array
+                  items:
+                    type: string
+                sort:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SortSpec"
+      responses:
+        "200":
+          description: Records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tableId:
+                    type: string
+                  records:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AirtableRecord"
+
+  /api/dealality-airtable/getRecordById:
+    post:
+      operationId: getRecordById
+      summary: Get one record by ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tableId, recordId]
+              properties:
+                tableId:
+                  type: string
+                recordId:
+                  type: string
+      responses:
+        "200":
+          description: Record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AirtableRecord"
+
+  /api/dealality-airtable/createRecordsByTableId:
+    post:
+      operationId: createRecordsByTableId
+      summary: Create one or more records with flexible Airtable fields
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tableId, records]
+              properties:
+                tableId:
+                  type: string
+                records:
+                  type: array
+                  minItems: 1
+                  maxItems: 10
+                  items:
+                    $ref: "#/components/schemas/CreateRecordInput"
+      responses:
+        "200":
+          description: Created records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tableId:
+                    type: string
+                  records:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AirtableRecord"
+
+  /api/dealality-airtable/updateRecordByTableId:
+    post:
+      operationId: updateRecordByTableId
+      summary: Update one record with flexible Airtable fields
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tableId, recordId, fields]
+              properties:
+                tableId:
+                  type: string
+                recordId:
+                  type: string
+                fields:
+                  $ref: "#/components/schemas/AirtableFieldsObject"
+      responses:
+        "200":
+          description: Updated record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AirtableRecord"
+
+  /api/dealality-airtable/updateRecordsByTableId:
+    post:
+      operationId: updateRecordsByTableId
+      summary: Bulk update up to 10 records
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tableId, records]
+              properties:
+                tableId:
+                  type: string
+                records:
+                  type: array
+                  minItems: 1
+                  maxItems: 10
+                  items:
+                    $ref: "#/components/schemas/UpdateRecordInput"
+      responses:
+        "200":
+          description: Updated records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tableId:
+                    type: string
+                  records:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AirtableRecord"
+
+  /api/dealality-airtable/summarizeRecordsByTableId:
+    post:
+      operationId: summarizeRecordsByTableId
+      summary: Summarize records with counts and incomplete samples
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tableId]
+              properties:
+                tableId:
+                  type: string
+                filterByFormula:
+                  type: string
+                view:
+                  type: string
+                groupBy:
+                  type: string
+                statusField:
+                  type: string
+                phaseField:
+                  type: string
+                priorityField:
+                  type: string
+                maxRecords:
+                  type: number
+                  default: 100
+                  maximum: 500
+      responses:
+        "200":
+          description: Summary
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tableId:
+                    type: string
+                  totalRecords:
+                    type: number
+                  counts:
+                    type: object
+                    properties:
+                      byStatus:
+                        type: object
+                        additionalProperties:
+                          type: number
+                      byPhase:
+                        type: object
+                        additionalProperties:
+                          type: number
+                      byPriority:
+                        type: object
+                        additionalProperties:
+                          type: number
+                      byGroup:
+                        type: object
+                        additionalProperties:
+                          type: number
+                  sampleRecords:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AirtableRecord"
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        recordId:
+                          type: string
+                        issue:
+                          type: string

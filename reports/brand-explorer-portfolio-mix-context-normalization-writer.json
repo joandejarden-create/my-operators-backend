@@ -1,0 +1,905 @@
+{
+  "writerVersion": "25C-4C",
+  "writerExists": true,
+  "v25C4CWriterExists": true,
+  "generatedAt": "2026-07-09T22:15:48.650Z",
+  "mode": "dry-run",
+  "allActiveAudit": true,
+  "brand": {
+    "name": "Tribute Portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "slug": "tribute-portfolio"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-tribute-visible-content-repair-writer.md",
+    "reports/brand-explorer-tribute-visible-content-repair-writer.json",
+    "reports/brand-explorer-required-section-population-contract.md",
+    "reports/brand-explorer-required-section-population-contract.json",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "reports/brand-explorer-required-section-source-capture-package.md",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "live Brand Explorer Presentation rows for active brands",
+    "live Brand Basics for active brands"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-portfolio-mix-context-normalization-writer.js",
+    "scripts/brand-explorer-portfolio-mix-context-normalization-writer.mjs",
+    "docs/data-intelligence/brand-explorer-portfolio-mix-context-normalization-writer-v25C-4C.md",
+    "reports/brand-explorer-portfolio-mix-context-normalization-writer.md",
+    "reports/brand-explorer-portfolio-mix-context-normalization-writer.json",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "package.json"
+  ],
+  "portfolioMixAuditByActiveBrand": [
+    {
+      "brand": "Tribute Portfolio",
+      "recordId": "recCvV0PuZOi8c3hC",
+      "slug": "tribute-portfolio",
+      "mixRowCount": 5,
+      "classification": "radisson_style_complete",
+      "mixRows": [
+        {
+          "recordId": "recMC3g0pTtuIhN1g",
+          "title": "Secondary Market",
+          "body": "Selective",
+          "sortOrder": 4
+        },
+        {
+          "recordId": "recWhwmEANR3R38KR",
+          "title": "Urban Lifestyle",
+          "body": "High",
+          "sortOrder": 1
+        },
+        {
+          "recordId": "reccw6Qw4MQNRrYXs",
+          "title": "Resort / Leisure-Adjacent",
+          "body": "Moderate",
+          "sortOrder": 2
+        },
+        {
+          "recordId": "recouCwdRiCZ6gfRI",
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sortOrder": 5
+        },
+        {
+          "recordId": "recq4lP7r68tw8TUq",
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sortOrder": 3
+        }
+      ],
+      "contextDiagnosis": {
+        "rowExists": true,
+        "recordId": "rec03qcBLx0q6LLDT",
+        "title": "2",
+        "bodyPreview": "Tribute Portfolio sits within Marriott's independent/lifestyle collection conversation. For owners, it can be relevant when an asset should retain local charact",
+        "active": true,
+        "legacyRelativePositioningRow": {
+          "recordId": "rec4tj91U4cCsgdrB",
+          "bodyPreview": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hote"
+        },
+        "rootCause": "frontend_mapping_issue",
+        "rootCauseDetail": "overview.portfolio_context row exists (v25C-4A) with tier Title and Body, but Portfolio Context on Overview tab only renders buildPortfolioLadderCellsHtml() — Body is not displayed in that section. Marriott brands also lack static sibling ladder mapping (unlike Choice/Hilton), so inactive ladder steps show generic labels only.",
+        "frontendSlotsRead": [
+          "overview.portfolio_context (tier Title + Body)",
+          "overview.relative_positioning (legacy Relative Positioning fallback)",
+          "buildPortfolioLadderCellsHtml (Overview tab Portfolio Context ladder only)"
+        ],
+        "apiExposure": "GET /api/brand-library/brand returns explorerPresentation blocks including overview.portfolio_context",
+        "rendersEmptyOnFirstTab": true
+      }
+    },
+    {
+      "brand": "Curio Collection by Hilton",
+      "recordId": "receQkxgjlezsc1xg",
+      "slug": "curio-collection",
+      "mixRowCount": 5,
+      "classification": "radisson_style_complete",
+      "mixRows": [
+        {
+          "recordId": "rec7bGGNlsU2BK3f7",
+          "title": "Urban",
+          "body": "High",
+          "sortOrder": 1
+        },
+        {
+          "recordId": "receZgLp6yeedNi5F",
+          "title": "Secondary Market",
+          "body": "Moderate",
+          "sortOrder": 3
+        },
+        {
+          "recordId": "recqIWRuxXSUQzBKD",
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sortOrder": 4
+        },
+        {
+          "recordId": "rectR4wQd5q0lm8PR",
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sortOrder": 5
+        },
+        {
+          "recordId": "recz3Tu7CDq9gXk0q",
+          "title": "Leisure / Resort-Adjacent",
+          "body": "High",
+          "sortOrder": 2
+        }
+      ],
+      "contextDiagnosis": {
+        "rowExists": true,
+        "recordId": "recj9eASvYBfSogyg",
+        "title": "3",
+        "bodyPreview": "Upper-upscale soft collection within Hilton—Curio sits with Tapestry as the independent-character tier; below Waldorf Astoria, Conrad, and LXR luxury; above Hil",
+        "active": true,
+        "legacyRelativePositioningRow": {
+          "recordId": "recmlLxpmd8KCxrjk",
+          "bodyPreview": "Upper-upscale soft collection within Hilton—individually remarkable hotels with distinctive architecture, culinary-forwa"
+        },
+        "rootCause": "frontend_mapping_issue",
+        "rootCauseDetail": "overview.portfolio_context row exists (v25C-4A) with tier Title and Body, but Portfolio Context on Overview tab only renders buildPortfolioLadderCellsHtml() — Body is not displayed in that section. Marriott brands also lack static sibling ladder mapping (unlike Choice/Hilton), so inactive ladder steps show generic labels only.",
+        "frontendSlotsRead": [
+          "overview.portfolio_context (tier Title + Body)",
+          "overview.relative_positioning (legacy Relative Positioning fallback)",
+          "buildPortfolioLadderCellsHtml (Overview tab Portfolio Context ladder only)"
+        ],
+        "apiExposure": "GET /api/brand-library/brand returns explorerPresentation blocks including overview.portfolio_context",
+        "rendersEmptyOnFirstTab": true
+      }
+    },
+    {
+      "brand": "Kimpton Hotels",
+      "recordId": "recCKuXCmGvxHPfb3",
+      "slug": "kimpton",
+      "mixRowCount": 5,
+      "classification": "radisson_style_complete",
+      "mixRows": [
+        {
+          "recordId": "recA4aftZysu6hZrW",
+          "title": "Secondary Market",
+          "body": "Selective",
+          "sortOrder": 3
+        },
+        {
+          "recordId": "recDcVvFeaEK9mGwj",
+          "title": "Urban",
+          "body": "High",
+          "sortOrder": 1
+        },
+        {
+          "recordId": "recSG1Q3GBpmgwHI4",
+          "title": "Leisure / Resort-Adjacent",
+          "body": "Moderate",
+          "sortOrder": 2
+        },
+        {
+          "recordId": "recZloR6IhA4jWX8D",
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sortOrder": 5
+        },
+        {
+          "recordId": "recyxOHpAel9hrGoZ",
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sortOrder": 4
+        }
+      ],
+      "contextDiagnosis": {
+        "rowExists": true,
+        "recordId": "rec2VtIIPtFfX605Q",
+        "title": "3",
+        "bodyPreview": "Luxury & lifestyle flagship within IHG—Kimpton sits with InterContinental, Regent, and Six Senses at the experiential apex; above Hotel Indigo, voco, and Crowne",
+        "active": true,
+        "legacyRelativePositioningRow": {
+          "recordId": "rec9pQeqcwYWd4POa",
+          "bodyPreview": "Upper-upscale lifestyle boutique within IHG—design-forward guestrooms, restaurant-forward F&B, wine hour, and pet-friend"
+        },
+        "rootCause": "frontend_mapping_issue",
+        "rootCauseDetail": "overview.portfolio_context row exists (v25C-4A) with tier Title and Body, but Portfolio Context on Overview tab only renders buildPortfolioLadderCellsHtml() — Body is not displayed in that section. Marriott brands also lack static sibling ladder mapping (unlike Choice/Hilton), so inactive ladder steps show generic labels only.",
+        "frontendSlotsRead": [
+          "overview.portfolio_context (tier Title + Body)",
+          "overview.relative_positioning (legacy Relative Positioning fallback)",
+          "buildPortfolioLadderCellsHtml (Overview tab Portfolio Context ladder only)"
+        ],
+        "apiExposure": "GET /api/brand-library/brand returns explorerPresentation blocks including overview.portfolio_context",
+        "rendersEmptyOnFirstTab": true
+      }
+    },
+    {
+      "brand": "Radisson Blu by Choice",
+      "recordId": "recWPEvxBQxVVzSq3",
+      "slug": "radisson-blu",
+      "mixRowCount": 5,
+      "classification": "radisson_style_complete",
+      "mixRows": [
+        {
+          "recordId": "rec2EvsvDCbW6gFu0",
+          "title": "New-Build Prototype",
+          "body": "Moderate",
+          "sortOrder": 5
+        },
+        {
+          "recordId": "rec4wd90bolxyd2lR",
+          "title": "Urban Gateway",
+          "body": "High",
+          "sortOrder": 1
+        },
+        {
+          "recordId": "recHd9wu1t6oIoabC",
+          "title": "Resort / Leisure",
+          "body": "High",
+          "sortOrder": 2
+        },
+        {
+          "recordId": "recImTJ1AKPXrI2mi",
+          "title": "Conversion / Adaptive Reuse",
+          "body": "Moderate",
+          "sortOrder": 4
+        },
+        {
+          "recordId": "recT6HqPbMtnyU7Dh",
+          "title": "CALA Metro",
+          "body": "High",
+          "sortOrder": 3
+        }
+      ],
+      "contextDiagnosis": {
+        "rowExists": true,
+        "recordId": "recfu060X5FIMCxeg",
+        "title": "3",
+        "bodyPreview": "Upper-upscale design flagship at the top of the CHI ladder—Nordic Nouveau above Radisson upscale and RED lifestyle select-service; not midscale, economy, or ext",
+        "active": true,
+        "legacyRelativePositioningRow": null,
+        "rootCause": "frontend_mapping_issue",
+        "rootCauseDetail": "overview.portfolio_context row exists (v25C-4A) with tier Title and Body, but Portfolio Context on Overview tab only renders buildPortfolioLadderCellsHtml() — Body is not displayed in that section. Marriott brands also lack static sibling ladder mapping (unlike Choice/Hilton), so inactive ladder steps show generic labels only.",
+        "frontendSlotsRead": [
+          "overview.portfolio_context (tier Title + Body)",
+          "overview.relative_positioning (legacy Relative Positioning fallback)",
+          "buildPortfolioLadderCellsHtml (Overview tab Portfolio Context ladder only)"
+        ],
+        "apiExposure": "GET /api/brand-library/brand returns explorerPresentation blocks including overview.portfolio_context",
+        "rendersEmptyOnFirstTab": true
+      }
+    },
+    {
+      "brand": "Radisson by Choice",
+      "recordId": "recywbx1YQSTCPqW1",
+      "slug": "radisson",
+      "mixRowCount": 5,
+      "classification": "radisson_style_complete",
+      "mixRows": [
+        {
+          "recordId": "recFj06ZtFbyjlXOW",
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sortOrder": 4
+        },
+        {
+          "recordId": "recLqzIZc4CVDO6IE",
+          "title": "Secondary Market",
+          "body": "Selective",
+          "sortOrder": 3
+        },
+        {
+          "recordId": "recNC73utTx8C2kOH",
+          "title": "Leisure / Resort-Adjacent",
+          "body": "Moderate",
+          "sortOrder": 2
+        },
+        {
+          "recordId": "recahuSqbaVK2S7eZ",
+          "title": "Urban",
+          "body": "High",
+          "sortOrder": 1
+        },
+        {
+          "recordId": "recdETlPJdo6YVex0",
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sortOrder": 5
+        }
+      ],
+      "contextDiagnosis": {
+        "rowExists": true,
+        "recordId": "recVfsXJMOwpw03p9",
+        "title": "2",
+        "bodyPreview": "Core upscale Radisson in the premium band—charming simplicity above upper-midscale flags, below Blu, Collection, Individuals, and RED on the right side of the C",
+        "active": true,
+        "legacyRelativePositioningRow": null,
+        "rootCause": "frontend_mapping_issue",
+        "rootCauseDetail": "overview.portfolio_context row exists (v25C-4A) with tier Title and Body, but Portfolio Context on Overview tab only renders buildPortfolioLadderCellsHtml() — Body is not displayed in that section. Marriott brands also lack static sibling ladder mapping (unlike Choice/Hilton), so inactive ladder steps show generic labels only.",
+        "frontendSlotsRead": [
+          "overview.portfolio_context (tier Title + Body)",
+          "overview.relative_positioning (legacy Relative Positioning fallback)",
+          "buildPortfolioLadderCellsHtml (Overview tab Portfolio Context ladder only)"
+        ],
+        "apiExposure": "GET /api/brand-library/brand returns explorerPresentation blocks including overview.portfolio_context",
+        "rendersEmptyOnFirstTab": true
+      }
+    },
+    {
+      "brand": "Ascend Hotel Collection",
+      "recordId": "reclkgOzvAcBheUSo",
+      "slug": "ascend",
+      "mixRowCount": 5,
+      "classification": "radisson_style_complete",
+      "mixRows": [
+        {
+          "recordId": "recBa1u13MKcLoPSI",
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sortOrder": 4
+        },
+        {
+          "recordId": "recLWasmLRk1p6AAx",
+          "title": "Secondary Market",
+          "body": "High",
+          "sortOrder": 3
+        },
+        {
+          "recordId": "reccCixRmCoEfctRm",
+          "title": "Urban",
+          "body": "Moderate",
+          "sortOrder": 1
+        },
+        {
+          "recordId": "reccQCgbf6I1adRZS",
+          "title": "Leisure / Resort-Adjacent",
+          "body": "Moderate",
+          "sortOrder": 2
+        },
+        {
+          "recordId": "recpyGda2vL5jJhGK",
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sortOrder": 5
+        }
+      ],
+      "contextDiagnosis": {
+        "rowExists": true,
+        "recordId": "recTobSyhUkP2gSct",
+        "title": "2",
+        "bodyPreview": "Upscale soft collection—premium tier for independent character with Choice scale, below upper-upscale Radisson Blu/Individuals/Collection and lifestyle RED; abo",
+        "active": true,
+        "legacyRelativePositioningRow": null,
+        "rootCause": "frontend_mapping_issue",
+        "rootCauseDetail": "overview.portfolio_context row exists (v25C-4A) with tier Title and Body, but Portfolio Context on Overview tab only renders buildPortfolioLadderCellsHtml() — Body is not displayed in that section. Marriott brands also lack static sibling ladder mapping (unlike Choice/Hilton), so inactive ladder steps show generic labels only.",
+        "frontendSlotsRead": [
+          "overview.portfolio_context (tier Title + Body)",
+          "overview.relative_positioning (legacy Relative Positioning fallback)",
+          "buildPortfolioLadderCellsHtml (Overview tab Portfolio Context ladder only)"
+        ],
+        "apiExposure": "GET /api/brand-library/brand returns explorerPresentation blocks including overview.portfolio_context",
+        "rendersEmptyOnFirstTab": true
+      }
+    }
+  ],
+  "tributePortfolioMixDiagnosis": {
+    "classification": "radisson_style_complete",
+    "currentRows": [
+      {
+        "recordId": "recMC3g0pTtuIhN1g",
+        "slotKey": "footprint.portfolio_mix",
+        "title": "Secondary Market",
+        "body": "Selective",
+        "sortOrder": 4,
+        "active": true
+      },
+      {
+        "recordId": "recWhwmEANR3R38KR",
+        "slotKey": "footprint.portfolio_mix",
+        "title": "Urban Lifestyle",
+        "body": "High",
+        "sortOrder": 1,
+        "active": true
+      },
+      {
+        "recordId": "reccw6Qw4MQNRrYXs",
+        "slotKey": "footprint.portfolio_mix",
+        "title": "Resort / Leisure-Adjacent",
+        "body": "Moderate",
+        "sortOrder": 2,
+        "active": true
+      },
+      {
+        "recordId": "recouCwdRiCZ6gfRI",
+        "slotKey": "footprint.portfolio_mix",
+        "title": "New Build Prototype-Led",
+        "body": "Low",
+        "sortOrder": 5,
+        "active": true
+      },
+      {
+        "recordId": "recq4lP7r68tw8TUq",
+        "slotKey": "footprint.portfolio_mix",
+        "title": "Conversion / Repositioning",
+        "body": "High",
+        "sortOrder": 3,
+        "active": true
+      }
+    ],
+    "sentenceStyleDetected": false,
+    "singleChipOnly": false
+  },
+  "tributeProposedPortfolioMixChips": [
+    {
+      "title": "Urban Lifestyle",
+      "body": "High",
+      "sort": 1
+    },
+    {
+      "title": "Resort / Leisure-Adjacent",
+      "body": "Moderate",
+      "sort": 2
+    },
+    {
+      "title": "Conversion / Repositioning",
+      "body": "High",
+      "sort": 3
+    },
+    {
+      "title": "Secondary Market",
+      "body": "Selective",
+      "sort": 4
+    },
+    {
+      "title": "New Build Prototype-Led",
+      "body": "Low",
+      "sort": 5
+    }
+  ],
+  "brandNormalizationPlans": [
+    {
+      "brand": "Tribute Portfolio",
+      "recordId": "recCvV0PuZOi8c3hC",
+      "classification": "radisson_style_complete",
+      "proposedChips": [
+        {
+          "title": "Urban Lifestyle",
+          "body": "High",
+          "sort": 1
+        },
+        {
+          "title": "Resort / Leisure-Adjacent",
+          "body": "Moderate",
+          "sort": 2
+        },
+        {
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sort": 3
+        },
+        {
+          "title": "Secondary Market",
+          "body": "Selective",
+          "sort": 4
+        },
+        {
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sort": 5
+        }
+      ],
+      "mixPlans": [
+        {
+          "title": "Urban Lifestyle",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Resort / Leisure-Adjacent",
+          "body": "Moderate",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Secondary Market",
+          "body": "Selective",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "action": "update",
+          "needsUpdate": false
+        }
+      ],
+      "obsoleteMixRows": []
+    },
+    {
+      "brand": "Curio Collection by Hilton",
+      "recordId": "receQkxgjlezsc1xg",
+      "classification": "radisson_style_complete",
+      "proposedChips": [
+        {
+          "title": "Urban",
+          "body": "High",
+          "sort": 1
+        },
+        {
+          "title": "Leisure / Resort-Adjacent",
+          "body": "High",
+          "sort": 2
+        },
+        {
+          "title": "Secondary Market",
+          "body": "Moderate",
+          "sort": 3
+        },
+        {
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sort": 4
+        },
+        {
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sort": 5
+        }
+      ],
+      "mixPlans": [
+        {
+          "title": "Urban",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Leisure / Resort-Adjacent",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Secondary Market",
+          "body": "Moderate",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        }
+      ],
+      "obsoleteMixRows": []
+    },
+    {
+      "brand": "Kimpton Hotels",
+      "recordId": "recCKuXCmGvxHPfb3",
+      "classification": "radisson_style_complete",
+      "proposedChips": [
+        {
+          "title": "Urban",
+          "body": "High",
+          "sort": 1
+        },
+        {
+          "title": "Leisure / Resort-Adjacent",
+          "body": "Moderate",
+          "sort": 2
+        },
+        {
+          "title": "Secondary Market",
+          "body": "Selective",
+          "sort": 3
+        },
+        {
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sort": 4
+        },
+        {
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sort": 5
+        }
+      ],
+      "mixPlans": [
+        {
+          "title": "Urban",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Leisure / Resort-Adjacent",
+          "body": "Moderate",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Secondary Market",
+          "body": "Selective",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        }
+      ],
+      "obsoleteMixRows": []
+    },
+    {
+      "brand": "Ascend Hotel Collection",
+      "recordId": "reclkgOzvAcBheUSo",
+      "classification": "radisson_style_complete",
+      "proposedChips": [
+        {
+          "title": "Urban",
+          "body": "Moderate",
+          "sort": 1
+        },
+        {
+          "title": "Leisure / Resort-Adjacent",
+          "body": "Moderate",
+          "sort": 2
+        },
+        {
+          "title": "Secondary Market",
+          "body": "High",
+          "sort": 3
+        },
+        {
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "sort": 4
+        },
+        {
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "sort": 5
+        }
+      ],
+      "mixPlans": [
+        {
+          "title": "Urban",
+          "body": "Moderate",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Leisure / Resort-Adjacent",
+          "body": "Moderate",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Secondary Market",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "New Build Prototype-Led",
+          "body": "Low",
+          "action": "update",
+          "needsUpdate": false
+        },
+        {
+          "title": "Conversion / Repositioning",
+          "body": "High",
+          "action": "update",
+          "needsUpdate": false
+        }
+      ],
+      "obsoleteMixRows": []
+    }
+  ],
+  "otherActiveBrandPortfolioMixIssues": [],
+  "radissonStyleBrandsLeftUnchanged": [
+    "Tribute Portfolio",
+    "Curio Collection by Hilton",
+    "Kimpton Hotels",
+    "Radisson Blu by Choice",
+    "Radisson by Choice",
+    "Ascend Hotel Collection"
+  ],
+  "tributePortfolioContextCurrentState": {
+    "rowExists": true,
+    "recordId": "rec03qcBLx0q6LLDT",
+    "title": "2",
+    "bodyPreview": "Tribute Portfolio sits within Marriott's independent/lifestyle collection conversation. For owners, it can be relevant when an asset should retain local charact",
+    "active": true,
+    "legacyRelativePositioningRow": {
+      "recordId": "rec4tj91U4cCsgdrB",
+      "bodyPreview": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hote"
+    },
+    "rootCause": "frontend_mapping_issue",
+    "rootCauseDetail": "overview.portfolio_context row exists (v25C-4A) with tier Title and Body, but Portfolio Context on Overview tab only renders buildPortfolioLadderCellsHtml() — Body is not displayed in that section. Marriott brands also lack static sibling ladder mapping (unlike Choice/Hilton), so inactive ladder steps show generic labels only.",
+    "frontendSlotsRead": [
+      "overview.portfolio_context (tier Title + Body)",
+      "overview.relative_positioning (legacy Relative Positioning fallback)",
+      "buildPortfolioLadderCellsHtml (Overview tab Portfolio Context ladder only)"
+    ],
+    "apiExposure": "GET /api/brand-library/brand returns explorerPresentation blocks including overview.portfolio_context",
+    "rendersEmptyOnFirstTab": true
+  },
+  "portfolioContextRootCause": "frontend_mapping_issue",
+  "portfolioContextRootCauseDetail": "overview.portfolio_context row exists (v25C-4A) with tier Title and Body, but Portfolio Context on Overview tab only renders buildPortfolioLadderCellsHtml() — Body is not displayed in that section. Marriott brands also lack static sibling ladder mapping (unlike Choice/Hilton), so inactive ladder steps show generic labels only.",
+  "proposedPortfolioContextRepair": {
+    "overviewPortfolioContext": {
+      "Slot Key": "overview.portfolio_context",
+      "Title": "2",
+      "Body": "Tribute Portfolio sits within Marriott's independent/lifestyle collection conversation. For owners, it can be relevant when an asset should retain local character and a less standardized identity while still accessing Marriott distribution, Bonvoy loyalty, and brand affiliation.\n\n• Best suited to character-led independent or lifestyle assets.\n• Often relevant in conversion, repositioning, resort/leisure, and urban boutique discussions.\n• Should be compared against other Marriott soft/lifestyle collection paths based on asset quality, market, owner control, operating model, and brand standards.",
+      "Brand Name": "Tribute Portfolio",
+      "Brand": [
+        "recCvV0PuZOi8c3hC"
+      ],
+      "Active": true,
+      "Sort Order": 0
+    },
+    "overviewRelativePositioning": {
+      "Slot Key": "overview.relative_positioning",
+      "Title": "",
+      "Body": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hotels as an independent-character path for hotels with distinctive local style and programming. Useful when owners want Marriott Bonvoy, global distribution, and commercial systems without a standardized full-service flag conversion—not select-service, extended-stay, or rigid prototype-led rebrands.",
+      "Brand Name": "Tribute Portfolio",
+      "Brand": [
+        "recCvV0PuZOi8c3hC"
+      ],
+      "Active": true,
+      "Sort Order": 0
+    },
+    "frontendRepairNote": "public/js/brand-explorer-atelier-from-api.js updated to render overview.portfolio_context Body as narrative above ladder and add Marriott sibling ladder mapping."
+  },
+  "proposedTablePayload": {
+    "portfolioMix": [
+      {
+        "title": "Urban Lifestyle",
+        "body": "High",
+        "action": "update"
+      },
+      {
+        "title": "Resort / Leisure-Adjacent",
+        "body": "Moderate",
+        "action": "update"
+      },
+      {
+        "title": "Conversion / Repositioning",
+        "body": "High",
+        "action": "update"
+      },
+      {
+        "title": "Secondary Market",
+        "body": "Selective",
+        "action": "update"
+      },
+      {
+        "title": "New Build Prototype-Led",
+        "body": "Low",
+        "action": "update"
+      }
+    ],
+    "portfolioContext": {
+      "Slot Key": "overview.portfolio_context",
+      "Title": "2",
+      "Body": "Tribute Portfolio sits within Marriott's independent/lifestyle collection conversation. For owners, it can be relevant when an asset should retain local character and a less standardized identity while still accessing Marriott distribution, Bonvoy loyalty, and brand affiliation.\n\n• Best suited to character-led independent or lifestyle assets.\n• Often relevant in conversion, repositioning, resort/leisure, and urban boutique discussions.\n• Should be compared against other Marriott soft/lifestyle collection paths based on asset quality, market, owner control, operating model, and brand standards.",
+      "Brand Name": "Tribute Portfolio",
+      "Brand": [
+        "recCvV0PuZOi8c3hC"
+      ],
+      "Active": true,
+      "Sort Order": 0
+    },
+    "relativePositioning": {
+      "Slot Key": "overview.relative_positioning",
+      "Title": "",
+      "Body": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hotels as an independent-character path for hotels with distinctive local style and programming. Useful when owners want Marriott Bonvoy, global distribution, and commercial systems without a standardized full-service flag conversion—not select-service, extended-stay, or rigid prototype-led rebrands.",
+      "Brand Name": "Tribute Portfolio",
+      "Brand": [
+        "recCvV0PuZOi8c3hC"
+      ],
+      "Active": true,
+      "Sort Order": 0
+    }
+  },
+  "rowsWouldCreate": [],
+  "rowsWouldUpdate": [],
+  "rowsWouldDeactivate": [],
+  "unsupportedPercentagesRemoved": true,
+  "curioHiltonLanguageExcluded": true,
+  "companyValidatedUntouched": true,
+  "companyValidatedBefore": {
+    "recCvV0PuZOi8c3hC": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "receQkxgjlezsc1xg": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "recCKuXCmGvxHPfb3": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "recWPEvxBQxVVzSq3": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "recywbx1YQSTCPqW1": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "reclkgOzvAcBheUSo": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    }
+  },
+  "companyValidatedAfter": {
+    "recCvV0PuZOi8c3hC": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "receQkxgjlezsc1xg": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "recCKuXCmGvxHPfb3": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "recWPEvxBQxVVzSq3": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "recywbx1YQSTCPqW1": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    },
+    "reclkgOzvAcBheUSo": {
+      "companyValidated": null,
+      "companyValidationDate": null
+    }
+  },
+  "loyaltyRowsUntouched": true,
+  "openingsRowsUntouched": true,
+  "momentumRowsUntouched": true,
+  "standardsRequirementRowsUntouched": true,
+  "airtableModified": false,
+  "applyGates": {
+    "apply": false,
+    "allActive": true,
+    "approveBatch": false,
+    "founderReviewed": false,
+    "noUnsupportedStatsConfirmed": false,
+    "ready": false,
+    "canApply": false
+  },
+  "applyBlockers": [],
+  "applyResults": null,
+  "exactApplyCommand": "npm run brand-explorer-portfolio-mix-context-normalization-writer -- --all-active --apply --approve-brand-explorer-v25C-4C-all-active-portfolio-mix-normalization --founder-reviewed-all-active-portfolio-mix-copy --confirm-no-unsupported-portfolio-statistics",
+  "exactTributeApplyCommand": "npm run brand-explorer-portfolio-mix-context-normalization-writer -- --brand tribute-portfolio --apply --approve-brand-explorer-v25C-4C-portfolio-mix-context --founder-reviewed-portfolio-mix-context-copy --confirm-no-unsupported-portfolio-statistics",
+  "idempotentAfterApply": true
+}

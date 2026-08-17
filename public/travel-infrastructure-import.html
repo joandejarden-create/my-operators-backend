@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import Travel Infrastructure (Additional Types)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: Inter, sans-serif; background: #0f172a; color: #e2e8f0; padding: 24px; }
+    .panel { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+    input, textarea { width: 100%; box-sizing: border-box; background: #0f172a; border: 1px solid #475569; color: #f1f5f9; border-radius: 6px; padding: 8px; }
+    textarea { min-height: 140px; font-family: monospace; font-size: 12px; }
+    button { background: #2563eb; color: #fff; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer; margin-right: 8px; }
+    .muted { color: #94a3b8; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    th, td { border: 1px solid #334155; padding: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Import Travel Infrastructure — Additional Types</h1>
+  <p class="muted">Train Station, Highway Access, Bus Terminal, Ferry Terminal, Port / Maritime only.</p>
+  <p class="muted"><a href="/demand-anchors-import.html">← Demand Anchors import</a></p>
+  <div class="panel">
+    <label>Market <input id="market" value="Cancun"></label>
+    <label>Country <input id="country" value="Mexico"></label>
+    <label>Region <input id="region" value="Mexico"></label>
+    <label>JSON <textarea id="json"></textarea></label>
+    <button id="loadFx">Load sample fixture</button>
+    <button id="preview">Preview</button>
+    <button id="save">Save selected</button>
+    <p id="status" class="muted"></p>
+  </div>
+  <div class="panel" id="out"></div>
+  <script>
+    var rows = [];
+    document.getElementById('loadFx').onclick = function () {
+      fetch('/fixtures/travel-infrastructure-additional-types-sample.json').then(function (r) { return r.json(); }).then(function (d) {
+        document.getElementById('market').value = d.market || '';
+        document.getElementById('country').value = d.country || '';
+        document.getElementById('region').value = d.region || '';
+        document.getElementById('json').value = JSON.stringify({ points: d.points }, null, 2);
+      });
+    };
+    function env() {
+      return { market: market.value.trim(), country: country.value.trim(), region: region.value.trim() };
+    }
+    function render(data) {
+      rows = data.preview || [];
+      var html = '<p>' + JSON.stringify(data.summary) + '</p><table><tr><th>✓</th><th>Name</th><th>Type</th><th>City</th><th>Warnings</th><th>Dup</th></tr>';
+      rows.forEach(function (row, i) {
+        html += '<tr><td><input type="checkbox" class="inc" data-i="' + i + '" ' + (row.valid ? 'checked' : 'disabled') + '></td>';
+        html += '<td>' + row.name + '</td><td>' + row.pointType + '</td><td>' + row.city + '</td>';
+        html += '<td>' + (row.warnings || []).join('; ') + '</td><td>' + row.duplicateStatus + '</td></tr>';
+      });
+      out.innerHTML = html + '</table>';
+    }
+    document.getElementById('preview').onclick = function () {
+      var body = JSON.parse(json.value);
+      var pts = Array.isArray(body) ? body : body.points;
+      fetch('/api/radar-map-points/travel-infrastructure/import-preview', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign(env(), { points: pts }))
+      }).then(function (r) { return r.json(); }).then(render).catch(function (e) { status.textContent = e.message; });
+    };
+    document.getElementById('save').onclick = function () {
+      var recs = [];
+      document.querySelectorAll('.inc').forEach(function (cb) {
+        if (cb.checked) recs.push(rows[Number(cb.dataset.i)]);
+      });
+      fetch('/api/radar-map-points/travel-infrastructure/import-commit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign(env(), { records: recs, skipDuplicates: true }))
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        status.textContent = 'Created ' + (d.created && d.created.length) + ', errors ' + (d.errors && d.errors.length);
+      });
+    };
+  </script>
+</body>
+</html>

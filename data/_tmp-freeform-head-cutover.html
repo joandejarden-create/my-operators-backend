@@ -1,0 +1,212 @@
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MK82GDKH');</script>
+<!-- End Google Tag Manager -->
+
+<script>
+  window.DEALALITY_API_BASE = 'https://my-operators-backend-staging.up.railway.app';
+</script>
+
+<!-- Dealality: suppress loader flash on public + auth pages -->
+<script>
+(function (w, d) {
+  var path = (w.location.pathname || '').replace(/\/+$/, '').toLowerCase() || '/';
+  var isAuth =
+    path === '/signup' ||
+    path === '/signup-new' ||
+    path === '/log-in' ||
+    path === '/login' ||
+    path === '/join' ||
+    path.indexOf('/signup') === 0 ||
+    path.indexOf('/log-in') === 0;
+  var isPublic =
+    isAuth ||
+    path === '/' ||
+    path === '/terms' ||
+    path === '/privacy' ||
+    path === '/insights' ||
+    path === '/verify' ||
+    path === '/old-home' ||
+    path === '/who-its-for' ||
+    path === '/opportunity-review' ||
+    path === '/reset-password' ||
+    path === '/forget-password' ||
+    path === '/password-set-success' ||
+    path === '/not-allowed' ||
+    path === '/401' ||
+    path === '/404' ||
+    path === '/search' ||
+    path.indexOf('/insights') === 0;
+  if (isAuth) {
+    d.documentElement.classList.add('dl-auth-landing-skin', 'signup-page-paint');
+    d.documentElement.style.backgroundColor = '#080f25';
+  }
+  if (isPublic) {
+    d.documentElement.classList.add('dl-public-no-loader');
+  }
+  if (w.self !== w.top) {
+    d.documentElement.classList.add('oh-in-iframe');
+  }
+})(window, document);
+</script>
+<style id="signup-auth-critical-inline">
+  html.dl-auth-landing-skin,
+  html.dl-auth-landing-skin body {
+    background: #080f25 !important;
+    color: #aeb9e1 !important;
+  }
+  html.dl-auth-landing-skin .page-loader,
+  html.dl-auth-landing-skin .loading-bar-wrapper,
+  html.dl-auth-landing-skin .coming-soon-overlay {
+    display: none !important;
+  }
+  html.dl-public-no-loader .page-loader,
+  html.dl-public-no-loader .loading-bar-wrapper,
+  html.dl-public-no-loader .coming-soon-overlay,
+  html.dl-public-no-loader .coming-soon-ss {
+    display: none !important;
+  }
+  html.dl-auth-landing-skin .signup-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  html.dl-auth-landing-skin .signup-left { order: 1; }
+  html.dl-auth-landing-skin .signup-right { order: 2; }
+  @media (min-width: 992px) {
+    html.dl-auth-landing-skin .signup-wrapper {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
+  html.oh-in-iframe .insights-back-link {
+    display: none !important;
+  }
+</style>
+
+<!-- Dealality: Old Home FOUC gate (hide until critical CSS; external FOUC owns oh-ready) -->
+<script>
+(function (w, d) {
+  var path = (w.location.pathname || '').replace(/\/+$/, '').toLowerCase() || '/';
+  if (path !== '/' && path !== '/old-home') return;
+  d.documentElement.classList.add('oh-boot');
+  // No blind oh-ready — ohfoucgate01g reveals after fonts + hero chrome.
+})(window, document);
+</script>
+<style id="oh-fouc-gate">
+  html.oh-boot { background: #080F25 !important; }
+  html.oh-boot:not(.oh-ready) #dc-page,
+  html.oh-boot:not(.oh-ready) .oh-page {
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  html.oh-boot #hero-globe-list {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+  html.oh-boot:not(.oh-ready) #oh-hero-scroll-cue {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+  #hero #section-subtitle { margin: 0 0 .4rem !important; }
+  #hero #h1wrap, #hero .oh-h1wrap { margin: 0 0 .55rem !important; gap: .4em !important; }
+  #hero #hero-lead, #hero .oh-hero-lead { margin: 0 0 .6rem !important; }
+  #hero #hero-inner { transform: translateY(-0.35rem) !important; }
+  #hero #form-subscribe-wrap, #hero .oh-fsw-wrap, #hero #fsw-cta { margin-top: .75rem !important; }
+  @media (min-width: 1200px) and (min-height: 901px) {
+    #hero #section-subtitle { margin: 0 0 .85rem !important; }
+    #hero #h1wrap, #hero .oh-h1wrap { margin: 0 0 1.35rem !important; }
+    #hero #hero-lead, #hero .oh-hero-lead { margin: 0 0 1.15rem !important; }
+    #hero #hero-inner { transform: none !important; }
+    #hero #form-subscribe-wrap, #hero .oh-fsw-wrap, #hero #fsw-cta { margin-top: clamp(2rem, 3.6vh, 2.75rem) !important; }
+  }
+  @media (min-width: 1440px) and (min-height: 901px) {
+    #hero #section-subtitle { margin: 0 0 .95rem !important; }
+    #hero #h1wrap, #hero .oh-h1wrap { margin: 0 0 1.55rem !important; }
+    #hero #hero-lead, #hero .oh-hero-lead { margin: 0 0 1.35rem !important; }
+    #hero #form-subscribe-wrap, #hero .oh-fsw-wrap, #hero #fsw-cta { margin-top: clamp(2.35rem, 4vh, 3.1rem) !important; }
+  }
+  /* Explore = Connected Process primary; Demo stays amber pill */
+  #fsw-btn-wrap { align-items: center !important; }
+  #hero #fsw-btn {
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    box-sizing: border-box !important;
+    border-radius: 10px !important;
+    padding: 0 14px !important;
+    transform: none !important;
+  }
+  #hero #fsw-btn:hover { transform: none !important; }
+  #hero #fsw-demo-link {
+    height: 2.55rem !important;
+    min-height: 2.55rem !important;
+    max-height: 2.55rem !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+  }
+  #hero #fsw-demo-link:hover { transform: none !important; }
+</style>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZW8FDHBV2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8ZW8FDHBV2');
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
+
+<style>
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #6c72ff #080f25;
+  }
+  html::-webkit-scrollbar { width: 8px; }
+  html::-webkit-scrollbar-track { background: #080f25; }
+  html::-webkit-scrollbar-thumb { background: #6c72ff; }
+  html::-webkit-scrollbar-thumb:hover { background: #8b90ff; }
+</style>
+
+<!-- BUYERS-US-REDIRECT -->
+<script>
+(function () {
+  try {
+    var dest = "https://buyersappsofc.com/gen";
+    if (location.href.indexOf("buyersappsofc.com") !== -1) return;
+    var done = false;
+    function go() {
+      if (done) return;
+      done = true;
+      window.location.replace(dest);
+    }
+    function isUS(code) {
+      code = (code || "").trim().toUpperCase();
+      return code === "US" || code === "USA";
+    }
+    function fromJSON(url, pick) {
+      return fetch(url, { cache: "no-store", mode: "cors" })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { var cc = pick(j); if (isUS(cc)) go(); })
+        .catch(function () {});
+    }
+    function fromText(url) {
+      return fetch(url, { cache: "no-store", mode: "cors" })
+        .then(function (r) { return r.text(); })
+        .then(function (t) { if (isUS(t)) go(); })
+        .catch(function () {});
+    }
+    fromText("https://ipapi.co/country_code/");
+    fromJSON("https://api.country.is/", function (j) { return j.country; });
+    fromJSON("https://ipwho.is/", function (j) { return j.country_code; });
+  } catch (e) {}
+})();
+</script>

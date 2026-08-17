@@ -1,0 +1,146 @@
+{
+  "version": "census-autopilot-source-yield-diagnostic-v1",
+  "generated_at": "2026-08-05T22:30:21.218Z",
+  "run_id": "2026-08-05_22-30-21-CALA-active-brands",
+  "mode": "controlled",
+  "airtable_writes": false,
+  "total_high_proposals": 0,
+  "queues": {
+    "description_extraction": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 341,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-description-extractor"
+    },
+    "amenities_extraction": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 1007,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "description-extractor+lane-2"
+    },
+    "radar_public_readiness": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 425,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-population-lane-2"
+    },
+    "address_confirmation": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 0,
+      "high_proposals": 0,
+      "notes": [
+        "geocode_calls_disabled_in_address_queue_geocodeLimit=0",
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-address-geocode-resolver"
+    },
+    "property_name_cleanup": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 2,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-property-name-cleanup-extractor"
+    },
+    "property_type_asset_context": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 425,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-population-lane-2"
+    },
+    "rooms_keys": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 420,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-rooms-keys-extractor"
+    },
+    "coordinate_resolution": {
+      "status": "soft_deferred",
+      "eligible_scanned": 0,
+      "high_proposals": 0,
+      "notes": [
+        "geocode_provider_or_storage_terms_missing"
+      ],
+      "extractor": "geocode-provider (soft-deferred)"
+    }
+  },
+  "high_proposals_by_queue": {},
+  "no_proposal_reason_counts": {
+    "C:official_page_fetch_blocked": 398,
+    "E:extractor_too_narrow": 627,
+    "K:brand_census_match_issue": 723,
+    "D:page_fetched_data_not_present": 79
+  },
+  "queues_executed": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_name_cleanup",
+    "property_type_asset_context",
+    "rooms_keys"
+  ],
+  "queues_exhausted": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_name_cleanup",
+    "property_type_asset_context",
+    "rooms_keys"
+  ],
+  "queues_soft_deferred": [
+    "coordinate_resolution"
+  ],
+  "family_gaps": {
+    "note": "See production-census-autopilot-source-yield-diagnostic.md for full family gap table"
+  },
+  "blocked_source_families": [
+    "Hilton (hilton.com edge 403 — Page Reference Code)",
+    "Marriott (marriott.com 403)",
+    "Choice (choicehotels.com 403)"
+  ],
+  "fetchable_families": [
+    "IHG (ihg.com hoteldetail)"
+  ],
+  "highest_yield_next_improvement": {
+    "id": "corporate_bot_block_bypass_learning",
+    "summary": "Hilton/Marriott/Choice official pages return 403 to Node fetch — need approved public-source path or Webhound learning for edge patterns (not production writes).",
+    "expected_fields": [
+      "Hotel Description - Source Text",
+      "Amenities - Source Text",
+      "Rooms / Keys"
+    ]
+  },
+  "apply_recommendation": {
+    "recommend_apply": false,
+    "reason": "high_proposals_below_threshold",
+    "message": "High proposals < 10 — improve extractors / source access before apply unless founder wants a smoke-test write.",
+    "bundle_too_small": true,
+    "threshold": 10,
+    "high_proposals": 0
+  },
+  "why_yield_was_low": [
+    "Prior smoke used tiny description fetch budgets and burned attempts on Hilton 403s",
+    "IHG descriptions/amenities already populated for active brands",
+    "Hilton/Marriott/Choice corporate pages bot-blocked from Node fetch",
+    "Address High VIC claims were dropped when geocode was deferred (fixed: address-only path)",
+    "Rooms High exhausted for prior avid writes; many IHG pages have empty numberOfRooms"
+  ]
+}

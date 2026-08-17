@@ -1,0 +1,786 @@
+{
+  "version": "census-intake-autopilot-apply-v1",
+  "controlled_version": "census-intake-autopilot-controlled-v1",
+  "status": "census_intake_apply_partial_needs_review",
+  "apply_executed": true,
+  "airtable_writes": true,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "legacy_hotel_census_used": false,
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "batch_id": "osm-dominican-republic-hotel-focused-2026-08-07-url-enriched-v3",
+  "cohort": "hr_only",
+  "approval_bundle": "C:\\Dev\\deal-capture-proxy\\reports\\census-intake-autopilot-approval-bundle-osm-dominican-republic-hotel-focused-2026-08-07-url-enriched-v3-hr_only.json",
+  "inserts_in_bundle": 95,
+  "writable_after_rededupe": 20,
+  "blocked_count": 75,
+  "blocked": [
+    {
+      "source_record_id": "node/302771731",
+      "identity_key": "osm_do_node_302771731",
+      "property_name": "Natura Park Beach Eco Resort & Spa",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/302771860",
+      "identity_key": "osm_do_node_302771860",
+      "property_name": "Catalonia Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/302800763",
+      "identity_key": "osm_do_node_302800763",
+      "property_name": "Wyndham Alltra Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/349129742",
+      "identity_key": "osm_do_node_349129742",
+      "property_name": "Hotel RIU Mambo",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/354627440",
+      "identity_key": "osm_do_node_354627440",
+      "property_name": "Hotel RIU Merengue",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/354627549",
+      "identity_key": "osm_do_node_354627549",
+      "property_name": "Hotel RIU Bachata",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/431025349",
+      "identity_key": "osm_do_node_431025349",
+      "property_name": "Barceló Bávaro Palace Deluxe",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/597456591",
+      "identity_key": "osm_do_node_597456591",
+      "property_name": "Hodelpa Novus Plaza",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/1234382123",
+      "identity_key": "osm_do_node_1234382123",
+      "property_name": "Emotion By Hodelpa.",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/1653013577",
+      "identity_key": "osm_do_node_1653013577",
+      "property_name": "Secrets Royal Beach Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/2106184527",
+      "identity_key": "osm_do_node_2106184527",
+      "property_name": "Hard Rock Hotel & Casino Punta Cana - All inclusive",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/2262714721",
+      "identity_key": "osm_do_node_2262714721",
+      "property_name": "Dreams Royal Beach Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/3015649822",
+      "identity_key": "osm_do_node_3015649822",
+      "property_name": "Occidental Caribe (former Barcelo Punta Cana)",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/3145204521",
+      "identity_key": "osm_do_node_3145204521",
+      "property_name": "Occidental Caribe (former Barcelo Punta Cana)",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/3145252104",
+      "identity_key": "osm_do_node_3145252104",
+      "property_name": "Grand Bahia Principe Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/3145261362",
+      "identity_key": "osm_do_node_3145261362",
+      "property_name": "Riu Palace Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/3154070396",
+      "identity_key": "osm_do_node_3154070396",
+      "property_name": "Excellence Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/3501119758",
+      "identity_key": "osm_do_node_3501119758",
+      "property_name": "Viva Dominicus Palace by Wyndham",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/4023347101",
+      "identity_key": "osm_do_node_4023347101",
+      "property_name": "Excellence El Carmen",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/4419741355",
+      "identity_key": "osm_do_node_4419741355",
+      "property_name": "Villa Ibiscus",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/4660748808",
+      "identity_key": "osm_do_node_4660748808",
+      "property_name": "Grand Bahia Principe Aquamarine",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/4901959222",
+      "identity_key": "osm_do_node_4901959222",
+      "property_name": "Hotel Riu República",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/5181801658",
+      "identity_key": "osm_do_node_5181801658",
+      "property_name": "Amhsa Marina Grand Paradise Playa Dorada",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/5688089045",
+      "identity_key": "osm_do_node_5688089045",
+      "property_name": "Lopesan Costa Bávaro Resort, Spa & Casino",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/6468314516",
+      "identity_key": "osm_do_node_6468314516",
+      "property_name": "Hotel Emotions by Hodelpa",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/8026710897",
+      "identity_key": "osm_do_node_8026710897",
+      "property_name": "Hyatt Zilara Cap Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/8116547995",
+      "identity_key": "osm_do_node_8116547995",
+      "property_name": "Majestic Mirage Punta Cana - All-Suite Resort",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/11216277399",
+      "identity_key": "osm_do_node_11216277399",
+      "property_name": "Marriott Miches Beach, An All-Inclusive Resort",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/11628073769",
+      "identity_key": "osm_do_node_11628073769",
+      "property_name": "Melia caribe beach resort",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/12818363772",
+      "identity_key": "osm_do_node_12818363772",
+      "property_name": "Holiday Inn Santo Domingo",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "node/13081433749",
+      "identity_key": "osm_do_node_13081433749",
+      "property_name": "Viva Dominicus Beach by Wyndham",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/27956819",
+      "identity_key": "osm_do_way_27956819",
+      "property_name": "Iberostar Waves Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/27956853",
+      "identity_key": "osm_do_way_27956853",
+      "property_name": "Iberostar Waves Dominicana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/27957139",
+      "identity_key": "osm_do_way_27957139",
+      "property_name": "Hotel Riu Palace Macao",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/53581002",
+      "identity_key": "osm_do_way_53581002",
+      "property_name": "Hotel Riu Bambu",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/104646167",
+      "identity_key": "osm_do_way_104646167",
+      "property_name": "Barceló Bávaro Beach – Adults only",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/110955858",
+      "identity_key": "osm_do_way_110955858",
+      "property_name": "Iberostar Selection Bavaro Suites",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/110962847",
+      "identity_key": "osm_do_way_110962847",
+      "property_name": "Iberostar Selection Coral Bávaro",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/136390467",
+      "identity_key": "osm_do_way_136390467",
+      "property_name": "Iberostar Waves Costa Dorada",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/142306645",
+      "identity_key": "osm_do_way_142306645",
+      "property_name": "Hotel Riu Naiboa",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/142306646",
+      "identity_key": "osm_do_way_142306646",
+      "property_name": "Hotel Riu Palace Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/153864150",
+      "identity_key": "osm_do_way_153864150",
+      "property_name": "Hotel Barceló Santo Domingo",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/164232205",
+      "identity_key": "osm_do_way_164232205",
+      "property_name": "Hodelpa Centro Plaza Hotel",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/177332379",
+      "identity_key": "osm_do_way_177332379",
+      "property_name": "Renaissance Hotel",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/199921835",
+      "identity_key": "osm_do_way_199921835",
+      "property_name": "Gran Bahia Principe El Portillo",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/233446403",
+      "identity_key": "osm_do_way_233446403",
+      "property_name": "Hodelpa Gran Almirante",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/236000172",
+      "identity_key": "osm_do_way_236000172",
+      "property_name": "Luxury Bahia Principe Samana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/253123206",
+      "identity_key": "osm_do_way_253123206",
+      "property_name": "Catalonia Royal La Romana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/255806141",
+      "identity_key": "osm_do_way_255806141",
+      "property_name": "Barceló Dominican Beach",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/309203833",
+      "identity_key": "osm_do_way_309203833",
+      "property_name": "JOIA Bávaro by Iberostar",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/309228608",
+      "identity_key": "osm_do_way_309228608",
+      "property_name": "Majestic Colonial Hotel",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/309228614",
+      "identity_key": "osm_do_way_309228614",
+      "property_name": "Majestic Elegance Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/310075723",
+      "identity_key": "osm_do_way_310075723",
+      "property_name": "Grand Sirenis Punta Cana Resort",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/310076079",
+      "identity_key": "osm_do_way_310076079",
+      "property_name": "Excellence Punta Cana Hotel",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/310436422",
+      "identity_key": "osm_do_way_310436422",
+      "property_name": "Occidental Grand Punta Cana Hotel",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/312593390",
+      "identity_key": "osm_do_way_312593390",
+      "property_name": "Hodelpa Garden Court Hotel",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/323830323",
+      "identity_key": "osm_do_way_323830323",
+      "property_name": "Iberostar Hacienda Dominicus",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/335856652",
+      "identity_key": "osm_do_way_335856652",
+      "property_name": "Hotel Breathless Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/378375761",
+      "identity_key": "osm_do_way_378375761",
+      "property_name": "Holiday Inn",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/406649862",
+      "identity_key": "osm_do_way_406649862",
+      "property_name": "Hodelpa Caribe Colonial",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/471926026",
+      "identity_key": "osm_do_way_471926026",
+      "property_name": "Grand Bahia Principe Turquesa",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/476739407",
+      "identity_key": "osm_do_way_476739407",
+      "property_name": "Hotel Riu Republica",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/539003044",
+      "identity_key": "osm_do_way_539003044",
+      "property_name": "Bahía Príncipe Bouganville",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/540475898",
+      "identity_key": "osm_do_way_540475898",
+      "property_name": "Dreams Dominicus La Romana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/545028233",
+      "identity_key": "osm_do_way_545028233",
+      "property_name": "Hotel Casa Hemingway",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/597361865",
+      "identity_key": "osm_do_way_597361865",
+      "property_name": "Lopesan Costa Bávaro Resort & Spa",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/659053800",
+      "identity_key": "osm_do_way_659053800",
+      "property_name": "Viva Wyndham Tangerine",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/677625141",
+      "identity_key": "osm_do_way_677625141",
+      "property_name": "Secrets Cap Cana Resort & Spa",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/711650078",
+      "identity_key": "osm_do_way_711650078",
+      "property_name": "Nickelodeon Hotels & Resorts Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/711650079",
+      "identity_key": "osm_do_way_711650079",
+      "property_name": "Nickelodeon Hotels & Resorts Punta Cana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/759223343",
+      "identity_key": "osm_do_way_759223343",
+      "property_name": "Sunscapes Dominicus La Romana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/975017774",
+      "identity_key": "osm_do_way_975017774",
+      "property_name": "Viva Wyndham V Samana",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/1040966966",
+      "identity_key": "osm_do_way_1040966966",
+      "property_name": "Hodelpa Garden Suites Golf & Convention Center",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "way/1375108124",
+      "identity_key": "osm_do_way_1375108124",
+      "property_name": "Courtyard Marriott",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    },
+    {
+      "source_record_id": "relation/1922795",
+      "identity_key": "osm_do_relation_1922795",
+      "property_name": "Hotel Riu Palace Bavaro",
+      "block_reason": "property_identity_key_already_in_hpc",
+      "validation_failures": null
+    }
+  ],
+  "writable_preview": [
+    {
+      "source_record_id": "node/270997923",
+      "identity_key": "osm_do_node_270997923",
+      "property_name": "Breezes",
+      "current_brand": "Breezes (SuperClubs)",
+      "city": "Puerto Plata",
+      "official_property_url": "https://www.breezes.com/resorts/breezes-puerto-plata/"
+    },
+    {
+      "source_record_id": "node/287032841",
+      "identity_key": "osm_do_node_287032841",
+      "property_name": "Dreams Palm Beach Resort",
+      "current_brand": "Dreams (Hyatt Inclusive Collection)",
+      "city": "Punta Cana",
+      "official_property_url": "https://www.hyattinclusivecollection.com/en/resorts-hotels/dreams/dominican-republic/palm-beach-punta-cana/"
+    },
+    {
+      "source_record_id": "node/302771929",
+      "identity_key": "osm_do_node_302771929",
+      "property_name": "Be Live Grand Bavaro",
+      "current_brand": "Be Live",
+      "city": "Bávaro",
+      "official_property_url": "https://www.belivehotels.com/en/hotels-punta-cana/be-live-collection-puntacana/"
+    },
+    {
+      "source_record_id": "node/1207422127",
+      "identity_key": "osm_do_node_1207422127",
+      "property_name": "Be Live Grand Marien Hotel",
+      "current_brand": "Be Live",
+      "city": "Puerto Plata",
+      "official_property_url": "https://www.belivehotels.com/en/hotels-puerto-plata/be-live-collection-marien/"
+    },
+    {
+      "source_record_id": "node/2998189889",
+      "identity_key": "osm_do_node_2998189889",
+      "property_name": "Hotel Occidental Allegro Playa Dorada",
+      "current_brand": "Occidental",
+      "city": "Puerto Plata",
+      "official_property_url": "https://www.barcelo.com/en-us/occidental-allegro-playa-dorada/"
+    },
+    {
+      "source_record_id": "node/2998191668",
+      "identity_key": "osm_do_node_2998191668",
+      "property_name": "Barceló Puerto Plata",
+      "current_brand": "Barceló",
+      "city": "Puerto Plata",
+      "official_property_url": "https://www.barcelo.com/en-us/barcelo-puerto-plata/"
+    },
+    {
+      "source_record_id": "node/3161538019",
+      "identity_key": "osm_do_node_3161538019",
+      "property_name": "Real Intercontinental",
+      "current_brand": "InterContinental",
+      "city": "Santo Domingo",
+      "official_property_url": "https://www.ihg.com/intercontinental/hotels/us/en/santo-domingo/sdqic/hoteldetail"
+    },
+    {
+      "source_record_id": "node/3287789561",
+      "identity_key": "osm_do_node_3287789561",
+      "property_name": "Breathless Resort",
+      "current_brand": "Breathless (Hyatt Inclusive Collection)",
+      "city": "Playas",
+      "official_property_url": "https://www.hyattinclusivecollection.com/en/resorts-hotels/breathless/dominican-republic/punta-cana-resort-spa/"
+    },
+    {
+      "source_record_id": "node/4268870091",
+      "identity_key": "osm_do_node_4268870091",
+      "property_name": "Melia Caribe Tropical",
+      "current_brand": "Meliá",
+      "city": "Punta Cana",
+      "official_property_url": "https://www.melia.com/en/hotels/dominican-republic/punta-cana/melia-caribe-beach-resort"
+    },
+    {
+      "source_record_id": "node/4660748798",
+      "identity_key": "osm_do_node_4660748798",
+      "property_name": "Grand Bahia Principe Bavaro",
+      "current_brand": "Bahía Príncipe",
+      "city": "Bávaro",
+      "official_property_url": "https://www.bahia-principe.com/en/resorts-in-dominican-republic/resort-bavaro/"
+    },
+    {
+      "source_record_id": "node/6314999313",
+      "identity_key": "osm_do_node_6314999313",
+      "property_name": "Catalonia Bavaro Royal",
+      "current_brand": "Catalonia",
+      "city": "Bávaro",
+      "official_property_url": "https://www.cataloniahotels.com/en/hotel/catalonia-bavaro-beach"
+    },
+    {
+      "source_record_id": "way/33120922",
+      "identity_key": "osm_do_way_33120922",
+      "property_name": "Hotel Occidental Allegro Playa Dorada",
+      "current_brand": "Occidental",
+      "city": "Puerto Plata",
+      "official_property_url": "https://www.barcelo.com/en-us/occidental-allegro-playa-dorada/"
+    },
+    {
+      "source_record_id": "way/34879211",
+      "identity_key": "osm_do_way_34879211",
+      "property_name": "Barcelo Punta Cana Hotel",
+      "current_brand": "Barceló",
+      "city": "Bávaro",
+      "official_property_url": "https://www.barcelo.com/en-us/barcelo-bavaro-palace/"
+    },
+    {
+      "source_record_id": "way/175357851",
+      "identity_key": "osm_do_way_175357851",
+      "property_name": "Gran Bahia Principe Cayacoa",
+      "current_brand": "Bahía Príncipe",
+      "city": "Samaná",
+      "official_property_url": "https://www.bahia-principe.com/en/resorts-in-dominican-republic/resort-cayacoa/"
+    },
+    {
+      "source_record_id": "way/204089278",
+      "identity_key": "osm_do_way_204089278",
+      "property_name": "Casa Marina Beach & Reef",
+      "current_brand": "Amhsa Marina Hotels",
+      "city": "Sosúa",
+      "official_property_url": "https://www.amhsamarina.com/casa-marina-beach"
+    },
+    {
+      "source_record_id": "way/255788067",
+      "identity_key": "osm_do_way_255788067",
+      "property_name": "Hard Rock Hotel",
+      "current_brand": "Hard Rock Hotels",
+      "city": "Punta Cana",
+      "official_property_url": "https://hotel.hardrock.com/punta-cana/"
+    },
+    {
+      "source_record_id": "way/272974124",
+      "identity_key": "osm_do_way_272974124",
+      "property_name": "Melia Santo Domingo Hotel",
+      "current_brand": "Meliá",
+      "city": "Santo Domingo",
+      "official_property_url": "https://www.melia.com/en/hotels/dominican-republic/santo-domingo/melia-santo-domingo"
+    },
+    {
+      "source_record_id": "way/310694392",
+      "identity_key": "osm_do_way_310694392",
+      "property_name": "Real Intercontinental Hotel",
+      "current_brand": "InterContinental",
+      "city": "Santo Domingo",
+      "official_property_url": "https://www.ihg.com/intercontinental/hotels/us/en/santo-domingo/sdqic/hoteldetail"
+    },
+    {
+      "source_record_id": "way/335856784",
+      "identity_key": "osm_do_way_335856784",
+      "property_name": "Dreams Punta Cana Resort & Spa",
+      "current_brand": "Dreams (Hyatt Inclusive Collection)",
+      "city": "Punta Cana",
+      "official_property_url": "https://www.hyattinclusivecollection.com/en/resorts-hotels/dreams/dominican-republic/punta-cana-resort-spa/"
+    },
+    {
+      "source_record_id": "way/342786288",
+      "identity_key": "osm_do_way_342786288",
+      "property_name": "Bahía Príncipe Playa Nueva La Romana",
+      "current_brand": "Bahía Príncipe",
+      "city": "La Romana",
+      "official_property_url": "https://www.bahia-principe.com/en/resorts-in-dominican-republic/resort-playa-nueva-romana/"
+    }
+  ],
+  "batches_planned": 2,
+  "created_count": 20,
+  "created_record_ids": [
+    "recp96oLzcJooK5Xe",
+    "reckB9liXcRVxzKtL",
+    "rec2gjht94CaFSfNX",
+    "rec8XBNPHAStPoWJM",
+    "recsPbfC0ndxnCAiX",
+    "rechdCDxCzO8QaYpo",
+    "recQGd8RyCTWcW6FC",
+    "recUbyoBfFBrCY1Gc",
+    "recj0jZi9Fc4buWNC",
+    "recxPNcFlxwDhxPNj",
+    "recq0434fssNkRo5q",
+    "recAsOCSrAEx7I137",
+    "recKO2Pg7GNayjVgx",
+    "rec4GtL5puDoZLBNv",
+    "recZMlOblXnJv1kWL",
+    "rec6ztnByQ5yYKq72",
+    "recCZ3QNBu2kkksi8",
+    "recbRxXcpUXMwHN1J",
+    "rech8ZXjwbFFZ279x",
+    "recWAt9joUREf4H41"
+  ],
+  "create_errors": [],
+  "checkpoint": {
+    "batches_completed": 2,
+    "identity_keys_created": [
+      "osm_do_node_270997923",
+      "osm_do_node_287032841",
+      "osm_do_node_302771929",
+      "osm_do_node_1207422127",
+      "osm_do_node_2998189889",
+      "osm_do_node_2998191668",
+      "osm_do_node_3161538019",
+      "osm_do_node_3287789561",
+      "osm_do_node_4268870091",
+      "osm_do_node_4660748798",
+      "osm_do_node_6314999313",
+      "osm_do_way_33120922",
+      "osm_do_way_34879211",
+      "osm_do_way_175357851",
+      "osm_do_way_204089278",
+      "osm_do_way_255788067",
+      "osm_do_way_272974124",
+      "osm_do_way_310694392",
+      "osm_do_way_335856784",
+      "osm_do_way_342786288"
+    ],
+    "record_ids_created": [
+      "recp96oLzcJooK5Xe",
+      "reckB9liXcRVxzKtL",
+      "rec2gjht94CaFSfNX",
+      "rec8XBNPHAStPoWJM",
+      "recsPbfC0ndxnCAiX",
+      "rechdCDxCzO8QaYpo",
+      "recQGd8RyCTWcW6FC",
+      "recUbyoBfFBrCY1Gc",
+      "recj0jZi9Fc4buWNC",
+      "recxPNcFlxwDhxPNj",
+      "recq0434fssNkRo5q",
+      "recAsOCSrAEx7I137",
+      "recKO2Pg7GNayjVgx",
+      "rec4GtL5puDoZLBNv",
+      "recZMlOblXnJv1kWL",
+      "rec6ztnByQ5yYKq72",
+      "recCZ3QNBu2kkksi8",
+      "recbRxXcpUXMwHN1J",
+      "rech8ZXjwbFFZ279x",
+      "recWAt9joUREf4H41"
+    ],
+    "stopped": false
+  },
+  "confirms_ok": true,
+  "env_ok": true,
+  "note": "Intake apply executed to Hotel Property Census (no_hr cohort)"
+}

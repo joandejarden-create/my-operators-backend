@@ -405,6 +405,7 @@ export function buildHomeDashboardViewModel(opts = {}) {
       { id: 'partner-directory', label: 'Partner Directory', labelHtml: 'Partner<br>Directory', iconKey: 'users', href: '/partner-directory', status: 'Live' },
       { id: 'market-intel', label: 'Fee Estimator', labelHtml: 'Fee<br>Estimator', iconKey: 'trending-up', href: '/franchise-fee-estimator', status: 'Live' },
       { id: 'financial-term', label: 'Term Library', labelHtml: 'Term<br>Library', iconKey: 'file-text', href: '/financial-term-library', status: 'Live' },
+      { id: 'brand-explorer', label: 'Brand Explorer', labelHtml: 'Brand<br>Explorer', iconKey: 'building', href: '/brand-explorer-combined', status: 'Live' },
       { id: 'legal-clause', label: 'Clause Library', labelHtml: 'Clause<br>Library', iconKey: 'file', href: '/clause-library', status: 'Live' },
       { id: 'message-center', label: 'Message Center', labelHtml: 'Message<br>Center', iconKey: 'message', href: '/outreach/inbox', status: 'Beta' },
       { id: 'deal-compare', label: 'Deal Compare', labelHtml: 'Deal<br>Compare', iconKey: 'scale', href: '/deal-compare', status: 'Beta' }

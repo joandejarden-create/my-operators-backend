@@ -1,0 +1,91 @@
+{
+  "families_used": [
+    "IHG",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [
+    "Choice",
+    "Marriott",
+    "Accor",
+    "Wyndham",
+    "Preferred"
+  ],
+  "adapter_errors": [
+    {
+      "family": "Marriott",
+      "error": "no_ready_marriott_countries_in_scope",
+      "note": "Marriott country hotel-sitemap adapter ready for mapped CALA slugs; check country filter"
+    },
+    {
+      "family": "Accor",
+      "error": "no_ready_accor_countries_in_scope"
+    },
+    {
+      "family": "Wyndham",
+      "error": "no_ready_wyndham_countries_in_scope"
+    },
+    {
+      "family": "Preferred",
+      "error": "no_ready_preferred_countries_in_scope"
+    }
+  ],
+  "vic_evidence_rows": 666,
+  "discover_all_official_parents": true,
+  "parent_scoped_discovery": true,
+  "require_brand_match": false,
+  "control_list_purpose": "official_parent_inventory_discovery",
+  "ihg_discovery": {
+    "source": {
+      "type": "official_ihg_destination_directory",
+      "url_template": "https://www.ihg.com/destinations/us/en/{country-slug}-hotels",
+      "secondary": "https://www.ihg.com/bin/sitemapindex.xml → hoteldetail XMLs",
+      "property_id_pattern": "/([A-Za-z0-9]{4,6})/hoteldetail",
+      "content_source": "ihg_destination_directory"
+    },
+    "countries": [
+      "Dominican Republic"
+    ],
+    "meta": {
+      "version": "census-autopilot-ihg-cala-discovery-v1",
+      "source": {
+        "type": "official_ihg_destination_directory",
+        "url_template": "https://www.ihg.com/destinations/us/en/{country-slug}-hotels",
+        "secondary": "https://www.ihg.com/bin/sitemapindex.xml → hoteldetail XMLs",
+        "property_id_pattern": "/([A-Za-z0-9]{4,6})/hoteldetail",
+        "content_source": "ihg_destination_directory"
+      },
+      "countries": [
+        "Dominican Republic"
+      ],
+      "page_results": [
+        {
+          "country": "Dominican Republic",
+          "url": "https://www.ihg.com/destinations/us/en/dominican-republic-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/dominican-republic",
+          "cards": 12,
+          "added": 12,
+          "ok": true
+        }
+      ],
+      "fetch_errors": [],
+      "hotels_found": 12,
+      "loaded_at": "2026-08-07T14:09:14.948Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v2-wave-2",
+    "loaded_at": null,
+    "hilton_count": 0,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 12,
+  "brand_governance_counts": {
+    "active_brand_setup": 1,
+    "unsupported_or_ambiguous": 11
+  },
+  "owner_facing_eligible_count": 1,
+  "promotion_candidate_count": 0
+}

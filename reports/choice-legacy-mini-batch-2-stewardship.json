@@ -1,0 +1,871 @@
+{
+  "stewardshipVersion": "1.1",
+  "batchName": "mini-batch-2",
+  "batchDisplayName": "Choice Legacy Mini-Batch 2",
+  "generatedAt": "2026-07-06T23:13:43.593Z",
+  "mode": "apply",
+  "airtableModified": true,
+  "extractionFieldNote": "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures.",
+  "summary": {
+    "totalBrands": 4,
+    "totalSourcesFound": 11,
+    "sourcesEligibleForApproval": 11,
+    "sourcesSkipped": 0,
+    "brandsWithEligibleSources": 4,
+    "blockers": []
+  },
+  "batchApplyCommand": "npm run choice-legacy-batch-source-stewardship -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-stewardship",
+  "perBrandFallbackCommands": [
+    "npm run choice-legacy-batch-source-stewardship -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-stewardship --brand country-inn-suites-choice",
+    "npm run choice-legacy-batch-source-stewardship -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-stewardship --brand radisson-choice",
+    "npm run choice-legacy-batch-source-stewardship -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-stewardship --brand radisson-individuals-choice",
+    "npm run choice-legacy-batch-source-stewardship -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-stewardship --brand radisson-red-choice"
+  ],
+  "recommendedNextAfterApproval": [
+    {
+      "brand": "mini-batch-2",
+      "recordId": null,
+      "command": "npm run choice-legacy-batch-source-stewardship -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-stewardship",
+      "note": "Approve official Choice consumer/press sources (Extraction Yes when readable). Do not extract facts until founder approves per brand."
+    }
+  ],
+  "eligibleSources": [
+    {
+      "brandKey": "country-inn-suites-choice",
+      "brandName": "Country Inn & Suites by Choice",
+      "recordId": "recaayt9u7YYg8h7Y",
+      "sourceId": "recOx0YuUUOfaLPBe",
+      "sourceTitle": "Country Inn & Suites by Choice — Choice consumer brand page",
+      "role": "consumer_page"
+    },
+    {
+      "brandKey": "country-inn-suites-choice",
+      "brandName": "Country Inn & Suites by Choice",
+      "recordId": "recaayt9u7YYg8h7Y",
+      "sourceId": "recPqQVEe01xl3aQ6",
+      "sourceTitle": "Country Inn & Suites by Choice — prototype brochure (local)",
+      "role": "mini_batch_primary_pdf"
+    },
+    {
+      "brandKey": "radisson-choice",
+      "brandName": "Radisson by Choice",
+      "recordId": "recywbx1YQSTCPqW1",
+      "sourceId": "recLsN4M2G1z0rJBa",
+      "sourceTitle": "Radisson by Choice — brand book (local)",
+      "role": "mini_batch_primary_pdf"
+    },
+    {
+      "brandKey": "radisson-choice",
+      "brandName": "Radisson by Choice",
+      "recordId": "recywbx1YQSTCPqW1",
+      "sourceId": "recdOL9QhOIrAxYRP",
+      "sourceTitle": "Radisson by Choice — Choice press kit / media center",
+      "role": "press_kit"
+    },
+    {
+      "brandKey": "radisson-choice",
+      "brandName": "Radisson by Choice",
+      "recordId": "recywbx1YQSTCPqW1",
+      "sourceId": "recsnDjbEjI5yCxmm",
+      "sourceTitle": "Radisson by Choice — Choice consumer brand page",
+      "role": "consumer_page"
+    },
+    {
+      "brandKey": "radisson-individuals-choice",
+      "brandName": "Radisson Individuals by Choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "sourceId": "reccfAdMmZI5XmRJK",
+      "sourceTitle": "Radisson Individuals by Choice — Choice press kit / media center",
+      "role": "press_kit"
+    },
+    {
+      "brandKey": "radisson-individuals-choice",
+      "brandName": "Radisson Individuals by Choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "sourceId": "recgDFeovQZZuiXZ8",
+      "sourceTitle": "Radisson Individuals by Choice — Choice consumer brand page",
+      "role": "consumer_page"
+    },
+    {
+      "brandKey": "radisson-individuals-choice",
+      "brandName": "Radisson Individuals by Choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "sourceId": "recin2kwFrIlQNKmp",
+      "sourceTitle": "Radisson Individuals by Choice — pitch deck (local)",
+      "role": "mini_batch_primary_pdf"
+    },
+    {
+      "brandKey": "radisson-red-choice",
+      "brandName": "Radisson RED by Choice",
+      "recordId": "recmKqo7M7mLZgRqQ",
+      "sourceId": "recPrdF1bltJtq4JS",
+      "sourceTitle": "Radisson RED by Choice — Choice consumer brand page",
+      "role": "consumer_page"
+    },
+    {
+      "brandKey": "radisson-red-choice",
+      "brandName": "Radisson RED by Choice",
+      "recordId": "recmKqo7M7mLZgRqQ",
+      "sourceId": "rechXybBKQsqTIsCz",
+      "sourceTitle": "Radisson RED by Choice — Choice press kit / media center",
+      "role": "press_kit"
+    },
+    {
+      "brandKey": "radisson-red-choice",
+      "brandName": "Radisson RED by Choice",
+      "recordId": "recmKqo7M7mLZgRqQ",
+      "sourceId": "recz8fmzzxvsP6V6J",
+      "sourceTitle": "Radisson RED by Choice — Upscale by Choice brand overview (local)",
+      "role": "mini_batch_primary_pdf"
+    }
+  ],
+  "skippedSources": [],
+  "brands": [
+    {
+      "key": "country-inn-suites-choice",
+      "brandName": "Country Inn & Suites by Choice",
+      "recordId": "recaayt9u7YYg8h7Y",
+      "batchName": "mini-batch-2",
+      "expectedPrimaryPdf": "Choice Hotels International/Country Inn & Suites/Country Inn & Suites Prototype Brochure.pdf",
+      "consumerUrl": "https://www.choicehotels.com/country-inn-suites",
+      "pressKitUrl": null,
+      "developmentUrl": "https://www.choicehotelsdevelopment.com/our-brands/upper-midscale/country-inn-and-suites",
+      "developmentNote": "provenance_only_js_shell_risk",
+      "sourcesFound": 2,
+      "sourceRows": [
+        {
+          "id": "recOx0YuUUOfaLPBe",
+          "sourceTitle": "Country Inn & Suites by Choice — Choice consumer brand page",
+          "brandId": "recaayt9u7YYg8h7Y",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "Medium",
+          "sourceType": "Brand Page",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recOx0YuUUOfaLPBe",
+          "localFilePath": "Choice Hotels International/website/Country Inn & Suites by Choice — Choice consumer brand page.html",
+          "sourceUrl": "https://www.choicehotels.com/country-inn-suites",
+          "approvedForExtraction": "No",
+          "role": "consumer_page",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 4073,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        },
+        {
+          "id": "recPqQVEe01xl3aQ6",
+          "sourceTitle": "Country Inn & Suites by Choice — prototype brochure (local)",
+          "brandId": "recaayt9u7YYg8h7Y",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "High",
+          "sourceType": "Development Brochure",
+          "sourceOrigin": "Brand Provided",
+          "region": "CALA",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recPqQVEe01xl3aQ6",
+          "localFilePath": "Choice Hotels International/Country Inn & Suites/Country Inn & Suites Prototype Brochure.pdf",
+          "sourceUrl": null,
+          "approvedForExtraction": "No",
+          "role": "mini_batch_primary_pdf",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 12178,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        }
+      ],
+      "eligibleSourceIds": [
+        "recOx0YuUUOfaLPBe",
+        "recPqQVEe01xl3aQ6"
+      ],
+      "eligibleCount": 2,
+      "skippedCount": 0
+    },
+    {
+      "key": "radisson-choice",
+      "brandName": "Radisson by Choice",
+      "recordId": "recywbx1YQSTCPqW1",
+      "batchName": "mini-batch-2",
+      "expectedPrimaryPdf": "Choice Hotels International/Radisson/1. Brand Book - RD.pdf",
+      "consumerUrl": "https://www.choicehotels.com/radisson",
+      "pressKitUrl": "https://media.choicehotels.com/Radisson-press-kit",
+      "developmentUrl": "https://www.choicehotelsdevelopment.com/our-brands/upscale/radisson",
+      "developmentNote": "provenance_only_js_shell_risk",
+      "sourcesFound": 3,
+      "sourceRows": [
+        {
+          "id": "recLsN4M2G1z0rJBa",
+          "sourceTitle": "Radisson by Choice — brand book (local)",
+          "brandId": "recywbx1YQSTCPqW1",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "High",
+          "sourceType": "Development Brochure",
+          "sourceOrigin": "Brand Provided",
+          "region": "CALA",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recLsN4M2G1z0rJBa",
+          "localFilePath": "Choice Hotels International/Radisson/1. Brand Book - RD.pdf",
+          "sourceUrl": null,
+          "approvedForExtraction": "No",
+          "role": "mini_batch_primary_pdf",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 12456,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        },
+        {
+          "id": "recdOL9QhOIrAxYRP",
+          "sourceTitle": "Radisson by Choice — Choice press kit / media center",
+          "brandId": "recywbx1YQSTCPqW1",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "Medium",
+          "sourceType": "Press Release",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recdOL9QhOIrAxYRP",
+          "localFilePath": "Choice Hotels International/press/Radisson by Choice — Choice press kit _ media center.html",
+          "sourceUrl": "https://media.choicehotels.com/Radisson-press-kit",
+          "approvedForExtraction": "No",
+          "role": "press_kit",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 3685,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        },
+        {
+          "id": "recsnDjbEjI5yCxmm",
+          "sourceTitle": "Radisson by Choice — Choice consumer brand page",
+          "brandId": "recywbx1YQSTCPqW1",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "Medium",
+          "sourceType": "Brand Page",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recsnDjbEjI5yCxmm",
+          "localFilePath": "Choice Hotels International/website/Radisson by Choice — Choice consumer brand page.html",
+          "sourceUrl": "https://www.choicehotels.com/radisson",
+          "approvedForExtraction": "No",
+          "role": "consumer_page",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 3824,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        }
+      ],
+      "eligibleSourceIds": [
+        "recLsN4M2G1z0rJBa",
+        "recdOL9QhOIrAxYRP",
+        "recsnDjbEjI5yCxmm"
+      ],
+      "eligibleCount": 3,
+      "skippedCount": 0
+    },
+    {
+      "key": "radisson-individuals-choice",
+      "brandName": "Radisson Individuals by Choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "batchName": "mini-batch-2",
+      "expectedPrimaryPdf": "Choice Hotels International/Radisson Individuals/RADIN_PitchDeck_PPT_New_Final.pdf",
+      "consumerUrl": "https://www.choicehotels.com/radisson-individuals",
+      "pressKitUrl": "https://media.choicehotels.com/Radisson-Individuals-press-kit",
+      "developmentUrl": "https://www.choicehotelsdevelopment.com/our-brands/upper-upscale/radisson-individuals",
+      "developmentNote": "provenance_only_js_shell_risk",
+      "sourcesFound": 3,
+      "sourceRows": [
+        {
+          "id": "reccfAdMmZI5XmRJK",
+          "sourceTitle": "Radisson Individuals by Choice — Choice press kit / media center",
+          "brandId": "recRyvM8OmLlDj9G7",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "Medium",
+          "sourceType": "Press Release",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "reccfAdMmZI5XmRJK",
+          "localFilePath": "Choice Hotels International/press/Radisson Individuals by Choice — Choice press kit _ media center.html",
+          "sourceUrl": "https://media.choicehotels.com/Radisson-Individuals-press-kit",
+          "approvedForExtraction": "No",
+          "role": "press_kit",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 3859,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        },
+        {
+          "id": "recgDFeovQZZuiXZ8",
+          "sourceTitle": "Radisson Individuals by Choice — Choice consumer brand page",
+          "brandId": "recRyvM8OmLlDj9G7",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "Medium",
+          "sourceType": "Brand Page",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recgDFeovQZZuiXZ8",
+          "localFilePath": "Choice Hotels International/website/Radisson Individuals by Choice — Choice consumer brand page.html",
+          "sourceUrl": "https://www.choicehotels.com/radisson-individuals",
+          "approvedForExtraction": "No",
+          "role": "consumer_page",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 3861,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        },
+        {
+          "id": "recin2kwFrIlQNKmp",
+          "sourceTitle": "Radisson Individuals by Choice — pitch deck (local)",
+          "brandId": "recRyvM8OmLlDj9G7",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "High",
+          "sourceType": "Development Brochure",
+          "sourceOrigin": "Brand Provided",
+          "region": "CALA",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recin2kwFrIlQNKmp",
+          "localFilePath": "Choice Hotels International/Radisson Individuals/RADIN_PitchDeck_PPT_New_Final.pdf",
+          "sourceUrl": null,
+          "approvedForExtraction": "No",
+          "role": "mini_batch_primary_pdf",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 10662,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        }
+      ],
+      "eligibleSourceIds": [
+        "reccfAdMmZI5XmRJK",
+        "recgDFeovQZZuiXZ8",
+        "recin2kwFrIlQNKmp"
+      ],
+      "eligibleCount": 3,
+      "skippedCount": 0
+    },
+    {
+      "key": "radisson-red-choice",
+      "brandName": "Radisson RED by Choice",
+      "recordId": "recmKqo7M7mLZgRqQ",
+      "batchName": "mini-batch-2",
+      "expectedPrimaryPdf": "Choice Hotels International/Radisson RED/Upscale by Choice brand overview guide.pdf",
+      "consumerUrl": "https://www.choicehotels.com/radisson-red",
+      "pressKitUrl": "https://media.choicehotels.com/Radisson-Red-press-kit",
+      "developmentUrl": "https://www.choicehotelsdevelopment.com/our-brands/upscale/radisson-red",
+      "developmentNote": "provenance_only_js_shell_risk",
+      "sourcesFound": 3,
+      "sourceRows": [
+        {
+          "id": "recPrdF1bltJtq4JS",
+          "sourceTitle": "Radisson RED by Choice — Choice consumer brand page",
+          "brandId": "recmKqo7M7mLZgRqQ",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "Medium",
+          "sourceType": "Brand Page",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recPrdF1bltJtq4JS",
+          "localFilePath": "Choice Hotels International/website/Radisson RED by Choice — Choice consumer brand page.html",
+          "sourceUrl": "https://www.choicehotels.com/radisson-red",
+          "approvedForExtraction": "No",
+          "role": "consumer_page",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 3296,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        },
+        {
+          "id": "rechXybBKQsqTIsCz",
+          "sourceTitle": "Radisson RED by Choice — Choice press kit / media center",
+          "brandId": "recmKqo7M7mLZgRqQ",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "Medium",
+          "sourceType": "Press Release",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "rechXybBKQsqTIsCz",
+          "localFilePath": "Choice Hotels International/press/Radisson RED by Choice — Choice press kit _ media center.html",
+          "sourceUrl": "https://media.choicehotels.com/Radisson-Red-press-kit",
+          "approvedForExtraction": "No",
+          "role": "press_kit",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 4208,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        },
+        {
+          "id": "recz8fmzzxvsP6V6J",
+          "sourceTitle": "Radisson RED by Choice — Upscale by Choice brand overview (local)",
+          "brandId": "recmKqo7M7mLZgRqQ",
+          "operatorId": null,
+          "status": "Captured",
+          "approvedForExplorerUse": "No",
+          "sourceQuality": "High",
+          "sourceType": "Development Brochure",
+          "sourceOrigin": "Brand Provided",
+          "region": "CALA",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recz8fmzzxvsP6V6J",
+          "localFilePath": "Choice Hotels International/Radisson RED/Upscale by Choice brand overview guide.pdf",
+          "sourceUrl": null,
+          "approvedForExtraction": "No",
+          "role": "mini_batch_primary_pdf",
+          "recommendation": "approve_explorer_use_status_and_extraction",
+          "blockers": [],
+          "eligibleForBatchApproval": true,
+          "approveExtractionRecommended": true,
+          "localFileReadable": true,
+          "localFileTextLength": 10002,
+          "applyPlan": {
+            "wouldApply": true,
+            "previewPatch": {
+              "Approved for Explorer Use?": "Yes",
+              "Status": "Approved",
+              "Approved for Extraction?": "Yes"
+            },
+            "appliedLabels": [
+              "Approved for Explorer Use → Yes",
+              "Status → Approved (was Captured)",
+              "Approved for Extraction? → Yes"
+            ],
+            "skipped": [],
+            "extractionNotes": [
+              "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures."
+            ]
+          }
+        }
+      ],
+      "eligibleSourceIds": [
+        "recPrdF1bltJtq4JS",
+        "rechXybBKQsqTIsCz",
+        "recz8fmzzxvsP6V6J"
+      ],
+      "eligibleCount": 3,
+      "skippedCount": 0
+    }
+  ],
+  "doesNotDo": [
+    "Rebuild Explorer content or overwrite Brand Setup fields",
+    "Approve or extract facts",
+    "Publish governance or set Company Validated",
+    "Approve development-page sources (JS-shell provenance only)",
+    "Approve RHG/global or uncertain third-party sources"
+  ],
+  "applyResult": {
+    "applied": [
+      {
+        "brand": "Country Inn & Suites by Choice",
+        "recordId": "recaayt9u7YYg8h7Y",
+        "sourceId": "recOx0YuUUOfaLPBe",
+        "sourceTitle": "Country Inn & Suites by Choice — Choice consumer brand page",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Country Inn & Suites by Choice",
+        "recordId": "recaayt9u7YYg8h7Y",
+        "sourceId": "recPqQVEe01xl3aQ6",
+        "sourceTitle": "Country Inn & Suites by Choice — prototype brochure (local)",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson by Choice",
+        "recordId": "recywbx1YQSTCPqW1",
+        "sourceId": "recLsN4M2G1z0rJBa",
+        "sourceTitle": "Radisson by Choice — brand book (local)",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson by Choice",
+        "recordId": "recywbx1YQSTCPqW1",
+        "sourceId": "recdOL9QhOIrAxYRP",
+        "sourceTitle": "Radisson by Choice — Choice press kit / media center",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson by Choice",
+        "recordId": "recywbx1YQSTCPqW1",
+        "sourceId": "recsnDjbEjI5yCxmm",
+        "sourceTitle": "Radisson by Choice — Choice consumer brand page",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson Individuals by Choice",
+        "recordId": "recRyvM8OmLlDj9G7",
+        "sourceId": "reccfAdMmZI5XmRJK",
+        "sourceTitle": "Radisson Individuals by Choice — Choice press kit / media center",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson Individuals by Choice",
+        "recordId": "recRyvM8OmLlDj9G7",
+        "sourceId": "recgDFeovQZZuiXZ8",
+        "sourceTitle": "Radisson Individuals by Choice — Choice consumer brand page",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson Individuals by Choice",
+        "recordId": "recRyvM8OmLlDj9G7",
+        "sourceId": "recin2kwFrIlQNKmp",
+        "sourceTitle": "Radisson Individuals by Choice — pitch deck (local)",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson RED by Choice",
+        "recordId": "recmKqo7M7mLZgRqQ",
+        "sourceId": "recPrdF1bltJtq4JS",
+        "sourceTitle": "Radisson RED by Choice — Choice consumer brand page",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson RED by Choice",
+        "recordId": "recmKqo7M7mLZgRqQ",
+        "sourceId": "rechXybBKQsqTIsCz",
+        "sourceTitle": "Radisson RED by Choice — Choice press kit / media center",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      },
+      {
+        "brand": "Radisson RED by Choice",
+        "recordId": "recmKqo7M7mLZgRqQ",
+        "sourceId": "recz8fmzzxvsP6V6J",
+        "sourceTitle": "Radisson RED by Choice — Upscale by Choice brand overview (local)",
+        "patch": {
+          "Approved for Explorer Use?": "Yes",
+          "Status": "Approved",
+          "Approved for Extraction?": "Yes"
+        },
+        "appliedLabels": [
+          "Approved for Explorer Use → Yes",
+          "Status → Approved (was Captured)",
+          "Approved for Extraction? → Yes"
+        ]
+      }
+    ],
+    "skipped": [],
+    "errors": [],
+    "rejected": false
+  }
+}

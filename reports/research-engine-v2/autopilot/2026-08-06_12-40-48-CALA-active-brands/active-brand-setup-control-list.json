@@ -1,0 +1,1571 @@
+{
+  "version": "census-autopilot-active-brand-setup-control-list-v2",
+  "generated_at": "2026-08-06T12:40:48.934Z",
+  "scope": "active-brand-setup",
+  "region": "CALA",
+  "parent_company_filter": null,
+  "source": {
+    "name": "Brand Basics Brand Status Active/Live",
+    "table": "Brand Setup - Brand Basics",
+    "file": "lib/brand-status-active.js",
+    "formula": "OR({Brand Status}='Active', {Brand Status}='Live')",
+    "filterCriteria": "OR({Brand Status}='Active', {Brand Status}='Live')",
+    "apis": [
+      "GET /api/brand-library/brands",
+      "GET /api/brand-explorer/brands"
+    ],
+    "note": "Canonical Brand Explorer active universe. Code cohort lists are operational overlays, not this universe.",
+    "version": "active-universe-v1",
+    "read_only": true,
+    "brand_setup_writes": false,
+    "brand_explorer_writes": false,
+    "baseline_path": "reports/brand-explorer-62-active-public-full-baseline.json",
+    "active_count": 62
+  },
+  "brand_setup_read_only": true,
+  "brand_explorer_untouched": true,
+  "parent_inference_read_only": true,
+  "active_brands_in_scope": 62,
+  "parent_companies_in_scope": [
+    "Accor",
+    "BWH Hotels",
+    "Bunkhouse",
+    "Choice",
+    "Hilton",
+    "IHG",
+    "Marriott",
+    "Preferred Hotels & Resorts",
+    "SLH",
+    "Wyndham"
+  ],
+  "inferred_parents": [
+    {
+      "brand_slug": "ac-hotels-by-marriott",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "aloft-hotels",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "ascend",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "autograph-collection",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "avid-hotels",
+      "parent_company": "IHG",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "bunkhouse-hotels",
+      "parent_company": "Bunkhouse",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "bw-premier-collection",
+      "parent_company": "BWH Hotels",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "bw-signature-collection",
+      "parent_company": "BWH Hotels",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "canopy-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "city-express-by-marriott",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "comfort-inn-suites",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "country-inn-suites",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "courtyard-by-marriott",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "curio-collection",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "dazzler-by-wyndham",
+      "parent_company": "Wyndham",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "design-hotels",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "doubletree-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "even-hotels",
+      "parent_company": "IHG",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "everhome-suites",
+      "parent_company": "Wyndham",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "fairmont-hotels-and-resorts",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "hampton-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "handwritten-collection",
+      "parent_company": "IHG",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "hilton-garden-inn",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "hilton-hotels-and-resorts",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "holiday-inn-express",
+      "parent_company": "IHG",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "home2-suites-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "homewood-suites-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "hotel-indigo",
+      "parent_company": "IHG",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "ibis",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "kimpton",
+      "parent_company": "IHG",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "mama-shelter",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "marriott-hotels",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "mercure",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "mgallery-collection",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "motto-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "moxy-hotels",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "novotel",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "preferred-hotels-and-resorts",
+      "parent_company": "Preferred Hotels & Resorts",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "pullman",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "quality-inn",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "radisson-blu",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "radisson",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "radisson-individuals-by-choice",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "radisson-red",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "residence-inn-by-marriott",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "sheraton",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "small-luxury-hotels-of-the-world",
+      "parent_company": "SLH",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "so-hotels-and-resorts",
+      "parent_company": "Accor",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "spark-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "springhill-suites-by-marriott",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "studiores",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "suburban-studios",
+      "parent_company": "Choice",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "tapestry-collection-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "tempo-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "towneplace-suites-by-marriott",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "trademark-collection-by-wyndham",
+      "parent_company": "Wyndham",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "tribute-portfolio",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "tru-by-hilton",
+      "parent_company": "Hilton",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "vignette-collection",
+      "parent_company": "IHG",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "voco-hotels",
+      "parent_company": "IHG",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "westin",
+      "parent_company": "Marriott",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    },
+    {
+      "brand_slug": "woodspring-suites",
+      "parent_company": "Wyndham",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    }
+  ],
+  "inferred_parent_count": 62,
+  "brands": [
+    {
+      "brand_name": "AC Hotels by Marriott",
+      "brand_slug": "ac-hotels-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "rec9aZp7GHtzUEg0c",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "ac hotels by marriott"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Aloft Hotels",
+      "brand_slug": "aloft-hotels",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recJ1GZQpttX7qHgw",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "aloft hotels",
+        "aloft"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Ascend Hotel Collection",
+      "brand_slug": "ascend",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "reclkgOzvAcBheUSo",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "ascend hotel collection",
+        "ascend"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Autograph Collection",
+      "brand_slug": "autograph-collection",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recEJCTDj1zrsjPM6",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "autograph collection"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "avid hotels",
+      "brand_slug": "avid-hotels",
+      "parent_company": "IHG",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "IHG",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recoEarnE8T6sDjZq",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "avid hotels",
+        "avid"
+      ],
+      "extractor_family": "IHG",
+      "known_source_family": "IHG"
+    },
+    {
+      "brand_name": "Bunkhouse Hotels",
+      "brand_slug": "bunkhouse-hotels",
+      "parent_company": "Bunkhouse",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "generic",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recGv268Wda31PlSZ",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "bunkhouse hotels"
+      ],
+      "extractor_family": "generic",
+      "known_source_family": "generic"
+    },
+    {
+      "brand_name": "BW Premier Collection",
+      "brand_slug": "bw-premier-collection",
+      "parent_company": "BWH Hotels",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "generic",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recwXZ5gVZ8ZH8ekA",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "bw premier collection"
+      ],
+      "extractor_family": "generic",
+      "known_source_family": "generic"
+    },
+    {
+      "brand_name": "BW Signature Collection",
+      "brand_slug": "bw-signature-collection",
+      "parent_company": "BWH Hotels",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "generic",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recdeh1NsP4gjrv80",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "bw signature collection"
+      ],
+      "extractor_family": "generic",
+      "known_source_family": "generic"
+    },
+    {
+      "brand_name": "Canopy by Hilton",
+      "brand_slug": "canopy-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recsggfbKlJbjeRP9",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "canopy by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "City Express by Marriott",
+      "brand_slug": "city-express-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recucEzAS6724tOYA",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "city express by marriott"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Comfort Inn & Suites",
+      "brand_slug": "comfort-inn-suites",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recOzH5iAE1xEjyD0",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "comfort inn & suites",
+        "comfort inn suites",
+        "comfort inn",
+        "comfort inn and suites"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Country Inn & Suites by Choice",
+      "brand_slug": "country-inn-suites",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recaayt9u7YYg8h7Y",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "country inn & suites by choice",
+        "country inn suites",
+        "country inn suites by choice",
+        "country inn and suites"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Courtyard by Marriott",
+      "brand_slug": "courtyard-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "rec6hye5H8zJmAGv3",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "courtyard by marriott"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Curio Collection by Hilton",
+      "brand_slug": "curio-collection",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "receQkxgjlezsc1xg",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "curio collection by hilton",
+        "curio collection"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Dazzler by Wyndham",
+      "brand_slug": "dazzler-by-wyndham",
+      "parent_company": "Wyndham",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Wyndham",
+      "brand_status": "Active",
+      "brand_setup_record_id": "rec5CNMM4ZUD7ZHlM",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "dazzler by wyndham"
+      ],
+      "extractor_family": "Wyndham",
+      "known_source_family": "Wyndham"
+    },
+    {
+      "brand_name": "Design Hotels",
+      "brand_slug": "design-hotels",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "rec02zPClpWUTCyXM",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "design hotels"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "DoubleTree by Hilton",
+      "brand_slug": "doubletree-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "rechVYWQ5ikRnr99B",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "doubletree by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Even Hotels",
+      "brand_slug": "even-hotels",
+      "parent_company": "IHG",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "IHG",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recvvmiyReHhiKdoK",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "even hotels"
+      ],
+      "extractor_family": "IHG",
+      "known_source_family": "IHG"
+    },
+    {
+      "brand_name": "Everhome Suites",
+      "brand_slug": "everhome-suites",
+      "parent_company": "Wyndham",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Wyndham",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recqkkrsevi4r9ibj",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "everhome suites",
+        "everhome"
+      ],
+      "extractor_family": "Wyndham",
+      "known_source_family": "Wyndham"
+    },
+    {
+      "brand_name": "Fairmont",
+      "brand_slug": "fairmont-hotels-and-resorts",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recJhPaDVU3YUDQUt",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "fairmont",
+        "fairmont hotels and resorts"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "Hampton by Hilton",
+      "brand_slug": "hampton-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "rectRvOWQPaL6FkzZ",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "hampton by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Handwritten Collection",
+      "brand_slug": "handwritten-collection",
+      "parent_company": "IHG",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "IHG",
+      "brand_status": "Active",
+      "brand_setup_record_id": "rec7hTXwMRC81EPqz",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "handwritten collection"
+      ],
+      "extractor_family": "IHG",
+      "known_source_family": "IHG"
+    },
+    {
+      "brand_name": "Hilton Garden Inn",
+      "brand_slug": "hilton-garden-inn",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recrvdAjRlXxPvPPF",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "hilton garden inn"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Hilton Hotels & Resorts",
+      "brand_slug": "hilton-hotels-and-resorts",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recWubG3rhiS1BaWi",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "hilton hotels & resorts",
+        "hilton hotels and resorts",
+        "hilton hotels resorts"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Holiday Inn Express",
+      "brand_slug": "holiday-inn-express",
+      "parent_company": "IHG",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "IHG",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recmGmiIqDtAsm01f",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "holiday inn express"
+      ],
+      "extractor_family": "IHG",
+      "known_source_family": "IHG"
+    },
+    {
+      "brand_name": "Home2 Suites by Hilton",
+      "brand_slug": "home2-suites-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "reccZ4zV6wMav7a2i",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "home2 suites by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Homewood Suites by Hilton",
+      "brand_slug": "homewood-suites-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recZjYI4nYflGHFNR",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "homewood suites by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Hotel Indigo",
+      "brand_slug": "hotel-indigo",
+      "parent_company": "IHG",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "IHG",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recegXrqaPiSLGCIe",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "hotel indigo"
+      ],
+      "extractor_family": "IHG",
+      "known_source_family": "IHG"
+    },
+    {
+      "brand_name": "ibis",
+      "brand_slug": "ibis",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "reclFXbpZ5XzLWbGP",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "ibis"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "Kimpton Hotels",
+      "brand_slug": "kimpton",
+      "parent_company": "IHG",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "IHG",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recCKuXCmGvxHPfb3",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "kimpton hotels",
+        "kimpton"
+      ],
+      "extractor_family": "IHG",
+      "known_source_family": "IHG"
+    },
+    {
+      "brand_name": "Mama Shelter",
+      "brand_slug": "mama-shelter",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recXCZCK05XXYX7Q8",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "mama shelter"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "Marriott Hotels",
+      "brand_slug": "marriott-hotels",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recn59UtkyyoYwzSz",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "marriott hotels"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Mercure",
+      "brand_slug": "mercure",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recevrLJ3m6rIug3S",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "mercure"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "MGallery Collection",
+      "brand_slug": "mgallery-collection",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recrWCD1LMqu864oU",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "mgallery collection"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "Motto by Hilton",
+      "brand_slug": "motto-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "reclt44apoi8co0e6",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "motto by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Moxy Hotels",
+      "brand_slug": "moxy-hotels",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recahVIW4aCx0Ao84",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "moxy hotels",
+        "moxy"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Novotel",
+      "brand_slug": "novotel",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recQE2lSSSSyuUrMQ",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "novotel"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "Preferred Hotels & Resorts",
+      "brand_slug": "preferred-hotels-and-resorts",
+      "parent_company": "Preferred Hotels & Resorts",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Preferred",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recwl5JOYxlChuCAr",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "preferred hotels & resorts",
+        "preferred hotels and resorts",
+        "preferred hotels resorts"
+      ],
+      "extractor_family": "Preferred",
+      "known_source_family": "Preferred"
+    },
+    {
+      "brand_name": "Pullman",
+      "brand_slug": "pullman",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recFW9kfqKfOjv7Z1",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "pullman"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "Quality Inn",
+      "brand_slug": "quality-inn",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recd8o4k1JddhkRWW",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "quality inn"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Radisson Blu by Choice",
+      "brand_slug": "radisson-blu",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recWPEvxBQxVVzSq3",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "radisson blu by choice",
+        "radisson blu"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Radisson by Choice",
+      "brand_slug": "radisson",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recywbx1YQSTCPqW1",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "radisson by choice",
+        "radisson"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Radisson Individuals by Choice",
+      "brand_slug": "radisson-individuals-by-choice",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recRyvM8OmLlDj9G7",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "radisson individuals by choice"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Radisson RED by Choice",
+      "brand_slug": "radisson-red",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recmKqo7M7mLZgRqQ",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "radisson red by choice",
+        "radisson red"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Residence Inn by Marriott",
+      "brand_slug": "residence-inn-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "rec9Ufbpa0GxJGzt8",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "residence inn by marriott",
+        "residence inn"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Sheraton",
+      "brand_slug": "sheraton",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recg8HjT5Bky7NXeV",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "sheraton"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Small Luxury Hotels of the World",
+      "brand_slug": "small-luxury-hotels-of-the-world",
+      "parent_company": "SLH",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "generic",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recjjSnY2opb8P4DG",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "small luxury hotels of the world",
+        "slh"
+      ],
+      "extractor_family": "generic",
+      "known_source_family": "generic"
+    },
+    {
+      "brand_name": "SO/",
+      "brand_slug": "so-hotels-and-resorts",
+      "parent_company": "Accor",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Accor",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recTJdPlr4mDs9app",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "so/",
+        "so hotels and resorts",
+        "so"
+      ],
+      "extractor_family": "Accor",
+      "known_source_family": "Accor"
+    },
+    {
+      "brand_name": "Spark by Hilton",
+      "brand_slug": "spark-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recfv66er4Ch2vJDO",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "spark by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "SpringHill Suites by Marriott",
+      "brand_slug": "springhill-suites-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recBzdGfkMUN9fYsv",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "springhill suites by marriott",
+        "springhill suites"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "StudioRes",
+      "brand_slug": "studiores",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recDM0LAD8jVRA2x3",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "studiores"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Suburban Studios",
+      "brand_slug": "suburban-studios",
+      "parent_company": "Choice",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Choice",
+      "brand_status": "Active",
+      "brand_setup_record_id": "reclcjg5Foa9Vs5TC",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "suburban studios",
+        "suburban"
+      ],
+      "extractor_family": "Choice",
+      "known_source_family": "Choice"
+    },
+    {
+      "brand_name": "Tapestry Collection by Hilton",
+      "brand_slug": "tapestry-collection-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "reccXxMHEh7NNRhIE",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "tapestry collection by hilton",
+        "tapestry by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Tempo by Hilton",
+      "brand_slug": "tempo-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recqiHq3GHKMj8Meo",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "tempo by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "TownePlace Suites by Marriott",
+      "brand_slug": "towneplace-suites-by-marriott",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recUPiPDivkhNUogr",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "towneplace suites by marriott",
+        "towneplace suites"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Trademark Collection by Wyndham",
+      "brand_slug": "trademark-collection-by-wyndham",
+      "parent_company": "Wyndham",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Wyndham",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recob7tgHRryRSbeO",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "trademark collection by wyndham"
+      ],
+      "extractor_family": "Wyndham",
+      "known_source_family": "Wyndham"
+    },
+    {
+      "brand_name": "Tribute Portfolio",
+      "brand_slug": "tribute-portfolio",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recCvV0PuZOi8c3hC",
+      "region_eligibility": "CALA-specific",
+      "census_matching_aliases": [
+        "tribute portfolio"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "Tru by Hilton",
+      "brand_slug": "tru-by-hilton",
+      "parent_company": "Hilton",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Hilton",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recJLiMTv4W8VgO9L",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "tru by hilton"
+      ],
+      "extractor_family": "Hilton",
+      "known_source_family": "Hilton"
+    },
+    {
+      "brand_name": "Vignette Collection",
+      "brand_slug": "vignette-collection",
+      "parent_company": "IHG",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "IHG",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recDwzv86TWnz2gGB",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "vignette collection"
+      ],
+      "extractor_family": "IHG",
+      "known_source_family": "IHG"
+    },
+    {
+      "brand_name": "Voco Hotels",
+      "brand_slug": "voco-hotels",
+      "parent_company": "IHG",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "IHG",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recwONQTqGU1jHCsM",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "voco hotels",
+        "voco"
+      ],
+      "extractor_family": "IHG",
+      "known_source_family": "IHG"
+    },
+    {
+      "brand_name": "Westin",
+      "brand_slug": "westin",
+      "parent_company": "Marriott",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Marriott",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recIPuBC50fv13zRR",
+      "region_eligibility": "CALA-informed",
+      "census_matching_aliases": [
+        "westin"
+      ],
+      "extractor_family": "Marriott",
+      "known_source_family": "Marriott"
+    },
+    {
+      "brand_name": "WoodSpring Suites",
+      "brand_slug": "woodspring-suites",
+      "parent_company": "Wyndham",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Wyndham",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recsOd51NzRPYsMko",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "woodspring suites"
+      ],
+      "extractor_family": "Wyndham",
+      "known_source_family": "Wyndham"
+    }
+  ],
+  "excluded": [],
+  "held_excluded_slugs": [
+    "four-points-flex-by-sheraton",
+    "radisson-collection",
+    "house-of-originals",
+    "morgans-originals"
+  ]
+}

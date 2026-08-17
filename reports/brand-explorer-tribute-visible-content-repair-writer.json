@@ -1,0 +1,326 @@
+{
+  "writerVersion": "25C-4A",
+  "writerExists": true,
+  "v25C4AWriterExists": true,
+  "generatedAt": "2026-07-09T21:48:33.136Z",
+  "mode": "dry-run",
+  "brand": {
+    "name": "Tribute Portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "slug": "tribute-portfolio"
+  },
+  "marriottValidationImplied": false,
+  "governanceLabels": [
+    "Founder-reviewed positioning and owner-value copy",
+    "Tagline from Marriott consumer source (Stay independent.)",
+    "Not company-validated",
+    "Not Marriott-validated"
+  ],
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-required-section-population-contract.md",
+    "reports/brand-explorer-required-section-population-contract.json",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "reports/brand-explorer-required-section-source-capture-package.md",
+    "reports/brand-explorer-required-section-source-capture-package.json",
+    "reports/tribute-portfolio-targeted-extract.md",
+    "reports/tribute-portfolio-targeted-extract.json",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "live Tribute Brand Basics / Brand Profile record",
+    "live Tribute Brand Explorer Presentation rows",
+    "live Tribute Source Library records",
+    "live Tribute Partner Facts",
+    "live Curio/Kimpton/Radisson/Ascend reference rows"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-tribute-visible-content-repair-writer.js",
+    "scripts/brand-explorer-tribute-visible-content-repair-writer.mjs",
+    "docs/data-intelligence/brand-explorer-tribute-visible-content-repair-writer-v25C-4A.md",
+    "reports/brand-explorer-tribute-visible-content-repair-writer.md",
+    "reports/brand-explorer-tribute-visible-content-repair-writer.json",
+    "package.json"
+  ],
+  "taglineLeakageDiagnosis": {
+    "curioPhraseFound": true,
+    "basicsTaglineCurrent": "Stay independent.",
+    "uiSurfaces": [
+      {
+        "surface": "Brand Basics → Brand Tagline",
+        "field": "Brand Tagline",
+        "table": "Brand Setup - Brand Basics",
+        "value": "Stay independent.",
+        "isCurioLeak": false,
+        "defectSource": "copied_seed_or_reference_brand_fixture_leakage"
+      },
+      {
+        "surface": "API → brandTaglineMotto",
+        "field": "Brand Tagline",
+        "table": "Brand Setup - Brand Basics",
+        "value": "Stay independent.",
+        "isCurioLeak": false,
+        "defectSource": "brand_basics_field_maps_to_api_brandTaglineMotto"
+      },
+      {
+        "surface": "Frontend hero (brand-explorer-gold-detail.js renderHero)",
+        "field": "Brand Tagline",
+        "table": "Brand Setup - Brand Basics",
+        "value": "Stay independent.",
+        "isCurioLeak": false,
+        "defectSource": "frontend_reads_brandTaglineMotto_from_basics"
+      },
+      {
+        "surface": "Frontend presentation hero positionLine",
+        "field": "Brand Tagline",
+        "table": "Brand Setup - Brand Basics",
+        "value": "Stay independent.",
+        "isCurioLeak": false,
+        "defectSource": "frontend_reads_brandTaglineMotto_from_basics"
+      },
+      {
+        "surface": "Overview Featured Application featLead",
+        "field": "Brand Tagline",
+        "table": "Brand Setup - Brand Basics",
+        "value": "Stay independent.",
+        "isCurioLeak": false,
+        "defectSource": "frontend_reads_brandTaglineMotto_from_basics"
+      }
+    ],
+    "presentationCurioHits": [
+      {
+        "surface": "Presentation row insight.similar",
+        "recordId": "recWmQRt6rJCoIqRZ",
+        "slotKey": "insight.similar",
+        "value": "Curio Collection by Hilton",
+        "isCurioLeak": true,
+        "defectSource": "presentation_row_copy"
+      }
+    ],
+    "primaryDefectSource": "Presentation row contains Curio copy"
+  },
+  "fieldsContainingExactlyLikeNothingElse": [
+    {
+      "surface": "Presentation row insight.similar",
+      "recordId": "recWmQRt6rJCoIqRZ",
+      "slotKey": "insight.similar",
+      "value": "Curio Collection by Hilton",
+      "isCurioLeak": true,
+      "defectSource": "presentation_row_copy"
+    }
+  ],
+  "activeBrandTaglineAudit": [
+    {
+      "recordId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "tagline": "Luxury with a Wink",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "tagline": "Stay independent.",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recOzH5iAE1xEjyD0",
+      "brandName": "Comfort Inn & Suites",
+      "tagline": "Where the joy happens.",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "tagline": "Explorers Welcome",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "tagline": "Think in Blu",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recaayt9u7YYg8h7Y",
+      "brandName": "Country Inn & Suites by Choice",
+      "tagline": "Generosity you can feel.",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recd8o4k1JddhkRWW",
+      "brandName": "Quality Inn",
+      "tagline": "Get Your Money's Worth",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "tagline": "Exactly like nothing else.",
+      "hasCurioTaglineLeak": true
+    },
+    {
+      "recordId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "tagline": "Find your travel story.",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recmKqo7M7mLZgRqQ",
+      "brandName": "Radisson RED by Choice",
+      "tagline": "Enjoy It!",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recqkkrsevi4r9ibj",
+      "brandName": "Everhome Suites",
+      "tagline": "A Fresh Take on Midscale",
+      "hasCurioTaglineLeak": false
+    },
+    {
+      "recordId": "recywbx1YQSTCPqW1",
+      "brandName": "Radisson by Choice",
+      "tagline": "Where New Feels Known",
+      "hasCurioTaglineLeak": false
+    }
+  ],
+  "proposedTaglineOrPositioning": {
+    "current": "Stay independent.",
+    "proposed": "Stay independent.",
+    "officialTaglineConfirmed": true,
+    "isPositioningCopyNotTagline": false,
+    "sourceFactKey": "be.positioning.tagline",
+    "sourceNote": "Directly stated on Marriott Tribute Portfolio consumer materials; extracted in tribute-portfolio-targeted-extract."
+  },
+  "relativePositioningCurrentState": {
+    "portfolioContextRow": {
+      "exists": true,
+      "recordId": "rec03qcBLx0q6LLDT",
+      "title": "2",
+      "body": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hotels as an independent-character path for hotels with distinctive local style and programming. Useful when owners want Marriott Bonvoy, global distribution, and commercial systems without a standardized full-service flag conversion—not select-service, extended-stay, or rigid prototype-led rebrands.",
+      "relativePositioningEmpty": false
+    },
+    "legacyRelativeRow": null,
+    "empty": false
+  },
+  "proposedRelativePositioning": {
+    "slotKey": "overview.portfolio_context",
+    "servedVia": "overview.portfolio_context Body (frontend relativePositioningFromBrand)",
+    "body": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hotels as an independent-character path for hotels with distinctive local style and programming. Useful when owners want Marriott Bonvoy, global distribution, and commercial systems without a standardized full-service flag conversion—not select-service, extended-stay, or rigid prototype-led rebrands."
+  },
+  "portfolioContextCurrentState": {
+    "exists": true,
+    "recordId": "rec03qcBLx0q6LLDT",
+    "title": "2",
+    "body": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hotels as an independent-character path for hotels with distinctive local style and programming. Useful when owners want Marriott Bonvoy, global distribution, and commercial systems without a standardized full-service flag conversion—not select-service, extended-stay, or rigid prototype-led rebrands.",
+    "relativePositioningEmpty": false
+  },
+  "proposedPortfolioContext": {
+    "slotKey": "overview.portfolio_context",
+    "recordId": "rec03qcBLx0q6LLDT",
+    "action": "update",
+    "fields": {
+      "Slot Key": "overview.portfolio_context",
+      "Title": "2",
+      "Body": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hotels as an independent-character path for hotels with distinctive local style and programming. Useful when owners want Marriott Bonvoy, global distribution, and commercial systems without a standardized full-service flag conversion—not select-service, extended-stay, or rigid prototype-led rebrands.",
+      "Brand Name": "Tribute Portfolio",
+      "Brand": [
+        "recCvV0PuZOi8c3hC"
+      ],
+      "Active": true,
+      "Sort Order": 0
+    },
+    "relativePositioningBody": "Lifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hotels as an independent-character path for hotels with distinctive local style and programming. Useful when owners want Marriott Bonvoy, global distribution, and commercial systems without a standardized full-service flag conversion—not select-service, extended-stay, or rigid prototype-led rebrands.",
+    "needsUpdate": false
+  },
+  "valueCreationScenarioCurrentState": [
+    {
+      "slotKey": "valueOwners.scenario.1",
+      "recordId": "rec8fstnbm3nEI33K",
+      "title": "Independent Reflag",
+      "body": "Independent or soft-brand full-service hotels that already carry local story, design point of view, and F&B complexity—Tribute adds Marriott Bonvoy, reservations, and commercial scale while preserving individuality. Best when the asset can support collection standards without erasing neighborhood character.",
+      "titleOnly": false
+    },
+    {
+      "slotKey": "valueOwners.scenario.2",
+      "recordId": "recqFE5LwzfAskOBC",
+      "title": "Tired Upscale Asset",
+      "body": "Mature upscale or upper-mid assets needing refresh capital and relevancy—Tribute reframing can reposition tired product around character, culinary, and experiential storytelling while unlocking Marriott affiliation economics versus standalone independent operation.",
+      "titleOnly": false
+    },
+    {
+      "slotKey": "valueOwners.scenario.3",
+      "recordId": "recZ0Rct6ZNhHOBOr",
+      "title": "Markets With Strong Brand Presence",
+      "body": "Gateway and regional markets where Marriott distribution and loyalty density matter—Tribute lets sponsors place a character-led hotel inside an established Marriott commercial stack without defaulting to a conventional Marriott Hotels & Resorts or select-service template.",
+      "titleOnly": false
+    },
+    {
+      "slotKey": "valueOwners.scenario.4",
+      "recordId": "recNrThpTenftVyHM",
+      "title": "Third-Party Operator–Led",
+      "body": "Assets run by experienced third-party operators who can execute collection design compliance, F&B complexity, and Marriott systems cutover—Tribute fits when management partnership is in place and the sponsor needs brand affiliation for financing, sales, and loyalty lift.",
+      "titleOnly": false
+    }
+  ],
+  "proposedFourScenarioDescriptions": [
+    {
+      "slotKey": "valueOwners.scenario.1",
+      "title": "Independent Reflag",
+      "body": "Independent or soft-brand full-service hotels that already carry local story, design point of view, and F&B complexity—Tribute adds Marriott Bonvoy, reservations, and commercial scale while preserving individuality. Best when the asset can support collection standards without erasing neighborhood character."
+    },
+    {
+      "slotKey": "valueOwners.scenario.2",
+      "title": "Tired Upscale Asset",
+      "body": "Mature upscale or upper-mid assets needing refresh capital and relevancy—Tribute reframing can reposition tired product around character, culinary, and experiential storytelling while unlocking Marriott affiliation economics versus standalone independent operation."
+    },
+    {
+      "slotKey": "valueOwners.scenario.3",
+      "title": "Markets With Strong Brand Presence",
+      "body": "Gateway and regional markets where Marriott distribution and loyalty density matter—Tribute lets sponsors place a character-led hotel inside an established Marriott commercial stack without defaulting to a conventional Marriott Hotels & Resorts or select-service template."
+    },
+    {
+      "slotKey": "valueOwners.scenario.4",
+      "title": "Third-Party Operator–Led",
+      "body": "Assets run by experienced third-party operators who can execute collection design compliance, F&B complexity, and Marriott systems cutover—Tribute fits when management partnership is in place and the sponsor needs brand affiliation for financing, sales, and loyalty lift."
+    }
+  ],
+  "rowsWouldUpdate": [],
+  "rowsWouldCreate": [],
+  "fieldsWouldUpdate": [],
+  "loyaltyRowsUntouched": true,
+  "openingsRowsUntouched": true,
+  "momentumRowsUntouched": true,
+  "imagesUntouched": true,
+  "companyValidatedUntouched": true,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedAfter": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "nonTargetSectionsModified": false,
+  "airtableModified": false,
+  "applyGates": {
+    "apply": false,
+    "approveBatch": false,
+    "founderReviewed": false,
+    "noCurioLeakageConfirmed": false,
+    "ready": false,
+    "canApply": false
+  },
+  "applyBlockers": [],
+  "applyResults": null,
+  "exactApplyCommand": "npm run brand-explorer-tribute-visible-content-repair-writer -- --brand tribute-portfolio --apply --approve-brand-explorer-v25C-4A-visible-content-repair --founder-reviewed-tribute-positioning-copy --confirm-no-curio-tagline-leakage",
+  "idempotentAfterApply": true,
+  "doesNotDo": [
+    "Invent an official tagline without source support",
+    "Modify loyalty, openings, or momentum rows",
+    "Change images or Company Validated",
+    "Imply Marriott validated anything",
+    "Modify unrelated Brand Basics fields"
+  ]
+}

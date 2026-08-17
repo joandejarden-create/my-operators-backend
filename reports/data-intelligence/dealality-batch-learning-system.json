@@ -1,0 +1,168 @@
+{
+  "version": "dealality-batch-learning-system-v1",
+  "generated_at": "2026-08-09T18:45:35.650Z",
+  "status": "dealality_batch_learning_system_ready",
+  "process_actually_learned": true,
+  "airtable_writes": false,
+  "brand_explorer_patches": false,
+  "ledger_validation": {
+    "ok": true,
+    "errors": [],
+    "entry_count": 62
+  },
+  "last_census_batch": {
+    "batch_name": "production_census_schema_v114_rooms_keys_provenance",
+    "date": "2026-08-05",
+    "source_report": "reports/research-engine-v2/production-census-schema-v114-rooms-keys-provenance-apply.json",
+    "report_mtime": "2026-08-09T18:42:18.793Z"
+  },
+  "last_brand_explorer_batch": {
+    "batch_name": "62_webhound_public_tabs_batch_c_owner_facing_claims",
+    "date": "2026-08-05",
+    "source_report": "reports/brand-explorer/brand-explorer-62-webhound-public-tabs-batch-c-owner-facing-claims.json",
+    "report_mtime": "2026-08-09T17:59:40.064Z"
+  },
+  "code_rules_added": 16,
+  "validation_rules_added": 27,
+  "source_patterns_added": 7,
+  "fixtures_added": 12,
+  "tests_added": 29,
+  "unresolved_webhound_candidates": 2,
+  "unresolved_steward_cases": 3,
+  "proposed_open": 11,
+  "module_hooks": [
+    {
+      "path": "lib/research-engine-v2/production-census-coordinate-resolver.js",
+      "exists": true
+    },
+    {
+      "path": "lib/research-engine-v2/production-census-address-geocode-resolver.js",
+      "exists": true
+    },
+    {
+      "path": "lib/research-engine-v2/production-census-geocoding-providers.js",
+      "exists": true
+    },
+    {
+      "path": "lib/research-engine-v2/marriott-hqv-coordinate-client.js",
+      "exists": true
+    },
+    {
+      "path": "lib/partner-intelligence/brand-explorer-62-background-validation.js",
+      "exists": true
+    },
+    {
+      "path": "lib/data-intelligence/dealality-batch-learning-system.js",
+      "exists": true
+    }
+  ],
+  "reports_present": {
+    "census_first_pass_apply": true,
+    "census_coord_resolver": true,
+    "census_address_geocode": true,
+    "webhound_closed": true,
+    "be_background_validation": true,
+    "be_safe_text_cleanup": true,
+    "be_safe_text_cleanup_1A_apply": true,
+    "be_safe_text_cleanup_1B_apply": true,
+    "be_mgallery_quality_minor_apply": true,
+    "be_62_quality_clean_freeze": true,
+    "be_brand_setup_child_table_validation_62": true,
+    "be_62_webhound_claim_validation": true,
+    "be_62_webhound_airtable_reconciliation_v1": true,
+    "be_62_webhound_claim_patch_batch_a": true,
+    "be_62_webhound_public_tabs_batch_c": true
+  },
+  "checklist": [
+    {
+      "id": "reusable_pattern",
+      "question": "Was a reusable pattern identified?"
+    },
+    {
+      "id": "code_or_documented_nonreusable",
+      "question": "Was code changed, or was the pattern documented as non-reusable?"
+    },
+    {
+      "id": "fixture_added",
+      "question": "Was a fixture added?"
+    },
+    {
+      "id": "regression_test_added",
+      "question": "Was a regression test added?"
+    },
+    {
+      "id": "next_dry_run_improved",
+      "question": "Did the next dry-run improve?"
+    },
+    {
+      "id": "false_positives_decreased",
+      "question": "Did false positives decrease?"
+    },
+    {
+      "id": "blocked_records_decreased",
+      "question": "Did blocked records decrease?"
+    },
+    {
+      "id": "webhound_dependency_decreased",
+      "question": "Did Webhound dependency decrease?"
+    },
+    {
+      "id": "no_unapproved_writes",
+      "question": "Did the change avoid production writes without approval?"
+    },
+    {
+      "id": "boundaries_intact",
+      "question": "Did Brand Explorer / Census boundaries remain intact?"
+    }
+  ],
+  "webhound_rules": {
+    "role": "pattern_discovery_sidecar_only",
+    "sample_size_normal": {
+      "min": 10,
+      "max": 25
+    },
+    "may_write_airtable": false,
+    "may_patch_brand_explorer": false,
+    "must_become_code_before_trust": true,
+    "allowed_for": [
+      "source_discovery_pattern_learning",
+      "hard_case_coordinate_signature_harvest"
+    ],
+    "not_for": [
+      "full_census_sweep",
+      "bulk_coordinate_writes",
+      "production_apply_path",
+      "owner_operator_rooms_dates",
+      "census_population_from_webhound",
+      "source_discovery_apply"
+    ]
+  },
+  "summary": {
+    "entry_count": 62,
+    "by_process": {
+      "census": 45,
+      "brand_explorer": 17
+    },
+    "by_status": {
+      "validated": 9,
+      "proposed": 11,
+      "implemented": 36,
+      "steward_only": 3,
+      "Webhound_only": 2,
+      "rejected": 1
+    },
+    "by_type": {
+      "learned_validation_rule": 27,
+      "learned_block_reason": 6,
+      "learned_source_pattern": 7,
+      "learned_code_rule": 16,
+      "steward_review_case": 3,
+      "Webhound_candidate": 2,
+      "do_not_learn_noise": 1
+    },
+    "implemented_or_validated": 45,
+    "unresolved_steward": 3,
+    "unresolved_webhound": 2,
+    "proposed_open": 11
+  }
+}

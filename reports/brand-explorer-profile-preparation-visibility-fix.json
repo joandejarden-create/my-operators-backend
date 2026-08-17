@@ -1,0 +1,1781 @@
+{
+  "version": "profile-preparation-visibility-fix-v1",
+  "generatedAt": "2026-07-22T17:25:52.696Z",
+  "dryRun": false,
+  "visibilityRestoredReleaseSlugs": [
+    "ascend",
+    "comfort-inn-suites",
+    "curio-collection",
+    "tribute-portfolio"
+  ],
+  "primaryReleaseSlugsUntouched": [
+    "everhome-suites",
+    "kimpton",
+    "radisson-individuals-by-choice",
+    "design-hotels",
+    "hotel-indigo",
+    "mgallery-collection",
+    "small-luxury-hotels-of-the-world"
+  ],
+  "note": "PRIMARY_RELEASE_SLUGS left unchanged; visibility restored via code cohort + optional Brand Basics release fields.",
+  "auditSummary": {
+    "brandCount": 17,
+    "profileInPreparationCount": 7,
+    "byClassification": {
+      "legacy_approved_pending_migration": 4,
+      "content_remediation_required": 3,
+      "image_remediation_required": 4,
+      "already_full_profile": 6
+    },
+    "readyToRestore": 0,
+    "pendingMigration": 4,
+    "imageRemediation": 4,
+    "contentRemediation": 3,
+    "founderPreviewRequired": 0,
+    "noLegacyEvidence": 0
+  },
+  "plannedRestores": [
+    {
+      "brandName": "Ascend Hotel Collection",
+      "slug": "ascend",
+      "brandBasicsRecordId": "reclkgOzvAcBheUSo",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-ascend.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 4,
+      "blockers": [
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "legacy_approved_pending_migration",
+      "recommendedAction": "restore_full_profile_visibility",
+      "migrationNote": "Legacy approved with full-profile visibility via reconciliation unlock; pending Active Profile field migration.",
+      "companyValidatedUntouched": true,
+      "inNamedRestoreCohort": true,
+      "willRestore": true,
+      "patch": {
+        "table": "Brand Setup - Brand Basics",
+        "action": "PATCH",
+        "recordId": "reclkgOzvAcBheUSo",
+        "brandSlug": "ascend",
+        "fields": {
+          "Active Profile Approved": true,
+          "Ready for Active Profile": true,
+          "Active Profile Approved Date": "2026-07-22",
+          "Founder Visual Review Pass": true
+        },
+        "reason": "profile_preparation_visibility_restore",
+        "codeCohort": true,
+        "fieldMapping": {
+          "Active Profile Approved": "Brand Basics.Active Profile Approved",
+          "Ready for Active Profile": "Brand Basics.Ready for Active Profile",
+          "Active Profile Approved Date": "Brand Basics.Active Profile Approved Date",
+          "Founder Visual Review Pass": "Brand Basics.Founder Visual Review Pass"
+        }
+      },
+      "validation": {
+        "pass": true,
+        "failedChecks": []
+      }
+    },
+    {
+      "brandName": "Comfort Inn & Suites",
+      "slug": "comfort-inn-suites",
+      "brandBasicsRecordId": "recOzH5iAE1xEjyD0",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 5,
+      "blockers": [
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "legacy_approved_pending_migration",
+      "recommendedAction": "restore_full_profile_visibility",
+      "migrationNote": "Legacy approved with full-profile visibility via reconciliation unlock; pending Active Profile field migration.",
+      "companyValidatedUntouched": true,
+      "inNamedRestoreCohort": true,
+      "willRestore": true,
+      "patch": {
+        "table": "Brand Setup - Brand Basics",
+        "action": "PATCH",
+        "recordId": "recOzH5iAE1xEjyD0",
+        "brandSlug": "comfort-inn-suites",
+        "fields": {
+          "Active Profile Approved": true,
+          "Ready for Active Profile": true,
+          "Active Profile Approved Date": "2026-07-22",
+          "Founder Visual Review Pass": true
+        },
+        "reason": "profile_preparation_visibility_restore",
+        "codeCohort": true,
+        "fieldMapping": {
+          "Active Profile Approved": "Brand Basics.Active Profile Approved",
+          "Ready for Active Profile": "Brand Basics.Ready for Active Profile",
+          "Active Profile Approved Date": "Brand Basics.Active Profile Approved Date",
+          "Founder Visual Review Pass": "Brand Basics.Founder Visual Review Pass"
+        }
+      },
+      "validation": {
+        "pass": true,
+        "failedChecks": []
+      }
+    },
+    {
+      "brandName": "Curio Collection by Hilton",
+      "slug": "curio-collection",
+      "brandBasicsRecordId": "receQkxgjlezsc1xg",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-curio-collection.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 5,
+      "blockers": [
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "legacy_approved_pending_migration",
+      "recommendedAction": "restore_full_profile_visibility",
+      "migrationNote": "Legacy approved with full-profile visibility via reconciliation unlock; pending Active Profile field migration.",
+      "companyValidatedUntouched": true,
+      "inNamedRestoreCohort": true,
+      "willRestore": true,
+      "patch": {
+        "table": "Brand Setup - Brand Basics",
+        "action": "PATCH",
+        "recordId": "receQkxgjlezsc1xg",
+        "brandSlug": "curio-collection",
+        "fields": {
+          "Active Profile Approved": true,
+          "Ready for Active Profile": true,
+          "Active Profile Approved Date": "2026-07-22",
+          "Founder Visual Review Pass": true
+        },
+        "reason": "profile_preparation_visibility_restore",
+        "codeCohort": true,
+        "fieldMapping": {
+          "Active Profile Approved": "Brand Basics.Active Profile Approved",
+          "Ready for Active Profile": "Brand Basics.Ready for Active Profile",
+          "Active Profile Approved Date": "Brand Basics.Active Profile Approved Date",
+          "Founder Visual Review Pass": "Brand Basics.Founder Visual Review Pass"
+        }
+      },
+      "validation": {
+        "pass": true,
+        "failedChecks": []
+      }
+    },
+    {
+      "brandName": "Tribute Portfolio",
+      "slug": "tribute-portfolio",
+      "brandBasicsRecordId": "recCvV0PuZOi8c3hC",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-tribute-portfolio.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 5,
+      "blockers": [
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "legacy_approved_pending_migration",
+      "recommendedAction": "restore_full_profile_visibility",
+      "migrationNote": "Legacy approved with full-profile visibility via reconciliation unlock; pending Active Profile field migration.",
+      "companyValidatedUntouched": true,
+      "inNamedRestoreCohort": true,
+      "willRestore": true,
+      "patch": {
+        "table": "Brand Setup - Brand Basics",
+        "action": "PATCH",
+        "recordId": "recCvV0PuZOi8c3hC",
+        "brandSlug": "tribute-portfolio",
+        "fields": {
+          "Active Profile Approved": true,
+          "Ready for Active Profile": true,
+          "Active Profile Approved Date": "2026-07-22",
+          "Founder Visual Review Pass": true
+        },
+        "reason": "profile_preparation_visibility_restore",
+        "codeCohort": true,
+        "fieldMapping": {
+          "Active Profile Approved": "Brand Basics.Active Profile Approved",
+          "Ready for Active Profile": "Brand Basics.Ready for Active Profile",
+          "Active Profile Approved Date": "Brand Basics.Active Profile Approved Date",
+          "Founder Visual Review Pass": "Brand Basics.Founder Visual Review Pass"
+        }
+      },
+      "validation": {
+        "pass": true,
+        "failedChecks": []
+      }
+    }
+  ],
+  "brandResults": [
+    {
+      "brandName": "Ascend Hotel Collection",
+      "slug": "ascend",
+      "brandBasicsRecordId": "reclkgOzvAcBheUSo",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-ascend.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 4,
+      "blockers": [
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "legacy_approved_pending_migration",
+      "recommendedAction": "restore_full_profile_visibility",
+      "migrationNote": "Legacy approved with full-profile visibility via reconciliation unlock; pending Active Profile field migration.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Autograph Collection",
+      "slug": "autograph-collection",
+      "brandBasicsRecordId": "recEJCTDj1zrsjPM6",
+      "currentOsState": "hidden_incomplete",
+      "currentDisplayState": "hidden_incomplete",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "presentation_rows",
+        "scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "gallery_images_0_of_6",
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "content_remediation_required",
+      "recommendedAction": "content_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current content gates (missing presentation rows).",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Comfort Inn & Suites",
+      "slug": "comfort-inn-suites",
+      "brandBasicsRecordId": "recOzH5iAE1xEjyD0",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 5,
+      "blockers": [
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "legacy_approved_pending_migration",
+      "recommendedAction": "restore_full_profile_visibility",
+      "migrationNote": "Legacy approved with full-profile visibility via reconciliation unlock; pending Active Profile field migration.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Country Inn & Suites by Choice",
+      "slug": "country-inn-suites",
+      "brandBasicsRecordId": "recaayt9u7YYg8h7Y",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 9,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "image_remediation_required",
+      "recommendedAction": "image_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current image/content/source gates.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Curio Collection by Hilton",
+      "slug": "curio-collection",
+      "brandBasicsRecordId": "receQkxgjlezsc1xg",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-curio-collection.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 5,
+      "blockers": [
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "legacy_approved_pending_migration",
+      "recommendedAction": "restore_full_profile_visibility",
+      "migrationNote": "Legacy approved with full-profile visibility via reconciliation unlock; pending Active Profile field migration.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Design Hotels",
+      "slug": "design-hotels",
+      "brandBasicsRecordId": "rec02zPClpWUTCyXM",
+      "currentOsState": "active_profile_ready",
+      "currentDisplayState": "active_profile_ready",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true,
+        "companyValidated": false,
+        "historicalApproved": false,
+        "legacyHistoricalApproved": false
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": false,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": false
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": true,
+        "inLegacySeedCohort": false,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 3,
+      "blockers": [
+        "not_company_validated"
+      ],
+      "classification": "already_full_profile",
+      "recommendedAction": "no_action",
+      "migrationNote": null,
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Everhome Suites",
+      "slug": "everhome-suites",
+      "brandBasicsRecordId": "recqkkrsevi4r9ibj",
+      "currentOsState": "active_profile_ready",
+      "currentDisplayState": "active_profile_ready",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true,
+        "companyValidated": false,
+        "historicalApproved": false,
+        "legacyHistoricalApproved": false
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": false,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-everhome-suites.json"
+        ],
+        "legacyHistoricalApprovedFlag": false
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": true,
+        "inLegacySeedCohort": false,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 4,
+      "blockers": [
+        "not_company_validated"
+      ],
+      "classification": "already_full_profile",
+      "recommendedAction": "no_action",
+      "migrationNote": null,
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Handwritten Collection",
+      "slug": "handwritten-collection",
+      "brandBasicsRecordId": "rec7hTXwMRC81EPqz",
+      "currentOsState": "hidden_incomplete",
+      "currentDisplayState": "hidden_incomplete",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "presentation_rows",
+        "scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "gallery_images_0_of_6",
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "content_remediation_required",
+      "recommendedAction": "content_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current content gates (missing presentation rows).",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Hotel Indigo",
+      "slug": "hotel-indigo",
+      "brandBasicsRecordId": "recegXrqaPiSLGCIe",
+      "currentOsState": "active_profile_ready",
+      "currentDisplayState": "active_profile_ready",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true,
+        "companyValidated": false,
+        "historicalApproved": false,
+        "legacyHistoricalApproved": false
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": false,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-live-golden-quality-rebuild.json"
+        ],
+        "legacyHistoricalApprovedFlag": false
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": true,
+        "inLegacySeedCohort": false,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 3,
+      "blockers": [
+        "not_company_validated"
+      ],
+      "classification": "already_full_profile",
+      "recommendedAction": "no_action",
+      "migrationNote": null,
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Kimpton Hotels",
+      "slug": "kimpton",
+      "brandBasicsRecordId": "recCKuXCmGvxHPfb3",
+      "currentOsState": "active_profile_ready",
+      "currentDisplayState": "active_profile_ready",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true,
+        "companyValidated": false,
+        "historicalApproved": false,
+        "legacyHistoricalApproved": false
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": false,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-kimpton.json"
+        ],
+        "legacyHistoricalApprovedFlag": false
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": true,
+        "inLegacySeedCohort": false,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 5,
+      "blockers": [
+        "not_company_validated"
+      ],
+      "classification": "already_full_profile",
+      "recommendedAction": "no_action",
+      "migrationNote": null,
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "MGallery Collection",
+      "slug": "mgallery-collection",
+      "brandBasicsRecordId": "recrWCD1LMqu864oU",
+      "currentOsState": "active_profile_ready",
+      "currentDisplayState": "active_profile_ready",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true,
+        "companyValidated": false,
+        "historicalApproved": false,
+        "legacyHistoricalApproved": false
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": false,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-image-uniqueness-audit.json",
+          "brand-explorer-live-golden-quality-rebuild.json"
+        ],
+        "legacyHistoricalApprovedFlag": false
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": true,
+        "inLegacySeedCohort": false,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 3,
+      "blockers": [
+        "not_company_validated"
+      ],
+      "classification": "already_full_profile",
+      "recommendedAction": "no_action",
+      "migrationNote": null,
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Radisson Individuals by Choice",
+      "slug": "radisson-individuals-by-choice",
+      "brandBasicsRecordId": "recRyvM8OmLlDj9G7",
+      "currentOsState": "draft_applied_with_defects",
+      "currentDisplayState": "draft_applied_with_defects",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true,
+        "companyValidated": false,
+        "historicalApproved": false,
+        "legacyHistoricalApproved": false
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": false,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-radisson-individuals-by-choice.json"
+        ],
+        "legacyHistoricalApprovedFlag": false
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": true,
+        "inLegacySeedCohort": false,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "image_uniqueness"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 2,
+      "blockers": [
+        "image_uniqueness_fail",
+        "not_company_validated"
+      ],
+      "classification": "image_remediation_required",
+      "recommendedAction": "image_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current image/content/source gates.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Small Luxury Hotels of the World",
+      "slug": "small-luxury-hotels-of-the-world",
+      "brandBasicsRecordId": "recjjSnY2opb8P4DG",
+      "currentOsState": "active_profile_ready",
+      "currentDisplayState": "active_profile_ready",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true,
+        "companyValidated": false,
+        "historicalApproved": false,
+        "legacyHistoricalApproved": false
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": false,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-image-uniqueness-audit.json",
+          "brand-explorer-live-golden-quality-rebuild.json"
+        ],
+        "legacyHistoricalApprovedFlag": false
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": true,
+        "inLegacySeedCohort": false,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 3,
+      "blockers": [
+        "not_company_validated"
+      ],
+      "classification": "already_full_profile",
+      "recommendedAction": "no_action",
+      "migrationNote": null,
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Suburban Studios",
+      "slug": "suburban-studios",
+      "brandBasicsRecordId": "reclcjg5Foa9Vs5TC",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-suburban-studios.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "gallery_images_0_of_6",
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "image_remediation_required",
+      "recommendedAction": "image_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current image/content/source gates.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Tribute Portfolio",
+      "slug": "tribute-portfolio",
+      "brandBasicsRecordId": "recCvV0PuZOi8c3hC",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": true,
+      "currentExternalBehavior": "full_profile",
+      "showsProfileInPreparation": false,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-tribute-portfolio.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 5,
+      "blockers": [
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "legacy_approved_pending_migration",
+      "recommendedAction": "restore_full_profile_visibility",
+      "migrationNote": "Legacy approved with full-profile visibility via reconciliation unlock; pending Active Profile field migration.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Vignette Collection",
+      "slug": "vignette-collection",
+      "brandBasicsRecordId": "recDwzv86TWnz2gGB",
+      "currentOsState": "hidden_incomplete",
+      "currentDisplayState": "hidden_incomplete",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "presentation_rows",
+        "scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "gallery_images_0_of_6",
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "content_remediation_required",
+      "recommendedAction": "content_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current content gates (missing presentation rows).",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "WoodSpring Suites",
+      "slug": "woodspring-suites",
+      "brandBasicsRecordId": "recsOd51NzRPYsMko",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-woodspring-suites.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 3,
+      "propertyExampleDistinctCount": 3,
+      "blockers": [
+        "missing_scenario_rows",
+        "gallery_images_3_of_6",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "image_remediation_required",
+      "recommendedAction": "image_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current image/content/source gates.",
+      "companyValidatedUntouched": true
+    }
+  ],
+  "profileInPreparationBrands": [
+    {
+      "brandName": "Autograph Collection",
+      "slug": "autograph-collection",
+      "brandBasicsRecordId": "recEJCTDj1zrsjPM6",
+      "currentOsState": "hidden_incomplete",
+      "currentDisplayState": "hidden_incomplete",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "presentation_rows",
+        "scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "gallery_images_0_of_6",
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "content_remediation_required",
+      "recommendedAction": "content_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current content gates (missing presentation rows).",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Country Inn & Suites by Choice",
+      "slug": "country-inn-suites",
+      "brandBasicsRecordId": "recaayt9u7YYg8h7Y",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 9,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "image_remediation_required",
+      "recommendedAction": "image_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current image/content/source gates.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Handwritten Collection",
+      "slug": "handwritten-collection",
+      "brandBasicsRecordId": "rec7hTXwMRC81EPqz",
+      "currentOsState": "hidden_incomplete",
+      "currentDisplayState": "hidden_incomplete",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "presentation_rows",
+        "scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "gallery_images_0_of_6",
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "content_remediation_required",
+      "recommendedAction": "content_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current content gates (missing presentation rows).",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Radisson Individuals by Choice",
+      "slug": "radisson-individuals-by-choice",
+      "brandBasicsRecordId": "recRyvM8OmLlDj9G7",
+      "currentOsState": "draft_applied_with_defects",
+      "currentDisplayState": "draft_applied_with_defects",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true,
+        "companyValidated": false,
+        "historicalApproved": false,
+        "legacyHistoricalApproved": false
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": false,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-radisson-individuals-by-choice.json"
+        ],
+        "legacyHistoricalApprovedFlag": false
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": true,
+        "activeProfileApproved": true,
+        "founderVisualReviewPass": true
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": true,
+        "inLegacySeedCohort": false,
+        "inActiveProfileConfig": false
+      },
+      "missingGates": [
+        "image_uniqueness"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": true,
+      "galleryDistinctCount": 6,
+      "propertyExampleDistinctCount": 2,
+      "blockers": [
+        "image_uniqueness_fail",
+        "not_company_validated"
+      ],
+      "classification": "image_remediation_required",
+      "recommendedAction": "image_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current image/content/source gates.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Suburban Studios",
+      "slug": "suburban-studios",
+      "brandBasicsRecordId": "reclcjg5Foa9Vs5TC",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-suburban-studios.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "gallery_images_0_of_6",
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "image_remediation_required",
+      "recommendedAction": "image_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current image/content/source gates.",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "Vignette Collection",
+      "slug": "vignette-collection",
+      "brandBasicsRecordId": "recDwzv86TWnz2gGB",
+      "currentOsState": "hidden_incomplete",
+      "currentDisplayState": "hidden_incomplete",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": false,
+        "reportSources": [],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "presentation_rows",
+        "scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 0,
+      "propertyExampleDistinctCount": 0,
+      "blockers": [
+        "missing_presentation_rows",
+        "missing_scenario_rows",
+        "gallery_images_0_of_6",
+        "property_examples_0_of_3",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "content_remediation_required",
+      "recommendedAction": "content_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current content gates (missing presentation rows).",
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandName": "WoodSpring Suites",
+      "slug": "woodspring-suites",
+      "brandBasicsRecordId": "recsOd51NzRPYsMko",
+      "currentOsState": "legacy_approved_pending_migration",
+      "currentDisplayState": "legacy_approved_pending_migration",
+      "shouldRenderFullProfile": false,
+      "currentExternalBehavior": "profile_in_preparation_shell",
+      "showsProfileInPreparation": true,
+      "historicalStatusFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false,
+        "companyValidated": false,
+        "historicalApproved": true,
+        "legacyHistoricalApproved": true
+      },
+      "legacyApprovalEvidence": {
+        "seedNamed": true,
+        "historicalReportReady": true,
+        "reportSources": [
+          "brand-explorer-complete-build-woodspring-suites.json"
+        ],
+        "legacyHistoricalApprovedFlag": true
+      },
+      "activeProfileFields": {
+        "readyForActiveProfile": false,
+        "activeProfileApproved": false,
+        "founderVisualReviewPass": false
+      },
+      "releaseCohortMembership": {
+        "inPrimaryReleaseSlugs": false,
+        "inLegacySeedCohort": true,
+        "inActiveProfileConfig": true
+      },
+      "missingGates": [
+        "scenario_rows",
+        "visual_asset_counts",
+        "image_uniqueness",
+        "image_role_match",
+        "active_profile_approved",
+        "founder_visual_review_pass",
+        "primary_release_cohort"
+      ],
+      "imageUniquenessPass": false,
+      "imageRoleMatchPass": false,
+      "galleryDistinctCount": 3,
+      "propertyExampleDistinctCount": 3,
+      "blockers": [
+        "missing_scenario_rows",
+        "gallery_images_3_of_6",
+        "image_uniqueness_fail",
+        "image_role_match_fail",
+        "external_owner_copy_fail",
+        "not_company_validated",
+        "founder_visual_review_not_passed",
+        "active_profile_not_approved",
+        "legacy_approved_pending_migration"
+      ],
+      "classification": "image_remediation_required",
+      "recommendedAction": "image_remediation_required",
+      "migrationNote": "Legacy approved, but blocked by current image/content/source gates.",
+      "companyValidatedUntouched": true
+    }
+  ],
+  "summary": {
+    "byClassification": {
+      "legacy_approved_pending_migration": 4,
+      "content_remediation_required": 3,
+      "image_remediation_required": 4,
+      "already_full_profile": 6
+    },
+    "restorePlannedCount": 4,
+    "restoredProfiles": [
+      "ascend",
+      "comfort-inn-suites",
+      "curio-collection",
+      "tribute-portfolio"
+    ],
+    "migrationReadyProfiles": [
+      "ascend",
+      "comfort-inn-suites",
+      "curio-collection",
+      "tribute-portfolio"
+    ],
+    "imageRemediationProfiles": [
+      "country-inn-suites",
+      "radisson-individuals-by-choice",
+      "suburban-studios",
+      "woodspring-suites"
+    ],
+    "contentRemediationProfiles": [
+      "autograph-collection",
+      "handwritten-collection",
+      "vignette-collection"
+    ],
+    "noEvidenceProfiles": [],
+    "founderPreviewRequired": []
+  },
+  "forbiddenWrites": {
+    "companyValidated": false,
+    "companyValidationDate": false,
+    "sourceLibraryStatus": false,
+    "registryApproval": false,
+    "ownerFacingContent": false,
+    "imageReassignment": false
+  }
+}

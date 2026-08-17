@@ -1,0 +1,4588 @@
+{
+  "plannerVersion": "v28B",
+  "v28BExists": true,
+  "generatedAt": "2026-07-10T03:20:34.325Z",
+  "mode": "dry-run",
+  "dryRun": true,
+  "airtableModified": false,
+  "companyValidatedUntouched": true,
+  "companyValidationDateUntouched": true,
+  "filesRead": [
+    "AGENTS.md",
+    "lib/partner-intelligence/brand-explorer-portfolio-mix-context-normalization-writer.js",
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "lib/dealality-master-todo/founder-project-plan-explorer-brand-inventory.js",
+    "docs/brand-explorer-presentation-slots.md",
+    "live Brand Setup - Brand Basics (read-only)",
+    "live Brand Setup - Brand Explorer Presentation (read-only)"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-expansion-backlog-planner.js",
+    "scripts/brand-explorer-expansion-backlog-planner.mjs",
+    "docs/data-intelligence/brand-explorer-expansion-backlog-planner-v28B.md",
+    "reports/brand-explorer-expansion-backlog-planner.md",
+    "reports/brand-explorer-expansion-backlog-planner.json",
+    "package.json"
+  ],
+  "factoryBatchPolicy": {
+    "continueOnPendingImageReview": true,
+    "blockActivationUntilImageApproval": true,
+    "description": "Factory stages continue across brands when image approval is pending; image-dependent activation remains blocked per brand until images are approved."
+  },
+  "activeBrandCount": 6,
+  "backlogTotal": 56,
+  "existingBrandBasicsCount": 56,
+  "newBrandBasicsNeeded": 0,
+  "brandsWithExplorerPresentation": 4,
+  "totalBrandBasicsInBase": 257,
+  "totalPresentationRowsInBase": 5150,
+  "proposedWaves": [
+    {
+      "wave": 1,
+      "label": "Wave 1 — Soft-collection pilots (closest to active six)",
+      "brands": [
+        {
+          "brandName": "Radisson Individuals by Choice",
+          "proposedSlug": "radisson-individuals-by-choice",
+          "priority": 115,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Tapestry Collection by Hilton",
+          "proposedSlug": "tapestry-collection-by-hilton",
+          "priority": 108,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Autograph Collection",
+          "proposedSlug": "autograph-collection",
+          "priority": 108,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Design Hotels",
+          "proposedSlug": "design-hotels",
+          "priority": 100,
+          "existsInBrandSetup": true
+        }
+      ],
+      "brandCount": 4,
+      "slugs": [
+        "radisson-individuals-by-choice",
+        "tapestry-collection-by-hilton",
+        "autograph-collection",
+        "design-hotels"
+      ],
+      "dryRunCommand": "npm run brand-explorer-complete-build -- --brands radisson-individuals-by-choice,tapestry-collection-by-hilton,autograph-collection,design-hotels --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 2,
+      "label": "Wave 2 — Marriott ladder (select, extended, lifestyle)",
+      "brands": [
+        {
+          "brandName": "Courtyard by Marriott",
+          "proposedSlug": "courtyard-by-marriott",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Residence Inn by Marriott",
+          "proposedSlug": "residence-inn-by-marriott",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "SpringHill Suites by Marriott",
+          "proposedSlug": "springhill-suites-by-marriott",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "TownePlace Suites by Marriott",
+          "proposedSlug": "towneplace-suites-by-marriott",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "AC Hotels by Marriott",
+          "proposedSlug": "ac-hotels-by-marriott",
+          "priority": 92,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Aloft Hotels",
+          "proposedSlug": "aloft-hotels",
+          "priority": 92,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Moxy Hotels",
+          "proposedSlug": "moxy-hotels",
+          "priority": 92,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "StudioRes",
+          "proposedSlug": "studiores",
+          "priority": 92,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Marriott Hotels",
+          "proposedSlug": "marriott-hotels",
+          "priority": 88,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Sheraton",
+          "proposedSlug": "sheraton",
+          "priority": 88,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Westin",
+          "proposedSlug": "westin",
+          "priority": 88,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Four Points Flex by Sheraton",
+          "proposedSlug": "four-points-flex-by-sheraton",
+          "priority": 88,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "City Express by Marriott",
+          "proposedSlug": "city-express-by-marriott",
+          "priority": 86,
+          "existsInBrandSetup": true
+        }
+      ],
+      "brandCount": 13,
+      "slugs": [
+        "courtyard-by-marriott",
+        "residence-inn-by-marriott",
+        "springhill-suites-by-marriott",
+        "towneplace-suites-by-marriott",
+        "ac-hotels-by-marriott",
+        "aloft-hotels",
+        "moxy-hotels",
+        "studiores",
+        "marriott-hotels",
+        "sheraton",
+        "westin",
+        "four-points-flex-by-sheraton",
+        "city-express-by-marriott"
+      ],
+      "dryRunCommand": "npm run brand-explorer-complete-build -- --brands courtyard-by-marriott,residence-inn-by-marriott,springhill-suites-by-marriott,towneplace-suites-by-marriott,ac-hotels-by-marriott,aloft-hotels,moxy-hotels,studiores,marriott-hotels,sheraton,westin,four-points-flex-by-sheraton,city-express-by-marriott --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 3,
+      "label": "Wave 3 — Hilton select / extended stay",
+      "brands": [
+        {
+          "brandName": "Home2 Suites by Hilton",
+          "proposedSlug": "home2-suites-by-hilton",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Tru by Hilton",
+          "proposedSlug": "tru-by-hilton",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Hampton by Hilton",
+          "proposedSlug": "hampton-by-hilton",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Hilton Garden Inn",
+          "proposedSlug": "hilton-garden-inn",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Spark by Hilton",
+          "proposedSlug": "spark-by-hilton",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Canopy by Hilton",
+          "proposedSlug": "canopy-by-hilton",
+          "priority": 92,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Motto by Hilton",
+          "proposedSlug": "motto-by-hilton",
+          "priority": 90,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Tempo by Hilton",
+          "proposedSlug": "tempo-by-hilton",
+          "priority": 90,
+          "existsInBrandSetup": true
+        }
+      ],
+      "brandCount": 8,
+      "slugs": [
+        "home2-suites-by-hilton",
+        "tru-by-hilton",
+        "hampton-by-hilton",
+        "hilton-garden-inn",
+        "spark-by-hilton",
+        "canopy-by-hilton",
+        "motto-by-hilton",
+        "tempo-by-hilton"
+      ],
+      "dryRunCommand": "npm run brand-explorer-complete-build -- --brands home2-suites-by-hilton,tru-by-hilton,hampton-by-hilton,hilton-garden-inn,spark-by-hilton,canopy-by-hilton,motto-by-hilton,tempo-by-hilton --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 4,
+      "label": "Wave 4 — Hyatt + IHG lifestyle & select",
+      "brands": [
+        {
+          "brandName": "Voco Hotels",
+          "proposedSlug": "voco-hotels",
+          "priority": 100,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Unbound Collection by Hyatt",
+          "proposedSlug": "unbound-collection-by-hyatt",
+          "priority": 100,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Vignette Collection",
+          "proposedSlug": "vignette-collection",
+          "priority": 100,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Handwritten Collection",
+          "proposedSlug": "handwritten-collection",
+          "priority": 100,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Hyatt Place",
+          "proposedSlug": "hyatt-place",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "avid hotels",
+          "proposedSlug": "avid-hotels",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Even Hotels",
+          "proposedSlug": "even-hotels",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Holiday Inn Express",
+          "proposedSlug": "holiday-inn-express",
+          "priority": 92,
+          "existsInBrandSetup": true
+        }
+      ],
+      "brandCount": 8,
+      "slugs": [
+        "voco-hotels",
+        "unbound-collection-by-hyatt",
+        "vignette-collection",
+        "handwritten-collection",
+        "hyatt-place",
+        "avid-hotels",
+        "even-hotels",
+        "holiday-inn-express"
+      ],
+      "dryRunCommand": "npm run brand-explorer-complete-build -- --brands voco-hotels,unbound-collection-by-hyatt,vignette-collection,handwritten-collection,hyatt-place,avid-hotels,even-hotels,holiday-inn-express --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 5,
+      "label": "Wave 5 — Accor / NH midscale ladder",
+      "brands": [
+        {
+          "brandName": "MGallery Collection",
+          "proposedSlug": "mgallery-collection",
+          "priority": 100,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "ibis",
+          "proposedSlug": "ibis",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Novotel",
+          "proposedSlug": "novotel",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Mercure",
+          "proposedSlug": "mercure",
+          "priority": 90,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "NH Hotels",
+          "proposedSlug": "nh-hotels",
+          "priority": 88,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Pullman",
+          "proposedSlug": "pullman",
+          "priority": 88,
+          "existsInBrandSetup": true
+        }
+      ],
+      "brandCount": 6,
+      "slugs": [
+        "mgallery-collection",
+        "ibis",
+        "novotel",
+        "mercure",
+        "nh-hotels",
+        "pullman"
+      ],
+      "dryRunCommand": "npm run brand-explorer-complete-build -- --brands mgallery-collection,ibis,novotel,mercure,nh-hotels,pullman --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 6,
+      "label": "Wave 6 — Wyndham + Choice extended stay",
+      "brands": [
+        {
+          "brandName": "Suburban Studios",
+          "proposedSlug": "suburban-studios",
+          "priority": 101,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "WoodSpring Suites",
+          "proposedSlug": "woodspring-suites",
+          "priority": 101,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Everhome Suites",
+          "proposedSlug": "everhome-suites",
+          "priority": 101,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Esplendor by Wyndham",
+          "proposedSlug": "esplendor-by-wyndham",
+          "priority": 100,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Dazzler by Wyndham",
+          "proposedSlug": "dazzler-by-wyndham",
+          "priority": 100,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Trademark Collection by Wyndham",
+          "proposedSlug": "trademark-collection-by-wyndham",
+          "priority": 100,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Travelodge by Wyndham",
+          "proposedSlug": "travelodge-by-wyndham",
+          "priority": 94,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Wyndham",
+          "proposedSlug": "wyndham",
+          "priority": 84,
+          "existsInBrandSetup": true
+        }
+      ],
+      "brandCount": 8,
+      "slugs": [
+        "suburban-studios",
+        "woodspring-suites",
+        "everhome-suites",
+        "esplendor-by-wyndham",
+        "dazzler-by-wyndham",
+        "trademark-collection-by-wyndham",
+        "travelodge-by-wyndham",
+        "wyndham"
+      ],
+      "dryRunCommand": "npm run brand-explorer-complete-build -- --brands suburban-studios,woodspring-suites,everhome-suites,esplendor-by-wyndham,dazzler-by-wyndham,trademark-collection-by-wyndham,travelodge-by-wyndham,wyndham --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 7,
+      "label": "Wave 7 — Resort / all-inclusive / lifestyle independents",
+      "brands": [
+        {
+          "brandName": "Iberostar Selection",
+          "proposedSlug": "iberostar-selection",
+          "priority": 78,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Bunkhouse Hotels",
+          "proposedSlug": "bunkhouse-hotels",
+          "priority": 74,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Hyatt Zilara",
+          "proposedSlug": "hyatt-zilara",
+          "priority": 70,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Hyatt Ziva",
+          "proposedSlug": "hyatt-ziva",
+          "priority": 70,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Secrets Resorts & Spas",
+          "proposedSlug": "secrets-resorts-and-spas",
+          "priority": 70,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Sunscape Resorts & Spas",
+          "proposedSlug": "sunscape-resorts-and-spas",
+          "priority": 70,
+          "existsInBrandSetup": true
+        }
+      ],
+      "brandCount": 6,
+      "slugs": [
+        "iberostar-selection",
+        "bunkhouse-hotels",
+        "hyatt-zilara",
+        "hyatt-ziva",
+        "secrets-resorts-and-spas",
+        "sunscape-resorts-and-spas"
+      ],
+      "dryRunCommand": "npm run brand-explorer-complete-build -- --brands iberostar-selection,bunkhouse-hotels,hyatt-zilara,hyatt-ziva,secrets-resorts-and-spas,sunscape-resorts-and-spas --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 8,
+      "label": "Wave 8 — Independent luxury collections (highest governance)",
+      "brands": [
+        {
+          "brandName": "Mr & Mrs Smith",
+          "proposedSlug": "mr-and-mrs-smith",
+          "priority": 72,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "Small Luxury Hotels of the World",
+          "proposedSlug": "small-luxury-hotels-of-the-world",
+          "priority": 70,
+          "existsInBrandSetup": true
+        },
+        {
+          "brandName": "The Leading Hotels of the World",
+          "proposedSlug": "the-leading-hotels-of-the-world",
+          "priority": 66,
+          "existsInBrandSetup": true
+        }
+      ],
+      "brandCount": 3,
+      "slugs": [
+        "mr-and-mrs-smith",
+        "small-luxury-hotels-of-the-world",
+        "the-leading-hotels-of-the-world"
+      ],
+      "dryRunCommand": "npm run brand-explorer-complete-build -- --brands mr-and-mrs-smith,small-luxury-hotels-of-the-world,the-leading-hotels-of-the-world --dry-run --target-quality active-profile"
+    }
+  ],
+  "recommendedProcessingSequence": [
+    {
+      "rank": 1,
+      "brandName": "Radisson Individuals by Choice",
+      "proposedSlug": "radisson-individuals-by-choice",
+      "wave": 1,
+      "priority": 115
+    },
+    {
+      "rank": 2,
+      "brandName": "Tapestry Collection by Hilton",
+      "proposedSlug": "tapestry-collection-by-hilton",
+      "wave": 1,
+      "priority": 108
+    },
+    {
+      "rank": 3,
+      "brandName": "Autograph Collection",
+      "proposedSlug": "autograph-collection",
+      "wave": 1,
+      "priority": 108
+    },
+    {
+      "rank": 4,
+      "brandName": "Suburban Studios",
+      "proposedSlug": "suburban-studios",
+      "wave": 6,
+      "priority": 101
+    },
+    {
+      "rank": 5,
+      "brandName": "WoodSpring Suites",
+      "proposedSlug": "woodspring-suites",
+      "wave": 6,
+      "priority": 101
+    },
+    {
+      "rank": 6,
+      "brandName": "Everhome Suites",
+      "proposedSlug": "everhome-suites",
+      "wave": 6,
+      "priority": 101
+    },
+    {
+      "rank": 7,
+      "brandName": "Voco Hotels",
+      "proposedSlug": "voco-hotels",
+      "wave": 4,
+      "priority": 100
+    },
+    {
+      "rank": 8,
+      "brandName": "Unbound Collection by Hyatt",
+      "proposedSlug": "unbound-collection-by-hyatt",
+      "wave": 4,
+      "priority": 100
+    },
+    {
+      "rank": 9,
+      "brandName": "Vignette Collection",
+      "proposedSlug": "vignette-collection",
+      "wave": 4,
+      "priority": 100
+    },
+    {
+      "rank": 10,
+      "brandName": "Esplendor by Wyndham",
+      "proposedSlug": "esplendor-by-wyndham",
+      "wave": 6,
+      "priority": 100
+    },
+    {
+      "rank": 11,
+      "brandName": "Dazzler by Wyndham",
+      "proposedSlug": "dazzler-by-wyndham",
+      "wave": 6,
+      "priority": 100
+    },
+    {
+      "rank": 12,
+      "brandName": "Trademark Collection by Wyndham",
+      "proposedSlug": "trademark-collection-by-wyndham",
+      "wave": 6,
+      "priority": 100
+    },
+    {
+      "rank": 13,
+      "brandName": "MGallery Collection",
+      "proposedSlug": "mgallery-collection",
+      "wave": 5,
+      "priority": 100
+    },
+    {
+      "rank": 14,
+      "brandName": "Handwritten Collection",
+      "proposedSlug": "handwritten-collection",
+      "wave": 4,
+      "priority": 100
+    },
+    {
+      "rank": 15,
+      "brandName": "Design Hotels",
+      "proposedSlug": "design-hotels",
+      "wave": 1,
+      "priority": 100
+    },
+    {
+      "rank": 16,
+      "brandName": "Courtyard by Marriott",
+      "proposedSlug": "courtyard-by-marriott",
+      "wave": 2,
+      "priority": 94
+    },
+    {
+      "rank": 17,
+      "brandName": "Hyatt Place",
+      "proposedSlug": "hyatt-place",
+      "wave": 4,
+      "priority": 94
+    },
+    {
+      "rank": 18,
+      "brandName": "Residence Inn by Marriott",
+      "proposedSlug": "residence-inn-by-marriott",
+      "wave": 2,
+      "priority": 94
+    },
+    {
+      "rank": 19,
+      "brandName": "SpringHill Suites by Marriott",
+      "proposedSlug": "springhill-suites-by-marriott",
+      "wave": 2,
+      "priority": 94
+    },
+    {
+      "rank": 20,
+      "brandName": "TownePlace Suites by Marriott",
+      "proposedSlug": "towneplace-suites-by-marriott",
+      "wave": 2,
+      "priority": 94
+    },
+    {
+      "rank": 21,
+      "brandName": "Home2 Suites by Hilton",
+      "proposedSlug": "home2-suites-by-hilton",
+      "wave": 3,
+      "priority": 94
+    },
+    {
+      "rank": 22,
+      "brandName": "Tru by Hilton",
+      "proposedSlug": "tru-by-hilton",
+      "wave": 3,
+      "priority": 94
+    },
+    {
+      "rank": 23,
+      "brandName": "avid hotels",
+      "proposedSlug": "avid-hotels",
+      "wave": 4,
+      "priority": 94
+    },
+    {
+      "rank": 24,
+      "brandName": "Even Hotels",
+      "proposedSlug": "even-hotels",
+      "wave": 4,
+      "priority": 94
+    },
+    {
+      "rank": 25,
+      "brandName": "Travelodge by Wyndham",
+      "proposedSlug": "travelodge-by-wyndham",
+      "wave": 6,
+      "priority": 94
+    },
+    {
+      "rank": 26,
+      "brandName": "ibis",
+      "proposedSlug": "ibis",
+      "wave": 5,
+      "priority": 94
+    },
+    {
+      "rank": 27,
+      "brandName": "Novotel",
+      "proposedSlug": "novotel",
+      "wave": 5,
+      "priority": 94
+    },
+    {
+      "rank": 28,
+      "brandName": "Hampton by Hilton",
+      "proposedSlug": "hampton-by-hilton",
+      "wave": 3,
+      "priority": 94
+    },
+    {
+      "rank": 29,
+      "brandName": "Hilton Garden Inn",
+      "proposedSlug": "hilton-garden-inn",
+      "wave": 3,
+      "priority": 94
+    },
+    {
+      "rank": 30,
+      "brandName": "Spark by Hilton",
+      "proposedSlug": "spark-by-hilton",
+      "wave": 3,
+      "priority": 94
+    },
+    {
+      "rank": 31,
+      "brandName": "AC Hotels by Marriott",
+      "proposedSlug": "ac-hotels-by-marriott",
+      "wave": 2,
+      "priority": 92
+    },
+    {
+      "rank": 32,
+      "brandName": "Canopy by Hilton",
+      "proposedSlug": "canopy-by-hilton",
+      "wave": 3,
+      "priority": 92
+    },
+    {
+      "rank": 33,
+      "brandName": "Holiday Inn Express",
+      "proposedSlug": "holiday-inn-express",
+      "wave": 4,
+      "priority": 92
+    },
+    {
+      "rank": 34,
+      "brandName": "Aloft Hotels",
+      "proposedSlug": "aloft-hotels",
+      "wave": 2,
+      "priority": 92
+    },
+    {
+      "rank": 35,
+      "brandName": "Moxy Hotels",
+      "proposedSlug": "moxy-hotels",
+      "wave": 2,
+      "priority": 92
+    },
+    {
+      "rank": 36,
+      "brandName": "StudioRes",
+      "proposedSlug": "studiores",
+      "wave": 2,
+      "priority": 92
+    },
+    {
+      "rank": 37,
+      "brandName": "Motto by Hilton",
+      "proposedSlug": "motto-by-hilton",
+      "wave": 3,
+      "priority": 90
+    },
+    {
+      "rank": 38,
+      "brandName": "Mercure",
+      "proposedSlug": "mercure",
+      "wave": 5,
+      "priority": 90
+    },
+    {
+      "rank": 39,
+      "brandName": "Tempo by Hilton",
+      "proposedSlug": "tempo-by-hilton",
+      "wave": 3,
+      "priority": 90
+    },
+    {
+      "rank": 40,
+      "brandName": "Marriott Hotels",
+      "proposedSlug": "marriott-hotels",
+      "wave": 2,
+      "priority": 88
+    },
+    {
+      "rank": 41,
+      "brandName": "Sheraton",
+      "proposedSlug": "sheraton",
+      "wave": 2,
+      "priority": 88
+    },
+    {
+      "rank": 42,
+      "brandName": "NH Hotels",
+      "proposedSlug": "nh-hotels",
+      "wave": 5,
+      "priority": 88
+    },
+    {
+      "rank": 43,
+      "brandName": "Westin",
+      "proposedSlug": "westin",
+      "wave": 2,
+      "priority": 88
+    },
+    {
+      "rank": 44,
+      "brandName": "Pullman",
+      "proposedSlug": "pullman",
+      "wave": 5,
+      "priority": 88
+    },
+    {
+      "rank": 45,
+      "brandName": "Four Points Flex by Sheraton",
+      "proposedSlug": "four-points-flex-by-sheraton",
+      "wave": 2,
+      "priority": 88
+    },
+    {
+      "rank": 46,
+      "brandName": "City Express by Marriott",
+      "proposedSlug": "city-express-by-marriott",
+      "wave": 2,
+      "priority": 86
+    },
+    {
+      "rank": 47,
+      "brandName": "Wyndham",
+      "proposedSlug": "wyndham",
+      "wave": 6,
+      "priority": 84
+    },
+    {
+      "rank": 48,
+      "brandName": "Iberostar Selection",
+      "proposedSlug": "iberostar-selection",
+      "wave": 7,
+      "priority": 78
+    },
+    {
+      "rank": 49,
+      "brandName": "Bunkhouse Hotels",
+      "proposedSlug": "bunkhouse-hotels",
+      "wave": 7,
+      "priority": 74
+    },
+    {
+      "rank": 50,
+      "brandName": "Mr & Mrs Smith",
+      "proposedSlug": "mr-and-mrs-smith",
+      "wave": 8,
+      "priority": 72
+    },
+    {
+      "rank": 51,
+      "brandName": "Hyatt Zilara",
+      "proposedSlug": "hyatt-zilara",
+      "wave": 7,
+      "priority": 70
+    },
+    {
+      "rank": 52,
+      "brandName": "Hyatt Ziva",
+      "proposedSlug": "hyatt-ziva",
+      "wave": 7,
+      "priority": 70
+    },
+    {
+      "rank": 53,
+      "brandName": "Secrets Resorts & Spas",
+      "proposedSlug": "secrets-resorts-and-spas",
+      "wave": 7,
+      "priority": 70
+    },
+    {
+      "rank": 54,
+      "brandName": "Sunscape Resorts & Spas",
+      "proposedSlug": "sunscape-resorts-and-spas",
+      "wave": 7,
+      "priority": 70
+    },
+    {
+      "rank": 55,
+      "brandName": "Small Luxury Hotels of the World",
+      "proposedSlug": "small-luxury-hotels-of-the-world",
+      "wave": 8,
+      "priority": 70
+    },
+    {
+      "rank": 56,
+      "brandName": "The Leading Hotels of the World",
+      "proposedSlug": "the-leading-hotels-of-the-world",
+      "wave": 8,
+      "priority": 66
+    }
+  ],
+  "recommendedFirst10": [
+    {
+      "rank": 1,
+      "brandName": "Radisson Individuals by Choice",
+      "proposedSlug": "radisson-individuals-by-choice",
+      "priority": 115,
+      "existsInBrandSetup": true,
+      "presentationRows": 212
+    },
+    {
+      "rank": 2,
+      "brandName": "Tapestry Collection by Hilton",
+      "proposedSlug": "tapestry-collection-by-hilton",
+      "priority": 108,
+      "existsInBrandSetup": true,
+      "presentationRows": 0
+    },
+    {
+      "rank": 3,
+      "brandName": "Autograph Collection",
+      "proposedSlug": "autograph-collection",
+      "priority": 108,
+      "existsInBrandSetup": true,
+      "presentationRows": 0
+    },
+    {
+      "rank": 4,
+      "brandName": "Suburban Studios",
+      "proposedSlug": "suburban-studios",
+      "priority": 101,
+      "existsInBrandSetup": true,
+      "presentationRows": 196
+    },
+    {
+      "rank": 5,
+      "brandName": "WoodSpring Suites",
+      "proposedSlug": "woodspring-suites",
+      "priority": 101,
+      "existsInBrandSetup": true,
+      "presentationRows": 195
+    },
+    {
+      "rank": 6,
+      "brandName": "Everhome Suites",
+      "proposedSlug": "everhome-suites",
+      "priority": 101,
+      "existsInBrandSetup": true,
+      "presentationRows": 205
+    },
+    {
+      "rank": 7,
+      "brandName": "Voco Hotels",
+      "proposedSlug": "voco-hotels",
+      "priority": 100,
+      "existsInBrandSetup": true,
+      "presentationRows": 0
+    },
+    {
+      "rank": 8,
+      "brandName": "Unbound Collection by Hyatt",
+      "proposedSlug": "unbound-collection-by-hyatt",
+      "priority": 100,
+      "existsInBrandSetup": true,
+      "presentationRows": 0
+    },
+    {
+      "rank": 9,
+      "brandName": "Vignette Collection",
+      "proposedSlug": "vignette-collection",
+      "priority": 100,
+      "existsInBrandSetup": true,
+      "presentationRows": 0
+    },
+    {
+      "rank": 10,
+      "brandName": "Esplendor by Wyndham",
+      "proposedSlug": "esplendor-by-wyndham",
+      "priority": 100,
+      "existsInBrandSetup": true,
+      "presentationRows": 0
+    }
+  ],
+  "highestComplexityBrands": [
+    {
+      "brandName": "Hyatt Zilara",
+      "proposedSlug": "hyatt-zilara",
+      "overallComplexity": 14,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 5,
+      "factGovernanceComplexity": 5
+    },
+    {
+      "brandName": "Hyatt Ziva",
+      "proposedSlug": "hyatt-ziva",
+      "overallComplexity": 14,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 5,
+      "factGovernanceComplexity": 5
+    },
+    {
+      "brandName": "Secrets Resorts & Spas",
+      "proposedSlug": "secrets-resorts-and-spas",
+      "overallComplexity": 14,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 5,
+      "factGovernanceComplexity": 5
+    },
+    {
+      "brandName": "Sunscape Resorts & Spas",
+      "proposedSlug": "sunscape-resorts-and-spas",
+      "overallComplexity": 14,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 5,
+      "factGovernanceComplexity": 5
+    },
+    {
+      "brandName": "Small Luxury Hotels of the World",
+      "proposedSlug": "small-luxury-hotels-of-the-world",
+      "overallComplexity": 14,
+      "sourceCaptureComplexity": 5,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 5
+    },
+    {
+      "brandName": "The Leading Hotels of the World",
+      "proposedSlug": "the-leading-hotels-of-the-world",
+      "overallComplexity": 14,
+      "sourceCaptureComplexity": 5,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 5
+    },
+    {
+      "brandName": "Mr & Mrs Smith",
+      "proposedSlug": "mr-and-mrs-smith",
+      "overallComplexity": 13,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 5
+    },
+    {
+      "brandName": "Iberostar Selection",
+      "proposedSlug": "iberostar-selection",
+      "overallComplexity": 12,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 4
+    },
+    {
+      "brandName": "Bunkhouse Hotels",
+      "proposedSlug": "bunkhouse-hotels",
+      "overallComplexity": 12,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 4
+    },
+    {
+      "brandName": "Voco Hotels",
+      "proposedSlug": "voco-hotels",
+      "overallComplexity": 9,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3
+    }
+  ],
+  "brandsNeedingSpecialHandling": [
+    {
+      "brandName": "Radisson Individuals by Choice",
+      "proposedSlug": "radisson-individuals-by-choice",
+      "specialHandling": [
+        "sibling_active_radisson"
+      ],
+      "activeConflicts": [
+        {
+          "type": "related_active_brand",
+          "activeSlug": "radisson-blu",
+          "activeName": "Radisson Blu by Choice",
+          "note": "Not a duplicate — factory ladder sibling; reuse parent-family patterns with brand-specific copy."
+        }
+      ]
+    },
+    {
+      "brandName": "Tapestry Collection by Hilton",
+      "proposedSlug": "tapestry-collection-by-hilton",
+      "specialHandling": [
+        "sibling_active_curio"
+      ],
+      "activeConflicts": [
+        {
+          "type": "related_active_brand",
+          "activeSlug": "curio-collection",
+          "activeName": "Curio Collection by Hilton",
+          "note": "Not a duplicate — factory ladder sibling; reuse parent-family patterns with brand-specific copy."
+        }
+      ]
+    },
+    {
+      "brandName": "Autograph Collection",
+      "proposedSlug": "autograph-collection",
+      "specialHandling": [
+        "sibling_active_tribute"
+      ],
+      "activeConflicts": [
+        {
+          "type": "related_active_brand",
+          "activeSlug": "tribute-portfolio",
+          "activeName": "Tribute Portfolio",
+          "note": "Not a duplicate — factory ladder sibling; reuse parent-family patterns with brand-specific copy."
+        }
+      ]
+    },
+    {
+      "brandName": "Design Hotels",
+      "proposedSlug": "design-hotels",
+      "specialHandling": [
+        "sibling_active_tribute",
+        "marriott_affiliate_not_flag"
+      ],
+      "activeConflicts": [
+        {
+          "type": "related_active_brand",
+          "activeSlug": "tribute-portfolio",
+          "activeName": "Tribute Portfolio",
+          "note": "Not a duplicate — factory ladder sibling; reuse parent-family patterns with brand-specific copy."
+        }
+      ]
+    },
+    {
+      "brandName": "Four Points Flex by Sheraton",
+      "proposedSlug": "four-points-flex-by-sheraton",
+      "specialHandling": [
+        "sheraton_sub_brand"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "City Express by Marriott",
+      "proposedSlug": "city-express-by-marriott",
+      "specialHandling": [
+        "cala_regional_focus"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Wyndham",
+      "proposedSlug": "wyndham",
+      "specialHandling": [
+        "parent_brand_name_collision_risk"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Iberostar Selection",
+      "proposedSlug": "iberostar-selection",
+      "specialHandling": [
+        "resort_governance"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Bunkhouse Hotels",
+      "proposedSlug": "bunkhouse-hotels",
+      "specialHandling": [
+        "independent_portfolio",
+        "limited_franchise_fdd"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Mr & Mrs Smith",
+      "proposedSlug": "mr-and-mrs-smith",
+      "specialHandling": [
+        "hyatt_acquisition",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Hyatt Zilara",
+      "proposedSlug": "hyatt-zilara",
+      "specialHandling": [
+        "adults_only_resort",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Hyatt Ziva",
+      "proposedSlug": "hyatt-ziva",
+      "specialHandling": [
+        "family_resort",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Secrets Resorts & Spas",
+      "proposedSlug": "secrets-resorts-and-spas",
+      "specialHandling": [
+        "adults_only_resort",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Sunscape Resorts & Spas",
+      "proposedSlug": "sunscape-resorts-and-spas",
+      "specialHandling": [
+        "family_resort",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "Small Luxury Hotels of the World",
+      "proposedSlug": "small-luxury-hotels-of-the-world",
+      "specialHandling": [
+        "independent_consortium",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": []
+    },
+    {
+      "brandName": "The Leading Hotels of the World",
+      "proposedSlug": "the-leading-hotels-of-the-world",
+      "specialHandling": [
+        "independent_consortium",
+        "legal_sensitivity",
+        "no_single_parent_fdd"
+      ],
+      "activeConflicts": []
+    }
+  ],
+  "reviewQueueModel": {
+    "states": [
+      "pending_source_review",
+      "pending_fact_review",
+      "pending_image_review",
+      "pending_founder_copy_review",
+      "pending_legal_sensitivity_review",
+      "ready_for_apply",
+      "active_profile_ready"
+    ],
+    "summary": {
+      "pending_source_review": 52,
+      "pending_fact_review": 4,
+      "pending_image_review": 0,
+      "pending_founder_copy_review": 0,
+      "pending_legal_sensitivity_review": 0,
+      "ready_for_apply": 0,
+      "active_profile_ready": 0
+    },
+    "brands": [
+      {
+        "brandName": "Radisson Individuals by Choice",
+        "proposedSlug": "radisson-individuals-by-choice",
+        "reviewQueue": {
+          "currentState": "pending_fact_review",
+          "parallelFlags": [
+            "pending_source_review",
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Tapestry Collection by Hilton",
+        "proposedSlug": "tapestry-collection-by-hilton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Autograph Collection",
+        "proposedSlug": "autograph-collection",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Suburban Studios",
+        "proposedSlug": "suburban-studios",
+        "reviewQueue": {
+          "currentState": "pending_fact_review",
+          "parallelFlags": [
+            "pending_source_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "WoodSpring Suites",
+        "proposedSlug": "woodspring-suites",
+        "reviewQueue": {
+          "currentState": "pending_fact_review",
+          "parallelFlags": [
+            "pending_source_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Everhome Suites",
+        "proposedSlug": "everhome-suites",
+        "reviewQueue": {
+          "currentState": "pending_fact_review",
+          "parallelFlags": [
+            "pending_source_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Voco Hotels",
+        "proposedSlug": "voco-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Unbound Collection by Hyatt",
+        "proposedSlug": "unbound-collection-by-hyatt",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Vignette Collection",
+        "proposedSlug": "vignette-collection",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Esplendor by Wyndham",
+        "proposedSlug": "esplendor-by-wyndham",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Dazzler by Wyndham",
+        "proposedSlug": "dazzler-by-wyndham",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Trademark Collection by Wyndham",
+        "proposedSlug": "trademark-collection-by-wyndham",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "MGallery Collection",
+        "proposedSlug": "mgallery-collection",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Handwritten Collection",
+        "proposedSlug": "handwritten-collection",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Design Hotels",
+        "proposedSlug": "design-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Courtyard by Marriott",
+        "proposedSlug": "courtyard-by-marriott",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Hyatt Place",
+        "proposedSlug": "hyatt-place",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Residence Inn by Marriott",
+        "proposedSlug": "residence-inn-by-marriott",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "SpringHill Suites by Marriott",
+        "proposedSlug": "springhill-suites-by-marriott",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "TownePlace Suites by Marriott",
+        "proposedSlug": "towneplace-suites-by-marriott",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Home2 Suites by Hilton",
+        "proposedSlug": "home2-suites-by-hilton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Tru by Hilton",
+        "proposedSlug": "tru-by-hilton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "avid hotels",
+        "proposedSlug": "avid-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Even Hotels",
+        "proposedSlug": "even-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Travelodge by Wyndham",
+        "proposedSlug": "travelodge-by-wyndham",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "ibis",
+        "proposedSlug": "ibis",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Novotel",
+        "proposedSlug": "novotel",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Hampton by Hilton",
+        "proposedSlug": "hampton-by-hilton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Hilton Garden Inn",
+        "proposedSlug": "hilton-garden-inn",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Spark by Hilton",
+        "proposedSlug": "spark-by-hilton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "AC Hotels by Marriott",
+        "proposedSlug": "ac-hotels-by-marriott",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Canopy by Hilton",
+        "proposedSlug": "canopy-by-hilton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Holiday Inn Express",
+        "proposedSlug": "holiday-inn-express",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Aloft Hotels",
+        "proposedSlug": "aloft-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Moxy Hotels",
+        "proposedSlug": "moxy-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "StudioRes",
+        "proposedSlug": "studiores",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Motto by Hilton",
+        "proposedSlug": "motto-by-hilton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Mercure",
+        "proposedSlug": "mercure",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Tempo by Hilton",
+        "proposedSlug": "tempo-by-hilton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Marriott Hotels",
+        "proposedSlug": "marriott-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Sheraton",
+        "proposedSlug": "sheraton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "NH Hotels",
+        "proposedSlug": "nh-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Westin",
+        "proposedSlug": "westin",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Pullman",
+        "proposedSlug": "pullman",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Four Points Flex by Sheraton",
+        "proposedSlug": "four-points-flex-by-sheraton",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "City Express by Marriott",
+        "proposedSlug": "city-express-by-marriott",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Wyndham",
+        "proposedSlug": "wyndham",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": false,
+          "notes": []
+        }
+      },
+      {
+        "brandName": "Iberostar Selection",
+        "proposedSlug": "iberostar-selection",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval."
+          ]
+        }
+      },
+      {
+        "brandName": "Bunkhouse Hotels",
+        "proposedSlug": "bunkhouse-hotels",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review",
+            "pending_legal_sensitivity_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval.",
+            "Legal/transaction-sensitive positioning — no company sign-off implied."
+          ]
+        }
+      },
+      {
+        "brandName": "Mr & Mrs Smith",
+        "proposedSlug": "mr-and-mrs-smith",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review",
+            "pending_legal_sensitivity_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval.",
+            "Legal/transaction-sensitive positioning — no company sign-off implied."
+          ]
+        }
+      },
+      {
+        "brandName": "Hyatt Zilara",
+        "proposedSlug": "hyatt-zilara",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review",
+            "pending_legal_sensitivity_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval.",
+            "Legal/transaction-sensitive positioning — no company sign-off implied."
+          ]
+        }
+      },
+      {
+        "brandName": "Hyatt Ziva",
+        "proposedSlug": "hyatt-ziva",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review",
+            "pending_legal_sensitivity_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval.",
+            "Legal/transaction-sensitive positioning — no company sign-off implied."
+          ]
+        }
+      },
+      {
+        "brandName": "Secrets Resorts & Spas",
+        "proposedSlug": "secrets-resorts-and-spas",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review",
+            "pending_legal_sensitivity_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval.",
+            "Legal/transaction-sensitive positioning — no company sign-off implied."
+          ]
+        }
+      },
+      {
+        "brandName": "Sunscape Resorts & Spas",
+        "proposedSlug": "sunscape-resorts-and-spas",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review",
+            "pending_legal_sensitivity_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval.",
+            "Legal/transaction-sensitive positioning — no company sign-off implied."
+          ]
+        }
+      },
+      {
+        "brandName": "Small Luxury Hotels of the World",
+        "proposedSlug": "small-luxury-hotels-of-the-world",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review",
+            "pending_legal_sensitivity_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval.",
+            "Legal/transaction-sensitive positioning — no company sign-off implied."
+          ]
+        }
+      },
+      {
+        "brandName": "The Leading Hotels of the World",
+        "proposedSlug": "the-leading-hotels-of-the-world",
+        "reviewQueue": {
+          "currentState": "pending_source_review",
+          "parallelFlags": [
+            "pending_image_review",
+            "pending_founder_copy_review",
+            "pending_legal_sensitivity_review"
+          ],
+          "factoryMayContinue": true,
+          "activationBlocked": true,
+          "notes": [
+            "Image-dependent activation blocked until image approval.",
+            "Legal/transaction-sensitive positioning — no company sign-off implied."
+          ]
+        }
+      }
+    ]
+  },
+  "waveCommands": [
+    {
+      "wave": 1,
+      "label": "Wave 1 — Soft-collection pilots (closest to active six)",
+      "command": "npm run brand-explorer-complete-build -- --brands radisson-individuals-by-choice,tapestry-collection-by-hilton,autograph-collection,design-hotels --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 2,
+      "label": "Wave 2 — Marriott ladder (select, extended, lifestyle)",
+      "command": "npm run brand-explorer-complete-build -- --brands courtyard-by-marriott,residence-inn-by-marriott,springhill-suites-by-marriott,towneplace-suites-by-marriott,ac-hotels-by-marriott,aloft-hotels,moxy-hotels,studiores,marriott-hotels,sheraton,westin,four-points-flex-by-sheraton,city-express-by-marriott --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 3,
+      "label": "Wave 3 — Hilton select / extended stay",
+      "command": "npm run brand-explorer-complete-build -- --brands home2-suites-by-hilton,tru-by-hilton,hampton-by-hilton,hilton-garden-inn,spark-by-hilton,canopy-by-hilton,motto-by-hilton,tempo-by-hilton --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 4,
+      "label": "Wave 4 — Hyatt + IHG lifestyle & select",
+      "command": "npm run brand-explorer-complete-build -- --brands voco-hotels,unbound-collection-by-hyatt,vignette-collection,handwritten-collection,hyatt-place,avid-hotels,even-hotels,holiday-inn-express --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 5,
+      "label": "Wave 5 — Accor / NH midscale ladder",
+      "command": "npm run brand-explorer-complete-build -- --brands mgallery-collection,ibis,novotel,mercure,nh-hotels,pullman --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 6,
+      "label": "Wave 6 — Wyndham + Choice extended stay",
+      "command": "npm run brand-explorer-complete-build -- --brands suburban-studios,woodspring-suites,everhome-suites,esplendor-by-wyndham,dazzler-by-wyndham,trademark-collection-by-wyndham,travelodge-by-wyndham,wyndham --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 7,
+      "label": "Wave 7 — Resort / all-inclusive / lifestyle independents",
+      "command": "npm run brand-explorer-complete-build -- --brands iberostar-selection,bunkhouse-hotels,hyatt-zilara,hyatt-ziva,secrets-resorts-and-spas,sunscape-resorts-and-spas --dry-run --target-quality active-profile"
+    },
+    {
+      "wave": 8,
+      "label": "Wave 8 — Independent luxury collections (highest governance)",
+      "command": "npm run brand-explorer-complete-build -- --brands mr-and-mrs-smith,small-luxury-hotels-of-the-world,the-leading-hotels-of-the-world --dry-run --target-quality active-profile"
+    }
+  ],
+  "backlogCreate": {
+    "attempted": false,
+    "created": [],
+    "preview": [],
+    "message": "Dry-run — no Brand Basics records created. Pass --apply-create-backlog to create stubs."
+  },
+  "brands": [
+    {
+      "brandName": "Radisson Individuals by Choice",
+      "proposedSlug": "radisson-individuals-by-choice",
+      "parentFamily": "Choice / Radisson Americas (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 1,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 115,
+      "specialHandling": [
+        "sibling_active_radisson"
+      ],
+      "activeConflicts": [
+        {
+          "type": "related_active_brand",
+          "activeSlug": "radisson-blu",
+          "activeName": "Radisson Blu by Choice",
+          "note": "Not a duplicate — factory ladder sibling; reuse parent-family patterns with brand-specific copy."
+        }
+      ],
+      "dataPresence": {
+        "brandBasicsRecordId": "recRyvM8OmLlDj9G7",
+        "brandBasicsName": "Radisson Individuals by Choice",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Choice Hotels International",
+        "presentationRowCount": 212,
+        "hasBrandExplorerData": true,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recRyvM8OmLlDj9G7",
+          "name": "Radisson Individuals by Choice"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_fact_review",
+        "parallelFlags": [
+          "pending_source_review",
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Tapestry Collection by Hilton",
+      "proposedSlug": "tapestry-collection-by-hilton",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 1,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 108,
+      "specialHandling": [
+        "sibling_active_curio"
+      ],
+      "activeConflicts": [
+        {
+          "type": "related_active_brand",
+          "activeSlug": "curio-collection",
+          "activeName": "Curio Collection by Hilton",
+          "note": "Not a duplicate — factory ladder sibling; reuse parent-family patterns with brand-specific copy."
+        }
+      ],
+      "dataPresence": {
+        "brandBasicsRecordId": "reccXxMHEh7NNRhIE",
+        "brandBasicsName": "Tapestry Collection by Hilton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "reccXxMHEh7NNRhIE",
+          "name": "Tapestry Collection by Hilton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Autograph Collection",
+      "proposedSlug": "autograph-collection",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 1,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 108,
+      "specialHandling": [
+        "sibling_active_tribute"
+      ],
+      "activeConflicts": [
+        {
+          "type": "related_active_brand",
+          "activeSlug": "tribute-portfolio",
+          "activeName": "Tribute Portfolio",
+          "note": "Not a duplicate — factory ladder sibling; reuse parent-family patterns with brand-specific copy."
+        }
+      ],
+      "dataPresence": {
+        "brandBasicsRecordId": "recEJCTDj1zrsjPM6",
+        "brandBasicsName": "Autograph Collection",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recEJCTDj1zrsjPM6",
+          "name": "Autograph Collection"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Suburban Studios",
+      "proposedSlug": "suburban-studios",
+      "parentFamily": "Choice (source-confirmed)",
+      "brandType": "extended stay economy",
+      "likelyUseCase": "extended stay",
+      "likelyFactoryWave": 6,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 101,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "reclcjg5Foa9Vs5TC",
+        "brandBasicsName": "Suburban Studios",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Choice Hotels International",
+        "presentationRowCount": 196,
+        "hasBrandExplorerData": true,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "reclcjg5Foa9Vs5TC",
+          "name": "Suburban Studios"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_fact_review",
+        "parallelFlags": [
+          "pending_source_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "WoodSpring Suites",
+      "proposedSlug": "woodspring-suites",
+      "parentFamily": "Choice (source-confirmed)",
+      "brandType": "extended stay economy",
+      "likelyUseCase": "extended stay",
+      "likelyFactoryWave": 6,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 101,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recsOd51NzRPYsMko",
+        "brandBasicsName": "WoodSpring Suites",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Choice Hotels International",
+        "presentationRowCount": 195,
+        "hasBrandExplorerData": true,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recsOd51NzRPYsMko",
+          "name": "WoodSpring Suites"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_fact_review",
+        "parallelFlags": [
+          "pending_source_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Everhome Suites",
+      "proposedSlug": "everhome-suites",
+      "parentFamily": "Choice (source-confirmed)",
+      "brandType": "extended stay",
+      "likelyUseCase": "extended stay",
+      "likelyFactoryWave": 6,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 101,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recqkkrsevi4r9ibj",
+        "brandBasicsName": "Everhome Suites",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Choice Hotels International",
+        "presentationRowCount": 205,
+        "hasBrandExplorerData": true,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recqkkrsevi4r9ibj",
+          "name": "Everhome Suites"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_fact_review",
+        "parallelFlags": [
+          "pending_source_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Voco Hotels",
+      "proposedSlug": "voco-hotels",
+      "parentFamily": "IHG (source-confirmed)",
+      "brandType": "conversion soft",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 4,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recwONQTqGU1jHCsM",
+        "brandBasicsName": "Voco Hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "InterContinental Hotels Group",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recwONQTqGU1jHCsM",
+          "name": "Voco Hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Unbound Collection by Hyatt",
+      "proposedSlug": "unbound-collection-by-hyatt",
+      "parentFamily": "Hyatt (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 4,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recDQwcMFontK2CSP",
+        "brandBasicsName": "Unbound Collection by Hyatt",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hyatt Hotels Corporation",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recDQwcMFontK2CSP",
+          "name": "Unbound Collection by Hyatt"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Vignette Collection",
+      "proposedSlug": "vignette-collection",
+      "parentFamily": "IHG (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 4,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recDwzv86TWnz2gGB",
+        "brandBasicsName": "Vignette Collection",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "InterContinental Hotels Group",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recDwzv86TWnz2gGB",
+          "name": "Vignette Collection"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Esplendor by Wyndham",
+      "proposedSlug": "esplendor-by-wyndham",
+      "parentFamily": "Wyndham (source-confirmed)",
+      "brandType": "soft boutique",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 6,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recE5LoJH1EaszkqG",
+        "brandBasicsName": "Esplendor by Wyndham",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Wyndham Hotels & Resorts",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recE5LoJH1EaszkqG",
+          "name": "Esplendor by Wyndham"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Dazzler by Wyndham",
+      "proposedSlug": "dazzler-by-wyndham",
+      "parentFamily": "Wyndham (source-confirmed)",
+      "brandType": "soft boutique",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 6,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "rec5CNMM4ZUD7ZHlM",
+        "brandBasicsName": "Dazzler by Wyndham",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Wyndham Hotels & Resorts",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rec5CNMM4ZUD7ZHlM",
+          "name": "Dazzler by Wyndham"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Trademark Collection by Wyndham",
+      "proposedSlug": "trademark-collection-by-wyndham",
+      "parentFamily": "Wyndham (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 6,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recob7tgHRryRSbeO",
+        "brandBasicsName": "Trademark Collection by Wyndham",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Wyndham Hotels & Resorts",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recob7tgHRryRSbeO",
+          "name": "Trademark Collection by Wyndham"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "MGallery Collection",
+      "proposedSlug": "mgallery-collection",
+      "parentFamily": "Accor (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 5,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recrWCD1LMqu864oU",
+        "brandBasicsName": "MGallery Collection",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "AccorHotels",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recrWCD1LMqu864oU",
+          "name": "MGallery Collection"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Handwritten Collection",
+      "proposedSlug": "handwritten-collection",
+      "parentFamily": "IHG (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 4,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "rec7hTXwMRC81EPqz",
+        "brandBasicsName": "Handwritten Collection",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "AccorHotels",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rec7hTXwMRC81EPqz",
+          "name": "Handwritten Collection"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Design Hotels",
+      "proposedSlug": "design-hotels",
+      "parentFamily": "Marriott affiliate (source-confirmed)",
+      "brandType": "soft collection",
+      "likelyUseCase": "soft brand",
+      "likelyFactoryWave": 1,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 100,
+      "specialHandling": [
+        "sibling_active_tribute",
+        "marriott_affiliate_not_flag"
+      ],
+      "activeConflicts": [
+        {
+          "type": "related_active_brand",
+          "activeSlug": "tribute-portfolio",
+          "activeName": "Tribute Portfolio",
+          "note": "Not a duplicate — factory ladder sibling; reuse parent-family patterns with brand-specific copy."
+        }
+      ],
+      "dataPresence": {
+        "brandBasicsRecordId": "rec02zPClpWUTCyXM",
+        "brandBasicsName": "Design Hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rec02zPClpWUTCyXM",
+          "name": "Design Hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Courtyard by Marriott",
+      "proposedSlug": "courtyard-by-marriott",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "select service",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "rec6hye5H8zJmAGv3",
+        "brandBasicsName": "Courtyard by Marriott",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rec6hye5H8zJmAGv3",
+          "name": "Courtyard by Marriott"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Hyatt Place",
+      "proposedSlug": "hyatt-place",
+      "parentFamily": "Hyatt (source-confirmed)",
+      "brandType": "select service",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 4,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recgwxli5IsoPKCOY",
+        "brandBasicsName": "Hyatt Place",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hyatt Hotels Corporation",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recgwxli5IsoPKCOY",
+          "name": "Hyatt Place"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Residence Inn by Marriott",
+      "proposedSlug": "residence-inn-by-marriott",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "extended stay",
+      "likelyUseCase": "extended stay",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "rec9Ufbpa0GxJGzt8",
+        "brandBasicsName": "Residence Inn by Marriott",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rec9Ufbpa0GxJGzt8",
+          "name": "Residence Inn by Marriott"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "SpringHill Suites by Marriott",
+      "proposedSlug": "springhill-suites-by-marriott",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "all-suites select",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recBzdGfkMUN9fYsv",
+        "brandBasicsName": "SpringHill Suites by Marriott",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recBzdGfkMUN9fYsv",
+          "name": "SpringHill Suites by Marriott"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "TownePlace Suites by Marriott",
+      "proposedSlug": "towneplace-suites-by-marriott",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "extended stay",
+      "likelyUseCase": "extended stay",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recUPiPDivkhNUogr",
+        "brandBasicsName": "TownePlace Suites by Marriott",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recUPiPDivkhNUogr",
+          "name": "TownePlace Suites by Marriott"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Home2 Suites by Hilton",
+      "proposedSlug": "home2-suites-by-hilton",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "extended stay",
+      "likelyUseCase": "extended stay",
+      "likelyFactoryWave": 3,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "reccZ4zV6wMav7a2i",
+        "brandBasicsName": "Home2 Suites by Hilton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "reccZ4zV6wMav7a2i",
+          "name": "Home2 Suites by Hilton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Tru by Hilton",
+      "proposedSlug": "tru-by-hilton",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "select service",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 3,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recJLiMTv4W8VgO9L",
+        "brandBasicsName": "Tru by Hilton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recJLiMTv4W8VgO9L",
+          "name": "Tru by Hilton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "avid hotels",
+      "proposedSlug": "avid-hotels",
+      "parentFamily": "IHG (source-confirmed)",
+      "brandType": "economy select",
+      "likelyUseCase": "economy/midscale",
+      "likelyFactoryWave": 4,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recoEarnE8T6sDjZq",
+        "brandBasicsName": "avid hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "InterContinental Hotels Group",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recoEarnE8T6sDjZq",
+          "name": "avid hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Even Hotels",
+      "proposedSlug": "even-hotels",
+      "parentFamily": "IHG (source-confirmed)",
+      "brandType": "wellness select",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 4,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recvvmiyReHhiKdoK",
+        "brandBasicsName": "Even Hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "InterContinental Hotels Group",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recvvmiyReHhiKdoK",
+          "name": "Even Hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Travelodge by Wyndham",
+      "proposedSlug": "travelodge-by-wyndham",
+      "parentFamily": "Wyndham (source-confirmed)",
+      "brandType": "economy",
+      "likelyUseCase": "economy/midscale",
+      "likelyFactoryWave": 6,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recgrfnefkcrkZtEa",
+        "brandBasicsName": "Travelodge by Wyndham",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Wyndham Hotels & Resorts",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recgrfnefkcrkZtEa",
+          "name": "Travelodge by Wyndham"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "ibis",
+      "proposedSlug": "ibis",
+      "parentFamily": "Accor (source-confirmed)",
+      "brandType": "economy",
+      "likelyUseCase": "economy/midscale",
+      "likelyFactoryWave": 5,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "reclFXbpZ5XzLWbGP",
+        "brandBasicsName": "ibis",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "AccorHotels",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "reclFXbpZ5XzLWbGP",
+          "name": "ibis"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Novotel",
+      "proposedSlug": "novotel",
+      "parentFamily": "Accor (source-confirmed)",
+      "brandType": "midscale",
+      "likelyUseCase": "economy/midscale",
+      "likelyFactoryWave": 5,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recQE2lSSSSyuUrMQ",
+        "brandBasicsName": "Novotel",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "AccorHotels",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recQE2lSSSSyuUrMQ",
+          "name": "Novotel"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Hampton by Hilton",
+      "proposedSlug": "hampton-by-hilton",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "select service",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 3,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "rectRvOWQPaL6FkzZ",
+        "brandBasicsName": "Hampton by Hilton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rectRvOWQPaL6FkzZ",
+          "name": "Hampton by Hilton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Hilton Garden Inn",
+      "proposedSlug": "hilton-garden-inn",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "select service",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 3,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recrvdAjRlXxPvPPF",
+        "brandBasicsName": "Hilton Garden Inn",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recrvdAjRlXxPvPPF",
+          "name": "Hilton Garden Inn"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Spark by Hilton",
+      "proposedSlug": "spark-by-hilton",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "economy select",
+      "likelyUseCase": "economy/midscale",
+      "likelyFactoryWave": 3,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 6,
+      "suggestedProcessingPriority": 94,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recfv66er4Ch2vJDO",
+        "brandBasicsName": "Spark by Hilton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recfv66er4Ch2vJDO",
+          "name": "Spark by Hilton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "AC Hotels by Marriott",
+      "proposedSlug": "ac-hotels-by-marriott",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "lifestyle soft",
+      "likelyUseCase": "lifestyle",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 92,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "rec9aZp7GHtzUEg0c",
+        "brandBasicsName": "AC Hotels by Marriott",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rec9aZp7GHtzUEg0c",
+          "name": "AC Hotels by Marriott"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Canopy by Hilton",
+      "proposedSlug": "canopy-by-hilton",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "lifestyle soft",
+      "likelyUseCase": "lifestyle",
+      "likelyFactoryWave": 3,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 92,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recsggfbKlJbjeRP9",
+        "brandBasicsName": "Canopy by Hilton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recsggfbKlJbjeRP9",
+          "name": "Canopy by Hilton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Holiday Inn Express",
+      "proposedSlug": "holiday-inn-express",
+      "parentFamily": "IHG (source-confirmed)",
+      "brandType": "select service",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 4,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 92,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recmGmiIqDtAsm01f",
+        "brandBasicsName": "Holiday Inn Express",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "InterContinental Hotels Group",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recmGmiIqDtAsm01f",
+          "name": "Holiday Inn Express"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Aloft Hotels",
+      "proposedSlug": "aloft-hotels",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "lifestyle select",
+      "likelyUseCase": "lifestyle",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 92,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recJ1GZQpttX7qHgw",
+        "brandBasicsName": "Aloft Hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recJ1GZQpttX7qHgw",
+          "name": "Aloft Hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Moxy Hotels",
+      "proposedSlug": "moxy-hotels",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "lifestyle select",
+      "likelyUseCase": "lifestyle",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 2,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 92,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recahVIW4aCx0Ao84",
+        "brandBasicsName": "Moxy Hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recahVIW4aCx0Ao84",
+          "name": "Moxy Hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "StudioRes",
+      "proposedSlug": "studiores",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "extended stay micro",
+      "likelyUseCase": "extended stay",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 92,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recDM0LAD8jVRA2x3",
+        "brandBasicsName": "StudioRes",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recDM0LAD8jVRA2x3",
+          "name": "StudioRes"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Motto by Hilton",
+      "proposedSlug": "motto-by-hilton",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "micro-lifestyle",
+      "likelyUseCase": "lifestyle",
+      "likelyFactoryWave": 3,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 8,
+      "suggestedProcessingPriority": 90,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "reclt44apoi8co0e6",
+        "brandBasicsName": "Motto by Hilton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "reclt44apoi8co0e6",
+          "name": "Motto by Hilton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Mercure",
+      "proposedSlug": "mercure",
+      "parentFamily": "Accor (source-confirmed)",
+      "brandType": "midscale premium",
+      "likelyUseCase": "economy/midscale",
+      "likelyFactoryWave": 5,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 8,
+      "suggestedProcessingPriority": 90,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recevrLJ3m6rIug3S",
+        "brandBasicsName": "Mercure",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "AccorHotels",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recevrLJ3m6rIug3S",
+          "name": "Mercure"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Tempo by Hilton",
+      "proposedSlug": "tempo-by-hilton",
+      "parentFamily": "Hilton (source-confirmed)",
+      "brandType": "lifestyle select",
+      "likelyUseCase": "lifestyle",
+      "likelyFactoryWave": 3,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 8,
+      "suggestedProcessingPriority": 90,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recqiHq3GHKMj8Meo",
+        "brandBasicsName": "Tempo by Hilton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hilton Worldwide",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recqiHq3GHKMj8Meo",
+          "name": "Tempo by Hilton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Marriott Hotels",
+      "proposedSlug": "marriott-hotels",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "full service flagship",
+      "likelyUseCase": "full service",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 88,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recn59UtkyyoYwzSz",
+        "brandBasicsName": "Marriott Hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recn59UtkyyoYwzSz",
+          "name": "Marriott Hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Sheraton",
+      "proposedSlug": "sheraton",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "full service",
+      "likelyUseCase": "full service",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 88,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recg8HjT5Bky7NXeV",
+        "brandBasicsName": "Sheraton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recg8HjT5Bky7NXeV",
+          "name": "Sheraton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "NH Hotels",
+      "proposedSlug": "nh-hotels",
+      "parentFamily": "Minor / NH (source-confirmed)",
+      "brandType": "upper midscale",
+      "likelyUseCase": "conversion",
+      "likelyFactoryWave": 5,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 88,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recZZlLvzB7NDs8yB",
+        "brandBasicsName": "NH Hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Minor Hotel Group Limited",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recZZlLvzB7NDs8yB",
+          "name": "NH Hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Westin",
+      "proposedSlug": "westin",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "full service wellness",
+      "likelyUseCase": "full service",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 88,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recIPuBC50fv13zRR",
+        "brandBasicsName": "Westin",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recIPuBC50fv13zRR",
+          "name": "Westin"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Pullman",
+      "proposedSlug": "pullman",
+      "parentFamily": "Accor (source-confirmed)",
+      "brandType": "upscale meetings",
+      "likelyUseCase": "full service",
+      "likelyFactoryWave": 5,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 88,
+      "specialHandling": [],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recFW9kfqKfOjv7Z1",
+        "brandBasicsName": "Pullman",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "AccorHotels",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recFW9kfqKfOjv7Z1",
+          "name": "Pullman"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Four Points Flex by Sheraton",
+      "proposedSlug": "four-points-flex-by-sheraton",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "economy select",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 2,
+      "overallComplexity": 7,
+      "suggestedProcessingPriority": 88,
+      "specialHandling": [
+        "sheraton_sub_brand"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recgaMzDn2GKkpUsi",
+        "brandBasicsName": "Four Points Flex by Sheraton",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recgaMzDn2GKkpUsi",
+          "name": "Four Points Flex by Sheraton"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "City Express by Marriott",
+      "proposedSlug": "city-express-by-marriott",
+      "parentFamily": "Marriott (source-confirmed)",
+      "brandType": "select service regional",
+      "likelyUseCase": "select service",
+      "likelyFactoryWave": 2,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 2,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 8,
+      "suggestedProcessingPriority": 86,
+      "specialHandling": [
+        "cala_regional_focus"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recucEzAS6724tOYA",
+        "brandBasicsName": "City Express by Marriott",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Marriott International, Inc.",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recucEzAS6724tOYA",
+          "name": "City Express by Marriott"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Wyndham",
+      "proposedSlug": "wyndham",
+      "parentFamily": "Wyndham (source-confirmed)",
+      "brandType": "full service flagship",
+      "likelyUseCase": "full service",
+      "likelyFactoryWave": 6,
+      "sourceCaptureComplexity": 3,
+      "imageApprovalComplexity": 3,
+      "factGovernanceComplexity": 3,
+      "overallComplexity": 9,
+      "suggestedProcessingPriority": 84,
+      "specialHandling": [
+        "parent_brand_name_collision_risk"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recaYpv0oNl06dkMY",
+        "brandBasicsName": "Wyndham",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Wyndham Hotels & Resorts",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recaYpv0oNl06dkMY",
+          "name": "Wyndham"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": false,
+        "notes": []
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Iberostar Selection",
+      "proposedSlug": "iberostar-selection",
+      "parentFamily": "Iberostar / IHG beachfront (source-confirmed)",
+      "brandType": "resort",
+      "likelyUseCase": "resort",
+      "likelyFactoryWave": 7,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 4,
+      "overallComplexity": 12,
+      "suggestedProcessingPriority": 78,
+      "specialHandling": [
+        "resort_governance"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recTUs7czCBYkzD4h",
+        "brandBasicsName": "Iberostar Selection",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Iberostar Hotels & Resorts",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recTUs7czCBYkzD4h",
+          "name": "Iberostar Selection"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Bunkhouse Hotels",
+      "proposedSlug": "bunkhouse-hotels",
+      "parentFamily": "Independent / Hyatt-adjacent (source-confirmed)",
+      "brandType": "lifestyle collection",
+      "likelyUseCase": "lifestyle",
+      "likelyFactoryWave": 7,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 4,
+      "overallComplexity": 12,
+      "suggestedProcessingPriority": 74,
+      "specialHandling": [
+        "independent_portfolio",
+        "limited_franchise_fdd"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recGv268Wda31PlSZ",
+        "brandBasicsName": "Bunkhouse Hotels",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hyatt Hotels Corporation",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recGv268Wda31PlSZ",
+          "name": "Bunkhouse Hotels"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review",
+          "pending_legal_sensitivity_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval.",
+          "Legal/transaction-sensitive positioning — no company sign-off implied."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Mr & Mrs Smith",
+      "proposedSlug": "mr-and-mrs-smith",
+      "parentFamily": "Hyatt / independent (source-confirmed)",
+      "brandType": "luxury collection",
+      "likelyUseCase": "luxury collection",
+      "likelyFactoryWave": 8,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 5,
+      "overallComplexity": 13,
+      "suggestedProcessingPriority": 72,
+      "specialHandling": [
+        "hyatt_acquisition",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recY5jJVpRoTy1cRK",
+        "brandBasicsName": "Mr & Mrs Smith",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hyatt Hotels Corporation",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recY5jJVpRoTy1cRK",
+          "name": "Mr & Mrs Smith"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review",
+          "pending_legal_sensitivity_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval.",
+          "Legal/transaction-sensitive positioning — no company sign-off implied."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Hyatt Zilara",
+      "proposedSlug": "hyatt-zilara",
+      "parentFamily": "Hyatt (source-confirmed)",
+      "brandType": "all-inclusive resort",
+      "likelyUseCase": "all-inclusive",
+      "likelyFactoryWave": 7,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 5,
+      "factGovernanceComplexity": 5,
+      "overallComplexity": 14,
+      "suggestedProcessingPriority": 70,
+      "specialHandling": [
+        "adults_only_resort",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "rechIjRoVmm4bo8g1",
+        "brandBasicsName": "Hyatt Zilara",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hyatt Hotels Corporation",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rechIjRoVmm4bo8g1",
+          "name": "Hyatt Zilara"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review",
+          "pending_legal_sensitivity_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval.",
+          "Legal/transaction-sensitive positioning — no company sign-off implied."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Hyatt Ziva",
+      "proposedSlug": "hyatt-ziva",
+      "parentFamily": "Hyatt (source-confirmed)",
+      "brandType": "all-inclusive resort",
+      "likelyUseCase": "all-inclusive",
+      "likelyFactoryWave": 7,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 5,
+      "factGovernanceComplexity": 5,
+      "overallComplexity": 14,
+      "suggestedProcessingPriority": 70,
+      "specialHandling": [
+        "family_resort",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "rec0sfR7SrVZUBm18",
+        "brandBasicsName": "Hyatt Ziva",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hyatt Hotels Corporation",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "rec0sfR7SrVZUBm18",
+          "name": "Hyatt Ziva"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review",
+          "pending_legal_sensitivity_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval.",
+          "Legal/transaction-sensitive positioning — no company sign-off implied."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Secrets Resorts & Spas",
+      "proposedSlug": "secrets-resorts-and-spas",
+      "parentFamily": "Hyatt / AMR (source-confirmed)",
+      "brandType": "adults-only all-inclusive",
+      "likelyUseCase": "all-inclusive",
+      "likelyFactoryWave": 7,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 5,
+      "factGovernanceComplexity": 5,
+      "overallComplexity": 14,
+      "suggestedProcessingPriority": 70,
+      "specialHandling": [
+        "adults_only_resort",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recNMxUhbOaIq3so5",
+        "brandBasicsName": "Secrets Resorts & Spas",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hyatt Hotels Corporation",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recNMxUhbOaIq3so5",
+          "name": "Secrets Resorts & Spas"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review",
+          "pending_legal_sensitivity_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval.",
+          "Legal/transaction-sensitive positioning — no company sign-off implied."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Sunscape Resorts & Spas",
+      "proposedSlug": "sunscape-resorts-and-spas",
+      "parentFamily": "Hyatt / AMR (source-confirmed)",
+      "brandType": "family all-inclusive",
+      "likelyUseCase": "all-inclusive",
+      "likelyFactoryWave": 7,
+      "sourceCaptureComplexity": 4,
+      "imageApprovalComplexity": 5,
+      "factGovernanceComplexity": 5,
+      "overallComplexity": 14,
+      "suggestedProcessingPriority": 70,
+      "specialHandling": [
+        "family_resort",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recI2FAEkY46LSx3m",
+        "brandBasicsName": "Sunscape Resorts & Spas",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Hyatt Hotels Corporation",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recI2FAEkY46LSx3m",
+          "name": "Sunscape Resorts & Spas"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review",
+          "pending_legal_sensitivity_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval.",
+          "Legal/transaction-sensitive positioning — no company sign-off implied."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "Small Luxury Hotels of the World",
+      "proposedSlug": "small-luxury-hotels-of-the-world",
+      "parentFamily": "SLH consortium (source-confirmed)",
+      "brandType": "luxury collection",
+      "likelyUseCase": "luxury collection",
+      "likelyFactoryWave": 8,
+      "sourceCaptureComplexity": 5,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 5,
+      "overallComplexity": 14,
+      "suggestedProcessingPriority": 70,
+      "specialHandling": [
+        "independent_consortium",
+        "legal_sensitivity"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recjjSnY2opb8P4DG",
+        "brandBasicsName": "Small Luxury Hotels of the World",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Small Luxury Hotels of the World",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recjjSnY2opb8P4DG",
+          "name": "Small Luxury Hotels of the World"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review",
+          "pending_legal_sensitivity_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval.",
+          "Legal/transaction-sensitive positioning — no company sign-off implied."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    },
+    {
+      "brandName": "The Leading Hotels of the World",
+      "proposedSlug": "the-leading-hotels-of-the-world",
+      "parentFamily": "LHW consortium (source-confirmed)",
+      "brandType": "luxury collection",
+      "likelyUseCase": "luxury collection",
+      "likelyFactoryWave": 8,
+      "sourceCaptureComplexity": 5,
+      "imageApprovalComplexity": 4,
+      "factGovernanceComplexity": 5,
+      "overallComplexity": 14,
+      "suggestedProcessingPriority": 66,
+      "specialHandling": [
+        "independent_consortium",
+        "legal_sensitivity",
+        "no_single_parent_fdd"
+      ],
+      "activeConflicts": [],
+      "dataPresence": {
+        "brandBasicsRecordId": "recuPZX2bZRAqM15l",
+        "brandBasicsName": "The Leading Hotels of the World",
+        "brandBasicsStatus": "Under Review",
+        "brandBasicsParentCompany": "Leading Hotels of the World",
+        "presentationRowCount": 0,
+        "hasBrandExplorerData": false,
+        "matchMethod": "exact",
+        "fuzzyMatch": false,
+        "isActiveProfileBrand": false,
+        "activeProfileReady": false,
+        "existsInBrandSetup": true,
+        "isNewBrandRecord": false,
+        "slugCollisionWithExisting": false,
+        "existingSlugOwner": {
+          "recordId": "recuPZX2bZRAqM15l",
+          "name": "The Leading Hotels of the World"
+        }
+      },
+      "reviewQueue": {
+        "currentState": "pending_source_review",
+        "parallelFlags": [
+          "pending_image_review",
+          "pending_founder_copy_review",
+          "pending_legal_sensitivity_review"
+        ],
+        "factoryMayContinue": true,
+        "activationBlocked": true,
+        "notes": [
+          "Image-dependent activation blocked until image approval.",
+          "Legal/transaction-sensitive positioning — no company sign-off implied."
+        ]
+      },
+      "needsBrandBasicsRecord": false
+    }
+  ],
+  "guardrails": {
+    "noAirtableWritesInDryRun": true,
+    "noAutoImageApproval": true,
+    "noAutoFactApproval": true,
+    "noCompanyValidatedChanges": true,
+    "createBacklogGate": "--apply-create-backlog"
+  }
+}

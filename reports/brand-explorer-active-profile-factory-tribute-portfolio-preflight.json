@@ -1,0 +1,1488 @@
+{
+  "factoryVersion": "v34D",
+  "brandConfigVersion": "v35B",
+  "stage": "preflight",
+  "generatedAt": "2026-07-14T12:49:52.923Z",
+  "brand": {
+    "slug": "tribute-portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio",
+    "parentCompany": "Marriott International, Inc.",
+    "consumerUrl": "https://tribute-portfolio.marriott.com/"
+  },
+  "activeProfileConfig": {
+    "slug": "tribute-portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "brandFamily": "marriott-soft-collection",
+    "propertyExampleStrategy": "labeled_property_examples_from_official_sources",
+    "galleryMinimum": 6
+  },
+  "mode": "dry-run",
+  "guardrails": {
+    "companyValidatedNeverAuto": true,
+    "imageApprovalNotCompanyValidation": true,
+    "noSummaryUrlWrites": true,
+    "registryOnlyNotVisibleReadiness": true,
+    "founderVisualReviewRequiredForApply": true,
+    "stagedApplyWorkflow": "apply-draft → founder-review → apply-approved",
+    "galleryMinimum": 6
+  },
+  "factoryRules": {
+    "factoryVersion": "v34D",
+    "pass": false,
+    "rules": {
+      "gallery": {
+        "ruleId": "gallery_minimum_six_visible",
+        "pass": true,
+        "minimum": 6,
+        "visibleInApi": 6,
+        "withImageUrl": 6,
+        "missingImageUrl": [],
+        "logoOrGenericSlots": [],
+        "blockers": []
+      },
+      "propertyExamples": {
+        "ruleId": "property_example_real_hotel_images",
+        "pass": true,
+        "visibleOpeningCards": 5,
+        "defects": [],
+        "blockers": []
+      },
+      "scenarioImages": {
+        "ruleId": "scenario_no_image_placeholder",
+        "pass": true,
+        "visibleScenarioCards": 3,
+        "placeholderSlots": [],
+        "staleFallbackTitles": false,
+        "blockers": []
+      },
+      "registryTraceability": {
+        "ruleId": "registry_traceability",
+        "pass": false,
+        "visualSlotsChecked": 15,
+        "gaps": [
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recA64mOFrKJk91dg",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "recordId": "receMhyKEl5yQGSKJ",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "recordId": "recOf4qCi4acHhxPc",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "overview.scenario.1",
+            "recordId": "recqiRkN3W7j1lGMT",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "overview.hero",
+            "recordId": "recWsc8VnTVSE2kKK",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.1",
+            "recordId": "reciNKaL1zf5KEvtn",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recS8yiXhrw9GDLT9",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "recordId": "recb7ZgWf6s1IzGaj",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recVOx8mYrzfUnVFQ",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "rec58S5gLVVHXiSNB",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "recordId": "recDCNmWcRNLZ8Aag",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.4",
+            "recordId": "recFjJ444WHSE9A6b",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recKFr0DmBNxTBx4c",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.5",
+            "recordId": "rec66EQgSd6vnMZoy",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.6",
+            "recordId": "recHn6N3Z77lv6wxR",
+            "issue": "missing_registry_row"
+          }
+        ],
+        "blockers": [
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:overview.scenario.3",
+          "missing_registry_row:overview.scenario.2",
+          "missing_registry_row:overview.scenario.1",
+          "missing_registry_row:overview.hero",
+          "missing_registry_row:materials.gallery.1",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:materials.gallery.2",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:materials.gallery.3",
+          "missing_registry_row:materials.gallery.4",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:materials.gallery.5",
+          "missing_registry_row:materials.gallery.6"
+        ]
+      },
+      "uiFallback": {
+        "ruleId": "ui_fallback_preference",
+        "pass": true,
+        "risks": [],
+        "blockers": []
+      },
+      "copySafety": {
+        "ruleId": "copy_safety",
+        "pass": false,
+        "findings": [
+          {
+            "slotKey": "overview.portfolio_context",
+            "recordId": "rec03qcBLx0q6LLDT",
+            "patternId": "tribute",
+            "excerpt": "2\nTribute Portfolio sits within Marriott's independent/lifestyle collection conversation. For owners, it can be relevant",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.portfolio_context",
+            "recordId": "rec03qcBLx0q6LLDT",
+            "patternId": "marriott",
+            "excerpt": "2\nTribute Portfolio sits within Marriott's independent/lifestyle collection conversation. For owners, it can be relevant",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.portfolio_context",
+            "recordId": "rec03qcBLx0q6LLDT",
+            "patternId": "bonvoy",
+            "excerpt": "2\nTribute Portfolio sits within Marriott's independent/lifestyle collection conversation. For owners, it can be relevant",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.growth_fit",
+            "recordId": "rec0AWSWsWF5tex6w",
+            "patternId": "adr",
+            "excerpt": "\nBoutique conversions with established ADR\nResort assets with experience investment plan\nUrban independents with design ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.scenarios",
+            "recordId": "rec0uvkA0gXyhKxYN",
+            "patternId": "adr",
+            "excerpt": "\nResort repositioning with experience-led ADR\nUrban boutique conversion with design narrative\nLeisure destination affili",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "rec46SixcVS6j9NbC",
+            "patternId": "tribute",
+            "excerpt": "Crystal Cove Opens As Tribute Portfolio's First All-Inclusive Resort\nFeb 2026\n\nCrystal Cove opened on Barbados' west coa",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "rec46SixcVS6j9NbC",
+            "patternId": "marriott",
+            "excerpt": "Crystal Cove Opens As Tribute Portfolio's First All-Inclusive Resort\nFeb 2026\n\nCrystal Cove opened on Barbados' west coa",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.relative_positioning",
+            "recordId": "rec4tj91U4cCsgdrB",
+            "patternId": "tribute",
+            "excerpt": "\nLifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hot",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.relative_positioning",
+            "recordId": "rec4tj91U4cCsgdrB",
+            "patternId": "marriott",
+            "excerpt": "\nLifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hot",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.relative_positioning",
+            "recordId": "rec4tj91U4cCsgdrB",
+            "patternId": "bonvoy",
+            "excerpt": "\nLifestyle soft-collection within Marriott International—Tribute Portfolio sits with Autograph Collection and Design Hot",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "rec58S5gLVVHXiSNB",
+            "patternId": "tribute",
+            "excerpt": "Humano, Lima, a Tribute Portfolio Hotel\nUrban, Peru, South America, Waterfront\n\nLima, Peru\n\nWaterfront Urban Lifestyle H",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "rec58S5gLVVHXiSNB",
+            "patternId": "marriott",
+            "excerpt": "Humano, Lima, a Tribute Portfolio Hotel\nUrban, Peru, South America, Waterfront\n\nLima, Peru\n\nWaterfront Urban Lifestyle H",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.lifecycle.1",
+            "recordId": "rec5HERfFAL1EdwWq",
+            "patternId": "tribute",
+            "excerpt": "Evaluate\nEvaluate collection fit, market tier, conversion scope, and whether the asset's design, F&B, and service model ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.international",
+            "recordId": "rec65q81fQObTF4oj",
+            "patternId": "marriott",
+            "excerpt": "International\nInternational guest sourcing through Bonvoy and Marriott network where properties participate.\n\nProject im",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.international",
+            "recordId": "rec65q81fQObTF4oj",
+            "patternId": "bonvoy",
+            "excerpt": "International\nInternational guest sourcing through Bonvoy and Marriott network where properties participate.\n\nProject im",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.gallery.5",
+            "recordId": "rec66EQgSd6vnMZoy",
+            "patternId": "tribute",
+            "excerpt": "Humano, Lima, a Tribute Portfolio Hotel\nRepresentative property scene supporting Tribute Portfolio's design-forward, loc",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.kpi.lens",
+            "recordId": "rec6PaoOsOQPEO0jC",
+            "patternId": "net_contribution",
+            "excerpt": "Owner lens\nModel net contribution after fees and loyalty costs",
+            "severity": "high"
+          },
+          {
+            "slotKey": "economics.opening.step.3",
+            "recordId": "rec6YEv4TyB0mbeY9",
+            "patternId": "bonvoy",
+            "excerpt": "Pre-Opening Planning\nPlan systems integration, distribution setup, Bonvoy participation, training, staffing, operating p",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "standards.requirement",
+            "recordId": "rec8SAIkISD7Vgryz",
+            "patternId": "marriott",
+            "excerpt": "Technology / Systems\nTypical consideration: Participation in Marriott systems can require PMS, CRS, loyalty, reporting, ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.scenario.1",
+            "recordId": "rec8fstnbm3nEI33K",
+            "patternId": "marriott",
+            "excerpt": "Independent Reflag\nIndependent or soft-brand full-service hotels that already carry local story, design point of view, a",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.scenario.1",
+            "recordId": "rec8fstnbm3nEI33K",
+            "patternId": "bonvoy",
+            "excerpt": "Independent Reflag\nIndependent or soft-brand full-service hotels that already carry local story, design point of view, a",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.intro",
+            "recordId": "rec93g1OMedBBgfRd",
+            "patternId": "tribute",
+            "excerpt": "\nTribute Portfolio is Marriott's soft collection for independent hotels—owners retain identity and local programming whi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.intro",
+            "recordId": "rec93g1OMedBBgfRd",
+            "patternId": "marriott",
+            "excerpt": "\nTribute Portfolio is Marriott's soft collection for independent hotels—owners retain identity and local programming whi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.intro",
+            "recordId": "rec93g1OMedBBgfRd",
+            "patternId": "bonvoy",
+            "excerpt": "\nTribute Portfolio is Marriott's soft collection for independent hotels—owners retain identity and local programming whi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recA4HVqRn8ZJv6RC",
+            "patternId": "marriott",
+            "excerpt": "Elite Recognition\nBonvoy’s member and elite tiers can support guest recognition expectations at participating properties",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recA4HVqRn8ZJv6RC",
+            "patternId": "bonvoy",
+            "excerpt": "Elite Recognition\nBonvoy’s member and elite tiers can support guest recognition expectations at participating properties",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recA64mOFrKJk91dg",
+            "patternId": "tribute",
+            "excerpt": "Casa Nizuc, a Tribute Portfolio Resort\nResort, Mexico, CALA, Riviera Maya\n\nCancún, Quintana Roo, Mexico\n\nFuture Resort E",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recA64mOFrKJk91dg",
+            "patternId": "marriott",
+            "excerpt": "Casa Nizuc, a Tribute Portfolio Resort\nResort, Mexico, CALA, Riviera Maya\n\nCancún, Quintana Roo, Mexico\n\nFuture Resort E",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenarios",
+            "recordId": "recA6BoBqxzCruvXt",
+            "patternId": "marriott",
+            "excerpt": "\nResort and leisure repositioning where an independent or tired resort needs Marriott distribution while preserving expe",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenarios",
+            "recordId": "recA6BoBqxzCruvXt",
+            "patternId": "bonvoy",
+            "excerpt": "\nResort and leisure repositioning where an independent or tired resort needs Marriott distribution while preserving expe",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenarios",
+            "recordId": "recA6BoBqxzCruvXt",
+            "patternId": "adr",
+            "excerpt": "\nResort and leisure repositioning where an independent or tired resort needs Marriott distribution while preserving expe",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.theme",
+            "recordId": "recAPdS6x7AiCXhUP",
+            "patternId": "adr",
+            "excerpt": "\nConversion and repositioning of independent, boutique, and lifestyle assets\nResort and leisure destinations with experi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.corporate_group",
+            "recordId": "recAVJKC8UUfGMjuG",
+            "patternId": "marriott",
+            "excerpt": "Corporate Group\nCorporate and group sales access through Marriott commercial organization where program participation ap",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "recordId": "recDCNmWcRNLZ8Aag",
+            "patternId": "tribute",
+            "excerpt": "Ermita, Cartagena, a Tribute Portfolio Hotel\nColonial-city lifestyle conversion in Cartagena's heritage district—illustr",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.hero_title",
+            "recordId": "recDHR5pOBS4DRtlb",
+            "patternId": "marriott",
+            "excerpt": "\nMarriott Bonvoy — Loyalty at a Glance",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.hero_title",
+            "recordId": "recDHR5pOBS4DRtlb",
+            "patternId": "bonvoy",
+            "excerpt": "\nMarriott Bonvoy — Loyalty at a Glance",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "hero.operator_compat",
+            "recordId": "recDWYcn9kmSn0k63",
+            "patternId": "marriott",
+            "excerpt": "\nFull-service, resort, and lifestyle operators experienced with soft-collection conversions, design narrative, and Marri",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.opening.process",
+            "recordId": "recEr3A9HxJLidJJp",
+            "patternId": "marriott",
+            "excerpt": "\nTribute openings and conversions should be planned around asset fit, design review, systems readiness, operator coordin",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.differentiator",
+            "recordId": "recFIl0MujrgLC7PV",
+            "patternId": "marriott",
+            "excerpt": "\nSoft-collection affiliation that keeps property individuality while adding Marriott commercial reach and Bonvoy guest d",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.differentiator",
+            "recordId": "recFIl0MujrgLC7PV",
+            "patternId": "bonvoy",
+            "excerpt": "\nSoft-collection affiliation that keeps property individuality while adding Marriott commercial reach and Bonvoy guest d",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.gallery.4",
+            "recordId": "recFjJ444WHSE9A6b",
+            "patternId": "tribute",
+            "excerpt": "Hotel Rumbao, a Tribute Portfolio Hotel\nRepresentative property scene supporting Tribute Portfolio's design-forward, loc",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.opening.step.1",
+            "recordId": "recGA0SMQOx8YnbOE",
+            "patternId": "marriott",
+            "excerpt": "Application & Feasibility\nConfirm asset fit, conversion path, ownership goals, market positioning, operator readiness, a",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.gallery.6",
+            "recordId": "recHn6N3Z77lv6wxR",
+            "patternId": "tribute",
+            "excerpt": "Loma, Medellin, a Tribute Portfolio Hotel\nRepresentative property scene supporting Tribute Portfolio's design-forward, l",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "standards.requirement",
+            "recordId": "recHxh3SeCrdLmuRq",
+            "patternId": "marriott",
+            "excerpt": "Guestroom Standards\nTypical consideration: Guestrooms should align with Tribute's lifestyle positioning while meeting Ma",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.lifecycle.5",
+            "recordId": "recI1supDQSpy3JOH",
+            "patternId": "bonvoy",
+            "excerpt": "Stabilize\nModel channel mix and Bonvoy contribution versus comp set.",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.opening.step.2",
+            "recordId": "recIj9CK3vXQd7gh0",
+            "patternId": "tribute",
+            "excerpt": "Design & Standards\nAlign the property’s independent character with Tribute Portfolio positioning, Marriott system requir",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.opening.step.2",
+            "recordId": "recIj9CK3vXQd7gh0",
+            "patternId": "marriott",
+            "excerpt": "Design & Standards\nAlign the property’s independent character with Tribute Portfolio positioning, Marriott system requir",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recIqGwvwRDpN0mB2",
+            "patternId": "marriott",
+            "excerpt": "Direct Booking & Digital Channels\nMarriott channels, member benefits, and direct-booking mechanics can support distribut",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "insight.similar",
+            "recordId": "recJ6dJY4QpiHQNXD",
+            "patternId": "marriott",
+            "excerpt": "Autograph Collection\n(Marriott · cross-parent soft collection · independent-character benchmark)",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.overview",
+            "recordId": "recJWQ0U79st5lz7m",
+            "patternId": "marriott",
+            "excerpt": "\nGuests: Independent hotels with distinctive style, local flavor, and memorable stays, with Bonvoy recognition and Marri",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.overview",
+            "recordId": "recJWQ0U79st5lz7m",
+            "patternId": "bonvoy",
+            "excerpt": "\nGuests: Independent hotels with distinctive style, local flavor, and memorable stays, with Bonvoy recognition and Marri",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.overview",
+            "recordId": "recJWQ0U79st5lz7m",
+            "patternId": "net_contribution",
+            "excerpt": "\nGuests: Independent hotels with distinctive style, local flavor, and memorable stays, with Bonvoy recognition and Marri",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recKFr0DmBNxTBx4c",
+            "patternId": "tribute",
+            "excerpt": "Loma, Medellin, a Tribute Portfolio Hotel\nUrban, Colombia, South America\n\nMedellín, Colombia\n\nAndean Urban Lifestyle Hot",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recKFr0DmBNxTBx4c",
+            "patternId": "marriott",
+            "excerpt": "Loma, Medellin, a Tribute Portfolio Hotel\nUrban, Colombia, South America\n\nMedellín, Colombia\n\nAndean Urban Lifestyle Hot",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.mea",
+            "recordId": "recLyiJs6OapVhrLU",
+            "patternId": "marriott",
+            "excerpt": "MEA\nSelective / case-by-case\n\nMiddle East & Africa should be treated as a case-by-case fit screen for Tribute—dependent ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.mea",
+            "recordId": "recLyiJs6OapVhrLU",
+            "patternId": "adr",
+            "excerpt": "MEA\nSelective / case-by-case\n\nMiddle East & Africa should be treated as a case-by-case fit screen for Tribute—dependent ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.cala",
+            "recordId": "recMxUaZjR2Q2c1fP",
+            "patternId": "marriott",
+            "excerpt": "CALA\nStrong lifestyle & resort context\n\nCALA is a meaningful Tribute context for resort, urban lifestyle, and character-",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.cala",
+            "recordId": "recMxUaZjR2Q2c1fP",
+            "patternId": "bonvoy",
+            "excerpt": "CALA\nStrong lifestyle & resort context\n\nCALA is a meaningful Tribute context for resort, urban lifestyle, and character-",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.cala",
+            "recordId": "recMxUaZjR2Q2c1fP",
+            "patternId": "adr",
+            "excerpt": "CALA\nStrong lifestyle & resort context\n\nCALA is a meaningful Tribute context for resort, urban lifestyle, and character-",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.brand_involvement",
+            "recordId": "recNNVVwGcx5Srb1c",
+            "patternId": "marriott",
+            "excerpt": "\nMarriott collection involvement on design narrative, conversion milestones, and QA—higher touch than select-service pro",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.scenario.4",
+            "recordId": "recNrThpTenftVyHM",
+            "patternId": "marriott",
+            "excerpt": "Third-Party Operator–Led\nAssets run by experienced third-party operators who can execute collection design compliance, F",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.implications.pnl",
+            "recordId": "recNza86lhiVTxdqg",
+            "patternId": "bonvoy",
+            "excerpt": "\nOwner implication (pnl): plan systems, staffing, and P&L treatment for Bonvoy participation—confirm with approved loyal",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "standards.conversion",
+            "recordId": "recOFikvazxvB9Nen",
+            "patternId": "marriott",
+            "excerpt": "\nOwner diligence framing: sequence conversion PIP scope, heritage or design constraints, systems cutover, and brand QA m",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "recordId": "recOf4qCi4acHhxPc",
+            "patternId": "marriott",
+            "excerpt": "Urban Boutique Repositioning\nA strong fit for design-led urban hotels where owners want lifestyle positioning, Marriott ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "recordId": "recOf4qCi4acHhxPc",
+            "patternId": "bonvoy",
+            "excerpt": "Urban Boutique Repositioning\nA strong fit for design-led urban hotels where owners want lifestyle positioning, Marriott ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "standards.requirement",
+            "recordId": "recPEmlDXZhUTjUAQ",
+            "patternId": "marriott",
+            "excerpt": "Training / QA / Brand Standards\nTypical consideration: Brand onboarding, training, quality assurance, and standards comp",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.digital_marketing",
+            "recordId": "recPqbstkbDeqGzkf",
+            "patternId": "marriott",
+            "excerpt": "Digital Marketing\nDigital demand generation and brand campaign participation through Marriott commercial stack.\n\nProject",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.implications.ops",
+            "recordId": "recRN00OoWmeU3smz",
+            "patternId": "bonvoy",
+            "excerpt": "\nOwner implication (ops): plan systems, staffing, and P&L treatment for Bonvoy participation—confirm with approved loyal",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recS8yiXhrw9GDLT9",
+            "patternId": "tribute",
+            "excerpt": "Crystal Cove, Barbados, a Tribute Portfolio All-Inclusive Resort\nResort, All-Inclusive, Barbados, CALA\n\nSt. James, Barba",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recS8yiXhrw9GDLT9",
+            "patternId": "marriott",
+            "excerpt": "Crystal Cove, Barbados, a Tribute Portfolio All-Inclusive Resort\nResort, All-Inclusive, Barbados, CALA\n\nSt. James, Barba",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.why_value",
+            "recordId": "recSFXWoFbjZ1mv5e",
+            "patternId": "marriott",
+            "excerpt": "\nPreserves independent identity while adding Bonvoy and Marriott commercial infrastructure\nSuited to conversion of bouti",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.why_value",
+            "recordId": "recSFXWoFbjZ1mv5e",
+            "patternId": "bonvoy",
+            "excerpt": "\nPreserves independent identity while adding Bonvoy and Marriott commercial infrastructure\nSuited to conversion of bouti",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "standards.questions",
+            "recordId": "recSOAvbkHyyqF8mq",
+            "patternId": "tribute",
+            "excerpt": "\nWhich elements of the hotel's identity, design, F&B, and local programming can remain unique under Tribute Portfolio?\nW",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "standards.questions",
+            "recordId": "recSOAvbkHyyqF8mq",
+            "patternId": "bonvoy",
+            "excerpt": "\nWhich elements of the hotel's identity, design, F&B, and local programming can remain unique under Tribute Portfolio?\nW",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.watchouts",
+            "recordId": "recSylIVEltQjQAaW",
+            "patternId": "net_contribution",
+            "excerpt": "\nPIP scope and timing can dominate conversion economics\nFull-service complexity may exceed limited-service underwriting\n",
+            "severity": "high"
+          },
+          {
+            "slotKey": "footprint.region.apac",
+            "recordId": "recUMmwVFf3V3or7j",
+            "patternId": "marriott",
+            "excerpt": "APAC\nDestination & urban lifestyle context\n\nAsia Pacific can support heritage, urban waterfront, and destination-led lif",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.apac",
+            "recordId": "recUMmwVFf3V3or7j",
+            "patternId": "bonvoy",
+            "excerpt": "APAC\nDestination & urban lifestyle context\n\nAsia Pacific can support heritage, urban waterfront, and destination-led lif",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.apac",
+            "recordId": "recUMmwVFf3V3or7j",
+            "patternId": "adr",
+            "excerpt": "APAC\nDestination & urban lifestyle context\n\nAsia Pacific can support heritage, urban waterfront, and destination-led lif",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.earn",
+            "recordId": "recUN78aEOqWk7Z7h",
+            "patternId": "marriott",
+            "excerpt": "Earn Examples\nMembers earn Marriott Bonvoy points on eligible hotel charges at participating properties when enrolled an",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.earn",
+            "recordId": "recUN78aEOqWk7Z7h",
+            "patternId": "bonvoy",
+            "excerpt": "Earn Examples\nMembers earn Marriott Bonvoy points on eligible hotel charges at participating properties when enrolled an",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.differentiators.identity",
+            "recordId": "recUTWOpoyhHoGS9p",
+            "patternId": "marriott",
+            "excerpt": "\nIndependent character and local sense of place\nDesign-forward guest experience\nBoutique and lifestyle operating posture",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.systems_integration",
+            "recordId": "recUjQ5dKGa317xQg",
+            "patternId": "marriott",
+            "excerpt": "\nMarriott PMS, CRS, Bonvoy, and brand reporting integration—confirm cutover scope, timing, and fee line items in franchi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.systems_integration",
+            "recordId": "recUjQ5dKGa317xQg",
+            "patternId": "bonvoy",
+            "excerpt": "\nMarriott PMS, CRS, Bonvoy, and brand reporting integration—confirm cutover scope, timing, and fee line items in franchi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recVOx8mYrzfUnVFQ",
+            "patternId": "tribute",
+            "excerpt": "Hotel Rumbao, a Tribute Portfolio Hotel\nUrban, Puerto Rico, CALA, Old San Juan\n\nSan Juan, Puerto Rico\n\nHistoric City Lif",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recVOx8mYrzfUnVFQ",
+            "patternId": "marriott",
+            "excerpt": "Hotel Rumbao, a Tribute Portfolio Hotel\nUrban, Puerto Rico, CALA, Old San Juan\n\nSan Juan, Puerto Rico\n\nHistoric City Lif",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recVOx8mYrzfUnVFQ",
+            "patternId": "bonvoy",
+            "excerpt": "Hotel Rumbao, a Tribute Portfolio Hotel\nUrban, Puerto Rico, CALA, Old San Juan\n\nSan Juan, Puerto Rico\n\nHistoric City Lif",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.primary_model",
+            "recordId": "recVxClMzskuI02hR",
+            "patternId": "marriott",
+            "excerpt": "\nFranchise or management affiliation with Marriott systems, Bonvoy, and commercial stack—common on independent full-serv",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.primary_model",
+            "recordId": "recVxClMzskuI02hR",
+            "patternId": "bonvoy",
+            "excerpt": "\nFranchise or management affiliation with Marriott systems, Bonvoy, and commercial stack—common on independent full-serv",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.distribution",
+            "recordId": "recWjvqtmQsZeUA5t",
+            "patternId": "marriott",
+            "excerpt": "Distribution\nMarriott reservation infrastructure and brand.com paths extend reach for independent assets that historical",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.distribution",
+            "recordId": "recWjvqtmQsZeUA5t",
+            "patternId": "net_contribution",
+            "excerpt": "Distribution\nMarriott reservation infrastructure and brand.com paths extend reach for independent assets that historical",
+            "severity": "high"
+          },
+          {
+            "slotKey": "insight.similar",
+            "recordId": "recWmQRt6rJCoIqRZ",
+            "patternId": "marriott",
+            "excerpt": "Design Hotels\n(Marriott · independent-character collection · experiential design benchmark for diligence)",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.hero",
+            "recordId": "recWsc8VnTVSE2kKK",
+            "patternId": "tribute",
+            "excerpt": "Ermita, Cartagena, a Tribute Portfolio Hotel\nErmita, Cartagena, a Tribute Portfolio Hotel — Hero Image (exterior)",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.reputation_qa",
+            "recordId": "recX7oKdte8XrQCoz",
+            "patternId": "adr",
+            "excerpt": "Reputation Qa\nReputation and quality programs supporting guest review performance.\n\nProject impact: Helps protect ADR du",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.scenario.3",
+            "recordId": "recZ0Rct6ZNhHOBOr",
+            "patternId": "marriott",
+            "excerpt": "Markets With Strong Brand Presence\nGateway and regional markets where Marriott distribution and loyalty density matter—T",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.am",
+            "recordId": "recah9ILLxcXHwmOa",
+            "patternId": "tribute",
+            "excerpt": "Americas\nIndependent lifestyle fit\n\nTribute Portfolio in the Americas suits owners evaluating independent lifestyle, urb",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.am",
+            "recordId": "recah9ILLxcXHwmOa",
+            "patternId": "marriott",
+            "excerpt": "Americas\nIndependent lifestyle fit\n\nTribute Portfolio in the Americas suits owners evaluating independent lifestyle, urb",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.am",
+            "recordId": "recah9ILLxcXHwmOa",
+            "patternId": "bonvoy",
+            "excerpt": "Americas\nIndependent lifestyle fit\n\nTribute Portfolio in the Americas suits owners evaluating independent lifestyle, urb",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.development_model",
+            "recordId": "recamUjgMyc5ErUUi",
+            "patternId": "marriott",
+            "excerpt": "\nSoft-collection path for independent, boutique, and lifestyle hotels where the asset already has identity worth preserv",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.revenue_management",
+            "recordId": "recawCLrVAPreVarC",
+            "patternId": "adr",
+            "excerpt": "Revenue Management\nRevenue tools and brand commercial support aligned to collection positioning and market tier.\n\nProjec",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "recordId": "recb7ZgWf6s1IzGaj",
+            "patternId": "tribute",
+            "excerpt": "Crystal Cove, Barbados, a Tribute Portfolio All-Inclusive Resort\nRepresentative property scene supporting Tribute Portfo",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.training",
+            "recordId": "recbRE9GTA0Un2ZA2",
+            "patternId": "marriott",
+            "excerpt": "\nMarriott brand training and collection service standards—budget per approved franchise fee schedule.",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.pre_opening",
+            "recordId": "reccpdbmOdlRgbfYw",
+            "patternId": "bonvoy",
+            "excerpt": "\nConversion PIP, design sign-off, Bonvoy onboarding, and opening QA before stabilization—not a light reflag path.",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "insight.summary",
+            "recordId": "recdfsNPCN3o5xlwZ",
+            "patternId": "tribute",
+            "excerpt": "\nTribute Portfolio fits when you want Marriott soft-collection affiliation with retained independence, Bonvoy distributi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "insight.summary",
+            "recordId": "recdfsNPCN3o5xlwZ",
+            "patternId": "marriott",
+            "excerpt": "\nTribute Portfolio fits when you want Marriott soft-collection affiliation with retained independence, Bonvoy distributi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "insight.summary",
+            "recordId": "recdfsNPCN3o5xlwZ",
+            "patternId": "bonvoy",
+            "excerpt": "\nTribute Portfolio fits when you want Marriott soft-collection affiliation with retained independence, Bonvoy distributi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "insight.summary",
+            "recordId": "recdfsNPCN3o5xlwZ",
+            "patternId": "adr",
+            "excerpt": "\nTribute Portfolio fits when you want Marriott soft-collection affiliation with retained independence, Bonvoy distributi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "standards.intro",
+            "recordId": "receLjtAO1mHOvIZT",
+            "patternId": "tribute",
+            "excerpt": "\nTribute Portfolio standards vary by asset type, conversion path, market, operating model, and agreement vintage. Use th",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "recordId": "receMhyKEl5yQGSKJ",
+            "patternId": "marriott",
+            "excerpt": "Adaptive Reuse & Heritage Repositioning\nHistoric urban cores, landmark buildings, and architecturally distinctive conver",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "recordId": "receMhyKEl5yQGSKJ",
+            "patternId": "adr",
+            "excerpt": "Adaptive Reuse & Heritage Repositioning\nHistoric urban cores, landmark buildings, and architecturally distinctive conver",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.geo_intro",
+            "recordId": "recetC6uE222siizH",
+            "patternId": "tribute",
+            "excerpt": "\nTribute Portfolio operates across Marriott's global regions—North America, Caribbean & Latin America, Europe, Middle Ea",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.geo_intro",
+            "recordId": "recetC6uE222siizH",
+            "patternId": "marriott",
+            "excerpt": "\nTribute Portfolio operates across Marriott's global regions—North America, Caribbean & Latin America, Europe, Middle Ea",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.geo_intro",
+            "recordId": "recetC6uE222siizH",
+            "patternId": "bonvoy",
+            "excerpt": "\nTribute Portfolio operates across Marriott's global regions—North America, Caribbean & Latin America, Europe, Middle Ea",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.typical_use_case",
+            "recordId": "recfMd4VCi7NnCZfF",
+            "patternId": "marriott",
+            "excerpt": "\nBest suited for independent boutique, lifestyle, and leisure hotels with a clear local point of view, where owners want",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.typical_use_case",
+            "recordId": "recfMd4VCi7NnCZfF",
+            "patternId": "bonvoy",
+            "excerpt": "\nBest suited for independent boutique, lifestyle, and leisure hotels with a clear local point of view, where owners want",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "recfvVguASf2SQmEc",
+            "patternId": "tribute",
+            "excerpt": "Hotel Rumbao Reopens In Old San Juan Under Tribute Portfolio\nMay 2024\n\nDriftwood Capital celebrated the grand opening of",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recgS5HVMuZ0roymR",
+            "patternId": "marriott",
+            "excerpt": "Earn & Redeem Points\nBonvoy participation gives guests a familiar points-based reason to stay within Marriott’s network,",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "recgS5HVMuZ0roymR",
+            "patternId": "bonvoy",
+            "excerpt": "Earn & Redeem Points\nBonvoy participation gives guests a familiar points-based reason to stay within Marriott’s network,",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.lifecycle.6",
+            "recordId": "recgXBSgwCYqAj0lm",
+            "patternId": "marriott",
+            "excerpt": "Hold / exit\nPlan hold-period QA, brand-standard upkeep, re-licensing considerations, and change-of-control assumptions w",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "recgzP6rMkL4VFrsW",
+            "patternId": "tribute",
+            "excerpt": "NEMI Milan Joins Tribute Portfolio Collection\nJun 2026\n\nNEMI Hotel Milano joined Tribute Portfolio in Porta Venezia—expa",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "rech6Z3zevnu1utSd",
+            "patternId": "marriott",
+            "excerpt": "Member Rates\nMember-rate incentives can give guests a direct-booking reason to consider participating Tribute properties",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.editorial",
+            "recordId": "rechVHEbCSYpHQIg3",
+            "patternId": "tribute",
+            "excerpt": "\nTribute Portfolio's footprint reflects independent boutique, lifestyle, and resort properties across North America, Car",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.featured_application",
+            "recordId": "reci9AYIlZIw83eRd",
+            "patternId": "marriott",
+            "excerpt": "Stay independent.\nIndependent boutique and lifestyle hotels with distinctive local character—Marriott soft-collection af",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.featured_application",
+            "recordId": "reci9AYIlZIw83eRd",
+            "patternId": "bonvoy",
+            "excerpt": "Stay independent.\nIndependent boutique and lifestyle hotels with distinctive local character—Marriott soft-collection af",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.gallery.1",
+            "recordId": "reciNKaL1zf5KEvtn",
+            "patternId": "tribute",
+            "excerpt": "Casa Nizuc, a Tribute Portfolio Resort\nRepresentative property scene supporting Tribute Portfolio's design-forward, loca",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.compliance.brand_interaction",
+            "recordId": "recijFb7HvwOxJhZN",
+            "patternId": "marriott",
+            "excerpt": "\nDesign narrative review, standards compliance, and QA with Marriott collection teams—budget owner and management time.",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.owner_experience",
+            "recordId": "recjk2qqX7AYUQOwv",
+            "patternId": "marriott",
+            "excerpt": "\nOwners retain design and local programming latitude within collection standards—affiliation adds Marriott commercial sy",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.owner_experience",
+            "recordId": "recjk2qqX7AYUQOwv",
+            "patternId": "bonvoy",
+            "excerpt": "\nOwners retain design and local programming latitude within collection standards—affiliation adds Marriott commercial sy",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "recjmKLQyq2YW0vp2",
+            "patternId": "tribute",
+            "excerpt": "Recoleta Grand Debuts Tribute Portfolio In Buenos Aires\nJun 2025\n\nRecoleta Grand marked Tribute Portfolio's Argentina de",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "recjmKLQyq2YW0vp2",
+            "patternId": "marriott",
+            "excerpt": "Recoleta Grand Debuts Tribute Portfolio In Buenos Aires\nJun 2025\n\nRecoleta Grand marked Tribute Portfolio's Argentina de",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.elite",
+            "recordId": "reclCM2KxwVpBhYh6",
+            "patternId": "bonvoy",
+            "excerpt": "Silver Elite\nIllustrative qualification: 10 Elite Night Credits per calendar year. Benefits may include bonus points on ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.implications.systems",
+            "recordId": "reclajkWrHzPu2dRv",
+            "patternId": "bonvoy",
+            "excerpt": "\nOwner implication (systems): plan systems, staffing, and P&L treatment for Bonvoy participation—confirm with approved l",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.eu",
+            "recordId": "recnQuk93grWDJl38",
+            "patternId": "marriott",
+            "excerpt": "Europe\nUrban & boutique context\n\nEurope can be relevant for urban lifestyle, independent boutique, and destination-led p",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.region.eu",
+            "recordId": "recnQuk93grWDJl38",
+            "patternId": "fee_stack",
+            "excerpt": "Europe\nUrban & boutique context\n\nEurope can be relevant for urban lifestyle, independent boutique, and destination-led p",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.owner_lens",
+            "recordId": "recoF8nmTqEpW6mhF",
+            "patternId": "bonvoy",
+            "excerpt": "\nModel loyalty contribution net of program fees and channel mix; treat Bonvoy as demand support—not a substitute for loc",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.demand",
+            "recordId": "recocQTvVnXlT3qKs",
+            "patternId": "marriott",
+            "excerpt": "Independent Hotel Seeking Marriott Distribution\nStrong",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.elite",
+            "recordId": "recpM1TUkOROWrBO3",
+            "patternId": "bonvoy",
+            "excerpt": "Member\nBase tier — join at no cost; earn points on eligible stays; access member rates and published member benefits whe",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.compliance.training_rigor",
+            "recordId": "recphoJqLBIeE9fqC",
+            "patternId": "marriott",
+            "excerpt": "\nMarriott opening training and ongoing service standards—confirm training fees and remediation paths in franchise materi",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "valueOwners.scenario.2",
+            "recordId": "recqFE5LwzfAskOBC",
+            "patternId": "marriott",
+            "excerpt": "Tired Upscale Asset\nMature upscale or upper-mid assets needing refresh capital and relevancy—Tribute reframing can repos",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.scenario.1",
+            "recordId": "recqiRkN3W7j1lGMT",
+            "patternId": "marriott",
+            "excerpt": "Resort & Leisure-Led Independent Hotels\nBest suited for distinctive leisure and resort assets that need Marriott distrib",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.redeem",
+            "recordId": "recqp3btZojuNbMBL",
+            "patternId": "marriott",
+            "excerpt": "Redeem Examples\nRedeem points toward reward nights at participating Marriott Bonvoy hotels, subject to availability and ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.redeem",
+            "recordId": "recqp3btZojuNbMBL",
+            "patternId": "bonvoy",
+            "excerpt": "Redeem Examples\nRedeem points toward reward nights at participating Marriott Bonvoy hotels, subject to availability and ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "recr4swOtCY7nOjui",
+            "patternId": "tribute",
+            "excerpt": "Loma Medellín Joins Tribute Portfolio In Colombia\nDec 2025\n\nMarriott International and OxoHotel opened Loma in El Poblad",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "recr4swOtCY7nOjui",
+            "patternId": "marriott",
+            "excerpt": "Loma Medellín Joins Tribute Portfolio In Colombia\nDec 2025\n\nMarriott International and OxoHotel opened Loma in El Poblad",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.standards_philosophy",
+            "recordId": "recrZ5MpVtbZuroi5",
+            "patternId": "marriott",
+            "excerpt": "\nCollection standards preserve guest-quality consistency while allowing property-specific design, F&B, and local program",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "rectCr7cWrrYEVcFf",
+            "patternId": "tribute",
+            "excerpt": "Global Program Scale\nMarriott Bonvoy gives Tribute Portfolio a connection to a global loyalty ecosystem, helping owners ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "rectCr7cWrrYEVcFf",
+            "patternId": "marriott",
+            "excerpt": "Global Program Scale\nMarriott Bonvoy gives Tribute Portfolio a connection to a global loyalty ecosystem, helping owners ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.proof",
+            "recordId": "rectCr7cWrrYEVcFf",
+            "patternId": "bonvoy",
+            "excerpt": "Global Program Scale\nMarriott Bonvoy gives Tribute Portfolio a connection to a global loyalty ecosystem, helping owners ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.operator_compat.fit",
+            "recordId": "rectYB4yghnFHl83V",
+            "patternId": "bonvoy",
+            "excerpt": "\nStrong fit when the asset already delivers distinctive experience and can absorb standards, QA, and Bonvoy program part",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.model.technology",
+            "recordId": "recusJdaO2aloAKnZ",
+            "patternId": "marriott",
+            "excerpt": "\nMarriott technology and distribution stack required beyond headline fees—budget PMS, CRS, and digital marketing line it",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "recordId": "recwinQHDJ9rL02Lw",
+            "patternId": "tribute",
+            "excerpt": "Humano Lima Opens As Tribute Portfolio Hotel In Peru\nApr 2026\n\nHumano, Lima opened in Miraflores as Tribute Portfolio's ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.ecosystem",
+            "recordId": "recxFslJ231H8rYIb",
+            "patternId": "marriott",
+            "excerpt": "\nBonvoy connects independent-character Tribute stays to Marriott's global loyalty ecosystem—supporting repeat and cross-",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.ecosystem",
+            "recordId": "recxFslJ231H8rYIb",
+            "patternId": "bonvoy",
+            "excerpt": "\nBonvoy connects independent-character Tribute stays to Marriott's global loyalty ecosystem—supporting repeat and cross-",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.file",
+            "recordId": "recxWaVqe0lRxa40w",
+            "patternId": "tribute",
+            "excerpt": "Tribute Portfolio — Public brand website\nOfficial Marriott reference · https://tribute-portfolio.marriott.com/",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.file",
+            "recordId": "recxWaVqe0lRxa40w",
+            "patternId": "marriott",
+            "excerpt": "Tribute Portfolio — Public brand website\nOfficial Marriott reference · https://tribute-portfolio.marriott.com/",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.differentiators.commercial",
+            "recordId": "recylGZZREiPCrqhm",
+            "patternId": "marriott",
+            "excerpt": "\nMarriott Bonvoy participation\nMarriott reservation and commercial support\nCollection affiliation without erasing proper",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.differentiators.commercial",
+            "recordId": "recylGZZREiPCrqhm",
+            "patternId": "bonvoy",
+            "excerpt": "\nMarriott Bonvoy participation\nMarriott reservation and commercial support\nCollection affiliation without erasing proper",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.file",
+            "recordId": "recz27yxapLtUiQsr",
+            "patternId": "tribute",
+            "excerpt": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)\nOfficial Marriott reference · htt",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.file",
+            "recordId": "recz27yxapLtUiQsr",
+            "patternId": "marriott",
+            "excerpt": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)\nOfficial Marriott reference · htt",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "materials.file",
+            "recordId": "recz27yxapLtUiQsr",
+            "patternId": "bonvoy",
+            "excerpt": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)\nOfficial Marriott reference · htt",
+            "severity": "medium"
+          }
+        ],
+        "highCount": 4,
+        "blockers": [
+          "risky_copy:net_contribution:commercial.kpi.lens",
+          "risky_copy:net_contribution:valueOwners.overview",
+          "risky_copy:net_contribution:valueOwners.watchouts",
+          "risky_copy:net_contribution:commercial.lever.distribution"
+        ]
+      },
+      "standardDetail": {
+        "ruleId": "standard_detail_governance",
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false,
+        "blockers": []
+      }
+    },
+    "imageGovernanceDefects": [],
+    "blockers": [
+      "missing_registry_row:footprint.openings",
+      "missing_registry_row:overview.scenario.3",
+      "missing_registry_row:overview.scenario.2",
+      "missing_registry_row:overview.scenario.1",
+      "missing_registry_row:overview.hero",
+      "missing_registry_row:materials.gallery.1",
+      "missing_registry_row:materials.gallery.2",
+      "missing_registry_row:materials.gallery.3",
+      "missing_registry_row:materials.gallery.4",
+      "missing_registry_row:materials.gallery.5",
+      "missing_registry_row:materials.gallery.6",
+      "risky_copy:net_contribution:commercial.kpi.lens",
+      "risky_copy:net_contribution:valueOwners.overview",
+      "risky_copy:net_contribution:valueOwners.watchouts",
+      "risky_copy:net_contribution:commercial.lever.distribution"
+    ],
+    "galleryMinimum": 6,
+    "visibleGalleryCount": 6
+  },
+  "assetPack": null,
+  "draftPlan": null,
+  "copyGovernancePlan": null,
+  "approvedSourcesCount": 0,
+  "applyResult": null,
+  "legacyWriterChainReference": [],
+  "finalQa": {
+    "readiness": "ready",
+    "numeric": 95,
+    "defectCount": 5
+  },
+  "visualDefects": null,
+  "completeBuild": {
+    "readyForActiveProfile": false,
+    "readinessBand": "ready"
+  },
+  "suburbanReadiness": null,
+  "applyApproved": {
+    "allowed": false,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-approved -- --brand tribute-portfolio --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+    "blockers": []
+  },
+  "applyDraft": {
+    "allowed": true,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-draft -- --brand tribute-portfolio --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+    "blockers": [],
+    "writesActiveProfileApproval": false
+  },
+  "stagedApplyVersion": "v34D",
+  "founderVisualReview": {
+    "stagedApplyVersion": "v34D",
+    "pass": false,
+    "checks": [
+      {
+        "id": "gallery_six_visible",
+        "label": "6 gallery images visible with imageUrl",
+        "pass": true,
+        "detail": "6/6"
+      },
+      {
+        "id": "property_examples_hotel_images",
+        "label": "3 property examples visible with hotel images",
+        "pass": true,
+        "detail": "5 cards"
+      },
+      {
+        "id": "no_logo_lifestyle_property_images",
+        "label": "No logo/lifestyle/generic property images",
+        "pass": true,
+        "detail": "gallery + property scan"
+      },
+      {
+        "id": "scenario_no_placeholders",
+        "label": "No IMAGE placeholders on scenario cards",
+        "pass": true,
+        "detail": "ok"
+      },
+      {
+        "id": "copy_safety",
+        "label": "No FDD / Item 19 / ADR / RevPAR / net contribution language",
+        "pass": false,
+        "detail": "4 high findings"
+      },
+      {
+        "id": "standard_detail_governance",
+        "label": "Standard detail governance visible and safe",
+        "pass": true,
+        "detail": "unknown"
+      },
+      {
+        "id": "company_validated_untouched",
+        "label": "Company Validated untouched",
+        "pass": true,
+        "detail": "before=false after=false"
+      },
+      {
+        "id": "registry_traceability",
+        "label": "Registry traceability for visual slots",
+        "pass": false,
+        "detail": "15 gaps"
+      },
+      {
+        "id": "ui_fallback_risk",
+        "label": "No stale UI fallback titles",
+        "pass": true,
+        "detail": "0 risks"
+      }
+    ],
+    "failedChecks": [
+      {
+        "id": "copy_safety",
+        "label": "No FDD / Item 19 / ADR / RevPAR / net contribution language",
+        "pass": false,
+        "detail": "4 high findings"
+      },
+      {
+        "id": "registry_traceability",
+        "label": "Registry traceability for visual slots",
+        "pass": false,
+        "detail": "15 gaps"
+      }
+    ],
+    "blockers": [
+      "founder_visual_check_failed:copy_safety",
+      "founder_visual_check_failed:registry_traceability",
+      "risky_copy:net_contribution:commercial.kpi.lens",
+      "risky_copy:net_contribution:valueOwners.overview",
+      "risky_copy:net_contribution:valueOwners.watchouts",
+      "risky_copy:net_contribution:commercial.lever.distribution"
+    ],
+    "highBlockerCount": 8
+  },
+  "draftApplyValidation": {
+    "stage": "apply-draft",
+    "allowed": true,
+    "blockers": [],
+    "missingFlagsForApply": [
+      "approveBrandExplorerActiveProfileDraft",
+      "founderVisualReview",
+      "confirmNoCompanyValidationClaim",
+      "confirmNoSummaryUrlField",
+      "confirmBrandOnly",
+      "confirmOfficialSourceImagesOnly",
+      "confirmMinimumSixVisibleGalleryImages",
+      "confirmPropertyExamplesHaveHotelImages",
+      "confirmNoLogoLifestylePropertyImages",
+      "confirmStandardDetailGovernanceReviewed"
+    ],
+    "requiredFlags": [
+      "approveBrandExplorerActiveProfileDraft",
+      "founderVisualReview",
+      "confirmNoCompanyValidationClaim",
+      "confirmNoSummaryUrlField",
+      "confirmBrandOnly",
+      "confirmOfficialSourceImagesOnly",
+      "confirmMinimumSixVisibleGalleryImages",
+      "confirmPropertyExamplesHaveHotelImages",
+      "confirmNoLogoLifestylePropertyImages",
+      "confirmStandardDetailGovernanceReviewed"
+    ],
+    "writesActiveProfileApproval": false,
+    "setsReadyForActiveProfile": false
+  },
+  "activeApprovalValidation": {
+    "stage": "apply-approved",
+    "allowed": true,
+    "blockers": [],
+    "missingFlagsForApply": [
+      "approveBrandExplorerActiveProfile",
+      "confirmFounderVisualReviewPassed",
+      "confirmNoCompanyValidationClaim",
+      "confirmBrandOnly"
+    ],
+    "requiredFlags": [
+      "approveBrandExplorerActiveProfile",
+      "confirmFounderVisualReviewPassed",
+      "confirmNoCompanyValidationClaim",
+      "confirmBrandOnly"
+    ],
+    "writesDraftContent": false
+  },
+  "postDraftApply": null,
+  "postDraftFactoryRules": null,
+  "founderVisualReviewMarkdown": "# Founder Visual Review v34D\n\n- Brand: **Tribute Portfolio** (`tribute-portfolio`)\n- Generated: 2026-07-14T12:49:52.924Z\n- Overall: **FAIL**\n\n## Live Brand Explorer checks\n- **PASS** — 6 gallery images visible with imageUrl (6/6)\n- **PASS** — 3 property examples visible with hotel images (5 cards)\n- **PASS** — No logo/lifestyle/generic property images (gallery + property scan)\n- **PASS** — No IMAGE placeholders on scenario cards (ok)\n- **FAIL** — No FDD / Item 19 / ADR / RevPAR / net contribution language (4 high findings)\n- **PASS** — Standard detail governance visible and safe (unknown)\n- **PASS** — Company Validated untouched (before=false after=false)\n- **FAIL** — Registry traceability for visual slots (15 gaps)\n- **PASS** — No stale UI fallback titles (0 risks)\n\n## Failed checks\n- `copy_safety`: No FDD / Item 19 / ADR / RevPAR / net contribution language\n- `registry_traceability`: Registry traceability for visual slots\n\n## Stage 1 — Draft apply\n- Allowed (apply mode): **yes**\n- Flags required for apply: approveBrandExplorerActiveProfileDraft, founderVisualReview, confirmNoCompanyValidationClaim, confirmNoSummaryUrlField, confirmBrandOnly, confirmOfficialSourceImagesOnly, confirmMinimumSixVisibleGalleryImages, confirmPropertyExamplesHaveHotelImages, confirmNoLogoLifestylePropertyImages, confirmStandardDetailGovernanceReviewed\n```bash\nnpm run brand-explorer-active-profile-apply-draft -- --brand tribute-portfolio --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed\n```\n\n## Stage 2 — Founder visual review (this report)\nBlocked. Fix issues or re-run draft apply, then re-run founder visual review.\n\n## Stage 3 — Active approval\n- Allowed: **no**\n- blocker: founder_visual_review_not_passed\n- Flags required for apply: approveBrandExplorerActiveProfile, confirmFounderVisualReviewPassed, confirmNoCompanyValidationClaim, confirmBrandOnly\n\n## Workflow separation\n1. **apply-draft** — writes gallery, property examples, scenarios, copy governance, visibility; does **not** approve active profile.\n2. **founder-review** — live rendered checks (this report).\n3. **apply-approved** — records active-profile approval only after visual review passes.",
+  "markdown": "# Brand Explorer Active Profile Founder Review v34D\n\n- Brand: **Tribute Portfolio** (`tribute-portfolio`)\n- Generated: 2026-07-14T12:49:52.925Z\n- Factory pass: **no**\n\n## Visual readiness\n- Gallery (6 visible + imageUrl): **PASS** (6/6)\n- Property examples: **PASS**\n- Scenario cards (no IMAGE placeholder): **PASS**\n- Registry traceability: **FAIL**\n- UI fallback risk: **PASS**\n- Copy safety: **FAIL**\n- Standard Detail governance: **PASS**\n\n## Property cards (asset pack)\n\n## Gallery image pack\n\n## Scenario cards\n\n## Proof cards\n\n## What will be applied (dry-run draft)\n- Presentation patches: **0**\n- Registry creates: **0**\n- Sections: (none)\n\n## Remains human-reviewed\n\n## Blockers\n- missing_registry_row:footprint.openings\n- missing_registry_row:overview.scenario.3\n- missing_registry_row:overview.scenario.2\n- missing_registry_row:overview.scenario.1\n- missing_registry_row:overview.hero\n- missing_registry_row:materials.gallery.1\n- missing_registry_row:materials.gallery.2\n- missing_registry_row:materials.gallery.3\n- missing_registry_row:materials.gallery.4\n- missing_registry_row:materials.gallery.5\n- missing_registry_row:materials.gallery.6\n- risky_copy:net_contribution:commercial.kpi.lens\n- risky_copy:net_contribution:valueOwners.overview\n- risky_copy:net_contribution:valueOwners.watchouts\n- risky_copy:net_contribution:commercial.lever.distribution\n\n## Staged apply workflow (v34D)\n\n### Stage 1 — Draft apply (preview writes)\n_Run after dry-runs are clean. Does not approve active profile._\n```bash\nnpm run brand-explorer-active-profile-apply-draft -- --brand tribute-portfolio --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed\n```\n\n### Stage 2 — Founder visual review\n```bash\nnpm run brand-explorer-active-profile-founder-review -- --brand tribute-portfolio --dry-run\n```\n\n### Stage 3 — Active approval\n_Blocked until founder visual review passes._",
+  "assetPackMarkdown": null,
+  "draftMarkdown": null,
+  "copyGovernanceMarkdown": null,
+  "founderQueueAuditMarkdown": null
+}

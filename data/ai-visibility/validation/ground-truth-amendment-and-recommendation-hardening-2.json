@@ -1,0 +1,294 @@
+{
+  "version": "ai_intelligence_ground_truth_amendment_and_recommendation_hardening_2_v1",
+  "generatedAt": "2026-08-14T23:52:14.525Z",
+  "classifierVersion": "ai_visibility_recommendation_classifier_v3_1",
+  "HOLDOUT_ACCESSED": false,
+  "HOLDOUT_CASES_INSPECTED": 0,
+  "HOLDOUT_METRICS_RUN": false,
+  "groundTruthAmendment": {
+    "REQUESTED_INVALIDATIONS": 12,
+    "APPLIED": 12,
+    "FAILED": 0,
+    "HISTORY_PRESERVED": true,
+    "GROUND_TRUTH_CORRECTIONS": 12,
+    "CLASSIFIER_LOGIC_CHANGES_DURING_ENTITY_RERUN": 0
+  },
+  "development": {
+    "DEV_N_BEFORE": 302,
+    "DEV_N_AFTER": 290,
+    "ENTITY_PRECISION": 1,
+    "ENTITY_RECALL": 1,
+    "ENTITY_F1": 1,
+    "ENTITY_FALSE_POSITIVES": 0,
+    "ENTITY_FALSE_NEGATIVES": 0,
+    "ENTITY_GATE": "PASS"
+  },
+  "recommendationBaselineAfterEntityFix": {
+    "note": "Post-invalidation, pre-hardening-2 approximate",
+    "RECOMMENDATION_ACCURACY_BEFORE": 0.7276,
+    "FIRST_REC_ACCURACY_BEFORE": 0.9586,
+    "QUESTION_STATUS_ACCURACY_BEFORE": 0.625
+  },
+  "recommendationAfter": {
+    "RECOMMENDATION_ACCURACY_AFTER": 0.7310344827586207,
+    "RECOMMENDATION_PRECISION_AFTER": 0.7310344827586207,
+    "RECOMMENDATION_RECALL_AFTER": 0.7310344827586207,
+    "RECOMMENDATION_F1_AFTER": 0.7310344827586208,
+    "FIRST_REC_ACCURACY_AFTER": 0.9517241379310345,
+    "QUESTION_STATUS_ACCURACY_AFTER": 0.8083333333333333
+  },
+  "confusionTop": [
+    {
+      "pattern": "ranked_recommendation => explicit_recommendation",
+      "count": 31,
+      "exampleCaseIds": [
+        "v1_g042",
+        "v2_cand_030739d6",
+        "v2_cand_090e59ac"
+      ]
+    },
+    {
+      "pattern": "discussed => explicit_recommendation",
+      "count": 14,
+      "exampleCaseIds": [
+        "v2_cand_1756c36a",
+        "v2_cand_17d13a6b",
+        "v2_cand_1c5b0f67"
+      ]
+    },
+    {
+      "pattern": "associated_option => discussed",
+      "count": 13,
+      "exampleCaseIds": [
+        "v2_cand_309ca81e",
+        "v2_cand_3df2487f",
+        "v2_cand_63012053"
+      ]
+    },
+    {
+      "pattern": "discussed => first_recommendation",
+      "count": 5,
+      "exampleCaseIds": [
+        "v2_cand_0e2e5bd2",
+        "v2_cand_160cbb3c",
+        "v2_cand_17be10b8"
+      ]
+    },
+    {
+      "pattern": "associated_option => explicit_recommendation",
+      "count": 3,
+      "exampleCaseIds": [
+        "v2_cand_1a571607",
+        "v2_cand_4811fa31",
+        "v2_cand_ac788b6c"
+      ]
+    },
+    {
+      "pattern": "first_recommendation => explicit_recommendation",
+      "count": 3,
+      "exampleCaseIds": [
+        "v2_cand_43f183de",
+        "v2_cand_75f7cc02",
+        "v2_cand_92f63d61"
+      ]
+    },
+    {
+      "pattern": "associated_option => first_recommendation",
+      "count": 3,
+      "exampleCaseIds": [
+        "v2_cand_7555e9c3",
+        "v2_cand_935f6696",
+        "v2_cand_e006943b"
+      ]
+    },
+    {
+      "pattern": "explicit_recommendation => first_recommendation",
+      "count": 2,
+      "exampleCaseIds": [
+        "v2_cand_350eddb9",
+        "v2_cand_6c5eef29"
+      ]
+    },
+    {
+      "pattern": "associated_option => ranked_recommendation",
+      "count": 2,
+      "exampleCaseIds": [
+        "v2_cand_d837af7f",
+        "v2_cand_e1446adf"
+      ]
+    },
+    {
+      "pattern": "discussed => comparator",
+      "count": 1,
+      "exampleCaseIds": [
+        "v2_cand_2906f0b5"
+      ]
+    },
+    {
+      "pattern": "ranked_recommendation => first_recommendation",
+      "count": 1,
+      "exampleCaseIds": [
+        "v2_cand_96f04629"
+      ]
+    }
+  ],
+  "remainingErrors": {
+    "TOTAL": 124,
+    "BY_TYPE": {
+      "other": 36,
+      "ranking_first_recommendation": 14,
+      "question_status": 46,
+      "recommendation_ambiguity": 28
+    }
+  },
+  "subgroups": {
+    "PROVIDER": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.98,
+        "RECOMMENDATION_PRECISION": 0.98,
+        "RECOMMENDATION_RECALL": 0.98,
+        "FIRST_RECOMMENDATION_ACCURACY": 1
+      },
+      "claude": {
+        "CASE_COUNT": 67,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.6567164179104478,
+        "RECOMMENDATION_PRECISION": 0.6567164179104478,
+        "RECOMMENDATION_RECALL": 0.6567164179104478,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9850746268656716
+      },
+      "gemini": {
+        "CASE_COUNT": 71,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.7605633802816901,
+        "RECOMMENDATION_PRECISION": 0.7605633802816901,
+        "RECOMMENDATION_RECALL": 0.7605633802816901,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9436619718309859
+      },
+      "perplexity": {
+        "CASE_COUNT": 64,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.625,
+        "RECOMMENDATION_PRECISION": 0.625,
+        "RECOMMENDATION_RECALL": 0.625,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9375
+      },
+      "openai": {
+        "CASE_COUNT": 38,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.6578947368421053,
+        "RECOMMENDATION_PRECISION": 0.6578947368421053,
+        "RECOMMENDATION_RECALL": 0.6578947368421053,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.868421052631579
+      }
+    },
+    "LANGUAGE": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.98,
+        "RECOMMENDATION_PRECISION": 0.98,
+        "RECOMMENDATION_RECALL": 0.98,
+        "FIRST_RECOMMENDATION_ACCURACY": 1
+      },
+      "es": {
+        "CASE_COUNT": 118,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.6779661016949152,
+        "RECOMMENDATION_PRECISION": 0.6779661016949152,
+        "RECOMMENDATION_RECALL": 0.6779661016949152,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.923728813559322
+      },
+      "en": {
+        "CASE_COUNT": 122,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.680327868852459,
+        "RECOMMENDATION_PRECISION": 0.680327868852459,
+        "RECOMMENDATION_RECALL": 0.680327868852459,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9590163934426229
+      }
+    },
+    "GEOGRAPHY": {
+      "unspecified": {
+        "CASE_COUNT": 50,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.98,
+        "RECOMMENDATION_PRECISION": 0.98,
+        "RECOMMENDATION_RECALL": 0.98,
+        "FIRST_RECOMMENDATION_ACCURACY": 1
+      },
+      "CALA": {
+        "CASE_COUNT": 80,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.8125,
+        "RECOMMENDATION_PRECISION": 0.8125,
+        "RECOMMENDATION_RECALL": 0.8125,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9375
+      },
+      "MEXICO": {
+        "CASE_COUNT": 85,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.5294117647058824,
+        "RECOMMENDATION_PRECISION": 0.5294117647058824,
+        "RECOMMENDATION_RECALL": 0.5294117647058824,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9411764705882353
+      },
+      "EUROPE": {
+        "CASE_COUNT": 21,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.5238095238095238,
+        "RECOMMENDATION_PRECISION": 0.5238095238095238,
+        "RECOMMENDATION_RECALL": 0.5238095238095238,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9523809523809523
+      },
+      "GLOBAL": {
+        "CASE_COUNT": 30,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.7666666666666667,
+        "RECOMMENDATION_PRECISION": 0.7666666666666667,
+        "RECOMMENDATION_RECALL": 0.7666666666666667,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9
+      },
+      "NORTH_AMERICA": {
+        "CASE_COUNT": 24,
+        "ENTITY_RESOLUTION_PRECISION": 1,
+        "ENTITY_RESOLUTION_RECALL": 1,
+        "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.7916666666666666,
+        "RECOMMENDATION_PRECISION": 0.7916666666666666,
+        "RECOMMENDATION_RECALL": 0.7916666666666666,
+        "FIRST_RECOMMENDATION_ACCURACY": 1
+      }
+    }
+  },
+  "gates": {
+    "ENTITY_GATE": "PASS",
+    "RECOMMENDATION_GATE": "FAIL",
+    "QUESTION_STATUS_STATUS": "BELOW_THRESHOLD_REVIEW"
+  },
+  "activity": {
+    "LIVE_PROVIDER_CALLS": 0,
+    "NEW_MONITORING": 0,
+    "PUBLIC_CRAWL": 0,
+    "HOLDOUT_ACCESSED": 0,
+    "HOLDOUT_TUNING": 0,
+    "GOLDEN_SET_UNAUTHORIZED_CHANGES": 0,
+    "AIRTABLE_WRITES": 0,
+    "SCHEMA_CHANGES": 0,
+    "DEPLOYS": 0
+  }
+}

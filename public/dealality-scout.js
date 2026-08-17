@@ -12,6 +12,13 @@
     liveMapMode: false,
     liveHotels: [],
     liveInfrastructure: [],
+    liveDemandAnchors: [],
+    infrastructurePointTypeFilter: "all",
+    infrastructureTypeCounts: null,
+    infrastructureTotalCount: null,
+    demandAnchorsPointTypeFilter: "all",
+    demandAnchorsTypeCounts: null,
+    demandAnchorsTotalCount: null,
     layerToggles: {
       opportunityMarkets: false,
       targetAssets: false,
@@ -88,6 +95,193 @@
     var searchInput = document.getElementById("searchInput");
     output.search = searchInput ? searchInput.value.trim().toLowerCase() : "";
     return output;
+  }
+
+  function setScoutInfrastructureFilterVisible(_show) {
+    var wrap = document.getElementById("infrastructureFilterWrap");
+    if (wrap) wrap.style.display = "none";
+    var chips = document.getElementById("infrastructureFilterChips");
+    if (chips) chips.style.display = "none";
+  }
+
+  function setScoutInfrastructureEmptyState(show) {
+    var el = document.getElementById("infrastructureEmptyState");
+    if (el) el.style.display = show ? "block" : "none";
+  }
+
+  function mapInfraRecord(i) {
+    var lat = i.lat != null ? i.lat : i.latitude;
+    var lng = i.lng != null ? i.lng : i.longitude;
+    return {
+      name: i.name,
+      type: i.type || i.pointType,
+      pointType: i.pointType || i.type,
+      pointSubtype: i.pointSubtype,
+      mapIconType: i.mapIconType,
+      demandRelevance: i.demandRelevance,
+      dataConfidence: i.dataConfidence,
+      hotelDemandRationale: i.hotelDemandRationale,
+      city: i.city,
+      country: i.country,
+      lat: Number(lat),
+      lng: Number(lng)
+    };
+  }
+
+  function renderScoutInfrastructureFilterChips() {
+    var TIR = window.TravelInfrastructureRadar;
+    var chips = document.getElementById("infrastructureFilterChips");
+    if (!TIR || !chips) return;
+    TIR.renderFilterChips(chips, {
+      selectedId: state.infrastructurePointTypeFilter,
+      typeCounts: state.infrastructureTypeCounts || {},
+      totalCount: state.infrastructureTotalCount,
+      onSelect: function (filterId) {
+        if (state.infrastructurePointTypeFilter === filterId) return;
+        state.infrastructurePointTypeFilter = filterId;
+        loadScoutInfrastructure().then(function () {
+          rerender();
+        });
+      }
+    });
+  }
+
+  async function loadScoutInfrastructureSummary() {
+    var TIR = window.TravelInfrastructureRadar;
+    if (!TIR) return;
+    try {
+      var filters = readFilters();
+      var data = await TIR.fetchInfrastructure({
+        country: filters.countryFilter || "",
+        region: filters.marketFilter || ""
+      });
+      state.infrastructureTypeCounts = TIR.extractTypeCounts(data);
+      state.infrastructureTotalCount = TIR.getTotalCount(data, state.infrastructureTypeCounts);
+      renderScoutInfrastructureFilterChips();
+    } catch (e) {
+      console.warn("[scout] infrastructure summary failed", e);
+    }
+  }
+
+  async function loadScoutInfrastructure() {
+    var TIR = window.TravelInfrastructureRadar;
+    if (!TIR) {
+      state.liveInfrastructure = [];
+      return;
+    }
+    var filters = readFilters();
+    try {
+      var data = await TIR.fetchInfrastructure({
+        pointTypeFilter: state.infrastructurePointTypeFilter,
+        country: filters.countryFilter || "",
+        region: filters.marketFilter || ""
+      });
+      if (!state.infrastructureTypeCounts) {
+        state.infrastructureTypeCounts = TIR.extractTypeCounts(data);
+        state.infrastructureTotalCount = TIR.getTotalCount(data, state.infrastructureTypeCounts);
+        renderScoutInfrastructureFilterChips();
+      }
+      var items = TIR.parseItems(data);
+      state.liveInfrastructure = items.filter(function (i) {
+        return i.includeOnRadarMap !== false;
+      }).filter(function (i) {
+        var lat = i.lat != null ? i.lat : i.latitude;
+        var lng = i.lng != null ? i.lng : i.longitude;
+        return Number.isFinite(Number(lat)) && Number.isFinite(Number(lng)) && (Number(lat) !== 0 || Number(lng) !== 0);
+      }).map(mapInfraRecord);
+    } catch (_infraErr) {
+      console.warn("[scout] infrastructure load failed", _infraErr);
+      state.liveInfrastructure = [];
+    }
+  }
+
+  function mapAnchorRecord(i) {
+    var lat = i.lat != null ? i.lat : i.latitude;
+    var lng = i.lng != null ? i.lng : i.longitude;
+    return {
+      name: i.name,
+      type: i.type || i.pointType,
+      pointType: i.pointType || i.type,
+      pointSubtype: i.pointSubtype,
+      mapIconType: i.mapIconType,
+      demandSegment: i.demandSegment,
+      demandRelevance: i.demandRelevance,
+      dataConfidence: i.dataConfidence,
+      hotelDemandRationale: i.hotelDemandRationale,
+      city: i.city,
+      country: i.country,
+      lat: Number(lat),
+      lng: Number(lng)
+    };
+  }
+
+  function setScoutDemandAnchorsFilterVisible(_show) {
+    var wrap = document.getElementById("demandAnchorsFilterWrap");
+    if (wrap) wrap.style.display = "none";
+    var chips = document.getElementById("demandAnchorsFilterChips");
+    if (chips) chips.style.display = "none";
+  }
+
+  function setScoutDemandAnchorsEmptyState(show) {
+    var el = document.getElementById("demandAnchorsEmptyState");
+    if (el) el.style.display = show ? "block" : "none";
+  }
+
+  function renderScoutDemandAnchorsFilterChips() {
+    var chips = document.getElementById("demandAnchorsFilterChips");
+    if (chips) {
+      chips.innerHTML = "";
+      chips.style.display = "none";
+    }
+  }
+
+  async function loadScoutDemandAnchorsSummary() {
+    var DAR = window.DemandAnchorsRadar;
+    if (!DAR) return;
+    try {
+      var filters = readFilters();
+      var data = await DAR.fetchDemandAnchors({
+        country: filters.countryFilter || "",
+        region: filters.marketFilter || ""
+      });
+      state.demandAnchorsTypeCounts = DAR.extractTypeCounts(data);
+      state.demandAnchorsTotalCount = DAR.getTotalCount(data, state.demandAnchorsTypeCounts);
+      renderScoutDemandAnchorsFilterChips();
+    } catch (e) {
+      console.warn("[scout] demand anchors summary failed", e);
+    }
+  }
+
+  async function loadScoutDemandAnchors() {
+    var DAR = window.DemandAnchorsRadar;
+    if (!DAR) {
+      state.liveDemandAnchors = [];
+      return;
+    }
+    var filters = readFilters();
+    try {
+      var data = await DAR.fetchDemandAnchors({
+        pointTypeFilter: state.demandAnchorsPointTypeFilter,
+        country: filters.countryFilter || "",
+        region: filters.marketFilter || ""
+      });
+      if (!state.demandAnchorsTypeCounts) {
+        state.demandAnchorsTypeCounts = DAR.extractTypeCounts(data);
+        state.demandAnchorsTotalCount = DAR.getTotalCount(data, state.demandAnchorsTypeCounts);
+        renderScoutDemandAnchorsFilterChips();
+      }
+      var items = DAR.parseItems(data);
+      state.liveDemandAnchors = items.filter(function (i) {
+        return i.includeOnRadarMap !== false;
+      }).filter(function (i) {
+        var lat = i.lat != null ? i.lat : i.latitude;
+        var lng = i.lng != null ? i.lng : i.longitude;
+        return Number.isFinite(Number(lat)) && Number.isFinite(Number(lng)) && (Number(lat) !== 0 || Number(lng) !== 0);
+      }).map(mapAnchorRecord);
+    } catch (_err) {
+      console.warn("[scout] demand anchors load failed", _err);
+      state.liveDemandAnchors = [];
+    }
   }
 
   function matchesSearch(row, search) {
@@ -556,12 +750,14 @@
     var signalsGroup = document.getElementById("legendSignalsGroup");
     var brandPenetrationGroup = document.getElementById("legendBrandPenetrationGroup");
     var infraGroup = document.getElementById("legendInfrastructureGroup");
+    var demandAnchorsGroup = document.getElementById("legendDemandAnchorsGroup");
     var demandCentersGroup = document.getElementById("legendDemandCentersGroup");
     var pinFlags = getTabPinFlags();
     var showHotels = isToggleOn("toggleShowHotels", true);
     var chainScaleView = isToggleOn("toggleChainScaleView", false);
     var showBrandPenetration = isToggleOn("toggleBrandPenetration", false);
     var showInfrastructure = isToggleOn("toggleTravelInfrastructure", false);
+    var showDemandAnchors = isToggleOn("toggleDemandAnchors", false);
     var filtersLeg = readFilters();
     var liveCount = (state.liveHotels || []).filter(function (h) {
       return liveHotelPassesFilters(h, filtersLeg);
@@ -572,6 +768,7 @@
     if (signalsGroup) signalsGroup.style.display = pinFlags.showSignals ? "" : "none";
     if (brandPenetrationGroup) brandPenetrationGroup.style.display = showBrandPenetration ? "" : "none";
     if (infraGroup) infraGroup.style.display = showInfrastructure ? "" : "none";
+    if (demandAnchorsGroup) demandAnchorsGroup.style.display = showDemandAnchors ? "" : "none";
     if (demandCentersGroup) demandCentersGroup.style.display = pinFlags.showDemandCenters ? "" : "none";
   }
 
@@ -785,6 +982,7 @@
     var pinFlags = getTabPinFlags();
     var activeFilters = readFilters();
     var showInfrastructure = isToggleOn("toggleTravelInfrastructure", false);
+    var showDemandAnchors = isToggleOn("toggleDemandAnchors", false);
 
     appendCensusHotelsLeaflet(bounds);
 
@@ -834,32 +1032,68 @@
       bounds.push([jitterLat, jitterLng]);
     });
 
-    if (showInfrastructure && state.liveInfrastructure && state.liveInfrastructure.length) {
-      state.liveInfrastructure.filter(function (infra) {
+    if (showInfrastructure) {
+      var infraFiltered = (state.liveInfrastructure || []).filter(function (infra) {
         return passesLiveGeoFilters(infra, activeFilters);
-      }).forEach(function (infra) {
-        var type = String(infra.type || "").toLowerCase();
+      });
+      setScoutInfrastructureEmptyState(infraFiltered.length === 0);
+      infraFiltered.forEach(function (infra) {
+        var type = String(infra.mapIconType || infra.pointType || infra.type || "").toLowerCase();
         var cls = type.indexOf("airport") !== -1 ? "infra-airport" :
-          (type.indexOf("cruise") !== -1 ? "infra-cruise" : "infra-convention");
-        var marker = mapMarker([infra.lat, infra.lng], cls,
-          radarPopupCard({
+          (type.indexOf("cruise") !== -1 ? "infra-cruise" :
+          (type.indexOf("train") !== -1 ? "infra-train" :
+          (type.indexOf("highway") !== -1 ? "infra-highway" :
+          (type.indexOf("bus") !== -1 ? "infra-bus" :
+          (type.indexOf("ferry") !== -1 ? "infra-ferry" :
+          (type.indexOf("port") !== -1 ? "infra-port" : "infra-convention"))))));
+        var popupHtml = window.TravelInfrastructureRadar
+          ? window.TravelInfrastructureRadar.buildPopupHtml(infra)
+          : radarPopupCard({
             title: infra.name,
             statusValue: infra.type || "Infrastructure",
             statusLabel: "Infrastructure Type",
             rows: [
               { label: "City", value: infra.city || "Unknown" },
-              { label: "Country", value: infra.country || "Unknown" },
-              { label: "Layer", value: "Travel Infrastructure" },
-              { label: "Source", value: "Radar Infrastructure Feed" }
+              { label: "Country", value: infra.country || "Unknown" }
             ],
             location: (infra.city || "Unknown") + ", " + (infra.country || "Unknown"),
             lat: infra.lat,
             lng: infra.lng
-          })
-        );
+          });
+        var marker = mapMarker([infra.lat, infra.lng], cls, popupHtml);
         marker.addTo(state.mapLayer);
         bounds.push([infra.lat, infra.lng]);
       });
+    } else {
+      setScoutInfrastructureEmptyState(false);
+    }
+
+    if (showDemandAnchors) {
+      var anchorFiltered = (state.liveDemandAnchors || []).filter(function (anchor) {
+        return passesLiveGeoFilters(anchor, activeFilters);
+      });
+      setScoutDemandAnchorsEmptyState(anchorFiltered.length === 0);
+      anchorFiltered.forEach(function (anchor) {
+        var popupHtml = window.DemandAnchorsRadar
+          ? window.DemandAnchorsRadar.buildPopupHtml(anchor)
+          : radarPopupCard({
+            title: anchor.name,
+            statusValue: anchor.pointType || "Demand Anchor",
+            statusLabel: "Point Type",
+            rows: [
+              { label: "City", value: anchor.city || "Unknown" },
+              { label: "Country", value: anchor.country || "Unknown" }
+            ],
+            location: (anchor.city || "Unknown") + ", " + (anchor.country || "Unknown"),
+            lat: anchor.lat,
+            lng: anchor.lng
+          });
+        var marker = mapMarker([anchor.lat, anchor.lng], "demand", popupHtml);
+        marker.addTo(state.mapLayer);
+        bounds.push([anchor.lat, anchor.lng]);
+      });
+    } else {
+      setScoutDemandAnchorsEmptyState(false);
     }
 
     if (pinFlags.showSignals) {
@@ -1228,14 +1462,64 @@
     FILTER_IDS.concat(["searchInput"]).forEach(function (id) {
       var el = document.getElementById(id);
       if (!el) return;
-      el.addEventListener(id === "searchInput" ? "input" : "change", rerender);
+      el.addEventListener(id === "searchInput" ? "input" : "change", function () {
+        if (isToggleOn("toggleTravelInfrastructure", false) && (id === "countryFilter" || id === "marketFilter")) {
+          loadScoutInfrastructure().then(rerender);
+        } else if (isToggleOn("toggleDemandAnchors", false) && (id === "countryFilter" || id === "marketFilter")) {
+          loadScoutDemandAnchors().then(rerender);
+        } else {
+          rerender();
+        }
+      });
     });
 
-    ["toggleShowHotels", "toggleChainScaleView", "toggleTravelInfrastructure", "toggleBrandPenetration"].forEach(function (id) {
+    ["toggleShowHotels", "toggleChainScaleView", "toggleBrandPenetration"].forEach(function (id) {
       var toggle = document.getElementById(id);
       if (!toggle) return;
       toggle.addEventListener("change", rerender);
     });
+
+    var infraToggle = document.getElementById("toggleTravelInfrastructure");
+    if (infraToggle) {
+      infraToggle.addEventListener("change", function () {
+        setScoutInfrastructureFilterVisible(infraToggle.checked);
+        if (infraToggle.checked) {
+          if (!state.infrastructureTypeCounts) {
+            loadScoutInfrastructureSummary().then(function () {
+              return loadScoutInfrastructure();
+            }).then(rerender);
+          } else {
+            renderScoutInfrastructureFilterChips();
+            loadScoutInfrastructure().then(rerender);
+          }
+        } else {
+          setScoutInfrastructureFilterVisible(false);
+          setScoutInfrastructureEmptyState(false);
+          rerender();
+        }
+      });
+    }
+
+    var anchorsToggle = document.getElementById("toggleDemandAnchors");
+    if (anchorsToggle) {
+      anchorsToggle.addEventListener("change", function () {
+        setScoutDemandAnchorsFilterVisible(anchorsToggle.checked);
+        if (anchorsToggle.checked) {
+          if (!state.demandAnchorsTypeCounts) {
+            loadScoutDemandAnchorsSummary().then(function () {
+              return loadScoutDemandAnchors();
+            }).then(rerender);
+          } else {
+            renderScoutDemandAnchorsFilterChips();
+            loadScoutDemandAnchors().then(rerender);
+          }
+        } else {
+          setScoutDemandAnchorsFilterVisible(false);
+          setScoutDemandAnchorsEmptyState(false);
+          rerender();
+        }
+      });
+    }
 
     LAYER_TOGGLE_CONFIG.forEach(function (cfg) {
       var toggle = document.getElementById(cfg.id);
@@ -1280,6 +1564,7 @@
       state.liveMapMode = false;
       state.liveHotels = [];
       state.liveInfrastructure = [];
+      state.liveDemandAnchors = [];
       try {
         var hotelsFetch = await fetch("/api/brand-presence?limit=100000");
         if (hotelsFetch.ok) {
@@ -1310,27 +1595,17 @@
       } catch (_hotelErr) {
         state.liveHotels = [];
       }
-      try {
-        var infraFetch = await fetch("/api/travel-infrastructure");
-        if (infraFetch.ok) {
-          var infraJson = await infraFetch.json();
-          state.liveInfrastructure = (infraJson.infrastructure || []).filter(function (i) {
-            return Number.isFinite(Number(i.lat)) && Number.isFinite(Number(i.lng)) && (Number(i.lat) !== 0 || Number(i.lng) !== 0);
-          }).map(function (i) {
-            return {
-              name: i.name,
-              type: i.type,
-              city: i.city,
-              country: i.country,
-              lat: Number(i.lat),
-              lng: Number(i.lng)
-            };
-          });
-        }
-      } catch (_infraErr) {
-        state.liveInfrastructure = [];
+      await loadScoutInfrastructureSummary();
+      await loadScoutDemandAnchorsSummary();
+      if (isToggleOn("toggleTravelInfrastructure", false)) {
+        await loadScoutInfrastructure();
+        setScoutInfrastructureFilterVisible(true);
       }
-      state.liveMapMode = state.liveHotels.length > 0 || state.liveInfrastructure.length > 0;
+      if (isToggleOn("toggleDemandAnchors", false)) {
+        await loadScoutDemandAnchors();
+        setScoutDemandAnchorsFilterVisible(true);
+      }
+      state.liveMapMode = state.liveHotels.length > 0 || state.liveInfrastructure.length > 0 || state.liveDemandAnchors.length > 0;
 
       populateSelect("countryFilter", state.filters.countries);
       populateSelect("marketFilter", state.filters.markets);

@@ -1,0 +1,152 @@
+{
+  "report": "operator-setup-staging-diagnostics-soak-plan",
+  "generatedAt": "2026-06-02",
+  "objective": "Use Batch 3B diagnostics in staging to identify real fallback-used patterns and determine targeted canonical contract closures for Batch 3C.",
+  "constraints": {
+    "noCodeChanges": true,
+    "noSchemaChanges": true,
+    "noScoringChanges": true,
+    "noDisplayBehaviorChanges": true,
+    "noFallbackOrderingChanges": true
+  },
+  "stagingEnvironmentVariables": {
+    "NODE_ENV": "production",
+    "OPERATOR_SETUP_WRITE_MODE": "canonical",
+    "OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD": "0",
+    "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "0",
+    "OPERATOR_SETUP_USE_NEW_BASE_WRITER": "1",
+    "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE": "0",
+    "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN": "0",
+    "OPERATOR_SETUP_CONTRACT_DIAGNOSTICS": "1"
+  },
+  "userFlows": [
+    "My Operator create",
+    "My Operator update",
+    "My Operator reload/prefill",
+    "Operator Explorer list",
+    "Operator Explorer detail",
+    "Operator Alignment Snapshot",
+    "Operator Alignment Score Breakdown",
+    "Operator Capability Snapshot regression check"
+  ],
+  "recordsToUse": [
+    "one newly created operator",
+    "one existing new-base operator",
+    "one operator with fuller profile fields",
+    "one operator with sparse/missing fields",
+    "one operator with logo",
+    "one operator without logo"
+  ],
+  "diagnosticPatternsToCapture": [
+    "[operator_setup_contract_diag]",
+    "fallbackUsed=true",
+    "unresolved=true",
+    "mirror_prefill_applied",
+    "mirror_write_contract",
+    "readPath=legacy",
+    "readPath=new_base",
+    "writeMode=canonical"
+  ],
+  "logCaptureFormat": {
+    "fields": [
+      "timestamp",
+      "route_or_page",
+      "operator_record_id",
+      "field_or_concept",
+      "canonical_key_expected",
+      "key_actually_used",
+      "fallback_used",
+      "unresolved",
+      "source_layer",
+      "user_facing_output_affected",
+      "recommended_action"
+    ],
+    "recommendedActionEnum": [
+      "batch_3c_fix",
+      "legacy_acceptable",
+      "data_backfill_needed",
+      "contract_clarification",
+      "defer_cleanup",
+      "business_review"
+    ]
+  },
+  "passFailCriteria": {
+    "pass": [
+      "no mock data in owner-facing views",
+      "canonical writes only",
+      "no shadow/fail-open behavior",
+      "new records read back as new_base",
+      "no demo-critical field unresolved",
+      "fallback usage either expected/acceptable or logged as Batch 3C candidate"
+    ],
+    "fail": [
+      "mock data appears in owner-facing views",
+      "canonical writes fail",
+      "new-base records cannot reload",
+      "scoring output changes unexpectedly"
+    ]
+  },
+  "batch3cConversionFramework": [
+    {
+      "classification": "confirmed_canonical_mapping_miss",
+      "definition": "Canonical key expected but fallback/alias used due to mapping gap.",
+      "action": "Add targeted mapping contract fix in Batch 3C with contract test."
+    },
+    {
+      "classification": "fallback_acceptable_legacy_only",
+      "definition": "Fallback is required for legacy compatibility and acceptable for now.",
+      "action": "Keep behavior; retain diagnostics and document."
+    },
+    {
+      "classification": "missing_data_issue",
+      "definition": "Mapping exists but source data is missing or sparse.",
+      "action": "Route to data quality/backfill workstream."
+    },
+    {
+      "classification": "display_read_contract_issue",
+      "definition": "Read contract is inconsistent across downstream consumers.",
+      "action": "Apply targeted read contract closure in Batch 3C."
+    },
+    {
+      "classification": "deferred_cleanup",
+      "definition": "Non-critical legacy/duplicate/noise item.",
+      "action": "Backlog as P2 cleanup."
+    },
+    {
+      "classification": "business_review_needed",
+      "definition": "Canonical expectation is ambiguous and needs product decision.",
+      "action": "Hold for business review before changes."
+    }
+  ],
+  "recommendedDurationVolume": {
+    "minimumProfiles": 5,
+    "targetProfiles": 10,
+    "minimumCoverage": [
+      "all main owner-facing flows executed across selected profiles",
+      "repeat update/reload cycles on at least 3 profiles"
+    ],
+    "suggestedWindows": [
+      "daytime active soak window",
+      "off-peak stability soak window"
+    ]
+  },
+  "stopConditions": [
+    "mock data appears in owner-facing views",
+    "canonical writes fail",
+    "new-base records cannot reload",
+    "scoring output changes unexpectedly",
+    "fallback volume is too noisy to interpret"
+  ],
+  "postSoakReportStructure": [
+    "run metadata",
+    "coverage summary",
+    "determinism checks",
+    "diagnostics findings",
+    "finding classification table",
+    "P0/P1/P2 recommendations",
+    "Batch 3C candidate list",
+    "deferred/non-actionable items",
+    "risk assessment",
+    "decision recommendation"
+  ]
+}

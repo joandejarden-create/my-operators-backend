@@ -1,0 +1,11 @@
+const fs = require('fs');
+const html = fs.readFileSync('tmp-landing-embed.html', 'utf8');
+const mid = Math.floor(html.length / 2);
+let splitAt = html.lastIndexOf('</section>', mid);
+if (splitAt < 0) splitAt = mid;
+splitAt += '</section>'.length;
+const a = html.slice(0, splitAt);
+const b = html.slice(splitAt);
+fs.writeFileSync('tmp-landing-embed-a.html', a);
+fs.writeFileSync('tmp-landing-embed-b.html', b);
+console.log({ total: html.length, a: a.length, b: b.length, splitAt });

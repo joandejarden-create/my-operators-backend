@@ -1,0 +1,402 @@
+{
+  "generatedAt": "2026-06-02T15:10:00.000Z",
+  "purpose": "Reconcile Batch F1 scope before implementation (audit only)",
+  "reconciliationNote": "Original implementation-plan F1 listed 6 fields. Plain-English summary listed 12 candidates. This report re-verifies all 12 plus brandedVsIndependentMix (original F1 #5) against current build-sheet writer, new-base read prefill, HTML form presence, field-bindings options, and downstream usage.",
+  "evidenceSources": [
+    "api/lib/operator-setup-new-base-build-sheet-rows.json",
+    "api/lib/operator-setup-new-base-writer.js (buildNewBaseTablePayloads)",
+    "api/lib/operator-setup-new-base-read.js (buildPrefillObjectFromNewBaseRows)",
+    "api/lib/third-party-operator-new-two-field-bindings.json",
+    "public/third-party-operator-setup-new-two.html",
+    "public/js/operator-explorer-new-base-profile.js",
+    "lib/operator-alignment-scoring-factors.js",
+    "lib/operator-alignment-field-options.js",
+    "reports/operator-setup-batch-3-field-mapping-plan.md"
+  ],
+  "finalApprovedF1": [
+  {
+    "canonical_key": "minimumKeyCount",
+    "implementation_order": 1,
+    "f1_tier": "F1-A (text/number, lowest risk)"
+  },
+  {
+    "canonical_key": "similarProjectCaseStudies",
+    "implementation_order": 2,
+    "f1_tier": "F1-A (text/number, lowest risk)"
+  },
+  {
+    "canonical_key": "brand_soft_independent_narrative",
+    "implementation_order": 3,
+    "f1_tier": "F1-A (text/number, lowest risk)"
+  },
+  {
+    "canonical_key": "governanceCadence",
+    "implementation_order": 4,
+    "f1_tier": "F1-B (select/multi with bindings options)"
+  },
+  {
+    "canonical_key": "infra_technology_maturity_level",
+    "implementation_order": 5,
+    "f1_tier": "F1-B (select/multi with bindings options)"
+  },
+  {
+    "canonical_key": "newBuildOpeningExperience",
+    "implementation_order": 6,
+    "f1_tier": "F1-B (select/multi with bindings options)"
+  },
+  {
+    "canonical_key": "marketPresenceType",
+    "implementation_order": 7,
+    "f1_tier": "F1-B (select/multi with bindings options)"
+  },
+  {
+    "canonical_key": "brandFamiliesOperated",
+    "implementation_order": 8,
+    "f1_tier": "F1-B (select/multi with bindings options)"
+  },
+  {
+    "canonical_key": "salesPlatform",
+    "implementation_order": 9,
+    "f1_tier": "F1-B (select/multi with bindings options)"
+  }
+  ],
+  "removedFromF1": [
+  {
+    "canonical_key": "brandsPortfolioDetail",
+    "excluded_from_f1": true,
+    "reason": "Not a missing save path. My Operator already serializes brand-grid rows into brandsPortfolioDetail on submit (collectBrandsPortfolioDetailFromForm). Adding a standalone textarea would duplicate/conflict with the brand grid contract.",
+    "defer_to": "F5 (no new control) or read-only review of grid output only"
+  },
+  {
+    "canonical_key": "readyForInvestorPublication",
+    "excluded_from_f1": true,
+    "reason": "Publication/workflow flag — business-review and admin-controlled, not operator self-serve demo data. Batch 3 plan marked as needs-review before activation. Bindings label (Submit as investor-ready) differs from new-base build-sheet column (readyForInvestorPublication); resolve naming/workflow before any UI.",
+    "defer_to": "F4 (business review) — optional read-only in Internal/System Review after workflow sign-off"
+  },
+  {
+    "canonical_key": "offeredServices",
+    "excluded_from_f1": true,
+    "reason": "Aggregate multi-select overlaps granular Support & Services UI already on the form (revenueManagementServices, salesMarketingSupport, etc.). Scoring reads offeredServices; adding a second entry surface risks drift vs granular columns without a defined derivation rule.",
+    "defer_to": "F4 (business rule: derive aggregate from granular vs separate manual field) or post-demo Batch 4 normalization"
+  },
+  {
+    "canonical_key": "brandedVsIndependentMix",
+    "excluded_from_f1": true,
+    "reason": "Was in original 6-item F1 but omitted from the 12-candidate summary. Scoring and Explorer consume it; contract exists but field is score-adjacent and may be derivable from brand grid / brandedVsIndependent signals. Safer as F1.5 after text/number wave with explicit save/read/score-stability validation.",
+    "defer_to": "F1.5 or F2 (add after core F1 validation; optional)"
+  }
+  ],
+  "fields": [
+  {
+    "canonical_key": "minimumKeyCount",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Commercial Fit & Terms",
+    "airtable_field": "Minimum Key Count",
+    "airtable_field_type": "number",
+    "writer_mapping_status": "Mapped — build-sheet form_name minimumKeyCount → Minimum Key Count (canonical writer loop)",
+    "readback_prefill_status": "Mapped — buildPrefillObjectFromNewBaseRows overlayDirectAndSnake + OAS_OPERATOR_PREFILL_KEY_ALIASES",
+    "downstream_usage": {
+      "operator_explorer": "Yes — operator-explorer-new-base-profile.js pickField + alignment snapshot row",
+      "alignment_snapshot": "Yes — via prefill aliases",
+      "score_breakdown": "Indirect — DNA/commercial fit display (minPropertySize/maxPropertySize fallback); not a primary scoring factor key",
+      "capability_snapshot": "No direct"
+    },
+    "recommended_form_section": "Commercial Fit & Deal Preferences",
+    "input_type": "number",
+    "required_or_optional": "optional",
+    "select_options_safe": "N/A",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": ""
+  },
+  {
+    "canonical_key": "similarProjectCaseStudies",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Commercial Fit & Terms",
+    "airtable_field": "Similar Project Case Studies",
+    "airtable_field_type": "longText",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlay + aliases",
+    "downstream_usage": {
+      "operator_explorer": "Yes — explorer snapshot row",
+      "alignment_snapshot": "Via prefill when populated",
+      "score_breakdown": "No direct scoring factor located",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Commercial Fit & Deal Preferences (or Case Studies cross-reference)",
+    "input_type": "textarea",
+    "required_or_optional": "optional",
+    "select_options_safe": "N/A",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": ""
+  },
+  {
+    "canonical_key": "brand_soft_independent_narrative",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Profile & Positioning",
+    "airtable_field": "brand_soft_independent_narrative",
+    "airtable_field_type": "longText",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlayDirectAndSnake (camelCase column name matches form key)",
+    "downstream_usage": {
+      "operator_explorer": "Yes — operator-brand-relationships-sections.js",
+      "alignment_snapshot": "No/Unclear",
+      "score_breakdown": "No",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Brand Relationships & Portfolio Experience",
+    "input_type": "textarea",
+    "required_or_optional": "optional",
+    "select_options_safe": "N/A",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": ""
+  },
+  {
+    "canonical_key": "governanceCadence",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Governance, Delivery & Diligence",
+    "airtable_field": "Governance Cadence",
+    "airtable_field_type": "singleSelect",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlay + OAS aliases",
+    "downstream_usage": {
+      "operator_explorer": "Yes — explorer snapshot + DNA view-model owner engagement",
+      "alignment_snapshot": "Yes — prefill alias family",
+      "score_breakdown": "Context/display; not a top-weight factor in scoring-factors.js",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Owner Engagement & Reporting (Governance)",
+    "input_type": "single-select",
+    "required_or_optional": "optional",
+    "select_options_safe": "Yes — use third-party-operator-new-two-field-bindings.json selectOptions (Monthly, Quarterly, …). Spot-check against live Airtable before demo; defer Batch 4 normalization.",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": ""
+  },
+  {
+    "canonical_key": "infra_technology_maturity_level",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Governance, Delivery & Diligence",
+    "airtable_field": "infra_technology_maturity_level",
+    "airtable_field_type": "singleSelect",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlayDirectAndSnake",
+    "downstream_usage": {
+      "operator_explorer": "Infrastructure sections (companion infra_* fields already on form)",
+      "alignment_snapshot": "No/Unclear",
+      "score_breakdown": "No",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Technology, Systems & Data Infrastructure",
+    "input_type": "single-select",
+    "required_or_optional": "optional",
+    "select_options_safe": "Yes — bindings: Basic, Structured, Integrated, Advanced",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": ""
+  },
+  {
+    "canonical_key": "newBuildOpeningExperience",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Commercial Fit & Terms",
+    "airtable_field": "New-Build Opening Experience",
+    "airtable_field_type": "singleSelect",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlay + OAS aliases",
+    "downstream_usage": {
+      "operator_explorer": "Yes — explorer badges/snapshot",
+      "alignment_snapshot": "Yes",
+      "score_breakdown": "Yes — operator-alignment-scoring-factors.js reads newBuildOpeningExperience",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Operating Platform & Services",
+    "input_type": "single-select",
+    "required_or_optional": "optional",
+    "select_options_safe": "Yes — bindings: Strong, Moderate, Limited, None documented, Unknown",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": "Scoring reads this field; F1 adds UI only — no scoring formula changes. Require score-stability validation in test plan."
+  },
+  {
+    "canonical_key": "marketPresenceType",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Platform & Markets",
+    "airtable_field": "Market Presence Type",
+    "airtable_field_type": "multipleSelects",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlay + OAS aliases",
+    "downstream_usage": {
+      "operator_explorer": "Yes — explorer field map + badges",
+      "alignment_snapshot": "Yes",
+      "score_breakdown": "Alignment context",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Markets, Segments & Asset Focus",
+    "input_type": "multi-select",
+    "required_or_optional": "optional",
+    "select_options_safe": "Yes — bindings match OAS_MARKET_PRESENCE_TYPE_OPTIONS",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": ""
+  },
+  {
+    "canonical_key": "brandFamiliesOperated",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Profile & Positioning",
+    "airtable_field": "Brand Families Operated",
+    "airtable_field_type": "multipleSelects",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlay + OAS aliases",
+    "downstream_usage": {
+      "operator_explorer": "Yes — explorer snapshot + DNA brand sections",
+      "alignment_snapshot": "Yes",
+      "score_breakdown": "Context",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Brand Relationships & Portfolio Experience",
+    "input_type": "multi-select",
+    "required_or_optional": "optional",
+    "select_options_safe": "Yes — bindings list (Marriott, Hilton, …, Other)",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": ""
+  },
+  {
+    "canonical_key": "salesPlatform",
+    "f1_status": "approved",
+    "airtable_table": "Operator Setup - Governance, Delivery & Diligence",
+    "airtable_field": "Sales Platform",
+    "airtable_field_type": "multipleSelects",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlay + OAS aliases",
+    "downstream_usage": {
+      "operator_explorer": "Yes — explorer snapshot",
+      "alignment_snapshot": "Yes",
+      "score_breakdown": "Backfill/scoring context (not formula change)",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Operating Platform & Services",
+    "input_type": "multi-select",
+    "required_or_optional": "optional",
+    "select_options_safe": "Yes — bindings selectOptions",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": false,
+    "exclusion_reason": ""
+  },
+  {
+    "canonical_key": "brandsPortfolioDetail",
+    "f1_status": "excluded",
+    "airtable_table": "Operator Setup - Platform & Markets",
+    "airtable_field": "Brands Portfolio Detail",
+    "airtable_field_type": "longText",
+    "writer_mapping_status": "Mapped — build-sheet + special JSON coercion in writer",
+    "readback_prefill_status": "Mapped — prefill via overlay; reload uses applyBrandsPortfolioDetailToBrandGrid",
+    "downstream_usage": {
+      "operator_explorer": "Yes — DNA/explorer brand onboarding text",
+      "alignment_snapshot": "No/Unclear",
+      "score_breakdown": "No",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "N/A — use existing Brands Managed grid",
+    "input_type": "derived (JSON from brand grid)",
+    "required_or_optional": "optional",
+    "select_options_safe": "N/A",
+    "operator_editable_or_readonly": "read-only review of grid-derived JSON (optional)",
+    "excluded_from_f1": true,
+    "exclusion_reason": "Already captured on submit from brand grid; not missing input."
+  },
+  {
+    "canonical_key": "readyForInvestorPublication",
+    "f1_status": "excluded",
+    "airtable_table": "Operator Setup - Profile & Positioning",
+    "airtable_field": "readyForInvestorPublication",
+    "airtable_field_type": "checkbox",
+    "writer_mapping_status": "Mapped in build-sheet; legacy bindings use title Submit as investor-ready (published profile) — verify single Airtable column before UI",
+    "readback_prefill_status": "Mapped via overlay (boolean)",
+    "downstream_usage": {
+      "operator_explorer": "List/publish workflow metadata",
+      "alignment_snapshot": "Publication gating (docs)",
+      "score_breakdown": "No",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Internal/System Review",
+    "input_type": "checkbox",
+    "required_or_optional": "admin-only when enabled",
+    "select_options_safe": "N/A",
+    "operator_editable_or_readonly": "read-only or admin-only (not operator self-serve F1)",
+    "excluded_from_f1": true,
+    "exclusion_reason": "Business-review publication workflow; not demo self-serve."
+  },
+  {
+    "canonical_key": "offeredServices",
+    "f1_status": "excluded",
+    "airtable_table": "Operator Setup - Governance, Delivery & Diligence",
+    "airtable_field": "Offered Services",
+    "airtable_field_type": "multipleSelects",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlay + OAS aliases",
+    "downstream_usage": {
+      "operator_explorer": "Yes — explorer offeredServices list",
+      "alignment_snapshot": "Yes",
+      "score_breakdown": "Yes — scoring-factors.js toList(opExtras.offeredServices)",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Operating Platform & Services (only if not derived)",
+    "input_type": "multi-select",
+    "required_or_optional": "optional",
+    "select_options_safe": "Bindings exist but overlap with granular service multis on form",
+    "operator_editable_or_readonly": "defer",
+    "excluded_from_f1": true,
+    "exclusion_reason": "Duplicate entry surface vs existing Support & Services granular fields; needs business derivation rule."
+  },
+  {
+    "canonical_key": "brandedVsIndependentMix",
+    "f1_status": "excluded",
+    "airtable_table": "Operator Setup - Profile & Positioning",
+    "airtable_field": "brandedVsIndependentMix",
+    "airtable_field_type": "singleLineText",
+    "writer_mapping_status": "Mapped — build-sheet",
+    "readback_prefill_status": "Mapped — overlay",
+    "downstream_usage": {
+      "operator_explorer": "Yes — DNA brandedIndependentMix",
+      "alignment_snapshot": "No/Unclear",
+      "score_breakdown": "Yes — score context",
+      "capability_snapshot": "No"
+    },
+    "recommended_form_section": "Brand Relationships & Portfolio Experience",
+    "input_type": "text",
+    "required_or_optional": "optional",
+    "select_options_safe": "N/A",
+    "operator_editable_or_readonly": "operator-editable",
+    "excluded_from_f1": true,
+    "exclusion_reason": "Score-adjacent; defer to F1.5 after core nine fields validated."
+  }
+  ],
+  "validationPlan": {
+    "environment": {
+      "OPERATOR_SETUP_WRITE_MODE": "canonical",
+      "NODE_ENV": "production",
+      "OPERATOR_SETUP_CONTRACT_DIAGNOSTICS": "0"
+    },
+    "perField": [
+      "My Operator save populates Airtable column via canonical writer",
+      "Reload/prefill shows same value on form control",
+      "GET detail returns value under canonical prefill key",
+      "Operator Explorer displays value when applicable (no mock)",
+      "For newBuildOpeningExperience only: duplicate score run on deal-linked operator — scores unchanged"
+    ],
+    "regression": [
+      "Brand grid still produces brandsPortfolioDetail JSON without new textarea",
+      "Granular service multis unchanged when offeredServices not added",
+      "No change to submission_status or readyForInvestorPublication from operator save"
+    ]
+  },
+  "counts": {
+    "original_f1_plan_items": 6,
+    "summary_12_candidates": 12,
+    "final_approved_f1": 9,
+    "removed_from_f1": 4
+  }
+}

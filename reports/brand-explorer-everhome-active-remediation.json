@@ -1,0 +1,132 @@
+{
+  "version": "everhome-active-remediation-v1",
+  "generatedAt": "2026-07-23T11:15:53.152Z",
+  "brandSlug": "everhome-suites",
+  "brandName": "Everhome Suites",
+  "recordId": "recqkkrsevi4r9ibj",
+  "publicFullBefore": false,
+  "displayStateBefore": "draft_applied_with_defects",
+  "blockersBefore": [
+    "external_owner_copy_fail",
+    "not_company_validated"
+  ],
+  "fieldRows": [
+    {
+      "brand": "everhome-suites",
+      "tab": "Footprint & Growth",
+      "section": "footprint.openings",
+      "recordId": "recLVtsXtbbwc5Tlk",
+      "field": "Case Summary Interpretation",
+      "apiKey": "caseSummaryInterpretation",
+      "failureType": "forbidden_owner_facing_language:adr",
+      "failureTypes": [
+        "forbidden_owner_facing_language:adr"
+      ],
+      "currentValue": "Treat CHD recent-opening placement as positioning—underwrite weekly ADR, kitchen opex, and local extended-stay supply before using as a performance proxy.",
+      "hits": [
+        "adr:ADR"
+      ],
+      "proposedFix": "Treat CHD recent-opening placement as positioning—underwrite weekly average daily rate, kitchen opex, and local extended-stay supply before using as a performance proxy.",
+      "proposedClean": true,
+      "remainingFailures": []
+    },
+    {
+      "brand": "everhome-suites",
+      "tab": "Footprint & Growth",
+      "section": "footprint.openings",
+      "recordId": "recl7HK2wkO08l3vA",
+      "field": "Case Summary Interpretation",
+      "apiKey": "caseSummaryInterpretation",
+      "failureType": "forbidden_owner_facing_language:fee_stack",
+      "failureTypes": [
+        "forbidden_owner_facing_language:fee_stack"
+      ],
+      "currentValue": "Metro access and weekly corporate demand mix drive performance—validate fee stack and parking/utility costs locally.",
+      "hits": [
+        "fee_stack:fee stack"
+      ],
+      "proposedFix": "Metro access and weekly corporate demand mix drive performance—validate participation costs and program fees and parking/utility costs locally.",
+      "proposedClean": true,
+      "remainingFailures": []
+    }
+  ],
+  "patches": [
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "action": "PATCH",
+      "recordId": "recLVtsXtbbwc5Tlk",
+      "brandSlug": "everhome-suites",
+      "slotKey": "footprint.openings",
+      "reason": "pvql_scrub:forbidden_owner_facing_language:adr",
+      "fields": {
+        "Case Summary Interpretation": "Treat CHD recent-opening placement as positioning—underwrite weekly average daily rate, kitchen opex, and local extended-stay supply before using as a performance proxy."
+      },
+      "sanitizedPayloadPreview": {
+        "field": "Case Summary Interpretation",
+        "before": "Treat CHD recent-opening placement as positioning—underwrite weekly ADR, kitchen opex, and local ext",
+        "after": "Treat CHD recent-opening placement as positioning—underwrite weekly average daily rate, kitchen opex",
+        "failureTypes": [
+          "forbidden_owner_facing_language:adr"
+        ]
+      }
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "action": "PATCH",
+      "recordId": "recl7HK2wkO08l3vA",
+      "brandSlug": "everhome-suites",
+      "slotKey": "footprint.openings",
+      "reason": "pvql_scrub:forbidden_owner_facing_language:fee_stack",
+      "fields": {
+        "Case Summary Interpretation": "Metro access and weekly corporate demand mix drive performance—validate participation costs and program fees and parking/utility costs locally."
+      },
+      "sanitizedPayloadPreview": {
+        "field": "Case Summary Interpretation",
+        "before": "Metro access and weekly corporate demand mix drive performance—validate fee stack and parking/utilit",
+        "after": "Metro access and weekly corporate demand mix drive performance—validate participation costs and prog",
+        "failureTypes": [
+          "forbidden_owner_facing_language:fee_stack"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "offenders": 2,
+    "patches": 2,
+    "remainingAfterProjection": 0
+  },
+  "validation": {
+    "pass": true,
+    "failedChecks": []
+  },
+  "remainingSample": [],
+  "guardrails": {
+    "companyValidatedUntouched": true,
+    "sourceLibraryUntouched": true,
+    "registryUntouched": true,
+    "brandStatusUntouched": true,
+    "broadRewriteForbidden": true
+  },
+  "applyResult": {
+    "applied": true,
+    "results": [
+      {
+        "recordId": "recLVtsXtbbwc5Tlk",
+        "slotKey": "footprint.openings",
+        "fields": [
+          "Case Summary Interpretation"
+        ],
+        "id": "recLVtsXtbbwc5Tlk"
+      },
+      {
+        "recordId": "recl7HK2wkO08l3vA",
+        "slotKey": "footprint.openings",
+        "fields": [
+          "Case Summary Interpretation"
+        ],
+        "id": "recl7HK2wkO08l3vA"
+      }
+    ],
+    "companyValidatedUntouched": true
+  }
+}

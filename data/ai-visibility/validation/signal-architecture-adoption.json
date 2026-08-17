@@ -1,0 +1,519 @@
+{
+  "phase": "AI_INTELLIGENCE_SIGNAL_ARCHITECTURE_ADOPTION_COMPLETE",
+  "status": "AI_INTELLIGENCE_SIGNAL_ARCHITECTURE_ADOPTION_PASS",
+  "nextStep": "READY_FOR_PRESENCE_HOLDOUT_AND_PRODUCT_INTEGRATION",
+  "architecture": {
+    "PRODUCTION_MODEL": "SIGNAL_AND_FLAG",
+    "SIGNALS": {
+      "AI_SIGNAL_PRESENCE": "AI_SIGNAL_PRESENCE",
+      "AI_SIGNAL_RECOMMENDED": "AI_SIGNAL_RECOMMENDED",
+      "AI_SIGNAL_FIRST_RECOMMENDATION": "AI_SIGNAL_FIRST_RECOMMENDATION",
+      "AI_SIGNAL_NEGATIVE_OR_QUALIFIED": "AI_SIGNAL_NEGATIVE_OR_QUALIFIED",
+      "AI_SIGNAL_COMPARATOR": "AI_SIGNAL_COMPARATOR"
+    },
+    "SIGNAL_DEFINITIONS": {
+      "PRESENCE": {
+        "id": "AI_SIGNAL_PRESENCE",
+        "key": "PRESENCE",
+        "gate": "PRESENCE_GATE",
+        "trueWhen": "the canonical entity appears in the eligible AI response",
+        "falseWhen": "the canonical entity does not appear",
+        "notes": "Derived from entity resolution / presence, not from recommendation role."
+      },
+      "RECOMMENDED": {
+        "id": "AI_SIGNAL_RECOMMENDED",
+        "key": "RECOMMENDED",
+        "gate": "RECOMMENDED_GATE",
+        "trueWhen": "internal evidence supports first_recommendation, ranked_recommendation, or explicit_recommendation",
+        "falseWhen": "otherwise (including associated_option, discussed, comparator, etc.)",
+        "excludes": [
+          "associated_option"
+        ],
+        "notes": "associated_option does NOT count as recommended."
+      },
+      "FIRST_RECOMMENDATION": {
+        "id": "AI_SIGNAL_FIRST_RECOMMENDATION",
+        "key": "FIRST_RECOMMENDATION",
+        "gate": "FIRST_REC_GATE",
+        "trueWhen": "strict first/lead recommendation evidence exists",
+        "doNotInferFrom": [
+          "first textual mention",
+          "ordinary numbered list",
+          "consideration-set position",
+          "document order alone"
+        ]
+      },
+      "NEGATIVE_OR_QUALIFIED": {
+        "id": "AI_SIGNAL_NEGATIVE_OR_QUALIFIED",
+        "key": "NEGATIVE_OR_QUALIFIED",
+        "gate": "NEGATIVE_GATE",
+        "trueWhen": "entity is materially discouraged, excluded, or negatively qualified"
+      },
+      "COMPARATOR": {
+        "id": "AI_SIGNAL_COMPARATOR",
+        "key": "COMPARATOR",
+        "gate": "COMPARATOR_GATE",
+        "trueWhen": "entity is principally used as a comparison/reference"
+      }
+    },
+    "SIGNAL_PAYLOAD_FIELDS": [
+      "value",
+      "evidenceRefs",
+      "validationStatus",
+      "classifierVersion",
+      "sourceResponseId",
+      "provider",
+      "language",
+      "geography"
+    ],
+    "INTERNAL_10_CLASS_PRESERVED": "YES",
+    "COMPOSITE_SCORE": "NO",
+    "MUTUALLY_EXCLUSIVE_ROLE": "NO",
+    "version": "ai_intelligence_signal_architecture_v1"
+  },
+  "definitions": {
+    "PRESENCE": {
+      "id": "AI_SIGNAL_PRESENCE",
+      "key": "PRESENCE",
+      "gate": "PRESENCE_GATE",
+      "trueWhen": "the canonical entity appears in the eligible AI response",
+      "falseWhen": "the canonical entity does not appear",
+      "notes": "Derived from entity resolution / presence, not from recommendation role."
+    },
+    "RECOMMENDED": {
+      "id": "AI_SIGNAL_RECOMMENDED",
+      "key": "RECOMMENDED",
+      "gate": "RECOMMENDED_GATE",
+      "trueWhen": "internal evidence supports first_recommendation, ranked_recommendation, or explicit_recommendation",
+      "falseWhen": "otherwise (including associated_option, discussed, comparator, etc.)",
+      "excludes": [
+        "associated_option"
+      ],
+      "notes": "associated_option does NOT count as recommended."
+    },
+    "FIRST_RECOMMENDATION": {
+      "id": "AI_SIGNAL_FIRST_RECOMMENDATION",
+      "key": "FIRST_RECOMMENDATION",
+      "gate": "FIRST_REC_GATE",
+      "trueWhen": "strict first/lead recommendation evidence exists",
+      "doNotInferFrom": [
+        "first textual mention",
+        "ordinary numbered list",
+        "consideration-set position",
+        "document order alone"
+      ]
+    },
+    "NEGATIVE_OR_QUALIFIED": {
+      "id": "AI_SIGNAL_NEGATIVE_OR_QUALIFIED",
+      "key": "NEGATIVE_OR_QUALIFIED",
+      "gate": "NEGATIVE_GATE",
+      "trueWhen": "entity is materially discouraged, excluded, or negatively qualified"
+    },
+    "COMPARATOR": {
+      "id": "AI_SIGNAL_COMPARATOR",
+      "key": "COMPARATOR",
+      "gate": "COMPARATOR_GATE",
+      "trueWhen": "entity is principally used as a comparison/reference"
+    }
+  },
+  "DEV_readiness": {
+    "PRESENCE": {
+      "P": 1,
+      "R": 1,
+      "F1": 1,
+      "STATUS": "VALIDATED",
+      "GATE": "PASS"
+    },
+    "RECOMMENDED": {
+      "P": 0.9791666666666666,
+      "R": 0.6025641025641025,
+      "F1": 0.7460317460317459,
+      "STATUS": "NOT_READY"
+    },
+    "FIRST_RECOMMENDATION": {
+      "P": 1,
+      "R": 0.43333333333333335,
+      "F1": 0.6046511627906976,
+      "STATUS": "NOT_READY"
+    },
+    "NEGATIVE": {
+      "P": 1,
+      "R": 0.8571428571428571,
+      "F1": 0.923076923076923,
+      "STATUS": "NOT_READY",
+      "sparse": true
+    },
+    "COMPARATOR": {
+      "P": 1,
+      "R": 0.42857142857142855,
+      "F1": 0.6,
+      "STATUS": "NOT_READY",
+      "sparse": true
+    }
+  },
+  "productSurfaceAudit": {
+    "SAFE_NOW": [
+      {
+        "id": "aiPresence",
+        "label": "AI Presence",
+        "class": "SAFE_NOW",
+        "signal": "PRESENCE"
+      },
+      {
+        "id": "competitivePosition",
+        "label": "Competitive Position (by Presence)",
+        "class": "SAFE_NOW",
+        "signal": "PRESENCE"
+      },
+      {
+        "id": "regionalPresence",
+        "label": "Regional Presence",
+        "class": "SAFE_NOW",
+        "signal": "PRESENCE"
+      },
+      {
+        "id": "presenceTrends",
+        "label": "Presence trends",
+        "class": "SAFE_NOW",
+        "signal": "PRESENCE",
+        "note": "SAFE_NOW where enough validated periods exist"
+      },
+      {
+        "id": "aiPresenceChange",
+        "label": "AI Presence change (pp)",
+        "class": "SAFE_NOW",
+        "signal": "PRESENCE"
+      },
+      {
+        "id": "questionsMissing",
+        "label": "Questions Missing",
+        "class": "SAFE_NOW",
+        "signal": "PRESENCE",
+        "note": "SAFE when driven only by Presence (absence)"
+      }
+    ],
+    "BLOCKED": [
+      {
+        "id": "recommendationShare",
+        "label": "Recommendation Share",
+        "class": "BLOCKED_BY_RECOMMENDED_FLAG",
+        "signal": "RECOMMENDED"
+      },
+      {
+        "id": "recommendationRate",
+        "label": "Recommendation Rate",
+        "class": "BLOCKED_BY_RECOMMENDED_FLAG",
+        "signal": "RECOMMENDED"
+      },
+      {
+        "id": "top3RecommendationRate",
+        "label": "Top-3 Recommendation Rate",
+        "class": "BLOCKED_BY_RECOMMENDED_FLAG",
+        "signal": "RECOMMENDED"
+      },
+      {
+        "id": "firstRecommendationRate",
+        "label": "First Recommendation Rate",
+        "class": "BLOCKED_BY_FIRST_REC_FLAG",
+        "signal": "FIRST_RECOMMENDATION"
+      },
+      {
+        "id": "questionsWon",
+        "label": "Questions Won",
+        "class": "BLOCKED_BY_FIRST_REC_FLAG",
+        "signal": "FIRST_RECOMMENDATION"
+      }
+    ],
+    "INTERNAL_ONLY": [
+      {
+        "id": "internal10ClassRecommendationStatus",
+        "label": "Internal 10-class recommendationStatus",
+        "class": "INTERNAL_ONLY",
+        "signal": null,
+        "note": "Research/audit/debug — not client contract"
+      },
+      {
+        "id": "negativeOrQualifiedSignal",
+        "label": "Negative / Qualified signal",
+        "class": "INTERNAL_ONLY",
+        "signal": "NEGATIVE_OR_QUALIFIED",
+        "note": "Not client-published until volume + gate pass"
+      },
+      {
+        "id": "comparatorSignal",
+        "label": "Comparator signal",
+        "class": "INTERNAL_ONLY",
+        "signal": "COMPARATOR",
+        "note": "Not client-published until volume + gate pass"
+      }
+    ]
+  },
+  "metricContracts": {
+    "AI_PRESENCE": {
+      "name": "AI Presence Rate",
+      "formula": "successful eligible responses where PRESENCE = true / successful eligible responses",
+      "drivingSignal": "PRESENCE",
+      "unchanged": true
+    },
+    "RECOMMENDATION_SHARE": {
+      "name": "Recommendation Share",
+      "formula": "governed positive recommendation slots only: first + ranked + explicit",
+      "drivingSignal": "RECOMMENDED",
+      "positiveRoles": [
+        "first_recommendation",
+        "ranked_recommendation",
+        "explicit_recommendation"
+      ],
+      "excludes": [
+        "associated_option"
+      ],
+      "doNotExpandToAssociated": true,
+      "unchanged": true
+    },
+    "FIRST_RECOMMENDATION": {
+      "name": "First Recommendation Rate",
+      "formula": "FIRST_RECOMMENDATION flag / successful eligible responses (as defined in metrics)",
+      "drivingSignal": "FIRST_RECOMMENDATION",
+      "unchanged": true
+    },
+    "QUESTIONS_WON": {
+      "name": "Questions Won",
+      "formula": "strict first recommendation leader",
+      "drivingSignal": "FIRST_RECOMMENDATION",
+      "unchanged": true
+    },
+    "QUESTIONS_MISSING": {
+      "name": "Questions Missing",
+      "formula": "entity absent (PRESENCE = false)",
+      "drivingSignal": "PRESENCE",
+      "unchanged": true
+    },
+    "COMPETITIVE_POSITION": {
+      "name": "Competitive Position",
+      "formula": "AI Presence Rate rank among peers",
+      "drivingSignal": "PRESENCE",
+      "unchanged": true
+    },
+    "confirmedUnchanged": true
+  },
+  "holdout": {
+    "version": "ai_intelligence_signal_holdout_strategy_v1",
+    "PRESENCE_READY_FOR_HOLDOUT": "YES",
+    "RECOMMENDED_READY_FOR_HOLDOUT": "NO",
+    "FIRST_READY_FOR_HOLDOUT": "NO",
+    "HOLDOUT_ACCESSED": "NO",
+    "HOLDOUT_EXECUTED": false,
+    "authorizationRequired": true,
+    "note": "Prepare Presence holdout evaluation only. Do not use holdout for Recommended/First/Negative/Comparator tuning yet. Do not execute without separate explicit authorization."
+  },
+  "validationScorecard": {
+    "version": "ai_intelligence_signal_scorecard_v1",
+    "PER_SIGNAL": true,
+    "COMPOSITE_SCORE": false,
+    "HOLDOUT_ACCESSED": false,
+    "rows": [
+      {
+        "signal": "PRESENCE",
+        "DEV_N": 290,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "accuracy": 1,
+        "holdoutStatus": "NOT_RUN",
+        "readiness": "VALIDATED",
+        "gateStatus": "PASS",
+        "sparse": false
+      },
+      {
+        "signal": "RECOMMENDED",
+        "DEV_N": 290,
+        "precision": 0.9791666666666666,
+        "recall": 0.6025641025641025,
+        "f1": 0.7460317460317459,
+        "accuracy": 0.8896551724137931,
+        "holdoutStatus": "NOT_RUN",
+        "readiness": "NOT_READY",
+        "gateStatus": "FAIL",
+        "sparse": false
+      },
+      {
+        "signal": "FIRST_RECOMMENDATION",
+        "DEV_N": 290,
+        "precision": 1,
+        "recall": 0.43333333333333335,
+        "f1": 0.6046511627906976,
+        "accuracy": 0.9413793103448276,
+        "holdoutStatus": "NOT_RUN",
+        "readiness": "NOT_READY",
+        "gateStatus": "FAIL",
+        "sparse": false
+      },
+      {
+        "signal": "NEGATIVE_OR_QUALIFIED",
+        "DEV_N": 290,
+        "precision": 1,
+        "recall": 0.8571428571428571,
+        "f1": 0.923076923076923,
+        "accuracy": 0.996551724137931,
+        "holdoutStatus": "NOT_RUN",
+        "readiness": "NOT_READY",
+        "gateStatus": "FAIL_SPARSE",
+        "sparse": true
+      },
+      {
+        "signal": "COMPARATOR",
+        "DEV_N": 290,
+        "precision": 1,
+        "recall": 0.42857142857142855,
+        "f1": 0.6,
+        "accuracy": 0.9862068965517241,
+        "holdoutStatus": "NOT_RUN",
+        "readiness": "NOT_READY",
+        "gateStatus": "FAIL_SPARSE",
+        "sparse": true
+      }
+    ],
+    "internal10ClassTaxonomy": {
+      "status": "RESEARCH_ONLY / NOT_PRODUCTION_CONTRACT",
+      "productionContract": false,
+      "internalResearchOnly": true
+    }
+  },
+  "oldTaxonomy": {
+    "PRODUCTION_CONTRACT": false,
+    "INTERNAL_RESEARCH_ONLY": true,
+    "status": "RESEARCH_ONLY / NOT_PRODUCTION_CONTRACT",
+    "gate": {
+      "retiredAsProductionReleaseControl": true,
+      "preservedAs": "INTERNAL_RESEARCH_VALIDATION",
+      "historicalMetricsPreserved": true,
+      "note": "Do not use multiclass recommendation accuracy as the client release gate. Production gates are per-signal: PRESENCE / RECOMMENDED / FIRST_REC / NEGATIVE / COMPARATOR."
+    },
+    "rolesPreserved": [
+      "first_recommendation",
+      "ranked_recommendation",
+      "explicit_recommendation",
+      "associated_option",
+      "comparator",
+      "discussed",
+      "passing_mention",
+      "negative_or_qualified",
+      "source_only",
+      "no_mention"
+    ]
+  },
+  "publication": {
+    "version": "ai_intelligence_signal_publication_gate_v1",
+    "plan": {
+      "PRESENCE": {
+        "clientVisible": true,
+        "readiness": "VALIDATED",
+        "gateStatus": "PASS",
+        "ifNotVisible": "Validated monitoring data is not currently available.",
+        "neverShowAsZero": true
+      },
+      "RECOMMENDED": {
+        "clientVisible": false,
+        "readiness": "NOT_READY",
+        "gateStatus": "FAIL",
+        "ifNotVisible": "Validated monitoring data is not currently available.",
+        "neverShowAsZero": true
+      },
+      "FIRST_RECOMMENDATION": {
+        "clientVisible": false,
+        "readiness": "NOT_READY",
+        "gateStatus": "FAIL",
+        "ifNotVisible": "Validated monitoring data is not currently available.",
+        "neverShowAsZero": true
+      },
+      "NEGATIVE_OR_QUALIFIED": {
+        "clientVisible": false,
+        "readiness": "NOT_READY",
+        "gateStatus": "FAIL_SPARSE",
+        "ifNotVisible": "Validated monitoring data is not currently available.",
+        "neverShowAsZero": true
+      },
+      "COMPARATOR": {
+        "clientVisible": false,
+        "readiness": "NOT_READY",
+        "gateStatus": "FAIL_SPARSE",
+        "ifNotVisible": "Validated monitoring data is not currently available.",
+        "neverShowAsZero": true
+      }
+    },
+    "presenceMayPublish": true,
+    "recommendedMustHide": true,
+    "firstMustHide": true
+  },
+  "readinessIndependence": {
+    "version": "ai_intelligence_signal_architecture_v1",
+    "SIGNAL_READINESS_INDEPENDENT": true,
+    "FAILED_RECOMMENDED_DOES_NOT_BLOCK_PRESENCE": true,
+    "FAILED_FIRST_DOES_NOT_BLOCK_PRESENCE": true,
+    "ok": true
+  },
+  "recallWorkstreams": {
+    "version": "ai_intelligence_signal_recall_workstreams_v1",
+    "workstreams": [
+      {
+        "id": "A_RECOMMENDED_FLAG_RECALL",
+        "status": "OPEN",
+        "goal": "Improve RECOMMENDED recall while maintaining precision >= 98%",
+        "current": {
+          "precision": 0.9791666666666666,
+          "recall": 0.6025641025641025,
+          "f1": 0.7460317460317459
+        },
+        "focusMisses": [
+          "first_recommendation",
+          "ranked_recommendation",
+          "explicit_recommendation"
+        ],
+        "doNotCareAbout": "associated vs discussed distinction except to prevent false positives",
+        "precisionFloor": 0.98,
+        "holdout": "DO_NOT_USE_YET"
+      },
+      {
+        "id": "B_FIRST_RECOMMENDATION_FLAG_RECALL",
+        "status": "OPEN",
+        "goal": "Improve FIRST_RECOMMENDATION recall while maintaining precision >= 98%",
+        "current": {
+          "precision": 1,
+          "recall": 0.43333333333333335,
+          "f1": 0.6046511627906976
+        },
+        "focus": "strict lead / rank-1 evidence only",
+        "doNotInferFrom": [
+          "consideration list numbering",
+          "first mention",
+          "document order"
+        ],
+        "precisionFloor": 0.98,
+        "holdout": "DO_NOT_USE_YET"
+      }
+    ],
+    "deferred": {
+      "NEGATIVE_OR_QUALIFIED": "Defer until sample volume justifies",
+      "COMPARATOR": "Defer until sample volume justifies"
+    },
+    "noBroadMulticlassRestart": true
+  },
+  "productionGates": {
+    "PRESENCE_GATE": "PASS",
+    "RECOMMENDED_GATE": "FAIL",
+    "FIRST_REC_GATE": "FAIL",
+    "NEGATIVE_GATE": "FAIL_SPARSE",
+    "COMPARATOR_GATE": "FAIL_SPARSE",
+    "COMPOSITE": "NONE",
+    "OLD_10_CLASS": "INTERNAL_RESEARCH_VALIDATION"
+  },
+  "hardGuards": {
+    "LIVE_PROVIDER_CALLS": 0,
+    "NEW_MONITORING": 0,
+    "HOLDOUT_ACCESS": 0,
+    "AUTO_GT_CHANGES": 0,
+    "AIRTABLE_WRITES": 0,
+    "SCHEMA_CHANGES": 0,
+    "DEPLOYS": 0
+  }
+}

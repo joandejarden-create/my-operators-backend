@@ -1,0 +1,1190 @@
+{
+  "auditVersion": "v36A",
+  "generatedAt": "2026-07-15T13:08:09.536Z",
+  "mode": "read-only",
+  "airtableModified": false,
+  "purpose": "Validate proposed v36 content contract against existing codebase before v36 AI Build OS Core implementation",
+  "factoryPipeline": {
+    "stages": [
+      "preflight",
+      "asset-pack",
+      "build-draft",
+      "copy-governance",
+      "apply-draft",
+      "founder-review",
+      "apply-approved",
+      "final-qa"
+    ],
+    "modules": [
+      {
+        "path": "lib/partner-intelligence/brand-explorer-active-profile-factory.js",
+        "version": "v34D",
+        "role": "orchestrator",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-active-profile-factory-rules.js",
+        "version": "v34D",
+        "role": "gate_rules",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-active-profile-brand-config.js",
+        "version": "v35B",
+        "role": "brand_model_config",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-active-profile-asset-pack-builder.js",
+        "version": "v34B",
+        "role": "visual_asset_pack",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-active-profile-draft-builder.js",
+        "version": "v34B",
+        "role": "draft_apply",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-active-profile-copy-governance-builder.js",
+        "version": "v34C/v35B",
+        "role": "copy_governance",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-active-profile-staged-apply.js",
+        "version": "v34D",
+        "role": "staged_apply_gates",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-lifestyle-affiliation-brand-config.js",
+        "version": "v35B",
+        "role": "lifestyle_brand_config",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-lifestyle-affiliation-property-catalog.js",
+        "version": "v35C",
+        "role": "property_catalog",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-design-hotels-content-packages-v35F.js",
+        "version": "v35F",
+        "role": "design_hotels_content",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+        "version": "v1",
+        "role": "final_qa",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+        "version": "v2",
+        "role": "complete_build_batch",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+        "version": "v24",
+        "role": "visual_defect_audit",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-external-owner-readiness-rules.js",
+        "version": "—",
+        "role": "external_owner_readiness",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-external-owner-content-governance.js",
+        "version": "—",
+        "role": "external_owner_copy_rules",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-required-section-population-contract.js",
+        "version": "v27B",
+        "role": "required_section_contract",
+        "exists": true
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-slot-standard-manifest.js",
+        "version": "v18",
+        "role": "slot_manifest",
+        "exists": true
+      }
+    ],
+    "blockedFieldsGlobal": [
+      "Company Validated",
+      "Company Validation Date",
+      "Summary URL",
+      "View Summary URL",
+      "Ready for Active Profile (not written by factory apply-approved)"
+    ]
+  },
+  "frontendRenderers": {
+    "primary": "public/js/brand-explorer-atelier-from-api.js",
+    "api": "api/brand-library.js normalizeBrandExplorerPresentationRecords",
+    "hero": "public/js/brand-explorer-gold-detail.js",
+    "tabs": [
+      "Overview",
+      "Value to Owners",
+      "Operating Model",
+      "Owner Considerations",
+      "Commercial Engine",
+      "Economics & Obligations",
+      "Loyalty Program",
+      "Footprint & Growth",
+      "Brand Materials",
+      "Dealality Insight"
+    ],
+    "docsRendererDrift": [
+      "materials.caseStudy — modal wired, cards not rendered",
+      "economics.checklist / economics.diligence / economics.opening.financials — documented, not in atelier JS",
+      "standards.* — rendered, under-documented in slots doc",
+      "overview.proof.1–6 — rendered, not in slots doc"
+    ]
+  },
+  "schemaInventory": {
+    "tables": [
+      {
+        "name": "Brand Setup - Brand Explorer Presentation",
+        "exists": "documented + used",
+        "readBy": [
+          "api/brand-library.js",
+          "factory modules",
+          "final-qa",
+          "complete-build",
+          "all apply writers"
+        ],
+        "writtenBy": [
+          "draft-builder",
+          "copy-governance-builder",
+          "brand-specific writers"
+        ],
+        "fieldsConfirmed": [
+          "Slot Key",
+          "Title",
+          "Body",
+          "Sort Order",
+          "Active",
+          "Brand (link)",
+          "Brand Name",
+          "Image / Images / Scenario Image / Attachments",
+          "Case Summary Overview",
+          "Case Summary Owner Objective",
+          "Case Summary Brand Relevance",
+          "Case Summary Interpretation",
+          "Case Summary Tags",
+          "Summary URL / View Summary URL / Case summary URL",
+          "External Display Status"
+        ],
+        "fieldsAssumedNotInSchema": [
+          "Brand Asset Registry (link on Presentation row — used in factory rules; may be missing in some bases)",
+          "Source IDs / Source Trace (no dedicated trace columns — trace lives in reports only)",
+          "Ready for Active Profile (referenced in blocked fields; not factory-written)",
+          "Company Validated (read-only guard; never auto-written)"
+        ],
+        "apiBlockShape": [
+          "recordId",
+          "slotKey",
+          "title",
+          "body",
+          "sort",
+          "imageUrl",
+          "summaryUrl",
+          "caseSummaryOverview",
+          "caseSummaryOwnerObjective",
+          "caseSummaryBrandRelevance",
+          "caseSummaryInterpretation",
+          "caseSummaryTags"
+        ],
+        "internalOnlyFields": [
+          "Source footnotes in Body (stripped by external-owner governance)",
+          "External Display Status = Internal Only / Do Not Display (filtered server-side)"
+        ]
+      },
+      {
+        "name": "Brand Setup - Brand Basics",
+        "exists": "documented + used",
+        "readBy": [
+          "brand-library.js",
+          "final-qa",
+          "factory"
+        ],
+        "writtenBy": [
+          "none in active-profile factory stack"
+        ],
+        "fieldsUsed": [
+          "Company Validated",
+          "Company Validation Date",
+          "Parent Company",
+          "Brand Name",
+          "feeStructure",
+          "footprint",
+          "loyaltyCommercial",
+          "brandStandards"
+        ]
+      },
+      {
+        "name": "Source Library",
+        "exists": "documented + used",
+        "readBy": [
+          "copy-governance",
+          "final-qa",
+          "orchestrator"
+        ],
+        "writtenBy": [
+          "source capture scripts only — not factory draft apply"
+        ],
+        "fieldsUsed": [
+          "Approved for Explorer Use",
+          "Source URL",
+          "Source Title",
+          "Source Type",
+          "Notes"
+        ]
+      },
+      {
+        "name": "Partner Intelligence - Brand Asset Registry",
+        "exists": "documented + used",
+        "readBy": [
+          "asset-pack-builder",
+          "factory rules",
+          "visual audits"
+        ],
+        "writtenBy": [
+          "draft-builder creates Candidate Only stubs"
+        ],
+        "fieldsUsed": [
+          "Asset Name",
+          "Brand",
+          "Source URL",
+          "Source Page URL",
+          "Explorer Use Permission",
+          "Usage Review Status",
+          "Recommended Explorer Slot",
+          "Asset Status"
+        ],
+        "gap": "Registry linkage to Presentation Image field is indirect — draft apply materializes Image attachment from registry URL, not a persistent link field on Presentation"
+      },
+      {
+        "name": "Partner Facts",
+        "exists": "documented + used",
+        "readBy": [
+          "final-qa",
+          "complete-build orchestrator"
+        ],
+        "writtenBy": [
+          "not in active-profile factory"
+        ],
+        "usage": "Governance / Claim Ledger analog — not wired to presentation row generation in factory v34D"
+      }
+    ]
+  },
+  "slotInventory": {
+    "source": "docs/brand-explorer-presentation-slots.md + brand-explorer-slot-standard-manifest.js + atelier-from-api.js",
+    "families": [
+      {
+        "prefix": "overview.",
+        "tab": "Overview",
+        "renderer": "renderAtelierOverview (+ hero in brand-explorer-gold-detail.js)",
+        "repeatable": "mixed",
+        "activeProfileRequired": true,
+        "examples": {
+          "design-hotels": [
+            "overview.why_value",
+            "overview.scenario.1",
+            "overview.proof.2"
+          ],
+          "woodspring-suites": [
+            "overview.typical_use_case",
+            "overview.scenario.1"
+          ],
+          "tribute": [
+            "overview.typical_use_case",
+            "overview.scenario.1",
+            "overview.portfolio_context"
+          ],
+          "everhome-suites": [
+            "overview.typical_use_case",
+            "overview.scenario.1"
+          ],
+          "slh": [
+            "overview.why_value",
+            "overview.scenario.1"
+          ]
+        }
+      },
+      {
+        "prefix": "overview.scenario.",
+        "tab": "Overview",
+        "renderer": "renderAtelierOverview scenario strip",
+        "repeatable": true,
+        "activeProfileRequired": true,
+        "expectedFields": [
+          "Title",
+          "Body",
+          "Image→imageUrl",
+          "Sort Order",
+          "Active"
+        ]
+      },
+      {
+        "prefix": "overview.proof.",
+        "tab": "Overview",
+        "renderer": "renderAtelierOverview proof grid",
+        "repeatable": true,
+        "activeProfileRequired": false,
+        "notes": "Code renders overview.proof.1–6; docs only mention overview.proof_operator"
+      },
+      {
+        "prefix": "overview.differentiators.",
+        "tab": "Overview",
+        "renderer": "renderAtelierOverview Key Differentiators",
+        "repeatable": false,
+        "activeProfileRequired": true
+      },
+      {
+        "prefix": "overview.bestAt.",
+        "tab": "Overview",
+        "renderer": "renderAtelierOverview Best At cards",
+        "repeatable": true,
+        "activeProfileRequired": false
+      },
+      {
+        "prefix": "valueOwners.",
+        "tab": "Value to Owners",
+        "renderer": "renderValueToOwners",
+        "repeatable": "mixed",
+        "activeProfileRequired": true
+      },
+      {
+        "prefix": "operations.",
+        "tab": "Operating Model",
+        "renderer": "renderOperationsStandards",
+        "repeatable": "mixed",
+        "activeProfileRequired": true,
+        "notes": "operations.flexibility.* requires canonical bar labels; operations.model.* has no Brand Setup fallback"
+      },
+      {
+        "prefix": "standards.",
+        "tab": "Owner Considerations",
+        "renderer": "renderStandardsOwnerConsiderations",
+        "repeatable": "standards.requirement multi-row",
+        "activeProfileRequired": true,
+        "notes": "Rendered in code but under-documented in presentation-slots.md"
+      },
+      {
+        "prefix": "commercial.",
+        "tab": "Commercial Engine",
+        "renderer": "renderCommercialEngine",
+        "repeatable": "mixed",
+        "activeProfileRequired": true,
+        "notes": "Heavy static fallbacks when slots empty (COMM_STATIC, LOY_DEMAND analog)"
+      },
+      {
+        "prefix": "economics.",
+        "tab": "Economics & Obligations",
+        "renderer": "renderAtelierEconomicsObligations",
+        "repeatable": "mixed",
+        "activeProfileRequired": true,
+        "notes": "economics.checklist/diligence/opening.financials documented but NOT wired in UI"
+      },
+      {
+        "prefix": "loyalty.",
+        "tab": "Loyalty Program",
+        "renderer": "renderLoyaltyProgram",
+        "repeatable": "mixed",
+        "activeProfileRequired": true,
+        "notes": "loyalty.kpi.* + loyalty.proof/elite/implications; demand matrix is hardcoded"
+      },
+      {
+        "prefix": "footprint.",
+        "tab": "Footprint & Growth",
+        "renderer": "renderFootprintGrowth + renderMomentumSection",
+        "repeatable": "footprint.openings/momentum/mix multi-row",
+        "activeProfileRequired": true,
+        "notes": "footprint.openings requires 5+ body paragraphs for full card; momentum needs press URL for linked label"
+      },
+      {
+        "prefix": "materials.gallery.",
+        "tab": "Brand Materials",
+        "renderer": "renderBrandMaterials gallery tiles",
+        "repeatable": true,
+        "activeProfileRequired": true,
+        "expectedFields": [
+          "Image→imageUrl required for visible gallery QA"
+        ]
+      },
+      {
+        "prefix": "materials.file",
+        "tab": "Brand Materials",
+        "renderer": "renderBrandMaterials file cards",
+        "repeatable": true,
+        "activeProfileRequired": false
+      },
+      {
+        "prefix": "insight.",
+        "tab": "Dealality Insight",
+        "renderer": "renderDealalityInsight",
+        "repeatable": "insight.similar multi-row",
+        "activeProfileRequired": true
+      }
+    ],
+    "canonicalManifestReport": "reports/brand-explorer-slot-standard-manifest.json",
+    "requiredSectionMinimums": "brand-explorer-required-section-population-contract.js REQUIRED_SECTION_MINIMUMS"
+  },
+  "referenceBrandReports": [
+    {
+      "brand": "Design Hotels",
+      "slug": "design-hotels",
+      "recordId": "rec02zPClpWUTCyXM",
+      "reportsFound": {
+        "completeBuild": true,
+        "factory": true,
+        "finalQa": true
+      },
+      "completeBuild": {
+        "halted": true,
+        "haltReason": "critical_visual_defects",
+        "readyForActiveProfile": false,
+        "readinessBand": "blocked",
+        "blockers": [
+          {
+            "type": "required_section",
+            "section": "Openings / Examples / Properties",
+            "classification": "required_backfill",
+            "message": "Insufficient complete openings rows.",
+            "category": "data",
+            "recommendedWriter": "row creation writer"
+          },
+          {
+            "type": "required_section",
+            "section": "Recent Momentum",
+            "classification": "required_backfill",
+            "message": "No minimum set of dated/source-backed momentum rows.",
+            "category": "data",
+            "recommendedWriter": "source capture writer"
+          },
+          {
+            "type": "required_section",
+            "section": "Standard Detail / Where Available",
+            "classification": "required_backfill + founder_review_required",
+            "message": "No approved external-display-safe standards owner table package.",
+            "category": "founder_legal_review",
+            "recommendedWriter": "standards founder-review package"
+          },
+          {
+            "type": "required_section",
+            "section": "Loyalty Program",
+            "classification": "required_backfill + fact_approval_required",
+            "message": "Required loyalty mechanics/proof coverage incomplete.",
+            "category": "source",
+            "recommendedWriter": "fact approval writer"
+          },
+          {
+            "type": "required_section",
+            "section": "Geographic Footprint",
+            "classification": "required_refinement",
+            "message": "Regional copy still template-thin.",
+            "category": "data",
+            "recommendedWriter": "brand-explorer-tribute-geographic-footprint-refinement-writer"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Key Watchouts",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Standard Detail, Where Available",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Standard Detail, Where Available",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          }
+        ],
+        "finalQaSummary": {
+          "requiredSectionReadinessScore": 38,
+          "presentationQualityScore": 44,
+          "brandCarryoverRiskScore": 100,
+          "sourceGovernanceScore": 100,
+          "visualCompletenessScore": 56,
+          "overallNumeric": 62,
+          "overallActiveProfileReadiness": "blocked"
+        },
+        "visualDefectSummary": {
+          "defects": {
+            "total": 5,
+            "critical": 2,
+            "high": 1,
+            "medium": 2,
+            "low": 0,
+            "missingImage": 0,
+            "emptyBullet": 1,
+            "titleOnlyOrThin": 1,
+            "placeholderGeneric": 1,
+            "sortOrder": 1
+          },
+          "comparableToCurio": false,
+          "nextBatch": "v24C_source_evidence_work"
+        },
+        "requiredSectionScore": {
+          "readinessScore": 38,
+          "ready": false,
+          "sectionsReady": 3,
+          "sectionsTotal": 8,
+          "nextWriters": [
+            "1) row creation writer",
+            "2) source capture writer",
+            "3) standards founder-review package",
+            "4) fact approval writer",
+            "5) brand-explorer-tribute-geographic-footprint-refinement-writer"
+          ]
+        }
+      },
+      "factorySnapshot": null,
+      "factoryStage": "preflight",
+      "founderVisualPass": true
+    },
+    {
+      "brand": "Small Luxury Hotels of the World",
+      "slug": "small-luxury-hotels-of-the-world",
+      "recordId": "recjjSnY2opb8P4DG",
+      "reportsFound": {
+        "completeBuild": false,
+        "factory": true,
+        "finalQa": false
+      },
+      "completeBuild": null,
+      "factorySnapshot": {
+        "source": "factory_report",
+        "version": "v35D",
+        "readiness": "blocked_by_factory_rules",
+        "readyForActiveProfile": false,
+        "founderVisualPass": false,
+        "founderVisualFailedChecks": [
+          "gallery_six_visible",
+          "property_examples_hotel_images",
+          "scenario_no_placeholders",
+          "ui_fallback_risk"
+        ],
+        "blockers": [
+          {
+            "section": "factory",
+            "message": "need_6_visible_gallery_imageUrl_got_0"
+          },
+          {
+            "section": "factory",
+            "message": "no_visible_scenario_cards_in_api"
+          },
+          {
+            "section": "factory",
+            "message": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1"
+          },
+          {
+            "section": "factory",
+            "message": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2"
+          },
+          {
+            "section": "factory",
+            "message": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+          },
+          {
+            "section": "gallery_six_visible",
+            "message": "0/6"
+          },
+          {
+            "section": "property_examples_hotel_images",
+            "message": "0 cards"
+          },
+          {
+            "section": "scenario_no_placeholders",
+            "message": "ok"
+          },
+          {
+            "section": "ui_fallback_risk",
+            "message": "3 risks"
+          }
+        ],
+        "externalOwnerBlockers": 0,
+        "visibleGalleryCount": null,
+        "wouldApplyPresentationPatches": 12
+      },
+      "factoryStage": "v35D",
+      "founderVisualPass": false
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "slug": "tribute-portfolio",
+      "recordId": "recCvV0PuZOi8c3hC",
+      "reportsFound": {
+        "completeBuild": true,
+        "factory": true,
+        "finalQa": false
+      },
+      "completeBuild": {
+        "halted": false,
+        "haltReason": "",
+        "readyForActiveProfile": false,
+        "readinessBand": "ready",
+        "blockers": [],
+        "finalQaSummary": {
+          "requiredSectionReadinessScore": 100,
+          "presentationQualityScore": 96,
+          "brandCarryoverRiskScore": 100,
+          "sourceGovernanceScore": 74,
+          "visualCompletenessScore": 100,
+          "overallNumeric": 95,
+          "overallActiveProfileReadiness": "ready"
+        },
+        "visualDefectSummary": {
+          "defects": {
+            "total": 1,
+            "critical": 0,
+            "high": 0,
+            "medium": 0,
+            "low": 1,
+            "missingImage": 0,
+            "emptyBullet": 0,
+            "titleOnlyOrThin": 1,
+            "placeholderGeneric": 0,
+            "sortOrder": 0
+          },
+          "comparableToCurio": false,
+          "nextBatch": "none_active_profile_ready"
+        },
+        "requiredSectionScore": {
+          "readinessScore": 100,
+          "ready": true,
+          "sectionsReady": 8,
+          "sectionsTotal": 8,
+          "nextWriters": []
+        }
+      },
+      "factorySnapshot": null,
+      "factoryStage": "asset-pack",
+      "founderVisualPass": false
+    },
+    {
+      "brand": "WoodSpring Suites",
+      "slug": "woodspring-suites",
+      "recordId": "recsOd51NzRPYsMko",
+      "reportsFound": {
+        "completeBuild": true,
+        "factory": true,
+        "finalQa": true
+      },
+      "completeBuild": {
+        "halted": false,
+        "haltReason": "",
+        "readyForActiveProfile": false,
+        "readinessBand": "almost_ready",
+        "blockers": [
+          {
+            "type": "visual_defect",
+            "section": "Where This Brand Creates the Most Value",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24B_media_asset_fix"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Where This Brand Creates the Most Value",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24B_media_asset_fix"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Where This Brand Creates the Most Value",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24B_media_asset_fix"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Brand Materials",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24B_media_asset_fix"
+          }
+        ],
+        "finalQaSummary": {
+          "requiredSectionReadinessScore": 100,
+          "presentationQualityScore": 65,
+          "brandCarryoverRiskScore": 100,
+          "sourceGovernanceScore": 100,
+          "visualCompletenessScore": 65,
+          "overallNumeric": 84,
+          "overallActiveProfileReadiness": "almost_ready"
+        },
+        "visualDefectSummary": {
+          "defects": {
+            "total": 5,
+            "critical": 0,
+            "high": 4,
+            "medium": 1,
+            "low": 0,
+            "missingImage": 2,
+            "emptyBullet": 0,
+            "titleOnlyOrThin": 1,
+            "placeholderGeneric": 0,
+            "sortOrder": 1
+          },
+          "comparableToCurio": false,
+          "nextBatch": "v24B_media_asset_fix"
+        },
+        "requiredSectionScore": {
+          "readinessScore": 100,
+          "ready": true,
+          "sectionsReady": 8,
+          "sectionsTotal": 8,
+          "nextWriters": []
+        }
+      },
+      "factorySnapshot": null,
+      "factoryStage": "founder-review",
+      "founderVisualPass": null
+    },
+    {
+      "brand": "Everhome Suites",
+      "slug": "everhome-suites",
+      "recordId": "recqkkrsevi4r9ibj",
+      "reportsFound": {
+        "completeBuild": true,
+        "factory": false,
+        "finalQa": false
+      },
+      "completeBuild": {
+        "halted": false,
+        "haltReason": "",
+        "readyForActiveProfile": true,
+        "readinessBand": "ready",
+        "blockers": [],
+        "finalQaSummary": {
+          "requiredSectionReadinessScore": 100,
+          "presentationQualityScore": 97,
+          "brandCarryoverRiskScore": 100,
+          "sourceGovernanceScore": 100,
+          "visualCompletenessScore": 97,
+          "overallNumeric": 99,
+          "overallActiveProfileReadiness": "ready"
+        },
+        "visualDefectSummary": {
+          "defects": {
+            "total": 1,
+            "critical": 0,
+            "high": 0,
+            "medium": 1,
+            "low": 0,
+            "missingImage": 0,
+            "emptyBullet": 0,
+            "titleOnlyOrThin": 0,
+            "placeholderGeneric": 0,
+            "sortOrder": 1
+          },
+          "comparableToCurio": true,
+          "nextBatch": "v24D_sort_order_correction"
+        },
+        "requiredSectionScore": {
+          "readinessScore": 100,
+          "ready": true,
+          "sectionsReady": 8,
+          "sectionsTotal": 8,
+          "nextWriters": []
+        }
+      },
+      "factorySnapshot": null,
+      "factoryStage": null,
+      "founderVisualPass": null
+    }
+  ],
+  "qaGapAnalysis": {
+    "commonFalsePositives": [
+      "Final QA presentationQualityScore can be moderate while UI still shows static commercial/loyalty fallbacks",
+      "Registry traceability pass does not guarantee gallery imageUrl in API",
+      "external_owner_readiness pass after momentum URL exceptions may miss other slot URL leaks",
+      "required_section_contract 100% while visual_defect_audit still has high-severity items (WoodSpring)"
+    ],
+    "gapsNotCaughtByFinalQa": [
+      "Hardcoded UI fallback cards (commercial.demand, loyalty.proof, economics.negotiable_items)",
+      "materials.caseStudy rows present in Airtable but never rendered",
+      "footprint.openings 4-block legacy body shape (thin cards)",
+      "Momentum rows with directory URLs instead of press URLs (caught only by founder review)",
+      "Non-hotel photography passing property example rules in some factory runs"
+    ],
+    "founderScreenshotOnlyIssues": [
+      "Loyalty KPI strip empty or generic for affiliation brands",
+      "Standard Detail table placeholder/governance language",
+      "Recent Momentum date column vs headline column parse inversion",
+      "Gallery fewer than 6 visible despite registry candidates",
+      "Watchouts bullet count / empty li elements"
+    ],
+    "recommendedExternalOwnerChecks": [
+      "visible_source_urls per slot policy",
+      "modal_placeholders on footprint.openings",
+      "empty_visible_cards on titled rows",
+      "governance_language (FDD, LOI, brand-verified, Sources: blocks)",
+      "fallback_active detection for commercial/loyalty/economics sections"
+    ]
+  },
+  "v36ComponentClassification": [
+    {
+      "component": "Brand Knowledge Pack",
+      "classification": "partially_exists",
+      "existingArtifacts": [
+        "ACTIVE_PROFILE_BRAND_CONFIGS (brand-explorer-active-profile-brand-config.js)",
+        "brand-explorer-lifestyle-affiliation-brand-config.js",
+        "approved Sources + property catalogs",
+        "overviewScenarioCopy / momentumSourceUrls per brand"
+      ],
+      "gaps": [
+        "No unified versioned JSON schema",
+        "No single export consumed by all writers",
+        "Facts not integrated into pack"
+      ],
+      "conflicts": [],
+      "recommendation": "safe_to_implement_now",
+      "notes": "Formalize as read-only aggregate over existing config + sources + catalogs; do not duplicate v35F content packages"
+    },
+    {
+      "component": "Claim Ledger",
+      "classification": "partially_exists",
+      "existingArtifacts": [
+        "Partner Facts table",
+        "Source Library",
+        "final-qa sourceGovernanceScore"
+      ],
+      "gaps": [
+        "No claim-to-slot mapping object",
+        "No approval state per claim row in factory pipeline",
+        "Facts not required for active-profile draft apply today"
+      ],
+      "conflicts": [
+        "Design Hotels has 0 approved facts but 90+ presentation rows"
+      ],
+      "recommendation": "should_be_deferred",
+      "notes": "Defer until fact approval workflow is mandatory for affiliation brands; use Source Library as interim ledger"
+    },
+    {
+      "component": "Visual Asset Pack",
+      "classification": "already_exists",
+      "existingArtifacts": [
+        "buildActiveProfileAssetPack (v34B)",
+        "gallery/property/scenario/proofSupport outputs",
+        "readinessBand"
+      ],
+      "gaps": [
+        "Registry-only assets can pass traceability QA but fail render until Image materialized"
+      ],
+      "conflicts": [],
+      "recommendation": "safe_to_implement_now",
+      "notes": "Promote to first-class v36 contract type; add render-readiness flag separate from registry-readiness"
+    },
+    {
+      "component": "Brand Model Spec",
+      "classification": "partially_exists",
+      "existingArtifacts": [
+        "ACTIVE_PROFILE_BRAND_CONFIGS modelType/copyGovernanceMode",
+        "lifestyle-affiliation brandModelType",
+        "required-section-population-contract section minimums"
+      ],
+      "gaps": [
+        "No single spec drives both renderer fallbacks and writer validation",
+        "Affiliation vs franchise rules scattered"
+      ],
+      "conflicts": [
+        "Commercial/economics static fallbacks ignore brand model spec"
+      ],
+      "recommendation": "safe_to_implement_now",
+      "notes": "Extract from brand-config + required-section-contract; wire into v36 validation layer"
+    },
+    {
+      "component": "Full Tab Content Contract",
+      "classification": "partially_exists",
+      "existingArtifacts": [
+        "docs/brand-explorer-presentation-slots.md",
+        "brand-explorer-slot-standard-manifest.js",
+        "brand-explorer-required-section-population-contract.js"
+      ],
+      "gaps": [
+        "Docs/code drift: materials.caseStudy, economics.checklist unwired",
+        "standards.* rendered but not in slots doc",
+        "overview.proof.1–6 rendered but not documented"
+      ],
+      "conflicts": [
+        "Renderer expects fields contract does not document"
+      ],
+      "recommendation": "needs_migration",
+      "notes": "Regenerate canonical contract from code + slot manifest before v36 writers"
+    },
+    {
+      "component": "External Owner Copy Rules",
+      "classification": "already_exists",
+      "existingArtifacts": [
+        "brand-explorer-external-owner-content-governance.js",
+        "brand-explorer-external-owner-readiness-rules.js",
+        "COPY_SAFETY_PATTERNS in factory-rules"
+      ],
+      "gaps": [
+        "footprint.momentum URL exception recently added — not in all writers",
+        "No numeric score"
+      ],
+      "conflicts": [
+        "Momentum/openings URLs allowed in body but other slots strip URLs"
+      ],
+      "recommendation": "safe_to_implement_now",
+      "notes": "Centralize slot-aware URL policy in v36 contract"
+    },
+    {
+      "component": "Presentation Plan Row Contract",
+      "classification": "partially_exists",
+      "existingArtifacts": [
+        "draft-builder presentationPatches shape",
+        "factory listPresentationRows normalized row"
+      ],
+      "gaps": [
+        "No JSON schema validation before apply",
+        "Case summary + imageUrl rules not enforced uniformly"
+      ],
+      "conflicts": [],
+      "recommendation": "safe_to_implement_now",
+      "notes": "Codify patch shape { recordId, slotKey, fields, reason, sourceIds } as v36 contract"
+    },
+    {
+      "component": "External Owner Readiness Score",
+      "classification": "partially_exists",
+      "existingArtifacts": [
+        "evaluateExternalOwnerReadinessRule → pass/blockers",
+        "founder visual review external_owner_readiness check"
+      ],
+      "gaps": [
+        "Not numeric; not in final-qa overallNumeric",
+        "Modal placeholder detection incomplete in Final QA"
+      ],
+      "conflicts": [],
+      "recommendation": "safe_to_implement_now",
+      "notes": "Add weighted score to v36; promote modal field completeness from visual audit"
+    },
+    {
+      "component": "Batch Queue Status",
+      "classification": "already_exists",
+      "existingArtifacts": [
+        "complete-build-orchestrator buildBatchAggregate",
+        "expansion_backlog wave metadata"
+      ],
+      "gaps": [
+        "No persistent queue table",
+        "Per-brand halt reasons not unified UI"
+      ],
+      "conflicts": [],
+      "recommendation": "safe_to_implement_now",
+      "notes": "Expose orchestrator batch output as v36 Batch Queue Status artifact"
+    },
+    {
+      "component": "Exception Review Report",
+      "classification": "partially_exists",
+      "existingArtifacts": [
+        "founderReviewQueue in copy-governance",
+        "founderQueueResolution",
+        "visual defect audit defectsBySeverity",
+        "complete-build blockers[]"
+      ],
+      "gaps": [
+        "No single exception report schema",
+        "Founder screenshot issues captured ad hoc in writer reports"
+      ],
+      "conflicts": [],
+      "recommendation": "safe_to_implement_now",
+      "notes": "Merge founderReviewQueue + visual defects + external-owner blockers into v36 Exception Review Report"
+    }
+  ],
+  "implementationRisks": [
+    {
+      "id": "source_urls_in_external_copy",
+      "severity": "high",
+      "detail": "footprint.openings and footprint.momentum allow trailing URLs; other slots strip URLs via sanitizeAffiliationExternalCopy. Writers without slot-aware policy reintroduce governance hits.",
+      "mitigation": "v36 External Owner Copy Rules must declare per-slot URL policy"
+    },
+    {
+      "id": "source_traceability_fields_missing",
+      "severity": "medium",
+      "detail": "No Presentation columns for sourceIds/sourceFootnote; trace lives in apply reports only",
+      "mitigation": "Keep internal trace in v36 plan rows; optional Source Library link field TODO"
+    },
+    {
+      "id": "registry_link_missing_on_presentation",
+      "severity": "high",
+      "detail": "Brand Asset Registry link may be missing on Presentation table; factory infers traceability via slot+URL matching",
+      "mitigation": "v36 Presentation Plan should include registryCandidateId when available; do not assume Airtable link field"
+    },
+    {
+      "id": "gallery_requires_presentation_image",
+      "severity": "critical",
+      "detail": "UI reads block.imageUrl from Presentation Image attachment only; registry-only assets do not render",
+      "mitigation": "Visual Asset Pack must distinguish registry-readiness vs render-readiness; draft apply must materialize Image"
+    },
+    {
+      "id": "registry_passes_qa_not_render",
+      "severity": "high",
+      "detail": "Factory registry traceability rule can pass while gallery_six_visible fails",
+      "mitigation": "v36 QA must require API imageUrl not just registry row"
+    },
+    {
+      "id": "hardcoded_ui_fallbacks",
+      "severity": "medium",
+      "detail": "Commercial, loyalty, economics, proof grids use static fallbacks masking empty slots",
+      "mitigation": "v36 contract should flag fallback-active sections as incomplete for active-profile"
+    },
+    {
+      "id": "empty_modal_fields",
+      "severity": "high",
+      "detail": "footprint.openings modals need Case Summary columns or 5+ paragraph Body; Final QA weak on modal placeholders",
+      "mitigation": "Promote evaluateExternalOwnerReadinessRule modal check into Final QA score"
+    },
+    {
+      "id": "economics_fee_template_language",
+      "severity": "medium",
+      "detail": "Affiliation brands still inherit FDD-oriented economics templates and fee bucket defaults",
+      "mitigation": "Brand Model Spec must branch economics.intro and fee copy for affiliation_curation_platform"
+    },
+    {
+      "id": "company_validated_wording",
+      "severity": "critical",
+      "detail": "All factory apply paths block Company Validated changes; copy must never imply brand-verified",
+      "mitigation": "v36 External Owner Copy Rules — enforce across all generated copy"
+    },
+    {
+      "id": "draft_vs_active_apply_separation",
+      "severity": "high",
+      "detail": "apply-approved does not write readyForActiveProfile; founders must not conflate draft materialization with active approval",
+      "mitigation": "v36 Batch Queue Status must show stage: draft-applied vs founder-approved vs active-ready"
+    },
+    {
+      "id": "materials_casestudy_unwired",
+      "severity": "medium",
+      "detail": "materials.caseStudy parsed in modal JS but not rendered — data can exist with zero UI",
+      "mitigation": "Either wire renderer or exclude from v36 Full Tab Contract until wired"
+    },
+    {
+      "id": "openings_body_shape",
+      "severity": "high",
+      "detail": "4-paragraph footprint.openings bodies lose scenario/meta/teaser in parser",
+      "mitigation": "v36 Presentation Plan Row Contract must enforce 5+ block or Case Summary columns"
+    }
+  ],
+  "recommendedV36Plan": {
+    "implementImmediately": [
+      "Visual Asset Pack contract (formalize v34B output + render-readiness flag)",
+      "External Owner Copy Rules (centralize slot URL policy + affiliation sanitizers)",
+      "Presentation Plan Row Contract (validate before apply)",
+      "Batch Queue Status (surface complete-build-orchestrator aggregate)",
+      "Exception Review Report (merge founder queue + visual defects + blockers)",
+      "Brand Model Spec (extract from ACTIVE_PROFILE_BRAND_CONFIGS + lifestyle config)"
+    ],
+    "schemaSafeApproach": [
+      "Read-only v36 contract modules consuming existing API block shape",
+      "No new Airtable fields in v36 phase 1",
+      "Internal source trace in plan JSON only — not in Presentation Body",
+      "Draft apply continues to materialize Image attachments; no registry link field required in phase 1"
+    ],
+    "requiresFieldAdditions": [
+      "Optional: Brand Asset Registry link on Presentation (nice-to-have, not blocking)",
+      "Optional: Source IDs multi-link on Presentation for dev traceability",
+      "Case Summary columns already exist — ensure ensure-brand-explorer-presentation-case-summary-fields run on all bases"
+    ],
+    "rendererChangesNeeded": [
+      "Wire materials.caseStudy OR remove from contract",
+      "Wire economics.checklist/diligence OR remove from docs",
+      "Detect and surface fallback-active state in UI (dev banner or QA only)",
+      "Design Hotels momentum label default already fixed — generalize via Brand Model Spec"
+    ],
+    "qaRuleAdditions": [
+      "render_readiness: API imageUrl present for gallery/openings/scenarios",
+      "fallback_active: section uses static fallback while slots empty",
+      "momentum_announcement_url: press/trade URL pattern required",
+      "openings_body_shape: 5+ paragraphs OR case summary columns complete",
+      "modal_field_completeness: promote external-owner rule into final-qa numeric"
+    ],
+    "migrationStrategyDesignHotels": [
+      "1. Run v36 contract audit against live API (this report)",
+      "2. Fix remaining blockers: openings complete rows, standards table, loyalty fact-backed KPIs",
+      "3. Do NOT re-run full v35F content — patch via Presentation Plan Row Contract",
+      "4. Materialize gallery Images from asset pack before founder visual review",
+      "5. Keep Company Validated untouched; external-owner cleanup already applied"
+    ],
+    "batchStrategySlhTribute": [
+      "Tribute: presentation mature (contract 100%); batch focus on fact approval + governance publish — not content rebuild",
+      "SLH: mirror Design Hotels affiliation pipeline; use lifestyle-affiliation config; asset pack from property catalog",
+      "Both: use Batch Queue Status to track haltReason separately from readyForActiveProfile"
+    ],
+    "nextImplementationPrompt": "Implement v36B Brand Knowledge Pack + Presentation Plan Row Contract as read-only lib modules that load ACTIVE_PROFILE_BRAND_CONFIGS, approved sources, and API blocks; emit validation report per brand without Airtable writes. Add render-readiness and fallback-active flags to Visual Asset Pack output. Wire into factory preflight stage before build-draft."
+  },
+  "validationTests": [
+    {
+      "script": "test:brand-explorer-active-profile-staged-apply",
+      "status": "pass",
+      "exitCode": 0,
+      "stderrTail": null
+    },
+    {
+      "script": "test:partner-intelligence-publish-readiness",
+      "status": "pass",
+      "exitCode": 0,
+      "stderrTail": null
+    },
+    {
+      "script": "test:partner-intelligence-profile-governance-publish",
+      "status": "pass",
+      "exitCode": 0,
+      "stderrTail": null
+    }
+  ],
+  "filesRead": [
+    "lib/partner-intelligence/brand-explorer-active-profile-factory.js",
+    "lib/partner-intelligence/brand-explorer-active-profile-factory-rules.js",
+    "lib/partner-intelligence/brand-explorer-active-profile-brand-config.js",
+    "lib/partner-intelligence/brand-explorer-active-profile-asset-pack-builder.js",
+    "lib/partner-intelligence/brand-explorer-active-profile-draft-builder.js",
+    "lib/partner-intelligence/brand-explorer-active-profile-copy-governance-builder.js",
+    "lib/partner-intelligence/brand-explorer-active-profile-staged-apply.js",
+    "lib/partner-intelligence/brand-explorer-lifestyle-affiliation-brand-config.js",
+    "lib/partner-intelligence/brand-explorer-lifestyle-affiliation-property-catalog.js",
+    "lib/partner-intelligence/brand-explorer-design-hotels-content-packages-v35F.js",
+    "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+    "lib/partner-intelligence/brand-explorer-external-owner-readiness-rules.js",
+    "lib/partner-intelligence/brand-explorer-external-owner-content-governance.js",
+    "lib/partner-intelligence/brand-explorer-required-section-population-contract.js",
+    "lib/partner-intelligence/brand-explorer-slot-standard-manifest.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "api/brand-library.js",
+    "docs/brand-explorer-presentation-slots.md",
+    "lib/partner-intelligence/brand-explorer-required-section-population-contract.js",
+    "reports/brand-explorer-slot-standard-manifest.json",
+    "reports/brand-explorer-complete-build-design-hotels.json",
+    "reports/brand-explorer-complete-build-small-luxury-hotels-of-the-world.json",
+    "reports/brand-explorer-complete-build-tribute-portfolio.json",
+    "reports/brand-explorer-complete-build-woodspring-suites.json",
+    "reports/brand-explorer-complete-build-everhome-suites.json"
+  ],
+  "changeImpact": "Low — read-only audit report generation only",
+  "markdown": "# Brand Explorer v36A Current-State Contract Audit\n\nGenerated: 2026-07-15T13:08:09.536Z\nAudit version: v36A\nMode: **read-only** — no Airtable writes\n\n## Executive summary\n\nThe codebase already implements most v36 concepts under different names (v34D factory, v34B asset pack, external-owner governance, complete-build batch queue). The primary gap is a **unified, code-derived Full Tab Content Contract** aligned with renderers — not greenfield infrastructure.\n\n## v36 component classification\n\n### Brand Knowledge Pack\n- **Status:** partially_exists\n- **Recommendation:** safe_to_implement_now\n- **Gaps:** No unified versioned JSON schema; No single export consumed by all writers; Facts not integrated into pack\n\n### Claim Ledger\n- **Status:** partially_exists\n- **Recommendation:** should_be_deferred\n- **Gaps:** No claim-to-slot mapping object; No approval state per claim row in factory pipeline; Facts not required for active-profile draft apply today\n- **Conflicts:** Design Hotels has 0 approved facts but 90+ presentation rows\n\n### Visual Asset Pack\n- **Status:** already_exists\n- **Recommendation:** safe_to_implement_now\n- **Gaps:** Registry-only assets can pass traceability QA but fail render until Image materialized\n\n### Brand Model Spec\n- **Status:** partially_exists\n- **Recommendation:** safe_to_implement_now\n- **Gaps:** No single spec drives both renderer fallbacks and writer validation; Affiliation vs franchise rules scattered\n- **Conflicts:** Commercial/economics static fallbacks ignore brand model spec\n\n### Full Tab Content Contract\n- **Status:** partially_exists\n- **Recommendation:** needs_migration\n- **Gaps:** Docs/code drift: materials.caseStudy, economics.checklist unwired; standards.* rendered but not in slots doc; overview.proof.1–6 rendered but not documented\n- **Conflicts:** Renderer expects fields contract does not document\n\n### External Owner Copy Rules\n- **Status:** already_exists\n- **Recommendation:** safe_to_implement_now\n- **Gaps:** footprint.momentum URL exception recently added — not in all writers; No numeric score\n- **Conflicts:** Momentum/openings URLs allowed in body but other slots strip URLs\n\n### Presentation Plan Row Contract\n- **Status:** partially_exists\n- **Recommendation:** safe_to_implement_now\n- **Gaps:** No JSON schema validation before apply; Case summary + imageUrl rules not enforced uniformly\n\n### External Owner Readiness Score\n- **Status:** partially_exists\n- **Recommendation:** safe_to_implement_now\n- **Gaps:** Not numeric; not in final-qa overallNumeric; Modal placeholder detection incomplete in Final QA\n\n### Batch Queue Status\n- **Status:** already_exists\n- **Recommendation:** safe_to_implement_now\n- **Gaps:** No persistent queue table; Per-brand halt reasons not unified UI\n\n### Exception Review Report\n- **Status:** partially_exists\n- **Recommendation:** safe_to_implement_now\n- **Gaps:** No single exception report schema; Founder screenshot issues captured ad hoc in writer reports\n\n## Reference brand QA snapshot\n\n### Design Hotels (`design-hotels`)\n- Halted: true (critical_visual_defects)\n- readyForActiveProfile: false\n- Required section score: 38%\n- Top blockers:\n  - Openings / Examples / Properties: Insufficient complete openings rows.\n  - Recent Momentum: No minimum set of dated/source-backed momentum rows.\n  - Standard Detail / Where Available: No approved external-display-safe standards owner table package.\n  - Loyalty Program: Required loyalty mechanics/proof coverage incomplete.\n  - Geographic Footprint: Regional copy still template-thin.\n\n### Small Luxury Hotels of the World (`small-luxury-hotels-of-the-world`)\n- Source: factory report (v35D)\n- Readiness: blocked_by_factory_rules\n- readyForActiveProfile: false\n- Founder visual review: FAIL\n- Failed visual checks: gallery_six_visible, property_examples_hotel_images, scenario_no_placeholders, ui_fallback_risk\n- Top blockers:\n  - factory: need_6_visible_gallery_imageUrl_got_0\n  - factory: no_visible_scenario_cards_in_api\n  - factory: atelier_hardcoded_scenario_fallback_risk:overview.scenario.1\n  - factory: atelier_hardcoded_scenario_fallback_risk:overview.scenario.2\n  - factory: atelier_hardcoded_scenario_fallback_risk:overview.scenario.3\n\n### Tribute Portfolio (`tribute-portfolio`)\n- Halted: false (—)\n- readyForActiveProfile: false\n- Required section score: 100%\n\n### WoodSpring Suites (`woodspring-suites`)\n- Halted: false (—)\n- readyForActiveProfile: false\n- Required section score: 100%\n- Top blockers:\n  - Where This Brand Creates the Most Value: high\n  - Where This Brand Creates the Most Value: high\n  - Where This Brand Creates the Most Value: high\n  - Brand Materials: high\n\n### Everhome Suites (`everhome-suites`)\n- Halted: false (—)\n- readyForActiveProfile: true\n- Required section score: 100%\n\n## Implementation risks\n\n- **source_urls_in_external_copy** (high): footprint.openings and footprint.momentum allow trailing URLs; other slots strip URLs via sanitizeAffiliationExternalCopy. Writers without slot-aware policy reintroduce governance hits.\n- **source_traceability_fields_missing** (medium): No Presentation columns for sourceIds/sourceFootnote; trace lives in apply reports only\n- **registry_link_missing_on_presentation** (high): Brand Asset Registry link may be missing on Presentation table; factory infers traceability via slot+URL matching\n- **gallery_requires_presentation_image** (critical): UI reads block.imageUrl from Presentation Image attachment only; registry-only assets do not render\n- **registry_passes_qa_not_render** (high): Factory registry traceability rule can pass while gallery_six_visible fails\n- **hardcoded_ui_fallbacks** (medium): Commercial, loyalty, economics, proof grids use static fallbacks masking empty slots\n- **empty_modal_fields** (high): footprint.openings modals need Case Summary columns or 5+ paragraph Body; Final QA weak on modal placeholders\n- **economics_fee_template_language** (medium): Affiliation brands still inherit FDD-oriented economics templates and fee bucket defaults\n- **company_validated_wording** (critical): All factory apply paths block Company Validated changes; copy must never imply brand-verified\n- **draft_vs_active_apply_separation** (high): apply-approved does not write readyForActiveProfile; founders must not conflate draft materialization with active approval\n- **materials_casestudy_unwired** (medium): materials.caseStudy parsed in modal JS but not rendered — data can exist with zero UI\n- **openings_body_shape** (high): 4-paragraph footprint.openings bodies lose scenario/meta/teaser in parser\n\n## Recommended v36 implementation plan\n\n### Implement immediately\n- Visual Asset Pack contract (formalize v34B output + render-readiness flag)\n- External Owner Copy Rules (centralize slot URL policy + affiliation sanitizers)\n- Presentation Plan Row Contract (validate before apply)\n- Batch Queue Status (surface complete-build-orchestrator aggregate)\n- Exception Review Report (merge founder queue + visual defects + blockers)\n- Brand Model Spec (extract from ACTIVE_PROFILE_BRAND_CONFIGS + lifestyle config)\n\n### Next implementation prompt\n\n> Implement v36B Brand Knowledge Pack + Presentation Plan Row Contract as read-only lib modules that load ACTIVE_PROFILE_BRAND_CONFIGS, approved sources, and API blocks; emit validation report per brand without Airtable writes. Add render-readiness and fallback-active flags to Visual Asset Pack output. Wire into factory preflight stage before build-draft.\n\n## Validation tests\n\n- `test:brand-explorer-active-profile-staged-apply`: **pass** (exit 0)\n- `test:partner-intelligence-publish-readiness`: **pass** (exit 0)\n- `test:partner-intelligence-profile-governance-publish`: **pass** (exit 0)"
+}

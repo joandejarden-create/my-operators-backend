@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import Demand Anchors — Dealality Radar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: Inter, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 24px; }
+    h1 { font-size: 1.35rem; margin: 0 0 8px; }
+    .muted { color: #94a3b8; font-size: 13px; }
+    .panel { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+    input[type=text], textarea, select { width: 100%; box-sizing: border-box; background: #0f172a; border: 1px solid #475569; color: #f1f5f9; border-radius: 6px; padding: 8px; font-family: inherit; }
+    textarea { min-height: 160px; font-family: ui-monospace, monospace; font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+    button { background: #2563eb; color: #fff; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer; font-weight: 500; }
+    button.secondary { background: #334155; }
+    .status { margin-top: 12px; font-size: 13px; }
+    .status.error { color: #f87171; }
+    .status.ok { color: #86efac; }
+    .preview-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .preview-table th, .preview-table td { border: 1px solid #334155; padding: 6px; text-align: left; vertical-align: top; }
+    .preview-table th { background: #0f172a; position: sticky; top: 0; }
+    #previewTableWrap { overflow: auto; max-height: 420px; }
+    a { color: #60a5fa; }
+  </style>
+</head>
+<body>
+  <h1>Import Demand Anchors</h1>
+  <p class="muted">Manual JSON / CSV import with preview, validation, and duplicate detection. Does not connect to Market Demand snapshots.</p>
+  <p class="muted"><a href="/deal-capture-radar-with-ranked-list.html">← Back to Radar Map</a> · <a href="/travel-infrastructure-import.html">Travel Infrastructure (additional types)</a></p>
+
+  <div class="panel">
+    <div class="grid">
+      <div>
+        <label for="market">Market</label>
+        <input type="text" id="market" placeholder="San Juan">
+      </div>
+      <div>
+        <label for="country">Country</label>
+        <input type="text" id="country" placeholder="Puerto Rico">
+      </div>
+      <div>
+        <label for="region">Region</label>
+        <input type="text" id="region" placeholder="Caribbean">
+      </div>
+    </div>
+    <div style="margin-top:12px;">
+      <label for="fixtureSelect">Load sample fixture</label>
+      <div class="actions">
+        <select id="fixtureSelect">
+          <option value="">— Select —</option>
+          <option value="demand-anchors-san-juan.json">San Juan</option>
+          <option value="demand-anchors-cancun.json">Cancún</option>
+          <option value="demand-anchors-cartagena.json">Cartagena</option>
+          <option value="demand-anchors-medellin.json">Medellín</option>
+          <option value="demand-anchors-panama-city.json">Panama City</option>
+          <option value="demand-anchors-colombia-countrywide-candidates.json">Colombia (Candidates)</option>
+          <option value="demand-anchors-colombia-countrywide-real.json">Colombia (Verified Clean)</option>
+        </select>
+        <button type="button" class="secondary" id="btnLoadFixture">Load fixture</button>
+      </div>
+    </div>
+    <div id="verificationSummaryPanel" class="panel" style="display:none; margin-top:12px;">
+      <strong>Verification Summary</strong>
+      <div id="verificationSummaryContent" class="muted" style="margin-top:6px;"></div>
+    </div>
+    <div style="margin-top:12px;">
+      <label for="jsonInput">Paste JSON (array or { "points": [] })</label>
+      <textarea id="jsonInput" placeholder='{ "points": [ { "name": "...", "pointType": "Medical Campus", "latitude": 18.4, "longitude": -66.0, "city": "...", "country": "..." } ] }'></textarea>
+    </div>
+    <div style="margin-top:12px;">
+      <label for="csvFile">Or upload CSV (headers: name, pointType, latitude, longitude, city, country, …)</label>
+      <input type="file" id="csvFile" accept=".csv,text/csv">
+    </div>
+    <div class="actions">
+      <button type="button" id="btnPreview">Preview import</button>
+      <label><input type="checkbox" id="skipDuplicates" checked> Skip duplicates on save</label>
+      <label><input type="checkbox" id="requireVerifiedFixture"> Require Verified Fixture</label>
+      <button type="button" class="secondary" id="btnSave">Save selected</button>
+    </div>
+    <div id="status" class="status"></div>
+  </div>
+
+  <div class="panel">
+    <div id="summary"></div>
+    <div id="previewTableWrap"></div>
+  </div>
+
+  <script src="/js/demand-anchors-import.js"></script>
+</body>
+</html>

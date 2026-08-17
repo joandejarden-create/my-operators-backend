@@ -1,0 +1,110 @@
+{
+  "writerVersion": "9.1",
+  "generatedAt": "2026-07-08T10:07:49.801Z",
+  "mode": "dry-run",
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-presentation-copy-parity-audit.md",
+    "reports/brand-explorer-presentation-copy-promotion-writer.md",
+    "reports/brand-explorer-visual-qa-verification.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "docs/brand-explorer-presentation-slots.md",
+    "fixtures/brand-explorer-presentation-radisson-blu.example.json",
+    "fixtures/brand-explorer-presentation-radisson-choice-overview.json",
+    "fixtures/brand-explorer-presentation-kimpton-full.json",
+    "fixtures/brand-explorer-presentation-curio-full.json",
+    "fixtures/brand-explorer-presentation-ascend-hotel-collection-full.json",
+    "reports/brand-explorer-presentation-copy-parity-audit.json"
+  ],
+  "brand": {
+    "key": "tribute-portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio"
+  },
+  "referenceBrandsInspected": [
+    "Kimpton Hotels",
+    "Radisson Blu by Choice",
+    "Radisson by Choice",
+    "Curio Collection by Hilton",
+    "Ascend Hotel Collection"
+  ],
+  "referenceValueDriverPattern": "Value-driver titles and bodies are strategic and owner-facing (market/use-case framing), with no property/hotel names in user-facing copy.",
+  "tributeCurrentValueDriverCopy": [
+    {
+      "slotKey": "overview.scenario.1",
+      "recordId": "recqiRkN3W7j1lGMT",
+      "currentTitle": "Resort & Leisure-Led Independent Hotels",
+      "currentBody": "Best suited for distinctive leisure and resort assets that need Marriott distribution and loyalty support while preserving an independent boutique identity.",
+      "containsHotelName": false
+    },
+    {
+      "slotKey": "overview.scenario.2",
+      "recordId": "recOf4qCi4acHhxPc",
+      "currentTitle": "Urban Boutique Repositioning",
+      "currentBody": "A strong fit for design-led urban hotels where owners want lifestyle positioning, Marriott Bonvoy affiliation, and brand support without a rigid full-service box.",
+      "containsHotelName": false
+    }
+  ],
+  "proposedCorrectedValueDriverCopy": [],
+  "slotAudit": [
+    {
+      "slotKey": "overview.scenario.1",
+      "recordId": "recqiRkN3W7j1lGMT",
+      "containsHotelName": false,
+      "currentTitle": "Resort & Leisure-Led Independent Hotels",
+      "currentBody": "Best suited for distinctive leisure and resort assets that need Marriott distribution and loyalty support while preserving an independent boutique identity.",
+      "proposedTitle": "Resort & Leisure-Led Independent Hotels",
+      "proposedBody": "Best suited for distinctive leisure and resort assets that need Marriott distribution and loyalty support while preserving an independent boutique identity.",
+      "decision": "unchanged_already_parity"
+    },
+    {
+      "slotKey": "overview.scenario.2",
+      "recordId": "recOf4qCi4acHhxPc",
+      "containsHotelName": false,
+      "currentTitle": "Urban Boutique Repositioning",
+      "currentBody": "A strong fit for design-led urban hotels where owners want lifestyle positioning, Marriott Bonvoy affiliation, and brand support without a rigid full-service box.",
+      "proposedTitle": "Urban Boutique Repositioning",
+      "proposedBody": "A strong fit for design-led urban hotels where owners want lifestyle positioning, Marriott Bonvoy affiliation, and brand support without a rigid full-service box.",
+      "decision": "unchanged_already_parity"
+    }
+  ],
+  "fieldsProposedForUpdate": [],
+  "fieldsLeftUnchanged": [
+    {
+      "slotKey": "overview.scenario.1",
+      "recordId": "recqiRkN3W7j1lGMT",
+      "reason": "Already matches strategic value-driver copy standard."
+    },
+    {
+      "slotKey": "overview.scenario.2",
+      "recordId": "recOf4qCi4acHhxPc",
+      "reason": "Already matches strategic value-driver copy standard."
+    }
+  ],
+  "slotsLeftUnchanged": [
+    "overview.scenario.3",
+    "overview.scenario.boutique_lifestyle",
+    "overview.scenario.mixed_use",
+    "materials.gallery.3",
+    "footprint.openings",
+    "PR / Opening Link"
+  ],
+  "applyBlockers": [],
+  "applyFlags": {
+    "applyRequested": false,
+    "applyApproved": false
+  },
+  "applyResult": {
+    "updated": [],
+    "errors": []
+  },
+  "hotelNamesRemovedFromUserFacingCopy": true,
+  "imagesUntouched": true,
+  "brandSetupFieldsUntouched": true,
+  "companyValidatedFieldsUntouched": true,
+  "airtableModified": false,
+  "exactApplyCommand": "npm run brand-explorer-value-driver-copy-parity-fix -- --brand tribute-portfolio --apply --approve-brand-explorer-value-driver-copy-fix",
+  "reachesValueDriverCopyParityAfterApply": false
+}

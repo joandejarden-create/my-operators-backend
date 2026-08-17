@@ -1,0 +1,218 @@
+{
+  "writerVersion": "11",
+  "generatedAt": "2026-07-08T18:03:31.177Z",
+  "mode": "dry-run",
+  "filesRead": [
+    "AGENTS.md",
+    "reports/tribute-brand-explorer-content-parity-audit.md",
+    "reports/tribute-brand-explorer-content-parity-audit.json",
+    "api/brand-library.js",
+    "api/lib/partner-intelligence-field-map.js",
+    "api/lib/partner-intelligence-explorer-field-registry.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "docs/data-intelligence/tribute-brand-explorer-content-parity-audit-v10.md",
+    "docs/data-intelligence/BRAND_PROFILE_DATA_MODEL.md",
+    "docs/brand-explorer-presentation-slots.md",
+    "docs/standards-owner-considerations-v1-audit.md",
+    "fixtures/brand-explorer-presentation-curio-full.json",
+    "fixtures/brand-explorer-presentation-kimpton-full.json"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/tribute-brand-explorer-content-promotion-writer.js",
+    "docs/data-intelligence/tribute-brand-explorer-content-promotion-writer-v11.md",
+    "reports/tribute-brand-explorer-content-promotion-writer.md",
+    "reports/tribute-brand-explorer-content-promotion-writer.json"
+  ],
+  "v11WriterExists": true,
+  "rootCause": "v11 previously PATCHed Brand Setup - Brand Basics using display labels (Brand Profile Analysis, Brand Standards, Questions Owners Should Ask) that do not exist in live Airtable. Completed brands store this copy in Brand Explorer Presentation slots (overview.typical_use_case, standards.intro, standards.questions).",
+  "brand": {
+    "key": "tribute-portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio",
+    "parentCompany": "Marriott International, Inc.",
+    "brandWebsite": "https://tribute-portfolio.marriott.com/"
+  },
+  "sectionsTargeted": [
+    "idealAssetProfile",
+    "standards"
+  ],
+  "contentTargets": [
+    {
+      "normalizedKey": "idealAssetProfile",
+      "displayLabel": "Brand Profile Analysis",
+      "slotKey": "overview.typical_use_case",
+      "airtableTable": "Brand Setup - Brand Explorer Presentation",
+      "airtableFieldName": "Body"
+    },
+    {
+      "normalizedKey": "standards",
+      "displayLabel": "Brand Standards",
+      "slotKey": "standards.intro",
+      "airtableTable": "Brand Setup - Brand Explorer Presentation",
+      "airtableFieldName": "Body"
+    },
+    {
+      "normalizedKey": "questionsOwnersShouldAsk",
+      "displayLabel": "Questions Owners Should Ask",
+      "slotKey": "standards.questions",
+      "airtableTable": "Brand Setup - Brand Explorer Presentation",
+      "airtableFieldName": "Body"
+    }
+  ],
+  "schemaPreflight": {
+    "tableWritable": true,
+    "missingPresentationFields": [],
+    "presentationTableId": "tblZyZF4JsRkNeCbU",
+    "targets": [
+      {
+        "normalizedKey": "idealAssetProfile",
+        "displayLabel": "Brand Profile Analysis",
+        "airtableTable": "Brand Setup - Brand Explorer Presentation",
+        "airtableTableId": "tblZyZF4JsRkNeCbU",
+        "slotKey": "overview.typical_use_case",
+        "airtableFieldName": "Body",
+        "airtableFieldId": "fldkBC9QelUQs4rKO",
+        "presentationRecordId": "recfMd4VCi7NnCZfF",
+        "currentValue": "Best suited for independent boutique, lifestyle, and leisure hotels with a clear local point of view, where owners want Marriott Bonvoy, distribution, and commercial support without losing the property’s individual identity. Strongest fit when the asset already has design character, destination relevance, or a story that can be sharpened rather than standardized.",
+        "proposedValue": "Best suited for independent boutique, lifestyle, and leisure hotels with a clear local point of view, where owners want Marriott Bonvoy, distribution, and commercial support without losing the property’s individual identity. Strongest fit when the asset already has design character, destination relevance, or a story that can be sharpened rather than standardized.",
+        "writable": false,
+        "schemaGap": "Nonblank existing Body preserved (no overwrite)."
+      },
+      {
+        "normalizedKey": "standards",
+        "displayLabel": "Brand Standards",
+        "airtableTable": "Brand Setup - Brand Explorer Presentation",
+        "airtableTableId": "tblZyZF4JsRkNeCbU",
+        "slotKey": "standards.intro",
+        "airtableFieldName": "Body",
+        "airtableFieldId": "fldkBC9QelUQs4rKO",
+        "presentationRecordId": "receLjtAO1mHOvIZT",
+        "currentValue": "Owners should expect a soft-brand path with more flexibility than a prototype-led flag, but still with Marriott brand, quality, systems, loyalty, and operating requirements. The key planning question is what can remain unique, what must be upgraded through the PIP, and which standards are mandatory for Tribute Portfolio affiliation.",
+        "proposedValue": "Owners should expect a soft-brand path with more flexibility than a prototype-led flag, but still with Marriott brand, quality, systems, loyalty, and operating requirements. The key planning question is what can remain unique, what must be upgraded through the PIP, and which standards are mandatory for Tribute Portfolio affiliation.",
+        "writable": false,
+        "schemaGap": "Nonblank existing Body preserved (no overwrite)."
+      },
+      {
+        "normalizedKey": "questionsOwnersShouldAsk",
+        "displayLabel": "Questions Owners Should Ask",
+        "airtableTable": "Brand Setup - Brand Explorer Presentation",
+        "airtableTableId": "tblZyZF4JsRkNeCbU",
+        "slotKey": "standards.questions",
+        "airtableFieldName": "Body",
+        "airtableFieldId": "fldkBC9QelUQs4rKO",
+        "presentationRecordId": "recSOAvbkHyyqF8mq",
+        "currentValue": "Which elements of the hotel’s identity, design, F&B, and local programming can remain unique under Tribute Portfolio? What brand, systems, quality, and Bonvoy participation requirements are mandatory, and what PIP scope, timing, and cost should be planned before affiliation?",
+        "proposedValue": "Which elements of the hotel’s identity, design, F&B, and local programming can remain unique under Tribute Portfolio? What brand, systems, quality, and Bonvoy participation requirements are mandatory, and what PIP scope, timing, and cost should be planned before affiliation?",
+        "writable": false,
+        "schemaGap": "Nonblank existing Body preserved (no overwrite)."
+      }
+    ],
+    "preflightPassed": false
+  },
+  "sectionsInspected": {
+    "idealAssetProfile": {
+      "slotKey": "overview.typical_use_case",
+      "field": "Body",
+      "current": "Best suited for independent boutique, lifestyle, and leisure hotels with a clear local point of view, where owners want Marriott Bonvoy, distribution, and commercial support without losing the property’s individual identity. Strongest fit when the asset already has design character, destination relevance, or a story that can be sharpened rather than standardized."
+    },
+    "standards": {
+      "standardsIntro": {
+        "slotKey": "standards.intro",
+        "field": "Body",
+        "current": "Owners should expect a soft-brand path with more flexibility than a prototype-led flag, but still with Marriott brand, quality, systems, loyalty, and operating requirements. The key planning question is what can remain unique, what must be upgraded through the PIP, and which standards are mandatory for Tribute Portfolio affiliation."
+      },
+      "questionsOwnersShouldAsk": {
+        "slotKey": "standards.questions",
+        "field": "Body",
+        "current": "Which elements of the hotel’s identity, design, F&B, and local programming can remain unique under Tribute Portfolio? What brand, systems, quality, and Bonvoy participation requirements are mandatory, and what PIP scope, timing, and cost should be planned before affiliation?"
+      }
+    },
+    "sourceLinks": {
+      "slotKey": "materials.file",
+      "rowCount": 2,
+      "writeScope": "excluded — sourceLinks already promoted; v11 does not write materials.file",
+      "rows": [
+        {
+          "recordId": "recxWaVqe0lRxa40w",
+          "title": "Tribute Portfolio — Official Tribute Portfolio consumer brand site",
+          "body": "Website Capture · Marriott-controlled reference · https://tribute-portfolio.marriott.com/",
+          "imageAttachmentCount": 0
+        },
+        {
+          "recordId": "recz27yxapLtUiQsr",
+          "title": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)",
+          "body": "Website Capture · Marriott-controlled reference · https://www.marriott.com/loyalty.mi",
+          "imageAttachmentCount": 0
+        }
+      ]
+    }
+  },
+  "currentGapsFromV10": {
+    "idealAssetProfile": "Generic/demo-like",
+    "standards": "Complete/comparable",
+    "sourceLinks": "Complete/comparable"
+  },
+  "proposedUpdates": [],
+  "sourceBackedUpdates": [],
+  "aiDraftedHumanReviewUpdates": [],
+  "fieldsLeftUnchanged": [
+    {
+      "section": "idealAssetProfile",
+      "normalizedKey": "idealAssetProfile",
+      "slotKey": "overview.typical_use_case",
+      "field": "Body",
+      "reason": "Nonblank existing content preserved (section not rewritten)."
+    },
+    {
+      "section": "standards",
+      "normalizedKey": "standards",
+      "slotKey": "standards.intro",
+      "field": "Body",
+      "reason": "Nonblank existing content preserved (section not rewritten)."
+    },
+    {
+      "section": "standards",
+      "normalizedKey": "questionsOwnersShouldAsk",
+      "slotKey": "standards.questions",
+      "field": "Body",
+      "reason": "Nonblank existing content preserved (section not rewritten)."
+    }
+  ],
+  "fieldsRemainBlank": [],
+  "sourceLinksExcluded": true,
+  "brandWebsiteUntouched": true,
+  "brandWebsiteCurrent": "https://tribute-portfolio.marriott.com/",
+  "recentOpeningsRemainsBlank": true,
+  "imagesUntouched": true,
+  "unrelatedPresentationRowsUntouched": true,
+  "brandSetupMediaFieldsUntouched": true,
+  "companyValidatedFieldsUntouched": true,
+  "heroValueDriverGalleryUntouched": true,
+  "applyFlags": {
+    "applyRequested": false,
+    "applyApproved": false,
+    "allowHumanReviewCopy": false
+  },
+  "applyBlockers": [
+    "Schema preflight failed: one or more target presentation fields are missing or not writable.",
+    "idealAssetProfile (overview.typical_use_case): Nonblank existing Body preserved (no overwrite).",
+    "standards (standards.intro): Nonblank existing Body preserved (no overwrite).",
+    "questionsOwnersShouldAsk (standards.questions): Nonblank existing Body preserved (no overwrite)."
+  ],
+  "skippedForHumanReviewGate": [],
+  "applyResult": {
+    "updated": [],
+    "created": [],
+    "errors": [],
+    "blocked": false
+  },
+  "airtableModified": false,
+  "exactApplyCommand": "npm run tribute-brand-explorer-content-promotion-writer -- --apply --approve-tribute-brand-explorer-content-promotion --allow-human-review-copy",
+  "expectedCompletionScoreAfterApply": 97,
+  "reachesCompletedBrandContentParityAfterApply": false,
+  "remainingParityGapsAfterApply": [
+    "idealAssetProfile",
+    "standards",
+    "questionsOwnersShouldAsk"
+  ]
+}

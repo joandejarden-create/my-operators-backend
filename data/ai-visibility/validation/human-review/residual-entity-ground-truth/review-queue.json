@@ -1,0 +1,755 @@
+{
+  "version": "ai_intelligence_residual_entity_ground_truth_audit_v1",
+  "generatedAt": "2026-08-14T23:38:14.111Z",
+  "queueLabel": "Residual Entity Ground-Truth Review",
+  "TOTAL_CASES": 12,
+  "HOLDOUT_ACCESSED": false,
+  "HOLDOUT_CASES_INSPECTED": 0,
+  "HOLDOUT_METRICS_RUN": false,
+  "AUTO_LABEL_CHANGES": 0,
+  "CLASSIFIER_CHANGES": 0,
+  "ALIAS_CHANGES": 0,
+  "ENTITY_RESOLVER_CHANGES": 0,
+  "PLAYA_CASES": {
+    "COUNT": 10,
+    "UNAMBIGUOUS": 0,
+    "AMBIGUOUS_GENERIC": 10,
+    "GROUND_TRUTH_REVIEW_REQUIRED": 10
+  },
+  "IHG_CASES": {
+    "COUNT": 2,
+    "SPECIFIC_REFERENCE": 0,
+    "PARENT_ONLY": 2,
+    "GROUND_TRUTH_REVIEW_REQUIRED": 2
+  },
+  "VALID_RESOLVER_MISSES": 0,
+  "POTENTIAL_GROUND_TRUTH_ERRORS": 12,
+  "POTENTIAL_CANDIDATE_NOMINATION_ERRORS": 12,
+  "HUMAN_REVIEW_REQUIRED": true,
+  "GOVERNANCE_GUIDANCE": {
+    "ENTITY_PRESENT_MEANS": "The specific canonical entity is actually represented in the response.",
+    "ENTITY_PRESENT_DOES_NOT_MEAN": "A generic word happens to overlap with the brand name (e.g. Spanish 'playa').",
+    "PARENT_RULE": "A parent-company mention does NOT automatically imply a specific child brand/operator/managed entity.",
+    "AMENDMENT_RULE": "Labels change only via explicit human KEEP/CORRECT/INVALIDATE/DEFER; original review audit preserved."
+  },
+  "CASE_IDS": [
+    "v2_cand_1674948a",
+    "v2_cand_17d64be9",
+    "v2_cand_27ec7204",
+    "v2_cand_2dd0fd2a",
+    "v2_cand_3515312a",
+    "v2_cand_465be86c",
+    "v2_cand_4cf733c7",
+    "v2_cand_52172a1d",
+    "v2_cand_5ae0142a",
+    "v2_cand_8d9c220b",
+    "v2_cand_a07ee6c3",
+    "v2_cand_adfdf95e"
+  ],
+  "cases": [
+    {
+      "CASE_ID": "v2_cand_1674948a",
+      "SOURCE_CASE_ID": "cand_1674948a",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "Si un propietario quiere posicionar un hotel como **upper-upscale en México**, las marcas que más conviene considerar suelen ser las de **Marriott, Hilton, IHG, Hyatt, Accor, Radisson y Wyndham**, además de algunas marcas locales con fuerte presencia nacional. La lista exacta depende de si el activo es urbano, de resort, de negocios o mixto, pero esas cadenas aparecen de forma recurrente en el segmento upper-upscale. [2][5][12]\n\nEntre las marcas internacionales que se mencionan con frecuencia para **upper-upscale** están:\n\n- **Marriott**: Westin, Sheraton, Le Méridien, Renaissance, Autograph Collection, Delta Hotels, JW Marriott y, en algunos posicionamientos, W. [2][5][14][15]\n- **Hilton**: DoubleTree, Hilton Garden Inn, Conrad y, según el enfoque de lujo superior, algunas propiedades de la marca Hilton. [2][5][12]\n- **IHG**: InterContinental, Crowne Plaza, Kimpton y Hotel Indigo. [2][5]\n- **Hyatt**: Hyatt Regency, Grand Hyatt, Hyatt Centric y, en ciertos casos, Alila o Park Hyatt para activos más cercanos al lujo. [2][5]\n- **Accor**: marcas como Pullman y, en la parte alta del espectro, Sofitel o The Luxury Collection no aplican como tal porque esta última pertenece a Marriott; aun así, Accor sí figura con presencia en el segmento upper-upscale en clasificaciones de mercado. [5][12]\n- **Radisson**: Radisson Blu es una referencia clara de upper-upscale. [1][12]\n- **Wyndham**: Wyndham Grand y otras marcas del grupo aparecen en el segmento. [2][4]\n\nSi el proyecto es en México y el propietario busca **marcas con conocimiento local o mayor tracción regional**, también vale la pena evaluar:\n\n- **Live Aqua**\n- **Grand Fiesta Americana**\n- **Fiesta Americana**\n- **Krystal**\n- **Quinta Real**\n- **Camino Real**  \nEstas marcas y grupos tienen presencia relevante en el mercado mexicano y abarcan desde upscale hasta upper-upscale y lujo, según el producto específico. [8][9][11][16]\n\nUna forma práctica de pensar el posicionamiento es esta:\n\n- **Upper-upscale clásico y corporativo**: Westin, Sheraton, Le Méridien, Renaissance, InterContinental, Crowne Plaza, Hyatt Regency, Hilton Garden Inn, Radisson Blu. [2][5][1]\n- **Upper-upscale con más estilo de vida/diseño**: W, Kimpton, Hyatt Centric, Moxy, Tempo, nhow. [2][3][5]\n- **Upper-upscale de resort o destino premium**: Grand Hyatt, JW Marriott, Live Aqua, Grand Fiesta Americana, Quinta Real, algunos Conrad o Alila según el caso. [2][5][9][11]\n\nEn México, además, el mercado muestra que el **upper-upscale está creciendo con fuerza en destinos clave**, lo que hace especialmente relevante elegir una marca que combine reconocimiento internacional, capacidad de distribución y encaje con la demanda local. [20][9]\n\nSi quieres, puedo convertir esto en una **shortlist de 5–8 marcas recomendadas por tipo de activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 2872,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente.",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente."
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "first_recommendation",
+        "firstRecommendation": true,
+        "questionStatus": "FIRST_RECOMMENDED",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:27.015Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente.",
+        "EXAMPLE_SURFACES": [
+          "activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente."
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_17d64be9",
+      "SOURCE_CASE_ID": "cand_17d64be9",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "Para un propietario o inversionista en México que busca alejarse del modelo de \"bandera *full-service* convencional\" (como un Marriott, Hilton o Crowne Plaza tradicional) y optar por un **posicionamiento *lifestyle*** claro, el mercado mexicano ofrece varias opciones atractivas.\n\nUn hotel *lifestyle* no solo vende habitaciones; monetiza intensamente los espacios comunes, la propuesta gastronómica (F&B), la vida nocturna/social y el diseño, adaptándose a la cultura local y a un perfil de huésped que busca experiencias.\n\nA continuación, se presentan las principales marcas y grupos a considerar, organizados por categoría estratégica:\n\n---\n\n### 1. Marcas *Lifestyle* Premium / Luxury (Alto ADR, alto enfoque en F&B y entretenimiento)\n\nEstas marcas compiten en el segmento superior y generan ingresos significativos por consumo en restaurantes, *rooftops* y eventos.\n\n*   **Thompson Hotels (Hyatt):**\n    *   *Perfil:* Elegante, con diseño de inspiración *mid-century*, fuerte cultura de *rooftop bars* y gastronomía sofisticada.\n    *   *Enfoque:* Excelente tanto para destinos urbanos (CDMX, Guadalajara) como vacacionales/resorts de playa.\n    *   *Ejemplos en México:* Thompson Zihuatanejo, Thompson Playa del Carmen.\n*   **Mondrian / SLS (Ennismore / Accor):**\n    *   *Perfil:* Ennismore es el jugador puro más especializado en *lifestyle*. Mondrian y SLS destacan por su diseño audaz, arte, alta gastronomía y ambiente social muy activo.\n    *   *Enfoque:* Zonas cosmopolitas de alta densidad o destinos de playa con club de playa e integración de vida nocturna.\n    *   *Ejemplos en México:* Mondrian Mexico City Condesa, SLS Cancún, SLS Playa Mujeres.\n*   **W Hotels (Marriott International):**\n    *   *Perfil:* Un clásico pionero del segmento *lifestyle*. Alta energía, música, coctelería y eventos de marca.\n    *   *Enfoque:* Grandes urbes y destinos de playa consolidados.\n    *   *Ejemplos en México:* W Mexico City (Polanco), W Punta de Mita.\n*   **EDITION Hotels (Marriott):**\n    *   *Perfil:* *Ultra-luxury lifestyle*. Diseño sobrio pero sofisticado, creado junto con Ian Schrager. Dirigido al viajero de altísimo poder adquisitivo que busca un *lifestyle* más discreto pero exclusivo.\n    *   *Ejemplos en México:* The Riviera Maya EDITION at Kanai.\n*   **Kimpton Hotels & Restaurants (IHG):**\n    *   *Perfil:* *Boutique-lifestyle* de lujo accesible, muy enfocado en la personalización, experiencias pet-friendly y restaurantes independientes dentro del hotel.\n    *   *Ejemplos en México:* Kimpton Aluna Tulum, Kimpton Mas Olas (Todos Santos), Kimpton Virgilio (Polanco, CDMX).\n\n---\n\n### 2. Marcas *Lifestyle* Selectas / Urbanas (Estructura de costos optimizada y diseño joven)\n\nSi la propiedad busca eficiencia operativa, espacios más optimizados y un público milenial/Gen Z o ejecutivo moderno:\n\n*   **Canopy by Hilton:**\n    *   *Perfil:* Integración con el barrio local, diseño moderno y funcional, ambiente relajado con énfasis en productos locales en sus bares/restaurantes.\n    *   *Ejemplos en México:* Canopy by Hilton Cancún La Isla.\n*   **Moxy Hotels (Marriott):**\n    *   *Perfil:* Formato divertido, vibrante y económico/selecto. El bar actúa como recepción. Habitaciones más compactas priorizando los espacios sociales.\n    *   *Ejemplos en México:* Moxy Mexico City (Chultepec / Reforma).\n*   **Hotel Indigo (IHG):**\n    *   *Perfil:* Cada hotel refleja la \"historia del vecindario\" (*neighborhood story*). Muy adecuado para centros históricos o ciudades intermedias con identidad cultural fuerte.\n    *   *Ejemplos en México:* Hotel Indigo Guadalajara Expo, Hotel Indigo Guadalajara Palacio de las Vacas.\n*   **Hyatt Centric:**\n    *   *Perfil:* Diseñado para el explorador urbano, ubicado cerca de centros gastronómicos y de entretenimiento.\n\n---\n\n### 3. Marcas Blandas (*Soft Brands*) — Mantener identidad propia con motor global\n\nSi la propiedad ya cuenta con un concepto único, valor histórico o un diseño independiente que no se quiere encasillar en los estándares rígidos de una marca dura, las *soft brands* permiten mantener la identidad propia mientras se accede al sistema de distribución y programa de lealtad de una gran cadena:\n\n*   **Design Hotels (Marriott):** Colección muy curada de hoteles independientes con fuerte enfoque en arquitectura, diseño y concepto único.\n*   **Autograph Collection / Tribute Portfolio (Marriott):** Colecciones de hoteles independientes de lujo/lifestyle.\n*   **Curio Collection / Tapestry Collection (Hilton):** (Ej. Umbral CDMX Curio Collection).\n*   **The Unbound Collection / JdV by Hyatt:** (Ej. Rancho Pescadero en B.C.S. o futuros proyectos urbanos).\n\n---\n\n### 4. Operadores Independientes y Grupos Especializados (*Niche/Regional*)\n\nPara un propietario que prefiere no firmar con una gran cadena internacional y busca una gestión o franquicia puramente enfocada en el diseño y la cultura boutique:\n\n*   **Grupo Habita:** El grupo pionero de hoteles boutique y *lifestyle* en México (Condesa DF, Habita Polanco, Hotel Básico, Maison Couturier). Aportan un *know-how* profundo del mercado mexicano y un posicionamiento sociocultural clave.\n*   **Bunkhouse Group:** Famosos por su diseño ecléctico e hiperlocal (como el Hotel San José en Austin o proyectos en México como San José del Cabo).\n*   **The Standard / Line Hotels:** En constante búsqueda de ubicaciones con alta identidad cultural y gastronómica.\n\n---\n\n### Factores Clave para el Propietario al Elegir:\n\n1.  **Peso del F&B (Alimentos y Bebidas):** En un hotel convencional, el F&B genera entre un 20% y 30% de los ingresos. En marcas como Mondrian, Thompson o Kimpton, el F&B puede representar del **40% al 50%+** de la facturación total si se gestiona con conceptos abiertos al público local (no solo para huéspedes).\n2.  **CapEx y Estándares de Marca:** Las marcas duras (como W o EDITION) exigen inversiones elevadas por habitación (*CapEx*) y rígidas especificaciones de diseño. Las *soft brands* o marcas selectas (Moxy, Canopy, Indigo) ofrecen mayor flexibilidad y retornos de inversión más ágiles.\n3.  **Ubicación y Micro-mercado:**\n    *   *Urbano vibrante (Roma/Condesa, Polanco, San Pedro Garza García, Americana en Guadalajara):* Funciona muy bien Thompson, Mondrian, Kimpton, Design Hotels.\n    *   *Pueblos Mágicos o Destinos Culturales:* Hotel Indigo, Curio Collection, Bunkhouse o conceptos independientes.\n    *   *Resorts/Playa:* SLS, W, Thompson, EDITION.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 6427,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "adalajara) como vacacionales/resorts de playa. * *Ejemplos en México:* Thompson Zihuatane",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "adalajara) como vacacionales/resorts de playa. * *Ejemplos en México:* Thompson Zihuatane",
+        "México:* Thompson Zihuatanejo, Thompson Playa del Carmen. * **Mondrian / SLS (Ennismore / Acc",
+        "opolitas de alta densidad o destinos de playa con club de playa e integración de vida nocturna.",
+        "ensidad o destinos de playa con club de playa e integración de vida nocturna. * *Ejemplos",
+        "an Mexico City Condesa, SLS Cancún, SLS Playa Mujeres. * **W Hotels (Marriott International):",
+        " *Enfoque:* Grandes urbes y destinos de playa consolidados. * *Ejemplos en México:* W Mex"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:20.213Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "adalajara) como vacacionales/resorts de playa. * *Ejemplos en México:* Thompson Zihuatane",
+        "EXAMPLE_SURFACES": [
+          "adalajara) como vacacionales/resorts de playa. * *Ejemplos en México:* Thompson Zihuatane",
+          "México:* Thompson Zihuatanejo, Thompson Playa del Carmen. * **Mondrian / SLS (Ennismore / Acc",
+          "opolitas de alta densidad o destinos de playa con club de playa e integración de vida nocturna.",
+          "ensidad o destinos de playa con club de playa e integración de vida nocturna. * *Ejemplos",
+          "an Mexico City Condesa, SLS Cancún, SLS Playa Mujeres. * **W Hotels (Marriott International):",
+          " *Enfoque:* Grandes urbes y destinos de playa consolidados. * *Ejemplos en México:* W Mex"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_27ec7204",
+      "SOURCE_CASE_ID": "cand_27ec7204",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "Aquí tienes un análisis completo y estructurado sobre las marcas hoteleras que un propietario/desarrollador debería considerar al evaluar **branded residences** para un proyecto en México:\n\n---\n\n# 🏨 Marcas Hoteleras para Branded Residences en México: Guía para Propietarios\n\n## Contexto del Mercado\n\n\nEl modelo de branded residences continúa consolidándose en México como una de las tendencias de mayor crecimiento dentro del sector inmobiliario turístico, al integrar vivienda, hospitalidad y servicios respaldados por marcas internacionales en destinos de alto valor.\n\n\n\nEn 2024, México registró un incremento del 15% en proyectos de branded residences, con todos los pesos pesados de la hospitalidad teniendo presencia en el país, consolidándose como uno de los mercados de segundas residencias más grandes de Norteamérica.\n De hecho, \nla Riviera Maya ocupa el puesto 8 y Los Cabos el puesto 9 a nivel mundial en cuanto al número de branded residences completadas y en pipeline.\n\n\n\nLas Branded Residences se consolidan como la nueva tendencia inmobiliaria en México, con precios 17% más altos que los proyectos de lujo tradicionales.\n\n\n---\n\n## 🌟 Las Marcas Hoteleras Más Relevantes en México\n\n### 1. **Marriott International** *(St. Regis, Ritz-Carlton, Autograph Collection, EDITION, W Hotels)*\n\nMarriott tiene más proyectos de branded residences que cualquier otro competidor individual.\n En México, su presencia es especialmente diversa:\n- \nEntre los proyectos más destacados en la CDMX se encuentra Ritz-Carlton Residences, con precios promedio de 27.9 mdp.\n\n- \nEn San Miguel de Allende se encuentra Clevía Autograph Collection de Marriott.\n\n- \nBajo su marca de lujo, Marriott opera en Cancún un hotel de 131 habitaciones y 126 residencias en un complejo diseñado por Lissoni & Partners con certificación LEED.\n\n- \nMarcas como W Hotels están redefiniendo el lujo urbano en ciudades como Ciudad de México y Guadalajara.\n\n\n**Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellness. Gran programa de lealtad (Marriott Bonvoy) con alcance global.\n\n---\n\n### 2. **Four Seasons**\n\nFour Seasons fue una de las primeras marcas en abrir branded residences en los años 80.\n En México, \nFour Seasons Private Residences Tamarindo es uno de los proyectos de alto perfil recientes, diseñado en colaboración con tres de los mejores arquitectos de México.\n\n\n**Ideal para:** Proyectos ultra-premium en Los Cabos, Punta Mita y Riviera Maya. Garantiza el precio más alto por unidad y el comprador más sofisticado.\n\n---\n\n### 3. **Rosewood Hotel Group**\n\nRosewood se expande rápidamente con una filosofía de \"sense of place\"; cada residencia Rosewood está arquitectónicamente enraizada en su ubicación.\n En México, \nSan Miguel de Allende alberga el proyecto flagship de Rosewood, con una creciente colección de lujo patrimonial.\n\n\n**Ideal para:** Destinos con identidad cultural fuerte (San Miguel de Allende, CDMX) y desarrollos boutique de alto nivel en Los Cabos.\n\n---\n\n### 4. **Hilton** *(Waldorf Astoria, Conrad)*\n\nHilton anunció la firma de Waldorf Astoria Residences Guadalajara con entrega esperada para invierno de 2029, desarrollado por el Grupo Inmobiliario GFA.\n \nCon esta colaboración, GFA se convierte en el primer desarrollador en México y en el Caribe y América Latina en lanzar un proyecto de residencias standalone de Waldorf Astoria.\n\n\n**Ideal para:** Mercados urbanos premium como Guadalajara y CDMX, así como destinos de resort de primer nivel.\n\n---\n\n### 5. **IHG Hotels & Resorts** *(Six Senses, Kimpton, InterContinental)*\n\nIHG opera branded residences a través de Kimpton y Six Senses, esta última enfocada en comunidades residenciales integradas con wellness.\n \nAmbas marcas incluirán componentes residenciales en sus próximos proyectos en México, respondiendo a que \"los propietarios quieren hoteles con branded residences\".\n\n\n\nKimpton también tiene un desarrollo de uso mixto con Grupo Alora en Monterrey, que contempla 120 habitaciones y 60 residencias privadas.\n\n\n**Ideal para:** Destinos de playa exclusivos y proyectos de wellness en costas vírgenes.\n\n---\n\n### 6. **Aman Resorts**\n\nUltra-privado y con enfoque arquitectónico, Aman limita su portafolio residencial a menos de 15 proyectos globales para preservar la exclusividad.\n \nAman ha anunciado su primer proyecto en México, ubicado en el East Cape de Baja California.\n\n\n**Ideal para:** Proyectos muy exclusivos con baja densidad, compradores ultra-high-net-worth y ubicaciones remotas o vírgenes de Baja California.\n\n---\n\n### 7. **Accor** *(Fairmont, Sofitel, Raffles, Banyan Tree, Mondrian)*\n\nAccor, el mayor grupo hotelero de Europa, se expande agresivamente en residencias a través de Fairmont, Sofitel, Raffles, Orient Express y Banyan Tree, con una estrategia multi-marca que abarca mercados globales.\n Mondrian ya tiene presencia activa en México: \nMondrian Residences Cancún contempla 328 residencias y un hotel lifestyle de 400 habitaciones, con apertura prevista para 2026.\n\n\n**Ideal para:** Proyectos de uso mixto en Cancún, Riviera Maya y mercados lifestyle/boutique.\n\n---\n\n### 8. **Hyatt** *(Park Hyatt, Andaz, Alila)*\n\nHyatt fue una de las primeras marcas de Estados Unidos en ofrecer residencias dentro de sus complejos hoteleros.\n \nPark Hyatt ha anunciado recientemente su entrada al mercado mexicano de branded residences.\n\n\n**Ideal para:** Proyectos en destinos urbanos y de playa con perfil de comprador norteamericano.\n\n---\n\n### 9. **Grupo Posadas** *(Fiesta Americana, Live Aqua)* — Marca local líder\n\nGrupo Posadas anunció el desarrollo de Fiesta Americana Collection Hotel & Residences Mazatlán, el primer proyecto de branded residences de la marca, consolidando a Mazatlán como uno de los mercados más atractivos para la inversión en México.\n \nEl desarrollo contará con amenidades alineadas con estándares hoteleros, y los propietarios podrán acceder al programa de rentas y a los beneficios del ecosistema de la marca, como la membresía Fiesta Rewards.\n\n\n**Ideal para:** Proyectos que buscan una marca nacional consolidada con fuerte red de distribución local y conocimiento del mercado mexicano.\n\n---\n\n### 10. **Otras marcas con presencia o pipeline en México**\n\nEntre las marcas internacionales con presencia activa también figuran St. Regis, Banyan Tree, Montage Hotels & Resorts, Pendry Hotels, y Thompson Hotels.\n Además, \nmarcas del diseño y la moda como Armani, Etiquetta y Náutica comienzan a incursionar en el segmento en ciudades como la CDMX y Cancún.\n\n\n---\n\n## 🗺️ Presencia por Destino en México\n\n| Destino | Marcas Relevantes |\n|---|---|\n| **Los Cabos** | Four Seasons, Rosewood, St. Regis, Aman, Auberge, Montage, Nobu |\n| **Riviera Maya / Cancún** | Ritz-Carlton, Mondrian, Marriott, Banyan Tree, Mandarin Oriental |\n| **Riviera Nayarit / Punta Mita** | Four Seasons, Six Senses, Waldorf Astoria, Omni |\n| **CDMX** | Ritz-Carlton, Thompson, Armani, Park Hyatt, W Hotels |\n| **Guadalajara** | Waldorf Astoria |\n| **Monterrey** | Kimpton |\n| **San Miguel de Allende** | Rosewood, Autograph Collection (Marriott) |\n| **Mazatlán** | Fiesta Americana (Posadas) |\n\n\nEl 75% de los proyectos de branded residences en México se encuentran en destinos de playa como Los Cabos, la Riviera Nayarit, Acapulco y Cancún/Riviera Maya.\n\n\n---\n\n## ✅ Criterios Clave para Elegir la Marca Correcta\n\n1. **Posicionamiento del comprador objetivo:** \nAliarse con marcas internacionales permite a los desarrolladores mexicanos acelerar preventas, elevar el ticket promedio y acceder a compradores internacionales fidelizados a través de programas de lealtad de las cadenas hoteleras.\n\n\n2. **Prima de precio:** \nLas branded residences históricamente generan una prima de precio del 25–40% sobre propiedades comparables sin marca, y demuestran mayor velocidad de reventa.\n\n\n3. **Amenidades y servicios:** \nA pesar de que las superficies suelen ser 45% menores que en proyectos de lujo tradicionales, el diferencial lo marcan las amenidades: gimnasios de última generación, spas, albercas, centros de negocios, concierge y el respaldo de marcas globales que aportan valor a la propiedad.\n\n\n4. **Exclusividad vs. volumen:** \nMarcas como Aman limitan su portafolio residencial a menos de 15 proyectos globales para preservar la exclusividad\n, mientras que Marriott ofrece mayor escala y alcance de distribución.\n\n5. **Expansión futura:** \nLas Branded Residences continuarán expandiéndose en el país, no solo en destinos turísticos, sino también en ciudades con creciente poder adquisitivo como Monterrey y Guadalajara.\n\n\n---\n\nEn resumen, la elección de la marca dependerá del destino, el perfil del comprador objetivo, el posicionamiento de precio y la estrategia de rentabilidad del desarrollador. Las marcas con mayor tracción y pipeline activo en México hoy son **Marriott (a través de sus múltiples submarcas), Four Seasons, Rosewood, Hilton/Waldorf Astoria, Aman, Accor y, a nivel local, Grupo Posadas**.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 8922,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "ajara. **Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellne",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "ajara. **Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellne",
+        "privadas. **Ideal para:** Destinos de playa exclusivos y proyectos de wellness en costas vírg",
+        "a:** Proyectos en destinos urbanos y de playa con perfil de comprador norteamericano. --- ###",
+        " en México se encuentran en destinos de playa como Los Cabos, la Riviera Nayarit, Acapulco y Ca"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "associated_option",
+        "firstRecommendation": false,
+        "questionStatus": "PRESENT",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:25.019Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "ajara. **Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellne",
+        "EXAMPLE_SURFACES": [
+          "ajara. **Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellne",
+          "privadas. **Ideal para:** Destinos de playa exclusivos y proyectos de wellness en costas vírg",
+          "a:** Proyectos en destinos urbanos y de playa con perfil de comprador norteamericano. --- ###",
+          " en México se encuentran en destinos de playa como Los Cabos, la Riviera Nayarit, Acapulco y Ca"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_2dd0fd2a",
+      "SOURCE_CASE_ID": "cand_2dd0fd2a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "Here is a comprehensive overview of the hotel brands most commonly considered by owners and developers in Mexico for **design-forward or distinctive-character lifestyle positioning**:\n\n---\n\n## 🏨 Lifestyle & Design-Forward Hotel Brands in Mexico\n\n### 1. **Grupo Habita** *(Homegrown Mexican Pioneer)*\n\nFounded in 2000 by Carlos Couturier along with brothers Jaime, Moisés, and Rafael Micha, Grupo Habita opened its first property—Habita Hotel in Mexico City's Polanco neighborhood—at a time when boutique hospitality was still finding its footing.\n The group has since expanded across Mexico, from Puerto Escondido to Oaxaca. \nGrupo Habita's pioneering spirit first led to Puerto Escondido with the original Hotel Escondido in 2013, then came the Escondido Oaxaca Hotel in 2019, followed by the 2022 opening of Hotel Terrestre.\n Their properties are widely regarded as a benchmark for culturally rooted, design-led hospitality in Mexico.\n\n---\n\n### 2. **Design Hotels™** *(Soft Brand / Curated Collection)*\n\nGrupo Habita's properties are part of Design Hotels, a curated collection of independent hotels that prioritize distinctive design and cultural authenticity. The affiliation connects boutique properties with a global network of travelers seeking accommodations that reflect local character rather than standardized brand aesthetics. Design Hotels, now partnered with Marriott Bonvoy, provides marketing reach and booking infrastructure while allowing member hotels to maintain their individual identities and creative direction.\n This makes it a popular platform for independent Mexican boutique owners who want global reach without sacrificing their design identity.\n\n---\n\n### 3. **EDITION Hotels** *(Marriott – Ian Schrager)*\n\nThe 182-key Riviera Maya EDITION at Kanai, designed by Ian Schrager Company in collaboration with New York's Rockwell Group and architecture firm Edmonds International, opened in 2024 as a contemporary ode to Mayan tradition.\n \nEDITION Hotels is a luxury lifestyle brand launched by Marriott in 2007.\n It is one of the most sought-after lifestyle flags for owners seeking a high-design, culturally resonant identity.\n\n---\n\n### 4. **Andaz** *(Hyatt Lifestyle Portfolio)*\n\nThis hip lifestyle brand appears in both urban and resort locations and features elevated service, design, and amenities appealing to sophisticated travelers looking to stay in hotels that reflect personal style and creativity. In fact, \"Andaz\" means \"personal style\" in Hindi.\n \nAndaz hotels are grounded in their local surroundings and infused with local culture,\n making them attractive to owners in destinations like the Riviera Maya, where the Andaz Mayakoba is a flagship example.\n\n---\n\n### 5. **Thompson Hotels** *(Hyatt Lifestyle Portfolio)*\n\nLocated in both city and resort destinations, Thompson Hotels tap heavily into art, design, nightlife, and culture, offering excellent dining and drinking selections. Some of the lifestyle brand's most spectacular options include the rooftop bar at The Cape, a Thompson Hotel in Cabo San Lucas, Mexico.\n \nThe brand continues to channel local creative energy into its expanding international portfolio of properties, with restaurants featuring top culinary names and lobbies that double as cultural epicenters. The result is a magnetic hub built for collective gathering, where distinct design is an ethos and a signature part of the guest experience.\n\n\n---\n\n### 6. **SLS Hotels** *(Ennismore)*\n\nSLS Playa Mujeres made its debut in 2024 as the brand's first all-inclusive offering of the kind. Situated in a private gated waterfront community, the resort, brought to life by Ennismore's in-house design team, balances 498 guestrooms with 18 restaurants and bars.\n SLS is known for its bold, pop-art-influenced design language and is increasingly considered by Mexican resort owners looking for a statement lifestyle flag.\n\n---\n\n### 7. **Hyde & The Hoxton** *(Ennismore)*\n\nLifestyle operator Ennismore is set to bring two of its key brands to Mexico City — Hyde and The Hoxton. Opening on Paseo de la Reforma, Hyde Mexico City will introduce 215 bohemian-inspired rooms, alongside two restaurants and bars, a wellness space, and dedicated areas for meetings and events, all rooted in the brand's music-led, free-spirited identity.\n \nJust around the corner, The Hoxton Mexico City is slated for 2028. The 80-room hotel will reflect the character of its neighbourhood through a mix of art, design, retail and cultural programming, staying true to the brand's community-driven approach.\n\n\n---\n\n### 8. **Kimpton Hotels** *(IHG Luxury & Lifestyle)*\n\nKimpton, part of IHG Hotels & Resorts' luxury and lifestyle portfolio, has been expanding aggressively in Mexico. As the brand's sixth property planned for Mexico, Kimpton Monterrey will be located in the new-build mixed-use Torre Rise, set to be the tallest tower in Latin America.\n \nIHG will also present a notable all-inclusive experience when the Kimpton Tres Rios, a 355-room renovation of the Hacienda Tres Rios, opens on the Riviera Maya.\n Kimpton's design-led, pet-friendly, and personality-driven positioning makes it a top consideration for urban and coastal owners.\n\n---\n\n### 9. **Rosewood Hotels & Resorts** *(Independent Luxury)*\n\nRosewood positions itself as \"A Sense of Place®\" and aims to weave local culture into every aspect of the stay. This brand blends historic renovations with modern comforts, attracting culturally curious, design-savvy travelers.\n Rosewood has a strong and growing presence in Mexico, from its iconic Mayakoba property to branded residences in development.\n\n---\n\n### 10. **Autograph Collection** *(Marriott Soft Brand)*\nA popular soft-brand platform for independent, design-driven Mexican properties that want to retain their distinctive identity while accessing Marriott Bonvoy's global distribution. Properties like Hacienda Del Mar Los Cabos operate under this flag, which is described by Marriott as a collection of \"exactly like nothing else\" hotels.\n\n---\n\n### 11. **Auberge Resorts Collection** *(Independent Luxury Lifestyle)*\nAuberge has a notable presence in Mexico through properties like Esperanza and Chileno Bay in Los Cabos — both strongly positioned on design character and experiential luxury. It appeals to owners of high-end coastal or resort assets seeking a refined yet intimate lifestyle brand.\n\n---\n\n### 12. **Aman Resorts** *(Ultra-Luxury Design)*\n\nMajor hotel brands such as Four Seasons, Ritz-Carlton, and Aman are expanding their presence in Mexico.\n \nAn icon of minimalist sophistication, Aman is known for ultra-private, design-forward sanctuaries in spectacular locations. With only around 35 properties, it's exclusive by design, catering to a high-profile clientele seeking peace and seclusion. Its spa programs, architectural purity, and cultural immersion make each stay feel like a wellness retreat.\n Amanvari on Baja's East Cape is one of its upcoming Mexico properties.\n\n---\n\n### 13. **Dream Hotels / Unscripted Hotels** *(Hyatt Lifestyle)*\n\nHyatt is expanding its brand presence in Mexico with the forthcoming Dream Valle de Guadalupe, situated over 35 acres in the Baja California region incorporating a large vineyard, 61 guestrooms and villas, a luxury spa and wellness concept, and three highly activated dining and nightlife venues.\n Dream and Unscripted are increasingly considered by owners in emerging, culturally rich Mexican destinations.\n\n---\n\n### 14. **New Fashion/Lifestyle Entrants** *(Armani, Bulgari, Diesel)*\n\nNew players in the lifestyle and fashion sector — including Armani, Bulgari, and Diesel — are seeking to position themselves in Mexico's lifestyle hospitality segment.\n These brands are particularly attractive for branded-residence-anchored hotel projects targeting international buyers.\n\n---\n\n### 15. **Namron Hospitality** *(Independent Boutique Operator)*\n\nNamron Hospitality designs, brands, and operates boutique lifestyle hospitality experiences. Each property is artfully designed and locally rooted to inspire inner and outer journeys with guests.\n \nEach property's design character exhibits a locally rooted spirit of place and quality of laid-back luxury that elevates local craftsmanship and art.\n Their La Valise brand (Los Cabos, Mexico City) is a notable example of hyper-boutique, design-centric positioning.\n\n---\n\n## Summary Table\n\n| Brand | Parent / Type | Key Design Positioning in Mexico |\n|---|---|---|\n| Grupo Habita | Independent Mexican | Cultural pioneer, locally rooted design |\n| Design Hotels™ | Marriott Bonvoy soft brand | Independent design-first curation |\n| EDITION | Marriott / Ian Schrager | High-design luxury lifestyle |\n| Andaz | Hyatt Lifestyle | Local culture, personal style |\n| Thompson | Hyatt Lifestyle | Art, culture, nightlife, design |\n| SLS | Ennismore | Bold, pop-culture design |\n| Hyde / The Hoxton | Ennismore | Music-led / community-driven |\n| Kimpton | IHG Luxury & Lifestyle | Personality-driven boutique |\n| Rosewood | Independent luxury | Sense of Place, cultural immersion |\n| Autograph Collection | Marriott soft brand | Distinct individuality with scale |\n| Auberge Resorts | Independent luxury | Intimate experiential lifestyle |\n| Aman | Ultra-luxury | Minimalist, architectural purity |\n| Dream / Unscripted | Hyatt Lifestyle | Emerging destination lifestyle |\n| Armani/Bulgari/Diesel | Fashion-led | Branded residence lifestyle |\n| Namron / La Valise | Independent boutique | Hyper-curated, design-forward |\n\nMexico's lifestyle hotel market is one of the most dynamic in Latin America, with \ngrowth being driven by a mix of lifestyle-led brands and luxury operators, with emphasis on adaptive reuse, mixed-use developments, and culturally attuned design.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 9724,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "## 6. **SLS Hotels** *(Ennismore)* SLS Playa Mujeres made its debut in 2024 as the brand's fir",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "## 6. **SLS Hotels** *(Ennismore)* SLS Playa Mujeres made its debut in 2024 as the brand's fir"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "associated_option",
+        "firstRecommendation": false,
+        "questionStatus": "PRESENT",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:06:55.921Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "## 6. **SLS Hotels** *(Ennismore)* SLS Playa Mujeres made its debut in 2024 as the brand's fir",
+        "EXAMPLE_SURFACES": [
+          "## 6. **SLS Hotels** *(Ennismore)* SLS Playa Mujeres made its debut in 2024 as the brand's fir"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_3515312a",
+      "SOURCE_CASE_ID": "cand_3515312a",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "Cuando un propietario o inversionista hotelero en México evalúa convertir un hotel independiente (o existente) bajo el modelo de **\"Soft Brand\" o \"Collection Brand\"**, busca obtener el músculo comercial, el sistema de reservaciones global (CRS) y el programa de lealtad de un gran grupo hotelero, sin perder la identidad, la historia, la arquitectura o el nombre original del inmueble.\n\nEn el mercado mexicano —con gran peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por los desarrolladores y propietarios se agrupan según las principales cadenas e instituciones globales:\n\n---\n\n### 1. Marriott International\nMarriott cuenta con la presencia de *soft brands* más consolidada en México:\n* **Autograph Collection (Upper Upscale / Luxury):** Es la marca insignia para hoteles independientes de lujo y alta gama con personalidad propia. Ideal para resorts icónicos en playa o propiedades históricas/lifestyle en ciudades como CDMX, San Miguel de Allende o Los Cabos.\n* **Tribute Portfolio (Upscale / Upper Upscale):** Orientada a hoteles boutique vibrantes, de diseño único y con un fuerte enfoque comunitario/local. Los requisitos de acondicionamiento (*Property Improvement Plan* - PIP) suelen ser ligeramente más flexibles que en Autograph.\n* **The Luxury Collection:** Destinada a propiedades históricas, haciendas o resorts legendarios de ultra lujo.\n* **Design Hotels:** Red de afiliados centrada en el diseño de autor y arquitectura (integrada al ecosistema comercial de Marriott Bonvoy).\n\n---\n\n### 2. Hilton\nHilton ha tenido una expansión agresiva con sus marcas de colección en México:\n* **Curio Collection by Hilton (Upper Upscale / Luxury):** Dirigida a propiedades de 4 y 5 estrellas distintivas, monumentos históricos o resorts donde la historia del lugar es el atractivo principal.\n* **Tapestry Collection by Hilton (Upscale):** Muy popular en México para conversiones boutique de tamaño medio y escala de precio accesible en destinos de ciudad, pueblos mágicos o destinos de playa (ej. San Miguel de Allende, Puebla, Playa del Carmen).\n* **LXR Hotels & Resorts:** Categoría de ultra lujo independiente (para residencias boutique exclusivas o resorts de alto perfil).\n\n---\n\n### 3. Hyatt\nHyatt ofrece un ecosistema de colecciones muy atractivo para viajeros de alto gasto:\n* **The Unbound Collection by Hyatt (Luxury / Upper Upscale):** Pensada para inmuebles legendarios o resorts con narrativa histórica y cultural profunda.\n* **JdV by Hyatt (Joie de Vivre) (Upscale):** Colección de hoteles boutique urbanos y de estilo de vida, enfocada en la vida de barrio y espíritu joven.\n* **Destination by Hyatt:** Colección enfocada en resorts independientes, spas y casas/residencias de lujo.\n\n---\n\n### 4. IHG Hotels & Resorts (InterContinental)\nIHG ha acelerado su estrategia de conversión en México para competir en el segmento suave:\n* **Vignette Collection (Luxury / Lifestyle):** La opción de lujo independiente de IHG que permite mantener el estilo distintivo del hotel integrándose a la red *IHG One Rewards*.\n* **Garner / Voco:** Aunque *Voco* se sitúa entre un híbrido de franquicia y conversión flexible (Upscale) y *Garner* en el segmento *Midscale*, ambas son ampliamente consideradas en México para conversiones rápidas con bajo CAPEX.\n\n---\n\n### 5. Accor\nAccor destaca por su fuerte perfil en hotelería boutique de diseño y gastronomía:\n* **MGallery Hotel Collection (Upper Upscale):** Colección de hoteles boutique con \"historias que contar\", excelente para haciendas rehabilitadas, casonas coloniales o hoteles boutique urbanos.\n* **Handwritten Collection (Midscale / Upscale):** Una opción más reciente y flexible para hoteles independientes medianos que buscan una conversión ágil con un toque cálido y personalizado.\n* **Emblems Collection:** Colección de ultra lujo para hoteles emblemáticos.\n\n---\n\n### 6. Wyndham & Choice Hotels\nOpciones muy atractivas por su flexibilidad operativa y estructuras de comisiones/fees competitivas:\n* **Trademark Collection by Wyndham (Upper Midscale / Upscale):** Muy utilizada para conversiones de hoteles independientes de negocios o vacacionales en ciudades secundarias o destinos de playa emergentes.\n* **Ascend Hotel Collection (Choice Hotels):** Una de las pioneras en el concepto *soft brand*; se busca frecuentemente en México para hoteles boutique, de época o históricos con escala *upscale*.\n\n---\n\n### 7. Consorcios de Afiliación y Comercialización (Sin Franquicia Completa)\nMuchos propietarios en México evalúan alternativas que no implican la entrada a las \"Big 5\" de la franquicia, sino alianzas de representación y mercadotecnia global:\n* **Preferred Hotels & Resorts** (categorías Legend, L.V.X., Lifestyle, Connect).\n* **The Leading Hotels of the World (LHW)** (Ultra lujo).\n* **Small Luxury Hotels of the World (SLH)** (Boutique de lujo; cuenta con alianza comercial y distribución con Hilton).\n* **Relais & Châteaux** (Enfoque en alta gastronomía y lujo de hacienda/resort boutique).\n\n---\n\n### ¿Cómo eligen los propietarios en México la mejor opción?\n\n1. **Segmento y Tarifa Promedio (ADR):** Hoteles con tarifas muy altas suelen optar por *Autograph*, *Curio*, *MGallery* o *The Unbound Collection*; propiedades de volumen o tarifa media prefieren *Tapestry*, *Tribute*, *Trademark* o *Ascend*.\n2. **Costo de Conversión (PIP/CAPEX):** Las exigencias de adaptación física varían considerablemente. Las colecciones de escala *Upscale* o *Midscale* suelen ser más permisivas con la infraestructura existente que las marcas de *Luxury*.\n3. **Origen del Huésped:** Si el hotel depende principalmente del mercado estadounidense/canadiense, las marcas de Marriott, Hilton y Hyatt suelen generar un arrastre de reservas directas muy elevado gracias a sus programas de lealtad.\n4. **Ubicación del Activo:** En destinos coloniales y urbanos (CDMX, Oaxaca, Mérida, San Miguel) predominan *Autograph*, *Tapestry*, *MGallery* y *SLH*. En destinos de playa (Cancún/Riviera Maya, Los Cabos, Riviera Nayarit) cobran gran relevancia *Curio*, *Autograph* y *Preferred Hotels*.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 6074,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": " peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por lo",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        " peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por lo",
+        " propia. Ideal para resorts icónicos en playa o propiedades históricas/lifestyle en ciudades co",
+        "e ciudad, pueblos mágicos o destinos de playa (ej. San Miguel de Allende, Puebla, Playa del Car",
+        "aya (ej. San Miguel de Allende, Puebla, Playa del Carmen). * **LXR Hotels & Resorts:** Categorí",
+        "s en ciudades secundarias o destinos de playa emergentes. * **Ascend Hotel Collection (Choice H",
+        "ry*, *MGallery* y *SLH*. En destinos de playa (Cancún/Riviera Maya, Los Cabos, Riviera Nayarit)"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "ranked_recommendation",
+        "firstRecommendation": false,
+        "questionStatus": "RECOMMENDED",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:06:48.361Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": " peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por lo",
+        "EXAMPLE_SURFACES": [
+          " peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por lo",
+          " propia. Ideal para resorts icónicos en playa o propiedades históricas/lifestyle en ciudades co",
+          "e ciudad, pueblos mágicos o destinos de playa (ej. San Miguel de Allende, Puebla, Playa del Car",
+          "aya (ej. San Miguel de Allende, Puebla, Playa del Carmen). * **LXR Hotels & Resorts:** Categorí",
+          "s en ciudades secundarias o destinos de playa emergentes. * **Ascend Hotel Collection (Choice H",
+          "ry*, *MGallery* y *SLH*. En destinos de playa (Cancún/Riviera Maya, Los Cabos, Riviera Nayarit)"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_465be86c",
+      "SOURCE_CASE_ID": "cand_465be86c",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "En la región de América Latina y el Caribe (CALA), el segmento *lifestyle* y de diseño con carácter distintivo ha tenido un crecimiento acelerado. Los propietarios e inversionistas hoteleros buscan habitualmente marcas que les permitan cobrar una tarifa promedio diaria (*ADR*) más alta, destacar en la oferta gastronómica (F&B) y ofrecer experiencias auténticas conectadas con la cultura local.\n\nA la hora de estructurar un proyecto o reconvertir un activo, los propietarios suelen considerar las marcas agrupadas en tres categorías clave:\n\n---\n\n### 1. Marcas \"Soft\" o Colecciones (Máxima libertad de diseño y distribución global)\nSon muy populares entre los propietarios porque permiten mantener la identidad arquitectónica, el concepto local y la flexibilidad en el diseño interior, mientras se benefician de la red de distribución y los programas de fidelización de las grandes cadenas.\n\n*   **Autograph Collection & Tribute Portfolio (Marriott International):** Autograph es una de las marcas coleccionables con mayor presencia en el Caribe y LATAM para hoteles *upper upscale* y de lujo con historia o personalidad única. Tribute Portfolio se enfoca en proyectos *lifestyle* más accesibles o boutique.\n*   **Curio Collection & Tapestry Collection (Hilton):** Curio permite integrar resorts y hoteles urbanos con un fuerte carácter local y de gama alta. Tapestry atiende al segmento *upscale* con un toque moderno e individual.\n*   **The Unbound Collection & JdV by Hyatt (Hyatt):** Destinadas a hoteles boutique singulares o propiedades históricas que buscan un posicionamiento de lujo desenfadado o de estilo de vida independiente.\n*   **MGallery Hotel Collection (Accor):** Muy enfocada en el diseño narrativo (*storytelling*), el arte local y boutique de lujo en destinos urbanos y de playa en América Latina.\n*   **Vignette Collection (IHG):** La propuesta de conversión boutique/lujo más reciente de IHG, ganando terreno en la región.\n\n---\n\n### 2. Marcas \"Hard\" Lifestyle (Identidad conceptual clara y estándares definidos)\nSon marcas donde el diseño, la música, la coctelería y el ambiente social están predefinidos por la cadena, ideales para desarrolladores que buscan un concepto \"clave en mano\" respaldado por un posicionamiento de marca fuerte.\n\n*   **Thompson Hotels (Hyatt):** Muy codiciada para el Caribe y México (p. ej., Los Cabos, Zihuatanejo, Riviera Maya). Destaca por su diseño arquitectónico sofisticado, ambiente de club social y un potente enfoque gastronómico.\n*   **Andaz (Hyatt):** Enfocada en el lujo *lifestyle* con fuerte arraigo en el arte y la cultura local (con presencia en Costa Rica, Riviera Maya, México, etc.).\n*   **W Hotels & EDITION (Marriott):** W sigue siendo referente en el lujo *lifestyle* vibrante enfocado en el entretenimiento y el diseño arriesgado. EDITION (desarrollada junto a Ian Schrager) se evalúa para proyectos de lujo *lifestyle* más sobrios y exclusivos.\n*   **Plataforma Ennismore (Accor):** Colección de marcas enfocadas en la cultura *lifestyle*:\n    *   **SLS:** Enfocado en la vida nocturna, diseño glamuroso y gastronomía de autor (ej. SLS Cancún).\n    *   **Mondrian & SO/:** Diseños vanguardistas y ambientes muy enfocados en la escena local.\n    *   **Mama Shelter / The Hoxton:** Muy enfocadas en el diseño urbano accesible y la vida comunitaria.\n*   **Kimpton Hotels & Restaurants (IHG):** Pionera del concepto boutique *lifestyle* en EE. UU., en plena expansión por México, Centroamérica y el Caribe. Destaca por su política *pet-friendly*, servicio cercano y restaurantes independientes de alto nivel.\n*   **Hotel Indigo (IHG):** Centrada en reflejar la identidad del barrio o comunidad local (*neighborhood story*), ideal para destinos secundarios y centros urbanos de LATAM.\n\n---\n\n### 3. Marcas Regionales, Eco-Lifestyle e Independientes\nPropietarios que buscan alejarse de las grandes corporaciones tradicionales suelen mirar hacia marcas especialistas en naturaleza, sostenibilidad y hospitalidad experiencial:\n\n*   **Grupo Habita:** Pioneros del concepto de hotel de diseño en México. Ideal para proyectos urbanos o de playa boutique de alta gama.\n*   **Our Habitas:** Una de las marcas de mayor crecimiento para desarrollos eco-lifestyle en la naturaleza (Tulum, Bacalar, San Miguel de Allende, Atacama), con un fuerte enfoque en sostenibilidad, arquitectura ligera y comunidad.\n*   **Cayuga Collection:** Referente en América Central para el manejo de ecolodges y hoteles boutique de lujo sostenible.\n*   **Sellos de Afiliación Independiente (SLH y LHW):**\n    *   **Small Luxury Hotels of the World (SLH)** (aliado estratégico con Hilton) y **The Leading Hotels of the World (LHW)** son opciones muy cotizadas por propietarios de hoteles boutique de lujo que rehúsan operar bajo franquicias tradicionales pero necesitan fuerza comercial internacional.\n\n---\n\n### Criterios clave que evalúan los propietarios en CALA\n\n1.  **Aportación de F&B (Alimentos y Bebidas):** Un hotel *lifestyle* exitoso en el Caribe o LATAM puede generar entre el 35% y el 50% de sus ingresos totales a través del bar y restaurante. Marcas como Thompson, SLS o Kimpton suelen liderar esta evaluación.\n2.  **Flexibilidad de Capex y Estándares de Diseño:** Los desarrolladores locales prefieren marcas *soft* cuando el proyecto involucra la reconversión de una propiedad histórica o un terreno con restricciones ambientales.\n3.  **Aportación del Programa de Fidelización:** Marriott Bonvoy, World of Hyatt, Hilton Honors y ALL representan una cuota importante de la reserva directa (*direct booking*), lo cual reduce los costes de intermediación (OTAs).\n4.  **Resiliencia ante la competencia All-Inclusive:** En zonas turísticas del Caribe donde predomina el Todo Incluido, una marca *lifestyle* permite diferenciar la propiedad atrayendo a un perfil de viajero de mayor poder adquisitivo que busca experiencias a la carta.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 5881,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "utique de lujo en destinos urbanos y de playa en América Latina. * **Vignette Collection (IHG",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "utique de lujo en destinos urbanos y de playa en América Latina. * **Vignette Collection (IHG",
+        "xico. Ideal para proyectos urbanos o de playa boutique de alta gama. * **Our Habitas:** Una d"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:24.215Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "utique de lujo en destinos urbanos y de playa en América Latina. * **Vignette Collection (IHG",
+        "EXAMPLE_SURFACES": [
+          "utique de lujo en destinos urbanos y de playa en América Latina. * **Vignette Collection (IHG",
+          "xico. Ideal para proyectos urbanos o de playa boutique de alta gama. * **Our Habitas:** Una d"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_4cf733c7",
+      "SOURCE_CASE_ID": "cand_4cf733c7",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "En la región de **Caribe y América Latina (CALA)**, el segmento *Upper-Upscale* (situado justo por debajo de *Luxury* y por encima de *Upscale*) es uno de los más dinámicos e interesantes para desarrolladores e inversionistas. Ofrece un equilibrio óptimo entre tarifas promedio altas (ADR), eficiencia operativa y flexibilidad de concepto.\n\nDependiendo de si el proyecto es **urbano/negocios**, **resort/vacacional** o un **concepto lifestyle/boutique**, la *shortlist* de propietarios suele dividirse en las siguientes categorías clave:\n\n---\n\n### 1. Las \"Soft Brands\" / Colecciones (La mayor tendencia en LATAM y Caribe)\nSon altamente demandadas porque permiten al propietario mantener una identidad o concepto arquitectónico local único, mientras se benefician del motor de distribución y el programa de lealtad de una gran cadena. Son la primera opción para conversiones y hoteles boutique de escala media-alta:\n\n*   **Autograph Collection** (*Marriott International*): Probablemente el líder indiscutible en la región para conversiones y proyectos independientes de lujo/upper-upscale.\n*   **Curio Collection by Hilton**: Muy fuerte presencia en Caribe (Costa Rica, México, República Dominicana) y grandes capitales de LATAM.\n*   **The Unbound Collection / Destination by Hyatt**: Ganando terreno rápidamente en destinos de playa e históricos.\n*   **Tribute Portfolio** (*Marriott*): Para proyectos lifestyle con un toque más accesible y de diseño enfocado.\n*   **Vignette Collection** (*IHG*): La apuesta reciente de IHG para capturar proyectos independientes de este segmento.\n\n---\n\n### 2. Marcas Tradicionales \"Hard Brands\" (Urbano, Convenciones y Resorts)\nSon las marcas de servicio completo (*full-service*) tradicionales, ideales para proyectos de nueva construcción, centros de convenciones o flagships en distritos financieros y hubs turísticos consolidados:\n\n*   **Westin Hotels & Resorts** (*Marriott*): Altísima demanda tanto en resorts de playa (Los Cabos, Cancún, Costa Rica) como en ciudades principales por su posicionamiento en bienestar (*wellness*).\n*   **Marriott Hotels / Sheraton** (*Marriott*): Estándares consolidados en capitales latinoamericanas (Bogotá, São Paulo, Ciudad de México, Lima) para turismo corporativo y MICE.\n*   **Hilton Hotels & Resorts**: Un \"safe haven\" para inversionistas por el peso global del programa Hilton Honors.\n*   **Hyatt Regency / Grand Hyatt**: Muy buscadas para desarrollos mixtos de gran escala (usos mixtos con centros comerciales u oficinas).\n*   **Pullman / Swissôtel** (*Accor*): Con una posición histórica muy sólida en Sudamérica (Brasil, Perú, Argentina, Colombia).\n\n---\n\n### 3. Lifestyle Upper-Upscale (Para viajeros Millennial / Gen Z de alto poder adquisitivo)\nMarcas centradas en diseño, oferta gastronómica, coctelería y experiencia social:\n\n*   **Thompson Hotels** (*Hyatt*): Gran crecimiento en México y Caribe (Playa del Carmen, Los Cabos, Zihuatanejo).\n*   **Kimpton Hotels & Restaurants** (*IHG*): En plena expansión en la región (Roatán, Tulum, Ciudad de México), conocida por su enfoque pet-friendly y gastronomía de autor.\n*   **Hotel Indigo** (*IHG*): Enfocada en la cultura y el vecindario local, ideal para zonas urbanas históricas o distritos creativos.\n*   **SLS / Mondrian** (*Ennismore / Accor*): Para proyectos en destinos \"trendy\" con una fuerte oferta de vida nocturna y *day-club*.\n\n---\n\n### 4. Especialistas en Resorts & All-Inclusive (Indispensable en el Caribe)\nEn el Caribe y el Caribe Mexicano, el modelo All-Inclusive de escala Upper-Upscale/Luxury domina la inversión. Las marcas de la shortlist aquí incluyen:\n\n*   **Dreams Resorts & Spas** (*Hyatt Inclusive Collection*): Referente para resorts familiares upper-upscale en el Caribe.\n*   **Secrets Resorts & Spas** (*Hyatt Inclusive Collection*): Mismo segmento pero enfocado en *Adults-Only*.\n*   **Royalton Luxury Resorts** (*Blue Diamond / Marriott*): Masiva presencia en el Caribe (Jamaica, RD, México) que suele operar bajo la sombrilla de distribución de Marriott.\n*   **Paradisus by Meliá / ME by Meliá**: Meliá tiene un peso histórico y operativo dominante en la región para resorts de playa.\n*   **Grand Fiesta Americana / Live Aqua** (*Grupo Posadas*): Actores regionales muy consolidados con estándares a la par de las multinacionales globales, especialmente en México y expansión regional.\n\n---\n\n### ¿Qué factores determinan la shortlist final de un desarrollador?\n\n1. **Penetración del Programa de Lealtad (Feeder Markets):** Para el Caribe, el mercado emisor principal es EE. UU. y Canadá. Por ello, Marriott Bonvoy, Hilton Honors y World of Hyatt suelen liderar las preferencias. Para Sudamérica, Accor (gracias a ALL en Brasil y el Cono Sur) tiene una ventaja competitiva muy fuerte.\n2. **Modelo de Operación:** ¿El propietario quiere operar con franquicia (*Franchise*) o busca un contrato de administración (*Management Agreement*)? Marcas como Hilton o Marriott son más estrictas con el perfil del operador franquiciado para marcas upper-upscale, mientras que operadores regionales suelen dar más margen.\n3. **Conversión vs. Objeto Nuevo (Greenfield):** Si se trata de reconvertir un hotel existente, las *Soft Brands* (Autograph, Curio) lideran la lista porque exigen menores cambios de PIP (*Property Improvement Plan*) en comparación con una marca dura como Westin o Hyatt Regency.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 5355,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "ando terreno rápidamente en destinos de playa e históricos. * **Tribute Portfolio** (*Marriot",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "ando terreno rápidamente en destinos de playa e históricos. * **Tribute Portfolio** (*Marriot",
+        "): Altísima demanda tanto en resorts de playa (Los Cabos, Cancún, Costa Rica) como en ciudades ",
+        "): Gran crecimiento en México y Caribe (Playa del Carmen, Los Cabos, Zihuatanejo). * **Kimpto",
+        " dominante en la región para resorts de playa. * **Grand Fiesta Americana / Live Aqua** (*Gru"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "first_recommendation",
+        "firstRecommendation": true,
+        "questionStatus": "FIRST_RECOMMENDED",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:01.141Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "ando terreno rápidamente en destinos de playa e históricos. * **Tribute Portfolio** (*Marriot",
+        "EXAMPLE_SURFACES": [
+          "ando terreno rápidamente en destinos de playa e históricos. * **Tribute Portfolio** (*Marriot",
+          "): Altísima demanda tanto en resorts de playa (Los Cabos, Cancún, Costa Rica) como en ciudades ",
+          "): Gran crecimiento en México y Caribe (Playa del Carmen, Los Cabos, Zihuatanejo). * **Kimpto",
+          " dominante en la región para resorts de playa. * **Grand Fiesta Americana / Live Aqua** (*Gru"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_52172a1d",
+      "SOURCE_CASE_ID": "cand_52172a1d",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "Posicionar un hotel en la categoría **Upper-Upscale** en México (según la clasificación oficial de cadenas de *STR / CoStar*) requiere un equilibrio preciso entre estándares de servicio premium, tarifas promedio (ADR) elevadas y una propuesta de valor atractiva tanto para el cliente internacional como para el nacional.\n\nA la hora de seleccionar la marca (*flag*), un propietario debe evaluar si prefiere una **marca rígida (*Hard Brand*)**, una **colección o marca blanda (*Soft Brand*)** para mantener identidad propia, o una **marca nacional de gran tradición y lealtad local**.\n\nA continuación, se presentan las principales marcas hoteleras *Upper-Upscale* a considerar en el mercado mexicano, divididas por estrategia:\n\n---\n\n### 1. Marcas Blandas / Colecciones (*Soft Brands*)\n*Ideal para:* Hoteles independientes existentes (conversión) o proyectos con arquitectura/personalidad única que no quieren ajustarse a los estrictos manuales de diseño de una marca tradicional, pero necesitan el motor de ventas y programa de lealtad de un gigante global.\n\n* **Autograph Collection (Marriott International):** Una de las colecciones más exitosas en México. Conserva el carácter boutique o histórico del inmueble respaldado por el motor de *Marriott Bonvoy*.\n* **Curio Collection by Hilton:** Competidor directo de Autograph. Funciona excepcionalmente bien tanto en destinos urbanos/culturales (ej. CDMX, Oaxaca, San Miguel de Allende) como en resorts de playa.\n* **The Unbound Collection by Hyatt:** Enfocada en hoteles icónicos con una narrativa o historia única. Muy valorada por viajeros de nivel adquisitivo alto.\n* **Tribute Portfolio (Marriott) / Tapestry Collection (Hilton):** Posicionadas en la parte alta de *Upscale* / entrada a *Upper-Upscale*, ideales para proyectos con diseño de autor pero presupuestos de conversión o desarrollo ligeramente más ajustados.\n\n---\n\n### 2. Marcas Internacionales Tradicionales (*Hard Brands*)\n*Ideal para:* Proyectos de nueva construcción o remodelaciones integrales en polos financieros, distritos corporativos o destinos turísticos consolidados donde los clientes buscan consistencia, reconocimiento de marca directo y centros de convenciones/eventos.\n\n* **Marriott Hotels & Resorts / Westin / Sheraton (Marriott):** \n  * *Westin:* Excelente posicionamiento en bienestar (*wellness*), altamente cotizado en playa y ciudades clave.\n  * *Marriott / Sheraton:* Estándar global para viajes corporativos, eventos y convenciones.\n* **Hilton Hotels & Resorts (Hilton):** Una de las marcas con mayor fuerza de atracción corporativa e internacional en México.\n* **Hyatt Regency / Grand Hyatt (Hyatt):** Hyatt Regency domina los segmentos corporativo y MICE (reuniones y eventos) en ciudades como CDMX y Guadalajara; Grand Hyatt roza el segmento *Luxury*.\n* **Pullman / Swissôtel (Accor):** Accor busca expandir estas marcas en México; son excelentes opciones si se busca un perfil de cliente europeo y de negocios internacionales.\n* **InterContinental (IHG):** Aunque a veces bordea el segmento *Luxury*, en varios mercados de México opera de forma muy sólida como un *Upper-Upscale* de alto nivel corporativo y diplomático.\n\n---\n\n### 3. Marcas de Estilo de Vida (*Lifestyle Upper-Upscale*)\n*Ideal para:* Desarrollos urbanos o de playa enfocados en el segmento *bleisure* (negocios + ocio), la generación *Millennial/Gen Z* de alto poder adquisitivo, y conceptos donde los centros de consumo (A&B/Bares) representan una parte sustancial de los ingresos.\n\n* **Kimpton Hotels & Restaurants (IHG):** Marca pionera en el concepto boutique-lifestyle, con un fuerte enfoque gastronómico, *pet-friendly* y servicio personalizado.\n* **Canopy by Hilton:** Concepto centrado en la integración con el barrio/vecindario local, diseño fresco y áreas públicas muy dinámicas.\n* **Thompson Hotels (Hyatt):** Excelente posicionamiento en destinos de playa sofisticados (ej. Cabo, Zihuatanejo, Riviera Maya) y zonas urbanas de tendencia.\n* **Renaissance Hotels (Marriott):** Enfocada en viajeros de negocios que buscan experiencias de descubrimiento local al terminar su jornada laboral.\n\n---\n\n### 4. Marcas Nacionales y Regionales (Gran *Equity* en México)\n*Ideal para:* Proyectos que buscan capturar con fuerza el mercado interno corporativo y gubernamental mexicano, donde la lealtad a programas locales es sumamente alta.\n\n* **Grand Fiesta Americana (Grupo Posadas):** Una de las marcas *Upper-Upscale* de origen mexicano con mayor presencia, reputación y red de distribución en el país. *(Live Aqua, también de Posadas, bordea el segmento Lifestyle Upper-Upscale / Luxury).*\n* **Camino Real (Grupo Real Turismo):** Marca histórica con fuerte presencia arquitectónica en las principales ciudades de México y alta lealtad corporativa nacional.\n* **Krystal Grand (Grupo Hotelero Santa Fe):** Opción sólida para desarrollos tanto urbanos como de playa bajo esquemas todo incluido o plan europeo.\n\n---\n\n### Criterios Clave para la Toma de Decisión del Propietario\n\n1. **Ubicación y Perfil del Inmueble:**\n   * *Playa / Resort:* Thompson, Curio, Autograph, Westin, Grand Fiesta Americana.\n   * *Urbano Corporativo:* Hyatt Regency, Hilton, Marriott, Camino Real, Pullman.\n   * *Destino Colonial / Boutique:* Autograph, Curio, Kimpton, Unbound Collection.\n\n2. **Estructura del Acuerdo (HMA vs. Franquicia):**\n   * Cadenas como **Marriott, Hilton e IHG** permiten operar bajo un contrato de **Franquicia** con una empresa operadora de terceros (*Third-Party Operator*), lo que otorga mayor control operativo al propietario.\n   * Otras cadenas o marcas insignia prefieren **Contratos de Gestión Directa (HMA)**.\n\n3. **Acceso a Programas de Lealtad:**\n   * **Marriott Bonvoy, Hilton Honors y World of Hyatt** traen consigo un flujo garantizado de turismo emisor estadounidense y canadiense.\n   * **Fiesta Rewards (Posadas)** tiene el dominio más fuerte en la cuenta corporativa mexicana.\n\n4. **Presupuesto de CapEx e Integración:**\n   * Si el hotel requiere una reconversión rápida con bajo impacto en inversión de obra civil, las **Soft Brands** suelen ser la vía de menor resistencia financiera y mayor retorno sobre la inversión (ROI).",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 6152,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "n Miguel de Allende) como en resorts de playa. * **The Unbound Collection by Hyatt:** Enfocada ",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "n Miguel de Allende) como en resorts de playa. * **The Unbound Collection by Hyatt:** Enfocada ",
+        "tar (*wellness*), altamente cotizado en playa y ciudades clave. * *Marriott / Sheraton:* Está",
+        " *Ideal para:* Desarrollos urbanos o de playa enfocados en el segmento *bleisure* (negocios + o",
+        "xcelente posicionamiento en destinos de playa sofisticados (ej. Cabo, Zihuatanejo, Riviera Maya",
+        " para desarrollos tanto urbanos como de playa bajo esquemas todo incluido o plan europeo. --- ",
+        "bicación y Perfil del Inmueble:** * *Playa / Resort:* Thompson, Curio, Autograph, Westin, Gr"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:16.627Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "n Miguel de Allende) como en resorts de playa. * **The Unbound Collection by Hyatt:** Enfocada ",
+        "EXAMPLE_SURFACES": [
+          "n Miguel de Allende) como en resorts de playa. * **The Unbound Collection by Hyatt:** Enfocada ",
+          "tar (*wellness*), altamente cotizado en playa y ciudades clave. * *Marriott / Sheraton:* Está",
+          " *Ideal para:* Desarrollos urbanos o de playa enfocados en el segmento *bleisure* (negocios + o",
+          "xcelente posicionamiento en destinos de playa sofisticados (ej. Cabo, Zihuatanejo, Riviera Maya",
+          " para desarrollos tanto urbanos como de playa bajo esquemas todo incluido o plan europeo. --- ",
+          "bicación y Perfil del Inmueble:** * *Playa / Resort:* Thompson, Curio, Autograph, Westin, Gr"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_5ae0142a",
+      "SOURCE_CASE_ID": "cand_5ae0142a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_SUBJECT": "IHG Hotels & Resorts (Managed)",
+      "CANONICAL_ID": "rec7IXYQYpKMYsrDl",
+      "FULL_STORED_RESPONSE": "This is a great and highly relevant topic. Here is a comprehensive guide to hotel brands that owners and developers should consider when evaluating branded residences as part of a global hotel project, organized by tier and market position:\n\n---\n\n# 🏨 Hotel Brands to Consider for Branded Residences: A Global Owner's Guide\n\n## Market Overview\n\n\nThere are currently more than 125 individual hotel brands active in the branded real estate sector, and hotel brands hold a significant market share, accounting for 79% of branded residences globally.\n \nThe branded residences sector's compound annual growth rate (CAGR) has consistently ranged between 11% and 16% since 2000.\n \nIn 2025, there are over 700 branded residences globally, with an equal number of projects under development.\n\n\n---\n\n## Tier 1: Global Market Leaders (Scale + Multi-Brand Portfolios)\n\n### 1. 🥇 Marriott International\n**Brands: Ritz-Carlton, St. Regis, W Hotels, JW Marriott, Autograph Collection, Waldorf Astoria (via Hilton), EDITION**\n\n\nLeading the hotel-branded segment is Marriott International, which has maintained its position as the market leader since 2002 and is poised for continued success.\n \nRegarding parent companies, the market leader is Marriott International, which hosts an impressive portfolio of luxury brands, including the Ritz-Carlton, St. Regis, and W Hotels, which all operate private residences under their name.\n\n\n- **Ritz-Carlton**: \nThe most active individual brand in the sector in 2024 was The Ritz-Carlton, followed by Four Seasons, and then St. Regis, Fairmont, and Rosewood, all vying to be the third most active single brand.\n\n- **St. Regis**: A top-five most active brand globally with a strong pipeline across the Middle East and Americas.\n- **JW Marriott**: \nMarriott International has officially entered Dubai's competitive branded residences sector, partnering with CG Developers Global to launch the emirate's first JW Marriott Residences at Dubai Islands, with the 115-unit development expected to be completed by early 2028.\n\n\n### 2. 🥈 Accor\n**Brands: Fairmont, Raffles, Sofitel, Orient Express, Banyan Tree**\n\n\nMarriott and Accor lead in scale, supported by multi-brand portfolios exceeding 35 brands each.\n \nEurope's largest hotel group is expanding aggressively into residences via Fairmont, Sofitel, Raffles, Orient Express, and Banyan Tree, with Accor's multi-brand strategy targeting markets from Dubai to the Maldives to Paris.\n\n\n---\n\n## Tier 2: Premium Single-Brand Operators\n\n### 3. Four Seasons\n\nFour Seasons offers branded residences in locations ranging from London to the Caribbean, with a strong focus on impeccable service standards, and more than half of its development pipeline includes residential components. The success of the strategy can be seen by the fact that Four Seasons achieved $1.2 billion in sales during the first half of 2024 alone.\n \nFour Seasons maintains a strong position as a single-brand operator.\n\n\n### 4. Hilton\n**Brands: Waldorf Astoria, Conrad, LXR**\n\n\nMajor groups including Hilton, Hyatt, IHG, Radisson, and Wyndham form a second tier, combining volume with diversified brand portfolios.\n \nHilton's Waldorf Astoria and Conrad properties account for more than 75 branded residences globally.\n\n\n### 5. Hyatt\n**Brands: Park Hyatt, Andaz, Alila**\n\nHyatt is an active second-tier operator with a growing residential pipeline, particularly through its Park Hyatt and Andaz lifestyle brands in urban and resort destinations.\n\n### 6. IHG (InterContinental Hotels Group)\n**Brands: Six Senses, Kimpton, InterContinental**\n\n\nIHG operates branded residences through Kimpton and Six Senses, the latter focused on wellness-integrated residential communities in destinations including Ibiza, Oman, and Saudi Arabia.\n \nFor wellness-focused brand Six Senses, \"residences are becoming a huge piece of our business,\" with homeowners gaining access to all of Six Senses' unique amenities.\n\n\n### 7. Mandarin Oriental\n\nMandarin Oriental branded residences are primarily boutique-scale properties that embrace the brand's Asian heritage. The portfolio includes standalone and hotel-attached options, with wellness as a top priority, allowing residents to buy properties in prime locations including Beverly Hills, Bangkok, and Barcelona. Services include housekeeping, 24/7 concierge, and valet parking.\n\n\n---\n\n## Tier 3: Ultra-Luxury & Boutique Operators\n\n### 8. Aman\n\nUltra-private and architecturally driven, Aman limits its residential portfolio to under 15 projects globally to preserve exclusivity, with Aman Residences New York and Aman Nai Lert Bangkok representing the brand's approach to urban residential living.\n \nTier 1 scarcity brands like Aman compound a 30–50% premium over comparable unbranded properties.\n\n\n### 9. Rosewood\n\nRosewood is rapidly expanding with a \"sense of place\" philosophy; each Rosewood residence is architecturally rooted in its location — from Hillsboro Beach, Florida to Marbella, Spain to Hong Kong.\n \nRosewood remains active at the luxury end of the spectrum.\n\n\n### 10. Kerzner International (One&Only, Atlantis)\n\nAman, Auberge, Montage, and Kerzner continue to define the ultra-luxury segment.\n Kerzner's One&Only brand is particularly well-recognized in resort-led destinations across Africa, the Middle East, and Asia-Pacific.\n\n### 11. Auberge Resorts & Montage\nBoth brands occupy a refined ultra-luxury niche in North America and resort markets, \nwith real estate being a natural evolution for these household name hotel brands.\n\n\n---\n\n## Tier 4: Wellness, Lifestyle & Regional Specialists\n\n### 12. Banyan Tree / Banyan Group\n\nBanyan Group remains active at the luxury end of the branded residences spectrum.\n Banyan Tree's wellness-led model is particularly well-suited to resort destinations across Asia and the Middle East.\n\n### 13. Raffles (via Accor)\nRaffles operates in the ultra-luxury space with a heritage appeal, particularly well-positioned in gateway cities and resort destinations where colonial-era prestige resonates with buyers.\n\n### 14. Regional & Lifestyle Brands\n\nRegional and lifestyle-driven brands are also gaining traction, including Emaar, Jumeirah, Nikki Beach, Faena, and Cipriani, alongside boutique operators such as Soneva, COMO, and Lefay, reflecting increased emphasis on wellness, sustainability, and experiential positioning.\n\n\n---\n\n## Key Considerations When Selecting a Brand\n\nWhen evaluating which brand to partner with, owners should weigh the following factors:\n\n1. **Price Premium**: \nThe price premium for branded residences can be significant, and the extent of the premium relates to several factors combined, including the hotel brand, design, location, range of services, and exclusivity of the experience.\n \nEach of the brands under consideration should be in a position to provide hard data from other comparable projects to support their assertions of the premium that can be achieved.\n\n\n2. **Scale vs. Exclusivity**: \nTier 1 scarcity brands (Aman, Rosewood, Cheval Blanc, Bulgari) compound a 30–50% premium, while mass-luxury brands (Marriott Ritz-Carlton, St. Regis, JW, EDITION; Accor; Hilton Conrad) see the premium commoditized toward 5–15% in oversupplied markets.\n\n\n3. **Symbiotic Hotel-Residence Relationship**: \nAn adjacent hotel, with an experienced staff and amenities such as spas, restaurants, and clubs, is well-positioned to offer the luxury living experience to long-term residents. The hotel-style services provided to residents also offer an additional ongoing revenue stream for the hotel owner and a way to share fixed operating costs.\n\n\n4. **Brand Track Record**: \nLuxury hotel brands active in the residences space, such as Four Seasons and Ritz-Carlton, have been doing this for a long time and their track record of bringing a lift to sales prices is demonstrated consistently, resulting in consistent lifts in purchase prices both in initial sales and resales.\n\n\n5. **Access to Buyer Pool**: \nAccess to the brand's existing customer base is a key benefit for developers. These benefits should be balanced against the costs of brand association, including royalty, design or commitment fees, service charges, construction costs, FF&E costs, and reserve.\n\n\n6. **Standalone vs. Mixed-Use**: \nThe branded residential market is expanding, with standalone branded residential projects expected to rise from 8% to over 12% globally\n — giving owners more flexibility in how they structure projects.\n\n---\n\n## Summary Table\n\n| **Tier** | **Brand/Parent** | **Best For** |\n|---|---|---|\n| Global Leaders | Marriott, Accor | Scale, multi-brand flexibility, global reach |\n| Premium Single-Brand | Four Seasons, Hilton (Waldorf/Conrad), Hyatt, IHG | Strong premium, proven track record |\n| Boutique Luxury | Mandarin Oriental, Rosewood | Design-led, curated service |\n| Ultra-Luxury | Aman, Kerzner (One&Only), Auberge, Montage | Maximum price premium, exclusivity |\n| Wellness/Lifestyle | Six Senses, Banyan Tree, Soneva, COMO | Wellness-oriented markets, destination resorts |\n| Regional/Lifestyle | Jumeirah, Emaar, Nikki Beach, Faena | Specific geographic or lifestyle markets |\n\nUltimately, the right brand depends on the **project location, target buyer profile, positioning strategy, and the owner's long-term financial objectives** — and securing experienced legal and advisory counsel early in the process is strongly recommended.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 9383,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "IHG",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "IHG"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "associated_option",
+        "firstRecommendation": false,
+        "questionStatus": "PRESENT",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:03.632Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": null,
+      "IHG_AUDIT": {
+        "SPECIFIC_CANONICAL_REFERENCE": "NO",
+        "PARENT_ONLY_REFERENCE": "YES",
+        "EXACT_TEXT": "IHG",
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "parent_IHG_mention_nominated_as_specific_IHG_Hotels_and_Resorts_Managed; human entityPresent treats parent as managed subject"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_8d9c220b",
+      "SOURCE_CASE_ID": "cand_8d9c220b",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "Aquí tienes un análisis detallado y estructurado de las principales **marcas hoteleras lifestyle** que un propietario debería considerar al posicionar un hotel en el Caribe y América Latina (CALA) con base en experiencia diferenciada y carácter local:\n\n---\n\n# 🏨 Marcas Hoteleras Lifestyle para el Caribe y América Latina\n\n> El contexto es favorable: \nen los últimos años, el concepto de lujo en la hotelería ha cambiado de forma notable en América Latina y el Caribe. El viajero actual ya no busca únicamente comodidad, sino autenticidad, privacidad y una conexión real con el destino. La tendencia apunta hacia espacios más íntimos, sostenibles y pensados para integrarse con su entorno.\n\n\n---\n\n## 🔵 GRUPO MARRIOTT INTERNATIONAL\n\n### 1. Autograph Collection\nLa marca más activa en la región en términos de carácter local e identidad de destino.\n\n- \nAutograph Collection ha expandido su portafolio caribeño con propiedades como Donoma Las Terrenas Beach Resort & Spa en República Dominicana, cuyo diseño enfatiza materiales naturales, acabados artesanales y layouts abiertos. El arte local y paletas de color sutiles reflejan el paisaje circundante.\n\n- \nEn Costa Rica, Marriott firmó acuerdos con Enjoy Group para crear una gama de hoteles de inspiración local bajo la marca Autograph Collection, sumando propiedades como El Mangroove y Punta Islita.\n\n- \nEn Playa Panamá, El Mangroove, Autograph Collection, invita a los huéspedes a participar en esfuerzos de conservación: plantan especies nativas que luego forman un mural viviente en el lobby del hotel y son transferidas a una estación experimental, dejando una huella positiva más allá de la estadía.\n\n- \nEn Guatapé, Colombia, The Brown, Autograph Collection, teje diseño, naturaleza y autenticidad local, convirtiendo cada visita cultural en una extensión natural de la experiencia del hotel.\n\n- **Ideal para:** Propiedades con historia, arquitectura vernácula, entornos naturales únicos o ubicaciones culturalmente ricas. Alta flexibilidad de diseño.\n\n---\n\n### 2. W Hotels\nMarca icónica de lujo-lifestyle con ADN de moda, música y entretenimiento.\n\n- \nMarriott tiene W Punta Cana, un resort adults-only all-inclusive de lujo, con 240 habitaciones y 13 restaurantes y bares, infinity pool, beach club y AWAY Spa.\n\n- \nMarriott también está introduciendo nuevas residencias de lujo bajo W Hotels en el Caribe y América Latina.\n\n- **Ideal para:** Destinos de playa vibrantes, mercado adulto sofisticado, propiedades con gran inversión en diseño, F&B y entretenimiento nocturno.\n\n---\n\n### 3. Tribute Portfolio\nMarca de hoteles independientes con carácter propio dentro del ecosistema Marriott Bonvoy.\n\n- \nCon la apertura del Recoleta Grand en Buenos Aires, el presidente de Marriott CALA destacó que Tribute Portfolio \"captura la esencia de lo que hace que la marca sea tan convincente: diseño distintivo, espacios vibrantes y una conexión auténtica con el lugar\", siendo una adición a su creciente colección global de hoteles independientes que celebran el carácter y la creatividad.\n\n- **Ideal para:** Hoteles boutique independientes que quieren mantener su identidad única, accediendo a la distribución y lealtad de Bonvoy.\n\n---\n\n## 🟡 GRUPO IHG HOTELS & RESORTS\n\n### 4. Kimpton Hotels & Restaurants\nLa marca lifestyle más expansiva de IHG, con enfoque boutique, diseño audaz y servicio con personalidad.\n\n- \nEntre las aperturas recientes de IHG en la región destaca Kimpton Mas Olas Resort and Spa en Baja California, México. Además, hay una próxima oferta conjunta de hotel y residencias Kimpton en Tulum, México.\n\n- \nIHG también anunció el signing de un Kimpton en Turks & Caicos, en la pintoresca Grace Bay, marcando el debut de IHG en esa isla caribeña, con apertura prevista para 2027.\n\n- \nKimpton es la amplia y dinámica marca boutique dentro de IHG.\n\n- **Ideal para:** Destinos de playa y ciudades con escena cultural activa; propietarios que buscan un programa de lealtad robusto (IHG One Rewards) con estándar lifestyle accesible.\n\n---\n\n### 5. Hotel Indigo\nMarca lifestyle de barrio, construida sobre la narrativa local de cada destino.\n\n- \nComo \"The World's Neighborhood Hotel\", Hotel Indigo se inspira en el barrio y la cultura de cada hotel para crear una atmósfera cálida y vibrante que invite a los huéspedes a descubrir algo nuevo.\n\n- \nEn 2024, IHG abrió el Hotel Indigo Grand Cayman, consolidando su presencia en el Caribe.\n\n- \nAdicionalmente, IHG anunció el signing de un Hotel Indigo en Turks & Caicos con apertura prevista antes de 2027.\n\n- **Ideal para:** Propiedades urbanas o destinos con identidad cultural muy marcada (ciudades coloniales, barrios históricos, comunidades costeras con tradición artesanal).\n\n---\n\n### 6. Vignette Collection\nLa propuesta más independiente y \"curada\" de IHG para hoteles únicos con propósito.\n\n- \nVignette Collection, la más reciente marca luxury-lifestyle de IHG debutada en 2021, es una curación de hoteles únicos con estadías irrepetibles, todos unidos por un sentido de propósito.\n\n- \nSOUMA Hotel Lima fue el primer Vignette Collection de América del Sur, con diseño minimalista inspirado en la Reserva Natural Pacaya Samiria de Perú, tres restaurantes signature y un extenso rooftop con infinity pool en el barrio de Miraflores, Lima.\n\n- **Ideal para:** Propiedades con una narrativa de sostenibilidad o propósito muy definida, que desean mantener alto grado de autonomía creativa con el respaldo de IHG.\n\n---\n\n## 🔴 GRUPO HYATT\n\n### 7. Andaz\nLa marca lifestyle más orientada al arte y la cultura local dentro del portafolio de Hyatt.\n\n- \nCon 32 propiedades, Andaz combina lujo y lifestyle, apoyándose profundamente en el arte y la cultura local, pero sin excederse como lo hacen competidores como W Hotels o Edition.\n\n- \nEsta marca de lifestyle aparece en ubicaciones urbanas y de resort, con servicio elevado, diseño y amenidades que atraen a viajeros sofisticados que buscan hoteles que reflejen estilo personal y creatividad. De hecho, \"Andaz\" significa \"estilo personal\" en hindi.\n\n- **Ideal para:** Destinos con capital cultural (ciudades como Ciudad de México, San José, Bogotá) o resorts de naturaleza integrados al entorno local.\n\n---\n\n### 8. Thompson Hotels\nMarca lifestyle premium de Hyatt con enfoque en diseño escénico y atmósfera social.\n\n- \nThompson Hotels forma parte del Lifestyle Portfolio de Hyatt, junto con Andaz, The Standard, Dream Hotels y JdV by Hyatt.\n\n- \nThompson Monterrey fue una de las aperturas previstas de Hyatt en la región, como parte de su expansión en México.\n\n- **Ideal para:** Mercados urbanos con alta demanda de experiencias gastronómicas y sociales (rooftops, lobbies activados, F&B de autor).\n\n---\n\n### 9. The Unbound Collection by Hyatt\nColección de hoteles de lujo boutique con identidad propia bajo el paraguas de Hyatt.\n\n- \nThe Unbound Collection ofrece estadías históricas y culturales en ubicaciones espléndidas. Son propiedades de lujo boutique con amenidades únicas, pero que mantienen su visión independiente del lujo con el respaldo operativo global de Hyatt.\n\n- \nThe Unbound Collection compite directamente con Autograph Collection de Marriott y Curio Collection de Hilton.\n\n- **Ideal para:** Haciendas, estancias, propiedades históricas o eco-lodges de alta gama que buscan preservar su carácter único.\n\n---\n\n## 🟣 GRUPO HILTON\n\n### 10. Curio Collection by Hilton\nLa apuesta de Hilton para hoteles de carácter único con conexión al destino.\n\n- \nEntre los proyectos más relevantes de Hilton en la región está Zemi Miches Punta Cana All-Inclusive Resort, Curio Collection by Hilton, en 2,000 pies de playa prístina en República Dominicana; y York Medellín, Curio Collection by Hilton, el primer hotel lifestyle Curio de Colombia.\n\n- \nMás de la mitad de las aperturas de Hilton en 2025 en la región fueron bajo sus marcas de lujo y lifestyle, incluyendo Curio Collection, superando el centenar de hoteles en este segmento.\n\n- **Ideal para:** Propiedades de resort o urbanas que quieren diferenciarse con una narrativa propia dentro del ecosistema Hilton Honors.\n\n---\n\n## 📊 Tabla Comparativa Rápida\n\n| Marca | Grupo | Enfoque Principal | Escala en CALA | Mejor Para |\n|---|---|---|---|---|\n| **Autograph Collection** | Marriott | Carácter local, diseño, narrativa única | ★★★★★ | Hoteles boutique, eco-resorts, patrimonio |\n| **Kimpton** | IHG | Diseño audaz, servicio con personalidad | ★★★★ | Playa + urbano, adultos |\n| **Hotel Indigo** | IHG | Identidad de barrio/vecindario | ★★★ | Destinos culturales, ciudades coloniales |\n| **Curio Collection** | Hilton | Independencia con red Hilton | ★★★★ | Resorts de playa distintivos |\n| **Andaz** | Hyatt | Arte y cultura local, lujo lifestyle | ★★★ | Urbano + resort de naturaleza |\n| **W Hotels** | Marriott | Moda, música, entretenimiento | ★★★ | Playa vibrante, adultos premium |\n| **Tribute Portfolio** | Marriott | Identidad 100% independiente | ★★★ | Hoteles boutique con historia |\n| **Vignette Collection** | IHG | Propósito, sostenibilidad, unicidad | ★★ | Propiedades con fuerte narrativa |\n| **Thompson Hotels** | Hyatt | Diseño escénico, F&B + social | ★★ | Urbano premium, mercados aspiracionales |\n| **The Unbound Collection** | Hyatt | Lujo boutique independiente | ★★ | Haciendas, lodges históricos |\n\n---\n\n## 💡 Recomendaciones Estratégicas para el Propietario\n\n1. **Si la propiedad tiene una identidad local muy fuerte** (arquitectura vernácula, entorno natural único, historia): **Autograph Collection** o **Vignette Collection** son las opciones más respetuosas con el carácter original.\n\n2. **Si el objetivo es maximizar distribución y lealtad** con marca lifestyle reconocida: **Kimpton** (IHG One Rewards) o **Curio Collection** (Hilton Honors) ofrecen la mejor combinación de exposición global y flexibilidad de diseño.\n\n3. **Si el destino es urbano y culturalmente vibrante**: **Andaz**, **Hotel Indigo** o **Thompson Hotels** permiten construir una narrativa de barrio y comunidad local muy potente.\n\n4. **Si el producto es all-inclusive adults-only con aspiración premium**: **W Hotels** o **Autograph Collection** ya tienen prueba de concepto exitosa en el Caribe.\n\n5. \nA pesar de un entorno macroeconómico mixto, la industria turística de la región ha experimentado un auge, con la UNWTO registrando que América Latina y el Caribe superó los niveles prepandemia de 2019\n, lo que hace de este un momento estratégicamente favorable para posicionarse con una marca lifestyle diferenciada.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 10433,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "omo El Mangroove y Punta Islita. - En Playa Panamá, El Mangroove, Autograph Collection, invit",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "omo El Mangroove y Punta Islita. - En Playa Panamá, El Mangroove, Autograph Collection, invit",
+        " Latina. - **Ideal para:** Destinos de playa vibrantes, mercado adulto sofisticado, propiedade",
+        " de IHG. - **Ideal para:** Destinos de playa y ciudades con escena cultural activa; propietari",
+        " Collection by Hilton, en 2,000 pies de playa prístina en República Dominicana; y York Medellín",
+        "daz, servicio con personalidad | ★★★★ | Playa + urbano, adultos | | **Hotel Indigo** | IHG | Id",
+        "ncia con red Hilton | ★★★★ | Resorts de playa distintivos | | **Andaz** | Hyatt | Arte y cultur"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:25.474Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "omo El Mangroove y Punta Islita. - En Playa Panamá, El Mangroove, Autograph Collection, invit",
+        "EXAMPLE_SURFACES": [
+          "omo El Mangroove y Punta Islita. - En Playa Panamá, El Mangroove, Autograph Collection, invit",
+          " Latina. - **Ideal para:** Destinos de playa vibrantes, mercado adulto sofisticado, propiedade",
+          " de IHG. - **Ideal para:** Destinos de playa y ciudades con escena cultural activa; propietari",
+          " Collection by Hilton, en 2,000 pies de playa prístina en República Dominicana; y York Medellín",
+          "daz, servicio con personalidad | ★★★★ | Playa + urbano, adultos | | **Hotel Indigo** | IHG | Id",
+          "ncia con red Hilton | ★★★★ | Resorts de playa distintivos | | **Andaz** | Hyatt | Arte y cultur"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_a07ee6c3",
+      "SOURCE_CASE_ID": "cand_a07ee6c3",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_SUBJECT": "IHG Hotels & Resorts (Managed)",
+      "CANONICAL_ID": "rec7IXYQYpKMYsrDl",
+      "FULL_STORED_RESPONSE": "This is a great question that sits at the intersection of hotel brand strategy, real estate development, and operator selection. Here is a comprehensive overview of the upper-upscale hotel brands most commonly shortlisted by owners and developers in Europe, organized by parent group:\n\n---\n\n## 🏨 Upper-Upscale Hotel Brands Commonly Shortlisted in Europe\n\n### 📊 Market Context First\n\n\nUpper-upscale development in Europe reached record-high project and room counts at Q4 2025 with 307 projects and 48,969 rooms, while luxury development also hit a record-high project count of 174 projects and 21,249 rooms.\n This sustained momentum means brand competition for management and franchise agreements is intense.\n\n\nRenovations and brand conversions remain a substantial part of the pipeline, with 667 projects and 87,640 rooms — an increase of 5% in projects and 7% in rooms year-over-year\n, reflecting that owners are not just building new — they're actively repositioning existing assets into upper-upscale brands.\n\n---\n\n### 1. 🔵 **Marriott International**\nMarriott is the dominant global hotel group and a perennial favourite on European owner shortlists. \nMarriott oversees Ritz-Carlton, St. Regis, W, The Luxury Collection, JW Marriott, Sheraton, and Westin.\n For upper-upscale specifically, the most shortlisted brands include:\n- **Sheraton** – the workhorse full-service brand, popular for conversions and new builds in gateway cities\n- **Westin** – wellness-positioned, strong with leisure and mixed-use developments\n- **W Hotels** – lifestyle-led, popular in urban and resort destinations\n- **The Luxury Collection** – soft-brand option for unique, independent-style properties\n- **JW Marriott** – premium meetings & conventions focus\n\n\nOn Marriott's Q4 2025 earnings call, executives described a strategy explicitly weighted toward the top of the market, with a worldwide development pipeline reaching a record 610,000 rooms, up 6% year-over-year, with roughly 265,000 of those rooms under construction.\n\n\n---\n\n### 2. 🟡 **Hilton Worldwide**\n\nHilton is one of the most recognised hotel brands globally and has built a powerful franchise and management platform across all major segments. Its upscale brands include Canopy by Hilton, Curio Collection, DoubleTree by Hilton, Hilton Hotels & Resorts, and Tapestry Collection, while luxury brands include Conrad Hotels & Resorts, LXR Hotels & Resorts, and Waldorf Astoria Hotels & Resorts.\n\n\nFor upper-upscale projects in Europe, owners most commonly shortlist:\n- **Hilton Hotels & Resorts** – the flagship brand, well-recognised in primary and secondary European cities\n- **DoubleTree by Hilton** – frequently considered for conversions and suburban/airport locations\n- **Curio Collection** – soft-brand option for design-led, independent-style properties\n- **Canopy by Hilton** – lifestyle-oriented, gaining traction in urban European markets\n\n---\n\n### 3. 🔴 **IHG Hotels & Resorts**\n\nInterContinental Hotels Group (IHG) is a hotel brand based in the United Kingdom. It owns some of the most recognisable hotel brands in Europe and the rest of the world, with examples including InterContinental Hotels & Resorts, Regent Hotels & Resorts, Holiday Inn, Crowne Plaza, and Hotel Indigo.\n\n\nCommonly shortlisted upper-upscale brands from IHG include:\n- **InterContinental Hotels & Resorts** – flagship full-service brand, strong in Europe's capital cities\n- **Crowne Plaza** – popular with business travel-focused developments and convention hotels\n- **Kimpton Hotels** – boutique lifestyle, increasingly active in European urban markets\n- **voco Hotels** – a conversion-friendly soft brand growing rapidly in Europe\n- **Hotel Indigo** – boutique/lifestyle positioning for unique buildings and adaptive reuse projects\n\n\nIHG operates luxury/lifestyle (InterContinental, Regent, Six Senses), upscale and mid-scale (Crowne Plaza, Holiday Inn), and economy/express brands. A recent development was the acquisition of \"Ruby\", a Europe-based urban-lifestyle hotel brand, to expand its portfolio.\n\n\n---\n\n### 4. 🟠 **Accor**\n\nAccor encompasses Raffles, Fairmont, Sofitel, Pullman, and, alongside LVMH, the legendary Orient Express.\n As a Europe-headquartered group with deep local relationships, Accor is frequently on shortlists, particularly for:\n- **Sofitel** – the flagship upper-upscale/luxury brand, strong in France and Southern Europe\n- **Pullman** – MICE and business travel-focused, popular across Europe\n- **MGallery** – boutique soft brand for heritage buildings and design-led properties\n- **Mövenpick** – growing European presence, especially for resort and leisure assets\n- **Emblems Collection** – newer soft brand for unique, independent properties\n\n\nAccor achieved its first-ever gross margin above €1 billion in 2024, outperforming expectations.\n \nThe group is committed to co-investing with hotel developers\n, which is a key differentiator for owners.\n\n---\n\n### 5. 🟢 **Radisson Hotel Group**\n\nThroughout 2025, Radisson Hotel Group retained Radisson Blu as Europe's largest upper-upscale brand, with a presence in 154 cities.\n \nIt also continues to lead Europe's resort segment, with Radisson Blu resorts spanning 27 destinations across the continent.\n\n\nKey brands shortlisted include:\n- **Radisson Blu** – the dominant upper-upscale brand in Europe; well-known among institutional owners\n- **Radisson Collection** – soft brand for premium independent-style properties\n- **Radisson RED** – lifestyle and design-oriented, popular with younger developments\n\n\nAcross EMEA, the group recorded around 70 signings and openings, with continued focus on Southern Europe, the UK, France, Germany, and Poland.\n Notably, Radisson Hotel Group is owned by Jin Jiang International. \nJin Jiang's international brands focus strongly on upscale and upper-upscale positioning.\n\n\n---\n\n### 6. 🔵 **Hyatt Hotels Corporation**\n\nHyatt is a U.S. hospitality company based in Chicago, operating in the luxury, upper-upscale, upscale, and resort categories. As of mid-2024, it runs over 1,350 hotels and all-inclusive properties across around 78 countries.\n\n\nBrands shortlisted in Europe include:\n- **Grand Hyatt** – full-service flagship for landmark urban hotels\n- **Hyatt Regency** – well-regarded for large convention and business hotels\n- **Andaz** – boutique lifestyle brand, increasingly sought-after for urban adaptive reuse\n\n\nHyatt has increasingly emphasised fee-based revenue over property ownership through an asset-light model\n, making it an attractive management partner for owners who want to retain control.\n\n---\n\n### 7. 🌍 **Other Notable Brands**\nBeyond the Big Five groups, European owners may also shortlist:\n- **Steigenberger / H World** – \nH World has expanded into Europe through strategic partnerships and operates several international brands including Steigenberger.\n\n- **Minor Hotels / NH Hotels** – active across Europe, with brands such as NH Collection and Anantara in the upper-upscale tier\n- **Melia Hotels International** – strong Iberian heritage with ME by Meliá and Gran Meliá\n\n---\n\n## 🔑 Key Takeaways for Owners & Developers\n\n| Factor | Consideration |\n|---|---|\n| **Market Coverage** | Radisson Blu has the widest European city footprint; Marriott and Hilton have the strongest loyalty ecosystems |\n| **Conversion Friendliness** | voco (IHG), Curio Collection (Hilton), MGallery (Accor), and Radisson Collection are designed for conversions |\n| **Lifestyle/Boutique** | Kimpton, Andaz, W, Canopy, Hotel Indigo, and Radisson RED cater to design-led developments |\n| **Owner Relations** | Radisson and Accor are frequently cited as strong co-investment and owner-centric operators |\n| **Pipeline Momentum** | \nThe upper-upscale segment reached a record-high room count with 297 projects and 48,479 rooms\n across Europe, indicating fierce brand competition and a wide choice for owners |\n\nThe shortlist for any specific project will ultimately depend on the location, asset type (city, resort, convention), target guest mix, and the owner's preferred operator relationship (franchise vs. management agreement).",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 8083,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "IHG Hotels & Resorts",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "IHG Hotels & Resorts"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "associated_option",
+        "firstRecommendation": false,
+        "questionStatus": "PRESENT",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:02.514Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": null,
+      "IHG_AUDIT": {
+        "SPECIFIC_CANONICAL_REFERENCE": "NO",
+        "PARENT_ONLY_REFERENCE": "YES",
+        "EXACT_TEXT": "IHG Hotels & Resorts",
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "parent_IHG_mention_nominated_as_specific_IHG_Hotels_and_Resorts_Managed; human entityPresent treats parent as managed subject"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    },
+    {
+      "CASE_ID": "v2_cand_adfdf95e",
+      "SOURCE_CASE_ID": "cand_adfdf95e",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "FULL_STORED_RESPONSE": "Convertir un hotel *upper-upscale* (gama alta superior) existente en el Caribe y América Latina (CALA) es una de las estrategias de inversión más atractivas actualmente. Permite acelerar el tiempo de salida al mercado (*time-to-market*), optimizar el capital de trabajo frente a los altos costos de construcción de nuevos proyectos y acceder inmediatamente a los potentes motores de distribución y programas de fidelización de las grandes cadenas globales.\n\nAl considerar la conversión de un inmueble en este segmento, la decisión principal radica en elegir entre una **Marca \"Soft\" (Colección)** —que permite preservar la identidad local, arquitectura única e independencia operativa del hotel— o una **Marca \"Hard\" (Estandarizada/Lifestyle)** —que impone pautas de diseño y marca más estrictas, pero ofrece un posicionamiento de marca masivo e instantáneo.\n\nA continuación, se presentan las principales marcas hoteleras que un propietario debería evaluar en la región CALA para la categoría *upper-upscale*:\n\n---\n\n### 1. Marcas \"Soft\" o Colecciones (La opción preferida para conversiones)\n\nLas marcas de colección son ideales para activos con carácter, buena arquitectura e identidad propia. Exigen un costo de adecuación (PIP - *Property Improvement Plan*) generalmente menor en comparación con las marcas tradicionales.\n\n*   **Autograph Collection (Marriott International):**\n    *   **Posicionamiento:** Alta gama superior / lujo independiente.\n    *   **Por qué considerarla:** Es el líder global de las marcas \"soft\". En CALA tiene un desempeño excelente tanto en destinos urbanos (ej. Bogotá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Marriott Bonvoy** (más de 200 millones de miembros) sin perder el concepto boutique del hotel.\n*   **Curio Collection by Hilton:**\n    *   **Posicionamiento:** Upper-upscale con narrativa y personalidad única.\n    *   **Por qué considerarla:** Compite directamente con Autograph. Hilton ha demostrado gran flexibilidad contractual en la región CALA para adaptar hoteles existentes. Los propietarios se benefician de la red de distribución de **Hilton Honors** y de sólidas tarifas promedio diarias (ADR).\n*   **Tribute Portfolio (Marriott International):**\n    *   **Posicionamiento:** Upper-upscale boutique de estilo de vida.\n    *   **Por qué considerarla:** A diferencia de Autograph, Tribute tiene un enfoque más juvenil, centrado en el diseño vibrante, espacios comunitarios y gastronomía de autor. Suele ser más flexible en los requerimientos de conversión y es ideal para hoteles boutique urbanos o de ocio de entre 50 y 150 habitaciones.\n*   **The Unbound Collection by Hyatt:**\n    *   **Posicionamiento:** Upper-upscale a lujo, enfocado en hoteles con historia o narrativa singular.\n    *   **Por qué considerarla:** Aunque exige estándares operativos y de servicio muy elevados, permite capturar al viajero de alto poder adquisitivo del programa **World of Hyatt**, reconocido por tener los miembros con mayor gasto promedio por estancia de la industria.\n*   **MGallery Hotel Collection (Accor):**\n    *   **Posicionamiento:** Upper-upscale boutique con fuerte toque de estilo de vida y cultura local.\n    *   **Por qué considerarla:** Accor tiene una presencia y reconocimiento de marca sumamente consolidados en Sudamérica (especialmente en Brasil, Chile, Colombia y Argentina). Es una opción idónea si la base de clientes objetivo proviene en gran medida de Europa y Sudamérica.\n\n---\n\n### 2. Marcas \"Hard\" y de Estilo de Vida (*Lifestyle*)\n\nSi la propiedad necesita un reposicionamiento total en el mercado o el propietario busca apoyarse en un concepto de marca sumamente reconocido por el viajero corporativo y de placer:\n\n*   **Renaissance Hotels (Marriott):**\n    *   **Posicionamiento:** Upper-upscale centrado en el descubrimiento local y estilo de vida.\n    *   **Por qué considerarla:** Es una de las marcas \"hard\" de Marriott más flexibles para reconversión. Funciona muy bien en destinos urbanos clave y centros financieros de América Latina.\n*   **Hyatt Centric (Hyatt):**\n    *   **Posicionamiento:** Upper-upscale estilo de vida urbano/experiencial.\n    *   **Por qué considerarla:** Diseñada específicamente para ubicar al huésped en el centro de la acción. Si la propiedad está en un centro urbano dinámico (como Ciudad de México, San Salvador, Santiago o Lima), es una opción muy atractiva para viajeros de negocios y turismo *bleisure*.\n*   **Westin Hotels & Resorts (Marriott):**\n    *   **Posicionamiento:** Upper-upscale enfocado en el bienestar (*wellness*).\n    *   **Por qué considerarla:** Excepcional para propiedades de cierto tamaño (más de 150-200 habitaciones) tanto en destinos de resort/playa como de negocios. Posee una lealtad de marca altísima entre viajeros ejecutivos y de salud/bienestar.\n*   **Canopy by Hilton:**\n    *   **Posicionamiento:** Upper-upscale enfocado en la experiencia de barrio (*neighborhood destination*).\n    *   **Por qué considerarla:** Excelente para propiedades urbanas con fuerte componente gastronómico y de entretenimiento local.\n*   **Kimpton Hotels & Restaurants (IHG):**\n    *   **Posicionamiento:** Upper-upscale / lujo boutique.\n    *   **Por qué considerarla:** Destaca por su oferta gastronómica (F&B) galardonada, diseño vanguardista y servicio personalizado. IHG ha estado impulsando fuertemente la expansión de Kimpton en el Caribe y Latinoamérica.\n\n---\n\n### 3. Consideración Especial: El Segmento All-Inclusive en CALA\n\nSi la propiedad existente se ubica en el Caribe o en un destino de playa (Riviera Maya, Punta Cana, Costa Rica, Jamaica, etc.) y opera o desea operar bajo el modelo **Todo Incluido (*All-Inclusive*)**:\n\n*   **Marriott All-Inclusive Collection:** Permite integrar el hotel bajo marcas como *Autograph Collection All-Inclusive* o *Tribute Portfolio All-Inclusive*, maximizando la distribución global manteniendo el concepto All-Inclusive.\n*   **Hyatt Inclusive Collection:** A través de marcas como **Dreams Resorts & Spas** o **Breathless Resorts & Spas** (para adultos), Hyatt domina gran parte de este segmento *upper-upscale* y lujo en la región.\n*   **Hilton All-Inclusive:** Hilton ofrece conversiones a su marca bandera (*Hilton All-Inclusive*) o a través de *Curio Collection*, adaptadas para resorts de playa existentes.\n\n---\n\n### Criterios Clave para Tomar la Decisión\n\nAl evaluar estas opciones, el propietario debe ponderar los siguientes aspectos financieros y operativos:\n\n1.  **Costo del PIP (Plan de Mejora de la Propiedad):**\n    *   Las marcas *Hard* (ej. Westin, Canopy) impondrán cambios estandarizados en mobiliario, baños, tecnología y áreas comunes que pueden elevar significativamente el CAPEX inicial.\n    *   Las marcas *Soft* (ej. Autograph, Curio, Tribute) adaptan sus requisitos a la arquitectura existente, reduciendo el desembolso inicial.\n2.  **Aportación de Canales Directos y Fidelización:**\n    *   Marriott Bonvoy y Hilton Honors suelen aportar entre el 50% y el 70% de las reservas en propiedades consolidadas, reduciendo la dependencia de las Agencias de Viajes Online (OTAs) y sus elevadas comisiones.\n3.  **Composición de Honorarios (*Fees*):**\n    *   Estructura típica: Fee de Franquicia (Royalty Fee: ~4%-6% de los ingresos de habitaciones), Programas de Fidelidad (~4%-5% sobre ingresos de miembros), Fee de Marketing y Distribución (~1.5%-3%).\n4.  **Autonomía Operativa y F&B:**\n    *   Si el hotel cuenta con un restaurante o bar independiente con marca y reputación propia muy exitosa, las marcas *Soft* o *Kimpton* suelen dar mayor libertad para mantener estos conceptos sin exigir la estandarización corporativa de Alimentos y Bebidas.\n\n**Recomendación:** La mejor práctica antes de firmar una Carta de Intención (LOI) con cualquier cadena es encargar un **estudio de viabilidad y prueba de concepto de conversión (*Conversion Feasibility Study*)** con una consultora especializada en la región CALA, comparando los PIP estimados y el incremento proyectado de RevPAR (Ingreso por Habitación Disponible) que aportaría cada marca.",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 8075,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "tá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Ma",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "tá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Ma",
+        "bitaciones) tanto en destinos de resort/playa como de negocios. Posee una lealtad de marca altí",
+        "e ubica en el Caribe o en un destino de playa (Riviera Maya, Punta Cana, Costa Rica, Jamaica, e",
+        " Collection*, adaptadas para resorts de playa existentes. --- ### Criterios Clave para Tomar "
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:09.524Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "tá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Ma",
+        "EXAMPLE_SURFACES": [
+          "tá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Ma",
+          "bitaciones) tanto en destinos de resort/playa como de negocios. Posee una lealtad de marca altí",
+          "e ubica en el Caribe o en un destino de playa (Riviera Maya, Punta Cana, Costa Rica, Jamaica, e",
+          " Collection*, adaptadas para resorts de playa existentes. --- ### Criterios Clave para Tomar "
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+    }
+  ]
+}

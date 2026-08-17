@@ -19,12 +19,14 @@ const FIXTURE = path.join(ROOT, "fixtures/brand-explorer-presentation-radisson-f
 function parseArgs(argv) {
   const dryRun = argv.includes("--dry-run");
   let brandName = "Radisson";
+  let brandRecordId = "";
   let fixturePath = FIXTURE;
   for (let i = 2; i < argv.length; i++) {
     if (argv[i] === "--brand-name" && argv[i + 1]) brandName = argv[++i];
+    else if (argv[i] === "--brand-record-id" && argv[i + 1]) brandRecordId = argv[++i];
     else if (argv[i] === "--fixture" && argv[i + 1]) fixturePath = path.resolve(ROOT, argv[++i]);
   }
-  return { dryRun, brandName, fixturePath };
+  return { dryRun, brandName, brandRecordId: brandRecordId.trim(), fixturePath };
 }
 
 async function findBasicsByName(base, brandName) {
@@ -77,11 +79,22 @@ function buildFields(brandRecordId, linkField, r, brandName) {
 }
 
 async function main() {
-  const { dryRun, brandName, fixturePath } = parseArgs(process.argv);
+  const { dryRun, brandName, brandRecordId, fixturePath } = parseArgs(process.argv);
   const data = JSON.parse(fs.readFileSync(fixturePath, "utf8"));
   const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
-  const brandId = await findBasicsByName(base, brandName);
-  const existing = await selectPresentationForBrand(base, brandId, brandName);
+  let brandId = brandRecordId;
+  let brandNameForRow = brandName;
+  if (!brandId) {
+    brandId = await findBasicsByName(base, brandName);
+  } else {
+    try {
+      const basics = await base(BASICS).find(brandId);
+      brandNameForRow = String(basics.get("Brand Name") || brandName).trim();
+    } catch {
+      /* keep CLI brand name */
+    }
+  }
+  const existing = await selectPresentationForBrand(base, brandId, brandNameForRow);
   const bySlot = new Map();
   for (const rec of existing) {
     const sk = String(rec.get("Slot Key") || "").trim();
@@ -96,7 +109,7 @@ async function main() {
     if (rec) {
       for (const linkField of LINK_FIELD_CANDIDATES) {
         try {
-          const fields = buildFields(brandId, linkField, row, brandName);
+          const fields = buildFields(brandId, linkField, row, brandNameForRow);
           console.log(`${dryRun ? "Would update" : "Updating"} ${sk} (${rec.id})`);
           if (!dryRun) await base(TABLE).update(rec.id, fields);
           updated++;
@@ -110,7 +123,7 @@ async function main() {
     } else {
       for (const linkField of LINK_FIELD_CANDIDATES) {
         try {
-          const fields = buildFields(brandId, linkField, row, brandName);
+          const fields = buildFields(brandId, linkField, row, brandNameForRow);
           console.log(`${dryRun ? "Would create" : "Creating"} ${sk}`);
           if (!dryRun) await base(TABLE).create([{ fields }]);
           created++;

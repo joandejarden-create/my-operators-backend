@@ -1,0 +1,149 @@
+{
+  "generatedAt": "2026-05-20T18:54:40.409Z",
+  "mode": "dry-run",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "pipelineEnabled": true,
+  "force": false,
+  "protectedTables": {
+    "hotelCensus": "Hotel Census",
+    "brandAliasMapping": "Brand Alias Mapping",
+    "hotelCensusWrites": false,
+    "brandAliasWrites": false,
+    "hotelCensusTableId": "tblgj2qEwxjTcg6q0",
+    "hotelCensusFieldCount": 103,
+    "brandAliasTableId": "tbltwiwQp74ZQtEoR"
+  },
+  "tables": {
+    "candidates": {
+      "tableName": "Independent Hotel Source Candidates",
+      "tableId": "tblKAUKiku7eMlV0d",
+      "exists": true,
+      "createdTable": false,
+      "wouldCreateTable": false,
+      "fieldsPresent": [
+        "Source Name",
+        "Source Type",
+        "Source License",
+        "Source URL",
+        "Source Record ID",
+        "Raw Hotel Name",
+        "Raw Address",
+        "Raw City",
+        "Raw Country",
+        "Raw Latitude",
+        "Raw Longitude",
+        "Raw Website",
+        "Raw Phone",
+        "Raw Brand",
+        "Raw Payload JSON",
+        "Import Batch ID",
+        "Imported At",
+        "Review Status",
+        "Possible Match Confidence",
+        "Recommended Action",
+        "Candidate Dedupe Key",
+        "Linked Evidence"
+      ],
+      "missingFields": [],
+      "fieldsCreated": [],
+      "wouldCreateFields": [],
+      "extraFields": [
+        "Linked Evidence",
+        "Independent Hotel Source Evidence",
+        "Verified Independent Hotel Census"
+      ],
+      "_nameById": {}
+    },
+    "evidence": {
+      "tableName": "Independent Hotel Source Evidence",
+      "tableId": "tbl4FrVompVBs9mTw",
+      "exists": true,
+      "createdTable": false,
+      "wouldCreateTable": false,
+      "fieldsPresent": [
+        "Name",
+        "Evidence Type",
+        "Evidence URL",
+        "Evidence Text",
+        "Captured At",
+        "Captured By",
+        "Match Score",
+        "Match Reason",
+        "Candidate"
+      ],
+      "missingFields": [],
+      "fieldsCreated": [],
+      "wouldCreateFields": [],
+      "extraFields": [
+        "Independent Hotel Source Candidates",
+        "Candidate"
+      ],
+      "_nameById": {}
+    },
+    "verified": {
+      "tableName": "Verified Independent Hotel Census",
+      "tableId": "tbljBvId1z4cEyE1J",
+      "exists": true,
+      "createdTable": false,
+      "wouldCreateTable": false,
+      "fieldsPresent": [
+        "Verified Hotel Name",
+        "Verified Address",
+        "Verified City",
+        "Verified State",
+        "Verified Country",
+        "Verified Postal Code",
+        "Verified Latitude",
+        "Verified Longitude",
+        "Verified Website",
+        "Verified Phone",
+        "Verified Brand Label",
+        "Approved At",
+        "Approved By",
+        "Approval Notes",
+        "Census Reconciliation Status",
+        "Verified Dedupe Key",
+        "Active",
+        "Primary Source Candidate"
+      ],
+      "missingFields": [],
+      "fieldsCreated": [],
+      "wouldCreateFields": [],
+      "extraFields": [
+        "Primary Source Candidate"
+      ],
+      "_nameById": {}
+    }
+  },
+  "hotelCensusLinkFieldsManualOnly": [
+    {
+      "table": "Independent Hotel Source Candidates",
+      "field": "Possible Match in Current Census",
+      "reason": "Airtable API link creation adds an inverse field on the linked table; auto-create would modify Hotel Census schema.",
+      "present": false
+    },
+    {
+      "table": "Independent Hotel Source Evidence",
+      "field": "Compares To Census Record",
+      "reason": "Airtable API link creation adds an inverse field on the linked table; auto-create would modify Hotel Census schema.",
+      "present": false
+    },
+    {
+      "table": "Verified Independent Hotel Census",
+      "field": "Linked Census Record",
+      "reason": "Airtable API link creation adds an inverse field on the linked table; auto-create would modify Hotel Census schema.",
+      "present": false
+    }
+  ],
+  "summary": {
+    "tablesMissing": [],
+    "tablesPresent": [
+      "Independent Hotel Source Candidates",
+      "Independent Hotel Source Evidence",
+      "Verified Independent Hotel Census"
+    ],
+    "totalMissingScalarFields": 0,
+    "totalWouldCreate": 0,
+    "totalCreated": 0
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "families_used": [
+    "Wyndham",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [],
+  "adapter_errors": [],
+  "vic_evidence_rows": 0,
+  "wyndham_discovery": {
+    "source": {
+      "type": "official_wyndham_property_sitemap",
+      "origin": "https://www.wyndhamhotels.com",
+      "sitemap_index": "https://www.wyndhamhotels.com/sitemap.xml",
+      "property_url_pattern": "https://www.wyndhamhotels.com/{brand}/{region}/{property}/overview",
+      "cala_filter": "json_ld_addressCountry_metadata",
+      "blocked_patterns": [
+        "path_keyword_cala_guesses",
+        "OTA listings"
+      ]
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-wyndham-cala-discovery-adapter-v1",
+      "source": {
+        "type": "official_wyndham_property_sitemap",
+        "origin": "https://www.wyndhamhotels.com",
+        "sitemap_index": "https://www.wyndhamhotels.com/sitemap.xml",
+        "property_url_pattern": "https://www.wyndhamhotels.com/{brand}/{region}/{property}/overview",
+        "cala_filter": "json_ld_addressCountry_metadata",
+        "blocked_patterns": [
+          "path_keyword_cala_guesses",
+          "OTA listings"
+        ]
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "hotel_count": 223,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        },
+        {
+          "country": "Dominican Republic",
+          "hotel_count": 31,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        },
+        {
+          "country": "Costa Rica",
+          "hotel_count": 12,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        },
+        {
+          "country": "Colombia",
+          "hotel_count": 16,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        },
+        {
+          "country": "Panama",
+          "hotel_count": 21,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        }
+      ],
+      "extract_ok": true,
+      "seed_used": true,
+      "seed_path": "C:\\Dev\\deal-capture-proxy\\reports\\wyndham-property-directory-extract.json",
+      "candidate_overview_urls": 46462,
+      "metadata_fetched": 723,
+      "errors": [],
+      "loaded_at": "2026-08-06T22:57:11.385Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v1",
+    "loaded_at": null,
+    "hilton_count": 0,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 80
+}

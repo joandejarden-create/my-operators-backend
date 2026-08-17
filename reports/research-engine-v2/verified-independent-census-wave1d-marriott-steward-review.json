@@ -1,0 +1,533 @@
+{
+  "status": "wave1d_marriott_steward_review_minor_holds_ready_for_4_family_baseline_lock",
+  "reviewed_at": "2026-08-04T23:09:12.505Z",
+  "wave1d_status": "wave1d_marriott_mexico_vic_complete_ready_for_combined_4_family_baseline",
+  "records_reviewed": 301,
+  "identity_risk_pass": true,
+  "brand_count": 28,
+  "four_points_count": 11,
+  "sheraton_count": 5,
+  "four_points_sheraton_verified": true,
+  "city_express_family": {
+    "City Express by Marriott": 89,
+    "City Express Plus by Marriott": 24,
+    "City Express Junior by Marriott": 21,
+    "City Express Suites by Marriott": 4,
+    "City Centro by Marriott": 3
+  },
+  "city_express_misparse_count": 0,
+  "brand_unconfirmed_count": 5,
+  "brand_unconfirmed_classifications": {
+    "steward_manual_review_required": 2,
+    "exclude_from_brand_completion": 2,
+    "confirm_brand": 1
+  },
+  "physical": {
+    "unique_physical_reported": 301,
+    "records": 301,
+    "marsha_unique": 301,
+    "marsha_duplicate_rows": 0,
+    "near_duplicate_pairs_reviewed": 103,
+    "campus_or_high_sim_steward_pairs": 9,
+    "confirmed_same_physical_merges": 0,
+    "auto_merges_applied": 0,
+    "staging_identity_count_safe": true,
+    "verdict": "301 unique MARSHA / 301 records — staging identity count SAFE (campus annexes kept distinct)"
+  },
+  "cross_family": {
+    "baseline_locked_total": 365,
+    "pairs_flagged": 14,
+    "exact_physical_match_requires_steward_review": 0,
+    "probable_physical_match_requires_steward_review": 0,
+    "rejected_fuzzy_match": 6,
+    "insufficient_evidence_no_merge": 8,
+    "auto_merges": 0,
+    "note": "Name/city/address used; missing Marriott coords do not invent 0,0 matches. City-corridor brand hotels classified rejected_fuzzy / insufficient — not merges."
+  },
+  "completeness_migration": {
+    "data_eligible": 237,
+    "data_ineligible": 64,
+    "missing_address": 301,
+    "missing_coordinates": 301,
+    "missing_rooms": 301,
+    "missing_owner_operator": 301,
+    "missing_open_date": 301,
+    "sitemap_only": 301,
+    "property_page_enriched": 0,
+    "suitable_for_be_completion_support": 204,
+    "suitable_only_for_census_identity": 301,
+    "requiring_steward_before_migration": 8,
+    "staging_migration_ready": true,
+    "production_overwrite_ready": false,
+    "fake_fields_created": 0
+  },
+  "blocking_issues": [],
+  "minor_holds": [
+    "5 Brand Unconfirmed (1 confirm_brand overlay candidate)",
+    "9 campus/high-sim physical steward pairs (no merge)",
+    "All 301 records missing coordinates (sitemap limitation) — staging OK",
+    "Material completeness 40% — census identity only; not production-ready"
+  ],
+  "auto_merges": 0,
+  "airtable_writes": false,
+  "webhound_used": false,
+  "brand_explorer_activation": false,
+  "production_overwrite": false,
+  "fake_rooms_owners_open_dates_created": false,
+  "brand_parsing_qa": [
+    {
+      "brand": "City Express by Marriott",
+      "count": 89,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low — sibling brands (Plus/Junior/Suites/Centro) ordered correctly",
+      "sample_records_reviewed": [
+        "City Express by Marriott Aguascalientes Sur",
+        "City Express by Marriott Leon",
+        "City Express by Marriott Irapuato"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Courtyard by Marriott",
+      "count": 29,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "Courtyard by Marriott Leon at The Poliforum",
+        "Courtyard by Marriott Ciudad Juarez",
+        "Courtyard by Marriott Cancun Airport"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Design Hotels",
+      "count": 25,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Medium — soft-brand URLs; city inference variable",
+      "sample_records_reviewed": [
+        "Elena de Cobre, a Member of Design Hotels™",
+        "Hotel Matilda, a Member of Design Hotels™",
+        "Papaya Playa Project, Tulum, a Member of Design Hotels™"
+      ],
+      "steward_action": "Accept for census identity; BE hold until material fields",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "City Express Plus by Marriott",
+      "count": 24,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "City Express Plus by Marriott Leon Centro de Convenciones",
+        "City Express Plus by Marriott Cancún Aeropuerto Riviera",
+        "City Express Plus by Marriott Guadalajara Providencia"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "City Express Junior by Marriott",
+      "count": 21,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "City Express Junior by Marriott Aguascalientes Centro",
+        "City Express Junior by Marriott León Centro De Convenciones",
+        "City Express Junior by Marriott Cancun"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Fairfield by Marriott",
+      "count": 12,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "Fairfield by Marriott Inn & Suites Aguascalientes",
+        "Fairfield by Marriott Inn & Suites Silao Guanajuato Airport",
+        "Fairfield by Marriott Inn & Suites Cancun Downtown"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Four Points by Sheraton",
+      "count": 11,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low — matched before Sheraton (Wave 1D fix verified)",
+      "sample_records_reviewed": [
+        "Four Points by Sheraton Ciudad Juarez",
+        "Four Points by Sheraton Cancun Centro",
+        "Four Points by Sheraton Distrito Uno Chihuahua"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Autograph Collection",
+      "count": 10,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Medium — soft brands / Royalton complexes; multi-property campuses",
+      "sample_records_reviewed": [
+        "Cleviá, San Miguel de Allende, Autograph Collection",
+        "Royalton Hideaway Riviera Cancun, An Autograph Collection All-Inclusive Resort - Adults Only",
+        "Royalton CHIC Cancun, An Autograph Collection All-Inclusive Resort - Adults Only"
+      ],
+      "steward_action": "Accept; campus pairs steward-noted",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Marriott Hotels",
+      "count": 10,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Medium — titles with 'Marriott … Hotel' (intervening words) may miss map",
+      "sample_records_reviewed": [
+        "Aguascalientes Marriott Hotel",
+        "Marriott Cancun, An All-Inclusive Resort",
+        "Culiacan Marriott Hotel"
+      ],
+      "steward_action": "Accept with known miss → Mexico City Marriott Reforma (unconfirmed bucket)",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Westin",
+      "count": 9,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low — Baja Point kept distinct MARSHA",
+      "sample_records_reviewed": [
+        "The Westin Lagunamar Ocean Resort Villas & Spa, Cancun",
+        "The Westin Los Cabos Resort Villas",
+        "The Westin Los Cabos Resort Villas - Baja Point"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "count": 8,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "AC Hotel Guadalajara, Mexico",
+        "AC Hotel Guadalajara Expo, Mexico",
+        "AC Hotel by Marriott Santa Fe"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "JW Marriott",
+      "count": 7,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low — Casa Maat mapped JW via rule",
+      "sample_records_reviewed": [
+        "JW Marriott Cancun Resort & Spa",
+        "JW Marriott Hotel Guadalajara",
+        "JW Marriott Hotel Monterrey Valle"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "The Luxury Collection",
+      "count": 5,
+      "parsing_confidence": "Medium",
+      "adjacent_brand_risk": "Review soft-brand / URL cues",
+      "sample_records_reviewed": [
+        "Paraiso de la Bonita, a Luxury Collection Resort, Riviera Maya, Adult All-Inclusive",
+        "Almare, a Luxury Collection Resort, Isla Mujeres Cancun, Adult All-Inclusive",
+        "Las Alcobas, a Luxury Collection Hotel, Mexico City"
+      ],
+      "steward_action": "Accept for census identity",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Marriott Bonvoy — Brand Unconfirmed",
+      "count": 5,
+      "parsing_confidence": "N/A — intentional hold",
+      "adjacent_brand_risk": "High — soft brands + one Marriott Hotels miss",
+      "sample_records_reviewed": [
+        "CASA MAYOR Saltillo, Hotel Hacienda",
+        "SJ Grand Hotel Monterrey",
+        "Gran Hotel de Puebla by HNF"
+      ],
+      "steward_action": "Review individually (see §3)",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Sheraton",
+      "count": 5,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low — no Four Points leakage in sample",
+      "sample_records_reviewed": [
+        "Sheraton León",
+        "Sheraton Chihuahua Soberano",
+        "Sheraton Guadalajara Expo"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "St. Regis",
+      "count": 4,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "None",
+      "sample_records_reviewed": [
+        "The St. Regis Kanai Resort, Riviera Maya",
+        "The St. Regis Costa Mujeres Resort, Cancun",
+        "The St. Regis Mexico City"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Aloft Hotels",
+      "count": 4,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "Aloft by Marriott Cancun",
+        "Aloft by Marriott Playa del Carmen",
+        "Aloft by Marriott Guadalajara Sur"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "City Express Suites by Marriott",
+      "count": 4,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "City Express Suites by Marriott Ciudad de México Anzures",
+        "City Express Suites Puebla Finsa",
+        "City Express Suites by Marriott Querétaro"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Residence Inn by Marriott",
+      "count": 4,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "Residence Inn by Marriott Playa del Carmen",
+        "Residence Inn by Marriott Cancun Hotel Zone",
+        "Residence Inn by Marriott Guadalajara Country Club"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Delta Hotels",
+      "count": 3,
+      "parsing_confidence": "Medium",
+      "adjacent_brand_risk": "Review soft-brand / URL cues",
+      "sample_records_reviewed": [
+        "Delta Hotels by Marriott Chihuahua",
+        "Delta Hotels Riviera Nayarit, An All-Inclusive Resort",
+        "Delta Hotels by Marriott Riviera Veracruz"
+      ],
+      "steward_action": "Accept for census identity",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "City Centro by Marriott",
+      "count": 3,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "City Centro by Marriott Ciudad De México",
+        "City Centro by Marriott Oaxaca",
+        "City Centro by Marriott San Luis Potosi"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "W Hotels",
+      "count": 2,
+      "parsing_confidence": "Medium",
+      "adjacent_brand_risk": "Review soft-brand / URL cues",
+      "sample_records_reviewed": [
+        "W Mexico City",
+        "W Punta de Mita"
+      ],
+      "steward_action": "Accept for census identity",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "count": 2,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "Mystique Holbox by Royalton, A Tribute Portfolio Resort",
+        "Casa Nizuc, a Tribute Portfolio Resort"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "EDITION",
+      "count": 1,
+      "parsing_confidence": "Medium",
+      "adjacent_brand_risk": "Review soft-brand / URL cues",
+      "sample_records_reviewed": [
+        "The Riviera Maya EDITION at Kanai"
+      ],
+      "steward_action": "Accept for census identity",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Le Méridien",
+      "count": 1,
+      "parsing_confidence": "Medium",
+      "adjacent_brand_risk": "Review soft-brand / URL cues",
+      "sample_records_reviewed": [
+        "Le Méridien Mexico City Reforma"
+      ],
+      "steward_action": "Accept for census identity",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Renaissance Hotels",
+      "count": 1,
+      "parsing_confidence": "Medium",
+      "adjacent_brand_risk": "Review soft-brand / URL cues",
+      "sample_records_reviewed": [
+        "Renaissance Cancun Resort & Marina"
+      ],
+      "steward_action": "Accept for census identity",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Moxy Hotels",
+      "count": 1,
+      "parsing_confidence": "High",
+      "adjacent_brand_risk": "Low",
+      "sample_records_reviewed": [
+        "Moxy Tulum"
+      ],
+      "steward_action": "Accept",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    },
+    {
+      "brand": "Apartments by Marriott Bonvoy",
+      "count": 1,
+      "parsing_confidence": "Medium",
+      "adjacent_brand_risk": "Review soft-brand / URL cues",
+      "sample_records_reviewed": [
+        "Bloom Tulum, Apartments by Marriott Bonvoy"
+      ],
+      "steward_action": "Accept for census identity",
+      "remap_consistency_mismatches": 0,
+      "remap_mismatch_samples": []
+    }
+  ],
+  "brand_unconfirmed": [
+    {
+      "independent_record_id": "ind_marriott_mx_slwak",
+      "property_name": "CASA MAYOR Saltillo, Hotel Hacienda",
+      "url": "https://www.marriott.com/en-us/hotels/slwak-casa-mayor-saltillo-hotel-hacienda/overview",
+      "city": "Hacienda",
+      "state": null,
+      "marsha": "SLWAK",
+      "source_path": "official_marriott_mexico_country_hotel_sitemap",
+      "why_brand_not_parsed": "Soft-brand / independent name on Bonvoy directory without brand path cue",
+      "likely_brand_if_inferable": null,
+      "confidence": "Insufficient",
+      "classification": "steward_manual_review_required",
+      "recommended_action": "Manual URL/brand page review before any brand confirmation"
+    },
+    {
+      "independent_record_id": "ind_marriott_mx_mtyjd",
+      "property_name": "SJ Grand Hotel Monterrey",
+      "url": "https://www.marriott.com/en-us/hotels/mtyjd-sj-grand-hotel-monterrey/overview",
+      "city": "Monterrey",
+      "state": null,
+      "marsha": "MTYJD",
+      "source_path": "official_marriott_mexico_country_hotel_sitemap",
+      "why_brand_not_parsed": "Soft-brand / independent name on Bonvoy directory without brand path cue",
+      "likely_brand_if_inferable": null,
+      "confidence": "Insufficient",
+      "classification": "steward_manual_review_required",
+      "recommended_action": "Manual URL/brand page review before any brand confirmation"
+    },
+    {
+      "independent_record_id": "ind_marriott_mx_pbcde",
+      "property_name": "Gran Hotel de Puebla by HNF",
+      "url": "https://www.marriott.com/en-us/hotels/pbcde-gran-hotel-de-puebla-by-hnf/overview",
+      "city": "Puebla",
+      "state": null,
+      "marsha": "PBCDE",
+      "source_path": "official_marriott_mexico_country_hotel_sitemap",
+      "why_brand_not_parsed": "HNF-operated soft brand on Bonvoy sitemap without Autograph/Tribute/Design Hotels cue in title or URL path",
+      "likely_brand_if_inferable": null,
+      "confidence": "Insufficient",
+      "classification": "exclude_from_brand_completion",
+      "recommended_action": "Keep Unconfirmed; exclude from BE completion; optional future property-page brand cue"
+    },
+    {
+      "independent_record_id": "ind_marriott_mx_mexmc",
+      "property_name": "Mexico City Marriott Reforma Hotel",
+      "url": "https://www.marriott.com/en-us/hotels/mexmc-mexico-city-marriott-reforma-hotel/overview",
+      "city": "Mexico City",
+      "state": null,
+      "marsha": "MEXMC",
+      "source_path": "official_marriott_mexico_country_hotel_sitemap",
+      "why_brand_not_parsed": "Official marriott.com sitemap title contains Marriott + Hotel; map missed due to intervening place token (e.g. 'Marriott Reforma Hotel')",
+      "likely_brand_if_inferable": "Marriott Hotels",
+      "confidence": "High",
+      "classification": "confirm_brand",
+      "recommended_action": "Overlay confirm_brand → Marriott Hotels (do not mutate freeze; apply on baseline lock overlay if steward accepts)"
+    },
+    {
+      "independent_record_id": "ind_marriott_mx_gdlcc",
+      "property_name": "Hotel Guadalajara Country Club by HNF",
+      "url": "https://www.marriott.com/en-us/hotels/gdlcc-hotel-guadalajara-country-club-by-hnf/overview",
+      "city": "Guadalajara",
+      "state": null,
+      "marsha": "GDLCC",
+      "source_path": "official_marriott_mexico_country_hotel_sitemap",
+      "why_brand_not_parsed": "HNF-operated soft brand on Bonvoy sitemap without Autograph/Tribute/Design Hotels cue in title or URL path",
+      "likely_brand_if_inferable": null,
+      "confidence": "Insufficient",
+      "classification": "exclude_from_brand_completion",
+      "recommended_action": "Keep Unconfirmed; exclude from BE completion; optional future property-page brand cue"
+    }
+  ],
+  "physical_steward_priority_count": 9,
+  "cross_family_exact_or_probable": []
+}

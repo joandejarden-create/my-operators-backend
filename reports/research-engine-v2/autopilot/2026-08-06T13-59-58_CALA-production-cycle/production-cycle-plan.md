@@ -1,0 +1,11 @@
+# Production Cycle Plan
+
+- Mode: production-cycle
+- Region: CALA
+- Scope: active-brand-setup
+- Batch size: 100
+- Max passes: 3
+- Writes enabled: true
+- Census before: 907
+- Queue order: source_discovery → core_identity_quality → key_field_completion → address_confirmation → property_name_cleanup → coordinate_completion → description_extraction → amenities_extraction → property_type_asset_context → rooms_keys → radar_public_readiness
+- Per-bundle ChatGPT approval: **false** (founder CLI is approval)

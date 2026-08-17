@@ -1,0 +1,62 @@
+{
+  "phase": "PRESENCE_HOLDOUT_V3_BULK_ELIGIBILITY_RECONCILIATION_COMPLETE",
+  "status": "PRESENCE_HOLDOUT_V3_BULK_ELIGIBILITY_RECONCILIATION_PASS",
+  "v3Scope": {
+    "TOTAL_PRIMARY": 170,
+    "PENDING": 170,
+    "ASSISTED": 170,
+    "ALREADY_REVIEWED": 0
+  },
+  "eligibility": {
+    "BACKEND_ELIGIBLE": 170,
+    "UI_ELIGIBLE_OBSERVED_BEFORE_FIX": 120,
+    "MANUAL_REQUIRED_NOW": 0,
+    "UI_MANUAL_OBSERVED_BEFORE_FIX": 50,
+    "BACKEND_ALREADY_IN_SCOPE": 0,
+    "UNSCOPED_ELIGIBLE": 170,
+    "UNSCOPED_MANUAL": 0,
+    "UNSCOPED_ALREADY_REVIEWED": 191
+  },
+  "manualReasonBreakdown_stale_session": {
+    "IDENTITY_AMBIGUITY_WARNING": 50,
+    "detail": "False positive: assisted notes containing the word 'unambiguous' matched substring regex /ambiguous/ before word-boundary fix. After fix: 0."
+  },
+  "manualReasonBreakdown_now": {},
+  "priorBatchIsolation": {
+    "PRIOR_191_INCLUDED": "NO",
+    "PRIOR_191_SHOWN_IN_UNSCOPED_ALREADY_REVIEWED_DISPLAY": "YES",
+    "note": "Prior 191 are assisted+human-final cases. Unscoped classify places them in ALREADY_REVIEWED only — never in ELIGIBLE. UI previously rendered that unscoped ALREADY_REVIEWED beside stale 120/50 counts."
+  },
+  "rootCause": {
+    "ROOT_CAUSE": "(1) IDENTITY_AMBIGUITY_WARNING substring match on 'unambiguous' caused 50 false manuals; fixed with word boundaries. (2) Bulk preview API used unscoped classifyAssistedBulkApproval(), so UI showed ALREADY_REVIEWED=191 from prior pool. (3) Stale browser/server session could retain 120/50 until reload after fix."
+  },
+  "fix": {
+    "CLASSIFICATION_LOGIC_CHANGED": "YES",
+    "UI_REPORTING_CHANGED": "YES",
+    "DATA_LABELS_CHANGED": 0
+  },
+  "finalState": {
+    "BULK_APPROVAL_ELIGIBLE": 170,
+    "MANUAL_REVIEW_REQUIRED": 0,
+    "scope": {
+      "proposalVersion": "presence_validation_holdout_v3_chatgpt_assisted_proposals_v1",
+      "batchId": "presence_validation_holdout_v3_candidate_batch_v1",
+      "caseIdFilterN": 170,
+      "SCOPE_NOTE": "Scoped to latest import / active review batch — prior assisted+reviewed pools excluded from eligibility counts",
+      "useActiveScope": true
+    }
+  },
+  "MANUAL_CASE_IDS_NOW": [],
+  "nextAction": "CONFIRM_HOLDOUT_V3_BULK_APPROVAL",
+  "hardGuards": {
+    "HUMAN_FINAL_LABELS_WRITTEN": 0,
+    "BULK_APPROVAL_EXECUTED": 0,
+    "HOLDOUT_V3_SELECTION": 0,
+    "HOLDOUT_V3_FREEZE": 0,
+    "HOLDOUT_V3_SCORING": 0,
+    "ENTITY_RESOLVER_CHANGES": 0,
+    "ALIAS_CHANGES": 0,
+    "GROUND_TRUTH_CHANGES": 0,
+    "PROVIDER_CALLS": 0
+  }
+}

@@ -1,8 +1,25 @@
 /**
  * Browser sanitizer for Brand Explorer display copy (loaded before atelier-from-api.js).
+ * Never show PI pipeline "— Source:" attributions in Explorer UI.
  */
 (function (global) {
   'use strict';
+
+  function stripSourceAttributionLines(text) {
+    if (text == null) return '';
+    var s = String(text);
+    s = s
+      .split(/\n/)
+      .filter(function (line) {
+        return !/^\s*[—–-]\s*Source:/i.test(String(line).trim());
+      })
+      .join('\n');
+    s = s.replace(/\n\n—\s*Source:\s*[^\n]+/gi, '');
+    s = s.replace(/\n—\s*Source:\s*[^\n]+/gi, '');
+    s = s.replace(/\s*—\s*Source:\s*[^\n]+/gi, '');
+    s = s.replace(/;\s*Kimpton stats:\s*[^\n]+/gi, '');
+    return s;
+  }
 
   var REPLACEMENTS = [
     [
@@ -40,9 +57,23 @@
     [/\bSource:\s*fixtures\//gi, 'Available from Choice Hotels '],
     [/\bpress kit\b/gi, 'Choice Hotels brand materials'],
     [/\bPatch-missing only\.?/gi, ''],
-    [/\bconfirm current counts in FDD\b/gi, 'confirm current counts in your franchise disclosure document'],
-    [/\bConfirm in FDD\b/g, 'Confirm in your franchise disclosure document'],
-    [/\bin FDD\b/g, 'in your franchise disclosure document'],
+    [/\bUse press kit, FDD Item 19\/20\b/gi, ''],
+    [/\bconfirm property counts in (?:your )?franchise disclosure document Item 20\b/gi, ''],
+    [/\bconfirm property counts in FDD Item 20\b/gi, ''],
+    [/\bConfirm opening commitments in Item 20[^\n.]*/gi, ''],
+    [/\bCombine franchise disclosure Items 19 and 20[^\n.]*/gi, ''],
+    [/\bHigh enterprise participation in Item 19 sample[^.]*\.?/gi, ''],
+    [/\s*\(Item 19 sample\)/gi, ''],
+    [/\s*—\s*FDD sample\.?/gi, ''],
+    [/\s*in Item 19 sample\b/gi, ''],
+    [
+      /\bconfirm (?:open\/pipeline|current counts) in (?:your )?franchise disclosure document Item 20[^\n.]*/gi,
+      ''
+    ],
+    [
+      /\bConfirm loyalty contribution in (?:your )?franchise disclosure document Item 19\.?/gi,
+      ''
+    ],
     [/\bprior indicator copy:\s*/gi, ''],
     [/Flexibility indicators on [^\n]+ use canonical levels only[^\n]*\n*/gi, ''],
     [/\s*Sample\s+[Bb]rand-to-[Oo]wner\s+[Mm]essage\s*/gi, ''],
@@ -55,6 +86,7 @@
   ];
 
   var INTERNAL_LINE = [
+    /^[—–-]\s*source:/i,
     /^parsed from choice fdd/i,
     /^derived from choice fdd/i,
     /^source:\s*fixtures\//i,
@@ -97,7 +129,7 @@
   function sanitizeExternalCopy(text) {
     if (text == null) return '';
     if (typeof text !== 'string') return String(text);
-    var s = filterInternalLines(text);
+    var s = stripSourceAttributionLines(filterInternalLines(text));
     for (var i = 0; i < REPLACEMENTS.length; i++) {
       s = s.replace(REPLACEMENTS[i][0], REPLACEMENTS[i][1]);
     }
@@ -106,5 +138,8 @@
     return s;
   }
 
-  global.DealalitySanitizeExternalCopy = { sanitizeExternalCopy: sanitizeExternalCopy };
+  global.DealalitySanitizeExternalCopy = {
+    sanitizeExternalCopy: sanitizeExternalCopy,
+    stripSourceAttributionLines: stripSourceAttributionLines
+  };
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -161,6 +161,65 @@
     return container.querySelector(".deal-brief-snapshot");
   }
 
+  /**
+   * Print layout: flat document (cover sheet + content), not the on-screen flipbook.
+   * Keeps standard A4 — cover sheet 1, content sheet 2 (full-page 3-column layout).
+   */
+  function flattenDealBriefForPrint(root) {
+    var stage = root.querySelector(".bas-book-stage");
+    if (!stage) return;
+
+    var pages = Array.prototype.slice.call(stage.querySelectorAll(":scope > .bas-book-page"));
+    var doc = document.createElement("div");
+    doc.className = "dbs-print-document";
+
+    pages.forEach(function (page) {
+      var cover = page.querySelector(".bas-cover-page");
+      var content = page.querySelector(".brochure-content-page, .bas-content-page, .bas-book-page-inner");
+      if (cover) {
+        cover.classList.add("dbs-print-cover-sheet");
+        doc.appendChild(cover);
+      } else if (content) {
+        content.classList.add("dbs-print-content-sheet");
+        doc.appendChild(content);
+      } else {
+        var fallback = document.createElement("div");
+        fallback.className = "dbs-print-content-sheet";
+        fallback.innerHTML = page.innerHTML;
+        doc.appendChild(fallback);
+      }
+      page.remove();
+    });
+
+    Array.prototype.forEach.call(
+      root.querySelectorAll(".bas-turn-btn, .bas-page-indicator, .bas-no-print"),
+      function (el) {
+        el.remove();
+      }
+    );
+
+    // Never leave Main Contact / Company in the print text layer (clipped ≠ removed).
+    Array.prototype.forEach.call(root.querySelectorAll(".brochure-contact-detail, #detailContact"), function (el) {
+      el.remove();
+    });
+    Array.prototype.forEach.call(root.querySelectorAll(".brochure-detail-row"), function (row) {
+      var label = row.querySelector(".l");
+      if (!label) return;
+      var t = String(label.textContent || "").trim().toLowerCase();
+      if (t === "main contact" || t === "company") row.remove();
+    });
+
+    var viewport = root.querySelector(".bas-book-viewport");
+    if (viewport) {
+      viewport.innerHTML = "";
+      viewport.classList.add("dbs-print-viewport-flat");
+      viewport.appendChild(doc);
+    } else {
+      stage.parentNode.replaceChild(doc, stage);
+    }
+    root.classList.add("dbs-print-flattened");
+  }
+
   function printSnapshot(root) {
     var snapshot = getSnapshotRoot(root);
     if (!snapshot) {
@@ -177,6 +236,7 @@
     var clone = snapshot.cloneNode(true);
     clone.classList.add("bas-printing");
     clone.classList.remove("bas--embed");
+    flattenDealBriefForPrint(clone);
     printHost.innerHTML = "";
     printHost.appendChild(clone);
     document.body.classList.add("bas-print-active");

@@ -1,0 +1,215 @@
+{
+  "auditVersion": "v1",
+  "generatedAt": "2026-07-06T15:06:38.670Z",
+  "mode": "audit",
+  "entityType": "operator",
+  "targetRecId": "recWPKu5laVZxsvpn",
+  "entityName": "Hotel Equities (CALA)",
+  "governance": {
+    "validationStatus": "Company Published",
+    "externalDisplayStatus": "Show Trust Label",
+    "companyValidated": false,
+    "displayAllowed": true
+  },
+  "stagingTable": "Partner Intelligence - Published Explorer Fields",
+  "summary": {
+    "totalFacts": 9,
+    "approvedFacts": 5,
+    "pendingOrRejectedFacts": 4,
+    "evidenceOnly": 0,
+    "suggestedUpdate": 5,
+    "controlledPublishCandidate": 0,
+    "blocked": 0
+  },
+  "mappings": [
+    {
+      "factId": "rec4OkNp3HErir1Tm",
+      "fieldKey": "op.snapshot.companyName",
+      "displayLabel": "Company Name",
+      "approvedValue": "Hotel Equities",
+      "humanReviewStatus": "Approved",
+      "sourceId": "rectG9wdsAeL7u0FG",
+      "sourceApproved": true,
+      "destinationTable": "Operator Setup - Platform & Markets",
+      "destinationField": "company_name",
+      "destinationFieldType": "singleLineText",
+      "consumptionPath": "prefill.companyName",
+      "presentationSlotKey": null,
+      "liveValue": "Hotel Equities (CALA)",
+      "liveValuePopulated": true,
+      "publishMode": "suggested_field_update",
+      "blockers": [
+        "identity_field_populated_no_overwrite"
+      ],
+      "proposedValue": "Hotel Equities",
+      "policy": {
+        "overwritePolicy": "blank_only",
+        "stagingPreferred": true,
+        "identityField": true,
+        "notes": "Suggest only when destination blank; never overwrite curated identity."
+      },
+      "registrySupported": true,
+      "notes": null
+    },
+    {
+      "factId": "rec5ZV7hxlyZz3eRk",
+      "fieldKey": "op.snapshot.companyDescription",
+      "displayLabel": "Company Description",
+      "approvedValue": "Hotel Equities took a step into the Caribbean and Latin America (CALA) region, recognizing the immense growth potential and unique opportunities within this vibrant market.",
+      "humanReviewStatus": "Approved",
+      "sourceId": "recy1oDTNe7kyQGbE",
+      "sourceApproved": true,
+      "destinationTable": "Operator Setup - Profile & Positioning",
+      "destinationField": "companyDescription",
+      "destinationFieldType": "longText",
+      "consumptionPath": "prefill.companyDescription",
+      "presentationSlotKey": null,
+      "liveValue": "Hotel Equities (CALA) is the Caribbean & Latin America division of Hotel Equities, focused on third-party hotel and resort management in the region. It combines local leadership and regional operating support with Hotel Equities' broader management platform. The division is positioned around all-inclusive resorts and urban/lifestyle hotels.",
+      "liveValuePopulated": true,
+      "publishMode": "suggested_field_update",
+      "blockers": [
+        "destination_field_populated"
+      ],
+      "proposedValue": "Hotel Equities took a step into the Caribbean and Latin America (CALA) region, recognizing the immense growth potential and unique opportunities within this vibrant market.",
+      "policy": {
+        "overwritePolicy": "blank_or_staging",
+        "stagingPreferred": true,
+        "notes": "Profile summary staging; suggested update when live field populated."
+      },
+      "registrySupported": true,
+      "notes": null
+    },
+    {
+      "factId": "recDasPN4e1SOJOUa",
+      "fieldKey": "op.snapshot.primaryServiceModel",
+      "displayLabel": "Primary Service Model",
+      "approvedValue": "Hotel Management",
+      "humanReviewStatus": "Approved",
+      "sourceId": "rec9FSzLhaLPcPvtv",
+      "sourceApproved": true,
+      "destinationTable": "Operator Setup - Profile & Positioning",
+      "destinationField": "primaryServiceModel",
+      "destinationFieldType": "singleSelect",
+      "consumptionPath": "prefill.primaryServiceModel",
+      "presentationSlotKey": null,
+      "liveValue": "Mixed",
+      "liveValuePopulated": true,
+      "publishMode": "suggested_field_update",
+      "blockers": [
+        "destination_field_populated"
+      ],
+      "proposedValue": "Hotel Management",
+      "policy": {
+        "overwritePolicy": "blank_only",
+        "stagingPreferred": true,
+        "singleSelectRisk": true,
+        "notes": "singleSelect — only controlled publish when blank and option exists."
+      },
+      "registrySupported": true,
+      "notes": null
+    },
+    {
+      "factId": "recQEsdNe6Z6yYl7R",
+      "fieldKey": "op.markets.regionsSupported",
+      "displayLabel": "Regions Supported",
+      "approvedValue": "Caribbean, Latin America, United States, Canada",
+      "humanReviewStatus": "Approved",
+      "sourceId": "rectG9wdsAeL7u0FG",
+      "sourceApproved": true,
+      "destinationTable": "Operator Setup - Platform & Markets",
+      "destinationField": "specificMarkets",
+      "destinationFieldType": "longText",
+      "consumptionPath": "prefill.regions",
+      "presentationSlotKey": null,
+      "liveValue": "Caribbean; Latin America",
+      "liveValuePopulated": true,
+      "publishMode": "suggested_field_update",
+      "blockers": [
+        "destination_field_populated"
+      ],
+      "proposedValue": "Caribbean, Latin America, United States, Canada",
+      "policy": {
+        "overwritePolicy": "blank_or_staging",
+        "stagingPreferred": true,
+        "notes": "Regional presence text; validate against select options if normalized later."
+      },
+      "registrySupported": true,
+      "notes": null
+    },
+    {
+      "factId": "recg9JSrZm9gmFKcN",
+      "fieldKey": "op.snapshot.companyDescription",
+      "displayLabel": "Company Description",
+      "approvedValue": "Choose the third party management team at Hotel Equities when you want to expand your hotel's company brand like never before.",
+      "humanReviewStatus": "Approved",
+      "sourceId": "rectG9wdsAeL7u0FG",
+      "sourceApproved": true,
+      "destinationTable": "Operator Setup - Profile & Positioning",
+      "destinationField": "companyDescription",
+      "destinationFieldType": "longText",
+      "consumptionPath": "prefill.companyDescription",
+      "presentationSlotKey": null,
+      "liveValue": "Hotel Equities (CALA) is the Caribbean & Latin America division of Hotel Equities, focused on third-party hotel and resort management in the region. It combines local leadership and regional operating support with Hotel Equities' broader management platform. The division is positioned around all-inclusive resorts and urban/lifestyle hotels.",
+      "liveValuePopulated": true,
+      "publishMode": "suggested_field_update",
+      "blockers": [
+        "destination_field_populated"
+      ],
+      "proposedValue": "Choose the third party management team at Hotel Equities when you want to expand your hotel's company brand like never before.",
+      "policy": {
+        "overwritePolicy": "blank_or_staging",
+        "stagingPreferred": true,
+        "notes": "Profile summary staging; suggested update when live field populated."
+      },
+      "registrySupported": true,
+      "notes": null
+    }
+  ],
+  "excludedFacts": [
+    {
+      "factId": "rec6gWJo6mjppJl9f",
+      "fieldKey": "op.snapshot.companyDescription",
+      "humanReviewStatus": "Pending",
+      "reason": "not_approved"
+    },
+    {
+      "factId": "recC83WhGxXlxEBBw",
+      "fieldKey": "op.snapshot.primaryServiceModel",
+      "humanReviewStatus": "Pending",
+      "reason": "not_approved"
+    },
+    {
+      "factId": "rech76iRVvMkJwHfm",
+      "fieldKey": "op.brand.familiesOperated",
+      "humanReviewStatus": "Pending",
+      "reason": "not_approved"
+    },
+    {
+      "factId": "recsCOAsfWlw3EWP3",
+      "fieldKey": "op.snapshot.companyName",
+      "humanReviewStatus": "Pending",
+      "reason": "not_approved"
+    }
+  ],
+  "safety": {
+    "readOnly": true,
+    "applyEnabled": false,
+    "neverWrites": [
+      "Company Validated",
+      "Company Validation Date",
+      "Validation Status",
+      "Usage Permission",
+      "External Display Status",
+      "Confidence Level",
+      "Last Reviewed Date",
+      "Evidence Notes",
+      "Company Reviewed",
+      "submission_status",
+      "readyForInvestorPublication",
+      "Company Validated",
+      "Company Validation Date",
+      "scoring fields (BAS/OAS/OCS)",
+      "Deal Readiness outputs"
+    ]
+  }
+}

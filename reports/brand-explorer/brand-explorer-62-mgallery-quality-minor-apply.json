@@ -1,0 +1,175 @@
+{
+  "version": "brand-explorer-62-mgallery-quality-minor-apply-v1",
+  "generatedAt": "2026-08-08T06:08:54.920Z",
+  "mode": "apply",
+  "status": "brand_explorer_62_mgallery_quality_minor_resolved_ready_for_child_table_validation",
+  "brandSlug": "mgallery-collection",
+  "brandName": "MGallery Collection",
+  "brandRecordId": "recrWCD1LMqu864oU",
+  "flagCheck": {
+    "apply": true,
+    "required": [
+      "--confirm-mgallery-only",
+      "--confirm-no-census-writes",
+      "--confirm-no-protected-fields",
+      "--confirm-no-recent-momentum",
+      "--confirm-no-child-brand-setup",
+      "--confirm-founder-approved-mgallery-minor"
+    ],
+    "missing": [],
+    "ok": true
+  },
+  "scope": {
+    "creates": [
+      "Guest Psychographics Description",
+      "valueOwners.overview",
+      "valueOwners.watchouts"
+    ],
+    "updates": [
+      {
+        "recordId": "rec8JMqWvldhwE1xn",
+        "slotKey": "footprint.portfolio_mix",
+        "field": "Body"
+      },
+      {
+        "recordId": "recDwU2wDYTHwqRPf",
+        "slotKey": "operations.operator_compat.tags",
+        "field": "Body"
+      }
+    ],
+    "excluded": [
+      "Recent Momentum",
+      "Census writes",
+      "child Brand Setup tables",
+      "Company Validated / Brand Verified / Brand Status / release fields",
+      "image caption remediations",
+      "similar brands / owner considerations / case study optional minors"
+    ]
+  },
+  "createResults": [
+    {
+      "slotKey": "Guest Psychographics Description",
+      "ok": true,
+      "stage": "already_present",
+      "recordId": "rec9KBr9EXgBwN53c"
+    },
+    {
+      "slotKey": "valueOwners.overview",
+      "ok": true,
+      "stage": "already_present",
+      "recordId": "recQUxJL1VnQ9bYDN"
+    },
+    {
+      "slotKey": "valueOwners.watchouts",
+      "ok": true,
+      "stage": "already_present",
+      "recordId": "recyapCrYT9TdHOKP"
+    }
+  ],
+  "updateResults": [
+    {
+      "recordId": "rec8JMqWvldhwE1xn",
+      "slotKey": "footprint.portfolio_mix",
+      "fieldName": "Body",
+      "ok": true,
+      "stage": "applied",
+      "finalBody": "Story-led soft collection\nFull-service heritage / boutique\nDestination character hotels\nConversion / repositioning focus"
+    },
+    {
+      "recordId": "recDwU2wDYTHwqRPf",
+      "slotKey": "operations.operator_compat.tags",
+      "fieldName": "Body",
+      "ok": true,
+      "stage": "applied",
+      "finalBody": "Accor soft collection\nStory-led full-service\nHeritage / boutique / destination\nConversion / repositioning operators"
+    }
+  ],
+  "protectedFieldsUntouched": true,
+  "censusUntouched": true,
+  "childBrandSetupUntouched": true,
+  "recentMomentumUntouched": true,
+  "validationGateResults": {
+    "activeUniverse": 62,
+    "semanticSeverity": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "semanticFreeze": "ready_to_freeze_62_semantic_qa_clean",
+    "semanticUniverseReconciled": true,
+    "pvqlPass": true,
+    "pvqlCount": 62,
+    "qualityFreeze": "ready_to_freeze_45_active_public_full_baseline",
+    "qualityCounts": {
+      "approve_for_baseline_freeze": 62
+    },
+    "qualityMinor": [],
+    "mgalleryRecommendation": "approve_for_baseline_freeze",
+    "mgalleryComposite": 97,
+    "footnotePass": true,
+    "footnoteSummary": {
+      "activeCount": 62,
+      "previewCount": 0,
+      "totalRows": 62,
+      "pass": 62,
+      "fail": 0,
+      "footnoteVisibleCount": 62,
+      "footnoteMissingCount": 0
+    },
+    "momentumPass": true,
+    "mandatoryPass": true,
+    "noCensusWrites": true,
+    "revalidatedAt": "2026-08-08T07:58:24.720Z"
+  },
+  "learningLedgerUpdate": {
+    "process": "brand_explorer",
+    "batch_name": "mgallery_quality_minor",
+    "issue_type": "learned_validation_rule",
+    "reusable_pattern": "Missing major Presentation slots must be filled before quality freeze; chip fields require newline-separated tags; never write ADR shorthand; portfolio_mix must stay structured (not long prose).",
+    "status": "implemented",
+    "auditStatus": "dealality_batch_learning_system_ready",
+    "processActuallyLearned": true,
+    "lastBeBatch": {
+      "batch_name": "mgallery_quality_minor",
+      "date": "2026-08-05",
+      "source_report": "reports/brand-explorer/brand-explorer-62-mgallery-quality-minor-apply.json",
+      "report_mtime": "2026-08-08T06:08:55.828Z"
+    }
+  },
+  "recommendationForNextLane": "Brand Setup child-table validation (read-only) — Active-62 Brand Explorer quality minor is resolved.",
+  "hardRulesHonored": [
+    "MGallery only",
+    "Quality minor resolution — smallest Presentation patch",
+    "No Recent Momentum",
+    "No Census writes",
+    "No child Brand Setup writes",
+    "No protected Brand Basics fields"
+  ],
+  "summary": {
+    "createsPlanned": 3,
+    "updatesPlanned": 2,
+    "created": 3,
+    "updated": 2,
+    "followUpScrubs": 3,
+    "failed": 0
+  },
+  "followUpFixes": [
+    {
+      "recordId": "recyapCrYT9TdHOKP",
+      "slotKey": "valueOwners.watchouts",
+      "change": "Scrubbed ADR/QA shorthand → rate positioning / guest reviews language"
+    },
+    {
+      "recordId": "recDwU2wDYTHwqRPf",
+      "slotKey": "operations.operator_compat.tags",
+      "change": "Restored newline chip format (minChips≥2) after middot join broke tab-factory"
+    },
+    {
+      "recordId": "rec8JMqWvldhwE1xn",
+      "slotKey": "footprint.portfolio_mix",
+      "change": "Converted long prose back to structured non-percentage mix (semantic prose_market_note)"
+    }
+  ],
+  "gatesRefreshedAt": "2026-08-08T07:58:24.720Z"
+}

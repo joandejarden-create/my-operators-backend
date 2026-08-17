@@ -24,6 +24,7 @@ import {
   isConversionDealProjectType,
   normalizeProjectTypeLabel,
 } from "../lib/project-type.js";
+import { brandMatchTierFromScore } from "../lib/brand-match-scoring-weight-config.js";
 
 const OUTPUT_STATUS = "Draft for validation";
 const METHODOLOGY_NOTE =
@@ -61,12 +62,7 @@ function normalizeBrandKey(name) {
 }
 
 function tierFromScore(score) {
-  const n = Number(score);
-  if (!Number.isFinite(n)) return "Conditional Review Signal";
-  if (n >= 75) return "Higher Alignment Signal";
-  if (n >= 55) return "Moderate Alignment Signal";
-  if (n >= 35) return "Conditional Review Signal";
-  return "Lower Alignment Signal";
+  return brandMatchTierFromScore(score);
 }
 
 function reviewStatusForBrand(tier, projectType) {

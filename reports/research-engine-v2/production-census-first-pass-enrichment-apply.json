@@ -1,0 +1,139 @@
+{
+  "version": "production-census-first-pass-enrichment-v1",
+  "generated_at": "2026-08-05T13:25:37.439Z",
+  "mode": "apply",
+  "apply_executed": true,
+  "status": "production_census_first_pass_applied_ready_for_next_enrichment_lane",
+  "base_id_masked": "appCCU…foLk",
+  "updates_attempted": 666,
+  "updates_written": 666,
+  "airtable_errors": [],
+  "summary_from_dry_run": {
+    "total_records_scanned": 666,
+    "active_brand_mapped_records": 425,
+    "eligible_records": 425,
+    "blocked_records": 241,
+    "brand_mapping_counts": {
+      "exact_match": 390,
+      "not_in_active_universe": 237,
+      "alias_match": 35,
+      "blocked_brand_unconfirmed": 4
+    },
+    "records_with_coordinates_before": 0,
+    "records_missing_coordinates_before": 666,
+    "coordinate_updates_proposed": 132,
+    "radar_status_updates_proposed": 666,
+    "radar_display_status_counts": {
+      "Public List Eligible": 293,
+      "Public Map Eligible": 132,
+      "Internal Only": 237,
+      "Hold": 4
+    },
+    "description_updates_proposed": 0,
+    "amenity_updates_proposed": 215,
+    "property_type_asset_context_updates_proposed": 295,
+    "strategic_flag_updates_proposed": 215,
+    "market_submarket_updates_proposed": 217,
+    "blocked_field_research_queue_count": 298,
+    "exact_airtable_update_count": 666,
+    "field_update_counts": {
+      "Latitude": 132,
+      "Longitude": 132,
+      "Radar Display Status": 666,
+      "Radar Display Reason": 666,
+      "Radar Geography Status": 666,
+      "Public Census Eligibility": 666,
+      "Public Display Confidence": 666,
+      "Public Display Review Status": 666,
+      "Hotel Description - Source Text": 0,
+      "Hotel Description - AI Summary": 0,
+      "Amenities - Source Text": 215,
+      "Amenities - Structured Tags": 215,
+      "Property Type": 220,
+      "Asset Context": 205,
+      "Market / Submarket": 217,
+      "F&B Flag": 193,
+      "Meeting Space Flag": 182,
+      "Resort / Leisure Flag": 179,
+      "Extended Stay Flag": 8,
+      "Mixed-Use Flag": 0,
+      "Branded Residences Flag": 1,
+      "Enrichment Status": 429,
+      "Enrichment Priority": 429,
+      "Last Reviewed Date": 429
+    }
+  },
+  "post_apply_validation": {
+    "record_count": 666,
+    "expected_record_count": 666,
+    "zero_zero": 0,
+    "held_public_eligible": 0,
+    "brand_unconfirmed_public_map": 0,
+    "owner_filled": 0,
+    "operator_filled": 0,
+    "rooms_filled": 0,
+    "opening_filled": 0,
+    "renovation_filled": 0,
+    "affiliation_start_filled": 0,
+    "coords_filled": 132,
+    "radar_populated": 666,
+    "amenities_filled": 215,
+    "pass": true
+  },
+  "forbidden_fields_untouched": {
+    "fields": [
+      "Owner Name",
+      "Developer Name",
+      "Developer",
+      "Operator / Management Company",
+      "Rooms / Keys",
+      "Opening Date",
+      "Renovation / Conversion Date",
+      "Renovation Date",
+      "Affiliation Start Date",
+      "Company Validated",
+      "Brand Verified",
+      "Recent Momentum"
+    ],
+    "proposed_writes": [],
+    "ok": true
+  },
+  "blocked_field_research_queue_count": 298,
+  "next_recommended_lane": "Marriott/IHG property-level coordinate sourcing + official-page description scrape (blocked owner/operator/rooms/dates remain queued)",
+  "brand_explorer_safety": {
+    "gates": [
+      {
+        "label": "active_universe_sot",
+        "ok": true,
+        "exit_code": 0,
+        "command": "npm run brand-explorer-active-universe-source-of-truth -- --dry-run"
+      },
+      {
+        "label": "global_active_semantic",
+        "ok": true,
+        "exit_code": 0,
+        "command": "npm run brand-explorer-global-active-semantic-audit -- --dry-run --fresh"
+      },
+      {
+        "label": "pvql_quiet",
+        "ok": true,
+        "exit_code": 0,
+        "command": "node scripts/brand-explorer-quiet-sequential-pvql.mjs"
+      },
+      {
+        "label": "momentum_evidence",
+        "ok": true,
+        "exit_code": 0,
+        "command": "npm run test:brand-explorer-recent-momentum-evidence-quality"
+      },
+      {
+        "label": "mandatory_release_gates",
+        "ok": true,
+        "exit_code": 0,
+        "command": "npm run test:brand-explorer-mandatory-release-gates"
+      }
+    ],
+    "all_pass": true,
+    "active_universe": 62
+  }
+}

@@ -1,0 +1,305 @@
+{
+  "generatedAt": "2026-07-10T13:43:47.962Z",
+  "mode": "dry-run",
+  "orchestratorVersion": "2",
+  "brand": {
+    "slug": "tribute-portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio",
+    "resolution": {
+      "inputTarget": "tribute-portfolio",
+      "resolvedBrandName": "Tribute Portfolio",
+      "resolvedRecordId": "recCvV0PuZOi8c3hC",
+      "resolvedSlug": "tribute-portfolio",
+      "resolutionSource": "active_registry",
+      "parentCompany": "Marriott International, Inc.",
+      "parentFamily": null,
+      "wave": null,
+      "ambiguous": false,
+      "error": null,
+      "suggestedMatches": []
+    }
+  },
+  "resolution": {
+    "inputTarget": "tribute-portfolio",
+    "resolvedBrandName": "Tribute Portfolio",
+    "resolvedRecordId": "recCvV0PuZOi8c3hC",
+    "resolvedSlug": "tribute-portfolio",
+    "resolutionSource": "active_registry",
+    "parentCompany": "Marriott International, Inc.",
+    "parentFamily": null,
+    "wave": null,
+    "ambiguous": false,
+    "error": null,
+    "suggestedMatches": []
+  },
+  "targetQuality": "active-profile",
+  "halted": false,
+  "haltReason": "",
+  "completedBatches": [
+    "v25C-2B",
+    "v25C-2C",
+    "v25C-2D",
+    "v25C-2E",
+    "v25C-2F",
+    "v25C-2G",
+    "v25C-2H",
+    "v25C-3A",
+    "v25C-3B",
+    "v25C-3C",
+    "v25C-3D",
+    "v25C-3E",
+    "v25C-3F",
+    "v25C-4A",
+    "v25C-4B",
+    "v25C-4C",
+    "v25C-4D",
+    "v25C-4E"
+  ],
+  "stageResults": [
+    {
+      "stage": "profile_inspection",
+      "status": "complete",
+      "summary": {
+        "brandName": "Tribute Portfolio",
+        "recordId": "recCvV0PuZOi8c3hC",
+        "companyValidated": null,
+        "companyValidationDate": null
+      }
+    },
+    {
+      "stage": "source_inventory",
+      "status": "complete",
+      "summary": {
+        "sourceCount": 9,
+        "approvedForExplorer": 9
+      }
+    },
+    {
+      "stage": "fact_inventory",
+      "status": "complete",
+      "summary": {
+        "factCount": 54,
+        "approved": 25,
+        "pending": 7
+      }
+    },
+    {
+      "stage": "brand_residences_legacy_migration",
+      "status": "blocked",
+      "summary": {
+        "alreadySynced": 0,
+        "migrateFromLegacy": 0,
+        "conflicts": 1,
+        "noDataDefault": 0,
+        "sourceBackedPreserved": 0,
+        "wouldUpdate": 0
+      },
+      "command": "npm run brand-residences-legacy-migration-writer -- --brand tribute-portfolio --dry-run",
+      "futureSetupWritesToBrandBasicsOnly": true
+    },
+    {
+      "stage": "required_section_contract",
+      "status": "complete",
+      "summary": {
+        "readinessScore": 100,
+        "ready": true,
+        "sectionsReady": 8,
+        "sectionsTotal": 8,
+        "nextWriters": []
+      },
+      "command": "npm run brand-explorer-required-section-population-contract -- --brand tribute-portfolio --dry-run"
+    },
+    {
+      "stage": "visual_defect_audit",
+      "status": "complete",
+      "summary": {
+        "defects": {
+          "total": 1,
+          "critical": 0,
+          "high": 0,
+          "medium": 0,
+          "low": 1,
+          "missingImage": 0,
+          "emptyBullet": 0,
+          "titleOnlyOrThin": 1,
+          "placeholderGeneric": 0,
+          "sortOrder": 0
+        },
+        "comparableToCurio": false,
+        "nextBatch": "none_active_profile_ready"
+      },
+      "command": "npm run brand-explorer-visual-display-defect-audit -- --brand tribute-portfolio --dry-run"
+    },
+    {
+      "stage": "brand-explorer-required-section-source-capture-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-required-section-source-capture-package -- --brand recCvV0PuZOi8c3hC --dry-run"
+    },
+    {
+      "stage": "brand-explorer-evidence-fact-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-evidence-fact-review-package -- --brand recCvV0PuZOi8c3hC --dry-run"
+    },
+    {
+      "stage": "brand-explorer-openings-momentum-row-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-openings-momentum-row-review-package -- --brand recCvV0PuZOi8c3hC --dry-run"
+    },
+    {
+      "stage": "final_qa_auditor",
+      "status": "complete",
+      "summary": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 96,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 74,
+        "visualCompletenessScore": 100,
+        "overallNumeric": 95,
+        "overallActiveProfileReadiness": "ready"
+      },
+      "command": "npm run brand-explorer-final-qa-auditor -- --brand tribute-portfolio --dry-run"
+    }
+  ],
+  "blockers": [],
+  "tributeExpectedRemaining": [
+    {
+      "id": "demand_scenario",
+      "section": "Demand Scenario View",
+      "writer": "brand-explorer-display-content-completion-writer",
+      "contractStatus": "complete",
+      "stillBlocking": false
+    },
+    {
+      "id": "geo_footprint",
+      "section": "Geographic Footprint",
+      "writer": "brand-explorer-display-content-completion-writer",
+      "contractStatus": "complete",
+      "stillBlocking": false
+    },
+    {
+      "id": "standard_detail_table",
+      "section": "Standard Detail / Where Available",
+      "writer": "brand-explorer-tribute-standard-detail-table-writer",
+      "note": "founder/legal approval required",
+      "contractStatus": "complete",
+      "stillBlocking": false
+    },
+    {
+      "id": "portfolio_context_ladder",
+      "section": "Portfolio Context",
+      "writer": "brand-explorer-portfolio-context-ladder-mapping-repair",
+      "priority": "low",
+      "contractStatus": "complete",
+      "stillBlocking": false
+    },
+    {
+      "id": "sort_order_hygiene",
+      "section": "Sort Order",
+      "writer": "brand-explorer-presentation-sort-order-audit",
+      "priority": "low",
+      "contractStatus": "unknown",
+      "stillBlocking": false
+    },
+    {
+      "id": "featured_truncation",
+      "section": "Featured Application",
+      "writer": "brand-explorer-visual-copy-cleanup-writer",
+      "priority": "medium",
+      "contractStatus": "unknown",
+      "stillBlocking": false
+    }
+  ],
+  "stagedApplyCommands": [
+    {
+      "section": "Governed source/fact path",
+      "blockerType": "source_governance",
+      "dryRunCommand": "npm run tribute-portfolio-package-pipeline -- --dry-run",
+      "applyCommand": null,
+      "requiresApproval": true
+    }
+  ],
+  "nextRequiredWriter": "none_active_profile_ready",
+  "finalQaScores": {
+    "requiredSectionReadinessScore": 100,
+    "presentationQualityScore": 96,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 74,
+    "visualCompletenessScore": 100,
+    "overallNumeric": 95,
+    "overallActiveProfileReadiness": "ready"
+  },
+  "contractReadinessScore": 100,
+  "requiredSectionStatus": {
+    "score": 100,
+    "ready": true,
+    "sectionsReady": 8,
+    "sectionsTotal": 8
+  },
+  "visualQaStatus": {
+    "score": 100,
+    "comparableToReference": false,
+    "defectCounts": {
+      "total": 1,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 1,
+      "missingImage": 0,
+      "emptyBullet": 0,
+      "titleOnlyOrThin": 1,
+      "placeholderGeneric": 0,
+      "sortOrder": 0
+    },
+    "recommendedNextBatch": "none_active_profile_ready"
+  },
+  "governanceStatus": {
+    "governedPlatformReady": false,
+    "sourceCount": 9,
+    "approvedExplorerSources": 9,
+    "explorerFactCount": 54,
+    "pendingFacts": 7,
+    "sourceEvidenceNeeded": true,
+    "factApprovalNeeded": true,
+    "founderReviewNeeded": false
+  },
+  "governedPlatformReady": false,
+  "readyForActiveProfile": false,
+  "readinessBand": "ready",
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "companyValidationDateSnapshot": null,
+  "exactDryRunCommand": "npm run brand-explorer-complete-build -- --brand tribute-portfolio --dry-run --target-quality active-profile",
+  "exactApplyCommand": "npm run brand-explorer-complete-build -- --brand tribute-portfolio --apply-approved --approve-brand-explorer-complete-build --target-quality active-profile",
+  "reportBasename": "brand-explorer-complete-build-tribute-portfolio",
+  "applySafety": {
+    "safeForApplyApproved": false,
+    "applyBlockReasons": [
+      "7 pending explorer fact(s) would need approval before apply",
+      "3 internal-only fact(s) present in explorer scope",
+      "1 FDD-sensitive fact(s) in scope",
+      "Source governance is insufficient for governed apply"
+    ],
+    "applySkippedReasons": [
+      "7 pending explorer fact(s) would need approval before apply",
+      "3 internal-only fact(s) present in explorer scope",
+      "1 FDD-sensitive fact(s) in scope",
+      "Source governance is insufficient for governed apply"
+    ],
+    "applyCommandsEligible": [],
+    "governanceSnapshot": {
+      "companyValidated": null,
+      "governedPlatformReady": false,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": true,
+      "pendingFacts": 7,
+      "internalFacts": 3,
+      "fddFacts": 1
+    }
+  },
+  "applyExecutionLog": [],
+  "airtableModified": false
+}

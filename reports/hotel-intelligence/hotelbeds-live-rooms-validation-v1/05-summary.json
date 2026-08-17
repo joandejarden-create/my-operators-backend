@@ -1,0 +1,53 @@
+{
+  "marker": "HOTELBEDS_LIVE_ROOM_COUNT_VALIDATION_COMPLETE",
+  "preflight_marker": "HOTELBEDS_LIVE_PREFLIGHT_COMPLETE",
+  "safety": {
+    "airtable_writes": 0,
+    "census_writes": 0,
+    "brand_explorer_writes": 0,
+    "automatic_merges": 0,
+    "schema_changes": 0,
+    "migrations": 0,
+    "secrets_exposed": false,
+    "ENABLE_HOTEL_INTELLIGENCE_AIRTABLE_WRITES": "0",
+    "ENABLE_HBX_CENSUS_WRITES": "0"
+  },
+  "preflight": {
+    "TEST_credentials": "PRESENT",
+    "LIVE_credentials": "MISSING",
+    "active_environment": "test",
+    "active_host_class": "TEST_HOST",
+    "Content_API_enabled_flag": "1",
+    "signature_check": "PASS",
+    "clock_check": "PASS",
+    "Content_API_reachable_LIVE": false,
+    "HTTP_status": null,
+    "quota_status": "UNKNOWN",
+    "rate_limit_status": "UNKNOWN",
+    "sanitized_error": "HBX_API_KEY_LIVE and HBX_API_SECRET_LIVE missing; HBX_ENV=test; refusing to send TEST credentials to LIVE host"
+  },
+  "room_count_field": {
+    "HOTELBEDS_ROOM_COUNT_FIELD_CONFIRMED": "UNCERTAIN",
+    "field": "roomsNumber (fallback: roomCount|numberOfRooms|totalRooms)",
+    "raw_type": null,
+    "example_sanitized_value": null,
+    "adapter_mapping": "extractRawHotel.rooms_total_value → candidate.room_count",
+    "prior_evidence": "HBX rooms field hunt: hotel-level Rooms/Keys not proven; rooms[] is catalog; public Content API docs emphasize room types/occupancy not total keys"
+  },
+  "eligibility": {
+    "sample": "hotel-intelligence-cala-validation-v1",
+    "total": 400,
+    "hbx_linked": 86,
+    "hbx_missing_rooms": 72,
+    "hbx_with_rooms": 14
+  },
+  "controlled_10": { "status": "NOT_RUN", "reason": "LIVE_ACCESS_BLOCKED" },
+  "full_hbx_linked_sample": { "status": "NOT_RUN", "reason": "LIVE_ACCESS_BLOCKED" },
+  "ROOM_COUNT_RESPONSE_RATE": null,
+  "ROOM_COUNT_RECOVERY_RATE": null,
+  "AUTO_ACCEPT_ELIGIBLE_ROOM_COUNTS": 0,
+  "POST_HBX_ROOM_COUNT_GAP_ESTIMATE": "UNKNOWN",
+  "verdict": "HOTELBEDS_LIVE_ACCESS_BLOCKED",
+  "DEALALITY_1000_VERIFIED_ROOMS_FEASIBLE": "UNCERTAIN",
+  "highest_value_next_step": "FIX_HOTELBEDS_ACCESS"
+}

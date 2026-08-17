@@ -1,0 +1,165 @@
+{
+  "generatedAt": "2026-07-23T08:27:30.637Z",
+  "mode": "apply",
+  "phase": "steward_triage_inclusive_brand_align_recovery",
+  "directoryUnique": 185,
+  "hyattParentRows": 184,
+  "calaCensusScanned": 184,
+  "matchedThisRun": 13,
+  "readyToApplyThisRun": 9,
+  "stewardReviewThisRun": 4,
+  "unmatchedBlank": 59,
+  "appliedWebsitePropertyIdThisRun": 13,
+  "appliedWebsitePropertyIdCumulative": 125,
+  "applyErrors": 0,
+  "priorCumulativeBeforeThisRun": 112,
+  "postApplyCounts": {
+    "cala": 184,
+    "withWebsite": 125,
+    "withPropertyId": 125,
+    "withAmenities": 0,
+    "blankWebsiteAndPropertyId": 59
+  },
+  "appliedThisRun": [
+    {
+      "censusRecordId": "recHVqRGzxtsfnh5s",
+      "censusName": "Secrets Moxche Playa Del Carmen",
+      "propertyId": "SEPDC"
+    },
+    {
+      "censusRecordId": "recUW35uWjUScX9Bj",
+      "censusName": "Secrets The Vine Cancun",
+      "propertyId": "SEVCU"
+    },
+    {
+      "censusRecordId": "recIsaBGr9tyS7TOl",
+      "censusName": "Dreams Playa Bonita Panama",
+      "propertyId": "DDPBP"
+    },
+    {
+      "censusRecordId": "recfxaGlcWUucHIbP",
+      "censusName": "Secrets Playa Mujeres Golf & Spa Resort",
+      "propertyId": "SECPM"
+    },
+    {
+      "censusRecordId": "recyX1wLsHBJYRPw7",
+      "censusName": "Secrets Papagayo Costa Rica",
+      "propertyId": "SEPCR"
+    },
+    {
+      "censusRecordId": "recwbEUJ6ZAAtYx8r",
+      "censusName": "The Cape a Thompson Hotel",
+      "propertyId": "CSLTH"
+    },
+    {
+      "censusRecordId": "rec8m9O8nnNZgK9pT",
+      "censusName": "Breathless Cancun Soul Resort & Spa",
+      "propertyId": "BRECU"
+    },
+    {
+      "censusRecordId": "recNXqsl1AKnvQMYI",
+      "censusName": "Dreams Cozumel Cape Resort & Spa",
+      "propertyId": "DRCZM"
+    },
+    {
+      "censusRecordId": "rec5DJiXBcHjl2aCJ",
+      "censusName": "Dreams Karibana Cartagena Golf & Spa Resort",
+      "propertyId": "DRCTG"
+    },
+    {
+      "censusRecordId": "rec2ZSjsk7fnq71Od",
+      "censusName": "Dreams Vallarta Bay Resort & Spa",
+      "propertyId": "DRVPV"
+    },
+    {
+      "censusRecordId": "recacLylqwat8mAa5",
+      "censusName": "Zoetry Curacao Resort & Spa",
+      "propertyId": "ZOCUR"
+    },
+    {
+      "censusRecordId": "rec8UKOAMTcQeVNtf",
+      "censusName": "Dreams Natura Resort & Spa",
+      "propertyId": "DRENA"
+    },
+    {
+      "censusRecordId": "recJJMRkPcaS7lYhe",
+      "censusName": "Dreams Sapphire Resort & Spa",
+      "propertyId": "DRSRC"
+    }
+  ],
+  "amenityProbe": {
+    "probed": 0,
+    "ready": 0,
+    "blocked": 0,
+    "applied": 0,
+    "skipped": true,
+    "reason": "Amenities skipped — prior Kasada/429 block; not re-probed this triage pass."
+  },
+  "unmatchedBrandBreakdown": {
+    "Dreams": 12,
+    "Hyatt Place": 7,
+    "nonstandard_or_unbound": 6,
+    "Secrets": 5,
+    "Grand Hyatt": 5,
+    "Andaz": 4,
+    "Hyatt Regency": 4,
+    "Hyatt Centric": 4,
+    "Park Hyatt": 3,
+    "Thompson": 3,
+    "Sunscape": 2,
+    "NOW": 1,
+    "Zoetry": 1,
+    "Hyatt Vivid": 1,
+    "other": 1
+  },
+  "stewardTriageBuckets": {
+    "classic_hyatt_missing_from_archive": 19,
+    "inclusive_missing_from_wayback": 18,
+    "nonstandard_or_unbound_name": 8,
+    "pipeline_or_unopened": 5,
+    "census_duplicate_after_1to1": 8,
+    "hard_exclusion_name_conflict": 1
+  },
+  "stewardGaps": [
+    {
+      "censusRecordId": "recPKO54xTtVbqwBE",
+      "censusName": "Hyatt Place San Jose Cariari",
+      "issue": "Hard-excluded from matching to Hyatt Place San Jose Pinares (SJOZP) — distinct properties. No official Cariari URL in directory yet."
+    },
+    {
+      "note": "Duplicate census rows for same hotel remain unmatched after 1:1 property-id assignment (Insurgentes, Impression Isla Mujeres, Secrets Playa Blanca/Tulum, etc.)."
+    },
+    {
+      "note": "Targeted Wayback CDX probe of 35 missing-name patterns returned 0 new CALA Property IDs — archive coverage exhausted for unmatched openings."
+    }
+  ],
+  "recoveryNotes": [
+    "hyattBrandsAlign no longer treats hyatt.com host as a brand token — Inclusive slug-stripped paths (e.g. /vallarta-bay-resort-spa/drvpv) can match Dreams/Secrets/etc.",
+    "planHyattCensusEnrichment excludes Property IDs already present on any census row (prevents duplicate PID re-binds).",
+    "Applied 9 medium/high + 4 low (--include-low) official hyatt.com fill-blanks."
+  ],
+  "fieldMapping": {
+    "Website": "Website",
+    "Property ID": "Property ID"
+  },
+  "reports": {
+    "directory": "reports/hyatt-cala-directory-extract.json",
+    "plan": "reports/hyatt-census-enrichment-plan.json",
+    "steward": "reports/hyatt-census-steward-review.csv",
+    "unmatched": "reports/hyatt-census-unmatched.csv",
+    "stewardTriageCsv": "reports/hyatt-census-unmatched-steward-triage.csv",
+    "stewardTriageJson": "reports/hyatt-census-unmatched-steward-triage.json",
+    "cdxProbe": "reports/hyatt-unmatched-cdx-probe.json",
+    "applyLog": "reports/hyatt-census-enrichment-apply-log.csv",
+    "summary": "reports/hyatt-census-enrichment-summary.json"
+  },
+  "limitations": [
+    "Live hyatt.com blocked (429/Kasada) — directory from Wayback sitemap 2024-01-26 + CDX of official hyatt.com URLs.",
+    "Targeted unmatched CDX probe (35 patterns) found 0 new Property IDs — openings absent from archive.",
+    "Amenities not applied this pass.",
+    "Hard exclusions: Cariari↔Pinares; Insurgentes census must not bind to generic MEXHR.",
+    "Remaining blanks are steward-triaged (duplicates, pipeline, nonstandard, classic/inclusive missing)."
+  ],
+  "changeImpact": "High",
+  "rollbackNote": "Clear Website + Property ID on the 13 censusRecordIds in appliedThisRun (this triage recovery batch). Prior cumulative 112 remains intact."
+}

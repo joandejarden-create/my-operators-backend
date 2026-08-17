@@ -1,0 +1,133 @@
+{
+  "version": "hotel-census-secondary-source-decision-pack-v1",
+  "generated_at": "2026-08-07T19:20:30.488Z",
+  "policy": {
+    "ENABLE_SECONDARY_HOTEL_DATA_SOURCES": "0",
+    "writes_until_founder_approval": false,
+    "webhound_as_census_sot": false
+  },
+  "sources": [
+    {
+      "source": "Official parent/brand pages + directories",
+      "fields": [
+        "address",
+        "phone",
+        "hotel_url",
+        "rooms",
+        "coords"
+      ],
+      "coverage": "High for chained brands",
+      "license": "Public pages; respect ToS",
+      "phone": "Primary when property-level",
+      "rooms": "Primary when exact",
+      "address": "Primary",
+      "website": "Primary",
+      "coordinates": "When present",
+      "recommendation": "Continue investing — primary path",
+      "founder_approval_required": false
+    },
+    {
+      "source": "Official hotel websites at scale",
+      "fields": [
+        "phone",
+        "rooms",
+        "address",
+        "website"
+      ],
+      "coverage": "Medium",
+      "license": "Public",
+      "phone": "Strong secondary after parent fail",
+      "rooms": "Strong secondary when exact",
+      "recommendation": "Approve fetch adapter after parent 403 exhaustion",
+      "founder_approval_required": true
+    },
+    {
+      "source": "CoStar / STR licensed hotel database",
+      "fields": [
+        "address",
+        "phone",
+        "rooms",
+        "coords",
+        "website"
+      ],
+      "coverage": "High commercial",
+      "license": "Licensed — never product-facing CoStar exposure",
+      "recommendation": "Internal ops only if licensed; not product-facing",
+      "founder_approval_required": true
+    },
+    {
+      "source": "Google Places API",
+      "fields": [
+        "address",
+        "phone",
+        "coords",
+        "website"
+      ],
+      "coverage": "Very high",
+      "license": "Storage restricted without Places ToS review",
+      "recommendation": "Hold — legal/storage review required",
+      "founder_approval_required": true
+    },
+    {
+      "source": "Data Appeal / licensed hospitality datasets",
+      "fields": [
+        "address",
+        "phone",
+        "rooms",
+        "coords"
+      ],
+      "coverage": "Medium–High",
+      "license": "License-dependent",
+      "recommendation": "Evaluate under secondary policy if storage allowed",
+      "founder_approval_required": true
+    },
+    {
+      "source": "Geoapify / Foursquare / HERE / TomTom",
+      "fields": [
+        "address",
+        "phone",
+        "coords",
+        "website"
+      ],
+      "coverage": "Medium–High",
+      "license": "Often no bulk store",
+      "recommendation": "Coords/POI secondary only after license",
+      "founder_approval_required": true
+    },
+    {
+      "source": "Tourism boards / convention bureaus",
+      "fields": [
+        "rooms",
+        "address",
+        "website"
+      ],
+      "coverage": "Country-specific / sparse",
+      "license": "Often open",
+      "recommendation": "Secondary when property-exact",
+      "founder_approval_required": true
+    },
+    {
+      "source": "Owner/developer websites",
+      "fields": [
+        "rooms",
+        "phone",
+        "address",
+        "website"
+      ],
+      "coverage": "Low volume",
+      "license": "Public",
+      "recommendation": "Secondary rooms/phone when exact property match",
+      "founder_approval_required": true
+    },
+    {
+      "source": "Hospitality trade publications",
+      "fields": [
+        "rooms"
+      ],
+      "coverage": "Sparse",
+      "license": "Public",
+      "recommendation": "Secondary rooms — exact count only",
+      "founder_approval_required": true
+    }
+  ]
+}

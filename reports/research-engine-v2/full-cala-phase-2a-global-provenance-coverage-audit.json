@@ -1,0 +1,2233 @@
+{
+  "ok": true,
+  "AUDIT_STATUS": "production_census_full_cala_phase_2a_global_provenance_coverage_audit_complete_with_gaps",
+  "PHASE_1_STATUS": "production_census_full_cala_shell_universe_exhausted_pending_enrichment",
+  "objective": "full-cala-phase-2a-global-provenance-coverage-audit-v1",
+  "version": "full-cala-phase-2a-global-provenance-coverage-audit-v1",
+  "production_writes": false,
+  "production_table_id": "tbl9aY5ijiuIzzWam",
+  "generated_at": "2026-08-09T19:35:49.213Z",
+  "PRODUCTION_CENSUS_COUNT": 5956,
+  "expected_census_count": 5956,
+  "census_count_delta_vs_expected": 0,
+  "SHELLS_RECONCILED": {
+    "expected": 3395,
+    "found_in_production": 3395,
+    "delta": 0,
+    "lineage": {
+      "expected_shell_inserts": 3395,
+      "production_shells_found": 3395,
+      "delta_expected_minus_found": 0,
+      "checkpoint_inserted": 3254,
+      "orchestrator_shells_added": 141,
+      "checkpoint_plus_orch": 3395,
+      "by_country_expected": {
+        "Dominican Republic": 416,
+        "Costa Rica": 641,
+        "Panama": 280,
+        "Colombia": 793,
+        "Mexico": 1265
+      },
+      "by_country_found": {
+        "Colombia": 793,
+        "Costa Rica": 641,
+        "Mexico": 1265,
+        "Dominican Republic": 416,
+        "Panama": 280
+      },
+      "by_country_batch_found": {
+        "Colombia Batch 2": 293,
+        "Costa Rica": 498,
+        "Mexico Batch 3": 265,
+        "Mexico Batch 1": 500,
+        "Dominican Republic": 416,
+        "(blank)": 2,
+        "Costa Rica Batch 2": 141,
+        "Mexico Batch 2": 500,
+        "Colombia": 500,
+        "Panama": 280
+      },
+      "country_deltas": {
+        "Dominican Republic": {
+          "expected": 416,
+          "found": 416,
+          "delta": 0
+        },
+        "Costa Rica": {
+          "expected": 641,
+          "found": 641,
+          "delta": 0
+        },
+        "Panama": {
+          "expected": 280,
+          "found": 280,
+          "delta": 0
+        },
+        "Colombia": {
+          "expected": 793,
+          "found": 793,
+          "delta": 0
+        },
+        "Mexico": {
+          "expected": 1265,
+          "found": 1265,
+          "delta": 0
+        }
+      },
+      "missing_batch_ids": 2,
+      "duplicate_batch_id_value": "full-cala-15k-census-shell-insert-v1",
+      "note": "Shell Insert Batch ID is intentionally shared across full-cala-15k wave (not per-country unique).",
+      "coverage": {
+        "shell_insert_batch_id": {
+          "present": 3393,
+          "missing": 2,
+          "pct": 99.9
+        },
+        "shell_insert_country_batch": {
+          "present": 3393,
+          "missing": 2,
+          "pct": 99.9
+        },
+        "shell_insert_date": {
+          "present": 3393,
+          "missing": 2,
+          "pct": 99.9
+        },
+        "shell_insert_source_mix": {
+          "present": 3393,
+          "missing": 2,
+          "pct": 99.9
+        },
+        "discovery_source": {
+          "present": 3393,
+          "missing": 2,
+          "pct": 99.9
+        },
+        "source_candidate_type": {
+          "present": 3393,
+          "missing": 2,
+          "pct": 99.9
+        },
+        "candidate_source_count": {
+          "present": 3393,
+          "missing": 2,
+          "pct": 99.9
+        },
+        "shell_dedupe_confidence": {
+          "present": 3393,
+          "missing": 2,
+          "pct": 99.9
+        },
+        "candidate_brand_text": {
+          "present": 577,
+          "missing": 2818,
+          "pct": 17
+        }
+      },
+      "allowlists": [
+        {
+          "path": "reports/research-engine-v2/full-cala-15k-colombia-batch-2-allowlist.json",
+          "count": 293,
+          "first": "hbx_810924"
+        },
+        {
+          "path": "reports/research-engine-v2/full-cala-shell-orchestrator/orch_2026-08-09T19-19-46-533Z/orch_2026-08-09T19-19-46-533Z__Costa_Rica__2-allowlist.json",
+          "count": 141,
+          "first": "hbx_5489"
+        }
+      ]
+    }
+  },
+  "part1_production_reconciliation": {
+    "total": 5956,
+    "by_country": {
+      "Dominican Republic": 654,
+      "Colombia": 967,
+      "Puerto Rico": 49,
+      "Peru": 57,
+      "Mexico": 2181,
+      "Costa Rica": 748,
+      "Chile": 65,
+      "Brazil": 494,
+      "Jamaica": 78,
+      "Panama": 325,
+      "Aruba": 13,
+      "Barbados": 47,
+      "Argentina": 129,
+      "Curaçao": 5,
+      "El Salvador": 10,
+      "Uruguay": 16,
+      "Grenada": 4,
+      "Belize": 12,
+      "Antigua and Barbuda": 5,
+      "Guatemala": 13,
+      "Ecuador": 31,
+      "Honduras": 12,
+      "Bahamas": 9,
+      "Saint Kitts and Nevis": 3,
+      "Saint Lucia": 3,
+      "Trinidad and Tobago": 7,
+      "Nicaragua": 7,
+      "Cayman Islands": 7,
+      "British Virgin Islands": 3,
+      "Dominica": 2
+    },
+    "by_production_use_status": {
+      "Census Only / Not Owner-Facing": 5956
+    },
+    "by_review_status": {
+      "(blank)": 2563,
+      "Internal Only": 3393
+    },
+    "by_enrichment_status": {
+      "Discovered — pending enrichment": 3773,
+      "Verified — geography pending": 87,
+      "Verified — material gaps": 940,
+      "Partial": 784,
+      "In Progress": 300,
+      "Not Started": 53,
+      "Universal record resolver — Choice official": 5,
+      "Choice Level-2 directory + geography completion (High only)": 11,
+      "Held": 2,
+      "Universal record resolver — Hilton": 1
+    },
+    "by_public_display_review_status": {
+      "(blank)": 1512,
+      "Hold": 3936,
+      "Auto-Classified": 438,
+      "Needs Review": 70
+    },
+    "by_radar_display_status": {
+      "(blank)": 1525,
+      "Hold": 3950,
+      "Public Map Eligible": 220,
+      "Public List Eligible": 261
+    },
+    "human_review_required": {
+      "true": 3834,
+      "false": 0,
+      "blank": 2122
+    },
+    "shell_state_anomalies_count": 0,
+    "shell_state_anomalies_sample": [],
+    "shell_enrichment_info_sample": [
+      {
+        "id": "rec02ursrVzGyvhsS",
+        "country": "Mexico",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec05gqBFy6qnQHoY",
+        "country": "Mexico",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec07eUE1UTjuki0z",
+        "country": "Costa Rica",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec086xRR8YaWRxrU",
+        "country": "Mexico",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec0CxJ7S95aDfqPp",
+        "country": "Colombia",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec0EPLp7OunKPkr9",
+        "country": "Colombia",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec0L7gILWZrDZnKB",
+        "country": "Mexico",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec0qIw7X3iULMYqc",
+        "country": "Costa Rica",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec0rpMSm5HxwU94W",
+        "country": "Mexico",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      },
+      {
+        "id": "rec0yjEAxuhCYXYT0",
+        "country": "Mexico",
+        "type": "enrichment_status_not_discovered_pending",
+        "value": "Partial",
+        "severity": "info"
+      }
+    ]
+  },
+  "part2_shell_lineage": {
+    "expected_shell_inserts": 3395,
+    "production_shells_found": 3395,
+    "delta_expected_minus_found": 0,
+    "checkpoint_inserted": 3254,
+    "orchestrator_shells_added": 141,
+    "checkpoint_plus_orch": 3395,
+    "by_country_expected": {
+      "Dominican Republic": 416,
+      "Costa Rica": 641,
+      "Panama": 280,
+      "Colombia": 793,
+      "Mexico": 1265
+    },
+    "by_country_found": {
+      "Colombia": 793,
+      "Costa Rica": 641,
+      "Mexico": 1265,
+      "Dominican Republic": 416,
+      "Panama": 280
+    },
+    "by_country_batch_found": {
+      "Colombia Batch 2": 293,
+      "Costa Rica": 498,
+      "Mexico Batch 3": 265,
+      "Mexico Batch 1": 500,
+      "Dominican Republic": 416,
+      "(blank)": 2,
+      "Costa Rica Batch 2": 141,
+      "Mexico Batch 2": 500,
+      "Colombia": 500,
+      "Panama": 280
+    },
+    "country_deltas": {
+      "Dominican Republic": {
+        "expected": 416,
+        "found": 416,
+        "delta": 0
+      },
+      "Costa Rica": {
+        "expected": 641,
+        "found": 641,
+        "delta": 0
+      },
+      "Panama": {
+        "expected": 280,
+        "found": 280,
+        "delta": 0
+      },
+      "Colombia": {
+        "expected": 793,
+        "found": 793,
+        "delta": 0
+      },
+      "Mexico": {
+        "expected": 1265,
+        "found": 1265,
+        "delta": 0
+      }
+    },
+    "missing_batch_ids": 2,
+    "duplicate_batch_id_value": "full-cala-15k-census-shell-insert-v1",
+    "note": "Shell Insert Batch ID is intentionally shared across full-cala-15k wave (not per-country unique).",
+    "coverage": {
+      "shell_insert_batch_id": {
+        "present": 3393,
+        "missing": 2,
+        "pct": 99.9
+      },
+      "shell_insert_country_batch": {
+        "present": 3393,
+        "missing": 2,
+        "pct": 99.9
+      },
+      "shell_insert_date": {
+        "present": 3393,
+        "missing": 2,
+        "pct": 99.9
+      },
+      "shell_insert_source_mix": {
+        "present": 3393,
+        "missing": 2,
+        "pct": 99.9
+      },
+      "discovery_source": {
+        "present": 3393,
+        "missing": 2,
+        "pct": 99.9
+      },
+      "source_candidate_type": {
+        "present": 3393,
+        "missing": 2,
+        "pct": 99.9
+      },
+      "candidate_source_count": {
+        "present": 3393,
+        "missing": 2,
+        "pct": 99.9
+      },
+      "shell_dedupe_confidence": {
+        "present": 3393,
+        "missing": 2,
+        "pct": 99.9
+      },
+      "candidate_brand_text": {
+        "present": 577,
+        "missing": 2818,
+        "pct": 17
+      }
+    },
+    "allowlists": [
+      {
+        "path": "reports/research-engine-v2/full-cala-15k-colombia-batch-2-allowlist.json",
+        "count": 293,
+        "first": "hbx_810924"
+      },
+      {
+        "path": "reports/research-engine-v2/full-cala-shell-orchestrator/orch_2026-08-09T19-19-46-533Z/orch_2026-08-09T19-19-46-533Z__Costa_Rica__2-allowlist.json",
+        "count": 141,
+        "first": "hbx_5489"
+      }
+    ]
+  },
+  "part3_hbx_linkage": {
+    "total_with_hbx_hotel_code": 3016,
+    "unique_hbx_hotel_codes": 3016,
+    "duplicate_hbx_hotel_codes": 0,
+    "duplicate_hbx_sample": [],
+    "malformed_hbx_hotel_codes": 0,
+    "malformed_sample": [],
+    "coverage_by_country": {
+      "Dominican Republic": 369,
+      "Colombia": 898,
+      "Mexico": 846,
+      "Costa Rica": 697,
+      "Panama": 206
+    },
+    "chain_code_distinct": 155,
+    "category_code_distinct": 43,
+    "linkage_confidence_distribution": {
+      "High": 2890,
+      "Medium": 128
+    },
+    "source_status_distribution": {
+      "Matched": 470,
+      "Candidate": 2285
+    },
+    "content_review_status_distribution": {
+      "Internal Only": 2755
+    }
+  },
+  "part4_source_mix": {
+    "shell_global": {
+      "hbx_only": 1908,
+      "cvent_plus_hbx": 640,
+      "cvent_only": 847,
+      "other": 0
+    },
+    "shell_by_country": {
+      "Colombia": {
+        "hbx_only": 619,
+        "cvent_plus_hbx": 174,
+        "cvent_only": 0,
+        "other": 0
+      },
+      "Costa Rica": {
+        "hbx_only": 559,
+        "cvent_plus_hbx": 82,
+        "cvent_only": 0,
+        "other": 0
+      },
+      "Mexico": {
+        "hbx_only": 367,
+        "cvent_plus_hbx": 307,
+        "cvent_only": 591,
+        "other": 0
+      },
+      "Dominican Republic": {
+        "hbx_only": 227,
+        "cvent_plus_hbx": 36,
+        "cvent_only": 153,
+        "other": 0
+      },
+      "Panama": {
+        "hbx_only": 136,
+        "cvent_plus_hbx": 41,
+        "cvent_only": 103,
+        "other": 0
+      }
+    },
+    "cvent_validation_language_anomalies": 0,
+    "cvent_validation_language_sample": [],
+    "provenance_issue_sample": []
+  },
+  "part5_brand_safety": {
+    "shell_records_audited": 3395,
+    "prohibited_field_hits_on_shells": 0,
+    "anomalies_sample": [],
+    "candidate_brand_coverage": {
+      "present": 577,
+      "missing": 2818,
+      "pct": 17
+    },
+    "note": "Classification B = populated on a shell-identified record. Shell insert path never writes Current Brand / Brand Family / Brand Verified / Brand Status / Company Validated."
+  },
+  "part6_protected_fields": {
+    "anomalies_count": 0,
+    "anomalies_sample": []
+  },
+  "part7_duplicates": {
+    "duplicate_high_groups": 0,
+    "duplicate_review_groups": 219,
+    "duplicate_high_sample": [],
+    "duplicate_review_sample": [
+      {
+        "reason": "name_country:tryp wyndham sao paulo paulista paraiso|brazil",
+        "size": 2,
+        "record_ids": [
+          "rec08YF1M2BOFBcYG",
+          "rec0zWvoHC8NUZGpU"
+        ],
+        "countries": [
+          "Brazil"
+        ],
+        "names": [
+          "TRYP by Wyndham Sao Paulo Paulista Paraiso",
+          "TRYP by Wyndham Sao Paulo Paulista Paraiso"
+        ]
+      },
+      {
+        "reason": "name_country:wyndham alltra playa del carmen adults only all inclusive|mexico",
+        "size": 2,
+        "record_ids": [
+          "rec0TMfTtlRbuKJ7K",
+          "rec2zNrEGGLpuog2u"
+        ],
+        "countries": [
+          "Mexico"
+        ],
+        "names": [
+          "Wyndham Alltra Playa del Carmen Adults Only All Inclusive",
+          "Wyndham Alltra Playa del Carmen Adults Only All Inclusive"
+        ]
+      },
+      {
+        "reason": "name_country:iberostar waves punta cana|dominican republic",
+        "size": 2,
+        "record_ids": [
+          "rec0aE97rzRABwJon",
+          "recwbwEj6MbjvS4sm"
+        ],
+        "countries": [
+          "Dominican Republic"
+        ],
+        "names": [
+          "Iberostar Waves Punta Cana",
+          "Iberostar Waves Punta Cana"
+        ]
+      },
+      {
+        "reason": "name_country:microtel wyndham guadalajara sur|mexico",
+        "size": 2,
+        "record_ids": [
+          "rec0sn1JPUrwyOXNP",
+          "recg9RerQZchaGVCp"
+        ],
+        "countries": [
+          "Mexico"
+        ],
+        "names": [
+          "Microtel Inn & Suites by Wyndham Guadalajara Sur",
+          "Microtel Inn & Suites by Wyndham Guadalajara Sur"
+        ]
+      },
+      {
+        "reason": "name_country:ascend collection playa del carmen|mexico",
+        "size": 2,
+        "record_ids": [
+          "rec29iAAbH99948Hi",
+          "recSoXjB3IFyLIikx"
+        ],
+        "countries": [
+          "Mexico"
+        ],
+        "names": [
+          "Ascend Hotel Collection Playa del Carmen",
+          "Ascend Hotel Collection Playa del Carmen"
+        ]
+      },
+      {
+        "reason": "name_country:marriott miches beach all inclusive|dominican republic",
+        "size": 2,
+        "record_ids": [
+          "rec2qzq0V2Hvr2m6l",
+          "recPEhDXYOmH34H4U"
+        ],
+        "countries": [
+          "Dominican Republic"
+        ],
+        "names": [
+          "Marriott Miches Beach, An All-Inclusive Resort",
+          "Marriott Miches Beach, An All-Inclusive Resort"
+        ]
+      },
+      {
+        "reason": "name_country:tryp wyndham sao paulo guarulhos airport|brazil",
+        "size": 2,
+        "record_ids": [
+          "rec2vztHG7gsevjVn",
+          "recForYpQSDs2YQ62"
+        ],
+        "countries": [
+          "Brazil"
+        ],
+        "names": [
+          "TRYP by Wyndham Sao Paulo Guarulhos Airport",
+          "TRYP by Wyndham Sao Paulo Guarulhos Airport"
+        ]
+      },
+      {
+        "reason": "name_country:los cabos golf trademark collection wyndham|mexico",
+        "size": 2,
+        "record_ids": [
+          "rec4T9KTOyM3RYz5w",
+          "reckTVqD9m0x62btN"
+        ],
+        "countries": [
+          "Mexico"
+        ],
+        "names": [
+          "Los Cabos Golf Resort, Trademark Collection by Wyndham",
+          "Los Cabos Golf Resort, Trademark Collection by Wyndham"
+        ]
+      },
+      {
+        "reason": "name_country:tryp wyndham guayaquil airport|ecuador",
+        "size": 2,
+        "record_ids": [
+          "rec56nKR2GhYle27o",
+          "recngAXIZMFTLS5AK"
+        ],
+        "countries": [
+          "Ecuador"
+        ],
+        "names": [
+          "TRYP by Wyndham Guayaquil Airport",
+          "TRYP by Wyndham Guayaquil Airport"
+        ]
+      },
+      {
+        "reason": "name_country:2026 best vacation destinations|mexico",
+        "size": 3,
+        "record_ids": [
+          "rec5b4Cscv9AfHspt",
+          "recE0182ItCvvmzJZ",
+          "rechwkmQG4ZpCkiFI"
+        ],
+        "countries": [
+          "Mexico"
+        ],
+        "names": [
+          "2026 Best Vacation Destinations",
+          "2026 Best Vacation Destinations",
+          "2026 Best Vacation Destinations"
+        ]
+      },
+      {
+        "reason": "name_country:iberostar waves dominicana|dominican republic",
+        "size": 2,
+        "record_ids": [
+          "rec5i0bwI4gOWw3LI",
+          "recHnVdH7ImQilC7n"
+        ],
+        "countries": [
+          "Dominican Republic"
+        ],
+        "names": [
+          "Iberostar Waves Dominicana",
+          "Iberostar Waves Dominicana"
+        ]
+      },
+      {
+        "reason": "name_country:holiday santo domingo|dominican republic",
+        "size": 2,
+        "record_ids": [
+          "rec6QsU0IyLwBGJdy",
+          "rectqOSbFpLbCBw0N"
+        ],
+        "countries": [
+          "Dominican Republic"
+        ],
+        "names": [
+          "Holiday Inn Santo Domingo",
+          "Holiday Inn Santo Domingo"
+        ]
+      },
+      {
+        "reason": "name_country:mx zocalo cdmx trademark collection wyndham|mexico",
+        "size": 2,
+        "record_ids": [
+          "rec6UpaPNavyeWxKd",
+          "rectvTSD2WzxYjtAl"
+        ],
+        "countries": [
+          "Mexico"
+        ],
+        "names": [
+          "Hotel MX zócalo CDMX, Trademark Collection by Wyndham",
+          "Hotel MX zocalo CDMX, Trademark Collection by Wyndham"
+        ]
+      },
+      {
+        "reason": "name_country:tryp wyndham aruba|aruba",
+        "size": 2,
+        "record_ids": [
+          "rec7OJSAN5r2130Ls",
+          "rechYcOOhicxLWV7h"
+        ],
+        "countries": [
+          "Aruba"
+        ],
+        "names": [
+          "TRYP by Wyndham Aruba",
+          "TRYP by Wyndham Aruba"
+        ]
+      },
+      {
+        "reason": "name_country:wyndham palmas beach golf boutique|puerto rico",
+        "size": 2,
+        "record_ids": [
+          "rec7WoKbxU8emyDFL",
+          "rechKRMaOxVH0QhPX"
+        ],
+        "countries": [
+          "Puerto Rico"
+        ],
+        "names": [
+          "Wyndham Palmas Beach and Golf Boutique Resort",
+          "Wyndham Palmas Beach and Golf Boutique Resort"
+        ]
+      },
+      {
+        "reason": "name_country:la quinta wyndham medellin|colombia",
+        "size": 2,
+        "record_ids": [
+          "rec8EFjDUSgLz2Oj3",
+          "reca8BBxvjE28lJYL"
+        ],
+        "countries": [
+          "Colombia"
+        ],
+        "names": [
+          "La Quinta by Wyndham Medellin",
+          "La Quinta by Wyndham Medellin"
+        ]
+      },
+      {
+        "reason": "name_country:wyndham grand rio mar rainforest beach golf|puerto rico",
+        "size": 2,
+        "record_ids": [
+          "rec964cSXgEvqiIXb",
+          "recUcNhitvAxiGANf"
+        ],
+        "countries": [
+          "Puerto Rico"
+        ],
+        "names": [
+          "Wyndham Grand Rio Mar Rainforest Beach and Golf Resort",
+          "Wyndham Grand Rio Mar Rainforest Beach and Golf Resort"
+        ]
+      },
+      {
+        "reason": "name_country:wyndham garden el morro montecristi|dominican republic",
+        "size": 2,
+        "record_ids": [
+          "rec9BG3MzGNgFZDFn",
+          "recde81vY3zMnxcbK"
+        ],
+        "countries": [
+          "Dominican Republic"
+        ],
+        "names": [
+          "wyndham garden el morro montecristi",
+          "wyndham garden el morro montecristi"
+        ]
+      },
+      {
+        "reason": "name_country:viva fortuna beach wyndham trademark all inclusive|bahamas",
+        "size": 2,
+        "record_ids": [
+          "rec9FoFYAS4K56PEP",
+          "recP6mGpSQX214xHG"
+        ],
+        "countries": [
+          "Bahamas"
+        ],
+        "names": [
+          "Viva Fortuna Beach by Wyndham, A Trademark All Inclusive",
+          "Viva Fortuna Beach by Wyndham, A Trademark All Inclusive"
+        ]
+      },
+      {
+        "reason": "name_country:ramada wyndham buenos aires vicente lopez|argentina",
+        "size": 2,
+        "record_ids": [
+          "recAUJQzyuITUWij4",
+          "recBBza2xVePprrNr"
+        ],
+        "countries": [
+          "Argentina"
+        ],
+        "names": [
+          "Ramada by Wyndham Buenos Aires Vicente Lopez",
+          "Ramada by Wyndham Buenos Aires Vicente Lopez"
+        ]
+      },
+      {
+        "reason": "name_country:occidental allegro playa dorada|dominican republic",
+        "size": 2,
+        "record_ids": [
+          "recAsOCSrAEx7I137",
+          "recsPbfC0ndxnCAiX"
+        ],
+        "countries": [
+          "Dominican Republic"
+        ],
+        "names": [
+          "Hotel Occidental Allegro Playa Dorada",
+          "Hotel Occidental Allegro Playa Dorada"
+        ]
+      },
+      {
+        "reason": "name_country:tryp wyndham mayaguez|puerto rico",
+        "size": 2,
+        "record_ids": [
+          "recBU6YBT6Uc9J1C0",
+          "recq5vRmLRrl0UWOW"
+        ],
+        "countries": [
+          "Puerto Rico"
+        ],
+        "names": [
+          "TRYP by Wyndham Mayaguez",
+          "TRYP by Wyndham Mayaguez"
+        ]
+      },
+      {
+        "reason": "name_country:wyndham garden santiago kennedy|chile",
+        "size": 2,
+        "record_ids": [
+          "recBXugl3w63O5QbM",
+          "recyXbkSAkRqtgkhT"
+        ],
+        "countries": [
+          "Chile"
+        ],
+        "names": [
+          "Wyndham Garden Santiago Kennedy",
+          "Wyndham Garden Santiago Kennedy"
+        ]
+      },
+      {
+        "reason": "name_country:days wyndham rio de janeiro lapa|brazil",
+        "size": 2,
+        "record_ids": [
+          "recBe73h4HWoyPmEG",
+          "rechVRwGlAuaAPVRC"
+        ],
+        "countries": [
+          "Brazil"
+        ],
+        "names": [
+          "Days Inn by Wyndham Rio de Janeiro Lapa",
+          "Days Inn by Wyndham Rio de Janeiro Lapa"
+        ]
+      },
+      {
+        "reason": "name_country:bristol panama registry collection|panama",
+        "size": 2,
+        "record_ids": [
+          "recCKuUdW6yqAe3L5",
+          "recE6004KEGyUcA7R"
+        ],
+        "countries": [
+          "Panama"
+        ],
+        "names": [
+          "Bristol Panama, a Registry Collection Hotel",
+          "Bristol Panama, a Registry Collection Hotel"
+        ]
+      }
+    ],
+    "countries_highest_duplicate_risk": [
+      {
+        "country": "Dominican Republic",
+        "groups_touched": 71
+      },
+      {
+        "country": "Mexico",
+        "groups_touched": 66
+      },
+      {
+        "country": "Colombia",
+        "groups_touched": 37
+      },
+      {
+        "country": "Costa Rica",
+        "groups_touched": 13
+      },
+      {
+        "country": "Panama",
+        "groups_touched": 6
+      },
+      {
+        "country": "Brazil",
+        "groups_touched": 5
+      },
+      {
+        "country": "Argentina",
+        "groups_touched": 5
+      },
+      {
+        "country": "Puerto Rico",
+        "groups_touched": 4
+      },
+      {
+        "country": "Ecuador",
+        "groups_touched": 2
+      },
+      {
+        "country": "Jamaica",
+        "groups_touched": 2
+      },
+      {
+        "country": "Aruba",
+        "groups_touched": 1
+      },
+      {
+        "country": "Bahamas",
+        "groups_touched": 1
+      },
+      {
+        "country": "Chile",
+        "groups_touched": 1
+      },
+      {
+        "country": "Guatemala",
+        "groups_touched": 1
+      },
+      {
+        "country": "Belize",
+        "groups_touched": 1
+      }
+    ]
+  },
+  "part8_holds": {
+    "total_held": 9633,
+    "by_country": {
+      "Grenada": 23,
+      "Guadeloupe": 32,
+      "Chile": 311,
+      "Guyana": 16,
+      "Dominica": 14,
+      "Haiti": 19,
+      "Brazil": 4842,
+      "Belize": 118,
+      "Costa Rica": 202,
+      "Bahamas": 74,
+      "Colombia": 299,
+      "Ecuador": 89,
+      "Saint Martin": 98,
+      "Jamaica": 170,
+      "French Guiana": 8,
+      "Guatemala": 74,
+      "Aruba": 32,
+      "Montserrat": 47,
+      "U.S. Virgin Islands": 50,
+      "Turks and Caicos": 57,
+      "Uruguay": 40,
+      "Trinidad and Tobago": 14,
+      "Paraguay": 61,
+      "Venezuela": 34,
+      "Bolivia": 57,
+      "Saint Lucia": 44,
+      "Suriname": 15,
+      "Saint Vincent and the Grenadines": 25,
+      "Peru": 303,
+      "British Virgin Islands": 20,
+      "Bonaire": 51,
+      "Mexico": 1276,
+      "Nicaragua": 42,
+      "Honduras": 48,
+      "Puerto Rico": 82,
+      "Curaçao": 3,
+      "Cayman Islands": 38,
+      "Martinique": 31,
+      "Argentina": 788,
+      "Saint Barthélemy": 6,
+      "Antigua and Barbuda": 3,
+      "Barbados": 55,
+      "El Salvador": 22
+    },
+    "by_class": {
+      "weak_identity_hold": 9630,
+      "non_hotel_reject": 2,
+      "shell_insert_with_review": 1
+    },
+    "by_reason": {
+      "cvent_only_missing_city": 9498,
+      "non_hotel_or_generic_venue_name": 2,
+      "cvent_only_hotel_like_inferred_destination": 1,
+      "cvent_only_inferred_destination_weak_hotel_signal": 132
+    },
+    "detail_by_country": {
+      "Grenada": {
+        "total_held": 23,
+        "cvent_only_held": 23,
+        "hbx_related_held": 0,
+        "missing_city": 23,
+        "missing_address": 23,
+        "missing_website": 23,
+        "generic_or_weak_name": 23,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 23
+        },
+        "by_class": {
+          "weak_identity_hold": 23
+        }
+      },
+      "Guadeloupe": {
+        "total_held": 32,
+        "cvent_only_held": 32,
+        "hbx_related_held": 0,
+        "missing_city": 32,
+        "missing_address": 32,
+        "missing_website": 32,
+        "generic_or_weak_name": 32,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 32
+        },
+        "by_class": {
+          "weak_identity_hold": 32
+        }
+      },
+      "Chile": {
+        "total_held": 311,
+        "cvent_only_held": 311,
+        "hbx_related_held": 0,
+        "missing_city": 311,
+        "missing_address": 311,
+        "missing_website": 311,
+        "generic_or_weak_name": 311,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 311
+        },
+        "by_class": {
+          "weak_identity_hold": 311
+        }
+      },
+      "Guyana": {
+        "total_held": 16,
+        "cvent_only_held": 16,
+        "hbx_related_held": 0,
+        "missing_city": 16,
+        "missing_address": 16,
+        "missing_website": 16,
+        "generic_or_weak_name": 16,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 16
+        },
+        "by_class": {
+          "weak_identity_hold": 16
+        }
+      },
+      "Dominica": {
+        "total_held": 14,
+        "cvent_only_held": 14,
+        "hbx_related_held": 0,
+        "missing_city": 14,
+        "missing_address": 14,
+        "missing_website": 14,
+        "generic_or_weak_name": 14,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 14
+        },
+        "by_class": {
+          "weak_identity_hold": 14
+        }
+      },
+      "Haiti": {
+        "total_held": 19,
+        "cvent_only_held": 19,
+        "hbx_related_held": 0,
+        "missing_city": 19,
+        "missing_address": 19,
+        "missing_website": 19,
+        "generic_or_weak_name": 19,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 19
+        },
+        "by_class": {
+          "weak_identity_hold": 19
+        }
+      },
+      "Brazil": {
+        "total_held": 4842,
+        "cvent_only_held": 4842,
+        "hbx_related_held": 0,
+        "missing_city": 4842,
+        "missing_address": 4842,
+        "missing_website": 4842,
+        "generic_or_weak_name": 4842,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 4840,
+          "non_hotel_or_generic_venue_name": 2
+        },
+        "by_class": {
+          "weak_identity_hold": 4840,
+          "non_hotel_reject": 2
+        }
+      },
+      "Belize": {
+        "total_held": 118,
+        "cvent_only_held": 118,
+        "hbx_related_held": 0,
+        "missing_city": 118,
+        "missing_address": 118,
+        "missing_website": 118,
+        "generic_or_weak_name": 118,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 118
+        },
+        "by_class": {
+          "weak_identity_hold": 118
+        }
+      },
+      "Costa Rica": {
+        "total_held": 202,
+        "cvent_only_held": 202,
+        "hbx_related_held": 0,
+        "missing_city": 202,
+        "missing_address": 202,
+        "missing_website": 202,
+        "generic_or_weak_name": 202,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 202
+        },
+        "by_class": {
+          "weak_identity_hold": 202
+        }
+      },
+      "Bahamas": {
+        "total_held": 74,
+        "cvent_only_held": 74,
+        "hbx_related_held": 0,
+        "missing_city": 74,
+        "missing_address": 74,
+        "missing_website": 74,
+        "generic_or_weak_name": 74,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 74
+        },
+        "by_class": {
+          "weak_identity_hold": 74
+        }
+      },
+      "Colombia": {
+        "total_held": 299,
+        "cvent_only_held": 299,
+        "hbx_related_held": 0,
+        "missing_city": 299,
+        "missing_address": 299,
+        "missing_website": 299,
+        "generic_or_weak_name": 299,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 299
+        },
+        "by_class": {
+          "weak_identity_hold": 299
+        }
+      },
+      "Ecuador": {
+        "total_held": 89,
+        "cvent_only_held": 89,
+        "hbx_related_held": 0,
+        "missing_city": 89,
+        "missing_address": 89,
+        "missing_website": 89,
+        "generic_or_weak_name": 89,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 89
+        },
+        "by_class": {
+          "weak_identity_hold": 89
+        }
+      },
+      "Saint Martin": {
+        "total_held": 98,
+        "cvent_only_held": 98,
+        "hbx_related_held": 0,
+        "missing_city": 98,
+        "missing_address": 98,
+        "missing_website": 98,
+        "generic_or_weak_name": 98,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 98
+        },
+        "by_class": {
+          "weak_identity_hold": 98
+        }
+      },
+      "Jamaica": {
+        "total_held": 170,
+        "cvent_only_held": 170,
+        "hbx_related_held": 0,
+        "missing_city": 170,
+        "missing_address": 170,
+        "missing_website": 170,
+        "generic_or_weak_name": 170,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 170
+        },
+        "by_class": {
+          "weak_identity_hold": 170
+        }
+      },
+      "French Guiana": {
+        "total_held": 8,
+        "cvent_only_held": 8,
+        "hbx_related_held": 0,
+        "missing_city": 8,
+        "missing_address": 8,
+        "missing_website": 8,
+        "generic_or_weak_name": 8,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 8
+        },
+        "by_class": {
+          "weak_identity_hold": 8
+        }
+      },
+      "Guatemala": {
+        "total_held": 74,
+        "cvent_only_held": 74,
+        "hbx_related_held": 0,
+        "missing_city": 74,
+        "missing_address": 74,
+        "missing_website": 74,
+        "generic_or_weak_name": 74,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 74
+        },
+        "by_class": {
+          "weak_identity_hold": 74
+        }
+      },
+      "Aruba": {
+        "total_held": 32,
+        "cvent_only_held": 32,
+        "hbx_related_held": 0,
+        "missing_city": 32,
+        "missing_address": 32,
+        "missing_website": 32,
+        "generic_or_weak_name": 32,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 32
+        },
+        "by_class": {
+          "weak_identity_hold": 32
+        }
+      },
+      "Montserrat": {
+        "total_held": 47,
+        "cvent_only_held": 47,
+        "hbx_related_held": 0,
+        "missing_city": 47,
+        "missing_address": 47,
+        "missing_website": 47,
+        "generic_or_weak_name": 47,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 47
+        },
+        "by_class": {
+          "weak_identity_hold": 47
+        }
+      },
+      "U.S. Virgin Islands": {
+        "total_held": 50,
+        "cvent_only_held": 50,
+        "hbx_related_held": 0,
+        "missing_city": 50,
+        "missing_address": 50,
+        "missing_website": 50,
+        "generic_or_weak_name": 50,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 50
+        },
+        "by_class": {
+          "weak_identity_hold": 50
+        }
+      },
+      "Turks and Caicos": {
+        "total_held": 57,
+        "cvent_only_held": 57,
+        "hbx_related_held": 0,
+        "missing_city": 57,
+        "missing_address": 57,
+        "missing_website": 57,
+        "generic_or_weak_name": 57,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 57
+        },
+        "by_class": {
+          "weak_identity_hold": 57
+        }
+      },
+      "Uruguay": {
+        "total_held": 40,
+        "cvent_only_held": 40,
+        "hbx_related_held": 0,
+        "missing_city": 40,
+        "missing_address": 40,
+        "missing_website": 40,
+        "generic_or_weak_name": 40,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 40
+        },
+        "by_class": {
+          "weak_identity_hold": 40
+        }
+      },
+      "Trinidad and Tobago": {
+        "total_held": 14,
+        "cvent_only_held": 14,
+        "hbx_related_held": 0,
+        "missing_city": 14,
+        "missing_address": 14,
+        "missing_website": 14,
+        "generic_or_weak_name": 14,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 14
+        },
+        "by_class": {
+          "weak_identity_hold": 14
+        }
+      },
+      "Paraguay": {
+        "total_held": 61,
+        "cvent_only_held": 61,
+        "hbx_related_held": 0,
+        "missing_city": 61,
+        "missing_address": 61,
+        "missing_website": 61,
+        "generic_or_weak_name": 61,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 61
+        },
+        "by_class": {
+          "weak_identity_hold": 61
+        }
+      },
+      "Venezuela": {
+        "total_held": 34,
+        "cvent_only_held": 34,
+        "hbx_related_held": 0,
+        "missing_city": 34,
+        "missing_address": 34,
+        "missing_website": 34,
+        "generic_or_weak_name": 34,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 34
+        },
+        "by_class": {
+          "weak_identity_hold": 34
+        }
+      },
+      "Bolivia": {
+        "total_held": 57,
+        "cvent_only_held": 57,
+        "hbx_related_held": 0,
+        "missing_city": 57,
+        "missing_address": 57,
+        "missing_website": 57,
+        "generic_or_weak_name": 57,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 57
+        },
+        "by_class": {
+          "weak_identity_hold": 57
+        }
+      },
+      "Saint Lucia": {
+        "total_held": 44,
+        "cvent_only_held": 44,
+        "hbx_related_held": 0,
+        "missing_city": 44,
+        "missing_address": 44,
+        "missing_website": 44,
+        "generic_or_weak_name": 44,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 44
+        },
+        "by_class": {
+          "weak_identity_hold": 44
+        }
+      },
+      "Suriname": {
+        "total_held": 15,
+        "cvent_only_held": 15,
+        "hbx_related_held": 0,
+        "missing_city": 15,
+        "missing_address": 15,
+        "missing_website": 15,
+        "generic_or_weak_name": 15,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 15
+        },
+        "by_class": {
+          "weak_identity_hold": 15
+        }
+      },
+      "Saint Vincent and the Grenadines": {
+        "total_held": 25,
+        "cvent_only_held": 25,
+        "hbx_related_held": 0,
+        "missing_city": 25,
+        "missing_address": 25,
+        "missing_website": 25,
+        "generic_or_weak_name": 25,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 25
+        },
+        "by_class": {
+          "weak_identity_hold": 25
+        }
+      },
+      "Peru": {
+        "total_held": 303,
+        "cvent_only_held": 303,
+        "hbx_related_held": 0,
+        "missing_city": 303,
+        "missing_address": 303,
+        "missing_website": 303,
+        "generic_or_weak_name": 303,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 303
+        },
+        "by_class": {
+          "weak_identity_hold": 303
+        }
+      },
+      "British Virgin Islands": {
+        "total_held": 20,
+        "cvent_only_held": 20,
+        "hbx_related_held": 0,
+        "missing_city": 20,
+        "missing_address": 20,
+        "missing_website": 20,
+        "generic_or_weak_name": 20,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 20
+        },
+        "by_class": {
+          "weak_identity_hold": 20
+        }
+      },
+      "Bonaire": {
+        "total_held": 51,
+        "cvent_only_held": 51,
+        "hbx_related_held": 0,
+        "missing_city": 51,
+        "missing_address": 51,
+        "missing_website": 51,
+        "generic_or_weak_name": 51,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 51
+        },
+        "by_class": {
+          "weak_identity_hold": 51
+        }
+      },
+      "Mexico": {
+        "total_held": 1276,
+        "cvent_only_held": 1276,
+        "hbx_related_held": 0,
+        "missing_city": 1276,
+        "missing_address": 1276,
+        "missing_website": 1276,
+        "generic_or_weak_name": 1275,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 1143,
+          "cvent_only_hotel_like_inferred_destination": 1,
+          "cvent_only_inferred_destination_weak_hotel_signal": 132
+        },
+        "by_class": {
+          "weak_identity_hold": 1275,
+          "shell_insert_with_review": 1
+        }
+      },
+      "Nicaragua": {
+        "total_held": 42,
+        "cvent_only_held": 42,
+        "hbx_related_held": 0,
+        "missing_city": 42,
+        "missing_address": 42,
+        "missing_website": 42,
+        "generic_or_weak_name": 42,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 42
+        },
+        "by_class": {
+          "weak_identity_hold": 42
+        }
+      },
+      "Honduras": {
+        "total_held": 48,
+        "cvent_only_held": 48,
+        "hbx_related_held": 0,
+        "missing_city": 48,
+        "missing_address": 48,
+        "missing_website": 48,
+        "generic_or_weak_name": 48,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 48
+        },
+        "by_class": {
+          "weak_identity_hold": 48
+        }
+      },
+      "Puerto Rico": {
+        "total_held": 82,
+        "cvent_only_held": 82,
+        "hbx_related_held": 0,
+        "missing_city": 82,
+        "missing_address": 82,
+        "missing_website": 82,
+        "generic_or_weak_name": 82,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 82
+        },
+        "by_class": {
+          "weak_identity_hold": 82
+        }
+      },
+      "Curaçao": {
+        "total_held": 3,
+        "cvent_only_held": 3,
+        "hbx_related_held": 0,
+        "missing_city": 3,
+        "missing_address": 3,
+        "missing_website": 3,
+        "generic_or_weak_name": 3,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 3
+        },
+        "by_class": {
+          "weak_identity_hold": 3
+        }
+      },
+      "Cayman Islands": {
+        "total_held": 38,
+        "cvent_only_held": 38,
+        "hbx_related_held": 0,
+        "missing_city": 38,
+        "missing_address": 38,
+        "missing_website": 38,
+        "generic_or_weak_name": 38,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 38
+        },
+        "by_class": {
+          "weak_identity_hold": 38
+        }
+      },
+      "Martinique": {
+        "total_held": 31,
+        "cvent_only_held": 31,
+        "hbx_related_held": 0,
+        "missing_city": 31,
+        "missing_address": 31,
+        "missing_website": 31,
+        "generic_or_weak_name": 31,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 31
+        },
+        "by_class": {
+          "weak_identity_hold": 31
+        }
+      },
+      "Argentina": {
+        "total_held": 788,
+        "cvent_only_held": 788,
+        "hbx_related_held": 0,
+        "missing_city": 788,
+        "missing_address": 788,
+        "missing_website": 788,
+        "generic_or_weak_name": 788,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 788
+        },
+        "by_class": {
+          "weak_identity_hold": 788
+        }
+      },
+      "Saint Barthélemy": {
+        "total_held": 6,
+        "cvent_only_held": 6,
+        "hbx_related_held": 0,
+        "missing_city": 6,
+        "missing_address": 6,
+        "missing_website": 6,
+        "generic_or_weak_name": 6,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 6
+        },
+        "by_class": {
+          "weak_identity_hold": 6
+        }
+      },
+      "Antigua and Barbuda": {
+        "total_held": 3,
+        "cvent_only_held": 3,
+        "hbx_related_held": 0,
+        "missing_city": 3,
+        "missing_address": 3,
+        "missing_website": 3,
+        "generic_or_weak_name": 3,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 3
+        },
+        "by_class": {
+          "weak_identity_hold": 3
+        }
+      },
+      "Barbados": {
+        "total_held": 55,
+        "cvent_only_held": 55,
+        "hbx_related_held": 0,
+        "missing_city": 55,
+        "missing_address": 55,
+        "missing_website": 55,
+        "generic_or_weak_name": 55,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 55
+        },
+        "by_class": {
+          "weak_identity_hold": 55
+        }
+      },
+      "El Salvador": {
+        "total_held": 22,
+        "cvent_only_held": 22,
+        "hbx_related_held": 0,
+        "missing_city": 22,
+        "missing_address": 22,
+        "missing_website": 22,
+        "generic_or_weak_name": 22,
+        "duplicate_ambiguity": 0,
+        "other_reason": 0,
+        "by_reason": {
+          "cvent_only_missing_city": 22
+        },
+        "by_class": {
+          "weak_identity_hold": 22
+        }
+      }
+    },
+    "mexico_held": 1276,
+    "colombia_held": 299,
+    "brazil_held": 4842,
+    "evidence_note": "missing_city/address/website counts can overlap on the same candidate."
+  },
+  "part9_coverage": {
+    "production_by_country": {
+      "Dominican Republic": 654,
+      "Colombia": 967,
+      "Puerto Rico": 49,
+      "Peru": 57,
+      "Mexico": 2181,
+      "Costa Rica": 748,
+      "Chile": 65,
+      "Brazil": 494,
+      "Jamaica": 78,
+      "Panama": 325,
+      "Aruba": 13,
+      "Barbados": 47,
+      "Argentina": 129,
+      "Curaçao": 5,
+      "El Salvador": 10,
+      "Uruguay": 16,
+      "Grenada": 4,
+      "Belize": 12,
+      "Antigua and Barbuda": 5,
+      "Guatemala": 13,
+      "Ecuador": 31,
+      "Honduras": 12,
+      "Bahamas": 9,
+      "Saint Kitts and Nevis": 3,
+      "Saint Lucia": 3,
+      "Trinidad and Tobago": 7,
+      "Nicaragua": 7,
+      "Cayman Islands": 7,
+      "British Virgin Islands": 3,
+      "Dominica": 2
+    },
+    "held_by_country": {
+      "Grenada": 23,
+      "Guadeloupe": 32,
+      "Chile": 311,
+      "Guyana": 16,
+      "Dominica": 14,
+      "Haiti": 19,
+      "Brazil": 4842,
+      "Belize": 118,
+      "Costa Rica": 202,
+      "Bahamas": 74,
+      "Colombia": 299,
+      "Ecuador": 89,
+      "Saint Martin": 98,
+      "Jamaica": 170,
+      "French Guiana": 8,
+      "Guatemala": 74,
+      "Aruba": 32,
+      "Montserrat": 47,
+      "U.S. Virgin Islands": 50,
+      "Turks and Caicos": 57,
+      "Uruguay": 40,
+      "Trinidad and Tobago": 14,
+      "Paraguay": 61,
+      "Venezuela": 34,
+      "Bolivia": 57,
+      "Saint Lucia": 44,
+      "Suriname": 15,
+      "Saint Vincent and the Grenadines": 25,
+      "Peru": 303,
+      "British Virgin Islands": 20,
+      "Bonaire": 51,
+      "Mexico": 1276,
+      "Nicaragua": 42,
+      "Honduras": 48,
+      "Puerto Rico": 82,
+      "Curaçao": 3,
+      "Cayman Islands": 38,
+      "Martinique": 31,
+      "Argentina": 788,
+      "Saint Barthélemy": 6,
+      "Antigua and Barbuda": 3,
+      "Barbados": 55,
+      "El Salvador": 22
+    },
+    "existing_match_by_country": {
+      "Panama": 331,
+      "Grenada": 2,
+      "Chile": 41,
+      "Dominica": 2,
+      "Brazil": 299,
+      "Belize": 4,
+      "Costa Rica": 740,
+      "Bahamas": 6,
+      "Colombia": 1009,
+      "Dominican Republic": 588,
+      "Ecuador": 16,
+      "Jamaica": 20,
+      "Guatemala": 8,
+      "Aruba": 9,
+      "Trinidad and Tobago": 5,
+      "Saint Lucia": 2,
+      "Peru": 41,
+      "British Virgin Islands": 2,
+      "Mexico": 2103,
+      "Nicaragua": 3,
+      "Honduras": 9,
+      "Puerto Rico": 29,
+      "Curaçao": 4,
+      "Cayman Islands": 5,
+      "Argentina": 66,
+      "Saint Kitts and Nevis": 1,
+      "Antigua and Barbuda": 2,
+      "Barbados": 24,
+      "El Salvador": 8
+    },
+    "potential_new_by_country": {
+      "Grenada": 23,
+      "Guadeloupe": 32,
+      "Chile": 311,
+      "Guyana": 16,
+      "Dominica": 20,
+      "Haiti": 19,
+      "Brazil": 4842,
+      "Belize": 118,
+      "Costa Rica": 200,
+      "Bahamas": 74,
+      "Colombia": 299,
+      "Ecuador": 89,
+      "Saint Martin": 98,
+      "Jamaica": 170,
+      "French Guiana": 8,
+      "Guatemala": 74,
+      "Aruba": 32,
+      "Montserrat": 49,
+      "U.S. Virgin Islands": 50,
+      "Turks and Caicos": 57,
+      "Uruguay": 43,
+      "Trinidad and Tobago": 14,
+      "Paraguay": 102,
+      "Venezuela": 35,
+      "Bolivia": 58,
+      "Saint Lucia": 44,
+      "Suriname": 15,
+      "Saint Vincent and the Grenadines": 25,
+      "Peru": 303,
+      "British Virgin Islands": 20,
+      "Bonaire": 51,
+      "Mexico": 1277,
+      "Anguilla": 24,
+      "Nicaragua": 42,
+      "Honduras": 48,
+      "Puerto Rico": 82,
+      "Curaçao": 48,
+      "Cayman Islands": 38,
+      "Martinique": 63,
+      "Argentina": 794,
+      "Sint Maarten": 98,
+      "Saint Barthélemy": 106,
+      "Saint Kitts and Nevis": 17,
+      "Antigua and Barbuda": 37,
+      "Barbados": 55,
+      "El Salvador": 22
+    },
+    "source_stock_by_country": {
+      "Panama": 338,
+      "Grenada": 26,
+      "Guadeloupe": 32,
+      "Chile": 362,
+      "Guyana": 16,
+      "Dominica": 23,
+      "Haiti": 19,
+      "Brazil": 5165,
+      "Belize": 123,
+      "Costa Rica": 963,
+      "Bahamas": 94,
+      "Colombia": 1361,
+      "Dominican Republic": 610,
+      "Ecuador": 105,
+      "Saint Martin": 100,
+      "Jamaica": 193,
+      "French Guiana": 8,
+      "Guatemala": 86,
+      "Aruba": 42,
+      "Montserrat": 50,
+      "U.S. Virgin Islands": 51,
+      "Turks and Caicos": 57,
+      "Uruguay": 43,
+      "Trinidad and Tobago": 19,
+      "Paraguay": 102,
+      "Venezuela": 36,
+      "Bolivia": 58,
+      "Saint Lucia": 48,
+      "Suriname": 15,
+      "Saint Vincent and the Grenadines": 25,
+      "Peru": 347,
+      "British Virgin Islands": 25,
+      "Bonaire": 51,
+      "Mexico": 4111,
+      "Anguilla": 25,
+      "Nicaragua": 46,
+      "Honduras": 60,
+      "Puerto Rico": 118,
+      "Curaçao": 52,
+      "Cayman Islands": 43,
+      "Martinique": 64,
+      "Argentina": 876,
+      "Sint Maarten": 100,
+      "Saint Barthélemy": 108,
+      "Saint Kitts and Nevis": 18,
+      "Antigua and Barbuda": 40,
+      "Barbados": 80,
+      "El Salvador": 30
+    },
+    "by_match_class": {
+      "existing_match_high": 5242,
+      "probable_duplicate_hold": 753,
+      "existing_match_medium": 137,
+      "reject_non_hotel": 185,
+      "new_candidate_medium": 10042,
+      "possible_duplicate_review": 5
+    },
+    "countries_little_or_no_discovery_inventory": [
+      "Cuba",
+      "French Guiana"
+    ],
+    "most_underrepresented": [
+      {
+        "country": "Brazil",
+        "production": 494,
+        "held": 4842,
+        "source_stock": 5165,
+        "potential_new_class": 4842,
+        "production_share_of_stock": 9.6
+      },
+      {
+        "country": "Argentina",
+        "production": 129,
+        "held": 788,
+        "source_stock": 876,
+        "potential_new_class": 794,
+        "production_share_of_stock": 14.7
+      },
+      {
+        "country": "Mexico",
+        "production": 2181,
+        "held": 1276,
+        "source_stock": 4111,
+        "potential_new_class": 1277,
+        "production_share_of_stock": 53.1
+      },
+      {
+        "country": "Chile",
+        "production": 65,
+        "held": 311,
+        "source_stock": 362,
+        "potential_new_class": 311,
+        "production_share_of_stock": 18
+      },
+      {
+        "country": "Peru",
+        "production": 57,
+        "held": 303,
+        "source_stock": 347,
+        "potential_new_class": 303,
+        "production_share_of_stock": 16.4
+      },
+      {
+        "country": "Belize",
+        "production": 12,
+        "held": 118,
+        "source_stock": 123,
+        "potential_new_class": 118,
+        "production_share_of_stock": 9.8
+      },
+      {
+        "country": "Jamaica",
+        "production": 78,
+        "held": 170,
+        "source_stock": 193,
+        "potential_new_class": 170,
+        "production_share_of_stock": 40.4
+      },
+      {
+        "country": "Paraguay",
+        "production": 0,
+        "held": 61,
+        "source_stock": 102,
+        "potential_new_class": 102,
+        "production_share_of_stock": 0
+      },
+      {
+        "country": "Bahamas",
+        "production": 9,
+        "held": 74,
+        "source_stock": 94,
+        "potential_new_class": 74,
+        "production_share_of_stock": 9.6
+      },
+      {
+        "country": "Guatemala",
+        "production": 13,
+        "held": 74,
+        "source_stock": 86,
+        "potential_new_class": 74,
+        "production_share_of_stock": 15.1
+      },
+      {
+        "country": "Ecuador",
+        "production": 31,
+        "held": 89,
+        "source_stock": 105,
+        "potential_new_class": 89,
+        "production_share_of_stock": 29.5
+      },
+      {
+        "country": "Bolivia",
+        "production": 0,
+        "held": 57,
+        "source_stock": 58,
+        "potential_new_class": 58,
+        "production_share_of_stock": 0
+      },
+      {
+        "country": "Puerto Rico",
+        "production": 49,
+        "held": 82,
+        "source_stock": 118,
+        "potential_new_class": 82,
+        "production_share_of_stock": 41.5
+      },
+      {
+        "country": "Honduras",
+        "production": 12,
+        "held": 48,
+        "source_stock": 60,
+        "potential_new_class": 48,
+        "production_share_of_stock": 20
+      },
+      {
+        "country": "Nicaragua",
+        "production": 7,
+        "held": 42,
+        "source_stock": 46,
+        "potential_new_class": 42,
+        "production_share_of_stock": 15.2
+      },
+      {
+        "country": "Venezuela",
+        "production": 0,
+        "held": 34,
+        "source_stock": 36,
+        "potential_new_class": 35,
+        "production_share_of_stock": 0
+      },
+      {
+        "country": "Cayman Islands",
+        "production": 7,
+        "held": 38,
+        "source_stock": 43,
+        "potential_new_class": 38,
+        "production_share_of_stock": 16.3
+      },
+      {
+        "country": "Uruguay",
+        "production": 16,
+        "held": 40,
+        "source_stock": 43,
+        "potential_new_class": 43,
+        "production_share_of_stock": 37.2
+      },
+      {
+        "country": "Aruba",
+        "production": 13,
+        "held": 32,
+        "source_stock": 42,
+        "potential_new_class": 32,
+        "production_share_of_stock": 31
+      },
+      {
+        "country": "Curaçao",
+        "production": 5,
+        "held": 3,
+        "source_stock": 52,
+        "potential_new_class": 48,
+        "production_share_of_stock": 9.6
+      }
+    ],
+    "brazil": {
+      "production": 494,
+      "held": 4842,
+      "source_stock": 5165,
+      "potential_new": 4842
+    }
+  },
+  "part10_gap": {
+    "CURRENT_PRODUCTION_CENSUS": 5956,
+    "IDENTIFIED_HELD_UNIQUE_CANDIDATES": 9633,
+    "OTHER_CLASSIFIED_UNIQUE_POTENTIALS_APPROX": 409,
+    "CURRENTLY_DISCOVERED_POTENTIAL_UNIVERSE": 15589,
+    "QUALIFIED_PRODUCTION_ONLY": 5956,
+    "WEAK_OR_REVIEW_HELD_APPROX": 9631,
+    "ESTIMATED_CALA_TARGET": 15000,
+    "ESTIMATED_UNDISCOVERED_GAP": 0,
+    "ESTIMATED_GAP_EXCLUDING_WEAK_HOLDS": 9042,
+    "DISCOVERED_BUT_NEEDS_ENRICHMENT": {
+      "production_shells_pending_enrichment": 3395,
+      "held_weak_identity": 9633
+    },
+    "NOT_YET_DISCOVERED_SOURCE_COVERAGE_GAP": 9042,
+    "precision_note": "Universe = production Census + unique HOLD ledger candidates. Many HOLDs are weak Cvent-only and are NOT production-ready hotels. 15k is aspirational. Prefer ESTIMATED_GAP_EXCLUDING_WEAK_HOLDS when judging true source-coverage shortfall vs weak-identity backlog."
+  },
+  "part11_recommendation": {
+    "NEXT_RECOMMENDED_ACTION": "PROCEED_SOURCE_GAP_DISCOVERY",
+    "rationale": "Large held weak pools + sizable undiscovered gap; discovery/source coverage is the binding constraint (Brazil dominant).",
+    "FOUNDER_DECISION_REQUIRED": "NO",
+    "FOUNDER_DECISION": null
+  },
+  "PROVENANCE_ANOMALIES": 0,
+  "PROTECTED_FIELD_ANOMALIES": 0,
+  "HBX_CODE_DUPLICATES": 0,
+  "HIGH_CONFIDENCE_DUPLICATE_GROUPS": 0,
+  "REVIEW_DUPLICATE_GROUPS": 219,
+  "TOTAL_HELD_CANDIDATES": 9633,
+  "HELD_BY_COUNTRY": {
+    "Grenada": 23,
+    "Guadeloupe": 32,
+    "Chile": 311,
+    "Guyana": 16,
+    "Dominica": 14,
+    "Haiti": 19,
+    "Brazil": 4842,
+    "Belize": 118,
+    "Costa Rica": 202,
+    "Bahamas": 74,
+    "Colombia": 299,
+    "Ecuador": 89,
+    "Saint Martin": 98,
+    "Jamaica": 170,
+    "French Guiana": 8,
+    "Guatemala": 74,
+    "Aruba": 32,
+    "Montserrat": 47,
+    "U.S. Virgin Islands": 50,
+    "Turks and Caicos": 57,
+    "Uruguay": 40,
+    "Trinidad and Tobago": 14,
+    "Paraguay": 61,
+    "Venezuela": 34,
+    "Bolivia": 57,
+    "Saint Lucia": 44,
+    "Suriname": 15,
+    "Saint Vincent and the Grenadines": 25,
+    "Peru": 303,
+    "British Virgin Islands": 20,
+    "Bonaire": 51,
+    "Mexico": 1276,
+    "Nicaragua": 42,
+    "Honduras": 48,
+    "Puerto Rico": 82,
+    "Curaçao": 3,
+    "Cayman Islands": 38,
+    "Martinique": 31,
+    "Argentina": 788,
+    "Saint Barthélemy": 6,
+    "Antigua and Barbuda": 3,
+    "Barbados": 55,
+    "El Salvador": 22
+  },
+  "BRAZIL_HELD_COUNT": 4842,
+  "MEXICO_HELD_COUNT": 1276,
+  "COLOMBIA_HELD_COUNT": 299,
+  "CURRENTLY_DISCOVERED_POTENTIAL_UNIVERSE": 15589,
+  "ESTIMATED_UNDISCOVERED_GAP": 9042,
+  "ESTIMATED_GAP_EXCLUDING_WEAK_HOLDS": 9042,
+  "MOST_UNDERREPRESENTED_COUNTRIES": [
+    "Brazil",
+    "Argentina",
+    "Mexico",
+    "Chile",
+    "Peru",
+    "Belize",
+    "Jamaica",
+    "Paraguay",
+    "Bahamas",
+    "Guatemala",
+    "Ecuador",
+    "Bolivia"
+  ],
+  "NEXT_RECOMMENDED_ACTION": "PROCEED_SOURCE_GAP_DISCOVERY",
+  "FOUNDER_DECISION_REQUIRED": "NO",
+  "secondary_statuses": {
+    "duplicate_review_needed": true,
+    "provenance_remediation_needed": false,
+    "source_coverage_gaps": true,
+    "enrichment_backlog": true,
+    "weak_identity_hold_backlog": true
+  }
+}

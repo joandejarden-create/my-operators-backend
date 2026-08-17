@@ -1,0 +1,2067 @@
+{
+  "auditVersion": "v28A",
+  "v28AExists": true,
+  "generatedAt": "2026-07-10T02:35:33.019Z",
+  "mode": "dry-run",
+  "allActive": true,
+  "airtableModified": false,
+  "companyValidatedUntouched": true,
+  "companyValidationDateUntouched": true,
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-complete-build-batch.md",
+    "reports/brand-explorer-complete-build-batch.json",
+    "reports/brand-explorer-complete-build-curio-collection.md",
+    "reports/brand-explorer-complete-build-curio-collection.json",
+    "reports/brand-explorer-complete-build-kimpton.md",
+    "reports/brand-explorer-complete-build-kimpton.json",
+    "reports/brand-explorer-complete-build-radisson-blu.md",
+    "reports/brand-explorer-complete-build-radisson-blu.json",
+    "reports/brand-explorer-complete-build-radisson.md",
+    "reports/brand-explorer-complete-build-radisson.json",
+    "reports/brand-explorer-complete-build-ascend.md",
+    "reports/brand-explorer-complete-build-ascend.json",
+    "reports/brand-explorer-final-qa-auditor.md",
+    "reports/brand-explorer-final-qa-auditor.json",
+    "reports/brand-explorer-factory-gap-matrix-audit.md",
+    "reports/brand-explorer-factory-gap-matrix-audit.json",
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+    "docs/brand-explorer-presentation-slots.md",
+    "live API/presentation rows for all six active brands"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-active-profile-readiness-prioritization-audit.js",
+    "scripts/brand-explorer-active-profile-readiness-prioritization-audit.mjs",
+    "docs/data-intelligence/brand-explorer-active-profile-readiness-prioritization-audit-v28A.md",
+    "reports/brand-explorer-active-profile-readiness-prioritization-audit.md",
+    "reports/brand-explorer-active-profile-readiness-prioritization-audit.json",
+    "package.json"
+  ],
+  "allSixContract100": true,
+  "contractScoresByBrand": [
+    {
+      "slug": "tribute-portfolio",
+      "name": "Tribute Portfolio",
+      "contractScore": 100,
+      "contractScoreLive": 100,
+      "activeProfileReady": true
+    },
+    {
+      "slug": "curio-collection",
+      "name": "Curio Collection by Hilton",
+      "contractScore": 100,
+      "contractScoreLive": 100,
+      "activeProfileReady": false
+    },
+    {
+      "slug": "kimpton",
+      "name": "Kimpton Hotels",
+      "contractScore": 100,
+      "contractScoreLive": 100,
+      "activeProfileReady": false
+    },
+    {
+      "slug": "radisson-blu",
+      "name": "Radisson Blu by Choice",
+      "contractScore": 100,
+      "contractScoreLive": 100,
+      "activeProfileReady": false
+    },
+    {
+      "slug": "radisson",
+      "name": "Radisson by Choice",
+      "contractScore": 100,
+      "contractScoreLive": 100,
+      "activeProfileReady": false
+    },
+    {
+      "slug": "ascend",
+      "name": "Ascend Hotel Collection",
+      "contractScore": 100,
+      "contractScoreLive": 100,
+      "activeProfileReady": false
+    }
+  ],
+  "tributeActiveProfileReady": true,
+  "tributeSummary": {
+    "brand": {
+      "slug": "tribute-portfolio",
+      "recordId": "recCvV0PuZOi8c3hC",
+      "name": "Tribute Portfolio"
+    },
+    "contractScore": 100,
+    "contractReady": true,
+    "activeProfileReady": true,
+    "readinessBand": "ready",
+    "haltReason": "",
+    "finalQaScore": 95,
+    "finalQaReadiness": "ready",
+    "finalQaBreakdown": {
+      "requiredSectionReadinessScore": 100,
+      "presentationQualityScore": 96,
+      "brandCarryoverRiskScore": 100,
+      "sourceGovernanceScore": 74,
+      "visualCompletenessScore": 100,
+      "overallNumeric": 95,
+      "overallActiveProfileReadiness": "ready"
+    },
+    "criticalDefects": 0,
+    "highDefects": 0,
+    "mediumDefects": 0,
+    "totalVisualDefects": 1,
+    "visualDefectSamples": [],
+    "carryoverDefects": [],
+    "carryoverCount": 0,
+    "pendingFacts": 7,
+    "fddFacts": 1,
+    "internalFacts": 3,
+    "missingImages": 0,
+    "emptyCards": 0,
+    "titleOnlyOrThin": 1,
+    "sourceGovernance": {
+      "governedPlatformReady": true,
+      "sourceCount": 9,
+      "approvedExplorerSources": 9,
+      "explorerFactCount": 54,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": true
+    },
+    "nextRecommendedWriter": "none_active_profile_ready",
+    "visualQaScore": 100,
+    "blockerBuckets": {
+      "visual_image_work": [
+        {
+          "type": "thin_copy",
+          "message": "titleOnlyOrThin=1"
+        }
+      ],
+      "copy_carryover_cleanup": [],
+      "source_fact_governance": [
+        {
+          "type": "pending_facts",
+          "count": 7
+        },
+        {
+          "type": "fdd_sensitive_facts",
+          "count": 1
+        },
+        {
+          "type": "internal_facts",
+          "count": 3
+        },
+        {
+          "type": "source_evidence_needed"
+        }
+      ],
+      "report_only_stale_flags": [
+        {
+          "message": "tributeExpectedRemaining: [object Object], [object Object], [object Object], [object Object], [object Object], [object Object]"
+        }
+      ],
+      "true_content_gaps": [
+        {
+          "type": "brand_residences_conflict",
+          "count": 1
+        }
+      ]
+    },
+    "primaryBlockerBucket": "true_content_gaps",
+    "easeScore": 208.6,
+    "applySafe": false,
+    "applyBlockReasons": [
+      "7 pending explorer fact(s) would need approval before apply",
+      "3 internal-only fact(s) present in explorer scope",
+      "1 FDD-sensitive fact(s) in scope"
+    ],
+    "liveApi": {
+      "name": "Tribute Portfolio",
+      "parentCompany": "Marriott International, Inc.",
+      "presentationBlockCount": 163,
+      "slotKeyCount": 125
+    },
+    "contractScoreLive": 100,
+    "contractReadyLive": true
+  },
+  "allBrands": [
+    {
+      "brand": {
+        "slug": "tribute-portfolio",
+        "recordId": "recCvV0PuZOi8c3hC",
+        "name": "Tribute Portfolio"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": true,
+      "readinessBand": "ready",
+      "haltReason": "",
+      "finalQaScore": 95,
+      "finalQaReadiness": "ready",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 96,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 74,
+        "visualCompletenessScore": 100,
+        "overallNumeric": 95,
+        "overallActiveProfileReadiness": "ready"
+      },
+      "criticalDefects": 0,
+      "highDefects": 0,
+      "mediumDefects": 0,
+      "totalVisualDefects": 1,
+      "visualDefectSamples": [],
+      "carryoverDefects": [],
+      "carryoverCount": 0,
+      "pendingFacts": 7,
+      "fddFacts": 1,
+      "internalFacts": 3,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 1,
+      "sourceGovernance": {
+        "governedPlatformReady": true,
+        "sourceCount": 9,
+        "approvedExplorerSources": 9,
+        "explorerFactCount": 54,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "none_active_profile_ready",
+      "visualQaScore": 100,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=1"
+          }
+        ],
+        "copy_carryover_cleanup": [],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 7
+          },
+          {
+            "type": "fdd_sensitive_facts",
+            "count": 1
+          },
+          {
+            "type": "internal_facts",
+            "count": 3
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [
+          {
+            "message": "tributeExpectedRemaining: [object Object], [object Object], [object Object], [object Object], [object Object], [object Object]"
+          }
+        ],
+        "true_content_gaps": [
+          {
+            "type": "brand_residences_conflict",
+            "count": 1
+          }
+        ]
+      },
+      "primaryBlockerBucket": "true_content_gaps",
+      "easeScore": 208.6,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "7 pending explorer fact(s) would need approval before apply",
+        "3 internal-only fact(s) present in explorer scope",
+        "1 FDD-sensitive fact(s) in scope"
+      ],
+      "liveApi": {
+        "name": "Tribute Portfolio",
+        "parentCompany": "Marriott International, Inc.",
+        "presentationBlockCount": 163,
+        "slotKeyCount": 125
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "curio-collection",
+        "recordId": "receQkxgjlezsc1xg",
+        "name": "Curio Collection by Hilton"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 61,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 43,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 0,
+        "visualCompletenessScore": 48,
+        "overallNumeric": 61,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 1,
+      "highDefects": 4,
+      "mediumDefects": 2,
+      "totalVisualDefects": 7,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [],
+      "carryoverCount": 0,
+      "pendingFacts": 123,
+      "fddFacts": 99,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 5,
+      "sourceGovernance": {
+        "governedPlatformReady": false,
+        "sourceCount": 15,
+        "approvedExplorerSources": 1,
+        "explorerFactCount": 149,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 47,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=5"
+          }
+        ],
+        "copy_carryover_cleanup": [],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 123
+          },
+          {
+            "type": "fdd_sensitive_facts",
+            "count": 99
+          },
+          {
+            "type": "governed_platform_not_ready"
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": [
+          {
+            "type": "brand_residences_conflict",
+            "count": 1
+          }
+        ]
+      },
+      "primaryBlockerBucket": "true_content_gaps",
+      "easeScore": -37.2,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "1 critical Final QA defect(s) remain",
+        "123 pending explorer fact(s) would need approval before apply",
+        "99 FDD-sensitive fact(s) in scope",
+        "Source governance is insufficient for governed apply"
+      ],
+      "liveApi": {
+        "name": "Curio Collection by Hilton",
+        "parentCompany": "Hilton Worldwide",
+        "presentationBlockCount": 211,
+        "slotKeyCount": 159
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "kimpton",
+        "recordId": "recCKuXCmGvxHPfb3",
+        "name": "Kimpton Hotels"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 46,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 28,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 0,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 46,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 1,
+      "highDefects": 5,
+      "mediumDefects": 1,
+      "totalVisualDefects": 7,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Portfolio Context",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [],
+      "carryoverCount": 0,
+      "pendingFacts": 44,
+      "fddFacts": 0,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 4,
+      "sourceGovernance": {
+        "governedPlatformReady": false,
+        "sourceCount": 4,
+        "approvedExplorerSources": 4,
+        "explorerFactCount": 48,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 42,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Portfolio Context",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=4"
+          }
+        ],
+        "copy_carryover_cleanup": [],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 44
+          },
+          {
+            "type": "governed_platform_not_ready"
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": [
+          {
+            "type": "brand_residences_conflict",
+            "count": 1
+          }
+        ]
+      },
+      "primaryBlockerBucket": "true_content_gaps",
+      "easeScore": 0.7,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "1 critical Final QA defect(s) remain",
+        "44 pending explorer fact(s) would need approval before apply",
+        "Source governance is insufficient for governed apply"
+      ],
+      "liveApi": {
+        "name": "Kimpton Hotels",
+        "parentCompany": "IHG Hotels & Resorts",
+        "presentationBlockCount": 197,
+        "slotKeyCount": 152
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "radisson-blu",
+        "recordId": "recWPEvxBQxVVzSq3",
+        "name": "Radisson Blu by Choice"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 57,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 16,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 91,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 57,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 2,
+      "highDefects": 4,
+      "mediumDefects": 2,
+      "totalVisualDefects": 8,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [
+        {
+          "type": "brand_carryover",
+          "severity": "medium",
+          "message": "UI-facing internal/source-capture language: consumer_site",
+          "category": "copy",
+          "recommendedWriter": "v26A_copy_carryover_cleanup"
+        }
+      ],
+      "carryoverCount": 1,
+      "pendingFacts": 3,
+      "fddFacts": 0,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 5,
+      "sourceGovernance": {
+        "governedPlatformReady": true,
+        "sourceCount": 4,
+        "approvedExplorerSources": 4,
+        "explorerFactCount": 11,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 32,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=5"
+          }
+        ],
+        "copy_carryover_cleanup": [
+          {
+            "type": "brand_carryover",
+            "severity": "medium",
+            "message": "UI-facing internal/source-capture language: consumer_site",
+            "category": "copy",
+            "recommendedWriter": "v26A_copy_carryover_cleanup"
+          }
+        ],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 3
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": []
+      },
+      "primaryBlockerBucket": "source_fact_governance",
+      "easeScore": 50.2,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "2 critical Final QA defect(s) remain",
+        "Wrong-brand copy/carryover risk detected",
+        "3 pending explorer fact(s) would need approval before apply"
+      ],
+      "liveApi": {
+        "name": "Radisson Blu by Choice",
+        "parentCompany": "Choice Hotels International",
+        "presentationBlockCount": 219,
+        "slotKeyCount": 162
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "radisson",
+        "recordId": "recywbx1YQSTCPqW1",
+        "name": "Radisson by Choice"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 55,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 7,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 91,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 55,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 2,
+      "highDefects": 4,
+      "mediumDefects": 1,
+      "totalVisualDefects": 7,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [],
+      "carryoverCount": 0,
+      "pendingFacts": 3,
+      "fddFacts": 0,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 4,
+      "sourceGovernance": {
+        "governedPlatformReady": true,
+        "sourceCount": 3,
+        "approvedExplorerSources": 3,
+        "explorerFactCount": 7,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 35,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=4"
+          }
+        ],
+        "copy_carryover_cleanup": [],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 3
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": []
+      },
+      "primaryBlockerBucket": "source_fact_governance",
+      "easeScore": 53.1,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "2 critical Final QA defect(s) remain",
+        "3 pending explorer fact(s) would need approval before apply"
+      ],
+      "liveApi": {
+        "name": "Radisson by Choice",
+        "parentCompany": "Choice Hotels International",
+        "presentationBlockCount": 201,
+        "slotKeyCount": 150
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "ascend",
+        "recordId": "reclkgOzvAcBheUSo",
+        "name": "Ascend Hotel Collection"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 58,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 16,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 97,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 58,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 2,
+      "highDefects": 4,
+      "mediumDefects": 2,
+      "totalVisualDefects": 8,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [
+        {
+          "type": "brand_carryover",
+          "severity": "medium",
+          "message": "UI-facing internal/source-capture language: consumer_site",
+          "category": "copy",
+          "recommendedWriter": "v26A_copy_carryover_cleanup"
+        }
+      ],
+      "carryoverCount": 1,
+      "pendingFacts": 1,
+      "fddFacts": 0,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 5,
+      "sourceGovernance": {
+        "governedPlatformReady": true,
+        "sourceCount": 3,
+        "approvedExplorerSources": 3,
+        "explorerFactCount": 6,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 32,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=5"
+          }
+        ],
+        "copy_carryover_cleanup": [
+          {
+            "type": "brand_carryover",
+            "severity": "medium",
+            "message": "UI-facing internal/source-capture language: consumer_site",
+            "category": "copy",
+            "recommendedWriter": "v26A_copy_carryover_cleanup"
+          }
+        ],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 1
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": []
+      },
+      "primaryBlockerBucket": "source_fact_governance",
+      "easeScore": 52.4,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "2 critical Final QA defect(s) remain",
+        "Wrong-brand copy/carryover risk detected",
+        "1 pending explorer fact(s) would need approval before apply"
+      ],
+      "liveApi": {
+        "name": "Ascend Hotel Collection",
+        "parentCompany": "Choice Hotels International",
+        "presentationBlockCount": 211,
+        "slotKeyCount": 162
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    }
+  ],
+  "rankedBlockedBrands": [
+    {
+      "brand": {
+        "slug": "radisson",
+        "recordId": "recywbx1YQSTCPqW1",
+        "name": "Radisson by Choice"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 55,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 7,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 91,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 55,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 2,
+      "highDefects": 4,
+      "mediumDefects": 1,
+      "totalVisualDefects": 7,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [],
+      "carryoverCount": 0,
+      "pendingFacts": 3,
+      "fddFacts": 0,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 4,
+      "sourceGovernance": {
+        "governedPlatformReady": true,
+        "sourceCount": 3,
+        "approvedExplorerSources": 3,
+        "explorerFactCount": 7,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 35,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=4"
+          }
+        ],
+        "copy_carryover_cleanup": [],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 3
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": []
+      },
+      "primaryBlockerBucket": "source_fact_governance",
+      "easeScore": 53.1,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "2 critical Final QA defect(s) remain",
+        "3 pending explorer fact(s) would need approval before apply"
+      ],
+      "liveApi": {
+        "name": "Radisson by Choice",
+        "parentCompany": "Choice Hotels International",
+        "presentationBlockCount": 201,
+        "slotKeyCount": 150
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "ascend",
+        "recordId": "reclkgOzvAcBheUSo",
+        "name": "Ascend Hotel Collection"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 58,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 16,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 97,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 58,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 2,
+      "highDefects": 4,
+      "mediumDefects": 2,
+      "totalVisualDefects": 8,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [
+        {
+          "type": "brand_carryover",
+          "severity": "medium",
+          "message": "UI-facing internal/source-capture language: consumer_site",
+          "category": "copy",
+          "recommendedWriter": "v26A_copy_carryover_cleanup"
+        }
+      ],
+      "carryoverCount": 1,
+      "pendingFacts": 1,
+      "fddFacts": 0,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 5,
+      "sourceGovernance": {
+        "governedPlatformReady": true,
+        "sourceCount": 3,
+        "approvedExplorerSources": 3,
+        "explorerFactCount": 6,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 32,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=5"
+          }
+        ],
+        "copy_carryover_cleanup": [
+          {
+            "type": "brand_carryover",
+            "severity": "medium",
+            "message": "UI-facing internal/source-capture language: consumer_site",
+            "category": "copy",
+            "recommendedWriter": "v26A_copy_carryover_cleanup"
+          }
+        ],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 1
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": []
+      },
+      "primaryBlockerBucket": "source_fact_governance",
+      "easeScore": 52.4,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "2 critical Final QA defect(s) remain",
+        "Wrong-brand copy/carryover risk detected",
+        "1 pending explorer fact(s) would need approval before apply"
+      ],
+      "liveApi": {
+        "name": "Ascend Hotel Collection",
+        "parentCompany": "Choice Hotels International",
+        "presentationBlockCount": 211,
+        "slotKeyCount": 162
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "radisson-blu",
+        "recordId": "recWPEvxBQxVVzSq3",
+        "name": "Radisson Blu by Choice"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 57,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 16,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 91,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 57,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 2,
+      "highDefects": 4,
+      "mediumDefects": 2,
+      "totalVisualDefects": 8,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [
+        {
+          "type": "brand_carryover",
+          "severity": "medium",
+          "message": "UI-facing internal/source-capture language: consumer_site",
+          "category": "copy",
+          "recommendedWriter": "v26A_copy_carryover_cleanup"
+        }
+      ],
+      "carryoverCount": 1,
+      "pendingFacts": 3,
+      "fddFacts": 0,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 5,
+      "sourceGovernance": {
+        "governedPlatformReady": true,
+        "sourceCount": 4,
+        "approvedExplorerSources": 4,
+        "explorerFactCount": 11,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 32,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=5"
+          }
+        ],
+        "copy_carryover_cleanup": [
+          {
+            "type": "brand_carryover",
+            "severity": "medium",
+            "message": "UI-facing internal/source-capture language: consumer_site",
+            "category": "copy",
+            "recommendedWriter": "v26A_copy_carryover_cleanup"
+          }
+        ],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 3
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": []
+      },
+      "primaryBlockerBucket": "source_fact_governance",
+      "easeScore": 50.2,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "2 critical Final QA defect(s) remain",
+        "Wrong-brand copy/carryover risk detected",
+        "3 pending explorer fact(s) would need approval before apply"
+      ],
+      "liveApi": {
+        "name": "Radisson Blu by Choice",
+        "parentCompany": "Choice Hotels International",
+        "presentationBlockCount": 219,
+        "slotKeyCount": 162
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "kimpton",
+        "recordId": "recCKuXCmGvxHPfb3",
+        "name": "Kimpton Hotels"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 46,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 28,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 0,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 46,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 1,
+      "highDefects": 5,
+      "mediumDefects": 1,
+      "totalVisualDefects": 7,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Portfolio Context",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [],
+      "carryoverCount": 0,
+      "pendingFacts": 44,
+      "fddFacts": 0,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 4,
+      "sourceGovernance": {
+        "governedPlatformReady": false,
+        "sourceCount": 4,
+        "approvedExplorerSources": 4,
+        "explorerFactCount": 48,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 42,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Portfolio Context",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=4"
+          }
+        ],
+        "copy_carryover_cleanup": [],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 44
+          },
+          {
+            "type": "governed_platform_not_ready"
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": [
+          {
+            "type": "brand_residences_conflict",
+            "count": 1
+          }
+        ]
+      },
+      "primaryBlockerBucket": "true_content_gaps",
+      "easeScore": 0.7,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "1 critical Final QA defect(s) remain",
+        "44 pending explorer fact(s) would need approval before apply",
+        "Source governance is insufficient for governed apply"
+      ],
+      "liveApi": {
+        "name": "Kimpton Hotels",
+        "parentCompany": "IHG Hotels & Resorts",
+        "presentationBlockCount": 197,
+        "slotKeyCount": 152
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    },
+    {
+      "brand": {
+        "slug": "curio-collection",
+        "recordId": "receQkxgjlezsc1xg",
+        "name": "Curio Collection by Hilton"
+      },
+      "contractScore": 100,
+      "contractReady": true,
+      "activeProfileReady": false,
+      "readinessBand": "blocked",
+      "haltReason": "critical_visual_defects",
+      "finalQaScore": 61,
+      "finalQaReadiness": "blocked",
+      "finalQaBreakdown": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 43,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 0,
+        "visualCompletenessScore": 48,
+        "overallNumeric": 61,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "criticalDefects": 1,
+      "highDefects": 4,
+      "mediumDefects": 2,
+      "totalVisualDefects": 7,
+      "visualDefectSamples": [
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Value Creation Scenarios",
+          "severity": "high",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        },
+        {
+          "type": "visual_defect",
+          "section": "Cross-section",
+          "severity": "critical",
+          "category": "frontend",
+          "recommendedWriter": "v24C_source_evidence_work"
+        }
+      ],
+      "carryoverDefects": [],
+      "carryoverCount": 0,
+      "pendingFacts": 123,
+      "fddFacts": 99,
+      "internalFacts": 0,
+      "missingImages": 0,
+      "emptyCards": 0,
+      "titleOnlyOrThin": 5,
+      "sourceGovernance": {
+        "governedPlatformReady": false,
+        "sourceCount": 15,
+        "approvedExplorerSources": 1,
+        "explorerFactCount": 149,
+        "sourceEvidenceNeeded": true,
+        "factApprovalNeeded": true
+      },
+      "nextRecommendedWriter": "v24C_source_evidence_work",
+      "visualQaScore": 47,
+      "blockerBuckets": {
+        "visual_image_work": [
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Value Creation Scenarios",
+            "severity": "high",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "visual_defect",
+            "section": "Cross-section",
+            "severity": "critical",
+            "category": "frontend",
+            "recommendedWriter": "v24C_source_evidence_work"
+          },
+          {
+            "type": "thin_copy",
+            "message": "titleOnlyOrThin=5"
+          }
+        ],
+        "copy_carryover_cleanup": [],
+        "source_fact_governance": [
+          {
+            "type": "pending_facts",
+            "count": 123
+          },
+          {
+            "type": "fdd_sensitive_facts",
+            "count": 99
+          },
+          {
+            "type": "governed_platform_not_ready"
+          },
+          {
+            "type": "source_evidence_needed"
+          }
+        ],
+        "report_only_stale_flags": [],
+        "true_content_gaps": [
+          {
+            "type": "brand_residences_conflict",
+            "count": 1
+          }
+        ]
+      },
+      "primaryBlockerBucket": "true_content_gaps",
+      "easeScore": -37.2,
+      "applySafe": false,
+      "applyBlockReasons": [
+        "1 critical Final QA defect(s) remain",
+        "123 pending explorer fact(s) would need approval before apply",
+        "99 FDD-sensitive fact(s) in scope",
+        "Source governance is insufficient for governed apply"
+      ],
+      "liveApi": {
+        "name": "Curio Collection by Hilton",
+        "parentCompany": "Hilton Worldwide",
+        "presentationBlockCount": 211,
+        "slotKeyCount": 159
+      },
+      "contractScoreLive": 100,
+      "contractReadyLive": true
+    }
+  ],
+  "blockerBucketDefinitions": [
+    "visual_image_work",
+    "copy_carryover_cleanup",
+    "source_fact_governance",
+    "report_only_stale_flags",
+    "true_content_gaps"
+  ],
+  "batchSnapshot": {
+    "generatedAt": "2026-07-10T02:30:07.790Z",
+    "brandsReady": 1,
+    "brandsBlocked": 5,
+    "brandsSafeForApplyApproved": 0
+  },
+  "finalQaSnapshot": "2026-07-10T01:55:46.041Z",
+  "factoryGapSnapshot": "2026-07-10T01:54:03.005Z",
+  "recommendations": {
+    "nextBrand": {
+      "slug": "radisson",
+      "name": "Radisson by Choice",
+      "recordId": "recywbx1YQSTCPqW1",
+      "easeScore": 53.1,
+      "finalQaScore": 55,
+      "rationale": "Highest ease score (53.1) among blocked brands; governed platform ready; low pending-fact load (3); primary blocker bucket: source_fact_governance"
+    },
+    "nextWriterToBuild": "v26A_copy_carryover_cleanup (carryover on Ascend/Radisson Blu) then v24C_source_evidence_work visual/thin-copy batch",
+    "multiBrandVisualCleanupSafe": false,
+    "multiBrandVisualCleanupRationale": "All blocked brands share the same visual defect writer recommendation and titleOnlyOrThin pattern — safe for a shared dry-run visual repair batch per brand, not a single apply-approved sweep.",
+    "multiBrandApplyApprovedSafe": false,
+    "applyApprovedRationale": "batch aggregate reports brandsSafeForApplyApproved=0; all brands retain critical/visual or governance apply blockers."
+  },
+  "exactNextCommand": "npm run brand-explorer-complete-build -- --brand radisson --dry-run --target-quality active-profile",
+  "markdown": "# Brand Explorer Active Profile Readiness Prioritization Audit vv28A\n\n- Generated: 2026-07-10T02:35:33.019Z\n- Mode: **dry-run**\n- All six contract 100: **yes**\n- Tribute active-profile ready: **yes**\n- Recommended next brand: **Radisson by Choice**\n- Multi-brand apply-approved safe: **no**\n- Airtable modified: **no**\n\n## Contract status (all active brands)\n| Brand | Contract | Active-profile | Final QA | Ease score |\n| --- | ---: | --- | ---: | ---: |\n| Tribute Portfolio | 100 | ready | 95 | 208.6 |\n| Curio Collection by Hilton | 100 | blocked | 61 | -37.2 |\n| Kimpton Hotels | 100 | blocked | 46 | 0.7 |\n| Radisson Blu by Choice | 100 | blocked | 57 | 50.2 |\n| Radisson by Choice | 100 | blocked | 55 | 53.1 |\n| Ascend Hotel Collection | 100 | blocked | 58 | 52.4 |\n\n## Ranked blocked brands (easiest path first)\n1. **Radisson by Choice** (`radisson`) — Final QA 55, ease 53.1, primary blocker: `source_fact_governance`, next writer: `v24C_source_evidence_work`\n2. **Ascend Hotel Collection** (`ascend`) — Final QA 58, ease 52.4, primary blocker: `source_fact_governance`, next writer: `v24C_source_evidence_work`\n3. **Radisson Blu by Choice** (`radisson-blu`) — Final QA 57, ease 50.2, primary blocker: `source_fact_governance`, next writer: `v24C_source_evidence_work`\n4. **Kimpton Hotels** (`kimpton`) — Final QA 46, ease 0.7, primary blocker: `true_content_gaps`, next writer: `v24C_source_evidence_work`\n5. **Curio Collection by Hilton** (`curio-collection`) — Final QA 61, ease -37.2, primary blocker: `true_content_gaps`, next writer: `v24C_source_evidence_work`\n\n### Radisson by Choice\n- Critical/high defects: 2/4\n- Visual defects (total): 7\n- Carryover defects: 0\n- Pending facts: 3 · FDD: 0 · Internal: 0\n- Missing images / empty cards: 0/0\n- Governed platform ready: yes\n- Blocker buckets:\n  - **visual_image_work**: 7 item(s)\n  - **source_fact_governance**: 2 item(s)\n\n### Ascend Hotel Collection\n- Critical/high defects: 2/4\n- Visual defects (total): 8\n- Carryover defects: 1\n- Pending facts: 1 · FDD: 0 · Internal: 0\n- Missing images / empty cards: 0/0\n- Governed platform ready: yes\n- Blocker buckets:\n  - **visual_image_work**: 7 item(s)\n  - **copy_carryover_cleanup**: 1 item(s)\n  - **source_fact_governance**: 2 item(s)\n\n### Radisson Blu by Choice\n- Critical/high defects: 2/4\n- Visual defects (total): 8\n- Carryover defects: 1\n- Pending facts: 3 · FDD: 0 · Internal: 0\n- Missing images / empty cards: 0/0\n- Governed platform ready: yes\n- Blocker buckets:\n  - **visual_image_work**: 7 item(s)\n  - **copy_carryover_cleanup**: 1 item(s)\n  - **source_fact_governance**: 2 item(s)\n\n### Kimpton Hotels\n- Critical/high defects: 1/5\n- Visual defects (total): 7\n- Carryover defects: 0\n- Pending facts: 44 · FDD: 0 · Internal: 0\n- Missing images / empty cards: 0/0\n- Governed platform ready: no\n- Blocker buckets:\n  - **visual_image_work**: 7 item(s)\n  - **source_fact_governance**: 3 item(s)\n  - **true_content_gaps**: 1 item(s)\n\n### Curio Collection by Hilton\n- Critical/high defects: 1/4\n- Visual defects (total): 7\n- Carryover defects: 0\n- Pending facts: 123 · FDD: 99 · Internal: 0\n- Missing images / empty cards: 0/0\n- Governed platform ready: no\n- Blocker buckets:\n  - **visual_image_work**: 6 item(s)\n  - **source_fact_governance**: 4 item(s)\n  - **true_content_gaps**: 1 item(s)\n\n## Recommendations\n- **Next brand end-to-end:** Radisson by Choice\n- **Next writer to build/run:** v26A_copy_carryover_cleanup (carryover on Ascend/Radisson Blu) then v24C_source_evidence_work visual/thin-copy batch\n- **Multi-brand visual cleanup safe:** no\n- **Apply-approved safe:** no\n\n```bash\nnpm run brand-explorer-complete-build -- --brand radisson --dry-run --target-quality active-profile\n```"
+}

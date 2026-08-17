@@ -1,0 +1,293 @@
+{
+  "prompt": "DEALALITY WEBHOUND TEST 2 — OUTREACH-READY OWNER INTELLIGENCE (NOT BROAD DISCOVERY)\n\nBudget: $5. Success = 1–2 substantially complete, evidence-backed owner packages Dealality could act on — NOT more rows. Do NOT discover unrelated Mexico hotel projects. Do NOT spend budget on generic market context, broad hotel portfolio reconstruction, brand/operator history, or unrelated discovery unless directly necessary for these targets.\n\nCORE QUESTION\nFor each priority project, establish:\nPROJECT → PUBLIC FILING → APPLICANT/SPV → LEGAL/ECONOMIC OWNER → PARENT/CONTROLLING OWNER → OWNER/DEVELOPER ORG → HOTEL DECISION-MAKER → VERIFIED CONTACT PATH\nand reassess whether a material hotel strategy / brand / operator decision may still plausibly be open.\n\nPRIORITY TARGETS (research in this order)\n1) Riviera Maya Ecotourism Complex / Oleum Joint Ventures — Playa del Carmen / Punta Piedra–Punta Ina Xcaret / Punta Venado corridor, Quintana Roo. SEMARNAT MIA authorized ~May 2026 (filed ~Dec 2023); ~572 keys (2×286); ~800M MXN; no public brand/operator identified in Test 1. Secondary lead: https://riviera-maya-news.com/ministry-authorizes-construction-of-two-hotel-complex-in-heart-of-riviera-maya/2026.html\n2) Proyecto Venado / Residencial Punta Venado — Punta Venado–Paamul corridor, south Playa del Carmen, Quintana Roo. SEMARNAT MIA authorized ~Jun 2026 (filed ~Sep 2024); ~108 hotel rooms + 50 suites + 33 residences; no public brand/operator in Test 1. Secondary lead: https://noticaribe.com.mx/2026/06/12/autoriza-semarnat-nuevo-desarrollo-turistico-en-punta-venado-al-sur-de-playa-del-carmen/\n3) ONLY IF #1 and #2 reach strong ownership+contact completion AND meaningful budget remains: Pastizales / Helio Alejandro Monforte Jaimes — Felipe Carrillo Puerto / Sian Ka'an buffer; SEMARNAT ~Nov 2025; CONANP objection risk. Otherwise skip Pastizales.\n\nOUTPUT: ONE PRIMARY RECORD PER PROJECT researched. Prefer depth on Oleum + Venado over a third thin row.\n\nRESEARCH PRIORITY (strict)\n1) Retrieve/verify strongest PRIMARY government/public filing evidence\n2) Resolve applicant/SPV identity\n3) Trace corporate ownership / parent / controlling owner\n4) Establish property-owner vs developer vs applicant roles\n5) Identify relevant principals and decision-makers\n6) Find legitimate contact paths\n7) Reassess whether hotel decision may still be open\n8) Immediate related projects/portfolio only if useful to outreach\n9) Secondary enrichment only after above is substantially complete\n\nPRIMARY SOURCE FIRST\nTest 1 over-relied on press ABOUT filings. Actively attempt underlying primary evidence where publicly accessible: SEMARNAT MIA / Gaceta Ecológica / expediente; government project summaries; environmental authorization; municipal/state planning; Registro Público de Comercio / SIGER; property/public registry where legitimately public; council/planning-board records; official gazettes; coastal/federal-zone; public consultation; other government records tied to the project.\nIf primary source cannot be accessed, set primary_source_accessed=No and fill primary_source_not_accessed_notes with: which authority should contain it; what was attempted; what secondary evidence is relied on instead. Do NOT silently substitute trade press for the underlying public record.\n\nENTITY RESOLUTION\nFor every named applicant/promoter/company/SPV: exact legal name; entity type; incorporation/registration jurisdiction; registration info if public; registered representatives/administrators if legitimately public; parent; controlling entity; ultimate controlling owner; related development company; beneficial owner if legitimately public; JV/equity partners; relationship applicant↔project, applicant↔property owner, developer↔owner.\nClassify each entity with one or more roles: Property Owner; Project SPV; Applicant/Promovente; Developer; Development Partner; Equity Owner; JV Partner; Parent Company; Ultimate/Controlling Owner; Fund/Investment Vehicle; Asset Manager; Operator; Brand; Lender; Advisor; Unknown.\nPromovente is NOT proof of property ownership.\n\nOWNERSHIP CONFIDENCE GATE\nDo not move to broad enrichment until a serious attempt answers: WHO ACTUALLY OWNS OR CONTROLS THIS PROJECT?\nReturn legal property owner/SPV; filing applicant; developer; parent; ultimate controlling owner; JV/equity partners; ownership % only if explicitly disclosed (else \"Not publicly disclosed\" — never infer %); ownership structure summary; ownership confidence; unresolved ownership questions.\n\nCONTACT / DECISION-MAKER (core objective)\nIdentify people most plausibly involved in ownership, hospitality investment, hotel development, acquisitions, asset management, hotel strategy, brand selection, operator selection, mixed-use development, capital/financing. Do NOT default to CEO if another executive is closer to the hotel/project decision.\nCapture: name, title, company, role, relationship to project, why relevant, LinkedIn/professional profile, verified public business email, verified public business phone, company contact route, evidence source, contact confidence, outreach priority High/Medium/Low.\nNEVER guess/construct emails or phones; never present data-broker guesses as verified. Profile URL + company contact route is useful when direct email unverified. Max 3 secondary contacts only if useful.\n\nDECISION STATUS / TOO-LATE CHECK (reassess from scratch)\nAnswer: what is confirmed; what indicates still early; what suggests brand/operator discussions already occurred; brand now public?; operator now public?; HMA/franchise?; construction begun?; design advanced?; financing closed?; residences marketed under a brand?; later materials missed in Test 1?\nDealality Status MUST be one of: Strong Pre-Decision Candidate; Conditional Pre-Decision Candidate; Owner Relationship Opportunity; Likely Too Late; Too Late; Insufficient Evidence.\nSeparately fill why_dealality_may_still_be_early AND why_dealality_may_already_be_too_late.\nDo NOT treat absence of a public announcement as evidence the decision remains open.\n\nCORRIDOR / RELATED-ENTITY (Oleum ↔ Venado)\nDetermine whether there is any actual relationship between sites, ownership, developers, landholders, investors, master planning, infrastructure, consultants, government applications. Do NOT assume relationship from geographic adjacency alone. If none supported, say so. If credible, explain whether broader corridor/ownership relationship may be more valuable than either project alone.\n\nBOUNDED OWNER PORTFOLIO (only after ownership+contacts substantially resolved)\nOther known hotel projects; other Mexico/CALA hospitality; relevant mixed-use/branded-residence; other pre-decision projects. Do not reconstruct a global portfolio. Question: DOES THIS OWNER REPRESENT A REPEAT DEALALITY RELATIONSHIP?\n\nFill the provided narrow schema. Leave unknown fields as Unknown / Not publicly disclosed / No / empty. Preserve provenance. Prefer primary sources. Candidate intelligence only — do not invent facts.",
+  "schema": {
+    "entity_name": "Dealality Mexico Owner Package",
+    "entity_description": "One primary record per priority project (Oleum, Venado, optionally Pastizales). Outreach-ready Owner Intelligence package — not broad discovery.",
+    "entity_criteria": [
+      "Only Oleum Joint Ventures Riviera Maya Ecotourism and/or Residencial Punta Venado Proyecto Venado, unless both are strongly complete and budget remains for Pastizales",
+      "Must attempt primary government/public filing access before relying on secondary press",
+      "Must attempt ownership resolution and decision-maker contact paths",
+      "Do not invent emails, phones, ownership percentages, or brand/operator decisions"
+    ],
+    "attributes": [
+      {
+        "name": "project_id",
+        "type": "string",
+        "is_primary": true,
+        "required": true,
+        "description": "Stable ID: OLEUM-RIVM-ECOT-001 | RPV-QROO-VENADO-001 | HMP-QROO-PAST-001 or similar."
+      },
+      {
+        "name": "project_name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "location_city",
+        "type": "string"
+      },
+      {
+        "name": "location_state",
+        "type": "string"
+      },
+      {
+        "name": "location_detail",
+        "type": "string",
+        "description": "Corridor/site detail (e.g. Punta Venado, Punta Piedra)."
+      },
+      {
+        "name": "project_description",
+        "type": "string"
+      },
+      {
+        "name": "keys_or_units",
+        "type": "string"
+      },
+      {
+        "name": "development_stage",
+        "type": "string"
+      },
+      {
+        "name": "filing_date",
+        "type": "string"
+      },
+      {
+        "name": "filing_status",
+        "type": "string"
+      },
+      {
+        "name": "primary_government_source",
+        "type": "string",
+        "description": "URL or citation for primary filing if accessed."
+      },
+      {
+        "name": "primary_source_accessed",
+        "type": "string",
+        "description": "Yes | No"
+      },
+      {
+        "name": "primary_source_not_accessed_notes",
+        "type": "string",
+        "description": "If No: authority that should contain it; what was attempted; secondary evidence relied on."
+      },
+      {
+        "name": "secondary_sources",
+        "type": "string",
+        "is_array": true
+      },
+      {
+        "name": "filing_applicant",
+        "type": "string"
+      },
+      {
+        "name": "legal_property_owner_or_spv",
+        "type": "string"
+      },
+      {
+        "name": "developer",
+        "type": "string"
+      },
+      {
+        "name": "parent_company",
+        "type": "string"
+      },
+      {
+        "name": "ultimate_controlling_owner",
+        "type": "string"
+      },
+      {
+        "name": "jv_partners",
+        "type": "string"
+      },
+      {
+        "name": "equity_partners",
+        "type": "string"
+      },
+      {
+        "name": "ownership_percentages",
+        "type": "string",
+        "description": "Only if explicitly disclosed; else Not publicly disclosed. Never infer."
+      },
+      {
+        "name": "ownership_structure_summary",
+        "type": "string"
+      },
+      {
+        "name": "entity_role_notes",
+        "type": "string",
+        "description": "Classify entities: Property Owner / Project SPV / Applicant-Promovente / Developer / etc. Promovente ≠ ownership."
+      },
+      {
+        "name": "ownership_confidence",
+        "type": "string",
+        "description": "High | Medium | Low | Unknown"
+      },
+      {
+        "name": "unresolved_ownership_questions",
+        "type": "string"
+      },
+      {
+        "name": "dealality_stage",
+        "type": "string"
+      },
+      {
+        "name": "potential_decision",
+        "type": "string"
+      },
+      {
+        "name": "evidence_of_early_status",
+        "type": "string"
+      },
+      {
+        "name": "too_late_evidence",
+        "type": "string"
+      },
+      {
+        "name": "dealality_status",
+        "type": "string",
+        "required": true,
+        "description": "Strong Pre-Decision Candidate | Conditional Pre-Decision Candidate | Owner Relationship Opportunity | Likely Too Late | Too Late | Insufficient Evidence"
+      },
+      {
+        "name": "why_dealality_may_still_be_early",
+        "type": "string"
+      },
+      {
+        "name": "why_dealality_may_already_be_too_late",
+        "type": "string"
+      },
+      {
+        "name": "earliness_confidence",
+        "type": "string",
+        "description": "High | Medium | Low | Unknown"
+      },
+      {
+        "name": "corridor_relationship_to_other_priority_project",
+        "type": "string",
+        "description": "Oleum↔Venado relationship if any: sites/ownership/developers/etc. Do not assume from adjacency. If none, say so."
+      },
+      {
+        "name": "corridor_relationship_more_valuable_than_single_project",
+        "type": "string",
+        "description": "Yes/No/Unknown + explanation."
+      },
+      {
+        "name": "primary_contact_name",
+        "type": "string"
+      },
+      {
+        "name": "primary_contact_title",
+        "type": "string"
+      },
+      {
+        "name": "primary_contact_company",
+        "type": "string"
+      },
+      {
+        "name": "primary_contact_role",
+        "type": "string"
+      },
+      {
+        "name": "primary_contact_why_relevant",
+        "type": "string"
+      },
+      {
+        "name": "primary_contact_relationship_to_project",
+        "type": "string"
+      },
+      {
+        "name": "primary_contact_linkedin_or_profile",
+        "type": "string",
+        "standard_format": "url"
+      },
+      {
+        "name": "primary_contact_verified_business_email",
+        "type": "string",
+        "description": "Verified public only; never guess."
+      },
+      {
+        "name": "primary_contact_verified_business_phone",
+        "type": "string",
+        "description": "Verified public only; never guess."
+      },
+      {
+        "name": "primary_contact_company_contact_route",
+        "type": "string"
+      },
+      {
+        "name": "primary_contact_outreach_priority",
+        "type": "string",
+        "description": "High | Medium | Low"
+      },
+      {
+        "name": "primary_contact_confidence",
+        "type": "string",
+        "description": "High | Medium | Low | Unknown"
+      },
+      {
+        "name": "primary_contact_source",
+        "type": "string"
+      },
+      {
+        "name": "secondary_contacts",
+        "type": "string",
+        "is_array": true,
+        "description": "Max 3: Name | Title | Company | Role | Profile | Verified Email | Verified Phone | Why Relevant"
+      },
+      {
+        "name": "other_hospitality_assets_or_projects",
+        "type": "string"
+      },
+      {
+        "name": "other_pre_decision_opportunities",
+        "type": "string"
+      },
+      {
+        "name": "mexico_or_cala_pipeline",
+        "type": "string"
+      },
+      {
+        "name": "why_owner_may_matter_beyond_this_project",
+        "type": "string"
+      },
+      {
+        "name": "primary_filing_source",
+        "type": "string"
+      },
+      {
+        "name": "ownership_sources",
+        "type": "string",
+        "is_array": true
+      },
+      {
+        "name": "contact_sources",
+        "type": "string",
+        "is_array": true
+      },
+      {
+        "name": "other_sources",
+        "type": "string",
+        "is_array": true
+      },
+      {
+        "name": "last_verified",
+        "type": "string"
+      },
+      {
+        "name": "evidence_confidence",
+        "type": "string",
+        "description": "High | Medium | Low | Unknown"
+      },
+      {
+        "name": "important_evidence_gaps",
+        "type": "string"
+      }
+    ]
+  },
+  "budget": 5,
+  "title": "Dealality Mexico Owner Intelligence — Test 2 Outreach-Ready Packages (Oleum + Venado)",
+  "use_free_run_when_available": false,
+  "prompt_len": 6964,
+  "attr_count": 61,
+  "note": "use_free_run_when_available=false — free pass already consumed in Test 1; requires paid credits or new funding before launch."
+}

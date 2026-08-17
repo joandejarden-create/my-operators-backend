@@ -1,0 +1,260 @@
+{
+  "entity_name": "Dealality Mexico Early Owner Signal",
+  "entity_description": "One owner-centered early hospitality opportunity in Mexico discovered via NON-GOVERNMENT signals (investment, land, corporate, hiring, capital, partnerships, investor communications, development ecosystem). Government filings may validate only — not originate. Not a SEMARNAT discovery run; not Tests 1–3 project enrichment.",
+  "entity_criteria": [
+    "Discovery MUST originate from a non-government signal family; government filings only for validation/dating",
+    "Prefer OWNER before PROJECT; future decision > known project",
+    "Mexico only; prioritize BCS, QROO, Riviera Nayarit, PV, CDMX, GDL, MTY, Mérida — quality over geographic coverage",
+    "Do not originate from openings, brand/operator/franchise/HMA announcements, rankings, or generic hotel owner lists",
+    "Do not invent emails, phones, ownership percentages, or brand/operator commitments",
+    "Exclude or deprioritize repeating Tests 1–3 named projects as primary targets",
+    "Prefer 4–8 strong owner opportunities over many weak rows"
+  ],
+  "attributes": [
+    {
+      "name": "opportunity_id",
+      "type": "string",
+      "is_primary": true,
+      "required": true,
+      "description": "Stable ID e.g. MX-OWN-2026-001."
+    },
+    {
+      "name": "discovery_class",
+      "type": "string",
+      "required": true,
+      "description": "Class 1 — Future Hotel Decision Owner | Class 2 — Owner Signal Only | Class 3 — Post-Commitment (only if reveals earlier opportunity)"
+    },
+    {
+      "name": "opportunity_name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "owner_name",
+      "type": "string",
+      "required": true,
+      "description": "Owner / developer / investment group at center of the signal."
+    },
+    {
+      "name": "owner_type",
+      "type": "string",
+      "description": "Family office | PE/Fund | Developer | Hotel company | RE company | Institutional | JV platform | Other | Unknown"
+    },
+    {
+      "name": "geography_market",
+      "type": "string",
+      "description": "Primary Mexico market focus (e.g. BCS, QROO, Riviera Nayarit, CDMX)."
+    },
+    {
+      "name": "city_or_region",
+      "type": "string"
+    },
+    {
+      "name": "state",
+      "type": "string"
+    },
+    {
+      "name": "discovery_origin_signal_type",
+      "type": "string",
+      "required": true,
+      "description": "Investment Intent | Land Activity | Corporate Activity | Executive Hiring | Investor Communications | Development Ecosystem | Capital Signal | Hospitality Partnership | Other Non-Government"
+    },
+    {
+      "name": "early_signal",
+      "type": "string",
+      "required": true,
+      "description": "Concrete non-government signal that originated discovery."
+    },
+    {
+      "name": "signal_date",
+      "type": "string"
+    },
+    {
+      "name": "why_signal_matters",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "potential_hotel_decision",
+      "type": "string",
+      "required": true,
+      "description": "What brand/operator/strategy/capital/development decision may still be open."
+    },
+    {
+      "name": "project_or_site_if_known",
+      "type": "string",
+      "description": "Optional; leave empty if owner-only signal."
+    },
+    {
+      "name": "discovered_before_government_filing",
+      "type": "string",
+      "required": true,
+      "description": "Yes | No | Unknown"
+    },
+    {
+      "name": "discovered_before_public_hotel_announcement",
+      "type": "string",
+      "required": true,
+      "description": "Yes | No | Unknown"
+    },
+    {
+      "name": "government_used_only_for_validation",
+      "type": "string",
+      "required": true,
+      "description": "Yes | No | N/A"
+    },
+    {
+      "name": "government_validation_notes",
+      "type": "string",
+      "description": "If government used: what checked and why it did not originate discovery."
+    },
+    {
+      "name": "dealality_status",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "earliness_confidence",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "signal_strength",
+      "type": "string",
+      "description": "High | Medium | Low"
+    },
+    {
+      "name": "why_dealality_may_still_be_early",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "evidence_may_already_be_too_late",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "confirmed_facts",
+      "type": "string"
+    },
+    {
+      "name": "research_inferences",
+      "type": "string"
+    },
+    {
+      "name": "developer",
+      "type": "string"
+    },
+    {
+      "name": "property_owner",
+      "type": "string"
+    },
+    {
+      "name": "parent_company",
+      "type": "string"
+    },
+    {
+      "name": "ultimate_controlling_owner",
+      "type": "string"
+    },
+    {
+      "name": "jv_or_investment_partners",
+      "type": "string"
+    },
+    {
+      "name": "hospitality_platform_or_fund",
+      "type": "string"
+    },
+    {
+      "name": "family_office_or_institution",
+      "type": "string"
+    },
+    {
+      "name": "ownership_structure_summary",
+      "type": "string"
+    },
+    {
+      "name": "ownership_confidence",
+      "type": "string",
+      "description": "High | Medium | Low | Unknown"
+    },
+    {
+      "name": "unresolved_ownership_questions",
+      "type": "string"
+    },
+    {
+      "name": "primary_contact_name",
+      "type": "string"
+    },
+    {
+      "name": "primary_contact_title",
+      "type": "string"
+    },
+    {
+      "name": "primary_contact_company",
+      "type": "string"
+    },
+    {
+      "name": "primary_contact_why_relevant",
+      "type": "string"
+    },
+    {
+      "name": "primary_contact_linkedin_or_profile",
+      "type": "string"
+    },
+    {
+      "name": "primary_contact_company_route",
+      "type": "string"
+    },
+    {
+      "name": "primary_contact_confidence",
+      "type": "string"
+    },
+    {
+      "name": "related_hospitality_pipeline_brief",
+      "type": "string",
+      "description": "Tier 2 — brief only; not full portfolio."
+    },
+    {
+      "name": "signal_sources",
+      "type": "string",
+      "is_array": true
+    },
+    {
+      "name": "ownership_sources",
+      "type": "string",
+      "is_array": true
+    },
+    {
+      "name": "contact_sources",
+      "type": "string",
+      "is_array": true
+    },
+    {
+      "name": "additional_sources",
+      "type": "string",
+      "is_array": true
+    },
+    {
+      "name": "latest_evidence_date",
+      "type": "string"
+    },
+    {
+      "name": "last_verified",
+      "type": "string"
+    },
+    {
+      "name": "evidence_confidence",
+      "type": "string"
+    },
+    {
+      "name": "evidence_gaps",
+      "type": "string"
+    },
+    {
+      "name": "comparative_signal_notes",
+      "type": "string",
+      "description": "Optional note for Tests 1–4 comparison: why this signal type is early/reliable/actionable vs government filings."
+    }
+  ]
+}

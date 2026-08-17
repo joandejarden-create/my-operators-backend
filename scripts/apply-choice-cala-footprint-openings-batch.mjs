@@ -13,6 +13,7 @@ import { spawnSync } from "child_process";
 import { fileURLToPath } from "url";
 import "../load-env.js";
 import Airtable from "airtable";
+import { resolveChiBrandBasicsName } from "./lib/choice-chi-brand-resolve.mjs";
 import { buildCalaFootprintOpeningRows } from "./lib/choice-cala-footprint-opening-rows.mjs";
 import { extractPropertyUrlFromBody } from "./lib/choice-hotel-page-image.mjs";
 import { resolveFootprintOpeningImageUrl } from "./lib/choice-footprint-opening-image-map.mjs";
@@ -94,8 +95,9 @@ async function main() {
   const base = new Airtable({ apiKey: key }).base(baseId);
   let brands = await listChiBrands(base);
   if (brandFilter) {
-    brands = brands.filter((b) => b === brandFilter);
-    if (!brands.length) throw new Error(`No CHI Brand Basics row named "${brandFilter}"`);
+    const resolved = resolveChiBrandBasicsName(brandFilter, brands);
+    if (!resolved) throw new Error(`No CHI Brand Basics row named "${brandFilter}"`);
+    brands = [resolved];
   }
 
   console.log(

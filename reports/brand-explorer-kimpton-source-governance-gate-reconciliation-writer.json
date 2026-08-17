@@ -1,0 +1,568 @@
+{
+  "writerVersion": "30D",
+  "v30DWriterExists": true,
+  "generatedAt": "2026-07-10T12:46:41.203Z",
+  "mode": "dry-run",
+  "brand": {
+    "slug": "kimpton",
+    "recordId": "recCKuXCmGvxHPfb3",
+    "name": "Kimpton Hotels"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-ihg-family-pending-fact-stewardship-writer.md",
+    "reports/brand-explorer-ihg-family-pending-fact-stewardship-writer.json",
+    "reports/brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer.md",
+    "reports/brand-explorer-kimpton-portfolio-context-gate-reconciliation-writer.json",
+    "reports/brand-explorer-complete-build-kimpton.md",
+    "reports/brand-explorer-complete-build-kimpton.json",
+    "reports/brand-explorer-final-qa-auditor.md",
+    "reports/brand-explorer-final-qa-auditor.json",
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+    "lib/partner-intelligence/airtable-facts.js",
+    "lib/partner-intelligence/airtable-source.js",
+    "api/lib/partner-intelligence-field-map.js",
+    "lib/partner-intelligence/profile-governance-publish-readiness.js",
+    "live Kimpton Partner Facts",
+    "live Kimpton Source Library records",
+    "live Kimpton presentation rows"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-kimpton-source-governance-gate-reconciliation-writer.js",
+    "scripts/brand-explorer-kimpton-source-governance-gate-reconciliation-writer.mjs",
+    "docs/data-intelligence/brand-explorer-kimpton-source-governance-gate-reconciliation-writer-v30D.md",
+    "reports/brand-explorer-kimpton-source-governance-gate-reconciliation-writer.md",
+    "reports/brand-explorer-kimpton-source-governance-gate-reconciliation-writer.json",
+    "lib/partner-intelligence/profile-governance-publish-readiness.js",
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "lib/partner-intelligence/brand-explorer-final-readiness-v26B.js",
+    "scripts/test-partner-intelligence-publish-readiness.mjs",
+    "package.json"
+  ],
+  "rootCause": "stale_gate_used_profile_publish_eligibility_not_explorer_governance",
+  "issueClass": "audit_logic_inconsistency",
+  "realGovernanceBlocker": false,
+  "staleGateLogic": true,
+  "factGovernanceBreakdown": {
+    "totalExplorerFacts": 48,
+    "counts": {
+      "approved_public": 7,
+      "approved_internal_only": 0,
+      "rejected_internal_only": 41,
+      "rejected_public": 0,
+      "pending_review_public": 0,
+      "pending_review_internal": 0,
+      "hold_founder_review_public": 0,
+      "hold_founder_review_internal": 0,
+      "source_confirmation_needed": 0,
+      "other": 0
+    },
+    "buckets": {
+      "approved_public": [
+        {
+          "id": "rec2DboeBcrWqexw2",
+          "fieldName": "be.positioning.tagline",
+          "humanReviewStatus": "Approved",
+          "publicVisibility": "Public",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "rec3C43a3luyOqAdB",
+          "fieldName": "be.identity.parentCompany",
+          "humanReviewStatus": "Approved",
+          "publicVisibility": "Public",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "rec4bDGJ813DjyGr9",
+          "fieldName": "be.identity.brandName",
+          "humanReviewStatus": "Approved",
+          "publicVisibility": "Public",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "rec4uii7RPJNocprM",
+          "fieldName": "be.positioning.summary",
+          "humanReviewStatus": "Approved",
+          "publicVisibility": "Public",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recDXX8Gcmp8dmK2A",
+          "fieldName": "be.loyalty.programName",
+          "humanReviewStatus": "Approved",
+          "publicVisibility": "Public",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recbmV27oIIyyzamm",
+          "fieldName": "be.identity.brandName",
+          "humanReviewStatus": "Approved",
+          "publicVisibility": "Public",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recrs2xh1to0gAsAx",
+          "fieldName": "be.identity.parentCompany",
+          "humanReviewStatus": "Approved",
+          "publicVisibility": "Public",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        }
+      ],
+      "approved_internal_only": [],
+      "rejected_internal_only": [
+        {
+          "id": "rec1BXrdqcYJUn9ue",
+          "fieldName": "be.footprint.globalPipeline",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "rec3zirTQ5GTQFgM6",
+          "fieldName": "be.footprint.globalRooms",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "rec5Im4nEygfAnitd",
+          "fieldName": "be.positioning.guestPromise",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "rec6Ra1m0RDPZdVbi",
+          "fieldName": "be.loyalty.roomContributionPct",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "rec7XflJ14dSxs6Lj",
+          "fieldName": "be.overview.typicalUseCase",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "rec8IEsDIllQcjsj1",
+          "fieldName": "be.footprint.americasHotels",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recAWOmVjQgWbPmXc",
+          "fieldName": "be.loyalty.memberCount",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recpXnHJUYhBIdCkt"
+        },
+        {
+          "id": "recAYLGaBt8WpfFoC",
+          "fieldName": "be.positioning.history",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recpXnHJUYhBIdCkt"
+        },
+        {
+          "id": "recAex2Pk3BuBdq2d",
+          "fieldName": "be.economics.royaltyPct",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recB231Yw2A8tkV8s",
+          "fieldName": "be.meta.overallSourceConfidence",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recCF2HNaw1TBiVNh",
+          "fieldName": "be.footprint.globalHotels",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recF6DZnTHvMHnWv9",
+          "fieldName": "be.loyalty.roomContributionPct",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recFbVHKc3dcvbaQj",
+          "fieldName": "be.overview.whyValue",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recGwrebSUnTmvR3R",
+          "fieldName": "be.meta.overallSourceConfidence",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recJKHTZcIhAZb6te",
+          "fieldName": "be.loyalty.programName",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recKKw3iRdG0rnGRi",
+          "fieldName": "be.overview.developmentModel",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recpXnHJUYhBIdCkt"
+        },
+        {
+          "id": "recNYPv3nuYLcJ2QD",
+          "fieldName": "be.footprint.globalHotels",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recNhXXtT2sVzpxul",
+          "fieldName": "be.positioning.tagline",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recNo3BFb6FZtkhCc",
+          "fieldName": "be.footprint.geoIntro",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recP3oeBYV5ojXTAQ",
+          "fieldName": "be.overview.whyValue",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recRr8s2VkuaURVyQ",
+          "fieldName": "be.meta.lastReviewedDate",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recTdacx88HIQo9l1",
+          "fieldName": "be.footprint.americasHotels",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recV6pKib2erMaIGT",
+          "fieldName": "be.overview.scenarios",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recpXnHJUYhBIdCkt"
+        },
+        {
+          "id": "recXiY78QWsTu5Sfc",
+          "fieldName": "be.economics.royaltyPct",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recbMZnwBpuqVkcJm",
+          "fieldName": "be.overview.typicalUseCase",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recbNoUnhhHo2cDNS",
+          "fieldName": "be.commercial.intro",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "reccH6jcHM0DW0nf3",
+          "fieldName": "be.overview.scenarios",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recpXnHJUYhBIdCkt"
+        },
+        {
+          "id": "rechN0l02XFcy8vqI",
+          "fieldName": "be.loyalty.enterpriseBookingPct",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recjf8iM5KjuClZ68",
+          "fieldName": "be.positioning.guestPromise",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "reckOTZRrfq0CEQSM",
+          "fieldName": "be.loyalty.enterpriseBookingPct",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "reclHwwNZHKyMhyt6",
+          "fieldName": "be.footprint.globalRooms",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recm6VQQJItsRDN6d",
+          "fieldName": "be.overview.developmentModel",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recpXnHJUYhBIdCkt"
+        },
+        {
+          "id": "recmgvzBOfnRUFnX7",
+          "fieldName": "be.loyalty.memberCount",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recpXnHJUYhBIdCkt"
+        },
+        {
+          "id": "rect4IChO6E1ErQzW",
+          "fieldName": "be.commercial.intro",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "rectGqJgKFWx4U3sA",
+          "fieldName": "be.positioning.history",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recpXnHJUYhBIdCkt"
+        },
+        {
+          "id": "rectbCGANXVGBKctw",
+          "fieldName": "be.footprint.globalPipeline",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "rectlkVMLNG6Fr2qm",
+          "fieldName": "be.footprint.geoIntro",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        },
+        {
+          "id": "recueWlcaoWR4Ihhx",
+          "fieldName": "be.positioning.summary",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recjFAVo3M2CL9rBF"
+        },
+        {
+          "id": "recutW2nCGZLgdNvM",
+          "fieldName": "be.economics.initialFranchiseFee",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "rec0wes92ieaTT5UU"
+        },
+        {
+          "id": "recwI9KIkJvRxfoKf",
+          "fieldName": "be.economics.initialFranchiseFee",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "rec0wes92ieaTT5UU"
+        },
+        {
+          "id": "reczJet14dqQLxgjp",
+          "fieldName": "be.meta.lastReviewedDate",
+          "humanReviewStatus": "Rejected",
+          "publicVisibility": "Internal Only",
+          "sourceRecordId": "recEMuArkvbqpkrUU"
+        }
+      ],
+      "rejected_public": [],
+      "pending_review_public": [],
+      "pending_review_internal": [],
+      "hold_founder_review_public": [],
+      "hold_founder_review_internal": [],
+      "source_confirmation_needed": [],
+      "other": []
+    }
+  },
+  "explorerGovernance": {
+    "ready": true,
+    "governedPlatformReady": true,
+    "blockers": [],
+    "breakdown": {
+      "totalExplorerFacts": 48,
+      "approvedPublic": 7,
+      "approvedInternal": 0,
+      "rejectedInternal": 41,
+      "rejectedPublic": 0,
+      "pendingReview": 0,
+      "pendingPublic": 0,
+      "holdPublic": 0,
+      "sourceConfirmationNeeded": 0,
+      "approvedExplorerSourceCount": 4
+    },
+    "approvedPublicFacts": [
+      {
+        "id": "rec2DboeBcrWqexw2",
+        "fieldName": "be.positioning.tagline",
+        "sourceRecordId": "recjFAVo3M2CL9rBF",
+        "publicVisibility": "Public",
+        "humanReviewStatus": "Approved"
+      },
+      {
+        "id": "rec3C43a3luyOqAdB",
+        "fieldName": "be.identity.parentCompany",
+        "sourceRecordId": "recEMuArkvbqpkrUU",
+        "publicVisibility": "Public",
+        "humanReviewStatus": "Approved"
+      },
+      {
+        "id": "rec4bDGJ813DjyGr9",
+        "fieldName": "be.identity.brandName",
+        "sourceRecordId": "recEMuArkvbqpkrUU",
+        "publicVisibility": "Public",
+        "humanReviewStatus": "Approved"
+      },
+      {
+        "id": "rec4uii7RPJNocprM",
+        "fieldName": "be.positioning.summary",
+        "sourceRecordId": "recjFAVo3M2CL9rBF",
+        "publicVisibility": "Public",
+        "humanReviewStatus": "Approved"
+      },
+      {
+        "id": "recDXX8Gcmp8dmK2A",
+        "fieldName": "be.loyalty.programName",
+        "sourceRecordId": "recEMuArkvbqpkrUU",
+        "publicVisibility": "Public",
+        "humanReviewStatus": "Approved"
+      },
+      {
+        "id": "recbmV27oIIyyzamm",
+        "fieldName": "be.identity.brandName",
+        "sourceRecordId": "recEMuArkvbqpkrUU",
+        "publicVisibility": "Public",
+        "humanReviewStatus": "Approved"
+      },
+      {
+        "id": "recrs2xh1to0gAsAx",
+        "fieldName": "be.identity.parentCompany",
+        "sourceRecordId": "recEMuArkvbqpkrUU",
+        "publicVisibility": "Public",
+        "humanReviewStatus": "Approved"
+      }
+    ],
+    "approvedPublicGateFailures": [],
+    "rejectedInternalExcludedFromGate": true,
+    "rootCause": "explorer_governance_ready"
+  },
+  "legacyGovernanceGate": {
+    "ready": false,
+    "approvedFacts": 7,
+    "governanceEligible": false,
+    "blockReasons": [
+      "would_downgrade_existing_validation"
+    ],
+    "proposedValidation": "Source-Informed",
+    "expectedValidation": "Source-Informed"
+  },
+  "profileGovernanceLive": {
+    "validationStatus": "Company Published",
+    "usagePermission": "Platform Display Allowed",
+    "sourceType": "Public Sources + AI Extraction",
+    "sourceRegion": "Global Reference",
+    "confidenceLevel": "High",
+    "lastReviewedDate": "2026-06-12",
+    "refreshDueDate": null,
+    "companyValidated": false,
+    "companyValidationDate": null,
+    "externalDisplayStatus": "Show Trust Label",
+    "evidenceNotes": "PI sources (4): EMEAA Kimpton Brand Summary; Kimpton FDD 2024 (MN state filing); Americas Kimpton Development Brochure…. Approved facts: 4.",
+    "missingDataFlags": null,
+    "reviewedBy": null,
+    "internalNotes": "PI profile-governance publish 2026-07-06 (operator:recCKuXCmGvxHPfb3).",
+    "_legacyLastUpdatedDate": null,
+    "_legacyHeroVerification": "Source-Backed Draft"
+  },
+  "profileGovernancePublishPlan": {
+    "eligible": false,
+    "blockReasons": [
+      "would_downgrade_existing_validation"
+    ],
+    "proposedValidation": "Source-Informed",
+    "note": "Profile-governance publish eligibility is separate from Brand Explorer active-profile governedPlatformReady."
+  },
+  "unresolvedPublicFacts": 0,
+  "approvedPublicWithoutApprovedSource": [],
+  "publicFacingUnresolvedFactsRemain": false,
+  "rejectedInternalCountedAsBlockerBeforeFix": true,
+  "codeRepairs": [
+    "assessBrandExplorerGovernanceReadiness() — explorer-scoped gate (pending public, approved public source-backed)",
+    "computeGovernedPlatformReady() in complete-build orchestrator uses explorer gate, not profile publish eligibility",
+    "Rejected/internal facts excluded from governedPlatformReady blockers"
+  ],
+  "codeFixDeployed": true,
+  "rowsWouldCreate": [],
+  "rowsWouldUpdate": [],
+  "applyBlockers": [
+    "no_airtable_changes_needed_code_reconciliation_only"
+  ],
+  "dryRunClean": true,
+  "canApply": false,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedAfter": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedUntouched": true,
+  "ihgValidationImplied": false,
+  "airtableModified": false,
+  "applyResults": null,
+  "finalQa": {
+    "overallNumeric": 100,
+    "readiness": "ready"
+  },
+  "completeBuildBeforeFix": {
+    "governedPlatformReady": false,
+    "readyForActiveProfile": false,
+    "sourceEvidenceNeeded": true
+  },
+  "completeBuildAfterFix": {
+    "governedPlatformReady": true,
+    "readyForActiveProfile": true,
+    "readinessBand": "ready",
+    "sourceEvidenceNeeded": true,
+    "blockers": []
+  },
+  "expectedKimptonActiveProfileReady": true,
+  "exactDryRunCommand": "npm run brand-explorer-kimpton-source-governance-gate-reconciliation-writer -- --brand kimpton --dry-run",
+  "exactApplyCommand": "npm run brand-explorer-kimpton-source-governance-gate-reconciliation-writer -- --brand kimpton --apply --approve-brand-explorer-v30D-kimpton-source-governance-gate-reconciliation --confirm-no-company-validation-claim",
+  "markdown": "# Brand Explorer Kimpton Source Governance Gate Reconciliation v30D\n\n- Generated: 2026-07-10T12:46:41.203Z\n- Brand: **Kimpton Hotels** (`kimpton`)\n- v30D exists: **yes**\n- Root cause: **stale_gate_used_profile_publish_eligibility_not_explorer_governance**\n- Issue class: **audit_logic_inconsistency**\n- Stale gate logic: **yes**\n- Real governance blocker: **no**\n- Airtable modified: **no**\n- Company Validated untouched: **yes**\n\n## Fact governance breakdown\n- Total Explorer facts: **48**\n- Approved / public: **7**\n- Approved / internal only: **0**\n- Rejected / internal only: **41**\n- Rejected / public: **0**\n- Pending review (public): **0**\n- Hold / founder review (public): **0**\n- Source confirmation needed: **0**\n\n## Governance gates\n- Explorer governedPlatformReady: **yes**\n- Legacy gate (profile publish): **no**\n- Profile publish blockers: would_downgrade_existing_validation\n- Live validation status: **Company Published**\n\n## Complete Build after fix\n- governedPlatformReady: **yes**\n- readyForActiveProfile: **yes**\n- readinessBand: **ready**\n\n## Code repairs\n- assessBrandExplorerGovernanceReadiness() — explorer-scoped gate (pending public, approved public source-backed)\n- computeGovernedPlatformReady() in complete-build orchestrator uses explorer gate, not profile publish eligibility\n- Rejected/internal facts excluded from governedPlatformReady blockers\n\n## Apply command\n`npm run brand-explorer-kimpton-source-governance-gate-reconciliation-writer -- --brand kimpton --apply --approve-brand-explorer-v30D-kimpton-source-governance-gate-reconciliation --confirm-no-company-validation-claim`"
+}

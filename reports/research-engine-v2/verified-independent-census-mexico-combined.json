@@ -1,0 +1,258 @@
+{
+  "baseline_status": "mexico_vic_baseline_locked_ready_for_marriott_wave1d",
+  "locked_at": "2026-08-04T22:55:52.330Z",
+  "staging_only": true,
+  "airtable_writes": false,
+  "brand_explorer_activation": false,
+  "webhound_used": false,
+  "legacy_used_as_research_evidence": false,
+  "production_overwrite": false,
+  "geography": "Mexico",
+  "families": [
+    "IHG",
+    "Hilton",
+    "Choice"
+  ],
+  "total_independent_hotel_records": 365,
+  "reconciliation": {
+    "ihg": 195,
+    "hilton": 102,
+    "choice": 68,
+    "sum": 365,
+    "ok": true
+  },
+  "combined_freeze_hash_sha256": "cd7887e30418a9df1a91d275ec9c358ced113e6e8e9368b3ec8d0bcb1c8f574e",
+  "combined_record_fingerprint_sha256": "cc5e0aea7ffe530d8626b39d22a4d8b8a54d410e0c36d427080499ba60ed5cb4",
+  "wave_freeze_hashes": {
+    "IHG": "41302100efa86713ae27c0cefdf3e2071dc0a779c876b73f8d6d07f68e4b0403",
+    "Hilton": "8397b19357f29dfe19d2ebc7ec1c1ba936ff84b5aaa7a439fe02d2b9edb4683c",
+    "Choice": "6f72bf60713dc3a103479d293d1f62ecef8a0b888f63be1bc9bb0d64e74d750f"
+  },
+  "next_wave": {
+    "id": "wave1d_marriott_mexico",
+    "status": "ready_to_launch_when_steward_approves",
+    "launched": false
+  },
+  "executive_summary": {
+    "statement": "Verified Independent Census Mexico baseline is locked for IHG + Hilton + Choice (365 independent hotel records). Staging-only. Ready for Marriott Mexico Wave 1D when steward approves. No Airtable writes, no Brand Explorer activation, no Webhound, no legacy-as-evidence, no production overwrite.",
+    "combined_records": 365,
+    "data_eligible_total": 343,
+    "unique_physical_estimate": 365,
+    "cross_family_same_physical_links": {
+      "ihg_hilton": 0,
+      "choice_vs_prior": 0,
+      "fuzzy_auto_merges": 0,
+      "note": "No cross-family fuzzy auto-merges. Property Identity V1 requires coords/address/ID — not name alone."
+    },
+    "property_identity_v1": "Implemented and applied (Choice Wave 1C); prior waves family-scoped IDs retained",
+    "temporal_affiliation_v1": "Implemented; current affiliation seeded As of discovery — no fabricated start dates",
+    "brand_explorer_completion": "READY FOR SMALL BRAND COMPLETION PILOT",
+    "migration": "PILOT MIGRATION READY (staging table only)",
+    "marriott_readiness": "READY TO LAUNCH WAVE 1D WHEN STEWARD APPROVES"
+  },
+  "family_comparison": [
+    {
+      "family": "IHG",
+      "wave": "wave1_ihg_mexico_all",
+      "independent_hotels": 195,
+      "unique_physical_properties": 195,
+      "core_pct": 100,
+      "material_pct": 56,
+      "data_eligible": 191,
+      "exact_legacy_matches": 151,
+      "probable_legacy_matches": null,
+      "independent_only": 29,
+      "legacy_only": 63,
+      "freeze_hash_sha256": "41302100efa86713ae27c0cefdf3e2071dc0a779c876b73f8d6d07f68e4b0403",
+      "firewall_pre_freeze_blocked": true,
+      "brands": null,
+      "source_artifacts": {
+        "full_records": "data\\research-engine-v2\\verified-independent-census-v1\\08-expanded-benchmark-full-records.json",
+        "freeze": "data\\research-engine-v2\\verified-independent-census-v1\\09-expanded-benchmark-freeze.json",
+        "summary": "data\\research-engine-v2\\verified-independent-census-v1\\12-vic-run-summary.json"
+      }
+    },
+    {
+      "family": "Hilton",
+      "wave": "wave1b_hilton_mexico",
+      "independent_hotels": 102,
+      "unique_physical_properties": 102,
+      "core_pct": 100,
+      "material_pct": 71,
+      "data_eligible": 102,
+      "exact_legacy_matches": 0,
+      "probable_legacy_matches": 2,
+      "independent_only": 100,
+      "legacy_only": 24,
+      "freeze_hash_sha256": "8397b19357f29dfe19d2ebc7ec1c1ba936ff84b5aaa7a439fe02d2b9edb4683c",
+      "firewall_pre_freeze_blocked": true,
+      "brands": {
+        "Canopy by Hilton": 1,
+        "Conrad Hotels & Resorts": 2,
+        "Curio Collection by Hilton": 5,
+        "DoubleTree by Hilton": 7,
+        "Hampton by Hilton": 20,
+        "Hilton Garden Inn": 17,
+        "Hilton Grand Vacations": 3,
+        "Hilton Hotels & Resorts": 12,
+        "Homewood Suites by Hilton": 3,
+        "Motto by Hilton": 2,
+        "Small Luxury Hotels of the World": 18,
+        "Tapestry by Hilton": 5,
+        "Tru by Hilton": 5,
+        "Waldorf Astoria": 2
+      },
+      "source_artifacts": {
+        "full_records": "data\\research-engine-v2\\verified-independent-census-wave1b-hilton\\02-hilton-full-records.json",
+        "freeze": "data\\research-engine-v2\\verified-independent-census-wave1b-hilton\\04-hilton-freeze.json",
+        "summary": "data\\research-engine-v2\\verified-independent-census-wave1b-hilton\\00-wave1b-run-summary.json"
+      }
+    },
+    {
+      "family": "Choice",
+      "wave": "wave1c_choice_mexico",
+      "independent_hotels": 68,
+      "unique_physical_properties": 68,
+      "core_pct": 97,
+      "material_pct": 56,
+      "data_eligible": 50,
+      "exact_legacy_matches": 29,
+      "probable_legacy_matches": 11,
+      "independent_only": 28,
+      "legacy_only": 13,
+      "freeze_hash_sha256": "6f72bf60713dc3a103479d293d1f62ecef8a0b888f63be1bc9bb0d64e74d750f",
+      "firewall_pre_freeze_blocked": true,
+      "brands": {
+        "Sleep Inn": 16,
+        "Comfort Inn": 19,
+        "Radisson": 11,
+        "Quality Inn": 7,
+        "Ascend Hotel Collection": 12,
+        "Comfort Suites": 1,
+        "Choice Hotels": 2
+      },
+      "source_artifacts": {
+        "full_records": "data\\research-engine-v2\\verified-independent-census-wave1c-choice\\02-choice-full-records.json",
+        "freeze": "data\\research-engine-v2\\verified-independent-census-wave1c-choice\\06-choice-freeze.json",
+        "summary": "data\\research-engine-v2\\verified-independent-census-wave1c-choice\\00-wave1c-run-summary.json"
+      }
+    }
+  ],
+  "combined_mexico_vic": {
+    "total_independent_hotel_records": 365,
+    "by_family": {
+      "IHG": 195,
+      "Hilton": 102,
+      "Choice": 68
+    },
+    "separately_traceable": true,
+    "record_index_path": "data/research-engine-v2/verified-independent-census-mexico-combined/02-combined-record-index.json"
+  },
+  "property_identity_v1": {
+    "status": "locked_in_baseline",
+    "choice_unique_physical": 68,
+    "choice_records": 68,
+    "intra_choice_collapses": 0,
+    "fuzzy_name_only_merges": 0,
+    "cross_family_auto_merges": 0,
+    "module": "lib/research-engine-v2/clean-census/property-identity.js"
+  },
+  "temporal_affiliation_v1": {
+    "status": "locked_in_baseline",
+    "precision_policy": "exact | as_of | before | unknown — no fabricated start dates",
+    "choice_seeded": true,
+    "fake_start_dates": 0,
+    "module": "lib/research-engine-v2/clean-census/temporal-affiliation.js"
+  },
+  "completeness_by_family": {
+    "IHG": {
+      "core_pct": 100,
+      "material_pct": 56
+    },
+    "Hilton": {
+      "core_pct": 100,
+      "material_pct": 71
+    },
+    "Choice": {
+      "core_pct": 97,
+      "material_pct": 56
+    }
+  },
+  "data_eligible_by_family": {
+    "IHG": 191,
+    "Hilton": 102,
+    "Choice": 50,
+    "total": 343
+  },
+  "legacy_overlap": {
+    "IHG": {
+      "exact_matches": 151,
+      "independent_only": 29,
+      "legacy_only": 63
+    },
+    "Hilton": {
+      "exact_matches": 0,
+      "probable_matches": 2,
+      "independent_only": 100,
+      "legacy_only": 24,
+      "note": "Legacy Parent=Hilton Mexico cohort sparse (26); high independent-only is product signal"
+    },
+    "Choice": {
+      "exact_matches": 29,
+      "probable_matches": 11,
+      "independent_only": 28,
+      "legacy_only": 13
+    }
+  },
+  "known_gaps": {
+    "rooms": {
+      "ihg": "Strong (directory/page room counts widely present in Wave 1A)",
+      "hilton": "Weak — Hilton locations/status GraphQL omit rooms; Unknown preferred",
+      "choice": "Weak — regional cards omit rooms; property pages often 403"
+    },
+    "open_date": {
+      "ihg": "Weak (few independent open dates)",
+      "hilton": "Strong (directory openDate ~99%)",
+      "choice": "Weak / Unknown"
+    },
+    "management_owner": {
+      "all": "Weak across families — first-party validation required"
+    },
+    "property_pages_403": {
+      "choice": "Choice property pages frequently Blocked (403). Blocked ≠ closed / reflagged / missing.",
+      "hilton": "Directory structured data reduced page dependence",
+      "ihg": "hoteldetail available for Wave 1A cohort"
+    },
+    "steward_review_before_migration": [
+      "Review independent-only vs legacy-only challenges per family",
+      "Confirm Ascend/El Cid Choice soft-brand classification",
+      "Confirm Hilton SLH inclusion policy for product Census",
+      "Confirm Property Identity V1 / Temporal Affiliation V1 before staging table write",
+      "No production overwrite of legacy Hotel Census"
+    ]
+  },
+  "brand_explorer_completion_readiness": {
+    "verdict": "READY FOR SMALL BRAND COMPLETION PILOT",
+    "do_not_activate": true,
+    "notes": [
+      "Use independently reconstructed Mexico Census + FP packs + PVQL/Tab Factory",
+      "Pilot 1–2 brands after steward sign-off",
+      "RIA relationship documented; no directory rows labeled Radisson Individuals Americas in Choice MX run",
+      "Faranda-named: 0; El Cid appeared as Ascend on Choice independently"
+    ]
+  },
+  "staging_migration_recommendation": {
+    "verdict": "PILOT MIGRATION READY",
+    "scope": "Verified Independent Hotel Census staging table — Mexico IHG+Hilton+Choice data-eligible rows only",
+    "do_not": [
+      "overwrite legacy Hotel Census",
+      "write without steward review",
+      "migrate image-ineligible as display assets"
+    ]
+  },
+  "marriott_mexico_readiness": {
+    "verdict": "READY TO LAUNCH WAVE 1D WHEN STEWARD APPROVES",
+    "launched": false,
+    "rationale": "Mexico VIC baseline locked across three parent families; architecture generalized; Property Identity + Temporal Affiliation V1 in place; Marriott has highest remaining Census/BE volume and soft-brand learning value."
+  }
+}

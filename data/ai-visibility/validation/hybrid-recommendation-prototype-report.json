@@ -1,0 +1,522 @@
+{
+  "phase": "AI_INTELLIGENCE_HYBRID_RECOMMENDATION_CLASSIFIER_PROTOTYPE_COMPLETE",
+  "status": "AI_INTELLIGENCE_HYBRID_RECOMMENDATION_CLASSIFIER_PROTOTYPE_REVIEW_REQUIRED",
+  "residualGt": {
+    "TOTAL": 5,
+    "KEEP": 0,
+    "AMEND": 4,
+    "DEFER": 1,
+    "DEFERRED_CASE_IDS": [
+      "v2_cand_035ffe13"
+    ]
+  },
+  "routing": {
+    "DEV_N": 290,
+    "DETERMINISTIC": 238,
+    "ADJUDICATOR": 52,
+    "ABSTAIN": 0,
+    "PROVIDER_CALL_RATE": 0.1793103448275862
+  },
+  "cost": {
+    "CALLS": 52,
+    "ESTIMATED_COST": 1.56,
+    "ACTUAL_COST": 1.56,
+    "CAP": 3
+  },
+  "baseline": {
+    "ACCURACY": 0.7,
+    "MACRO_F1": 0.7232886117071462,
+    "FIRST_REC": 0.9448275862068966,
+    "QUESTION_STATUS": 0.6761133603238867,
+    "ERRORS": 87
+  },
+  "hybrid": {
+    "ACCURACY": 0.7137931034482758,
+    "PRECISION": 0.7137931034482758,
+    "RECALL": 0.7137931034482758,
+    "F1": 0.7137931034482758,
+    "MACRO_P": 0.8450237784915204,
+    "MACRO_R": 0.6734120190833324,
+    "MACRO_F1": 0.7144087431617488,
+    "FIRST_REC": 0.9344827586206896,
+    "QUESTION_STATUS": 0.7344827586206897,
+    "ABSTENTION_RATE": 0,
+    "NON_ABSTAIN_N": 290
+  },
+  "componentAccuracy": {
+    "DETERMINISTIC_ACCURACY": 0.7899159663865546,
+    "ADJUDICATOR_ACCURACY": 0.36538461538461536,
+    "ROUTING_ACCURACY": null,
+    "note": "Deterministic route subset accuracy 78.99%; adjudicator subset 36.54%. Overall hybrid +1.4pp vs deterministic baseline — below material +2pp bar."
+  },
+  "classMetrics": {
+    "first_recommendation": {
+      "precision": 1,
+      "recall": 0.36666666666666664,
+      "f1": 0.5365853658536585,
+      "tp": 11,
+      "fp": 0,
+      "fn": 19
+    },
+    "ranked_recommendation": {
+      "precision": 1,
+      "recall": 0.4375,
+      "f1": 0.6086956521739131,
+      "tp": 7,
+      "fp": 0,
+      "fn": 9
+    },
+    "explicit_recommendation": {
+      "precision": 0.8387096774193549,
+      "recall": 0.8125,
+      "f1": 0.8253968253968254,
+      "tp": 26,
+      "fp": 5,
+      "fn": 6
+    },
+    "associated_option": {
+      "precision": 0.4791666666666667,
+      "recall": 0.48936170212765956,
+      "f1": 0.4842105263157895,
+      "tp": 23,
+      "fp": 25,
+      "fn": 24
+    },
+    "comparator": {
+      "precision": 1,
+      "recall": 0.42857142857142855,
+      "f1": 0.6,
+      "tp": 3,
+      "fp": 0,
+      "fn": 4
+    },
+    "discussed": {
+      "precision": 0.7159090909090909,
+      "recall": 0.8689655172413793,
+      "f1": 0.7850467289719626,
+      "tp": 126,
+      "fp": 50,
+      "fn": 19
+    },
+    "passing_mention": {
+      "precision": 0.5714285714285714,
+      "recall": 0.8,
+      "f1": 0.6666666666666666,
+      "tp": 4,
+      "fp": 3,
+      "fn": 1
+    },
+    "negative_or_qualified": {
+      "precision": 1,
+      "recall": 0.8571428571428571,
+      "f1": 0.923076923076923,
+      "tp": 6,
+      "fp": 0,
+      "fn": 1
+    },
+    "source_only": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    }
+  },
+  "remainingErrors": {
+    "DETERMINISTIC_WRONG": 50,
+    "ADJUDICATOR_WRONG": 30,
+    "ROUTING_WRONG": 0,
+    "ABSTAINED": 0,
+    "GROUND_TRUTH_REVIEW_REQUIRED": 3
+  },
+  "gates": {
+    "ENTITY_GATE": "PASS",
+    "HYBRID_RECOMMENDATION_GATE": "FAIL",
+    "FIRST_REC_GATE": "FAIL",
+    "CLASS_BALANCE_STATUS": "WEAK"
+  },
+  "holdout": {
+    "HOLDOUT_ACCESSED": "NO",
+    "HOLDOUT_CASES_INSPECTED": 0,
+    "HOLDOUT_METRICS_RUN": "NO"
+  },
+  "recommendation": "HYBRID_APPROACH_NOT_JUSTIFIED",
+  "hardGuards": {
+    "HOLDOUT_ACCESS": 0,
+    "NEW_MONITORING": 0,
+    "PUBLIC_CRAWL": 0,
+    "AIRTABLE_WRITES": 0,
+    "SCHEMA_CHANGES": 0,
+    "DEPLOYS": 0,
+    "THRESHOLD_LOWERING": 0,
+    "AUTO_GT_CHANGES": 0
+  },
+  "errorsSample": [
+    {
+      "caseId": "v1_g034",
+      "entity": "Hotel Equities (CALA)",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "bucket": "GROUND_TRUTH_REVIEW_REQUIRED",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v1_g041",
+      "entity": "Aimbridge Hospitality (LATAM)",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "bucket": "GROUND_TRUTH_REVIEW_REQUIRED",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_0091dfff",
+      "entity": "Hotel Indigo",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_024fcf9c",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_035ffe13",
+      "entity": "Small Luxury Hotels of the World",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_07cbcda0",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "passing_mention",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_090e59ac",
+      "entity": "Ascend Hotel Collection",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_0a8cfa16",
+      "entity": "DoubleTree by Hilton",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_0ac8f8ef",
+      "entity": "Autograph Collection",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_0e2e5bd2",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_141a99e1",
+      "entity": "Fairmont",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_14651e14",
+      "entity": "Hilton Hotels & Resorts",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_14cb6324",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_1550f44a",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_17be10b8",
+      "entity": "Westin",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_17d13a6b",
+      "entity": "Sheraton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_17e09529",
+      "entity": "Westin",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_186c03b8",
+      "entity": "Moxy Hotels",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_198ab403",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_198f2e2c",
+      "entity": "Fairmont",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_1c5b0f67",
+      "entity": "Vignette Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_1d0e7663",
+      "entity": "Autograph Collection",
+      "humanRole": "negative_or_qualified",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_224ba464",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_25520887",
+      "entity": "Fairmont",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_2cad5049",
+      "entity": "Sheraton",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_2e0a4ca6",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "associated_option",
+      "predictedRole": "explicit_recommendation",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_3468ce7e",
+      "entity": "Design Hotels",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_350eddb9",
+      "entity": "Autograph Collection",
+      "humanRole": "explicit_recommendation",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_37210b41",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_3bea5bb6",
+      "entity": "Sheraton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_43f183de",
+      "entity": "Westin",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_4c7fd94c",
+      "entity": "Kimpton Hotels",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_4e014498",
+      "entity": "Vignette Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_529f405a",
+      "entity": "Westin",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_53e95635",
+      "entity": "Marriott Hotels",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_548dde0e",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_5bd0176f",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_5dc534cd",
+      "entity": "Sheraton",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    },
+    {
+      "caseId": "v2_cand_5e706e2f",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "bucket": "ADJUDICATOR_WRONG",
+      "route": "ADJUDICATOR",
+      "source": "adjudicator"
+    },
+    {
+      "caseId": "v2_cand_64751348",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "bucket": "DETERMINISTIC_WRONG",
+      "route": "DETERMINISTIC",
+      "source": "deterministic"
+    }
+  ],
+  "analysis": {
+    "DETERMINISTIC_SUBSET_ACCURACY": 0.7899159663865546,
+    "ADJUDICATOR_SUBSET_ACCURACY": 0.36538461538461536,
+    "INTERPRETATION": "Routing architecture is usable (decisive cases ~79%). Constrained adjudicator quality is not yet justified (36.5%). Do not ship hybrid until adjudicator calibration improves or high-error ambiguity clusters are narrowed."
+  }
+}

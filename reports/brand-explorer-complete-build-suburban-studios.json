@@ -1,0 +1,400 @@
+{
+  "generatedAt": "2026-07-14T11:01:14.071Z",
+  "mode": "dry-run",
+  "orchestratorVersion": "2",
+  "brand": {
+    "slug": "suburban-studios",
+    "recordId": "reclcjg5Foa9Vs5TC",
+    "name": "Suburban Studios",
+    "resolution": {
+      "inputTarget": "suburban-studios",
+      "resolvedBrandName": "Suburban Studios",
+      "resolvedRecordId": "reclcjg5Foa9Vs5TC",
+      "resolvedSlug": "suburban-studios",
+      "resolutionSource": "expansion_backlog",
+      "parentCompany": "Choice Hotels International",
+      "parentFamily": "Choice (source-confirmed)",
+      "wave": 6,
+      "ambiguous": false,
+      "error": null,
+      "suggestedMatches": []
+    }
+  },
+  "resolution": {
+    "inputTarget": "suburban-studios",
+    "resolvedBrandName": "Suburban Studios",
+    "resolvedRecordId": "reclcjg5Foa9Vs5TC",
+    "resolvedSlug": "suburban-studios",
+    "resolutionSource": "expansion_backlog",
+    "parentCompany": "Choice Hotels International",
+    "parentFamily": "Choice (source-confirmed)",
+    "wave": 6,
+    "ambiguous": false,
+    "error": null,
+    "suggestedMatches": []
+  },
+  "targetQuality": "active-profile",
+  "halted": false,
+  "haltReason": "",
+  "completedBatches": [],
+  "stageResults": [
+    {
+      "stage": "profile_inspection",
+      "status": "complete",
+      "summary": {
+        "brandName": "Suburban Studios",
+        "recordId": "reclcjg5Foa9Vs5TC",
+        "companyValidated": null,
+        "companyValidationDate": null
+      }
+    },
+    {
+      "stage": "source_inventory",
+      "status": "complete",
+      "summary": {
+        "sourceCount": 5,
+        "approvedForExplorer": 0
+      }
+    },
+    {
+      "stage": "fact_inventory",
+      "status": "complete",
+      "summary": {
+        "factCount": 0,
+        "approved": 0,
+        "pending": 0
+      }
+    },
+    {
+      "stage": "brand_residences_legacy_migration",
+      "status": "complete",
+      "summary": {
+        "alreadySynced": 1,
+        "migrateFromLegacy": 0,
+        "conflicts": 0,
+        "noDataDefault": 0,
+        "sourceBackedPreserved": 0,
+        "wouldUpdate": 0
+      },
+      "command": "npm run brand-residences-legacy-migration-writer -- --brand suburban-studios --dry-run",
+      "futureSetupWritesToBrandBasicsOnly": true
+    },
+    {
+      "stage": "required_section_contract",
+      "status": "blocked",
+      "summary": {
+        "readinessScore": 63,
+        "ready": false,
+        "sectionsReady": 5,
+        "sectionsTotal": 8,
+        "nextWriters": [
+          "1) row creation writer",
+          "2) source capture writer",
+          "3) row creation writer"
+        ]
+      },
+      "command": "npm run brand-explorer-required-section-population-contract -- --brand suburban-studios --dry-run"
+    },
+    {
+      "stage": "visual_defect_audit",
+      "status": "complete",
+      "summary": {
+        "defects": {
+          "total": 12,
+          "critical": 0,
+          "high": 8,
+          "medium": 4,
+          "low": 0,
+          "missingImage": 1,
+          "emptyBullet": 0,
+          "titleOnlyOrThin": 4,
+          "placeholderGeneric": 0,
+          "sortOrder": 1
+        },
+        "comparableToCurio": false,
+        "nextBatch": "v24B_media_asset_fix"
+      },
+      "command": "npm run brand-explorer-visual-display-defect-audit -- --brand suburban-studios --dry-run"
+    },
+    {
+      "stage": "brand-explorer-required-section-source-capture-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-required-section-source-capture-package -- --brand reclcjg5Foa9Vs5TC --dry-run"
+    },
+    {
+      "stage": "brand-explorer-evidence-fact-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-evidence-fact-review-package -- --brand reclcjg5Foa9Vs5TC --dry-run"
+    },
+    {
+      "stage": "brand-explorer-openings-momentum-row-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-openings-momentum-row-review-package -- --brand reclcjg5Foa9Vs5TC --dry-run"
+    },
+    {
+      "stage": "final_qa_auditor",
+      "status": "blocked",
+      "summary": {
+        "requiredSectionReadinessScore": 63,
+        "presentationQualityScore": 0,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 90,
+        "visualCompletenessScore": 24,
+        "overallNumeric": 50,
+        "overallActiveProfileReadiness": "not_ready"
+      },
+      "command": "npm run brand-explorer-final-qa-auditor -- --brand suburban-studios --dry-run"
+    }
+  ],
+  "blockers": [
+    {
+      "type": "required_section",
+      "section": "Openings / Examples / Properties",
+      "classification": "required_backfill",
+      "message": "Insufficient complete openings rows.",
+      "category": "data",
+      "recommendedWriter": "row creation writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Recent Momentum",
+      "classification": "required_backfill",
+      "message": "No minimum set of dated/source-backed momentum rows.",
+      "category": "data",
+      "recommendedWriter": "source capture writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Portfolio Mix",
+      "classification": "required_backfill",
+      "message": "Portfolio mix coverage below minimum.",
+      "category": "data",
+      "recommendedWriter": "row creation writer"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Brand Materials",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "presentation.overview.scenario.2",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v31C_radisson_individuals_openings_suppression"
+    },
+    {
+      "type": "visual_defect",
+      "section": "presentation.overview.scenario.3",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v31C_radisson_individuals_openings_suppression"
+    },
+    {
+      "type": "visual_defect",
+      "section": "presentation.overview.scenario.1",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v31C_radisson_individuals_openings_suppression"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "medium",
+      "message": "UI-facing internal/source-capture language: consumer_site",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    },
+    {
+      "type": "brand_carryover",
+      "severity": "high",
+      "message": "UI-facing internal/source-capture language: item_19_ui",
+      "category": "copy",
+      "recommendedWriter": "v26A_copy_carryover_cleanup"
+    }
+  ],
+  "tributeExpectedRemaining": [],
+  "stagedApplyCommands": [],
+  "nextRequiredWriter": "row creation writer",
+  "finalQaScores": {
+    "requiredSectionReadinessScore": 63,
+    "presentationQualityScore": 0,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 90,
+    "visualCompletenessScore": 24,
+    "overallNumeric": 50,
+    "overallActiveProfileReadiness": "not_ready"
+  },
+  "contractReadinessScore": 63,
+  "requiredSectionStatus": {
+    "score": 63,
+    "ready": false,
+    "sectionsReady": 5,
+    "sectionsTotal": 8
+  },
+  "visualQaStatus": {
+    "score": 24,
+    "comparableToReference": false,
+    "defectCounts": {
+      "total": 12,
+      "critical": 0,
+      "high": 8,
+      "medium": 4,
+      "low": 0,
+      "missingImage": 1,
+      "emptyBullet": 0,
+      "titleOnlyOrThin": 4,
+      "placeholderGeneric": 0,
+      "sortOrder": 1
+    },
+    "recommendedNextBatch": "v24B_media_asset_fix"
+  },
+  "governanceStatus": {
+    "governedPlatformReady": false,
+    "sourceCount": 5,
+    "approvedExplorerSources": 0,
+    "explorerFactCount": 0,
+    "pendingFacts": 0,
+    "sourceEvidenceNeeded": true,
+    "factApprovalNeeded": false,
+    "founderReviewNeeded": false
+  },
+  "governedPlatformReady": false,
+  "readyForActiveProfile": false,
+  "readinessBand": "not_ready",
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "companyValidationDateSnapshot": null,
+  "exactDryRunCommand": "npm run brand-explorer-complete-build -- --brand suburban-studios --dry-run --target-quality active-profile",
+  "exactApplyCommand": "npm run brand-explorer-complete-build -- --brand suburban-studios --apply-approved --approve-brand-explorer-complete-build --target-quality active-profile",
+  "reportBasename": "brand-explorer-complete-build-suburban-studios",
+  "applySafety": {
+    "safeForApplyApproved": false,
+    "applyBlockReasons": [
+      "Wrong-brand copy/carryover risk detected",
+      "Required sections are not ready",
+      "Required image slots are still missing",
+      "Source governance is insufficient for governed apply"
+    ],
+    "applySkippedReasons": [
+      "Wrong-brand copy/carryover risk detected",
+      "Required sections are not ready",
+      "Required image slots are still missing",
+      "Source governance is insufficient for governed apply"
+    ],
+    "applyCommandsEligible": [],
+    "governanceSnapshot": {
+      "companyValidated": null,
+      "governedPlatformReady": false,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": false,
+      "pendingFacts": 0,
+      "internalFacts": 0,
+      "fddFacts": 0
+    }
+  },
+  "applyExecutionLog": [],
+  "airtableModified": false
+}

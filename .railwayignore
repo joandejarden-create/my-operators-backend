@@ -3,6 +3,17 @@ matcha/
 reports/
 uploads/
 data/
+# Seed only V4 runtime + independent freeze (NOT full candidate shards — too large for upload)
+!data/research-engine-v2/
+!data/research-engine-v2/census-autopilot-v4-full-universe/
+!data/research-engine-v2/census-autopilot-v4-full-universe/**
+!data/research-engine-v2/census-autopilot-v2-3-independent-universe/
+!data/research-engine-v2/census-autopilot-v2-3-independent-universe/**
+# Explicitly keep heavy trees out even if parent is un-ignored
+data/research-engine-v2/census-autopilot-v2-full-universe/
+data/research-engine-v2/census-autopilot-v4-standing/
+data/research-engine-v2/census-autopilot-v4-full-universe/**/*.log
+data/research-engine-v2/census-autopilot-v4-full-universe/**/*-run*.log
 node_modules/
 .env
 .env.local
@@ -11,3 +22,4 @@ _archive/
 *.log
 *.tmp
 *.zip
+.git/

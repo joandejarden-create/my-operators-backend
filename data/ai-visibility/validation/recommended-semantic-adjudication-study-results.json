@@ -1,0 +1,400 @@
+{
+  "phase": "RECOMMENDED_SEMANTIC_ADJUDICATION_STUDY_COMPLETE",
+  "adjudicatorVersion": "ai_visibility_recommended_semantic_adjudicator_v1",
+  "MODEL": "gpt-4.1-mini",
+  "STUDY_COST": 0.81,
+  "CALLS": 342,
+  "initialStudy": {
+    "N": 114,
+    "SINGLE_PASS": {
+      "N": 114,
+      "TP": 37,
+      "TN": 33,
+      "FP": 8,
+      "FN": 36,
+      "precision": 0.8222222222222222,
+      "recall": 0.5068493150684932,
+      "f1": 0.6271186440677966,
+      "specificity": 0.8048780487804879,
+      "accuracy": 0.6140350877192983,
+      "fpr": 0.1951219512195122,
+      "fnr": 0.4931506849315068,
+      "PRECISION_PCT": "82.22%",
+      "RECALL_PCT": "50.68%",
+      "F1_PCT": "62.71%"
+    }
+  },
+  "repeatability": {
+    "UNANIMOUS_DECISION_RATE": 0.9649122807017544,
+    "TWO_OF_THREE_AGREEMENT_RATE": 1,
+    "DECISION_FLIP_N": 4,
+    "TRUE_TO_FALSE_FLIPS": 2,
+    "FALSE_TO_TRUE_FLIPS": 2
+  },
+  "consensus": {
+    "MAJORITY_2_OF_3": {
+      "N": 114,
+      "TP": 39,
+      "TN": 34,
+      "FP": 7,
+      "FN": 34,
+      "precision": 0.8478260869565217,
+      "recall": 0.5342465753424658,
+      "f1": 0.6554621848739496,
+      "specificity": 0.8292682926829268,
+      "accuracy": 0.6403508771929824,
+      "fpr": 0.17073170731707318,
+      "fnr": 0.4657534246575342,
+      "PRECISION_PCT": "84.78%",
+      "RECALL_PCT": "53.42%",
+      "F1_PCT": "65.55%"
+    },
+    "UNANIMITY_TRUE": {
+      "N": 114,
+      "TP": 37,
+      "TN": 35,
+      "FP": 6,
+      "FN": 36,
+      "precision": 0.8604651162790697,
+      "recall": 0.5068493150684932,
+      "f1": 0.6379310344827587,
+      "specificity": 0.8536585365853658,
+      "accuracy": 0.631578947368421,
+      "fpr": 0.14634146341463414,
+      "fnr": 0.4931506849315068,
+      "PRECISION_PCT": "86.05%",
+      "RECALL_PCT": "50.68%",
+      "F1_PCT": "63.79%"
+    }
+  },
+  "fullDev": {
+    "EXECUTED": "NO",
+    "reason": "Initial study did not meet PRECISION/RECALL >= 98% — STOP per protocol"
+  },
+  "comparison": {
+    "V4_1": {
+      "PRECISION": 0.8421052631578947,
+      "RECALL": 0.2191780821917808,
+      "F1": 0.34782608695652173,
+      "PRECISION_PCT": "84.21%",
+      "RECALL_PCT": "21.92%",
+      "F1_PCT": "34.78%"
+    },
+    "CURRENT_DETERMINISTIC": {
+      "PRECISION": 0.6097560975609756,
+      "RECALL": 0.3424657534246575,
+      "F1": 0.43859649122807015,
+      "PRECISION_PCT": "60.98%",
+      "RECALL_PCT": "34.25%",
+      "F1_PCT": "43.86%"
+    },
+    "SEMANTIC_SINGLE": {
+      "PRECISION": 0.8222222222222222,
+      "RECALL": 0.5068493150684932,
+      "F1": 0.6271186440677966,
+      "PRECISION_PCT": "82.22%",
+      "RECALL_PCT": "50.68%",
+      "F1_PCT": "62.71%"
+    },
+    "SEMANTIC_MAJORITY_2_OF_3": {
+      "PRECISION": 0.8478260869565217,
+      "RECALL": 0.5342465753424658,
+      "F1": 0.6554621848739496,
+      "PRECISION_PCT": "84.78%",
+      "RECALL_PCT": "53.42%",
+      "F1_PCT": "65.55%"
+    }
+  },
+  "remainingErrors": {
+    "N": 41,
+    "byReasonCode": {
+      "DESCRIPTIVE_ONLY": 32,
+      "LIST_SCOPE": 4,
+      "CONSIDERATION_SET": 3,
+      "EXPLICIT_RECOMMENDATION": 1,
+      "TABLE_SCOPE": 1
+    },
+    "samples": [
+      {
+        "caseId": "v1_g012",
+        "entity": "Curio Collection by Hilton",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "Curio Collection by Hilton is frequently associated with distinctive urban residences."
+      },
+      {
+        "caseId": "v2_cand_0091dfff",
+        "entity": "Hotel Indigo",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "LIST_SCOPE"
+        ],
+        "evidenceSelected": "- **InterContinental** e **Hotel Indigo** también forman parte del pipeline regional."
+      },
+      {
+        "caseId": "v2_cand_024fcf9c",
+        "entity": "Preferred Hotels & Resorts",
+        "promptIntent": "Collection / Soft Brand",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "This is one of the most active consortiums in Mexico. Through their affiliation with Preferred Hotels & Resorts, independent hotels in Mexico can maintain autonomy in their operation and preserve their Mexican identity while accessing Preferred's advanced distribution and sales"
+      },
+      {
+        "caseId": "v2_cand_035ffe13",
+        "entity": "Small Luxury Hotels of the World",
+        "promptIntent": "Collection / Soft Brand",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "Hilton maintains LXR Hotels & Resorts for the luxury end, and in 2024, also announced a partnership with Small Luxury Hotels of the World (SLH)."
+      },
+      {
+        "caseId": "v2_cand_07cbcda0",
+        "entity": "Preferred Hotels & Resorts",
+        "promptIntent": "Collection / Soft Brand",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "Well-known examples mentioned in the results include affiliations connected to large chains such as Marriott International and Choice Hotels International, as well as representation groups like Preferred Hotels & Resorts and The Leading Hotels of the World.[7] For an owner, the appeal is that these models typically provide: - Brand distribution and reservations support through global systems.[1][3][4] - Access to loyalty programs that can drive repeat business.[4][7][9]"
+      },
+      {
+        "caseId": "v2_cand_0ac8f8ef",
+        "entity": "Autograph Collection",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "LIST_SCOPE",
+          "DESCRIPTIVE_ONLY",
+          "LIST_SCOPE"
+        ],
+        "evidenceSelected": "Si el proyecto busca una escala más masiva, precios de entrada más accesibles o un volumen alto de unidades para acelerar el flujo de caja, las marcas *premium* / *upper-upscale* ofrecen estructuras de costos de marca más flexibles: * **Marriott Premium (JW Marriott, Westin, Autograph Collection):** * *JW Marriott:* Funciona excelente para proyectos familiares de lujo maduro. * *Westin:* Enfoque en *wellness* familiar (p. ej., Costa Rica, Cozumel). * *Autograph Collection:* Permite mantener la identidad boutique/independiente del hotel mientras se apro"
+      },
+      {
+        "caseId": "v2_cand_141a99e1",
+        "entity": "Fairmont",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "Accor es uno de los rivales más cercanos de Marriott por número de propiedades de branded residences a nivel global. En la región destaca con marcas como: - **Fairmont Residences** - **Sofitel Residences** - **Raffles Residences** (segmento ultra-lujo) - **Rixos** (mercado todo incluido premium con residencias)"
+      },
+      {
+        "caseId": "v2_cand_17e09529",
+        "entity": "Westin",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "Marriott Premium (JW Marriott, Westin, Autograph Collection): JW Marriott: Funciona excelente para proyectos familiares de lujo maduro. Westin: Enfoque en wellness familiar (p. ej., Costa Rica, Cozumel). Autograph Collection: Permite mantener la identidad boutique/independiente del"
+      },
+      {
+        "caseId": "v2_cand_198ab403",
+        "entity": "Preferred Hotels & Resorts",
+        "promptIntent": "Soft-Brand Affiliation Flexibility",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "Preferred Hotels & Resorts: Una de las redes independientes más grandes del mundo. Ofrece diferentes colecciones (Legend, LVX, Lifestyle, Connect) según el nivel de lujo. Es muy fuerte en América Latina para hoteles que quieren mantener independencia absoluta pero acceder a ventas globales y al programa de lealtad I Prefer."
+      },
+      {
+        "caseId": "v2_cand_198f2e2c",
+        "entity": "Fairmont",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "México, las marcas habitualmente consideradas para un hotel con componente de branded residences suelen ser, sobre todo, cadenas hoteleras de lujo y upper-upscale con presencia residencial o interés en este formato, como Ritz-Carlton, St. Regis, Four Seasons, Thompson, Fairmont, Waldorf Astoria, W, Park Hyatt, Banyan Tree, Aman, Rosewood, Viceroy, Mondrian, SLS, Kimpton, Curio by Hilton, Autograph Collection, Luxury Collection, Sofitel, MGallery, Raffles, Mövenpick y Pendry."
+      },
+      {
+        "caseId": "v2_cand_224ba464",
+        "entity": "Curio Collection by Hilton",
+        "promptIntent": "Upper-Upscale Positioning",
+        "expected": false,
+        "actualMajority": true,
+        "reasonCode": [
+          "CONSIDERATION_SET",
+          "CONSIDERATION_SET",
+          "CONSIDERATION_SET"
+        ],
+        "evidenceSelected": "Para una estrategia de posicionamiento **upper-upscale** en el Caribe y América Latina, las marcas hoteleras que más conviene considerar son las que ya operan o encajan claramente en ese segmento y tienen reconocimiento regional o internacional. Entre las más relevantes están **Hyatt Regency**, **InterContinental**, **Westin**, **Sheraton**, **Le Méridien**, **Renaissance**, **Radisson Blu**, **Barceló Hotels & Resorts**, **Wyndham Grand**, **Hilton Curio Collection**, **Kimpton**, **DoubleTree** y, en algunos casos, **Marriott** y **Tribute Portfolio**.[1][2][4][18]"
+      },
+      {
+        "caseId": "v2_cand_25520887",
+        "entity": "Fairmont",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "* **Fairmont:** Strong presence in North America and resort markets."
+      },
+      {
+        "caseId": "v2_cand_37210b41",
+        "entity": "Preferred Hotels & Resorts",
+        "promptIntent": "Soft-Brand Affiliation Flexibility",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "- **Preferred Hotels & Resorts**: Es la mayor marca de hoteles independientes del mundo, con más de 700 hoteles en su portafolio en 80 países."
+      },
+      {
+        "caseId": "v2_cand_3bea5bb6",
+        "entity": "Sheraton",
+        "promptIntent": "Upper-Upscale Positioning",
+        "expected": false,
+        "actualMajority": true,
+        "reasonCode": [
+          "CONSIDERATION_SET",
+          "CONSIDERATION_SET",
+          "CONSIDERATION_SET"
+        ],
+        "evidenceSelected": "Para una estrategia de posicionamiento **upper-upscale** en el Caribe y América Latina, las marcas hoteleras que más conviene considerar son las que ya operan o encajan claramente en ese segmento y tienen reconocimiento regional o internacional. Entre las más relevantes están **Hyatt Regency**, **InterContinental**, **Westin**, **Sheraton**, **Le Méridien**, **Renaissance**, **Radisson Blu**, **Barceló Hotels & Resorts**, **Wyndham Grand**, **Hilton Curio Collection**, **Kimpton**, **DoubleTree** y, en algunos casos, **Marriott** y **Tribute Portfolio**.[1][2][4][18]"
+      },
+      {
+        "caseId": "v2_cand_529f405a",
+        "entity": "Westin",
+        "promptIntent": "showcase_branded_residences_hotel_project",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "Marriott dispone de una plataforma residencial especialmente amplia, desde Ritz-Carlton y St. Regis hasta EDITION, W, JW Marriott, Luxury Collection y Westin. Hilton opera residencias bajo Waldorf Astoria, Conrad, LXR y otras marcas, con proyectos regionales en Costa Rica, Los Cabos, Panamá, Medellín, Belice, Playa del Carmen y Turks & Caicos. ([marriott.com](https://www.marriott.com/luxury/about-us?utm_source=openai))"
+      },
+      {
+        "caseId": "v2_cand_64751348",
+        "entity": "Preferred Hotels & Resorts",
+        "promptIntent": "Collection / Soft Brand",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "* **Preferred Hotels & Resorts** (categorías Legend, L.V.X., Lifestyle, Connect)."
+      },
+      {
+        "caseId": "v2_cand_6e24c43f",
+        "entity": "Autograph Collection",
+        "promptIntent": "Lifestyle Positioning",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "A popular soft-brand platform for independent, design-driven Mexican properties that want to retain their distinctive identity while accessing Marriott Bonvoy's global distribution. Properties like Hacienda Del Mar Los Cabos operate under this flag"
+      },
+      {
+        "caseId": "v2_cand_6fb1fc83",
+        "entity": "Kimpton Hotels",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "LIST_SCOPE",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "IHG mantiene una presencia significativa de Lujo & Lifestyle en México, América Latina y el Caribe (MLAC) y espera añadir 32 hoteles en los próximos años. Sus marcas clave en residencias son: - Kimpton Hotels & Restaurants: Entre los proyectos en pipeline habrá branded residences, incluyendo una oferta conjunta de hotel y residencias Kimpton en Tulum, México."
+      },
+      {
+        "caseId": "v2_cand_729dabbb",
+        "entity": "Autograph Collection",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "En México, las marcas **habitualmente consideradas** para un hotel con componente de *branded residences* suelen ser, sobre todo, cadenas hoteleras de lujo y *upper-upscale* con presencia residencial o interés en este formato, como **Ritz-Carlton, St. Regis, Four Seasons, Thompson, Fairmont, Waldorf Astoria, W, Park Hyatt, Banyan Tree, Aman, Rosewood, Viceroy, Mondrian, SLS, Kimpton, Curio by Hilton, Autograph Collection, Luxury Collection, Sofitel, MGallery, Raffles, Mövenpick y Pendry**.[2][5][6][9][11][13][14][16][17]"
+      },
+      {
+        "caseId": "v2_cand_7342b809",
+        "entity": "Autograph Collection",
+        "promptIntent": "Branded Residences",
+        "expected": true,
+        "actualMajority": false,
+        "reasonCode": [
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY",
+          "DESCRIPTIVE_ONLY"
+        ],
+        "evidenceSelected": "Leading the hotel-branded segment is Marriott International, which has maintained its position as the market leader since 2002 and is poised for continued success."
+      }
+    ]
+  },
+  "cost": {
+    "STUDY_COST": 0.81,
+    "COST_PER_EVALUATION": 0.007,
+    "COST_PER_1000_EVALUATIONS": 7.15,
+    "COST_PER_10000_EVALUATIONS": 71.46,
+    "COST_PER_100000_EVALUATIONS": 714.56,
+    "PERCENT_CASES_REQUIRING_SEMANTIC_ADJUDICATION": "~40–60% if hybrid routes hard det cases away (estimate; not optimized)",
+    "note": "Assumes every evaluation uses semantic adjudication at study unit cost."
+  },
+  "architectureDecision": "RECOMMENDED_SIGNAL_NOT_YET_RELIABLY_AUTOMATABLE",
+  "recommended": {
+    "STATUS": "NOT_PRODUCTION_CERTIFIED",
+    "RECOMMENDATION_SHARE": "BLOCKED"
+  },
+  "presence": {
+    "STATUS": "PRODUCTION_VALIDATED",
+    "CHANGED": "NO"
+  },
+  "nextStep": "RECOMMENDED_SIGNAL_RESEARCH_REVIEW_REQUIRED",
+  "recommendedProductionRule": "Prefer majority 2-of-3 if hybrid pursued; unanimity-required TRUE maximizes precision but harms recall."
+}

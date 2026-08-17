@@ -1,0 +1,268 @@
+{
+  "version": "census-autopilot-planner-v1",
+  "generated_at": "2026-08-05T19:23:15.904Z",
+  "parent_company": "IHG",
+  "parent_family": "IHG",
+  "region": "CALA",
+  "country": null,
+  "mode": "plan",
+  "limit": 250,
+  "confidence_threshold": "High",
+  "provider": "google",
+  "provider_readiness": {
+    "approved_for_geocode_apply": false,
+    "block_reason": "provider_or_storage_terms_not_confirmed",
+    "preferred": "mapbox_permanent"
+  },
+  "schema_v114": {
+    "ready": false,
+    "note": "Rooms Source Type / Reviewed Date / Notes + Hold option still planned (v1.1.4)"
+  },
+  "records_scanned": null,
+  "records_eligible": null,
+  "queue_order": [
+    "source_discovery",
+    "address_confirmation",
+    "coordinate_resolution",
+    "radar_public_readiness",
+    "description_extraction",
+    "amenities_extraction",
+    "property_type_asset_context",
+    "rooms_keys",
+    "steward_webhound_hard_cases"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "queue_id": "source_discovery",
+      "letter": "A",
+      "label": "Source discovery / record matching",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Source URL",
+        "Official Website",
+        "Official Property URL"
+      ],
+      "writes": "propose_inserts_only",
+      "existing_module": null,
+      "queue_engine_id": null,
+      "note": "Find official URLs; match Census; propose inserts only"
+    },
+    {
+      "step": 2,
+      "queue_id": "address_confirmation",
+      "letter": "B",
+      "label": "Address confirmation",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Address",
+        "Street Address",
+        "City",
+        "State / Province",
+        "Postal Code",
+        "Country"
+      ],
+      "writes": "high_official_only",
+      "existing_module": "production-census-address-geocode-resolver",
+      "queue_engine_id": null,
+      "note": "Official hotel address only when High confidence"
+    },
+    {
+      "step": 3,
+      "queue_id": "coordinate_resolution",
+      "letter": "C",
+      "label": "Coordinate resolution",
+      "status": "blocked_provider",
+      "blockers": [
+        "geocode_provider_or_storage_terms_missing"
+      ],
+      "target_fields": [
+        "Latitude",
+        "Longitude",
+        "Coordinate Provenance",
+        "Coordinate Confidence",
+        "Coordinate Source URL"
+      ],
+      "writes": "high_official_or_approved_geocode",
+      "existing_module": "production-census-coordinate-resolver",
+      "queue_engine_id": null,
+      "note": "Official coords first; approved provider geocode after address; no centroids/0,0"
+    },
+    {
+      "step": 4,
+      "queue_id": "radar_public_readiness",
+      "letter": "D",
+      "label": "Radar / public readiness",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Radar Display Status",
+        "Radar Geography Status",
+        "Public Census Eligibility",
+        "Public Display Confidence",
+        "Public Display Review Status"
+      ],
+      "writes": "high_identity_clear",
+      "existing_module": "production-census-population-lane-2",
+      "queue_engine_id": null,
+      "note": "No public eligibility for held / brand-unconfirmed"
+    },
+    {
+      "step": 5,
+      "queue_id": "description_extraction",
+      "letter": "E",
+      "label": "Description extraction",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary"
+      ],
+      "writes": "high_grounded_only",
+      "existing_module": "production-census-description-extraction",
+      "queue_engine_id": null,
+      "note": "Grounded official/public source only"
+    },
+    {
+      "step": 6,
+      "queue_id": "amenities_extraction",
+      "letter": "F",
+      "label": "Amenities extraction",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Amenities - Source Text",
+        "Amenities - Structured Tags"
+      ],
+      "writes": "high_explicit_only",
+      "existing_module": "production-census-population-lane-2",
+      "queue_engine_id": null,
+      "note": "Strategic flags only; explicit support required"
+    },
+    {
+      "step": 7,
+      "queue_id": "property_type_asset_context",
+      "letter": "G",
+      "label": "Property type / asset context",
+      "status": "scheduled",
+      "blockers": [],
+      "target_fields": [
+        "Property Type",
+        "Asset Context",
+        "Market",
+        "Submarket"
+      ],
+      "writes": "high_only",
+      "existing_module": "production-census-population-lane-2",
+      "queue_engine_id": null,
+      "note": "Dealality Market/Submarket; Property Type / Asset Context"
+    },
+    {
+      "step": 8,
+      "queue_id": "rooms_keys",
+      "letter": "H",
+      "label": "Rooms / Keys",
+      "status": "runnable_needs_schema",
+      "blockers": [
+        "v1.1.4_rooms_provenance_fields_missing"
+      ],
+      "target_fields": [
+        "Rooms / Keys",
+        "Rooms Confidence",
+        "Rooms Source URL"
+      ],
+      "writes": "high_official_hotel_rooms_only",
+      "existing_module": "production-census-rooms-keys-queue",
+      "queue_engine_id": "rooms_keys_missing",
+      "note": "Early queue; Medium/Low/Hold → steward; needs v1.1.4 provenance fields"
+    },
+    {
+      "step": 9,
+      "queue_id": "steward_webhound_hard_cases",
+      "letter": "I",
+      "label": "Steward / Webhound hard cases",
+      "status": "learning_only",
+      "blockers": [],
+      "target_fields": [],
+      "writes": "never_direct_airtable",
+      "existing_module": null,
+      "queue_engine_id": null,
+      "note": "Unresolved hard cases only; Webhound sample 10–25; never writes Airtable"
+    }
+  ],
+  "existing_queue_engine": [
+    {
+      "id": "rooms_keys_missing",
+      "name": "Rooms / Keys missing",
+      "purpose": "Find and populate hotel room/key counts when supported by strong official source evidence",
+      "early": true
+    }
+  ],
+  "blocked_production_lanes": [
+    "Owner Name",
+    "Developer",
+    "Operator / Management Company",
+    "Opening Date",
+    "Renovation Date",
+    "Affiliation Start Date",
+    "Recent Momentum",
+    "Brand Explorer fields",
+    "Company Validated",
+    "Brand Verified"
+  ],
+  "processing_gates": {
+    "no_city_centroid": true,
+    "no_zero_zero_coords": true,
+    "no_owner_operator_writes": true,
+    "no_date_writes": true,
+    "no_brand_explorer_writes": true,
+    "no_company_validated": true,
+    "no_brand_verified": true,
+    "no_recent_momentum": true,
+    "no_webhound_direct_writes": true,
+    "high_confidence_only_on_apply": true,
+    "held_records_excluded_from_writes": true,
+    "brand_unconfirmed_excluded_from_writes": true
+  },
+  "batch_sizes": {
+    "dry-run": {
+      "min": 100,
+      "max": 250,
+      "default": 250
+    },
+    "apply": {
+      "min": 25,
+      "max": 100,
+      "default": 100
+    },
+    "webhound_candidates": {
+      "min": 10,
+      "max": 25,
+      "default": 25
+    }
+  },
+  "extractor_family": {
+    "label": "IHG",
+    "family": "IHG"
+  },
+  "speed_rules": [
+    "use_cache_for_dry_runs",
+    "re_read_only_target_records_before_apply",
+    "process_only_queues_with_missing_target_fields",
+    "skip_completed_records",
+    "family_extractors_before_generic",
+    "no_full_be_gates_on_census_dry_run"
+  ],
+  "recommended_commands": {
+    "plan": "npm run census:autopilot -- --region CALA --parent-company IHG --mode plan",
+    "dry_run": "npm run census:autopilot -- --region CALA --parent-company IHG --mode dry-run --limit 250",
+    "controlled": "npm run census:autopilot -- --region CALA --parent-company IHG --mode controlled --limit 250",
+    "apply": "npm run census:autopilot -- --region CALA --parent-company IHG --mode apply --limit 100 --confirm-safe-writes --confirm-no-owner-operator --confirm-no-date-writes --confirm-no-brand-explorer-writes"
+  },
+  "recommended_next": "npm run census:autopilot -- --region CALA --parent-company IHG --mode dry-run --limit 250",
+  "next_mode_hint": "dry-run",
+  "airtable_writes": false,
+  "brand_explorer_writes": false
+}

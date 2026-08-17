@@ -1,0 +1,520 @@
+{
+  "contractVersion": "27B",
+  "generatedAt": "2026-07-10T02:25:56.596Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "imagesUntouched": true,
+  "companyValidatedUntouched": true,
+  "companyValidationDateUntouched": true,
+  "marriottValidationImplied": false,
+  "brand": {
+    "recordId": "recywbx1YQSTCPqW1",
+    "slug": "radisson",
+    "name": "Radisson by Choice",
+    "parentCompany": "Choice Hotels International"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-missing-content-remediation.md",
+    "reports/brand-explorer-missing-content-remediation.json",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "reports/brand-explorer-screenshot-seeded-remediation-review-package.md",
+    "reports/brand-explorer-screenshot-seeded-remediation-review-package.json",
+    "reports/brand-explorer-visual-minimums-backfill-planner.md",
+    "reports/brand-explorer-visual-minimums-backfill-writer.md",
+    "reports/brand-explorer-evidence-fact-review-package.md",
+    "reports/brand-explorer-evidence-fact-review-package.json",
+    "reports/tribute-portfolio-targeted-extract.md",
+    "reports/tribute-portfolio-targeted-extract.json",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "live Tribute presentation rows (API)",
+    "live Curio/Kimpton/Radisson/Ascend reference rows (API)",
+    "Tribute Source Library records (via report snapshots)",
+    "Tribute Partner Facts (via report snapshots)",
+    "Tribute Brand Asset Registry records (via report snapshots)"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-required-section-population-contract.js",
+    "scripts/brand-explorer-required-section-population-contract.mjs",
+    "docs/data-intelligence/brand-explorer-required-section-population-contract-v25C-1.md",
+    "reports/brand-explorer-required-section-population-contract.md",
+    "reports/brand-explorer-required-section-population-contract.json",
+    "package.json"
+  ],
+  "v25C1RequiredSectionContractExists": true,
+  "v27BGeneralizedEvaluatorsActive": true,
+  "requiredSectionMinimums": {
+    "openings": {
+      "section": "Openings / Examples / Properties",
+      "minimum": 3,
+      "rowRules": [
+        "title/property name",
+        "image/imageUrl",
+        "location or descriptor",
+        "body/summary",
+        "source URL or property URL"
+      ]
+    },
+    "momentum": {
+      "section": "Recent Momentum",
+      "minimum": 3,
+      "rowRules": [
+        "date or year",
+        "title/event",
+        "body/summary",
+        "source URL"
+      ]
+    },
+    "mix": {
+      "section": "Portfolio Mix",
+      "minimum": 3,
+      "rowRules": [
+        "asset type, market/use case, or owner relevance",
+        "source-backed or founder-reviewed"
+      ]
+    },
+    "context": {
+      "section": "Portfolio Context",
+      "minimum": 1,
+      "rowRules": [
+        "parent-company portfolio ladder context",
+        "owner-facing explanation of brand position in parent or soft-brand ecosystem"
+      ]
+    },
+    "standards": {
+      "section": "Standard Detail / Where Available",
+      "minimum": 1,
+      "rowRules": [
+        "structured owner-planning table or structured owner considerations",
+        "no internal-only legal fragments directly"
+      ]
+    },
+    "demand": {
+      "section": "Demand Scenario View",
+      "minimum": 3,
+      "targetParity": 6,
+      "rowRules": [
+        "title",
+        "body/summary",
+        "owner/developer implication"
+      ]
+    },
+    "loyalty": {
+      "section": "Loyalty Program",
+      "minimum": 5,
+      "rowRules": [
+        "program affiliation summary",
+        "earn mechanics",
+        "redeem mechanics",
+        "elite/member benefit mechanics",
+        "proof/support statement"
+      ]
+    },
+    "geo": {
+      "section": "Geographic Footprint",
+      "minimum": 5,
+      "rowRules": [
+        "regional rows",
+        "no unsupported counts",
+        "not generic template filler"
+      ]
+    }
+  },
+  "readinessScore": 100,
+  "brandExplorerRequiredSectionsReady": true,
+  "tributeReadinessPassFail": "n/a",
+  "brandReadinessPassFail": "pass",
+  "sectionBySectionReadiness": [
+    {
+      "section": "Openings / Examples / Properties",
+      "currentStatus": "meets_minimum",
+      "classification": "ready",
+      "requiredMinimum": 3,
+      "currentCount": 4,
+      "missingCount": 0,
+      "rowsFound": 4,
+      "rowsMissing": 0,
+      "rendersToday": true,
+      "temporarySuppressBlankUiGuard": false,
+      "exactBackfillRequirements": [
+        "Create at least 3 complete footprint.openings rows.",
+        "Each row must include title, imageUrl, location/descriptor, summary body, and source/property URL."
+      ],
+      "sourceFactSupportAvailable": "approved source library records + founder-reviewed AI draft needed",
+      "proposedRowPayloadsIfSafe": [],
+      "blockerIfNotSafe": "",
+      "recommendedNextAction": "row creation writer"
+    },
+    {
+      "section": "Recent Momentum",
+      "currentStatus": "meets_minimum",
+      "classification": "ready",
+      "requiredMinimum": 3,
+      "currentCount": 4,
+      "missingCount": 0,
+      "rowsFound": 4,
+      "rowsMissing": 0,
+      "rendersToday": true,
+      "temporarySuppressBlankUiGuard": false,
+      "exactBackfillRequirements": [
+        "Create at least 3 footprint.momentum rows with date/year, title, summary, and source URL.",
+        "Rows must be dated and source-backed."
+      ],
+      "sourceFactSupportAvailable": "new source capture required",
+      "proposedRowPayloadsIfSafe": [],
+      "blockerIfNotSafe": "",
+      "recommendedNextAction": "source capture writer"
+    },
+    {
+      "section": "Portfolio Mix",
+      "currentStatus": "meets_minimum",
+      "classification": "ready",
+      "requiredMinimum": 3,
+      "currentCount": 5,
+      "missingCount": 0,
+      "rowsFound": 5,
+      "rowsMissing": 0,
+      "rendersToday": true,
+      "temporarySuppressBlankUiGuard": false,
+      "exactBackfillRequirements": [
+        "Create at least 3 mix rows/chips with owner-relevant framing.",
+        "Rows must be source-backed or founder-reviewed."
+      ],
+      "sourceFactSupportAvailable": "founder-reviewed AI draft + approved source library records",
+      "proposedRowPayloadsIfSafe": [],
+      "blockerIfNotSafe": "",
+      "recommendedNextAction": "row creation writer"
+    },
+    {
+      "section": "Portfolio Context",
+      "currentStatus": "meets_minimum",
+      "classification": "ready",
+      "requiredMinimum": 1,
+      "currentCount": 1,
+      "missingCount": 0,
+      "rowsFound": 1,
+      "rowsMissing": 0,
+      "rendersToday": true,
+      "temporarySuppressBlankUiGuard": false,
+      "exactBackfillRequirements": [],
+      "sourceFactSupportAvailable": "approved source library records + founder-reviewed narrative",
+      "proposedRowPayloadsIfSafe": [],
+      "blockerIfNotSafe": "",
+      "recommendedNextAction": ""
+    },
+    {
+      "section": "Standard Detail / Where Available",
+      "currentStatus": "meets_minimum",
+      "classification": "ready",
+      "requiredMinimum": 1,
+      "currentCount": 10,
+      "missingCount": 0,
+      "rowsFound": 10,
+      "rowsMissing": 0,
+      "rendersToday": true,
+      "temporarySuppressBlankUiGuard": false,
+      "exactBackfillRequirements": [],
+      "sourceFactSupportAvailable": "founder-reviewed owner-planning governance package",
+      "proposedRowPayloadsIfSafe": [],
+      "blockerIfNotSafe": "",
+      "recommendedNextAction": ""
+    },
+    {
+      "section": "Demand Scenario View",
+      "currentStatus": "meets_minimum",
+      "classification": "ready",
+      "requiredMinimum": 3,
+      "currentCount": 6,
+      "missingCount": 0,
+      "rowsFound": 6,
+      "rowsMissing": 0,
+      "rendersToday": true,
+      "temporarySuppressBlankUiGuard": false,
+      "exactBackfillRequirements": [],
+      "sourceFactSupportAvailable": "founder-reviewed AI draft + source capture required",
+      "proposedRowPayloadsIfSafe": [],
+      "blockerIfNotSafe": "",
+      "recommendedNextAction": ""
+    },
+    {
+      "section": "Loyalty Program",
+      "currentStatus": "meets_minimum",
+      "classification": "ready",
+      "requiredMinimum": 5,
+      "currentCount": 5,
+      "missingCount": 0,
+      "rowsFound": 12,
+      "rowsMissing": 0,
+      "rendersToday": true,
+      "temporarySuppressBlankUiGuard": false,
+      "exactBackfillRequirements": [
+        "Populate affiliation summary + earn + redeem + elite + proof coverage.",
+        "Do not populate unsupported KPI counts."
+      ],
+      "sourceFactSupportAvailable": "pending v23 facts after approval (5)",
+      "proposedRowPayloadsIfSafe": [],
+      "blockerIfNotSafe": "",
+      "recommendedNextAction": "fact approval writer"
+    },
+    {
+      "section": "Geographic Footprint",
+      "currentStatus": "meets_minimum",
+      "classification": "ready",
+      "requiredMinimum": 5,
+      "currentCount": 5,
+      "missingCount": 0,
+      "rowsFound": 5,
+      "rowsMissing": 0,
+      "rendersToday": true,
+      "temporarySuppressBlankUiGuard": false,
+      "exactBackfillRequirements": [],
+      "sourceFactSupportAvailable": "founder-reviewed regional footprint refinement",
+      "proposedRowPayloadsIfSafe": [],
+      "blockerIfNotSafe": "",
+      "recommendedNextAction": ""
+    }
+  ],
+  "requiredSectionsMissing": [],
+  "openingsBackfillRequirements": {
+    "section": "Openings / Examples / Properties",
+    "currentStatus": "meets_minimum",
+    "classification": "ready",
+    "requiredMinimum": 3,
+    "currentCount": 4,
+    "missingCount": 0,
+    "rowsFound": 4,
+    "rowsMissing": 0,
+    "rendersToday": true,
+    "temporarySuppressBlankUiGuard": false,
+    "exactBackfillRequirements": [
+      "Create at least 3 complete footprint.openings rows.",
+      "Each row must include title, imageUrl, location/descriptor, summary body, and source/property URL."
+    ],
+    "sourceFactSupportAvailable": "approved source library records + founder-reviewed AI draft needed",
+    "proposedRowPayloadsIfSafe": [],
+    "blockerIfNotSafe": "",
+    "recommendedNextAction": "row creation writer"
+  },
+  "recentMomentumBackfillRequirements": {
+    "section": "Recent Momentum",
+    "currentStatus": "meets_minimum",
+    "classification": "ready",
+    "requiredMinimum": 3,
+    "currentCount": 4,
+    "missingCount": 0,
+    "rowsFound": 4,
+    "rowsMissing": 0,
+    "rendersToday": true,
+    "temporarySuppressBlankUiGuard": false,
+    "exactBackfillRequirements": [
+      "Create at least 3 footprint.momentum rows with date/year, title, summary, and source URL.",
+      "Rows must be dated and source-backed."
+    ],
+    "sourceFactSupportAvailable": "new source capture required",
+    "proposedRowPayloadsIfSafe": [],
+    "blockerIfNotSafe": "",
+    "recommendedNextAction": "source capture writer"
+  },
+  "portfolioMixBackfillRequirements": {
+    "section": "Portfolio Mix",
+    "currentStatus": "meets_minimum",
+    "classification": "ready",
+    "requiredMinimum": 3,
+    "currentCount": 5,
+    "missingCount": 0,
+    "rowsFound": 5,
+    "rowsMissing": 0,
+    "rendersToday": true,
+    "temporarySuppressBlankUiGuard": false,
+    "exactBackfillRequirements": [
+      "Create at least 3 mix rows/chips with owner-relevant framing.",
+      "Rows must be source-backed or founder-reviewed."
+    ],
+    "sourceFactSupportAvailable": "founder-reviewed AI draft + approved source library records",
+    "proposedRowPayloadsIfSafe": [],
+    "blockerIfNotSafe": "",
+    "recommendedNextAction": "row creation writer"
+  },
+  "portfolioContextBackfillRequirements": {
+    "section": "Portfolio Context",
+    "currentStatus": "meets_minimum",
+    "classification": "ready",
+    "requiredMinimum": 1,
+    "currentCount": 1,
+    "missingCount": 0,
+    "rowsFound": 1,
+    "rowsMissing": 0,
+    "rendersToday": true,
+    "temporarySuppressBlankUiGuard": false,
+    "exactBackfillRequirements": [],
+    "sourceFactSupportAvailable": "approved source library records + founder-reviewed narrative",
+    "proposedRowPayloadsIfSafe": [],
+    "blockerIfNotSafe": "",
+    "recommendedNextAction": ""
+  },
+  "standardDetailBackfillRequirements": {
+    "section": "Standard Detail / Where Available",
+    "currentStatus": "meets_minimum",
+    "classification": "ready",
+    "requiredMinimum": 1,
+    "currentCount": 10,
+    "missingCount": 0,
+    "rowsFound": 10,
+    "rowsMissing": 0,
+    "rendersToday": true,
+    "temporarySuppressBlankUiGuard": false,
+    "exactBackfillRequirements": [],
+    "sourceFactSupportAvailable": "founder-reviewed owner-planning governance package",
+    "proposedRowPayloadsIfSafe": [],
+    "blockerIfNotSafe": "",
+    "recommendedNextAction": ""
+  },
+  "demandScenarioBackfillRequirements": {
+    "section": "Demand Scenario View",
+    "currentStatus": "meets_minimum",
+    "classification": "ready",
+    "requiredMinimum": 3,
+    "currentCount": 6,
+    "missingCount": 0,
+    "rowsFound": 6,
+    "rowsMissing": 0,
+    "rendersToday": true,
+    "temporarySuppressBlankUiGuard": false,
+    "exactBackfillRequirements": [],
+    "sourceFactSupportAvailable": "founder-reviewed AI draft + source capture required",
+    "proposedRowPayloadsIfSafe": [],
+    "blockerIfNotSafe": "",
+    "recommendedNextAction": ""
+  },
+  "loyaltyBackfillRequirements": {
+    "section": "Loyalty Program",
+    "currentStatus": "meets_minimum",
+    "classification": "ready",
+    "requiredMinimum": 5,
+    "currentCount": 5,
+    "missingCount": 0,
+    "rowsFound": 12,
+    "rowsMissing": 0,
+    "rendersToday": true,
+    "temporarySuppressBlankUiGuard": false,
+    "exactBackfillRequirements": [
+      "Populate affiliation summary + earn + redeem + elite + proof coverage.",
+      "Do not populate unsupported KPI counts."
+    ],
+    "sourceFactSupportAvailable": "pending v23 facts after approval (5)",
+    "proposedRowPayloadsIfSafe": [],
+    "blockerIfNotSafe": "",
+    "recommendedNextAction": "fact approval writer"
+  },
+  "geographicFootprintRefinementRequirements": {
+    "section": "Geographic Footprint",
+    "currentStatus": "meets_minimum",
+    "classification": "ready",
+    "requiredMinimum": 5,
+    "currentCount": 5,
+    "missingCount": 0,
+    "rowsFound": 5,
+    "rowsMissing": 0,
+    "rendersToday": true,
+    "temporarySuppressBlankUiGuard": false,
+    "exactBackfillRequirements": [],
+    "sourceFactSupportAvailable": "founder-reviewed regional footprint refinement",
+    "proposedRowPayloadsIfSafe": [],
+    "blockerIfNotSafe": "",
+    "recommendedNextAction": ""
+  },
+  "sectionsNeedImmediateRowCreation": [
+    "Openings / Examples / Properties",
+    "Portfolio Mix",
+    "Demand Scenario View",
+    "Geographic Footprint"
+  ],
+  "sectionsNeedSourceCapture": [
+    "Recent Momentum",
+    "Demand Scenario View"
+  ],
+  "sectionsNeedFounderReview": [],
+  "sectionsNeedFrontendMapping": [],
+  "sectionsNeedFactApproval": [],
+  "temporarySuppressionGuardsRecommended": [],
+  "exactNextWriterSequence": [],
+  "referenceRowsInspected": [
+    {
+      "name": "Curio Collection by Hilton",
+      "id": "receQkxgjlezsc1xg",
+      "blockCount": 211
+    },
+    {
+      "name": "Kimpton Hotels",
+      "id": "recCKuXCmGvxHPfb3",
+      "blockCount": 197
+    },
+    {
+      "name": "Radisson Blu by Choice",
+      "id": "recWPEvxBQxVVzSq3",
+      "blockCount": 219
+    },
+    {
+      "name": "Ascend Hotel Collection",
+      "id": "reclkgOzvAcBheUSo",
+      "blockCount": 211
+    }
+  ],
+  "contextSignals": {
+    "pendingLoyaltyFacts": 5,
+    "screenshotCriticalDefects": [
+      "Loyalty Program:generic_ui_fallback",
+      "Standard Detail, Where Available:missing_table_structure",
+      "Openings / Examples / Properties:empty_property_cards",
+      "Openings / Examples / Properties:property_rows_missing_or_incomplete"
+    ],
+    "evidenceNeedsSourceCapture": [
+      "be.standards.designStandardsDelivery",
+      "loyalty.kpi.hotels",
+      "loyalty.kpi.markets",
+      "loyalty.kpi.members",
+      "loyalty.kpi.mix",
+      "materials.caseStudy",
+      "overview.proof.1",
+      "overview.proof.2",
+      "overview.proof.3",
+      "overview.proof.4",
+      "overview.proof.5",
+      "overview.proof.6"
+    ]
+  },
+  "exactNextCommand": "npm run brand-explorer-required-section-population-contract -- --brand radisson --dry-run",
+  "evaluatorSummary": {
+    "portfolioContext": {
+      "ready": true,
+      "legacyReady": false,
+      "falseNegativeVsLegacy": true,
+      "family": "choice",
+      "narrativePreview": "Core upscale Radisson in the premium band—charming simplicity above upper-midscale flags, below Blu, Collection, Individuals, and RED on the right side of the C",
+      "contextRowCount": 1,
+      "mixRowCount": 5,
+      "blockers": []
+    },
+    "standardsDetail": {
+      "ready": true,
+      "blockers": [],
+      "evaluator": "generalized_v27B"
+    },
+    "demandScenario": {
+      "ready": true,
+      "legacyReady": false,
+      "falseNegativeVsLegacy": true,
+      "rowCount": 6,
+      "completeCount": 6,
+      "legacyCompleteCount": 0,
+      "requiredMinimum": 3,
+      "incompleteRows": [],
+      "blockers": []
+    }
+  },
+  "markdown": "# Brand Explorer Required Section Population Contract v27B\n\n- Generated: 2026-07-10T02:25:56.596Z\n- Mode: **dry-run**\n- Brand: **Radisson by Choice** (`recywbx1YQSTCPqW1`) · slug `radisson` · parent **Choice Hotels International**\n- Required Sections Ready: **true**\n- Readiness Score: **100**\n\n## Required Minimums\n- **Openings / Examples / Properties**: minimum 3\n- **Recent Momentum**: minimum 3\n- **Portfolio Mix**: minimum 3\n- **Portfolio Context**: minimum 1\n- **Standard Detail / Where Available**: minimum 1\n- **Demand Scenario View**: minimum 3\n- **Loyalty Program**: minimum 5\n- **Geographic Footprint**: minimum 5\n\n## Section Readiness\n- **Openings / Examples / Properties**: `ready` · current 4/3\n- **Recent Momentum**: `ready` · current 4/3\n- **Portfolio Mix**: `ready` · current 5/3\n- **Portfolio Context**: `ready` · current 1/1\n- **Standard Detail / Where Available**: `ready` · current 10/1\n- **Demand Scenario View**: `ready` · current 6/3\n- **Loyalty Program**: `ready` · current 5/5\n- **Geographic Footprint**: `ready` · current 5/5\n\n## Contract status\n- All required sections meet minimums — suppression guards and backfill writer sequence not applicable.\n\n## Exact next command\n```bash\nnpm run brand-explorer-required-section-population-contract -- --brand radisson --dry-run\n```"
+}

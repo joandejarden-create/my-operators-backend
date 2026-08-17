@@ -1,0 +1,408 @@
+{
+  "phase": "PRESENCE_VALIDATION_POOL_READINESS_AUDIT_COMPLETE",
+  "auditedAt": "2026-08-15T15:14:11.584Z",
+  "HOLDOUT_V2_SELECTION": 0,
+  "HOLDOUT_V2_FREEZE": 0,
+  "HOLDOUT_V2_SCORING": 0,
+  "HUMAN_LABEL_CHANGES": 0,
+  "PROVIDER_CALLS": 0,
+  "pool": {
+    "CANDIDATE_PAIRS": 191,
+    "UNIQUE_RESPONSES": 96,
+    "PRESENT": 97,
+    "NOT_PRESENT": 94,
+    "INVALID": 0,
+    "DEFERRED": 0,
+    "BY_PROVIDER": {
+      "claude": {
+        "candidatePairN": 48,
+        "presentN": 26,
+        "notPresentN": 22,
+        "uniqueResponseN": 24
+      },
+      "gemini": {
+        "candidatePairN": 47,
+        "presentN": 23,
+        "notPresentN": 24,
+        "uniqueResponseN": 24
+      },
+      "perplexity": {
+        "candidatePairN": 48,
+        "presentN": 24,
+        "notPresentN": 24,
+        "uniqueResponseN": 24
+      },
+      "openai": {
+        "candidatePairN": 48,
+        "presentN": 24,
+        "notPresentN": 24,
+        "uniqueResponseN": 24
+      }
+    },
+    "BY_LANGUAGE": {
+      "es": {
+        "candidatePairN": 63,
+        "presentN": 31,
+        "notPresentN": 32,
+        "uniqueResponseN": 32
+      },
+      "en": {
+        "candidatePairN": 128,
+        "presentN": 66,
+        "notPresentN": 62,
+        "uniqueResponseN": 64
+      }
+    },
+    "BY_GEOGRAPHY": {
+      "CALA": {
+        "candidatePairN": 64,
+        "presentN": 32,
+        "notPresentN": 32,
+        "uniqueResponseN": 32
+      },
+      "Europe": {
+        "candidatePairN": 24,
+        "presentN": 12,
+        "notPresentN": 12,
+        "uniqueResponseN": 12
+      },
+      "Global": {
+        "candidatePairN": 40,
+        "presentN": 21,
+        "notPresentN": 19,
+        "uniqueResponseN": 20
+      },
+      "Mexico": {
+        "candidatePairN": 47,
+        "presentN": 23,
+        "notPresentN": 24,
+        "uniqueResponseN": 24
+      },
+      "North America": {
+        "candidatePairN": 16,
+        "presentN": 9,
+        "notPresentN": 7,
+        "uniqueResponseN": 8
+      }
+    }
+  },
+  "governance": {
+    "RESPONSE_LEVEL_GOVERNANCE": "PASS",
+    "MAX_PAIRS_PER_RESPONSE": 2,
+    "CANDIDATE_CAP_PER_RESPONSE": 2,
+    "missingSourceResponseId": 0,
+    "partitionAtomicityOk": true,
+    "overCapResponseCount": 0
+  },
+  "leakage": {
+    "LEAKAGE": "PASS",
+    "LEAKAGE_CASES": 0,
+    "LEAKAGE_SAMPLE": [],
+    "DUPLICATE_CASE_IDS": 0,
+    "DUPLICATE_RESPONSE_ENTITY_PAIRS": 0,
+    "DUPLICATE_RESPONSE_HASHES_WITHIN_POOL_EXPECTED": "95 (same response → ≤2 pairs share hash — expected)",
+    "withinPoolSharedResponseHashes": 95
+  },
+  "labelIntegrity": {
+    "LABEL_INTEGRITY": "PASS",
+    "missingFinalDecisions": 0,
+    "missingCanonicalEntityIds": 0,
+    "missingSourceResponses": 0,
+    "malformedResponseText": 0,
+    "invalidCases": 0,
+    "deferredCases": 0,
+    "identityAmbiguityNotes": 0
+  },
+  "holdoutV2": {
+    "designStatus": "BLOCKED_OPENAI_AND_HUMAN_REVIEW",
+    "CURRENT_TARGET": "75 / 25",
+    "TOTAL_N": 100,
+    "ELIGIBLE_PAIR_N": 191,
+    "ELIGIBLE_UNIQUE_RESPONSE_N": 96,
+    "ELIGIBLE_PRESENT": 97,
+    "ELIGIBLE_NOT_PRESENT": 94,
+    "TARGET_75_25_FEASIBLE": "YES",
+    "TARGET_RECOMMENDATION": "KEEP",
+    "dryRunSelection": {
+      "selectedPairN": 100,
+      "uniqueResponseN": 74,
+      "presentN": 75,
+      "notPresentN": 25,
+      "byProvider": {
+        "claude": {
+          "candidatePairN": 28,
+          "presentN": 21,
+          "notPresentN": 7,
+          "uniqueResponseN": 20
+        },
+        "gemini": {
+          "candidatePairN": 26,
+          "presentN": 19,
+          "notPresentN": 7,
+          "uniqueResponseN": 19
+        },
+        "openai": {
+          "candidatePairN": 27,
+          "presentN": 20,
+          "notPresentN": 7,
+          "uniqueResponseN": 20
+        },
+        "perplexity": {
+          "candidatePairN": 19,
+          "presentN": 15,
+          "notPresentN": 4,
+          "uniqueResponseN": 15
+        }
+      },
+      "byLanguage": {
+        "en": {
+          "candidatePairN": 73,
+          "presentN": 54,
+          "notPresentN": 19,
+          "uniqueResponseN": 53
+        },
+        "es": {
+          "candidatePairN": 27,
+          "presentN": 21,
+          "notPresentN": 6,
+          "uniqueResponseN": 21
+        }
+      },
+      "byGeography": {
+        "CALA": {
+          "candidatePairN": 30,
+          "presentN": 23,
+          "notPresentN": 7,
+          "uniqueResponseN": 23
+        },
+        "Europe": {
+          "candidatePairN": 15,
+          "presentN": 11,
+          "notPresentN": 4,
+          "uniqueResponseN": 11
+        },
+        "Global": {
+          "candidatePairN": 15,
+          "presentN": 11,
+          "notPresentN": 4,
+          "uniqueResponseN": 11
+        },
+        "Mexico": {
+          "candidatePairN": 28,
+          "presentN": 21,
+          "notPresentN": 7,
+          "uniqueResponseN": 21
+        },
+        "North America": {
+          "candidatePairN": 12,
+          "presentN": 9,
+          "notPresentN": 3,
+          "uniqueResponseN": 8
+        }
+      }
+    }
+  },
+  "negativeControls": {
+    "counts": {
+      "parent_or_sibling_hilton_context": 61,
+      "marriott_family_context": 6,
+      "generic_collection_language": 8,
+      "geographic_or_playa_negative": 19,
+      "hard_negative_pool_absent": 0,
+      "other_false_rationale": 0
+    },
+    "byEntity": {
+      "Canopy by Hilton": 44,
+      "Playa Hotels & Resorts": 19,
+      "Tapestry Collection by Hilton": 15,
+      "Autograph Collection": 5,
+      "Tribute Portfolio": 4,
+      "Curio Collection by Hilton": 7
+    },
+    "NEGATIVE_CONTROL_TYPES_PRESENT": [
+      "parent_or_sibling_hilton_context",
+      "marriott_family_context",
+      "generic_collection_language",
+      "geographic_or_playa_negative"
+    ],
+    "NEGATIVE_CONTROL_TYPES_MISSING": [
+      "hard_negative_pool_absent"
+    ],
+    "NEGATIVE_CONTROL_COVERAGE_SUFFICIENT": "YES"
+  },
+  "proposedAllocation": {
+    "note": "Recommended from dry-run stratified selection — NOT frozen",
+    "byProvider": {
+      "claude": {
+        "candidatePairN": 28,
+        "presentN": 21,
+        "notPresentN": 7,
+        "uniqueResponseN": 20
+      },
+      "gemini": {
+        "candidatePairN": 26,
+        "presentN": 19,
+        "notPresentN": 7,
+        "uniqueResponseN": 19
+      },
+      "openai": {
+        "candidatePairN": 27,
+        "presentN": 20,
+        "notPresentN": 7,
+        "uniqueResponseN": 20
+      },
+      "perplexity": {
+        "candidatePairN": 19,
+        "presentN": 15,
+        "notPresentN": 4,
+        "uniqueResponseN": 15
+      }
+    },
+    "PROJECTED_UNIQUE_RESPONSE_N": 74,
+    "designTargets": {
+      "OpenAI": 20,
+      "Gemini": 25,
+      "Perplexity": 25,
+      "Claude": 25,
+      "note": "Approximate; allow ±3 per provider while covering all four. OpenAI required before final freeze."
+    }
+  },
+  "languageGeoAllocation": {
+    "recommendedFromPool": {
+      "languages": {
+        "es": {
+          "candidatePairN": 63,
+          "presentN": 31,
+          "notPresentN": 32,
+          "uniqueResponseN": 32
+        },
+        "en": {
+          "candidatePairN": 128,
+          "presentN": 66,
+          "notPresentN": 62,
+          "uniqueResponseN": 64
+        }
+      },
+      "geographies": {
+        "CALA": {
+          "candidatePairN": 64,
+          "presentN": 32,
+          "notPresentN": 32,
+          "uniqueResponseN": 32
+        },
+        "Europe": {
+          "candidatePairN": 24,
+          "presentN": 12,
+          "notPresentN": 12,
+          "uniqueResponseN": 12
+        },
+        "Global": {
+          "candidatePairN": 40,
+          "presentN": 21,
+          "notPresentN": 19,
+          "uniqueResponseN": 20
+        },
+        "Mexico": {
+          "candidatePairN": 47,
+          "presentN": 23,
+          "notPresentN": 24,
+          "uniqueResponseN": 24
+        },
+        "North America": {
+          "candidatePairN": 16,
+          "presentN": 9,
+          "notPresentN": 7,
+          "uniqueResponseN": 8
+        }
+      }
+    },
+    "dryRunHoldout": {
+      "languages": {
+        "en": {
+          "candidatePairN": 73,
+          "presentN": 54,
+          "notPresentN": 19,
+          "uniqueResponseN": 53
+        },
+        "es": {
+          "candidatePairN": 27,
+          "presentN": 21,
+          "notPresentN": 6,
+          "uniqueResponseN": 21
+        }
+      },
+      "geographies": {
+        "CALA": {
+          "candidatePairN": 30,
+          "presentN": 23,
+          "notPresentN": 7,
+          "uniqueResponseN": 23
+        },
+        "Europe": {
+          "candidatePairN": 15,
+          "presentN": 11,
+          "notPresentN": 4,
+          "uniqueResponseN": 11
+        },
+        "Global": {
+          "candidatePairN": 15,
+          "presentN": 11,
+          "notPresentN": 4,
+          "uniqueResponseN": 11
+        },
+        "Mexico": {
+          "candidatePairN": 28,
+          "presentN": 21,
+          "notPresentN": 7,
+          "uniqueResponseN": 21
+        },
+        "North America": {
+          "candidatePairN": 12,
+          "presentN": 9,
+          "notPresentN": 3,
+          "uniqueResponseN": 8
+        }
+      }
+    },
+    "rationale": "Do not force equal EN/ES or geo balance; stratify from actual eligible pool. Design targets (~50/50 EN/ES) are aspirational — actual Spanish share in pool drives holdout share."
+  },
+  "finalGate": {
+    "PRECISION_THRESHOLD": "98%",
+    "RECALL_THRESHOLD": "98%",
+    "metricContract": {
+      "requiredMetrics": [
+        "Accuracy",
+        "Precision",
+        "Recall",
+        "F1",
+        "Specificity",
+        "FalsePositiveRate",
+        "FalseNegativeRate",
+        "CANDIDATE_PAIR_N",
+        "UNIQUE_RESPONSE_N"
+      ],
+      "requiredBreakdowns": [
+        "provider",
+        "language",
+        "geography"
+      ],
+      "forbidCompositeScore": true,
+      "note": "Report metrics independently — no single composite score."
+    },
+    "forbidCompositeScore": true
+  },
+  "regionalization": {
+    "STATUS": "PLANNED_AFTER_PRESENCE_CERTIFICATION",
+    "PROVIDER_CALLS": 0,
+    "CURRENT_PRESENCE_CERTIFICATION_EFFECT": 0
+  },
+  "universe": {
+    "TOTAL_CANDIDATES": 416,
+    "PRIMARY_REVIEWED": 191,
+    "UNREVIEWED": 225,
+    "NON_PRIMARY_RESERVE": 225,
+    "DO_REMAINING_BLOCK_HOLDOUT": false
+  },
+  "status": "PRESENCE_VALIDATION_POOL_READINESS_PASS",
+  "NEXT_STEP": "READY_FOR_PRESENCE_HOLDOUT_V2_SELECTION_AND_FREEZE"
+}

@@ -1,0 +1,16 @@
+{
+  "flags": {
+    "ENABLE_CENSUS_V4_WORKER": {
+      "required_for_supervisor": true,
+      "default_safe": "0",
+      "production_worker": "1"
+    },
+    "ENABLE_CENSUS_AUTOPILOT_V4": { "recommended": "1" },
+    "ENABLE_VERIFIED_CENSUS_WRITES": { "required_for_live_writes": true },
+    "AIRTABLE_PAT": { "required": true, "secret": true },
+    "AIRTABLE_BASE_ID": { "required": true },
+    "SERPAPI_KEY": { "required": false, "secret": true }
+  },
+  "web_service_must_not_enable_worker": true,
+  "secrets_logged": false
+}

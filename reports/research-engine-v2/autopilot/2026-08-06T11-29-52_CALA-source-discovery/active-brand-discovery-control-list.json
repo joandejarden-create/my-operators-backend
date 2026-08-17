@@ -1,0 +1,597 @@
+{
+  "version": "census-autopilot-active-brand-discovery-control-list-v2",
+  "generated_at": "2026-08-06T11:29:52.984Z",
+  "scope": "active-brand-setup",
+  "region": "CALA",
+  "parent_company_filter": "Preferred",
+  "source": {
+    "name": "Brand Basics Brand Status Active/Live",
+    "table": "Brand Setup - Brand Basics",
+    "file": "lib/brand-status-active.js",
+    "formula": "OR({Brand Status}='Active', {Brand Status}='Live')",
+    "filterCriteria": "OR({Brand Status}='Active', {Brand Status}='Live')",
+    "apis": [
+      "GET /api/brand-library/brands",
+      "GET /api/brand-explorer/brands"
+    ],
+    "note": "Canonical Brand Explorer active universe. Code cohort lists are operational overlays, not this universe.",
+    "version": "active-universe-v1",
+    "read_only": true,
+    "brand_setup_writes": false,
+    "brand_explorer_writes": false,
+    "baseline_path": "reports/brand-explorer-62-active-public-full-baseline.json",
+    "active_count": 62
+  },
+  "brand_setup_read_only": true,
+  "brand_explorer_untouched": true,
+  "parent_inference_read_only": true,
+  "active_brands_in_scope": 1,
+  "parent_companies_in_scope": [
+    "Preferred Hotels & Resorts"
+  ],
+  "inferred_parents": [
+    {
+      "brand_slug": "preferred-hotels-and-resorts",
+      "parent_company": "Preferred Hotels & Resorts",
+      "confidence": "High",
+      "source": "parent_by_slug_map"
+    }
+  ],
+  "inferred_parent_count": 1,
+  "brands": [
+    {
+      "brand_name": "Preferred Hotels & Resorts",
+      "brand_slug": "preferred-hotels-and-resorts",
+      "parent_company": "Preferred Hotels & Resorts",
+      "parent_company_raw": null,
+      "parent_inferred": true,
+      "parent_inference_confidence": "High",
+      "parent_inference_source": "parent_by_slug_map",
+      "brand_family": "Preferred",
+      "brand_status": "Active",
+      "brand_setup_record_id": "recwl5JOYxlChuCAr",
+      "region_eligibility": "International Reference",
+      "census_matching_aliases": [
+        "preferred hotels & resorts",
+        "preferred hotels and resorts",
+        "preferred hotels resorts"
+      ],
+      "extractor_family": "Preferred",
+      "known_source_family": "Preferred",
+      "discovery_adapter_available": true,
+      "discovery_adapter_countries": [
+        "Antigua and Barbuda",
+        "Argentina",
+        "Aruba",
+        "Bahamas",
+        "Barbados",
+        "Belize",
+        "Bonaire",
+        "Brazil",
+        "British Virgin Islands",
+        "Cayman Islands",
+        "Chile",
+        "Colombia",
+        "Costa Rica",
+        "Cuba",
+        "Curaçao",
+        "Dominica",
+        "Dominican Republic",
+        "Ecuador",
+        "El Salvador",
+        "Grenada",
+        "Guadeloupe",
+        "Guatemala",
+        "Haiti",
+        "Honduras",
+        "Jamaica",
+        "Martinique",
+        "Mexico",
+        "Nicaragua",
+        "Panama",
+        "Peru",
+        "Puerto Rico",
+        "Saint Kitts and Nevis",
+        "Saint Lucia",
+        "Saint Vincent and the Grenadines",
+        "Trinidad and Tobago",
+        "Turks & Caicos",
+        "U.S. Virgin Islands",
+        "Uruguay"
+      ],
+      "discovery_adapters": {
+        "Antigua and Barbuda": "preferred_directory",
+        "Argentina": "preferred_directory",
+        "Aruba": "preferred_directory",
+        "Bahamas": "preferred_directory",
+        "Barbados": "preferred_directory",
+        "Belize": "preferred_directory",
+        "Bonaire": "preferred_directory",
+        "Brazil": "preferred_directory",
+        "British Virgin Islands": "preferred_directory",
+        "Cayman Islands": "preferred_directory",
+        "Chile": "preferred_directory",
+        "Colombia": "preferred_directory",
+        "Costa Rica": "preferred_directory",
+        "Cuba": "preferred_directory",
+        "Curaçao": "preferred_directory",
+        "Dominica": "preferred_directory",
+        "Dominican Republic": "preferred_directory",
+        "Ecuador": "preferred_directory",
+        "El Salvador": "preferred_directory",
+        "Grenada": "preferred_directory",
+        "Guadeloupe": "preferred_directory",
+        "Guatemala": "preferred_directory",
+        "Haiti": "preferred_directory",
+        "Honduras": "preferred_directory",
+        "Jamaica": "preferred_directory",
+        "Martinique": "preferred_directory",
+        "Mexico": "preferred_directory",
+        "Nicaragua": "preferred_directory",
+        "Panama": "preferred_directory",
+        "Peru": "preferred_directory",
+        "Puerto Rico": "preferred_directory",
+        "Saint Kitts and Nevis": "preferred_directory",
+        "Saint Lucia": "preferred_directory",
+        "Saint Vincent and the Grenadines": "preferred_directory",
+        "Trinidad and Tobago": "preferred_directory",
+        "Turks & Caicos": "preferred_directory",
+        "U.S. Virgin Islands": "preferred_directory",
+        "Uruguay": "preferred_directory"
+      },
+      "source_family": "Preferred"
+    }
+  ],
+  "excluded": [
+    {
+      "slug": "ac-hotels-by-marriott",
+      "brand_name": "AC Hotels by Marriott",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "aloft-hotels",
+      "brand_name": "Aloft Hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "ascend",
+      "brand_name": "Ascend Hotel Collection",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "autograph-collection",
+      "brand_name": "Autograph Collection",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "avid-hotels",
+      "brand_name": "avid hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "IHG",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "bunkhouse-hotels",
+      "brand_name": "Bunkhouse Hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "Bunkhouse",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "bw-premier-collection",
+      "brand_name": "BW Premier Collection",
+      "reason": "parent_company_filter",
+      "parent_company": "BWH Hotels",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "bw-signature-collection",
+      "brand_name": "BW Signature Collection",
+      "reason": "parent_company_filter",
+      "parent_company": "BWH Hotels",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "canopy-by-hilton",
+      "brand_name": "Canopy by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "city-express-by-marriott",
+      "brand_name": "City Express by Marriott",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "comfort-inn-suites",
+      "brand_name": "Comfort Inn & Suites",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "country-inn-suites",
+      "brand_name": "Country Inn & Suites by Choice",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "courtyard-by-marriott",
+      "brand_name": "Courtyard by Marriott",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "curio-collection",
+      "brand_name": "Curio Collection by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "dazzler-by-wyndham",
+      "brand_name": "Dazzler by Wyndham",
+      "reason": "parent_company_filter",
+      "parent_company": "Wyndham",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "design-hotels",
+      "brand_name": "Design Hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "doubletree-by-hilton",
+      "brand_name": "DoubleTree by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "even-hotels",
+      "brand_name": "Even Hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "IHG",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "everhome-suites",
+      "brand_name": "Everhome Suites",
+      "reason": "parent_company_filter",
+      "parent_company": "Wyndham",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "fairmont-hotels-and-resorts",
+      "brand_name": "Fairmont",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "hampton-by-hilton",
+      "brand_name": "Hampton by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "handwritten-collection",
+      "brand_name": "Handwritten Collection",
+      "reason": "parent_company_filter",
+      "parent_company": "IHG",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "hilton-garden-inn",
+      "brand_name": "Hilton Garden Inn",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "hilton-hotels-and-resorts",
+      "brand_name": "Hilton Hotels & Resorts",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "holiday-inn-express",
+      "brand_name": "Holiday Inn Express",
+      "reason": "parent_company_filter",
+      "parent_company": "IHG",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "home2-suites-by-hilton",
+      "brand_name": "Home2 Suites by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "homewood-suites-by-hilton",
+      "brand_name": "Homewood Suites by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "hotel-indigo",
+      "brand_name": "Hotel Indigo",
+      "reason": "parent_company_filter",
+      "parent_company": "IHG",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "ibis",
+      "brand_name": "ibis",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "kimpton",
+      "brand_name": "Kimpton Hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "IHG",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "mama-shelter",
+      "brand_name": "Mama Shelter",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "marriott-hotels",
+      "brand_name": "Marriott Hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "mercure",
+      "brand_name": "Mercure",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "mgallery-collection",
+      "brand_name": "MGallery Collection",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "motto-by-hilton",
+      "brand_name": "Motto by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "moxy-hotels",
+      "brand_name": "Moxy Hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "novotel",
+      "brand_name": "Novotel",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "pullman",
+      "brand_name": "Pullman",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "quality-inn",
+      "brand_name": "Quality Inn",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "radisson-blu",
+      "brand_name": "Radisson Blu by Choice",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "radisson",
+      "brand_name": "Radisson by Choice",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "radisson-individuals-by-choice",
+      "brand_name": "Radisson Individuals by Choice",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "radisson-red",
+      "brand_name": "Radisson RED by Choice",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "residence-inn-by-marriott",
+      "brand_name": "Residence Inn by Marriott",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "sheraton",
+      "brand_name": "Sheraton",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "small-luxury-hotels-of-the-world",
+      "brand_name": "Small Luxury Hotels of the World",
+      "reason": "parent_company_filter",
+      "parent_company": "SLH",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "so-hotels-and-resorts",
+      "brand_name": "SO/",
+      "reason": "parent_company_filter",
+      "parent_company": "Accor",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "spark-by-hilton",
+      "brand_name": "Spark by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "springhill-suites-by-marriott",
+      "brand_name": "SpringHill Suites by Marriott",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "studiores",
+      "brand_name": "StudioRes",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "suburban-studios",
+      "brand_name": "Suburban Studios",
+      "reason": "parent_company_filter",
+      "parent_company": "Choice",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "tapestry-collection-by-hilton",
+      "brand_name": "Tapestry Collection by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "tempo-by-hilton",
+      "brand_name": "Tempo by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "towneplace-suites-by-marriott",
+      "brand_name": "TownePlace Suites by Marriott",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "trademark-collection-by-wyndham",
+      "brand_name": "Trademark Collection by Wyndham",
+      "reason": "parent_company_filter",
+      "parent_company": "Wyndham",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "tribute-portfolio",
+      "brand_name": "Tribute Portfolio",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "tru-by-hilton",
+      "brand_name": "Tru by Hilton",
+      "reason": "parent_company_filter",
+      "parent_company": "Hilton",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "vignette-collection",
+      "brand_name": "Vignette Collection",
+      "reason": "parent_company_filter",
+      "parent_company": "IHG",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "voco-hotels",
+      "brand_name": "Voco Hotels",
+      "reason": "parent_company_filter",
+      "parent_company": "IHG",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "westin",
+      "brand_name": "Westin",
+      "reason": "parent_company_filter",
+      "parent_company": "Marriott",
+      "parent_company_raw": null
+    },
+    {
+      "slug": "woodspring-suites",
+      "brand_name": "WoodSpring Suites",
+      "reason": "parent_company_filter",
+      "parent_company": "Wyndham",
+      "parent_company_raw": null
+    }
+  ],
+  "held_excluded_slugs": [
+    "four-points-flex-by-sheraton",
+    "radisson-collection",
+    "house-of-originals",
+    "morgans-originals"
+  ],
+  "purpose": "source_discovery",
+  "marriott_hqv_required_for_discovery": false,
+  "marriott_discovery_source": {
+    "type": "official_country_hotel_sitemap",
+    "origin": "https://www.marriott.com",
+    "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+    "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+    "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+    "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+    "hqv_required_for_discovery": false,
+    "deprecated_blocked_patterns": [
+      "/en/hotels/{country}.sitemap-hotels.xml",
+      "*.sitemap-hotels.xml"
+    ]
+  },
+  "adapters_available_count": 1,
+  "adapters_missing_count": 0
+}

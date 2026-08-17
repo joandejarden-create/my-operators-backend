@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "version": "census-marriott-property-url-city-backfill-v1",
+  "generated_at": "2026-08-07T17:07:02.166Z",
+  "status": "production_census_marriott_property_url_city_backfill_partial_remaining",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "inserts_applied": 0,
+  "parent_scope": "Marriott",
+  "paused_queues": [
+    "source_discovery_inserts",
+    "address_confirmation",
+    "coordinate_completion",
+    "phone_number_enrichment",
+    "rooms_keys"
+  ],
+  "before": {
+    "clean_core": 1023,
+    "below_clean_core": 201,
+    "marriott_unknown_city": 3,
+    "coordinate_blocked_dirty_identity": 17,
+    "marriott_records": 393
+  },
+  "after": {
+    "clean_core": 1023,
+    "below_clean_core": 201,
+    "marriott_unknown_city": 3,
+    "coordinate_blocked_dirty_identity": 17,
+    "marriott_records": 393
+  },
+  "applied": {
+    "records_fixed": 0,
+    "fields_written": [],
+    "examples": []
+  },
+  "counters": null,
+  "steward_remaining": [],
+  "blocked_source_patterns": [
+    "marriott_country_hotel_sitemap_as_source_url",
+    "akamai_blocked_property_page_json_ld",
+    "hotel_name_only_city_inference_forbidden"
+  ],
+  "examples_before_after": [],
+  "next_recommended_action": "Steward remaining Marriott Unknown cities without slug/IATA High city; optionally harvest property-page locality when Akamai allows. Keep address/Mapbox paused."
+}

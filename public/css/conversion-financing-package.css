@@ -1,0 +1,188 @@
+/* Conversion Financing Package — My Deals modal */
+.cfp-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 10, 28, 0.82);
+  z-index: 1005;
+  overflow-y: auto;
+  padding: 16px;
+}
+.cfp-modal-overlay.is-open {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.cfp-modal {
+  width: min(920px, 100%);
+  margin: 24px auto;
+  background: var(--secondary--color-1, #0b1328);
+  border: 1px solid var(--neutral--600, #2a3550);
+  border-radius: 12px;
+  color: var(--neutral--100, #e8ecf4);
+}
+.cfp-modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--neutral--600, #2a3550);
+}
+.cfp-modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--neutral--100, #e8ecf4);
+}
+.cfp-modal-header .sub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--neutral--400, #9aa5bd);
+  line-height: 1.45;
+}
+.cfp-modal-close {
+  background: none;
+  border: none;
+  color: var(--neutral--400, #9aa5bd);
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+.cfp-modal-body {
+  padding: 20px 22px 24px;
+}
+.cfp-state {
+  padding: 24px;
+  text-align: center;
+  color: var(--neutral--400, #9aa5bd);
+}
+.cfp-state-error {
+  color: #f5a8a8;
+}
+.cfp-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 16px;
+}
+@media (max-width: 720px) {
+  .cfp-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.cfp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cfp-field.full {
+  grid-column: 1 / -1;
+}
+.cfp-field label {
+  font-size: 13px;
+  color: var(--neutral--200, #c5cce0);
+}
+.cfp-field .helper {
+  font-size: 12px;
+  color: var(--neutral--400, #9aa5bd);
+  margin-top: -2px;
+}
+.cfp-field input,
+.cfp-field select,
+.cfp-field textarea {
+  background: var(--neutral--800, #121a30);
+  border: 1px solid var(--neutral--600, #2a3550);
+  border-radius: 8px;
+  color: var(--neutral--100, #e8ecf4);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+.cfp-field textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+.cfp-checklist {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+}
+@media (max-width: 720px) {
+  .cfp-checklist {
+    grid-template-columns: 1fr;
+  }
+}
+.cfp-checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--neutral--300, #b0b9d0);
+  cursor: pointer;
+}
+.cfp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--neutral--600, #2a3550);
+}
+.cfp-btn {
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.cfp-btn-primary {
+  background: var(--primary--color-1, #4f7cff);
+  color: #fff;
+}
+.cfp-btn-secondary {
+  background: transparent;
+  border-color: var(--neutral--600, #2a3550);
+  color: var(--neutral--200, #c5cce0);
+}
+.cfp-package {
+  margin-top: 20px;
+}
+.cfp-section {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--neutral--700, #1e2840);
+  border-radius: 10px;
+}
+.cfp-section h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--neutral--100, #e8ecf4);
+}
+.cfp-section p,
+.cfp-section li {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--neutral--300, #b0b9d0);
+}
+.cfp-section ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+.cfp-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.cfp-chip {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--neutral--600, #2a3550);
+  color: var(--neutral--300, #b0b9d0);
+}
+.cfp-disclaimer {
+  font-size: 12px;
+  color: var(--neutral--400, #9aa5bd);
+  margin-top: 12px;
+  line-height: 1.45;
+}

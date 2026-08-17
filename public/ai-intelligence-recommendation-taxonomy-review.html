@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recommendation Taxonomy Review — Dealality</title>
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css">
+  <style>
+    .trx-wrap { max-width: 1180px; margin: 0 auto; padding: 16px 20px 40px; }
+    .trx-progress { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin: 12px 0 16px; }
+    .trx-card { background: #0b1534; border: 1px solid #2f3e68; border-radius: 8px; padding: 12px; }
+    .trx-card h3 { margin: 0 0 4px; font-size: 11px; color: #9facd6; text-transform: uppercase; }
+    .trx-card .val { font-size: 20px; color: #e8eeff; font-weight: 600; }
+    .trx-layout { display: grid; grid-template-columns: 260px 1fr; gap: 16px; }
+    @media (max-width: 900px) { .trx-layout { grid-template-columns: 1fr; } }
+    .trx-queue { max-height: 72vh; overflow: auto; border: 1px solid #2f3e68; border-radius: 8px; background: #0b1534; }
+    .trx-queue button { display: block; width: 100%; text-align: left; background: transparent; border: none; border-bottom: 1px solid #1c2a52; color: #c5d0f0; padding: 10px; font-size: 12px; cursor: pointer; }
+    .trx-queue button.active { background: #152456; color: #fff; }
+    .trx-queue .meta { color: #7f8db3; font-size: 11px; }
+    .trx-queue .badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 4px; margin-left: 4px; }
+    .trx-queue .badge.amend { background: #5a4a1a; color: #ffe9a8; }
+    .trx-queue .badge.keep { background: #1a3a2a; color: #a8ffd0; }
+    .trx-queue .badge.done { background: #1e3a7a; color: #cfe0ff; }
+    .trx-queue .badge.defer { background: #3a1a1a; color: #ffc9c9; }
+    .trx-panel { border: 1px solid #2f3e68; border-radius: 8px; background: #0b1534; padding: 16px; }
+    .trx-panel h2 { margin: 0 0 8px; font-size: 16px; color: #fff; }
+    .trx-meta { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 12px; font-size: 12px; color: #9facd6; }
+    .trx-meta strong { color: #e8eeff; display: block; font-size: 13px; margin-top: 2px; }
+    .trx-box { margin: 12px 0; padding: 12px; border-radius: 6px; border: 1px solid #2f3e68; }
+    .trx-box.human { border-color: #5a4a2a; background: #1a160c; }
+    .trx-box.proposed { border-color: #2a5a4a; background: #0c1a16; }
+    .trx-box.classifier { border-color: #2a3a5a; background: #0c1220; }
+    .trx-box h3 { margin: 0 0 8px; font-size: 13px; color: #d9e1ff; }
+    .trx-excerpt { white-space: pre-wrap; font-size: 12px; color: #d5ddf5; max-height: 260px; overflow: auto; line-height: 1.45; }
+    .trx-ev { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 6px; font-size: 12px; color: #9facd6; }
+    .trx-ev span.on { color: #a8ffd0; }
+    .trx-ev span.off { color: #6a7390; }
+    .trx-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .trx-actions button { background: #1e3a7a; color: #fff; border: 1px solid #3d5aa0; border-radius: 6px; padding: 8px 12px; font-size: 13px; cursor: pointer; }
+    .trx-actions button.keep { background: #1a5a3a; border-color: #2f8a58; }
+    .trx-actions button.accept { background: #5a4a1a; border-color: #8a7a2f; }
+    .trx-actions button.defer { background: #3a1a1a; border-color: #8a3a3a; }
+    .trx-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; align-items: center; }
+    .trx-filters select, .trx-filters input { background: #0b1534; color: #e8eeff; border: 1px solid #2f3e68; border-radius: 4px; padding: 6px 8px; font-size: 12px; }
+    .trx-state { margin: 12px 0; padding: 10px 12px; border-radius: 6px; background: #0f1d45; border: 1px solid #2f3e68; font-size: 13px; color: #9facd6; }
+    .trx-state.error { border-color: #8b3a3a; color: #ffc9c9; }
+    .trx-help { margin: 0 0 14px; border: 1px solid #2f3e68; border-radius: 8px; background: #0b1534; }
+    .trx-help summary { cursor: pointer; padding: 10px 12px; color: #d9e1ff; font-size: 13px; }
+    .trx-help .body { padding: 0 12px 12px; font-size: 12px; color: #9facd6; line-height: 1.45; }
+    .trx-help ol { margin: 8px 0; padding-left: 20px; }
+    .trx-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .trx-toolbar button { background: #152456; color: #e8eeff; border: 1px solid #2f3e68; border-radius: 6px; padding: 8px 12px; font-size: 12px; cursor: pointer; }
+    .trx-toolbar button.apply { background: #5a1a1a; border-color: #8a3a3a; }
+    .trx-preview { display: none; margin: 12px 0; padding: 12px; border: 1px solid #8a7a2f; border-radius: 8px; background: #1a160c; font-size: 12px; color: #ffe9a8; white-space: pre-wrap; }
+    label.trx-edit { display: block; margin-top: 10px; font-size: 12px; color: #9facd6; }
+    label.trx-edit select { width: 100%; max-width: 320px; background: #07102a; color: #e8eeff; border: 1px solid #2f3e68; border-radius: 4px; padding: 8px; margin-top: 4px; }
+  </style>
+</head>
+<body class="deal-workspace-shell">
+  <div class="trx-wrap">
+    <h1 style="color:#fff;font-size:22px;margin:0 0 6px;">Recommendation Taxonomy Review</h1>
+    <p style="color:#9facd6;font-size:13px;margin:0 0 12px;">
+      52 flagged DEV cases only — not the 318-case Golden Set queue. Human reviewer is final authority. No auto-apply.
+    </p>
+    <div id="trxState" class="trx-state">Loading taxonomy review…</div>
+    <div id="trxProgress" class="trx-progress" hidden></div>
+    <details class="trx-help" id="trxHelp">
+      <summary>Mutually exclusive taxonomy decision tree</summary>
+      <div class="body" id="trxHelpBody"></div>
+    </details>
+    <div class="trx-toolbar" id="trxToolbar" hidden>
+      <button type="button" id="trxAcceptAll">Accept All Valid Taxonomy Proposals (seed decisions)</button>
+      <button type="button" id="trxPreview">Preview Apply</button>
+      <button type="button" class="apply" id="trxApply" disabled>Apply to Golden Set (requires preview)</button>
+      <input type="text" id="trxReviewer" placeholder="Reviewer email / name" style="min-width:200px;background:#0b1534;color:#e8eeff;border:1px solid #2f3e68;border-radius:4px;padding:6px 8px;font-size:12px;">
+    </div>
+    <div id="trxPreviewBox" class="trx-preview"></div>
+    <div class="trx-filters" id="trxFilters" hidden>
+      <select id="trxFilt">
+        <option value="ALL">ALL 52</option>
+        <option value="PROPOSED_AMENDMENT">PROPOSED AMENDMENT</option>
+        <option value="KEEP_LIKELY">KEEP LIKELY</option>
+        <option value="RANKED_BOUNDARY">RANKED BOUNDARY</option>
+        <option value="ASSOCIATED_DISCUSSED">ASSOCIATED / DISCUSSED</option>
+        <option value="FIRST_REC">FIRST REC</option>
+        <option value="EXPLICIT">EXPLICIT</option>
+        <option value="UNREVIEWED">UNREVIEWED</option>
+        <option value="DEFERRED">DEFERRED</option>
+      </select>
+    </div>
+    <div class="trx-layout" id="trxMain" hidden>
+      <div class="trx-queue" id="trxQueue"></div>
+      <div class="trx-panel" id="trxPanel"></div>
+    </div>
+  </div>
+  <script src="/js/ai-visibility/ai-intelligence-recommendation-taxonomy-review.js"></script>
+</body>
+</html>

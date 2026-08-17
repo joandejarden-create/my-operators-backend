@@ -1,0 +1,142 @@
+{
+  "generatedAt": "2026-08-03T22:27:21.080Z",
+  "applyMode": "apply",
+  "backupDir": "C:/Dev/deal-capture-proxy/backups/operator-intelligence/2026-08-03T22-17-55-690Z",
+  "appliedOps": 8,
+  "skippedOps": 1,
+  "claimsCreated": 9,
+  "compsCreated": 14,
+  "errors": [],
+  "cenoteNormalization": {
+    "activeCountries": [
+      "Mexico"
+    ],
+    "ok": true,
+    "note": "Unsupported countries removed; not asserted as Confirmed Absence. Presence type remains Claimed Capability in overlay.",
+    "airtableVsOverlayResidual": "Airtable Active Countries can yield Ranking Ready while overlay stays Conditional — Market Presence Type needed before pilot."
+  },
+  "planApplyCount": 8,
+  "planSkipCount": 1,
+  "comparisons": [
+    {
+      "operatorId": "recF5Z87OAqFgndoq",
+      "operatorName": "Arbor Lodging (CALA)",
+      "airtableReadiness": "Ranking Ready",
+      "overlayReadiness": "Ranking Ready",
+      "readinessMatch": true,
+      "materialConsistencyOk": true,
+      "caseStudyCount": 9,
+      "geoAirtable": "Mexico",
+      "geoOverlay": "Mexico|United States",
+      "geoMateriallyConsistent": true,
+      "airtableCoverage": 83.1,
+      "overlayCoverage": 83.1,
+      "notes": null
+    },
+    {
+      "operatorId": "recQ6Cf8O2z0tiqBz",
+      "operatorName": "Cenote Azul Operadores",
+      "airtableReadiness": "Ranking Ready",
+      "overlayReadiness": "Conditionally Rankable",
+      "readinessMatch": false,
+      "materialConsistencyOk": true,
+      "caseStudyCount": 4,
+      "geoAirtable": "Mexico",
+      "geoOverlay": "",
+      "geoMateriallyConsistent": true,
+      "airtableCoverage": 95.4,
+      "overlayCoverage": 95.4,
+      "notes": "Claimed Capability Mexico in overlay vs Active Countries Mexico in Airtable"
+    },
+    {
+      "operatorId": "recWPKu5laVZxsvpn",
+      "operatorName": "Hotel Equities (CALA)",
+      "airtableReadiness": "Ranking Ready",
+      "overlayReadiness": "Ranking Ready",
+      "readinessMatch": true,
+      "materialConsistencyOk": true,
+      "caseStudyCount": 6,
+      "geoAirtable": "Costa Rica|Curaçao|Dominica|Dominican Republic|Grenada|Jamaica|Mexico|Trinidad & Tobago|Turks & Caicos|U.S. Virgin Islands",
+      "geoOverlay": "Dominican Republic|Jamaica|Mexico|U.S. Virgin Islands",
+      "geoMateriallyConsistent": true,
+      "airtableCoverage": 95.4,
+      "overlayCoverage": 95.4,
+      "notes": null
+    },
+    {
+      "operatorId": "reciI2tYQBfMoMK9G",
+      "operatorName": "GHL Hoteles (GHL Holding)",
+      "airtableReadiness": "Research Required",
+      "overlayReadiness": "Research Required",
+      "readinessMatch": true,
+      "materialConsistencyOk": true,
+      "caseStudyCount": 3,
+      "geoAirtable": "Chile|Colombia|Panama|Peru",
+      "geoOverlay": "Chile|Colombia|Ecuador|Guatemala|Panama|Peru",
+      "geoMateriallyConsistent": true,
+      "airtableCoverage": 83.1,
+      "overlayCoverage": 83.1,
+      "notes": null
+    },
+    {
+      "operatorId": "rec3TUHT9Z4AnFp5P",
+      "operatorName": "Playa Hotels & Resorts",
+      "airtableReadiness": "Ranking Ready",
+      "overlayReadiness": "Ranking Ready",
+      "readinessMatch": true,
+      "materialConsistencyOk": true,
+      "caseStudyCount": 3,
+      "geoAirtable": "Dominican Republic|Jamaica|Mexico",
+      "geoOverlay": "Dominican Republic|Jamaica|Mexico",
+      "geoMateriallyConsistent": true,
+      "airtableCoverage": 83.1,
+      "overlayCoverage": 83.1,
+      "notes": null
+    },
+    {
+      "operatorId": "recGWxIJqnYHkJZFD",
+      "operatorName": "Aimbridge Hospitality (LATAM)",
+      "airtableReadiness": "Ranking Ready",
+      "overlayReadiness": "Ranking Ready",
+      "readinessMatch": true,
+      "materialConsistencyOk": true,
+      "caseStudyCount": 3,
+      "geoAirtable": "Mexico",
+      "geoOverlay": "Mexico",
+      "geoMateriallyConsistent": true,
+      "airtableCoverage": 83.1,
+      "overlayCoverage": 83.1,
+      "notes": null
+    }
+  ],
+  "consistency": {
+    "readinessMatches": 5,
+    "readinessMismatches": [
+      "Cenote Azul Operadores"
+    ],
+    "materialConsistencyOk": true,
+    "documentedTolerance": "Cenote Claimed Capability vs Active Countries; US taxonomy skip for Arbor; experience dims may still need overlay until Commercial experience backfill.",
+    "note": "No operator lost Ranking Ready due to incorrect field mapping. Cenote residual is documented, not multi-operator rollback."
+  },
+  "rollbackTriggers": {
+    "unexpectedReadinessChangesGt1": false,
+    "unsupportedClaimOwnerFacing": false,
+    "cenoteUnsupportedGeoRemains": false,
+    "featureFlagOn": false,
+    "writesOutsidePlan": false
+  },
+  "rollbackRequired": false,
+  "rollbackStatus": "NOT_REQUIRED — backups retained",
+  "protectedUnchanged": {
+    "legacyOas": true,
+    "brandMatchV2": true,
+    "ownerIntake": true,
+    "featureFlagOff": true,
+    "myDealsUnwired": true
+  },
+  "preExistingOasFailures": {
+    "count": 2,
+    "suite": "test-operator-alignment-snapshot-page.mjs",
+    "status": "out_of_scope_documented"
+  }
+}

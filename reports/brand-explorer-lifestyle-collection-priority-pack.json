@@ -1,0 +1,1239 @@
+{
+  "priorityPackVersion": "v35",
+  "generatedAt": "2026-07-14T12:17:37.910Z",
+  "mode": "dry-run",
+  "guardrails": {
+    "noAirtableWrites": true,
+    "noActiveProfileApproval": true,
+    "companyValidatedUntouched": true,
+    "noFranchiseLanguageForAffiliationBrands": true
+  },
+  "namingAmbiguity": {
+    "tributeCollection": {
+      "likelyMeans": "Marriott Tribute Portfolio",
+      "resolvedSlug": "tribute-portfolio",
+      "createDuplicateBrandRecord": false,
+      "note": "No distinct Brand Setup entity found for “Tribute Collection”; use tribute-portfolio."
+    }
+  },
+  "brands": [
+    {
+      "priority": 1,
+      "found": true,
+      "exactBrandName": "Design Hotels",
+      "slug": "design-hotels",
+      "recordId": "rec02zPClpWUTCyXM",
+      "parentCompany": "Marriott International, Inc.",
+      "parentAffiliation": "Marriott affiliate / curation platform",
+      "resolutionSource": "expansion_backlog",
+      "namingNote": null,
+      "tributeCollectionAmbiguity": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "brandExplorerStatus": {
+        "presentationRowCount": 0,
+        "visiblePresentationRows": 0,
+        "hasBrandApiShape": true
+      },
+      "finalQa": {
+        "readiness": "blocked",
+        "numeric": 30,
+        "defectCount": 23,
+        "critical": 2,
+        "high": 11
+      },
+      "completeBuild": {
+        "readinessBand": "blocked",
+        "readyForActiveProfile": false,
+        "haltReason": null
+      },
+      "sourceCoverage": {
+        "total": 0,
+        "approved": 0,
+        "extractable": 0
+      },
+      "presentationCoverage": {
+        "totalRows": 0,
+        "visibleRows": 0,
+        "galleryPresentationWithImage": 0,
+        "galleryApiWithImageUrl": 0,
+        "propertyExamplesVisible": 0,
+        "propertyExamplesWithImage": 0,
+        "scenarioCardsVisible": 0,
+        "scenarioCardsWithImage": 0,
+        "proofCardsVisible": 0,
+        "standardDetailRows": 0
+      },
+      "registryCoverage": {
+        "total": 0,
+        "approvedForExplorer": 0,
+        "withDurableSourceUrl": 0,
+        "visualCandidates": 0
+      },
+      "standardDetailGovernance": {
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false
+      },
+      "factoryPreflight": {
+        "pass": false,
+        "blockerCount": 5,
+        "galleryBlockers": [
+          "need_6_visible_gallery_imageUrl_got_0"
+        ],
+        "propertyExampleBlockers": [],
+        "scenarioBlockers": [
+          "no_visible_scenario_cards_in_api"
+        ],
+        "copySafetyBlockers": [],
+        "standardDetailBlockers": [],
+        "registryTraceabilityBlockers": [],
+        "uiFallbackBlockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "factoryConfigRegistered": false,
+        "factoryPreflightRunnable": false
+      },
+      "assetPackFeasibility": {
+        "hasActiveProfileFactoryConfig": false,
+        "readinessBand": "early_stage_needs_source_capture",
+        "canRunFactoryPreflight": false,
+        "canRunFactoryAssetPack": false,
+        "gallerySixFeasible": false,
+        "propertyExamplesFeasible": false,
+        "scenarioImagesFeasible": false,
+        "officialSourceUrls": 0,
+        "propertyImageUrls": 0,
+        "momentumSourceCandidates": 0,
+        "standardDetailEvidence": false,
+        "proofCardEvidence": false,
+        "factoryPreflightPass": false,
+        "notes": [
+          "Brand not yet registered in brand-explorer-active-profile-brand-config.js — factory preflight/asset-pack require v35+ config registration."
+        ]
+      },
+      "stagedApplyReadiness": {
+        "canApplyDraft": false,
+        "founderVisualReviewNeeded": true,
+        "activeApprovalBlockedUntilVisualPass": true
+      },
+      "modelMeta": {
+        "modelType": "affiliation_collection",
+        "independentIdentity": 95,
+        "boutiqueCredibility": 92,
+        "affiliationFit": 95,
+        "ownerControl": 88,
+        "conversionFit": 82,
+        "distributionPlatform": 90,
+        "standardsIntensity": 45,
+        "storytellingExpectations": 95,
+        "franchiseLanguageRisk": "high_if_forced_into_franchise_copy",
+        "copyGuidance": "Use affiliation / collection / curation / distribution language — not franchise-flag or FDD-style copy.",
+        "parentHint": "Marriott affiliate / curation platform"
+      },
+      "brandLens": {
+        "fitSummary": "Design Hotels fits independent, design-led, culturally distinctive hotels seeking curated global distribution without a standardized franchise prototype.",
+        "affiliationVsFranchise": "Marriott affiliate / curation platform — not a traditional franchise flag. Owners retain independent identity; Marriott provides Bonvoy distribution and collection credibility.",
+        "ownerControl": "Higher than soft-brand conversion paths; narrative must preserve property-level design story.",
+        "storytelling": "High design/storytelling bar — over-branding or generic Marriott copy is a material risk.",
+        "operationalReadiness": "Property curation and design authenticity matter more than prototype compliance.",
+        "propertyExamples": 0,
+        "imageAvailability": 0,
+        "risks": [
+          "Zero approved sources in last complete-build snapshot",
+          "Critical visual defects halted prior complete build",
+          "Factory config not registered — cannot run v34D asset-pack yet",
+          "Franchise-language contamination risk if copy uses Marriott flag framing"
+        ]
+      },
+      "strategicScores": {
+        "speedToOwnerReady": 5,
+        "ownerProjectFit": 93,
+        "combined": 58
+      },
+      "factoryNextSteps": {
+        "preflight": "npm run brand-explorer-active-profile-preflight -- --brand design-hotels --dry-run",
+        "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand design-hotels --dry-run",
+        "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand design-hotels --dry-run",
+        "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand design-hotels --dry-run",
+        "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand design-hotels --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+        "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand design-hotels --dry-run",
+        "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand design-hotels --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+        "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+      }
+    },
+    {
+      "priority": 2,
+      "found": true,
+      "exactBrandName": "Small Luxury Hotels of the World",
+      "slug": "small-luxury-hotels-of-the-world",
+      "recordId": "recjjSnY2opb8P4DG",
+      "parentCompany": "Small Luxury Hotels of the World",
+      "parentAffiliation": "SLH independent luxury consortium",
+      "resolutionSource": "expansion_backlog",
+      "namingNote": null,
+      "tributeCollectionAmbiguity": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "brandExplorerStatus": {
+        "presentationRowCount": 0,
+        "visiblePresentationRows": 0,
+        "hasBrandApiShape": true
+      },
+      "finalQa": {
+        "readiness": "blocked",
+        "numeric": 30,
+        "defectCount": 20,
+        "critical": 2,
+        "high": 10
+      },
+      "completeBuild": {
+        "readinessBand": "blocked",
+        "readyForActiveProfile": false,
+        "haltReason": null
+      },
+      "sourceCoverage": {
+        "total": 0,
+        "approved": 0,
+        "extractable": 0
+      },
+      "presentationCoverage": {
+        "totalRows": 0,
+        "visibleRows": 0,
+        "galleryPresentationWithImage": 0,
+        "galleryApiWithImageUrl": 0,
+        "propertyExamplesVisible": 0,
+        "propertyExamplesWithImage": 0,
+        "scenarioCardsVisible": 0,
+        "scenarioCardsWithImage": 0,
+        "proofCardsVisible": 0,
+        "standardDetailRows": 0
+      },
+      "registryCoverage": {
+        "total": 0,
+        "approvedForExplorer": 0,
+        "withDurableSourceUrl": 0,
+        "visualCandidates": 0
+      },
+      "standardDetailGovernance": {
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false
+      },
+      "factoryPreflight": {
+        "pass": false,
+        "blockerCount": 5,
+        "galleryBlockers": [
+          "need_6_visible_gallery_imageUrl_got_0"
+        ],
+        "propertyExampleBlockers": [],
+        "scenarioBlockers": [
+          "no_visible_scenario_cards_in_api"
+        ],
+        "copySafetyBlockers": [],
+        "standardDetailBlockers": [],
+        "registryTraceabilityBlockers": [],
+        "uiFallbackBlockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "factoryConfigRegistered": false,
+        "factoryPreflightRunnable": false
+      },
+      "assetPackFeasibility": {
+        "hasActiveProfileFactoryConfig": false,
+        "readinessBand": "early_stage_needs_source_capture",
+        "canRunFactoryPreflight": false,
+        "canRunFactoryAssetPack": false,
+        "gallerySixFeasible": false,
+        "propertyExamplesFeasible": false,
+        "scenarioImagesFeasible": false,
+        "officialSourceUrls": 0,
+        "propertyImageUrls": 0,
+        "momentumSourceCandidates": 0,
+        "standardDetailEvidence": false,
+        "proofCardEvidence": false,
+        "factoryPreflightPass": false,
+        "notes": [
+          "Brand not yet registered in brand-explorer-active-profile-brand-config.js — factory preflight/asset-pack require v35+ config registration."
+        ]
+      },
+      "stagedApplyReadiness": {
+        "canApplyDraft": false,
+        "founderVisualReviewNeeded": true,
+        "activeApprovalBlockedUntilVisualPass": true
+      },
+      "modelMeta": {
+        "modelType": "affiliation_collection",
+        "independentIdentity": 95,
+        "boutiqueCredibility": 92,
+        "affiliationFit": 95,
+        "ownerControl": 88,
+        "conversionFit": 72,
+        "distributionPlatform": 78,
+        "standardsIntensity": 45,
+        "storytellingExpectations": 95,
+        "franchiseLanguageRisk": "high_if_forced_into_franchise_copy",
+        "copyGuidance": "Use affiliation / collection / curation / distribution language — not franchise-flag or FDD-style copy.",
+        "parentHint": "SLH independent luxury consortium"
+      },
+      "brandLens": {
+        "fitSummary": "SLH fits independent luxury/boutique hotels seeking global luxury distribution and consortium credibility without a chain flag.",
+        "affiliationValue": "Collection membership + SLH distribution/loyalty context — not a conversion franchise.",
+        "luxuryCredibility": "High when property quality and independent character are source-evidenced.",
+        "ownerControl": "Strong — legal/consortium sensitivity requires careful copy governance.",
+        "guestExperience": "Boutique/luxury service and property distinctiveness are central.",
+        "propertyExamples": 0,
+        "imageAvailability": 0,
+        "risks": [
+          "Expansion backlog wave 8 — highest source/image governance complexity",
+          "Likely limited Source Library coverage",
+          "Factory config not registered",
+          "Independent consortium — avoid parent-franchise language"
+        ]
+      },
+      "strategicScores": {
+        "speedToOwnerReady": 5,
+        "ownerProjectFit": 93,
+        "combined": 58
+      },
+      "factoryNextSteps": {
+        "preflight": "npm run brand-explorer-active-profile-preflight -- --brand small-luxury-hotels-of-the-world --dry-run",
+        "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand small-luxury-hotels-of-the-world --dry-run",
+        "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand small-luxury-hotels-of-the-world --dry-run",
+        "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand small-luxury-hotels-of-the-world --dry-run",
+        "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand small-luxury-hotels-of-the-world --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+        "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand small-luxury-hotels-of-the-world --dry-run",
+        "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand small-luxury-hotels-of-the-world --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+        "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+      }
+    },
+    {
+      "priority": 3,
+      "found": true,
+      "exactBrandName": "Autograph Collection",
+      "slug": "autograph-collection",
+      "recordId": "recEJCTDj1zrsjPM6",
+      "parentCompany": "Marriott International, Inc.",
+      "parentAffiliation": "Marriott soft collection",
+      "resolutionSource": "expansion_backlog",
+      "namingNote": null,
+      "tributeCollectionAmbiguity": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "brandExplorerStatus": {
+        "presentationRowCount": 0,
+        "visiblePresentationRows": 0,
+        "hasBrandApiShape": true
+      },
+      "finalQa": {
+        "readiness": "blocked",
+        "numeric": 26,
+        "defectCount": 24,
+        "critical": 4,
+        "high": 10
+      },
+      "completeBuild": {
+        "readinessBand": "blocked",
+        "readyForActiveProfile": false,
+        "haltReason": null
+      },
+      "sourceCoverage": {
+        "total": 0,
+        "approved": 0,
+        "extractable": 0
+      },
+      "presentationCoverage": {
+        "totalRows": 0,
+        "visibleRows": 0,
+        "galleryPresentationWithImage": 0,
+        "galleryApiWithImageUrl": 0,
+        "propertyExamplesVisible": 0,
+        "propertyExamplesWithImage": 0,
+        "scenarioCardsVisible": 0,
+        "scenarioCardsWithImage": 0,
+        "proofCardsVisible": 0,
+        "standardDetailRows": 0
+      },
+      "registryCoverage": {
+        "total": 0,
+        "approvedForExplorer": 0,
+        "withDurableSourceUrl": 0,
+        "visualCandidates": 0
+      },
+      "standardDetailGovernance": {
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false
+      },
+      "factoryPreflight": {
+        "pass": false,
+        "blockerCount": 5,
+        "galleryBlockers": [
+          "need_6_visible_gallery_imageUrl_got_0"
+        ],
+        "propertyExampleBlockers": [],
+        "scenarioBlockers": [
+          "no_visible_scenario_cards_in_api"
+        ],
+        "copySafetyBlockers": [],
+        "standardDetailBlockers": [],
+        "registryTraceabilityBlockers": [],
+        "uiFallbackBlockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "factoryConfigRegistered": false,
+        "factoryPreflightRunnable": false
+      },
+      "assetPackFeasibility": {
+        "hasActiveProfileFactoryConfig": false,
+        "readinessBand": "early_stage_needs_source_capture",
+        "canRunFactoryPreflight": false,
+        "canRunFactoryAssetPack": false,
+        "gallerySixFeasible": false,
+        "propertyExamplesFeasible": false,
+        "scenarioImagesFeasible": false,
+        "officialSourceUrls": 0,
+        "propertyImageUrls": 0,
+        "momentumSourceCandidates": 0,
+        "standardDetailEvidence": false,
+        "proofCardEvidence": false,
+        "factoryPreflightPass": false,
+        "notes": [
+          "Brand not yet registered in brand-explorer-active-profile-brand-config.js — factory preflight/asset-pack require v35+ config registration."
+        ]
+      },
+      "stagedApplyReadiness": {
+        "canApplyDraft": false,
+        "founderVisualReviewNeeded": true,
+        "activeApprovalBlockedUntilVisualPass": true
+      },
+      "modelMeta": {
+        "modelType": "soft_brand",
+        "independentIdentity": 78,
+        "boutiqueCredibility": 85,
+        "affiliationFit": 70,
+        "ownerControl": 68,
+        "conversionFit": 82,
+        "distributionPlatform": 90,
+        "standardsIntensity": 62,
+        "storytellingExpectations": 85,
+        "franchiseLanguageRisk": "medium_soft_brand_framing",
+        "copyGuidance": "Use soft-collection / lifestyle affiliation framing within parent platform context.",
+        "parentHint": "Marriott soft collection"
+      },
+      "brandLens": {
+        "parentPlatform": "Marriott soft collection",
+        "softBrandPositioning": "Lifestyle soft collection within parent platform — independent character with parent distribution/loyalty.",
+        "conversionFit": "Moderate to strong by market",
+        "ownerFlexibility": "More than rigid flags; less than pure affiliation platforms like Design Hotels / SLH.",
+        "propertyExamples": 0,
+        "diligenceQuestions": [
+          "How much local identity must remain visible post-affiliation?",
+          "What standards/PIP obligations apply vs collection guidelines?",
+          "How does parent loyalty/distribution offset operating complexity?"
+        ]
+      },
+      "strategicScores": {
+        "speedToOwnerReady": 5,
+        "ownerProjectFit": 77,
+        "combined": 48
+      },
+      "factoryNextSteps": {
+        "preflight": "npm run brand-explorer-active-profile-preflight -- --brand autograph-collection --dry-run",
+        "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand autograph-collection --dry-run",
+        "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand autograph-collection --dry-run",
+        "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand autograph-collection --dry-run",
+        "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand autograph-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+        "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand autograph-collection --dry-run",
+        "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand autograph-collection --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+        "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+      }
+    },
+    {
+      "priority": 4,
+      "found": true,
+      "exactBrandName": "Tribute Portfolio",
+      "slug": "tribute-portfolio",
+      "recordId": "recCvV0PuZOi8c3hC",
+      "parentCompany": "Marriott International, Inc.",
+      "parentAffiliation": "Marriott Tribute Portfolio (not a separate Tribute Collection entity)",
+      "resolutionSource": "active_registry",
+      "namingNote": "“Tribute Collection” in owner-facing copy usually means Marriott Tribute Portfolio. No distinct Brand Setup row should be created for a separate “Tribute Collection”.",
+      "tributeCollectionAmbiguity": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "brandExplorerStatus": {
+        "presentationRowCount": 163,
+        "visiblePresentationRows": 163,
+        "hasBrandApiShape": true
+      },
+      "finalQa": {
+        "readiness": "ready",
+        "numeric": 95,
+        "defectCount": 5,
+        "critical": 0,
+        "high": 0
+      },
+      "completeBuild": {
+        "readinessBand": "ready",
+        "readyForActiveProfile": false,
+        "haltReason": null
+      },
+      "sourceCoverage": {
+        "total": 9,
+        "approved": 9,
+        "extractable": 5
+      },
+      "presentationCoverage": {
+        "totalRows": 163,
+        "visibleRows": 163,
+        "galleryPresentationWithImage": 6,
+        "galleryApiWithImageUrl": 6,
+        "propertyExamplesVisible": 5,
+        "propertyExamplesWithImage": 5,
+        "scenarioCardsVisible": 3,
+        "scenarioCardsWithImage": 3,
+        "proofCardsVisible": 0,
+        "standardDetailRows": 14
+      },
+      "registryCoverage": {
+        "total": 27,
+        "approvedForExplorer": 0,
+        "withDurableSourceUrl": 0,
+        "visualCandidates": 0
+      },
+      "standardDetailGovernance": {
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false
+      },
+      "factoryPreflight": {
+        "pass": false,
+        "blockerCount": 15,
+        "galleryBlockers": [],
+        "propertyExampleBlockers": [],
+        "scenarioBlockers": [],
+        "copySafetyBlockers": [
+          "risky_copy:net_contribution:commercial.kpi.lens",
+          "risky_copy:net_contribution:valueOwners.overview",
+          "risky_copy:net_contribution:valueOwners.watchouts",
+          "risky_copy:net_contribution:commercial.lever.distribution"
+        ],
+        "standardDetailBlockers": [],
+        "registryTraceabilityBlockers": [
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:overview.scenario.3",
+          "missing_registry_row:overview.scenario.2",
+          "missing_registry_row:overview.scenario.1",
+          "missing_registry_row:overview.hero",
+          "missing_registry_row:materials.gallery.1",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:materials.gallery.2",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:materials.gallery.3",
+          "missing_registry_row:materials.gallery.4",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:materials.gallery.5",
+          "missing_registry_row:materials.gallery.6"
+        ],
+        "uiFallbackBlockers": [],
+        "factoryConfigRegistered": false,
+        "factoryPreflightRunnable": false
+      },
+      "assetPackFeasibility": {
+        "hasActiveProfileFactoryConfig": false,
+        "readinessBand": "config_required_but_assets_present",
+        "canRunFactoryPreflight": false,
+        "canRunFactoryAssetPack": false,
+        "gallerySixFeasible": true,
+        "propertyExamplesFeasible": true,
+        "scenarioImagesFeasible": true,
+        "officialSourceUrls": 9,
+        "propertyImageUrls": 5,
+        "momentumSourceCandidates": 5,
+        "standardDetailEvidence": true,
+        "proofCardEvidence": false,
+        "factoryPreflightPass": false,
+        "notes": [
+          "Brand not yet registered in brand-explorer-active-profile-brand-config.js — factory preflight/asset-pack require v35+ config registration."
+        ]
+      },
+      "stagedApplyReadiness": {
+        "canApplyDraft": false,
+        "founderVisualReviewNeeded": true,
+        "activeApprovalBlockedUntilVisualPass": true
+      },
+      "modelMeta": {
+        "modelType": "soft_brand",
+        "independentIdentity": 78,
+        "boutiqueCredibility": 85,
+        "affiliationFit": 70,
+        "ownerControl": 68,
+        "conversionFit": 82,
+        "distributionPlatform": 90,
+        "standardsIntensity": 62,
+        "storytellingExpectations": 85,
+        "franchiseLanguageRisk": "medium_soft_brand_framing",
+        "copyGuidance": "Use soft-collection / lifestyle affiliation framing within parent platform context.",
+        "parentHint": "Marriott Tribute Portfolio (not a separate Tribute Collection entity)"
+      },
+      "brandLens": {
+        "parentPlatform": "Marriott Tribute Portfolio (not a separate Tribute Collection entity)",
+        "softBrandPositioning": "Lifestyle soft collection within parent platform — independent character with parent distribution/loyalty.",
+        "conversionFit": "Strong for conversions/repositioning with local character",
+        "ownerFlexibility": "More than rigid flags; less than pure affiliation platforms like Design Hotels / SLH.",
+        "propertyExamples": 5,
+        "diligenceQuestions": [
+          "How much local identity must remain visible post-affiliation?",
+          "What standards/PIP obligations apply vs collection guidelines?",
+          "How does parent loyalty/distribution offset operating complexity?"
+        ]
+      },
+      "strategicScores": {
+        "speedToOwnerReady": 63,
+        "ownerProjectFit": 77,
+        "combined": 71
+      },
+      "factoryNextSteps": {
+        "preflight": "npm run brand-explorer-active-profile-preflight -- --brand tribute-portfolio --dry-run",
+        "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand tribute-portfolio --dry-run",
+        "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand tribute-portfolio --dry-run",
+        "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand tribute-portfolio --dry-run",
+        "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand tribute-portfolio --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+        "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand tribute-portfolio --dry-run",
+        "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand tribute-portfolio --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+        "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+      }
+    },
+    {
+      "priority": 5,
+      "found": true,
+      "exactBrandName": "Vignette Collection",
+      "slug": "vignette-collection",
+      "recordId": "recDwzv86TWnz2gGB",
+      "parentCompany": "InterContinental Hotels Group",
+      "parentAffiliation": "IHG soft collection",
+      "resolutionSource": "expansion_backlog",
+      "namingNote": null,
+      "tributeCollectionAmbiguity": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "brandExplorerStatus": {
+        "presentationRowCount": 0,
+        "visiblePresentationRows": 0,
+        "hasBrandApiShape": true
+      },
+      "finalQa": {
+        "readiness": "blocked",
+        "numeric": 30,
+        "defectCount": 20,
+        "critical": 2,
+        "high": 10
+      },
+      "completeBuild": {
+        "readinessBand": "blocked",
+        "readyForActiveProfile": false,
+        "haltReason": null
+      },
+      "sourceCoverage": {
+        "total": 0,
+        "approved": 0,
+        "extractable": 0
+      },
+      "presentationCoverage": {
+        "totalRows": 0,
+        "visibleRows": 0,
+        "galleryPresentationWithImage": 0,
+        "galleryApiWithImageUrl": 0,
+        "propertyExamplesVisible": 0,
+        "propertyExamplesWithImage": 0,
+        "scenarioCardsVisible": 0,
+        "scenarioCardsWithImage": 0,
+        "proofCardsVisible": 0,
+        "standardDetailRows": 0
+      },
+      "registryCoverage": {
+        "total": 0,
+        "approvedForExplorer": 0,
+        "withDurableSourceUrl": 0,
+        "visualCandidates": 0
+      },
+      "standardDetailGovernance": {
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false
+      },
+      "factoryPreflight": {
+        "pass": false,
+        "blockerCount": 5,
+        "galleryBlockers": [
+          "need_6_visible_gallery_imageUrl_got_0"
+        ],
+        "propertyExampleBlockers": [],
+        "scenarioBlockers": [
+          "no_visible_scenario_cards_in_api"
+        ],
+        "copySafetyBlockers": [],
+        "standardDetailBlockers": [],
+        "registryTraceabilityBlockers": [],
+        "uiFallbackBlockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "factoryConfigRegistered": false,
+        "factoryPreflightRunnable": false
+      },
+      "assetPackFeasibility": {
+        "hasActiveProfileFactoryConfig": false,
+        "readinessBand": "early_stage_needs_source_capture",
+        "canRunFactoryPreflight": false,
+        "canRunFactoryAssetPack": false,
+        "gallerySixFeasible": false,
+        "propertyExamplesFeasible": false,
+        "scenarioImagesFeasible": false,
+        "officialSourceUrls": 0,
+        "propertyImageUrls": 0,
+        "momentumSourceCandidates": 0,
+        "standardDetailEvidence": false,
+        "proofCardEvidence": false,
+        "factoryPreflightPass": false,
+        "notes": [
+          "Brand not yet registered in brand-explorer-active-profile-brand-config.js — factory preflight/asset-pack require v35+ config registration."
+        ]
+      },
+      "stagedApplyReadiness": {
+        "canApplyDraft": false,
+        "founderVisualReviewNeeded": true,
+        "activeApprovalBlockedUntilVisualPass": true
+      },
+      "modelMeta": {
+        "modelType": "soft_brand",
+        "independentIdentity": 72,
+        "boutiqueCredibility": 80,
+        "affiliationFit": 70,
+        "ownerControl": 70,
+        "conversionFit": 78,
+        "distributionPlatform": 82,
+        "standardsIntensity": 60,
+        "storytellingExpectations": 85,
+        "franchiseLanguageRisk": "medium_soft_brand_framing",
+        "copyGuidance": "Use soft-collection / lifestyle affiliation framing within parent platform context.",
+        "parentHint": "IHG soft collection"
+      },
+      "brandLens": {
+        "parentPlatform": "IHG soft collection",
+        "softBrandPositioning": "Lifestyle soft collection within parent platform — independent character with parent distribution/loyalty.",
+        "conversionFit": "Moderate to strong by market",
+        "ownerFlexibility": "More than rigid flags; less than pure affiliation platforms like Design Hotels / SLH.",
+        "propertyExamples": 0,
+        "diligenceQuestions": [
+          "How much local identity must remain visible post-affiliation?",
+          "What standards/PIP obligations apply vs collection guidelines?",
+          "How does parent loyalty/distribution offset operating complexity?"
+        ]
+      },
+      "strategicScores": {
+        "speedToOwnerReady": 5,
+        "ownerProjectFit": 74,
+        "combined": 46
+      },
+      "factoryNextSteps": {
+        "preflight": "npm run brand-explorer-active-profile-preflight -- --brand vignette-collection --dry-run",
+        "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand vignette-collection --dry-run",
+        "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand vignette-collection --dry-run",
+        "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand vignette-collection --dry-run",
+        "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand vignette-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+        "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand vignette-collection --dry-run",
+        "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand vignette-collection --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+        "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+      }
+    },
+    {
+      "priority": 6,
+      "found": true,
+      "exactBrandName": "MGallery Collection",
+      "slug": "mgallery-collection",
+      "recordId": "recrWCD1LMqu864oU",
+      "parentCompany": "AccorHotels",
+      "parentAffiliation": "Accor soft collection",
+      "resolutionSource": "live_brand_basics",
+      "namingNote": null,
+      "tributeCollectionAmbiguity": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "brandExplorerStatus": {
+        "presentationRowCount": 0,
+        "visiblePresentationRows": 0,
+        "hasBrandApiShape": true
+      },
+      "finalQa": {
+        "readiness": "blocked",
+        "numeric": 30,
+        "defectCount": 20,
+        "critical": 2,
+        "high": 10
+      },
+      "completeBuild": {
+        "readinessBand": "blocked",
+        "readyForActiveProfile": false,
+        "haltReason": null
+      },
+      "sourceCoverage": {
+        "total": 0,
+        "approved": 0,
+        "extractable": 0
+      },
+      "presentationCoverage": {
+        "totalRows": 0,
+        "visibleRows": 0,
+        "galleryPresentationWithImage": 0,
+        "galleryApiWithImageUrl": 0,
+        "propertyExamplesVisible": 0,
+        "propertyExamplesWithImage": 0,
+        "scenarioCardsVisible": 0,
+        "scenarioCardsWithImage": 0,
+        "proofCardsVisible": 0,
+        "standardDetailRows": 0
+      },
+      "registryCoverage": {
+        "total": 0,
+        "approvedForExplorer": 0,
+        "withDurableSourceUrl": 0,
+        "visualCandidates": 0
+      },
+      "standardDetailGovernance": {
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false
+      },
+      "factoryPreflight": {
+        "pass": false,
+        "blockerCount": 5,
+        "galleryBlockers": [
+          "need_6_visible_gallery_imageUrl_got_0"
+        ],
+        "propertyExampleBlockers": [],
+        "scenarioBlockers": [
+          "no_visible_scenario_cards_in_api"
+        ],
+        "copySafetyBlockers": [],
+        "standardDetailBlockers": [],
+        "registryTraceabilityBlockers": [],
+        "uiFallbackBlockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "factoryConfigRegistered": false,
+        "factoryPreflightRunnable": false
+      },
+      "assetPackFeasibility": {
+        "hasActiveProfileFactoryConfig": false,
+        "readinessBand": "early_stage_needs_source_capture",
+        "canRunFactoryPreflight": false,
+        "canRunFactoryAssetPack": false,
+        "gallerySixFeasible": false,
+        "propertyExamplesFeasible": false,
+        "scenarioImagesFeasible": false,
+        "officialSourceUrls": 0,
+        "propertyImageUrls": 0,
+        "momentumSourceCandidates": 0,
+        "standardDetailEvidence": false,
+        "proofCardEvidence": false,
+        "factoryPreflightPass": false,
+        "notes": [
+          "Brand not yet registered in brand-explorer-active-profile-brand-config.js — factory preflight/asset-pack require v35+ config registration."
+        ]
+      },
+      "stagedApplyReadiness": {
+        "canApplyDraft": false,
+        "founderVisualReviewNeeded": true,
+        "activeApprovalBlockedUntilVisualPass": true
+      },
+      "modelMeta": {
+        "modelType": "soft_brand",
+        "independentIdentity": 70,
+        "boutiqueCredibility": 80,
+        "affiliationFit": 70,
+        "ownerControl": 70,
+        "conversionFit": 75,
+        "distributionPlatform": 80,
+        "standardsIntensity": 60,
+        "storytellingExpectations": 85,
+        "franchiseLanguageRisk": "medium_soft_brand_framing",
+        "copyGuidance": "Use soft-collection / lifestyle affiliation framing within parent platform context.",
+        "parentHint": "Accor soft collection"
+      },
+      "brandLens": null,
+      "strategicScores": {
+        "speedToOwnerReady": 5,
+        "ownerProjectFit": 74,
+        "combined": 46
+      },
+      "factoryNextSteps": {
+        "preflight": "npm run brand-explorer-active-profile-preflight -- --brand mgallery-collection --dry-run",
+        "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand mgallery-collection --dry-run",
+        "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand mgallery-collection --dry-run",
+        "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand mgallery-collection --dry-run",
+        "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+        "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand mgallery-collection --dry-run",
+        "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+        "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+      }
+    },
+    {
+      "priority": 7,
+      "found": true,
+      "exactBrandName": "Handwritten Collection",
+      "slug": "handwritten-collection",
+      "recordId": "rec7hTXwMRC81EPqz",
+      "parentCompany": "AccorHotels",
+      "parentAffiliation": "IHG soft collection",
+      "resolutionSource": "expansion_backlog",
+      "namingNote": null,
+      "tributeCollectionAmbiguity": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "brandExplorerStatus": {
+        "presentationRowCount": 0,
+        "visiblePresentationRows": 0,
+        "hasBrandApiShape": true
+      },
+      "finalQa": {
+        "readiness": "blocked",
+        "numeric": 30,
+        "defectCount": 20,
+        "critical": 2,
+        "high": 10
+      },
+      "completeBuild": {
+        "readinessBand": "blocked",
+        "readyForActiveProfile": false,
+        "haltReason": null
+      },
+      "sourceCoverage": {
+        "total": 0,
+        "approved": 0,
+        "extractable": 0
+      },
+      "presentationCoverage": {
+        "totalRows": 0,
+        "visibleRows": 0,
+        "galleryPresentationWithImage": 0,
+        "galleryApiWithImageUrl": 0,
+        "propertyExamplesVisible": 0,
+        "propertyExamplesWithImage": 0,
+        "scenarioCardsVisible": 0,
+        "scenarioCardsWithImage": 0,
+        "proofCardsVisible": 0,
+        "standardDetailRows": 0
+      },
+      "registryCoverage": {
+        "total": 0,
+        "approvedForExplorer": 0,
+        "withDurableSourceUrl": 0,
+        "visualCandidates": 0
+      },
+      "standardDetailGovernance": {
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false
+      },
+      "factoryPreflight": {
+        "pass": false,
+        "blockerCount": 5,
+        "galleryBlockers": [
+          "need_6_visible_gallery_imageUrl_got_0"
+        ],
+        "propertyExampleBlockers": [],
+        "scenarioBlockers": [
+          "no_visible_scenario_cards_in_api"
+        ],
+        "copySafetyBlockers": [],
+        "standardDetailBlockers": [],
+        "registryTraceabilityBlockers": [],
+        "uiFallbackBlockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "factoryConfigRegistered": false,
+        "factoryPreflightRunnable": false
+      },
+      "assetPackFeasibility": {
+        "hasActiveProfileFactoryConfig": false,
+        "readinessBand": "early_stage_needs_source_capture",
+        "canRunFactoryPreflight": false,
+        "canRunFactoryAssetPack": false,
+        "gallerySixFeasible": false,
+        "propertyExamplesFeasible": false,
+        "scenarioImagesFeasible": false,
+        "officialSourceUrls": 0,
+        "propertyImageUrls": 0,
+        "momentumSourceCandidates": 0,
+        "standardDetailEvidence": false,
+        "proofCardEvidence": false,
+        "factoryPreflightPass": false,
+        "notes": [
+          "Brand not yet registered in brand-explorer-active-profile-brand-config.js — factory preflight/asset-pack require v35+ config registration."
+        ]
+      },
+      "stagedApplyReadiness": {
+        "canApplyDraft": false,
+        "founderVisualReviewNeeded": true,
+        "activeApprovalBlockedUntilVisualPass": true
+      },
+      "modelMeta": {
+        "modelType": "soft_brand",
+        "independentIdentity": 72,
+        "boutiqueCredibility": 80,
+        "affiliationFit": 70,
+        "ownerControl": 70,
+        "conversionFit": 78,
+        "distributionPlatform": 82,
+        "standardsIntensity": 60,
+        "storytellingExpectations": 85,
+        "franchiseLanguageRisk": "medium_soft_brand_framing",
+        "copyGuidance": "Use soft-collection / lifestyle affiliation framing within parent platform context.",
+        "parentHint": "IHG soft collection"
+      },
+      "brandLens": {
+        "parentPlatform": "IHG soft collection",
+        "softBrandPositioning": "Lifestyle soft collection within parent platform — independent character with parent distribution/loyalty.",
+        "conversionFit": "Moderate to strong by market",
+        "ownerFlexibility": "More than rigid flags; less than pure affiliation platforms like Design Hotels / SLH.",
+        "propertyExamples": 0,
+        "diligenceQuestions": [
+          "How much local identity must remain visible post-affiliation?",
+          "What standards/PIP obligations apply vs collection guidelines?",
+          "How does parent loyalty/distribution offset operating complexity?"
+        ]
+      },
+      "strategicScores": {
+        "speedToOwnerReady": 5,
+        "ownerProjectFit": 74,
+        "combined": 46
+      },
+      "factoryNextSteps": {
+        "preflight": "npm run brand-explorer-active-profile-preflight -- --brand handwritten-collection --dry-run",
+        "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand handwritten-collection --dry-run",
+        "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand handwritten-collection --dry-run",
+        "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand handwritten-collection --dry-run",
+        "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand handwritten-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+        "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand handwritten-collection --dry-run",
+        "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand handwritten-collection --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+        "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+      }
+    }
+  ],
+  "strategicRanking": [
+    {
+      "rank": 1,
+      "slug": "tribute-portfolio",
+      "name": "Tribute Portfolio",
+      "combinedScore": 71,
+      "speedToOwnerReady": 63,
+      "ownerProjectFit": 77,
+      "factoryPreflightPass": false,
+      "assetPackBand": "config_required_but_assets_present"
+    },
+    {
+      "rank": 2,
+      "slug": "design-hotels",
+      "name": "Design Hotels",
+      "combinedScore": 58,
+      "speedToOwnerReady": 5,
+      "ownerProjectFit": 93,
+      "factoryPreflightPass": false,
+      "assetPackBand": "early_stage_needs_source_capture"
+    },
+    {
+      "rank": 3,
+      "slug": "small-luxury-hotels-of-the-world",
+      "name": "Small Luxury Hotels of the World",
+      "combinedScore": 58,
+      "speedToOwnerReady": 5,
+      "ownerProjectFit": 93,
+      "factoryPreflightPass": false,
+      "assetPackBand": "early_stage_needs_source_capture"
+    },
+    {
+      "rank": 4,
+      "slug": "autograph-collection",
+      "name": "Autograph Collection",
+      "combinedScore": 48,
+      "speedToOwnerReady": 5,
+      "ownerProjectFit": 77,
+      "factoryPreflightPass": false,
+      "assetPackBand": "early_stage_needs_source_capture"
+    },
+    {
+      "rank": 5,
+      "slug": "vignette-collection",
+      "name": "Vignette Collection",
+      "combinedScore": 46,
+      "speedToOwnerReady": 5,
+      "ownerProjectFit": 74,
+      "factoryPreflightPass": false,
+      "assetPackBand": "early_stage_needs_source_capture"
+    },
+    {
+      "rank": 6,
+      "slug": "mgallery-collection",
+      "name": "MGallery Collection",
+      "combinedScore": 46,
+      "speedToOwnerReady": 5,
+      "ownerProjectFit": 74,
+      "factoryPreflightPass": false,
+      "assetPackBand": "early_stage_needs_source_capture"
+    },
+    {
+      "rank": 7,
+      "slug": "handwritten-collection",
+      "name": "Handwritten Collection",
+      "combinedScore": 46,
+      "speedToOwnerReady": 5,
+      "ownerProjectFit": 74,
+      "factoryPreflightPass": false,
+      "assetPackBand": "early_stage_needs_source_capture"
+    }
+  ],
+  "speedRanking": [
+    {
+      "rank": 1,
+      "slug": "tribute-portfolio",
+      "name": "Tribute Portfolio",
+      "speedToOwnerReady": 63
+    },
+    {
+      "rank": 2,
+      "slug": "design-hotels",
+      "name": "Design Hotels",
+      "speedToOwnerReady": 5
+    },
+    {
+      "rank": 3,
+      "slug": "small-luxury-hotels-of-the-world",
+      "name": "Small Luxury Hotels of the World",
+      "speedToOwnerReady": 5
+    },
+    {
+      "rank": 4,
+      "slug": "autograph-collection",
+      "name": "Autograph Collection",
+      "speedToOwnerReady": 5
+    },
+    {
+      "rank": 5,
+      "slug": "vignette-collection",
+      "name": "Vignette Collection",
+      "speedToOwnerReady": 5
+    },
+    {
+      "rank": 6,
+      "slug": "mgallery-collection",
+      "name": "MGallery Collection",
+      "speedToOwnerReady": 5
+    },
+    {
+      "rank": 7,
+      "slug": "handwritten-collection",
+      "name": "Handwritten Collection",
+      "speedToOwnerReady": 5
+    }
+  ],
+  "ownerFitRanking": [
+    {
+      "rank": 1,
+      "slug": "design-hotels",
+      "name": "Design Hotels",
+      "ownerProjectFit": 93
+    },
+    {
+      "rank": 2,
+      "slug": "small-luxury-hotels-of-the-world",
+      "name": "Small Luxury Hotels of the World",
+      "ownerProjectFit": 93
+    },
+    {
+      "rank": 3,
+      "slug": "autograph-collection",
+      "name": "Autograph Collection",
+      "ownerProjectFit": 77
+    },
+    {
+      "rank": 4,
+      "slug": "tribute-portfolio",
+      "name": "Tribute Portfolio",
+      "ownerProjectFit": 77
+    },
+    {
+      "rank": 5,
+      "slug": "vignette-collection",
+      "name": "Vignette Collection",
+      "ownerProjectFit": 74
+    },
+    {
+      "rank": 6,
+      "slug": "mgallery-collection",
+      "name": "MGallery Collection",
+      "ownerProjectFit": 74
+    },
+    {
+      "rank": 7,
+      "slug": "handwritten-collection",
+      "name": "Handwritten Collection",
+      "ownerProjectFit": 74
+    }
+  ],
+  "recommendedActivationSequence": {
+    "firstTwoForLiveOwnerProject": [
+      "design-hotels",
+      "small-luxury-hotels-of-the-world"
+    ],
+    "firstTwoSevereBlockers": true,
+    "firstTwoNote": "Strategic priority remains Design Hotels + SLH for independent/lifestyle owner relevance, but both need Source Library capture, presentation buildout, and v35 factory config registration before v34D staged apply.",
+    "fastestTechnicalPrepare": "tribute-portfolio",
+    "nextThreeBenchmarks": [
+      "tribute-portfolio",
+      "autograph-collection",
+      "vignette-collection"
+    ],
+    "defer": [
+      "autograph-collection",
+      "vignette-collection",
+      "mgallery-collection",
+      "handwritten-collection"
+    ]
+  },
+  "topTwoFactoryNextSteps": {
+    "design-hotels": {
+      "preflight": "npm run brand-explorer-active-profile-preflight -- --brand design-hotels --dry-run",
+      "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand design-hotels --dry-run",
+      "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand design-hotels --dry-run",
+      "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand design-hotels --dry-run",
+      "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand design-hotels --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+      "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand design-hotels --dry-run",
+      "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand design-hotels --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+      "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+    },
+    "small-luxury-hotels-of-the-world": {
+      "preflight": "npm run brand-explorer-active-profile-preflight -- --brand small-luxury-hotels-of-the-world --dry-run",
+      "assetPack": "npm run brand-explorer-active-profile-asset-pack -- --brand small-luxury-hotels-of-the-world --dry-run",
+      "buildDraft": "npm run brand-explorer-active-profile-build-draft -- --brand small-luxury-hotels-of-the-world --dry-run",
+      "copyGovernance": "npm run brand-explorer-active-profile-copy-governance -- --brand small-luxury-hotels-of-the-world --dry-run",
+      "applyDraft": "npm run brand-explorer-active-profile-apply-draft -- --brand small-luxury-hotels-of-the-world --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+      "founderReview": "npm run brand-explorer-active-profile-founder-review -- --brand small-luxury-hotels-of-the-world --dry-run",
+      "applyApproved": "npm run brand-explorer-active-profile-apply-approved -- --brand small-luxury-hotels-of-the-world --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+      "prerequisite": "Register brand in brand-explorer-active-profile-brand-config.js with affiliation-appropriate copy governance before factory stages."
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "actor": "maxcopell/tripadvisor",
+  "url": "https://apify.com/maxcopell/tripadvisor",
+  "verified_at": "2026-08-12",
+  "expected_vs_actual": {
+    "id": "present",
+    "name": "present",
+    "type": "present",
+    "category": "present",
+    "address": "present (+ addressObj)",
+    "latitude": "present",
+    "longitude": "present",
+    "hotelClass": "present (string)",
+    "numberOfRooms": "present (nullable; occasional bad values e.g. 1 on mega-resorts)",
+    "description": "present (often null)",
+    "website": "present",
+    "email": "present (nullable)",
+    "phone": "present (nullable)"
+  },
+  "additional_useful_fields": [
+    "webUrl",
+    "rating",
+    "numberOfReviews",
+    "rankingString",
+    "amenities",
+    "priceLevel",
+    "priceRange",
+    "travelerChoiceAward",
+    "aiReviewsSummary"
+  ],
+  "pricing_ppe_usd_per_result": {
+    "FREE": 0.005,
+    "BRONZE": 0.0029,
+    "SILVER": 0.0025,
+    "GOLD": 0.002,
+    "PLATINUM": 0.0015,
+    "DIAMOND": 0.00125
+  },
+  "operational_warnings": [
+    "Free-text destination query geo resolution can map to wrong country (Bogotá → Athens GA)",
+    "Prefer Search?q= hotel URLs or Hotels-g / Hotel_Review startUrls",
+    "Disable restaurants/attractions for census hotel enrichment",
+    "Do not enable photo/leads add-ons unless needed"
+  ]
+}

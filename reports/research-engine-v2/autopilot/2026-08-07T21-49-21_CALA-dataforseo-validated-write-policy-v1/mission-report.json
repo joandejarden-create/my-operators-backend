@@ -1,0 +1,100 @@
+{
+  "ok": false,
+  "status": "production_census_dataforseo_validated_write_policy_v1_blocked",
+  "objective": "dataforseo-validated-write-policy-v1",
+  "version": "dataforseo-validated-write-policy-v1",
+  "generated_at": "2026-08-07T21:52:19.446Z",
+  "gates": {
+    "ok": true,
+    "blockers": [],
+    "dataforseo_is_source_of_truth": false,
+    "serp_snippet_writes_allowed": false,
+    "url_writes": true,
+    "rooms_writes": true,
+    "address_writes": false,
+    "phone_writes": false,
+    "coordinate_writes": false,
+    "maps_writes": false,
+    "travel_weekly_direct_writes": false,
+    "candidates_only": false,
+    "validated_writes": true
+  },
+  "candidates_path": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T21-05-20_CALA-dataforseo-discovery-pilot-v2\\per-record-candidates.json",
+  "candidates_reviewed": 621,
+  "candidates_validated": 2,
+  "official_url_writes": 0,
+  "hotel_official_accepted": 8,
+  "hotel_official_rejected": 4,
+  "rooms_writes": 2,
+  "rooms_source_type_split": {
+    "official_hotel_website": 2
+  },
+  "rooms_confidence_split": {
+    "High": 2
+  },
+  "rejected_reasons": {
+    "travel_weekly_or_trusted_secondary_not_approved": 48,
+    "rejected_host_fetch_skipped": 80,
+    "rejected_ota_or_affiliate_host": 2,
+    "no_rooms_on_page": 22,
+    "maps_candidate_only": 7,
+    "fetch_error:AbortError": 3,
+    "http_403": 138,
+    "multi_hotel_generic_page": 3,
+    "affiliate_wording": 1
+  },
+  "records_updated": 0,
+  "records_proposed": 2,
+  "fields_written": [
+    "Rooms / Keys",
+    "Rooms Confidence",
+    "Rooms Source URL",
+    "Rooms Source Type",
+    "Rooms Reviewed Date",
+    "Rooms Notes",
+    "Last Reviewed Date",
+    "Enrichment Status",
+    "Rooms Evidence Tier",
+    "Rooms Review Status"
+  ],
+  "address_phone_maps_held": 55,
+  "airtable_writes": 0,
+  "census_writes": 0,
+  "brand_setup_writes": 0,
+  "brand_explorer_writes": 0,
+  "write_errors": [
+    {
+      "status": 422,
+      "error": {
+        "type": "UNKNOWN_FIELD_NAME",
+        "message": "Unknown field name: \"Rooms Review Status\""
+      },
+      "batch": true
+    },
+    {
+      "status": 422,
+      "error": {
+        "type": "UNKNOWN_FIELD_NAME",
+        "message": "Unknown field name: \"Rooms Review Status\""
+      },
+      "record_id": "rec94JxJjq67Db1QN"
+    },
+    {
+      "status": 422,
+      "error": {
+        "type": "UNKNOWN_FIELD_NAME",
+        "message": "Unknown field name: \"Rooms Review Status\""
+      },
+      "record_id": "recCabd9yzDW6ldAR"
+    }
+  ],
+  "next_policy_decision": "Decide whether to approve Google Maps contact/geo candidate validation, Travel Weekly secondary rooms, and scale validated URL/rooms promotion beyond the 200-record v2 set.",
+  "scale_estimate_notes": "If yield holds: ~0 Official Property URL writes and ~12 Rooms writes across 1,224 incomplete records (fetch+validate cost dominates; DataForSEO SERP not re-run).",
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T21-49-21_CALA-dataforseo-validated-write-policy-v1",
+  "enable_production_writes": true
+}

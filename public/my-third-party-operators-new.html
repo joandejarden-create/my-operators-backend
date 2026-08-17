@@ -296,6 +296,7 @@
             cursor: not-allowed;
             pointer-events: none;
         }
+        /* Wave loader: styles.css imports dealality-wave-loader.css (My Deals canonical) */
         .loading-brands { padding: 40px; text-align: center; }
         .loading-brands .loading {
             position: relative;
@@ -305,45 +306,6 @@
             margin: 0 auto;
             display: inline-block;
         }
-        .loading {
-            position: relative;
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 20px 24px;
-            border-radius: 12px;
-            min-width: 280px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .loading-content { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; text-align: left; }
-        .loading .wave-container {
-            width: 32px;
-            height: 32px;
-            position: relative;
-            background: var(--neutral--700);
-            border-radius: 50%;
-            border: 2px solid var(--neutral--600);
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        .loading .wave { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; }
-        .loading .wave-1 { height: 40%; background: linear-gradient(45deg, #d69e2e, #f4d03f); animation: bl-wave-1 2s ease-in-out infinite; animation-delay: 0s; }
-        .loading .wave-2 { height: 60%; background: linear-gradient(45deg, #b8860b, #d69e2e); animation: bl-wave-2 2s ease-in-out infinite; animation-delay: 0.3s; }
-        .loading .wave-3 { height: 80%; background: linear-gradient(45deg, #f4d03f, #f7dc6f); animation: bl-wave-3 2s ease-in-out infinite; animation-delay: 0.6s; }
-        .loading .wave-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
-        .loading .particle { position: absolute; width: 2px; height: 2px; background: #d69e2e; border-radius: 50%; animation: bl-particle-float 3s ease-in-out infinite; box-shadow: 0 0 4px #d69e2e; }
-        .loading .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
-        .loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
-        .loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
-        .loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
-        .loading-text-main { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 4px; }
-        .loading-text-time { font-size: 12px; color: var(--neutral--400); }
-        .loading-progress { width: 100%; height: 3px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; overflow: hidden; margin-top: 8px; }
-        .loading-progress-bar { height: 100%; background: linear-gradient(90deg, #fdb52a, #d5691b); border-radius: 2px; animation: bl-progress 3s ease-in-out infinite; }
-        @keyframes bl-progress { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
-        @keyframes bl-wave-1 { 0%,100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; } 50% { transform: translateX(0%) scaleY(1.2); opacity: 1; } }
-        @keyframes bl-wave-2 { 0%,100% { transform: translateX(100%) scaleY(1); opacity: 0.6; } 50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; } }
-        @keyframes bl-wave-3 { 0%,100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; } 50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; } }
-        @keyframes bl-particle-float { 0% { transform: translateY(100%) scale(0); opacity: 0; } 20% { transform: translateY(80%) scale(1); opacity: 1; } 80% { transform: translateY(20%) scale(1); opacity: 1; } 100% { transform: translateY(0%) scale(0); opacity: 0; } }
         .empty-brands { padding: 40px; text-align: center; color: var(--neutral--500); }
         .results-count { margin-bottom: 0; color: var(--neutral--400); font-size: 13px; }
         .results-count strong { color: var(--neutral--100); }
@@ -396,7 +358,7 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label class="filter-label">Chain scale</label>
+                        <label class="filter-label">Chain scales supported</label>
                         <select class="filter-select" id="chainScaleFilter">
                             <option value="">All</option>
                         </select>
@@ -432,7 +394,7 @@
 
                 <div class="deals-table-container" id="tableContainer">
                     <div class="loading-brands" id="loadingState">
-                        <div class="loading">
+                        <div class="loading dealality-wave-loader">
                             <div class="loading-content">
                                 <div class="wave-container">
                                     <div class="wave wave-1"></div>
@@ -460,7 +422,7 @@
                                 <th data-sort="headquarters"><span style="display:inline-flex;align-items:center;">HQ<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                 <th data-sort="regionsSupported"><span style="display:inline-flex;align-items:center;">Regions<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                 <th data-sort="brandsManaged"><span style="display:inline-flex;align-items:center;">Brands managed<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
-                                <th data-sort="chainScale"><span style="display:inline-flex;align-items:center;">Chain Scale<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                <th data-sort="chainScalesSupported"><span style="display:inline-flex;align-items:center;">Chain Scales Supported<span class="sort-indicator" title="From Operator Setup Profile: chainScalesSupported"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                 <th data-sort="primaryServiceModel"><span style="display:inline-flex;align-items:center;">Service model<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                 <th data-sort="dealStatus"><span style="display:inline-flex;align-items:center;">Deal Status<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                 <th class="no-sort">Call To Action</th>
@@ -516,6 +478,45 @@
                 return s.slice(0, max - 1) + '…';
             }
 
+            /** Operator Setup Profile field chainScalesSupported (Airtable), not Platform chainScale footprint. */
+            function chainScalesSupportedValue(row) {
+                return String((row && row.chainScalesSupported) || '').trim();
+            }
+
+            /** Canonical STR / Dealality ladder: Luxury → Independent (top → bottom in filter). */
+            var CHAIN_SCALE_LADDER = [
+                'Luxury',
+                'Upper Upscale',
+                'Upscale',
+                'Upper Midscale',
+                'Midscale',
+                'Economy',
+                'Independent'
+            ];
+
+            function chainScaleLadderIndex(label) {
+                var n = String(label || '').trim().toLowerCase();
+                if (!n) return CHAIN_SCALE_LADDER.length + 1;
+                for (var i = 0; i < CHAIN_SCALE_LADDER.length; i++) {
+                    if (CHAIN_SCALE_LADDER[i].toLowerCase() === n) return i;
+                }
+                for (var j = 0; j < CHAIN_SCALE_LADDER.length; j++) {
+                    var tier = CHAIN_SCALE_LADDER[j].toLowerCase();
+                    if (n.indexOf(tier) === 0 || n === tier) return j;
+                }
+                if (n.indexOf('independent') >= 0) return CHAIN_SCALE_LADDER.length - 1;
+                return CHAIN_SCALE_LADDER.length;
+            }
+
+            function sortChainScalesSupported(labels) {
+                return (labels || []).slice().sort(function (a, b) {
+                    var ia = chainScaleLadderIndex(a);
+                    var ib = chainScaleLadderIndex(b);
+                    if (ia !== ib) return ia - ib;
+                    return String(a).localeCompare(String(b), undefined, { sensitivity: 'base' });
+                });
+            }
+
             function statusClassName(status) {
                 var s = String(status || '').trim().toLowerCase();
                 if (!s) return 'status-unknown';
@@ -533,7 +534,7 @@
                 if (search) {
                     var blob = [
                         row.companyName, row.headquarters, row.contactEmail, row.contactPhone,
-                        row.website, row.brandsManaged, row.regionsSupported, row.chainScale,
+                        row.website, row.brandsManaged, row.regionsSupported, chainScalesSupportedValue(row),
                         row.primaryServiceModel, row.dealStatus
                     ].join(' ').toLowerCase();
                     if (blob.indexOf(search) === -1) return false;
@@ -543,7 +544,7 @@
                     if (reg.indexOf(region.toLowerCase()) === -1) return false;
                 }
                 if (chain) {
-                    var ch = (row.chainScale || '').toLowerCase();
+                    var ch = chainScalesSupportedValue(row).toLowerCase();
                     if (ch.indexOf(chain.toLowerCase()) === -1) return false;
                 }
                 var svc = (serviceModelFilter && serviceModelFilter.value) ? serviceModelFilter.value : '';
@@ -700,7 +701,7 @@
                         '<td>' + escapeHtml(row.headquarters || '—') + '</td>' +
                         '<td class="truncate"' + (row.regionsSupported ? ' title="' + escapeHtml(row.regionsSupported).replace(/"/g, '&quot;') + '"' : '') + '>' + escapeHtml(truncate(row.regionsSupported || '—', 40)) + '</td>' +
                         '<td class="truncate"' + brandsTitle + '>' + escapeHtml(brandsShort) + '</td>' +
-                        '<td class="truncate"' + (row.chainScale ? ' title="' + escapeHtml(row.chainScale).replace(/"/g, '&quot;') + '"' : '') + '>' + escapeHtml(truncate(row.chainScale || '—', 36)) + '</td>' +
+                        '<td class="truncate"' + (chainScalesSupportedValue(row) ? ' title="' + escapeHtml(chainScalesSupportedValue(row)).replace(/"/g, '&quot;') + '"' : '') + '>' + escapeHtml(truncate(chainScalesSupportedValue(row) || '—', 36)) + '</td>' +
                         '<td class="truncate">' + escapeHtml(truncate(row.primaryServiceModel || '—', 28)) + '</td>' +
                         '<td>' + dealStatusCell + '</td>' +
                         '<td class="cell-call-to-action">' + actionIcons + '</td>';
@@ -716,7 +717,7 @@
                         var t = p.trim();
                         if (t) regions.add(t);
                     });
-                    (String(r.chainScale || '').split(',')).forEach(function (p) {
+                    (String(chainScalesSupportedValue(r) || '').split(',')).forEach(function (p) {
                         var t = p.trim();
                         if (t) chains.add(t);
                     });
@@ -727,7 +728,7 @@
                     });
                 }
                 if (chainScaleFilter) {
-                    Array.from(chains).sort().forEach(function (x) {
+                    sortChainScalesSupported(Array.from(chains)).forEach(function (x) {
                         chainScaleFilter.appendChild(new Option(x, x));
                     });
                 }
@@ -878,6 +879,15 @@
 
                     if (action === 'view' || action === 'edit') {
                         if (!dealId) return;
+                        var intakePath = '/third-party-operator-intake?recordId=' + encodeURIComponent(dealId);
+                        if (/(?:^|[?&])appShell=1(?:&|$)/.test(window.location.search || '')) {
+                            try {
+                                if (window.parent && window.parent !== window) {
+                                    window.parent.postMessage({ type: 'dealality-navigate', path: intakePath }, window.location.origin);
+                                    return;
+                                }
+                            } catch (_parentNavErr) { /* fall through to direct navigation */ }
+                        }
                         var intakeUrl = '/third-party-operator-setup-new-two.html?recordId=' + encodeURIComponent(dealId);
                         if (document.documentElement.classList.contains('embed-mode')) {
                             intakeUrl += '&embed=1';

@@ -1,0 +1,249 @@
+{
+  "version": "census-autopilot-production-cycle-v1",
+  "generated_at": "2026-08-06T19:02:13.413Z",
+  "status": "production_census_autopilot_production_cycle_complete",
+  "ok": true,
+  "run_id": "2026-08-06T18-59-10_CALA-production-cycle",
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T18-59-10_CALA-production-cycle",
+  "mode": "production-cycle",
+  "region": "CALA",
+  "scope": "active-brand-setup",
+  "strategy": "fastest-safe",
+  "cleanup_existing_only": true,
+  "airtable_writes": true,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "vic_writes": false,
+  "per_bundle_chatgpt_approval": false,
+  "records_before": 907,
+  "records_after": 907,
+  "inserts_applied": 0,
+  "updates_applied": 282,
+  "fields_written": [
+    "Canonical Property Name",
+    "City"
+  ],
+  "queues_executed": [
+    "core_identity_quality",
+    "core_identity_source_lookup",
+    "key_field_completion"
+  ],
+  "queues_exhausted": [
+    "core_identity_source_lookup",
+    "core_identity_quality"
+  ],
+  "queues_blocked": [],
+  "steward_cases": 0,
+  "provider_decision_cases": 0,
+  "webhound_candidates": 0,
+  "runtime_ms": 183378,
+  "passes": [
+    {
+      "pass": 1,
+      "high_update_proposals": 438,
+      "updates_applied": 253,
+      "inserts_raw": 0,
+      "inserts_auto": 0,
+      "inserts_steward": 0,
+      "inserts_created": 0,
+      "queues_executed": [
+        "core_identity_quality",
+        "core_identity_source_lookup",
+        "key_field_completion"
+      ],
+      "queues_soft_deferred": []
+    },
+    {
+      "pass": 2,
+      "high_update_proposals": 58,
+      "updates_applied": 29,
+      "inserts_raw": 0,
+      "inserts_auto": 0,
+      "inserts_steward": 0,
+      "inserts_created": 0,
+      "queues_executed": [
+        "core_identity_quality",
+        "core_identity_source_lookup",
+        "key_field_completion"
+      ],
+      "queues_soft_deferred": []
+    },
+    {
+      "pass": 3,
+      "high_update_proposals": 0,
+      "updates_applied": 0,
+      "inserts_raw": 0,
+      "inserts_auto": 0,
+      "inserts_steward": 0,
+      "inserts_created": 0,
+      "queues_executed": [
+        "core_identity_quality",
+        "core_identity_source_lookup",
+        "key_field_completion"
+      ],
+      "queues_soft_deferred": []
+    }
+  ],
+  "safety_stops": [],
+  "target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam"
+  },
+  "next_recommended_action": "Continue official source lookup for Unknown/descriptor cities and blank Canonical; keep address/Mapbox paused.",
+  "clean_core_identity_repair_status": "production_census_clean_core_identity_repair_partial_source_lookup_remaining",
+  "clean_core_before": {
+    "total_records": 907,
+    "clean_core": 558,
+    "below_clean_core": 349,
+    "canonical_blank": 225,
+    "canonical_dirty": 0,
+    "canonical_conflict": 23,
+    "canonical_safe_autofill": 185,
+    "canonical_duplicate_risk": 68,
+    "unknown_city": 104,
+    "blank_city": 0,
+    "descriptor_city": 2,
+    "all_caps_city": 12,
+    "all_lowercase_city": 11,
+    "city_state_combined": 2,
+    "city_safe_normalization": 79,
+    "state_region_complete": 43,
+    "state_blank": 864,
+    "source_url_complete": 907,
+    "source_url_missing": 0,
+    "human_review_required": 4,
+    "coordinate_blocked_dirty_identity": 314,
+    "by_class": {
+      "Clean Core": 558,
+      "Needs Source Lookup": 42,
+      "Needs Steward Review": 239,
+      "Duplicate Risk": 68,
+      "Not Usable Yet": 0
+    },
+    "by_parent": {
+      "Hilton": {
+        "below_clean_core": 42,
+        "unknown_city": 0,
+        "canonical_blank": 40
+      },
+      "Marriott International": {
+        "below_clean_core": 91,
+        "unknown_city": 64,
+        "canonical_blank": 0
+      },
+      "Accor": {
+        "below_clean_core": 49,
+        "unknown_city": 0,
+        "canonical_blank": 49
+      },
+      "Choice": {
+        "below_clean_core": 12,
+        "unknown_city": 12,
+        "canonical_blank": 12
+      },
+      "IHG Hotels & Resorts": {
+        "below_clean_core": 13,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Wyndham": {
+        "below_clean_core": 22,
+        "unknown_city": 0,
+        "canonical_blank": 22
+      },
+      "Choice Hotels International, Inc.": {
+        "below_clean_core": 18,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott": {
+        "below_clean_core": 41,
+        "unknown_city": 28,
+        "canonical_blank": 41
+      },
+      "Preferred Hotels & Resorts": {
+        "below_clean_core": 61,
+        "unknown_city": 0,
+        "canonical_blank": 61
+      }
+    }
+  },
+  "clean_core_after": {
+    "total_records": 907,
+    "clean_core": 808,
+    "below_clean_core": 99,
+    "canonical_blank": 11,
+    "canonical_dirty": 0,
+    "canonical_conflict": 24,
+    "canonical_safe_autofill": 0,
+    "canonical_duplicate_risk": 62,
+    "unknown_city": 69,
+    "blank_city": 0,
+    "descriptor_city": 0,
+    "all_caps_city": 0,
+    "all_lowercase_city": 0,
+    "city_state_combined": 2,
+    "city_safe_normalization": 0,
+    "state_region_complete": 43,
+    "state_blank": 864,
+    "source_url_complete": 907,
+    "source_url_missing": 0,
+    "human_review_required": 4,
+    "coordinate_blocked_dirty_identity": 95,
+    "by_class": {
+      "Clean Core": 808,
+      "Needs Source Lookup": 13,
+      "Needs Steward Review": 24,
+      "Duplicate Risk": 62,
+      "Not Usable Yet": 0
+    },
+    "by_parent": {
+      "Hilton": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott International": {
+        "below_clean_core": 80,
+        "unknown_city": 58,
+        "canonical_blank": 0
+      },
+      "Accor": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice": {
+        "below_clean_core": 5,
+        "unknown_city": 5,
+        "canonical_blank": 5
+      },
+      "IHG Hotels & Resorts": {
+        "below_clean_core": 6,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Wyndham": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice Hotels International, Inc.": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott": {
+        "below_clean_core": 6,
+        "unknown_city": 6,
+        "canonical_blank": 6
+      },
+      "Preferred Hotels & Resorts": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      }
+    }
+  }
+}

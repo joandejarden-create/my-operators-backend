@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-08-11T20:02:25.360Z",
+  "tallies": {
+    "ACTIVE_UNRESOLVED_HOLD": 7611,
+    "RESOLVED_TO_CENSUS": 1899,
+    "RESOLVED_EXISTING_MATCH": 115,
+    "RESOLVED_DUPLICATE": 0,
+    "INVALID": 5,
+    "MANUAL_REVIEW": 2,
+    "HISTORICAL_HOLD_SUPERSEDED": 0
+  },
+  "active_count": 7611,
+  "hbx_upgrade_explain": {
+    "definition": "Prior HBX_HOLDS_UPGRADED counted in-memory name+country overlaps between HBX pack and Cvent candidates during the Core Identity run. It did NOT remove those candidates from holds-ledger.json.",
+    "prior_reported": 3879,
+    "of_those_now_resolved_to_census": 1864,
+    "of_those_existing_match": 115,
+    "of_those_still_active_hold": 0,
+    "of_those_invalid": 0,
+    "of_those_other_resolved": 0,
+    "name_country_overlap_now_in_census": 1979,
+    "note": "Prior HBX_HOLDS_UPGRADED=3879 was an in-memory overlap count only; holds-ledger.json was not rewritten. Reconciliation now removes resolved rows from the active HOLD queue. TOTAL_REMAINING_HOLDS previously counted all historical ledger rows (including ones already in Census).",
+    "total_remaining_holds_was": "historical_ledger_rows_including_resolved",
+    "active_unresolved_holds_now": 7611
+  }
+}

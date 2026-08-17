@@ -1,0 +1,361 @@
+{
+  "version": "wave13-partial-status-promotion-v1",
+  "waveVersion": "brand-explorer-wave13-factory-v1",
+  "stage": "status-promotion",
+  "generatedAt": "2026-07-27T18:17:16.293Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "dryRun": false,
+  "approvedOnly": true,
+  "targetBrandStatus": "Active",
+  "allowedStatuses": [
+    "Active",
+    "Live"
+  ],
+  "statusFromExpected": "Under Review",
+  "flagCheck": {
+    "apply": true,
+    "ok": true,
+    "missing": [],
+    "required": [
+      "--approve-wave13-partial-brand-status-promotion",
+      "--confirm-founder-approval-for-six-only",
+      "--confirm-so-held",
+      "--confirm-target-brands-only",
+      "--confirm-status-to-active",
+      "--confirm-no-so-status-change",
+      "--confirm-no-company-validation-changes",
+      "--confirm-no-source-library-status-changes",
+      "--confirm-no-registry-approval-changes",
+      "--confirm-no-content-writes",
+      "--confirm-no-image-writes",
+      "--confirm-no-release-field-writes",
+      "--confirm-no-protected-39-brand-changes",
+      "--confirm-no-house-of-originals-writes",
+      "--confirm-no-morgans-originals-writes",
+      "--confirm-no-radisson-collection-changes"
+    ]
+  },
+  "requiredApplyFlags": [
+    "--approve-wave13-partial-brand-status-promotion",
+    "--confirm-founder-approval-for-six-only",
+    "--confirm-so-held",
+    "--confirm-target-brands-only",
+    "--confirm-status-to-active",
+    "--confirm-no-so-status-change",
+    "--confirm-no-company-validation-changes",
+    "--confirm-no-source-library-status-changes",
+    "--confirm-no-registry-approval-changes",
+    "--confirm-no-content-writes",
+    "--confirm-no-image-writes",
+    "--confirm-no-release-field-writes",
+    "--confirm-no-protected-39-brand-changes",
+    "--confirm-no-house-of-originals-writes",
+    "--confirm-no-morgans-originals-writes",
+    "--confirm-no-radisson-collection-changes"
+  ],
+  "preflight": {
+    "ok": true,
+    "issues": [],
+    "baseline39": {
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "pvqlSource": "fresh_report",
+      "liveUniverseCount": 39,
+      "failures": [],
+      "tail": [
+        "pass=true",
+        "liveCount=39",
+        "pvqlSource=fresh_report"
+      ]
+    },
+    "founderApprovals": {
+      "ok": true,
+      "issues": []
+    },
+    "statusGateOk": true,
+    "soHeldOk": true,
+    "protected39RecordIdCount": 39
+  },
+  "held": {
+    "slug": "so-hotels-and-resorts",
+    "recordId": "recTJdPlr4mDs9app",
+    "from": "Under Review",
+    "to": "(unchanged)",
+    "needsWrite": false,
+    "recommendation": "approve_after_minor_cleanup"
+  },
+  "universeBefore": {
+    "totalCount": 39,
+    "expected": 39,
+    "wave13PartialPresent": []
+  },
+  "universeAfter": {
+    "totalCount": 45,
+    "expected": 45,
+    "wave13PartialPresent": [
+      "fairmont-hotels-and-resorts",
+      "ibis",
+      "mama-shelter",
+      "mercure",
+      "novotel",
+      "pullman"
+    ],
+    "soPresent": false
+  },
+  "summary": {
+    "brandCount": 6,
+    "needsWrite": 6,
+    "promotedCount": 6,
+    "heldCount": 1,
+    "acceptanceUniverse45": true
+  },
+  "brands": [
+    {
+      "slug": "mama-shelter",
+      "name": "Mama Shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "mercure",
+      "name": "Mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "ibis",
+      "name": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "novotel",
+      "name": "Novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "pullman",
+      "name": "Pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "fairmont-hotels-and-resorts",
+      "name": "Fairmont",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    }
+  ],
+  "applyResults": [
+    {
+      "slug": "mama-shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recXCZCK05XXYX7Q8",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recevrLJ3m6rIug3S",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "reclFXbpZ5XzLWbGP",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recQE2lSSSSyuUrMQ",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recFW9kfqKfOjv7Z1",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "fairmont-hotels-and-resorts",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recJhPaDVU3YUDQUt",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    }
+  ],
+  "fieldMapping": {
+    "brandStatus": "Brand Status"
+  },
+  "guardrails": {
+    "targetBrandsOnly": true,
+    "sixApprovedOnly": true,
+    "soHeld": true,
+    "singleFieldPayload": true,
+    "companyValidatedWrites": false,
+    "sourceLibraryWrites": false,
+    "registryWrites": false,
+    "contentWrites": false,
+    "imageWrites": false,
+    "releaseFieldWrites": false,
+    "protected39Untouched": true,
+    "houseOfOriginalsUntouched": true,
+    "morgansOriginalsUntouched": true,
+    "radissonCollectionUntouched": true,
+    "neverWriteFields": [
+      "Company Validated",
+      "Company Validation Date",
+      "Source Library status",
+      "Registry approval/status",
+      "Source Library Status",
+      "Registry Approval",
+      "Registry Status"
+    ],
+    "baselineConvention": "frozen_39_were_Active"
+  },
+  "readyStatement": "wave13_partial_status_promotion_applied_ready_for_public_release",
+  "postReleaseValidationSummary": {
+    "generatedAt": "2026-07-27T19:07:34.453Z",
+    "activeUniverseAfter": 45,
+    "pvqlPublicFullOnlyPass": false,
+    "qualityFreezeReady": false,
+    "acceptanceComplete": false,
+    "readyStatement": "wave13_six_brand_partial_release_complete_so_held"
+  }
+}

@@ -1,0 +1,34 @@
+import fs from "fs";
+
+const code =
+  '<link rel="stylesheet" href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6cdb367404e90afdfdb29a_old-home-manual-process.shell.v20260731a.css" />' +
+  '<link rel="stylesheet" href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6d2589e8d817b263e09936_old-home-manual-process.v20260731m.css" />' +
+  '<div id="dealality-manual-process-host" data-dmp-state="loading" aria-busy="true">Loading...</div>' +
+  '<script src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6d23d3e8d817b263df7ea5_old-home-manual-process.boot.v20260731k.js" defer></script>';
+
+fs.writeFileSync(
+  "tmp/wf-set-dmp-embed-icons.json",
+  JSON.stringify({
+    siteId: "68108c29063eeb5d1bd7ae4a",
+    pageId: "68108c2a063eeb5d1bd7ae90",
+    context: "Point Manual Process embed at icon-row FAQ-divider CSS m.",
+    actions: [
+      {
+        label: "set_embed",
+        set_settings: {
+          operations: [
+            {
+              label: "code",
+              element_id: {
+                component: "68108c2a063eeb5d1bd7ae90",
+                element: "a64ef2f7-2f5f-ab92-9711-5f43f9eeb3fa",
+              },
+              settings: [{ key: "code", static_text: { value: code } }],
+            },
+          ],
+        },
+      },
+    ],
+  })
+);
+console.log("ok");

@@ -1,0 +1,79 @@
+{
+  "status": "production_census_cala_discovery_mode_ready_needs_source_adapter",
+  "match_summary_line": "Matched Active / Live Brand Setup brands to production Hotel Property Census records.",
+  "active_brands_searched": 62,
+  "parent_companies_searched": [
+    "Choice",
+    "Hilton",
+    "Marriott"
+  ],
+  "countries_covered": [
+    "Mexico"
+  ],
+  "countries_needing_adapters": [
+    "Antigua and Barbuda",
+    "Argentina",
+    "Aruba",
+    "Bahamas",
+    "Barbados",
+    "Belize",
+    "Bonaire",
+    "Brazil",
+    "British Virgin Islands",
+    "Cayman Islands",
+    "Chile",
+    "Colombia",
+    "Costa Rica",
+    "Cuba",
+    "Curaçao",
+    "Dominica",
+    "Dominican Republic",
+    "Ecuador",
+    "El Salvador",
+    "Grenada",
+    "Guadeloupe",
+    "Guatemala",
+    "Haiti",
+    "Honduras",
+    "Jamaica",
+    "Martinique",
+    "Mexico",
+    "Nicaragua",
+    "Panama",
+    "Peru",
+    "Puerto Rico",
+    "Saint Kitts and Nevis",
+    "Saint Lucia",
+    "Saint Vincent and the Grenadines",
+    "Trinidad and Tobago",
+    "Turks & Caicos",
+    "U.S. Virgin Islands",
+    "Uruguay"
+  ],
+  "discovered_properties": 122,
+  "existing_hotel_property_census_matches": 122,
+  "new_property_candidates": 0,
+  "duplicate_risks": 0,
+  "steward_review_cases": 0,
+  "source_families_used": [
+    "Hilton",
+    "Choice",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [
+    "Marriott"
+  ],
+  "estimated_insert_count": 0,
+  "recommended_apply_command": "ALLOW_CENSUS_AUTOPILOT_APPLY=1 \\\n  CONFIRM_WRITE_TO_PRODUCTION_CENSUS=1 \\\n  CONFIRM_NO_BRAND_EXPLORER_WRITES=1 \\\n  CONFIRM_NO_OWNER_OPERATOR_WRITES=1 \\\n  npm run census:autopilot -- --region CALA --scope active-brand-setup --mode apply \\\n  --strategy fastest-safe --queue source_discovery --run-until-complete --batch-size 100 \\\n  --approval-bundle reports/research-engine-v2/autopilot/2026-08-05T22-55-01_CALA-source-discovery/approval-bundle.json \\\n  --confirm-safe-writes --confirm-write-to-production-census \\\n  --confirm-no-brand-explorer-writes --confirm-no-owner-operator \\\n  --confirm-no-date-writes --confirm-no-recent-momentum \\\n  --confirm-no-company-validation --confirm-webhound-not-production-source \\\n  --enable-production-writes",
+  "recommended_next_enrichment_command": "npm run census:autopilot -- --region CALA --scope active-brand-setup --mode controlled \\\n  --strategy fastest-safe --run-until-complete --batch-size 250",
+  "runtime_ms": 7831,
+  "airtable_writes": false,
+  "production_target": {
+    "baseName": "Deal Capture Platform",
+    "tableName": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam",
+    "role": "production_property_table",
+    "allowedWriteTarget": true,
+    "envBaseResolver": "AIRTABLE_BASE_ID_ALT (Deal Capture Platform)"
+  }
+}

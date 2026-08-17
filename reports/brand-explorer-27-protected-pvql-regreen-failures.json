@@ -1,0 +1,184 @@
+{
+  "version": "27-protected-pvql-regreen-v1",
+  "generatedAt": "2026-07-24T12:18:19.861Z",
+  "readOnly": true,
+  "targets": [
+    "preferred-hotels-and-resorts",
+    "radisson-individuals-by-choice",
+    "small-luxury-hotels-of-the-world"
+  ],
+  "summary": {
+    "brands": 3,
+    "failureRows": 6,
+    "brandsNeedingFix": 3
+  },
+  "brands": [
+    {
+      "slug": "preferred-hotels-and-resorts",
+      "name": "Preferred Hotels & Resorts",
+      "recordId": "recwl5JOYxlChuCAr",
+      "segments": [
+        "Luxury / Discerning",
+        "Leisure",
+        "Experience-Oriented",
+        "International Inbound"
+      ],
+      "goldenPass": false,
+      "goldenFailures": [
+        "generic_audience_prose"
+      ],
+      "tabFactoryAuditPass": false,
+      "tabFactoryFailFindings": 0,
+      "failureCount": 2
+    },
+    {
+      "slug": "radisson-individuals-by-choice",
+      "name": "Radisson Individuals by Choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "segments": [
+        "Luxury / Discerning",
+        "Leisure",
+        "Experience-Oriented"
+      ],
+      "goldenPass": false,
+      "goldenFailures": [
+        "generic_audience_prose"
+      ],
+      "tabFactoryAuditPass": false,
+      "tabFactoryFailFindings": 0,
+      "failureCount": 2
+    },
+    {
+      "slug": "small-luxury-hotels-of-the-world",
+      "name": "Small Luxury Hotels of the World",
+      "recordId": "recjjSnY2opb8P4DG",
+      "segments": [
+        "Luxury / Discerning",
+        "Leisure",
+        "Experience-Oriented",
+        "International Inbound"
+      ],
+      "goldenPass": false,
+      "goldenFailures": [
+        "generic_audience_prose"
+      ],
+      "tabFactoryAuditPass": false,
+      "tabFactoryFailFindings": 0,
+      "failureCount": 2
+    }
+  ],
+  "failures": [
+    {
+      "brand": "Preferred Hotels & Resorts",
+      "slug": "preferred-hotels-and-resorts",
+      "tab": "Overview",
+      "section": "Brand Positioning / Audience",
+      "recordId": "recwl5JOYxlChuCAr",
+      "field": "Target Guest Segments",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "generic_copy_scan / generic_audience_prose",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound",
+      "currentRendered": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound Independent-minded luxury and upscale travelers who choose hotels for distinctive chara",
+      "whyItFails": "Rendered Audience joins multi-select as \"Luxury / Discerning, Leisure…\", which matches golden GENERIC_AUDIENCE_PROSE and fails PVQL generic_copy_scan. Tab Factory also fails because golden_content_quality is a hard gate (failFindings may still be 0).",
+      "proposedFix": "Replace Target Guest Segments with: Experience-Oriented, Leisure, International Inbound (drop Luxury / Discerning while keeping Leisure / Experience-Oriented / International Inbound as applicable).",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ]
+    },
+    {
+      "brand": "Preferred Hotels & Resorts",
+      "slug": "preferred-hotels-and-resorts",
+      "tab": "Tab Factory (aggregate)",
+      "section": "golden_content_quality gate",
+      "recordId": "recwl5JOYxlChuCAr",
+      "field": "Target Guest Segments (via rendered Audience)",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "tab_factory_audit",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound",
+      "currentRendered": "auditPass=false; failFindings=0; golden.pass=false",
+      "whyItFails": "tab_factory_audit.pass requires golden_content_quality.pass. Completeness failFindings can be 0 while audit still fails on generic_audience_prose.",
+      "proposedFix": "Same Target Guest Segments adjacency remediation clears the golden gate and re-greens tab_factory_audit.",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ]
+    },
+    {
+      "brand": "Radisson Individuals by Choice",
+      "slug": "radisson-individuals-by-choice",
+      "tab": "Overview",
+      "section": "Brand Positioning / Audience",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "field": "Target Guest Segments",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "generic_copy_scan / generic_audience_prose",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented",
+      "currentRendered": "Luxury / Discerning, Leisure, Experience-Oriented Curious, experience-led travelers who seek independent and boutique hotels with local story and design—willing",
+      "whyItFails": "Rendered Audience joins multi-select as \"Luxury / Discerning, Leisure…\", which matches golden GENERIC_AUDIENCE_PROSE and fails PVQL generic_copy_scan. Tab Factory also fails because golden_content_quality is a hard gate (failFindings may still be 0).",
+      "proposedFix": "Replace Target Guest Segments with: Experience-Oriented, Leisure (drop Luxury / Discerning while keeping Leisure / Experience-Oriented / International Inbound as applicable).",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure"
+      ]
+    },
+    {
+      "brand": "Radisson Individuals by Choice",
+      "slug": "radisson-individuals-by-choice",
+      "tab": "Tab Factory (aggregate)",
+      "section": "golden_content_quality gate",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "field": "Target Guest Segments (via rendered Audience)",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "tab_factory_audit",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented",
+      "currentRendered": "auditPass=false; failFindings=0; golden.pass=false",
+      "whyItFails": "tab_factory_audit.pass requires golden_content_quality.pass. Completeness failFindings can be 0 while audit still fails on generic_audience_prose.",
+      "proposedFix": "Same Target Guest Segments adjacency remediation clears the golden gate and re-greens tab_factory_audit.",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure"
+      ]
+    },
+    {
+      "brand": "Small Luxury Hotels of the World",
+      "slug": "small-luxury-hotels-of-the-world",
+      "tab": "Overview",
+      "section": "Brand Positioning / Audience",
+      "recordId": "recjjSnY2opb8P4DG",
+      "field": "Target Guest Segments",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "generic_copy_scan / generic_audience_prose",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound",
+      "currentRendered": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound Luxury leisure travelers seeking individual hotels, experience-led guests, and traveler",
+      "whyItFails": "Rendered Audience joins multi-select as \"Luxury / Discerning, Leisure…\", which matches golden GENERIC_AUDIENCE_PROSE and fails PVQL generic_copy_scan. Tab Factory also fails because golden_content_quality is a hard gate (failFindings may still be 0).",
+      "proposedFix": "Replace Target Guest Segments with: Experience-Oriented, Leisure, International Inbound (drop Luxury / Discerning while keeping Leisure / Experience-Oriented / International Inbound as applicable).",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ]
+    },
+    {
+      "brand": "Small Luxury Hotels of the World",
+      "slug": "small-luxury-hotels-of-the-world",
+      "tab": "Tab Factory (aggregate)",
+      "section": "golden_content_quality gate",
+      "recordId": "recjjSnY2opb8P4DG",
+      "field": "Target Guest Segments (via rendered Audience)",
+      "airtableTable": "Brand Setup - Brand Basics",
+      "failureType": "tab_factory_audit",
+      "currentValue": "Luxury / Discerning, Leisure, Experience-Oriented, International Inbound",
+      "currentRendered": "auditPass=false; failFindings=0; golden.pass=false",
+      "whyItFails": "tab_factory_audit.pass requires golden_content_quality.pass. Completeness failFindings can be 0 while audit still fails on generic_audience_prose.",
+      "proposedFix": "Same Target Guest Segments adjacency remediation clears the golden gate and re-greens tab_factory_audit.",
+      "proposedValue": [
+        "Experience-Oriented",
+        "Leisure",
+        "International Inbound"
+      ]
+    }
+  ]
+}
