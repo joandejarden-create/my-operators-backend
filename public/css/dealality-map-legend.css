@@ -1,0 +1,152 @@
+/**
+ * Shared Dealality map legend — aligned with The Radar.
+ * Used by Scout Market Map; styles match deal-capture-radar-with-ranked-list.html.
+ */
+
+.dc-map-legend.map-legend {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(26, 26, 26, 0.92);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px 14px 12px 12px;
+  color: #fff;
+  font-size: 12px;
+  z-index: 500;
+  min-width: 200px;
+  max-width: 240px;
+  width: fit-content;
+  pointer-events: none;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.dc-map-legend .dc-legend-section,
+.dc-map-legend .legend-section {
+  margin: 10px 0 6px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #444;
+  color: #fff;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dc-map-legend .dc-legend-section:first-child,
+.dc-map-legend .legend-section:first-child {
+  margin-top: 0;
+}
+
+.dc-map-legend .dc-legend-item,
+.dc-map-legend .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  min-height: 18px;
+}
+
+.dc-map-legend .dc-legend-item:last-child,
+.dc-map-legend .legend-item:last-child {
+  margin-bottom: 0;
+}
+
+.dc-map-legend .legend-marker {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+/* Hotel status — circles (Radar) */
+.dc-map-legend .legend-marker.open {
+  background: #2563eb;
+  border-radius: 50%;
+}
+
+.dc-map-legend .legend-marker.pipeline {
+  background: #dc2626;
+  border-radius: 50%;
+}
+
+.dc-map-legend .legend-marker.candidate {
+  background: #7c3aed;
+  border-radius: 50%;
+}
+
+/* Travel infrastructure — pentagons */
+.dc-map-legend .legend-marker.infrastructure-airport,
+.dc-map-legend .legend-marker.infrastructure-cruise,
+.dc-map-legend .legend-marker.infrastructure-convention,
+.dc-map-legend .legend-marker.infrastructure-ferry,
+.dc-map-legend .legend-marker.infrastructure-port,
+.dc-map-legend .legend-marker.infrastructure-highway,
+.dc-map-legend .legend-marker.infrastructure-bus {
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dc-map-legend .legend-marker.infrastructure-airport { background: #9c27b0; }
+.dc-map-legend .legend-marker.infrastructure-cruise { background: #e91e63; }
+.dc-map-legend .legend-marker.infrastructure-convention { background: #00bcd4; }
+.dc-map-legend .legend-marker.infrastructure-ferry { background: #009688; }
+.dc-map-legend .legend-marker.infrastructure-port { background: #ff5722; }
+.dc-map-legend .legend-marker.infrastructure-highway { background: #795548; }
+.dc-map-legend .legend-marker.infrastructure-bus { background: #607d8b; }
+
+/* Demand anchors — diamonds */
+.dc-map-legend .legend-marker.demand-anchor-beach,
+.dc-map-legend .legend-marker.demand-anchor-attraction,
+.dc-map-legend .legend-marker.demand-anchor-entertainment,
+.dc-map-legend .legend-marker.demand-anchor-institutional,
+.dc-map-legend .legend-marker.demand-anchor-sports,
+.dc-map-legend .legend-marker.demand-anchor-business,
+.dc-map-legend .legend-marker.demand-anchor-industrial {
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dc-map-legend .legend-marker.demand-anchor-beach { background: #00acc1; }
+.dc-map-legend .legend-marker.demand-anchor-attraction { background: #26a69a; }
+.dc-map-legend .legend-marker.demand-anchor-entertainment { background: #ab47bc; }
+.dc-map-legend .legend-marker.demand-anchor-institutional { background: #e53935; }
+.dc-map-legend .legend-marker.demand-anchor-sports { background: #43a047; }
+.dc-map-legend .legend-marker.demand-anchor-business { background: #1e88e5; }
+.dc-map-legend .legend-marker.demand-anchor-industrial { background: #6d4c41; }
+
+/* Scout-only layers */
+.dc-map-legend .legend-marker.scout-signal {
+  background: #fbbf24;
+  border: 2px solid #f59e0b;
+  border-radius: 50%;
+}
+
+.dc-map-legend .legend-marker.scout-saved {
+  background: #34d399;
+  border: 2px solid #10b981;
+  border-radius: 50%;
+}
+
+.dc-map-legend .legend-marker.scout-cluster {
+  background: #a78bfa;
+  border: 2px solid #8b5cf6;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  border-radius: 0;
+}
+
+.dc-map-marker-icon-wrap {
+  background: transparent !important;
+  border: none !important;
+}
+
+.scout-map-map-wrap {
+  position: relative;
+  min-height: 520px;
+}
+
+.scout-map-map-wrap #scoutMarketMap {
+  height: 520px;
+  width: 100%;
+}

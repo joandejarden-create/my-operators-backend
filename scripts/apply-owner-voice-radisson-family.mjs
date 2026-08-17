@@ -103,8 +103,8 @@ async function main() {
         false
       );
       applyFixture(b.id, b.name, "fixtures/brand-explorer-presentation-radisson-footprint-momentum.json", "footprint.momentum", false);
+      // Single apply — fixture already includes Paramaribo (sort 3). Second apply wiped other openings.
       applyFixture(b.id, b.name, "fixtures/brand-explorer-presentation-radisson-footprint-openings.json", "footprint.openings", false);
-      applyFixture(b.id, b.name, "fixtures/brand-explorer-presentation-radisson-paramaribo-opening.json", "footprint.openings", false);
       run(process.execPath, [
         BASICS_APPLY,
         "--brand-record-id",

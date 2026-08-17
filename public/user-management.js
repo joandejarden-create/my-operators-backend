@@ -7,6 +7,14 @@
 (function () {
     const API_BASE = '/api/user-management';
     const REGION_COLORS = { MEA: 'um-tag--orange', CALA: 'um-tag--green', EU: 'um-tag--purple', EUROPE: 'um-tag--purple', AP: 'um-tag--blue', AMERICAS: 'um-tag--amber', GLOBAL: 'um-tag--blue' };
+
+    function adminAuthFetch(url, options) {
+        const auth = window.DealalityMemberstackAuth;
+        if (auth && typeof auth.authFetch === 'function') {
+            return auth.authFetch(url, Object.assign({ maxWaitMs: 20000 }, options || {}));
+        }
+        return fetch(url, options || {});
+    }
     const CONTACT_VISIBILITY_OPTIONS = ['Show Contact', 'Hide Contact', 'Visible on Match', 'Admin Controlled'];
     const COUNTRY_OPTIONS_TOP = ['United States', 'Canada', 'United Kingdom', 'Mexico', 'Australia'];
     const COUNTRY_OPTIONS_ALL = [
@@ -280,7 +288,7 @@
         const newVisibility = (sel.value || '').trim();
         if (!recordId || !newVisibility) return;
         try {
-            const res = await fetch(API_BASE + '/' + encodeURIComponent(recordId), {
+            const res = await adminAuthFetch(API_BASE + '/' + encodeURIComponent(recordId), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contactVisibility: newVisibility }),
@@ -372,7 +380,7 @@
         showError('');
         tableBody.innerHTML = '<tr><td colspan="10" class="um-loading">Loading Users…</td></tr>';
         try {
-            const res = await fetch(API_BASE);
+            const res = await adminAuthFetch(API_BASE);
             if (!res.ok) throw new Error(res.statusText || 'Failed to load users');
             const data = await res.json();
             users = data.users || [];
@@ -386,7 +394,7 @@
 
     async function loadCompanies() {
         try {
-            const res = await fetch(API_BASE + '/companies');
+            const res = await adminAuthFetch(API_BASE + '/companies');
             if (!res.ok) return;
             const data = await res.json();
             companies = data.companies || [];
@@ -455,7 +463,7 @@
         userFormSubmit.disabled = true;
         try {
             if (id) {
-                const res = await fetch(API_BASE + '/' + encodeURIComponent(id), {
+                const res = await adminAuthFetch(API_BASE + '/' + encodeURIComponent(id), {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
@@ -466,7 +474,7 @@
                 if (idx !== -1) users[idx] = { ...users[idx], ...data.user };
                 showToast('User updated successfully.');
             } else {
-                const res = await fetch(API_BASE, {
+                const res = await adminAuthFetch(API_BASE, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
@@ -494,7 +502,7 @@
 
     async function doDelete(recordId) {
         try {
-            const res = await fetch(API_BASE + '/' + encodeURIComponent(recordId), { method: 'DELETE' });
+            const res = await adminAuthFetch(API_BASE + '/' + encodeURIComponent(recordId), { method: 'DELETE' });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) throw new Error(data.details || data.error || res.statusText);
             users = users.filter(x => x.id !== recordId);
@@ -510,7 +518,7 @@
         if (ids.length === 0) return;
         if (!confirm(`Remove ${ids.length} selected user(s)? This cannot be undone.`)) return;
         try {
-            const res = await fetch(API_BASE + '/bulk-delete', {
+            const res = await adminAuthFetch(API_BASE + '/bulk-delete', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ recordIds: ids }),

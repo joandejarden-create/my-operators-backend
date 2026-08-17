@@ -627,38 +627,42 @@ export const TIER1_OVERVIEW = {
   },
   "Everhome Suites": {
     scenarioTitles: [
-      "New Extended-Stay System",
-      "Residential Suite NC",
-      "No Item 19 Averages",
+      "Weekly-Stay Revenue Stability",
+      "Efficient Purpose-Built Prototype",
+      "Midscale Platform With Choice Scale",
     ],
     scenarioBodies: [
-      "Developers choosing newest Choice extended-stay brand versus MainStay or Suburban—6% royalty on room revenue per FDD.\nResidential suites for weekly stays; Item 19 states no financial performance representations.\nUnderwrite from market comps and local extended-stay performance, not system averages.",
+      "Greenfield or conversion extended-stay in markets with project, relocation, and training demand where guests stay about two weeks on average. Full kitchens and residential suites support weekly rate structures and lower guest churn than nightly midscale flags.",
+      "Developers choosing Choice's newest midscale extended-stay product—designed with extended-stay operators for efficient new builds and conversions. Energy-efficient systems and modular FF&E help control capex and utility intensity versus ad hoc extended conversions.",
+      "Midscale extended-stay positioning with Choice distribution, loyalty enrollment, and dedicated extended-stay opening support—modern residential product above economy extended flags without legacy prototype constraints on mature MainStay conversions.",
     ],
     bestAtTitles: [
-      "Newest Choice Extended Brand",
+      "Newest Choice Midscale Extended Brand",
       "Residential Weekly-Stay",
-      "Diligence-Heavy Underwriting",
+      "Developer-Friendly Prototype",
     ],
     bestAtBodies: [
-      "Everhome: residential extended-stay without published Item 19 performance table—feasibility-driven deals.\n6% royalty on room revenue for agreement duration (FDD language).\nCompare prototype and fees against MainStay (mature) and Suburban (economy extended).",
+      "Introduced in 2020 as the first new core midscale brand in nearly a decade—residential extended-stay with kitchens and Homebase Market.\n6% royalty on room revenue for agreement duration.\nCompare prototype and fees against MainStay (mature) and Suburban (economy extended).",
+      "Kitchen-equipped suites for relocations, projects, and training assignments averaging about 15 nights—with Homebase Market, outdoor living, and fitness amenities per prototype.",
+      "Turnkey development support, flexible prototypes, competitive cost per key, and area development model—ready-to-build track typically 10–12 months per brand materials.",
     ],
     whyValue:
-      "Why owners choose Everhome: residential extended-stay on newest Choice extended platform.\nGuest promise: suite comfort for longer stays with kitchen/residential features per prototype.\nRisk: no Item 19 financial performance in current FDD—market study required.\nEconomics: 6% royalty on room revenue; extended-stay opex and weekly mix.\nFit: extended-stay developers comfortable with newer brand standards—not nightly midscale.",
+      "Why owners choose Everhome: first new core midscale extended-stay brand from Choice in nearly a decade (2020).\nGuest promise: residential suites with kitchens, Homebase Market, and outdoor living for ~15-night stays.\nEconomics: midscale extended-stay fee tier with incremental revenue from Homebase, housekeeping upgrades, and pet fees.\nFit: developers and operators with professional third-party management and weekly-stay expertise—not nightly transient midscale.",
     ownerExperience:
-      "Typical guest: weekly and monthly stays—relocations, projects, training.\nOwner journey: extended-stay feasibility without system averages → prototype approval → compare vs MainStay/Suburban fees.\nCommercial: build pro forma from comp set extended properties, not CHI Item 19 tables.\nOngoing: monitor brand system growth in Item 20 as network matures.",
+      "Typical guest: weekly and monthly stays (~15 nights average)—relocations, projects, travel nurses, and training.\nOwner journey: market feasibility → prototype approval → professional management onboarding → compare vs MainStay/Suburban fees.\nCommercial: build pro forma from comp set extended properties and Homebase ancillary revenue.\nOngoing: weekly billing discipline, kitchen maintenance, and brand QA cadence.",
     differentiatorsIdentity:
-      "Newer Choice extended-stay system—residential suite positioning.\nNo Item 19 performance representations in current FDD.\nAlternative to MainStay and Suburban in extended tier.\nWeekly-stay guest expectations with residential comfort.",
+      "Midscale extended-stay with fully equipped in-suite kitchens.\nSeparate spaces to sleep, work, and eat.\nSocial outdoor living with fire pits, grills, and optional pool.\nDesigned with prominent extended-stay developers and operators.",
     differentiatorsCommercial:
-      "6% royalty on room revenue (FDD Everhome language).\nNo published loyalty/enterprise % in Item 19—use local extended-stay data.\nDevelopers must compare incentive packages with MainStay conversions.\nChoice distribution without legacy extended-stay performance tables.",
+      "6% royalty on room revenue per franchise agreement.\nIncremental revenue from Homebase Market, upgraded housekeeping, faster Wi-Fi, and pet fees.\nChoice distribution and Choice Privileges enrollment.\nArea development model for multi-unit growth.",
     proofOperator:
-      "Extended-stay operators who underwrite without system Item 19—strong feasibility, kitchen ops, and weekly billing discipline.",
+      "Extended-stay operators with professional third-party management experience—strong feasibility, kitchen ops, and weekly billing discipline.",
     proof: [
-      { title: "No Item 19 Table", body: "FDD Item 19: no past financial performance representations—market study required." },
-      { title: "6% Room Revenue Royalty", body: "Royalty six percent of room revenue for agreement duration (FDD)." },
-      { title: "New Extended Platform", body: "Newest Choice extended-stay brand—confirm open count in Item 20." },
-      { title: "Residential Suites", body: "Weekly-stay residential product—not nightly midscale or upscale F&B." },
+      { title: "2020 Midscale Launch", body: "Introduced in 2020 as the first new core midscale brand in nearly a decade; first hotel opened in Corona, CA." },
+      { title: "6% Room Revenue Royalty", body: "Royalty six percent of room revenue for agreement duration (franchise disclosure)." },
+      { title: "Purpose-Built Prototype", body: "Designed with extended-stay developers; ready-to-build track typically 10–12 months." },
+      { title: "Residential Suites", body: "Weekly-stay residential product with fully equipped kitchens—not nightly midscale or upscale F&B." },
       { title: "Compare MainStay/Suburban", body: "Benchmark fees and prototypes against mature extended brands in portfolio." },
-      { title: "Feasibility-Led Deals", body: "Operator proof is local extended-stay comps and kitchen economics—not system averages." },
+      { title: "Extended-Stay Expert Bench", body: "70+ dedicated extended-stay experts support openings and operating model execution." },
     ],
   },
 };

@@ -1,0 +1,400 @@
+{
+  "incident": "geography-quality-incident-v1 + current-brand-expansion",
+  "audited_at": "2026-08-08T17:16:24.201Z",
+  "v4_production_writes": "PAUSED",
+  "waves_audited": [
+    "V3",
+    "V3.0.1",
+    "V3.0.2A",
+    "V3.0.3",
+    "V3.1"
+  ],
+  "v4_writes_found": 0,
+  "sources": [
+    "census-autopilot-v3-airtable-migration/23-post-write-airtable-snapshot.json",
+    "census-autopilot-v3-1-scale-proof/23-post-write-airtable-snapshot.json"
+  ],
+  "note": "V3.0.x backfills updated geography/contact on V3 keys; Current Brand values originate from V3 + V3.1 governed writes. Snapshots are post-write production state for those waves.",
+  "totals": {
+    "production_records_audited": 400,
+    "current_brand_blank": 0,
+    "current_brand_incorrect_parent_as_brand": 70,
+    "current_brand_incorrect_estimated": 70,
+    "historical_as_current": 0,
+    "affiliation_conflicts": 0,
+    "possible_reflags_requiring_review": 0
+  },
+  "priority_damage": {
+    "P0_wrong_physical_affiliation_choice_parent_as_brand": 70,
+    "P1_parent_as_brand_other_families": 0,
+    "P2_blank_current_brand": 0,
+    "P3_historical_reference_cleanup": 0
+  },
+  "flag_counts": {
+    "CURRENT_BRAND_BLANK": 0,
+    "CURRENT_BRAND_EQUALS_PARENT_COMPANY": 70,
+    "CURRENT_BRAND_WRONG_SIBLING_BRAND": 0,
+    "CURRENT_BRAND_HISTORICAL": 0,
+    "CURRENT_BRAND_COLLECTION_PARENT_CONFUSION": 70,
+    "CURRENT_BRAND_CONTRADICTS_OFFICIAL_PROPERTY_PAGE": 70,
+    "MULTIPLE_CURRENT_BRAND_CLAIMS": 0
+  },
+  "parent_as_brand_values": [
+    {
+      "value": "Choice",
+      "count": 70
+    }
+  ],
+  "sample_incorrect": [
+    {
+      "key": "ind_choice_br_br033",
+      "name": "Quality Hotel Faria Lima",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/sao-paulo/quality-inn-hotels/br033",
+      "best_claim": "Quality Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br110",
+      "name": "Quality Hotel Pampulha",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/minas-gerais/belo-horizonte/quality-inn-hotels/br110",
+      "best_claim": "Quality Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br154",
+      "name": "Radisson Blu Belo Horizonte, Savassi",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/minas-gerais/belo-horizonte/radisson-blu-hotels/br154",
+      "best_claim": "Radisson Blu",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br155",
+      "name": "Radisson Hotel Maiorana Belem",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/para/belem/radisson-hotels/br155",
+      "best_claim": "Radisson",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br156",
+      "name": "Park Inn by Radisson Berrini",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/cidade-moncoes/park-inn-hotels/br156",
+      "best_claim": "Park Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br036",
+      "name": "Quality Suites Vila Velha",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/espirito-santo/vila-velha/quality-inn-hotels/br036",
+      "best_claim": "Quality Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br113",
+      "name": "Comfort Hotel & Suites Rondonopolis",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/mato-grosso/rondonopolis/comfort-inn-hotels/br113",
+      "best_claim": "Comfort Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br157",
+      "name": "Radisson RED Campinas",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/campinas/radisson-red-hotels/br157",
+      "best_claim": "Radisson RED",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br114",
+      "name": "Comfort Hotel Bauru",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/bauru/comfort-inn-hotels/br114",
+      "best_claim": "Comfort Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br158",
+      "name": "Radisson Hotel Curitiba",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/parana/curitiba/radisson-hotels/br158",
+      "best_claim": "Radisson",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br115",
+      "name": "Comfort Suites Vitoria",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/espirito-santo/vitoria/comfort-suites-hotels/br115",
+      "best_claim": "Comfort Suites",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br117",
+      "name": "Comfort Hotel Santos",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/santos/comfort-inn-hotels/br117",
+      "best_claim": "Comfort Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br080",
+      "name": "Comfort Hotel Joinville",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/santa-catarina/joinville/comfort-inn-hotels/br080",
+      "best_claim": "Comfort Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br083",
+      "name": "Comfort Hotel Manaus",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/amazonas/manaus/comfort-inn-hotels/br083",
+      "best_claim": "Comfort Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br160",
+      "name": "Radisson Hotel Oscar Freire",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/sao-paulo/radisson-hotels/br160",
+      "best_claim": "Radisson",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br085",
+      "name": "Sleep Inn Manaus",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/amazonas/manaus/sleep-inn-hotels/br085",
+      "best_claim": "Sleep Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br162",
+      "name": "Radisson Hotel Pinheiros, Sao Paulo",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/pinheiros/radisson-hotels/br162",
+      "best_claim": "Radisson",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br163",
+      "name": "Radisson Hotel Paulista Sao Paulo",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/jardins/radisson-hotels/br163",
+      "best_claim": "Radisson",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br164",
+      "name": "Park Plaza Porto Alegre Moinhos de Vento",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/rio-grande-do-sul/porto-alegre/park-plaza-hotels/br164",
+      "best_claim": "Park Plaza",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br008",
+      "name": "Quality Suites Alphaville",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/barueri/quality-inn-hotels/br008",
+      "best_claim": "Quality Inn",
+      "wave": "v3",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br129",
+      "name": "Sleep Inn Guarulhos",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/guarulhos/sleep-inn-hotels/br129",
+      "best_claim": "Sleep Inn",
+      "wave": "v31",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br009",
+      "name": "Quality Suites Oscar Freire",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/sao-paulo/sao-paulo/quality-inn-hotels/br009",
+      "best_claim": "Quality Inn",
+      "wave": "v31",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br121",
+      "name": "Quality Hotel Rio de Janeiro - Barra da Tijuca",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/rio-de-janeiro/rio-de-janeiro/quality-inn-hotels/br121",
+      "best_claim": "Quality Inn",
+      "wave": "v31",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br165",
+      "name": "Radisson Hotel Recife",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/pernambuco/recife/radisson-hotels/br165",
+      "best_claim": "Radisson",
+      "wave": "v31",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    },
+    {
+      "key": "ind_choice_br_br089",
+      "name": "Comfort Hotel Goiania",
+      "production_brand": "Choice",
+      "family": "Choice",
+      "url": "https://www.choicehotels.com/goias/goiania/comfort-inn-hotels/br089",
+      "best_claim": "Comfort Inn",
+      "wave": "v31",
+      "flags": [
+        "CURRENT_BRAND_EQUALS_PARENT_COMPANY",
+        "CURRENT_BRAND_WRONG_SIBLING_OR_PARENT",
+        "CHOICE_FAMILY_DEFAULT"
+      ]
+    }
+  ]
+}

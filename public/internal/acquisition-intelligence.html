@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Acquisition Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/support-runbook.css">
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css">
+  <style>
+    .ai-wrap { max-width: 960px; margin: 0 auto; padding: 24px; }
+    .ai-hero { margin-bottom: 20px; }
+    .ai-hero h1 { color: #fff; margin: 0 0 8px; font-size: 28px; }
+    .ai-hero p { color: var(--runbook-muted); margin: 0 0 8px; line-height: 1.45; font-size: 14px; }
+    .ai-card {
+      border: 1px solid var(--runbook-border);
+      background: var(--runbook-surface);
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+    .ai-card h2 { margin: 0 0 10px; color: #fff; font-size: 16px; }
+    .ai-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .ai-metric {
+      border: 1px solid var(--runbook-border);
+      padding: 10px 12px;
+      background: var(--runbook-bg);
+    }
+    .ai-metric .label { font-size: 11px; color: var(--runbook-muted); text-transform: uppercase; letter-spacing: .04em; }
+    .ai-metric .value { font-size: 22px; color: #fff; font-weight: 600; margin-top: 4px; }
+    .ai-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
+    .ai-actions button, .ai-actions label.file-btn {
+      background: var(--runbook-bg);
+      color: var(--runbook-heading);
+      border: 1px solid var(--runbook-border);
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .ai-actions button.primary { background: #243049; color: #fff; }
+    .ai-actions button:disabled { opacity: .45; cursor: not-allowed; }
+    .ai-help { font-size: 13px; color: var(--runbook-muted); margin-top: 8px; }
+    .ai-state { font-size: 13px; color: var(--runbook-muted); margin: 8px 0; }
+    .ai-state.error { color: #ff7b7b; }
+    .ai-state.ok { color: #14ca74; }
+    table.ai-table { width: 100%; border-collapse: collapse; font-size: 13px; color: var(--runbook-text); }
+    table.ai-table th, table.ai-table td {
+      text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--runbook-border); vertical-align: top;
+    }
+    table.ai-table th { color: var(--runbook-muted); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: .03em; }
+    .ai-muted { color: var(--runbook-muted); font-size: 12px; }
+  </style>
+</head>
+<body class="support-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access Restricted</h1>
+    <p data-gate-message>This page is for Dealality internal/admin use only.</p>
+  </div>
+  <div class="support-page-shell" id="supportGateContent" hidden>
+    <div class="ai-wrap">
+      <div class="ai-hero">
+        <h1>Acquisition Intelligence</h1>
+        <p>Build your acquisition network from people you already know.</p>
+        <p>Upload your LinkedIn Connections export to identify owner prospects, connectors and relationships worth researching.</p>
+      </div>
+
+      <div class="ai-metrics" id="metricsRow" aria-live="polite">
+        <div class="ai-metric"><div class="label">Total Connections</div><div class="value" id="mTotal">—</div></div>
+        <div class="ai-metric"><div class="label">Relevant</div><div class="value" id="mRelevant">—</div></div>
+        <div class="ai-metric"><div class="label">High Direct Prospects</div><div class="value" id="mDirect">—</div></div>
+        <div class="ai-metric"><div class="label">High Connectors</div><div class="value" id="mConnectors">—</div></div>
+        <div class="ai-metric"><div class="label">High Decision Visibility</div><div class="value" id="mDecision">—</div></div>
+        <div class="ai-metric"><div class="label">CALA Relevant</div><div class="value" id="mCala">—</div></div>
+        <div class="ai-metric"><div class="label">Research Priority</div><div class="value" id="mResearch">—</div></div>
+        <div class="ai-metric"><div class="label">Unclassified</div><div class="value" id="mUnclassified">—</div></div>
+      </div>
+      <p class="ai-muted" id="metricsNote">Import connections, then run classification. No web research in Stage 2.</p>
+
+      <div class="ai-card">
+        <h2>Upload Connections CSV</h2>
+        <p class="ai-help">Your file is used to build your private acquisition network. Dealality does not contact anyone automatically.</p>
+        <div class="ai-actions">
+          <label class="file-btn">
+            Choose CSV
+            <input type="file" id="fileInput" accept=".csv,text/csv" hidden />
+          </label>
+          <button type="button" class="primary" id="btnPreview" disabled>Preview Import</button>
+          <button type="button" id="btnImport" disabled>Import Connections</button>
+          <button type="button" id="btnDryRun" disabled>Dry-Run Import</button>
+        </div>
+        <p class="ai-state" id="uploadState">No file selected.</p>
+      </div>
+
+      <div class="ai-card" id="previewCard" hidden>
+        <h2>Import Preview</h2>
+        <div id="previewBody"></div>
+        <p class="ai-state" id="previewState"></p>
+      </div>
+
+      <div class="ai-card">
+        <h2>Stage 2 Classification</h2>
+        <p class="ai-help">Run only after Import Connections. Preview alone does not create relationships. Deterministic triage from title/company — no web research.</p>
+        <div class="ai-actions">
+          <button type="button" id="btnClassifyDry">Dry-Run Classify</button>
+          <button type="button" class="primary" id="btnClassify">Apply Classification</button>
+        </div>
+        <p class="ai-state" id="classifyState">Classification not run yet this session.</p>
+        <div id="classifySummary"></div>
+      </div>
+
+      <div class="ai-card">
+        <h2>Top Results</h2>
+        <p class="ai-state" id="tableState">Loading relationships…</p>
+        <div id="tableBody" style="overflow-x:auto"></div>
+      </div>
+
+      <div class="ai-card">
+        <h2>Import History</h2>
+        <p class="ai-state" id="historyState">Loading import history…</p>
+        <div id="historyBody"></div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script>
+  (function () {
+    if (window.SupportAdminGate) SupportAdminGate.showPageLoading("supportGateLoading", "Verifying access…");
+
+    var selectedFile = null;
+    var previewId = null;
+
+    function authFetch(url, opts) {
+      return window.DealalityMemberstackAuth.authFetch(url, opts || {});
+    }
+    function esc(s) {
+      return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    /**
+     * Internal admin diagnostics — status + action + route + API message.
+     * Never includes secrets/stack traces.
+     */
+    function formatApiFailure(action, method, url, res, json, err) {
+      var pathOnly = String(url || "").split("?")[0];
+      if (err && !res) {
+        return action + " failed (network): " + method + " " + pathOnly + " — " + (err.message || "request failed");
+      }
+      var status = res && res.status != null ? res.status : "?";
+      var apiErr = (json && (json.message || json.error)) || "";
+      if (status === 404 || apiErr === "API route not found") {
+        return (
+          action +
+          " failed (404): " +
+          method +
+          " " +
+          pathOnly +
+          " — route not found. Restart the Node server (npm run start) so Acquisition Intelligence routes are registered."
+        );
+      }
+      if (status === 401 || status === 403) {
+        return (
+          action +
+          " failed (" +
+          status +
+          "): " +
+          method +
+          " " +
+          pathOnly +
+          " — " +
+          (apiErr || "admin access required")
+        );
+      }
+      return action + " failed (" + status + "): " + method + " " + pathOnly + (apiErr ? " — " + apiErr : "");
+    }
+    async function authJson(method, url, opts) {
+      opts = opts || {};
+      var fetchOpts = Object.assign({}, opts, { method: method });
+      var res;
+      try {
+        res = await authFetch(url, fetchOpts);
+      } catch (err) {
+        return { ok: false, res: null, json: null, err: err, message: formatApiFailure(opts.action || "Request", method, url, null, null, err) };
+      }
+      var json = null;
+      try {
+        json = await res.json();
+      } catch (_) {
+        json = null;
+      }
+      if (!res.ok || (json && json.ok === false)) {
+        return {
+          ok: false,
+          res: res,
+          json: json,
+          err: null,
+          message: formatApiFailure(opts.action || "Request", method, url, res, json, null),
+        };
+      }
+      return { ok: true, res: res, json: json, err: null, message: "" };
+    }
+    function setText(id, value) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = value == null || value === "" ? "—" : String(value);
+    }
+
+    function renderMetrics(metrics) {
+      if (!metrics) {
+        setText("mTotal", "—");
+        return;
+      }
+      setText("mTotal", metrics.totalConnections);
+      setText("mRelevant", metrics.relevantConnections);
+      setText("mDirect", metrics.highDirectProspects != null ? metrics.highDirectProspects : metrics.directProspects);
+      setText("mConnectors", metrics.highConnectors != null ? metrics.highConnectors : metrics.highValueConnectors);
+      setText("mDecision", metrics.highDecisionVisibility);
+      setText("mCala", metrics.calaRelevant);
+      setText("mResearch", metrics.researchPriority != null ? metrics.researchPriority : metrics.researchQueue);
+      setText("mUnclassified", metrics.unclassified);
+      if (metrics.note) document.getElementById("metricsNote").textContent = metrics.note;
+    }
+
+    function renderRelationships(rows, emptyMessage) {
+      var state = document.getElementById("tableState");
+      var body = document.getElementById("tableBody");
+      if (!rows || !rows.length) {
+        state.textContent = emptyMessage || "No classified relationships yet.";
+        state.className = "ai-state";
+        body.innerHTML = "";
+        return;
+      }
+      state.textContent = "Showing " + rows.length + " relationship" + (rows.length === 1 ? "" : "s") + ".";
+      state.className = "ai-state ok";
+      body.innerHTML =
+        '<table class="ai-table"><thead><tr>' +
+        "<th>Name</th><th>Position</th><th>Company</th><th>Role</th><th>Direct</th><th>Connector</th><th>Decision</th><th>CALA</th><th>Confidence</th><th>Research</th>" +
+        "</tr></thead><tbody>" +
+        rows
+          .map(function (r) {
+            return (
+              "<tr><td>" +
+              esc(r.name) +
+              "</td><td>" +
+              esc(r.position) +
+              "</td><td>" +
+              esc(r.company) +
+              "</td><td>" +
+              esc(r.acquisitionRole) +
+              "</td><td>" +
+              esc(r.directProspectPotential) +
+              "</td><td>" +
+              esc(r.connectorPotential) +
+              "</td><td>" +
+              esc(r.decisionVisibility) +
+              "</td><td>" +
+              esc(r.calaRelevance) +
+              "</td><td>" +
+              esc(r.classificationConfidence) +
+              "</td><td>" +
+              esc(r.researchQueueEligibility) +
+              "</td></tr>"
+            );
+          })
+          .join("") +
+        "</tbody></table>";
+    }
+
+    function renderClassifySummary(summary, review) {
+      var el = document.getElementById("classifySummary");
+      if (!summary) {
+        el.innerHTML = "";
+        return;
+      }
+      var html =
+        '<table class="ai-table" style="margin-top:10px"><tbody>' +
+        row("Would Update / Updated", (summary.wouldUpdate || 0) + " / " + (summary.updated || 0)) +
+        row("Skipped Manual", summary.skippedManual) +
+        row("Skipped Unchanged", summary.skippedUnchanged) +
+        row("Relevant", summary.relevantConnections) +
+        row("Research Priority", (summary.researchQueue || {})["Research Priority"]) +
+        row("Owner Target Matches (Yes)", (summary.existingOwnerTargetMatch || {}).Yes) +
+        "</tbody></table>";
+      if (review && review.topDirectProspects && review.topDirectProspects.length) {
+        html +=
+          '<p class="ai-muted" style="margin-top:12px">Sample — top direct prospects</p><table class="ai-table"><thead><tr><th>Name</th><th>Role</th><th>Company</th><th>Direct</th><th>Reason</th></tr></thead><tbody>' +
+          review.topDirectProspects
+            .slice(0, 8)
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                esc(r.name) +
+                "</td><td>" +
+                esc(r.acquisitionRole) +
+                "</td><td>" +
+                esc(r.company) +
+                "</td><td>" +
+                esc(r.directProspectPotential) +
+                "</td><td class='ai-muted'>" +
+                esc((r.reason || "").slice(0, 140)) +
+                "</td></tr>"
+              );
+            })
+            .join("") +
+          "</tbody></table>";
+      }
+      el.innerHTML = html;
+    }
+
+    async function loadRelationships() {
+      try {
+        var first = await authJson("GET", "/api/acquisition-intelligence/relationships?limit=50&researchOnly=1", {
+          action: "Top Results",
+        });
+        if (!first.ok) {
+          document.getElementById("tableState").textContent = first.message;
+          document.getElementById("tableState").className = "ai-state error";
+          return;
+        }
+        var json = first.json;
+        if (json.empty || !(json.rows || []).length) {
+          var all = await authJson("GET", "/api/acquisition-intelligence/relationships?limit=40", {
+            action: "Top Results",
+          });
+          if (!all.ok) {
+            document.getElementById("tableState").textContent = all.message;
+            document.getElementById("tableState").className = "ai-state error";
+            return;
+          }
+          renderRelationships(all.json.rows || [], json.message || "No relationships yet. Import a CSV first.");
+          return;
+        }
+        renderRelationships(json.rows);
+      } catch (err) {
+        document.getElementById("tableState").textContent =
+          formatApiFailure("Top Results", "GET", "/api/acquisition-intelligence/relationships", null, null, err);
+        document.getElementById("tableState").className = "ai-state error";
+      }
+    }
+
+    async function runClassify(live) {
+      var state = document.getElementById("classifyState");
+      state.textContent = live ? "Applying classification…" : "Running classification dry-run…";
+      state.className = "ai-state";
+      try {
+        var result = await authJson("POST", "/api/acquisition-intelligence/classify", {
+          action: live ? "Apply Classification" : "Dry-Run Classify",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(live ? { confirm: true } : { dryRun: true }),
+        });
+        if (!result.ok) {
+          state.textContent = result.message;
+          state.className = "ai-state error";
+          return;
+        }
+        var json = result.json;
+        state.textContent = json.message || "Classification complete.";
+        state.className = json.empty ? "ai-state error" : "ai-state ok";
+        renderClassifySummary(json.summary, json.review);
+        if (!json.dryRun && !json.empty) {
+          await loadSummaryAndHistory();
+          await loadRelationships();
+        }
+      } catch (err) {
+        state.textContent = formatApiFailure(
+          live ? "Apply Classification" : "Dry-Run Classify",
+          "POST",
+          "/api/acquisition-intelligence/classify",
+          null,
+          null,
+          err
+        );
+        state.className = "ai-state error";
+      }
+    }
+
+    function renderPreview(data) {
+      var card = document.getElementById("previewCard");
+      var body = document.getElementById("previewBody");
+      card.hidden = false;
+      var s = data.stats || {};
+      body.innerHTML =
+        '<table class="ai-table"><tbody>' +
+        row("File Name", s.fileName) +
+        row("Connections Detected", s.connectionsDetected) +
+        row("Records With Company", s.recordsWithCompany) +
+        row("Records With Position", s.recordsWithPosition) +
+        row("Records With LinkedIn URL", s.recordsWithLinkedInUrl) +
+        row("Records With Email", s.recordsWithEmail) +
+        row("Earliest Connection", s.earliestConnection) +
+        row("Latest Connection", s.latestConnection) +
+        row("Potential Duplicates", s.potentialDuplicates) +
+        row("Invalid Rows", s.invalidRows) +
+        "</tbody></table>" +
+        (data.sampleRows && data.sampleRows.length
+          ? '<p class="ai-muted" style="margin-top:12px">Sample rows</p><table class="ai-table"><thead><tr><th>Name</th><th>Position</th><th>Company</th></tr></thead><tbody>' +
+            data.sampleRows
+              .map(function (r) {
+                return (
+                  "<tr><td>" +
+                  esc(r.displayName) +
+                  "</td><td>" +
+                  esc(r.position) +
+                  "</td><td>" +
+                  esc(r.company) +
+                  "</td></tr>"
+                );
+              })
+              .join("") +
+            "</tbody></table>"
+          : "");
+      document.getElementById("btnImport").disabled = !(data.validation && data.validation.pass && data.previewId);
+      document.getElementById("btnDryRun").disabled = !(data.validation && data.validation.pass && data.previewId);
+    }
+
+    function row(label, value) {
+      return "<tr><th>" + esc(label) + "</th><td>" + esc(value == null ? "—" : value) + "</td></tr>";
+    }
+
+    function renderHistory(batches) {
+      var state = document.getElementById("historyState");
+      var body = document.getElementById("historyBody");
+      if (!batches || !batches.length) {
+        state.textContent = "No imports yet.";
+        state.className = "ai-state";
+        body.innerHTML = "";
+        return;
+      }
+      state.textContent = batches.length + " import batch" + (batches.length === 1 ? "" : "es") + ".";
+      state.className = "ai-state ok";
+      body.innerHTML =
+        '<table class="ai-table"><thead><tr><th>File</th><th>Imported At</th><th>Detected</th><th>Created</th><th>Updated</th><th>Skipped</th><th>Invalid</th><th>Status</th></tr></thead><tbody>' +
+        batches
+          .map(function (b) {
+            return (
+              "<tr><td>" +
+              esc(b.sourceFileName || b.batchLabel) +
+              "</td><td>" +
+              esc(b.importedAt || "—") +
+              "</td><td>" +
+              esc(b.rowsDetected) +
+              "</td><td>" +
+              esc(b.createdCount) +
+              "</td><td>" +
+              esc(b.updatedCount) +
+              "</td><td>" +
+              esc(b.skippedCount) +
+              "</td><td>" +
+              esc(b.invalidCount) +
+              "</td><td>" +
+              esc(b.status) +
+              "</td></tr>"
+            );
+          })
+          .join("") +
+        "</tbody></table>";
+    }
+
+    async function loadSummaryAndHistory() {
+      try {
+        var sum = await authJson("GET", "/api/acquisition-intelligence/summary", { action: "Summary" });
+        if (sum.ok && sum.json.metrics) renderMetrics(sum.json.metrics);
+        else if (!sum.ok) {
+          renderMetrics(null);
+          document.getElementById("metricsNote").textContent = sum.message;
+        } else renderMetrics(sum.json.metrics || null);
+      } catch (err) {
+        renderMetrics(null);
+        document.getElementById("metricsNote").textContent = formatApiFailure(
+          "Summary",
+          "GET",
+          "/api/acquisition-intelligence/summary",
+          null,
+          null,
+          err
+        );
+      }
+
+      try {
+        var hist = await authJson("GET", "/api/acquisition-intelligence/import-batches", {
+          action: "Import History",
+        });
+        if (!hist.ok) {
+          document.getElementById("historyState").textContent = hist.message;
+          document.getElementById("historyState").className = "ai-state error";
+        } else {
+          renderHistory(hist.json.batches || []);
+        }
+      } catch (err) {
+        document.getElementById("historyState").textContent = formatApiFailure(
+          "Import History",
+          "GET",
+          "/api/acquisition-intelligence/import-batches",
+          null,
+          null,
+          err
+        );
+        document.getElementById("historyState").className = "ai-state error";
+      }
+    }
+
+    async function runPreview() {
+      var state = document.getElementById("uploadState");
+      if (!selectedFile) return;
+      state.textContent = "Building preview…";
+      state.className = "ai-state";
+      previewId = null;
+      document.getElementById("btnImport").disabled = true;
+      document.getElementById("btnDryRun").disabled = true;
+
+      var fd = new FormData();
+      fd.append("file", selectedFile, selectedFile.name);
+      var url = "/api/acquisition-intelligence/connections/preview";
+
+      try {
+        var result = await authJson("POST", url, { action: "Preview Import", body: fd });
+        if (!result.ok) {
+          state.textContent = result.message;
+          state.className = "ai-state error";
+          document.getElementById("previewCard").hidden = false;
+          document.getElementById("previewBody").innerHTML =
+            "<p class='ai-state error'>" + esc(result.message) + "</p>";
+          return;
+        }
+        var json = result.json;
+        previewId = json.previewId;
+        state.textContent = "Preview ready — review stats, then Import Connections.";
+        state.className = "ai-state ok";
+        renderPreview(json);
+      } catch (err) {
+        state.textContent = formatApiFailure("Preview Import", "POST", url, null, null, err);
+        state.className = "ai-state error";
+      }
+    }
+
+    async function runImport(dryRun) {
+      var state = document.getElementById("previewState");
+      var url = "/api/acquisition-intelligence/connections/import";
+      if (!previewId) {
+        state.textContent = "Preview required before import.";
+        state.className = "ai-state error";
+        return;
+      }
+      state.textContent = dryRun ? "Running dry-run…" : "Importing connections…";
+      state.className = "ai-state";
+      document.getElementById("btnImport").disabled = true;
+      document.getElementById("btnDryRun").disabled = true;
+
+      try {
+        var result = await authJson("POST", url, {
+          action: dryRun ? "Dry-Run Import" : "Import Connections",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ previewId: previewId, confirm: true, dryRun: !!dryRun }),
+        });
+        if (!result.ok) {
+          state.textContent = result.message;
+          state.className = "ai-state error";
+          document.getElementById("btnImport").disabled = false;
+          document.getElementById("btnDryRun").disabled = false;
+          return;
+        }
+        var json = result.json;
+        var summary = json.planSummary || {};
+        state.textContent =
+          (json.dryRun ? "Dry-run OK. " : "Import applied. ") +
+          "Create " +
+          (summary.createRelationships || 0) +
+          ", update " +
+          (summary.updateRelationships || 0) +
+          ", skipped " +
+          (summary.skipped || 0) +
+          ".";
+        state.className = "ai-state ok";
+        if (!json.dryRun) {
+          previewId = null;
+          await loadSummaryAndHistory();
+          await loadRelationships();
+        } else {
+          document.getElementById("btnImport").disabled = false;
+          document.getElementById("btnDryRun").disabled = false;
+        }
+      } catch (err) {
+        state.textContent = formatApiFailure(
+          dryRun ? "Dry-Run Import" : "Import Connections",
+          "POST",
+          url,
+          null,
+          null,
+          err
+        );
+        state.className = "ai-state error";
+        document.getElementById("btnImport").disabled = false;
+        document.getElementById("btnDryRun").disabled = false;
+      }
+    }
+
+    document.getElementById("fileInput").addEventListener("change", function (e) {
+      selectedFile = (e.target.files && e.target.files[0]) || null;
+      previewId = null;
+      document.getElementById("btnPreview").disabled = !selectedFile;
+      document.getElementById("btnImport").disabled = true;
+      document.getElementById("btnDryRun").disabled = true;
+      document.getElementById("uploadState").textContent = selectedFile
+        ? "Selected: " + selectedFile.name
+        : "No file selected.";
+      document.getElementById("uploadState").className = "ai-state";
+    });
+    document.getElementById("btnPreview").addEventListener("click", runPreview);
+    document.getElementById("btnImport").addEventListener("click", function () {
+      runImport(false);
+    });
+    document.getElementById("btnDryRun").addEventListener("click", function () {
+      runImport(true);
+    });
+    document.getElementById("btnClassifyDry").addEventListener("click", function () {
+      runClassify(false);
+    });
+    document.getElementById("btnClassify").addEventListener("click", function () {
+      runClassify(true);
+    });
+
+    window.SupportAdminGate.requireAdmin({
+      loadingId: "supportGateLoading",
+      deniedId: "supportGateDenied",
+      contentId: "supportGateContent",
+      onAllowed: function () {
+        loadSummaryAndHistory();
+        loadRelationships();
+      },
+    });
+  })();
+  </script>
+</body>
+</html>

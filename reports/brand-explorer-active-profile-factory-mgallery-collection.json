@@ -1,0 +1,1201 @@
+{
+  "factoryVersion": "v34D",
+  "brandConfigVersion": "v35B",
+  "stage": "build-draft",
+  "generatedAt": "2026-07-21T22:46:17.493Z",
+  "brand": {
+    "slug": "mgallery-collection",
+    "recordId": "recrWCD1LMqu864oU",
+    "name": "MGallery Collection",
+    "parentCompany": "Accor",
+    "consumerUrl": "https://mgallery.accor.com/"
+  },
+  "activeProfileConfig": {
+    "slug": "mgallery-collection",
+    "recordId": "recrWCD1LMqu864oU",
+    "brandFamily": "accor-soft-collection",
+    "propertyExampleStrategy": "lifestyle_property_page_probe",
+    "galleryMinimum": 6
+  },
+  "mode": "dry-run",
+  "guardrails": {
+    "companyValidatedNeverAuto": true,
+    "imageApprovalNotCompanyValidation": true,
+    "noSummaryUrlWrites": true,
+    "registryOnlyNotVisibleReadiness": true,
+    "founderVisualReviewRequiredForApply": true,
+    "stagedApplyWorkflow": "apply-draft → founder-review → apply-approved",
+    "galleryMinimum": 6
+  },
+  "factoryRules": {
+    "factoryVersion": "v34D",
+    "pass": false,
+    "rules": {
+      "gallery": {
+        "ruleId": "gallery_minimum_six_visible",
+        "pass": true,
+        "minimum": 6,
+        "visibleInApi": 6,
+        "withImageUrl": 6,
+        "missingImageUrl": [],
+        "logoOrGenericSlots": [],
+        "blockers": []
+      },
+      "propertyExamples": {
+        "ruleId": "property_example_real_hotel_images",
+        "pass": true,
+        "visibleOpeningCards": 3,
+        "expectedOpeningCards": 3,
+        "defects": [],
+        "blockers": []
+      },
+      "scenarioImages": {
+        "ruleId": "scenario_no_image_placeholder",
+        "pass": true,
+        "visibleScenarioCards": 3,
+        "placeholderSlots": [],
+        "staleFallbackTitles": false,
+        "blockers": []
+      },
+      "registryTraceability": {
+        "ruleId": "registry_traceability",
+        "pass": false,
+        "visualSlotsChecked": 12,
+        "gaps": [
+          {
+            "slotKey": "materials.gallery.1",
+            "recordId": "recB8YMMFdA5ZpIS6",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "overview.scenario.1",
+            "recordId": "rectwmt0jj6LZf4Lb",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "recordId": "recm2lhl6dhxQJ6bU",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "recordId": "recoI6KB4iS8eisyK",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "recordId": "recL52iw54gubYRaL",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "recordId": "recNDRiTKj0iLVN2p",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "materials.gallery.4",
+            "recordId": "reci6xRXQbOtgBUsg",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "materials.gallery.5",
+            "recordId": "recFv26feyOuPspVi",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "materials.gallery.6",
+            "recordId": "rec0cb78ciUH8XuPT",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recDUlVndGpUZ11zs",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recfOLHdiiLyeP2vz",
+            "issue": "registry_not_approved"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recpxQXeEO3z3Zq8T",
+            "issue": "registry_not_approved"
+          }
+        ],
+        "blockers": [
+          "registry_not_approved:materials.gallery.1",
+          "registry_not_approved:overview.scenario.1",
+          "registry_not_approved:materials.gallery.2",
+          "registry_not_approved:overview.scenario.2",
+          "registry_not_approved:overview.scenario.3",
+          "registry_not_approved:materials.gallery.3",
+          "registry_not_approved:materials.gallery.4",
+          "registry_not_approved:materials.gallery.5",
+          "registry_not_approved:materials.gallery.6",
+          "registry_not_approved:footprint.openings",
+          "registry_not_approved:footprint.openings",
+          "registry_not_approved:footprint.openings"
+        ]
+      },
+      "uiFallback": {
+        "ruleId": "ui_fallback_preference",
+        "pass": true,
+        "risks": [],
+        "blockers": []
+      },
+      "copySafety": {
+        "ruleId": "copy_safety",
+        "pass": true,
+        "findings": [],
+        "highCount": 0,
+        "blockers": []
+      },
+      "externalOwnerReadiness": {
+        "ruleId": "external_owner_readiness",
+        "pass": false,
+        "blockers": [
+          "modal_placeholders:recDUlVndGpUZ11zs",
+          "modal_placeholders:recfOLHdiiLyeP2vz",
+          "modal_placeholders:recpxQXeEO3z3Zq8T"
+        ],
+        "urlHitCount": 0,
+        "emptyCardCount": 0,
+        "emptyCardRows": [],
+        "modalPlaceholderCount": 15
+      },
+      "standardDetail": {
+        "ruleId": "standard_detail_governance",
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false,
+        "blockers": []
+      }
+    },
+    "imageGovernanceDefects": [],
+    "blockers": [
+      "registry_not_approved:materials.gallery.1",
+      "registry_not_approved:overview.scenario.1",
+      "registry_not_approved:materials.gallery.2",
+      "registry_not_approved:overview.scenario.2",
+      "registry_not_approved:overview.scenario.3",
+      "registry_not_approved:materials.gallery.3",
+      "registry_not_approved:materials.gallery.4",
+      "registry_not_approved:materials.gallery.5",
+      "registry_not_approved:materials.gallery.6",
+      "registry_not_approved:footprint.openings",
+      "modal_placeholders:recDUlVndGpUZ11zs",
+      "modal_placeholders:recfOLHdiiLyeP2vz",
+      "modal_placeholders:recpxQXeEO3z3Zq8T"
+    ],
+    "galleryMinimum": 6,
+    "visibleGalleryCount": 6
+  },
+  "assetPack": {
+    "assetPackVersion": "v34B",
+    "brandSlug": "mgallery-collection",
+    "brandConfig": {
+      "slug": "mgallery-collection",
+      "recordId": "recrWCD1LMqu864oU",
+      "name": "MGallery Collection",
+      "brandFamily": "accor-soft-collection",
+      "geographicFallbackRule": "cala_first_then_us_then_global",
+      "propertyExampleStrategy": "lifestyle_property_page_probe",
+      "galleryMinimum": 6,
+      "propertyExampleMinimum": 3,
+      "scenarioMinimum": 3
+    },
+    "gallery": [
+      {
+        "slotKey": "materials.gallery.1",
+        "intendedSlot": "materials.gallery.1",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.1)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "b1r7",
+        "propertyName": "Palladio Hotel Buenos Aires MGallery Collection",
+        "notes": "v37a_visual_asset_pack_report",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.2",
+        "intendedSlot": "materials.gallery.2",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.2)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "b3g3",
+        "propertyName": "Hotel Costanero Montevideo - MGallery Collection",
+        "notes": "v37a_visual_asset_pack_report",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.3",
+        "intendedSlot": "materials.gallery.3",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.3)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "a1x5",
+        "propertyName": "Santa Teresa Hotel RJ - MGallery Collection",
+        "notes": "v37a_visual_asset_pack_report",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.4",
+        "intendedSlot": "materials.gallery.4",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.4)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "c2a2",
+        "propertyName": "Palladio Hotel Buenos Aires MGallery Collection",
+        "notes": "v37a_visual_asset_pack_report",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.5",
+        "intendedSlot": "materials.gallery.5",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.5)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "b1r7",
+        "propertyName": "Hotel Costanero Montevideo - MGallery Collection",
+        "notes": "v37a_visual_asset_pack_report",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.6",
+        "intendedSlot": "materials.gallery.6",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.6)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "b3g3",
+        "propertyName": "Santa Teresa Hotel RJ - MGallery Collection",
+        "notes": "v37a_visual_asset_pack_report",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "propertyExamples": [
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Palladio Hotel Buenos Aires MGallery Collection",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for b1r7)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "b1r7",
+        "propertyName": "Palladio Hotel Buenos Aires MGallery Collection",
+        "notes": "Official property page hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Hotel Costanero Montevideo - MGallery Collection",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for b3g3)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "b3g3",
+        "propertyName": "Hotel Costanero Montevideo - MGallery Collection",
+        "notes": "Official property page hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Santa Teresa Hotel RJ - MGallery Collection",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for a1x5)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "a1x5",
+        "propertyName": "Santa Teresa Hotel RJ - MGallery Collection",
+        "notes": "Official property page hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "scenarios": [
+      {
+        "slotKey": "overview.scenario.1",
+        "intendedSlot": "overview.scenario.1",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for overview.scenario.1)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "palladio-hotel-buenos-aires-mgallery-collection",
+        "propertyName": "Distinctive Local Character",
+        "notes": "copy package available",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "overview.scenario.2",
+        "intendedSlot": "overview.scenario.2",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for overview.scenario.2)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "hotel-costanero-montevideo---mgallery-collection",
+        "propertyName": "Soft-Collection Conversion",
+        "notes": "copy package available",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "overview.scenario.3",
+        "intendedSlot": "overview.scenario.3",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg",
+        "registryRowCandidate": "(new registry for overview.scenario.3)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "santa-teresa-hotel-rj---mgallery-collection",
+        "propertyName": "CALA Collection Reference",
+        "notes": "copy package available",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "momentumSources": [
+      {
+        "slotKey": "footprint.momentum",
+        "intendedSlot": "momentum_source_1",
+        "sourcePageUrl": "https://mgallery.accor.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "text_source",
+        "approvalStatus": "source_candidate",
+        "renderReadiness": "copy_only",
+        "assetRole": "momentum",
+        "notes": "Momentum narrative source — no image required"
+      }
+    ],
+    "standardDetailSources": [
+      {
+        "slotKey": "standard_detail",
+        "intendedSlot": "standard_detail / where_available",
+        "sourcePageUrl": "https://mgallery.accor.com/",
+        "imageUrl": "",
+        "sourceConfidence": "medium",
+        "approvalStatus": "pending_governance_review",
+        "renderReadiness": "governance_gate",
+        "assetRole": "standard_detail",
+        "notes": "Requires founder governance review before apply"
+      }
+    ],
+    "proofSupport": [
+      {
+        "slotKey": "overview.proof.1",
+        "intendedSlot": "overview.proof.1",
+        "sourcePageUrl": "https://mgallery.accor.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.2",
+        "intendedSlot": "overview.proof.2",
+        "sourcePageUrl": "https://mgallery.accor.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.3",
+        "intendedSlot": "overview.proof.3",
+        "sourcePageUrl": "https://mgallery.accor.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.4",
+        "intendedSlot": "overview.proof.4",
+        "sourcePageUrl": "https://mgallery.accor.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.5",
+        "intendedSlot": "overview.proof.5",
+        "sourcePageUrl": "https://mgallery.accor.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.6",
+        "intendedSlot": "overview.proof.6",
+        "sourcePageUrl": "https://mgallery.accor.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      }
+    ],
+    "registryCandidateMapping": [
+      {
+        "slotKey": "materials.gallery.1",
+        "intendedSlot": "materials.gallery.1",
+        "registryRowCandidate": "(new registry for materials.gallery.1)",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.2",
+        "intendedSlot": "materials.gallery.2",
+        "registryRowCandidate": "(new registry for materials.gallery.2)",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.3",
+        "intendedSlot": "materials.gallery.3",
+        "registryRowCandidate": "(new registry for materials.gallery.3)",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.4",
+        "intendedSlot": "materials.gallery.4",
+        "registryRowCandidate": "(new registry for materials.gallery.4)",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.5",
+        "intendedSlot": "materials.gallery.5",
+        "registryRowCandidate": "(new registry for materials.gallery.5)",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.6",
+        "intendedSlot": "materials.gallery.6",
+        "registryRowCandidate": "(new registry for materials.gallery.6)",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Palladio Hotel Buenos Aires MGallery Collection",
+        "registryRowCandidate": "(new registry for b1r7)",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Hotel Costanero Montevideo - MGallery Collection",
+        "registryRowCandidate": "(new registry for b3g3)",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Santa Teresa Hotel RJ - MGallery Collection",
+        "registryRowCandidate": "(new registry for a1x5)",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "overview.scenario.1",
+        "intendedSlot": "overview.scenario.1",
+        "registryRowCandidate": "(new registry for overview.scenario.1)",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "overview.scenario.2",
+        "intendedSlot": "overview.scenario.2",
+        "registryRowCandidate": "(new registry for overview.scenario.2)",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg"
+      },
+      {
+        "slotKey": "overview.scenario.3",
+        "intendedSlot": "overview.scenario.3",
+        "registryRowCandidate": "(new registry for overview.scenario.3)",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "imageUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg"
+      }
+    ],
+    "summary": {
+      "galleryReady": "6/6",
+      "propertyExamplesReady": "3/3",
+      "scenariosWithImage": "3/3",
+      "galleryPoolSize": 6,
+      "partialReadiness": false,
+      "readinessBand": "full",
+      "canProceedWithConfigOnly": false,
+      "canProceedWithConfigAndAssetPack": true,
+      "customCodeRequired": false
+    },
+    "enforcement": {
+      "galleryMinimum": 6,
+      "propertyExampleMinimum": 3,
+      "propertyExamplesPartialAllowed": true,
+      "noLogoLifestyleAsPropertyExamples": true,
+      "usFallbackLabeled": true
+    }
+  },
+  "draftPlan": {
+    "draftBuilderVersion": "v34B",
+    "brandSlug": "mgallery-collection",
+    "mode": "dry-run",
+    "presentationPatches": [
+      {
+        "recordId": "recB8YMMFdA5ZpIS6",
+        "slotKey": "materials.gallery.1",
+        "fields": {
+          "Title": "Exterior / Arrival - Palladio Hotel Buenos Aires MGallery Collection",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml"
+      },
+      {
+        "recordId": "recm2lhl6dhxQJ6bU",
+        "slotKey": "materials.gallery.2",
+        "fields": {
+          "Title": "Guest Room / Suite - Hotel Costanero Montevideo - MGallery Collection",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml"
+      },
+      {
+        "recordId": "recNDRiTKj0iLVN2p",
+        "slotKey": "materials.gallery.3",
+        "fields": {
+          "Title": "Public Space - Santa Teresa Hotel RJ - MGallery Collection",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml"
+      },
+      {
+        "recordId": "reci6xRXQbOtgBUsg",
+        "slotKey": "materials.gallery.4",
+        "fields": {
+          "Title": "F&B or Local Experience - Palladio Hotel Buenos Aires MGallery Collection",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml"
+      },
+      {
+        "recordId": "recFv26feyOuPspVi",
+        "slotKey": "materials.gallery.5",
+        "fields": {
+          "Title": "Design Detail - Hotel Costanero Montevideo - MGallery Collection",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml"
+      },
+      {
+        "recordId": "rec0cb78ciUH8XuPT",
+        "slotKey": "materials.gallery.6",
+        "fields": {
+          "Title": "Property Setting - Santa Teresa Hotel RJ - MGallery Collection",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml"
+      },
+      {
+        "recordId": "recDUlVndGpUZ11zs",
+        "slotKey": "footprint.openings",
+        "fields": {
+          "Title": "Palladio Hotel Buenos Aires MGallery Collection — CALA Property Example",
+          "Body": "CALA urban MGallery in Buenos Aires — reference for soft-collection conversion and local character.",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_property_example",
+        "createIfMissing": false,
+        "catalogPropertyKey": "b1r7",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml"
+      },
+      {
+        "recordId": "recpxQXeEO3z3Zq8T",
+        "slotKey": "footprint.openings",
+        "fields": {
+          "Title": "Hotel Costanero Montevideo - MGallery Collection — CALA Property Example",
+          "Body": "CALA waterfront MGallery in Montevideo — reference for collection positioning in secondary capital markets.",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_property_example",
+        "createIfMissing": false,
+        "catalogPropertyKey": "b3g3",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml"
+      },
+      {
+        "recordId": "recfOLHdiiLyeP2vz",
+        "slotKey": "footprint.openings",
+        "fields": {
+          "Title": "Santa Teresa Hotel RJ - MGallery Collection — CALA Property Example",
+          "Body": "CALA urban MGallery in Rio — reference for boutique collection fit in Brazil gateway markets.",
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_property_example",
+        "createIfMissing": false,
+        "catalogPropertyKey": "a1x5",
+        "imageSourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml"
+      },
+      {
+        "recordId": "rectwmt0jj6LZf4Lb",
+        "slotKey": "overview.scenario.1",
+        "fields": {
+          "Title": "Distinctive Local Character",
+          "Body": "Memorable hotels with strong local narrative and design identity—MGallery fits when owners want Accor collection affiliation while preserving property character and storytelling.",
+          "External Display Status": null,
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg"
+            }
+          ]
+        },
+        "reason": "active_profile_scenario_build",
+        "riskyCopyRemoved": [],
+        "createIfMissing": false
+      },
+      {
+        "recordId": "recoI6KB4iS8eisyK",
+        "slotKey": "overview.scenario.2",
+        "fields": {
+          "Title": "Soft-Collection Conversion",
+          "Body": "Independent or boutique assets evaluating Accor soft-collection path—owners diligence collection standards, conversion PIP, and ALL participation without generic Accor boilerplate.",
+          "External Display Status": null,
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg"
+            }
+          ]
+        },
+        "reason": "active_profile_scenario_build",
+        "riskyCopyRemoved": [],
+        "createIfMissing": false
+      },
+      {
+        "recordId": "recL52iw54gubYRaL",
+        "slotKey": "overview.scenario.3",
+        "fields": {
+          "Title": "CALA Collection Reference",
+          "Body": "Caribbean and Latin America distinctive hotels comparing Accor collection options—MGallery competes when local character and curated experience matter in the region.",
+          "External Display Status": null,
+          "Image": [
+            {
+              "url": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg"
+            }
+          ]
+        },
+        "reason": "active_profile_scenario_build",
+        "riskyCopyRemoved": [],
+        "createIfMissing": false
+      }
+    ],
+    "registryCreates": [
+      {
+        "assetName": "MGallery Collection — materials.gallery.1",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "materials.gallery.1",
+        "slotPurpose": "MGallery Collection gallery — Exterior / Arrival",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "MGallery Collection — materials.gallery.2",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "materials.gallery.2",
+        "slotPurpose": "MGallery Collection gallery — Guest Room / Suite",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "MGallery Collection — materials.gallery.3",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "materials.gallery.3",
+        "slotPurpose": "MGallery Collection gallery — Public Space",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "MGallery Collection — materials.gallery.4",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "materials.gallery.4",
+        "slotPurpose": "MGallery Collection gallery — F&B or Local Experience",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "MGallery Collection — materials.gallery.5",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "materials.gallery.5",
+        "slotPurpose": "MGallery Collection gallery — Design Detail",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "MGallery Collection — materials.gallery.6",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "materials.gallery.6",
+        "slotPurpose": "MGallery Collection gallery — Property Setting",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "MGallery Collection — footprint.openings — Palladio Hotel Buenos Aires MGallery Collection",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/b1r7_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "footprint.openings",
+        "slotPurpose": "Palladio Hotel Buenos Aires MGallery Collection CALA property example",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "Yes",
+        "notes": "v34B generic factory draft — property_example"
+      },
+      {
+        "assetName": "MGallery Collection — footprint.openings — Hotel Costanero Montevideo - MGallery Collection",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/b3g3_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "footprint.openings",
+        "slotPurpose": "Hotel Costanero Montevideo - MGallery Collection CALA property example",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "Yes",
+        "notes": "v34B generic factory draft — property_example"
+      },
+      {
+        "assetName": "MGallery Collection — footprint.openings — Santa Teresa Hotel RJ - MGallery Collection",
+        "brandRecordId": "recrWCD1LMqu864oU",
+        "parentCompany": "AccorHotels",
+        "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+        "sourceUrl": "https://www.ahstatic.com/photos/a1x5_ho_00_p_1024x768.jpg",
+        "recommendedExplorerSlot": "footprint.openings",
+        "slotPurpose": "Santa Teresa Hotel RJ - MGallery Collection CALA property example",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "Yes",
+        "notes": "v34B generic factory draft — property_example"
+      }
+    ],
+    "registryPatches": [],
+    "visibilityPatches": [],
+    "copyPatches": [
+      {
+        "slotKey": "overview.scenario.1",
+        "title": "Distinctive Local Character",
+        "source": "brand_config"
+      },
+      {
+        "slotKey": "overview.scenario.2",
+        "title": "Soft-Collection Conversion",
+        "source": "brand_config"
+      },
+      {
+        "slotKey": "overview.scenario.3",
+        "title": "CALA Collection Reference",
+        "source": "brand_config"
+      }
+    ],
+    "riskyCopyRemoved": [],
+    "missingSourceEvidence": [],
+    "pendingGovernanceGates": [
+      "standard_detail_governance_review",
+      "founder_visual_review"
+    ],
+    "willApply": {
+      "presentationPatchCount": 12,
+      "registryCreateCount": 9,
+      "visibilityPatchCount": 0,
+      "sections": [
+        "materials.gallery",
+        "footprint.openings",
+        "overview.scenario"
+      ],
+      "slots": [
+        "materials.gallery.1",
+        "materials.gallery.2",
+        "materials.gallery.3",
+        "materials.gallery.4",
+        "materials.gallery.5",
+        "materials.gallery.6",
+        "footprint.openings",
+        "footprint.openings",
+        "footprint.openings",
+        "overview.scenario.1",
+        "overview.scenario.2",
+        "overview.scenario.3"
+      ]
+    },
+    "remainsHumanReviewed": [
+      "Company Validated field — never auto-written",
+      "Summary URL field — never auto-written",
+      "Standard Detail governance sign-off",
+      "Founder visual review approval"
+    ],
+    "summary": {
+      "patchCount": 12,
+      "registryCreates": 9,
+      "galleryPatches": 6,
+      "propertyPatches": 3,
+      "scenarioPatches": 3,
+      "readyForDryRunReview": true
+    }
+  },
+  "copyGovernancePlan": null,
+  "approvedSourcesCount": 0,
+  "applyResult": null,
+  "legacyWriterChainReference": [],
+  "finalQa": null,
+  "visualDefects": null,
+  "completeBuild": {
+    "readyForActiveProfile": false,
+    "readinessBand": "blocked"
+  },
+  "suburbanReadiness": null,
+  "applyApproved": {
+    "allowed": false,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-approved -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+    "blockers": []
+  },
+  "applyDraft": {
+    "allowed": true,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-draft -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+    "blockers": [],
+    "writesActiveProfileApproval": false
+  },
+  "stagedApplyVersion": "v34D",
+  "founderVisualReview": {
+    "stagedApplyVersion": "v34D",
+    "pass": false,
+    "checks": [
+      {
+        "id": "gallery_six_visible",
+        "label": "6 gallery images visible with imageUrl",
+        "pass": true,
+        "detail": "6/6"
+      },
+      {
+        "id": "property_examples_hotel_images",
+        "label": "3 property examples visible with hotel images",
+        "pass": true,
+        "detail": "3 cards"
+      },
+      {
+        "id": "no_logo_lifestyle_property_images",
+        "label": "No logo/lifestyle/generic property images",
+        "pass": true,
+        "detail": "gallery + property scan"
+      },
+      {
+        "id": "scenario_no_placeholders",
+        "label": "No IMAGE placeholders on scenario cards",
+        "pass": true,
+        "detail": "ok"
+      },
+      {
+        "id": "external_owner_readiness",
+        "label": "No visible source URLs, governance language, or modal placeholders in owner copy",
+        "pass": false,
+        "detail": "3 blockers"
+      },
+      {
+        "id": "copy_safety",
+        "label": "No FDD / Item 19 / ADR / RevPAR / net contribution language",
+        "pass": true,
+        "detail": "0 high findings"
+      },
+      {
+        "id": "standard_detail_governance",
+        "label": "Standard detail governance visible and safe",
+        "pass": true,
+        "detail": "unknown"
+      },
+      {
+        "id": "company_validated_untouched",
+        "label": "Company Validated untouched",
+        "pass": true,
+        "detail": "before=false after=false"
+      },
+      {
+        "id": "registry_traceability",
+        "label": "Registry traceability for visual slots",
+        "pass": false,
+        "detail": "12 gaps"
+      },
+      {
+        "id": "ui_fallback_risk",
+        "label": "No stale UI fallback titles",
+        "pass": true,
+        "detail": "0 risks"
+      }
+    ],
+    "failedChecks": [
+      {
+        "id": "external_owner_readiness",
+        "label": "No visible source URLs, governance language, or modal placeholders in owner copy",
+        "pass": false,
+        "detail": "3 blockers"
+      },
+      {
+        "id": "registry_traceability",
+        "label": "Registry traceability for visual slots",
+        "pass": false,
+        "detail": "12 gaps"
+      }
+    ],
+    "blockers": [
+      "founder_visual_check_failed:external_owner_readiness",
+      "founder_visual_check_failed:registry_traceability",
+      "modal_placeholders:recDUlVndGpUZ11zs",
+      "modal_placeholders:recfOLHdiiLyeP2vz",
+      "modal_placeholders:recpxQXeEO3z3Zq8T"
+    ],
+    "highBlockerCount": 3
+  },
+  "draftApplyValidation": {
+    "stage": "apply-draft",
+    "allowed": true,
+    "blockers": [],
+    "missingFlagsForApply": [
+      "approveBrandExplorerActiveProfileDraft",
+      "founderVisualReview",
+      "confirmNoCompanyValidationClaim",
+      "confirmNoSummaryUrlField",
+      "confirmBrandOnly",
+      "confirmOfficialSourceImagesOnly",
+      "confirmMinimumSixVisibleGalleryImages",
+      "confirmPropertyExamplesHaveHotelImages",
+      "confirmNoLogoLifestylePropertyImages",
+      "confirmStandardDetailGovernanceReviewed"
+    ],
+    "requiredFlags": [
+      "approveBrandExplorerActiveProfileDraft",
+      "founderVisualReview",
+      "confirmNoCompanyValidationClaim",
+      "confirmNoSummaryUrlField",
+      "confirmBrandOnly",
+      "confirmOfficialSourceImagesOnly",
+      "confirmMinimumSixVisibleGalleryImages",
+      "confirmPropertyExamplesHaveHotelImages",
+      "confirmNoLogoLifestylePropertyImages",
+      "confirmStandardDetailGovernanceReviewed"
+    ],
+    "writesActiveProfileApproval": false,
+    "setsReadyForActiveProfile": false
+  },
+  "activeApprovalValidation": {
+    "stage": "apply-approved",
+    "allowed": true,
+    "blockers": [],
+    "missingFlagsForApply": [
+      "approveBrandExplorerActiveProfile",
+      "confirmFounderVisualReviewPassed",
+      "confirmNoCompanyValidationClaim",
+      "confirmBrandOnly"
+    ],
+    "requiredFlags": [
+      "approveBrandExplorerActiveProfile",
+      "confirmFounderVisualReviewPassed",
+      "confirmNoCompanyValidationClaim",
+      "confirmBrandOnly"
+    ],
+    "writesDraftContent": false
+  },
+  "postDraftApply": null,
+  "postDraftFactoryRules": null,
+  "founderVisualReviewMarkdown": "# Founder Visual Review v34D\n\n- Brand: **MGallery Collection** (`mgallery-collection`)\n- Generated: 2026-07-21T22:46:17.493Z\n- Overall: **FAIL**\n\n## Live Brand Explorer checks\n- **PASS** — 6 gallery images visible with imageUrl (6/6)\n- **PASS** — 3 property examples visible with hotel images (3 cards)\n- **PASS** — No logo/lifestyle/generic property images (gallery + property scan)\n- **PASS** — No IMAGE placeholders on scenario cards (ok)\n- **FAIL** — No visible source URLs, governance language, or modal placeholders in owner copy (3 blockers)\n- **PASS** — No FDD / Item 19 / ADR / RevPAR / net contribution language (0 high findings)\n- **PASS** — Standard detail governance visible and safe (unknown)\n- **PASS** — Company Validated untouched (before=false after=false)\n- **FAIL** — Registry traceability for visual slots (12 gaps)\n- **PASS** — No stale UI fallback titles (0 risks)\n\n## Failed checks\n- `external_owner_readiness`: No visible source URLs, governance language, or modal placeholders in owner copy\n- `registry_traceability`: Registry traceability for visual slots\n\n## Stage 1 — Draft apply\n- Allowed (apply mode): **yes**\n- Flags required for apply: approveBrandExplorerActiveProfileDraft, founderVisualReview, confirmNoCompanyValidationClaim, confirmNoSummaryUrlField, confirmBrandOnly, confirmOfficialSourceImagesOnly, confirmMinimumSixVisibleGalleryImages, confirmPropertyExamplesHaveHotelImages, confirmNoLogoLifestylePropertyImages, confirmStandardDetailGovernanceReviewed\n```bash\nnpm run brand-explorer-active-profile-apply-draft -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed\n```\n\n## Stage 2 — Founder visual review (this report)\nBlocked. Fix issues or re-run draft apply, then re-run founder visual review.\n\n## Stage 3 — Active approval\n- Allowed: **no**\n- blocker: founder_visual_review_not_passed\n- Flags required for apply: approveBrandExplorerActiveProfile, confirmFounderVisualReviewPassed, confirmNoCompanyValidationClaim, confirmBrandOnly\n\n## Workflow separation\n1. **apply-draft** — writes gallery, property examples, scenarios, copy governance, visibility; does **not** approve active profile.\n2. **founder-review** — live rendered checks (this report).\n3. **apply-approved** — records active-profile approval only after visual review passes.",
+  "markdown": "# Brand Explorer Active Profile Founder Review v34D\n\n- Brand: **MGallery Collection** (`mgallery-collection`)\n- Generated: 2026-07-21T22:46:17.493Z\n- Factory pass: **no**\n\n## Visual readiness\n- Gallery (6 visible + imageUrl): **PASS** (6/6)\n- Property examples: **PASS**\n- Scenario cards (no IMAGE placeholder): **PASS**\n- Registry traceability: **FAIL**\n- UI fallback risk: **PASS**\n- Copy safety: **PASS**\n- Standard Detail governance: **PASS**\n\n## Property cards (asset pack)\n- **Palladio Hotel Buenos Aires MGallery Collection**: image ✓ | needs_materialization\n- **Hotel Costanero Montevideo - MGallery Collection**: image ✓ | needs_materialization\n- **Santa Teresa Hotel RJ - MGallery Collection**: image ✓ | needs_materialization\n\n## Gallery image pack\n- `materials.gallery.1`: source found | ready\n- `materials.gallery.2`: source found | ready\n- `materials.gallery.3`: source found | ready\n- `materials.gallery.4`: source found | ready\n- `materials.gallery.5`: source found | ready\n- `materials.gallery.6`: source found | ready\n\n## Scenario cards\n- `overview.scenario.1`: image ✓ | copy package available\n- `overview.scenario.2`: image ✓ | copy package available\n- `overview.scenario.3`: image ✓ | copy package available\n\n## Proof cards\n- `overview.proof.1`: needs_review\n- `overview.proof.2`: needs_review\n- `overview.proof.3`: needs_review\n- `overview.proof.4`: needs_review\n- `overview.proof.5`: needs_review\n- `overview.proof.6`: needs_review\n\n## Pending governance gates\n- standard_detail_governance_review\n- founder_visual_review\n\n## What will be applied (dry-run draft)\n- Presentation patches: **12**\n- Registry creates: **9**\n- Sections: materials.gallery, footprint.openings, overview.scenario\n\n## Remains human-reviewed\n- Company Validated field — never auto-written\n- Summary URL field — never auto-written\n- Standard Detail governance sign-off\n- Founder visual review approval\n\n## Blockers\n- registry_not_approved:materials.gallery.1\n- registry_not_approved:overview.scenario.1\n- registry_not_approved:materials.gallery.2\n- registry_not_approved:overview.scenario.2\n- registry_not_approved:overview.scenario.3\n- registry_not_approved:materials.gallery.3\n- registry_not_approved:materials.gallery.4\n- registry_not_approved:materials.gallery.5\n- registry_not_approved:materials.gallery.6\n- registry_not_approved:footprint.openings\n- modal_placeholders:recDUlVndGpUZ11zs\n- modal_placeholders:recfOLHdiiLyeP2vz\n- modal_placeholders:recpxQXeEO3z3Zq8T\n\n## Staged apply workflow (v34D)\n\n### Stage 1 — Draft apply (preview writes)\n_Run after dry-runs are clean. Does not approve active profile._\n```bash\nnpm run brand-explorer-active-profile-apply-draft -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed\n```\n\n### Stage 2 — Founder visual review\n```bash\nnpm run brand-explorer-active-profile-founder-review -- --brand mgallery-collection --dry-run\n```\n\n### Stage 3 — Active approval\n_Blocked until founder visual review passes._",
+  "assetPackMarkdown": "# Active Profile Asset Pack v34B\n\n- Brand: **MGallery Collection** (`mgallery-collection`)\n- Readiness: **full**\n- Gallery: 6/6\n- Property examples: 3/3\n- Scenarios with image: 3/3\n\n## Gallery assets\n### materials.gallery.1\n- Source page: https://all.accor.com/hotel/B1R7/index.en.shtml\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.1)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n\n### materials.gallery.2\n- Source page: https://all.accor.com/hotel/B3G3/index.en.shtml\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.2)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n\n### materials.gallery.3\n- Source page: https://all.accor.com/hotel/A1X5/index.en.shtml\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.3)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n\n### materials.gallery.4\n- Source page: https://all.accor.com/hotel/B1R7/index.en.shtml\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.4)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n\n### materials.gallery.5\n- Source page: https://all.accor.com/hotel/B3G3/index.en.shtml\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.5)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n\n### materials.gallery.6\n- Source page: https://all.accor.com/hotel/A1X5/index.en.shtml\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.6)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n",
+  "draftMarkdown": "# Active Profile Draft Build v34B\n\n- Brand: `mgallery-collection`\n- Mode: **dry-run**\n- Presentation patches: **12**\n- Registry creates: **9**\n\n- `materials.gallery.1` (recB8YMMFdA5ZpIS6): active_profile_gallery_materialization\n- `materials.gallery.2` (recm2lhl6dhxQJ6bU): active_profile_gallery_materialization\n- `materials.gallery.3` (recNDRiTKj0iLVN2p): active_profile_gallery_materialization\n- `materials.gallery.4` (reci6xRXQbOtgBUsg): active_profile_gallery_materialization\n- `materials.gallery.5` (recFv26feyOuPspVi): active_profile_gallery_materialization\n- `materials.gallery.6` (rec0cb78ciUH8XuPT): active_profile_gallery_materialization\n- `footprint.openings` (recDUlVndGpUZ11zs): active_profile_property_example\n- `footprint.openings` (recpxQXeEO3z3Zq8T): active_profile_property_example\n- `footprint.openings` (recfOLHdiiLyeP2vz): active_profile_property_example\n- `overview.scenario.1` (rectwmt0jj6LZf4Lb): active_profile_scenario_build\n- `overview.scenario.2` (recoI6KB4iS8eisyK): active_profile_scenario_build\n- `overview.scenario.3` (recL52iw54gubYRaL): active_profile_scenario_build",
+  "copyGovernanceMarkdown": null,
+  "founderQueueAuditMarkdown": null
+}

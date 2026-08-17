@@ -287,6 +287,12 @@ async function main() {
       expectKeys: 502,
     },
     {
+      name: "Country Inn & Suites by Radisson",
+      expectSource: "census",
+      expectHotels: 1,
+      expectKeys: 92,
+    },
+    {
       name: "Clarion Pointe",
       expectSource: "unverified",
       expectHotels: null,

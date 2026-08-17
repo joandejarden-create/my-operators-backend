@@ -1,0 +1,65 @@
+{
+  "reported_blocked_field_rows": 1050,
+  "formula": "150 properties × 7 blocked_rights fields = 1050",
+  "blocked_rights_fields": [
+    "Latitude",
+    "Longitude",
+    "Phone",
+    "Amenities - Source Text",
+    "Amenities - Structured Tags",
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary"
+  ],
+  "per_field_expected": {
+    "Latitude": 150,
+    "Longitude": 150,
+    "Phone": 150,
+    "Amenities - Source Text": 150,
+    "Amenities - Structured Tags": 150,
+    "Hotel Description - Source Text": 150,
+    "Hotel Description - AI Summary": 150
+  },
+  "address_in_blocked_rows": false,
+  "note": "Address is NOT part of the 1,050. The 1,050 are Latitude+Longitude+Phone+2 amenities+2 description fields × 150. All blocked rows used value:null and serpapi_blocked:true even when SerpApi was not used (official-directory cohort).",
+  "lat_lng_phone_share": {
+    "fields": [
+      "Latitude",
+      "Longitude",
+      "Phone"
+    ],
+    "rows": 450,
+    "pct_of_1050": 42.9
+  },
+  "amenities_description_share": {
+    "fields": [
+      "Amenities - Source Text",
+      "Amenities - Structured Tags",
+      "Hotel Description - Source Text",
+      "Hotel Description - AI Summary"
+    ],
+    "rows": 600,
+    "pct_of_1050": 57.1
+  },
+  "official_coords_incorrectly_blocked": {
+    "count_properties": 60,
+    "field_rows": 120,
+    "families": {
+      "Hilton": 40,
+      "Choice": 20,
+      "IHG": 0,
+      "Marriott": 0
+    },
+    "serpapi_sourced_coords_in_cohort": 0,
+    "contamination_finding": "Writer blocked official Hilton/Choice coordinates solely because Latitude/Longitude are on the blanket blocked_rights list — no per-claim source check. SerpApi evidence was not present; a lower-authority blocked class contaminated higher-authority eligible claims."
+  },
+  "coordinate_source_counts": {
+    "hilton_official_structured": 40,
+    "choice_official_directory": 20,
+    "ihg_official": 0,
+    "marriott_official": 0,
+    "approved_geocode": 0,
+    "serpapi": 0,
+    "other": 0,
+    "none": 90
+  }
+}

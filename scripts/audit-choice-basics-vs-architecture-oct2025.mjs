@@ -5,6 +5,10 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  CHOICE_ARCHITECTURE_NOT_IN_DOC,
+  resolveArchForAirtableName,
+} from "../lib/choice-brand-architecture-oct2025.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -12,157 +16,7 @@ const EXPORT = path.join(ROOT, "fixtures", "choice-basics-audit-export.json");
 const ARCH_TXT = path.join(ROOT, "fixtures", "choice-pdf-text", "chi-brands-architecture-oct-2025.txt");
 const OUT_MD = path.join(ROOT, "docs", "choice-brand-basics-architecture-oct2025-audit.md");
 
-/** Authoritative fields from CHI Brands Architecture _ Oct 2025.pdf (internal positioning). */
-const ARCH = {
-  "Ascend Hotel Collection": {
-    tier: "Upscale",
-    service: "Select-Service",
-    brandIdea: "Find your travel story.",
-    strategicProposition: "We believe in the power of originality.",
-    pillars: ["Distinct Details (Design)", "Home Away From Home (Experience)", "Heartfelt Connection (Service)"],
-  },
-  "Cambria Hotels": {
-    tier: "Upscale",
-    service: "Select-Service",
-    brandIdea: "Going Places",
-    strategicProposition: "A brand on the rise, for people who are too",
-    pillars: ["Effortlessly Refined (Design)", "Fueling the Journey (Experience)", "Paving the Way (Service)"],
-  },
-  "Radisson (Choice)": {
-    tier: "Upscale",
-    service: "Full-Service",
-    brandIdea: "Where New Feels Known",
-    strategicProposition:
-      "To give people the confidence to explore what's new, by offering them the safety of what's known.",
-    pillars: ["Balanced Calm (Design)", "Ease of Discovery (Experience)", "Confident Authenticity (Service)"],
-  },
-  "Radisson Blu (Choice)": {
-    tier: "Upper Upscale",
-    service: "Full-Service",
-    brandIdea: "Think in Blu",
-    strategicProposition: "We believe in transcending the ordinary.",
-    pillars: ["Nordic Nouveau (Product)", "Enticing Moments (Experience)", "Curatorial Warmth (Service)"],
-  },
-  "Radisson RED  (Choice)": {
-    tier: "Upscale",
-    service: "Select-Service",
-    brandIdea: "Enjoy It!",
-    strategicProposition: "We believe every moment matters.",
-    pillars: ["Design With Attitude", "Share & Connect", "Fun & Flexible"],
-  },
-  "Radisson Collection  (Choice)": {
-    tier: "Upper Upscale",
-    service: "Full-Service",
-    brandIdea: "Explorers Welcome.",
-    strategicProposition: "We believe in fueling curiosity.",
-    pillars: ["Vivid Settings", "Characterful Encounters", "Explorer's Compass"],
-  },
-  "Comfort Inn & Suites": {
-    tier: "Upper Midscale",
-    service: "Select-Service",
-    brandIdea: "Where the joy happens.",
-    strategicProposition: "A familiar base to unlock the joy of travel.",
-    pillars: ["Rise & Shine (Product)", "Memories in the Making (Experience)", "Joy Loves Company (Service)"],
-  },
-  "Country Inn & Suites by Radisson (Choice)": {
-    tier: "Upper Midscale",
-    service: "Select-Service",
-    brandIdea: "Generosity you can feel.",
-    strategicProposition: "Generous hospitality with touches of home.",
-    pillars: [
-      "Comfortable Continuity (Product)",
-      "There's One Place Like Home (Experience)",
-      "Where The Heart Is (Service)",
-    ],
-  },
-  "Sleep Inn": {
-    tier: "Midscale",
-    service: "Limited Service",
-    brandIdea: "Dream Better Here",
-    strategicProposition:
-      "Deliver the lowest cost-to-build and operate midscale brand that doesn't compromise on design or guest experience.",
-    pillars: ["Scenic Dreams (Product)", "Better Night's Rest (Experience)", "Happy to Help (Service)"],
-  },
-  Clarion: {
-    tier: "Midscale",
-    service: "Full-Service",
-    brandIdea: "Get Together Here",
-    strategicProposition:
-      "Clarion delivers focused full-service hospitality designed to support meaningful gatherings.",
-    pillars: ["On-site dining", "Meeting & event spaces", "Open lobby & bar", "Business support", "Fitness & wellness"],
-    scaleNote: "Guardrails table lists Minimum Quality Levels as Midscale/Upper Midscale for Clarion column.",
-  },
-  "Clarion Pointe": {
-    tier: "Midscale",
-    service: "Limited Service",
-    brandIdea: "stay on pointe",
-    strategicProposition:
-      "Clarion Pointe provides affordable elevated essentials in just the right places for a sharper, more connected stay",
-    pillars: ["Focal Pointes", "Contemporary Design Touches", "Starting Pointe Breakfast", "On-Demand Connectivity"],
-  },
-  "Quality Inn": {
-    tier: "Midscale",
-    service: "Limited Service",
-    brandIdea: "Get Your Money's Worth",
-    strategicProposition: "Value means getting more for your money and creating memories that matter",
-    pillars: ["Q Breakfast", "Q Bed", "Q Service", "Q Shower", "Q Essentials"],
-  },
-  "Rodeway Inn": {
-    tier: "Economy",
-    service: "Economy",
-    brandIdea: "Good night. Great savings.",
-    strategicProposition:
-      "Rodeway Inn hotels give guests an affordable place to stay that they can rely on. The bare essentials. No frills, nothing fancy.",
-  },
-  "Econo Lodge": {
-    tier: "Economy",
-    service: "Economy",
-    brandIdea: "Easy Stop On The Road",
-    strategicProposition: "Econo Lodge hotels make it easy for guests to feel confident and capable when they travel.",
-  },
-  "Park Inn by Radisson (Choice)": {
-    tier: "Premium Value",
-    service: "Premium Value",
-    brandIdea: "Have a Happy Stay",
-    altBrandIdea: "Brighten up the stay",
-    strategicProposition: "Delivering brighter basics with a contemporary design and elevated essentials at a competitive price.",
-    scaleNote: "Grouped with Value & Economy in architecture; guardrails = Premium Value (not upper midscale).",
-  },
-  "Everhome Suites": {
-    tier: "Extended Stay (Midscale positioning in portfolio)",
-    service: "Extended Stay",
-    brandIdea: "Closer to Home.®",
-    strategicProposition:
-      "For grey-collar work travelers and personal stay guests, Everhome Suites is more than a place to stay - it's an experience designed to keep life moving.",
-  },
-  "MainStay Suites": {
-    tier: "Extended Stay",
-    service: "Extended Stay",
-    brandIdea: "Live Like Home.®",
-    strategicProposition:
-      "MainStay Suites is more than a place to sleep - it's a space designed to help guests stay in control of their lifestyle and maintain their routines.",
-  },
-  "WoodSpring Suites": {
-    tier: "Economy Extended Stay",
-    service: "Extended Stay",
-    brandIdea: "It's Simple. Done Better.®",
-    strategicProposition:
-      "For blue-collar work travelers and personal stay guests, WoodSpring Suites is the straightforward, affordable extended stay hotel that delivers just what guests need",
-  },
-  "Suburban Studios": {
-    tier: "Economy Extended Stay",
-    service: "Extended Stay",
-    brandIdea: "Longer Stays Made Easy",
-    strategicProposition:
-      "For hardworking travelers - from skilled trades to everyday guests - Suburban Studios makes longer stays easy and affordable.",
-  },
-};
-
-const NOT_IN_ARCH = [
-  "Radisson Individual (Choice)",
-  "Radisson Inn & Suites",
-  "Park Plaza (Choice)",
-];
+const NOT_IN_ARCH = CHOICE_ARCHITECTURE_NOT_IN_DOC;
 
 function norm(s) {
   return String(s || "")
@@ -310,7 +164,7 @@ for (const row of brands) {
     notInDoc.push(name);
     continue;
   }
-  const arch = ARCH[name];
+  const arch = resolveArchForAirtableName(name);
   if (!arch) {
     notInDoc.push(name);
     continue;
@@ -375,17 +229,26 @@ lines.push(`| Positioning / pillars gaps | ${new Set(contentGap.map((x) => x.nam
 lines.push("");
 
 lines.push("### Highest-priority corrections vs architecture", "");
-lines.push(
-  [
-    "1. **Clarion** — Change **Hotel Chain Scale** from Upscale → **Midscale** (or Midscale/Upper Midscale per guardrails); align tagline to **Get Together Here**; rebuild positioning from midscale architecture section.",
-    "2. **Park Inn by Radisson (Choice)** — Tier should reflect **Premium Value**, not Upper Midscale; tagline **Have a Happy Stay** / **Brighten up the stay**; replace stub copy.",
-    "3. **Radisson Collection (Choice)** — Tagline **Explorers Welcome.**; pillars **Vivid Settings / Characterful Encounters / Explorer's Compass** (not generic luxury stubs).",
-    "4. **Radisson (Choice)** — Replace **A Century Young** with architecture Brand Idea **Where New Feels Known**; refresh pillars to Balanced Calm / Ease of Discovery / Confident Authenticity.",
-    "5. **Country Inn & Suites** — Still stub-level vs architecture (**Generosity you can feel.**, home-touch pillars, Country Hosts / cookie / breakfast RTBs).",
-    "6. **Extended stay taglines** — Everhome **Closer to Home.®**, MainStay **Live Like Home.®**, WoodSpring **It's Simple. Done Better.®**, Suburban **Longer Stays Made Easy** (Airtable uses development-era lines).",
-    "7. **Radisson RED (Choice)** — Tagline **Enjoy It!**; tier likely **Upscale** not Upper Upscale; replace stub pillars.",
-  ].join("\n")
-);
+const byBrand = new Map();
+for (const item of [...taglineMismatch, ...scaleMismatch, ...contentGap]) {
+  if (!byBrand.has(item.name)) byBrand.set(item.name, []);
+  byBrand.get(item.name).push(`${item.field}: ${item.msg}`);
+}
+let priorityNum = 1;
+if (byBrand.size === 0 && notInDoc.length === 0) {
+  lines.push("_No open gaps on automated checks for brands covered in the Oct 2025 deck._");
+} else {
+  for (const [brand, msgs] of byBrand) {
+    lines.push(`${priorityNum}. **${brand}** — ${msgs.join("; ")}`);
+    priorityNum++;
+  }
+  for (const n of notInDoc) {
+    lines.push(
+      `${priorityNum}. **${n}** — Not in Oct 2025 architecture deck; use brand one-pagers / dev materials (Radisson Individual vs Collection framework needs brand-team confirmation).`
+    );
+    priorityNum++;
+  }
+}
 lines.push("");
 
 lines.push("---", "", "## Brand-by-brand comparison", "");
@@ -405,7 +268,7 @@ for (const row of brands) {
     );
     continue;
   }
-  const arch = ARCH[name];
+  const arch = resolveArchForAirtableName(name);
   if (!arch) {
     lines.push("_No mapping entry._", "");
     continue;

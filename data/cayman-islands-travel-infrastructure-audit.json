@@ -1,0 +1,188 @@
+{
+  "auditedAt": "2026-06-25T10:16:38.508Z",
+  "country": "Cayman Islands",
+  "market": "Cayman Islands Countrywide",
+  "keywords": [
+    "cayman",
+    "grand cayman",
+    "george town",
+    "seven mile beach",
+    "owen roberts",
+    "gcm",
+    "cayman brac",
+    "little cayman",
+    "rum point",
+    "camana bay",
+    "east end",
+    "cruise",
+    "tender",
+    "ciaa",
+    "ferry",
+    "charles kirkconnell",
+    "edward bodden"
+  ],
+  "summary": {
+    "countryTravelInfrastructureTotal": 8,
+    "marketMatchedRecords": 8,
+    "existingExpectedNodes": 6,
+    "likelyMissingNodes": 2,
+    "duplicateCandidates": 0,
+    "weakSubmarketRecords": 3,
+    "governanceBackfillCandidates": 0,
+    "additionalFixtureRecommended": true,
+    "mexicoTravelInfrastructureTotal": 8
+  },
+  "existingMatchingRecords": [
+    {
+      "name": "Little Cayman Inter-Island Ferry Node",
+      "pointType": "Ferry Terminal",
+      "city": "Little Cayman",
+      "submarket": "Little Cayman",
+      "latitude": 19.6762,
+      "longitude": -80.0878,
+      "sourceReference": "https://www.visitcaymanislands.com/",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "Charles Kirkconnell International Airport",
+      "pointType": "Airport",
+      "city": "West End",
+      "submarket": "",
+      "latitude": 19.687,
+      "longitude": -79.882797,
+      "sourceReference": "https://en.wikipedia.org/wiki/Gerrard_Smith_International_Airport",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "Grand Cayman Owen Roberts Airport",
+      "pointType": "Airport",
+      "city": "George Town",
+      "submarket": "",
+      "latitude": 19.2928,
+      "longitude": -81.3577,
+      "sourceReference": "https://en.wikipedia.org/wiki/Owen_Roberts_International_Airport",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "Seven Mile Beach Corridor Access",
+      "pointType": "Highway Access",
+      "city": "Seven Mile Beach",
+      "submarket": "Grand Cayman",
+      "latitude": 19.3296,
+      "longitude": -81.3848,
+      "sourceReference": "https://www.visitcaymanislands.com/en-us/things-to-do/beaches/seven-mile-beach",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "George Town Cruise Tender Port Access",
+      "pointType": "Port / Maritime",
+      "city": "George Town",
+      "submarket": "Grand Cayman",
+      "latitude": 19.2866,
+      "longitude": -81.3744,
+      "sourceReference": "https://www.caymanport.com/",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "George Town Cruise Port",
+      "pointType": "Cruise Port",
+      "city": "George Town",
+      "submarket": "",
+      "latitude": 19.3,
+      "longitude": -81.3833,
+      "sourceReference": "https://www.openstreetmap.org/?mlat=19.3&mlon=-81.3833&zoom=13",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "East End Coastal Access Route",
+      "pointType": "Highway Access",
+      "city": "East End",
+      "submarket": "Grand Cayman",
+      "latitude": 19.3001,
+      "longitude": -81.0937,
+      "sourceReference": "https://www.visitcaymanislands.com/",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "Charles Kirkconnell Airport Access",
+      "pointType": "Highway Access",
+      "city": "Cayman Brac",
+      "submarket": "Cayman Brac",
+      "latitude": 19.687,
+      "longitude": -79.8828,
+      "sourceReference": "https://ciaa.ky/",
+      "dataConfidence": "High"
+    }
+  ],
+  "expectedNodeCoverage": [
+    {
+      "label": "Owen Roberts International Airport / GCM",
+      "name": "Grand Cayman Owen Roberts Airport",
+      "city": "George Town",
+      "submarket": "",
+      "pointType": "Airport"
+    },
+    {
+      "label": "George Town cruise tender port",
+      "name": "George Town Cruise Tender Port Access",
+      "city": "George Town",
+      "submarket": "Grand Cayman",
+      "pointType": "Port / Maritime"
+    },
+    {
+      "label": "Seven Mile Beach corridor access",
+      "name": "Seven Mile Beach Corridor Access",
+      "city": "Seven Mile Beach",
+      "submarket": "Grand Cayman",
+      "pointType": "Highway Access"
+    },
+    {
+      "label": "East End coastal access",
+      "name": "East End Coastal Access Route",
+      "city": "East End",
+      "submarket": "Grand Cayman",
+      "pointType": "Highway Access"
+    },
+    {
+      "label": "Charles Kirkconnell Airport / CYB",
+      "name": "Charles Kirkconnell International Airport",
+      "city": "West End",
+      "submarket": "",
+      "pointType": "Airport"
+    },
+    {
+      "label": "Inter-island ferry / maritime",
+      "name": "Little Cayman Inter-Island Ferry Node",
+      "city": "Little Cayman",
+      "submarket": "Little Cayman",
+      "pointType": "Ferry Terminal"
+    }
+  ],
+  "likelyMissingRecords": [
+    "Camana Bay / George Town connector",
+    "Edward Bodden Airfield / LYB"
+  ],
+  "duplicateCandidates": [],
+  "weakSubmarketRecords": [
+    {
+      "name": "Charles Kirkconnell International Airport",
+      "city": "West End",
+      "submarket": ""
+    },
+    {
+      "name": "Grand Cayman Owen Roberts Airport",
+      "city": "George Town",
+      "submarket": ""
+    },
+    {
+      "name": "George Town Cruise Port",
+      "city": "George Town",
+      "submarket": ""
+    }
+  ],
+  "governanceBackfillCandidates": [],
+  "notes": [
+    "Demand anchors should not duplicate TI airports/ferries unless explicitly DA-relevant.",
+    "Do not import TI from this audit unless gaps are confirmed and fixture is prepared."
+  ]
+}

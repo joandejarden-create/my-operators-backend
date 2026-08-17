@@ -1,0 +1,100 @@
+{
+  "families_used": [
+    "Marriott",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [],
+  "adapter_errors": [],
+  "vic_evidence_rows": 301,
+  "marriott_discovery": {
+    "source": {
+      "type": "official_country_hotel_sitemap",
+      "origin": "https://www.marriott.com",
+      "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+      "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+      "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+      "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+      "hqv_required_for_discovery": false,
+      "deprecated_blocked_patterns": [
+        "/en/hotels/{country}.sitemap-hotels.xml",
+        "*.sitemap-hotels.xml"
+      ]
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "hqv_required_for_discovery": false,
+    "deprecated_sitemap_hotels_xml_blocked": true,
+    "meta": {
+      "version": "census-autopilot-marriott-discovery-adapter-v1",
+      "source": {
+        "type": "official_country_hotel_sitemap",
+        "origin": "https://www.marriott.com",
+        "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+        "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+        "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+        "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+        "hqv_required_for_discovery": false,
+        "deprecated_blocked_patterns": [
+          "/en/hotels/{country}.sitemap-hotels.xml",
+          "*.sitemap-hotels.xml"
+        ]
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "hotel_count": 300,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "hotel_count": 30,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+          "hotel_count": 17,
+          "ok": true
+        }
+      ],
+      "errors": [],
+      "hqv_required_for_discovery": false,
+      "loaded_at": "2026-08-06T22:43:16.875Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v1",
+    "loaded_at": null,
+    "hilton_count": 0,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 397
+}

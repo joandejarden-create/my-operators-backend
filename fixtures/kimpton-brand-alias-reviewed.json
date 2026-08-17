@@ -1,0 +1,23 @@
+{
+  "instructions": "Kimpton Hotels → census Affiliation Kimpton. Run: node scripts/seed-reviewed-brand-aliases.mjs --file=fixtures/kimpton-brand-alias-reviewed.json",
+  "rows": [
+    {
+      "Canonical Brand Name": "Kimpton Hotels",
+      "Alias / Source Brand Name": "Kimpton",
+      "Parent Company": "IHG Hotels & Resorts",
+      "Active": true,
+      "Match Confidence": "High",
+      "Notes": "Hotel Census Affiliation match (CALA STR import). Powers Brand Explorer footprint country/archetype breakdowns.",
+      "Approved": true
+    },
+    {
+      "Canonical Brand Name": "Kimpton Hotels",
+      "Alias / Source Brand Name": "Kimpton Hotels",
+      "Parent Company": "InterContinental Hotels Group",
+      "Active": false,
+      "Match Confidence": "Low",
+      "Notes": "Deactivate baseline alias — census uses Affiliation Kimpton, not Kimpton Hotels.",
+      "Approved": true
+    }
+  ]
+}

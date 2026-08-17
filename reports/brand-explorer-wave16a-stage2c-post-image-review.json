@@ -1,0 +1,119 @@
+{
+  "version": "wave16a-stage2c-post-image-review-v1",
+  "stage": "post-image-review",
+  "generatedAt": "2026-08-10T13:12:00.000Z",
+  "readyStatement": "wave16a_stage2c_low_risk_profiles_ready_for_founder_review",
+  "pass": true,
+  "activeUniverseBefore": 62,
+  "activeUniverseAfter": 62,
+  "brandStatus": {
+    "fairfield-by-marriott": "Under Review",
+    "four-points-by-sheraton": "Under Review",
+    "delta-hotels-by-marriott": "Under Review"
+  },
+  "fourPointsFlex": {
+    "recordId": "recgaMzDn2GKkpUsi",
+    "brandStatus": "Under Review",
+    "classification": "PROTECTED_HOLD",
+    "inActiveUniverse": false,
+    "writes": 0,
+    "contaminationCount": 0
+  },
+  "defectInventoryInitial": {
+    "CRITICAL": 1,
+    "HIGH": 14,
+    "MEDIUM": 9,
+    "LOW": 2,
+    "notes": "After Flex contrastive false-positive fix; inventory before first apply"
+  },
+  "defectInventoryFinal": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "LOW": 0
+  },
+  "exactFixesApplied": [
+    {
+      "brand": "fairfield-by-marriott",
+      "recordId": "recGVOoMylpLwOgLI",
+      "fix": "Unify Times Square title/body with Cancún Airport CALA image metadata"
+    },
+    {
+      "brand": "all three",
+      "fix": "Strip raw URLs from openings Body; replace Confirm live affiliation Interpretation; replace role-label teasers with owner-facing teasers"
+    },
+    {
+      "brand": "fairfield-by-marriott",
+      "fix": "Title dedupe (Central Park / Times Square) + brand-copy dedupe on teasers; Cancún title without doubled brand"
+    },
+    {
+      "brand": "delta-hotels-by-marriott",
+      "recordId": "recmmLsKsvZwM8lCZ",
+      "fix": "Differentiate second Toronto openings card toward meetings/conference demand"
+    },
+    {
+      "brand": "all three",
+      "fix": "Rebuild collapsed openings Bodies to structured chips/location/meta/scenario/teaser (no raw URL)"
+    }
+  ],
+  "writeAuditByBrand": {
+    "fairfield-by-marriott": {
+      "contentPatches": 8,
+      "imageCaptionPatches": 0,
+      "visibilityPatches": 0,
+      "other": 0
+    },
+    "four-points-by-sheraton": {
+      "contentPatches": 6,
+      "imageCaptionPatches": 0,
+      "visibilityPatches": 0,
+      "other": 0
+    },
+    "delta-hotels-by-marriott": {
+      "contentPatches": 6,
+      "imageCaptionPatches": 0,
+      "visibilityPatches": 0,
+      "other": 0
+    }
+  },
+  "writeAudit": {
+    "presentationContentPatchesTotal": 20,
+    "recentMomentumWrites": 0,
+    "brandStatusWrites": 0,
+    "releaseWrites": 0,
+    "companyValidatedWrites": 0,
+    "companyValidationDateWrites": 0,
+    "brandVerifiedWrites": 0,
+    "censusWrites": 0,
+    "active62Writes": 0,
+    "fourPointsFlexWrites": 0,
+    "wave16bWrites": 0,
+    "remainingWave16aWrites": 0,
+    "nonTargetWrites": 0,
+    "founderVisualReviewPassWrites": 0,
+    "protectedFieldWrites": 0
+  },
+  "postAudits": {
+    "golden": "PASS",
+    "sourceProvenance": "PASS",
+    "imageUniqueness": "PASS",
+    "imageRoleMatch": "PASS",
+    "galleryScenarioOpeningsCoverage": "6/3/3 per brand PASS",
+    "openingsPublicCopySafety": "PASS",
+    "fourPointsFlexContamination": 0,
+    "crossBrandSemantic": "PASS",
+    "nonMomentumCompleteness": "PASS (Recent Momentum intentionally deferred)",
+    "tabFactoryAuditNote": "Fails only on Recent Momentum pattern (deferred); empty-render fails = 0"
+  },
+  "founderReviewReadiness": {
+    "fairfield-by-marriott": true,
+    "four-points-by-sheraton": true,
+    "delta-hotels-by-marriott": true,
+    "note": "Reported in local artifacts only — Founder Visual Review Pass field not written"
+  },
+  "deferred": [
+    "Recent Momentum (all three brands)"
+  ],
+  "recommendedNextStage": "Founder visual review for Fairfield / Four Points / Delta only — no Momentum writes, no promote, no release, no Wave 16A MODERATE/HIGH, no Wave 16B",
+  "imageRematerialization": "none (existing Stage 2B images retained)"
+}

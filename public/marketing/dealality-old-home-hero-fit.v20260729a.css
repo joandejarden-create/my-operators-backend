@@ -1,0 +1,139 @@
+/* Old Home hero — fit first viewport + quiet overview re-open link */
+#hero.oh-hero,
+#hero{
+  position:relative!important;
+  box-sizing:border-box!important;
+  min-height:100vh!important;
+  min-height:100dvh!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+  padding-top:clamp(3.25rem,7vh,4.75rem)!important;
+  padding-bottom:clamp(2.75rem,7vh,4rem)!important;
+}
+#hero #hero-inner{
+  padding-top:0!important;
+  margin-top:0!important;
+}
+#hero #section-subtitle{
+  margin:0 0 .55rem!important;
+}
+#hero #h1wrap,
+#hero .oh-h1wrap{
+  margin:0 0 .85rem!important;
+  gap:.45em!important;
+  column-gap:.45em!important;
+  --hr-lh:clamp(34px,4.4vw,56px)!important;
+}
+#hero #hstatic,
+#hero .oh-hstatic,
+#hero #rotator > *,
+#hero .oh-hrword,
+#hero .oh-hrword-on{
+  font-size:clamp(28px,3.6vw,48px)!important;
+  line-height:1.06!important;
+}
+#hero #hero-lead,
+#hero .oh-hero-lead{
+  margin:0 0 .85rem!important;
+  max-width:34rem!important;
+  font-size:clamp(.92rem,.85rem + .2vw,1.02rem)!important;
+  line-height:1.45!important;
+}
+#hero #hero-signals{
+  margin:0 0 .15rem!important;
+  max-width:26rem!important;
+  gap:.65rem!important;
+}
+#hero #hero-signals-pos,
+#hero #hero-signals-neg{
+  padding:.4rem .55rem .45rem!important;
+}
+#hero #hero-signals-pos > span,
+#hero #hero-signals-neg > span{
+  padding:.12rem 0!important;
+  font-size:.76rem!important;
+}
+#hero #hs-pos-label,
+#hero #hs-neg-label{
+  margin:0 0 .12rem!important;
+  font-size:.72rem!important;
+}
+#hero #form-subscribe-wrap,
+#hero .oh-fsw-wrap{
+  margin-top:1.05rem!important;
+}
+#hero #fsw-btn{
+  min-height:2.7rem!important;
+  padding:.7rem 1.2rem!important;
+}
+
+/* Re-open link: bottom-center of hero, regular weight, only when visible */
+#hero > #fsw-secondary-wrap,
+#hero #fsw-secondary-wrap,
+#fsw-secondary-wrap.oh-fsw-secondary-wrap{
+  position:absolute!important;
+  left:50%!important;
+  bottom:clamp(.85rem,2.8vh,1.5rem)!important;
+  transform:translateX(-50%)!important;
+  margin:0!important;
+  padding:0!important;
+  width:max-content!important;
+  max-width:calc(100% - 2rem)!important;
+  text-align:center!important;
+  z-index:3!important;
+}
+#fsw-secondary-wrap[hidden],
+#fsw-secondary-wrap[aria-hidden="true"],
+#fsw-secondary-wrap[data-oh-visible="0"]{
+  display:none!important;
+}
+#hero #fsw-secondary,
+#fsw-secondary{
+  display:inline!important;
+  color:rgba(255,255,255,.62)!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:.9rem!important;
+  font-weight:400!important;
+  letter-spacing:0!important;
+  line-height:1.35!important;
+  text-decoration:none!important;
+  text-align:center!important;
+}
+#hero #fsw-secondary:hover,
+#fsw-secondary:hover{
+  color:rgba(255,255,255,.88)!important;
+  text-decoration:underline!important;
+  text-underline-offset:3px!important;
+}
+
+@media(max-width:960px){
+  #hero,.oh-hero{
+    min-height:auto!important;
+    padding-top:clamp(2.75rem,6vh,3.75rem)!important;
+    padding-bottom:clamp(2.25rem,6vh,3.25rem)!important;
+  }
+  #hero #h1wrap,.oh-h1wrap{--hr-lh:clamp(30px,7vw,44px)!important}
+  #hero #hstatic,#hero .oh-hstatic,#hero #rotator > *,#hero .oh-hrword,#hero .oh-hrword-on{
+    font-size:clamp(24px,6.4vw,36px)!important;
+  }
+  #hero > #fsw-secondary-wrap,
+  #fsw-secondary-wrap{
+    position:static!important;
+    left:auto!important;
+    bottom:auto!important;
+    transform:none!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin:1.1rem 0 0!important;
+    text-align:center!important;
+  }
+}
+
+@media(max-height:820px) and (min-width:961px){
+  #hero,.oh-hero{padding-top:3rem!important;padding-bottom:2.5rem!important}
+  #hero #h1wrap,.oh-h1wrap{margin-bottom:.65rem!important}
+  #hero #hero-lead,.oh-hero-lead{margin-bottom:.65rem!important;line-height:1.4!important}
+  #hero #form-subscribe-wrap,.oh-fsw-wrap{margin-top:.85rem!important}
+  #hero #hero-signals{transform:scale(.96);transform-origin:left top}
+}

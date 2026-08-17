@@ -1,0 +1,42 @@
+{
+  "version": "production-census-schema-v1.1.4-rooms-keys-provenance",
+  "status": "plan_only_no_schema_create",
+  "generated_at": "2026-08-05T19:15:00.000Z",
+  "airtable_schema_writes": false,
+  "existing_live_fields": [
+    "Rooms / Keys",
+    "Rooms Confidence",
+    "Rooms Source URL"
+  ],
+  "proposed_fields": [
+    {
+      "name": "Rooms Source Type",
+      "type": "singleSelect",
+      "options": [
+        "official_property_page",
+        "official_brand_directory",
+        "official_hotel_website",
+        "official_press_release",
+        "official_development_page",
+        "trusted_secondary_source",
+        "steward_review"
+      ]
+    },
+    {
+      "name": "Rooms Reviewed Date",
+      "type": "date"
+    },
+    {
+      "name": "Rooms Notes",
+      "type": "multilineText"
+    }
+  ],
+  "recommend_add_hold_to_rooms_confidence": true,
+  "rooms_confidence_hold_mapping_until_then": "Insufficient",
+  "do_not_create_unless": {
+    "mode": "schema-apply",
+    "confirm_flag": "--confirm-schema-v114-rooms-provenance",
+    "founder_approval": true
+  },
+  "related_autopilot_status": "production_census_autopilot_runner_ready_needs_v114_schema"
+}

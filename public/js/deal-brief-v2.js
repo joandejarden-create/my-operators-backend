@@ -55,6 +55,82 @@
 
   var PIP_FIELD_KEYS = ["PIP / CapEx Status", "PIP Budget Range (if conversion)"];
 
+  var MIXED_USE_SECTION_FIELD_KEYS = [
+    "Condo Residences?",
+    "Hotel Rental Program?",
+    "Number of Condo / Residence Units",
+    "Branded Residence Program Model",
+    "Condo Rental Program Model",
+    "Development Proforma Available?",
+  ];
+
+  var CONDO_SUB_FIELD_KEYS = [
+    "Number of Condo / Residence Units",
+    "Condo Rental Program Model",
+  ];
+
+  function isYesValue(val) {
+    return /^yes$/i.test(String(val == null ? "" : val).trim());
+  }
+
+  /** True when affiliation is a non-brand / pre-opening placeholder, not a flag parent. */
+  function isUnbrandedAffiliation(brand) {
+    var s = String(brand == null ? "" : brand).trim();
+    if (!s) return true;
+    var low = s.toLowerCase();
+    if (/pre-?opening|unbranded|unaffiliated|no\s*brand|non[-\s]?branded|not\s+applicable|\bn\/?a\b/.test(low)) {
+      return true;
+    }
+    if (/^(none|null|independent|independent\s*\(legacy\s*flag\)|independent ownership)$/i.test(s)) {
+      return true;
+    }
+    if (/^none\b/i.test(s)) return true;
+    return false;
+  }
+
+  /**
+   * Deal Brief "Current Brand/Operator" line.
+   * Omits Parent when not currently branded / unbranded / pre-opening so owner entity
+   * names in Parent Company Name are not shown as a brand parent.
+   */
+  function formatCurrentBrandOperator(fields) {
+    fields = fields || {};
+    var parent =
+      fields["Parent Company Name"] != null && fields["Parent Company Name"] !== ""
+        ? String(fields["Parent Company Name"]).trim()
+        : "";
+    var brand =
+      fields["Current Brand Affiliation"] != null && fields["Current Brand Affiliation"] !== ""
+        ? String(fields["Current Brand Affiliation"]).trim()
+        : "";
+    var op =
+      fields["Operator Name Current"] != null && fields["Operator Name Current"] !== ""
+        ? String(fields["Operator Name Current"]).trim()
+        : "";
+    var currentlyBranded = fields["Is the hotel currently branded?"];
+    var flagPath = String(fields["Existing flag staying or being replaced?"] || "").trim();
+    // Parent Company Name is brand-parent only — never owner entity for unbranded / pre-opening.
+    var showParent =
+      !!parent &&
+      isYesValue(currentlyBranded) &&
+      !isUnbrandedAffiliation(brand) &&
+      !/not applicable \(unbranded or new build\)/i.test(flagPath);
+    return [showParent && "Parent: " + parent, brand && "Brand: " + brand, op && "Operator: " + op]
+      .filter(Boolean)
+      .join(" · ");
+  }
+
+  function isCondoResidencesDeal(fields) {
+    return isYesValue(fields && fields["Condo Residences?"]);
+  }
+
+  function isMixedUseBriefSection(fields) {
+    fields = fields || {};
+    var pt = String(fields["Project Type"] || "").trim().toLowerCase();
+    if (/mixed.?use|mixed use/.test(pt)) return true;
+    return isCondoResidencesDeal(fields);
+  }
+
   function readinessStageKey(stage) {
     return String(stage || "").trim().toLowerCase();
   }
@@ -168,6 +244,11 @@
       return isOperatorInScope(ctx) || isExistingAsset(ctx) || !isPreOperating(ctx);
     }
     if (PIP_FIELD_KEYS.indexOf(fieldKey) >= 0) return !isPreOperating(ctx) || isExistingAsset(ctx);
+    if (MIXED_USE_SECTION_FIELD_KEYS.indexOf(fieldKey) >= 0) {
+      if (!isMixedUseBriefSection(fields)) return false;
+      if (CONDO_SUB_FIELD_KEYS.indexOf(fieldKey) >= 0) return isCondoResidencesDeal(fields);
+      return true;
+    }
     if (fieldKey === "Is the hotel currently branded?" && isPreOperating(ctx)) return false;
     return true;
   }
@@ -300,6 +381,71 @@
     );
   }
 
+  function fieldVal(fields, keys) {
+    fields = fields || {};
+    var list = Array.isArray(keys) ? keys : [keys];
+    for (var i = 0; i < list.length; i++) {
+      var v = fields[list[i]];
+      if (v != null && String(v).trim() !== "") return String(v).trim();
+    }
+    return "";
+  }
+
+  /**
+   * Anonymous project-focused copy for The Opportunity card (no sponsor / developer identity).
+   */
+  function buildOpportunityCardSummary(fields, normalized, mode) {
+    fields = fields || {};
+    normalized = normalized || {};
+    var keys = fieldVal(fields, ["Total Number of Rooms/Keys"]) || (normalized.totalKeys ? String(normalized.totalKeys) : "");
+    var cityState = fieldVal(fields, ["City & State"]);
+    var submarket = fieldVal(fields, ["Hotel Submarket & Location"]);
+    var country = fieldVal(fields, ["Country"]);
+    var projectType = fieldVal(fields, ["Project Type"]) || normalized.projectType || "";
+    var condoUnits = fieldVal(fields, ["Number of Condo / Residence Units"]);
+    var fbYes = /^yes$/i.test(fieldVal(fields, ["F&B Outlets?"]));
+    var parkingYes = /^yes$/i.test(fieldVal(fields, ["Parking Amenities?"]));
+    var buildingType = fieldVal(fields, ["Building Type"]);
+    var cityName = cityState ? cityState.split(",")[0].trim() : "";
+    var locPhrase = "";
+    if (submarket && /historic/i.test(submarket) && cityName) {
+      locPhrase = "in historic " + cityName;
+    } else if (cityName) {
+      locPhrase = "in " + cityName;
+    } else if (country) {
+      locPhrase = "in " + country;
+    } else if (normalized.hotelLocation) {
+      locPhrase = "in " + normalized.hotelLocation;
+    }
+    var isMixedUse = /mixed.?use/i.test(projectType) || /mixed.?use/i.test(buildingType) || !!condoUnits;
+    var opener = isMixedUse
+      ? "A boutique hospitality-led mixed-use project"
+      : "A hospitality development opportunity";
+    if (locPhrase) opener += " " + locPhrase;
+    var components = [];
+    if (keys) {
+      var context = (submarket + " " + cityState).toLowerCase();
+      var hotelLabel = /urban|downtown|city|centro|historic/i.test(context) ? "urban hotel" : "hotel";
+      components.push("a ~" + keys + "-key " + hotelLabel);
+    }
+    if (condoUnits) components.push(condoUnits + " branded residences");
+    if (fbYes) components.push("ground-floor destination F&B");
+    if (parkingYes) components.push("shared underground parking");
+    if (components.length) {
+      return opener + " combining " + components.join(", ") + ".";
+    }
+    var meta = {
+      keyCount: keys,
+      marketLine: normalized.hotelLocation || cityState || country || "the identified market",
+      projectType: projectType,
+      targetPositioning: fieldVal(fields, ["Brand Positioning", "Target Chain Scale", "Hotel Chain Scale", "Preferred Chain Scales"]),
+    };
+    if (mode === MODES.RECIPIENT_VIEW) {
+      return buildRecipientOpportunityLead(meta, normalized);
+    }
+    return buildOwnerOpportunityLead(meta);
+  }
+
   /**
    * Resolve brief mode from URL + audience (no per-deal IDs).
    * @param {object} params - URLSearchParams-like { get(name) }
@@ -361,8 +507,13 @@
     buildValidationItems: buildValidationItems,
     buildOwnerOpportunityLead: buildOwnerOpportunityLead,
     buildRecipientOpportunityLead: buildRecipientOpportunityLead,
+    buildOpportunityCardSummary: buildOpportunityCardSummary,
     executiveFieldLabel: executiveFieldLabel,
     isFieldShownInBrief: isFieldShownInBrief,
     inferBriefContext: inferBriefContext,
+    isCondoResidencesDeal: isCondoResidencesDeal,
+    isMixedUseBriefSection: isMixedUseBriefSection,
+    formatCurrentBrandOperator: formatCurrentBrandOperator,
+    isUnbrandedAffiliation: isUnbrandedAffiliation,
   };
 })(typeof window !== "undefined" ? window : globalThis);

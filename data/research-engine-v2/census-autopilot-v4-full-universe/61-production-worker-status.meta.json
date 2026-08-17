@@ -1,0 +1,12 @@
+{
+  "worker_status": "RUNNING",
+  "note": "Local persistent supervisor started after 3-boundary demo. Railway service still needs Joan link/deploy for laptop-independent continuity.",
+  "railway_linked": false,
+  "start_command": "npm run census:v4-full-build-worker",
+  "required_env": ["ENABLE_CENSUS_V4_WORKER=1", "ENABLE_VERIFIED_CENSUS_WRITES=1", "ENABLE_CENSUS_AUTOPILOT_V4=1"],
+  "observability": {
+    "status": "61-production-worker-status.json",
+    "heartbeat": "55-worker-heartbeat.json",
+    "lock": "61-census-v4-worker.lock.json"
+  }
+}

@@ -1,0 +1,1507 @@
+{
+  "metrics": {
+    "ACCURACY": 0.6413793103448275,
+    "PRECISION": 0.6413793103448275,
+    "RECALL": 0.6413793103448275,
+    "F1": 0.6413793103448275,
+    "MACRO_P": 0.7443204040750506,
+    "MACRO_R": 0.6909362430190871,
+    "MACRO_F1": 0.6797751360895691,
+    "FIRST_REC": 0.8758620689655172,
+    "QUESTION_STATUS": 0.6182572614107884,
+    "ENTITY_P": 1,
+    "ENTITY_R": 1,
+    "ENTITY_F1": 1
+  },
+  "classMetrics": {
+    "first_recommendation": {
+      "precision": 1,
+      "recall": 0.28,
+      "f1": 0.43750000000000006,
+      "tp": 14,
+      "fp": 0,
+      "fn": 36
+    },
+    "ranked_recommendation": {
+      "precision": 0.7777777777777778,
+      "recall": 0.4117647058823529,
+      "f1": 0.5384615384615384,
+      "tp": 7,
+      "fp": 2,
+      "fn": 10
+    },
+    "explicit_recommendation": {
+      "precision": 0.4666666666666667,
+      "recall": 0.7368421052631579,
+      "f1": 0.5714285714285714,
+      "tp": 14,
+      "fp": 16,
+      "fn": 5
+    },
+    "associated_option": {
+      "precision": 0.36619718309859156,
+      "recall": 0.6666666666666666,
+      "f1": 0.4727272727272727,
+      "tp": 26,
+      "fp": 45,
+      "fn": 13
+    },
+    "comparator": {
+      "precision": 0.6666666666666666,
+      "recall": 0.5714285714285714,
+      "f1": 0.6153846153846153,
+      "tp": 4,
+      "fp": 2,
+      "fn": 3
+    },
+    "discussed": {
+      "precision": 0.7465753424657534,
+      "recall": 0.7517241379310344,
+      "f1": 0.7491408934707903,
+      "tp": 109,
+      "fp": 37,
+      "fn": 36
+    },
+    "passing_mention": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1": 0.8000000000000002,
+      "tp": 4,
+      "fp": 1,
+      "fn": 1
+    },
+    "negative_or_qualified": {
+      "precision": 0.875,
+      "recall": 1,
+      "f1": 0.9333333333333333,
+      "tp": 7,
+      "fp": 1,
+      "fn": 0
+    },
+    "source_only": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    }
+  },
+  "errors": [
+    {
+      "caseId": "v1_g007",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": null,
+      "language": null,
+      "geography": null,
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "Curio Collection by Hilton is a strong alternative to Autograph Collection for conversions."
+    },
+    {
+      "caseId": "v1_g020",
+      "entity": "Hotel Equities (CALA)",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": null,
+      "language": null,
+      "geography": null,
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "Hotel Equities CALA is a strong candidate for lifestyle operations."
+    },
+    {
+      "caseId": "v1_g023",
+      "entity": "Aimbridge Hospitality (LATAM)",
+      "humanRole": "first_recommendation",
+      "predictedRole": "associated_option",
+      "provider": null,
+      "language": null,
+      "geography": null,
+      "rootCause": "FIRST_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "pair": "first_recommendation => associated_option",
+      "snippet": "## Operators to consider 1. Aimbridge Hospitality (LATAM) 2. GHL Operador "
+    },
+    {
+      "caseId": "v1_g024",
+      "entity": "GHL Hoteles (GHL Holding)",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "provider": null,
+      "language": null,
+      "geography": null,
+      "rootCause": "RANKED_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "pair": "ranked_recommendation => associated_option",
+      "snippet": "## Operators to consider 1. Aimbridge Hospitality (LATAM) 2. GHL Operador "
+    },
+    {
+      "caseId": "v1_g045",
+      "entity": "Tribute Portfolio",
+      "humanRole": "first_recommendation",
+      "predictedRole": "associated_option",
+      "provider": null,
+      "language": null,
+      "geography": null,
+      "rootCause": "FIRST_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "pair": "first_recommendation => associated_option",
+      "snippet": "## Brands to consider 1. Tribute Portfolio 2. Curio Collection 3. Autograph "
+    },
+    {
+      "caseId": "v1_g048",
+      "entity": "Highgate",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": null,
+      "language": null,
+      "geography": null,
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "Other alternatives include local operators; Highgate remains institutional scale."
+    },
+    {
+      "caseId": "v1_g051",
+      "entity": "GHL Hoteles (GHL Holding)",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": null,
+      "language": null,
+      "geography": null,
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "GHL Operador is particularly suitable for Andean multi-brand portfolios."
+    },
+    {
+      "caseId": "v2_cand_024fcf9c",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Here is a comprehensive guide to the **soft brand and collection hotel affiliations** that a hotel owner in Mexico should consider, organized from global mega-brand collections to independent consortiums: --- ## 🏨 Sof"
+    },
+    {
+      "caseId": "v2_cand_030739d6",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "comparator",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "COMPARATOR_BOUNDARY",
+      "pair": "discussed => comparator",
+      "snippet": "For an independent **upper-upscale hotel in Mexico**, converting into a branded affiliation typically means balancing **global distribution and loyalty power** with the desire to preserve the property’s **unique identity"
+    },
+    {
+      "caseId": "v2_cand_035ffe13",
+      "entity": "Small Luxury Hotels of the World",
+      "humanRole": "first_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+      "pair": "first_recommendation => associated_option",
+      "snippet": "Here is a comprehensive overview of the collection and soft-brand options most commonly considered by hotel owners pursuing a conversion in Europe, organized by parent company and market segment: --- ## 🏨 Collection &"
+    },
+    {
+      "caseId": "v2_cand_07cbcda0",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "passing_mention",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "PAIR_first_recommendation_TO_passing_mention",
+      "pair": "first_recommendation => passing_mention",
+      "snippet": "An owner looking to **preserve individuality** should consider **soft brands** and **collection brands**—affiliations that let the hotel keep its own name, design, and character while accessing the parent company’s distr"
+    },
+    {
+      "caseId": "v2_cand_090e59ac",
+      "entity": "Ascend Hotel Collection",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "pair": "ranked_recommendation => associated_option",
+      "snippet": "Cuando un propietario en México busca **afiliación de marca** pero quiere **conservar la identidad propia del hotel**, las opciones que más habitualmente se consideran son las **soft brands** y las **colecciones de hotel"
+    },
+    {
+      "caseId": "v2_cand_0a8cfa16",
+      "entity": "DoubleTree by Hilton",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "pair": "ranked_recommendation => associated_option",
+      "snippet": "This is a great question that sits at the intersection of hotel brand strategy, real estate development, and operator selection. Here is a comprehensive overview of the upper-upscale hotel brands most commonly shortliste"
+    },
+    {
+      "caseId": "v2_cand_0ac8f8ef",
+      "entity": "Autograph Collection",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_ASSOCIATED_RECALL",
+      "pair": "associated_option => discussed",
+      "snippet": "Al evaluar un proyecto de **Branded Residences** (residencias con marca hotelera) en el Caribe y América Latina (CALA), un propietario o desarrollador debe considerar que esta región es una de las más dinámicas del mundo"
+    },
+    {
+      "caseId": "v2_cand_0cfea0d4",
+      "entity": "Tapestry Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "ranked_recommendation",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "PAIR_discussed_TO_ranked_recommendation",
+      "pair": "discussed => ranked_recommendation",
+      "snippet": "Al posicionar un hotel en el Caribe y América Latina alrededor de una **experiencia diferenciada** y con **carácter local**, las marcas lifestyle más relevantes a considerar son **Curio Collection by Hilton**, **Tapestry"
+    },
+    {
+      "caseId": "v2_cand_0e2e5bd2",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Aquí tiene un análisis exhaustivo y estructurado de las principales **soft brands / marcas de colección** que un propietario debería considerar cuando la **flexibilidad de afiliación** es prioritaria en una conversión ho"
+    },
+    {
+      "caseId": "v2_cand_14651e14",
+      "entity": "Hilton Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+      "pair": "first_recommendation => associated_option",
+      "snippet": "This is a great question that sits at the intersection of hotel brand strategy, real estate development, and operator selection. Here is a comprehensive overview of the upper-upscale hotel brands most commonly shortliste"
+    },
+    {
+      "caseId": "v2_cand_14cb6324",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "Owners in Mexico commonly look at a mix of **homegrown lifestyle brands** and **global soft-brand / design-led flags** when they want a property with distinctive character. The names that appear most often in the results"
+    },
+    {
+      "caseId": "v2_cand_1550f44a",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "CALA",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Here is a comprehensive breakdown of the **soft brands and collection brands** that hotel owners in the **Caribbean and Latin America (CALA)** should seriously consider when **affiliation flexibility** is the top priorit"
+    },
+    {
+      "caseId": "v2_cand_160cbb3c",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "comparator",
+      "provider": "gemini",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "COMPARATOR_BOUNDARY",
+      "pair": "discussed => comparator",
+      "snippet": "Convertir un hotel *upper-upscale* (gama alta superior) existente en el Caribe y América Latina (CALA) es una de las estrategias de inversión más atractivas actualmente. Permite acelerar el tiempo de salida al mercado (*"
+    },
+    {
+      "caseId": "v2_cand_17be10b8",
+      "entity": "Westin",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "Si un propietario quiere posicionar un hotel como **upper-upscale en México**, las marcas que más conviene considerar suelen ser las de **Marriott, Hilton, IHG, Hyatt, Accor, Radisson y Wyndham**, además de algunas marca"
+    },
+    {
+      "caseId": "v2_cand_17d13a6b",
+      "entity": "Sheraton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "Si un propietario quiere posicionar un hotel como **upper-upscale en México**, las marcas que más conviene considerar suelen ser las de **Marriott, Hilton, IHG, Hyatt, Accor, Radisson y Wyndham**, además de algunas marca"
+    },
+    {
+      "caseId": "v2_cand_17e09529",
+      "entity": "Westin",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_ASSOCIATED_RECALL",
+      "pair": "associated_option => discussed",
+      "snippet": "Al evaluar un proyecto de **Branded Residences** (residencias con marca hotelera) en el Caribe y América Latina (CALA), un propietario o desarrollador debe considerar que esta región es una de las más dinámicas del mundo"
+    },
+    {
+      "caseId": "v2_cand_198ab403",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Cuando un propietario hotelero en el Caribe y América Latina (región conocida en la industria como **CALA**) busca afiliación para ganar distribución global, tecnología y motores de reservas, pero desea preservar la iden"
+    },
+    {
+      "caseId": "v2_cand_1a571607",
+      "entity": "Sheraton",
+      "humanRole": "discussed",
+      "predictedRole": "negative_or_qualified",
+      "provider": "openai",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "PAIR_discussed_TO_negative_or_qualified",
+      "pair": "discussed => negative_or_qualified",
+      "snippet": "For an **upper-upscale hotel**, owners and developers typically begin with the following global brand universe. Exact chain-scale classifications vary slightly by region and benchmarking firm, so this is best treated as "
+    },
+    {
+      "caseId": "v2_cand_1c5b0f67",
+      "entity": "Vignette Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Si la prioridad es la **flexibilidad de afiliación** en una conversión hotelera en México, las opciones más relevantes suelen ser las **soft brands** de las grandes cadenas, porque permiten afiliar hoteles independientes"
+    },
+    {
+      "caseId": "v2_cand_224ba464",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Para una estrategia de posicionamiento **upper-upscale** en el Caribe y América Latina, las marcas hoteleras que más conviene considerar son las que ya operan o encajan claramente en ese segmento y tienen reconocimiento "
+    },
+    {
+      "caseId": "v2_cand_238deb1e",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_23bdc61c",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_25520887",
+      "entity": "Fairmont",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "pair": "associated_option => discussed",
+      "snippet": "The market for hotel-branded residences has grown rapidly over the past two decades. Developers globally consider specific hotel brands based on target buyer demographics, price premiums (typically 25–35%+ higher than no"
+    },
+    {
+      "caseId": "v2_cand_2cad5049",
+      "entity": "Sheraton",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "pair": "ranked_recommendation => associated_option",
+      "snippet": "This is a great question for hotel owners and investors. Here is a comprehensive overview of the **upper-upscale hotel brands** worth considering when positioning a hotel in Mexico, organized by parent company: --- ## "
+    },
+    {
+      "caseId": "v2_cand_2e0a4ca6",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+      "pair": "first_recommendation => associated_option",
+      "snippet": "Cuando un propietario en México busca **afiliación de marca** pero quiere **conservar la identidad propia del hotel**, las opciones que más habitualmente se consideran son las **soft brands** y las **colecciones de hotel"
+    },
+    {
+      "caseId": "v2_cand_30a8281f",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "This is a great question for hotel owners and investors. Here is a comprehensive overview of the **upper-upscale hotel brands** worth considering when positioning a hotel in Mexico, organized by parent company: --- ## "
+    },
+    {
+      "caseId": "v2_cand_3468ce7e",
+      "entity": "Design Hotels",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "pair": "ranked_recommendation => associated_option",
+      "snippet": "For an owner in Mexico who wants **brand affiliation** but still needs to preserve **greater hotel individuality**, the brands most commonly considered are **soft-brand** or **collection-style** options rather than highl"
+    },
+    {
+      "caseId": "v2_cand_359453c0",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "NORTH_AMERICA",
+      "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+      "pair": "first_recommendation => associated_option",
+      "snippet": "This is a great question about **soft brand collections** — a fast-growing segment of the hotel industry that gives owners the best of both worlds: brand affiliation and preserved individuality. Here is a comprehensive o"
+    },
+    {
+      "caseId": "v2_cand_37210b41",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Aquí tienes un panorama completo y estructurado de las marcas y colecciones hoteleras más consideradas cuando un propietario en el **Caribe y América Latina** busca afiliación de marca pero quiere **preservar la identida"
+    },
+    {
+      "caseId": "v2_cand_39bb0c9a",
+      "entity": "Tribute Portfolio",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Aquí tiene un análisis exhaustivo y estructurado de las principales **soft brands / marcas de colección** que un propietario debería considerar cuando la **flexibilidad de afiliación** es prioritaria en una conversión ho"
+    },
+    {
+      "caseId": "v2_cand_3a457626",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "ranked_recommendation",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "PAIR_discussed_TO_ranked_recommendation",
+      "pair": "discussed => ranked_recommendation",
+      "snippet": "Al posicionar un hotel en el Caribe y América Latina alrededor de una **experiencia diferenciada** y con **carácter local**, las marcas lifestyle más relevantes a considerar son **Curio Collection by Hilton**, **Tapestry"
+    },
+    {
+      "caseId": "v2_cand_3bea5bb6",
+      "entity": "Sheraton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Para una estrategia de posicionamiento **upper-upscale** en el Caribe y América Latina, las marcas hoteleras que más conviene considerar son las que ya operan o encajan claramente en ese segmento y tienen reconocimiento "
+    },
+    {
+      "caseId": "v2_cand_3c28453a",
+      "entity": "Handwritten Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+      "pair": "first_recommendation => associated_option",
+      "snippet": "Great, I now have comprehensive information to provide a thorough answer. Here is a breakdown of the collection and soft-brand options commonly considered for hotel conversions in Mexico: --- ## Collection & Soft-Brand"
+    },
+    {
+      "caseId": "v2_cand_3df2487f",
+      "entity": "Vignette Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "pair": "discussed => associated_option",
+      "snippet": "This is a great and highly relevant topic in European hospitality development. Here is a comprehensive overview of the hotel brands most commonly considered by owners looking to affiliate an independent upper-upscale pro"
+    },
+    {
+      "caseId": "v2_cand_415f17f0",
+      "entity": "Tapestry Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "explicit_recommendation",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_EXPLICIT_OVER_PROMOTION",
+      "pair": "discussed => explicit_recommendation",
+      "snippet": "Here is a comprehensive guide to the **soft brand and collection hotel affiliations** that a hotel owner in Mexico should consider, organized from global mega-brand collections to independent consortiums: --- ## 🏨 Sof"
+    },
+    {
+      "caseId": "v2_cand_43f183de",
+      "entity": "Westin",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Para un hotel **upper-upscale** existente y de tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros de negocios como de ocio: **Hyatt Regenc"
+    },
+    {
+      "caseId": "v2_cand_45ad67a6",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Aquí tienes un panorama completo y estructurado de las marcas y colecciones hoteleras más consideradas cuando un propietario en el **Caribe y América Latina** busca afiliación de marca pero quiere **preservar la identida"
+    },
+    {
+      "caseId": "v2_cand_4c7fd94c",
+      "entity": "Kimpton Hotels",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "pair": "discussed => associated_option",
+      "snippet": "For an owner positioning a hotel around **differentiated guest experience** and **local character**, the strongest lifestyle brands to consider are **Hotel Indigo**, **Canopy by Hilton**, **The Hoxton**, **The Standard**"
+    },
+    {
+      "caseId": "v2_cand_4e014498",
+      "entity": "Vignette Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "En México, los propietarios suelen considerar **marcas lifestyle con diseño distintivo** como **Grupo Habita**, **Kimpton**, **Hotel Indigo**, **AC Hotels by Marriott**, **Vignette Collection**, **nhow**, **Design Hotels"
+    },
+    {
+      "caseId": "v2_cand_53e95635",
+      "entity": "Marriott Hotels",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "discussed",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "MISSING_RANKED_RECALL",
+      "pair": "ranked_recommendation => discussed",
+      "snippet": "For an **upper-upscale hotel positioning strategy in Europe**, an owner should primarily consider **brands with a proven upper-upscale classification and strong European footprint**. The clearest branded options in the s"
+    },
+    {
+      "caseId": "v2_cand_548dde0e",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Si la prioridad es la **flexibilidad de afiliación** en una conversión hotelera en México, las opciones más relevantes suelen ser las **soft brands** de las grandes cadenas, porque permiten afiliar hoteles independientes"
+    },
+    {
+      "caseId": "v2_cand_59e9c457",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_5a598dd",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "en",
+      "geography": "CALA",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_5bd0176f",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "discussed",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_RANKED_RECALL",
+      "pair": "ranked_recommendation => discussed",
+      "snippet": "Para un hotel **upper-upscale** existente y de tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros de negocios como de ocio: **Hyatt Regenc"
+    },
+    {
+      "caseId": "v2_cand_5dc534cd",
+      "entity": "Sheraton",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "discussed",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_RANKED_RECALL",
+      "pair": "ranked_recommendation => discussed",
+      "snippet": "Para un hotel **upper-upscale** existente y de tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros de negocios como de ocio: **Hyatt Regenc"
+    },
+    {
+      "caseId": "v2_cand_5e706e2f",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "Si un propietario quiere posicionar un hotel como **upper-upscale en México**, las marcas que más conviene considerar suelen ser las de **Marriott, Hilton, IHG, Hyatt, Accor, Radisson y Wyndham**, además de algunas marca"
+    },
+    {
+      "caseId": "v2_cand_63012053",
+      "entity": "Tribute Portfolio",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "pair": "discussed => associated_option",
+      "snippet": "This is a great and highly relevant topic in European hospitality development. Here is a comprehensive overview of the hotel brands most commonly considered by owners looking to affiliate an independent upper-upscale pro"
+    },
+    {
+      "caseId": "v2_cand_64751348",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Cuando un propietario o inversionista hotelero en México evalúa convertir un hotel independiente (o existente) bajo el modelo de **\"Soft Brand\" o \"Collection Brand\"**, busca obtener el músculo comercial, el sistema de re"
+    },
+    {
+      "caseId": "v2_cand_6702a2e1",
+      "entity": "Autograph Collection",
+      "humanRole": "comparator",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "NORTH_AMERICA",
+      "rootCause": "COMPARATOR_BOUNDARY",
+      "pair": "comparator => discussed",
+      "snippet": "This is a comprehensive and well-sourced question. Here is a detailed breakdown of the key soft brands and collection brands a hotel owner should consider when **affiliation flexibility is a top priority** for a conversi"
+    },
+    {
+      "caseId": "v2_cand_6995af8a",
+      "entity": "Hotel Indigo",
+      "humanRole": "first_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FIRST_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "pair": "first_recommendation => associated_option",
+      "snippet": "For an owner positioning a hotel around **differentiated guest experience** and **local character**, the strongest lifestyle brands to consider are **Hotel Indigo**, **Canopy by Hilton**, **The Hoxton**, **The Standard**"
+    },
+    {
+      "caseId": "v2_cand_6c47a167",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "When hotel owners in Mexico consider converting an existing independent hotel, historic property, or boutique resort into a soft-brand collection, the main objective is usually to retain the hotel’s unique character and "
+    },
+    {
+      "caseId": "v2_cand_6c5eef29",
+      "entity": "Hotel Indigo",
+      "humanRole": "explicit_recommendation",
+      "predictedRole": "discussed",
+      "provider": "openai",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "MISSING_EXPLICIT_POSITIVE_OR_SECTION",
+      "pair": "explicit_recommendation => discussed",
+      "snippet": "For an owner prioritizing **differentiated guest experience, design and local character**, the strongest candidates fall into two groups: 1. **Lifestyle “hard brands”**—a defined personality and operating concept. 2. **"
+    },
+    {
+      "caseId": "v2_cand_6ca6d57f",
+      "entity": "Design Hotels",
+      "humanRole": "associated_option",
+      "predictedRole": "explicit_recommendation",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "PAIR_associated_option_TO_explicit_recommendation",
+      "pair": "associated_option => explicit_recommendation",
+      "snippet": "When hotel owners in Mexico consider converting an existing independent hotel, historic property, or boutique resort into a soft-brand collection, the main objective is usually to retain the hotel’s unique character and "
+    },
+    {
+      "caseId": "v2_cand_6cfb89f5",
+      "entity": "Tribute Portfolio",
+      "humanRole": "comparator",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "NORTH_AMERICA",
+      "rootCause": "COMPARATOR_BOUNDARY",
+      "pair": "comparator => discussed",
+      "snippet": "This is a comprehensive and well-sourced question. Here is a detailed breakdown of the key soft brands and collection brands a hotel owner should consider when **affiliation flexibility is a top priority** for a conversi"
+    },
+    {
+      "caseId": "v2_cand_6e24c43f",
+      "entity": "Autograph Collection",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "pair": "associated_option => discussed",
+      "snippet": "Here is a comprehensive overview of the hotel brands most commonly considered by owners and developers in Mexico for **design-forward or distinctive-character lifestyle positioning**: --- ## 🏨 Lifestyle & Design-Forwa"
+    },
+    {
+      "caseId": "v2_cand_723e554b",
+      "entity": "Design Hotels",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "pair": "associated_option => discussed",
+      "snippet": "Here is a comprehensive overview of the hotel brands most commonly considered by owners and developers in Mexico for **design-forward or distinctive-character lifestyle positioning**: --- ## 🏨 Lifestyle & Design-Forwa"
+    },
+    {
+      "caseId": "v2_cand_7342b809",
+      "entity": "Autograph Collection",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "MISSING_ASSOCIATED_RECALL",
+      "pair": "associated_option => discussed",
+      "snippet": "This is a great and highly relevant topic. Here is a comprehensive guide to hotel brands that owners and developers should consider when evaluating branded residences as part of a global hotel project, organized by tier "
+    },
+    {
+      "caseId": "v2_cand_74a241da",
+      "entity": "Fairmont",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_ASSOCIATED_RECALL",
+      "pair": "associated_option => discussed",
+      "snippet": "Aquí tienes un análisis completo y estructurado sobre las marcas hoteleras que un propietario/desarrollador debería considerar al evaluar **branded residences** para un proyecto en México: --- # 🏨 Marcas Hoteleras par"
+    },
+    {
+      "caseId": "v2_cand_75f7cc02",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "explicit_recommendation",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "MISSING_EXPLICIT_POSITIVE_OR_SECTION",
+      "pair": "explicit_recommendation => discussed",
+      "snippet": "When a hotel owner or investor seeks a **soft brand** or **collection brand** for a property conversion, the goal is typically to retain the hotel’s unique identity, character, and local story while gaining access to a m"
+    },
+    {
+      "caseId": "v2_cand_7787c910",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "For an **upper-upscale hotel positioning strategy in Europe**, an owner should primarily consider **brands with a proven upper-upscale classification and strong European footprint**. The clearest branded options in the s"
+    },
+    {
+      "caseId": "v2_cand_786bec95",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "explicit_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "PAIR_explicit_recommendation_TO_associated_option",
+      "pair": "explicit_recommendation => associated_option",
+      "snippet": "Great, I now have comprehensive information to provide a thorough answer. Here is a breakdown of the collection and soft-brand options commonly considered for hotel conversions in Mexico: --- ## Collection & Soft-Brand"
+    },
+    {
+      "caseId": "v2_cand_7ab10797",
+      "entity": "Kimpton Hotels",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "pair": "associated_option => discussed",
+      "snippet": "Here is a comprehensive overview of the hotel brands most commonly considered by owners and developers in Mexico for **design-forward or distinctive-character lifestyle positioning**: --- ## 🏨 Lifestyle & Design-Forwa"
+    },
+    {
+      "caseId": "v2_cand_81b6acd1",
+      "entity": "Autograph Collection",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "NORTH_AMERICA",
+      "rootCause": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "pair": "associated_option => discussed",
+      "snippet": "When a hotel owner in North America wants the backing of a major distribution network and loyalty program while retaining the property’s unique identity, architecture, and operational flexibility, they turn to **\"Soft Br"
+    },
+    {
+      "caseId": "v2_cand_85350e7d",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "When hotel owners in Mexico consider converting an existing independent hotel, historic property, or boutique resort into a soft-brand collection, the main objective is usually to retain the hotel’s unique character and "
+    },
+    {
+      "caseId": "v2_cand_85fd4887",
+      "entity": "Kimpton Hotels",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "Owners in Mexico commonly look at a mix of **homegrown lifestyle brands** and **global soft-brand / design-led flags** when they want a property with distinctive character. The names that appear most often in the results"
+    },
+    {
+      "caseId": "v2_cand_862fe000",
+      "entity": "Tribute Portfolio",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "When hotel owners in Mexico consider converting an existing independent hotel, historic property, or boutique resort into a soft-brand collection, the main objective is usually to retain the hotel’s unique character and "
+    },
+    {
+      "caseId": "v2_cand_870c2d12",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_8d17c5dc",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_8ff4f422",
+      "entity": "Canopy by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "pair": "discussed => associated_option",
+      "snippet": "For an owner positioning a hotel around **differentiated guest experience** and **local character**, the strongest lifestyle brands to consider are **Hotel Indigo**, **Canopy by Hilton**, **The Hoxton**, **The Standard**"
+    },
+    {
+      "caseId": "v2_cand_92fa427f",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_932a61bf",
+      "entity": "Vignette Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Hotel owners who want **brand affiliation** but still want to preserve a stronger sense of **individuality** commonly look at **soft brands** and **lifestyle/boutique-style brands** such as **Autograph Collection**, **Th"
+    },
+    {
+      "caseId": "v2_cand_93762692",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_FIRST_FROM_CONFIRMED_RANK_OR_SHORTLIST",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Cuando la **flexibilidad** es la prioridad principal en la conversión de un hotel en México (es decir, minimizar la inversión en el Plan de Mejora de la Propiedad o *PIP*, conservar la identidad local, mantener autonomía"
+    },
+    {
+      "caseId": "v2_cand_955a9776",
+      "entity": "Small Luxury Hotels of the World",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "pair": "discussed => associated_option",
+      "snippet": "For an owner positioning a hotel around **differentiated guest experience** and **local character**, the strongest lifestyle brands to consider are **Hotel Indigo**, **Canopy by Hilton**, **The Hoxton**, **The Standard**"
+    },
+    {
+      "caseId": "v2_cand_967d73b3",
+      "entity": "Hotel Indigo",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "pair": "ranked_recommendation => associated_option",
+      "snippet": "Cuando un propietario en México busca **afiliación de marca** pero quiere **conservar la identidad propia del hotel**, las opciones que más habitualmente se consideran son las **soft brands** y las **colecciones de hotel"
+    },
+    {
+      "caseId": "v2_cand_98c0b04a",
+      "entity": "Vignette Collection",
+      "humanRole": "discussed",
+      "predictedRole": "explicit_recommendation",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "CALA",
+      "rootCause": "FALSE_EXPLICIT_OVER_PROMOTION",
+      "pair": "discussed => explicit_recommendation",
+      "snippet": "For an owner looking to preserve a hotel’s **individuality** in the Caribbean and Latin America, the strongest “soft” or *collection-style* affiliations to consider are **Marriott’s Autograph Collection and The Luxury Co"
+    },
+    {
+      "caseId": "v2_cand_9ba8bb69",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "claude",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Aquí tienes una visión completa y estructurada de las principales marcas **soft brand / collection** que los propietarios de hoteles suelen considerar para conversiones en el **Caribe y América Latina (CALA)**: --- ## "
+    },
+    {
+      "caseId": "v2_cand_a16a0bd3",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "explicit_recommendation",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "MISSING_EXPLICIT_POSITIVE_OR_SECTION",
+      "pair": "explicit_recommendation => discussed",
+      "snippet": "Here is a comprehensive overview of the collection and soft-brand options most commonly considered by hotel owners pursuing a conversion in Europe, organized by parent company and market segment: --- ## 🏨 Collection &"
+    },
+    {
+      "caseId": "v2_cand_a25aefe1",
+      "entity": "Curio Collection by Hilton",
+      "humanRole": "comparator",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "COMPARATOR_BOUNDARY",
+      "pair": "comparator => discussed",
+      "snippet": "When owners and developers in Mexico shortlist **Upper-Upscale** hotel brands (the tier sitting directly below ultra-luxury like Four Seasons/St. Regis and above midscale/upscale like Courtyard/Fiesta Inn), choices depen"
+    },
+    {
+      "caseId": "v2_cand_a503a80b",
+      "entity": "Grupo Presidente",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "pair": "discussed => associated_option",
+      "snippet": "Para un hotel **upper-upscale** existente y de tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros de negocios como de ocio: **Hyatt Regenc"
+    },
+    {
+      "caseId": "v2_cand_ae7d5331",
+      "entity": "Kimpton Hotels",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "MISSING_ASSOCIATED_RECALL",
+      "pair": "associated_option => discussed",
+      "snippet": "This is a great and highly relevant topic. Here is a comprehensive guide to hotel brands that owners and developers should consider when evaluating branded residences as part of a global hotel project, organized by tier "
+    },
+    {
+      "caseId": "v2_cand_b3b588a8",
+      "entity": "Fairmont",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_ASSOCIATED_RECALL",
+      "pair": "associated_option => discussed",
+      "snippet": "Al evaluar un proyecto de **Branded Residences** (residencias con marca hotelera) en el Caribe y América Latina (CALA), un propietario o desarrollador debe considerar que esta región es una de las más dinámicas del mundo"
+    },
+    {
+      "caseId": "v2_cand_b521cc27",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Hotel owners who want **brand affiliation** but still want to preserve a stronger sense of **individuality** commonly look at **soft brands** and **lifestyle/boutique-style brands** such as **Autograph Collection**, **Th"
+    },
+    {
+      "caseId": "v2_cand_b733314b",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Aquí tienes un análisis detallado y estructurado de las marcas que un propietario de un hotel **upper-upscale independiente en México** debería considerar para una conversión o afiliación de marca: --- # 🏨 Marcas a Co"
+    },
+    {
+      "caseId": "v2_cand_b74cb48a",
+      "entity": "Courtyard by Marriott",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_FIRST_FROM_CONFIRMED_RANK_OR_SHORTLIST",
+      "pair": "first_recommendation => discussed",
+      "snippet": "When owners and developers in Mexico shortlist **Upper-Upscale** hotel brands (the tier sitting directly below ultra-luxury like Four Seasons/St. Regis and above midscale/upscale like Courtyard/Fiesta Inn), choices depen"
+    },
+    {
+      "caseId": "v2_cand_b868afbc",
+      "entity": "Hotel Indigo",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "en",
+      "geography": "GLOBAL",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Hotel owners who want **brand affiliation** but still want to preserve a stronger sense of **individuality** commonly look at **soft brands** and **lifestyle/boutique-style brands** such as **Autograph Collection**, **Th"
+    },
+    {
+      "caseId": "v2_cand_b900ff0c",
+      "entity": "Tribute Portfolio",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Si la prioridad es la **flexibilidad de afiliación** en una conversión hotelera en México, las opciones más relevantes suelen ser las **soft brands** de las grandes cadenas, porque permiten afiliar hoteles independientes"
+    },
+    {
+      "caseId": "v2_cand_bd43a0eb",
+      "entity": "Autograph Collection",
+      "humanRole": "discussed",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "pair": "discussed => associated_option",
+      "snippet": "Si la prioridad es la **flexibilidad de afiliación** en una conversión hotelera en México, las opciones más relevantes suelen ser las **soft brands** de las grandes cadenas, porque permiten afiliar hoteles independientes"
+    },
+    {
+      "caseId": "v2_cand_c1325b8b",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_FIRST_FROM_CONFIRMED_RANK_OR_SHORTLIST",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Para un propietario de un hotel en el Caribe y América Latina (CALA) donde la **flexibilidad de afiliación** es la máxima prioridad —es decir, adaptar el hotel sin perder su identidad local, con menores exigencias de CAP"
+    },
+    {
+      "caseId": "v2_cand_c1bc5a0b",
+      "entity": "Preferred Hotels & Resorts",
+      "humanRole": "explicit_recommendation",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "EUROPE",
+      "rootCause": "MISSING_EXPLICIT_POSITIVE_OR_SECTION",
+      "pair": "explicit_recommendation => discussed",
+      "snippet": "When a hotel owner in Europe wants global distribution, powerful loyalty program access, and marketing power while preserving the hotel’s unique character, history, and operational autonomy, they typically look at **\"sof"
+    },
+    {
+      "caseId": "v2_cand_c539ca28",
+      "entity": "Marriott Hotels",
+      "humanRole": "passing_mention",
+      "predictedRole": "discussed",
+      "provider": "gemini",
+      "language": "en",
+      "geography": "MEXICO",
+      "rootCause": "PAIR_passing_mention_TO_discussed",
+      "pair": "passing_mention => discussed",
+      "snippet": "When owners and developers in Mexico shortlist **Upper-Upscale** hotel brands (the tier sitting directly below ultra-luxury like Four Seasons/St. Regis and above midscale/upscale like Courtyard/Fiesta Inn), choices depen"
+    },
+    {
+      "caseId": "v2_cand_c964ea2b",
+      "entity": "Autograph Collection",
+      "humanRole": "associated_option",
+      "predictedRole": "discussed",
+      "provider": "openai",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_ASSOCIATED_RECALL",
+      "pair": "associated_option => discussed",
+      "snippet": "Normalmente se consideran **“soft brands” o marcas de colección**: permiten conservar el nombre, diseño, narrativa y personalidad del hotel, pero aportan distribución mundial, sistemas comerciales y programas de fideliza"
+    },
+    {
+      "caseId": "v2_cand_d72d9741",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "claude",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Aquí tienes un análisis detallado y estructurado de las principales **marcas hoteleras lifestyle** que un propietario debería considerar al posicionar un hotel en el Caribe y América Latina (CALA) con base en experiencia"
+    },
+    {
+      "caseId": "v2_cand_d988a97c",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "en",
+      "geography": "CALA",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_da6f4fb6",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "en",
+      "geography": "CALA",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_e598a5b",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "explicit_recommendation",
+      "provider": "openai",
+      "language": "en",
+      "geography": "NORTH_AMERICA",
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "pair": "first_recommendation => explicit_recommendation",
+      "snippet": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels."
+    },
+    {
+      "caseId": "v2_cand_e69ac0b8",
+      "entity": "Autograph Collection",
+      "humanRole": "first_recommendation",
+      "predictedRole": "discussed",
+      "provider": "openai",
+      "language": "es",
+      "geography": "MEXICO",
+      "rootCause": "MISSING_FIRST_RECALL",
+      "pair": "first_recommendation => discussed",
+      "snippet": "Para un hotel existente **upper-upscale, de tamaño medio, en México**, empezaría con una licitación competitiva entre **soft brands orientadas a conversiones** y dos o tres marcas tradicionales. La selección final depend"
+    },
+    {
+      "caseId": "v2_cand_ed35e8e8",
+      "entity": "Kimpton Hotels",
+      "humanRole": "ranked_recommendation",
+      "predictedRole": "associated_option",
+      "provider": "perplexity",
+      "language": "es",
+      "geography": "CALA",
+      "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "pair": "ranked_recommendation => associated_option",
+      "snippet": "Para una estrategia de posicionamiento **upper-upscale** en el Caribe y América Latina, las marcas hoteleras que más conviene considerar son las que ya operan o encajan claramente en ese segmento y tienen reconocimiento "
+    }
+  ],
+  "pairs": [
+    {
+      "pair": "discussed => associated_option",
+      "count": 29
+    },
+    {
+      "pair": "first_recommendation => discussed",
+      "count": 14
+    },
+    {
+      "pair": "first_recommendation => explicit_recommendation",
+      "count": 13
+    },
+    {
+      "pair": "associated_option => discussed",
+      "count": 12
+    },
+    {
+      "pair": "first_recommendation => associated_option",
+      "count": 8
+    },
+    {
+      "pair": "ranked_recommendation => associated_option",
+      "count": 7
+    },
+    {
+      "pair": "explicit_recommendation => discussed",
+      "count": 4
+    },
+    {
+      "pair": "ranked_recommendation => discussed",
+      "count": 3
+    },
+    {
+      "pair": "comparator => discussed",
+      "count": 3
+    },
+    {
+      "pair": "discussed => comparator",
+      "count": 2
+    },
+    {
+      "pair": "discussed => ranked_recommendation",
+      "count": 2
+    },
+    {
+      "pair": "discussed => explicit_recommendation",
+      "count": 2
+    },
+    {
+      "pair": "first_recommendation => passing_mention",
+      "count": 1
+    },
+    {
+      "pair": "discussed => negative_or_qualified",
+      "count": 1
+    },
+    {
+      "pair": "associated_option => explicit_recommendation",
+      "count": 1
+    },
+    {
+      "pair": "explicit_recommendation => associated_option",
+      "count": 1
+    },
+    {
+      "pair": "passing_mention => discussed",
+      "count": 1
+    }
+  ],
+  "clusters": [
+    {
+      "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "count": 15
+    },
+    {
+      "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "count": 13
+    },
+    {
+      "rootCause": "MISSING_FIRST_RECALL",
+      "count": 11
+    },
+    {
+      "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "count": 9
+    },
+    {
+      "rootCause": "MISSING_ASSOCIATED_RECALL",
+      "count": 7
+    },
+    {
+      "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "count": 6
+    },
+    {
+      "rootCause": "COMPARATOR_BOUNDARY",
+      "count": 5
+    },
+    {
+      "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+      "count": 5
+    },
+    {
+      "rootCause": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "count": 5
+    },
+    {
+      "rootCause": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "count": 5
+    },
+    {
+      "rootCause": "MISSING_EXPLICIT_POSITIVE_OR_SECTION",
+      "count": 4
+    },
+    {
+      "rootCause": "FIRST_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "count": 3
+    },
+    {
+      "rootCause": "MISSING_RANKED_RECALL",
+      "count": 3
+    },
+    {
+      "rootCause": "MISSING_FIRST_FROM_CONFIRMED_RANK_OR_SHORTLIST",
+      "count": 3
+    },
+    {
+      "rootCause": "PAIR_discussed_TO_ranked_recommendation",
+      "count": 2
+    },
+    {
+      "rootCause": "FALSE_EXPLICIT_OVER_PROMOTION",
+      "count": 2
+    },
+    {
+      "rootCause": "RANKED_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "count": 1
+    },
+    {
+      "rootCause": "PAIR_first_recommendation_TO_passing_mention",
+      "count": 1
+    },
+    {
+      "rootCause": "PAIR_discussed_TO_negative_or_qualified",
+      "count": 1
+    },
+    {
+      "rootCause": "PAIR_associated_option_TO_explicit_recommendation",
+      "count": 1
+    },
+    {
+      "rootCause": "PAIR_explicit_recommendation_TO_associated_option",
+      "count": 1
+    },
+    {
+      "rootCause": "PAIR_passing_mention_TO_discussed",
+      "count": 1
+    }
+  ],
+  "errorCount": 104,
+  "holdout": {
+    "HOLDOUT_ACCESSED": false,
+    "HOLDOUT_CASES_INSPECTED": 0,
+    "HOLDOUT_METRICS_RUN": false
+  },
+  "classifierVersion": "lab_final_with_c08"
+}

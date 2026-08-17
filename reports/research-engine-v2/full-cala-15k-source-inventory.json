@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-08-09T18:32:37.036Z",
+  "sources": [
+    {
+      "file_path": "reports/research-engine-v2/hbx-cala-wave1-candidate-pack.json",
+      "source_type": "hbx_content_api",
+      "countries_covered": [
+        "Mexico",
+        "Dominican Republic",
+        "Colombia",
+        "Costa Rica",
+        "Panama"
+      ],
+      "candidate_count": 3385,
+      "field_availability": [
+        "name",
+        "country",
+        "city",
+        "address",
+        "website",
+        "phonehotel",
+        "chain_code",
+        "hbx_hotel_code",
+        "match_class"
+      ],
+      "licensed_approved": "license_policy_partial — identity/contact ok; media/coords held",
+      "insert_identity_ok": true,
+      "field_level_provenance_ok": "partial_internal_only",
+      "duplicate_risk": "medium",
+      "recommended_use": "primary Wave1 identity + contact for MX/DO/CO/CR/PA"
+    },
+    {
+      "file_path": "data/research-engine-v2/census-autopilot-v2-full-universe/candidates/*.json",
+      "source_type": "cvent_challenge_universe_plus_independent",
+      "countries_covered": "LATAM/Caribbean multi-country (see shards)",
+      "candidate_count": 14035,
+      "cvent_origin_count": 13369,
+      "independent_origin_count": 666,
+      "field_availability": [
+        "origin_name",
+        "origin_country",
+        "origin_city",
+        "origin_url",
+        "candidate_origin"
+      ],
+      "licensed_approved": "cvent_candidate_identity_only — not field-level SoT",
+      "insert_identity_ok": true,
+      "field_level_provenance_ok": false,
+      "duplicate_risk": "high_without_dedupe",
+      "recommended_use": "shell identity discovery; validate fields via HBX/official later",
+      "cvent_artifacts_present": true
+    },
+    {
+      "file_path": "reports/research-engine-v2/cvent-latam-harvest-inventory-summary.json",
+      "source_type": "cvent_harvest_inventory",
+      "countries_covered": 48,
+      "candidate_count": 13369,
+      "field_availability": [
+        "venue urls",
+        "sample titles"
+      ],
+      "licensed_approved": "candidate_inventory_only",
+      "insert_identity_ok": true,
+      "field_level_provenance_ok": false,
+      "duplicate_risk": "high",
+      "recommended_use": "coverage reference; do not scrape live"
+    },
+    {
+      "file_path": "data/research-engine-v2/census-autopilot-v4-full-universe/27-universe-ledger-index.json",
+      "source_type": "universe_ledger_index",
+      "countries_covered": "CALA/LATAM ledger",
+      "candidate_count": 15198,
+      "field_availability": [
+        "status_counts"
+      ],
+      "licensed_approved": "internal_ops",
+      "insert_identity_ok": false,
+      "field_level_provenance_ok": false,
+      "duplicate_risk": "n/a",
+      "recommended_use": "coverage planning / status reference"
+    },
+    {
+      "file_path": "reports/research-engine-v2/autopilot/**/enrichment-candidates.json",
+      "source_type": "dataforseo_local_candidates",
+      "countries_covered": "varies by run",
+      "candidate_count": "run-scoped",
+      "field_availability": [
+        "website",
+        "address",
+        "phone",
+        "place_id"
+      ],
+      "licensed_approved": "internal_enrichment_lane",
+      "insert_identity_ok": true,
+      "field_level_provenance_ok": "partial_with_policy",
+      "duplicate_risk": "medium",
+      "recommended_use": "post-shell enrichment; optional identity if match_high",
+      "note": "Not bulk-loaded in this dry-run; path pattern noted for inventory"
+    }
+  ],
+  "cvent_artifacts_present": true,
+  "partial_cvent_status": null
+}

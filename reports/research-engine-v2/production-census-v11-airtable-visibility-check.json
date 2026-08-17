@@ -1,0 +1,260 @@
+{
+  "generated_at": "2026-08-05T10:05:20.270Z",
+  "mode": "read_only",
+  "airtable_writes": false,
+  "status": "production_census_v11_founder_looking_at_wrong_base_or_table",
+  "freeze_hash": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+  "bases": {
+    "correct_base": {
+      "name": "Deal Capture Platform",
+      "id_masked": "appCCU…foLk",
+      "id_full_hint": "appCCU…foLk",
+      "role": "Hotel Property Census production home"
+    },
+    "not_here": [
+      {
+        "name": "Deal Capture MVP",
+        "id_masked": "appvtn…INP6",
+        "reason": "Brand Explorer / Brand Setup / Operator Setup live here — not Hotel Property Census",
+        "has_hotel_property_census": false
+      },
+      {
+        "name": "Deal Capture MVP — Sandbox",
+        "id_masked": "appRbW…2ch1",
+        "reason": "Sandbox BE pilot only",
+        "has_hotel_property_census": false
+      }
+    ],
+    "wrong_tables_on_correct_or_other_bases": [
+      "Brand Setup - Brand Basics",
+      "Brand Setup - Brand Explorer Presentation",
+      "Hotel Census (legacy)",
+      "Verified Independent Hotel Census (stub)"
+    ]
+  },
+  "tables": {
+    "Hotel Property Census": {
+      "exists_on_platform": true,
+      "id": "tbl9aY5ijiuIzzWam",
+      "exists_on_mvp": false,
+      "exists_on_sandbox": false
+    },
+    "Hotel Property Brand Affiliations": {
+      "exists_on_platform": true,
+      "id": "tbll7n0xgmYywyrTd",
+      "exists_on_mvp": false,
+      "exists_on_sandbox": false
+    },
+    "Hotel Property Source Evidence": {
+      "exists_on_platform": true,
+      "id": "tblfhosu44nMbvSbS",
+      "exists_on_mvp": false,
+      "exists_on_sandbox": false
+    },
+    "Hotel Property Steward Review": {
+      "exists_on_platform": true,
+      "id": "tbluxLjGTuKGRO2iM",
+      "exists_on_mvp": false,
+      "exists_on_sandbox": false
+    }
+  },
+  "hotel_property_census": {
+    "table_id": "tbl9aY5ijiuIzzWam",
+    "record_count": 666,
+    "total_field_count": 95,
+    "v11_fields_present": 62,
+    "v11_fields_expected": 62,
+    "v11_fields_missing": [],
+    "v11_field_names": [
+      "Hotel Description - Source Text",
+      "Hotel Description - AI Summary",
+      "Short Property Summary",
+      "Property Positioning",
+      "Hotel Class / Segment",
+      "Property Type",
+      "Asset Context",
+      "Market / Submarket",
+      "Amenities - Source Text",
+      "Amenities - Structured Tags",
+      "F&B Flag",
+      "Meeting Space Flag",
+      "Fitness Flag",
+      "Pool Flag",
+      "Resort Amenities Flag",
+      "Extended Stay Amenity Flag",
+      "Parking Flag",
+      "Airport Shuttle Flag",
+      "Spa Flag",
+      "Beach / Waterfront Flag",
+      "Branded Residences Flag",
+      "Mixed-Use Flag",
+      "Rooms / Keys",
+      "Rooms Source URL",
+      "Rooms Confidence",
+      "Building / Asset Notes",
+      "Opening Date",
+      "Opening Date Source URL",
+      "Renovation / Conversion Status",
+      "Renovation / Conversion Date",
+      "Renovation / Conversion Source URL",
+      "Owner Name",
+      "Owner Type",
+      "Owner Source URL",
+      "Owner Confidence",
+      "Developer Name",
+      "Developer Source URL",
+      "Developer Confidence",
+      "Ownership Review Status",
+      "Operator / Management Company",
+      "Operator Type",
+      "Management Model",
+      "Operator Source URL",
+      "Operator Confidence",
+      "Operator Review Status",
+      "Possible Operator Target",
+      "Independent Hotel Flag",
+      "Independent Classification",
+      "Brand-Unassigned Reason",
+      "Possible Soft-Brand Candidate",
+      "Possible Brand Conversion Candidate",
+      "Possible Owner Outreach Target",
+      "Possible Financing Target",
+      "Possible Dealality Opportunity",
+      "Data Confidence Tier",
+      "Relationship Confidence",
+      "Last Verified Date",
+      "Next Review Needed",
+      "Enrichment Status",
+      "Enrichment Priority",
+      "Human Review Required",
+      "Notes for Steward"
+    ],
+    "blank_by_design": [
+      "Hotel Description - Source Text",
+      "Hotel Description - AI Summary",
+      "Short Property Summary",
+      "Amenities - Source Text",
+      "Amenities - Structured Tags",
+      "Owner Name",
+      "Operator / Management Company",
+      "Rooms / Keys",
+      "Opening Date",
+      "Developer Name"
+    ],
+    "safe_backfill_fields": [
+      "Enrichment Status (= Not Started)",
+      "Human Review Required (= true on 4 held only)",
+      "Data Confidence Tier",
+      "Enrichment Priority",
+      "Independent Classification / soft-brand flags (derived)"
+    ],
+    "record_stats": {
+      "count": 666,
+      "enrichment_not_started": 666,
+      "human_review_true": 4,
+      "production_use_ok": 666,
+      "description_filled": 0,
+      "amenities_filled": 0,
+      "owner_filled": 0,
+      "operator_filled": 0,
+      "rooms_filled": 0,
+      "opening_filled": 0
+    }
+  },
+  "name_changes": {
+    "applied": false,
+    "explanation": [
+      "Post-apply review was read-only.",
+      "It recommended possible v1.1.1 cleanup later — it did not rename or delete fields.",
+      "Last Verified Date vs Last Reviewed Date remains a founder decision (not applied).",
+      "Amenity consolidation (move Fitness/Pool/etc. into Structured Tags) was recommended but not applied.",
+      "No fields were renamed or deleted after v1.1 schema create."
+    ]
+  },
+  "views": {
+    "available": [
+      {
+        "id": "viw9zpA4M7PYntHKJ",
+        "name": "Grid view",
+        "type": "grid",
+        "visible_field_count": 95,
+        "v11_hidden_count": 0,
+        "v11_hidden_names": []
+      }
+    ],
+    "recommended_view": "Grid view",
+    "v11_hidden_by_any_view": false,
+    "note": "API reports all 95 fields (including all 62 v1.1 fields) visible in Grid view. If founder still cannot see them, they are almost certainly in the wrong base/table, or scanning for renamed labels / filled enrichment cells that do not exist yet."
+  },
+  "search_targets": [
+    {
+      "name": "Hotel Description - Source Text",
+      "exists": true,
+      "field_id": "fldzUWFeQZyBZx5kY",
+      "type": "multilineText",
+      "visible_in_default_grid": true
+    },
+    {
+      "name": "Amenities - Structured Tags",
+      "exists": true,
+      "field_id": "fld14YNNlPBVPa24C",
+      "type": "multilineText",
+      "visible_in_default_grid": true
+    },
+    {
+      "name": "Owner Name",
+      "exists": true,
+      "field_id": "fld6izcVMECXAnIwC",
+      "type": "singleLineText",
+      "visible_in_default_grid": true
+    },
+    {
+      "name": "Operator / Management Company",
+      "exists": true,
+      "field_id": "fldDSZI7oE6w4ysm5",
+      "type": "singleLineText",
+      "visible_in_default_grid": true
+    },
+    {
+      "name": "Enrichment Status",
+      "exists": true,
+      "field_id": "flddR43xuY0b9hh9t",
+      "type": "singleSelect",
+      "visible_in_default_grid": true
+    },
+    {
+      "name": "Human Review Required",
+      "exists": true,
+      "field_id": "fldowXulTbsx6IFlS",
+      "type": "checkbox",
+      "visible_in_default_grid": true
+    },
+    {
+      "name": "Production Use Status",
+      "exists": true,
+      "field_id": "fldKQE4bEaJMIHqDc",
+      "type": "singleSelect",
+      "visible_in_default_grid": true
+    }
+  ],
+  "ui_guidance": {
+    "steps": [
+      "Open Airtable base: Deal Capture Platform (appCCU…foLk) — not MVP, not Sandbox",
+      "Open table: Hotel Property Census (tbl9aY5ijiuIzzWam)",
+      "Open view: Grid view",
+      "Click the field visibility / hidden fields control (or use field search)",
+      "Search for: Hotel Description - Source Text, Amenities - Structured Tags, Owner Name, Operator / Management Company, Enrichment Status, Human Review Required, Production Use Status",
+      "Expect Enrichment Status = Not Started on rows; description/owner/operator/rooms/amenities cells blank by design",
+      "Do not expect renamed fields (Last Reviewed Date etc.) — renames were not applied"
+    ]
+  },
+  "why_founder_may_not_see_changes": [
+    "Looking at Deal Capture MVP or Sandbox instead of Deal Capture Platform",
+    "Looking at Brand Setup - Brand Basics / Presentation instead of Hotel Property Census",
+    "Looking at legacy Hotel Census or Verified Independent Hotel Census stub",
+    "Expecting field renames from post-apply review — those were recommendations only, not applied",
+    "Expecting filled description/owner/operator/rooms cells — blank until enrichment lane runs",
+    "Wide table: new columns are toward the right of the original identity columns (scroll or field search)"
+  ],
+  "recommended_next_step": "Founder opens Deal Capture Platform → Hotel Property Census → Grid view → field search for Enrichment Status. Confirm 666 rows and blank enrichment columns. Then proceed to first enrichment lane (descriptions + amenities + property type) when ready."
+}

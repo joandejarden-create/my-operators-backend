@@ -1,0 +1,258 @@
+{
+  "report": "operator-setup-batch-3b-contract-hardening-plan",
+  "generatedAt": "2026-06-02",
+  "status": "plan_only_no_implementation",
+  "constraints": {
+    "airtable_schema_changes": false,
+    "field_renames_or_deletes": false,
+    "select_option_normalization": false,
+    "scoring_methodology_changes": false,
+    "legacy_alias_or_mirror_removal": false,
+    "operator_capability_snapshot_logic_changes": false,
+    "operator_alignment_user_output_changes": false
+  },
+  "items": [
+    {
+      "issueId": "OCS3B-001",
+      "priority": "P0",
+      "fieldConcept": "Explorer company identity key provenance",
+      "currentCanonicalSourceKey": "companyName (prefill), company_name (raw)",
+      "currentFallbackAliasKeys": [
+        "company_name",
+        "Company Name"
+      ],
+      "currentFileFunctionUsingFallback": "public/js/operator-explorer-new-base-profile.js::pickField",
+      "airtableTableField": "Operator Setup - Master.company_name",
+      "affectedDownstreamPageFunction": "Operator Explorer profile model hydration",
+      "currentRisk": "Silent fallback masks canonical mapping drift.",
+      "proposedDiagnosticOrContractHardening": "Add debug provenance output for source key/layer used.",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "Canonical-first + fallback provenance unit tests.",
+      "riskLevel": "High",
+      "rollbackApproach": "Disable provenance hook and keep current fallback behavior."
+    },
+    {
+      "issueId": "OCS3B-002",
+      "priority": "P0",
+      "fieldConcept": "Service model key provenance",
+      "currentCanonicalSourceKey": "serviceModelsSupported",
+      "currentFallbackAliasKeys": [
+        "serviceModels",
+        "service_models",
+        "Service Models Supported",
+        "Primary Service Model"
+      ],
+      "currentFileFunctionUsingFallback": "public/js/operator-explorer-new-base-profile.js::pickList, lib/operator-alignment-prefill-map.js::applyOperatorAlignmentPrefillAliases",
+      "airtableTableField": "Operator Setup - Platform & Markets.serviceModelsSupported (+ legacy aliases)",
+      "affectedDownstreamPageFunction": "Operator Explorer + Operator Alignment company context",
+      "currentRisk": "Different readers may resolve different aliases.",
+      "proposedDiagnosticOrContractHardening": "Fallback-used diagnostics + canonical-first contract tests across readers.",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "Cross-reader canonical/fallback resolution matrix tests.",
+      "riskLevel": "High",
+      "rollbackApproach": "Remove diagnostics/tests only."
+    },
+    {
+      "issueId": "OCS3B-003",
+      "priority": "P0",
+      "fieldConcept": "Chain scale key provenance",
+      "currentCanonicalSourceKey": "chainScalesSupported",
+      "currentFallbackAliasKeys": [
+        "chainScale",
+        "Chain Scales You Support",
+        "Chain Scale"
+      ],
+      "currentFileFunctionUsingFallback": "public/js/operator-explorer-new-base-profile.js::pickList",
+      "airtableTableField": "Operator Setup - Profile & Positioning.chainScalesSupported",
+      "affectedDownstreamPageFunction": "Operator Explorer + alignment support narratives",
+      "currentRisk": "Fallback to broader fields can alter semantic meaning.",
+      "proposedDiagnosticOrContractHardening": "Provenance metadata + canonical-order tests.",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "Deterministic key-order provenance tests.",
+      "riskLevel": "High",
+      "rollbackApproach": "Revert provenance additions."
+    },
+    {
+      "issueId": "OCS3B-004",
+      "priority": "P1",
+      "fieldConcept": "Parent/management ownership alias provenance",
+      "currentCanonicalSourceKey": "parentCompany",
+      "currentFallbackAliasKeys": [
+        "platform",
+        "Platform",
+        "managementCompany (semantic alias family)"
+      ],
+      "currentFileFunctionUsingFallback": "public/js/operator-explorer-new-base-profile.js::pickField",
+      "airtableTableField": "Operator Setup profile/master ownership fields",
+      "affectedDownstreamPageFunction": "Operator Explorer ownership/platform display",
+      "currentRisk": "Ownership meaning drift through broad fallback aliases.",
+      "proposedDiagnosticOrContractHardening": "Add source-field provenance in debug payload.",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "Ownership key source provenance tests.",
+      "riskLevel": "Medium-High",
+      "rollbackApproach": "Disable provenance emission."
+    },
+    {
+      "issueId": "OCS3B-005",
+      "priority": "P0",
+      "fieldConcept": "Geography fallback ambiguity",
+      "currentCanonicalSourceKey": "activeCountries, activeMarkets, regionsSupported/specificMarkets",
+      "currentFallbackAliasKeys": [
+        "Active Countries",
+        "Active Markets / Cities",
+        "active_markets",
+        "Regions Supported"
+      ],
+      "currentFileFunctionUsingFallback": "public/js/operator-explorer-new-base-profile.js::pickList, lib/operator-alignment-prefill-map.js",
+      "airtableTableField": "Operator Setup - Platform & Markets geography fields",
+      "affectedDownstreamPageFunction": "Operator Explorer geography + alignment context",
+      "currentRisk": "Silent geography source drift affects trust in coverage outputs.",
+      "proposedDiagnosticOrContractHardening": "Per-field fallback-used logs and geography provenance tests.",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "Geography resolution provenance matrix tests.",
+      "riskLevel": "High",
+      "rollbackApproach": "Remove fallback diagnostics."
+    },
+    {
+      "issueId": "OCS3B-006",
+      "priority": "P0",
+      "fieldConcept": "Leadership child mapping consistency",
+      "currentCanonicalSourceKey": "role, summary, bio, headshot",
+      "currentFallbackAliasKeys": [
+        "function",
+        "shortBio",
+        "experienceSummary",
+        "headshotUrl"
+      ],
+      "currentFileFunctionUsingFallback": "api/lib/operator-setup-new-base-read.js::mapNewBaseLeadershipForDetail",
+      "airtableTableField": "Operator Setup - Leadership Team Members.role/summary/bio/headshot",
+      "affectedDownstreamPageFunction": "Explorer leadership detail rendering",
+      "currentRisk": "Compatibility outputs can conceal child-row mapping mismatch.",
+      "proposedDiagnosticOrContractHardening": "Add mapper provenance map in debug mode and mapper contract tests.",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "Leadership save/read contract tests with provenance checks.",
+      "riskLevel": "High",
+      "rollbackApproach": "Revert provenance map/tests only."
+    },
+    {
+      "issueId": "OCS3B-007",
+      "priority": "P0",
+      "fieldConcept": "explorerProfileJson mirror masking risk",
+      "currentCanonicalSourceKey": "Structured top-level fields in new-base mappings",
+      "currentFallbackAliasKeys": [
+        "explorerProfileJson mirror payload"
+      ],
+      "currentFileFunctionUsingFallback": "public/js/operator-setup-explorer-behavior.js::enrichOperatorSetupSubmitData/applyExplorerProfileJsonPrefill",
+      "airtableTableField": "Legacy Basics Explorer Profile JSON + new-base structured fields",
+      "affectedDownstreamPageFunction": "Explorer prefill/edit contract",
+      "currentRisk": "Mirror may hide missing structured field persistence.",
+      "proposedDiagnosticOrContractHardening": "Structured-vs-mirror key coverage diff diagnostics (log only).",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "Mirror masking detection tests.",
+      "riskLevel": "High",
+      "rollbackApproach": "Disable diagnostics; keep mirror unchanged."
+    },
+    {
+      "issueId": "OCS3B-008",
+      "priority": "P1",
+      "fieldConcept": "Alignment/score support provenance logging",
+      "currentCanonicalSourceKey": "Canonical prefill keys",
+      "currentFallbackAliasKeys": [
+        "OAS_OPERATOR_PREFILL_KEY_ALIASES mapping titles/snake aliases"
+      ],
+      "currentFileFunctionUsingFallback": "lib/operator-alignment-prefill-map.js::applyOperatorAlignmentPrefillAliases",
+      "airtableTableField": "Operator Setup profile/platform fields via alias map",
+      "affectedDownstreamPageFunction": "Operator Alignment Snapshot + score support context",
+      "currentRisk": "Cannot audit canonical-vs-alias source used in alignment context.",
+      "proposedDiagnosticOrContractHardening": "Emit non-user-facing provenance map per resolved key.",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "Alias resolver provenance tests.",
+      "riskLevel": "Medium-High",
+      "rollbackApproach": "Remove provenance map emission."
+    },
+    {
+      "issueId": "OCS3B-009",
+      "priority": "P2",
+      "fieldConcept": "Canonical key documentation in code",
+      "currentCanonicalSourceKey": "Distributed across readers",
+      "currentFallbackAliasKeys": [
+        "Distributed fallback stacks"
+      ],
+      "currentFileFunctionUsingFallback": "Explorer reader, alignment alias resolver, new-base read prefill merger",
+      "airtableTableField": "N/A",
+      "affectedDownstreamPageFunction": "Engineering maintainability",
+      "currentRisk": "Future regressions due to undocumented precedence.",
+      "proposedDiagnosticOrContractHardening": "Inline canonical-first mapping docs/comments.",
+      "whetherBehaviorChanges": false,
+      "whetherUserFacingOutputChanges": false,
+      "whetherScoringChanges": false,
+      "testNeeded": "N/A",
+      "riskLevel": "Low",
+      "rollbackApproach": "Revert docs/comments only."
+    }
+  ],
+  "separation": {
+    "A_safeDiagnosticsTelemetryOnly": [
+      "OCS3B-001",
+      "OCS3B-002",
+      "OCS3B-003",
+      "OCS3B-004",
+      "OCS3B-005",
+      "OCS3B-006",
+      "OCS3B-007",
+      "OCS3B-008"
+    ],
+    "B_contractTestsOnly": [
+      "OCS3B-001",
+      "OCS3B-002",
+      "OCS3B-003",
+      "OCS3B-005",
+      "OCS3B-006",
+      "OCS3B-007",
+      "OCS3B-008"
+    ],
+    "C_readKeyOrderingChanges": [
+      "Deferred unless diagnostics prove canonical order is incorrect."
+    ],
+    "D_userFacingBehaviorChangeItems": [],
+    "E_deferredItems": [
+      "Any fallback-stack reorder affecting displayed values",
+      "Any scoring input/logic change",
+      "Any option normalization",
+      "Any schema changes"
+    ]
+  },
+  "smallestSafeImplementationSlice": {
+    "goal": "diagnostics + tests + documentation only",
+    "includes": [
+      "Fallback-used diagnostics in Explorer key resolution",
+      "Fallback-used diagnostics in alignment alias resolver",
+      "Leadership mapper provenance diagnostics",
+      "explorerProfileJson mirror masking diagnostics",
+      "Contract/provenance tests for critical key families",
+      "Explicit canonical key documentation comments"
+    ],
+    "explicitlyExcludes": [
+      "User-facing display changes",
+      "Scoring changes",
+      "Fallback order behavior changes",
+      "Schema/option work"
+    ]
+  }
+}

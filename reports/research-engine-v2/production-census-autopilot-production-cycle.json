@@ -1,0 +1,643 @@
+{
+  "version": "census-autopilot-production-cycle-v1",
+  "generated_at": "2026-08-06T20:20:21.640Z",
+  "status": "production_census_autopilot_production_cycle_complete",
+  "ok": true,
+  "run_id": "2026-08-06T20-18-52_CALA-production-cycle",
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T20-18-52_CALA-production-cycle",
+  "mode": "production-cycle",
+  "region": "CALA",
+  "scope": "active-brand-setup",
+  "strategy": "fastest-safe",
+  "cleanup_existing_only": true,
+  "airtable_writes": true,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "vic_writes": false,
+  "per_bundle_chatgpt_approval": false,
+  "records_before": 907,
+  "records_after": 907,
+  "inserts_applied": 0,
+  "updates_applied": 77,
+  "fields_written": [
+    "Source URL",
+    "City",
+    "Canonical Property Name"
+  ],
+  "queues_executed": [
+    "core_identity_source_lookup",
+    "core_identity_quality",
+    "key_field_completion"
+  ],
+  "queues_exhausted": [
+    "core_identity_source_lookup"
+  ],
+  "queues_blocked": [],
+  "steward_cases": 0,
+  "provider_decision_cases": 0,
+  "webhound_candidates": 0,
+  "runtime_ms": 88803,
+  "passes": [
+    {
+      "pass": 1,
+      "high_update_proposals": 122,
+      "updates_applied": 71,
+      "inserts_raw": 0,
+      "inserts_auto": 0,
+      "inserts_steward": 0,
+      "inserts_created": 0,
+      "queues_executed": [
+        "core_identity_source_lookup",
+        "core_identity_quality",
+        "key_field_completion"
+      ],
+      "queues_soft_deferred": [],
+      "marriott_counters": {
+        "targets": 64,
+        "property_urls_found": 64,
+        "source_urls_replaced": 64,
+        "cities_resolved": 61,
+        "cities_written": 61,
+        "state_written": 0,
+        "canonical_written": 0,
+        "stewarded": 3,
+        "blocked_no_sitemap_match": 0,
+        "blocked_slug_unresolved": 3,
+        "blocked_duplicate_url": 0
+      },
+      "marriott_examples": [
+        {
+          "record_id": "rec02wJ8dk7HtjPjx",
+          "property_name": "Elena de Cobre, a Member of Design Hotels™",
+          "marsha": "BJXDS",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview"
+          },
+          "method": "marriott_official_sitemap_property_url_only"
+        },
+        {
+          "record_id": "rec0H65Zl2xa0St9L",
+          "property_name": "City Express by Marriott Ciudad Obregón",
+          "marsha": "CENXO",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+            "City": "Ciudad Obregón"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "rec0dxxcwt79FO1nZ",
+          "property_name": "City Express by Marriott Nogales",
+          "marsha": "NOGXN",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+            "City": "Nogales"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "rec30eORcGKDSQKhJ",
+          "property_name": "Terrestre, a Member of Design Hotels™",
+          "marsha": "PXMTR",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/pxmtr-terrestre-a-member-of-design-hotels/overview",
+            "City": "Puerto Escondido"
+          },
+          "method": "marriott_marsha_iata_high_fallback"
+        },
+        {
+          "record_id": "rec3HSGv9Rt3Nwtmd",
+          "property_name": "Courtyard by Marriott Panama Metromall",
+          "marsha": "PTYMM",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/ptymm-courtyard-panama-metromall/overview",
+            "City": "Panama City"
+          },
+          "method": "marriott_property_url_slug_panama_city"
+        },
+        {
+          "record_id": "rec3TjoFBXiolr2lz",
+          "property_name": "City Express by Marriott San Luis Potosí Zona Industrial",
+          "marsha": "SLPXI",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/slpxi-city-express-san-luis-potosi-zona-industrial/overview",
+            "City": "San Luis Potosí"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "rec4327YEwJT59CAv",
+          "property_name": "Casa Nizuc, a Tribute Portfolio Resort",
+          "marsha": "CUNAN",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+            "City": "Cancún"
+          },
+          "method": "marriott_marsha_iata_high_fallback"
+        },
+        {
+          "record_id": "rec4UM5tor3ZMOvpp",
+          "property_name": "City Express by Marriott Tuxpan",
+          "marsha": "PAZXT",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/pazxt-city-express-tuxpan/overview",
+            "City": "Tuxpan"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "rec6Zn0N2vUDkRvk5",
+          "property_name": "City Express by Marriott Tapachula",
+          "marsha": "TAPXT",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/tapxt-city-express-tapachula/overview",
+            "City": "Tapachula"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "rec7Z9d1HeCnfobLW",
+          "property_name": "The St. Regis Punta Mita Resort",
+          "marsha": "PVRXR",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+            "City": "Punta Mita"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "rec9fNNwBiJXgLuFS",
+          "property_name": "City Express by Marriott Rosarito",
+          "marsha": "TIJXS",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/tijxs-city-express-rosarito/overview",
+            "City": "Rosarito"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recAWR4e268Jk7xGw",
+          "property_name": "Costa Rica Marriott Hotel Hacienda Belen",
+          "marsha": "SJOCR",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/sjocr-costa-rica-marriott-hotel-hacienda-belen/overview",
+            "City": "Belén"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recAymC67NGyq50tR",
+          "property_name": "City Express Junior by Marriott Tuxtepec",
+          "marsha": "VERJT",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/verjt-city-express-junior-tuxtepec/overview",
+            "City": "Tuxtepec"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recB0byXK6WSDbZyP",
+          "property_name": "AC Hotel Santa Marta",
+          "marsha": "SMRSM",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/smrsm-ac-hotel-santa-marta/overview",
+            "City": "Santa Marta"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recBQWBWy34egojZS",
+          "property_name": "City Express by Marriott Salamanca",
+          "marsha": "BJXXS",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/bjxxs-city-express-salamanca/overview",
+            "City": "Salamanca"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recCksMSQt8WapQAP",
+          "property_name": "City Express by Marriott Minatitlan",
+          "marsha": "MTTXT",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/mttxt-city-express-minatitlan/overview",
+            "City": "Minatitlán"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recEERnZ9OmFS0Ihq",
+          "property_name": "City Express Plus by Marriott San Luis Potosí",
+          "marsha": "SLPPS",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/slpps-city-express-plus-san-luis-potosi/overview",
+            "City": "San Luis Potosí"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recFbSKBRvO96aJhc",
+          "property_name": "City Express by Marriott Caborca",
+          "marsha": "PPEXC",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/ppexc-city-express-caborca/overview",
+            "City": "Caborca"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recGMbJPpx5y8bANX",
+          "property_name": "VETTA Distrito Uno, Autograph Collection",
+          "marsha": "CUUAK",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/cuuak-vetta-distrito-uno-autograph-collection/overview",
+            "City": "Chihuahua"
+          },
+          "method": "marriott_marsha_iata_high_fallback"
+        },
+        {
+          "record_id": "recHlobHjcA75VtcJ",
+          "property_name": "City Express by Marriott Xalapa",
+          "marsha": "VERXX",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/verxx-city-express-xalapa/overview",
+            "City": "Xalapa"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recHwf9euNdF3ah4U",
+          "property_name": "City Express by Marriott Ciudad del Carmen",
+          "marsha": "CMEXC",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/cmexc-city-express-ciudad-del-carmen/overview",
+            "City": "Ciudad del Carmen"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recI9rkOyGPHCdWvF",
+          "property_name": "City Express by Marriott Reynosa",
+          "marsha": "REXXR",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/rexxr-city-express-reynosa/overview",
+            "City": "Reynosa"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recJR1Kh1s4pkAenT",
+          "property_name": "Downtown Mexico, a Member of Design Hotels",
+          "marsha": "MEXDD",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/mexdd-downtown-mexico-a-member-of-design-hotels/overview",
+            "City": "Mexico City"
+          },
+          "method": "marriott_property_url_slug_mexico_city"
+        },
+        {
+          "record_id": "recLkKYwYe65p19F3",
+          "property_name": "City Express by Marriott Tepotzotlan",
+          "marsha": "MEXXP",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/mexxp-city-express-tepotzotlan/overview",
+            "City": "Tepotzotlán"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        },
+        {
+          "record_id": "recMSlR5wm8H3sq22",
+          "property_name": "City Express by Marriott Tepic",
+          "marsha": "TPQXT",
+          "before": {
+            "City": "Unknown",
+            "Source URL": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+          },
+          "after": {
+            "Source URL": "https://www.marriott.com/en-us/hotels/tpqxt-city-express-tepic/overview",
+            "City": "Tepic"
+          },
+          "method": "marriott_property_url_slug_known_city"
+        }
+      ]
+    },
+    {
+      "pass": 2,
+      "high_update_proposals": 12,
+      "updates_applied": 6,
+      "inserts_raw": 0,
+      "inserts_auto": 0,
+      "inserts_steward": 0,
+      "inserts_created": 0,
+      "queues_executed": [
+        "core_identity_source_lookup",
+        "core_identity_quality",
+        "key_field_completion"
+      ],
+      "queues_soft_deferred": [],
+      "marriott_counters": {
+        "targets": 3,
+        "property_urls_found": 3,
+        "source_urls_replaced": 0,
+        "cities_resolved": 0,
+        "cities_written": 0,
+        "state_written": 0,
+        "canonical_written": 0,
+        "stewarded": 3,
+        "blocked_no_sitemap_match": 0,
+        "blocked_slug_unresolved": 3,
+        "blocked_duplicate_url": 0
+      },
+      "marriott_examples": []
+    },
+    {
+      "pass": 3,
+      "high_update_proposals": 0,
+      "updates_applied": 0,
+      "inserts_raw": 0,
+      "inserts_auto": 0,
+      "inserts_steward": 0,
+      "inserts_created": 0,
+      "queues_executed": [
+        "core_identity_source_lookup",
+        "core_identity_quality",
+        "key_field_completion"
+      ],
+      "queues_soft_deferred": [],
+      "marriott_counters": {
+        "targets": 3,
+        "property_urls_found": 3,
+        "source_urls_replaced": 0,
+        "cities_resolved": 0,
+        "cities_written": 0,
+        "state_written": 0,
+        "canonical_written": 0,
+        "stewarded": 3,
+        "blocked_no_sitemap_match": 0,
+        "blocked_slug_unresolved": 3,
+        "blocked_duplicate_url": 0
+      },
+      "marriott_examples": []
+    }
+  ],
+  "safety_stops": [],
+  "target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam"
+  },
+  "next_recommended_action": "Continue official source lookup for Unknown/descriptor cities and blank Canonical; keep address/Mapbox paused.",
+  "clean_core_identity_repair_status": "production_census_clean_core_identity_repair_partial_source_lookup_remaining",
+  "clean_core_before": {
+    "total_records": 907,
+    "clean_core": 789,
+    "below_clean_core": 118,
+    "canonical_blank": 11,
+    "canonical_dirty": 0,
+    "canonical_conflict": 24,
+    "canonical_safe_autofill": 0,
+    "canonical_duplicate_risk": 62,
+    "unknown_city": 69,
+    "blank_city": 0,
+    "descriptor_city": 0,
+    "all_caps_city": 0,
+    "all_lowercase_city": 0,
+    "city_state_combined": 2,
+    "city_safe_normalization": 70,
+    "state_region_complete": 43,
+    "state_blank": 864,
+    "source_url_complete": 907,
+    "source_url_missing": 0,
+    "human_review_required": 4,
+    "coordinate_blocked_dirty_identity": 95,
+    "by_class": {
+      "Clean Core": 789,
+      "Needs Source Lookup": 13,
+      "Needs Steward Review": 43,
+      "Duplicate Risk": 62,
+      "Not Usable Yet": 0
+    },
+    "by_parent": {
+      "Hilton": {
+        "below_clean_core": 4,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott International": {
+        "below_clean_core": 87,
+        "unknown_city": 58,
+        "canonical_blank": 0
+      },
+      "Accor": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice": {
+        "below_clean_core": 5,
+        "unknown_city": 5,
+        "canonical_blank": 5
+      },
+      "IHG Hotels & Resorts": {
+        "below_clean_core": 12,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Wyndham": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice Hotels International, Inc.": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott": {
+        "below_clean_core": 6,
+        "unknown_city": 6,
+        "canonical_blank": 6
+      },
+      "Preferred Hotels & Resorts": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      }
+    }
+  },
+  "clean_core_after": {
+    "total_records": 907,
+    "clean_core": 853,
+    "below_clean_core": 54,
+    "canonical_blank": 5,
+    "canonical_dirty": 0,
+    "canonical_conflict": 28,
+    "canonical_safe_autofill": 0,
+    "canonical_duplicate_risk": 7,
+    "unknown_city": 8,
+    "blank_city": 0,
+    "descriptor_city": 0,
+    "all_caps_city": 0,
+    "all_lowercase_city": 0,
+    "city_state_combined": 2,
+    "city_safe_normalization": 12,
+    "state_region_complete": 43,
+    "state_blank": 864,
+    "source_url_complete": 907,
+    "source_url_missing": 0,
+    "human_review_required": 4,
+    "coordinate_blocked_dirty_identity": 38,
+    "by_class": {
+      "Clean Core": 853,
+      "Needs Source Lookup": 7,
+      "Needs Steward Review": 40,
+      "Duplicate Risk": 7,
+      "Not Usable Yet": 0
+    },
+    "by_parent": {
+      "Hilton": {
+        "below_clean_core": 4,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott International": {
+        "below_clean_core": 29,
+        "unknown_city": 3,
+        "canonical_blank": 0
+      },
+      "Accor": {
+        "below_clean_core": 3,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice": {
+        "below_clean_core": 5,
+        "unknown_city": 5,
+        "canonical_blank": 5
+      },
+      "IHG Hotels & Resorts": {
+        "below_clean_core": 12,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Wyndham": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice Hotels International, Inc.": {
+        "below_clean_core": 1,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Preferred Hotels & Resorts": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      }
+    }
+  },
+  "marriott_property_url_city_backfill_status": "production_census_marriott_property_url_city_backfill_partial_remaining",
+  "status_detail": "production_census_marriott_property_url_city_backfill_partial_remaining"
+}

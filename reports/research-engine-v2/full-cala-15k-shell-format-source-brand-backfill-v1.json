@@ -1,0 +1,140 @@
+{
+  "ok": true,
+  "status": "production_census_full_cala_15k_shell_format_source_brand_backfill_v1_complete",
+  "secondary_status": "production_census_full_cala_15k_shell_format_source_brand_backfill_v1_partial_brand_validation_needed",
+  "objective": "full-cala-15k-shell-format-source-brand-backfill-v1",
+  "version": "full-cala-15k-shell-format-source-brand-backfill-v1",
+  "generated_at": "2026-08-09T16:55:02.493Z",
+  "dry_run": false,
+  "airtable_writes": 1194,
+  "countries": [
+    "Dominican Republic",
+    "Costa Rica",
+    "Panama"
+  ],
+  "records_reviewed": 1194,
+  "proposals_ready": 1194,
+  "records_updated": 1194,
+  "canonical_names_fixed": 562,
+  "provenance_writes": 1194,
+  "candidate_brand_text_writes": 83,
+  "candidate_brand_family_writes": 0,
+  "candidate_brand_source_writes": 83,
+  "brand_validation_status_writes": 83,
+  "current_brand_writes": 0,
+  "brand_family_writes": 0,
+  "conflicts_count": 0,
+  "conflicts": [],
+  "write_errors": [],
+  "schema": {
+    "found": [
+      "Discovery Source",
+      "Source Candidate Type",
+      "Candidate Source Count",
+      "Review Status",
+      "Shell Insert Batch ID",
+      "Shell Insert Country Batch",
+      "Shell Insert Date",
+      "Shell Insert Source Mix",
+      "Shell Dedupe Confidence",
+      "Candidate Brand Text",
+      "Candidate Brand Family",
+      "Candidate Brand Source",
+      "Candidate Brand Confidence",
+      "Brand Validation Status"
+    ],
+    "created": [
+      {
+        "name": "Discovery Source",
+        "type": "singleSelect",
+        "id": "fldkhR3G10BpnxDS6"
+      },
+      {
+        "name": "Source Candidate Type",
+        "type": "singleSelect",
+        "id": "fldZ7WSEyXp6qBBMD"
+      },
+      {
+        "name": "Candidate Source Count",
+        "type": "number",
+        "id": "fldtxzbO7qssRuEnD"
+      },
+      {
+        "name": "Review Status",
+        "type": "singleSelect",
+        "id": "fldawAARQwwkb7sq0"
+      },
+      {
+        "name": "Shell Insert Batch ID",
+        "type": "singleLineText",
+        "id": "fldyeR1vNVVjXd4SN"
+      },
+      {
+        "name": "Shell Insert Country Batch",
+        "type": "singleSelect",
+        "id": "fldnNq1j1m7zsS5UB"
+      },
+      {
+        "name": "Shell Insert Date",
+        "type": "date",
+        "id": "fldPyMjleHNMiiKtK"
+      },
+      {
+        "name": "Shell Insert Source Mix",
+        "type": "singleLineText",
+        "id": "fldVzwtEhl5Vy9Lku"
+      },
+      {
+        "name": "Shell Dedupe Confidence",
+        "type": "singleSelect",
+        "id": "fldBeoafb5bBGF9cc"
+      },
+      {
+        "name": "Candidate Brand Text",
+        "type": "singleLineText",
+        "id": "fldYiGvorEqaPfRYd"
+      },
+      {
+        "name": "Candidate Brand Family",
+        "type": "singleLineText",
+        "id": "fldoVZMtkjBBFJkCz"
+      },
+      {
+        "name": "Candidate Brand Source",
+        "type": "singleSelect",
+        "id": "fldxFNmfKTFrD2PCt"
+      },
+      {
+        "name": "Candidate Brand Confidence",
+        "type": "singleSelect",
+        "id": "fldDcK2xGwutoDVGP"
+      },
+      {
+        "name": "Brand Validation Status",
+        "type": "singleSelect",
+        "id": "fld3H4Lp66UchurDV"
+      }
+    ],
+    "missing": []
+  },
+  "family_source_investigation": {
+    "field_name_requested": "Family / Source",
+    "field_name_actual": "Family / Source Family",
+    "type": "singleSelect",
+    "semantics": "Brand / source-family affiliation options (IHG, Hilton, Marriott, Independent, etc.) — NOT discovery provenance.",
+    "current_usage": "Used as Brand Family / parent-company family signal alongside Brand Family in Census Autopilot.",
+    "recommended_handling": "Do not backfill from unvalidated Cvent/HBX chain text. Use Candidate Brand Family for unvalidated signals. Leave Family / Source Family blank until validated.",
+    "backfill_this_mission": false
+  },
+  "confirmations": {
+    "hotel_property_census_only": true,
+    "no_brand_explorer": true,
+    "no_brand_setup": true,
+    "no_rooms_keys": true,
+    "no_coords_media": true,
+    "no_owner_operator_dates": true,
+    "no_current_brand_from_unvalidated_cvent": true,
+    "shells_remain_hold_hr": true,
+    "family_source_family_not_written": true
+  }
+}

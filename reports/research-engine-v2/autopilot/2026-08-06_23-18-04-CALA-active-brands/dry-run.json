@@ -1,0 +1,4092 @@
+{
+  "mode": "controlled",
+  "parent_company": null,
+  "region": "CALA",
+  "country": null,
+  "batch_size": 250,
+  "max_records": null,
+  "run_until_complete": true,
+  "queues_executed": [
+    "source_discovery",
+    "brand_normalization",
+    "core_identity_quality",
+    "city_state_normalization",
+    "core_identity_source_lookup",
+    "clean_core_classification",
+    "canonical_property_name_completion",
+    "market_geography_completion",
+    "key_field_completion",
+    "property_name_cleanup",
+    "address_confirmation",
+    "coordinate_completion",
+    "phone_number_enrichment",
+    "coordinate_resolution",
+    "radar_public_readiness",
+    "description_extraction",
+    "amenities_extraction",
+    "property_type_asset_context",
+    "rooms_keys",
+    "steward_webhound_hard_cases"
+  ],
+  "proposals": [
+    {
+      "record_id": "rec02wJ8dk7HtjPjx",
+      "identity_key": "ind_marriott_mx_bjxds",
+      "property_name": "Elena de Cobre, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec0IqAQQtjvBvstj",
+      "identity_key": "ind_hilton_mx_cunmelx",
+      "property_name": "Mezzanine, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec0P2XU4LWSkAMKm",
+      "identity_key": "ind_hilton_pa_ptyatlx",
+      "property_name": "American Trade Hotel, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec0qmO7Xj7uyjWLZ",
+      "identity_key": "ind_choice_mx_mx086",
+      "property_name": "Choice property MX086",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec1XdpdiXxT2K18C",
+      "identity_key": "ind_hilton_cr_lirrplx",
+      "property_name": "Rio Perdido, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec1dTLhN2kHSjyv1",
+      "identity_key": "ind_ihg_cr_sjoap",
+      "property_name": "Holiday Inn Express San Jose Costa Rica Airport",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec1f0W6zwB9lA50p",
+      "identity_key": "ind_marriott_mx_pbcds",
+      "property_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec2mY62wnBxrSb3h",
+      "identity_key": "ind_choice_mx_mx073",
+      "property_name": "Choice property MX073",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec30eORcGKDSQKhJ",
+      "identity_key": "ind_marriott_mx_pxmtr",
+      "property_name": "Terrestre, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec3MHAXsWlTUz2gY",
+      "identity_key": "ind_hilton_mx_sjdtlup",
+      "property_name": "Tropicana Los Cabos, Tapestry Collection by Hilton",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Tapestry by Hilton",
+      "brand_after": "Tapestry Collection by Hilton",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Tapestry by Hilton",
+          "to": "Tapestry Collection by Hilton"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec3QgXCAUGHlVw6c",
+      "identity_key": "ind_marriott_mx_lapbc",
+      "property_name": "Baja Club Hotel, La Paz, Baja California Sur, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec3VtNHyHrW0xDk8",
+      "identity_key": "ind_choice_mx_mx184",
+      "property_name": "Radisson Hotel Tapatio Guadalajara",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec4WX7MfEUKPZz0H",
+      "identity_key": "ind_choice_mx_mx159",
+      "property_name": "Comfort Inn Delicias",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec5HytFhKHHeQ8Kj",
+      "identity_key": "ind_marriott_mx_midds",
+      "property_name": "Rosas & Xocolate, Mérida, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec5Yiueiagomif1m",
+      "identity_key": "ind_choice_mx_mx183",
+      "property_name": "Choice property MX183",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec5ipKwCzFMSjwck",
+      "identity_key": "ind_ihg_mx_sjdtd",
+      "property_name": "Kimpton Mas Olas Resort and Spa",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Kimpton",
+      "brand_after": "Kimpton Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Kimpton",
+          "to": "Kimpton Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec5su7y7H7ZugdIO",
+      "identity_key": "ind_choice_mx_mx182",
+      "property_name": "Choice property MX182",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec6trraPa03RhrKl",
+      "identity_key": "ind_marriott_co_mdewt",
+      "property_name": "Wake BioHotel, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec80TQv5GLlZpUXJ",
+      "identity_key": "ind_ihg_mx_pbcpl",
+      "property_name": "voco Royalty Puebla Downtown",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "voco",
+      "brand_after": "Voco Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "voco",
+          "to": "Voco Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec80isZs41AC5dqE",
+      "identity_key": "ind_marriott_mx_mexds",
+      "property_name": "CONDESA df, Mexico City, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rec8OP2d0vaQxvlmP",
+      "identity_key": "ind_choice_mx_mx056",
+      "property_name": "Comfort Inn Tampico",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec8OtmFD9eqKORYs",
+      "identity_key": "ind_choice_mx_mx226",
+      "property_name": "Comfort Inn Queretaro Tecnologico",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec8WiNOFyLPqC0Sv",
+      "identity_key": "ind_choice_mx_mx240",
+      "property_name": "Radisson San Luis Potosi Aeropuerto",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec8p3hHGuNLdbHlz",
+      "identity_key": "ind_choice_mx_mx089",
+      "property_name": "Comfort Inn San Luis Potosi",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rec9i1dsU1KdqN9Kj",
+      "identity_key": "ind_hilton_mx_qrolvlx",
+      "property_name": "La Valise San Miguel de Allende, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recBsqzZIXorzhgVE",
+      "identity_key": "ind_ihg_cr_sjoin",
+      "property_name": "Holiday Inn Express San Jose Forum",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recBvkvMZewtONyB2",
+      "identity_key": "ind_hilton_mx_mexpdlx",
+      "property_name": "Hacienda Pena Pobre, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recCs5MdweIvs8Da6",
+      "identity_key": "ind_ihg_co_mdeex",
+      "property_name": "Holiday Inn Express & Suites Medellin",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recCv8y71tA2C8PvP",
+      "identity_key": "ind_choice_mx_mx179",
+      "property_name": "Choice property MX179",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recD97JdCQoiwI3X9",
+      "identity_key": "ind_ihg_co_baqex",
+      "property_name": "Holiday Inn Express Barranquilla Buenavista",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recEeZzrgtKP3QgT6",
+      "identity_key": "ind_choice_mx_mx178",
+      "property_name": "Radisson Hotel Cuernavaca",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recEtl07tpuEDPpRi",
+      "identity_key": "ind_hilton_cr_sjotrlx",
+      "property_name": "The Retreat Costa Rica - Wellness Resort and Spa, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recFqGC5xs7t0eMke",
+      "identity_key": "ind_marriott_co_mdewm",
+      "property_name": "Wake Medellin, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recFtm0joBzzPpLcn",
+      "identity_key": "ind_choice_mx_mx109",
+      "property_name": "Comfort Inn Ciudad Juarez",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recFuJKGY1ouU3K0U",
+      "identity_key": "ind_hilton_mx_cunwhlx",
+      "property_name": "Wakax Hacienda - Cenote and Boutique Hotel, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recG2Avv5YMNhcpeO",
+      "identity_key": "ind_ihg_mx_hermx",
+      "property_name": "voco Hermosillo",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "voco",
+      "brand_after": "Voco Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "voco",
+          "to": "Voco Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recG7GEqswAepVQAo",
+      "identity_key": "ind_hilton_mx_cunlvlx",
+      "property_name": "La Valise Tulum, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recGL82SfUlRB2adK",
+      "identity_key": "ind_choice_mx_mx096",
+      "property_name": "Comfort Inn & Suites Los Cabos",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recIna7TAhXoRnao6",
+      "identity_key": "ind_choice_mx_mx067",
+      "property_name": "Comfort Inn Cancun Aeropuerto",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recIw82E8Ql7VIPly",
+      "identity_key": "ind_ihg_mx_mexpl",
+      "property_name": "Kimpton Virgilio Polanco",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Kimpton",
+      "brand_after": "Kimpton Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Kimpton",
+          "to": "Kimpton Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recJ6ZaG52F5m8a3r",
+      "identity_key": "ind_hilton_mx_oaxvmlx",
+      "property_name": "La Valise Mazunte, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recJ7feOXGO5Dx8Hl",
+      "identity_key": "ind_hilton_cr_lirnblx",
+      "property_name": "Hotel Nantipa, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recJHwImimVQ5yOf4",
+      "identity_key": "ind_marriott_mx_czmde",
+      "property_name": "Papaya Playa Project, Tulum, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recJJllq895FhV4IQ",
+      "identity_key": "ind_ihg_mx_vcrdt",
+      "property_name": "Holiday Inn Express Veracruz Centro Historico",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Holiday Inn",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Holiday Inn",
+          "to": "Holiday Inn Express"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recJR1Kh1s4pkAenT",
+      "identity_key": "ind_marriott_mx_mexdd",
+      "property_name": "Downtown Mexico, a Member of Design Hotels",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recJmRWXMaR3PLXLF",
+      "identity_key": "ind_choice_mx_mx224",
+      "property_name": "Comfort Inn Puebla Centro Histórico",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recKI0UUutwks5d3N",
+      "identity_key": "ind_hilton_do_sdqsrlx",
+      "property_name": "Sublime Samana Hotel & Residences, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recLore4MMly9ziBB",
+      "identity_key": "ind_choice_mx_mx180",
+      "property_name": "Choice property MX180",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recLssFRriCurCxi8",
+      "identity_key": "ind_ihg_co_bogex",
+      "property_name": "Holiday Inn Express Bogota - Parque La 93",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recLzpslbdyo2LPjw",
+      "identity_key": "ind_ihg_mx_slwvc",
+      "property_name": "voco Saltillo Suites",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "voco",
+      "brand_after": "Voco Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "voco",
+          "to": "Voco Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recMA7cRuDpOGGLW7",
+      "identity_key": "ind_ihg_mx_cjsjz",
+      "property_name": "voco Ciudad Juárez",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "voco",
+      "brand_after": "Voco Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "voco",
+          "to": "Voco Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recMmhI7VgyVUkQMd",
+      "identity_key": "ind_hilton_mx_lapvslx",
+      "property_name": "Villa Santa Cruz, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recOY6gmMrTQLhWxO",
+      "identity_key": "ind_hilton_pa_boclclx",
+      "property_name": "La Coralina Island House, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recOyzLQATwUVnc17",
+      "identity_key": "ind_choice_mx_mx227",
+      "property_name": "Radisson Puebla Angelopolis",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recP5C9bsYWRS4NCM",
+      "identity_key": "ind_choice_mx_mx087",
+      "property_name": "Comfort Inn Morelia",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recSXXbWhcNcsSyHc",
+      "identity_key": "ind_marriott_mx_mexhd",
+      "property_name": "Habita, Mexico City, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recSbz3vsbjS4Mw04",
+      "identity_key": "ind_marriott_mx_pxmhh",
+      "property_name": "Hotel Humano, a Member of Design Hotels",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recSdv3q472kmlSlA",
+      "identity_key": "ind_marriott_mx_oaxoo",
+      "property_name": "Otro Oaxaca, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recTgBmnQVsOpF0mC",
+      "identity_key": "ind_choice_mx_mx098",
+      "property_name": "Comfort Inn Hermosillo Airport",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recTk5I8VOzsPhxDz",
+      "identity_key": "ind_ihg_mx_cuncn",
+      "property_name": "voco Cancún Zona Hotelera",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "voco",
+      "brand_after": "Voco Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "voco",
+          "to": "Voco Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recTzbWYmSpipGXjt",
+      "identity_key": "ind_hilton_mx_mexbhlx",
+      "property_name": "Brick Hotel, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recUanvpOQZBXVNNk",
+      "identity_key": "ind_hilton_mx_mexrhlx",
+      "property_name": "Roso Guest House, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recV47DDYGTqvSLAK",
+      "identity_key": "ind_marriott_mx_pxmds",
+      "property_name": "Hotel Escondido, Puerto Escondido, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recVmMllItEE5sM8r",
+      "identity_key": "ind_choice_mx_mx248",
+      "property_name": "Radisson Hotel Chapala",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recW36Mc2SfxCdbuC",
+      "identity_key": "ind_marriott_mx_pazds",
+      "property_name": "Azucar, Monte Gordo, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recW7sPeknxZ04GBg",
+      "identity_key": "ind_marriott_mx_mtyds",
+      "property_name": "Habita Monterrey, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recWY3fHxShu6xFLv",
+      "identity_key": "ind_marriott_mx_bjxhm",
+      "property_name": "Hotel Matilda, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recWaomh8avHNojht",
+      "identity_key": "ind_ihg_mx_gdlea",
+      "property_name": "voco Guadalajara Expo",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "voco",
+      "brand_after": "Voco Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "voco",
+          "to": "Voco Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recXkhmSxdzqhiyyQ",
+      "identity_key": "ind_choice_mx_mx185",
+      "property_name": "Radisson Hotel & Convention Center Toluca",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recY9Cxxo1iAbJgOt",
+      "identity_key": "ind_hilton_mx_czmpdup",
+      "property_name": "The Yucatan Playa del Carmen, Tapestry Collection by Hilton",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Tapestry by Hilton",
+      "brand_after": "Tapestry Collection by Hilton",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Tapestry by Hilton",
+          "to": "Tapestry Collection by Hilton"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recYCJLcB7FYCmcB4",
+      "identity_key": "ind_marriott_mx_gdlds",
+      "property_name": "Casa Habita, Guadalajara, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recZ6FQXTTC9uhxZn",
+      "identity_key": "ind_hilton_mx_lapitup",
+      "property_name": "Perla La Paz, Tapestry Collection by Hilton",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Tapestry by Hilton",
+      "brand_after": "Tapestry Collection by Hilton",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Tapestry by Hilton",
+          "to": "Tapestry Collection by Hilton"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recZIoN8XMYCnRU4i",
+      "identity_key": "ind_choice_mx_mx061",
+      "property_name": "Comfort Inn Puerto Vallarta Golfside & Marina",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recZLjtpujQoNcqaO",
+      "identity_key": "ind_hilton_cr_sjoallx",
+      "property_name": "Alta Las Palomas, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recZQY1XbMejpSDHf",
+      "identity_key": "ind_hilton_mx_sjdvclx",
+      "property_name": "La Valise Los Cabos, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recabSgALHHvys0In",
+      "identity_key": "ind_choice_mx_mx092",
+      "property_name": "Choice property MX092",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recazCEnMYzUaPGvy",
+      "identity_key": "ind_hilton_do_popcclx",
+      "property_name": "Casa Colonial Beach and Spa, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recb1ioSL6IhKXZSb",
+      "identity_key": "ind_hilton_mx_czmttlx",
+      "property_name": "TAGO Tulum, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recbAIe2bnUwWAjmr",
+      "identity_key": "ind_hilton_mx_mexlvlx",
+      "property_name": "La Valise Mexico City, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recc4Q3BZldMeMtlA",
+      "identity_key": "ind_ihg_do_sdqlm",
+      "property_name": "Kimpton Las Mercedes",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "kimptonhotels",
+      "brand_after": "Kimpton Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recd8C3YOCYvk5uib",
+      "identity_key": "ind_marriott_mx_pazdr",
+      "property_name": "Maison Couturier, San Rafael, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recdA09CjsCpegQl8",
+      "identity_key": "ind_marriott_mx_mexul",
+      "property_name": "Circulo Mexicano, Mexico, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recejqysZwwkbtuEP",
+      "identity_key": "ind_hilton_cr_sjottlx",
+      "property_name": "Tabacon Thermal Resort and Spa, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recf0a8MEj0IgvGDu",
+      "identity_key": "ind_marriott_mx_tqoxt",
+      "property_name": "XELA Tulum, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recfitqtBIOWnqUTl",
+      "identity_key": "ind_hilton_cr_sjolclx",
+      "property_name": "Los Altos Resort, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recgMcYTKJG8N5QAa",
+      "identity_key": "ind_marriott_mx_sjddh",
+      "property_name": "Drift San Jose del Cabo, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recgwNc7RQ9sX3h8q",
+      "identity_key": "ind_ihg_co_ctgex",
+      "property_name": "Holiday Inn Express Cartagena Bocagrande",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recgxvDmi47qXWo1s",
+      "identity_key": "ind_hilton_mx_cunlzlx",
+      "property_name": "La Zebra, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recgybHF0cPT7UqbK",
+      "identity_key": "ind_choice_mx_mx241",
+      "property_name": "Comfort Inn Hermosillo Pitic",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rechzQGdhpsNY6IFL",
+      "identity_key": "ind_ihg_mx_gdlvo",
+      "property_name": "voco Guadalajara Neruda",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "voco",
+      "brand_after": "Voco Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "voco",
+          "to": "Voco Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recilyM8vTTrd94aB",
+      "identity_key": "ind_hilton_mx_middmlx",
+      "property_name": "Decu Downtown, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recleTMDVrwNT6h8I",
+      "identity_key": "ind_ihg_co_eypex",
+      "property_name": "Holiday Inn Express Yopal",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "reclzMoWsbnmCwarC",
+      "identity_key": "ind_ihg_mx_mexkm",
+      "property_name": "Kimpton El Castelar Polanco",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Kimpton",
+      "brand_after": "Kimpton Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Kimpton",
+          "to": "Kimpton Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recmBG7cQC7M7u2Xp",
+      "identity_key": "ind_accor_mx_c655",
+      "property_name": "SO/ Mexico City",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "SO/",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "SO/",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "SO/ Hotels and Resorts",
+      "brand_after": "SO/",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "SO/ Hotels and Resorts",
+          "to": "SO/"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recmqYctNE2jN1IZT",
+      "identity_key": "ind_ihg_mx_mexvc",
+      "property_name": "voco Ciudad de Mexico Reforma",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Voco Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "voco",
+      "brand_after": "Voco Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "voco",
+          "to": "Voco Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recoGI3BaW8xQXvUU",
+      "identity_key": "ind_choice_mx_mx080",
+      "property_name": "Comfort Inn Monterrey Norte",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recodiZIwEYLg73z0",
+      "identity_key": "ind_choice_mx_mx050",
+      "property_name": "Comfort Inn Cordoba",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recogsmJEcIhrnGVO",
+      "identity_key": "ind_hilton_mx_laptslx",
+      "property_name": "Todos Santos Boutique Hotel, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recpSuHbxYi676qzU",
+      "identity_key": "ind_hilton_cr_sjotslx",
+      "property_name": "Hotel Three Sixty, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recq1L0McPXA3WNKs",
+      "identity_key": "ind_hilton_mx_pbcmmup",
+      "property_name": "MM Grand Hotel Puebla, Tapestry Collection by Hilton",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Tapestry by Hilton",
+      "brand_after": "Tapestry Collection by Hilton",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Tapestry by Hilton",
+          "to": "Tapestry Collection by Hilton"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recrJCf3qwho6h7PS",
+      "identity_key": "ind_marriott_mx_czmds",
+      "property_name": "Hotel La Semilla, Playa del Carmen, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recrNPNLZ8rZds5F9",
+      "identity_key": "ind_marriott_mx_sjdnb",
+      "property_name": "NEST Baja, a Member of Design Hotels",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recsnXHzjLQqaoxTe",
+      "identity_key": "ind_hilton_mx_cunmalx",
+      "property_name": "Mi Amor, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rectBqnxEwVv5POqj",
+      "identity_key": "ind_ihg_co_ctgcm",
+      "property_name": "Holiday Inn Express Cartagena Manga",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "rectpyNDGNelhWeZx",
+      "identity_key": "ind_marriott_mx_tijme",
+      "property_name": "MIRA Earth Studios Valle de Guadalupe, a Member of Design Hotels",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "rectw0Z0wcAPUhEtS",
+      "identity_key": "ind_choice_mx_mx181",
+      "property_name": "Radisson Paraiso Hotel Mexico City",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Radisson by Choice",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Radisson",
+      "brand_after": "Radisson by Choice",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Radisson",
+          "to": "Radisson by Choice"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recu03WyEkh3gnlQR",
+      "identity_key": "ind_marriott_mx_pxmhe",
+      "property_name": "Hotel Escondido Oaxaca , Oaxaca, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recuic6Ss3JKjMSms",
+      "identity_key": "ind_ihg_mx_pcmht",
+      "property_name": "Kimpton Tres Rios - All Inclusive",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Kimpton Hotels",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Kimpton",
+      "brand_after": "Kimpton Hotels",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Kimpton",
+          "to": "Kimpton Hotels"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recv4H7O6ENbUMDhM",
+      "identity_key": "ind_hilton_mx_bjxupup",
+      "property_name": "Albor San Miguel de Allende, Tapestry Collection by Hilton",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Tapestry Collection by Hilton",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Tapestry by Hilton",
+      "brand_after": "Tapestry Collection by Hilton",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Tapestry by Hilton",
+          "to": "Tapestry Collection by Hilton"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recvR2BdCxtEu6wvr",
+      "identity_key": "ind_choice_mx_mx077",
+      "property_name": "Comfort Inn Chihuahua",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recxx94Ij6YdZlXop",
+      "identity_key": "ind_choice_mx_mx051",
+      "property_name": "Comfort Inn Monterrey Valle",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Comfort Inn & Suites",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Comfort Inn",
+      "brand_after": "Comfort Inn & Suites",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "alias",
+          "confidence": "High",
+          "from": "Comfort Inn",
+          "to": "Comfort Inn & Suites"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recy1nDBZaZvZFksB",
+      "identity_key": "ind_marriott_mx_midhs",
+      "property_name": "Hotel Sevilla, a Member of Design Hotels™",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Design Hotels",
+      "brand_after": "Design Hotels",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recycVQsfCCL8BRoq",
+      "identity_key": "ind_ihg_co_bogbo",
+      "property_name": "Holiday Inn Express & Suites Bogota DC",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Current Brand": "Holiday Inn Express",
+        "Data Confidence Tier": "High",
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "holidayinnexpress",
+      "brand_after": "Holiday Inn Express",
+      "classification": "brand_alias_normalizable",
+      "sources": [
+        {
+          "field": "Current Brand",
+          "method": "canonical_casing",
+          "confidence": "High"
+        }
+      ],
+      "method": "brand_normalization"
+    },
+    {
+      "record_id": "recyry5FiwPqHy7Ez",
+      "identity_key": "ind_hilton_mx_cunbelx",
+      "property_name": "Bespoke Tulum, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "recyxRT2TKLn3xRC6",
+      "identity_key": "ind_hilton_cr_sjosmlx",
+      "property_name": "Senda Monteverde Hotel, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    },
+    {
+      "record_id": "reczuuEr7dpPpy1je",
+      "identity_key": "ind_hilton_mx_midddlx",
+      "property_name": "Diez Diez Collection, an SLH Hotel",
+      "queue": "brand_normalization",
+      "confidence": "High",
+      "action": "update",
+      "patch": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "fields": {
+        "Human Review Required": true,
+        "Enrichment Status": "In Progress",
+        "Enrichment Priority": "High",
+        "Last Reviewed Date": "2026-08-06"
+      },
+      "brand_before": "Small Luxury Hotels of the World",
+      "brand_after": "Small Luxury Hotels of the World",
+      "classification": "brand_source_mismatch",
+      "method": "brand_normalization_steward_flag",
+      "steward_only": true
+    }
+  ],
+  "blocked": [],
+  "steward_review_queue": [],
+  "webhound_candidates": {
+    "candidates": [],
+    "capped_at": 25,
+    "total_input": 0,
+    "truncated": false
+  },
+  "confidence_tally": {
+    "High": 116,
+    "Medium": 0,
+    "Low": 0,
+    "Hold": 0
+  },
+  "fields_proposed": [
+    "Human Review Required",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Last Reviewed Date",
+    "Current Brand",
+    "Data Confidence Tier"
+  ],
+  "records_scanned": 116,
+  "records_eligible": 116,
+  "provider_readiness": {
+    "approved_for_geocode_apply": true,
+    "block_reason": null,
+    "preferred": "mapbox_permanent",
+    "note": "Missing provider decision skips geocode only; other queues continue"
+  },
+  "gates": {
+    "ok": true,
+    "failures": [],
+    "gates": {
+      "no_city_centroid": true,
+      "no_zero_zero_coords": true,
+      "no_owner_operator_writes": true,
+      "no_date_writes": true,
+      "no_brand_explorer_writes": true,
+      "no_company_validated": true,
+      "no_brand_verified": true,
+      "no_recent_momentum": true,
+      "no_webhound_direct_writes": true,
+      "high_confidence_only_on_apply": true,
+      "held_records_excluded_from_writes": true,
+      "brand_unconfirmed_excluded_from_writes": true
+    },
+    "note": "Full Brand Explorer gates are NOT run on Census dry-run; run after production apply only"
+  },
+  "airtable_writes": false,
+  "note": "v2 dry-run bundle",
+  "batch_result": {
+    "ok": true,
+    "version": "census-autopilot-batch-engine-v2",
+    "run_id": "2026-08-06_23-18-04-CALA-active-brands",
+    "completion_status": "complete",
+    "stop_reason": null,
+    "batch_size": 250,
+    "max_records": null,
+    "run_until_complete": true,
+    "scope": "active-brand-setup",
+    "strategy": "fastest-safe",
+    "scope_capped_by_batch_size": false,
+    "scope_capped_by_max_records": false,
+    "total_records_in_scope": 116,
+    "total_processed": 116,
+    "total_updated": 116,
+    "total_skipped": 0,
+    "total_blocked": 0,
+    "batches_run": 1,
+    "batch_reports": [
+      {
+        "batch_number": 1,
+        "queue": "brand_normalization",
+        "size": 116,
+        "runtime_ms": 11,
+        "result": {
+          "ok": true,
+          "stop": false,
+          "airtable_writes": false,
+          "written_count": 0,
+          "would_write_count": 116,
+          "skipped_count": 0,
+          "blocked_count": 0,
+          "provider_decision_needed_count": 0,
+          "steward_count": 0
+        },
+        "written_ids": [
+          "rec02wJ8dk7HtjPjx",
+          "rec0IqAQQtjvBvstj",
+          "rec0P2XU4LWSkAMKm",
+          "rec0qmO7Xj7uyjWLZ",
+          "rec1XdpdiXxT2K18C",
+          "rec1dTLhN2kHSjyv1",
+          "rec1f0W6zwB9lA50p",
+          "rec2mY62wnBxrSb3h",
+          "rec30eORcGKDSQKhJ",
+          "rec3MHAXsWlTUz2gY",
+          "rec3QgXCAUGHlVw6c",
+          "rec3VtNHyHrW0xDk8",
+          "rec4WX7MfEUKPZz0H",
+          "rec5HytFhKHHeQ8Kj",
+          "rec5Yiueiagomif1m",
+          "rec5ipKwCzFMSjwck",
+          "rec5su7y7H7ZugdIO",
+          "rec6trraPa03RhrKl",
+          "rec80TQv5GLlZpUXJ",
+          "rec80isZs41AC5dqE",
+          "rec8OP2d0vaQxvlmP",
+          "rec8OtmFD9eqKORYs",
+          "rec8WiNOFyLPqC0Sv",
+          "rec8p3hHGuNLdbHlz",
+          "rec9i1dsU1KdqN9Kj",
+          "recBsqzZIXorzhgVE",
+          "recBvkvMZewtONyB2",
+          "recCs5MdweIvs8Da6",
+          "recCv8y71tA2C8PvP",
+          "recD97JdCQoiwI3X9",
+          "recEeZzrgtKP3QgT6",
+          "recEtl07tpuEDPpRi",
+          "recFqGC5xs7t0eMke",
+          "recFtm0joBzzPpLcn",
+          "recFuJKGY1ouU3K0U",
+          "recG2Avv5YMNhcpeO",
+          "recG7GEqswAepVQAo",
+          "recGL82SfUlRB2adK",
+          "recIna7TAhXoRnao6",
+          "recIw82E8Ql7VIPly",
+          "recJ6ZaG52F5m8a3r",
+          "recJ7feOXGO5Dx8Hl",
+          "recJHwImimVQ5yOf4",
+          "recJJllq895FhV4IQ",
+          "recJR1Kh1s4pkAenT",
+          "recJmRWXMaR3PLXLF",
+          "recKI0UUutwks5d3N",
+          "recLore4MMly9ziBB",
+          "recLssFRriCurCxi8",
+          "recLzpslbdyo2LPjw",
+          "recMA7cRuDpOGGLW7",
+          "recMmhI7VgyVUkQMd",
+          "recOY6gmMrTQLhWxO",
+          "recOyzLQATwUVnc17",
+          "recP5C9bsYWRS4NCM",
+          "recSXXbWhcNcsSyHc",
+          "recSbz3vsbjS4Mw04",
+          "recSdv3q472kmlSlA",
+          "recTgBmnQVsOpF0mC",
+          "recTk5I8VOzsPhxDz",
+          "recTzbWYmSpipGXjt",
+          "recUanvpOQZBXVNNk",
+          "recV47DDYGTqvSLAK",
+          "recVmMllItEE5sM8r",
+          "recW36Mc2SfxCdbuC",
+          "recW7sPeknxZ04GBg",
+          "recWY3fHxShu6xFLv",
+          "recWaomh8avHNojht",
+          "recXkhmSxdzqhiyyQ",
+          "recY9Cxxo1iAbJgOt",
+          "recYCJLcB7FYCmcB4",
+          "recZ6FQXTTC9uhxZn",
+          "recZIoN8XMYCnRU4i",
+          "recZLjtpujQoNcqaO",
+          "recZQY1XbMejpSDHf",
+          "recabSgALHHvys0In",
+          "recazCEnMYzUaPGvy",
+          "recb1ioSL6IhKXZSb",
+          "recbAIe2bnUwWAjmr",
+          "recc4Q3BZldMeMtlA",
+          "recd8C3YOCYvk5uib",
+          "recdA09CjsCpegQl8",
+          "recejqysZwwkbtuEP",
+          "recf0a8MEj0IgvGDu",
+          "recfitqtBIOWnqUTl",
+          "recgMcYTKJG8N5QAa",
+          "recgwNc7RQ9sX3h8q",
+          "recgxvDmi47qXWo1s",
+          "recgybHF0cPT7UqbK",
+          "rechzQGdhpsNY6IFL",
+          "recilyM8vTTrd94aB",
+          "recleTMDVrwNT6h8I",
+          "reclzMoWsbnmCwarC",
+          "recmBG7cQC7M7u2Xp",
+          "recmqYctNE2jN1IZT",
+          "recoGI3BaW8xQXvUU",
+          "recodiZIwEYLg73z0",
+          "recogsmJEcIhrnGVO",
+          "recpSuHbxYi676qzU",
+          "recq1L0McPXA3WNKs",
+          "recrJCf3qwho6h7PS",
+          "recrNPNLZ8rZds5F9",
+          "recsnXHzjLQqaoxTe",
+          "rectBqnxEwVv5POqj",
+          "rectpyNDGNelhWeZx",
+          "rectw0Z0wcAPUhEtS",
+          "recu03WyEkh3gnlQR",
+          "recuic6Ss3JKjMSms",
+          "recv4H7O6ENbUMDhM",
+          "recvR2BdCxtEu6wvr",
+          "recxx94Ij6YdZlXop",
+          "recy1nDBZaZvZFksB",
+          "recycVQsfCCL8BRoq",
+          "recyry5FiwPqHy7Ez",
+          "recyxRT2TKLn3xRC6",
+          "reczuuEr7dpPpy1je"
+        ],
+        "provider_decision_needed": [],
+        "safety": {
+          "stop": false,
+          "reasons": []
+        }
+      }
+    ],
+    "fields_populated": [
+      "Human Review Required",
+      "Enrichment Status",
+      "Enrichment Priority",
+      "Last Reviewed Date",
+      "Current Brand",
+      "Data Confidence Tier"
+    ],
+    "confidence_distribution": {
+      "High": 116,
+      "Medium": 0,
+      "Low": 0,
+      "Hold": 0
+    },
+    "provider_decision_needed": [],
+    "steward_review_queue": [],
+    "webhound_candidates": {
+      "candidates": [],
+      "capped_at": 25,
+      "total_input": 0,
+      "truncated": false
+    },
+    "blocked_records": [],
+    "blocked_source_families": [],
+    "checkpoint": {
+      "version": "census-autopilot-checkpoint-v2",
+      "updated_at": "2026-08-06T23:18:04.489Z",
+      "run_id": "2026-08-06_23-18-04-CALA-active-brands",
+      "parent_company": null,
+      "scope": "active-brand-setup",
+      "region": "CALA",
+      "country": null,
+      "mode": "controlled",
+      "strategy": "fastest-safe",
+      "batch_size": 250,
+      "current_queue": "brand_normalization",
+      "current_batch_number": 1,
+      "total_records_in_scope": 116,
+      "records_completed": 116,
+      "records_remaining": 0,
+      "records_updated": 116,
+      "records_skipped": 0,
+      "records_blocked": 0,
+      "airtable_record_ids_written": [
+        "rec02wJ8dk7HtjPjx",
+        "rec0IqAQQtjvBvstj",
+        "rec0P2XU4LWSkAMKm",
+        "rec0qmO7Xj7uyjWLZ",
+        "rec1XdpdiXxT2K18C",
+        "rec1dTLhN2kHSjyv1",
+        "rec1f0W6zwB9lA50p",
+        "rec2mY62wnBxrSb3h",
+        "rec30eORcGKDSQKhJ",
+        "rec3MHAXsWlTUz2gY",
+        "rec3QgXCAUGHlVw6c",
+        "rec3VtNHyHrW0xDk8",
+        "rec4WX7MfEUKPZz0H",
+        "rec5HytFhKHHeQ8Kj",
+        "rec5Yiueiagomif1m",
+        "rec5ipKwCzFMSjwck",
+        "rec5su7y7H7ZugdIO",
+        "rec6trraPa03RhrKl",
+        "rec80TQv5GLlZpUXJ",
+        "rec80isZs41AC5dqE",
+        "rec8OP2d0vaQxvlmP",
+        "rec8OtmFD9eqKORYs",
+        "rec8WiNOFyLPqC0Sv",
+        "rec8p3hHGuNLdbHlz",
+        "rec9i1dsU1KdqN9Kj",
+        "recBsqzZIXorzhgVE",
+        "recBvkvMZewtONyB2",
+        "recCs5MdweIvs8Da6",
+        "recCv8y71tA2C8PvP",
+        "recD97JdCQoiwI3X9",
+        "recEeZzrgtKP3QgT6",
+        "recEtl07tpuEDPpRi",
+        "recFqGC5xs7t0eMke",
+        "recFtm0joBzzPpLcn",
+        "recFuJKGY1ouU3K0U",
+        "recG2Avv5YMNhcpeO",
+        "recG7GEqswAepVQAo",
+        "recGL82SfUlRB2adK",
+        "recIna7TAhXoRnao6",
+        "recIw82E8Ql7VIPly",
+        "recJ6ZaG52F5m8a3r",
+        "recJ7feOXGO5Dx8Hl",
+        "recJHwImimVQ5yOf4",
+        "recJJllq895FhV4IQ",
+        "recJR1Kh1s4pkAenT",
+        "recJmRWXMaR3PLXLF",
+        "recKI0UUutwks5d3N",
+        "recLore4MMly9ziBB",
+        "recLssFRriCurCxi8",
+        "recLzpslbdyo2LPjw",
+        "recMA7cRuDpOGGLW7",
+        "recMmhI7VgyVUkQMd",
+        "recOY6gmMrTQLhWxO",
+        "recOyzLQATwUVnc17",
+        "recP5C9bsYWRS4NCM",
+        "recSXXbWhcNcsSyHc",
+        "recSbz3vsbjS4Mw04",
+        "recSdv3q472kmlSlA",
+        "recTgBmnQVsOpF0mC",
+        "recTk5I8VOzsPhxDz",
+        "recTzbWYmSpipGXjt",
+        "recUanvpOQZBXVNNk",
+        "recV47DDYGTqvSLAK",
+        "recVmMllItEE5sM8r",
+        "recW36Mc2SfxCdbuC",
+        "recW7sPeknxZ04GBg",
+        "recWY3fHxShu6xFLv",
+        "recWaomh8avHNojht",
+        "recXkhmSxdzqhiyyQ",
+        "recY9Cxxo1iAbJgOt",
+        "recYCJLcB7FYCmcB4",
+        "recZ6FQXTTC9uhxZn",
+        "recZIoN8XMYCnRU4i",
+        "recZLjtpujQoNcqaO",
+        "recZQY1XbMejpSDHf",
+        "recabSgALHHvys0In",
+        "recazCEnMYzUaPGvy",
+        "recb1ioSL6IhKXZSb",
+        "recbAIe2bnUwWAjmr",
+        "recc4Q3BZldMeMtlA",
+        "recd8C3YOCYvk5uib",
+        "recdA09CjsCpegQl8",
+        "recejqysZwwkbtuEP",
+        "recf0a8MEj0IgvGDu",
+        "recfitqtBIOWnqUTl",
+        "recgMcYTKJG8N5QAa",
+        "recgwNc7RQ9sX3h8q",
+        "recgxvDmi47qXWo1s",
+        "recgybHF0cPT7UqbK",
+        "rechzQGdhpsNY6IFL",
+        "recilyM8vTTrd94aB",
+        "recleTMDVrwNT6h8I",
+        "reclzMoWsbnmCwarC",
+        "recmBG7cQC7M7u2Xp",
+        "recmqYctNE2jN1IZT",
+        "recoGI3BaW8xQXvUU",
+        "recodiZIwEYLg73z0",
+        "recogsmJEcIhrnGVO",
+        "recpSuHbxYi676qzU",
+        "recq1L0McPXA3WNKs",
+        "recrJCf3qwho6h7PS",
+        "recrNPNLZ8rZds5F9",
+        "recsnXHzjLQqaoxTe",
+        "rectBqnxEwVv5POqj",
+        "rectpyNDGNelhWeZx",
+        "rectw0Z0wcAPUhEtS",
+        "recu03WyEkh3gnlQR",
+        "recuic6Ss3JKjMSms",
+        "recv4H7O6ENbUMDhM",
+        "recvR2BdCxtEu6wvr",
+        "recxx94Ij6YdZlXop",
+        "recy1nDBZaZvZFksB",
+        "recycVQsfCCL8BRoq",
+        "recyry5FiwPqHy7Ez",
+        "recyxRT2TKLn3xRC6",
+        "reczuuEr7dpPpy1je"
+      ],
+      "fields_written": [
+        "Human Review Required",
+        "Enrichment Status",
+        "Enrichment Priority",
+        "Last Reviewed Date",
+        "Current Brand",
+        "Data Confidence Tier"
+      ],
+      "failed_records": [],
+      "completed_record_ids": [
+        "rec02wJ8dk7HtjPjx",
+        "rec0IqAQQtjvBvstj",
+        "rec0P2XU4LWSkAMKm",
+        "rec0qmO7Xj7uyjWLZ",
+        "rec1XdpdiXxT2K18C",
+        "rec1dTLhN2kHSjyv1",
+        "rec1f0W6zwB9lA50p",
+        "rec2mY62wnBxrSb3h",
+        "rec30eORcGKDSQKhJ",
+        "rec3MHAXsWlTUz2gY",
+        "rec3QgXCAUGHlVw6c",
+        "rec3VtNHyHrW0xDk8",
+        "rec4WX7MfEUKPZz0H",
+        "rec5HytFhKHHeQ8Kj",
+        "rec5Yiueiagomif1m",
+        "rec5ipKwCzFMSjwck",
+        "rec5su7y7H7ZugdIO",
+        "rec6trraPa03RhrKl",
+        "rec80TQv5GLlZpUXJ",
+        "rec80isZs41AC5dqE",
+        "rec8OP2d0vaQxvlmP",
+        "rec8OtmFD9eqKORYs",
+        "rec8WiNOFyLPqC0Sv",
+        "rec8p3hHGuNLdbHlz",
+        "rec9i1dsU1KdqN9Kj",
+        "recBsqzZIXorzhgVE",
+        "recBvkvMZewtONyB2",
+        "recCs5MdweIvs8Da6",
+        "recCv8y71tA2C8PvP",
+        "recD97JdCQoiwI3X9",
+        "recEeZzrgtKP3QgT6",
+        "recEtl07tpuEDPpRi",
+        "recFqGC5xs7t0eMke",
+        "recFtm0joBzzPpLcn",
+        "recFuJKGY1ouU3K0U",
+        "recG2Avv5YMNhcpeO",
+        "recG7GEqswAepVQAo",
+        "recGL82SfUlRB2adK",
+        "recIna7TAhXoRnao6",
+        "recIw82E8Ql7VIPly",
+        "recJ6ZaG52F5m8a3r",
+        "recJ7feOXGO5Dx8Hl",
+        "recJHwImimVQ5yOf4",
+        "recJJllq895FhV4IQ",
+        "recJR1Kh1s4pkAenT",
+        "recJmRWXMaR3PLXLF",
+        "recKI0UUutwks5d3N",
+        "recLore4MMly9ziBB",
+        "recLssFRriCurCxi8",
+        "recLzpslbdyo2LPjw",
+        "recMA7cRuDpOGGLW7",
+        "recMmhI7VgyVUkQMd",
+        "recOY6gmMrTQLhWxO",
+        "recOyzLQATwUVnc17",
+        "recP5C9bsYWRS4NCM",
+        "recSXXbWhcNcsSyHc",
+        "recSbz3vsbjS4Mw04",
+        "recSdv3q472kmlSlA",
+        "recTgBmnQVsOpF0mC",
+        "recTk5I8VOzsPhxDz",
+        "recTzbWYmSpipGXjt",
+        "recUanvpOQZBXVNNk",
+        "recV47DDYGTqvSLAK",
+        "recVmMllItEE5sM8r",
+        "recW36Mc2SfxCdbuC",
+        "recW7sPeknxZ04GBg",
+        "recWY3fHxShu6xFLv",
+        "recWaomh8avHNojht",
+        "recXkhmSxdzqhiyyQ",
+        "recY9Cxxo1iAbJgOt",
+        "recYCJLcB7FYCmcB4",
+        "recZ6FQXTTC9uhxZn",
+        "recZIoN8XMYCnRU4i",
+        "recZLjtpujQoNcqaO",
+        "recZQY1XbMejpSDHf",
+        "recabSgALHHvys0In",
+        "recazCEnMYzUaPGvy",
+        "recb1ioSL6IhKXZSb",
+        "recbAIe2bnUwWAjmr",
+        "recc4Q3BZldMeMtlA",
+        "recd8C3YOCYvk5uib",
+        "recdA09CjsCpegQl8",
+        "recejqysZwwkbtuEP",
+        "recf0a8MEj0IgvGDu",
+        "recfitqtBIOWnqUTl",
+        "recgMcYTKJG8N5QAa",
+        "recgwNc7RQ9sX3h8q",
+        "recgxvDmi47qXWo1s",
+        "recgybHF0cPT7UqbK",
+        "rechzQGdhpsNY6IFL",
+        "recilyM8vTTrd94aB",
+        "recleTMDVrwNT6h8I",
+        "reclzMoWsbnmCwarC",
+        "recmBG7cQC7M7u2Xp",
+        "recmqYctNE2jN1IZT",
+        "recoGI3BaW8xQXvUU",
+        "recodiZIwEYLg73z0",
+        "recogsmJEcIhrnGVO",
+        "recpSuHbxYi676qzU",
+        "recq1L0McPXA3WNKs",
+        "recrJCf3qwho6h7PS",
+        "recrNPNLZ8rZds5F9",
+        "recsnXHzjLQqaoxTe",
+        "rectBqnxEwVv5POqj",
+        "rectpyNDGNelhWeZx",
+        "rectw0Z0wcAPUhEtS",
+        "recu03WyEkh3gnlQR",
+        "recuic6Ss3JKjMSms",
+        "recv4H7O6ENbUMDhM",
+        "recvR2BdCxtEu6wvr",
+        "recxx94Ij6YdZlXop",
+        "recy1nDBZaZvZFksB",
+        "recycVQsfCCL8BRoq",
+        "recyry5FiwPqHy7Ez",
+        "recyxRT2TKLn3xRC6",
+        "reczuuEr7dpPpy1je"
+      ],
+      "provider_decision_needed": [],
+      "next_cursor": null,
+      "queues_remaining": [],
+      "completion_status": "complete",
+      "resume_command": "npm run census:autopilot -- --resume 2026-08-06_23-18-04-CALA-active-brands"
+    },
+    "runtime_metrics": {
+      "total_runtime_ms": 17,
+      "runtime_per_batch": [
+        {
+          "batch": 1,
+          "queue": "brand_normalization",
+          "ms": 11
+        }
+      ],
+      "runtime_per_queue": {
+        "brand_normalization": {
+          "ms": 11,
+          "records": 116,
+          "writes": 116,
+          "fetches_ok": 0,
+          "fetches_fail": 0
+        }
+      },
+      "average_seconds_per_record": 0.00014655172413793104,
+      "average_seconds_per_successful_write": 0.00014655172413793104,
+      "fetch_success_rate": null,
+      "extraction_success_rate": null,
+      "write_success_rate": 1,
+      "blocked_source_count": 0,
+      "blocked_sources_by_family": {},
+      "steward_review_count": 0,
+      "webhound_candidate_count": 0,
+      "estimated_time_remaining_ms": 0,
+      "targets": {
+        "plan_mode_parent_region_minutes": 2,
+        "queue_build_per_5k_records_minutes": 5,
+        "cached_dry_run_per_1k_minutes": 10,
+        "live_fetch_dry_run_per_250_minutes": {
+          "min": 5,
+          "max": 20
+        },
+        "apply_per_100_minutes": {
+          "min": 2,
+          "max": 8
+        },
+        "parent_company_estimates": {
+          "small_100": {
+            "min_minutes": 15,
+            "max_minutes": 30
+          },
+          "medium_500": {
+            "min_minutes": 45,
+            "max_minutes": 90
+          },
+          "large_1000": {
+            "min_minutes": 60,
+            "max_minutes": 180
+          },
+          "very_large_4000": {
+            "min_minutes": 240,
+            "max_minutes": 600
+          }
+        }
+      },
+      "guardrails": {
+        "max_retries_per_source": 2,
+        "batch_runtime_overage_multiplier": 3,
+        "repeated_source_block_threshold": 8,
+        "rate_limit_failure_threshold": 3,
+        "write_success_floor": 0.15,
+        "confidence_high_floor_for_extractor_health": 0.05
+      }
+    },
+    "airtable_writes": false,
+    "target": {
+      "base": "Deal Capture Platform",
+      "table": "Hotel Property Census",
+      "tableId": "tbl9aY5ijiuIzzWam"
+    },
+    "runtime_ms": 20,
+    "preflight": {
+      "ok": true,
+      "blockers": [],
+      "warnings": []
+    },
+    "allow_geocode": true,
+    "resume_command": "npm run census:autopilot -- --resume 2026-08-06_23-18-04-CALA-active-brands"
+  }
+}

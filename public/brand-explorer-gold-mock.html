@@ -93,6 +93,7 @@
   <script src="/js/brand-explorer-brand-fetch.js" defer></script>
   <script src="/js/brand-explorer-census-metrics.js"></script>
   <script src="/js/external-owner-copy.js" defer></script>
+  <script src="/js/profile-governance-trust-chip.js" defer></script>
   <script src="/js/brand-explorer-atelier-from-api.js" defer></script>
   <script src="/js/brand-explorer-gold-detail.js" defer></script>
   <script defer>
@@ -104,15 +105,22 @@
         return p.get("id") || p.get("brandId") || p.get("brand") || p.get("name") || "";
       }
 
-      function notifyParentReady(brandId) {
+      function notifyParentReady(brandId, live) {
         try {
           if (window.parent && window.parent !== window) {
-            window.parent.postMessage(
-              { type: "brand-gold-mock-ready", brandId: brandId || "" },
-              window.location.origin
-            );
+            var p = new URLSearchParams(window.location.search || "");
+            var popupToken = (p.get("popupToken") || "").trim();
+            var msg = {
+              type: "brand-gold-mock-ready",
+              brandId: brandId || "",
+              live: live !== false
+            };
+            if (popupToken) msg.popupToken = popupToken;
+            window.parent.postMessage(msg, window.location.origin);
           }
-        } catch (e) {}
+        } catch (e) {
+          console.warn("[brand-gold-mock] parent ready notify failed", e);
+        }
       }
 
       async function boot() {
@@ -127,6 +135,7 @@
             miss.textContent =
               "Add a brand id to the URL (e.g. ?id=recCKuXCmGvxHPfb3&embed=1).";
           }
+          notifyParentReady("", false);
           return;
         }
         try {
@@ -142,15 +151,28 @@
           console.warn("[brand-gold-mock] brand list prefetch failed", e);
         }
         if (window.BrandExplorerGoldDetail && typeof window.BrandExplorerGoldDetail.load === "function") {
+          var liveOk = false;
           try {
             await window.BrandExplorerGoldDetail.load(id);
+            var errVisible = document.getElementById("brandError");
+            var rootVisible = document.getElementById("brandRoot");
+            liveOk = !(
+              errVisible &&
+              errVisible.style &&
+              errVisible.style.display === "block"
+            );
+            if (rootVisible && rootVisible.style && rootVisible.style.display === "none") {
+              liveOk = false;
+            }
           } catch (e) {
             console.error(e);
+            liveOk = false;
           } finally {
-            notifyParentReady(id);
+            notifyParentReady(id, liveOk);
           }
         } else {
           console.error("BrandExplorerGoldDetail.load not available");
+          notifyParentReady(id, false);
         }
       }
 

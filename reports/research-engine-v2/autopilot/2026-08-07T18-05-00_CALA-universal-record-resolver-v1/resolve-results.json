@@ -1,0 +1,160 @@
+{
+  "count": 1,
+  "sample": [
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recmWNlAbpgMinyLt",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recmWNlAbpgMinyLt",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_contains_code_or_record_id",
+            "current": "Choice property MX043"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX043",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX043",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX043"
+        },
+        "official_url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "*",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX043"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [
+        {
+          "field": "Address/Phone/Rooms",
+          "reason": "official_choice_directory_miss",
+          "note": "Enable secondary only after founder policy approval"
+        }
+      ],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    }
+  ]
+}

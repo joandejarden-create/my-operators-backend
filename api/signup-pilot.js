@@ -5,6 +5,10 @@ import {
   provisionMemberstackForSignup,
 } from "../lib/memberstack/signup-member.js";
 import { upsertSignupUserRecord } from "../lib/signup-airtable-upsert.js";
+import {
+  CURRENT_TERMS_VERSION,
+  recordSignupTermsAcceptance,
+} from "../lib/signup-terms-acceptance.js";
 
 /**
  * POST /api/signup-pilot — same Airtable + welcome email as /api/signup, plus optional Memberstack id resolution.
@@ -28,12 +32,36 @@ export default async function signupPilot(req, res) {
       companyType,
       reasonToJoin,
       howDidYouHear,
+      agreeWithTerms,
+      termsVersion,
+      termsAcceptedAt,
     } = req.body || {};
 
     const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
     if (!normalizedEmail) {
       return res.status(400).json({ error: "Email is required" });
     }
+
+    const agreed =
+      agreeWithTerms === true ||
+      agreeWithTerms === "true" ||
+      agreeWithTerms === "on" ||
+      agreeWithTerms === "Yes" ||
+      agreeWithTerms === 1;
+    if (!agreed) {
+      return res.status(400).json({
+        error: "You must agree to the Terms of Service and Privacy Policy",
+      });
+    }
+
+    const acceptedAt =
+      typeof termsAcceptedAt === "string" && termsAcceptedAt.trim()
+        ? termsAcceptedAt.trim()
+        : new Date().toISOString();
+    const version =
+      typeof termsVersion === "string" && termsVersion.trim()
+        ? termsVersion.trim()
+        : CURRENT_TERMS_VERSION;
 
     const body = {
       firstName,
@@ -45,6 +73,9 @@ export default async function signupPilot(req, res) {
       companyType,
       reasonToJoin,
       howDidYouHear,
+      agreeWithTerms: true,
+      termsAcceptedAt: acceptedAt,
+      termsVersion: version,
     };
 
     const customFields = buildSignupCustomFields(body);
@@ -67,6 +98,21 @@ export default async function signupPilot(req, res) {
         return res.status(400).json({ error: err.message || "Bad request" });
       }
       throw err;
+    }
+
+    try {
+      await recordSignupTermsAcceptance({
+        email: normalizedEmail,
+        firstName,
+        lastName,
+        companyName,
+        memberTypeHint: companyType,
+        acceptedAtIso: acceptedAt,
+        termsVersion: version,
+        usersRecordId: record?.id,
+      });
+    } catch (err) {
+      console.error("Signup-pilot terms acceptance record failed:", err.message || err);
     }
 
     if (ms.memberstackId) {

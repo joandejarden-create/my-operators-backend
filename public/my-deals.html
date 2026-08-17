@@ -512,7 +512,7 @@
         }
         .deals-table tbody tr:hover { background: var(--neutral--700); }
         .deals-table td { padding: 10px 8px; color: var(--neutral--400); vertical-align: middle; }
-        /* Compact Chain Scale, Project Type, Target Opening Date */
+        /* Compact Project Chain Scale, Project Type, Target Opening Date */
         .deals-table th[data-sort="hotelChainScale"] {
             width: 72px !important;
             max-width: 72px;
@@ -602,7 +602,7 @@
         }
         #matchedDealsTable th { white-space: nowrap; }
         #matchedDealsTable .cell-call-to-action { min-width: 0; padding-left: 8px; }
-        /* Matched Brands — room for Chain Scale / Project Type / Target Opening Date (override global compact + ellipsis) */
+        /* Matched Brands — room for Project Chain Scale / Project Type / Target Opening Date (override global compact + ellipsis) */
         #matchedDealsTable {
             table-layout: auto;
         }
@@ -971,6 +971,12 @@
         /* Match Score column (Brand Development Dashboard style) */
         .match-score-cell { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; min-height: 60px; }
         .match-score-badge { min-width: 50px; padding: 6px 10px; border-radius: 6px; font-weight: 700; font-size: 16px; text-align: center; display: inline-block; line-height: 1.2; }
+        /* Non-Active/Live preferred brands: dark gray badge (overrides band colors). */
+        .match-score-badge.match-score-not-finalized {
+          background: #79797a !important;
+          color: var(--neutral--100) !important;
+          opacity: 1;
+        }
         .match-score-high { background: var(--system--green-400); color: white; }
         .match-score-medium { background: var(--system--orange-400); color: white; }
         .match-score-weak { background: var(--system--red-400); color: white; }
@@ -1009,6 +1015,20 @@
             border: 1px solid var(--neutral--600);
             border-radius: 8px;
             padding: 16px;
+        }
+        #matchedBrandsScoreNewModal .match-score-breakdown-section-header {
+            grid-column: 1 / -1;
+            margin: 16px 0 4px 0;
+            padding: 0 0 6px 0;
+            border-bottom: 1px solid var(--neutral--600);
+            color: var(--neutral--300);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+        #matchedBrandsScoreNewModal .match-score-breakdown-section-header:first-child {
+            margin-top: 0;
         }
         #matchedBrandsScoreNewModal .score-category { display: contents; }
         #matchedBrandsScoreNewModal .score-category-label {
@@ -1513,7 +1533,7 @@
                             <select class="filter-select" id="projectTypeFilter"><option value="">All</option></select>
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">Chain Scale</label>
+                            <label class="filter-label">Project Chain Scale</label>
                             <select class="filter-select" id="hotelChainScaleFilter"><option value="">All</option></select>
                         </div>
                         <div class="filter-group">
@@ -1566,7 +1586,7 @@
                                     <th class="cell-checkbox"><input type="checkbox" id="selectAllCheckbox" title="Select all"></th>
                                     <th data-sort="projectName" style="width:16%;"><span style="display:inline-flex;align-items:center;">Project Name<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="hotelLocation" style="width:14%;"><span style="display:inline-flex;align-items:center;">Project Location<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
-                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Chain Scale<span class="sort-indicator" title="From Location &amp; Property"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Project Chain Scale<span class="sort-indicator" title="From Location &amp; Property (deal target, not brand)"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="projectType" ><span style="display:inline-flex;align-items:center;">Project Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="targetOpeningDate" ><span style="display:inline-flex;align-items:center;">Target Opening Date<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="dealType" style="width:9%;"><span style="display:inline-flex;align-items:center;">Deal Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
@@ -1617,7 +1637,7 @@
                             <select class="filter-select" id="matchedProjectTypeFilter"><option value="">All</option></select>
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">Chain Scale</label>
+                            <label class="filter-label">Project Chain Scale</label>
                             <select class="filter-select" id="matchedHotelChainScaleFilter"><option value="">All</option></select>
                         </div>
                         <div class="filter-group">
@@ -1668,7 +1688,7 @@
                                     <th class="cell-checkbox"><input type="checkbox" id="matchedSelectAllCheckbox" title="Select all"></th>
                                     <th data-sort="projectName" style="width:16%;"><span style="display:inline-flex;align-items:center;">Project Name<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="hotelLocation" style="width:10%;"><span style="display:inline-flex;align-items:center;">Project Location<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
-                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Chain Scale<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Project Chain Scale<span class="sort-indicator" title="From Location &amp; Property (deal target, not brand)"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="projectType" ><span style="display:inline-flex;align-items:center;">Project Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="targetOpeningDate" ><span style="display:inline-flex;align-items:center;">Target Opening Date<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="dealType" ><span style="display:inline-flex;align-items:center;">Deal Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
@@ -1855,7 +1875,7 @@
                             <input type="text" class="filter-input" id="contactedSearchInput" placeholder="Project name, brand, location...">
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">Match Score</label>
+                            <label class="filter-label">Score at request</label>
                             <select class="filter-select" id="contactedMatchScoreFilter">
                                 <option value="">All</option>
                                 <option value="80-100">80–100 (Strong)</option>
@@ -1887,7 +1907,7 @@
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">Chain Scale</label>
+                            <label class="filter-label">Project Chain Scale</label>
                             <select class="filter-select" id="contactedHotelChainScaleFilter">
                                 <option value="">All</option>
                             </select>
@@ -1958,12 +1978,12 @@
                                     <th data-sort="status" style="width:8%;"><span style="display:inline-flex;align-items:center;">Deal Status<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="nextAction" style="width:10%;"><span style="display:inline-flex;align-items:center;">Next Action<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="hotelLocation" style="width:10%;"><span style="display:inline-flex;align-items:center;">Project Location<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
-                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Chain Scale<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Project Chain Scale<span class="sort-indicator" title="From Location &amp; Property (deal target, not brand)"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="projectType" ><span style="display:inline-flex;align-items:center;">Project Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="targetOpeningDate" ><span style="display:inline-flex;align-items:center;">Target Opening Date<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="dealType" style="width:6%;"><span style="display:inline-flex;align-items:center;">Deal Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="brandName" style="width:10%;"><span style="display:inline-flex;align-items:center;">Contact Brand<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
-                                    <th data-sort="matchScore" style="width:8%;"><span style="display:inline-flex;align-items:center;">Match Score<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th data-sort="matchScore" style="width:8%;" title="Brand Match Score stored when outreach was sent"><span style="display:inline-flex;align-items:center;">Score at request<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th class="no-sort" style="width:14%;min-width:320px;">Call To Action</th>
                                 </tr>
                             </thead>
@@ -2553,7 +2573,7 @@
                             <select class="filter-select" id="franchiseProjectTypeFilter"><option value="">All</option></select>
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">Chain Scale</label>
+                            <label class="filter-label">Project Chain Scale</label>
                             <select class="filter-select" id="franchiseHotelChainScaleFilter"><option value="">All</option></select>
                         </div>
                         <div class="filter-group">
@@ -2608,7 +2628,7 @@
                                     <th class="cell-checkbox"><input type="checkbox" id="franchiseSelectAllCheckbox" title="Select all"></th>
                                     <th data-sort="projectName" style="width:16%;"><span style="display:inline-flex;align-items:center;">Project Name<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="hotelLocation" style="width:14%;"><span style="display:inline-flex;align-items:center;">Project Location<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
-                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Chain Scale<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Project Chain Scale<span class="sort-indicator" title="From Location &amp; Property (deal target, not brand)"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="projectType" ><span style="display:inline-flex;align-items:center;">Project Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="targetOpeningDate" ><span style="display:inline-flex;align-items:center;">Target Opening Date<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="dealType" style="width:9%;"><span style="display:inline-flex;align-items:center;">Deal Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
@@ -2653,7 +2673,7 @@
                             <select class="filter-select" id="shortlistProjectTypeFilter"><option value="">All</option></select>
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">Chain Scale</label>
+                            <label class="filter-label">Project Chain Scale</label>
                             <select class="filter-select" id="shortlistHotelChainScaleFilter"><option value="">All</option></select>
                         </div>
                         <div class="filter-group filter-group-reset">
@@ -2693,7 +2713,7 @@
                                     <th data-sort="projectName" style="width:16%;"><span style="display:inline-flex;align-items:center;">Project Name<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="brandName" style="width:14%;"><span style="display:inline-flex;align-items:center;">Brand / Operator<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="hotelLocation" style="width:12%;"><span style="display:inline-flex;align-items:center;">Project Location<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
-                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Chain Scale<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Project Chain Scale<span class="sort-indicator" title="From Location &amp; Property (deal target, not brand)"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="projectType" ><span style="display:inline-flex;align-items:center;">Project Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="dealType" style="width:10%;"><span style="display:inline-flex;align-items:center;">Deal Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="dealStatus" style="width:10%;"><span style="display:inline-flex;align-items:center;">Deal Status<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
@@ -2785,9 +2805,10 @@
     <script src="/js/operator-alignment-snapshot.js?v=oas-cover-265"></script>
     <script src="/js/generated/operator-match-scoring-config.js"></script>
     <script src="/js/operator-match-score-ui.js"></script>
+    <script src="/js/match-score-breakdown-ui.js"></script>
     <script src="/js/operator-strategy-my-deals.js?v=os-score-breakdown-20260703"></script>
-    <script src="/js/deal-brief-v2.js"></script>
-    <script src="/js/deal-brief-render-html.js"></script>
+    <script src="/js/deal-brief-v2.js?v=20260724-unbranded-parent"></script>
+    <script src="/js/deal-brief-render-html.js?v=20260724-unbranded-parent"></script>
     <script src="/js/deal-brief-snapshot.js"></script>
     <script type="module">
         import * as Pipeline from '/lib/deal-workspace-pipeline.js';
@@ -3331,26 +3352,40 @@
                 var content = document.getElementById('alternativeBrandsModalContent');
                 if (!modal || !content) return;
                 var projectName = deal ? (deal.projectName || 'Deal') : 'Deal';
-                content.innerHTML = '<div class="loading"><div class="loading-text-main">Loading Alternative Brands…</div></div>';
+                content.innerHTML =
+                    '<div class="loading">' +
+                    '<div class="loading-text-main">Loading Alternative Brands…</div>' +
+                    '<div class="loading-text-time" style="margin-top:8px;color:var(--neutral--500);font-size:13px;">First open can take a bit while Active/Live brands are scored. Cached results load faster next time.</div>' +
+                    '</div>';
                 modal.style.display = 'block';
                 var apiBase = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
+                var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+                var timeoutId = null;
+                if (controller) {
+                    timeoutId = setTimeout(function () {
+                        try { controller.abort(); } catch (_) { /* ignore */ }
+                    }, 120000);
+                }
                 try {
-                    var res = await fetch(apiBase + '/api/my-deals/' + encodeURIComponent(dealId) + '/alternative-brands?limit=5');
+                    var res = await myDealsAuthFetch(
+                        '/api/my-deals/' + encodeURIComponent(dealId) + '/alternative-brands?limit=5&_ts=' + Date.now(),
+                        { cache: 'no-store', signal: controller ? controller.signal : undefined }
+                    );
+                    if (!res.ok) {
+                        throw new Error('Alternative brands API failed (' + res.status + ')');
+                    }
                     var data = await res.json().catch(function() { return {}; });
                     var preferredBrand = data.preferredBrand || deal && deal.preferredBrandsChosen ? String(deal.preferredBrandsChosen).split(/\s*,\s*/)[0] : '—';
                     var preferredScore = data.preferredScore != null ? Number(data.preferredScore) : null;
                     var preferredBreakdown = data.preferredBreakdown || {};
                     var preferredBreakdownJson = JSON.stringify(preferredBreakdown);
-                    console.log('Preferred breakdown from API:', preferredBreakdown);
-                    console.log('Preferred breakdown JSON string:', preferredBreakdownJson);
-                    console.log('Preferred breakdown keys:', Object.keys(preferredBreakdown));
                     var topAlternatives = data.alternatives || [];
                     var html = '<div class="modal-section"><h3>Alternative Brand Suggestions for ' + escapeHtml(projectName) + '</h3>' +
                         '<p style="color: var(--neutral--400); margin-bottom: 20px;">Owner\'s preferred brand: <strong>' + escapeHtml(preferredBrand) + '</strong>' +
                         (preferredScore != null ? ' (Score: ' + Number(preferredScore).toFixed(1) + '/100)' : '') + '</p></div>' +
                         '<div class="modal-section"><h4>Top Alternative Brands</h4>';
                     if (topAlternatives.length === 0) {
-                        html += '<p style="color: var(--neutral--400); padding: 20px;">No alternative brands in cache. Save the deal or run a cache refresh to populate alternatives.</p>';
+                        html += '<p style="color: var(--neutral--400); padding: 20px;">No alternative brands found with better match scores.</p>';
                     } else {
                         var preferredBrandsSet = (deal && deal.preferredBrandsChosen ? String(deal.preferredBrandsChosen).split(/\s*,\s*/).map(function(s) { return s.trim().toLowerCase(); }).filter(Boolean) : []);
                         html += '<div class="alternative-brands-list">';
@@ -3384,7 +3419,15 @@
                     content.innerHTML = html;
                 } catch (err) {
                     console.error(err);
-                    content.innerHTML = '<div class="modal-section"><p style="color: var(--system--red-400);">Failed to load alternative brands. Please try again.</p></div>';
+                    var aborted = err && (err.name === 'AbortError' || /abort/i.test(String(err.message || '')));
+                    content.innerHTML =
+                        '<div class="modal-section"><p style="color: var(--system--red-400);">' +
+                        (aborted
+                            ? 'Alternative brands are taking too long to score. Close and try again in a minute — the server may still be finishing the first cache build.'
+                            : 'Failed to load alternative brands. Please try again.') +
+                        '</p></div>';
+                } finally {
+                    if (timeoutId) clearTimeout(timeoutId);
                 }
             }
 
@@ -4821,6 +4864,42 @@
                 return null;
             }
 
+            /** True when Brand Status is Active/Live. Prefer list-load map so gray badges paint before View Details. */
+            function isMatchedBrandSetupFinalized(deal, brand) {
+                if (!deal || !brand) return true;
+                var brandTrimmed = String(brand).trim();
+                var want = brandTrimmed.toLowerCase().replace(/\s+/g, ' ');
+                var eligMap = deal.matchBrandStatusEligibleByBrand;
+                if (eligMap && typeof eligMap === 'object' && Object.keys(eligMap).length > 0) {
+                    if (Object.prototype.hasOwnProperty.call(eligMap, brandTrimmed) && typeof eligMap[brandTrimmed] === 'boolean') {
+                        return eligMap[brandTrimmed] !== false;
+                    }
+                    for (var ek in eligMap) {
+                        if (!Object.prototype.hasOwnProperty.call(eligMap, ek)) continue;
+                        if (String(ek).trim().toLowerCase().replace(/\s+/g, ' ') === want && typeof eligMap[ek] === 'boolean') {
+                            return eligMap[ek] !== false;
+                        }
+                    }
+                    // Enrich ran but this brand wasn't stamped — do not gray from stale breakdown _meta.
+                    return true;
+                }
+                var detailsMap = deal.matchBreakdownNewDetailsByBrand;
+                if (!detailsMap || typeof detailsMap !== 'object') return true;
+                var d = detailsMap[brandTrimmed];
+                if (!d) {
+                    for (var key in detailsMap) {
+                        if (!Object.prototype.hasOwnProperty.call(detailsMap, key) || key === '_meta') continue;
+                        if (String(key).trim().toLowerCase().replace(/\s+/g, ' ') === want) {
+                            d = detailsMap[key];
+                            break;
+                        }
+                    }
+                }
+                if (!d || typeof d !== 'object' || !d._meta) return true;
+                if (d._meta.brandStatusEligible === false) return false;
+                return true;
+            }
+
             function getBreakdownScoreClass(score) {
                 if (score == null || score === '') return 'medium';
                 var n = Number(score);
@@ -4841,66 +4920,172 @@
                     return;
                 }
                 var brandKey = brand != null ? String(brand).trim() : null;
-                var scoreNew = getMatchedBrandsMatchScore(deal, brandKey);
-                if (scoreNew == null || scoreNew === '') {
-                    content.innerHTML = '<div class="modal-section" style="color: var(--neutral--300);"><p>Match Score New is not available for this row.</p><p style="margin-top: 8px; color: var(--neutral--400); font-size: 14px;">Ensure the deal has preferred brands and a linked Location &amp; Property with Chain Scale so the Chain Scale Proximity factor can be calculated.</p></div>';
+                if (!brandKey) {
+                    content.innerHTML = '<div class="modal-section" style="color: var(--neutral--300);"><p>Match Score breakdown needs a brand.</p></div>';
                     modal.style.display = 'block';
                     return;
                 }
-                var details = null;
-                if (brandKey && deal.matchBreakdownNewDetailsByBrand) {
-                    details = deal.matchBreakdownNewDetailsByBrand[brandKey];
-                    if (!details && brandKey) {
-                        var bLower = brandKey.toLowerCase();
-                        for (var dk in deal.matchBreakdownNewDetailsByBrand) {
-                            if (Object.prototype.hasOwnProperty.call(deal.matchBreakdownNewDetailsByBrand, dk) && String(dk).trim().toLowerCase() === bLower) {
-                                details = deal.matchBreakdownNewDetailsByBrand[dk];
-                                break;
+
+                content.innerHTML = '<div class="modal-section"><p style="color: var(--neutral--400);">Loading Breakdown…</p></div>';
+                modal.style.display = 'block';
+
+                (async function () {
+                    var scoreNew = getMatchedBrandsMatchScore(deal, brandKey);
+                    var details = null;
+                    var gateReason = null;
+                    var liveOk = false;
+                    var insufficientData = false;
+                    var insufficientReason = null;
+
+                    try {
+                        var apiBase = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
+                        var res = await myDealsAuthFetch(
+                            apiBase + '/api/my-deals/' + encodeURIComponent(dealId) + '/match-score-breakdown?brand=' + encodeURIComponent(brandKey) + '&_ts=' + Date.now(),
+                            { cache: 'no-store' }
+                        );
+                        var data = await res.json().catch(function () { return {}; });
+                        if (res.ok) {
+                            liveOk = true;
+                            insufficientData = !!data.insufficientData;
+                            insufficientReason = data.insufficientDataReason || null;
+                            if (data.scoreNew != null && data.scoreNew !== '') scoreNew = Number(data.scoreNew);
+                            else if (insufficientData) scoreNew = null;
+                            details = data.breakdownNewDetails && typeof data.breakdownNewDetails === 'object' ? data.breakdownNewDetails : {};
+                            gateReason = data.matchGateReason || data.keyMoneyGateReason || null;
+                            // Keep list payload in sync so subsequent opens / summaries use live v2 rows
+                            if (!deal.matchBreakdownNewDetailsByBrand) deal.matchBreakdownNewDetailsByBrand = {};
+                            deal.matchBreakdownNewDetailsByBrand[brandKey] = details;
+                            if (typeof data.brandStatusEligible === 'boolean') {
+                                if (!deal.matchBrandStatusEligibleByBrand) deal.matchBrandStatusEligibleByBrand = {};
+                                deal.matchBrandStatusEligibleByBrand[brandKey] = data.brandStatusEligible;
+                            }
+                            if (gateReason) {
+                                if (!deal.matchKeyMoneyGateReasonByBrand) deal.matchKeyMoneyGateReasonByBrand = {};
+                                deal.matchKeyMoneyGateReasonByBrand[brandKey] = gateReason;
+                            }
+                            if (!deal.matchScoresNewByBrand) deal.matchScoresNewByBrand = {};
+                            if (scoreNew != null && !isNaN(scoreNew)) {
+                                deal.matchScoresNewByBrand[brandKey] = scoreNew;
+                                deal.matchScoreNew = scoreNew;
+                            } else if (insufficientData) {
+                                deal.matchScoresNewByBrand[brandKey] = null;
+                            }
+                            if (typeof renderMatchedBrandsTable === 'function') renderMatchedBrandsTable();
+                            // Persist v2 score into Deal Brand Cache so list badge stays aligned after reload
+                            myDealsAuthFetch(
+                                apiBase + '/api/my-deals/' + encodeURIComponent(dealId) + '/refresh-brand-cache',
+                                { method: 'POST' }
+                            ).catch(function () { /* non-blocking */ });
+                        }
+                    } catch (err) {
+                        if (typeof console !== 'undefined' && console.warn) {
+                            console.warn('[My Deals] Live match-score breakdown fetch failed; falling back to cached rows.', err);
+                        }
+                    }
+
+                    if (!liveOk) {
+                        if (deal.matchBreakdownNewDetailsByBrand) {
+                            details = deal.matchBreakdownNewDetailsByBrand[brandKey];
+                            if (!details) {
+                                var bLower = brandKey.toLowerCase();
+                                for (var dk in deal.matchBreakdownNewDetailsByBrand) {
+                                    if (Object.prototype.hasOwnProperty.call(deal.matchBreakdownNewDetailsByBrand, dk) && String(dk).trim().toLowerCase() === bLower) {
+                                        details = deal.matchBreakdownNewDetailsByBrand[dk];
+                                        break;
+                                    }
+                                }
+                            }
+                            if (details && details._meta && details._meta.insufficientData) {
+                                insufficientData = true;
+                                scoreNew = null;
+                            }
+                        }
+                        if (brandKey && deal.matchKeyMoneyGateReasonByBrand && typeof deal.matchKeyMoneyGateReasonByBrand === 'object') {
+                            gateReason = deal.matchKeyMoneyGateReasonByBrand[brandKey];
+                            if (!gateReason) {
+                                var gLower = brandKey.toLowerCase();
+                                for (var gk in deal.matchKeyMoneyGateReasonByBrand) {
+                                    if (Object.prototype.hasOwnProperty.call(deal.matchKeyMoneyGateReasonByBrand, gk) && String(gk).trim().toLowerCase() === gLower) {
+                                        gateReason = deal.matchKeyMoneyGateReasonByBrand[gk];
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
-                }
-                var scoreDisplay = Number(scoreNew).toFixed(1);
-                var subTitle = brandKey ? ' for <span style="color: var(--accent--primary-1);">' + escapeHtml(brandKey) + '</span>' : '';
-                var colorNoteNew = ' Score bands: <span style="color: var(--system--green-400);">80–100 = strong</span>, <span style="color: var(--system--orange-400);">50–79 = moderate</span>, <span style="color: var(--system--red-400);">25–49 = weak</span>, <span style="color: #6B2D2D;">0–24 = poor</span>.';
-                var html = '<div class="modal-section"><h3>Overall Match Score New: <span style="color: var(--accent--primary-1);">' + scoreDisplay + '/100</span>' + subTitle + '</h3>' +
-                    '<p style="color: var(--neutral--400); font-size: 14px; line-height: 1.5; margin: 10px 0 0 0;">This score compares what each brand is looking for with what your project offers. It weighs 12 factors across three areas: how well the project fits (size, type, amenities), whether the deal structure works (franchise vs management, fees, key money), and your preferences (brands you like, service level, incentives).' + colorNoteNew + ' The breakdown below shows how each factor scored and why.</p></div>';
-                if (details && typeof details === 'object' && Object.keys(details).length > 0) {
-                    html += '<div class="modal-section"><h3>Quantitative Breakdown</h3><div class="match-score-breakdown">';
-                    for (var factorKey in details) {
-                        if (!Object.prototype.hasOwnProperty.call(details, factorKey)) continue;
-                        var d = details[factorKey];
-                        var label = (d && d.label) ? d.label : factorKey;
-                        var weight = (d && d.weight != null) ? d.weight : 0;
-                        var sc = (d && d.score != null && d.score !== '—') ? getBreakdownScoreClass(Number(d.score)) : 'low';
-                        var scorePct = (d && d.score != null && d.score !== '—') ? Math.min(100, Math.max(0, Number(d.score))) : 0;
-                        html += '<div class="score-category"><div class="score-category-label">' +
-                            '<div class="score-factor-heading">' + escapeHtml(label) + '</div>' +
-                            (weight ? '<div class="score-factor-weight">(Weight: ' + weight + '%)</div>' : '') +
-                            '</div>' +
-                            '<div class="score-category-value"><div class="score-bar"><div class="score-bar-fill ' + sc + '" style="width: ' + scorePct + '%"></div></div>' +
-                            '<span class="score-number">' + (d.score != null && d.score !== '—' ? d.score : '—') + '</span></div>';
-                        if (d.brandValue || d.dealValue || d.note) {
-                            html += '<div class="score-factor-details">' +
-                                '<div><strong style="color: var(--neutral--300);">Brand setup:</strong> ' + escapeHtml(d.brandValue || '—') + '</div>' +
-                                '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">Deal setup:</strong> ' + escapeHtml(d.dealValue || '—') + '</div>' +
-                                (d.note ? '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">How match works:</strong> ' + escapeHtml(d.note) + '</div>' : '') +
-                                '</div>';
-                        }
-                        html += '</div>';
+
+                    var hasNumericScore = scoreNew != null && scoreNew !== '' && !isNaN(Number(scoreNew));
+                    if (!hasNumericScore && !insufficientData && !(details && typeof details === 'object' && Object.keys(details).length > 0)) {
+                        content.innerHTML = '<div class="modal-section" style="color: var(--neutral--300);"><p>Match Score New is not available for this row.</p><p style="margin-top: 8px; color: var(--neutral--400); font-size: 14px;">Ensure the deal has preferred brands and a linked Location &amp; Property with Chain Scale so the Chain Scale Proximity factor can be calculated.</p></div>';
+                        return;
                     }
-                    html += '</div></div>';
-                } else {
-                    var emptyMsg = 'Breakdown details are not available for this row. This usually means the brand "' + (brandKey ? escapeHtml(brandKey) : '') + '" was not found in Brand Setup - Brand Basics. ';
-                    emptyMsg += 'To investigate: run <code>node scripts/forensic-review-per-deal.js --deal-id=' + escapeHtml(dealId || '') + '</code> and check the server console for [Brand Basics] Lookup failed messages.';
-                    html += '<div class="modal-section"><h3>Quantitative Breakdown</h3><p style="color: var(--neutral--400);">' + emptyMsg + '</p></div>';
-                }
-                var summary = buildMatchScoreNewSummary(Number(scoreNew), brandKey, details);
-                if (summary) {
-                    html += '<div class="modal-section"><h3>What This Score Means For You</h3><p class="match-score-summary" style="color: var(--neutral--300); font-size: 15px; line-height: 1.6; margin: 0;">' + escapeHtml(summary) + '</p></div>';
-                }
-                content.innerHTML = html;
-                modal.style.display = 'block';
+
+                    var scoreDisplay = hasNumericScore ? Number(scoreNew).toFixed(1) : '—';
+                    var subTitle = ' for <span style="color: var(--accent--primary-1);">' + escapeHtml(brandKey) + '</span>';
+                    var colorNoteNew = ' Score bands: <span style="color: var(--system--green-400);">80–100 = strong</span>, <span style="color: var(--system--orange-400);">50–79 = moderate</span>, <span style="color: var(--system--red-400);">25–49 = weak</span>, <span style="color: #6B2D2D;">0–24 = poor</span>.';
+                    var intro = insufficientData
+                        ? 'This row does not publish a numeric Match Score yet because too little Brand Setup / deal data could be scored. Missing soft factors are excluded from the average (they no longer pull the score down as zeros). Complete Brand Setup for Active/Live brands and refresh the deal cache.'
+                        : 'This score compares what each brand is looking for with what your project offers. It averages only soft factors that have data on both sides (missing Brand Setup no longer counts as a fail), then adds a preferred-brand bonus when applicable. Hard mismatches (key money, agreement type, chain scale, rooms, project type, markets to avoid) set the overall score to 0.' + colorNoteNew;
+                    var html = '<div class="modal-section"><h3>Overall Match Score New: <span style="color: var(--accent--primary-1);">' + scoreDisplay + '/100</span>' + subTitle + '</h3>' +
+                        '<p style="color: var(--neutral--400); font-size: 14px; line-height: 1.5; margin: 10px 0 0 0;">' + intro + ' The breakdown below is ordered: gates, mismatches, missing data, then fit.</p></div>';
+                    if (insufficientData) {
+                        html += '<div class="modal-section" style="border: 1px solid var(--system--orange-400); border-radius: 8px; padding: 12px 14px;"><p style="margin: 0; color: var(--system--orange-400); font-size: 14px; line-height: 1.5;">' +
+                            escapeHtml(insufficientReason || 'Insufficient brand/deal data to publish a reliable Match Score.') +
+                            '</p></div>';
+                    }
+                    if (gateReason) {
+                        html += '<div class="modal-section" style="border: 1px solid var(--system--red-400); border-radius: 8px; padding: 12px 14px;"><p style="margin: 0; color: var(--system--red-400); font-size: 14px; line-height: 1.5;">' + escapeHtml(gateReason) + '</p></div>';
+                    }
+                    if (details && typeof details === 'object' && Object.keys(details).length > 0) {
+                        html += '<div class="modal-section"><h3>Quantitative Breakdown</h3><div class="match-score-breakdown">';
+                        if (window.DealalityMatchScoreBreakdownUi && typeof window.DealalityMatchScoreBreakdownUi.renderGroupedBreakdownHtml === 'function') {
+                            html += window.DealalityMatchScoreBreakdownUi.renderGroupedBreakdownHtml(details, {
+                                escapeHtml: escapeHtml,
+                                getScoreClass: getBreakdownScoreClass,
+                                meta: details && details._meta ? details._meta : {}
+                            });
+                        } else {
+                            var obsoleteKeys = { localBrandPower:1, marketPriorityGrowth:1, sameBrandTerritoryHeadroom:1, conversionReflagReadiness:1 };
+                            for (var factorKey in details) {
+                                if (!Object.prototype.hasOwnProperty.call(details, factorKey)) continue;
+                                if (factorKey === '_meta' || obsoleteKeys[factorKey]) continue;
+                                var d = details[factorKey];
+                                if (!d || typeof d !== 'object' || (!d.label && d.score == null && !d.brandValue)) continue;
+                                if (d.label && /conversion\s*\/\s*reflag readiness/i.test(String(d.label))) continue;
+                                if (d.note && /^Opportunity:/i.test(String(d.note))) continue;
+                                var label = (d && d.label) ? d.label : factorKey;
+                                var weight = (d && d.weight != null) ? d.weight : 0;
+                                var sc = (d && d.score != null && d.score !== '—') ? getBreakdownScoreClass(Number(d.score)) : 'low';
+                                var scorePct = (d && d.score != null && d.score !== '—') ? Math.min(100, Math.max(0, Number(d.score))) : 0;
+                                html += '<div class="score-category"><div class="score-category-label">' +
+                                    '<div class="score-factor-heading">' + escapeHtml(label) + '</div>' +
+                                    (weight ? '<div class="score-factor-weight">(Weight: ' + weight + '%)</div>' : '') +
+                                    '</div>' +
+                                    '<div class="score-category-value"><div class="score-bar"><div class="score-bar-fill ' + sc + '" style="width: ' + scorePct + '%"></div></div>' +
+                                    '<span class="score-number">' + (d.score != null && d.score !== '—' ? d.score : '—') + '</span></div>';
+                                if (d.brandValue || d.dealValue || d.note) {
+                                    html += '<div class="score-factor-details">' +
+                                        '<div><strong style="color: var(--neutral--300);">Brand setup:</strong> ' + escapeHtml(d.brandValue || '—') + '</div>' +
+                                        '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">Deal setup:</strong> ' + escapeHtml(d.dealValue || '—') + '</div>' +
+                                        (d.note ? '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">How match works:</strong> ' + escapeHtml(d.note) + '</div>' : '') +
+                                        '</div>';
+                                }
+                                html += '</div>';
+                            }
+                        }
+                        html += '</div></div>';
+                    } else {
+                        var emptyMsg = insufficientReason
+                            ? escapeHtml(insufficientReason)
+                            : ('No Match Score breakdown for "' + escapeHtml(brandKey) + '". The preferred brand name must match Brand Setup – Brand Basics exactly. Example: use "Moxy Hotels" if that is the Brand Name in Brand Basics (not "Moxy").');
+                        html += '<div class="modal-section"><h3>Quantitative Breakdown</h3><p style="color: var(--neutral--400);">' + emptyMsg + '</p></div>';
+                    }
+                    var summary = hasNumericScore ? buildMatchScoreNewSummary(Number(scoreNew), brandKey, details) : null;
+                    if (summary) {
+                        html += '<div class="modal-section"><h3>What This Score Means For You</h3><p class="match-score-summary" style="color: var(--neutral--300); font-size: 15px; line-height: 1.6; margin: 0;">' + escapeHtml(summary) + '</p></div>';
+                    }
+                    content.innerHTML = html;
+                })();
             }
 
             function buildMatchScoreNewSummary(score, brandKey, details) {
@@ -4924,7 +5109,7 @@
                 if (score >= 80) {
                     var p = 'With a score of ' + score.toFixed(0) + ', your project aligns strongly with ' + brandPhrase + ' requirements across most factors. ';
                     if (strongStr) p += 'Your strongest areas are ' + strongStr + '—these signal that your property, deal structure, and preferences line up well with what ' + (brand || 'this brand') + ' typically seeks. ';
-                    p += 'This is a promising match worth advancing: reach out with confidence and highlight how your project fits their criteria.';
+                    p += 'This is a strong alignment signal worth prioritizing for review—use the factor breakdown to prepare diligence questions and confirm remaining gaps before outreach.';
                     return p;
                 }
                 if (score >= 50) {
@@ -5035,15 +5220,18 @@
                     return 0;
                 });
                 var rowCount = 0;
-                function matchScoreNewCellFor(scoreNew, id, brand) {
+                function matchScoreNewCellFor(scoreNew, id, brand, dealForStatus) {
                     if (scoreNew == null || scoreNew === '') return '<div class="match-score-cell">—</div>';
                     var n = Number(scoreNew);
                     var scoreClass = getMatchedBrandsScoreClass(n);
                     var display = Number(n).toFixed(1);
+                    var finalized = isMatchedBrandSetupFinalized(dealForStatus || null, brand);
+                    if (!finalized) scoreClass += ' match-score-not-finalized';
                     var detailsBtn = brand != null
                         ? '<button type="button" class="match-score-new-details-btn" data-deal-id="' + escapeHtml(id) + '" data-brand="' + escapeHtml(brand) + '">View Details</button>'
                         : '<button type="button" class="match-score-new-details-btn" data-deal-id="' + escapeHtml(id) + '">View Details</button>';
-                    return '<div class="match-score-cell"><span class="match-score-badge ' + scoreClass + '">' + escapeHtml(display) + '</span>' + detailsBtn + '</div>';
+                    var titleAttr = finalized ? '' : ' title="Brand Status is not Active/Live"';
+                    return '<div class="match-score-cell"><span class="match-score-badge ' + scoreClass + '"' + titleAttr + '>' + escapeHtml(display) + '</span>' + detailsBtn + '</div>';
                 }
                 rows.forEach(function(row) {
                     var deal = row.deal;
@@ -5057,7 +5245,7 @@
                     var dealTypeCell = escapeHtml(deal.dealType || '—');
                     var outreachCell = escapeHtml(deal.hasOutreachSetup ? 'Custom' : 'Default');
                     var preferredBrandsCell = row.brand != null ? escapeHtml(row.brand) : '—';
-                    var matchScoreNewCell = matchScoreNewCellFor(row.rowScoreNew, id, row.brand);
+                    var matchScoreNewCell = matchScoreNewCellFor(row.rowScoreNew, id, row.brand, deal);
                     var isInTargetList = row.brand && isBrandInTargetList(id, row.brand);
                     var isDeleted = row.brand && isBrandDeleted(id, row.brand);
                     var bookmarkColor = isInTargetList ? '#fdb52a' : 'currentColor'; // Orange if in target list

@@ -1,0 +1,212 @@
+{
+  "report": "operator-setup-batch-3c-candidate-review",
+  "generatedAt": "2026-06-02",
+  "mode": "planning_only",
+  "constraintsRespected": {
+    "noCodeChanges": true,
+    "noSchemaChanges": true,
+    "noScoringChanges": true,
+    "noDisplayBehaviorChanges": true,
+    "noFallbackOrderingChanges": true,
+    "noSelectOptionChanges": true,
+    "noAliasRemoval": true,
+    "noExplorerProfileJsonRemoval": true
+  },
+  "evidence": {
+    "sources": [
+      "reports/operator-setup-staging-diagnostics-soak-results.md",
+      "reports/operator-setup-staging-diagnostics-soak-results.json",
+      "reports/operator-setup-staging-diagnostics-log-capture.csv"
+    ],
+    "soakSummary": {
+      "profilesTested": 10,
+      "checks": {
+        "pass": 81,
+        "fail": 10,
+        "total": 91
+      },
+      "determinism": {
+        "writeModeCanonical": true,
+        "noShadowFailOpenObserved": true,
+        "nonRecMockBlocking": true,
+        "newBaseReadProfiles": 10,
+        "legacyReadProfiles": 0
+      },
+      "keyFindings": {
+        "serviceModelsSupportedFallbackUsed": 13,
+        "managementStructuresSupportedFallbackUsed": 1,
+        "sparseUnresolvedExamples": [
+          "marketPresenceType",
+          "governanceCadence",
+          "minimumKeyCount"
+        ],
+        "mirrorMaskingCaptured": false,
+        "oasFailuresLikelyDealCohortMismatch": true
+      }
+    }
+  },
+  "findingClassificationTable": {
+    "confirmed_canonical_mapping_miss": 1,
+    "fallback_acceptable_legacy_only": 1,
+    "missing_data_issue": 1,
+    "display_read_contract_issue": 1,
+    "deferred_cleanup": 1,
+    "business_review_needed": 1
+  },
+  "candidates": [
+    {
+      "fieldConcept": "serviceModelsSupported",
+      "affectedFileFunction": [
+        "public/js/operator-explorer-new-base-profile.js::pickField service-model stack",
+        "scripts/validate-operator-setup-batch-3b-contracts.mjs::canonical-first checks"
+      ],
+      "canonicalKeyExpected": "serviceModelsSupported",
+      "fallbackKeyUsed": "primaryServiceModel",
+      "countObserved": 13,
+      "profilesAffected": [
+        "recZKRDG8eH2e9Tiy",
+        "recfQ1w5OR0a5Digr",
+        "recyHakOliyjuJGKT",
+        "recWynAfAXb6aznyb",
+        "recPIkCoZi9FRs8h5",
+        "recP78Z4fiObIhmCM"
+      ],
+      "likelyRootCause": "Canonical field population is inconsistent across records while legacy scalar fallback remains populated.",
+      "classification": "confirmed_canonical_mapping_miss",
+      "recommendedAction": "Batch 3C smallest-scope canonical contract closure for serviceModelsSupported; keep compatibility fallback.",
+      "codeChangeNeeded": true,
+      "dataBackfillNeeded": "possible_targeted",
+      "uiChangeNeeded": false,
+      "schemaChangeNeeded": false,
+      "scoringChangesNeeded": false,
+      "riskLevel": "medium",
+      "testNeeded": [
+        "serviceModelsSupported canonical round-trip save/reload/detail",
+        "canonical-first contract assertion",
+        "output parity assertion (no display/scoring change)"
+      ]
+    },
+    {
+      "fieldConcept": "managementStructuresSupported",
+      "affectedFileFunction": [
+        "lib/operator-alignment-prefill-map.js::applyOperatorAlignmentPrefillAliases"
+      ],
+      "canonicalKeyExpected": "managementStructuresSupported",
+      "fallbackKeyUsed": "bf_selected_deal_structures",
+      "countObserved": 1,
+      "profilesAffected": [],
+      "likelyRootCause": "Deal-side alias compatibility path rather than confirmed canonical mapping defect.",
+      "classification": "fallback_acceptable_legacy_only",
+      "secondaryClassification": "business_review_needed",
+      "recommendedAction": "Defer from first Batch 3C code slice; validate source-of-truth ownership decision first.",
+      "codeChangeNeeded": "not_in_first_slice",
+      "dataBackfillNeeded": false,
+      "uiChangeNeeded": false,
+      "schemaChangeNeeded": false,
+      "scoringChangesNeeded": false,
+      "riskLevel": "low_medium",
+      "testNeeded": [
+        "deal-linked alias provenance validation",
+        "business confirmation of canonical ownership"
+      ]
+    },
+    {
+      "fieldConcept": "Sparse-profile unresolved alignment fields",
+      "affectedFileFunction": [
+        "lib/operator-alignment-prefill-map.js::applyOperatorAlignmentPrefillAliases diagnostics"
+      ],
+      "canonicalKeyExpected": "concept-specific canonical prefill keys",
+      "fallbackKeyUsed": "",
+      "countObserved": 1,
+      "profilesAffected": [
+        "sparse profile cohort"
+      ],
+      "likelyRootCause": "Missing data in sparse records, not mapping bug.",
+      "classification": "missing_data_issue",
+      "recommendedAction": "Route to data completion/backfill track; do not treat as Batch 3C mapping code fix.",
+      "codeChangeNeeded": false,
+      "dataBackfillNeeded": true,
+      "uiChangeNeeded": false,
+      "schemaChangeNeeded": false,
+      "scoringChangesNeeded": false,
+      "riskLevel": "low_for_mapping_medium_for_demo_completeness",
+      "testNeeded": [
+        "data completeness audit for demo-target operators"
+      ]
+    },
+    {
+      "fieldConcept": "explorerProfileJson mirror masking",
+      "affectedFileFunction": [
+        "public/js/operator-setup-explorer-behavior.js::mirror_prefill_applied/mirror_write_contract diagnostics"
+      ],
+      "canonicalKeyExpected": "structured canonical keys by concept",
+      "fallbackKeyUsed": "explorerProfileJson mirror",
+      "countObserved": 0,
+      "profilesAffected": [],
+      "likelyRootCause": "Browser-only diagnostics path not exercised in API/module soak.",
+      "classification": "display_read_contract_issue",
+      "recommendedAction": "Run short browser diagnostics pass before deciding any Batch 3C change.",
+      "codeChangeNeeded": "not_yet",
+      "dataBackfillNeeded": "unknown",
+      "uiChangeNeeded": false,
+      "schemaChangeNeeded": false,
+      "scoringChangesNeeded": false,
+      "riskLevel": "medium",
+      "testNeeded": [
+        "browser-side mirror diagnostics capture"
+      ]
+    },
+    {
+      "fieldConcept": "OAS deal-linked validation gap",
+      "affectedFileFunction": [
+        "api/operator-alignment-snapshot.js routes (validation path)",
+        "deal-scoped companiesForConsideration selection in soak harness"
+      ],
+      "canonicalKeyExpected": "operator appears in deal companies list when linked",
+      "fallbackKeyUsed": "",
+      "countObserved": 10,
+      "profilesAffected": [
+        "all 10 soak profiles for current deal"
+      ],
+      "likelyRootCause": "Validation cohort mismatch for deal recIeGRZP21udmTnt.",
+      "classification": "deferred_cleanup",
+      "recommendedAction": "Run deal-linked follow-up pass with confirmed linked operator (e.g. recBVEgtm8cS96mu7 if linked).",
+      "codeChangeNeeded": false,
+      "dataBackfillNeeded": false,
+      "uiChangeNeeded": false,
+      "schemaChangeNeeded": false,
+      "scoringChangesNeeded": false,
+      "riskLevel": "medium_for_validation_confidence",
+      "testNeeded": [
+        "deal-linked OAS profile/companies validation"
+      ]
+    }
+  ],
+  "proposedBatch3CSmallestScope": {
+    "include": [
+      "serviceModelsSupported canonical contract closure only",
+      "focused canonical-first contract test for serviceModelsSupported"
+    ],
+    "exclude": [
+      "managementStructuresSupported contract changes",
+      "sparse unresolved field mapping changes",
+      "explorerProfileJson mirror behavior changes",
+      "OAS logic changes",
+      "scoring/display/fallback-order changes",
+      "schema/option/alias-removal changes"
+    ],
+    "implementationIntent": "Populate/repair canonical source mapping, not reorder fallback stacks."
+  },
+  "doNotImplementYet": [
+    "managementStructuresSupported if business/source-of-truth review is pending",
+    "sparse-profile unresolved fields (treat as data completeness work)",
+    "explorerProfileJson mirror masking changes before browser diagnostics evidence",
+    "OAS behavior changes before deal-linked validation pass"
+  ],
+  "followUpValidationPlan": [
+    "serviceModelsSupported round-trip validation (save/reload/detail/explorer canonical-first)",
+    "OAS deal-linked operator pass (deal recIeGRZP21udmTnt + confirmed linked operator, e.g. recBVEgtm8cS96mu7 if confirmed)",
+    "browser diagnostic mirror masking check (capture mirror_prefill_applied and mirror_write_contract)"
+  ],
+  "recommendation": "Proceed with a minimal Batch 3C focused on serviceModelsSupported only after approval; keep all other candidates deferred pending targeted evidence gates."
+}

@@ -1,0 +1,446 @@
+{
+  "version": "census-autopilot-v1.2-golden-schema",
+  "reused_from": "lib/research-engine-v2/census-autopilot-v1/golden/golden-schema.js",
+  "redefined": false,
+  "priority_fields": [
+    {
+      "field": "Property Name",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "Current Brand",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "Brand Family",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "Official Property ID",
+      "group": "G1_Identity_Geography",
+      "applicability": "CONDITIONAL",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Official Property URL",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "Address",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "City",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "State / Region",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Country",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "Continent",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Sub-Continent",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Market",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "Submarket",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "Postal Code",
+      "group": "G1_Identity_Geography",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Latitude",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Longitude",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Phone",
+      "group": "G1_Identity_Geography",
+      "applicability": "REQUIRED",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Rooms / Keys",
+      "group": "G2_Physical_Profile",
+      "applicability": "REQUIRED",
+      "weight": 4,
+      "weight_band": "CRITICAL"
+    },
+    {
+      "field": "Suites",
+      "group": "G2_Physical_Profile",
+      "applicability": "CONDITIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Floors",
+      "group": "G2_Physical_Profile",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Property Type",
+      "group": "G2_Physical_Profile",
+      "applicability": "REQUIRED",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Asset Context",
+      "group": "G2_Physical_Profile",
+      "applicability": "CONDITIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Resort / Urban",
+      "group": "G2_Physical_Profile",
+      "applicability": "REQUIRED",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Boutique Flag",
+      "group": "G2_Physical_Profile",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "All-Suite Flag",
+      "group": "G2_Physical_Profile",
+      "applicability": "CONDITIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Mixed-Use Flag",
+      "group": "G2_Physical_Profile",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Branded Residences Flag",
+      "group": "G2_Physical_Profile",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Amenities - Source Text",
+      "group": "G3_Amenities",
+      "applicability": "REQUIRED",
+      "weight": 3,
+      "weight_band": "HIGH"
+    },
+    {
+      "field": "Amenities - Structured Tags",
+      "group": "G3_Amenities",
+      "applicability": "REQUIRED",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Pool",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Spa",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Fitness",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Golf",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Beach / Beachfront",
+      "group": "G3_Amenities",
+      "applicability": "CONDITIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Beach Club",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Casino",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Kids Club",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Club Lounge",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "All-Inclusive",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Parking",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Airport Shuttle",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Ski",
+      "group": "G3_Amenities",
+      "applicability": "CONDITIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Residences Amenity",
+      "group": "G3_Amenities",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Restaurant Count",
+      "group": "G4_FB",
+      "applicability": "CONDITIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Restaurant Names",
+      "group": "G4_FB",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Bars / Lounges",
+      "group": "G4_FB",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Rooftop F&B",
+      "group": "G4_FB",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Signature / Third-Party Restaurant",
+      "group": "G4_FB",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Room Service",
+      "group": "G4_FB",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "F&B Flag",
+      "group": "G4_FB",
+      "applicability": "REQUIRED",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Meeting / Event Space",
+      "group": "G5_Meetings",
+      "applicability": "REQUIRED",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Total Meeting Space",
+      "group": "G5_Meetings",
+      "applicability": "CONDITIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Largest Meeting Room / Ballroom",
+      "group": "G5_Meetings",
+      "applicability": "CONDITIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Number of Meeting Rooms",
+      "group": "G5_Meetings",
+      "applicability": "CONDITIONAL",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Ballroom",
+      "group": "G5_Meetings",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Convention Hotel",
+      "group": "G5_Meetings",
+      "applicability": "OPTIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    },
+    {
+      "field": "Dealality Segment / Positioning",
+      "group": "G6_Dealality_Classification",
+      "applicability": "REQUIRED",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Hotel Description - Source Text",
+      "group": "G7_Content",
+      "applicability": "REQUIRED",
+      "weight": 2,
+      "weight_band": "MEDIUM"
+    },
+    {
+      "field": "Hotel Description - AI Summary",
+      "group": "G7_Content",
+      "applicability": "CONDITIONAL",
+      "weight": 1,
+      "weight_band": "LOW"
+    }
+  ],
+  "separate_tracks": [
+    "LIFECYCLE",
+    "OWNERSHIP_OPERATION",
+    "IMAGE",
+    "GOVERNANCE"
+  ],
+  "hotel_identity_must_include": [
+    "Property Identity",
+    "Hotel Name / Property Name",
+    "Brand",
+    "Parent Company / Brand Family",
+    "Property Type",
+    "Address",
+    "City",
+    "State / Region",
+    "Country",
+    "Continent",
+    "Sub-Continent",
+    "Market",
+    "Submarket",
+    "Latitude",
+    "Longitude",
+    "Website",
+    "Telephone"
+  ],
+  "registry_size": 75
+}

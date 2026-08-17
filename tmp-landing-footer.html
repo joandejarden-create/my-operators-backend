@@ -1,0 +1,74 @@
+<!-- Memberstack webflow package -->
+<!--<script data-memberstack-app="app_cm9yhctsc00vn0wuz3ytk2jkt" src="https://static.memberstack.com/scripts/v1/memberstack.js" type="text/javascript"></script>-->
+
+<script>
+window.$memberstackDom.getCurrentMember().then((member) => {
+  if (member.data) {
+  
+  	//$('.quick-sign-in').text('Go to Dashboard').attr('href', member.data.loginRedirect);
+
+	// Replace 'pln_basic-plan-id' with your actual Basic Plan ID
+    const basicPlanId = 'pln_basic-47rv0rwf'; 
+    const hasBasicPlan = member.data.planConnections.some(
+      (plan) => plan.planId === basicPlanId
+    );
+
+    if (hasBasicPlan) {
+      console.log('User not verified');
+      window.$memberstackDom.logout();
+    } else {
+      $('.quick-sign-in').text('Go to Dashboard').attr('href', member.data.loginRedirect);
+    }
+    
+    //console.log('There is a member logged in:', member);
+    // Access member data here, e.g., member.data.id, member.data.email
+  } else {
+    //console.log('No member is logged in:', member);
+    // Handle the case where no member is logged in
+  }
+});
+</script>
+
+<script>
+window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+// Mobile nav
+    const hamburger = document.getElementById('nav-hamburger');
+    const overlay = document.getElementById('nav-overlay');
+    const overlayClose = document.getElementById('nav-overlay-close');
+    if (hamburger && overlay) {
+      hamburger.addEventListener('click', () => overlay.classList.add('open'));
+      overlayClose && overlayClose.addEventListener('click', () => overlay.classList.remove('open'));
+    }
+
+    // Back to top
+    const backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+      window.addEventListener('scroll', () => {
+        backToTop.classList.toggle('visible', window.scrollY > 400);
+      });
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        
+        // Close all other FAQ items
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('open');
+          }
+        });
+        
+        // Toggle current item
+        item.classList.toggle('open');
+      });
+    });
+</script>

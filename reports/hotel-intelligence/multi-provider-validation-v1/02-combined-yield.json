@@ -1,0 +1,182 @@
+{
+  "independentYield": {
+    "hotelbeds": {
+      "hotels_attempted": 0,
+      "hotels_matched": 0,
+      "api_calls": 0,
+      "status": "quota_exhausted",
+      "message": "TEST_DAILY_QUOTA_EXHAUSTED",
+      "fields_returned": {},
+      "note": "Identity validated; content enrich not measured on frozen sample",
+      "census_hbx_codes_present_live": 3016
+    },
+    "stayingapi": {
+      "hotels_attempted": 15,
+      "hotels_matched_exact_high": 0,
+      "api_calls": 15,
+      "fields_recovered": {
+        "address": 0,
+        "coordinates": 0,
+        "phone": 0,
+        "website": 0,
+        "rooms": 0,
+        "brand": 0
+      },
+      "recommendation": "DO_NOT_USE_STAYINGAPI_FOR_CENSUS"
+    },
+    "serpapi": {
+      "hotels_attempted": 400,
+      "hotels_matched_exact_high": 129,
+      "api_calls": 404,
+      "account_delta_searches": 380,
+      "fields_recovered": {
+        "address": 83,
+        "coordinates": 106,
+        "phone": 79,
+        "website": 5,
+        "rooms": 0,
+        "brand": 0
+      },
+      "high_confidence": {
+        "address": 83,
+        "coordinates": 106,
+        "phone": 4
+      },
+      "property_tokens": 129,
+      "recommendation": "USE_SERPAPI_AS_COMPLEMENTARY_PROVIDER"
+    },
+    "hotelapi_co_free": {
+      "hotels_attempted": 0,
+      "note": "Docs-only; not integrated",
+      "HOTELAPI_CO_FREE_CENSUS_VALUE": "LOW"
+    }
+  },
+  "combined": {
+    "missing_before": {
+      "address": 299,
+      "coordinates": 351,
+      "rooms": 375,
+      "brand": 104,
+      "parent": 95,
+      "website": 38,
+      "phone": 295
+    },
+    "recovered_by_hotelbeds_only": {
+      "address": 0,
+      "coordinates": 0,
+      "phone": 0,
+      "website": 0,
+      "rooms": 0,
+      "brand": 0,
+      "note": "HBX enrich not measured (quota)"
+    },
+    "recovered_by_stayingapi_only": {
+      "address": 0,
+      "coordinates": 0,
+      "phone": 0,
+      "website": 0,
+      "rooms": 0,
+      "brand": 0
+    },
+    "recovered_by_serpapi_only": {
+      "address": 83,
+      "coordinates": 106,
+      "phone": 79,
+      "website": 5,
+      "rooms": 0,
+      "brand": 0
+    },
+    "recovered_by_multiple_agreeing": {
+      "note": "Not jointly measured this sprint (providers run independently; HBX unavailable)",
+      "rooms": 0,
+      "coordinates": 0
+    },
+    "conflicting_providers": {
+      "note": "Intra-SerpApi conflicts only (address 25, phone 16, website 36 vs existing census)",
+      "serpapi_address_conflicts": 25,
+      "serpapi_phone_conflicts": 16,
+      "serpapi_website_conflicts": 36
+    },
+    "still_missing_after_serpapi": {
+      "address": 216,
+      "coordinates": 245,
+      "phone": 216,
+      "website": 33,
+      "rooms": 375,
+      "brand": 104,
+      "parent": 95
+    }
+  },
+  "field_recovery_table": [
+    {
+      "field": "address",
+      "missing_before": 299,
+      "hbx": 0,
+      "stayingapi": 0,
+      "serpapi": 83,
+      "combined": 83,
+      "still_missing": 216,
+      "recovery_pct": 27.8
+    },
+    {
+      "field": "coordinates",
+      "missing_before": 351,
+      "hbx": 0,
+      "stayingapi": 0,
+      "serpapi": 106,
+      "combined": 106,
+      "still_missing": 245,
+      "recovery_pct": 30.2
+    },
+    {
+      "field": "phone",
+      "missing_before": 295,
+      "hbx": 0,
+      "stayingapi": 0,
+      "serpapi": 79,
+      "combined": 79,
+      "still_missing": 216,
+      "recovery_pct": 26.8
+    },
+    {
+      "field": "website",
+      "missing_before": 38,
+      "hbx": 0,
+      "stayingapi": 0,
+      "serpapi": 5,
+      "combined": 5,
+      "still_missing": 33,
+      "recovery_pct": 13.2
+    },
+    {
+      "field": "room_count",
+      "missing_before": 375,
+      "hbx": 0,
+      "stayingapi": 0,
+      "serpapi": 0,
+      "combined": 0,
+      "still_missing": 375,
+      "recovery_pct": 0
+    },
+    {
+      "field": "brand",
+      "missing_before": 104,
+      "hbx": 0,
+      "stayingapi": 0,
+      "serpapi": 0,
+      "combined": 0,
+      "still_missing": 104,
+      "recovery_pct": 0
+    },
+    {
+      "field": "parent_company",
+      "missing_before": 95,
+      "hbx": 0,
+      "stayingapi": 0,
+      "serpapi": 0,
+      "combined": 0,
+      "still_missing": 95,
+      "recovery_pct": 0
+    }
+  ]
+}

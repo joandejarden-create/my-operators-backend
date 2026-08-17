@@ -1,0 +1,66 @@
+{
+  "version": "rooms-source-map-v2.2",
+  "evidence_standard": "guest rooms / hotel rooms / keys / unambiguous rooms+suites totals only; never infer",
+  "confidence": {
+    "HIGH": "Official structured property source / current first-party hotel facts",
+    "MEDIUM": "Official owner/operator/current opening or development source",
+    "LOW": "Credible secondary — research clue only; not Census candidate"
+  },
+  "by_family": {
+    "IHG": {
+      "hoteldetail_numberOfRooms": "usually empty string — do not invent",
+      "json_ld": "rare",
+      "embedded_state": "empty field common",
+      "pdf_fact_sheet": "occasional",
+      "owner_operator": "medium path",
+      "development_opening": "medium when current",
+      "first_party": "primary remaining path for Mexico cohort"
+    },
+    "Hilton": {
+      "graphql_shortDesc": "occasional prose room counts",
+      "html": "often 403",
+      "fact_sheets": "occasional",
+      "first_party": "needed when GraphQL silent"
+    },
+    "Choice": {
+      "html": "sparse",
+      "first_party": "primary"
+    },
+    "Marriott": {
+      "marsha_embedded": "investigate",
+      "fact_sheets": "medium",
+      "first_party": "common"
+    },
+    "Accor": {
+      "directory": true,
+      "rooms": "owner/opening/first-party"
+    },
+    "Wyndham": {
+      "directory": true,
+      "rooms": "owner/opening/first-party"
+    },
+    "Hyatt": {
+      "embedded": "possible",
+      "rooms": "fact sheet / first-party"
+    },
+    "Melia": {
+      "rooms": "owner/opening/first-party"
+    },
+    "Minor": {
+      "rooms": "first-party"
+    }
+  },
+  "never_from": [
+    "room_types",
+    "search_inventory",
+    "available_rooms",
+    "bedrooms",
+    "reviews",
+    "occupancy",
+    "meeting_rooms",
+    "floor_count",
+    "booking_inventory",
+    "serpapi",
+    "cvent"
+  ]
+}

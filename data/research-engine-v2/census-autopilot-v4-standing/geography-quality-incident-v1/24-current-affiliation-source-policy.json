@@ -1,0 +1,44 @@
+{
+  "version": "current-affiliation-source-policy-v1",
+  "hierarchy": [
+    {
+      "rank": 1,
+      "source": "current_official_hotel_property_page_with_explicit_brand"
+    },
+    {
+      "rank": 2,
+      "source": "current_official_brand_directory_property_record"
+    },
+    {
+      "rank": 3,
+      "source": "current_parent_company_official_directory_with_property_level_brand"
+    },
+    {
+      "rank": 4,
+      "source": "official_hotel_website_with_explicit_current_affiliation"
+    },
+    {
+      "rank": 5,
+      "source": "current_official_owner_operator_page"
+    },
+    {
+      "rank": 6,
+      "source": "approved_corroborated_source"
+    }
+  ],
+  "prohibited_sole_sources": [
+    "parent_domain",
+    "source_adapter_family",
+    "url_hostname_alone",
+    "old_property_record",
+    "hotel_name_fuzzy_similarity",
+    "google_category",
+    "cvent",
+    "legacy_census",
+    "historical_brand_explorer_record"
+  ],
+  "cvent_as_production_brand_evidence": false,
+  "legacy_as_production_brand_evidence": false,
+  "brand_explorer_may_override_census": false,
+  "directionality": "Verified Property Census → Brand Explorer validation (not reverse)"
+}

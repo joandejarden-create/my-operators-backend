@@ -1,0 +1,371 @@
+{
+  "factoryVersion": "v34B",
+  "brandConfigVersion": "v34B",
+  "stage": "final-qa",
+  "generatedAt": "2026-07-14T08:48:09.124Z",
+  "brand": {
+    "slug": "woodspring-suites",
+    "recordId": "recsOd51NzRPYsMko",
+    "name": "WoodSpring Suites",
+    "parentCompany": "Choice Hotels International",
+    "consumerUrl": "https://www.woodspring.com/"
+  },
+  "activeProfileConfig": {
+    "slug": "woodspring-suites",
+    "recordId": "recsOd51NzRPYsMko",
+    "brandFamily": "choice-extended-stay",
+    "propertyExampleStrategy": "us_labeled_property_examples",
+    "galleryMinimum": 6
+  },
+  "mode": "dry-run",
+  "guardrails": {
+    "companyValidatedNeverAuto": true,
+    "imageApprovalNotCompanyValidation": true,
+    "noSummaryUrlWrites": true,
+    "registryOnlyNotVisibleReadiness": true,
+    "founderVisualReviewRequiredForApply": true,
+    "galleryMinimum": 6
+  },
+  "factoryRules": {
+    "factoryVersion": "v34B",
+    "pass": false,
+    "rules": {
+      "gallery": {
+        "ruleId": "gallery_minimum_six_visible",
+        "pass": false,
+        "minimum": 6,
+        "visibleInApi": 3,
+        "withImageUrl": 3,
+        "missingImageUrl": [],
+        "logoOrGenericSlots": [],
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_3"
+        ]
+      },
+      "propertyExamples": {
+        "ruleId": "property_example_real_hotel_images",
+        "pass": false,
+        "visibleOpeningCards": 3,
+        "defects": [
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recI3cbO8mOhEpo1W",
+            "issue": "non_hotel_photography"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recpNB0KoPq6y3Mhs",
+            "issue": "non_hotel_photography"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "rec4Eqp9lwXSP7UQE",
+            "issue": "non_hotel_photography"
+          }
+        ],
+        "blockers": [
+          "non_hotel_photography:recI3cbO8mOhEpo1W",
+          "non_hotel_photography:recpNB0KoPq6y3Mhs",
+          "non_hotel_photography:rec4Eqp9lwXSP7UQE"
+        ]
+      },
+      "scenarioImages": {
+        "ruleId": "scenario_no_image_placeholder",
+        "pass": true,
+        "visibleScenarioCards": 2,
+        "placeholderSlots": [],
+        "staleFallbackTitles": false,
+        "blockers": []
+      },
+      "registryTraceability": {
+        "ruleId": "registry_traceability",
+        "pass": false,
+        "visualSlotsChecked": 8,
+        "gaps": [
+          {
+            "slotKey": "overview.scenario.1",
+            "recordId": "rec9jf7DAXzgWTgx1",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recI3cbO8mOhEpo1W",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "recordId": "recMUrSv3EO6jgELM",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.1",
+            "recordId": "rechUn7nwlxjW1jyV",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recpNB0KoPq6y3Mhs",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "rec4Eqp9lwXSP7UQE",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "recordId": "recXfIGZUrwap6AIK",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "recordId": "recJokIWQxU64gVsl",
+            "issue": "missing_registry_row"
+          }
+        ],
+        "blockers": [
+          "missing_registry_row:overview.scenario.1",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:overview.scenario.2",
+          "missing_registry_row:materials.gallery.1",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:materials.gallery.2",
+          "missing_registry_row:materials.gallery.3"
+        ]
+      },
+      "uiFallback": {
+        "ruleId": "ui_fallback_preference",
+        "pass": false,
+        "risks": [
+          {
+            "surface": "overview.scenario.3",
+            "issue": "atelier_hardcoded_scenario_fallback_risk",
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          }
+        ],
+        "blockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ]
+      },
+      "copySafety": {
+        "ruleId": "copy_safety",
+        "pass": false,
+        "findings": [
+          {
+            "slotKey": "commercial.lever.data_analytics",
+            "recordId": "rec2nAmi1x1ti4qY2",
+            "patternId": "adr",
+            "excerpt": "Data, Analytics & Experimentation\nPortfolio benchmarks, test-and-learn, and guest insights to refine offers, room types,",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.sales_catering",
+            "recordId": "rec83RHgjktgwrE3R",
+            "patternId": "adr",
+            "excerpt": "Sales & Catering Brand Pull\nBrand credibility, central inquiry flow, and proposal tools for weddings, SMERF, and small c",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.leisure_destination",
+            "recordId": "recAonJUpmPwTt8MJ",
+            "patternId": "adr",
+            "excerpt": "Leisure & Destination Visibility\nInspiration content, packages, partnerships, and destination narratives for high-intent",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.bestAt.2",
+            "recordId": "recEZp6p4J1UKNcAX",
+            "patternId": "net_contribution",
+            "excerpt": "Owners who model net contribution after fees, loyalty, and channel mix.\nOwners who model net contribution after fees, lo",
+            "severity": "high"
+          },
+          {
+            "slotKey": "valueOwners.watchouts",
+            "recordId": "recOShnRVobjnGQD9",
+            "patternId": "adr",
+            "excerpt": "\nMarkets that cannot support extended-stay ADR or required amenity stack.\nHeavy conversion PIP misaligned with building ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.reputation_qa",
+            "recordId": "recPGRUnIS03eQuTg",
+            "patternId": "adr",
+            "excerpt": "Reputation, Reviews & QA Lift\nRecognizable flags improve post-click conversion; QA and service standards reduce variance",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.international",
+            "recordId": "recPc2aB0amEzubas",
+            "patternId": "adr",
+            "excerpt": "International & Feeder Markets\nInbound and cross-border feeders where global recognition reduces perceived risk—gateways",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.ecosystem",
+            "recordId": "recRqsBPKgtatTymN",
+            "patternId": "fdd",
+            "excerpt": "\n7,100+ hotels worldwide across 20+ brands; earn up to 10 points per $1 on eligible direct stays; reward nights from 8,0",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.owner_lens",
+            "recordId": "recYOqmwRPW8itP3n",
+            "patternId": "net_contribution",
+            "excerpt": "\nModel loyalty as net contribution—member discounts, fulfillment, and owner diligence materials-reported room mix from C",
+            "severity": "high"
+          },
+          {
+            "slotKey": "commercial.lever.corporate_group",
+            "recordId": "recYVkX5rYtfVJguN",
+            "patternId": "adr",
+            "excerpt": "Corporate, SME & Group Pull\nContracted travelers, small meetings, and negotiated programs where the flag acts as a trust",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.revenue_management",
+            "recordId": "recZzZykJ9TUuuIdJ",
+            "patternId": "adr",
+            "excerpt": "Revenue Management & Pricing Discipline\nForecasting tools, competitive sets, restriction strategies, and brand-level pla",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.kpi.fee_stack",
+            "recordId": "reca5TLdd1Mbt595b",
+            "patternId": "confirm_fees",
+            "excerpt": "Fee Stack Diligence\nOwners should map franchise, marketing, and technology fees during underwriting. Dealality summarize",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.implications.pnl",
+            "recordId": "receQCs16PSr69L99",
+            "patternId": "adr",
+            "excerpt": "\nModel net after distribution, member discounts, and redemption—strongest when direct/member mix supports your brand tie",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.digital_marketing",
+            "recordId": "rechrNv61Vp6TRt1C",
+            "patternId": "adr",
+            "excerpt": "Digital Marketing & Performance Media\nPaid and owned media, search, social, and retargeting at portfolio scale, with cre",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.operator_compat.fit",
+            "recordId": "recjBgda3wLQ5bABC",
+            "patternId": "net_contribution",
+            "excerpt": "\nStrong fit when operator has extended-stay depth, can meet prototype/PIP, and models net contribution after 6.0% royalt",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.bestAt.1",
+            "recordId": "recn2dAqBL4QifP0J",
+            "patternId": "adr",
+            "excerpt": "Markets that support extended-stay ADR and required amenity stack.\nMarkets that support extended-stay ADR and required a",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.kpi.lens",
+            "recordId": "rectWqznHv9n75V5s",
+            "patternId": "net_contribution",
+            "excerpt": "Owner Underwriting Lens\nNet contribution after fees and channel costs",
+            "severity": "high"
+          },
+          {
+            "slotKey": "commercial.differentiator",
+            "recordId": "recwBJohd1tQoyZYn",
+            "patternId": "adr",
+            "excerpt": "Commercial edge on this brand\nMarkets that support extended-stay ADR and required amenity stack.",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.distribution",
+            "recordId": "reczN9RAx9D8bDswG",
+            "patternId": "adr",
+            "excerpt": "Distribution & Retail Reach\nBranded retail paths guests already use—CRS connectivity, brand.com and app, retail OTA rela",
+            "severity": "medium"
+          }
+        ],
+        "highCount": 5,
+        "blockers": [
+          "risky_copy:net_contribution:overview.bestAt.2",
+          "risky_copy:fdd:loyalty.ecosystem",
+          "risky_copy:net_contribution:loyalty.owner_lens",
+          "risky_copy:net_contribution:operations.operator_compat.fit",
+          "risky_copy:net_contribution:commercial.kpi.lens"
+        ]
+      },
+      "standardDetail": {
+        "ruleId": "standard_detail_governance",
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false,
+        "blockers": []
+      }
+    },
+    "imageGovernanceDefects": [],
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_3",
+      "non_hotel_photography:recI3cbO8mOhEpo1W",
+      "non_hotel_photography:recpNB0KoPq6y3Mhs",
+      "non_hotel_photography:rec4Eqp9lwXSP7UQE",
+      "missing_registry_row:overview.scenario.1",
+      "missing_registry_row:footprint.openings",
+      "missing_registry_row:overview.scenario.2",
+      "missing_registry_row:materials.gallery.1",
+      "missing_registry_row:materials.gallery.2",
+      "missing_registry_row:materials.gallery.3",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+      "risky_copy:net_contribution:overview.bestAt.2",
+      "risky_copy:fdd:loyalty.ecosystem",
+      "risky_copy:net_contribution:loyalty.owner_lens",
+      "risky_copy:net_contribution:operations.operator_compat.fit",
+      "risky_copy:net_contribution:commercial.kpi.lens"
+    ],
+    "galleryMinimum": 6,
+    "visibleGalleryCount": 3
+  },
+  "assetPack": null,
+  "draftPlan": null,
+  "applyResult": null,
+  "legacyWriterChainReference": [
+    "brand-explorer-woodspring-six-image-gallery-completion-writer",
+    "brand-explorer-woodspring-real-property-examples-writer"
+  ],
+  "finalQa": {
+    "readiness": "almost_ready",
+    "numeric": 84,
+    "defectCount": 5
+  },
+  "visualDefects": null,
+  "completeBuild": {
+    "readyForActiveProfile": false,
+    "readinessBand": "almost_ready"
+  },
+  "suburbanReadiness": null,
+  "applyApproved": {
+    "allowed": false,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-approved -- --brand woodspring-suites --apply --approve-brand-explorer-active-profile --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_3",
+      "non_hotel_photography:recI3cbO8mOhEpo1W",
+      "non_hotel_photography:recpNB0KoPq6y3Mhs",
+      "non_hotel_photography:rec4Eqp9lwXSP7UQE",
+      "missing_registry_row:overview.scenario.1",
+      "missing_registry_row:footprint.openings",
+      "missing_registry_row:overview.scenario.2",
+      "missing_registry_row:materials.gallery.1",
+      "missing_registry_row:materials.gallery.2",
+      "missing_registry_row:materials.gallery.3",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+      "risky_copy:net_contribution:overview.bestAt.2",
+      "risky_copy:fdd:loyalty.ecosystem",
+      "risky_copy:net_contribution:loyalty.owner_lens",
+      "risky_copy:net_contribution:operations.operator_compat.fit",
+      "risky_copy:net_contribution:commercial.kpi.lens"
+    ]
+  },
+  "markdown": "# Brand Explorer Active Profile Founder Review v34B\n\n- Brand: **WoodSpring Suites** (`woodspring-suites`)\n- Generated: 2026-07-14T08:48:09.125Z\n- Factory pass: **no**\n\n## Visual readiness\n- Gallery (6 visible + imageUrl): **FAIL** (3/6)\n- Property examples: **FAIL**\n- Scenario cards (no IMAGE placeholder): **PASS**\n- Registry traceability: **FAIL**\n- UI fallback risk: **FAIL**\n- Copy safety: **FAIL**\n- Standard Detail governance: **PASS**\n\n## Property cards (asset pack)\n\n## Gallery image pack\n\n## Scenario cards\n\n## Proof cards\n\n## What will be applied (dry-run draft)\n- Presentation patches: **0**\n- Registry creates: **0**\n- Sections: (none)\n\n## Remains human-reviewed\n\n## Blockers\n- need_6_visible_gallery_imageUrl_got_3\n- non_hotel_photography:recI3cbO8mOhEpo1W\n- non_hotel_photography:recpNB0KoPq6y3Mhs\n- non_hotel_photography:rec4Eqp9lwXSP7UQE\n- missing_registry_row:overview.scenario.1\n- missing_registry_row:footprint.openings\n- missing_registry_row:overview.scenario.2\n- missing_registry_row:materials.gallery.1\n- missing_registry_row:materials.gallery.2\n- missing_registry_row:materials.gallery.3\n- atelier_hardcoded_scenario_fallback_risk:overview.scenario.3\n- risky_copy:net_contribution:overview.bestAt.2\n- risky_copy:fdd:loyalty.ecosystem\n- risky_copy:net_contribution:loyalty.owner_lens\n- risky_copy:net_contribution:operations.operator_compat.fit\n- risky_copy:net_contribution:commercial.kpi.lens\n\n## Exact apply command\n_Blocked until founder review passes and dry-runs are clean._",
+  "assetPackMarkdown": null,
+  "draftMarkdown": null
+}

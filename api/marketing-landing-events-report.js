@@ -43,8 +43,13 @@ export async function getMarketingLandingEventsReport(req, res) {
     setReportNoStore(res);
     const window = buildReportWindow(req.query?.days);
     const filters = parseReportFilters(req.query);
+    const excludeInternal =
+      String(req.query?.excludeInternal || "").trim() === "1";
     const report = buildLandingEventsReport(
-      loadOptionsForWindow(window),
+      {
+        ...loadOptionsForWindow(window),
+        excludeInternal,
+      },
       window,
       filters
     );

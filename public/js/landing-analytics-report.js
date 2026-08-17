@@ -135,6 +135,10 @@
     if (era.disabled) era.value = "all";
   }
 
+  function selectedExcludeInternal() {
+    return Boolean($("laExcludeInternal") && $("laExcludeInternal").checked);
+  }
+
   function reportQueryString() {
     var q =
       "days=" +
@@ -142,7 +146,9 @@
       "&version=" +
       encodeURIComponent(selectedVersion()) +
       "&lang=" +
-      encodeURIComponent(selectedLang());
+      encodeURIComponent(selectedLang()) +
+      "&excludeInternal=" +
+      (selectedExcludeInternal() ? "1" : "0");
     var cutover = selectedCutover();
     if (cutover) {
       q +=
@@ -160,6 +166,11 @@
       url.searchParams.set("days", String(selectedDays()));
       url.searchParams.set("version", String(selectedVersion()));
       url.searchParams.set("lang", String(selectedLang()));
+      if (selectedExcludeInternal()) {
+        url.searchParams.set("excludeInternal", "1");
+      } else {
+        url.searchParams.delete("excludeInternal");
+      }
       var cutover = selectedCutover();
       if (cutover) {
         url.searchParams.set("cutover", cutover);
@@ -208,6 +219,9 @@
       if (era && $("laEra")) {
         var eraOpt = $("laEra").querySelector('option[value="' + era + '"]');
         if (eraOpt) $("laEra").value = era;
+      }
+      if ($("laExcludeInternal")) {
+        $("laExcludeInternal").checked = params.get("excludeInternal") === "1";
       }
       syncEraEnabled();
     } catch (_e2) {}
@@ -446,6 +460,52 @@
         "</p>";
     }
     el.innerHTML = html;
+  }
+
+  function renderTrafficSegments(segments) {
+    var el = $("laTrafficSegments");
+    if (!el) return;
+    if (!segments) {
+      el.innerHTML = '<p class="empty">No segment data yet.</p>';
+      return;
+    }
+
+    var rows = [
+      {
+        label: "External Sessions",
+        value: segments.externalSessions || 0,
+      },
+      {
+        label: "Internal Sessions (" + (segments.internalLocationLabel || "Barcelona") + ")",
+        value: segments.internalSessions || 0,
+      },
+      {
+        label: "External Events",
+        value: segments.externalEvents || 0,
+      },
+      {
+        label: "Internal Events",
+        value: segments.internalEvents || 0,
+      },
+    ];
+
+    el.innerHTML =
+      rows
+        .map(function (row) {
+          return (
+            '<div class="segment-row"><span>' +
+            esc(row.label) +
+            '</span><span class="segment-row__value">' +
+            esc(row.value) +
+            "</span></div>"
+          );
+        })
+        .join("") +
+      '<p class="panel-sub" style="margin:10px 0 0;">' +
+      (segments.excludedInternal
+        ? "Internal traffic is excluded from charts and KPIs."
+        : "Toggle exclude to remove internal traffic from all charts and KPIs.") +
+      "</p>";
   }
 
   function renderHeroKpis(totals, funnel) {
@@ -790,9 +850,7 @@
       if (row.sessions > maxSessions) maxSessions = row.sessions;
     });
 
-    var html = '<div class="panel-split">';
-    html += "<div>";
-    html += '<div class="overview-metrics">';
+    var html = '<div class="overview-metrics">';
     html +=
       '<div class="overview-metric"><span class="overview-metric__value">' +
       esc(audience.totalSessions) +
@@ -803,12 +861,12 @@
       '</span><span class="overview-metric__label">Median session</span></div>';
     html += "</div>";
 
-    var w = 520;
-    var h = 168;
-    var pad = { l: 14, r: 14, t: 28, b: 36 };
+    var days = audience.days;
+    var w = Math.max(640, 48 + days.length * 36);
+    var h = 180;
+    var pad = { l: 16, r: 16, t: 30, b: 34 };
     var innerW = w - pad.l - pad.r;
     var innerH = h - pad.t - pad.b;
-    var days = audience.days;
     var points = days.map(function (row, i) {
       var x =
         pad.l +
@@ -880,27 +938,39 @@
         esc(p.label) +
         "</text>";
     });
-    html += "</svg></div>";
+    html += "</svg>";
 
-    html += "<div>";
     html +=
-      '<table class="dash-table line-chart__table" aria-label="Sessions by day data table">';
+      '<div class="date-matrix-wrap" style="--date-cols:' +
+      days.length +
+      '">';
     html +=
-      "<thead><tr><th>Day</th><th>Sessions</th><th>Median time</th></tr></thead><tbody>";
+      '<table class="date-matrix" aria-label="Sessions and median time by day">';
+    html += "<thead><tr><th>Metric</th>";
+    html += days
+      .map(function (row) {
+        return "<th>" + esc(row.label) + "</th>";
+      })
+      .join("");
+    html += "</tr></thead><tbody>";
+    html += "<tr><td>Sessions</td>";
+    html += days
+      .map(function (row) {
+        return "<td>" + esc(row.sessions) + "</td>";
+      })
+      .join("");
+    html += "</tr>";
+    html += '<tr><td>Median time</td>';
     html += days
       .map(function (row) {
         return (
-          "<tr><td>" +
-          esc(row.label) +
-          "</td><td>" +
-          esc(row.sessions) +
-          "</td><td>" +
+          '<td class="date-matrix__duration">' +
           esc(fmtDuration(row.medianDurationSeconds)) +
-          "</td></tr>"
+          "</td>"
         );
       })
       .join("");
-    html += "</tbody></table></div></div>";
+    html += "</tr></tbody></table></div>";
     el.innerHTML = html;
   }
 
@@ -918,7 +988,7 @@
       if (row.total > maxTotal) maxTotal = row.total;
     });
 
-    var colHeight = 110;
+    var colHeight = 140;
     var html =
       '<div class="stacked-chart" role="img" aria-label="Sessions by acquisition channel">';
     html += acquisition.days
@@ -963,6 +1033,35 @@
       .join("");
     html += "</div>";
     html += renderDashboardLegend(acquisition.totals || []);
+    if (acquisition.topReferrers && acquisition.topReferrers.length) {
+      var maxRef = acquisition.topReferrers[0].count || 1;
+      html +=
+        '<div style="margin-top:12px"><div class="panel-sub" style="margin:0 0 8px;">Where they came from</div>';
+      html += acquisition.topReferrers
+        .map(function (row) {
+          var width = Math.max(6, Math.round((row.count / maxRef) * 100));
+          return (
+            '<div class="barlist__row">' +
+            '<div class="barlist__meta">' +
+            '<span class="barlist__label">' +
+            esc(row.label) +
+            '</span><span class="barlist__count">' +
+            esc(row.count) +
+            "</span></div>" +
+            '<div class="barlist__track"><div class="barlist__bar" style="width:' +
+            width +
+            '%;background:#a78bfa"></div></div></div>'
+          );
+        })
+        .join("");
+      html += "</div>";
+    }
+    if (acquisition.note) {
+      html +=
+        '<p class="panel-sub" style="margin:10px 0 0;">' +
+        esc(acquisition.note) +
+        "</p>";
+    }
     el.innerHTML = html;
   }
 
@@ -1850,6 +1949,7 @@
       renderRecommendations(data.recommendations);
       renderLocaleCompare(data.localeCompare);
       renderHeroKpis(data.totals || {}, data.funnel);
+      renderTrafficSegments(data.trafficSegments);
       renderCompare(data.compare);
       renderDashboard(data.dashboard);
       renderInsightsHub(data.insightsHub);
@@ -1968,6 +2068,9 @@
   $("laDays").addEventListener("change", loadReport);
   if ($("laVersion")) $("laVersion").addEventListener("change", loadReport);
   if ($("laLang")) $("laLang").addEventListener("change", loadReport);
+  if ($("laExcludeInternal")) {
+    $("laExcludeInternal").addEventListener("change", loadReport);
+  }
   if ($("laCutover")) {
     $("laCutover").addEventListener("change", function () {
       syncEraEnabled();

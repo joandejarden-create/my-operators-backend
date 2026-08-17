@@ -1,0 +1,106 @@
+clearTimeout(loadTimer);
+  loadTimer=setTimeout(function(){
+    if(loadingEl&&loadingEl.classList.contains("is-on")){
+      setLoading(false);
+      setError(true);
+    }
+  },12000);
+  frame.onload=function(){
+    if(loadTimer){clearTimeout(loadTimer);loadTimer=null;}
+    setLoading(false);
+    setError(false);
+    try{hideEmbedChrome(frame.contentDocument);}catch(err){}
+  };
+  frame.onerror=function(){
+    if(loadTimer){clearTimeout(loadTimer);loadTimer=null;}
+    setLoading(false);
+    setError(true);
+  };
+  frame.src=url;
+  if(closeEl)closeEl.focus();
+}
+if(root){
+  root.addEventListener("click",function(e){
+    var a=e.target&&e.target.closest?e.target.closest("a[href]"):null;
+    if(!a||!root.contains(a))return;
+    var href=a.getAttribute("href")||"";
+    if(!isArticleUrl(href))return;
+    e.preventDefault();
+    var label="";
+    var card=a.closest("article");
+    if(card){
+      var t=card.querySelector("h3,h3 a,#ins-1-title,#ins-2-title");
+      if(t)label=(t.textContent||"").trim();
+    }
+    if(!label)label=(a.textContent||"").trim()||"Article";
+    openReader(a.href,label,{loadingText:"Loading article…"});
+  });
+}
+window.ohOpenOpportunityReview=function(url,label){
+  openReader(url,label||"Explore Your Hotel Opportunity",{loadingText:"Loading opportunity review…"});
+};
+if(ctaBtn){
+  ctaBtn.addEventListener("click",function(e){
+    var href=ctaBtn.getAttribute("href")||"https://www.dealality.com/opportunity-review";
+    if(!isOpportunityUrl(href)&&!/opportunity-review/i.test(href))return;
+    e.preventDefault();
+    var label=(document.getElementById("cta-band-btn-text")&&document.getElementById("cta-band-btn-text").textContent||ctaBtn.textContent||"Start an Opportunity Review").trim();
+    window.ohOpenOpportunityReview(ctaBtn.href||href,label);
+  });
+}
+if(fswBtn){
+  fswBtn.addEventListener("click",function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    var em=document.getElementById("fsw-email");
+    if(em&&typeof em.reportValidity==="function"&&!em.reportValidity())return;
+    var v=(em&&em.value||"").trim();
+    var url="https://www.dealality.com/opportunity-review";
+    if(v)url+="?email="+encodeURIComponent(v);
+    window.ohOpenOpportunityReview(url,"Explore Your Hotel Opportunity");
+  });
+}
+closeEl.addEventListener("click",function(e){e.preventDefault();closeReader();});
+modal.addEventListener("click",function(e){
+  if(e.target===modal)closeReader();
+});
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"&&modal.classList.contains("is-open")){
+    e.preventDefault();
+    closeReader();
+  }
+});
+if(dialog){
+  dialog.addEventListener("click",function(e){e.stopPropagation();});
+}
+})();</script>
+<script>(function(){
+var dot1=document.getElementById("modules-dot-1");
+var dot2=document.getElementById("modules-dot-2");
+var tab1=document.getElementById("modules-tab-outcomes");
+var tab2=document.getElementById("modules-tab-platform");
+var panel1=document.getElementById("modules-panel-outcomes");
+var panel2=document.getElementById("modules-panel-platform");
+if(!dot1||!dot2||!tab1||!tab2||!panel1||!panel2)return;
+function activate(which){
+  var is1=which===1;
+  dot1.classList.toggle("is-active",is1);
+  dot2.classList.toggle("is-active",!is1);
+  dot1.setAttribute("aria-selected",is1?"true":"false");
+  dot2.setAttribute("aria-selected",is1?"false":"true");
+  tab1.setAttribute("aria-selected",is1?"true":"false");
+  tab2.setAttribute("aria-selected",is1?"false":"true");
+  if(is1){panel1.removeAttribute("hidden");panel2.setAttribute("hidden","");}
+  else{panel2.removeAttribute("hidden");panel1.setAttribute("hidden","");}
+}
+dot1.addEventListener("click",function(){activate(1);});
+dot2.addEventListener("click",function(){activate(2);});
+tab1.addEventListener("click",function(){activate(1);});
+tab2.addEventListener("click",function(){activate(2);});
+})();</script>
+<script>(function(){
+var icons={
+"mod-1-icon":'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="16" stroke="#9B8AFB" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="20" cy="10" r="3" fill="#9B8AFB"/><circle cx="10" cy="26" r="3" fill="#9B8AFB" opacity=".6"/><circle cx="20" cy="26" r="3" fill="#9B8AFB" opacity=".6"/><circle cx="30" cy="26" r="3" fill="#9B8AFB" opacity=".6"/><path d="M20 13v5M14 24l4-4M26 24l-4-4" stroke="#9B8AFB" stroke-width="1.2" stroke-linecap="round"/></svg>',
+"mod-2-icon":'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="12" width="24" height="18" rx="3" stroke="#9B8AFB" stroke-width="1.5"/><path d="M8 18h24" stroke="#9B8AFB" stroke-width="1.2"/><rect x="12" y="22" width="7" height="4" rx="1" fill="#9B8AFB" opacity=".5"/><rect x="21" y="22" width="7" height="4" rx="1" fill="#9B8AFB" opacity=".5"/><path d="M16 9v4M24 9v4" stroke="#9B8AFB" stroke-width="1.5" stroke-linecap="round"/><circle cx="15.5" cy="15" r="1" fill="#9B8AFB"/><circle cx="20" cy="15" r="1" fill="#9B8AFB"/><circle cx="24.5" cy="15" r="1" fill="#9B8AFB"/></svg>',
+"mod-3-icon":'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="14" r="5" stroke="#9B8AFB" stroke-width="1.5"/><path d="M12 30c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#9B8AFB" stroke-width="1.5" stroke-linecap="round"/><circle cx="31" cy="14" r="3" stroke="#9B8AFB" stroke-width="1.2" opacity=".5"/><path d="M28 24c1.7-1.3 3.2-1.5 5-1" stroke="#9B8AFB" stroke-width="1.2" stroke-linecap="round" opacity=".5"/><circle cx="9" cy="14" r="3" stroke="#9B8AFB" stroke-width="1.2" opacity=".5"/><path d="M12 24c-1.7-1.3-3.2-1.5-5-1" stroke="#9B8AFB" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg>',
+"mod-4-icon":'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 28V14l10-5 10 5v14" stroke="#9B8AFB" stroke-width="1.5" stroke-li

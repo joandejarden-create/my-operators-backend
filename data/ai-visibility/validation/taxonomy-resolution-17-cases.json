@@ -1,0 +1,493 @@
+{
+  "TOTAL": 17,
+  "KEEP": 0,
+  "AMEND": 17,
+  "DEFER": 0,
+  "BY_TRANSITION": {
+    "first_recommendation => explicit_recommendation": 13,
+    "first_recommendation => associated_option": 3,
+    "ranked_recommendation => associated_option": 1
+  },
+  "cases": [
+    {
+      "CASE_ID": "v1_g007",
+      "ENTITY": "Curio Collection by Hilton",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "Curio Collection by Hilton is a strong alternative to Autograph Collection for conversions.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v1_g020",
+      "ENTITY": "Hotel Equities (CALA)",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "Hotel Equities CALA is a strong candidate for lifestyle operations.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v1_g023",
+      "ENTITY": "Aimbridge Hospitality (LATAM)",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "associated_option",
+      "ROOT_CAUSE": "FIRST_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "FULL_RELEVANT_CONTEXT": "## Operators to consider\n\n1. Aimbridge Hospitality (LATAM)\n2. GHL Operador\n",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": true,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": false,
+        "numberedOnly": true,
+        "sectionTypesNear": [
+          {
+            "type": "CONSIDERATION_SET_SECTION",
+            "title": "## Operators to consider"
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "associated_option",
+      "REASON": "RULE2+RULE3: consideration-set list; numbering alone is not meaningful ranking → associated_option",
+      "taxonomyRuleApplied": [
+        "RULE_2_CONSIDERATION_NOT_RANK",
+        "RULE_3_MEANINGFUL_ORDERING_REQUIRED"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v1_g024",
+      "ENTITY": "GHL Hoteles (GHL Holding)",
+      "CURRENT_HUMAN_LABEL": "ranked_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "associated_option",
+      "ROOT_CAUSE": "RANKED_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "FULL_RELEVANT_CONTEXT": "## Operators to consider\n\n1. Aimbridge Hospitality (LATAM)\n2. GHL Operador\n",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": true,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": false,
+        "numberedOnly": true,
+        "sectionTypesNear": [
+          {
+            "type": "CONSIDERATION_SET_SECTION",
+            "title": "## Operators to consider"
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "associated_option",
+      "REASON": "RULE2+RULE3: consideration-set list; numbering alone is not meaningful ranking → associated_option",
+      "taxonomyRuleApplied": [
+        "RULE_2_CONSIDERATION_NOT_RANK",
+        "RULE_3_MEANINGFUL_ORDERING_REQUIRED"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v1_g045",
+      "ENTITY": "Tribute Portfolio",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "associated_option",
+      "ROOT_CAUSE": "FIRST_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "FULL_RELEVANT_CONTEXT": "## Brands to consider\n\n1. Tribute Portfolio\n2. Curio Collection\n3. Autograph\n",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": true,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": false,
+        "numberedOnly": true,
+        "sectionTypesNear": [
+          {
+            "type": "CONSIDERATION_SET_SECTION",
+            "title": "## Brands to consider"
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "associated_option",
+      "REASON": "RULE2+RULE3: consideration-set list; numbering alone is not meaningful ranking → associated_option",
+      "taxonomyRuleApplied": [
+        "RULE_2_CONSIDERATION_NOT_RANK",
+        "RULE_3_MEANINGFUL_ORDERING_REQUIRED"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v1_g051",
+      "ENTITY": "GHL Hoteles (GHL Holding)",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "GHL Operador is particularly suitable for Andean multi-brand portfolios.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_238deb1e",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_23bdc61c",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_59e9c457",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_5a598dd",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_6995af8a",
+      "ENTITY": "Hotel Indigo",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "associated_option",
+      "ROOT_CAUSE": "FIRST_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+      "FULL_RELEVANT_CONTEXT": "For an owner positioning a hotel around **differentiated guest experience** and **local character**, the strongest lifestyle brands to consider are **Hotel Indigo**, **Canopy by Hilton**, **The Hoxton**, **The Standard**, **The Dean**, **Palisociety**, **Andaz**, **The Unbound Collection by Hyatt**, **Moxy**, **Kimpton**, **SLH**, and **Edition**.[2][6][8][14][16][18][20]\n\nThe clearest brand fits for *local, neighborhood-led positioning* ",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": true,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": false,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "CONSIDERATION_SET_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "associated_option",
+      "REASON": "RULE2+RULE3: consideration-set list; numbering alone is not meaningful ranking → associated_option",
+      "taxonomyRuleApplied": [
+        "RULE_2_CONSIDERATION_NOT_RANK",
+        "RULE_3_MEANINGFUL_ORDERING_REQUIRED"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_870c2d12",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_8d17c5dc",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_92fa427f",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_d988a97c",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_da6f4fb6",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_e598a5b",
+      "ENTITY": "Autograph Collection",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_CLASSIFIER_LABEL": "explicit_recommendation",
+      "ROOT_CAUSE": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+      "FULL_RELEVANT_CONTEXT": "For owners, Autograph Collection and Curio Collection by Hilton are strong options. 1. Autograph Collection 2. Kimpton Hotels 3. Design Hotels.",
+      "STRUCTURAL_CONTEXT": {
+        "inConsideration": false,
+        "hasLead": false,
+        "hasRankSem": false,
+        "hasDirectPositive": true,
+        "numberedOnly": false,
+        "sectionTypesNear": [
+          {
+            "type": "UNKNOWN_SECTION",
+            "title": ""
+          }
+        ]
+      },
+      "DECISION": "AMEND",
+      "FINAL_PROPOSED_ROLE": "explicit_recommendation",
+      "REASON": "RULE1: strong/explicit positive without separate lead/rank-1 evidence → explicit_recommendation",
+      "taxonomyRuleApplied": [
+        "RULE_1_POSITIVE_NOT_FIRST"
+      ],
+      "holdoutSplit": "development"
+    }
+  ]
+}

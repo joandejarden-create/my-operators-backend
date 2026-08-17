@@ -1,0 +1,10 @@
+const fs = require("fs");
+const html = fs.readFileSync("tmp-old-home.html", "utf8");
+const m = html.match(/Start with the role[\s\S]{0,200}/);
+console.log("hit", !!m, m && m[0].slice(0, 180));
+const f = html.match(/Dealality Method[\s\S]{0,160}/);
+console.log("method", f && f[0]);
+const ids = [...html.matchAll(/id="(pricing[^"]*)"/g)].map((x) => x[1]);
+console.log("pricing ids", Array.from(new Set(ids)).slice(0, 50));
+const idx = html.indexOf("footer-col");
+console.log("footer", html.slice(idx, idx + 2200));

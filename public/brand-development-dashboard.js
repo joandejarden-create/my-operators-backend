@@ -180,11 +180,13 @@ class BrandDevelopmentDashboard {
             .map(s => s.trim())
             .filter(Boolean);
         const preferredBrandName = preferredBrands[0] || '';
-        const matchScoresByBrand = rawDeal.matchScoresNewByBrand || rawDeal.matchScoresByBrand || {};
-        const matchBreakdownByBrand = rawDeal.matchBreakdownNewDetailsByBrand || rawDeal.matchBreakdownDetailsByBrand || rawDeal.matchBreakdownByBrand || {};
+        const matchScoresByBrand = rawDeal.matchScoresNewByBrand || {};
+        const matchBreakdownByBrand = rawDeal.matchBreakdownNewDetailsByBrand || {};
         const preferredBrandScore = preferredBrandName && matchScoresByBrand[preferredBrandName] != null
             ? Number(matchScoresByBrand[preferredBrandName])
-            : Number(rawDeal.matchScoreNew ?? rawDeal.matchScore ?? 0);
+            : (rawDeal.matchScoreNew != null && rawDeal.matchScoreNew !== ''
+                ? Number(rawDeal.matchScoreNew)
+                : (rawDeal.matchScore != null && rawDeal.matchScore !== '' ? Number(rawDeal.matchScore) : null));
         const scoreBreakdown = preferredBrandName && matchBreakdownByBrand[preferredBrandName]
             ? (matchBreakdownByBrand[preferredBrandName] || {})
             : {};
@@ -236,9 +238,9 @@ class BrandDevelopmentDashboard {
             marketPerformanceData: {},
             strategicIntentData: rawDeal.strategicIntentForm && typeof rawDeal.strategicIntentForm === 'object' ? { ...rawDeal.strategicIntentForm } : {},
             matchScoresByBrand,
-            matchScoresNewByBrand: rawDeal.matchScoresNewByBrand || rawDeal.matchScoresByBrand || {},
-            matchBreakdownNewDetailsByBrand: rawDeal.matchBreakdownNewDetailsByBrand || rawDeal.matchBreakdownDetailsByBrand || {},
-            matchBreakdownDetailsByBrand: rawDeal.matchBreakdownDetailsByBrand || {},
+            matchScoresNewByBrand: rawDeal.matchScoresNewByBrand || {},
+            matchBreakdownNewDetailsByBrand: rawDeal.matchBreakdownNewDetailsByBrand || {},
+            matchBreakdownDetailsByBrand: {},
             matchScoreNew: rawDeal.matchScoreNew != null && rawDeal.matchScoreNew !== '' ? Number(rawDeal.matchScoreNew) : null
         };
     }
@@ -304,7 +306,7 @@ class BrandDevelopmentDashboard {
         if (!deal || brand == null) return null;
         const b = String(brand).trim();
         if (!b || b === '—') return null;
-        const map = deal.matchScoresNewByBrand || deal.matchScoresByBrand || {};
+        const map = deal.matchScoresNewByBrand || {};
         if (map[b] != null && map[b] !== '') return Number(map[b]);
         const lower = b.toLowerCase();
         for (const key of Object.keys(map)) {
@@ -315,9 +317,17 @@ class BrandDevelopmentDashboard {
         return null;
     }
 
-    /** Score shown on workspace rows: deal↔target brand fit, then BDR snapshot, then deal default. */
+    /**
+     * Workspace row score: Contacted/BDR-backed rows use frozen score at request.
+     * New/uncontacted rows use live Match Score New for the target brand.
+     */
     _effectiveWorkspaceRowScore(row) {
         if (!row) return null;
+        if (row._requestId) {
+            if (row._requestMatchScore != null && row._requestMatchScore !== '' && !Number.isNaN(Number(row._requestMatchScore))) {
+                return Number(row._requestMatchScore);
+            }
+        }
         if (row._rowBrandMatchScore != null && row._rowBrandMatchScore !== '' && !Number.isNaN(Number(row._rowBrandMatchScore))) {
             return Number(row._rowBrandMatchScore);
         }
@@ -524,7 +534,7 @@ class BrandDevelopmentDashboard {
             const brandName = r.brandName || this.brandId || '';
             const st = (r.status || 'Accepted').trim();
             const base = deal ? { ...deal } : { id: r.dealId, propertyName: 'Deal ' + (r.dealId || '').slice(-6), rooms: 'N/A', chainScale: '—', projectType: '—', propertyType: '—', city: '', country: '', targetOpeningDate: '' };
-            return { ...base, status: st, _requestId: r.id, _requestMatchScore: r.matchScore, _contactedBrand: brandName };
+            return { ...base, status: st, _requestId: r.id, _requestMatchScore: r.matchScoreAtRequest != null ? r.matchScoreAtRequest : r.matchScore, _contactedBrand: brandName };
         });
 
         const declinedArchived = [
@@ -880,16 +890,20 @@ class BrandDevelopmentDashboard {
     }
 
     async calculateMatchScore(dealFields, locationData, brandNames, marketPerformanceData, strategicIntentData) {
-        // Note: This uses a simplified calculation. For production, integrate the full 
-        // calculation logic from production-brand-dashboard.js (calculateRealMatchScore method)
-        // which includes all the detailed subscore calculations (MKT1, MKT2, SEG1, etc.)
-        
-        if (!brandNames || brandNames === 'Not specified') {
+        // P3: client-side legacy 19-factor calculator retired. Use Match Score New via API.
+        console.warn('[BDD] calculateMatchScore retired — use GET /api/my-deals/:id/match-score-breakdown?brand=…');
+        return { score: null, breakdown: {}, retired: true };
+    }
+
+    async _retiredClientMatchScoreUnused(_dealFields, _locationData, _brandNames, _marketPerformanceData, _strategicIntentData) {
+        // Kept only so historical call sites that still reference helper names do not break module parse.
+        // Real scoring: fetchMatchScoreBreakdown / matchScoresNewByBrand.
+        if (!_brandNames || _brandNames === 'Not specified') {
             return { score: 0, breakdown: {} };
         }
         
         // Get brand data
-        const brandData = await this.getBrandData(brandNames);
+        const brandData = await this.getBrandData(_brandNames);
         if (!brandData) {
             return { score: 0, breakdown: {} };
         }
@@ -2313,7 +2327,7 @@ class BrandDevelopmentDashboard {
         const row = { ...base };
         row._requestId = req.id;
         row._requestStatus = req._requestStatus || req.status || 'New';
-        row._requestMatchScore = req.matchScore;
+        row._requestMatchScore = req.matchScoreAtRequest != null ? req.matchScoreAtRequest : req.matchScore;
         row._contactedBrand = req.brandName || '';
         row._bdr = req;
         row.ndaStatus = req.ndaStatus != null ? String(req.ndaStatus) : '';
@@ -3046,7 +3060,7 @@ class BrandDevelopmentDashboard {
                 this._bddSortTh('targetBrand', 'Target brand') +
                 this._bddSortTh('country', 'Country') +
                 this._bddSortTh('rooms', 'Rooms') +
-                this._bddSortTh('matchScore', 'Brand fit') +
+                this._bddSortTh('matchScore', 'Score at request') +
                 this._bddSortTh('stageLabel', 'Stage') +
                 this._bddSortTh('status', 'Status') +
                 this._bddSortTh('lastActivity', 'Last activity') +
@@ -3800,7 +3814,7 @@ class BrandDevelopmentDashboard {
         if (score >= 80) {
             let p = "With a score of " + score.toFixed(0) + ", your project aligns strongly with " + brandPhrase + " requirements across most factors. ";
             if (strongStr) p += "Your strongest areas are " + strongStr + "—these signal that your property, deal structure, and preferences line up well with what " + (brand || 'this brand') + " typically seeks. ";
-            p += "This is a promising match worth advancing: reach out with confidence and highlight how your project fits their criteria.";
+            p += "This is a strong alignment signal worth prioritizing for review—use the factor breakdown to prepare diligence questions and confirm remaining gaps before outreach.";
             return p;
         }
         if (score >= 50) {
@@ -3853,39 +3867,80 @@ class BrandDevelopmentDashboard {
                 return;
             }
 
-            const scoreNew = data.scoreNew != null ? data.scoreNew : null;
+            const scoreNew = data.scoreNew != null && data.scoreNew !== '' ? data.scoreNew : null;
+            const insufficientData = !!data.insufficientData;
+            const insufficientReason = data.insufficientDataReason || null;
             const details = data.breakdownNewDetails && typeof data.breakdownNewDetails === 'object' ? data.breakdownNewDetails : {};
+            const frozenAtRequest = deal._requestMatchScore != null && deal._requestMatchScore !== ''
+                ? Number(deal._requestMatchScore)
+                : null;
+            const hasFrozen = frozenAtRequest != null && !Number.isNaN(frozenAtRequest);
 
             const scoreDisplay = scoreNew != null ? Number(scoreNew).toFixed(1) : '—';
+            const frozenDisplay = hasFrozen ? Number(frozenAtRequest).toFixed(1) : null;
             const subTitle = ' for <span style="color: var(--accent--primary-1);">' + this.escapeHtml(brand) + '</span>';
             const colorNote = ' Score bands: <span style="color: var(--system--green-400);">80–100 = strong</span>, <span style="color: var(--system--orange-400);">50–79 = moderate</span>, <span style="color: var(--system--red-400);">25–49 = weak</span>, <span style="color: #6B2D2D;">0–24 = poor</span>.';
+            const liveIntro = insufficientData
+                ? 'This row does not publish a numeric Match Score yet because too little Brand Setup / deal data could be scored. Missing soft factors are excluded from the average. Complete Brand Setup and refresh.'
+                : 'This score compares what each brand is looking for with what your project offers. It averages only soft factors that have data on both sides, then adds a preferred-brand bonus when applicable. Hard mismatches set the overall score to 0.' + colorNote;
 
-            let html = '<div class="modal-section">' +
-                '<h3>Overall Match Score: <span style="color: var(--accent--primary-1);">' + scoreDisplay + '/100</span>' + subTitle + '</h3>' +
-                '<p style="color: var(--neutral--400); font-size: 14px; line-height: 1.5; margin: 10px 0 0 0;">This score compares what each brand is looking for with what your project offers. It weighs 12 factors across three areas: how well the project fits (size, type, amenities), whether the deal structure works (franchise vs management, fees, key money), and your preferences (brands you like, service level, incentives).' + colorNote + ' The breakdown below shows how each factor scored and why.</p></div>';
+            let html = '';
+            if (hasFrozen) {
+                html += '<div class="modal-section">' +
+                    '<h3>Score at request: <span style="color: var(--accent--primary-1);">' + frozenDisplay + '/100</span>' + subTitle + '</h3>' +
+                    '<p style="color: var(--neutral--400); font-size: 14px; line-height: 1.5; margin: 10px 0 0 0;">Frozen Brand Match Score stored when outreach was sent. It does not change if deal or brand inputs are updated later.' + colorNote + '</p></div>';
+                html += '<div class="modal-section">' +
+                    '<h3>Current live score: <span style="color: var(--accent--primary-1);">' + scoreDisplay + '/100</span>' + subTitle + '</h3>' +
+                    '<p style="color: var(--neutral--400); font-size: 14px; line-height: 1.5; margin: 10px 0 0 0;">Live alignment from today’s deal and brand setup. Factor breakdown below is current (live), not the snapshot at send. Ordered: gates, mismatches, missing data, then fit.</p></div>';
+            } else {
+                html += '<div class="modal-section">' +
+                    '<h3>Overall Match Score: <span style="color: var(--accent--primary-1);">' + scoreDisplay + '/100</span>' + subTitle + '</h3>' +
+                    '<p style="color: var(--neutral--400); font-size: 14px; line-height: 1.5; margin: 10px 0 0 0;">' + liveIntro + ' The breakdown below is ordered: gates, mismatches, missing data, then fit.</p></div>';
+            }
+
+            if (insufficientData) {
+                html += '<div class="modal-section" style="border: 1px solid var(--system--orange-400); border-radius: 8px; padding: 12px 14px;"><p style="margin: 0; color: var(--system--orange-400); font-size: 14px; line-height: 1.5;">' +
+                    this.escapeHtml(insufficientReason || 'Insufficient brand/deal data to publish a reliable Match Score.') +
+                    '</p></div>';
+            }
+
+            const gateReason = data.matchGateReason || data.keyMoneyGateReason || null;
+            if (gateReason) {
+                html += '<div class="modal-section" style="border: 1px solid var(--system--red-400); border-radius: 8px; padding: 12px 14px;"><p style="margin: 0; color: var(--system--red-400); font-size: 14px; line-height: 1.5;">' + this.escapeHtml(gateReason) + '</p></div>';
+            }
 
             if (details && Object.keys(details).length > 0) {
                 html += '<div class="modal-section"><h3>Quantitative Breakdown</h3><div class="match-score-breakdown">';
-                for (const factorKey of Object.keys(details)) {
-                    const d = details[factorKey];
-                    const label = (d && d.label) ? d.label : factorKey;
-                    const weight = (d && d.weight != null) ? d.weight : 0;
-                    const sc = (d && d.score != null && d.score !== '—') ? this.getBreakdownScoreClass(Number(d.score)) : 'low';
-                    const scorePct = (d && d.score != null && d.score !== '—') ? Math.min(100, Math.max(0, Number(d.score))) : 0;
-                    html += '<div class="score-category"><div class="score-category-label">' +
-                        '<div class="score-factor-heading">' + this.escapeHtml(label) + '</div>' +
-                        (weight ? '<div class="score-factor-weight">(Weight: ' + weight + '%)</div>' : '') +
-                        '</div>' +
-                        '<div class="score-category-value"><div class="score-bar"><div class="score-bar-fill ' + sc + '" style="width: ' + scorePct + '%"></div></div>' +
-                        '<span class="score-number">' + (d.score != null && d.score !== '—' ? d.score : '—') + '</span></div>';
-                    if (d.brandValue || d.dealValue || d.note) {
-                        html += '<div class="score-factor-details">' +
-                            '<div><strong style="color: var(--neutral--300);">Brand setup:</strong> ' + this.escapeHtml(d.brandValue || '—') + '</div>' +
-                            '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">Deal setup:</strong> ' + this.escapeHtml(d.dealValue || '—') + '</div>' +
-                            (d.note ? '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">How match works:</strong> ' + this.escapeHtml(d.note) + '</div>' : '') +
-                            '</div>';
+                if (typeof window !== 'undefined' && window.DealalityMatchScoreBreakdownUi && typeof window.DealalityMatchScoreBreakdownUi.renderGroupedBreakdownHtml === 'function') {
+                    html += window.DealalityMatchScoreBreakdownUi.renderGroupedBreakdownHtml(details, {
+                        escapeHtml: (s) => this.escapeHtml(s),
+                        getScoreClass: (n) => this.getBreakdownScoreClass(n),
+                        meta: details && details._meta ? details._meta : {},
+                    });
+                } else {
+                    for (const factorKey of Object.keys(details)) {
+                        if (factorKey === '_meta') continue;
+                        const d = details[factorKey];
+                        if (!d || typeof d !== 'object' || (!d.label && d.score == null && !d.brandValue)) continue;
+                        const label = (d && d.label) ? d.label : factorKey;
+                        const weight = (d && d.weight != null) ? d.weight : 0;
+                        const sc = (d && d.score != null && d.score !== '—') ? this.getBreakdownScoreClass(Number(d.score)) : 'low';
+                        const scorePct = (d && d.score != null && d.score !== '—') ? Math.min(100, Math.max(0, Number(d.score))) : 0;
+                        html += '<div class="score-category"><div class="score-category-label">' +
+                            '<div class="score-factor-heading">' + this.escapeHtml(label) + '</div>' +
+                            (weight ? '<div class="score-factor-weight">(Weight: ' + weight + '%)</div>' : '') +
+                            '</div>' +
+                            '<div class="score-category-value"><div class="score-bar"><div class="score-bar-fill ' + sc + '" style="width: ' + scorePct + '%"></div></div>' +
+                            '<span class="score-number">' + (d.score != null && d.score !== '—' ? d.score : '—') + '</span></div>';
+                        if (d.brandValue || d.dealValue || d.note) {
+                            html += '<div class="score-factor-details">' +
+                                '<div><strong style="color: var(--neutral--300);">Brand setup:</strong> ' + this.escapeHtml(d.brandValue || '—') + '</div>' +
+                                '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">Deal setup:</strong> ' + this.escapeHtml(d.dealValue || '—') + '</div>' +
+                                (d.note ? '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">How match works:</strong> ' + this.escapeHtml(d.note) + '</div>' : '') +
+                                '</div>';
+                        }
+                        html += '</div>';
                     }
-                    html += '</div>';
                 }
                 html += '</div></div>';
             } else {
@@ -6178,18 +6233,17 @@ class BrandDevelopmentDashboard {
                 try {
                     const oldScore = deal.matchScore;
                     const map1 = deal.matchScoresNewByBrand || {};
-                    const map2 = deal.matchScoresByBrand || {};
                     const precomputedScore = Object.prototype.hasOwnProperty.call(map1, this.brandId)
                         ? Number(map1[this.brandId])
-                        : (Object.prototype.hasOwnProperty.call(map2, this.brandId) ? Number(map2[this.brandId]) : null);
-                    const precomputedBreakdownMap = deal.matchBreakdownNewDetailsByBrand || deal.matchBreakdownDetailsByBrand || {};
+                        : null;
+                    const precomputedBreakdownMap = deal.matchBreakdownNewDetailsByBrand || {};
 
                     if (precomputedScore != null && !Number.isNaN(precomputedScore)) {
                         deal.matchScore = precomputedScore;
                         deal.scoreBreakdown = precomputedBreakdownMap[this.brandId] || {};
                     } else {
                         const backendBreakdown = await this.fetchMatchScoreBreakdown(deal.id, this.brandId);
-                        deal.matchScore = backendBreakdown?.score ?? 0;
+                        deal.matchScore = backendBreakdown?.score ?? null;
                         deal.scoreBreakdown = backendBreakdown?.breakdown ?? {};
                     }
                     processed++;
@@ -6520,8 +6574,8 @@ class BrandDevelopmentDashboard {
         `;
 
         try {
-            const scoreMap = deal.matchScoresNewByBrand || deal.matchScoresByBrand || {};
-            const breakdownMap = deal.matchBreakdownNewDetailsByBrand || deal.matchBreakdownDetailsByBrand || {};
+            const scoreMap = deal.matchScoresNewByBrand || {};
+            const breakdownMap = deal.matchBreakdownNewDetailsByBrand || {};
 
             const preferredFromMap = Object.prototype.hasOwnProperty.call(scoreMap, preferredBrandName)
                 ? Number(scoreMap[preferredBrandName]) : null;
@@ -6558,7 +6612,7 @@ class BrandDevelopmentDashboard {
                 MKT1: 'Market Presence',
                 MKT2: 'Brand Recognition',
                 SEG1: 'Segment Alignment',
-                SVC1: 'Service Level',
+                SVC1: 'Service / Operating Model',
                 SIZE1: 'Property Size',
                 OWN1: 'Ownership Fit',
                 STR1: 'Strategic Alignment',
@@ -6619,7 +6673,7 @@ class BrandDevelopmentDashboard {
                                     </span>
                                 </div>
                                 <div class="comparison-metric">
-                                    <span class="comparison-metric-label">Service Level</span>
+                                    <span class="comparison-metric-label">Service / Operating Model</span>
                                     <span class="comparison-metric-value">
                                         ${preferredBrandData.brandBasics?.['Service Level'] || 'N/A'}
                                     </span>
@@ -6668,7 +6722,7 @@ class BrandDevelopmentDashboard {
                                     </span>
                                 </div>
                                 <div class="comparison-metric">
-                                    <span class="comparison-metric-label">Service Level</span>
+                                    <span class="comparison-metric-label">Service / Operating Model</span>
                                     <span class="comparison-metric-value">
                                         ${alternativeBrandData.brandBasics?.['Service Level'] || 'N/A'}
                                     </span>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Brand Explorer — Choice Hotels Preview</title>
+  <link rel="stylesheet" href="/css/brand-explorer-share-shell.css" />
+</head>
+<body>
+  <div class="bes-page">
+    <p class="bes-draft-banner" id="besDraftBanner" hidden>
+      <strong>Working draft.</strong>
+      This Brand Explorer pack is shared for review. Content may include preliminary research and should be validated before broader use.
+    </p>
+    <div class="bes-toolbar" id="besToolbar">
+      <div>
+        <h1 class="bes-toolbar__title" id="besTitle">Brand Explorer</h1>
+        <p class="bes-toolbar__meta" id="besMeta">Shared preview</p>
+      </div>
+      <a class="bes-back" id="besBack" href="#" hidden>← Back to brand pack</a>
+    </div>
+    <div class="bes-panel" id="besPanel">
+      <div class="bes-loading" id="besLoading" role="status" aria-live="polite">
+        Loading Brand Explorer…
+      </div>
+      <iframe
+        class="bes-frame"
+        id="besFrame"
+        title="Brand Explorer share pack"
+        src="about:blank"
+      ></iframe>
+    </div>
+  </div>
+  <script>
+  (function () {
+    "use strict";
+
+    /**
+     * Registered share packs. parentCompany must match Brand Basics "Parent Company"
+     * exactly (same string used by /api/brand-library/brands filter options).
+     */
+    var SHARE_PACKS = {
+      choice: {
+        key: "choice",
+        label: "Choice Hotels International",
+        parentCompany: "Choice Hotels International",
+        title: "Brand Explorer — Choice Hotels",
+        metaList: "Shared Choice brand pack · no login required",
+        metaDetail: "Shared Choice brand profile · no login required"
+      },
+      ihg: {
+        key: "ihg",
+        label: "InterContinental Hotels Group",
+        parentCompany: "InterContinental Hotels Group",
+        title: "Brand Explorer — IHG",
+        metaList: "Shared IHG brand pack · no login required",
+        metaDetail: "Shared IHG brand profile · no login required"
+      }
+    };
+
+    var DEFAULT_PACK = "choice";
+
+    var params = new URLSearchParams(window.location.search || "");
+    var packKey = String(params.get("pack") || DEFAULT_PACK)
+      .trim()
+      .toLowerCase();
+    var pack = SHARE_PACKS[packKey] || SHARE_PACKS[DEFAULT_PACK];
+    var brandId = (
+      params.get("id") ||
+      params.get("brandId") ||
+      params.get("brand") ||
+      ""
+    ).trim();
+    var showDraftBanner =
+      params.get("draft") !== "0" && params.get("draft") !== "false";
+    var isDetail = brandId.indexOf("rec") === 0;
+
+    var loading = document.getElementById("besLoading");
+    var frame = document.getElementById("besFrame");
+    var panel = document.getElementById("besPanel");
+    var draftBanner = document.getElementById("besDraftBanner");
+    var titleEl = document.getElementById("besTitle");
+    var metaEl = document.getElementById("besMeta");
+    var backEl = document.getElementById("besBack");
+    var popupToken =
+      Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+
+    function escapeHtml(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function showError(title, message) {
+      if (!loading) return;
+      loading.hidden = false;
+      loading.classList.add("is-error");
+      loading.innerHTML =
+        "<div><h2>" +
+        escapeHtml(title || "Preview unavailable") +
+        "</h2><p>" +
+        String(message || "") +
+        "</p></div>";
+      if (frame) frame.style.display = "none";
+    }
+
+    function markFrameReady() {
+      if (frame) frame.classList.add("is-ready");
+      if (loading) loading.hidden = true;
+    }
+
+    function buildListUrl() {
+      var q = new URLSearchParams();
+      q.set("embed", "1");
+      q.set("share", "1");
+      q.set("sharePack", pack.key);
+      q.set("parentCompany", pack.parentCompany);
+      q.set("popupToken", popupToken);
+      return "/brand-explorer-combined.html?" + q.toString();
+    }
+
+    function buildDetailUrl() {
+      var q = new URLSearchParams();
+      q.set("id", brandId);
+      q.set("embed", "1");
+      q.set("popupToken", popupToken);
+      return "/brand-explorer-gold-mock.html?" + q.toString();
+    }
+
+    function packListHref() {
+      var q = new URLSearchParams();
+      q.set("pack", pack.key);
+      if (!showDraftBanner) q.set("draft", "0");
+      return "/brand-explorer-share.html?" + q.toString();
+    }
+
+    function detailHref(id) {
+      var q = new URLSearchParams();
+      q.set("pack", pack.key);
+      q.set("id", id);
+      if (!showDraftBanner) q.set("draft", "0");
+      return "/brand-explorer-share.html?" + q.toString();
+    }
+
+    function applyChrome() {
+      document.title = isDetail
+        ? pack.title + " — Profile"
+        : pack.title + " — Preview";
+      if (titleEl) titleEl.textContent = pack.title;
+      if (metaEl) {
+        metaEl.textContent = isDetail ? pack.metaDetail : pack.metaList;
+      }
+      if (backEl) {
+        if (isDetail) {
+          backEl.hidden = false;
+          backEl.href = packListHref();
+        } else {
+          backEl.hidden = true;
+        }
+      }
+      if (panel) {
+        if (isDetail) panel.classList.remove("is-list");
+        else panel.classList.add("is-list");
+      }
+      if (draftBanner && showDraftBanner) {
+        draftBanner.hidden = false;
+      }
+    }
+
+    async function assertBundleAvailable() {
+      var path = isDetail
+        ? "/brand-explorer-gold-mock.html"
+        : "/brand-explorer-combined.html";
+      var res = await fetch(path, { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error(
+          "Brand Explorer " +
+            (isDetail ? "profile" : "list") +
+            " page is not available on this host."
+        );
+      }
+    }
+
+    function mount() {
+      if (!frame) return;
+      frame.classList.remove("is-ready");
+      if (loading) {
+        loading.hidden = false;
+        loading.classList.remove("is-error");
+        loading.textContent = isDetail
+          ? "Loading Brand Profile…"
+          : "Loading " + pack.label + " brand pack…";
+      }
+      // Safety: if child never posts ready (older deploy), still reveal after load.
+      frame.addEventListener("load", function () {
+        setTimeout(function () {
+          if (!loading || loading.hidden) return;
+          if (loading.classList.contains("is-error")) return;
+          markFrameReady();
+        }, 2500);
+      });
+      frame.src = isDetail ? buildDetailUrl() : buildListUrl();
+    }
+
+    window.addEventListener("message", function (event) {
+      if (!event || event.origin !== window.location.origin) return;
+      var data = event.data || {};
+
+      if (data.type === "brand-explorer-share-open" && data.brandId) {
+        if (data.popupToken && data.popupToken !== popupToken) return;
+        window.location.href = detailHref(String(data.brandId));
+        return;
+      }
+
+      if (data.type === "brand-explorer-share-list-ready") {
+        if (data.popupToken && data.popupToken !== popupToken) return;
+        if (isDetail) return;
+        if (data.ok === false) {
+          showError(
+            "Brand pack unavailable",
+            data.message ||
+              "Could not load brands for " +
+                escapeHtml(pack.parentCompany) +
+                "."
+          );
+          return;
+        }
+        markFrameReady();
+        if (metaEl && typeof data.count === "number") {
+          metaEl.textContent =
+            pack.metaList +
+            " · " +
+            data.count +
+            " brand" +
+            (data.count === 1 ? "" : "s");
+        }
+        return;
+      }
+
+      if (data.type === "brand-gold-mock-ready") {
+        if (data.popupToken && data.popupToken !== popupToken) return;
+        if (!isDetail) return;
+        if (data.live === false) {
+          showError(
+            "Live profile unavailable",
+            "Brand profile data did not load. Confirm brand id " +
+              escapeHtml(brandId) +
+              " exists on this environment."
+          );
+          return;
+        }
+        markFrameReady();
+      }
+    });
+
+    (async function init() {
+      if (!pack) {
+        showError(
+          "Unknown share pack",
+          "Use <code>?pack=choice</code> or <code>?pack=ihg</code>."
+        );
+        return;
+      }
+      if (brandId && brandId.indexOf("rec") !== 0) {
+        showError(
+          "Invalid brand link",
+          "Add a valid brand record id, for example <code>?id=recCKuXCmGvxHPfb3&amp;pack=ihg</code>."
+        );
+        return;
+      }
+
+      applyChrome();
+
+      try {
+        await assertBundleAvailable();
+        mount();
+      } catch (err) {
+        showError(
+          "Preview not ready",
+          err && err.message ? err.message : String(err)
+        );
+      }
+    })();
+  })();
+  </script>
+</body>
+</html>

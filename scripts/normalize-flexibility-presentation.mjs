@@ -14,9 +14,8 @@ import "../load-env.js";
 import Airtable from "airtable";
 import {
   FLEXIBILITY_SLOT_KEYS,
-  coerceToCanonicalFlexLevel,
   flexEditorialSupplement,
-  flexLevelForSlot,
+  inferFlexSegmentForBrand,
   normalizeFlexSlotBody,
 } from "../lib/brand-explorer-flexibility-levels.mjs";
 import { TIER1_BRANDS } from "./lib/choice-tier1-explorer-profiles.mjs";
@@ -35,6 +34,8 @@ const SEGMENT_OVERRIDES = new Map([
   ["radisson (choice)", "upscale"],
   ["radisson blu (choice)", "upscale"],
   ["radisson blu", "upscale"],
+  ["kimpton hotels", "softCollection"],
+  ["kimpton", "softCollection"],
 ]);
 
 function parseArgs() {
@@ -60,13 +61,7 @@ function segmentForBrand(brandName) {
     if (s === "economy" || s === "extendedStay" || s === "upscale" || s === "softCollection") return s;
     return "midscale";
   }
-  if (key.includes("ascend") || key.includes("individual")) return "softCollection";
-  if (key.includes("red") || key.includes("blu") || key.includes("park inn") || key.includes("country inn"))
-    return "upscale";
-  if (key.includes("cambria")) return "upscale";
-  if (key.includes("econo") || key.includes("rodeway")) return "economy";
-  if (key.includes("mainstay") || key.includes("everhome") || key.includes("suburban")) return "extendedStay";
-  return "midscale";
+  return inferFlexSegmentForBrand(brandName);
 }
 
 function profileForBrand(brandName) {
@@ -110,9 +105,12 @@ function normalizeRows(rows, brandName) {
   }
 
   const supplement = flexEditorialSupplement(profile);
-  const needsPhilosophyBlock = !philosophy || !String(philosophy.body ?? philosophy.Body ?? "").includes(
-    "Flexibility indicators on"
-  );
+  const philosophyBody = String(philosophy?.body ?? philosophy?.Body ?? "");
+  // Avoid re-appending when prior normalize already wrote the detail block.
+  const needsPhilosophyBlock =
+    !philosophy ||
+    (!philosophyBody.includes("Flexibility indicators on") &&
+      !philosophyBody.includes("Design flexibility (detail):"));
 
   if (philosophy) {
     let body = String(philosophy.body ?? philosophy.Body ?? "").trim();

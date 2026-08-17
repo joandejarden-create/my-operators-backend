@@ -1,0 +1,159 @@
+{
+  "version": "census-dr-state-region-backfill-v1",
+  "map_version": "dr-city-to-province-v2",
+  "status": "applied",
+  "generated_at": "2026-08-07T11:20:43.568Z",
+  "scope": "osm_intake_only",
+  "overwrite_existing": false,
+  "apply_executed": true,
+  "airtable_writes": true,
+  "legacy_hotel_census_used": false,
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "input_count": 174,
+  "proposal_count": 6,
+  "steward_count": 2,
+  "skipped_count": 166,
+  "patched_count": 6,
+  "patched_record_ids": [
+    "recFT63Mw6DOL8LWo",
+    "recILJRLLHTZMqQyk",
+    "recL6BP5Nry222uwu",
+    "recQ1KXPNkrde3N9U",
+    "recUHUP1Xw61iYV5r",
+    "recebn4aVyrF12JZK"
+  ],
+  "errors": [],
+  "proposals": [
+    {
+      "record_id": "recFT63Mw6DOL8LWo",
+      "property_name": "Hotel RIU Merengue",
+      "identity_key": "osm_do_node_354627440",
+      "city_before": "Maimón",
+      "state_before": null,
+      "state_after": "Puerto Plata",
+      "city_after": "Maimón",
+      "reason": "city_to_province_map",
+      "confidence": "High",
+      "osm_intake": true,
+      "patch": {
+        "State / Region": "Puerto Plata"
+      }
+    },
+    {
+      "record_id": "recILJRLLHTZMqQyk",
+      "property_name": "Iberostar Hacienda Dominicus",
+      "identity_key": "osm_do_way_323830323",
+      "city_before": "Higüey",
+      "state_before": null,
+      "state_after": "La Altagracia",
+      "city_after": "Higüey",
+      "reason": "city_to_province_map",
+      "confidence": "High",
+      "osm_intake": true,
+      "patch": {
+        "State / Region": "La Altagracia"
+      }
+    },
+    {
+      "record_id": "recL6BP5Nry222uwu",
+      "property_name": "Hotel RIU Mambo",
+      "identity_key": "osm_do_node_349129742",
+      "city_before": "Maimón",
+      "state_before": null,
+      "state_after": "Puerto Plata",
+      "city_after": "Maimón",
+      "reason": "city_to_province_map",
+      "confidence": "High",
+      "osm_intake": true,
+      "patch": {
+        "State / Region": "Puerto Plata"
+      }
+    },
+    {
+      "record_id": "recQ1KXPNkrde3N9U",
+      "property_name": "Hotel RIU Bachata",
+      "identity_key": "osm_do_node_354627549",
+      "city_before": "Maimón",
+      "state_before": null,
+      "state_after": "Puerto Plata",
+      "city_after": "Maimón",
+      "reason": "city_to_province_map",
+      "confidence": "High",
+      "osm_intake": true,
+      "patch": {
+        "State / Region": "Puerto Plata"
+      }
+    },
+    {
+      "record_id": "recUHUP1Xw61iYV5r",
+      "property_name": "Iberostar Waves Costa Dorada",
+      "identity_key": "osm_do_way_136390467",
+      "city_before": "Marapica",
+      "state_before": null,
+      "state_after": "Puerto Plata",
+      "city_after": "Marapica",
+      "reason": "city_to_province_map",
+      "confidence": "High",
+      "osm_intake": true,
+      "patch": {
+        "State / Region": "Puerto Plata"
+      }
+    },
+    {
+      "record_id": "recebn4aVyrF12JZK",
+      "property_name": "Dreams Dominicus La Romana",
+      "identity_key": "osm_do_way_540475898",
+      "city_before": "Bahahibe",
+      "state_before": null,
+      "state_after": "La Romana",
+      "city_after": "Bahahibe",
+      "reason": "city_to_province_map",
+      "confidence": "High",
+      "osm_intake": true,
+      "patch": {
+        "State / Region": "La Romana"
+      }
+    }
+  ],
+  "steward_sample": [
+    {
+      "record_id": "recUbyoBfFBrCY1Gc",
+      "property_name": "Breathless Resort",
+      "identity_key": "osm_do_node_3287789561",
+      "city": "Playas",
+      "reason": "city_not_in_high_confidence_map",
+      "osm_intake": true
+    },
+    {
+      "record_id": "recvkqoeciYzLbpkQ",
+      "property_name": "Villa Ibiscus",
+      "identity_key": "osm_do_node_4419741355",
+      "city": "",
+      "reason": "city_blank",
+      "osm_intake": true
+    }
+  ],
+  "steward": [
+    {
+      "record_id": "recUbyoBfFBrCY1Gc",
+      "property_name": "Breathless Resort",
+      "identity_key": "osm_do_node_3287789561",
+      "city": "Playas",
+      "reason": "city_not_in_high_confidence_map",
+      "osm_intake": true
+    },
+    {
+      "record_id": "recvkqoeciYzLbpkQ",
+      "property_name": "Villa Ibiscus",
+      "identity_key": "osm_do_node_4419741355",
+      "city": "",
+      "reason": "city_blank",
+      "osm_intake": true
+    }
+  ],
+  "note": "DR State / Region High-confidence backfill applied"
+}

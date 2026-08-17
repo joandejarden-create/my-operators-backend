@@ -4,7 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operator Setup — Dealality</title>
+    <link rel="stylesheet" href="css/operator-leadership-team-sections.css?v=oe-setup-leadership-profile-20260530">
+    <link rel="stylesheet" href="css/operator-leadership-platform-setup.css?v=oe-leadership-platform-20260530">
+    <link rel="stylesheet" href="css/operator-infrastructure-platform-setup.css?v=oe-infra-platform-20260602">
+    <link rel="stylesheet" href="css/operator-engagement-reporting-setup.css?v=oe-engagement-reporting-20260603">
+    <link rel="stylesheet" href="css/operator-operating-platform-setup.css?v=oe-operating-platform-20260603">
+    <link rel="stylesheet" href="css/operator-brand-relationships-setup.css?v=oe-brand-relationships-20260603">
     <style>
+        #operatorIntakeForm.operator-setup-prefill-loading .form-section,
+        #operatorIntakeForm.operator-setup-prefill-loading .form-navigation {
+            opacity: 0.65;
+        }
+        /* Tab bar stays clickable while sections load */
+        #operatorIntakeForm.operator-setup-prefill-loading .section-nav,
+        #operatorIntakeForm .section-nav {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        .operator-setup-prefill-banner {
+            display: none;
+            margin: 0 0 12px 0;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: rgba(108, 114, 255, 0.12);
+            border: 0.6px solid rgba(108, 114, 255, 0.35);
+            color: var(--neutral--200);
+            font-size: 13px;
+        }
+        .operator-setup-prefill-banner.is-visible {
+            display: block;
+        }
         /* CSS Variables - Matching Clause Library styling */
         :root {
           --neutral--800: #080f25;
@@ -1215,6 +1244,138 @@
             margin-top: 0;
         }
 
+        /* Executive repeater — compact 4-column layout (always visible) */
+        .repeater[data-repeater="executives"] .executives-repeater-row,
+        .repeater[data-repeater="executives"] .repeater-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px 12px;
+            padding: 12px 14px 10px;
+            margin-bottom: 12px;
+        }
+        .repeater[data-repeater="executives"] .repeater-row > .btn-remove-row {
+            grid-column: 4;
+            grid-row: 1;
+            justify-self: end;
+            align-self: start;
+            margin: 0;
+            padding: 6px 10px;
+            font-size: 12px;
+            min-height: 30px;
+        }
+        .repeater[data-repeater="executives"] .repeater-row > h4 {
+            grid-column: 1 / 4;
+            grid-row: 1;
+            margin: 0 0 4px;
+            align-self: center;
+        }
+        .repeater[data-repeater="executives"] .repeater-row > .field-wrap {
+            gap: 4px;
+            min-width: 0;
+        }
+        .repeater[data-repeater="executives"] .repeater-row > .field-wrap .form-label.label-spacing {
+            margin-bottom: 0;
+        }
+        .repeater[data-repeater="executives"] .repeater-row > .field-wrap .help-text {
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(1) { grid-column: 1; }
+        .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(2) { grid-column: 2; }
+        .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(3) { grid-column: 3; }
+        .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(4) { grid-column: 1 / 3; }
+        .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(5) { grid-column: 3 / 5; }
+        .repeater[data-repeater="executives"] .exec-compact-textarea,
+        .repeater[data-repeater="executives"] .repeater-row textarea.explorer-story-field {
+            min-height: 52px;
+            max-height: 88px;
+            padding: 8px 10px;
+            font-size: 13px;
+            line-height: 1.35;
+        }
+        .repeater[data-repeater="executives"] .repeater-row .explorer-char-count {
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        .repeater[data-repeater="executives"] .exec-profile-detail {
+            grid-column: 1 / -1;
+            margin: 4px 0 0;
+            padding: 10px 0 0;
+            border-top: 1px dashed rgba(108, 114, 255, 0.35);
+        }
+        .repeater[data-repeater="executives"] .exec-profile-detail__title {
+            margin: 0 0 6px;
+        }
+        .repeater[data-repeater="executives"] .exec-profile-detail__grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px 10px;
+        }
+        .repeater[data-repeater="executives"] .exec-profile-detail__span-2 {
+            grid-column: span 2;
+        }
+        .repeater[data-repeater="executives"] .exec-profile-multiselect {
+            min-height: 56px;
+            max-height: 72px;
+            padding: 4px 6px;
+            font-size: 12px;
+        }
+        .repeater[data-repeater="executives"] .exec-profile-detail .help-text {
+            display: none;
+        }
+        .repeater[data-repeater="executives"] .exec-headshot-section {
+            grid-column: 1 / -1;
+            margin-top: 4px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(108, 114, 255, 0.25);
+        }
+        .repeater[data-repeater="executives"] .exec-headshot-section .project-fit-subheader {
+            margin: 0 0 6px;
+        }
+        .repeater[data-repeater="executives"] .exec-headshot-section .case-study-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
+        .repeater[data-repeater="executives"] .exec-headshot-section .form-group:first-child {
+            grid-column: 1 / 3;
+        }
+        .repeater[data-repeater="executives"] .exec-headshot-section .form-group:last-child {
+            grid-column: 3 / 5;
+        }
+        @media (max-width: 1100px) {
+            .repeater[data-repeater="executives"] .repeater-row,
+            .repeater[data-repeater="executives"] .exec-profile-detail__grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .repeater[data-repeater="executives"] .repeater-row > h4 { grid-column: 1 / -1; }
+            .repeater[data-repeater="executives"] .repeater-row > .btn-remove-row { grid-column: 2; }
+            .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(n) { grid-column: auto; }
+            .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(4),
+            .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(5) { grid-column: 1 / -1; }
+            .repeater[data-repeater="executives"] .exec-profile-detail__span-2 { grid-column: 1 / -1; }
+            .repeater[data-repeater="executives"] .exec-headshot-section .case-study-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .repeater[data-repeater="executives"] .exec-headshot-section .form-group:first-child,
+            .repeater[data-repeater="executives"] .exec-headshot-section .form-group:last-child {
+                grid-column: auto;
+            }
+        }
+        @media (max-width: 600px) {
+            .repeater[data-repeater="executives"] .repeater-row,
+            .repeater[data-repeater="executives"] .exec-profile-detail__grid,
+            .repeater[data-repeater="executives"] .exec-headshot-section .case-study-grid {
+                grid-template-columns: 1fr;
+            }
+            .repeater[data-repeater="executives"] .repeater-row > .field-wrap:nth-of-type(n),
+            .repeater[data-repeater="executives"] .exec-profile-detail__span-2,
+            .repeater[data-repeater="executives"] .exec-headshot-section .form-group:first-child,
+            .repeater[data-repeater="executives"] .exec-headshot-section .form-group:last-child {
+                grid-column: 1 / -1;
+            }
+        }
+
         /* Executive repeater (Leadership / Gold) — same compact subheader as case study rows */
         .repeater-row .project-fit-subheader.case-study-row-subheader {
             font-size: 13px;
@@ -1228,6 +1389,30 @@
         .repeater-row .exec-headshot-section {
             margin-top: 16px;
             padding-top: 4px;
+        }
+
+        /* Executive profile detail — Explorer card structured fields */
+        .exec-profile-detail {
+            margin: 16px 0 8px;
+            padding: 16px 0 0;
+            border-top: 1px dashed rgba(108, 114, 255, 0.45);
+        }
+        .exec-profile-detail__grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .exec-profile-detail__full {
+            grid-column: 1 / -1;
+        }
+        .exec-profile-multiselect {
+            min-height: 88px;
+        }
+        @media (max-width: 960px) {
+            .exec-profile-detail__grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Reduce spacing between subheader and first label in Ideal Projects tab */
@@ -2471,6 +2656,7 @@
                 <!-- Intake Form (consolidated) — section nav first (same as production intake) so tabs stay at the top on every step including Operator Basics -->
                 <form class="intake-form" id="operatorIntakeForm" novalidate>
                     <input type="hidden" name="keyLeadership" id="keyLeadershipHidden" value="" autocomplete="off">
+                    <div class="operator-setup-prefill-banner" id="operatorSetupPrefillBanner" role="status" aria-live="polite">Loading operator data…</div>
                     <div class="section-nav" id="sectionNav" aria-label="Operator setup sections">
 
                     <div class="section-nav-item active" data-section="0" aria-current="true" role="button" tabindex="0">
@@ -2555,7 +2741,7 @@
                                     <span class="required">*</span>
                                     <span class="help-text">Legal name of your hotel management company</span>
                                 </label>
-                                <input type="text" class="form-input" id="companyName" name="companyName" required placeholder="Enter company name" value="Altura Hospitality Group">
+                                <input type="text" class="form-input" id="companyName" name="companyName" required placeholder="Enter company name" value="">
 
                                 <label class="form-label label-spacing">
                                     Company Description
@@ -3062,7 +3248,7 @@
       Operating Model<span class="required">*</span>
       <span class="help-text">How you position the company today. Use N/A only if you do not track or publish this.</span>
     </label>
-    <select class="form-select form-select--single" name="cap_kpi_operating_model" id="cap_kpi_operating_model" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Hybrid Platform" selected>Hybrid Platform</option><option value="Full-Service Institutional Operator">Full-Service Institutional Operator</option><option value="Select- and Limited-Service Focus">Select- and Limited-Service Focus</option><option value="Resort and Lifestyle Specialist">Resort and Lifestyle Specialist</option><option value="Urban and Gateway Market Focus">Urban and Gateway Market Focus</option><option value="Mixed Branded and Independent Portfolio">Mixed Branded and Independent Portfolio</option><option value="Conversion and Transition Specialist">Conversion and Transition Specialist</option><option value="Regional Hub with Local Pods">Regional Hub with Local Pods</option><option value="Owner-Aligned Partnership Model">Owner-Aligned Partnership Model</option></select>
+    <select class="form-select form-select--single" name="cap_kpi_operating_model" id="cap_kpi_operating_model" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Hybrid Platform">Hybrid Platform</option><option value="Full-Service Institutional Operator">Full-Service Institutional Operator</option><option value="Select- and Limited-Service Focus">Select- and Limited-Service Focus</option><option value="Resort and Lifestyle Specialist">Resort and Lifestyle Specialist</option><option value="Urban and Gateway Market Focus">Urban and Gateway Market Focus</option><option value="Mixed Branded and Independent Portfolio">Mixed Branded and Independent Portfolio</option><option value="Conversion and Transition Specialist">Conversion and Transition Specialist</option><option value="Regional Hub with Local Pods">Regional Hub with Local Pods</option><option value="Owner-Aligned Partnership Model" selected>Owner-Aligned Partnership Model</option></select>
     </div>
       
     <div class="field-wrap">
@@ -3070,7 +3256,7 @@
       Execution Strength<span class="required">*</span>
       <span class="help-text">Day-to-day discipline and consistency across the portfolio—not aspiration. Pick the closest level.</span>
     </label>
-    <select class="form-select form-select--single" name="cap_kpi_execution_strength" id="cap_kpi_execution_strength" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Emerging">Emerging</option><option value="Developing">Developing</option><option value="Proven">Proven</option><option value="Institutional" selected>Institutional</option></select>
+    <select class="form-select form-select--single" name="cap_kpi_execution_strength" id="cap_kpi_execution_strength" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Emerging">Emerging</option><option value="Developing">Developing</option><option value="Proven" selected>Proven</option><option value="Institutional">Institutional</option></select>
     </div>
       
     <div class="field-wrap">
@@ -3086,7 +3272,7 @@
       Reporting Strength<span class="required">*</span>
       <span class="help-text">Analytics maturity and what owners materially receive today. Pick the closest level.</span>
     </label>
-    <select class="form-select form-select--single" name="cap_kpi_reporting" id="cap_kpi_reporting" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Basic">Basic</option><option value="Structured">Structured</option><option value="Advanced" selected>Advanced</option><option value="Institutional">Institutional</option><option value="Standard">Standard</option></select>
+    <select class="form-select form-select--single" name="cap_kpi_reporting" id="cap_kpi_reporting" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Basic">Basic</option><option value="Structured" selected>Structured</option><option value="Advanced">Advanced</option><option value="Institutional">Institutional</option><option value="Standard">Standard</option></select>
     </div>
     </div>
     <h3 class="project-fit-subheader">Hotel Operating Profile</h3>
@@ -3099,11 +3285,11 @@
       <span class="help-text">What to enter: Concrete proof of day-to-day discipline—SOPs, labor/productivity, QA, guest experience, accountability.
 Format: One short proof point per line.</span>
     </label>
-    <textarea class="form-textarea very-tall explorer-story-field" name="cap_profile_operational" id="cap_profile_operational" rows="6" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="800" data-explorer-payload="1">Standardized SOP frameworks across full-service, resort, lifestyle, and select-service assets
-Labor productivity models tailored to complex operating markets
-Quality assurance and standards governance
-Guest experience consistency programs
-Property-to-portfolio accountability routines</textarea>
+    <textarea class="form-textarea very-tall explorer-story-field" name="cap_profile_operational" id="cap_profile_operational" rows="6" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="800" data-explorer-payload="1">Local leadership and regional execution across Caribbean and Latin America leisure markets
+Opening, transition, and ongoing management for resort and lifestyle assets—not a remote-only model
+Purpose-built CALA structure with property-to-regional accountability (Juan Corvinos · division president)
+SOP and QA discipline backed by Hotel Equities enterprise standards
+Guest experience and labor programs adapted to all-inclusive and resort operating profiles</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/800</div>
     </div>
       
@@ -3113,11 +3299,11 @@ Property-to-portfolio accountability routines</textarea>
       <span class="help-text">What to enter: How you manage revenue—segments, channels, sales, OTA/channel discipline, and performance review rhythm.
 Format: One short proof point per line.</span>
     </label>
-    <textarea class="form-textarea very-tall explorer-story-field" name="cap_profile_commercial" id="cap_profile_commercial" rows="6" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="800" data-explorer-payload="1">Revenue strategy governance across transient, group, and direct segments
-Channel mix optimization and OTA discipline
-Sales strategy aligned to market demand profile
-Demand generation coordination with brand and local teams
-Weekly performance response routines</textarea>
+    <textarea class="form-textarea very-tall explorer-story-field" name="cap_profile_commercial" id="cap_profile_commercial" rows="6" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="800" data-explorer-payload="1">Regional commercial coverage with HE parent-platform revenue management and distribution support
+Performance-driven coordination between operations and commercial on open CALA hotels
+Brand-appropriate PMS/RMS/channel stack by flag (Marriott, Hilton, Hyatt families)
+Group, leisure, and direct segments aligned to island and resort demand cycles
+Commercial pacing tied to owner business reviews (Martha Estrada · revenue leadership)</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/800</div>
     </div>
       
@@ -3127,11 +3313,11 @@ Weekly performance response routines</textarea>
       <span class="help-text">What to enter: Mobilization for conversions, repositioning, openings, systems cutover, lender/owner onboarding.
 Format: One short proof point per line.</span>
     </label>
-    <textarea class="form-textarea very-tall explorer-story-field" name="cap_profile_transition" id="cap_profile_transition" rows="6" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="800" data-explorer-payload="1">Independent to branded conversions
-Repositioning and turnaround mobilization
-Pre-opening planning and operating ramp-up
-Systems launch and controls activation
-Owner and lender onboarding support</textarea>
+    <textarea class="form-textarea very-tall explorer-story-field" name="cap_profile_transition" id="cap_profile_transition" rows="6" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="800" data-explorer-payload="1">Active pre-opening and pipeline work in DR, México, Turks &amp; Caicos, Curaçao, and Costa Rica
+Independent-to-branded conversions and soft-brand transitions within franchise ecosystems
+First Costa Rica opening publicly announced March 2026—evidence of opening execution path
+Owner and lender onboarding during takeover and ramp-up (Maria del Pilar Garcia · openings &amp; IT)
+Transition steering with weekly critical-path reviews where asset is live or near opening</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/800</div>
     </div>
     </div>
@@ -3143,7 +3329,7 @@ Owner and lender onboarding support</textarea>
       Asset Positioning<span class="required">*</span>
       <span class="help-text">Write 2–4 sentences for the Asset Positioning card. Max 500 characters.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="cap_card_asset_positioning" id="cap_card_asset_positioning" rows="4" placeholder="Write 2–4 sentences for the Asset Positioning card. Max 500 characters." maxlength="500" data-explorer-payload="1">Positions each asset using demand profile, channel economics, and owner return targets. Aligns positioning to market segment realities and capex constraints.</textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="cap_card_asset_positioning" id="cap_card_asset_positioning" rows="4" placeholder="Write 2–4 sentences for the Asset Positioning card. Max 500 characters." maxlength="500" data-explorer-payload="1">HE CALA is a regional operating platform for leisure-oriented owners in Caribbean and Latin America—not a generic global scale play. Concentrated in resort, all-inclusive, and urban/lifestyle assets rather than broad urban-only management.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
       
@@ -3152,7 +3338,7 @@ Owner and lender onboarding support</textarea>
       Service Differentiation<span class="required">*</span>
       <span class="help-text">Write 2–4 sentences for the Service Differentiation card. Max 500 characters.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="cap_card_service_diff" id="cap_card_service_diff" rows="4" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="500" data-explorer-payload="1">Differentiates operations through governance discipline, structured execution cadence, and practical localization. Creates repeatable owner-facing performance confidence.</textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="cap_card_service_diff" id="cap_card_service_diff" rows="4" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="500" data-explorer-payload="1">Regional leadership (Corvinos, Register, Pergola) tied to Hotel Equities' broader platform: local knowledge, owner alignment, and a dedicated 2025 CALA division—distinct from a generic third-party remote model.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
       
@@ -3161,7 +3347,7 @@ Owner and lender onboarding support</textarea>
       Execution Reliability<span class="required">*</span>
       <span class="help-text">Write 2–4 sentences for the Execution Reliability card. Max 500 characters.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="cap_card_execution_rel" id="cap_card_execution_rel" rows="4" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="500" data-explorer-payload="1">Uses recurring control routines, escalation pathways, and weekly response cycles. Maintains consistency from portfolio strategy through property-level delivery.</textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="cap_card_execution_rel" id="cap_card_execution_rel" rows="4" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="500" data-explorer-payload="1">Owner-facing language emphasizes value creation and local execution. Institutional owners should view CALA depth as emerging (2025 launch) with continuity strength from Hotel Equities enterprise backing.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
       
@@ -3170,7 +3356,7 @@ Owner and lender onboarding support</textarea>
       Governance &amp; Reporting<span class="required">*</span>
       <span class="help-text">Write 2–4 sentences for the Governance &amp; Reporting card. Max 500 characters.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="cap_card_governance" id="cap_card_governance" rows="4" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="500" data-explorer-payload="1">Runs decision-grade reporting packs and variance narratives tied to actions. Keeps owner, lender, and operator priorities aligned through formal review rhythms.</textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="cap_card_governance" id="cap_card_governance" rows="4" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="500" data-explorer-payload="1">Governance is structured in practice (monthly operating reviews, quarterly strategy touchpoints) but public sources do not publish committee structure or pack formats—confirm cadence in executed management agreements.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
     </div>
@@ -3182,10 +3368,10 @@ Owner and lender onboarding support</textarea>
       Revenue Systems<span class="required">*</span>
       <span class="help-text">Named revenue tools and workflows (max 800 characters). One line per item.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="cap_deep_revenue_systems" id="cap_deep_revenue_systems" rows="4" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="800" data-explorer-payload="1">IDeaS RMS deployment
-Duetto demand response workflows
-Rate governance cadence
-Channel mix control routines</textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="cap_deep_revenue_systems" id="cap_deep_revenue_systems" rows="4" placeholder="One bullet or line per row where the subsection asks for bullets." maxlength="800" data-explorer-payload="1">Brand-appropriate PMS/RMS/channel tooling by flag
+Governance on discounting, group displacement, and channel mix
+Owner participation in commercial business reviews with comp-set and pacing context
+Rate and restriction discipline coordinated with regional revenue leadership</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/800</div>
     </div>
       
@@ -3194,10 +3380,10 @@ Channel mix control routines</textarea>
       Execution Infrastructure<span class="required">*</span>
       <span class="help-text">Describe your <strong>operating model for delivery</strong>: regional teams or pods, transition/deploy teams, escalation paths, cadences, and playbooks—how work gets done across properties. <strong>One line per bullet.</strong> Max 800 characters. <strong>Do not paste your systems and software list here</strong>; that belongs under <strong>Infrastructure &amp; Data</strong> (tools). This field is about <strong>people, structure, and process</strong>, not product names.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="cap_deep_execution_infra" id="cap_deep_execution_infra" rows="4" placeholder="e.g. Regional ops pods, escalation paths — one per line" maxlength="800" data-explorer-payload="1">Regional operations pods
-Transition taskforces
-Cross-functional escalation paths
-Standard operating playbooks</textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="cap_deep_execution_infra" id="cap_deep_execution_infra" rows="4" placeholder="e.g. Regional ops pods, escalation paths — one per line" maxlength="800" data-explorer-payload="1">Purpose-built CALA infrastructure with in-market leadership pods
+Transition and opening taskforces for pipeline assets (DR, México, T&amp;C, Curaçao, Costa Rica)
+Escalation from property → regional CALA → Hotel Equities enterprise
+Operating playbooks for resort, all-inclusive, and lifestyle asset types</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/800</div>
     </div>
     </div>
@@ -3209,7 +3395,7 @@ Standard operating playbooks</textarea>
       Budget Accuracy<span class="required">*</span>
       <span class="help-text">Pick the band that best matches typical variance vs approved budget.</span>
     </label>
-    <select class="form-select form-select--single" name="cap_signal_budget" id="cap_signal_budget" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Within ±1%">Within ±1%</option><option value="Within ±2%">Within ±2%</option><option value="Within ±3%">Within ±3%</option><option value="Within ±3.5%" selected>Within ±3.5%</option><option value="Within ±5%">Within ±5%</option><option value="Greater than ±5%">Greater than ±5%</option><option value="In line with budget (qualitative)">In line with budget (qualitative)</option></select>
+    <select class="form-select form-select--single" name="cap_signal_budget" id="cap_signal_budget" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A" selected>Not Measured / N/A</option><option value="Within ±1%">Within ±1%</option><option value="Within ±2%">Within ±2%</option><option value="Within ±3%">Within ±3%</option><option value="Within ±3.5%">Within ±3.5%</option><option value="Within ±5%">Within ±5%</option><option value="Greater than ±5%">Greater than ±5%</option><option value="In line with budget (qualitative)">In line with budget (qualitative)</option></select>
     </div>
       
     <div class="field-wrap">
@@ -3217,7 +3403,7 @@ Standard operating playbooks</textarea>
       Time to First Performance Lift<span class="required">*</span>
       <span class="help-text">Band from effective start to first measurable lift—use one consistent definition of “lift.”</span>
     </label>
-    <select class="form-select form-select--single" name="cap_signal_lift" id="cap_signal_lift" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="0–30 days">0–30 days</option><option value="31–60 days">31–60 days</option><option value="61–90 days">61–90 days</option><option value="91–120 days" selected>91–120 days</option><option value="121–180 days">121–180 days</option><option value="181–365 days">181–365 days</option><option value="More than 12 months">More than 12 months</option><option value="Varies materially by asset type">Varies materially by asset type</option></select>
+    <select class="form-select form-select--single" name="cap_signal_lift" id="cap_signal_lift" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A" selected>Not Measured / N/A</option><option value="0–30 days">0–30 days</option><option value="31–60 days">31–60 days</option><option value="61–90 days">61–90 days</option><option value="91–120 days">91–120 days</option><option value="121–180 days">121–180 days</option><option value="181–365 days">181–365 days</option><option value="More than 12 months">More than 12 months</option><option value="Varies materially by asset type">Varies materially by asset type</option></select>
     </div>
       
     <div class="field-wrap">
@@ -3225,11 +3411,14 @@ Standard operating playbooks</textarea>
       Transitions Delivered on Schedule<span class="required">*</span>
       <span class="help-text">Pick the on-time rate band that matches how you report transitions.</span>
     </label>
-    <select class="form-select form-select--single" name="cap_signal_trans" id="cap_signal_trans" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="95% or higher">95% or higher</option><option value="90–94%">90–94%</option><option value="80–89%" selected>80–89%</option><option value="70–79%">70–79%</option><option value="Below 70%">Below 70%</option></select>
+    <select class="form-select form-select--single" name="cap_signal_trans" id="cap_signal_trans" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A" selected>Not Measured / N/A</option><option value="95% or higher">95% or higher</option><option value="90–94%">90–94%</option><option value="80–89%">80–89%</option><option value="70–79%">70–79%</option><option value="Below 70%">Below 70%</option></select>
     </div>
     </div>
-    <h3 class="project-fit-subheader">Explorer DNA — Operating Platform pillars (JSON)</h3>
-    <p class="subsection-hint">Optional. Up to six custom capability tiles per pillar on the Operator Explorer DNA profile. Legacy multiline fields above still work as fallbacks until these are filled.</p>
+    <h3 class="project-fit-subheader">Explorer DNA — Operating Platform</h3>
+    <p class="subsection-hint">Structured capability tiles saved to <strong>Operator Setup - Operating Platform</strong> on submit. KPI dropdowns and bullet fields above are mirrored automatically. Add up to six tiles per pillar below—no JSON required.</p>
+    <div id="operating-platform-setup-root"></div>
+    <div class="explorer-json-legacy-hidden" aria-hidden="true">
+    <p class="subsection-hint">Legacy JSON (hidden)—migrated to child table; do not edit.</p>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="op_commercial_engine_json">Commercial Engine capability tiles (JSON)</label>
     <textarea class="form-textarea tall explorer-story-field" name="op_commercial_engine_json" id="op_commercial_engine_json" rows="6" data-explorer-payload="1" placeholder='{ "intro": "...", "items": [{ "title": "...", "description": "..." }] }'></textarea>
@@ -3249,6 +3438,7 @@ Standard operating playbooks</textarea>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="op_fb_lifestyle_resort_json">F&amp;B, Lifestyle &amp; Resort capability tiles (JSON)</label>
     <textarea class="form-textarea tall explorer-story-field" name="op_fb_lifestyle_resort_json" id="op_fb_lifestyle_resort_json" rows="6" data-explorer-payload="1" placeholder='{ "intro": "...", "items": [{ "title": "...", "description": "..." }] }'></textarea>
+    </div>
     </div>
   </div>
 <div class="form-section" data-section="3" data-explorer-tab="Brand Experience">
@@ -3328,23 +3518,36 @@ Independent asset operating confidence</textarea>
     </label>
     <input class="form-input" type="number" min="0" step="1" name="brand_conversion_project_count" id="brand_conversion_project_count" data-explorer-payload="1" placeholder="e.g. 12">
     </div>
-    <h3 class="project-fit-subheader">Explorer DNA — Brand &amp; Relationships subsections (JSON)</h3>
-    <p class="subsection-hint">Optional. Powers portfolio mix, relationship depth, execution, and governance cards on the DNA Brand tab.</p>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="brand_soft_independent_narrative">
+      Soft-brand &amp; independent positioning
+      <span class="help-text">Shown on Explorer when owners evaluate soft-brand, independent-to-branded, or resort repositioning paths. Max 800 characters.</span>
+    </label>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_soft_independent_narrative" id="brand_soft_independent_narrative" rows="4" maxlength="800" data-explorer-payload="1" placeholder="What owners should expect when evaluating soft-brand or independent paths…"></textarea>
+    <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/800</div>
+    </div>
+    <h3 class="project-fit-subheader">Explorer DNA — Brand &amp; Relationships</h3>
+    <p class="subsection-hint">Structured rows saved on submit (no JSON editing). Portfolio mix % can be suggested from Company Profile brand unit counts; decision-signal KPIs above stay manual.</p>
+    <div id="brandFootprintDerivedHint" class="br-derived-panel is-hidden" aria-live="polite"></div>
+    <div id="brand-relationships-setup-root"></div>
+    <div class="explorer-json-legacy-hidden" aria-hidden="true">
+    <p class="subsection-hint">Legacy JSON (hidden)—synced from repeaters above on save.</p>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="brand_portfolio_mix_json">Portfolio mix by brand / flag type (JSON)</label>
-    <textarea class="form-textarea tall explorer-story-field" name="brand_portfolio_mix_json" id="brand_portfolio_mix_json" rows="6" data-explorer-payload="1" placeholder='[{ "brandFlagType", "portfolioMix", "assetContext", "relationshipStatus" }]'></textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_portfolio_mix_json" id="brand_portfolio_mix_json" rows="4" data-explorer-payload="1" tabindex="-1"></textarea>
     </div>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="brand_relationship_depth_json">Brands &amp; relationship depth (JSON)</label>
-    <textarea class="form-textarea tall explorer-story-field" name="brand_relationship_depth_json" id="brand_relationship_depth_json" rows="6" data-explorer-payload="1" placeholder='[{ "brandSegment", "relationshipType", "depth", "ownerContext" }]'></textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_relationship_depth_json" id="brand_relationship_depth_json" rows="4" data-explorer-payload="1" tabindex="-1"></textarea>
     </div>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="brand_execution_capabilities_json">Brand execution capabilities (JSON)</label>
-    <textarea class="form-textarea tall explorer-story-field" name="brand_execution_capabilities_json" id="brand_execution_capabilities_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_execution_capabilities_json" id="brand_execution_capabilities_json" rows="4" data-explorer-payload="1" tabindex="-1"></textarea>
     </div>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="brand_governance_compliance_json">Brand governance &amp; compliance support (JSON)</label>
-    <textarea class="form-textarea tall explorer-story-field" name="brand_governance_compliance_json" id="brand_governance_compliance_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_governance_compliance_json" id="brand_governance_compliance_json" rows="4" data-explorer-payload="1" tabindex="-1"></textarea>
+    </div>
     </div>
   </div>
 <div class="form-section" data-section="4" data-explorer-tab="Markets">
@@ -3703,6 +3906,52 @@ Independent asset operating confidence</textarea>
                                             <span class="input-unit">properties</span>
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Branded Residence Properties Managed
+                                            <span class="help-text">Projects with a branded residence or condo-hotel component.</span>
+                                        </label>
+                                        <div class="input-with-unit">
+                                            <input type="number" class="form-input" id="brandedResidencePropertiesManaged" name="brandedResidencePropertiesManaged" min="0" step="1" placeholder="e.g., 4">
+                                            <span class="input-unit">properties</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Mixed-Use Hospitality Experience
+                                            <span class="help-text">Hotel mixed-use projects (retail, office, and/or residential components).</span>
+                                        </label>
+                                        <div class="input-with-unit">
+                                            <input type="number" class="form-input" id="mixedUseHospitalityExperience" name="mixedUseHospitalityExperience" min="0" step="1" placeholder="e.g., 6">
+                                            <span class="input-unit">properties</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group full-width section-break-border spacing-top-12">
+                                    <h3 class="project-fit-subheader">Service Models Supported</h3>
+                                    <p class="help-text spacing-top-8" style="margin-bottom: 10px; display: block;">Select all hospitality operating models in your portfolio—including branded residential / mixed-use when applicable. Powers Operator Explorer filters.</p>
+                                    <div class="multi-select-with-count">
+                                        <label class="form-label" for="serviceModelsSupportedSelect">
+                                            Service models
+                                            <span class="selection-count"></span>
+                                        </label>
+                                        <select class="form-select" id="serviceModelsSupportedSelect" name="serviceModelsSupported" multiple size="6">
+                                            <option value="Limited-service">Limited-service</option>
+                                            <option value="Select-service">Select-service</option>
+                                            <option value="Focused-service">Focused-service</option>
+                                            <option value="Full-service">Full-service</option>
+                                            <option value="Lifestyle">Lifestyle</option>
+                                            <option value="Boutique">Boutique</option>
+                                            <option value="Resort">Resort</option>
+                                            <option value="All-inclusive">All-inclusive</option>
+                                            <option value="Extended stay">Extended stay</option>
+                                            <option value="Branded residential / mixed-use">Branded residential / mixed-use</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
@@ -3938,8 +4187,11 @@ Budget and forecast updates</textarea>
     </div>
     </div>
     </div>
-    <h3 class="project-fit-subheader">Explorer DNA — Owner Engagement subsections (JSON)</h3>
-    <p class="subsection-hint">Optional. Powers Owner Engagement &amp; Reporting subsections on the DNA profile (replaces demo defaults when populated).</p>
+    <h3 class="project-fit-subheader">Explorer DNA — Owner Engagement &amp; Reporting</h3>
+    <p class="subsection-hint">Structured rows saved to <strong>Operator Setup - Engagement &amp; Reporting</strong> on submit. Value cards above are included automatically. Add cadence, reports, and tools below—no JSON required.</p>
+    <div id="engagement-reporting-setup-root"></div>
+    <div class="explorer-json-legacy-hidden" aria-hidden="true">
+    <p class="subsection-hint">Legacy JSON (hidden)—migrated to child table; do not edit.</p>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="ov_strategic_owner_value_json">Strategic owner value (JSON)</label>
     <textarea class="form-textarea tall explorer-story-field" name="ov_strategic_owner_value_json" id="ov_strategic_owner_value_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
@@ -3963,6 +4215,7 @@ Budget and forecast updates</textarea>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="ov_lifecycle_support_json">Owner support across asset lifecycle (JSON)</label>
     <textarea class="form-textarea tall explorer-story-field" name="ov_lifecycle_support_json" id="ov_lifecycle_support_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
     </div>
 
     <h3 class="project-fit-subheader">Performance &amp; Operations</h3>
@@ -4508,6 +4761,9 @@ Okta SSO</textarea>
     <select class="form-select form-select--single" name="infra_signal_refresh" id="infra_signal_refresh" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Real-time">Real-time / streaming</option><option value="Hourly">Hourly</option><option value="Daily">Daily</option><option value="Daily + Weekly" selected>Daily + Weekly</option><option value="Weekly">Weekly</option><option value="Monthly">Monthly</option><option value="Varies">Varies by dataset</option></select>
     </div>
     </div>
+    <h3 class="project-fit-subheader">Infrastructure &amp; Data — Explorer presentation</h3>
+    <p class="subsection-hint">Structured rows saved to the <strong>Operator Setup - Infrastructure Platform</strong> child table on submit. Decision signals and KPIs above are included automatically. Use repeaters below for stack, services, and data domains—or rely on the text fields above (those are parsed into the same table when repeaters are empty).</p>
+    <div id="infrastructure-platform-setup-root"></div>
   
 
     <h3 class="project-fit-subheader">Technology Stack &amp; Service Offerings</h3>
@@ -4747,6 +5003,38 @@ Okta SSO</textarea>
     <p class="form-section-subtitle">Emergency readiness, continuity, certifications, controls, resilience metrics, and risk signals.</p>
     <p class="required-note"><span class="required">*</span> Marked fields are Required <span class="required-count"></span></p>
     <p class="subsection-hint">Company Profile already includes emergency, continuity, and insurance flags. Use one short story here for owners—avoid repeating those same checklists.</p>
+
+    <h3 class="project-fit-subheader">Branded Residence Governance</h3>
+    <p class="subsection-hint">For mixed-use and branded residence deals—HOA/condo interfaces and sales coordination are common diligence topics.</p>
+    <div class="economics-grid economics-grid--2">
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="hoaCondoAssociationInterface">
+      HOA / Condo Association Interface
+      <span class="help-text">How you interface with owner associations on residence components.</span>
+    </label>
+    <select class="form-select form-select--single" name="hoaCondoAssociationInterface" id="hoaCondoAssociationInterface" autocomplete="off">
+      <option value="">Select…</option>
+      <option value="None">None</option>
+      <option value="Basic">Basic</option>
+      <option value="Structured">Structured</option>
+      <option value="Dedicated team">Dedicated team</option>
+      <option value="Unknown">Unknown</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="residenceSalesClosingSupport">
+      Residence Sales &amp; Closing Support
+      <span class="help-text">Support for branded residence sales, closings, and owner onboarding.</span>
+    </label>
+    <select class="form-select form-select--single" name="residenceSalesClosingSupport" id="residenceSalesClosingSupport" autocomplete="off">
+      <option value="">Select…</option>
+      <option value="None">None</option>
+      <option value="Advisory">Advisory</option>
+      <option value="Full program support">Full program support</option>
+      <option value="Unknown">Unknown</option>
+    </select>
+    </div>
+    </div>
     
     <div class="field-wrap">
     <label class="form-label label-spacing" for="risk_programs_narrative">
@@ -4797,7 +5085,7 @@ Owner communication on incidents</textarea>
   </div>
 <div class="form-section" data-section="8" data-explorer-tab="Leadership">
     <h2 class="form-section-title">Leadership &amp; Team</h2>
-    <p class="form-section-subtitle">Add your executive team here—this is the main place for names and bios on your public profile. On the full questionnaire, duplicate leadership text on Company Profile is hidden.</p>
+    <p class="form-section-subtitle">Add your executive team here—names, bios, and structured profile details (credentials, languages, markets, expertise, asset types) that appear on the Leadership tab in Operator Explorer. On the full questionnaire, duplicate leadership text on Company Profile is hidden.</p>
     <p class="required-note"><span class="required">*</span> Marked fields are Required <span class="required-count"></span></p>
 <div class="intake-subsection team-leadership-intake">
 <!-- Team & Leadership (in Operator Setup (New) this block is shown on the Leadership tab, not Basics — see generate-operator-setup-new.mjs) -->
@@ -4918,64 +5206,13 @@ Gateway and resort markets</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
     </div>
-    <h3 class="project-fit-subheader">Leadership &amp; Team — Explorer presentation (JSON)</h3>
-    <p class="subsection-hint">Powers Organization Structure, Team Depth, Languages, Governance, Markets, and Owner Relationship on the public profile. Create Airtable columns listed in <code>docs/operator-leadership-explorer-airtable-fields.md</code>. Use &ldquo;Load sample JSON&rdquo; for a CALA-realistic template, then edit.</p>
-    <p class="subsection-hint"><button type="button" class="btn btn-secondary btn-sm" id="leadExplorerLoadSampleBtn">Load sample JSON</button></p>
+    <h3 class="project-fit-subheader">Leadership &amp; Team — Explorer presentation</h3>
+    <p class="subsection-hint">Structured rows saved to the <strong>Operator Setup - Leadership Platform</strong> child table (linked to your Master record). Each section below maps to one row type on the public Leadership tab. Legacy JSON long-text fields are no longer edited here.</p>
     <div class="field-wrap">
       <label class="form-label label-spacing" for="lead_avg_hospitality_experience">Avg. hospitality experience (snapshot KPI)</label>
-      <input class="form-input" type="text" name="lead_avg_hospitality_experience" id="lead_avg_hospitality_experience" value="18 yrs" placeholder="e.g. 18 yrs" data-explorer-payload="1" />
+      <input class="form-input" type="text" name="lead_avg_hospitality_experience" id="lead_avg_hospitality_experience" value="18 yrs" placeholder="e.g. 20 yrs" data-explorer-payload="1" />
     </div>
-    <div class="field-wrap">
-      <label class="form-label label-spacing" for="lead_org_structure_json">Organization structure (JSON array)</label>
-      <textarea class="form-textarea tall explorer-story-field" name="lead_org_structure_json" id="lead_org_structure_json" rows="6" data-explorer-payload="1" placeholder="[{ &quot;title&quot;: &quot;...&quot;, &quot;description&quot;: &quot;...&quot;, &quot;tags&quot;: [&quot;...&quot;] }]"></textarea>
-    </div>
-    <div class="field-wrap">
-      <label class="form-label label-spacing" for="lead_team_depth_json">Team depth by function (JSON array)</label>
-      <textarea class="form-textarea tall explorer-story-field" name="lead_team_depth_json" id="lead_team_depth_json" rows="6" data-explorer-payload="1" placeholder="[{ &quot;function&quot;: &quot;...&quot;, &quot;leadRole&quot;: &quot;...&quot;, &quot;depth&quot;: &quot;Strong&quot;, &quot;relevance&quot;: &quot;...&quot; }]"></textarea>
-    </div>
-    <div class="field-wrap">
-      <label class="form-label label-spacing" for="lead_language_capability_json">Language &amp; regional capability (JSON array)</label>
-      <textarea class="form-textarea tall explorer-story-field" name="lead_language_capability_json" id="lead_language_capability_json" rows="5" data-explorer-payload="1"></textarea>
-    </div>
-    <div class="field-wrap">
-      <label class="form-label label-spacing" for="lead_governance_cadence_json">Governance &amp; communication cadence (JSON array)</label>
-      <textarea class="form-textarea tall explorer-story-field" name="lead_governance_cadence_json" id="lead_governance_cadence_json" rows="5" data-explorer-payload="1"></textarea>
-    </div>
-    <div class="field-wrap">
-      <label class="form-label label-spacing" for="lead_team_markets_json">Team experience markets (JSON array)</label>
-      <textarea class="form-textarea tall explorer-story-field" name="lead_team_markets_json" id="lead_team_markets_json" rows="5" data-explorer-payload="1"></textarea>
-    </div>
-    <div class="field-wrap">
-      <label class="form-label label-spacing" for="lead_owner_relationship_json">Owner relationship model (JSON array)</label>
-      <textarea class="form-textarea tall explorer-story-field" name="lead_owner_relationship_json" id="lead_owner_relationship_json" rows="6" data-explorer-payload="1"></textarea>
-    </div>
-    <script>
-    (function () {
-      var btn = document.getElementById("leadExplorerLoadSampleBtn");
-      if (!btn) return;
-      btn.addEventListener("click", function () {
-        fetch("/fixtures/operator-leadership-explorer-antillano-norte.json")
-          .then(function (r) { return r.json(); })
-          .then(function (d) {
-            var map = {
-              lead_avg_hospitality_experience: "lead_avg_hospitality_experience",
-              lead_org_structure_json: "lead_org_structure_json",
-              lead_team_depth_json: "lead_team_depth_json",
-              lead_language_capability_json: "lead_language_capability_json",
-              lead_governance_cadence_json: "lead_governance_cadence_json",
-              lead_team_markets_json: "lead_team_markets_json",
-              lead_owner_relationship_json: "lead_owner_relationship_json"
-            };
-            Object.keys(map).forEach(function (id) {
-              var el = document.getElementById(id);
-              if (!el || !d[id]) return;
-              el.value = typeof d[id] === "string" ? d[id] : JSON.stringify(d[id], null, 2);
-            });
-          })
-          .catch(function (e) { console.warn("[leadership-explorer] sample load failed", e); });
-      });
-    })();
-    </script>
+    <div id="leadership-platform-setup-root"></div>
     <h3 class="project-fit-subheader">Executive Function Coverage</h3>
     <p class="subsection-hint">Select the disciplines your platform covers at the executive level. The count below updates automatically from your selections.</p>
     <div class="lead-functions-kpi-block">
@@ -4997,7 +5234,7 @@ Gateway and resort markets</textarea>
       <button type="button" class="btn btn-secondary btn-sm" data-repeater-add="executives">+ Add executive</button>
     </div>
     <div class="repeater-rows" id="repeater-executives">
-    <div class="case-block repeater-row" data-repeater-row="executives">
+    <div class="case-block repeater-row executives-repeater-row" data-repeater-row="executives">
         <button type="button" class="filter-reset-btn btn-remove-row">Remove Row</button>
         <h4>Executive 1</h4>
         
@@ -5028,20 +5265,116 @@ Gateway and resort markets</textarea>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_1_summary">
       Card Summary<span class="required">*</span>
-      <span class="help-text">2–3 sentences for the card front (max 500 characters).</span>
+      <span class="help-text">2–3 sentences for the card front (max 500 characters). Do not repeat the title or role line above—the Explorer card shows those separately.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_1_summary" id="exec_1_summary" rows="4" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">20+ years across LATAM hospitality platforms. Leads growth, governance, and owner confidence across the platform.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_1_summary" id="exec_1_summary" rows="2" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">20+ years across LATAM hospitality platforms. Leads growth, governance, and owner confidence across the platform.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
         
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_1_bio">
       Executive Bio (Hover)<span class="required">*</span>
-      <span class="help-text">Longer paragraph for hover/detail (max 600 characters).</span>
+      <span class="help-text">Longer paragraph for hover/detail (max 600 characters). Do not repeat the title or role line—focus on career highlights and owner-relevant impact.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_1_bio" id="exec_1_bio" rows="4" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Executive operator with 20+ years leading multi-country hotel platforms. Known for disciplined governance, conversion execution, and owner-ready reporting structures across LATAM portfolios.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_1_bio" id="exec_1_bio" rows="2" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Executive operator with 20+ years leading multi-country hotel platforms. Known for disciplined governance, conversion execution, and owner-ready reporting structures across LATAM portfolios.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/600</div>
     </div>
+        
+        <div class="exec-profile-detail" data-exec-profile-detail="1">
+        <h3 class="project-fit-subheader case-study-row-subheader exec-profile-detail__title">Profile Detail</h3>
+        <div class="exec-profile-detail__grid">
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_1_hospitality_experience_years">Hospitality Experience (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_1_hospitality_experience_years" id="exec_1_hospitality_experience_years" placeholder="e.g. 28" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_1_company_tenure_years">Company Tenure (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_1_company_tenure_years" id="exec_1_company_tenure_years" placeholder="e.g. 9" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap exec-profile-detail__span-2">
+    <label class="form-label label-spacing" for="exec_1_prior_background">Prior Background</label>
+    <input class="form-input" type="text" name="exec_1_prior_background" id="exec_1_prior_background" placeholder="e.g. Hilton CALA development — 350+ management agreements" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_1_languages">Languages</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_1_languages" id="exec_1_languages" multiple size="3" data-explorer-payload="1">
+            <option value="English">English</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="French">French</option>
+            <option value="Italian">Italian</option>
+            <option value="German">German</option>
+            <option value="Mandarin">Mandarin</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Other">Other</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_1_market_experience">Market Experience</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_1_market_experience" id="exec_1_market_experience" multiple size="3" data-explorer-payload="1">
+            <option value="United States">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Dominican Republic">Dominican Republic</option>
+            <option value="Puerto Rico">Puerto Rico</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="Panama">Panama</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Chile">Chile</option>
+            <option value="Peru">Peru</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Caribbean">Caribbean</option>
+            <option value="CALA — Regional">CALA — Regional</option>
+            <option value="Europe">Europe</option>
+            <option value="Middle East">Middle East</option>
+            <option value="Central America">Central America</option>
+            <option value="South America">South America</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_1_core_expertise">Core Expertise</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_1_core_expertise" id="exec_1_core_expertise" multiple size="3" data-explorer-payload="1">
+            <option value="Revenue Management">Revenue Management</option>
+            <option value="Direct Booking">Direct Booking</option>
+            <option value="Distribution">Distribution</option>
+            <option value="Operations">Operations</option>
+            <option value="Pre-Opening / Transitions">Pre-Opening / Transitions</option>
+            <option value="Development">Development</option>
+            <option value="Finance & Owner Reporting">Finance & Owner Reporting</option>
+            <option value="F&B / Lifestyle">F&B / Lifestyle</option>
+            <option value="Brand Compliance">Brand Compliance</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Technology">Technology</option>
+            <option value="HR / Talent">HR / Talent</option>
+            <option value="Legal / Compliance">Legal / Compliance</option>
+            <option value="Owner Relations">Owner Relations</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_1_relevant_asset_types">Relevant Asset Types</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_1_relevant_asset_types" id="exec_1_relevant_asset_types" multiple size="3" data-explorer-payload="1">
+            <option value="Resort">Resort</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Independent">Independent</option>
+            <option value="Full-Service">Full-Service</option>
+            <option value="Select-Service">Select-Service</option>
+            <option value="Extended-Stay">Extended-Stay</option>
+            <option value="Urban">Urban</option>
+            <option value="Airport">Airport</option>
+            <option value="Convention">Convention</option>
+            <option value="Mixed-Use">Mixed-Use</option>
+            <option value="Branded">Branded</option>
+            <option value="Soft Brand">Soft Brand</option>
+            <option value="All-Inclusive">All-Inclusive</option>
+    </select>
+    </div>
+        </div>
+        </div>
         <div class="exec-headshot-section">
         <h3 class="project-fit-subheader case-study-row-subheader">Headshot</h3>
         <div class="case-study-grid">
@@ -5061,7 +5394,7 @@ Gateway and resort markets</textarea>
           </div>
         </div>
         </div>
-      </div><div class="case-block repeater-row" data-repeater-row="executives">
+      </div><div class="case-block repeater-row executives-repeater-row" data-repeater-row="executives">
         <button type="button" class="filter-reset-btn btn-remove-row">Remove Row</button>
         <h4>Executive 2</h4>
         
@@ -5092,20 +5425,116 @@ Gateway and resort markets</textarea>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_2_summary">
       Card Summary<span class="required">*</span>
-      <span class="help-text">2–3 sentences for the card front (max 500 characters).</span>
+      <span class="help-text">2–3 sentences for the card front (max 500 characters). Do not repeat the title or role line above—the Explorer card shows those separately.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_2_summary" id="exec_2_summary" rows="4" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Former Marriott regional operations leader. Drives operating consistency, labor discipline, and performance accountability.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_2_summary" id="exec_2_summary" rows="2" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Former Marriott regional operations leader. Drives operating consistency, labor discipline, and performance accountability.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
         
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_2_bio">
       Executive Bio (Hover)<span class="required">*</span>
-      <span class="help-text">Longer paragraph for hover/detail (max 600 characters).</span>
+      <span class="help-text">Longer paragraph for hover/detail (max 600 characters). Do not repeat the title or role line—focus on career highlights and owner-relevant impact.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_2_bio" id="exec_2_bio" rows="4" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Former regional operations executive with deep full-service and brand-managed experience. Builds repeatable operating systems that improve margin performance and execution consistency.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_2_bio" id="exec_2_bio" rows="2" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Former regional operations executive with deep full-service and brand-managed experience. Builds repeatable operating systems that improve margin performance and execution consistency.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/600</div>
     </div>
+        
+        <div class="exec-profile-detail" data-exec-profile-detail="1">
+        <h3 class="project-fit-subheader case-study-row-subheader exec-profile-detail__title">Profile Detail</h3>
+        <div class="exec-profile-detail__grid">
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_2_hospitality_experience_years">Hospitality Experience (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_2_hospitality_experience_years" id="exec_2_hospitality_experience_years" placeholder="e.g. 28" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_2_company_tenure_years">Company Tenure (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_2_company_tenure_years" id="exec_2_company_tenure_years" placeholder="e.g. 9" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap exec-profile-detail__span-2">
+    <label class="form-label label-spacing" for="exec_2_prior_background">Prior Background</label>
+    <input class="form-input" type="text" name="exec_2_prior_background" id="exec_2_prior_background" placeholder="e.g. Hilton CALA development — 350+ management agreements" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_2_languages">Languages</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_2_languages" id="exec_2_languages" multiple size="3" data-explorer-payload="1">
+            <option value="English">English</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="French">French</option>
+            <option value="Italian">Italian</option>
+            <option value="German">German</option>
+            <option value="Mandarin">Mandarin</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Other">Other</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_2_market_experience">Market Experience</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_2_market_experience" id="exec_2_market_experience" multiple size="3" data-explorer-payload="1">
+            <option value="United States">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Dominican Republic">Dominican Republic</option>
+            <option value="Puerto Rico">Puerto Rico</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="Panama">Panama</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Chile">Chile</option>
+            <option value="Peru">Peru</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Caribbean">Caribbean</option>
+            <option value="CALA — Regional">CALA — Regional</option>
+            <option value="Europe">Europe</option>
+            <option value="Middle East">Middle East</option>
+            <option value="Central America">Central America</option>
+            <option value="South America">South America</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_2_core_expertise">Core Expertise</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_2_core_expertise" id="exec_2_core_expertise" multiple size="3" data-explorer-payload="1">
+            <option value="Revenue Management">Revenue Management</option>
+            <option value="Direct Booking">Direct Booking</option>
+            <option value="Distribution">Distribution</option>
+            <option value="Operations">Operations</option>
+            <option value="Pre-Opening / Transitions">Pre-Opening / Transitions</option>
+            <option value="Development">Development</option>
+            <option value="Finance & Owner Reporting">Finance & Owner Reporting</option>
+            <option value="F&B / Lifestyle">F&B / Lifestyle</option>
+            <option value="Brand Compliance">Brand Compliance</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Technology">Technology</option>
+            <option value="HR / Talent">HR / Talent</option>
+            <option value="Legal / Compliance">Legal / Compliance</option>
+            <option value="Owner Relations">Owner Relations</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_2_relevant_asset_types">Relevant Asset Types</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_2_relevant_asset_types" id="exec_2_relevant_asset_types" multiple size="3" data-explorer-payload="1">
+            <option value="Resort">Resort</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Independent">Independent</option>
+            <option value="Full-Service">Full-Service</option>
+            <option value="Select-Service">Select-Service</option>
+            <option value="Extended-Stay">Extended-Stay</option>
+            <option value="Urban">Urban</option>
+            <option value="Airport">Airport</option>
+            <option value="Convention">Convention</option>
+            <option value="Mixed-Use">Mixed-Use</option>
+            <option value="Branded">Branded</option>
+            <option value="Soft Brand">Soft Brand</option>
+            <option value="All-Inclusive">All-Inclusive</option>
+    </select>
+    </div>
+        </div>
+        </div>
         <div class="exec-headshot-section">
         <h3 class="project-fit-subheader case-study-row-subheader">Headshot</h3>
         <div class="case-study-grid">
@@ -5125,7 +5554,7 @@ Gateway and resort markets</textarea>
           </div>
         </div>
         </div>
-      </div><div class="case-block repeater-row" data-repeater-row="executives">
+      </div><div class="case-block repeater-row executives-repeater-row" data-repeater-row="executives">
         <button type="button" class="filter-reset-btn btn-remove-row">Remove Row</button>
         <h4>Executive 3</h4>
         
@@ -5156,20 +5585,116 @@ Gateway and resort markets</textarea>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_3_summary">
       Card Summary<span class="required">*</span>
-      <span class="help-text">2–3 sentences for the card front (max 500 characters).</span>
+      <span class="help-text">2–3 sentences for the card front (max 500 characters). Do not repeat the title or role line above—the Explorer card shows those separately.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_3_summary" id="exec_3_summary" rows="4" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Specialist in conversions and growth markets. Supports deal execution, brand alignment, and market-entry strategy.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_3_summary" id="exec_3_summary" rows="2" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Specialist in conversions and growth markets. Supports deal execution, brand alignment, and market-entry strategy.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
         
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_3_bio">
       Executive Bio (Hover)<span class="required">*</span>
-      <span class="help-text">Longer paragraph for hover/detail (max 600 characters).</span>
+      <span class="help-text">Longer paragraph for hover/detail (max 600 characters). Do not repeat the title or role line—focus on career highlights and owner-relevant impact.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_3_bio" id="exec_3_bio" rows="4" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Development and transition leader focused on growth-market deal activation. Specializes in conversion pathways, pre-opening mobilization, and brand alignment under complex timelines.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_3_bio" id="exec_3_bio" rows="2" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Development and transition leader focused on growth-market deal activation. Specializes in conversion pathways, pre-opening mobilization, and brand alignment under complex timelines.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/600</div>
     </div>
+        
+        <div class="exec-profile-detail" data-exec-profile-detail="1">
+        <h3 class="project-fit-subheader case-study-row-subheader exec-profile-detail__title">Profile Detail</h3>
+        <div class="exec-profile-detail__grid">
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_3_hospitality_experience_years">Hospitality Experience (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_3_hospitality_experience_years" id="exec_3_hospitality_experience_years" placeholder="e.g. 28" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_3_company_tenure_years">Company Tenure (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_3_company_tenure_years" id="exec_3_company_tenure_years" placeholder="e.g. 9" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap exec-profile-detail__span-2">
+    <label class="form-label label-spacing" for="exec_3_prior_background">Prior Background</label>
+    <input class="form-input" type="text" name="exec_3_prior_background" id="exec_3_prior_background" placeholder="e.g. Hilton CALA development — 350+ management agreements" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_3_languages">Languages</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_3_languages" id="exec_3_languages" multiple size="3" data-explorer-payload="1">
+            <option value="English">English</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="French">French</option>
+            <option value="Italian">Italian</option>
+            <option value="German">German</option>
+            <option value="Mandarin">Mandarin</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Other">Other</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_3_market_experience">Market Experience</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_3_market_experience" id="exec_3_market_experience" multiple size="3" data-explorer-payload="1">
+            <option value="United States">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Dominican Republic">Dominican Republic</option>
+            <option value="Puerto Rico">Puerto Rico</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="Panama">Panama</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Chile">Chile</option>
+            <option value="Peru">Peru</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Caribbean">Caribbean</option>
+            <option value="CALA — Regional">CALA — Regional</option>
+            <option value="Europe">Europe</option>
+            <option value="Middle East">Middle East</option>
+            <option value="Central America">Central America</option>
+            <option value="South America">South America</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_3_core_expertise">Core Expertise</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_3_core_expertise" id="exec_3_core_expertise" multiple size="3" data-explorer-payload="1">
+            <option value="Revenue Management">Revenue Management</option>
+            <option value="Direct Booking">Direct Booking</option>
+            <option value="Distribution">Distribution</option>
+            <option value="Operations">Operations</option>
+            <option value="Pre-Opening / Transitions">Pre-Opening / Transitions</option>
+            <option value="Development">Development</option>
+            <option value="Finance & Owner Reporting">Finance & Owner Reporting</option>
+            <option value="F&B / Lifestyle">F&B / Lifestyle</option>
+            <option value="Brand Compliance">Brand Compliance</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Technology">Technology</option>
+            <option value="HR / Talent">HR / Talent</option>
+            <option value="Legal / Compliance">Legal / Compliance</option>
+            <option value="Owner Relations">Owner Relations</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_3_relevant_asset_types">Relevant Asset Types</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_3_relevant_asset_types" id="exec_3_relevant_asset_types" multiple size="3" data-explorer-payload="1">
+            <option value="Resort">Resort</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Independent">Independent</option>
+            <option value="Full-Service">Full-Service</option>
+            <option value="Select-Service">Select-Service</option>
+            <option value="Extended-Stay">Extended-Stay</option>
+            <option value="Urban">Urban</option>
+            <option value="Airport">Airport</option>
+            <option value="Convention">Convention</option>
+            <option value="Mixed-Use">Mixed-Use</option>
+            <option value="Branded">Branded</option>
+            <option value="Soft Brand">Soft Brand</option>
+            <option value="All-Inclusive">All-Inclusive</option>
+    </select>
+    </div>
+        </div>
+        </div>
         <div class="exec-headshot-section">
         <h3 class="project-fit-subheader case-study-row-subheader">Headshot</h3>
         <div class="case-study-grid">
@@ -5189,7 +5714,7 @@ Gateway and resort markets</textarea>
           </div>
         </div>
         </div>
-      </div><div class="case-block repeater-row" data-repeater-row="executives">
+      </div><div class="case-block repeater-row executives-repeater-row" data-repeater-row="executives">
         <button type="button" class="filter-reset-btn btn-remove-row">Remove Row</button>
         <h4>Executive 4</h4>
         
@@ -5220,20 +5745,116 @@ Gateway and resort markets</textarea>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_4_summary">
       Card Summary<span class="required">*</span>
-      <span class="help-text">2–3 sentences for the card front (max 500 characters).</span>
+      <span class="help-text">2–3 sentences for the card front (max 500 characters). Do not repeat the title or role line above—the Explorer card shows those separately.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_4_summary" id="exec_4_summary" rows="4" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Leads commercial architecture across revenue strategy, channel management, and market-level demand planning.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_4_summary" id="exec_4_summary" rows="2" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Leads commercial architecture across revenue strategy, channel management, and market-level demand planning.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
         
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_4_bio">
       Executive Bio (Hover)<span class="required">*</span>
-      <span class="help-text">Longer paragraph for hover/detail (max 600 characters).</span>
+      <span class="help-text">Longer paragraph for hover/detail (max 600 characters). Do not repeat the title or role line—focus on career highlights and owner-relevant impact.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_4_bio" id="exec_4_bio" rows="4" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Commercial strategist overseeing pricing, channel, and demand architecture. Connects portfolio-level commercial strategy to property-level actions and measurable owner outcomes.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_4_bio" id="exec_4_bio" rows="2" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Commercial strategist overseeing pricing, channel, and demand architecture. Connects portfolio-level commercial strategy to property-level actions and measurable owner outcomes.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/600</div>
     </div>
+        
+        <div class="exec-profile-detail" data-exec-profile-detail="1">
+        <h3 class="project-fit-subheader case-study-row-subheader exec-profile-detail__title">Profile Detail</h3>
+        <div class="exec-profile-detail__grid">
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_4_hospitality_experience_years">Hospitality Experience (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_4_hospitality_experience_years" id="exec_4_hospitality_experience_years" placeholder="e.g. 28" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_4_company_tenure_years">Company Tenure (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_4_company_tenure_years" id="exec_4_company_tenure_years" placeholder="e.g. 9" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap exec-profile-detail__span-2">
+    <label class="form-label label-spacing" for="exec_4_prior_background">Prior Background</label>
+    <input class="form-input" type="text" name="exec_4_prior_background" id="exec_4_prior_background" placeholder="e.g. Hilton CALA development — 350+ management agreements" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_4_languages">Languages</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_4_languages" id="exec_4_languages" multiple size="3" data-explorer-payload="1">
+            <option value="English">English</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="French">French</option>
+            <option value="Italian">Italian</option>
+            <option value="German">German</option>
+            <option value="Mandarin">Mandarin</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Other">Other</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_4_market_experience">Market Experience</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_4_market_experience" id="exec_4_market_experience" multiple size="3" data-explorer-payload="1">
+            <option value="United States">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Dominican Republic">Dominican Republic</option>
+            <option value="Puerto Rico">Puerto Rico</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="Panama">Panama</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Chile">Chile</option>
+            <option value="Peru">Peru</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Caribbean">Caribbean</option>
+            <option value="CALA — Regional">CALA — Regional</option>
+            <option value="Europe">Europe</option>
+            <option value="Middle East">Middle East</option>
+            <option value="Central America">Central America</option>
+            <option value="South America">South America</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_4_core_expertise">Core Expertise</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_4_core_expertise" id="exec_4_core_expertise" multiple size="3" data-explorer-payload="1">
+            <option value="Revenue Management">Revenue Management</option>
+            <option value="Direct Booking">Direct Booking</option>
+            <option value="Distribution">Distribution</option>
+            <option value="Operations">Operations</option>
+            <option value="Pre-Opening / Transitions">Pre-Opening / Transitions</option>
+            <option value="Development">Development</option>
+            <option value="Finance & Owner Reporting">Finance & Owner Reporting</option>
+            <option value="F&B / Lifestyle">F&B / Lifestyle</option>
+            <option value="Brand Compliance">Brand Compliance</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Technology">Technology</option>
+            <option value="HR / Talent">HR / Talent</option>
+            <option value="Legal / Compliance">Legal / Compliance</option>
+            <option value="Owner Relations">Owner Relations</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_4_relevant_asset_types">Relevant Asset Types</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_4_relevant_asset_types" id="exec_4_relevant_asset_types" multiple size="3" data-explorer-payload="1">
+            <option value="Resort">Resort</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Independent">Independent</option>
+            <option value="Full-Service">Full-Service</option>
+            <option value="Select-Service">Select-Service</option>
+            <option value="Extended-Stay">Extended-Stay</option>
+            <option value="Urban">Urban</option>
+            <option value="Airport">Airport</option>
+            <option value="Convention">Convention</option>
+            <option value="Mixed-Use">Mixed-Use</option>
+            <option value="Branded">Branded</option>
+            <option value="Soft Brand">Soft Brand</option>
+            <option value="All-Inclusive">All-Inclusive</option>
+    </select>
+    </div>
+        </div>
+        </div>
         <div class="exec-headshot-section">
         <h3 class="project-fit-subheader case-study-row-subheader">Headshot</h3>
         <div class="case-study-grid">
@@ -5253,7 +5874,7 @@ Gateway and resort markets</textarea>
           </div>
         </div>
         </div>
-      </div><div class="case-block repeater-row" data-repeater-row="executives">
+      </div><div class="case-block repeater-row executives-repeater-row" data-repeater-row="executives">
         <button type="button" class="filter-reset-btn btn-remove-row">Remove Row</button>
         <h4>Executive 5</h4>
         
@@ -5284,20 +5905,116 @@ Gateway and resort markets</textarea>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_5_summary">
       Card Summary<span class="required">*</span>
-      <span class="help-text">2–3 sentences for the card front (max 500 characters).</span>
+      <span class="help-text">2–3 sentences for the card front (max 500 characters). Do not repeat the title or role line above—the Explorer card shows those separately.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_5_summary" id="exec_5_summary" rows="4" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Oversees financial controls, reporting integrity, forecasting discipline, and owner capital planning visibility.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_5_summary" id="exec_5_summary" rows="2" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Oversees financial controls, reporting integrity, forecasting discipline, and owner capital planning visibility.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
         
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_5_bio">
       Executive Bio (Hover)<span class="required">*</span>
-      <span class="help-text">Longer paragraph for hover/detail (max 600 characters).</span>
+      <span class="help-text">Longer paragraph for hover/detail (max 600 characters). Do not repeat the title or role line—focus on career highlights and owner-relevant impact.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_5_bio" id="exec_5_bio" rows="4" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Finance executive focused on control integrity, forecasting rigor, and capital visibility. Partners with owners on budget discipline, variance management, and investment planning.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_5_bio" id="exec_5_bio" rows="2" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">Finance executive focused on control integrity, forecasting rigor, and capital visibility. Partners with owners on budget discipline, variance management, and investment planning.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/600</div>
     </div>
+        
+        <div class="exec-profile-detail" data-exec-profile-detail="1">
+        <h3 class="project-fit-subheader case-study-row-subheader exec-profile-detail__title">Profile Detail</h3>
+        <div class="exec-profile-detail__grid">
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_5_hospitality_experience_years">Hospitality Experience (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_5_hospitality_experience_years" id="exec_5_hospitality_experience_years" placeholder="e.g. 28" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_5_company_tenure_years">Company Tenure (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_5_company_tenure_years" id="exec_5_company_tenure_years" placeholder="e.g. 9" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap exec-profile-detail__span-2">
+    <label class="form-label label-spacing" for="exec_5_prior_background">Prior Background</label>
+    <input class="form-input" type="text" name="exec_5_prior_background" id="exec_5_prior_background" placeholder="e.g. Hilton CALA development — 350+ management agreements" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_5_languages">Languages</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_5_languages" id="exec_5_languages" multiple size="3" data-explorer-payload="1">
+            <option value="English">English</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="French">French</option>
+            <option value="Italian">Italian</option>
+            <option value="German">German</option>
+            <option value="Mandarin">Mandarin</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Other">Other</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_5_market_experience">Market Experience</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_5_market_experience" id="exec_5_market_experience" multiple size="3" data-explorer-payload="1">
+            <option value="United States">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Dominican Republic">Dominican Republic</option>
+            <option value="Puerto Rico">Puerto Rico</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="Panama">Panama</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Chile">Chile</option>
+            <option value="Peru">Peru</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Caribbean">Caribbean</option>
+            <option value="CALA — Regional">CALA — Regional</option>
+            <option value="Europe">Europe</option>
+            <option value="Middle East">Middle East</option>
+            <option value="Central America">Central America</option>
+            <option value="South America">South America</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_5_core_expertise">Core Expertise</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_5_core_expertise" id="exec_5_core_expertise" multiple size="3" data-explorer-payload="1">
+            <option value="Revenue Management">Revenue Management</option>
+            <option value="Direct Booking">Direct Booking</option>
+            <option value="Distribution">Distribution</option>
+            <option value="Operations">Operations</option>
+            <option value="Pre-Opening / Transitions">Pre-Opening / Transitions</option>
+            <option value="Development">Development</option>
+            <option value="Finance & Owner Reporting">Finance & Owner Reporting</option>
+            <option value="F&B / Lifestyle">F&B / Lifestyle</option>
+            <option value="Brand Compliance">Brand Compliance</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Technology">Technology</option>
+            <option value="HR / Talent">HR / Talent</option>
+            <option value="Legal / Compliance">Legal / Compliance</option>
+            <option value="Owner Relations">Owner Relations</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_5_relevant_asset_types">Relevant Asset Types</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_5_relevant_asset_types" id="exec_5_relevant_asset_types" multiple size="3" data-explorer-payload="1">
+            <option value="Resort">Resort</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Independent">Independent</option>
+            <option value="Full-Service">Full-Service</option>
+            <option value="Select-Service">Select-Service</option>
+            <option value="Extended-Stay">Extended-Stay</option>
+            <option value="Urban">Urban</option>
+            <option value="Airport">Airport</option>
+            <option value="Convention">Convention</option>
+            <option value="Mixed-Use">Mixed-Use</option>
+            <option value="Branded">Branded</option>
+            <option value="Soft Brand">Soft Brand</option>
+            <option value="All-Inclusive">All-Inclusive</option>
+    </select>
+    </div>
+        </div>
+        </div>
         <div class="exec-headshot-section">
         <h3 class="project-fit-subheader case-study-row-subheader">Headshot</h3>
         <div class="case-study-grid">
@@ -5317,7 +6034,7 @@ Gateway and resort markets</textarea>
           </div>
         </div>
         </div>
-      </div><div class="case-block repeater-row" data-repeater-row="executives">
+      </div><div class="case-block repeater-row executives-repeater-row" data-repeater-row="executives">
         <button type="button" class="filter-reset-btn btn-remove-row">Remove Row</button>
         <h4>Executive 6</h4>
         
@@ -5348,20 +6065,116 @@ Gateway and resort markets</textarea>
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_6_summary">
       Card Summary<span class="required">*</span>
-      <span class="help-text">2–3 sentences for the card front (max 500 characters).</span>
+      <span class="help-text">2–3 sentences for the card front (max 500 characters). Do not repeat the title or role line above—the Explorer card shows those separately.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_6_summary" id="exec_6_summary" rows="4" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Builds talent operating model, leadership capability, and service consistency through structured culture systems.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_6_summary" id="exec_6_summary" rows="2" placeholder="2–3 sentences for the card front (max 500 characters)." maxlength="500" data-explorer-payload="1">Builds talent operating model, leadership capability, and service consistency through structured culture systems.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
         
     <div class="field-wrap">
     <label class="form-label label-spacing" for="exec_6_bio">
       Executive Bio (Hover)<span class="required">*</span>
-      <span class="help-text">Longer paragraph for hover/detail (max 600 characters).</span>
+      <span class="help-text">Longer paragraph for hover/detail (max 600 characters). Do not repeat the title or role line—focus on career highlights and owner-relevant impact.</span>
     </label>
-    <textarea class="form-textarea tall explorer-story-field" name="exec_6_bio" id="exec_6_bio" rows="4" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">People and culture leader designing scalable talent systems. Improves service consistency and leadership continuity through structured capability development.</textarea>
+    <textarea class="form-textarea explorer-story-field exec-compact-textarea" name="exec_6_bio" id="exec_6_bio" rows="2" placeholder="Longer paragraph for hover/detail (max 600 characters)." maxlength="600" data-explorer-payload="1">People and culture leader designing scalable talent systems. Improves service consistency and leadership continuity through structured capability development.</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/600</div>
     </div>
+        
+        <div class="exec-profile-detail" data-exec-profile-detail="1">
+        <h3 class="project-fit-subheader case-study-row-subheader exec-profile-detail__title">Profile Detail</h3>
+        <div class="exec-profile-detail__grid">
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_6_hospitality_experience_years">Hospitality Experience (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_6_hospitality_experience_years" id="exec_6_hospitality_experience_years" placeholder="e.g. 28" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_6_company_tenure_years">Company Tenure (Years)</label>
+    <input class="form-input" type="number" min="0" max="80" step="0.5" name="exec_6_company_tenure_years" id="exec_6_company_tenure_years" placeholder="e.g. 9" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap exec-profile-detail__span-2">
+    <label class="form-label label-spacing" for="exec_6_prior_background">Prior Background</label>
+    <input class="form-input" type="text" name="exec_6_prior_background" id="exec_6_prior_background" placeholder="e.g. Hilton CALA development — 350+ management agreements" data-explorer-payload="1">
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_6_languages">Languages</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_6_languages" id="exec_6_languages" multiple size="3" data-explorer-payload="1">
+            <option value="English">English</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="French">French</option>
+            <option value="Italian">Italian</option>
+            <option value="German">German</option>
+            <option value="Mandarin">Mandarin</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Other">Other</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_6_market_experience">Market Experience</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_6_market_experience" id="exec_6_market_experience" multiple size="3" data-explorer-payload="1">
+            <option value="United States">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Dominican Republic">Dominican Republic</option>
+            <option value="Puerto Rico">Puerto Rico</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="Panama">Panama</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Chile">Chile</option>
+            <option value="Peru">Peru</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Caribbean">Caribbean</option>
+            <option value="CALA — Regional">CALA — Regional</option>
+            <option value="Europe">Europe</option>
+            <option value="Middle East">Middle East</option>
+            <option value="Central America">Central America</option>
+            <option value="South America">South America</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_6_core_expertise">Core Expertise</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_6_core_expertise" id="exec_6_core_expertise" multiple size="3" data-explorer-payload="1">
+            <option value="Revenue Management">Revenue Management</option>
+            <option value="Direct Booking">Direct Booking</option>
+            <option value="Distribution">Distribution</option>
+            <option value="Operations">Operations</option>
+            <option value="Pre-Opening / Transitions">Pre-Opening / Transitions</option>
+            <option value="Development">Development</option>
+            <option value="Finance & Owner Reporting">Finance & Owner Reporting</option>
+            <option value="F&B / Lifestyle">F&B / Lifestyle</option>
+            <option value="Brand Compliance">Brand Compliance</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Technology">Technology</option>
+            <option value="HR / Talent">HR / Talent</option>
+            <option value="Legal / Compliance">Legal / Compliance</option>
+            <option value="Owner Relations">Owner Relations</option>
+    </select>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="exec_6_relevant_asset_types">Relevant Asset Types</label>
+    <span class="help-text">Hold Ctrl/Cmd to select multiple.</span>
+    <select class="form-select exec-profile-multiselect" name="exec_6_relevant_asset_types" id="exec_6_relevant_asset_types" multiple size="3" data-explorer-payload="1">
+            <option value="Resort">Resort</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Independent">Independent</option>
+            <option value="Full-Service">Full-Service</option>
+            <option value="Select-Service">Select-Service</option>
+            <option value="Extended-Stay">Extended-Stay</option>
+            <option value="Urban">Urban</option>
+            <option value="Airport">Airport</option>
+            <option value="Convention">Convention</option>
+            <option value="Mixed-Use">Mixed-Use</option>
+            <option value="Branded">Branded</option>
+            <option value="Soft Brand">Soft Brand</option>
+            <option value="All-Inclusive">All-Inclusive</option>
+    </select>
+    </div>
+        </div>
+        </div>
         <div class="exec-headshot-section">
         <h3 class="project-fit-subheader case-study-row-subheader">Headshot</h3>
         <div class="case-study-grid">
@@ -5463,7 +6276,7 @@ Assignments without transition runway</textarea>
         Supported Asset Types<span class="required">*</span>
         <span class="help-text">Building / asset categories (matches Acceptable Building Types in Ideal Projects).</span>
       </label>
-      <select class="form-select bf-quant-multiselect" name="bf_selected_asset_types" id="bf_selected_asset_types" multiple size="6" data-explorer-payload="1">
+      <select class="form-select bf-quant-multiselect" name="bf_selected_asset_types" id="bf_selected_asset_types" multiple size="5" data-explorer-payload="1">
         <option value="Low-Rise" selected>Low-Rise</option><option value="Mid-Rise" selected>Mid-Rise</option><option value="Mixed-Use" selected>Mixed-Use</option><option value="Podium / Tower" selected>Podium / Tower</option><option value="Historic / Renovated">Historic / Renovated</option><option value="Resort-Style Compound">Resort-Style Compound</option>
       </select>
       <input type="hidden" name="bf_q_assets" id="bf_q_assets" value="4" data-explorer-payload="1" />
@@ -5487,8 +6300,8 @@ Assignments without transition runway</textarea>
         Supported Deal Structures<span class="required">*</span>
         <span class="help-text">Agreement types (matches Acceptable Agreement Types in Ideal Projects).</span>
       </label>
-      <select class="form-select bf-quant-multiselect" name="bf_selected_deal_structures" id="bf_selected_deal_structures" multiple size="4" data-explorer-payload="1">
-        <option value="Third-Party Management (Franchised Brand)" selected>Third-Party Management (Franchised Brand)</option><option value="Third-Party Management (Independent / Soft Brand)" selected>Third-Party Management (Independent / Soft Brand)</option><option value="Hybrid / Operating Lease Structure" selected>Hybrid / Operating Lease Structure</option><option value="Joint Venture / Equity" selected>Joint Venture / Equity</option>
+      <select class="form-select bf-quant-multiselect" name="bf_selected_deal_structures" id="bf_selected_deal_structures" multiple size="6" data-explorer-payload="1">
+        <option value="Third-Party Management (Franchised Brand)" selected>Third-Party Management (Franchised Brand)</option><option value="Third-Party Management (Independent / Soft Brand)" selected>Third-Party Management (Independent / Soft Brand)</option><option value="Hybrid / Operating Lease Structure" selected>Hybrid / Operating Lease Structure</option><option value="Joint Venture / Equity" selected>Joint Venture / Equity</option><option value="Brand + Third-Party Mgmt. (Separate)">Brand + Third-Party Mgmt. (Separate)</option>
       </select>
       <input type="hidden" name="bf_q_deals" id="bf_q_deals" value="4" data-explorer-payload="1" />
       <p class="bf-quant-count-readout" aria-live="polite">Count (for your profile): <strong class="bf-quant-count-strong" id="bf_q_deals_readout">4</strong></p>
@@ -5550,6 +6363,14 @@ Assignments without transition runway</textarea>
     </label>
     <input class="form-input" type="text" name="bf_signal_capital" id="bf_signal_capital" value="Moderate to High" placeholder="e.g. Moderate to High" data-explorer-payload="1">
     </div>
+
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="bf_signal_residence">
+      Branded Residence Fit Signal
+      <span class="help-text">Short phrase for owners comparing mixed-use / residence deals (e.g. Integrated tower specialist, Case-by-Case).</span>
+    </label>
+    <input class="form-input" type="text" name="bf_signal_residence" id="bf_signal_residence" placeholder="e.g. Integrated hotel-residence operator" data-explorer-payload="1">
+    </div>
     </div>
   
 
@@ -5567,9 +6388,10 @@ Assignments without transition runway</textarea>
                                         Acceptable Project Types
                                         <span class="help-text">Recommended. Actively pursue—see multi-select rule above. <span class="selection-count"></span></span>
                                     </label>
-                                    <select class="form-select" id="idealProjectTypesSelect" name="idealProjectTypes" multiple size="2">
+                                    <select class="form-select" id="idealProjectTypesSelect" name="idealProjectTypes" multiple size="3">
                                         <option value="New Build">New Build</option>
                                         <option value="Conversion / Reflag">Conversion / Reflag</option>
+                                        <option value="Mixed-Use Hospitality Project">Mixed-Use Hospitality Project</option>
                                     </select>
                                 </div>
 
@@ -5593,11 +6415,12 @@ Assignments without transition runway</textarea>
                                         Acceptable Agreement Types
                                         <span class="help-text">Recommended. Actively pursue. <span class="selection-count"></span></span>
                                     </label>
-                                    <select class="form-select" id="idealAgreementTypesSelect" name="idealAgreementTypes" multiple size="4">
+                                    <select class="form-select" id="idealAgreementTypesSelect" name="idealAgreementTypes" multiple size="5">
                                         <option value="Third-Party Management (Franchised Brand)">Third-Party Management (Franchised Brand)</option>
                                         <option value="Third-Party Management (Independent / Soft Brand)">Third-Party Management (Independent / Soft Brand)</option>
                                         <option value="Hybrid / Operating Lease Structure">Hybrid / Operating Lease Structure</option>
                                         <option value="Joint Venture / Equity">Joint Venture / Equity</option>
+                                        <option value="Brand + Third-Party Mgmt. (Separate)">Brand + Third-Party Mgmt. (Separate)</option>
                                     </select>
                                 </div>
 
@@ -5679,7 +6502,7 @@ Assignments without transition runway</textarea>
                                     <option value="">Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
-                                    <option value="Case-by-case">Case-by-case</option>
+                                    <option value="Case-by-Case">Case-by-Case</option>
                                 </select>
 
                                 <label class="form-label label-spacing">
@@ -5690,7 +6513,7 @@ Assignments without transition runway</textarea>
                                     <option value="">Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
-                                    <option value="Case-by-case">Case-by-case</option>
+                                    <option value="Case-by-Case">Case-by-Case</option>
                                 </select>
 
                                 <label class="form-label label-spacing">
@@ -5701,8 +6524,52 @@ Assignments without transition runway</textarea>
                                     <option value="">Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
-                                    <option value="Case-by-case">Case-by-case</option>
+                                    <option value="Case-by-Case">Case-by-Case</option>
                                 </select>
+
+                                <h3 class="project-fit-subheader spacing-top-12">Mixed-Use &amp; Branded Residence Experience</h3>
+                                <p class="help-text" style="margin-bottom: 12px; max-width: 920px;">Willingness fields above are gates; the fields below capture <strong>operating experience</strong> and program models—aligned with owner deal intake for mixed-use hospitality projects.</p>
+
+                                <label class="form-label label-spacing" for="brandedResidenceExperienceLevel">
+                                    Branded Residence Experience Level
+                                    <span class="help-text">Depth of branded residence / condo-hotel operating experience—not just openness.</span>
+                                </label>
+                                <select class="form-select" id="brandedResidenceExperienceLevel" name="brandedResidenceExperienceLevel">
+                                    <option value="">Select…</option>
+                                    <option value="Strong">Strong</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Limited">Limited</option>
+                                    <option value="None documented">None documented</option>
+                                    <option value="Unknown">Unknown</option>
+                                </select>
+
+                                <div class="multi-select-with-count spacing-top-12">
+                                    <label class="form-label label-spacing" for="brandedResidenceProgramModelsSupportedSelect">
+                                        Branded Residence Program Models Supported
+                                        <span class="help-text">How residences relate to the hotel brand and operator. <span class="selection-count"></span></span>
+                                    </label>
+                                    <select class="form-select" id="brandedResidenceProgramModelsSupportedSelect" name="brandedResidenceProgramModelsSupported" multiple size="5">
+                                        <option value="Hotel-branded residences (integrated with hotel)">Hotel-branded residences (integrated with hotel)</option>
+                                        <option value="Branded residences + independent condo units (same building)">Branded residences + independent condo units (same building)</option>
+                                        <option value="Condo-hotel / rental pool integrated">Condo-hotel / rental pool integrated</option>
+                                        <option value="Residences only — hotel component separate">Residences only — hotel component separate</option>
+                                        <option value="To be defined with operator">To be defined with operator</option>
+                                    </select>
+                                </div>
+
+                                <div class="multi-select-with-count spacing-top-12">
+                                    <label class="form-label label-spacing" for="condoRentalProgramModelsSupportedSelect">
+                                        Condo Rental Program Models Supported
+                                        <span class="help-text">Rental-pool models you can operate or support. <span class="selection-count"></span></span>
+                                    </label>
+                                    <select class="form-select" id="condoRentalProgramModelsSupportedSelect" name="condoRentalProgramModelsSupported" multiple size="5">
+                                        <option value="Operator-managed rental pool (optional owner participation)">Operator-managed rental pool (optional owner participation)</option>
+                                        <option value="Operator-managed rental pool (mandatory participation)">Operator-managed rental pool (mandatory participation)</option>
+                                        <option value="Owner-managed rental pool">Owner-managed rental pool</option>
+                                        <option value="No rental program (owner use only)">No rental program (owner use only)</option>
+                                        <option value="To be defined with operator">To be defined with operator</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <!-- RIGHT: Priority vs Markets to Avoid -->
@@ -6537,7 +7404,7 @@ Assignments without transition runway</textarea>
                                     <option value="No early termination">No early termination</option>
                                     <option value="Allowed with X months fees">Allowed with X months fees</option>
                                     <option value="Allowed with step-down schedule">Allowed with step-down schedule</option>
-                                    <option value="Case-by-case">Case-by-case</option>
+                                    <option value="Case-by-Case">Case-by-Case</option>
                                     <option value="Typically none">Typically none</option>
                                 </select>
                                 <input type="text" class="form-input" id="terminationFeeStructureNotes" name="terminationFeeStructureNotes" placeholder="Additional notes (e.g., 6–12 months fees, step-down after year 10)" style="margin-top: 8px;">
@@ -6551,7 +7418,7 @@ Assignments without transition runway</textarea>
                                     <option value="">Select one...</option>
                                     <option value="Owner only">Owner only</option>
                                     <option value="Mutual">Mutual</option>
-                                    <option value="Rarely exercised / Case-by-case">Rarely exercised / Case-by-case</option>
+                                    <option value="Rarely exercised / Case-by-Case">Rarely exercised / Case-by-Case</option>
                                 </select>
                             </div>
 
@@ -6678,9 +7545,18 @@ Assignments without transition runway</textarea>
                                     <div class="form-group">
                                         <label class="form-label">
                                             Hotel / Asset Type
-                                            <span class="help-text">Type, scale, service level.</span>
+                                            <span class="help-text">Type, scale, service level—include branded residences / condo-hotel when applicable.</span>
                                         </label>
-                                        <input type="text" class="form-input cs-hotel-type" maxlength="200" placeholder="e.g. Upper upscale full-service, select extended-stay">
+                                        <input type="text" class="form-input cs-hotel-type" maxlength="200" placeholder="e.g. Upper upscale full-service" list="caseStudyHotelTypeOptions">
+                                        <datalist id="caseStudyHotelTypeOptions">
+                                            <option value="Full-Service"></option>
+                                            <option value="Select-Service"></option>
+                                            <option value="Resort"></option>
+                                            <option value="Boutique"></option>
+                                            <option value="Lifestyle"></option>
+                                            <option value="Branded Residences / Condo Hotel"></option>
+                                            <option value="Mixed-Use Hospitality"></option>
+                                        </datalist>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">
@@ -6874,8 +7750,14 @@ Assignments without transition runway</textarea>
     </div>
 
     <!-- Load before inline init: async prefill microtasks run before the next <script>, so this must exist before loadRecordPrefillIfAny. -->
-    <script src="js/operator-leadership-member-map.js?v=oe-leadership-profile-20260530h"></script>
-    <script src="js/operator-setup-explorer-behavior.js?v=oe-leadership-profile-20260530h"></script>
+    <script src="js/operator-leadership-platform-setup.js?v=oe-leadership-platform-prefill-20260603"></script>
+    <script src="js/operator-infrastructure-platform-setup.js?v=oe-infra-platform-he-cala-20260603"></script>
+    <script src="js/operator-engagement-reporting-setup.js?v=oe-engagement-reporting-20260603"></script>
+    <script src="js/operator-operating-platform-setup.js?v=oe-operating-platform-20260603"></script>
+    <script src="js/operator-brand-relationships-setup.js?v=oe-brand-relationships-20260603"></script>
+    <script src="js/operator-setup-brands-managed.js?v=oe-setup-brands-lazy-20260602"></script>
+    <script src="js/operator-leadership-member-map.js?v=oe-setup-market-options-20260530"></script>
+    <script src="js/operator-setup-explorer-behavior.js?v=oe-setup-leadership-prefill-20260603"></script>
 
     <script>
         /**
@@ -6957,54 +7839,180 @@ Assignments without transition runway</textarea>
 
             const form = document.getElementById('operatorIntakeForm');
 
+            /** Edit mode: record id from iframe URL, parent shell hash, or parent search. */
+            var OPERATOR_SETUP_RECORD_ID_ALIASES = {
+                recWPKu5laVZcsvpn: 'recWPKu5laVZxsvpn'
+            };
+
+            function resolveOperatorSetupRecordId() {
+                var params = new URLSearchParams(window.location.search || '');
+                var id = params.get('recordId') || params.get('operatorId') || params.get('id');
+                if (id && String(id).trim()) id = String(id).trim();
+                else id = '';
+                if (!id) {
+                    try {
+                        if (window.parent && window.parent !== window) {
+                            var parentHash = window.parent.location.hash || '';
+                            var hashBody = parentHash.charAt(0) === '#' ? parentHash.slice(1) : parentHash;
+                            var qIdx = hashBody.indexOf('?');
+                            if (qIdx >= 0) {
+                                var hashQs = new URLSearchParams(hashBody.slice(qIdx + 1));
+                                id = hashQs.get('recordId') || hashQs.get('operatorId') || hashQs.get('id') || '';
+                                if (id) id = String(id).trim();
+                            }
+                            if (!id) {
+                                var parentSearch = new URLSearchParams(window.parent.location.search || '');
+                                id = parentSearch.get('recordId') || parentSearch.get('operatorId') || parentSearch.get('id') || '';
+                                if (id) id = String(id).trim();
+                            }
+                        }
+                    } catch (_parentErr) {
+                        /* cross-origin parent — ignore */
+                    }
+                }
+                if (id && OPERATOR_SETUP_RECORD_ID_ALIASES[id]) {
+                    console.warn('[operator-setup] Corrected recordId:', id, '->', OPERATOR_SETUP_RECORD_ID_ALIASES[id]);
+                    id = OPERATOR_SETUP_RECORD_ID_ALIASES[id];
+                }
+                return id || '';
+            }
+
+            function yieldToBrowser() {
+                return new Promise(function (resolve) {
+                    requestAnimationFrame(function () {
+                        setTimeout(resolve, 0);
+                    });
+                });
+            }
+
+            function scheduleOperatorSetupIdleWork(fn, timeoutMs) {
+                var t = timeoutMs == null ? 1500 : timeoutMs;
+                if (typeof requestIdleCallback === 'function') {
+                    requestIdleCallback(function () { fn(); }, { timeout: t });
+                } else {
+                    setTimeout(fn, 0);
+                }
+            }
+
+            function fetchWithTimeout(url, ms) {
+                ms = ms || 25000;
+                if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+                    return fetch(url, { signal: AbortSignal.timeout(ms) });
+                }
+                var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+                var timer = setTimeout(function () {
+                    if (controller) controller.abort();
+                }, ms);
+                return fetch(url, controller ? { signal: controller.signal } : undefined).finally(function () {
+                    clearTimeout(timer);
+                });
+            }
+
+            function setOperatorSetupPrefillBanner(visible, message) {
+                var banner = document.getElementById('operatorSetupPrefillBanner');
+                if (!banner) return;
+                if (message) banner.textContent = message;
+                banner.classList.toggle('is-visible', !!visible);
+            }
+
+            /** Clear one control's baked-in demo/gold default. */
+            function clearOneGoldDefaultEl(el) {
+                if (!el) return;
+                var tag = el.tagName;
+                if (tag === 'INPUT') {
+                    var t = el.type;
+                    if (t === 'file' || t === 'button' || t === 'submit' || t === 'reset') return;
+                    if (el.readOnly) return;
+                    if (t === 'hidden') {
+                        var hidId = el.id;
+                        if (hidId === 'lead_kpi_functions' || hidId === 'bf_q_assets' || hidId === 'bf_q_situations' || hidId === 'bf_q_deals') {
+                            el.value = '0';
+                        }
+                        return;
+                    }
+                    if (t === 'checkbox') {
+                        if (el.id === 'displayLeadershipOnExplorer') return;
+                        el.checked = false;
+                        return;
+                    }
+                    if (t === 'radio') {
+                        el.checked = false;
+                        return;
+                    }
+                    el.value = '';
+                    return;
+                }
+                if (tag === 'TEXTAREA') {
+                    if (el.readOnly) return;
+                    el.value = '';
+                    return;
+                }
+                if (tag === 'SELECT') {
+                    if (el.id === 'brandsManagedSelect') return;
+                    if (el.multiple) {
+                        Array.from(el.options).forEach(function (opt) {
+                            opt.selected = false;
+                        });
+                    } else {
+                        el.selectedIndex = 0;
+                    }
+                }
+            }
+
             /** New Two is write-only: strip gold/mock defaults baked into the HTML (not API prefill). */
             function clearEmbeddedOperatorSetupGoldDefaults(formEl) {
                 if (!formEl) return;
-                formEl.querySelectorAll('input, textarea, select').forEach(function (el) {
-                    var tag = el.tagName;
-                    if (tag === 'INPUT') {
-                        var t = el.type;
-                        if (t === 'file' || t === 'button' || t === 'submit' || t === 'reset') return;
-                        if (el.readOnly) return;
-                        if (t === 'hidden') {
-                            var hidId = el.id;
-                            if (hidId === 'lead_kpi_functions' || hidId === 'bf_q_assets' || hidId === 'bf_q_situations' || hidId === 'bf_q_deals') {
-                                el.value = '0';
-                            }
-                            return;
-                        }
-                        if (t === 'checkbox') {
-                            if (el.id === 'displayLeadershipOnExplorer') return;
-                            el.checked = false;
-                            return;
-                        }
-                        if (t === 'radio') {
-                            el.checked = false;
-                            return;
-                        }
-                        el.value = '';
-                        return;
-                    }
-                    if (tag === 'TEXTAREA') {
-                        if (el.readOnly) return;
-                        el.value = '';
-                        return;
-                    }
-                    if (tag === 'SELECT') {
-                        if (el.multiple) {
-                            Array.from(el.options).forEach(function (opt) {
-                                opt.selected = false;
-                            });
-                        } else {
-                            el.selectedIndex = 0;
-                        }
-                    }
-                });
+                formEl.querySelectorAll('input, textarea, select').forEach(clearOneGoldDefaultEl);
             }
-            clearEmbeddedOperatorSetupGoldDefaults(form);
+
+            /** Non-blocking clear — yields to the browser between chunks to avoid "Page Unresponsive". */
+            function clearEmbeddedOperatorSetupGoldDefaultsBatched(formEl, onDone) {
+                if (!formEl) {
+                    if (onDone) onDone();
+                    return;
+                }
+                var els = formEl.querySelectorAll('input, textarea, select');
+                var i = 0;
+                var CHUNK = 48;
+                function tick() {
+                    var end = Math.min(i + CHUNK, els.length);
+                    for (; i < end; i++) clearOneGoldDefaultEl(els[i]);
+                    if (i < els.length) {
+                        requestAnimationFrame(tick);
+                    } else if (onDone) {
+                        onDone();
+                    }
+                }
+                requestAnimationFrame(tick);
+            }
+
+            var operatorSetupEditRecordId = resolveOperatorSetupRecordId();
+            var operatorSetupPrefillStartPending = false;
+            var loadBrandsThenPrefillRef = null;
+
+            function tryStartBrandsAndPrefill() {
+                if (typeof loadBrandsThenPrefillRef !== 'function') {
+                    operatorSetupPrefillStartPending = true;
+                    return;
+                }
+                operatorSetupPrefillStartPending = false;
+                loadBrandsThenPrefillRef();
+            }
 
             if (typeof initThirdPartyOperatorFootprint === 'function') {
-                initThirdPartyOperatorFootprint(form, { toast: showOperatorToast });
+                scheduleOperatorSetupIdleWork(function () {
+                    initThirdPartyOperatorFootprint(form, { toast: showOperatorToast });
+                });
+            }
+
+            if (operatorSetupEditRecordId) {
+                form.classList.add('operator-setup-prefill-loading');
+                setOperatorSetupPrefillBanner(true, 'Loading operator data…');
+                operatorSetupPrefillStartPending = true;
+            } else {
+                clearEmbeddedOperatorSetupGoldDefaultsBatched(form, function () {
+                    tryStartBrandsAndPrefill();
+                });
             }
 
             (function bindIntakeBreadcrumbBack() {
@@ -7241,6 +8249,7 @@ Assignments without transition runway</textarea>
             }
 
             function updateRequiredQuestionCounts() {
+                if (form && form.dataset.suppressRequiredCount === '1') return;
                 sections.forEach(function (sec) {
                     var notes = sec.querySelectorAll('.required-note .required-count');
                     if (!notes.length) return;
@@ -7415,10 +8424,62 @@ Assignments without transition runway</textarea>
                         goToSection(targetSectionId);
                     }
                 });
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const targetSectionId = parseInt(this.dataset.section, 10);
+                        if (!Number.isNaN(targetSectionId)) goToSection(targetSectionId);
+                    }
+                });
             });
 
-            // Initialize
+            // Initialize — tabs work immediately; heavy multi-select UI init runs when idle
             updateSectionNavigation();
+
+            function initOperatorSetupMultiSelectUi() {
+            // Add selection count to all multi-select fields
+            document.querySelectorAll('select[multiple]').forEach(select => {
+                select.addEventListener('change', function() {
+                    updateSelectionCount(this);
+                });
+                updateSelectionCount(select);
+            });
+
+            (function initSearchableMultiSelects() {
+                var MULTI_SELECT_SEARCH_THRESHOLD = 10;
+                document.querySelectorAll('select[multiple]').forEach(function(select) {
+                    if (select.id === 'brandsManagedSelect') return;
+                    var options = select.options;
+                    if (!options || options.length < MULTI_SELECT_SEARCH_THRESHOLD) return;
+                    if (select.closest('.multi-select-with-search')) return;
+                    var wrapper = document.createElement('div');
+                    wrapper.className = 'multi-select-with-search';
+                    select.parentNode.insertBefore(wrapper, select);
+                    wrapper.appendChild(select);
+                    var input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'multi-select-search-input';
+                    input.placeholder = 'Filter options...';
+                    input.setAttribute('aria-label', 'Filter options in list below');
+                    wrapper.insertBefore(input, select);
+                    function filterOptions() {
+                        var q = (input.value || '').trim().toLowerCase();
+                        for (var i = 0; i < options.length; i++) {
+                            var opt = options[i];
+                            var text = (opt.textContent || opt.text || '').trim().toLowerCase();
+                            if (!q || text.indexOf(q) !== -1) opt.removeAttribute('data-filter-hidden');
+                            else opt.setAttribute('data-filter-hidden', 'true');
+                        }
+                    }
+                    input.addEventListener('input', filterOptions);
+                    input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape') { input.value = ''; filterOptions(); input.blur(); }
+                    });
+                });
+            })();
+            }
+
+            scheduleOperatorSetupIdleWork(initOperatorSetupMultiSelectUi);
 
             /**
              * Handles visibility and validation of "Other" option for multi-select fields
@@ -7518,46 +8579,6 @@ Assignments without transition runway</textarea>
                 const selectedCount = selectElement.selectedOptions.length;
                 countIndicator.textContent = selectedCount > 0 ? '(' + selectedCount + ' selected)' : '';
             }
-
-            // Add selection count to all multi-select fields
-            document.querySelectorAll('select[multiple]').forEach(select => {
-                select.addEventListener('change', function() {
-                    updateSelectionCount(this);
-                });
-                updateSelectionCount(select);
-            });
-
-            (function initSearchableMultiSelects() {
-                var MULTI_SELECT_SEARCH_THRESHOLD = 10;
-                document.querySelectorAll('select[multiple]').forEach(function(select) {
-                    var options = select.options;
-                    if (!options || options.length < MULTI_SELECT_SEARCH_THRESHOLD) return;
-                    if (select.closest('.multi-select-with-search')) return;
-                    var wrapper = document.createElement('div');
-                    wrapper.className = 'multi-select-with-search';
-                    select.parentNode.insertBefore(wrapper, select);
-                    wrapper.appendChild(select);
-                    var input = document.createElement('input');
-                    input.type = 'text';
-                    input.className = 'multi-select-search-input';
-                    input.placeholder = 'Filter options...';
-                    input.setAttribute('aria-label', 'Filter options in list below');
-                    wrapper.insertBefore(input, select);
-                    function filterOptions() {
-                        var q = (input.value || '').trim().toLowerCase();
-                        for (var i = 0; i < options.length; i++) {
-                            var opt = options[i];
-                            var text = (opt.textContent || opt.text || '').trim().toLowerCase();
-                            if (!q || text.indexOf(q) !== -1) opt.removeAttribute('data-filter-hidden');
-                            else opt.setAttribute('data-filter-hidden', 'true');
-                        }
-                    }
-                    input.addEventListener('input', filterOptions);
-                    input.addEventListener('keydown', function(e) {
-                        if (e.key === 'Escape') { input.value = ''; filterOptions(); input.blur(); }
-                    });
-                });
-            })();
 
             /** Thousands separators for Footprint hotel/room cells (US locale). */
             function formatFootprintHotelsRoomsDisplay(n) {
@@ -7841,8 +8862,7 @@ Assignments without transition runway</textarea>
                 });
                 inp.addEventListener('change', calculateGeoTotals);
             });
-            // Initialize totals
-            calculateGeoTotals();
+            scheduleOperatorSetupIdleWork(calculateGeoTotals);
 
             // Chain scale totals (sum per-chain properties/rooms into portfolio totals)
             const chainScaleFields = [
@@ -7933,7 +8953,7 @@ Assignments without transition runway</textarea>
                 }
                 inp.addEventListener('change', calculateChainScaleTotals);
             });
-            calculateChainScaleTotals();
+            scheduleOperatorSetupIdleWork(calculateChainScaleTotals);
 
             (function bindFootprintAlignButtons() {
                 const btnGeo = document.getElementById('btnAlignGeoToChain');
@@ -8154,6 +9174,11 @@ Assignments without transition runway</textarea>
             })();
 
             function filterBrandsManagedOptions() {
+                var bm = window.OperatorSetupBrandsManaged;
+                if (bm && typeof bm.filterBrandsManagedOptions === 'function') {
+                    bm.filterBrandsManagedOptions(cachedElements.brandsManagedSelect, cachedElements.brandsManagedSearch);
+                    return;
+                }
                 const input = cachedElements.brandsManagedSearch;
                 const select = cachedElements.brandsManagedSelect;
                 if (!input || !select) return;
@@ -8187,7 +9212,7 @@ Assignments without transition runway</textarea>
             }
 
             /**
-             * Loads brands into the searchable multi-select (deal-setup style, no max selections).
+             * Load brand catalog (memory) and bind lazy search-driven multiselect — avoids rendering 1000s of <option>s.
              */
             async function loadBrandsFromAirtable(retryCount = 0) {
                 const MAX_RETRIES = 3;
@@ -8195,6 +9220,7 @@ Assignments without transition runway</textarea>
 
                 const select = cachedElements.brandsManagedSelect;
                 const searchInput = cachedElements.brandsManagedSearch;
+                const bm = window.OperatorSetupBrandsManaged;
                 if (!select) {
                     console.error('Brands select not found');
                     return;
@@ -8206,59 +9232,23 @@ Assignments without transition runway</textarea>
                     select.innerHTML = '';
                     const loadingOpt = document.createElement('option');
                     loadingOpt.value = '';
-                    loadingOpt.textContent = 'Loading Brands…';
+                    loadingOpt.textContent = 'Loading brand catalog…';
                     loadingOpt.disabled = true;
                     loadingOpt.selected = true;
                     select.appendChild(loadingOpt);
 
-                    const response = await fetch(CONSTANTS.API_ENDPOINTS.BRANDS_GROUPED, {
-                        method: 'GET',
-                        headers: { 'Content-Type': 'application/json' },
-                        signal: AbortSignal.timeout(10000)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                    if (bm && typeof bm.loadBrandsCatalog === 'function') {
+                        await bm.loadBrandsCatalog(CONSTANTS.API_ENDPOINTS.BRANDS_GROUPED);
+                        bm.renderBrandsManagedSelect(select, searchInput ? searchInput.value : '', new Set());
+                    } else {
+                        throw new Error('Brands module not loaded');
                     }
-
-                    const data = await response.json();
-                    if (!data.success || !data.brandsByParentCompany) {
-                        throw new Error('Invalid response from API');
-                    }
-
-                    select.innerHTML = '';
-
-                    data.brandsByParentCompany.forEach(function(group) {
-                        const parentCompany = group.parentCompany || 'Other';
-                        const og = document.createElement('optgroup');
-                        og.label = parentCompany + ' brands';
-                        (group.brands || []).forEach(function(brand) {
-                            const name = brand.name || brand;
-                            if (!name) return;
-                            const opt = document.createElement('option');
-                            opt.value = name;
-                            opt.textContent = name;
-                            og.appendChild(opt);
-                        });
-                        if (og.children.length > 0) {
-                            select.appendChild(og);
-                        }
-                    });
-
-                    const extraOg = document.createElement('optgroup');
-                    extraOg.label = 'Also report';
-                    const ind = document.createElement('option');
-                    ind.value = 'Independent';
-                    ind.textContent = 'Independent';
-                    extraOg.appendChild(ind);
-                    const oth = document.createElement('option');
-                    oth.value = 'Other';
-                    oth.textContent = 'Other (specify below)';
-                    extraOg.appendChild(oth);
-                    select.appendChild(extraOg);
 
                     if (!select.dataset.brandsListenersBound) {
                         select.addEventListener('change', function() {
+                            if (bm && typeof bm.filterBrandsManagedOptions === 'function') {
+                                bm.filterBrandsManagedOptions(select, searchInput);
+                            }
                             syncBrandsOtherFromSelect();
                             updateBrandCount();
                             generateBrandUnitsTable();
@@ -8295,15 +9285,11 @@ Assignments without transition runway</textarea>
                         cachedElements.additionalBrands.dataset.brandsExtraBound = 'true';
                     }
 
-                    filterBrandsManagedOptions();
                     syncBrandsOtherFromSelect();
                     updateBrandCount();
                     if (typeof updateSelectionCount === 'function') {
                         updateSelectionCount(select);
                     }
-                    setTimeout(function() {
-                        generateBrandUnitsTable();
-                    }, 100);
                 } catch (error) {
                     console.error('Error loading brands from Airtable:', error);
 
@@ -8326,101 +9312,270 @@ Assignments without transition runway</textarea>
             }
 
             async function loadBrandsThenPrefill() {
-                await loadBrandsFromAirtable();
+                try {
+                    await loadBrandsFromAirtable();
+                } catch (brandErr) {
+                    console.warn('Brand load failed; continuing with operator prefill', brandErr);
+                }
                 await loadRecordPrefillIfAny();
+            }
+            loadBrandsThenPrefillRef = loadBrandsThenPrefill;
+            if (operatorSetupPrefillStartPending) tryStartBrandsAndPrefill();
+
+            function applyPrefillValueToControl(el, value, applySingleSelectPrefill) {
+                if (!el || value == null) return;
+                if (el.type === 'checkbox') {
+                    var cv = Array.isArray(value) ? value[0] : value;
+                    el.checked = cv === true || cv === 'yes' || cv === 'true' || cv === '1' ||
+                        String(cv || '').toLowerCase() === 'on';
+                    return;
+                }
+                if (el.tagName === 'SELECT' && el.multiple) {
+                    const vals = Array.isArray(value)
+                        ? value.map(function(v) { return String(v).trim(); })
+                        : String(value).split(',').map(function(v) { return v.trim(); }).filter(Boolean);
+                    Array.from(el.options).forEach(function(opt) {
+                        opt.selected = vals.indexOf(String(opt.value).trim()) !== -1;
+                    });
+                    return;
+                }
+                if (el.tagName === 'SELECT' && !el.multiple) {
+                    applySingleSelectPrefill(el, Array.isArray(value) ? value[0] : value);
+                    return;
+                }
+                if (Array.isArray(value)) {
+                    el.value = value.length ? String(value[0]) : '';
+                } else {
+                    el.value = String(value);
+                }
+            }
+
+            function applySingleSelectPrefill(select, raw) {
+                if (!select || select.multiple) return;
+                var v = raw == null ? '' : String(raw).trim();
+                if (v === '') return;
+                var norm = v.replace(/\u2013/g, '-').replace(/\u2014/g, '-').trim();
+                select.value = norm;
+                if (select.value === norm) return;
+                var opts = Array.from(select.options);
+                var i, o, ov;
+                for (i = 0; i < opts.length; i++) {
+                    o = opts[i];
+                    if (!o.value) continue;
+                    ov = o.value.replace(/\u2013/g, '-').replace(/\u2014/g, '-').trim();
+                    if (ov === norm) {
+                        select.value = o.value;
+                        return;
+                    }
+                }
+                var nl = norm.toLowerCase();
+                for (i = 0; i < opts.length; i++) {
+                    o = opts[i];
+                    if (o.value && o.value.toLowerCase() === nl) {
+                        select.value = o.value;
+                        return;
+                    }
+                }
+            }
+
+            async function applyPrefillFromKeys(prefill, keyNames) {
+                var PREFILL_KEY_CHUNK = 24;
+                for (var ki = 0; ki < keyNames.length; ki += PREFILL_KEY_CHUNK) {
+                    keyNames.slice(ki, ki + PREFILL_KEY_CHUNK).forEach(function(name) {
+                        if (!name || !(name in prefill)) return;
+                        if (name === 'brands' && window.OperatorSetupBrandsManaged) return;
+                        var value = prefill[name];
+                        if (value == null) return;
+                        var nodes = form.querySelectorAll('[name="' + name.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"]');
+                        for (var ni = 0; ni < nodes.length; ni++) {
+                            applyPrefillValueToControl(nodes[ni], value, applySingleSelectPrefill);
+                        }
+                    });
+                    await yieldToBrowser();
+                }
+            }
+
+            function isLeadershipTabScalarPrefillKey(key) {
+                if (!key || /^exec_\d+_/.test(key)) return false;
+                if (key === 'leadershipPlatform' || key === 'infrastructurePlatform' || key === 'engagementReporting' || key === 'engagementPlatform' || key === 'operatingPlatform' || key === 'brandRelationships') return false;
+                if (/^lead_/.test(key)) return true;
+                return [
+                    'regionalTeams', 'totalEmployees', 'avgExperience', 'certifications',
+                    'mkt_signal_fte', 'mkt_signal_years', 'mkt_signal_gateway', 'mkt_signal_mix',
+                    'displayLeadershipOnExplorer'
+                ].indexOf(key) !== -1;
+            }
+
+            function collectLeadershipTabScalarPrefillKeys(prefillObj) {
+                return Object.keys(prefillObj || {}).filter(isLeadershipTabScalarPrefillKey);
+            }
+
+            function syncLeadershipKpiReadouts(formEl, prefillObj) {
+                var sel = formEl.querySelector('#lead_functions_selected');
+                var hid = formEl.querySelector('#lead_kpi_functions');
+                var ro = formEl.querySelector('#lead_kpi_functions_readout');
+                if (!sel || !hid) return;
+                var n = sel.selectedOptions ? sel.selectedOptions.length : 0;
+                if (n > 0) {
+                    hid.value = String(n);
+                    if (ro) ro.textContent = String(n);
+                    return;
+                }
+                var fallback = prefillObj && prefillObj.lead_kpi_functions;
+                if (fallback != null && String(fallback).trim() !== '') {
+                    hid.value = String(fallback);
+                    if (ro) ro.textContent = String(fallback);
+                }
+            }
+
+            function applyLeadershipPlatformPrefillFromPayload(payload, prefillObj) {
+                var platform = (payload && payload.operator && payload.operator.leadershipPlatform) ||
+                    (prefillObj && prefillObj.leadershipPlatform);
+                if (platform && typeof window.applyLeadershipPlatformPrefill === 'function') {
+                    window.applyLeadershipPlatformPrefill(platform);
+                }
             }
 
             async function loadRecordPrefillIfAny() {
+                var prefillWatchdog = null;
+                function hidePrefillBannerOnly() {
+                    form.classList.remove('operator-setup-prefill-loading');
+                    setOperatorSetupPrefillBanner(false);
+                }
+                function finishPrefillState() {
+                    delete form.dataset.suppressRequiredCount;
+                    hidePrefillBannerOnly();
+                    if (prefillWatchdog) {
+                        clearTimeout(prefillWatchdog);
+                        prefillWatchdog = null;
+                    }
+                }
                 try {
-                    const params = new URLSearchParams(window.location.search || '');
-                    const recordId = params.get('recordId');
+                    const recordId = resolveOperatorSetupRecordId();
                     if (!recordId) return;
 
-                    const res = await fetch('/api/intake/third-party-operators/' + encodeURIComponent(recordId));
+                    form.dataset.suppressRequiredCount = '1';
+                    form.classList.add('operator-setup-prefill-loading');
+                    setOperatorSetupPrefillBanner(true, 'Loading operator data…');
+
+                    prefillWatchdog = setTimeout(function () {
+                        console.warn('[operator-setup] prefill watchdog — unblocking UI after timeout');
+                        finishPrefillState();
+                    }, 12000);
+
+                    const res = await fetchWithTimeout('/api/intake/third-party-operators/' + encodeURIComponent(recordId), 25000);
                     const payload = await res.json().catch(function() { return {}; });
                     if (!res.ok || !payload || !payload.success || !payload.operator) {
                         if (!res.ok) {
-                            showOperatorToast('Could not load operator to edit. Check the link or try again.', false);
+                            showOperatorToast('Could not load operator to edit. Check recordId in the URL (HE CALA: recWPKu5laVZxsvpn).', false);
                         }
                         return;
                     }
 
                     const prefill = payload.operator.prefill || {};
+                    const prefillKeys = Object.keys(prefill);
+
+                    setOperatorSetupPrefillBanner(true, 'Applying saved fields…');
+                    await yieldToBrowser();
+
+                    const prefillCompany = prefill.companyName || '';
+                    if (prefillCompany && String(prefillCompany).trim()) {
+                        var crumbEarly = document.getElementById('intakeBreadcrumbCurrent');
+                        if (crumbEarly) crumbEarly.textContent = String(prefillCompany).trim();
+                    }
                     const crumb = document.getElementById('intakeBreadcrumbCurrent');
                     if (crumb && prefill.companyName) {
                         crumb.textContent = String(prefill.companyName).trim() || 'Operator setup';
                     }
-                    /**
-                     * Apply Explorer JSON *before* column prefill. JSON often contains empty strings for cap_/overview_
-                     * keys; if applied after API values, it would wipe selects (e.g. cap_kpi_transition, cap_kpi_reporting).
-                     * Column-backed prefill must win for edit.
-                     */
+
+                    /** Priority fields first so Company Profile is usable while heavier sections load. */
+                    var priorityKeys = [
+                        'companyName', 'companyDescription', 'website', 'headquartersLocation',
+                        'yearEstablished', 'yearsInBusiness', 'companyTagline', 'companyHistory',
+                        'keyDifferentiators', 'managementPhilosophy', 'primaryServiceModel'
+                    ].filter(function(k) { return k in prefill; });
+                    await applyPrefillFromKeys(prefill, priorityKeys);
+
+                    /** Leadership executives first — child-table rows map to exec_1…exec_N (10 for HE CALA). */
+                    if (typeof window.applyLeadershipTeamPrefill === 'function' && payload.operator.leadershipTeam && payload.operator.leadershipTeam.length) {
+                        window.applyLeadershipTeamPrefill(form, payload.operator.leadershipTeam);
+                    }
+                    await yieldToBrowser();
+
+                    /** Leadership tab scalars (narratives, signals, headcount) + platform repeaters. */
+                    var leadershipScalarKeys = collectLeadershipTabScalarPrefillKeys(prefill);
+                    await applyPrefillFromKeys(prefill, leadershipScalarKeys);
+                    syncLeadershipKpiReadouts(form, prefill);
+                    applyLeadershipPlatformPrefillFromPayload(payload, prefill);
+                    await yieldToBrowser();
+
+                    /** Unblock tabs/edits while remaining prefill continues in background. */
+                    hidePrefillBannerOnly();
+
+                    var remainingKeys = prefillKeys.filter(function(k) {
+                        return priorityKeys.indexOf(k) === -1 &&
+                            !/^exec_\d+_/.test(k) &&
+                            !isLeadershipTabScalarPrefillKey(k) &&
+                            k !== 'brands' &&
+                            k !== 'caseStudiesDetail' &&
+                            k !== 'ownerDiligenceQa' &&
+                            k !== 'brandsPortfolioDetail' &&
+                            k !== 'explorerProfileJson' &&
+                            k !== 'leadershipPlatform' &&
+                            k !== 'infrastructurePlatform' &&
+                            k !== 'engagementReporting' &&
+                            k !== 'engagementPlatform' &&
+                            k !== 'operatingPlatform';
+                    });
+                    await applyPrefillFromKeys(prefill, remainingKeys);
+
                     if (typeof window.applyExplorerProfileJsonPrefill === 'function' && prefill.explorerProfileJson) {
                         window.applyExplorerProfileJsonPrefill(form, prefill.explorerProfileJson);
                     }
-
-                    const fields = form.querySelectorAll('input[name], select[name], textarea[name]');
-
-                    function applySingleSelectPrefill(select, raw) {
-                        if (!select || select.multiple) return;
-                        var v = raw == null ? '' : String(raw).trim();
-                        if (v === '') return;
-                        var norm = v.replace(/\u2013/g, '-').replace(/\u2014/g, '-').trim();
-                        select.value = norm;
-                        if (select.value === norm) return;
-                        var opts = Array.from(select.options);
-                        var i, o, ov;
-                        for (i = 0; i < opts.length; i++) {
-                            o = opts[i];
-                            if (!o.value) continue;
-                            ov = o.value.replace(/\u2013/g, '-').replace(/\u2014/g, '-').trim();
-                            if (ov === norm) {
-                                select.value = o.value;
-                                return;
-                            }
-                        }
-                        var nl = norm.toLowerCase();
-                        for (i = 0; i < opts.length; i++) {
-                            o = opts[i];
-                            if (o.value && o.value.toLowerCase() === nl) {
-                                select.value = o.value;
-                                return;
-                            }
-                        }
+                    if (typeof window.applyBrandRelationshipsPrefill === 'function') {
+                        window.applyBrandRelationshipsPrefill(prefill);
+                        if (payload.operator) window.applyBrandRelationshipsPrefill(payload.operator);
                     }
+                    if (typeof window.applyBrandRelationshipsFromHiddenFields === 'function') {
+                        window.applyBrandRelationshipsFromHiddenFields(form);
+                    }
+                    await yieldToBrowser();
 
-                    fields.forEach(function(el) {
-                        const name = el.name;
-                        if (!name || !(name in prefill)) return;
-                        const value = prefill[name];
-                        if (value == null) return;
+                    if (typeof window.applyInfrastructurePlatformPrefill === 'function' && payload.operator.infrastructurePlatform) {
+                        window.applyInfrastructurePlatformPrefill(payload.operator.infrastructurePlatform);
+                    } else if (typeof window.applyInfrastructurePlatformPrefill === 'function' && prefill.infrastructurePlatform) {
+                        window.applyInfrastructurePlatformPrefill(prefill.infrastructurePlatform);
+                    }
+                    await yieldToBrowser();
 
-                        if (el.type === 'checkbox') return; // handled below by group
+                    if (typeof window.applyEngagementReportingPrefill === 'function' && payload.operator.engagementReporting) {
+                        window.applyEngagementReportingPrefill(payload.operator.engagementReporting);
+                    } else if (typeof window.applyEngagementReportingPrefill === 'function' && prefill.engagementReporting) {
+                        window.applyEngagementReportingPrefill(prefill.engagementReporting);
+                    } else if (typeof window.applyEngagementReportingPrefill === 'function' && prefill.engagementPlatform) {
+                        window.applyEngagementReportingPrefill(prefill.engagementPlatform);
+                    }
+                    await yieldToBrowser();
 
-                        if (el.tagName === 'SELECT' && el.multiple) {
-                            const vals = Array.isArray(value)
-                                ? value.map(function(v) { return String(v).trim(); })
-                                : String(value).split(',').map(function(v) { return v.trim(); }).filter(Boolean);
-                            Array.from(el.options).forEach(function(opt) {
-                                opt.selected = vals.indexOf(String(opt.value).trim()) !== -1;
-                            });
-                            el.dispatchEvent(new Event('change', { bubbles: true }));
-                            return;
-                        }
+                    if (typeof window.applyOperatingPlatformPrefill === 'function' && payload.operator.operatingPlatform) {
+                        window.applyOperatingPlatformPrefill(payload.operator.operatingPlatform);
+                    } else if (typeof window.applyOperatingPlatformPrefill === 'function' && prefill.operatingPlatform) {
+                        window.applyOperatingPlatformPrefill(prefill.operatingPlatform);
+                    }
+                    if (typeof window.applyBrandRelationshipsPlatformPrefill === 'function' && payload.operator.brandRelationships) {
+                        window.applyBrandRelationshipsPlatformPrefill(payload.operator.brandRelationships);
+                    } else if (typeof window.applyBrandRelationshipsPlatformPrefill === 'function' && prefill.brandRelationships) {
+                        window.applyBrandRelationshipsPlatformPrefill(prefill.brandRelationships);
+                    }
+                    await yieldToBrowser();
 
-                        if (el.tagName === 'SELECT' && !el.multiple) {
-                            applySingleSelectPrefill(el, Array.isArray(value) ? value[0] : value);
-                            el.dispatchEvent(new Event('change', { bubbles: true }));
-                            return;
-                        }
-
-                        if (Array.isArray(value)) {
-                            el.value = value.length ? String(value[0]) : '';
-                        } else {
-                            el.value = String(value);
-                        }
-                        el.dispatchEvent(new Event('change', { bubbles: true }));
-                    });
+                    if (window.OperatorSetupBrandsManaged && prefill.brands) {
+                        window.OperatorSetupBrandsManaged.applyBrandsPrefill(
+                            cachedElements.brandsManagedSelect,
+                            cachedElements.brandsManagedSearch,
+                            prefill.brands
+                        );
+                    }
 
                     function normCheckboxVal(s) {
                         return String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
@@ -8446,19 +9601,17 @@ Assignments without transition runway</textarea>
                             Array.from(sel.options).forEach(function(opt) {
                                 opt.selected = valNorms.indexOf(normCheckboxVal(opt.value)) !== -1;
                             });
-                            sel.dispatchEvent(new Event('change', { bubbles: true }));
                             if (typeof updateOpSupportOtherVisibility === 'function') updateOpSupportOtherVisibility(sel);
                             if (typeof updateSelectionCount === 'function') updateSelectionCount(sel);
                             return;
                         }
                         form.querySelectorAll('input[type="checkbox"][name="' + groupName + '"]').forEach(function(cb) {
                             cb.checked = valNorms.indexOf(normCheckboxVal(cb.value)) !== -1;
-                            cb.dispatchEvent(new Event('change', { bubbles: true }));
                         });
                     });
 
-                    if (typeof window.applyLeadershipTeamPrefill === 'function' && payload.operator.leadershipTeam && payload.operator.leadershipTeam.length) {
-                        window.applyLeadershipTeamPrefill(form, payload.operator.leadershipTeam);
+                    if (typeof window.syncExecutiveMultiselectOptionsFromMap === 'function') {
+                        window.syncExecutiveMultiselectOptionsFromMap(form);
                     }
 
                     // Rehydrate dynamic arrays after base fields
@@ -8568,21 +9721,25 @@ Assignments without transition runway</textarea>
 
                     updateBrandCount();
                     if (cachedElements.brandsManagedSelect) updateSelectionCount(cachedElements.brandsManagedSelect);
+                    await yieldToBrowser();
                     generateBrandUnitsTable();
                     applyBrandsPortfolioDetailToBrandGrid(prefill.brandsPortfolioDetail);
+                    await yieldToBrowser();
                     reformatPrefilledFootprintHotelsRooms();
                     calculateGeoTotals();
                     calculateChainScaleTotals();
                     calculateBrandTotals();
                     updateFootprintConsistencyUI();
-                    form.querySelectorAll('textarea[name]').forEach(function(ta) {
-                        ta.dispatchEvent(new Event('input', { bubbles: true }));
-                    });
                     if (typeof updateRequiredQuestionCounts === 'function') updateRequiredQuestionCounts();
-                    showOperatorToast('Loaded existing operator data.', true);
+                    var footprintMsg = prefill.footprintPortfolioSource === 'hotel_census'
+                        ? 'Loaded operator data. Portfolio distribution from Hotel Census (Operator Setup used as fallback where census has no rows).'
+                        : 'Loaded existing operator data.';
+                    showOperatorToast(footprintMsg, true);
                 } catch (err) {
                     console.warn('Prefill load failed:', err);
                     showOperatorToast('Could not load operator data to edit.', false);
+                } finally {
+                    finishPrefillState();
                 }
             }
 
@@ -8611,11 +9768,8 @@ Assignments without transition runway</textarea>
             // Additional brands input watcher is set up in loadBrandsFromAirtable()
 
             // Select All / Deselect All buttons are now initialized dynamically in loadBrandsFromAirtable()
-            loadBrandsThenPrefill();
-
             form.addEventListener('input', updateRequiredQuestionCounts, true);
             form.addEventListener('change', updateRequiredQuestionCounts, true);
-            updateRequiredQuestionCounts();
 
             // Auto-format website URL (add https:// if missing)
             if (cachedElements.websiteInput) {
@@ -9514,10 +10668,17 @@ Assignments without transition runway</textarea>
                     }
                 });
 
-                Object.keys(data).forEach(function (k) {
-                    if (/^brand_/.test(k)) delete data[k];
-                });
                 if (data.companyLogo != null) delete data.companyLogo;
+
+                if (typeof window.syncBrandRelationshipsToHiddenFields === 'function') {
+                    window.syncBrandRelationshipsToHiddenFields(form);
+                }
+                if (typeof window.collectBrandRelationshipsFromForm === 'function') {
+                    var brandJsonFields = window.collectBrandRelationshipsFromForm(form);
+                    Object.keys(brandJsonFields).forEach(function (bk) {
+                        data[bk] = brandJsonFields[bk];
+                    });
+                }
 
                 // Always send JSON text (not an array of objects). The new-base writer used to coerce long text with
                 // String(arrayOfObjects) → "[object Object],…"; legacy intake already accepts a JSON string here.
@@ -9527,6 +10688,21 @@ Assignments without transition runway</textarea>
                 })();
                 data.caseStudiesDetail = collectCaseStudiesDetail();
                 data.ownerDiligenceQa = collectOwnerDiligenceQa();
+                if (typeof window.collectLeadershipPlatformFromForm === 'function') {
+                    data.leadershipPlatform = window.collectLeadershipPlatformFromForm();
+                }
+                if (typeof window.collectInfrastructurePlatformFromForm === 'function') {
+                    data.infrastructurePlatform = window.collectInfrastructurePlatformFromForm(form);
+                }
+                if (typeof window.collectEngagementReportingFromForm === 'function') {
+                    data.engagementReporting = window.collectEngagementReportingFromForm(form);
+                }
+                if (typeof window.collectOperatingPlatformFromForm === 'function') {
+                    data.operatingPlatform = window.collectOperatingPlatformFromForm(form);
+                }
+                if (typeof window.collectBrandRelationshipsPlatformFromForm === 'function') {
+                    data.brandRelationships = window.collectBrandRelationshipsPlatformFromForm(form);
+                }
 
                 if (typeof window.enrichOperatorSetupSubmitData === 'function') {
                     window.enrichOperatorSetupSubmitData(data, form);
@@ -9595,8 +10771,7 @@ Assignments without transition runway</textarea>
 
                 // Add timestamp
                 data.submittedAt = new Date().toISOString();
-                const params = new URLSearchParams(window.location.search || '');
-                const existingRecordId = params.get('recordId');
+                const existingRecordId = resolveOperatorSetupRecordId();
                 if (existingRecordId) data.recordId = existingRecordId;
 
                 // Show loading state
@@ -9678,7 +10853,7 @@ Assignments without transition runway</textarea>
         });
     </script>
   <script src="js/third-party-operator-footprint.js"></script>
-  <script src="/js/oas-inject-form-fields.js?v=oas-5b-20260525"></script>
+  <script src="/js/oas-inject-form-fields.js?v=oas-proper-case-20260714b"></script>
 
     <script src="/embed-chrome.js" defer></script>
 </body>

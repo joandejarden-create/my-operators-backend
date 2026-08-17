@@ -1,0 +1,49 @@
+{
+  "version": "brand_matrix_data_quality_flag_v1",
+  "createdAt": "2026-08-15T14:22:00.000Z",
+  "phase": "CANOPY_PRESENCE_AND_BRAND_MATRIX_GAP_RESOLVED",
+  "brand": {
+    "name": "Canopy by Hilton",
+    "slug": "canopy-by-hilton",
+    "recordId": "recsggfbKlJbjeRP9",
+    "parentCompany": "Hilton"
+  },
+  "BRAND_EXISTS": true,
+  "BRAND_MATRIX_RECORD_EXISTS": true,
+  "SUMMARY_FIELD_EXISTS": true,
+  "SUMMARY_VALUE_PRESENT": false,
+  "DATA_QUALITY_STATUS": "BRAND_MATRIX_SUMMARY_MISSING",
+  "BRAND_MATRIX_REMEDIATION_REQUIRED": true,
+  "evidence": {
+    "activeUniverseAnchor": "lib/partner-intelligence/brand-explorer-active-universe.js",
+    "factorySeedPresent": true,
+    "factorySeedPath": "lib/partner-intelligence/brand-explorer-wave12-tab-factory-seeds.js",
+    "brandExplorerPresentationFixtures": [],
+    "peerWithPresentationFixturesExample": "Curio has multiple fixtures/brand-explorer-presentation-curio-*.json; Canopy has none",
+    "galleryPoolOnly": "fixtures/wave12-canopy-by-hilton-gallery-pool.json",
+    "note": "Canopy exists as a canonical Brand Explorer / Brand Matrix brand, but no presentation summary package is present in-repo. Do not fabricate summary content."
+  },
+  "fieldNeedingCompletion": {
+    "surface": "Brand Explorer / Brand Matrix presentation summary (overview / profile summary slots)",
+    "recordId": "recsggfbKlJbjeRP9",
+    "slug": "canopy-by-hilton",
+    "issueCode": "MISSING_SUMMARY"
+  },
+  "separationOfConcerns": {
+    "AI_SIGNAL_PRESENCE": false,
+    "BRAND_MATRIX_COMPLETENESS": true,
+    "CLIENT_FACING_PROFILE_COMPLETENESS": true,
+    "AI_VISIBILITY_METRIC_VALIDITY": false
+  },
+  "actionsTaken": {
+    "fabricatedSummary": false,
+    "usedPresenceTextAsSummary": false,
+    "schemaChanges": false,
+    "addedToExistingRemediationQueue": false,
+    "reasonNoQueueWrite": "No existing governed Brand Matrix MISSING_SUMMARY queue found in this phase"
+  },
+  "ENTITY_RESOLVER_CHANGES": 0,
+  "GENERIC_ALIAS_CHANGES": 0,
+  "AUTO_GENERATED_BRAND_SUMMARY": 0,
+  "FABRICATED_BRAND_DATA": 0
+}

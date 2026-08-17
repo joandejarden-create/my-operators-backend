@@ -1,0 +1,552 @@
+{
+  "generatedAt": "2026-08-14T00:12:55.320Z",
+  "mode": "apply",
+  "baseId": "appvtnDurnMSjINP6",
+  "APPROVED_TABLES": [
+    "AI Visibility - Prompts",
+    "AI Visibility - Opportunities"
+  ],
+  "brandBasicsFound": true,
+  "operatorMasterFound": true,
+  "protectedFieldsTouched": false,
+  "destructiveChanges": false,
+  "tables": [
+    {
+      "tableName": "AI Visibility - Prompts",
+      "tableId": "tblsQyfNuNPkSR2G1",
+      "createdTable": false,
+      "wouldCreateTable": false,
+      "fieldsWouldCreate": [],
+      "fieldsCreated": [
+        "Language",
+        "Semantic Pair ID"
+      ],
+      "fieldsSkipped": [
+        "Prompt ID",
+        "Prompt Family",
+        "Prompt Text",
+        "Version",
+        "Stakeholder Relevance",
+        "Entity Scope",
+        "Geography Scope",
+        "Commercial Region",
+        "Subregion",
+        "Country",
+        "Country Code",
+        "Market",
+        "Geography Model Version",
+        "Peer Set ID",
+        "Chain Scale",
+        "Asset Type",
+        "Hotel Type",
+        "Development Type",
+        "Branded Residences Relevance",
+        "Decision Stage",
+        "Active",
+        "Monitoring Eligible",
+        "Cadence",
+        "Governance Status",
+        "Review Status",
+        "Review Notes",
+        "Source / Rationale",
+        "Last Monitored At",
+        "Prompt Name",
+        "Linked Brands",
+        "Linked Operators"
+      ],
+      "fieldsFailed": [
+        {
+          "name": "Intent Territory",
+          "error": {
+            "error": {
+              "type": "INVALID_REQUEST_UNKNOWN",
+              "message": "Changing a field's type or number precision is not currently supported."
+            }
+          },
+          "action": "add_choices"
+        }
+      ],
+      "fieldsConflict": [],
+      "protectedFieldsTouched": false,
+      "choicesWouldAdd": [],
+      "choicesAdded": []
+    },
+    {
+      "tableName": "AI Visibility - Opportunities",
+      "tableId": "tblGAoMaPqHwlYtyM",
+      "createdTable": false,
+      "wouldCreateTable": false,
+      "fieldsWouldCreate": [],
+      "fieldsCreated": [],
+      "fieldsSkipped": [
+        "Opportunity ID",
+        "Entity Type",
+        "Geography Scope",
+        "Commercial Region",
+        "Subregion",
+        "Country",
+        "Market",
+        "Peer Set ID",
+        "Observation Window",
+        "Observation",
+        "Competitor Leader",
+        "Current Presence",
+        "Competitor Presence",
+        "Evidence Descriptor",
+        "Evidence Store Refs",
+        "Diagnostic Reason",
+        "Recommended Action",
+        "Interpretation Status",
+        "Status",
+        "Human Review Status",
+        "Rule Version",
+        "Metric Version",
+        "Evidence Count",
+        "Engines Observed",
+        "First Detected",
+        "Last Detected",
+        "Resolved At",
+        "Opportunity Name",
+        "Linked Brand",
+        "Linked Operator"
+      ],
+      "fieldsFailed": [
+        {
+          "name": "Intent Territory",
+          "error": {
+            "error": {
+              "type": "INVALID_REQUEST_UNKNOWN",
+              "message": "Changing a field's type or number precision is not currently supported."
+            }
+          },
+          "action": "add_choices"
+        }
+      ],
+      "fieldsConflict": [],
+      "protectedFieldsTouched": false,
+      "choicesWouldAdd": [],
+      "choicesAdded": []
+    }
+  ],
+  "warnings": [],
+  "liveSchema": {
+    "AI Visibility - Prompts": {
+      "id": "tblsQyfNuNPkSR2G1",
+      "fields": [
+        {
+          "name": "Prompt Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Prompt ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Prompt Family",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Prompt Text",
+          "type": "multilineText"
+        },
+        {
+          "name": "Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Intent Territory",
+          "type": "singleSelect",
+          "choices": [
+            "Brand Selection",
+            "Operator Selection",
+            "Conversion",
+            "New Build",
+            "HMA vs Franchise",
+            "Owner Economics",
+            "Owner Flexibility",
+            "Branded Residences",
+            "Mixed Use",
+            "Market / Geography",
+            "Chain Scale / Positioning",
+            "Development Strategy",
+            "Other"
+          ]
+        },
+        {
+          "name": "Stakeholder Relevance",
+          "type": "multipleSelects",
+          "choices": [
+            "Brand",
+            "Operator",
+            "Owner",
+            "Admin"
+          ]
+        },
+        {
+          "name": "Entity Scope",
+          "type": "singleSelect",
+          "choices": [
+            "Brand",
+            "Operator",
+            "Both"
+          ]
+        },
+        {
+          "name": "Geography Scope",
+          "type": "singleSelect",
+          "choices": [
+            "Global",
+            "Region",
+            "Subregion",
+            "Country",
+            "Market"
+          ]
+        },
+        {
+          "name": "Commercial Region",
+          "type": "singleSelect",
+          "choices": [
+            "CALA",
+            "Europe",
+            "North America",
+            "APAC",
+            "Middle East & Africa"
+          ]
+        },
+        {
+          "name": "Subregion",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Country Code",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Market",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Geography Model Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Peer Set ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Chain Scale",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Asset Type",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Hotel Type",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Development Type",
+          "type": "singleSelect",
+          "choices": [
+            "New Build",
+            "Conversion",
+            "Either",
+            "Unspecified"
+          ]
+        },
+        {
+          "name": "Branded Residences Relevance",
+          "type": "checkbox"
+        },
+        {
+          "name": "Decision Stage",
+          "type": "singleSelect",
+          "choices": [
+            "Early Evaluation",
+            "Shortlist",
+            "Contracting",
+            "Unspecified"
+          ]
+        },
+        {
+          "name": "Active",
+          "type": "checkbox"
+        },
+        {
+          "name": "Monitoring Eligible",
+          "type": "checkbox"
+        },
+        {
+          "name": "Cadence",
+          "type": "singleSelect",
+          "choices": [
+            "Weekly",
+            "Monthly",
+            "Ad-hoc",
+            "Paused"
+          ]
+        },
+        {
+          "name": "Governance Status",
+          "type": "singleSelect",
+          "choices": [
+            "Draft",
+            "Approved",
+            "Paused",
+            "Retired"
+          ]
+        },
+        {
+          "name": "Review Status",
+          "type": "singleSelect",
+          "choices": [
+            "Not Reviewed",
+            "Needs Review",
+            "Reviewed",
+            "Deferred"
+          ]
+        },
+        {
+          "name": "Review Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Source / Rationale",
+          "type": "multilineText"
+        },
+        {
+          "name": "Last Monitored At",
+          "type": "dateTime"
+        },
+        {
+          "name": "Linked Brands",
+          "type": "multipleRecordLinks",
+          "linkedTableId": "tbl1x6S7I7JwTcRdV"
+        },
+        {
+          "name": "Linked Operators",
+          "type": "multipleRecordLinks",
+          "linkedTableId": "tbl4YPJ3XhnYLHLsD"
+        },
+        {
+          "name": "Language",
+          "type": "singleSelect",
+          "choices": [
+            "English",
+            "Spanish"
+          ]
+        },
+        {
+          "name": "Semantic Pair ID",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    "AI Visibility - Opportunities": {
+      "id": "tblGAoMaPqHwlYtyM",
+      "fields": [
+        {
+          "name": "Opportunity Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Opportunity ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Entity Type",
+          "type": "singleSelect",
+          "choices": [
+            "Brand",
+            "Operator"
+          ]
+        },
+        {
+          "name": "Intent Territory",
+          "type": "singleSelect",
+          "choices": [
+            "Brand Selection",
+            "Operator Selection",
+            "Conversion",
+            "New Build",
+            "HMA vs Franchise",
+            "Owner Economics",
+            "Owner Flexibility",
+            "Branded Residences",
+            "Mixed Use",
+            "Market / Geography",
+            "Chain Scale / Positioning",
+            "Development Strategy",
+            "Other"
+          ]
+        },
+        {
+          "name": "Geography Scope",
+          "type": "singleSelect",
+          "choices": [
+            "Global",
+            "Region",
+            "Subregion",
+            "Country",
+            "Market"
+          ]
+        },
+        {
+          "name": "Commercial Region",
+          "type": "singleSelect",
+          "choices": [
+            "CALA",
+            "Europe",
+            "North America",
+            "APAC",
+            "Middle East & Africa"
+          ]
+        },
+        {
+          "name": "Subregion",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Market",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Peer Set ID",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Observation Window",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Observation",
+          "type": "multilineText"
+        },
+        {
+          "name": "Competitor Leader",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Current Presence",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Competitor Presence",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Evidence Descriptor",
+          "type": "singleSelect",
+          "choices": [
+            "Repeated across engines",
+            "Repeated across runs",
+            "Emerging pattern",
+            "Single-engine observation"
+          ]
+        },
+        {
+          "name": "Evidence Store Refs",
+          "type": "multilineText"
+        },
+        {
+          "name": "Diagnostic Reason",
+          "type": "singleSelect",
+          "choices": [
+            "Persistent Absence",
+            "Competitor Dominance",
+            "Source Gap",
+            "Representation Gap",
+            "Visibility Loss",
+            "Visibility Gain",
+            "Other"
+          ]
+        },
+        {
+          "name": "Recommended Action",
+          "type": "multilineText"
+        },
+        {
+          "name": "Interpretation Status",
+          "type": "singleSelect",
+          "choices": [
+            "Evidence Only",
+            "Needs Review",
+            "Human Confirmed",
+            "AI-Assisted Draft"
+          ]
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "choices": [
+            "New",
+            "Reviewing",
+            "Action Planned",
+            "Monitoring",
+            "Improved",
+            "Closed"
+          ]
+        },
+        {
+          "name": "Human Review Status",
+          "type": "singleSelect",
+          "choices": [
+            "Not Required",
+            "Needs Review",
+            "Reviewed",
+            "Deferred"
+          ]
+        },
+        {
+          "name": "Rule Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Metric Version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Evidence Count",
+          "type": "number"
+        },
+        {
+          "name": "Engines Observed",
+          "type": "singleLineText"
+        },
+        {
+          "name": "First Detected",
+          "type": "dateTime"
+        },
+        {
+          "name": "Last Detected",
+          "type": "dateTime"
+        },
+        {
+          "name": "Resolved At",
+          "type": "dateTime"
+        },
+        {
+          "name": "Linked Brand",
+          "type": "multipleRecordLinks",
+          "linkedTableId": "tbl1x6S7I7JwTcRdV"
+        },
+        {
+          "name": "Linked Operator",
+          "type": "multipleRecordLinks",
+          "linkedTableId": "tbl4YPJ3XhnYLHLsD"
+        }
+      ]
+    }
+  },
+  "SCHEMA_APPLY_STATUS": "PASS",
+  "AIRTABLE_WRITES_SCHEMA": 2
+}

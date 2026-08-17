@@ -1,0 +1,55 @@
+{
+  "dry_run_classifier_add_calls": {
+    "State / Region": false,
+    "Address": false,
+    "Submarket": true,
+    "Latitude": false,
+    "Longitude": false,
+    "Phone": false
+  },
+  "findings": [
+    {
+      "field": "State / Region",
+      "policy_class": "AUTO_WRITE_SAFE",
+      "classifier_add": false,
+      "staging_nonblank": 0,
+      "classification": "LATENT_BUG — would omit even if researched; this cohort also had 0 staging values"
+    },
+    {
+      "field": "Address",
+      "policy_class": "CORROBORATED_WRITE",
+      "classifier_add": false,
+      "staging_nonblank": 0,
+      "classification": "LATENT_BUG — would omit even if researched; this cohort also had 0 staging values"
+    },
+    {
+      "field": "Submarket",
+      "policy_class": "AUTO_WRITE_SAFE",
+      "classifier_add": true,
+      "staging_nonblank": 46,
+      "written": 46,
+      "classification": "OK — writes when geography.submarket present"
+    },
+    {
+      "field": "Latitude",
+      "policy_class": "BLOCKED_RIGHTS (unless official)",
+      "classifier_add": false,
+      "staging_nonblank": 60,
+      "classification": "BUG — blanket block ignored official freeze coordinates"
+    },
+    {
+      "field": "Longitude",
+      "policy_class": "BLOCKED_RIGHTS (unless official)",
+      "classifier_add": false,
+      "staging_nonblank": 60,
+      "classification": "BUG — blanket block ignored official freeze coordinates"
+    },
+    {
+      "field": "Phone",
+      "policy_class": "BLOCKED_RIGHTS",
+      "classifier_add": false,
+      "staging_nonblank": 0,
+      "classification": "OK for this cohort (0 values); keep blocked until official phone researched or SerpApi clarified"
+    }
+  ]
+}

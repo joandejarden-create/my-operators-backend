@@ -1,0 +1,133 @@
+{
+  "parent_company": "(active-brand-setup)",
+  "region": "CALA",
+  "country": null,
+  "mode": "controlled",
+  "batch_size": 250,
+  "max_records": null,
+  "run_until_complete": true,
+  "total_records_in_scope": 5,
+  "total_processed": 5,
+  "total_updated": 5,
+  "total_skipped": 0,
+  "total_blocked": 0,
+  "fields_populated": [
+    "Rooms / Keys",
+    "Rooms Confidence",
+    "Rooms Source URL",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Last Reviewed Date",
+    "Rooms Source Type",
+    "Rooms Reviewed Date"
+  ],
+  "confidence_counts": {
+    "High": 5,
+    "Medium": 0,
+    "Low": 0,
+    "Hold": 0
+  },
+  "blocked_reasons": {},
+  "webhound_candidates": 0,
+  "steward_review_cases": 0,
+  "runtime_ms": 45,
+  "remaining_queues": [],
+  "completion_status": "complete",
+  "resume_command": null,
+  "recommended_next_run_command": "npm run census:autopilot -- --region CALA --parent-company IHG --mode plan",
+  "status": "production_census_autopilot_active_brand_setup_fastest_safe_ready",
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census"
+  },
+  "scope": "active-brand-setup",
+  "strategy": "fastest-safe",
+  "active_brands_in_scope": 62,
+  "parent_companies_in_scope": [
+    "Choice",
+    "Hilton",
+    "Marriott"
+  ],
+  "processing_order": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_type_asset_context",
+    "rooms_keys",
+    "source_discovery",
+    "steward_webhound_hard_cases",
+    "coordinate_resolution"
+  ],
+  "processing_order_why": "Prioritize geography/radar and proven extractors with high expected High-confidence writes; soft-defer geocode without provider; rooms early but after lower-ambiguity description when scores dictate; hard cases last.",
+  "runtime_metrics": {
+    "total_runtime_ms": 7,
+    "runtime_per_batch": [
+      {
+        "batch": 1,
+        "queue": "rooms_keys",
+        "ms": 3
+      }
+    ],
+    "runtime_per_queue": {
+      "rooms_keys": {
+        "ms": 3,
+        "records": 5,
+        "writes": 5,
+        "fetches_ok": 0,
+        "fetches_fail": 0
+      }
+    },
+    "average_seconds_per_record": 0.0014,
+    "average_seconds_per_successful_write": 0.0014,
+    "fetch_success_rate": null,
+    "extraction_success_rate": null,
+    "write_success_rate": 1,
+    "blocked_source_count": 0,
+    "blocked_sources_by_family": {},
+    "steward_review_count": 0,
+    "webhound_candidate_count": 0,
+    "estimated_time_remaining_ms": 0,
+    "targets": {
+      "plan_mode_parent_region_minutes": 2,
+      "queue_build_per_5k_records_minutes": 5,
+      "cached_dry_run_per_1k_minutes": 10,
+      "live_fetch_dry_run_per_250_minutes": {
+        "min": 5,
+        "max": 20
+      },
+      "apply_per_100_minutes": {
+        "min": 2,
+        "max": 8
+      },
+      "parent_company_estimates": {
+        "small_100": {
+          "min_minutes": 15,
+          "max_minutes": 30
+        },
+        "medium_500": {
+          "min_minutes": 45,
+          "max_minutes": 90
+        },
+        "large_1000": {
+          "min_minutes": 60,
+          "max_minutes": 180
+        },
+        "very_large_4000": {
+          "min_minutes": 240,
+          "max_minutes": 600
+        }
+      }
+    },
+    "guardrails": {
+      "max_retries_per_source": 2,
+      "batch_runtime_overage_multiplier": 3,
+      "repeated_source_block_threshold": 8,
+      "rate_limit_failure_threshold": 3,
+      "write_success_floor": 0.15,
+      "confidence_high_floor_for_extractor_health": 0.05
+    }
+  }
+}

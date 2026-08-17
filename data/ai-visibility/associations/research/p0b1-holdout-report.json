@@ -1,0 +1,670 @@
+{
+  "generatedAt": "2026-08-17T10:02:49.763Z",
+  "phase": "P0B.1",
+  "NEW_PROVIDER_CALLS": 0,
+  "PROVIDER_MONITORING_CALLS": 0,
+  "extractorVersion": "ai_visibility_association_extractor_det_v1_1",
+  "holdoutCorpus": {
+    "totalLabelled": 11297,
+    "selectedCount": 135,
+    "developmentSet": 101,
+    "sealedHoldout": 34,
+    "developmentHash": "d49fa21852964ef54c5a2d38fc21a58f8b3ce2a81e07ccd1b509aa112188f8e0",
+    "holdoutHash": "b867e65668d8e1e57696c0cf88985dab4ec33cfbb2af73196510a1aae3f795c9",
+    "providers": {
+      "openai": 40,
+      "gemini": 41,
+      "perplexity": 26,
+      "claude": 28
+    },
+    "en": 105,
+    "es": 30,
+    "reviewMode": "SINGLE_REVIEWER_GOLDEN"
+  },
+  "labelDistribution": {
+    "POSITIVE": 40,
+    "NEGATIVE": 18,
+    "MIXED": 6,
+    "NEUTRAL_DESCRIPTIVE": 21,
+    "NO_ASSOCIATION": 50,
+    "AMBIGUOUS": 0,
+    "HARD_NEGATIVE": 50
+  },
+  "spanFailureAudit": {
+    "counts": {
+      "SPAN_TOO_WIDE": 0,
+      "SPAN_TOO_NARROW": 0,
+      "ENTITY_OUTSIDE_SPAN": 3,
+      "ATTRIBUTE_OUTSIDE_SPAN": 0,
+      "CROSS_SENTENCE_BINDING": 0,
+      "TABLE_STRUCTURE_ERROR": 0,
+      "PARENTHETICAL_BINDING": 0,
+      "PRONOUN_AMBIGUITY": 0,
+      "SIBLING_LEAKAGE": 0,
+      "PARENT_INHERITANCE": 0,
+      "NORMALIZATION_OFFSET_ERROR": 0,
+      "SPAN_NOT_IN_RESPONSE": 0,
+      "OTHER": 0
+    },
+    "samples": [
+      {
+        "associationEvidenceId": "asoc_0d99efa1068b45a6",
+        "evidenceId": "ev_1b9453934b8b4333",
+        "attributeId": "CONVERSION_SUITABILITY",
+        "failureMode": "ENTITY_OUTSIDE_SPAN",
+        "details": "entity_not_bound_in_span_sentence",
+        "spanPreview": "AC Hotels, DoubleTree, Hotel Indigo, NH Collection** or similar full brands, normally with more pres"
+      },
+      {
+        "associationEvidenceId": "asoc_48086bca0c414f18",
+        "evidenceId": "ev_18d7f7361be047bf",
+        "attributeId": "CONVERSION_SUITABILITY",
+        "failureMode": "ENTITY_OUTSIDE_SPAN",
+        "details": "entity_not_bound_in_span_sentence",
+        "spanPreview": "Iberostar Partnership:** In resort and all-inclusive segments, IHG’s commercial alliance with Iberos"
+      },
+      {
+        "associationEvidenceId": "asoc_04ee13a7e3c745d1",
+        "evidenceId": "ev_6cc42fb735c3463c",
+        "attributeId": "CONVERSION_SUITABILITY",
+        "failureMode": "ENTITY_OUTSIDE_SPAN",
+        "details": "entity_not_bound_in_span_sentence",
+        "spanPreview": "conversion-minded hotels."
+      }
+    ],
+    "totalFailures": 3
+  },
+  "remediation": {
+    "FIXES_APPLIED": [
+      "Sentence-bounded spans with exactText (no ellipsis normalization)",
+      "Markdown table-row rejection in extractor",
+      "List-item cross-boundary rejection",
+      "validateSupportingSpan offset + substring dual check",
+      "Hard-negative pattern library fixtures",
+      "Balanced holdout selection with provider/attribute stratification"
+    ],
+    "REGRESSION_CASES_ADDED": 10,
+    "extractorVersion": "ai_visibility_association_extractor_det_v1_1"
+  },
+  "developmentMetrics": {
+    "scoredCount": 98,
+    "overall": {
+      "precision": 0.9692307692307692,
+      "recall": 1,
+      "f1": 0.9843749999999999,
+      "falsePositiveRate": 0.05714285714285714,
+      "falseNegativeRate": 0,
+      "spanValidity": 1,
+      "entityBindingErrorRate": 0.02040816326530612,
+      "polarityErrorRate": 0
+    },
+    "polarityAccuracy": {
+      "POSITIVE": 1,
+      "NEGATIVE": 1,
+      "MIXED": 1,
+      "NEUTRAL_DESCRIPTIVE": 1
+    },
+    "bindingErrors": {
+      "PARENT_LEAK": 0,
+      "SIBLING_LEAK": 0,
+      "PEER_LEAK": 0,
+      "OTHER": 0
+    },
+    "attributeResults": [
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "cases": 7,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "PRODUCTION_VALIDATED",
+        "highRisk": false
+      },
+      {
+        "attributeId": "LOYALTY",
+        "cases": 17,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "PRODUCTION_VALIDATED",
+        "highRisk": false
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "cases": 18,
+        "precision": 0.9230769230769231,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "PRODUCTION_VALIDATED",
+        "highRisk": false
+      },
+      {
+        "attributeId": "LUXURY_POSITIONING",
+        "cases": 6,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "PRODUCTION_VALIDATED",
+        "highRisk": false
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "cases": 31,
+        "precision": 0.9615384615384616,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "PRODUCTION_VALIDATED",
+        "highRisk": true
+      },
+      {
+        "attributeId": "BRANDED_RESIDENCES",
+        "cases": 3,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "DESIGN_INDIVIDUALITY",
+        "cases": 1,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "cases": 3,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "cases": 4,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "cases": 3,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": true
+      },
+      {
+        "attributeId": "OWNER_CONTROL",
+        "cases": 2,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": true
+      },
+      {
+        "attributeId": "OPERATING_MODEL",
+        "cases": 3,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": true
+      }
+    ],
+    "productionEligible": [
+      "INDEPENDENT_IDENTITY",
+      "LOYALTY",
+      "DISTRIBUTION",
+      "LUXURY_POSITIONING",
+      "CONVERSION_SUITABILITY"
+    ],
+    "researchOnly": [
+      "BRANDED_RESIDENCES",
+      "DESIGN_INDIVIDUALITY",
+      "LIFESTYLE_POSITIONING",
+      "GEOGRAPHIC_PRESENCE",
+      "OWNER_FLEXIBILITY",
+      "OWNER_CONTROL",
+      "OPERATING_MODEL"
+    ]
+  },
+  "finalHoldoutMetrics": {
+    "scoredCount": 29,
+    "overall": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "falsePositiveRate": 0,
+      "falseNegativeRate": 0,
+      "spanValidity": 1,
+      "entityBindingErrorRate": 0,
+      "polarityErrorRate": 0
+    },
+    "polarityAccuracy": {
+      "POSITIVE": 1,
+      "NEGATIVE": 1,
+      "MIXED": null,
+      "NEUTRAL_DESCRIPTIVE": 1
+    },
+    "bindingErrors": {
+      "PARENT_LEAK": 0,
+      "SIBLING_LEAK": 0,
+      "PEER_LEAK": 0,
+      "OTHER": 0
+    },
+    "attributeResults": [
+      {
+        "attributeId": "DISTRIBUTION",
+        "cases": 5,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "PRODUCTION_VALIDATED",
+        "highRisk": false
+      },
+      {
+        "attributeId": "LUXURY_POSITIONING",
+        "cases": 4,
+        "precision": null,
+        "recall": null,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "cases": 8,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": true
+      },
+      {
+        "attributeId": "LOYALTY",
+        "cases": 2,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "DESIGN_INDIVIDUALITY",
+        "cases": 1,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "MARKET_FIT",
+        "cases": 1,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": true
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "cases": 3,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "cases": 2,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": true
+      },
+      {
+        "attributeId": "OPERATING_MODEL",
+        "cases": 1,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": true
+      },
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "cases": 1,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "cases": 1,
+        "precision": 1,
+        "recall": 1,
+        "spanValidity": 1,
+        "bindingErrorRate": 0,
+        "status": "RESEARCH_VALIDATED_MORE_DATA",
+        "highRisk": false
+      }
+    ],
+    "productionEligible": [
+      "DISTRIBUTION"
+    ],
+    "researchOnly": [
+      "LUXURY_POSITIONING",
+      "CONVERSION_SUITABILITY",
+      "LOYALTY",
+      "DESIGN_INDIVIDUALITY",
+      "MARKET_FIT",
+      "GEOGRAPHIC_PRESENCE",
+      "OWNER_FLEXIBILITY",
+      "OPERATING_MODEL",
+      "INDEPENDENT_IDENTITY",
+      "LIFESTYLE_POSITIONING"
+    ]
+  },
+  "productionGate": {
+    "overallPrecision": 1,
+    "spanValidity": 1,
+    "entityBindingErrorRate": 0,
+    "passesOverall": true,
+    "passesSpan": true,
+    "passesBinding": true
+  },
+  "attributeReadiness": [
+    {
+      "attributeId": "DISTRIBUTION",
+      "cases": 5,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "PRODUCTION_VALIDATED",
+      "highRisk": false
+    },
+    {
+      "attributeId": "LUXURY_POSITIONING",
+      "cases": 4,
+      "precision": null,
+      "recall": null,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": false
+    },
+    {
+      "attributeId": "CONVERSION_SUITABILITY",
+      "cases": 8,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": true
+    },
+    {
+      "attributeId": "LOYALTY",
+      "cases": 2,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": false
+    },
+    {
+      "attributeId": "DESIGN_INDIVIDUALITY",
+      "cases": 1,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": false
+    },
+    {
+      "attributeId": "MARKET_FIT",
+      "cases": 1,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": true
+    },
+    {
+      "attributeId": "GEOGRAPHIC_PRESENCE",
+      "cases": 3,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": false
+    },
+    {
+      "attributeId": "OWNER_FLEXIBILITY",
+      "cases": 2,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": true
+    },
+    {
+      "attributeId": "OPERATING_MODEL",
+      "cases": 1,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": true
+    },
+    {
+      "attributeId": "INDEPENDENT_IDENTITY",
+      "cases": 1,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": false
+    },
+    {
+      "attributeId": "LIFESTYLE_POSITIONING",
+      "cases": 1,
+      "precision": 1,
+      "recall": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "highRisk": false
+    }
+  ],
+  "highRisk": {
+    "OWNER_FLEXIBILITY": {
+      "attributeId": "OWNER_FLEXIBILITY",
+      "cases": 2,
+      "precision": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "passesGate": false
+    },
+    "OWNER_CONTROL": {
+      "attributeId": "OWNER_CONTROL",
+      "status": "NO_CASES",
+      "cases": 0
+    },
+    "CONVERSION_SUITABILITY": {
+      "attributeId": "CONVERSION_SUITABILITY",
+      "cases": 8,
+      "precision": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "passesGate": false
+    },
+    "OPERATING_MODEL": {
+      "attributeId": "OPERATING_MODEL",
+      "cases": 1,
+      "precision": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "passesGate": false
+    },
+    "MARKET_FIT": {
+      "attributeId": "MARKET_FIT",
+      "cases": 1,
+      "precision": 1,
+      "spanValidity": 1,
+      "bindingErrorRate": 0,
+      "status": "RESEARCH_VALIDATED_MORE_DATA",
+      "passesGate": false
+    }
+  },
+  "competitiveAssociation": {
+    "subjectBrandId": "recEJCTDj1zrsjPM6",
+    "peerBrandId": "receQkxgjlezsc1xg",
+    "scenarioId": "scenario_owner_flexibility_control_v1",
+    "geographyKey": "CALA",
+    "language": "en",
+    "attributeId": "OWNER_FLEXIBILITY",
+    "status": "UNSUPPORTED",
+    "subjectObservations": [
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity"
+        ],
+        "variants": [
+          "p_cala_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_97a3a0c04a36407a"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      }
+    ],
+    "peerObservations": [
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity"
+        ],
+        "variants": [
+          "p_cala_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_97a3a0c04a36407a"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      }
+    ],
+    "example": "Insufficient comparable association evidence for competitive statement.",
+    "autographPositive": 0,
+    "autographNegative": 0,
+    "curioPositive": 0,
+    "curioNegative": 0,
+    "detail": "COMPETITIVE_ASSOCIATION_NOT_YET_SUPPORTED"
+  },
+  "isolation": {
+    "SPANISH_IN_ENGLISH": 0,
+    "ENGLISH_IN_SPANISH": 0
+  },
+  "certifiedLayer": {
+    "PRESENCE_DIFF": 0,
+    "QM_DIFF": 0,
+    "ALL_PROVIDERS_DIFF": 0,
+    "CITATION_DIFF": 0,
+    "RAW_EVIDENCE_MUTATIONS": 0
+  },
+  "clientPublication": {
+    "PRODUCTION_ELIGIBLE_ATTRIBUTES": [
+      "DISTRIBUTION"
+    ],
+    "RESEARCH_ONLY_ATTRIBUTES": [
+      "LUXURY_POSITIONING",
+      "CONVERSION_SUITABILITY",
+      "LOYALTY",
+      "DESIGN_INDIVIDUALITY",
+      "MARKET_FIT",
+      "GEOGRAPHIC_PRESENCE",
+      "OWNER_FLEXIBILITY",
+      "OPERATING_MODEL",
+      "INDEPENDENT_IDENTITY",
+      "LIFESTYLE_POSITIONING"
+    ],
+    "DEFERRED_ATTRIBUTES": [
+      "ECONOMICS",
+      "DEVELOPMENT_SUPPORT"
+    ]
+  },
+  "corpusShortages": {
+    "gemini": null,
+    "unlabelledRemaining": 31682
+  },
+  "llmAdjudication": {
+    "executed": false,
+    "estimatedCases": 0,
+    "estimatedCostUsd": "15-40",
+    "purpose": "Adjudicate remaining AMBIGUOUS holdout cases only — requires founder approval"
+  },
+  "productionReadiness": "ASSOCIATION_LAYER_VALIDATED_PARTIAL",
+  "nextStep": "READY_FOR_LIMITED_ASSOCIATION_PUBLICATION_AND_P0C"
+}

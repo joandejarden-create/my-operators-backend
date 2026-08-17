@@ -1,0 +1,82 @@
+/**
+ * Old Home — Modules tab wire (v20260730d)
+ * Path-gated to /old-home. Keeps Outcomes/Platform panel switching.
+ * Does NOT inject freeform-head w16 (that CSS forced 1-up testimonials and
+ * overrode #oh-tt / w22 2-up tiles). Strips any stale w16 link if present.
+ */
+(function () {
+  try {
+    var path = (location.pathname || "").replace(/\/+$/, "").toLowerCase();
+    if (path !== "/old-home") return;
+
+    document.querySelectorAll('link[href*="freeform-head.v20260729w16"]').forEach(function (l) {
+      try {
+        l.parentNode && l.parentNode.removeChild(l);
+      } catch (e) {}
+    });
+
+    function sp(el, on) {
+      if (!el) return;
+      if (on) {
+        el.removeAttribute("hidden");
+        el.setAttribute("aria-hidden", "false");
+        el.style.display = "";
+      } else {
+        el.setAttribute("hidden", "");
+        el.setAttribute("aria-hidden", "true");
+        el.style.display = "none";
+      }
+    }
+
+    function wire() {
+      var d1 = document.getElementById("modules-dot-1");
+      var d2 = document.getElementById("modules-dot-2");
+      var t1 = document.getElementById("modules-tab-outcomes");
+      var t2 = document.getElementById("modules-tab-platform");
+      var p1 = document.getElementById("modules-panel-outcomes");
+      var p2 = document.getElementById("modules-panel-platform");
+      if (!p1 || !p2) return;
+
+      function act(w) {
+        var a = w === 1;
+        if (d1) {
+          d1.classList.toggle("is-active", a);
+          d1.setAttribute("aria-selected", a ? "true" : "false");
+        }
+        if (d2) {
+          d2.classList.toggle("is-active", !a);
+          d2.setAttribute("aria-selected", a ? "false" : "true");
+        }
+        if (t1) t1.setAttribute("aria-selected", a ? "true" : "false");
+        if (t2) t2.setAttribute("aria-selected", a ? "false" : "true");
+        sp(p1, a);
+        sp(p2, !a);
+      }
+
+      function b(el, w) {
+        if (!el || el.dataset.ohMods) return;
+        el.dataset.ohMods = "1";
+        el.addEventListener(
+          "click",
+          function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            act(w);
+          },
+          true
+        );
+      }
+
+      b(d1, 1);
+      b(d2, 2);
+      b(t1, 1);
+      b(t2, 2);
+    }
+
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", wire);
+    else wire();
+    window.addEventListener("load", wire);
+  } catch (e) {
+    if (typeof console !== "undefined" && console.error) console.error("[oh-modules-tabs]", e);
+  }
+})();

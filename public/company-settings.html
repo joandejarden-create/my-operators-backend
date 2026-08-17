@@ -489,8 +489,40 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Company Type <span class="required">*</span></label>
-                            <span class="help-text">Primary stakeholder type for directory and matching.</span>
-                            <input type="text" class="form-input form-input-readonly" id="companyType" name="companyType" value="" required readonly tabindex="-1" placeholder="—" aria-readonly="true" title="Set from your account; contact support to change">
+                            <span class="help-text">Derived from capabilities below, or set from your account. Contact support to override manually.</span>
+                            <input type="text" class="form-input form-input-readonly" id="companyTypeDisplay" value="" required readonly tabindex="-1" placeholder="—" aria-readonly="true">
+                            <input type="hidden" id="companyType" name="companyType" value="">
+                            <input type="hidden" id="deriveCompanyTypeFromCapabilities" name="deriveCompanyTypeFromCapabilities" value="0">
+                            <input type="hidden" id="deriveWorkspaceFromCapabilities" name="deriveWorkspaceFromCapabilities" value="0">
+                            <input type="hidden" id="workspaceAccessJson" name="workspaceAccessJson" value="">
+                            <input type="hidden" id="companyCapabilitiesJson" name="companyCapabilitiesJson" value="">
+                            <input type="hidden" id="existingThirdPartyManagementAvailability" name="existingThirdPartyManagementAvailability" value="">
+                            <input type="hidden" id="existingOperatingModel" name="existingOperatingModel" value="">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Company Capabilities</label>
+                            <span class="help-text">Select all that apply. These drive company type and workspace access.</span>
+                            <div class="checkbox-group" id="companyCapabilitiesGroup"></div>
+                            <p class="help-text" style="margin-top:8px;">Hotel Owner - Operator means the company owns, develops, or controls hotel assets and also operates hotels. Operator marketplace visibility depends on third-party management availability and profile completeness.</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Workspace Access</label>
+                            <span class="help-text">Preview workspace views without production permissions when Demo Mode is assigned in Airtable.</span>
+                            <input type="text" class="form-input form-input-readonly" id="workspaceAccessDisplay" value="" readonly tabindex="-1" placeholder="—" aria-readonly="true">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Operating Model</label>
+                            <span class="help-text">How your company owns and operates hotel assets.</span>
+                            <select class="form-select" id="operatingModel" name="operatingModel">
+                                <option value="">Select One...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Third-Party Management Availability</label>
+                            <span class="help-text">Controls whether the company may appear in operator marketplace workflows. Companies that only operate their own portfolio should generally select No.</span>
+                            <select class="form-select" id="thirdPartyManagementAvailability" name="thirdPartyManagementAvailability">
+                                <option value="">Select One...</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Company Website <span class="required">*</span></label>
@@ -794,6 +826,8 @@
         </div>
     </div>
     <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/dealality-ui-labels.js"></script>
+    <script src="/js/company-profile-capabilities.js"></script>
     <script>
         (function () {
             var API_BASE = (window.DEALALITY_API_BASE || window.DEALALITY_API_BASE_URL || window.API_BASE_URL || '').trim().replace(/\/+$/, '');
@@ -1057,10 +1091,100 @@
                 if (companyLogoCurrentRow) companyLogoCurrentRow.style.display = 'none';
             }
 
+            var thirdPartyTouchedByUser = false;
+            var capApi = window.DEALALITY_COMPANY_CAPABILITIES;
+            var uiLabels = window.DEALALITY_UI_LABELS;
+
+            function updateWorkspaceAccessDisplay(workspaceList) {
+                var el = document.getElementById('workspaceAccessDisplay');
+                if (!el) return;
+                var list = Array.isArray(workspaceList) ? workspaceList : [];
+                if (uiLabels && typeof uiLabels.formatWorkspaceAccessDisplay === 'function') {
+                    el.value = uiLabels.formatWorkspaceAccessDisplay(list);
+                } else {
+                    el.value = list.join(', ');
+                }
+            }
+
+            function syncDerivedCompanyFields(fromCapabilities) {
+                if (!capApi) return;
+                var ids = capApi.getSelectedCapabilityIds();
+                var tags = capApi.capabilitiesToTags(ids);
+                var derived = capApi.deriveFromTags(tags);
+                var companyTypeHidden = document.getElementById('companyType');
+                var companyTypeDisplay = document.getElementById('companyTypeDisplay');
+                var workspaceJson = document.getElementById('workspaceAccessJson');
+                var deriveType = document.getElementById('deriveCompanyTypeFromCapabilities');
+                var deriveWs = document.getElementById('deriveWorkspaceFromCapabilities');
+                var capJson = document.getElementById('companyCapabilitiesJson');
+                var thirdSel = document.getElementById('thirdPartyManagementAvailability');
+                var opSel = document.getElementById('operatingModel');
+
+                if (capJson) capJson.value = JSON.stringify(ids);
+                if (fromCapabilities && ids.length) {
+                    if (deriveType) deriveType.value = '1';
+                    if (deriveWs) deriveWs.value = '1';
+                    if (companyTypeHidden) companyTypeHidden.value = derived.companyTypeForm;
+                    if (companyTypeDisplay) companyTypeDisplay.value = derived.companyTypeDisplay;
+                    if (workspaceJson) workspaceJson.value = JSON.stringify(derived.workspaceAccess);
+                    updateWorkspaceAccessDisplay(derived.workspaceAccess);
+                } else if (companyTypeHidden && companyTypeHidden.value) {
+                    if (companyTypeDisplay) {
+                        companyTypeDisplay.value = capApi.companyTypeDisplayFromFormKey(companyTypeHidden.value);
+                    }
+                }
+
+                if (fromCapabilities && thirdSel && !thirdPartyTouchedByUser) {
+                    var existingHidden = document.getElementById('existingThirdPartyManagementAvailability');
+                    var existing = existingHidden ? existingHidden.value : '';
+                    var opVal = opSel ? opSel.value : '';
+                    var suggested = capApi.suggestThirdParty(tags, existing, opVal);
+                    if (suggested && !thirdSel.value) thirdSel.value = suggested;
+                }
+            }
+
+            function initCompanyCapabilitiesUi() {
+                if (!capApi) return;
+                capApi.renderCapabilityCheckboxes('companyCapabilitiesGroup');
+                capApi.populateOperatingModelSelect('operatingModel');
+                capApi.populateThirdPartySelect('thirdPartyManagementAvailability');
+                var thirdSel = document.getElementById('thirdPartyManagementAvailability');
+                if (thirdSel) {
+                    thirdSel.addEventListener('change', function () {
+                        thirdPartyTouchedByUser = true;
+                    });
+                }
+                var capRoot = document.getElementById('companyCapabilitiesGroup');
+                if (capRoot) {
+                    capRoot.addEventListener('change', function () {
+                        syncDerivedCompanyFields(true);
+                    });
+                }
+            }
+            initCompanyCapabilitiesUi();
+
             function applyPrefill(prefill) {
                 if (!prefill) return;
                 setInputValue('companyName', prefill.companyName);
-                setInputValue('companyType', prefill.companyType);
+                var companyTypeForm = prefill.companyType || '';
+                setInputValue('companyType', companyTypeForm);
+                setInputValue('companyTypeDisplay', prefill.companyTypeDisplay || (capApi ? capApi.companyTypeDisplayFromFormKey(companyTypeForm) : companyTypeForm));
+                if (capApi && Array.isArray(prefill.companyCapabilities)) {
+                    capApi.setSelectedCapabilityIds(prefill.companyCapabilities);
+                    syncDerivedCompanyFields(false);
+                }
+                setSingleSelect('operatingModel', prefill.operatingModel || '');
+                setSingleSelect('thirdPartyManagementAvailability', prefill.thirdPartyManagementAvailability || '');
+                setInputValue('existingThirdPartyManagementAvailability', prefill.thirdPartyManagementAvailability || '');
+                setInputValue('existingOperatingModel', prefill.operatingModel || '');
+                var wsJson = document.getElementById('workspaceAccessJson');
+                if (wsJson && Array.isArray(prefill.workspaceAccess)) {
+                    wsJson.value = JSON.stringify(prefill.workspaceAccess);
+                    updateWorkspaceAccessDisplay(prefill.workspaceAccess);
+                } else {
+                    updateWorkspaceAccessDisplay([]);
+                }
+                thirdPartyTouchedByUser = !!(prefill.thirdPartyManagementAvailability);
                 setInputValue('companyWebsite', prefill.companyWebsite);
                 setSingleSelect('numberOfEmployees', prefill.numberOfEmployees);
                 setSingleSelect('companyHQCountry', prefill.companyHQCountry);
@@ -1214,6 +1338,15 @@
                     if (addlSelect && addlSelect.multiple) {
                         formData.set('additionalServicesJson', JSON.stringify(Array.from(addlSelect.selectedOptions).map(function (o) { return o.value; })));
                     }
+                    syncDerivedCompanyFields(true);
+                    var capIds = capApi ? capApi.getSelectedCapabilityIds() : [];
+                    formData.set('companyCapabilitiesJson', JSON.stringify(capIds));
+                    if (capIds.length) {
+                        formData.set('deriveCompanyTypeFromCapabilities', '1');
+                        formData.set('deriveWorkspaceFromCapabilities', '1');
+                    }
+                    var wsEl = document.getElementById('workspaceAccessJson');
+                    if (wsEl && wsEl.value) formData.set('workspaceAccessJson', wsEl.value);
 
                     var saveMethod = currentCompanyProfileRecordId ? 'PATCH' : 'POST';
                     var saveUrl = currentCompanyProfileRecordId

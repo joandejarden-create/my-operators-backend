@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validation Scorecard — Dealality</title>
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css">
+  <style>
+    .aiv-val-note { margin-top: 1rem; padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); color: #9facd6; font-size: 0.85rem; line-height: 1.45; max-width: 52rem; }
+    .aiv-val-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 16px 0 28px; }
+    .aiv-val-card { background: #0b1534; border: 1px solid #2f3e68; border-radius: 8px; padding: 14px; }
+    .aiv-val-card h3 { margin: 0 0 6px; font-size: 13px; color: #9facd6; font-weight: 600; }
+    .aiv-val-card .val { font-size: 18px; color: #e8eeff; font-weight: 600; }
+    .aiv-val-card .detail { margin-top: 6px; font-size: 12px; color: #7f8db3; }
+    .aiv-val-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0 28px; }
+    .aiv-val-table th, .aiv-val-table td { border: 1px solid #2f3e68; padding: 8px; text-align: left; vertical-align: top; }
+    .aiv-val-table th { background: #0f1d45; color: #fff; }
+    .aiv-val-section { margin-top: 8px; }
+    .aiv-val-section h2 { font-size: 16px; margin: 0 0 8px; color: #d9e1ff; }
+    .aiv-val-section h3 { font-size: 14px; margin: 16px 0 8px; color: #b8c4e8; }
+    .aiv-val-muted { color: #9facd6; font-size: 13px; margin: 0 0 12px; }
+    .aiv-val-state { margin: 12px 0; padding: 10px 12px; border-radius: 6px; background: #0f1d45; border: 1px solid #2f3e68; font-size: 13px; }
+    .aiv-val-state.error { border-color: #8b3a3a; color: #ffc9c9; }
+    .aiv-val-state.loading { color: #9facd6; }
+    .aiv-val-area { margin: 28px 0; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .aiv-val-area > h2 { font-size: 18px; color: #fff; }
+    .aiv-val-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+    .aiv-val-filters select { background: #0b1534; color: #e8eeff; border: 1px solid #2f3e68; border-radius: 4px; padding: 6px 8px; font-size: 12px; }
+    .aiv-val-link { color: #9ec1ff; cursor: pointer; text-decoration: underline; background: none; border: none; font: inherit; padding: 0; }
+  </style>
+  <script src="/js/dealality-memberstack-auth.js" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-shared.js" defer></script>
+  <script src="/js/ai-visibility/ai-intelligence-validation.js" defer></script>
+</head>
+<body class="aiv-page embed-mode">
+  <div class="dashboard-container aiv-dashboard">
+    <header class="dashboard-header aiv-dashboard-header">
+      <div class="dashboard-header-left">
+        <div class="dashboard-title-container">
+          <h1>Validation Scorecard</h1>
+        </div>
+        <p>Independent validation of Dealality AI Intelligence — Data Trust, Monitoring Coverage, and Monitoring Operations. No composite accuracy or trust score.</p>
+      </div>
+    </header>
+
+    <div id="aivValState" class="aiv-val-state loading" role="status">Loading validation results…</div>
+
+    <section class="aiv-val-section" id="aivValTopSummary" hidden>
+      <h2>Scorecard Summary</h2>
+      <p class="aiv-val-muted">Three separate areas — not collapsed into one score.</p>
+      <div class="aiv-val-cards" id="aivValTopCards"></div>
+    </section>
+
+    <section class="aiv-val-section" id="aivValFreshness" hidden>
+      <h2>Freshness</h2>
+    </section>
+
+    <!-- A. DATA TRUST -->
+    <div class="aiv-val-area" id="aivValDataTrust" hidden>
+      <h2>A. Data Trust</h2>
+      <p class="aiv-val-muted">Can we trust Dealality's calculations and classifications?</p>
+
+      <section class="aiv-val-section" id="aivValSystem">
+        <h3>System Validation Status</h3>
+        <div class="aiv-val-cards" id="aivValCards"></div>
+      </section>
+
+      <section class="aiv-val-section" id="aivValClassification">
+        <h3>Classification Quality (Golden Set)</h3>
+        <div id="aivValGolden"></div>
+      </section>
+
+      <section class="aiv-val-section" id="aivValGates">
+        <h3>Validation Gates</h3>
+        <table class="aiv-val-table" id="aivValGatesTable">
+          <thead>
+            <tr>
+              <th>Gate</th>
+              <th>Status</th>
+              <th>Measured Result</th>
+              <th>Required Condition</th>
+              <th>Failures</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="aiv-val-section" id="aivValIssues">
+        <h3>Current Issues</h3>
+        <table class="aiv-val-table" id="aivValIssuesTable">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Batch</th>
+              <th>Metric / Entity</th>
+              <th>Expected</th>
+              <th>Actual</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </div>
+
+    <!-- B. MONITORING COVERAGE -->
+    <div class="aiv-val-area" id="aivValCoverage" hidden>
+      <h2>B. Monitoring Coverage</h2>
+      <p class="aiv-val-muted">What have we actually measured?</p>
+      <div class="aiv-val-cards" id="aivValCoverageCards"></div>
+      <h3>Provider × Language</h3>
+      <table class="aiv-val-table" id="aivValProviderLangTable">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>English Prompts</th>
+            <th>Spanish Prompts</th>
+            <th>EN Success</th>
+            <th>ES Success</th>
+            <th>Latest EN</th>
+            <th>Latest ES</th>
+            <th>Est. EN Cost</th>
+            <th>Est. ES Cost</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <h3>Geography Coverage</h3>
+      <table class="aiv-val-table" id="aivValGeoTable">
+        <thead>
+          <tr>
+            <th>Geography</th>
+            <th>Batches</th>
+            <th>Prompts</th>
+            <th>Success</th>
+            <th>Providers</th>
+            <th>Languages</th>
+            <th>Brands</th>
+            <th>First Run</th>
+            <th>Latest Run</th>
+            <th>Est. Cost</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- C. MONITORING OPERATIONS -->
+    <div class="aiv-val-area" id="aivValOperations" hidden>
+      <h2>C. Monitoring Operations</h2>
+      <p class="aiv-val-muted">What did we run, when, and at what estimated cost?</p>
+      <div class="aiv-val-cards" id="aivValOpsCards"></div>
+
+      <h3>Provider Operations</h3>
+      <table class="aiv-val-table" id="aivValProviderOpsTable">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Batches</th>
+            <th>Runs</th>
+            <th>Attempted</th>
+            <th>Success</th>
+            <th>Fail</th>
+            <th>Success Rate</th>
+            <th>Tokens</th>
+            <th>Estimated Cost</th>
+            <th>Latest Run</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3>Language Operations</h3>
+      <table class="aiv-val-table" id="aivValLangOpsTable">
+        <thead>
+          <tr>
+            <th>Language</th>
+            <th>Prompts</th>
+            <th>Success</th>
+            <th>Fail</th>
+            <th>Runs</th>
+            <th>Batches</th>
+            <th>Providers</th>
+            <th>Geographies</th>
+            <th>Estimated Cost</th>
+            <th>Latest Run</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3>Monitoring Inventory</h3>
+      <div class="aiv-val-filters" id="aivValInventoryFilters">
+        <select id="aivFiltProvider"><option value="">Provider: All</option></select>
+        <select id="aivFiltGeo"><option value="">Geography: All</option></select>
+        <select id="aivFiltLang"><option value="">Language: All</option></select>
+        <select id="aivFiltStatus"><option value="">Validation: All</option></select>
+      </div>
+      <table class="aiv-val-table" id="aivValInventoryTable">
+        <thead>
+          <tr>
+            <th>Batch</th>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>Geography</th>
+            <th>Language</th>
+            <th>Prompts</th>
+            <th>Success</th>
+            <th>Fail</th>
+            <th>Citations</th>
+            <th>Est. Cost</th>
+            <th>Executed</th>
+            <th>Validated</th>
+            <th>Status</th>
+            <th>Publishable</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3>Batch Drilldown</h3>
+      <div id="aivValBatchDetail" class="aiv-val-muted">Select a batch ID to view metadata (raw responses not shown).</div>
+    </div>
+
+    <section class="aiv-val-section" id="aivValBatches" hidden>
+      <h2>Batch Validation (Trust View)</h2>
+      <table class="aiv-val-table" id="aivValBatchesTable">
+        <thead>
+          <tr>
+            <th>Batch ID</th>
+            <th>Provider</th>
+            <th>Geography</th>
+            <th>Language</th>
+            <th>Status</th>
+            <th>Publishable</th>
+            <th>Issues</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="aiv-val-section" id="aivValManual" hidden>
+      <h2>Manual Spot Check / Golden Set Review</h2>
+      <div id="aivValManualBody"></div>
+      <p class="aiv-val-muted" style="margin-top:8px;">
+        <a href="/ai-intelligence-golden-set-review" style="color:#9ec1ff;">Open Golden Set Review →</a>
+        ·
+        <a href="/ai-intelligence-presence-validation-review" style="color:#9ec1ff;">Open Presence Validation Review →</a>
+        Unreviewed candidates are never ground truth.
+      </p>
+    </section>
+
+    <section class="aiv-val-section" id="aivValVariability" hidden>
+      <h2>Model Variability</h2>
+      <p class="aiv-val-muted">Observational LLM variability — not Dealality calculation accuracy.</p>
+      <div id="aivValVariabilityBody"></div>
+    </section>
+
+    <section class="aiv-val-section" id="aivValMethod" hidden>
+      <h2>Methodology</h2>
+      <p class="aiv-val-note" id="aivValMethodologyNote"></p>
+      <p class="aiv-val-note" id="aivValOpsMethodologyNote"></p>
+    </section>
+  </div>
+</body>
+</html>

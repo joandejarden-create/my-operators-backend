@@ -1,0 +1,178 @@
+{
+  "version": "census-autopilot-source-yield-diagnostic-v1",
+  "generated_at": "2026-08-05T21:50:15.604Z",
+  "run_id": "2026-08-05_21-49-37-CALA-active-brands",
+  "mode": "controlled",
+  "airtable_writes": false,
+  "total_high_proposals": 108,
+  "queues": {
+    "description_extraction": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 341,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-description-extractor"
+    },
+    "amenities_extraction": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 1007,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "description-extractor+lane-2"
+    },
+    "radar_public_readiness": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 425,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-population-lane-2"
+    },
+    "address_confirmation": {
+      "status": "executed",
+      "eligible_scanned": 107,
+      "high_proposals": 107,
+      "notes": [
+        "geocode_calls_disabled_in_address_queue_geocodeLimit=0"
+      ],
+      "extractor": "production-census-address-geocode-resolver"
+    },
+    "property_name_cleanup": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 2,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-property-name-cleanup-extractor"
+    },
+    "property_type_asset_context": {
+      "status": "executed",
+      "eligible_scanned": 425,
+      "high_proposals": 1,
+      "notes": [],
+      "extractor": "production-census-population-lane-2"
+    },
+    "rooms_keys": {
+      "status": "executed_exhausted",
+      "eligible_scanned": 420,
+      "high_proposals": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ],
+      "extractor": "production-census-rooms-keys-extractor"
+    },
+    "coordinate_resolution": {
+      "status": "soft_deferred",
+      "eligible_scanned": 0,
+      "high_proposals": 0,
+      "notes": [
+        "geocode_provider_or_storage_terms_missing"
+      ],
+      "extractor": "geocode-provider (soft-deferred)"
+    }
+  },
+  "high_proposals_by_queue": {
+    "address_confirmation": 107,
+    "property_type_asset_context": 1
+  },
+  "no_proposal_reason_counts": {},
+  "queues_executed": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_name_cleanup",
+    "property_type_asset_context",
+    "rooms_keys"
+  ],
+  "queues_exhausted": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "property_name_cleanup",
+    "rooms_keys"
+  ],
+  "queues_soft_deferred": [
+    "coordinate_resolution"
+  ],
+  "family_gaps": {
+    "Marriott": {
+      "n": 197,
+      "miss_desc": 197,
+      "miss_amen": 197,
+      "miss_ptype": 100,
+      "miss_addr": 197,
+      "miss_rooms": 197,
+      "has_url": 197,
+      "fetch": "403_blocked"
+    },
+    "Hilton": {
+      "n": 95,
+      "miss_desc": 95,
+      "miss_amen": 0,
+      "miss_ptype": 0,
+      "miss_addr": 95,
+      "miss_rooms": 95,
+      "has_url": 95,
+      "fetch": "403_page_reference_code",
+      "vic_addr_high": 95
+    },
+    "IHG": {
+      "n": 84,
+      "miss_desc": 0,
+      "miss_amen": 0,
+      "miss_ptype": 0,
+      "miss_addr": 84,
+      "miss_rooms": 79,
+      "has_url": 84,
+      "fetch": "ok"
+    },
+    "Choice": {
+      "n": 49,
+      "miss_desc": 49,
+      "miss_amen": 13,
+      "miss_ptype": 10,
+      "miss_addr": 49,
+      "miss_rooms": 49,
+      "has_url": 49,
+      "fetch": "403_blocked",
+      "vic_addr_high": 36
+    }
+  },
+  "blocked_source_families": [
+    "Hilton (hilton.com edge 403 — Page Reference Code)",
+    "Marriott (marriott.com 403)",
+    "Choice (choicehotels.com 403)"
+  ],
+  "fetchable_families": [
+    "IHG (ihg.com hoteldetail)"
+  ],
+  "highest_yield_next_improvement": {
+    "id": "ihg_rooms_prose_patterns",
+    "summary": "IHG hoteldetail often omits numberOfRooms — expand High-only prose patterns when explicit.",
+    "expected_fields": [
+      "Rooms / Keys"
+    ]
+  },
+  "apply_recommendation": {
+    "recommend_apply": true,
+    "reason": "high_proposals_meet_threshold",
+    "message": "High proposals ≥ 10 and safety checks pass — recommend approval-bundle-bound apply after founder review.",
+    "bundle_too_small": false,
+    "threshold": 10,
+    "high_proposals": 108
+  },
+  "why_yield_was_low": [
+    "Prior smoke used tiny description fetch budgets and burned attempts on Hilton 403s",
+    "IHG descriptions/amenities already populated for active brands",
+    "Hilton/Marriott/Choice corporate pages bot-blocked from Node fetch",
+    "Address High VIC claims were dropped when geocode was deferred (fixed: address-only path)",
+    "Rooms High exhausted for prior avid writes; many IHG pages have empty numberOfRooms"
+  ]
+}

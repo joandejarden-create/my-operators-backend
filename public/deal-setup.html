@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deal Setup - Dealality Platform</title>
+    <script>(function(){var p=new URLSearchParams(window.location.search||'');if(p.get('embed')==='1'||window!==window.top){document.documentElement.classList.add('embed-mode');}if(p.get('marketingEmbed')==='1'){document.documentElement.classList.add('marketing-embed');}})();</script>
     <style>
         /* CSS Variables – match Brand Setup */
         :root {
@@ -55,6 +56,7 @@
             color: var(--accent--primary-1); text-decoration: none; font-size: 14px; font-weight: 500;
         }
         .back-to-my-deals a:hover { color: var(--secondary--color-2); text-decoration: underline; }
+        html.marketing-embed .back-to-my-deals { display: none !important; }
         .intake-title-container { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
         .intake-header h1 { color: #ffffff; margin: 0; font-size: 2rem; font-weight: 700; line-height: 1.2em; }
         .intake-header p { color: #ffffff; font-size: 0.75rem; font-weight: 300; line-height: 1.3; max-width: 650px; margin: 0; margin-top: 5px; }
@@ -318,6 +320,7 @@
         .form-group.full-width { grid-column: 1 / -1; min-width: 0; }
         .form-grid > .project-fit-subheader.full-width { grid-column: 1 / -1; }
         .form-group-stack { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+        .conditional-block > .subsection-description { margin-top: -6px; }
         .form-label {
             color: var(--neutral--100);
             font-weight: 600;
@@ -613,10 +616,10 @@
                                         <option value="New Build">New Build</option>
                                         <option value="Conversion / Reflag">Conversion / Reflag</option>
                                         <option value="Renovation / Repositioning">Renovation / Repositioning</option>
+                                        <option value="Expansion / Add-on">Expansion / Add-on</option>
+                                        <option value="Mixed-Use Hospitality Project">Mixed-Use Hospitality Project</option>
                                         <option value="Existing Operating Hotel">Existing Operating Hotel</option>
                                         <option value="Adaptive Reuse">Adaptive Reuse</option>
-                                        <option value="Mixed-Use Hospitality Project">Mixed-Use Hospitality Project</option>
-                                        <option value="Other / To Be Confirmed">Other / To Be Confirmed</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -634,14 +637,14 @@
                                     <label class="form-label">Opening / Transition Phase <span class="required">*</span><span class="help-text">Where the asset sits in opening, renovation, or rebranding (if applicable).</span></label>
                                     <select class="form-select" name="Opening / Transition Phase">
                                         <option value="">Select One…</option>
-                                        <option value="N/A (stabilized operating)">N/A (stabilized operating)</option>
-                                        <option value="Planning / entitlement">Planning / entitlement</option>
-                                        <option value="Pre-construction">Pre-construction</option>
+                                        <option value="N/A (Stabilized Operating)">N/A (Stabilized Operating)</option>
+                                        <option value="Planning / Entitlement">Planning / Entitlement</option>
+                                        <option value="Pre-Construction">Pre-Construction</option>
                                         <option value="Construction">Construction</option>
-                                        <option value="Pre-opening ramp">Pre-opening ramp</option>
-                                        <option value="Soft opening">Soft opening</option>
-                                        <option value="Reopening after renovation">Reopening after renovation</option>
-                                        <option value="Rebranding in place">Rebranding in place</option>
+                                        <option value="Pre-Opening Ramp">Pre-Opening Ramp</option>
+                                        <option value="Soft Opening">Soft Opening</option>
+                                        <option value="Reopening After Renovation">Reopening After Renovation</option>
+                                        <option value="Rebranding In Place">Rebranding In Place</option>
                                         <option value="Needs Review">Needs Review</option>
                                     </select>
                                 </div>
@@ -702,13 +705,13 @@
                                     <label class="form-label">Current Operating Model <span class="required">*</span><span class="help-text">How the hotel operates today (canonical for operator capability review).</span></label>
                                     <select class="form-select" name="Current Operating Model">
                                         <option value="">Select One…</option>
-                                        <option value="Owner-operated (unbranded)">Owner-operated (unbranded)</option>
-                                        <option value="Owner-operated (branded/franchised)">Owner-operated (branded/franchised)</option>
-                                        <option value="Third-party managed (branded)">Third-party managed (branded)</option>
-                                        <option value="Third-party managed (independent/collection)">Third-party managed (independent/collection)</option>
-                                        <option value="Brand-managed">Brand-managed</option>
-                                        <option value="Lease/operator lease structure">Lease/operator lease structure</option>
-                                        <option value="Mixed/transitioning">Mixed/transitioning</option>
+                                        <option value="Owner-Operated (Unbranded)">Owner-Operated (Unbranded)</option>
+                                        <option value="Owner-Operated (Branded/Franchised)">Owner-Operated (Branded/Franchised)</option>
+                                        <option value="Third-Party Managed (Branded)">Third-Party Managed (Branded)</option>
+                                        <option value="Third-Party Managed (Independent/Collection)">Third-Party Managed (Independent/Collection)</option>
+                                        <option value="Brand-Managed">Brand-Managed</option>
+                                        <option value="Lease/Operator Lease Structure">Lease/Operator Lease Structure</option>
+                                        <option value="Mixed/Transitioning">Mixed/Transitioning</option>
                                         <option value="Needs Review">Needs Review</option>
                                         <option value="Unknown">Unknown</option>
                                     </select>
@@ -744,7 +747,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Current franchise/management contract end date<span class="help-text">When the existing agreement ends, if applicable.</span></label>
+                                    <label class="form-label">Current Franchise/Management Contract End Date<span class="help-text">When the existing agreement ends, if applicable.</span></label>
                                     <input type="date" class="form-input" name="Current Franchise/Management Contract End Date">
                                 </div>
                                 <div class="form-group">
@@ -1032,7 +1035,7 @@
                                     <input type="text" class="form-input" name="Hotel Submarket & Location" placeholder="e.g., Pacific Central">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Hotel Service Model <span class="required">*</span><span class="help-text">Operational style (Full-Service, Select-Service, etc.).</span></label>
+                                    <label class="form-label">Service / Operating Model <span class="required">*</span><span class="help-text">Day-to-day ops and commercial style. Full-Service = F&amp;B and full ops; Select-Service = limited F&amp;B; Extended Stay = longer stays; Lifestyle / Boutique = design-led product mode; All-Inclusive = package pricing. Not Soft vs Hard affiliation control.</span></label>
                                     <select class="form-select" name="Hotel Service Model">
                                         <option value="">Select One…</option>
                                         <option value="Full-Service">Full-Service</option>
@@ -1134,7 +1137,7 @@
                                         <option value="Lease (Building/Site)">Lease (Building/Site)</option>
                                         <option value="Option to Purchase">Option to Purchase</option>
                                         <option value="Under Contract (Lease)">Under Contract (Lease)</option>
-                                        <option value="Letter of intent (LOI) / Term Sheet">Letter of intent (LOI) / Term Sheet</option>
+                                        <option value="Letter of Intent (LOI) / Term Sheet">Letter of Intent (LOI) / Term Sheet</option>
                                         <option value="No Site Control Yet">No Site Control Yet</option>
                                         <option value="Lease">Lease</option>
                                         <option value="Under Contract">Under Contract</option>
@@ -1212,11 +1215,13 @@
                                     <label class="form-label">Building Type <span class="required">*</span><span class="help-text">e.g. Low-Rise, Mid-Rise, Mixed-Use.</span></label>
                                     <select class="form-select" name="Building Type">
                                         <option value="">Select One…</option>
-                                        <option value="Low-Rise">Low-Rise</option>
+                                        <option value="High-Rise">High-Rise</option>
                                         <option value="Mid-Rise">Mid-Rise</option>
+                                        <option value="Low-Rise">Low-Rise</option>
                                         <option value="Mixed-Use">Mixed-Use</option>
-                                        <option value="Podium / Tower">Podium / Tower</option>
                                         <option value="Historic / Renovated">Historic / Renovated</option>
+                                        <option value="Historic / Adaptive Reuse">Historic / Adaptive Reuse</option>
+                                        <option value="Podium / Tower">Podium / Tower</option>
                                         <option value="Resort-Style Compound">Resort-Style Compound</option>
                                     </select>
                                 </div>
@@ -1259,8 +1264,19 @@
                                     <select class="form-select" name="Existing MEP Capacity (Conversion)">
                                         <option value="">Select One…</option>
                                         <option value="Adequate">Adequate</option>
-                                        <option value="Upgrade needed">Upgrade needed</option>
-                                        <option value="Unknown / to be assessed">Unknown / to be assessed</option>
+                                        <option value="Upgrade Needed">Upgrade Needed</option>
+                                        <option value="Unknown / To Be Assessed">Unknown / To Be Assessed</option>
+                                    </select>
+                                </div>
+                                <div id="fbOperatingModelBlock" class="form-group hidden">
+                                    <label class="form-label">F&amp;B Operating Model <span class="required fb-operating-model-required">*</span><span class="help-text">How flagship or ground-floor F&amp;B is operated when outlets exist.</span></label>
+                                    <select class="form-select" name="F&B Operating Model">
+                                        <option value="">Select One…</option>
+                                        <option value="Hotel-Operated">Hotel-Operated</option>
+                                        <option value="Third-Party Lease (Independent Restaurateur)">Third-Party Lease (Independent Restaurateur)</option>
+                                        <option value="Third-Party Management Agreement (Hotel-Branded)">Third-Party Management Agreement (Hotel-Branded)</option>
+                                        <option value="Hybrid (Hotel Core + Leased Flagship Restaurant)">Hybrid (Hotel Core + Leased Flagship Restaurant)</option>
+                                        <option value="Not Applicable">Not Applicable</option>
                                     </select>
                                 </div>
                             </div>
@@ -1331,11 +1347,63 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Condo Residences? <span class="required">*</span><span class="help-text">Yes if the property includes condo or residential units.</span></label>
-                                        <select class="form-select" name="Condo Residences?">
+                                        <select class="form-select" name="Condo Residences?" id="condoResidencesSelect">
                                             <option value="">Select One…</option>
                                             <option value="Yes">Yes</option>
                                             <option value="No">No</option>
                                         </select>
+                                    </div>
+                                    <div id="mixedUseIntakeBlock" class="conditional-block hidden">
+                                        <h3 class="project-fit-subheader">Mixed-Use &amp; Branded Residences</h3>
+                                        <p class="subsection-description">Additional detail when the project includes condo/residence components or is a mixed-use hospitality development.</p>
+                                        <div class="form-group-stack">
+                                            <div id="mixedUseCondoSubBlock" class="form-group-stack hidden">
+                                                <div class="form-group">
+                                                    <label class="form-label">Number of Condo / Residence Units <span class="required">*</span><span class="help-text">Total branded residence or condo units in the development.</span></label>
+                                                    <input type="number" class="form-input" name="Number of Condo / Residence Units" placeholder="e.g. 36" min="0" step="1">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">Condo Rental Program Model <span class="required">*</span><span class="help-text">How owners may participate in a hospitality rental program.</span></label>
+                                                    <select class="form-select" name="Condo Rental Program Model">
+                                                        <option value="">Select One…</option>
+                                                        <option value="Operator-Managed Rental Pool (Optional Owner Participation)">Operator-Managed Rental Pool (Optional Owner Participation)</option>
+                                                        <option value="Operator-Managed Rental Pool (Mandatory Participation)">Operator-Managed Rental Pool (Mandatory Participation)</option>
+                                                        <option value="Owner-Managed Rental Pool">Owner-Managed Rental Pool</option>
+                                                        <option value="No Rental Program (Owner Use Only)">No Rental Program (Owner Use Only)</option>
+                                                        <option value="To Be Defined With Operator">To Be Defined With Operator</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Branded Residence Program Model <span class="required">*</span><span class="help-text">How residences relate to the hotel brand and operator.</span></label>
+                                                <select class="form-select" name="Branded Residence Program Model">
+                                                    <option value="">Select One…</option>
+                                                    <option value="Hotel-Branded Residences (Integrated With Hotel)">Hotel-Branded Residences (Integrated With Hotel)</option>
+                                                    <option value="Branded Residences + Independent Condo Units (Same Building)">Branded Residences + Independent Condo Units (Same Building)</option>
+                                                    <option value="Condo-Hotel / Rental Pool Integrated">Condo-Hotel / Rental Pool Integrated</option>
+                                                    <option value="Residences Only — Hotel Component Separate">Residences Only — Hotel Component Separate</option>
+                                                    <option value="To Be Defined With Operator">To Be Defined With Operator</option>
+                                                </select>
+                                            </div>
+                                            <h3 class="project-fit-subheader">Development Underwriting</h3>
+                                            <div class="form-group">
+                                                <label class="form-label">Stabilized ADR (USD) <span class="required">*</span><span class="help-text">Underwriting stabilized average daily rate from development proforma.</span></label>
+                                                <input type="number" class="form-input" name="Stabilized ADR (USD)" placeholder="e.g. 250" min="0" step="1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Stabilized Occupancy (%) <span class="required">*</span><span class="help-text">Underwriting stabilized occupancy (0–100).</span></label>
+                                                <input type="number" class="form-input" name="Stabilized Occupancy (%)" placeholder="e.g. 68" min="0" max="100" step="0.1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Development Proforma Available? <span class="required">*</span><span class="help-text">Whether a hotel operating proforma is available for this development-stage project.</span></label>
+                                                <select class="form-select" name="Development Proforma Available?">
+                                                    <option value="">Select One…</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                    <option value="In Progress">In Progress</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="meeting-gym-right-column">
@@ -1417,23 +1485,39 @@
                                     <h3 class="project-fit-subheader" style="margin-top: 24px;">Additional Amenities</h3>
                                     <div class="multi-select-with-count">
                                         <label class="form-label">Additional Amenities <span class="required">*</span><span class="help-text">Select all that apply. <span class="selection-count"></span></span></label>
-                                        <select class="form-select" name="Additional Amenities" multiple size="8" style="min-width: 260px;">
+                                        <select class="form-select" name="Additional Amenities" multiple size="10" style="min-width: 260px;">
                                             <option value="Not Applicable / None">Not Applicable / None</option>
                                             <option value="Lobby">Lobby</option>
                                             <option value="Co-working or Lounge Space">Co-working or Lounge Space</option>
-                                            <option value="Grab & Go or Marketplace">Grab & Go or Marketplace</option>
-                                            <option value="Bar or Beverage Concept">Bar or Beverage Concept</option>
-                                            <option value="Fitness Center">Fitness Center</option>
-                                            <option value="Pool">Pool</option>
-                                            <option value="Meeting/Event Space">Meeting/Event Space</option>
                                             <option value="Business Center">Business Center</option>
+                                            <option value="Meeting/Event Space">Meeting/Event Space</option>
+                                            <option value="Boardroom">Boardroom</option>
+                                            <option value="Ballroom / Banquet">Ballroom / Banquet</option>
                                             <option value="Outdoor Area / Courtyard">Outdoor Area / Courtyard</option>
+                                            <option value="Garden / Landscaped Grounds">Garden / Landscaped Grounds</option>
+                                            <option value="Rooftop Terrace / Deck">Rooftop Terrace / Deck</option>
+                                            <option value="Bar or Beverage Concept">Bar or Beverage Concept</option>
+                                            <option value="Rooftop Bar">Rooftop Bar</option>
+                                            <option value="Grab & Go or Marketplace">Grab & Go or Marketplace</option>
+                                            <option value="Restaurant (on-site)">Restaurant (on-site)</option>
+                                            <option value="Room Service">Room Service</option>
+                                            <option value="Fitness Center">Fitness Center</option>
                                             <option value="Spa or Wellness Center">Spa or Wellness Center</option>
+                                            <option value="Pool">Pool</option>
+                                            <option value="Rooftop Pool">Rooftop Pool</option>
+                                            <option value="Hot Tub/Jacuzzi">Hot Tub/Jacuzzi</option>
                                             <option value="Kids' Area or Family Zone">Kids' Area or Family Zone</option>
                                             <option value="Pet Amenities">Pet Amenities</option>
-                                            <option value="Hot Tub/Jacuzzi">Hot Tub/Jacuzzi</option>
-                                            <option value="Room Service">Room Service</option>
-                                            <option value="Other Amenities (specify)">Other Amenities (specify)</option>
+                                            <option value="Concierge">Concierge</option>
+                                            <option value="Laundry / Valet">Laundry / Valet</option>
+                                            <option value="Kitchenette / In-room Kitchen">Kitchenette / In-room Kitchen</option>
+                                            <option value="EV Charging">EV Charging</option>
+                                            <option value="Beach Access / Frontage">Beach Access / Frontage</option>
+                                            <option value="Beach Club">Beach Club</option>
+                                            <option value="Water Sports / Marina Access">Water Sports / Marina Access</option>
+                                            <option value="Nightclub / Entertainment Venue">Nightclub / Entertainment Venue</option>
+                                            <option value="Sustainability Features">Sustainability Features</option>
+                                            <option value="Other Amenities">Other Amenities</option>
                                         </select>
                                         <div class="other-field-container hidden" id="amenitiesOtherContainer" style="margin-top: 8px;">
                                             <input type="text" class="form-input" name="Additional Amenities Other" placeholder="Specify other amenities...">
@@ -1537,12 +1621,25 @@
                                     <select class="form-select" name="Preferred Deal Structure">
                                         <option value="">Select One…</option>
                                         <option value="Franchise Only">Franchise Only</option>
-                                        <option value="Brand-Managed">Brand-Managed</option>
                                         <option value="Third-Party Management Only">Third-Party Management Only</option>
+                                        <option value="Brand + Third-Party Mgmt. (Combined)">Brand + Third-Party Mgmt. (Combined)</option>
+                                        <option value="Brand + Third-Party Mgmt. (Separate)">Brand + Third-Party Mgmt. (Separate)</option>
+                                        <option value="Brand-Managed Only">Brand-Managed Only</option>
                                         <option value="Lease">Lease</option>
                                         <option value="Joint Venture">Joint Venture</option>
                                         <option value="Flexible/Open">Flexible/Open</option>
-                                        <option value="Brand + Third-Party Management (Combined)">Brand + Third-Party Management (Combined)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label">Preferred Operator Management Structure<span class="help-text">How would the owner ideally like the hotel to be managed? Owner preference for operating structure — separate from brand franchise economics above. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Preferred Operator Management Structure" multiple size="6" style="min-width:260px;">
+                                        <option value="Third-Party Management">Third-Party Management</option>
+                                        <option value="Franchise + Operator">Franchise + Operator</option>
+                                        <option value="Franchise Only">Franchise Only</option>
+                                        <option value="Owner-Operated">Owner-Operated</option>
+                                        <option value="Lease">Lease</option>
+                                        <option value="Asset Management">Asset Management</option>
+                                        <option value="To Be Confirmed">To Be Confirmed</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -1567,7 +1664,7 @@
                                         <option value="$50M – $100M">$50M – $100M</option>
                                         <option value="$100M – $200M">$100M – $200M</option>
                                         <option value="$200M+">$200M+</option>
-                                        <option value="Not Applicable / New build">Not Applicable / New build</option>
+                                        <option value="Not Applicable / New Build">Not Applicable / New Build</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -1586,7 +1683,7 @@
                                         <option value="$5M – $10M">$5M – $10M</option>
                                         <option value="$10M – $20M">$10M – $20M</option>
                                         <option value="$20M+">$20M+</option>
-                                        <option value="Not Applicable / New build">Not Applicable / New build</option>
+                                        <option value="Not Applicable / New Build">Not Applicable / New Build</option>
                                     </select>
                                 </div>
                             </div>
@@ -1718,7 +1815,7 @@
                             <div class="form-grid">
                                 <div class="form-group-stack">
                                     <div class="form-group">
-                                        <label class="form-label">Soft vs Hard Brand Preference <span class="required">*</span><span class="help-text">Preference for soft brand vs hard brand.</span></label>
+                                        <label class="form-label">Soft vs Hard Brand Preference <span class="required">*</span><span class="help-text">Preferred Affiliation Model: Soft Brand (more independence, lighter standards) vs Hard Brand (full brand system), or open to both.</span></label>
                                         <select class="form-select" name="Soft vs Hard Brand Preference">
                                             <option value="">Select One…</option>
                                             <option value="Hard Brand">Hard Brand</option>
@@ -1758,32 +1855,30 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group" id="targetGuestSegmentGroup">
-                                    <label class="form-label">Target Guest Segment<span class="help-text">Primary segment (leisure, corporate, group, etc.).</span></label>
-                                    <select class="form-select" name="Target Guest Segment" id="targetGuestSegmentSelect">
-                                        <option value="">Select One…</option>
+                                <div class="form-group full-width multi-select-with-count" id="targetGuestSegmentGroup">
+                                    <label class="form-label">Target Guest Segments<span class="help-text">Select all that apply (leisure, corporate, group, etc.). Hold Ctrl/Cmd to select multiple. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Target Guest Segment" id="targetGuestSegmentSelect" multiple size="8" style="min-width: 260px;">
                                         <option value="Corporate / Business">Corporate / Business</option>
                                         <option value="Leisure">Leisure</option>
+                                        <option value="Bleisure">Bleisure</option>
+                                        <option value="Family">Family</option>
+                                        <option value="Solo Traveler">Solo Traveler</option>
+                                        <option value="Wellness Seeker">Wellness Seeker</option>
                                         <option value="Group / MICE">Group / MICE</option>
-                                        <option value="Bleisure (Business + Leisure)">Bleisure (Business + Leisure)</option>
-                                        <option value="Convention / Meetings">Convention / Meetings</option>
-                                        <option value="Tour Groups">Tour Groups</option>
                                         <option value="Contract / Extended Stay">Contract / Extended Stay</option>
                                         <option value="Government / Military">Government / Military</option>
                                         <option value="International Inbound">International Inbound</option>
                                         <option value="Staycation / Local">Staycation / Local</option>
-                                        <option value="Family Leisure">Family Leisure</option>
-                                        <option value="Other">Other</option>
+                                        <option value="Digital Nomad">Digital Nomad</option>
+                                        <option value="Luxury / Discerning">Luxury / Discerning</option>
+                                        <option value="Experience-Oriented">Experience-Oriented</option>
                                     </select>
-                                    <div class="other-field-container hidden" id="targetGuestSegmentOtherBlock" style="margin-top: 8px;">
-                                        <input type="text" class="form-input" name="Target Guest Segment Other" placeholder="Specify other guest segment...">
-                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Planned Hold Period<span class="help-text">Expected length of ownership or hold.</span></label>
                                     <select class="form-select" name="Planned Hold Period">
                                         <option value="">Select One…</option>
-                                        <option value="Under 1 year">Under 1 year</option>
+                                        <option value="Under 1 Year">Under 1 Year</option>
                                         <option value="1-3 Years">1-3 Years</option>
                                         <option value="3-5 Years">3-5 Years</option>
                                         <option value="5-7 Years">5-7 Years</option>
@@ -1839,13 +1934,13 @@
                                     <label class="form-label">Preferred Future Operating Model <span class="required">*</span><span class="help-text">Target operating model after this deal (canonical).</span></label>
                                     <select class="form-select" name="Preferred Future Operating Model">
                                         <option value="">Select One…</option>
-                                        <option value="Owner-operated">Owner-operated</option>
-                                        <option value="Third-party management only">Third-party management only</option>
-                                        <option value="Franchise/license only (owner or third-party operator)">Franchise/license only (owner or third-party operator)</option>
-                                        <option value="Brand + third-party management">Brand + third-party management</option>
-                                        <option value="Brand-managed">Brand-managed</option>
-                                        <option value="Lease structure">Lease structure</option>
-                                        <option value="Undecided / exploring">Undecided / exploring</option>
+                                        <option value="Owner-Operated">Owner-Operated</option>
+                                        <option value="Third-Party Management Only">Third-Party Management Only</option>
+                                        <option value="Franchise/License Only (Owner or Third-Party Operator)">Franchise/License Only (Owner or Third-Party Operator)</option>
+                                        <option value="Brand + Third-Party Management">Brand + Third-Party Management</option>
+                                        <option value="Brand-Managed">Brand-Managed</option>
+                                        <option value="Lease Structure">Lease Structure</option>
+                                        <option value="Undecided / Exploring">Undecided / Exploring</option>
                                         <option value="Needs Review">Needs Review</option>
                                     </select>
                                 </div>
@@ -1877,45 +1972,58 @@
                                     <label class="form-label ocs-required-when-visible">Operator Strategy Status <span class="required">*</span><span class="help-text">Where you are in operator planning (not a recommendation).</span></label>
                                     <select class="form-select" name="Operator Strategy Status">
                                         <option value="">Select One…</option>
-                                        <option value="Not seeking operator input">Not seeking operator input</option>
-                                        <option value="Exploring capabilities only">Exploring capabilities only</option>
-                                        <option value="Building shortlist for advisor review">Building shortlist for advisor review</option>
-                                        <option value="Ready for structured operator review">Ready for structured operator review</option>
-                                        <option value="Already in discussions">Already in discussions</option>
+                                        <option value="Not Seeking Operator Input">Not Seeking Operator Input</option>
+                                        <option value="Exploring Capabilities Only">Exploring Capabilities Only</option>
+                                        <option value="Building Shortlist for Advisor Review">Building Shortlist for Advisor Review</option>
+                                        <option value="Ready for Structured Operator Review">Ready for Structured Operator Review</option>
+                                        <option value="Already In Discussions">Already In Discussions</option>
                                         <option value="Needs Review">Needs Review</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Operator Structure Intent<span class="help-text">What role should the operator play in the opportunity? Optional owner intent for operator alignment review.</span></label>
+                                    <select class="form-select" name="Operator Structure Intent">
+                                        <option value="">Select One…</option>
+                                        <option value="Third-Party Management">Third-Party Management</option>
+                                        <option value="Franchise + Operator">Franchise + Operator</option>
+                                        <option value="Franchise Only">Franchise Only</option>
+                                        <option value="Owner-Operated">Owner-Operated</option>
+                                        <option value="Lease">Lease</option>
+                                        <option value="Asset Management">Asset Management</option>
+                                        <option value="To Be Confirmed">To Be Confirmed</option>
                                     </select>
                                 </div>
                                 <div class="form-group multi-select-with-count">
                                     <label class="form-label ocs-required-when-visible">Operator Capability Priorities <span class="required">*</span><span class="help-text">Capability areas that may matter for this deal. Select all that apply. <span class="selection-count"></span></span></label>
                                     <select class="form-select" name="Operator Capability Priorities" multiple size="8" style="min-width: 280px;">
-                                        <option value="Full hotel management">Full hotel management</option>
-                                        <option value="Pre-opening / opening support">Pre-opening / opening support</option>
-                                        <option value="Conversion & PIP execution">Conversion & PIP execution</option>
-                                        <option value="Revenue management & distribution">Revenue management & distribution</option>
-                                        <option value="Accounting & owner reporting">Accounting & owner reporting</option>
-                                        <option value="Procurement & cost control">Procurement & cost control</option>
-                                        <option value="F&B / culinary operations">F&amp;B / culinary operations</option>
-                                        <option value="Sales & marketing">Sales &amp; marketing</option>
-                                        <option value="HR & training">HR &amp; training</option>
-                                        <option value="Technology & systems">Technology &amp; systems</option>
-                                        <option value="Design / renovation PM">Design / renovation PM</option>
-                                        <option value="Asset management / capex planning">Asset management / capex planning</option>
-                                        <option value="Local market / CALA execution">Local market / CALA execution</option>
-                                        <option value="Lifestyle / experience programming">Lifestyle / experience programming</option>
-                                        <option value="Crisis / business continuity">Crisis / business continuity</option>
+                                        <option value="Full Hotel Management">Full Hotel Management</option>
+                                        <option value="Pre-Opening / Opening Support">Pre-Opening / Opening Support</option>
+                                        <option value="Conversion & PIP Execution">Conversion & PIP Execution</option>
+                                        <option value="Revenue Management & Distribution">Revenue Management & Distribution</option>
+                                        <option value="Accounting & Owner Reporting">Accounting & Owner Reporting</option>
+                                        <option value="Procurement & Cost Control">Procurement & Cost Control</option>
+                                        <option value="F&B / Culinary Operations">F&amp;B / culinary operations</option>
+                                        <option value="Sales & Marketing">Sales &amp; marketing</option>
+                                        <option value="HR & Training">HR &amp; training</option>
+                                        <option value="Technology & Systems">Technology &amp; systems</option>
+                                        <option value="Design / Renovation PM">Design / Renovation PM</option>
+                                        <option value="Asset Management / CapEx Planning">Asset Management / CapEx Planning</option>
+                                        <option value="Local Market / CALA Execution">Local Market / CALA Execution</option>
+                                        <option value="Lifestyle / Experience Programming">Lifestyle / Experience Programming</option>
+                                        <option value="Crisis / Business Continuity">Crisis / Business Continuity</option>
                                     </select>
                                 </div>
                                 <div class="form-group multi-select-with-count">
                                     <label class="form-label ocs-required-when-visible">Owner Reporting Package<span class="help-text">Reporting and oversight you expect from an operator. <span class="selection-count"></span></span></label>
                                     <select class="form-select" name="Owner Reporting Package" multiple size="6" style="min-width: 260px;">
-                                        <option value="Weekly financial">Weekly financial</option>
+                                        <option value="Weekly Financial">Weekly Financial</option>
                                         <option value="Monthly P&amp;L">Monthly P&amp;L</option>
-                                        <option value="Monthly operating metrics">Monthly operating metrics</option>
-                                        <option value="Quarterly board pack">Quarterly board pack</option>
-                                        <option value="Annual budget / forecast">Annual budget / forecast</option>
-                                        <option value="Owner portal access">Owner portal access</option>
-                                        <option value="On-demand / ad hoc">On-demand / ad hoc</option>
-                                        <option value="Third-party audit support">Third-party audit support</option>
+                                        <option value="Monthly Operating Metrics">Monthly Operating Metrics</option>
+                                        <option value="Quarterly Board Pack">Quarterly Board Pack</option>
+                                        <option value="Annual Budget / Forecast">Annual Budget / Forecast</option>
+                                        <option value="Owner Portal Access">Owner Portal Access</option>
+                                        <option value="On-Demand / Ad Hoc">On-Demand / Ad Hoc</option>
+                                        <option value="Third-Party Audit Support">Third-Party Audit Support</option>
                                     </select>
                                 </div>
                             </div>
@@ -1988,7 +2096,7 @@
                                         <option value="Bi-weekly">Bi-weekly</option>
                                         <option value="Monthly">Monthly</option>
                                         <option value="Quarterly">Quarterly</option>
-                                        <option value="Ad hoc">Ad hoc</option>
+                                        <option value="Ad Hoc">Ad Hoc</option>
                                     </select>
                                 </div>
                                 <div class="form-group full-width">
@@ -2270,7 +2378,7 @@
                                             <option value="Sign-on / Conversion Incentive">Sign-on / Conversion Incentive</option>
                                             <option value="Application Fee Credit">Application Fee Credit</option>
                                             <option value="Opening / FF&E Support">Opening / FF&E Support</option>
-                                            <option value="Marketing Allowance (one-time or recurring)">Marketing Allowance (one-time or recurring)</option>
+                                            <option value="Marketing Allowance (One-Time or Recurring)">Marketing Allowance (One-Time or Recurring)</option>
                                             <option value="Other">Other</option>
                                         </select>
                                         <div class="other-field-container hidden" style="margin-top: 8px;">
@@ -2340,9 +2448,9 @@
                                     <select class="form-select" name="Decision Timeline for Brand/Operator">
                                         <option value="">Select One…</option>
                                         <option value="Immediately">Immediately</option>
-                                        <option value="Within 30 days">Within 30 days</option>
-                                        <option value="30-90 days">30-90 days</option>
-                                        <option value="3-6 months">3-6 months</option>
+                                        <option value="Within 30 Days">Within 30 Days</option>
+                                        <option value="30–90 Days">30–90 Days</option>
+                                        <option value="3–6 Months">3–6 Months</option>
                                         <option value="Undecided">Undecided</option>
                                     </select>
                                 </div>
@@ -2418,7 +2526,7 @@
                                     <label class="form-label">Would You Like to Meet Consultants? <span class="required">*</span><span class="help-text">Yes if you want to be introduced to consultants.</span></label>
                                     <select class="form-select" name="Would you like to meet consultants?">
                                         <option value="">Select One…</option>
-                                        <option value="Yes - Connect me with Consultant">Yes – Connect me with Consultant</option>
+                                        <option value="Yes — Connect Me With a Consultant">Yes – Connect me with Consultant</option>
                                         <option value="Yes - I Have the Support I Need">Yes – I Have the Support I Need</option>
                                         <option value="Not Right Now">Not Right Now</option>
                                     </select>
@@ -2427,7 +2535,7 @@
                                     <label class="form-label">Legal Support Needed? <span class="required">*</span><span class="help-text">Yes if you need legal support referrals.</span></label>
                                     <select class="form-select" name="Legal Support Needed?">
                                         <option value="">Select One…</option>
-                                        <option value="Yes — Connect me With a Legal Advisor">Yes — Connect me With a Legal Advisor</option>
+                                        <option value="Yes — Connect Me With a Legal Advisor">Yes — Connect Me With a Legal Advisor</option>
                                         <option value="No — I Have Legal Support">No — I Have Legal Support</option>
                                         <option value="Not Right Now">Not Right Now</option>
                                     </select>
@@ -2466,7 +2574,7 @@
                                 </div>
                                 <div id="workingWithBrokerAdvisorDetails" class="conditional-block hidden">
                                     <div class="form-group full-width">
-                                        <label class="form-label">Broker/Advisor details<span class="help-text">Company and contract information.</span></label>
+                                        <label class="form-label">Broker/Advisor Details<span class="help-text">Company and contract information.</span></label>
                                         <input type="text" class="form-input" name="Broker/Advisor Company and Contract Details" placeholder="Company Name, Contract Details">
                                     </div>
                                 </div>
@@ -2644,6 +2752,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/operator-capability-intake.js?v=20260522-file-multiple"></script>
     <script src="/dealality-webflow-nav.js"></script>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/deal-setup-attachments-ui.js"></script>
     <script>
 (function () {
     var form = document.getElementById("dealForm");
@@ -2946,6 +3056,41 @@
         });
     }
 
+    function updateMixedUseIntakeVisibility() {
+        var block = document.getElementById("mixedUseIntakeBlock");
+        var condoSub = document.getElementById("mixedUseCondoSubBlock");
+        var projectTypeSel = document.getElementById("projectTypeSelect") || form.querySelector('[name="Project Type"]');
+        var condoSel = document.getElementById("condoResidencesSelect") || form.querySelector('[name="Condo Residences?"]');
+        var hotelTypeSel = form.querySelector('[name="Hotel Type"]');
+        if (!block) return;
+        var pt = projectTypeSel ? (projectTypeSel.value || "").trim() : "";
+        var condo = condoSel ? (condoSel.value || "").trim() : "";
+        var hotelType = hotelTypeSel ? (hotelTypeSel.value || "").trim() : "";
+        var inScope = pt === "Mixed-Use Hospitality Project" || condo === "Yes" || hotelType === "Branded Residences / Condo Hotel";
+        block.classList.toggle("hidden", !inScope);
+        if (!inScope) {
+            clearInputsInBlock(block);
+            return;
+        }
+        if (condoSub) {
+            var condoVisible = condo === "Yes";
+            condoSub.classList.toggle("hidden", !condoVisible);
+            if (!condoVisible) clearInputsInBlock(condoSub);
+        }
+    }
+
+    function updateFbOperatingModelVisibility() {
+        var block = document.getElementById("fbOperatingModelBlock");
+        var sel = form.querySelector('[name="F&B Outlets?"]');
+        if (!block || !sel) return;
+        var visible = (sel.value || "").trim() === "Yes";
+        block.classList.toggle("hidden", !visible);
+        if (!visible) {
+            var fbModelSel = block.querySelector('[name="F&B Operating Model"]');
+            if (fbModelSel) fbModelSel.selectedIndex = 0;
+        }
+    }
+
     function updateFbOutletsBlockVisibility() {
         var block = document.getElementById("fbOutletsBlock");
         var sel = form.querySelector('[name="F&B Outlets?"]');
@@ -2953,6 +3098,7 @@
         var visible = (sel.value || "").trim() === "Yes";
         block.classList.toggle("hidden", !visible);
         if (!visible) clearInputsInBlock(block);
+        updateFbOperatingModelVisibility();
     }
 
     function updateWorkedWithPreferredVisibility() {
@@ -3038,12 +3184,12 @@
     }
 
     function updateTargetGuestSegmentOtherVisibility() {
+        // Target Guest Segments is multi-select aligned with Brand Setup (no Other).
         var block = document.getElementById("targetGuestSegmentOtherBlock");
-        var sel = document.getElementById("targetGuestSegmentSelect") || form.querySelector('select[name="Target Guest Segment"]');
-        if (!block) return;
-        var visible = sel && (sel.value || "").trim() === "Other";
-        block.classList.toggle("hidden", !visible);
-        if (!visible) clearInputsInBlock(block);
+        if (block) {
+            block.classList.add("hidden");
+            clearInputsInBlock(block);
+        }
     }
 
     function updateAccessToTransitOtherVisibility() {
@@ -3083,26 +3229,25 @@
 
     /** Render "Current attachments" list from array of { url, filename } or strings. Does not touch file input. */
     function renderCurrentAttachments(attachments) {
+        if (window.DealSetupAttachmentsUi && typeof window.DealSetupAttachmentsUi.renderCurrentAttachments === 'function') {
+            var statusEl = document.getElementById('attachment-upload-status');
+            window.DealSetupAttachmentsUi.renderCurrentAttachments(attachments, {
+                onError: function (msg) {
+                    if (statusEl) {
+                        statusEl.textContent = msg;
+                        statusEl.style.color = 'var(--system--red-500, #b91c1c)';
+                    } else {
+                        alert(msg);
+                    }
+                }
+            });
+            return;
+        }
         var listEl = document.getElementById("current-attachments-list");
         var emptyEl = document.getElementById("current-attachments-empty");
         if (!listEl || !emptyEl) return;
         var arr = Array.isArray(attachments) ? attachments : [];
         listEl.innerHTML = "";
-        arr.forEach(function (item) {
-            var url = typeof item === "object" && item && item.url ? item.url : (typeof item === "string" ? item : "");
-            var name = (typeof item === "object" && item && (item.filename != null ? item.filename : item.name)) ? String(item.filename != null ? item.filename : item.name) : "";
-            if (!url) return;
-            var li = document.createElement("li");
-            li.style.marginBottom = "4px";
-            var a = document.createElement("a");
-            a.href = url;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = name || url;
-            a.style.color = "var(--secondary--color-2, #4f46e5)";
-            li.appendChild(a);
-            listEl.appendChild(li);
-        });
         emptyEl.style.display = arr.length ? "none" : "block";
     }
 
@@ -3148,6 +3293,25 @@
                 return;
             }
             if (el.type === "number") el.value = strVal === "" ? "" : Number(val);
+            else if (el.tagName === "SELECT" && !el.multiple) {
+                el.value = strVal;
+                if (strVal && el.value !== strVal) {
+                    var normOpt = function (s) {
+                        return String(s || "")
+                            .replace(/\u2013|\u2014/g, "-")
+                            .replace(/\s+/g, " ")
+                            .trim()
+                            .toLowerCase();
+                    };
+                    var want = normOpt(strVal);
+                    for (var oi = 0; oi < el.options.length; oi++) {
+                        if (normOpt(el.options[oi].value) === want) {
+                            el.selectedIndex = oi;
+                            break;
+                        }
+                    }
+                }
+            }
             else el.value = strVal;
         });
         try {
@@ -3164,6 +3328,7 @@
         updateThirdPartyOperatorBlockVisibility();
         updateLeaseStructureVisibility();
         updateFbOutletsBlockVisibility();
+        updateMixedUseIntakeVisibility();
         updateWorkedWithPreferredVisibility();
         updateWorkingWithBrokerAdvisorVisibility();
         updateCriticalDeadlinesDescriptionVisibility();
@@ -3231,7 +3396,7 @@
         var hasOther = false;
         for (var j = 0; j < selectEl.options.length; j++) {
             var v = selectEl.options[j].value;
-            if (selectEl.options[j].selected && (v === "Other" || v === "Other Amenities (specify)")) { hasOther = true; break; }
+            if (selectEl.options[j].selected && (v === "Other" || v === "Other Amenities" || v === "Other Amenities (Specify)")) { hasOther = true; break; }
         }
         var container = selectEl.closest(".multi-select-with-count") && selectEl.closest(".multi-select-with-count").querySelector(".other-field-container");
         if (container) {
@@ -3334,8 +3499,31 @@
         if (!isNaN(idx)) switchSection(idx);
     });
 
+    function getPendingAttachmentFileCount() {
+        var fileInput = document.getElementById("upload-supporting-docs-input");
+        return fileInput && fileInput.files ? fileInput.files.length : 0;
+    }
+
+    function attachmentResponseIsAirtableBacked(data) {
+        var uploaded = (data && data.uploadedAttachments) || [];
+        if (!Array.isArray(uploaded) || !uploaded.length) return false;
+        return uploaded.every(function (item) {
+            var url = item && item.url ? String(item.url) : "";
+            return /airtableusercontent\.com/i.test(url) && !!(item.filename || item.id);
+        });
+    }
+
     function doSave(triggerBtn) {
         if (!dealId) return;
+        if (getPendingAttachmentFileCount() > 0) {
+            showError("Selected file(s) are not uploaded yet. Click Upload before Save Progress.");
+            var statusElPending = document.getElementById("attachment-upload-status");
+            if (statusElPending) {
+                statusElPending.textContent = "Click Upload to save selected file(s) to Airtable.";
+                statusElPending.style.color = "var(--system--red-500, #b91c1c)";
+            }
+            return;
+        }
         var fields = getFieldValues();
         var dealPayload = {};
         /* Send all non-empty form fields (every tab) so the server has full state and returns the full merged deal; then applyFieldsToForm(record.fields, { mergeMode: true }) keeps all inputs from resetting. */
@@ -3611,7 +3799,10 @@
                 uploadBtn.disabled = true;
                 var formData = new FormData();
                 for (var i = 0; i < files.length; i++) formData.append("files", files[i]);
-                fetch("/api/my-deals/" + encodeURIComponent(dealId) + "/attachments", {
+                var uploadFetch = window.DealalityMemberstackAuth && typeof window.DealalityMemberstackAuth.fetchMyDealsApi === "function"
+                    ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+                    : fetch;
+                uploadFetch("/api/my-deals/" + encodeURIComponent(dealId) + "/attachments", {
                     method: "POST",
                     body: formData
                 })
@@ -3624,11 +3815,17 @@
                     })
                     .then(function (result) {
                         uploadBtn.disabled = false;
-                        if (result.ok && result.data && result.data.success) {
-                            renderCurrentAttachments(result.data.attachments);
+                        if (result.ok && result.data && result.data.success && attachmentResponseIsAirtableBacked(result.data)) {
+                            renderCurrentAttachments(result.data.attachments || result.data.uploadedAttachments);
                             fileInput.value = "";
-                            setUploadStatus("Uploaded.");
-                            if (typeof showDealSavedToast === "function") showDealSavedToast();
+                            var names = (result.data.uploadedAttachments || []).map(function (a) { return a.filename; }).filter(Boolean);
+                            setUploadStatus(
+                                names.length
+                                    ? "Uploaded to Airtable: " + names.join(", ")
+                                    : "Uploaded to Airtable."
+                            );
+                        } else if (result.ok && result.data && result.data.success) {
+                            setUploadStatus("Upload did not persist to Airtable. Please try again.", true);
                         } else {
                             var msg = (result.data && result.data.error) ? result.data.error : ("Upload failed (" + (result.status || 500) + ").");
                             setUploadStatus(msg, true);
@@ -3824,7 +4021,19 @@
     if (preferredDealStructEl) preferredDealStructEl.addEventListener("change", updateThirdPartyOperatorBlockVisibility);
 
     var fbOutletsEl = form.querySelector('[name="F&B Outlets?"]');
-    if (fbOutletsEl) fbOutletsEl.addEventListener("change", updateFbOutletsBlockVisibility);
+    if (fbOutletsEl) fbOutletsEl.addEventListener("change", function () {
+        updateFbOutletsBlockVisibility();
+        updateMixedUseIntakeVisibility();
+    });
+
+    var projectTypeEl = document.getElementById("projectTypeSelect") || form.querySelector('[name="Project Type"]');
+    if (projectTypeEl) projectTypeEl.addEventListener("change", updateMixedUseIntakeVisibility);
+
+    var condoResidencesEl = document.getElementById("condoResidencesSelect") || form.querySelector('[name="Condo Residences?"]');
+    if (condoResidencesEl) condoResidencesEl.addEventListener("change", updateMixedUseIntakeVisibility);
+
+    var hotelTypeEl = form.querySelector('[name="Hotel Type"]');
+    if (hotelTypeEl) hotelTypeEl.addEventListener("change", updateMixedUseIntakeVisibility);
 
     var workedWithPreferredEl = form.querySelector('[name="Have you worked with any of your preferred brands/operators before?"]');
     if (workedWithPreferredEl) workedWithPreferredEl.addEventListener("change", updateWorkedWithPreferredVisibility);
@@ -3855,6 +4064,7 @@
 
     updateLeaseStructureVisibility();
     updateFbOutletsBlockVisibility();
+    updateMixedUseIntakeVisibility();
     updateWorkedWithPreferredVisibility();
     updateWorkingWithBrokerAdvisorVisibility();
     updateCriticalDeadlinesDescriptionVisibility();

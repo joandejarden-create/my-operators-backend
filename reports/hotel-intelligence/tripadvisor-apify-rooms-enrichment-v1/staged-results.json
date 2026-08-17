@@ -1,0 +1,488 @@
+{
+  "version": "tripadvisor-enrich-v1",
+  "match_version": "tripadvisor-match-v1",
+  "verify_version": "tripadvisor-verify-v1",
+  "module_version": "tripadvisor-apify-rooms-enrichment-v1",
+  "production_writes": false,
+  "counts": {
+    "hotels": 8,
+    "new_room_candidates": 4,
+    "primary_source_verified": 0,
+    "multi_source_verified": 0,
+    "single_source_candidates": 4,
+    "conflicts": 2,
+    "unresolved": 0,
+    "false_match_rejections": 0,
+    "authoritative_exact": 2,
+    "authoritative_near": 0,
+    "authoritative_conflict": 2
+  },
+  "cost": {
+    "model": "attributed_ppe_silver_for_staged_sample",
+    "total_usd": 0.03,
+    "note": "Apify MCP pool reused from benchmark; attributed PPE for staged hotels only",
+    "benchmark_pool_total_usd": 0.795,
+    "price_per_result_usd": 0.0025
+  },
+  "cost_per_verified_room_count": null,
+  "ppe_reference_usd": {
+    "FREE": 0.005,
+    "BRONZE": 0.0029,
+    "SILVER": 0.0025,
+    "GOLD": 0.002,
+    "PLATINUM": 0.0015,
+    "DIAMOND": 0.00125
+  },
+  "rows": [
+    {
+      "dealality_record_id": "rec0qmO7Xj7uyjWLZ",
+      "dealality_name": "Comfort Inn & Suites Querétaro",
+      "dealality_country": "Mexico",
+      "dealality_city": "Querétaro",
+      "rooms_authoritative": 70,
+      "rooms_candidate": 60,
+      "rooms_source": "tripadvisor_apify",
+      "rooms_source_url": "https://www.tripadvisor.com/Hotel_Review-g479232-d628773-Reviews-Comfort_Inn_Queretaro-Queretaro_City_Central_Mexico_and_Gulf_Coast.html",
+      "rooms_verified_at": "2026-08-12",
+      "rooms_confidence": 0.7,
+      "rooms_verification_status": "AUTHORITATIVE_COMPARE_CONFLICT",
+      "room_compare_vs_authoritative": "CONFLICT",
+      "match_confidence": "high",
+      "false_match_rejected": false,
+      "rejection": null,
+      "tripadvisor": {
+        "id": "628773",
+        "name": "Comfort Inn Queretaro",
+        "webUrl": "https://www.tripadvisor.com/Hotel_Review-g479232-d628773-Reviews-Comfort_Inn_Queretaro-Queretaro_City_Central_Mexico_and_Gulf_Coast.html",
+        "website": "http://www.choicehotels.com/mexico/queretaro/comfort-inn-hotels/mx086",
+        "email": null,
+        "phone": "+52 442 216 0100",
+        "hotelClass": "0.0",
+        "amenities": null,
+        "numberOfRooms": 60
+      },
+      "resolution_plan": {
+        "ok": true,
+        "steps": [
+          {
+            "priority": 3,
+            "kind": "per_hotel_search_q",
+            "url": "https://www.tripadvisor.com/Search?q=Comfort%20Inn%20%26%20Suites%20Quer%C3%A9taro%20Quer%C3%A9taro%20Mexico",
+            "query": "Comfort Inn & Suites Querétaro Querétaro Mexico"
+          }
+        ],
+        "reason": null
+      },
+      "verification": null,
+      "match_score": 0.99,
+      "note": "authoritative_rooms_preserved_no_overwrite"
+    },
+    {
+      "dealality_record_id": "rec07FR57B9Yt3TCh",
+      "dealality_name": "JW Marriott Hotel Bogota",
+      "dealality_country": "Colombia",
+      "dealality_city": "Bogotá",
+      "rooms_authoritative": 239,
+      "rooms_candidate": 264,
+      "rooms_source": "tripadvisor_apify",
+      "rooms_source_url": "https://www.tripadvisor.com/Hotel_Review-g294074-d1778657-Reviews-JW_Marriott_Hotel_Bogota-Bogota.html",
+      "rooms_verified_at": "2026-08-12",
+      "rooms_confidence": 0.7,
+      "rooms_verification_status": "AUTHORITATIVE_COMPARE_CONFLICT",
+      "room_compare_vs_authoritative": "CONFLICT",
+      "match_confidence": "high",
+      "false_match_rejected": false,
+      "rejection": null,
+      "tripadvisor": {
+        "id": "1778657",
+        "name": "JW Marriott Hotel Bogota",
+        "webUrl": "https://www.tripadvisor.com/Hotel_Review-g294074-d1778657-Reviews-JW_Marriott_Hotel_Bogota-Bogota.html",
+        "website": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview/",
+        "email": null,
+        "phone": "18446310595",
+        "hotelClass": "5.0",
+        "amenities": null,
+        "numberOfRooms": 264
+      },
+      "resolution_plan": {
+        "ok": true,
+        "steps": [
+          {
+            "priority": 3,
+            "kind": "per_hotel_search_q",
+            "url": "https://www.tripadvisor.com/Search?q=JW%20Marriott%20Hotel%20Bogota%20Bogot%C3%A1%20Colombia",
+            "query": "JW Marriott Hotel Bogota Bogotá Colombia"
+          }
+        ],
+        "reason": null
+      },
+      "verification": null,
+      "match_score": 1.2,
+      "note": "authoritative_rooms_preserved_no_overwrite"
+    },
+    {
+      "dealality_record_id": "rec0aE97rzRABwJon",
+      "dealality_name": "Iberostar Waves Punta Cana",
+      "dealality_country": "Dominican Republic",
+      "dealality_city": "Punta Cana",
+      "rooms_authoritative": 427,
+      "rooms_candidate": 427,
+      "rooms_source": "tripadvisor_apify",
+      "rooms_source_url": "https://www.tripadvisor.com/Hotel_Review-g3176298-d579774-Reviews-Iberostar_Waves_Punta_Cana-Bavaro_Punta_Cana_La_Altagracia_Province_Dominican_Republic.html",
+      "rooms_verified_at": "2026-08-12",
+      "rooms_confidence": 0.7,
+      "rooms_verification_status": "AUTHORITATIVE_COMPARE_EXACT",
+      "room_compare_vs_authoritative": "EXACT",
+      "match_confidence": "high",
+      "false_match_rejected": false,
+      "rejection": null,
+      "tripadvisor": {
+        "id": "579774",
+        "name": "Iberostar Waves Punta Cana",
+        "webUrl": "https://www.tripadvisor.com/Hotel_Review-g3176298-d579774-Reviews-Iberostar_Waves_Punta_Cana-Bavaro_Punta_Cana_La_Altagracia_Province_Dominican_Republic.html",
+        "website": "https://www.iberostar.com/en/hotels/punta-cana/iberostar-punta-cana",
+        "email": null,
+        "phone": "18778595095",
+        "hotelClass": "5.0",
+        "amenities": null,
+        "numberOfRooms": 427
+      },
+      "resolution_plan": {
+        "ok": true,
+        "steps": [
+          {
+            "priority": 3,
+            "kind": "per_hotel_search_q",
+            "url": "https://www.tripadvisor.com/Search?q=Iberostar%20Waves%20Punta%20Cana%20Punta%20Cana%20Dominican%20Republic",
+            "query": "Iberostar Waves Punta Cana Punta Cana Dominican Republic"
+          }
+        ],
+        "reason": null
+      },
+      "verification": null,
+      "match_score": 1.35,
+      "note": "authoritative_rooms_preserved_no_overwrite"
+    },
+    {
+      "dealality_record_id": "recST2nLpCY63suUs",
+      "dealality_name": "Santarena Hotel",
+      "dealality_country": "Costa Rica",
+      "dealality_city": "Las Catalinas",
+      "rooms_authoritative": 45,
+      "rooms_candidate": 45,
+      "rooms_source": "tripadvisor_apify",
+      "rooms_source_url": "https://www.tripadvisor.com/Hotel_Review-g6437168-d15241835-Reviews-Santarena_Hotel_at_Las_Catalinas-Las_Catalinas_Province_of_Guanacaste.html",
+      "rooms_verified_at": "2026-08-12",
+      "rooms_confidence": 0.6,
+      "rooms_verification_status": "AUTHORITATIVE_COMPARE_EXACT",
+      "room_compare_vs_authoritative": "EXACT",
+      "match_confidence": "medium",
+      "false_match_rejected": false,
+      "rejection": null,
+      "tripadvisor": {
+        "id": "15241835",
+        "name": "Santarena Hotel at Las Catalinas",
+        "webUrl": "https://www.tripadvisor.com/Hotel_Review-g6437168-d15241835-Reviews-Santarena_Hotel_at_Las_Catalinas-Las_Catalinas_Province_of_Guanacaste.html",
+        "website": "https://www.santarenahotel.com/",
+        "email": "hello@santarenahotel.com",
+        "phone": "+1 866-658-0107",
+        "hotelClass": "4.0",
+        "amenities": null,
+        "numberOfRooms": 45
+      },
+      "resolution_plan": {
+        "ok": true,
+        "steps": [
+          {
+            "priority": 3,
+            "kind": "per_hotel_search_q",
+            "url": "https://www.tripadvisor.com/Search?q=Santarena%20Hotel%20Las%20Catalinas%20Costa%20Rica",
+            "query": "Santarena Hotel Las Catalinas Costa Rica"
+          }
+        ],
+        "reason": null
+      },
+      "verification": null,
+      "match_score": 0.92,
+      "note": "authoritative_rooms_preserved_no_overwrite"
+    },
+    {
+      "dealality_record_id": "rec1XynKuinAWon0c",
+      "dealality_name": "Suryaa Hotel Pinhais, Curio Collection by Hilton",
+      "dealality_country": "Brazil",
+      "dealality_city": "Pinhais",
+      "rooms_authoritative": null,
+      "rooms_candidate": 25,
+      "rooms_source": "tripadvisor_apify",
+      "rooms_source_url": "https://www.tripadvisor.com/Hotel_Review-g2342989-d24809871-Reviews-Suryaa_Hotel_Pinhais_Curio_Collection_by_Hilton-Pinhais_State_of_Parana.html",
+      "rooms_verified_at": "2026-08-12",
+      "rooms_confidence": 0.55,
+      "rooms_verification_status": "CANDIDATE_SINGLE_SOURCE",
+      "room_compare_vs_authoritative": "MISSING",
+      "match_confidence": "high",
+      "false_match_rejected": false,
+      "rejection": null,
+      "tripadvisor": {
+        "id": "24809871",
+        "name": "Suryaa Hotel Pinhais, Curio Collection by Hilton",
+        "webUrl": "https://www.tripadvisor.com/Hotel_Review-g2342989-d24809871-Reviews-Suryaa_Hotel_Pinhais_Curio_Collection_by_Hilton-Pinhais_State_of_Parana.html",
+        "website": "https://www.hilton.com/en/hotels/cwbspqq-suryaa-hotel-pinhais/?SEO_id=YEXTN-AMER-QQ-CWBSPQQ&y_source=1_NTI2MzM3OTgtNzY5LWxvY2F0aW9uLndlYnNpdGU%3D",
+        "email": "reservas1@hcchotels.com.br",
+        "phone": "011558444428746",
+        "hotelClass": "4.0",
+        "amenities": null,
+        "numberOfRooms": 25
+      },
+      "resolution_plan": {
+        "ok": true,
+        "steps": [
+          {
+            "priority": 3,
+            "kind": "per_hotel_search_q",
+            "url": "https://www.tripadvisor.com/Search?q=Suryaa%20Hotel%20Pinhais%2C%20Curio%20Collection%20by%20Hilton%20Pinhais%20Brazil",
+            "query": "Suryaa Hotel Pinhais, Curio Collection by Hilton Pinhais Brazil"
+          }
+        ],
+        "reason": null
+      },
+      "verification": {
+        "version": "tripadvisor-verify-v1",
+        "agreeing_count": 0,
+        "conflicting_count": 0,
+        "independent_count": 0,
+        "steps": [
+          {
+            "step": "official_site_fetch",
+            "url": "https://www.hilton.com/en/hotels/cwbspqq-suryaa-hotel-pinhais/"
+          },
+          {
+            "step": "official_site_fetch_failed",
+            "url": "https://www.hilton.com/en/hotels/cwbspqq-suryaa-hotel-pinhais/",
+            "error": 403
+          },
+          {
+            "step": "official_site_fetch",
+            "url": "https://www.hilton.com/en/hotels/cwbspqq-suryaa-hotel-pinhais/?SEO_id=YEXTN-AMER-QQ-CWBSPQQ&y_source=1_NTI2MzM3OTgtNzY5LWxvY2F0aW9uLndlYnNpdGU%3D"
+          },
+          {
+            "step": "official_site_fetch_failed",
+            "url": "https://www.hilton.com/en/hotels/cwbspqq-suryaa-hotel-pinhais/?SEO_id=YEXTN-AMER-QQ-CWBSPQQ&y_source=1_NTI2MzM3OTgtNzY5LWxvY2F0aW9uLndlYnNpdGU%3D",
+            "error": 403
+          },
+          {
+            "step": "room_count_research"
+          },
+          {
+            "step": "room_count_research_done",
+            "status": "NO_EVIDENCE",
+            "candidate": null
+          }
+        ],
+        "agreeing": [],
+        "conflicting": []
+      },
+      "match_score": 1.35
+    },
+    {
+      "dealality_record_id": "rec02pPY8kVklN6mK",
+      "dealality_name": "Club Regina Los Cabos managed by Accor",
+      "dealality_country": "Mexico",
+      "dealality_city": "San José del Cabo",
+      "rooms_authoritative": null,
+      "rooms_candidate": 243,
+      "rooms_source": "tripadvisor_apify",
+      "rooms_source_url": "https://www.tripadvisor.com/Hotel_Review-g152516-d553142-Reviews-Club_Regina_Los_Cabos-San_Jose_del_Cabo_Los_Cabos_Baja_California.html",
+      "rooms_verified_at": "2026-08-12",
+      "rooms_confidence": 0.55,
+      "rooms_verification_status": "CANDIDATE_SINGLE_SOURCE",
+      "room_compare_vs_authoritative": "MISSING",
+      "match_confidence": "high",
+      "false_match_rejected": false,
+      "rejection": null,
+      "tripadvisor": {
+        "id": "553142",
+        "name": "Club Regina Los Cabos",
+        "webUrl": "https://www.tripadvisor.com/Hotel_Review-g152516-d553142-Reviews-Club_Regina_Los_Cabos-San_Jose_del_Cabo_Los_Cabos_Baja_California.html",
+        "website": "https://all.accor.com/hotel/c4p4/index.de.shtml",
+        "email": "hc4t7-re@accor.com",
+        "phone": "+52 322 980 0580",
+        "hotelClass": "4.0",
+        "amenities": null,
+        "numberOfRooms": 243
+      },
+      "resolution_plan": {
+        "ok": true,
+        "steps": [
+          {
+            "priority": 3,
+            "kind": "per_hotel_search_q",
+            "url": "https://www.tripadvisor.com/Search?q=Club%20Regina%20Los%20Cabos%20managed%20by%20Accor%20San%20Jos%C3%A9%20del%20Cabo%20Mexico",
+            "query": "Club Regina Los Cabos managed by Accor San José del Cabo Mexico"
+          }
+        ],
+        "reason": null
+      },
+      "verification": {
+        "version": "tripadvisor-verify-v1",
+        "agreeing_count": 0,
+        "conflicting_count": 0,
+        "independent_count": 0,
+        "steps": [
+          {
+            "step": "official_site_fetch",
+            "url": "https://all.accor.com/hotel/C4P4/index.en.shtml"
+          },
+          {
+            "step": "official_site_fetch",
+            "url": "https://all.accor.com/hotel/c4p4/index.de.shtml"
+          },
+          {
+            "step": "room_count_research"
+          },
+          {
+            "step": "room_count_research_done",
+            "status": "NO_EVIDENCE",
+            "candidate": null
+          }
+        ],
+        "agreeing": [],
+        "conflicting": []
+      },
+      "match_score": 1.12
+    },
+    {
+      "dealality_record_id": "rec3iveAi0TN3xNRO",
+      "dealality_name": "Holiday Inn Cartagena Morros",
+      "dealality_country": "Colombia",
+      "dealality_city": "Cartagena de Indias",
+      "rooms_authoritative": null,
+      "rooms_candidate": 140,
+      "rooms_source": "tripadvisor_apify",
+      "rooms_source_url": "https://www.tripadvisor.com/Hotel_Review-g297476-d2322449-Reviews-Holiday_Inn_Cartagena_Morros_By_IHG-Cartagena_Cartagena_District_Bolivar_Department.html",
+      "rooms_verified_at": "2026-08-12",
+      "rooms_confidence": 0.55,
+      "rooms_verification_status": "CANDIDATE_SINGLE_SOURCE",
+      "room_compare_vs_authoritative": "MISSING",
+      "match_confidence": "high",
+      "false_match_rejected": false,
+      "rejection": null,
+      "tripadvisor": {
+        "id": "2322449",
+        "name": "Holiday Inn Cartagena Morros By IHG",
+        "webUrl": "https://www.tripadvisor.com/Hotel_Review-g297476-d2322449-Reviews-Holiday_Inn_Cartagena_Morros_By_IHG-Cartagena_Cartagena_District_Bolivar_Department.html",
+        "website": "https://www.ihg.com/holidayinn/hotels/us/en/cartagena-de-indias/ctghi/hoteldetail?cm_mmc=yextlocal-_-hi-_-co-_-ctghi",
+        "email": "reservations.ctghi@ihg.com",
+        "phone": "18778595095",
+        "hotelClass": "5.0",
+        "amenities": null,
+        "numberOfRooms": 140
+      },
+      "resolution_plan": {
+        "ok": true,
+        "steps": [
+          {
+            "priority": 3,
+            "kind": "per_hotel_search_q",
+            "url": "https://www.tripadvisor.com/Search?q=Holiday%20Inn%20Cartagena%20Morros%20Cartagena%20de%20Indias%20Colombia",
+            "query": "Holiday Inn Cartagena Morros Cartagena de Indias Colombia"
+          }
+        ],
+        "reason": null
+      },
+      "verification": {
+        "version": "tripadvisor-verify-v1",
+        "agreeing_count": 0,
+        "conflicting_count": 0,
+        "independent_count": 0,
+        "steps": [
+          {
+            "step": "official_site_fetch",
+            "url": "https://www.ihg.com/holidayinn/hotels/us/en/cartagena-de-indias/ctghi/hoteldetail"
+          },
+          {
+            "step": "official_site_fetch",
+            "url": "https://www.ihg.com/holidayinn/hotels/us/en/cartagena-de-indias/ctghi/hoteldetail?cm_mmc=yextlocal-_-hi-_-co-_-ctghi"
+          },
+          {
+            "step": "room_count_research"
+          },
+          {
+            "step": "room_count_research_done",
+            "status": "NO_EVIDENCE",
+            "candidate": null
+          }
+        ],
+        "agreeing": [],
+        "conflicting": []
+      },
+      "match_score": 1.22
+    },
+    {
+      "dealality_record_id": "rec1dTLhN2kHSjyv1",
+      "dealality_name": "Holiday Inn Express San Jose Costa Rica Airport",
+      "dealality_country": "Costa Rica",
+      "dealality_city": "San José",
+      "rooms_authoritative": null,
+      "rooms_candidate": 100,
+      "rooms_source": "tripadvisor_apify",
+      "rooms_source_url": "https://www.tripadvisor.com/Hotel_Review-g309224-d557144-Reviews-Holiday_Inn_Express_San_Jose_Costa_Rica_Airport_by_IHG-Alajuela_Province_of_Alajuela.html",
+      "rooms_verified_at": "2026-08-12",
+      "rooms_confidence": 0.55,
+      "rooms_verification_status": "CANDIDATE_SINGLE_SOURCE",
+      "room_compare_vs_authoritative": "MISSING",
+      "match_confidence": "high",
+      "false_match_rejected": false,
+      "rejection": null,
+      "tripadvisor": {
+        "id": "557144",
+        "name": "Holiday Inn Express San Jose Costa Rica Airport by IHG",
+        "webUrl": "https://www.tripadvisor.com/Hotel_Review-g309224-d557144-Reviews-Holiday_Inn_Express_San_Jose_Costa_Rica_Airport_by_IHG-Alajuela_Province_of_Alajuela.html",
+        "website": "https://www.ihg.com/holidayinnexpress/hotels/us/en/san-jose/sjoap/hoteldetail?cm_mmc=YextLocal-_-EX-_-CR-_-SJOAP",
+        "email": "reserve@gmhiex.net",
+        "phone": "18778595095",
+        "hotelClass": "2.0",
+        "amenities": null,
+        "numberOfRooms": 100
+      },
+      "resolution_plan": {
+        "ok": true,
+        "steps": [
+          {
+            "priority": 3,
+            "kind": "per_hotel_search_q",
+            "url": "https://www.tripadvisor.com/Search?q=Holiday%20Inn%20Express%20San%20Jose%20Costa%20Rica%20Airport%20San%20Jos%C3%A9%20Costa%20Rica",
+            "query": "Holiday Inn Express San Jose Costa Rica Airport San José Costa Rica"
+          }
+        ],
+        "reason": null
+      },
+      "verification": {
+        "version": "tripadvisor-verify-v1",
+        "agreeing_count": 0,
+        "conflicting_count": 0,
+        "independent_count": 0,
+        "steps": [
+          {
+            "step": "official_site_fetch",
+            "url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/san-jose/sjoap/hoteldetail"
+          },
+          {
+            "step": "official_site_fetch",
+            "url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/san-jose/sjoap/hoteldetail?cm_mmc=YextLocal-_-EX-_-CR-_-SJOAP"
+          },
+          {
+            "step": "room_count_research"
+          },
+          {
+            "step": "room_count_research_done",
+            "status": "NO_EVIDENCE",
+            "candidate": null
+          }
+        ],
+        "agreeing": [],
+        "conflicting": []
+      },
+      "match_score": 1.27
+    }
+  ]
+}

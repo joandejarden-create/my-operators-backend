@@ -1,0 +1,193 @@
+{
+  "ok": true,
+  "status": "production_census_level_2_adapter_wave_2_partial_source_remaining",
+  "objective": "level-2-adapter-wave-2",
+  "legacy_objective": "level-2-source-extraction-v1",
+  "version": "level-2-adapter-wave-2",
+  "extractor_version": "census-level-2-parent-extractors-v2-wave-2",
+  "mode": "mission",
+  "parent_company": "Marriott International",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "updates_applied": 0,
+  "inserts_applied": 0,
+  "fields_written": [],
+  "choice_high_writes": 0,
+  "marriott_high_writes": 0,
+  "rooms_high_writes": 0,
+  "bot_blocked_source_counts": 0,
+  "source_insufficient_counts": 11,
+  "steward_conflicts": 0,
+  "before": {
+    "total_records": 1224,
+    "clean_core": 631,
+    "below_clean_core": 593,
+    "unknown_city": 6,
+    "descriptor_city": 0,
+    "canonical_blank": 3,
+    "state_region_complete": 1018,
+    "address_complete": 375,
+    "address_confidence_high": 324,
+    "address_source_url_complete": 325,
+    "lat_long_complete": 379,
+    "mapbox_eligible": 58,
+    "phone_complete": 350,
+    "rooms_complete": 116,
+    "continent_complete": 1224,
+    "subcontinent_complete": 1224,
+    "market_complete": 0,
+    "submarket_complete": 0,
+    "complete_census_v1": 14,
+    "map_ready": 189,
+    "contact_ready": 177,
+    "size_ready": 74,
+    "blocked_missing_address": 384,
+    "blocked_dirty_identity": 579,
+    "blocked_source_access": 0,
+    "mapbox_provider_ready": false,
+    "estimated_mapbox_requests": 58,
+    "estimated_mapbox_cost_usd": 0.29,
+    "coordinate_blocked_dirty_identity": 17,
+    "by_class": {
+      "Clean Core": 631,
+      "Needs Source Lookup": 5,
+      "Needs Steward Review": 418,
+      "Duplicate Risk": 170,
+      "Not Usable Yet": 0
+    },
+    "source_lookup_remaining": 5,
+    "steward_remaining": 418,
+    "duplicate_risk_remaining": 170
+  },
+  "after": {
+    "total_records": 1224,
+    "clean_core": 631,
+    "below_clean_core": 593,
+    "unknown_city": 6,
+    "descriptor_city": 0,
+    "canonical_blank": 3,
+    "state_region_complete": 1018,
+    "address_complete": 375,
+    "address_confidence_high": 324,
+    "address_source_url_complete": 325,
+    "lat_long_complete": 379,
+    "mapbox_eligible": 58,
+    "phone_complete": 350,
+    "rooms_complete": 116,
+    "continent_complete": 1224,
+    "subcontinent_complete": 1224,
+    "market_complete": 0,
+    "submarket_complete": 0,
+    "complete_census_v1": 14,
+    "map_ready": 189,
+    "contact_ready": 177,
+    "size_ready": 74,
+    "blocked_missing_address": 384,
+    "blocked_dirty_identity": 579,
+    "blocked_source_access": 0,
+    "mapbox_provider_ready": false,
+    "estimated_mapbox_requests": 58,
+    "estimated_mapbox_cost_usd": 0.29,
+    "coordinate_blocked_dirty_identity": 17,
+    "by_class": {
+      "Clean Core": 631,
+      "Needs Source Lookup": 5,
+      "Needs Steward Review": 418,
+      "Duplicate Risk": 170,
+      "Not Usable Yet": 0
+    },
+    "source_lookup_remaining": 5,
+    "steward_remaining": 418,
+    "duplicate_risk_remaining": 170
+  },
+  "extraction": {
+    "version": "census-level-2-parent-extractors-v2-wave-2",
+    "objective": "level-2-source-extraction-v1",
+    "parent_filter": "Marriott International",
+    "counters": {
+      "records_scanned": 1224,
+      "eligible": 228,
+      "high_proposals": 0,
+      "steward_conflicts": 0,
+      "blocked_pages": 0,
+      "fetch_attempted": 0,
+      "fetch_ok": 0,
+      "fetch_blocked": 0,
+      "fetch_limit": 250,
+      "by_parent": {
+        "Choice": {
+          "scanned": 0,
+          "high": 0,
+          "blocked": 0,
+          "insufficient": 0
+        },
+        "Marriott": {
+          "scanned": 228,
+          "high": 0,
+          "blocked": 0,
+          "insufficient": 11
+        },
+        "Hilton": {
+          "scanned": 0,
+          "high": 0,
+          "blocked": 0,
+          "insufficient": 0
+        },
+        "IHG": {
+          "scanned": 0,
+          "high": 0,
+          "blocked": 0,
+          "insufficient": 0
+        },
+        "Accor": {
+          "scanned": 0,
+          "high": 0,
+          "blocked": 0,
+          "insufficient": 0
+        },
+        "Wyndham": {
+          "scanned": 0,
+          "high": 0,
+          "blocked": 0,
+          "insufficient": 0
+        },
+        "Preferred": {
+          "scanned": 0,
+          "high": 0,
+          "blocked": 0,
+          "insufficient": 0
+        },
+        "Other": {
+          "scanned": 0,
+          "high": 0,
+          "blocked": 0,
+          "insufficient": 0
+        }
+      },
+      "directory_warm": {
+        "hilton_count": 372,
+        "choice_count": 156,
+        "marriott_count": 796
+      }
+    },
+    "proposals": [],
+    "steward_review": [],
+    "blocked": [],
+    "examples_before_after": []
+  },
+  "apply": {
+    "updates_applied": 0,
+    "fields_written": [],
+    "writable_count": 0
+  },
+  "chained_cala_completion": null,
+  "runtime_ms": 99797,
+  "next_recommended_action": "Official Level 2 sources remain partial (bot-blocked pages / missing street JSON-LD / directory gaps). Do not invent; expand parent adapters or steward blocked families.",
+  "note": "alias_of_level_2_adapter_wave_2"
+}

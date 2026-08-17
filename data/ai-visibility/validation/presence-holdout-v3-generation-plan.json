@@ -1,0 +1,109 @@
+{
+  "phase": "PRESENCE_HOLDOUT_V3_GENERATION_PLAN_READY",
+  "batchId": "presence_validation_holdout_v3_candidate_batch_v1",
+  "version": "ai_intelligence_presence_holdout_v3_candidate_batch_v1",
+  "PLANNED_RESPONSES": 112,
+  "EXPECTED_CANDIDATE_PAIRS": "150–180",
+  "EXPECTED_UNIQUE_RESPONSES": "112 (target band 90–110)",
+  "BY_PROVIDER": {
+    "openai": 28,
+    "gemini": 28,
+    "perplexity": 28,
+    "claude": 28
+  },
+  "BY_LANGUAGE": {
+    "en": 72,
+    "es": 40
+  },
+  "BY_GEOGRAPHY": {
+    "Global": 24,
+    "CALA": 36,
+    "Europe": 12,
+    "North America": 12,
+    "Mexico": 28
+  },
+  "PROMPT_N": 28,
+  "promptIds": [
+    "p_global_existing_asset_reposition_v1",
+    "p_cala_existing_asset_reposition_v1",
+    "p_cala_existing_asset_reposition_es_v1",
+    "p_europe_existing_asset_reposition_v1",
+    "p_na_existing_asset_reposition_v1",
+    "p_mx_existing_asset_reposition_es_v1",
+    "p_global_soft_brand_shortlist_v1",
+    "p_cala_collection_affiliation_v1",
+    "p_cala_collection_affiliation_es_v1",
+    "p_mx_soft_brand_shortlist_v1",
+    "p_mx_soft_brand_shortlist_es_v1",
+    "p_europe_collection_affiliation_v1",
+    "p_cala_soft_brand_shortlist_es_v1",
+    "p_na_collection_affiliation_v1",
+    "p_global_lifestyle_strategy_v1",
+    "p_cala_lifestyle_strategy_es_v1",
+    "p_mx_lifestyle_strategy_v1",
+    "p_mx_lifestyle_strategy_es_v1",
+    "p_na_lifestyle_strategy_v1",
+    "p_europe_uu_positioning_strategy_v1",
+    "p_global_uu_owner_shortlist_v1",
+    "p_cala_uu_positioning_strategy_es_v1",
+    "p_mx_uu_owner_shortlist_v1",
+    "p_global_residences_hotel_project_v1",
+    "p_cala_residences_capability_v1",
+    "p_mx_residences_capability_es_v1",
+    "p_cala_affiliation_flexibility_es_v1",
+    "p_global_affiliation_flexibility_v1"
+  ],
+  "FINAL_TARGET": 100,
+  "TARGET_PRESENT": 60,
+  "TARGET_NOT_PRESENT": 40,
+  "TARGET_UNIQUE_RESPONSES": ">=80",
+  "ESTIMATED_COST": 31.36,
+  "COST_CAP": 40,
+  "EST_USD_PER_CALL": 0.28,
+  "providerAvailability": {
+    "openai": true,
+    "gemini": true,
+    "perplexity": true,
+    "claude": true
+  },
+  "missingProviders": [],
+  "plannedModels": {
+    "openai": "gpt-5.6",
+    "gemini": "gemini-2.5-flash (adapter default)",
+    "perplexity": "sonar (adapter default)",
+    "claude": "claude adapter default"
+  },
+  "LEAKAGE_CHECK_READY": "YES",
+  "LEAKAGE_INDEX_SIZES": {
+    "hashes": 319,
+    "responseIds": 196,
+    "caseIds": 1216
+  },
+  "LEAKAGE_SOURCES": [
+    "golden_v1",
+    "golden_v2",
+    "presence_validation_pool_v1",
+    "presence_openai_batch",
+    "presence_reserve",
+    "holdout_v1",
+    "holdout_v2",
+    "classifier_lab",
+    "regression_fixtures",
+    "assisted_review_exports"
+  ],
+  "HOLDOUT_V3_SELECTION_ALLOWED": "NO",
+  "HOLDOUT_V3_FREEZE_ALLOWED": "NO",
+  "HOLDOUT_V3_SCORING_ALLOWED": "NO",
+  "READY_TO_RUN": "YES",
+  "stopReasons": [],
+  "hardGuards": {
+    "HOLDOUT_V2_CHANGES": 0,
+    "ENTITY_RESOLVER_CHANGES": 0,
+    "ALIAS_CHANGES": 0,
+    "HOLDOUT_V3_SELECTION": 0,
+    "HOLDOUT_V3_FREEZE": 0,
+    "HOLDOUT_V3_SCORING": 0,
+    "REGIONALIZATION_EXECUTION": 0,
+    "AIRTABLE_WRITES": 0
+  }
+}

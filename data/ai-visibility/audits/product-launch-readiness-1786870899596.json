@@ -1,0 +1,842 @@
+{
+  "generatedAt": "2026-08-16T09:01:39.595Z",
+  "auditOnly": true,
+  "CERTIFIED_LAYER_FROZEN": "YES",
+  "contract": {
+    "version": "brand_ai_visibility_v1_presence_led_v1",
+    "BRAND_AI_VISIBILITY_V1": "PRESENCE_LED_PRODUCTION_BUILD",
+    "BRAND_AI_VISIBILITY_V1_RELEASE_MODE": "CONTROLLED_CLIENT_RELEASE_READY",
+    "CONTROLLED_RELEASE_MONITORING_MODE": "MANUAL_GOVERNED",
+    "CORE_SIGNAL": "AI_SIGNAL_PRESENCE",
+    "RECOMMENDED_REQUIRED_FOR_V1": false,
+    "BRAND_AI_VISIBILITY_CAN_ADVANCE_WITHOUT_RECOMMENDED": true,
+    "PRESENCE": "PRODUCTION_VALIDATED",
+    "RECOMMENDED": "RESEARCH_BLOCKED_NOT_PRODUCTION_READY",
+    "productQuestions": [
+      "WHERE DOES THE BRAND APPEAR?",
+      "WHERE IS IT ABSENT?",
+      "HOW DOES IT COMPARE WITH PEERS?",
+      "HOW DOES THIS DIFFER BY PROVIDER?",
+      "HOW DOES THIS DIFFER BY REGION?",
+      "WHAT QUESTIONS ARE WE MISSING?",
+      "HOW IS PRESENCE CHANGING?",
+      "WHAT EVIDENCE / SOURCES ARE ASSOCIATED WITH THESE OBSERVATIONS?"
+    ],
+    "ENABLED": [
+      "AI_PRESENCE",
+      "REGIONAL_PRESENCE",
+      "COMPETITIVE_POSITION_PRESENCE",
+      "QUESTIONS_MISSING",
+      "COMPARABLE_PRESENCE_TRENDS",
+      "CROSS_PROVIDER_PRESENCE_INTELLIGENCE",
+      "EXECUTIVE_INSIGHT_LAYER",
+      "EVIDENCE_DRILLDOWN",
+      "SOURCE_INTELLIGENCE"
+    ],
+    "BLOCKED": {
+      "RECOMMENDATION_SHARE": "BLOCKED",
+      "QUESTIONS_WON": "BLOCKED",
+      "FIRST_RECOMMENDATION": "NOT_READY",
+      "NEGATIVE_OR_QUALIFIED": "NOT_READY",
+      "COMPARATOR": "NOT_READY",
+      "AI_VISIBILITY_SCORE": "FORBIDDEN",
+      "GEO_SCORE": "FORBIDDEN",
+      "PROVIDER_CONFIDENCE_SCORE": "FORBIDDEN",
+      "CONSENSUS_SCORE": "FORBIDDEN"
+    },
+    "ROADMAP": {
+      "CURRENT": "CONTROLLED_CLIENT_RELEASE_READY",
+      "NEXT": "READY_FOR_CONTROLLED_BRAND_AI_VISIBILITY_CLIENT_RELEASE",
+      "THEN": "OPERATOR_AI_VISIBILITY_FOUNDATION_GAP_FILL",
+      "FULL_AUTOMATED_PRODUCTION": "BLOCKED_UNTIL_SCHEDULER_CERTIFIED",
+      "QUERY_ORIGIN": "RESEARCH_COMPLETE_NO_PRODUCTIZATION",
+      "RECOMMENDED": "RESEARCH_BLOCKED_NOT_PRODUCTION_READY"
+    },
+    "LANGUAGE": {
+      "allowed": [
+        "Observed Presence is higher...",
+        "Brand appears in...",
+        "Brand is absent from...",
+        "Three monitored providers surface...",
+        "Associated sources include...",
+        "Presence increased between comparable monitoring periods...",
+        "Brand was not observed in these monitored responses."
+      ],
+      "forbidden": [
+        "AI prefers...",
+        "AI recommends...",
+        "This source influenced the AI..."
+      ],
+      "note": "Causal / preference language forbidden unless separately validated evidence supports the claim."
+    },
+    "recommendedClosure": {
+      "version": "ai_intelligence_recommended_research_closure_v1",
+      "AI_SIGNAL_RECOMMENDED": "RESEARCH_BLOCKED_NOT_PRODUCTION_READY",
+      "RECOMMENDATION_SHARE": "BLOCKED",
+      "FIRST_RECOMMENDATION": "NOT_READY",
+      "QUESTIONS_WON": "BLOCKED",
+      "NEGATIVE_OR_QUALIFIED": "NOT_READY",
+      "COMPARATOR": "NOT_READY",
+      "PRODUCTION_GATE": {
+        "PRECISION_MIN": 0.98,
+        "RECALL_MIN": 0.98
+      },
+      "cycle": {
+        "deterministicBinaryRemediation": {
+          "version": "ai_visibility_recommended_binary_v1",
+          "ruleVersion": "ai_visibility_recommended_binary_rules_v1_3",
+          "unambiguousDevN": 273,
+          "precision": 0.8182,
+          "recall": 0.6,
+          "gate": "FAIL"
+        },
+        "semanticAdjudicationFeasibility": {
+          "model": "gpt-4.1-mini",
+          "studyN": 114,
+          "bestConsensus": {
+            "rule": "majority_2_of_3",
+            "precision": 0.8478,
+            "recall": 0.5342
+          },
+          "repeatability": {
+            "unanimousDecisionRate": 0.9649,
+            "twoOfThreeAgreementRate": 1
+          },
+          "gate": "FAIL",
+          "fullDevExecuted": false
+        },
+        "conclusion": "RECOMMENDED_SIGNAL_NOT_YET_RELIABLY_AUTOMATABLE",
+        "abandoned": false,
+        "recurringResearchScheduled": false
+      },
+      "REOPEN_RESEARCH_IF": [
+        "materially stronger semantic model becomes available",
+        "evidence-contract architecture materially improves",
+        "substantial new real-world monitoring dataset exists",
+        "customer use case justifies human-assisted adjudication",
+        "new research hypothesis has a plausible path to >=98% precision and recall"
+      ],
+      "RECOMMENDED_REQUIRED_FOR_BRAND_AI_VISIBILITY_V1": false,
+      "note": "Recommended remains a governed future signal. Brand AI Visibility v1 advances on Presence only."
+    },
+    "REOPEN_RESEARCH_IF": [
+      "materially stronger semantic model becomes available",
+      "evidence-contract architecture materially improves",
+      "substantial new real-world monitoring dataset exists",
+      "customer use case justifies human-assisted adjudication",
+      "new research hypothesis has a plausible path to >=98% precision and recall"
+    ],
+    "hardGuards": {
+      "RECOMMENDED_RESEARCH_CALLS": 0,
+      "RECOMMENDED_CLASSIFIER_CHANGES": 0,
+      "RECOMMENDATION_SHARE_ENABLE": 0,
+      "FIRST_RECOMMENDATION_WORK": 0,
+      "PRESENCE_DEFINITION_CHANGES": 0,
+      "PRESENCE_RESCORE": 0,
+      "ARBITRARY_SCORE_CREATION": 0,
+      "UNSUPPORTED_CAUSAL_CLAIMS": 0,
+      "RAW_RESPONSES_TO_AIRTABLE": 0
+    },
+    "FINAL_STATUS": "BRAND_AI_VISIBILITY_V1_CONTROLLED_RELEASE_READY"
+  },
+  "sop": {
+    "version": "ai_visibility_controlled_release_monitoring_v1",
+    "CURRENT_MODE": "MANUAL_GOVERNED",
+    "CONTROLLED_RELEASE_SOP": "READY",
+    "steps": [
+      "run_initiation",
+      "provider_preflight",
+      "cost_cap",
+      "idempotency",
+      "duplicate_run_prevention",
+      "retry_policy",
+      "partial_failure_handling",
+      "completion_verification",
+      "snapshot_creation",
+      "comparability_check",
+      "client_publication_check"
+    ],
+    "scheduler": {
+      "version": "ai_visibility_controlled_release_monitoring_v1",
+      "SCHEDULER_IMPLEMENTED": true,
+      "SCHEDULER_ENABLED": false,
+      "IDEMPOTENCY_READY": true,
+      "RETRY_READY": true,
+      "DUPLICATE_PREVENTION_READY": true,
+      "COST_GUARD_READY": true,
+      "PARTIAL_FAILURE_READY": true,
+      "OBSERVABILITY_READY": true,
+      "AUTO_ENABLE_BLOCKED": true,
+      "note": "Do not enable scheduler until all gates explicitly certified. Controlled client release uses MANUAL_GOVERNED."
+    },
+    "CLAIMS_FORBIDDEN": [
+      "automated_biweekly_monitoring",
+      "FULL_AUTOMATED_PRODUCTION"
+    ],
+    "hardGuards": {
+      "SCHEDULER_AUTO_ENABLE": 0,
+      "PROVIDER_CALLS_FROM_THIS_MODULE": 0
+    }
+  },
+  "scheduler": {
+    "version": "ai_visibility_controlled_release_monitoring_v1",
+    "SCHEDULER_IMPLEMENTED": true,
+    "SCHEDULER_ENABLED": false,
+    "IDEMPOTENCY_READY": true,
+    "RETRY_READY": true,
+    "DUPLICATE_PREVENTION_READY": true,
+    "COST_GUARD_READY": true,
+    "PARTIAL_FAILURE_READY": true,
+    "OBSERVABILITY_READY": "PARTIAL",
+    "AUTO_ENABLE_BLOCKED": true,
+    "note": "Do not enable scheduler until all gates explicitly certified. Controlled client release uses MANUAL_GOVERNED."
+  },
+  "recurringConfig": {
+    "version": "ai_visibility_recurring_monitoring_config_v1",
+    "cadence": {
+      "FREQUENCY": "WEEKLY",
+      "INTERVAL": 2,
+      "LABEL": "biweekly",
+      "TIMEZONE": "UTC",
+      "SCHEDULER_ENABLED": false
+    },
+    "executionOrder": [
+      {
+        "provider": "perplexity",
+        "order": 1,
+        "WHY": "Lowest cost/latency; completes quickly; failure isolation before heavier providers"
+      },
+      {
+        "provider": "gemini",
+        "order": 2,
+        "WHY": "Moderate cost; grounding reliable; precedes OpenAI/Claude in compact window"
+      },
+      {
+        "provider": "openai",
+        "order": 3,
+        "WHY": "Established Wave-1 adapter; mid-high cost; before Claude bottleneck"
+      },
+      {
+        "provider": "claude",
+        "order": 4,
+        "WHY": "Highest cost/latency; web-search heavy; run last so cap issues do not block other providers"
+      }
+    ],
+    "collectionWindow": {
+      "TARGET": "< 12 hours",
+      "HARD_MAX": "24 hours",
+      "WHY": "Tighter than first baseline multi-day window; not statistical simultaneity"
+    },
+    "matrix": {
+      "providers": [
+        "openai",
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "callsPerProvider": 84,
+      "totalLogicalCalls": 336,
+      "slots": [
+        {
+          "key": "GLOBAL_EN",
+          "planned": 12
+        },
+        {
+          "key": "CALA_EN",
+          "planned": 12
+        },
+        {
+          "key": "CALA_ES",
+          "planned": 12
+        },
+        {
+          "key": "EUROPE_EN",
+          "planned": 12
+        },
+        {
+          "key": "NORTH_AMERICA_EN",
+          "planned": 12
+        },
+        {
+          "key": "MEXICO_EN",
+          "planned": 12
+        },
+        {
+          "key": "MEXICO_ES",
+          "planned": 12
+        }
+      ],
+      "promptLibrary": "showcase_prompts_v1",
+      "peerSetId": "peers_uu_collection_lifestyle_owner_decision_v2",
+      "metricVersion": "ai_visibility_metrics_v1"
+    },
+    "hardCaps": {
+      "openai": 59.63,
+      "gemini": 11.07,
+      "perplexity": 1.5,
+      "claude": 66.92,
+      "TOTAL_PERIOD_CAP": 139.12,
+      "WARNING_THRESHOLD": 118.25,
+      "BASIS": "baseline_actual_usd × operational buffer (provider-specific); not experimental validation caps"
+    },
+    "costEstimate": {
+      "OPENAI": 38.41,
+      "GEMINI": 6.56,
+      "PERPLEXITY": 0.47,
+      "CLAUDE": 58.19,
+      "TOTAL_BASELINE_COST": 103.63,
+      "LOW": 93.27,
+      "EXPECTED": 103.63,
+      "HIGH": 119.17
+    }
+  },
+  "discoverability": {
+    "TOTAL_BRANDS_WITH_GOVERNED_URLS": 18,
+    "BASELINE_MEASURED": [
+      "Autograph Collection",
+      "Curio Collection by Hilton",
+      "Ascend Hotel Collection",
+      "Hotel Indigo"
+    ],
+    "CHECK_NOT_RUN": [
+      "Tribute Portfolio",
+      "Design Hotels",
+      "Westin",
+      "AC Hotels by Marriott",
+      "Tapestry Collection by Hilton",
+      "Canopy by Hilton",
+      "Tempo by Hilton",
+      "Radisson Individuals by Choice",
+      "Radisson Blu by Choice",
+      "recmKqo7M7mLZgRqQ",
+      "Kimpton Hotels",
+      "recwONQTqGU1jHCsM",
+      "recvvmiyReHhiKdoK",
+      "recDwzv86TWnz2gGB"
+    ],
+    "SOURCE_NOT_CONFIGURED": [],
+    "CHECK_FAILED": [],
+    "OTHER": []
+  },
+  "ownedByPortfolio": {
+    "marriott": [
+      {
+        "name": "Autograph Collection",
+        "PARENT_COMPANY_DOMAIN": "marriott.com",
+        "BRAND_DOMAINS": [],
+        "DEVELOPMENT_DOMAIN": "hotel-development.marriott.com",
+        "RESIDENCES_DOMAIN": "marriottresidences.com",
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "marriott.com",
+          "hotel-development.marriott.com",
+          "marriottresidences.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Tribute Portfolio",
+        "PARENT_COMPANY_DOMAIN": "marriott.com",
+        "BRAND_DOMAINS": [
+          "tribute-portfolio.marriott.com"
+        ],
+        "DEVELOPMENT_DOMAIN": "hotel-development.marriott.com",
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "tribute-portfolio.marriott.com",
+          "marriott.com",
+          "hotel-development.marriott.com"
+        ],
+        "STATUS": "COMPLETE",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Design Hotels",
+        "PARENT_COMPANY_DOMAIN": "marriott.com",
+        "BRAND_DOMAINS": [
+          "design-hotels.marriott.com"
+        ],
+        "DEVELOPMENT_DOMAIN": "hotel-development.marriott.com",
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "design-hotels.marriott.com",
+          "marriott.com",
+          "hotel-development.marriott.com"
+        ],
+        "STATUS": "COMPLETE",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Westin",
+        "PARENT_COMPANY_DOMAIN": "marriott.com",
+        "BRAND_DOMAINS": [],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "marriott.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "AC Hotels by Marriott",
+        "PARENT_COMPANY_DOMAIN": "marriott.com",
+        "BRAND_DOMAINS": [],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "marriott.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      }
+    ],
+    "hilton": [
+      {
+        "name": "Curio Collection by Hilton",
+        "PARENT_COMPANY_DOMAIN": "hilton.com",
+        "BRAND_DOMAINS": [],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "hilton.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Tapestry Collection by Hilton",
+        "PARENT_COMPANY_DOMAIN": "hilton.com",
+        "BRAND_DOMAINS": [],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "hilton.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Canopy by Hilton",
+        "PARENT_COMPANY_DOMAIN": "hilton.com",
+        "BRAND_DOMAINS": [],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "hilton.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Tempo by Hilton",
+        "PARENT_COMPANY_DOMAIN": "hilton.com",
+        "BRAND_DOMAINS": [],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "hilton.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      }
+    ],
+    "choice": [
+      {
+        "name": "Ascend Hotel Collection",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "choicehotels.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "choicehotels.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Radisson Individuals by Choice",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "choicehotels.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "choicehotels.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Radisson Blu by Choice",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "choicehotels.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "choicehotels.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "recmKqo7M7mLZgRqQ",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "choicehotels.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "choicehotels.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      }
+    ],
+    "ihg": [
+      {
+        "name": "Hotel Indigo",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "hotelindigo.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "hotelindigo.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "Kimpton Hotels",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "kimptonhotels.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "kimptonhotels.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "recwONQTqGU1jHCsM",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "ihg.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "ihg.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "recvvmiyReHhiKdoK",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "ihg.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "ihg.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      },
+      {
+        "name": "recDwzv86TWnz2gGB",
+        "PARENT_COMPANY_DOMAIN": null,
+        "BRAND_DOMAINS": [
+          "ihg.com"
+        ],
+        "DEVELOPMENT_DOMAIN": null,
+        "RESIDENCES_DOMAIN": null,
+        "REGIONAL_DOMAIN": null,
+        "ALL_DOMAINS": [
+          "ihg.com"
+        ],
+        "STATUS": "PARTIAL",
+        "OWNED_DOMAIN_STATUS": "CONFIGURED"
+      }
+    ]
+  },
+  "portfolioMatrix": {
+    "marriott": {
+      "available": true,
+      "brandCount": 5,
+      "brands": [
+        {
+          "name": "Autograph Collection",
+          "disc": "BASELINE_MEASURED",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "Tribute Portfolio",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "COMPLETE"
+        },
+        {
+          "name": "Design Hotels",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "COMPLETE"
+        },
+        {
+          "name": "Westin",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "AC Hotels by Marriott",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        }
+      ]
+    },
+    "hilton": {
+      "available": true,
+      "brandCount": 4,
+      "brands": [
+        {
+          "name": "Curio Collection by Hilton",
+          "disc": "BASELINE_MEASURED",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "Tapestry Collection by Hilton",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "Canopy by Hilton",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "Tempo by Hilton",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        }
+      ]
+    },
+    "choice": {
+      "available": true,
+      "brandCount": 4,
+      "brands": [
+        {
+          "name": "Ascend Hotel Collection",
+          "disc": "BASELINE_MEASURED",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "Radisson Individuals by Choice",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "Radisson Blu by Choice",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "recmKqo7M7mLZgRqQ",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        }
+      ]
+    },
+    "ihg": {
+      "available": true,
+      "brandCount": 5,
+      "brands": [
+        {
+          "name": "Hotel Indigo",
+          "disc": "BASELINE_MEASURED",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "Kimpton Hotels",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "recwONQTqGU1jHCsM",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "recvvmiyReHhiKdoK",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        },
+        {
+          "name": "recDwzv86TWnz2gGB",
+          "disc": "CHECK_NOT_RUN",
+          "owned": "CONFIGURED",
+          "ownedStatusClass": "PARTIAL"
+        }
+      ]
+    }
+  },
+  "envProvider": {
+    "openai": {
+      "credential": true,
+      "modelConfigured": true,
+      "defaultModel": "gpt-5.6"
+    },
+    "gemini": {
+      "credential": true,
+      "modelConfigured": true,
+      "defaultModel": "gemini-3.6-flash"
+    },
+    "perplexity": {
+      "credential": true,
+      "modelConfigured": true,
+      "defaultModel": "sonar"
+    },
+    "claude": {
+      "credential": false,
+      "modelConfigured": true,
+      "defaultModel": "claude-sonnet-4-6"
+    }
+  },
+  "sizes": {
+    "EXEC_API_RESPONSE_SIZE": 28012,
+    "DETAIL_OVERVIEW_SIZE": 831,
+    "QUESTIONS_PAGE_SIZE": 702,
+    "SOURCES_SIZE": 822,
+    "questionsPaginated": false,
+    "execKeys": [
+      "ok",
+      "productSurface",
+      "view",
+      "provider",
+      "providerLabel",
+      "providerMode",
+      "availableProviders",
+      "providerSelectorOptions",
+      "providerHasCompletedData",
+      "ALL_PROVIDERS_DERIVED",
+      "ALL_PROVIDERS_RUN",
+      "ALL_PROVIDERS_PROVIDER_RECORD",
+      "NO_SILENT_PROVIDER_FALLBACK",
+      "geography",
+      "language",
+      "availableLanguages",
+      "languageFilterContract",
+      "SILENT_LANGUAGE_FALLBACK",
+      "currentPosition",
+      "portfolioSnapshot"
+    ],
+    "hasMonitoringMeta": false,
+    "freshnessProbe": {
+      "execAsOf": null,
+      "periodLabel": null,
+      "providersCompleted": null,
+      "partial": null
+    }
+  },
+  "authSafety": {
+    "productionUserCanSwitch": false,
+    "demoUserCanSwitch": true,
+    "demoOverrideIgnoredForNonDemoUser": true,
+    "demoOverrideAppliesForDemoUser": false,
+    "PRODUCTION_AUTH_SAFETY": "PASS"
+  },
+  "clientCopyHits": [
+    {
+      "term": "\\bdeterministic\\b",
+      "jsHits": 1,
+      "htmlHits": 1
+    },
+    {
+      "term": "\\bevidenceId\\b",
+      "jsHits": 13,
+      "htmlHits": 0
+    },
+    {
+      "term": "\\bresponseId\\b",
+      "jsHits": 8,
+      "htmlHits": 0
+    },
+    {
+      "term": "\\bAirtable\\b",
+      "jsHits": 3,
+      "htmlHits": 0
+    }
+  ],
+  "help": {
+    "definitionsPresent": [
+      "AI_PRESENCE",
+      "PORTFOLIO_AI_PRESENCE",
+      "COMPETITIVE_POSITION",
+      "QUESTIONS_MISSING",
+      "ALL_PROVIDERS",
+      "CITATION_RATE",
+      "OWNED_SOURCE_CITATION_RATE",
+      "CITED_SOURCE",
+      "ASSOCIATED_SOURCE",
+      "AI_DISCOVERABILITY",
+      "PUBLIC_DISCOVERABILITY",
+      "COMPARABLE_TREND"
+    ],
+    "missingRequired": [],
+    "extras": {
+      "PROVIDER_DISAGREEMENT": true,
+      "SOURCE_MIX": true,
+      "SOURCE_CITATION_FREQUENCY": true
+    }
+  },
+  "PROVIDER_MODELS": {
+    "openai": "gpt-5.6",
+    "gemini": "gemini-3.6-flash",
+    "perplexity": "sonar",
+    "claude": "claude-sonnet-4-6"
+  }
+}

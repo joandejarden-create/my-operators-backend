@@ -27,6 +27,8 @@ const EXTRA_BY_PROPERTY_PAGE = {
     "https://www.choicehotels.com/hoteldam/mx/slpap/images/1280/SLPAPExteriorTemp01_1.jpg",
   "https://www.choicehotels.com/suriname/paramaribo/radisson-hotels/sr001":
     "https://www.choicehotels.com/hoteldam/sr/sr001/images/1280/SR001ExteriorTemp01_1.jpg",
+  "https://www.choicehotels.com/es-mx/panama/panama/radisson-hotels/pn018":
+    "https://www.choicehotels.com/hoteldam/pn/pn018/images/1280/PN018AerialTemp1_1.jpg",
   "https://www.choicehotels.com/argentina/san-carlos-de-bariloche/radisson-blu-hotels/aa022":
     "https://www.choicehotels.com/hoteldam/aa/aa022/images/1280/AA022ExteriorTemp01_1.jpg",
   "https://www.choicehotels.com/chile/santiago/radisson-blu-hotels/cl012":

@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-07-23T07:45:00.000Z",
+  "mode": "wayback_steward_full",
+  "source": "web.archive.org snapshots of official choicehotels.com property URLs",
+  "fieldMapping": {
+    "Amenities": "parsed Choice property amenities JSON / HTML (MAP_CHOICE_AMENITIES_HTML_APPLY)"
+  },
+  "harvest": {
+    "stewardPoolAtStart": 169,
+    "waybackSavedOrReused": 101,
+    "waybackMissed": 68,
+    "report": "reports/choice-amenity-wayback-steward.json"
+  },
+  "apply": {
+    "htmlFiles": 109,
+    "appliedThisBatch": 98,
+    "skippedAlreadyPopulatedOrInvalid": 11,
+    "errors": 2,
+    "errorDetails": [
+      "br162.html — no_census_match (Property ID not on Choice Parent census row)",
+      "cb030.html — no_census_match (Property ID not on Choice Parent census row)"
+    ],
+    "applyLog": "reports/choice-amenities-html-applies.csv",
+    "cumulativeApplyLogRows": 107
+  },
+  "remainingBlankAmenities": {
+    "stewardWorklistRows": 71,
+    "csv": "reports/choice-amenities-steward-worklist.csv",
+    "typicalGap": "No usable Wayback snapshot with embedded amenities payload (or no CDX hit)"
+  },
+  "scripts": [
+    "scripts/harvest-choice-amenity-wayback-steward.mjs",
+    "scripts/apply-choice-amenities-from-html.mjs",
+    "scripts/export-choice-amenities-steward-worklist.mjs"
+  ],
+  "changeImpact": "High",
+  "rollbackNote": "Clear Amenities on record IDs listed in reports/choice-amenities-html-applies.csv"
+}

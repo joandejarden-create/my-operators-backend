@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "status": "production_census_dataforseo_local_business_enrichment_v1_partial_policy_decision_needed",
+  "objective": "dataforseo-local-business-enrichment-v1",
+  "version": "dataforseo-local-business-enrichment-v1",
+  "generated_at": "2026-08-07T22:26:37.323Z",
+  "gates": {
+    "ok": true,
+    "blockers": [],
+    "candidates_only": true,
+    "dataforseo_is_source_of_truth": false,
+    "census_writes_allowed": false,
+    "inserts_allowed": false,
+    "rooms_from_maps_allowed": false,
+    "field_write_flags": {
+      "address": false,
+      "phone": false,
+      "website": false,
+      "coordinates": false
+    }
+  },
+  "census_writes": 0,
+  "inserts": 0,
+  "brand_setup_writes": 0,
+  "brand_explorer_writes": 0,
+  "rooms_writes_from_maps": 0,
+  "existing_records_tested": 300,
+  "markets_tested": 9,
+  "markets": [
+    "cancun-riviera-maya",
+    "los-cabos",
+    "mexico-city",
+    "punta-cana",
+    "santo-domingo",
+    "cartagena",
+    "bogota",
+    "panama-city",
+    "san-jose-cr"
+  ],
+  "queries_run": 318,
+  "estimated_cost_usd": 0.098,
+  "local_business_candidates_found": 105,
+  "high_confidence_matches": 19,
+  "medium_confidence_matches": 0,
+  "duplicate_risk_matches": 10,
+  "new_hotel_candidates": 35,
+  "already_in_census": 2,
+  "possible_duplicates": 10,
+  "non_hotel_rejected": 9,
+  "address_candidates": 43,
+  "phone_candidates": 43,
+  "website_candidates": 43,
+  "coordinate_candidates": 43,
+  "rooms_evidence_candidates": 0,
+  "cost_per_matched_record": 0.005158,
+  "cost_per_new_hotel_candidate": 0.0028,
+  "cost_per_address_candidate": 0.002279,
+  "cost_per_phone_candidate": 0.002279,
+  "cost_per_website_candidate": 0.002279,
+  "cost_per_geo_candidate": 0.002279,
+  "recommended_write_policy_md": "### A. Safe to approve now (after steward spot-check)\n- Website / Official Property URL from **match_high** + official/brand domain only (not OTA).\n- Address from **match_high** local/business matches (spot-check 20 before scale).\n\n### B. Needs founder / legal approval\n- Phone from DataForSEO / Google local (43 candidates) — secondary contact policy.\n- Storing Google-derived coordinates (43 candidates) — geocode storage / terms.\n- Storing Google-derived address as production SoT.\n\n### C. Keep candidate-only\n- match_medium steward queue\n- duplicate_risk records\n- new_hotel_candidates (no auto-insert in field-completion-only)\n- category-ambiguous / hostel / apartment / VR\n- Rooms / Keys from Maps (never)",
+  "recommended_fields_to_approve": {
+    "safe_now_after_spot_check": [
+      "website_official_domain_match_high",
+      "address_match_high_spot_check"
+    ],
+    "needs_founder_legal": [
+      "phone_google_local",
+      "coordinates_google_local_storage_terms",
+      "address_as_production_sot"
+    ],
+    "keep_candidate_only": [
+      "match_medium",
+      "duplicate_risk",
+      "new_hotel_candidates",
+      "rooms_from_maps"
+    ]
+  },
+  "scale_estimate_notes": "If enrichment yield holds across ~1224 Census rows: ~1297 Maps queries, ~$0.4 estimated, ~78 high matches, ~4760 new hotel candidates if discovery expanded beyond 9 markets (order-of-magnitude only).",
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam",
+    "role": "read_only_candidate_pilot"
+  },
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T22-22-14_CALA-dataforseo-local-business-enrichment-v1"
+}

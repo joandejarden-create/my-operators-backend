@@ -1,0 +1,102 @@
+{
+  "run_type": "production_census_marriott_discovery_adapter",
+  "generated_at": "2026-08-05T23:47:30.000Z",
+  "final_status": "production_census_marriott_discovery_adapter_ready_for_insert_review",
+  "production_writes": false,
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "hqv_required_for_discovery": false,
+  "deprecated_sitemap_hotels_xml_used": false,
+  "webhound_invoked": false,
+  "production_target": {
+    "baseName": "Deal Capture Platform",
+    "tableName": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam"
+  },
+  "adapter": {
+    "module": "lib/research-engine-v2/census-autopilot-marriott-discovery-adapter.js",
+    "wired_into": "lib/research-engine-v2/census-autopilot-source-discovery.js",
+    "coverage_config": "lib/research-engine-v2/production-census-cala-region-config.js",
+    "source": {
+      "type": "official_country_hotel_sitemap",
+      "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+      "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+      "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+      "hqv_required_for_discovery": false
+    },
+    "blocked_patterns": [
+      "/en/hotels/{country}.sitemap-hotels.xml",
+      "*.sitemap-hotels.xml",
+      "OTA directories",
+      "Webhound as Census SoT",
+      "VIC as production write"
+    ]
+  },
+  "marriott_country_readiness": {
+    "Mexico": "supported",
+    "Dominican Republic": "supported",
+    "Costa Rica": "supported",
+    "Colombia": "supported",
+    "Panama": "supported"
+  },
+  "controlled_runs": [
+    {
+      "label": "marriott_mexico_smoke",
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-05T23-45-16_CALA-source-discovery",
+      "countries_searched": ["Mexico"],
+      "discovered": 301,
+      "existing_exact_matches": 301,
+      "new_property_candidates": 0,
+      "duplicate_risks": 0,
+      "steward_review_cases": 0,
+      "estimated_insert_count": 0,
+      "marsha_coverage_pct": 100,
+      "official_url_coverage_pct": 100
+    },
+    {
+      "label": "marriott_cala_priority_five",
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-05T23-45-32_CALA-source-discovery",
+      "countries_searched": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_hotel_counts": {
+        "Mexico": 301,
+        "Dominican Republic": 25,
+        "Costa Rica": 25,
+        "Colombia": 30,
+        "Panama": 17
+      },
+      "discovered": 398,
+      "existing_exact_matches": 301,
+      "new_property_candidates": 93,
+      "duplicate_risks": 0,
+      "steward_review_cases": 4,
+      "estimated_insert_count": 65,
+      "marsha_coverage_pct": 100,
+      "official_url_coverage_pct": 100,
+      "new_candidates_by_country": {
+        "Dominican Republic": 24,
+        "Costa Rica": 24,
+        "Colombia": 30,
+        "Panama": 15
+      }
+    },
+    {
+      "label": "active_brand_setup_cala_all_ready_adapters",
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-05T23-47-10_CALA-source-discovery",
+      "source_families_used": ["Hilton", "Choice", "Marriott", "VIC_evidence"],
+      "discovered": 290,
+      "existing_exact_matches": 262,
+      "new_property_candidates": 28,
+      "estimated_insert_count": 28,
+      "note": "Marriott filtered to Active/Live Brand Setup brands; Hilton+Choice Mexico still included"
+    }
+  ],
+  "recommended_next_action": "Founder review approval-bundle from Marriott CALA run (65 High inserts) or Active Brand Setup run (28 High inserts); apply only with explicit confirm flags. Next adapters: non-Mexico Hilton/Choice, then IHG.",
+  "still_needs_adapter": ["IHG listing", "Hilton non-Mexico", "Choice non-Mexico"]
+}

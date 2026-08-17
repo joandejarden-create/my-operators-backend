@@ -1,0 +1,442 @@
+{
+  "mode": "controlled",
+  "parent_company": null,
+  "region": "CALA",
+  "country": null,
+  "batch_size": 250,
+  "max_records": null,
+  "run_until_complete": true,
+  "queues_executed": [
+    "source_discovery",
+    "property_name_cleanup",
+    "address_confirmation",
+    "coordinate_resolution",
+    "radar_public_readiness",
+    "description_extraction",
+    "amenities_extraction",
+    "property_type_asset_context",
+    "rooms_keys",
+    "steward_webhound_hard_cases"
+  ],
+  "proposals": [
+    {
+      "record_id": "recClyVxmPwDndCcx",
+      "identity_key": "ind_ihg_mx_tijav",
+      "family": "IHG",
+      "brand": "avid hotels",
+      "city": "Tijuana",
+      "action": "propose_high_write",
+      "current_property_name": "Welcome to avid hotels in Tijuana, where the essentials are done right. Every time.",
+      "proposed_property_name": "avid hotels Tijuana - Otay",
+      "confidence": "High",
+      "method": "json_ld_hotel_name",
+      "source_url": "https://www.ihg.com/avidhotels/hotels/us/en/tijuana/tijav/hoteldetail",
+      "reason": "official_clean_name_replaces_marketing_phrase",
+      "name_problems": [
+        "starts_with_marketing_intro",
+        "contains_marketing_phrase",
+        "multi_sentence_marketing"
+      ],
+      "write_allowed_now": true,
+      "patch_fields": [
+        "Property Name",
+        "Last Reviewed Date",
+        "Enrichment Status",
+        "Enrichment Priority"
+      ],
+      "patch": {
+        "Property Name": "avid hotels Tijuana - Otay",
+        "Last Reviewed Date": "2026-08-05",
+        "Enrichment Status": "Partial",
+        "Enrichment Priority": "Medium"
+      },
+      "queue": "property_name_cleanup",
+      "current_fields": {}
+    },
+    {
+      "record_id": "recCrOmuncVJsA2qs",
+      "identity_key": "ind_ihg_mx_zclav",
+      "family": "IHG",
+      "brand": "avid hotels",
+      "city": "Fresnillo",
+      "action": "propose_high_write",
+      "current_property_name": "Welcome to avid hotels in Fresnillo, where the essentials are done right. Every time.",
+      "proposed_property_name": "avid hotels Fresnillo",
+      "confidence": "High",
+      "method": "json_ld_hotel_name",
+      "source_url": "https://www.ihg.com/avidhotels/hotels/us/en/fresnillo/zclav/hoteldetail",
+      "reason": "official_clean_name_replaces_marketing_phrase",
+      "name_problems": [
+        "starts_with_marketing_intro",
+        "contains_marketing_phrase",
+        "multi_sentence_marketing"
+      ],
+      "write_allowed_now": true,
+      "patch_fields": [
+        "Property Name",
+        "Last Reviewed Date",
+        "Enrichment Status",
+        "Enrichment Priority"
+      ],
+      "patch": {
+        "Property Name": "avid hotels Fresnillo",
+        "Last Reviewed Date": "2026-08-05",
+        "Enrichment Status": "Partial",
+        "Enrichment Priority": "Medium"
+      },
+      "queue": "property_name_cleanup",
+      "current_fields": {}
+    },
+    {
+      "record_id": "recmHhHstI1XY1tI0",
+      "identity_key": "ind_ihg_mx_gdlet",
+      "family": "IHG",
+      "brand": "avid hotels",
+      "city": "Tlaquepaque",
+      "action": "propose_high_write",
+      "current_property_name": "Welcome to avid hotels in Tlaquepaque, where the essentials are done right. Every time.",
+      "proposed_property_name": "avid hotels Guadalajara Aeropuerto Norte",
+      "confidence": "High",
+      "method": "json_ld_hotel_name",
+      "source_url": "https://www.ihg.com/avidhotels/hotels/us/en/tlaquepaque/gdlet/hoteldetail",
+      "reason": "official_clean_name_replaces_marketing_phrase",
+      "name_problems": [
+        "starts_with_marketing_intro",
+        "contains_marketing_phrase",
+        "multi_sentence_marketing"
+      ],
+      "write_allowed_now": true,
+      "patch_fields": [
+        "Property Name",
+        "Last Reviewed Date",
+        "Enrichment Status",
+        "Enrichment Priority"
+      ],
+      "patch": {
+        "Property Name": "avid hotels Guadalajara Aeropuerto Norte",
+        "Last Reviewed Date": "2026-08-05",
+        "Enrichment Status": "Partial",
+        "Enrichment Priority": "Medium"
+      },
+      "queue": "property_name_cleanup",
+      "current_fields": {}
+    },
+    {
+      "record_id": "reco7guOJ29TMdlAQ",
+      "identity_key": "ind_ihg_mx_qroav",
+      "family": "IHG",
+      "brand": "avid hotels",
+      "city": "Queretaro",
+      "action": "propose_high_write",
+      "current_property_name": "Welcome to avid hotels in Queretaro, where the essentials are done right. Every time.",
+      "proposed_property_name": "avid hotels Queretaro Centro Sur",
+      "confidence": "High",
+      "method": "json_ld_hotel_name",
+      "source_url": "https://www.ihg.com/avidhotels/hotels/us/en/queretaro/qroav/hoteldetail",
+      "reason": "official_clean_name_replaces_marketing_phrase",
+      "name_problems": [
+        "starts_with_marketing_intro",
+        "contains_marketing_phrase",
+        "multi_sentence_marketing"
+      ],
+      "write_allowed_now": true,
+      "patch_fields": [
+        "Property Name",
+        "Last Reviewed Date",
+        "Enrichment Status",
+        "Enrichment Priority"
+      ],
+      "patch": {
+        "Property Name": "avid hotels Queretaro Centro Sur",
+        "Last Reviewed Date": "2026-08-05",
+        "Enrichment Status": "Partial",
+        "Enrichment Priority": "Medium"
+      },
+      "queue": "property_name_cleanup",
+      "current_fields": {}
+    },
+    {
+      "record_id": "rectmFdQjVlrRcylq",
+      "identity_key": "ind_ihg_mx_gdlav",
+      "family": "IHG",
+      "brand": "avid hotels",
+      "city": "Zapopan",
+      "action": "propose_high_write",
+      "current_property_name": "Welcome to avid hotels in Zapopan, where the essentials are done right. Every time.",
+      "proposed_property_name": "avid hotels Guadalajara Av Vallarta Pte",
+      "confidence": "High",
+      "method": "json_ld_hotel_name",
+      "source_url": "https://www.ihg.com/avidhotels/hotels/us/en/zapopan/gdlav/hoteldetail",
+      "reason": "official_clean_name_replaces_marketing_phrase",
+      "name_problems": [
+        "starts_with_marketing_intro",
+        "contains_marketing_phrase",
+        "multi_sentence_marketing"
+      ],
+      "write_allowed_now": true,
+      "patch_fields": [
+        "Property Name",
+        "Last Reviewed Date",
+        "Enrichment Status",
+        "Enrichment Priority"
+      ],
+      "patch": {
+        "Property Name": "avid hotels Guadalajara Av Vallarta Pte",
+        "Last Reviewed Date": "2026-08-05",
+        "Enrichment Status": "Partial",
+        "Enrichment Priority": "Medium"
+      },
+      "queue": "property_name_cleanup",
+      "current_fields": {}
+    }
+  ],
+  "blocked": [],
+  "steward_review_queue": [],
+  "webhound_candidates": {
+    "candidates": [],
+    "capped_at": 25,
+    "total_input": 0,
+    "truncated": false
+  },
+  "confidence_tally": {
+    "High": 5,
+    "Medium": 0,
+    "Low": 0,
+    "Hold": 0
+  },
+  "fields_proposed": [
+    "Property Name",
+    "Last Reviewed Date",
+    "Enrichment Status",
+    "Enrichment Priority"
+  ],
+  "records_scanned": 5,
+  "records_eligible": 5,
+  "provider_readiness": {
+    "approved_for_geocode_apply": false,
+    "block_reason": "provider_or_storage_terms_not_confirmed",
+    "preferred": "mapbox_permanent",
+    "note": "Missing provider decision skips geocode only; other queues continue"
+  },
+  "gates": {
+    "ok": true,
+    "failures": [],
+    "gates": {
+      "no_city_centroid": true,
+      "no_zero_zero_coords": true,
+      "no_owner_operator_writes": true,
+      "no_date_writes": true,
+      "no_brand_explorer_writes": true,
+      "no_company_validated": true,
+      "no_brand_verified": true,
+      "no_recent_momentum": true,
+      "no_webhound_direct_writes": true,
+      "high_confidence_only_on_apply": true,
+      "held_records_excluded_from_writes": true,
+      "brand_unconfirmed_excluded_from_writes": true
+    },
+    "note": "Full Brand Explorer gates are NOT run on Census dry-run; run after production apply only"
+  },
+  "airtable_writes": false,
+  "note": "v2 dry-run bundle",
+  "batch_result": {
+    "ok": true,
+    "version": "census-autopilot-batch-engine-v2",
+    "run_id": "2026-08-05_20-40-47-CALA-active-brands",
+    "completion_status": "complete",
+    "stop_reason": null,
+    "batch_size": 250,
+    "max_records": null,
+    "run_until_complete": true,
+    "scope": "active-brand-setup",
+    "strategy": "fastest-safe",
+    "scope_capped_by_batch_size": false,
+    "scope_capped_by_max_records": false,
+    "total_records_in_scope": 5,
+    "total_processed": 5,
+    "total_updated": 5,
+    "total_skipped": 0,
+    "total_blocked": 0,
+    "batches_run": 1,
+    "batch_reports": [
+      {
+        "batch_number": 1,
+        "queue": "property_name_cleanup",
+        "size": 5,
+        "runtime_ms": 2,
+        "result": {
+          "ok": true,
+          "stop": false,
+          "airtable_writes": false,
+          "written_count": 0,
+          "would_write_count": 5,
+          "skipped_count": 0,
+          "blocked_count": 0,
+          "provider_decision_needed_count": 0,
+          "steward_count": 0
+        },
+        "written_ids": [
+          "recClyVxmPwDndCcx",
+          "recCrOmuncVJsA2qs",
+          "recmHhHstI1XY1tI0",
+          "reco7guOJ29TMdlAQ",
+          "rectmFdQjVlrRcylq"
+        ],
+        "provider_decision_needed": [],
+        "safety": {
+          "stop": false,
+          "reasons": []
+        }
+      }
+    ],
+    "fields_populated": [
+      "Property Name",
+      "Last Reviewed Date",
+      "Enrichment Status",
+      "Enrichment Priority"
+    ],
+    "confidence_distribution": {
+      "High": 5,
+      "Medium": 0,
+      "Low": 0,
+      "Hold": 0
+    },
+    "provider_decision_needed": [],
+    "steward_review_queue": [],
+    "webhound_candidates": {
+      "candidates": [],
+      "capped_at": 25,
+      "total_input": 0,
+      "truncated": false
+    },
+    "blocked_records": [],
+    "blocked_source_families": [],
+    "checkpoint": {
+      "version": "census-autopilot-checkpoint-v2",
+      "updated_at": "2026-08-05T20:40:48.029Z",
+      "run_id": "2026-08-05_20-40-47-CALA-active-brands",
+      "parent_company": null,
+      "scope": "active-brand-setup",
+      "region": "CALA",
+      "country": null,
+      "mode": "controlled",
+      "strategy": "fastest-safe",
+      "batch_size": 250,
+      "current_queue": "property_name_cleanup",
+      "current_batch_number": 1,
+      "total_records_in_scope": 5,
+      "records_completed": 5,
+      "records_remaining": 0,
+      "records_updated": 5,
+      "records_skipped": 0,
+      "records_blocked": 0,
+      "airtable_record_ids_written": [
+        "recClyVxmPwDndCcx",
+        "recCrOmuncVJsA2qs",
+        "recmHhHstI1XY1tI0",
+        "reco7guOJ29TMdlAQ",
+        "rectmFdQjVlrRcylq"
+      ],
+      "fields_written": [
+        "Property Name",
+        "Last Reviewed Date",
+        "Enrichment Status",
+        "Enrichment Priority"
+      ],
+      "failed_records": [],
+      "completed_record_ids": [
+        "recClyVxmPwDndCcx",
+        "recCrOmuncVJsA2qs",
+        "recmHhHstI1XY1tI0",
+        "reco7guOJ29TMdlAQ",
+        "rectmFdQjVlrRcylq"
+      ],
+      "provider_decision_needed": [],
+      "next_cursor": null,
+      "queues_remaining": [],
+      "completion_status": "complete",
+      "resume_command": "npm run census:autopilot -- --resume 2026-08-05_20-40-47-CALA-active-brands"
+    },
+    "runtime_metrics": {
+      "total_runtime_ms": 7,
+      "runtime_per_batch": [
+        {
+          "batch": 1,
+          "queue": "property_name_cleanup",
+          "ms": 2
+        }
+      ],
+      "runtime_per_queue": {
+        "property_name_cleanup": {
+          "ms": 2,
+          "records": 5,
+          "writes": 5,
+          "fetches_ok": 0,
+          "fetches_fail": 0
+        }
+      },
+      "average_seconds_per_record": 0.0014,
+      "average_seconds_per_successful_write": 0.0014,
+      "fetch_success_rate": null,
+      "extraction_success_rate": null,
+      "write_success_rate": 1,
+      "blocked_source_count": 0,
+      "blocked_sources_by_family": {},
+      "steward_review_count": 0,
+      "webhound_candidate_count": 0,
+      "estimated_time_remaining_ms": 0,
+      "targets": {
+        "plan_mode_parent_region_minutes": 2,
+        "queue_build_per_5k_records_minutes": 5,
+        "cached_dry_run_per_1k_minutes": 10,
+        "live_fetch_dry_run_per_250_minutes": {
+          "min": 5,
+          "max": 20
+        },
+        "apply_per_100_minutes": {
+          "min": 2,
+          "max": 8
+        },
+        "parent_company_estimates": {
+          "small_100": {
+            "min_minutes": 15,
+            "max_minutes": 30
+          },
+          "medium_500": {
+            "min_minutes": 45,
+            "max_minutes": 90
+          },
+          "large_1000": {
+            "min_minutes": 60,
+            "max_minutes": 180
+          },
+          "very_large_4000": {
+            "min_minutes": 240,
+            "max_minutes": 600
+          }
+        }
+      },
+      "guardrails": {
+        "max_retries_per_source": 2,
+        "batch_runtime_overage_multiplier": 3,
+        "repeated_source_block_threshold": 8,
+        "rate_limit_failure_threshold": 3,
+        "write_success_floor": 0.15,
+        "confidence_high_floor_for_extractor_health": 0.05
+      }
+    },
+    "airtable_writes": false,
+    "target": {
+      "base": "Deal Capture Platform",
+      "table": "Hotel Property Census"
+    },
+    "runtime_ms": 10,
+    "preflight": {
+      "ok": true,
+      "blockers": [],
+      "warnings": []
+    },
+    "allow_geocode": false,
+    "resume_command": "npm run census:autopilot -- --resume 2026-08-05_20-40-47-CALA-active-brands"
+  }
+}

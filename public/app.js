@@ -13,13 +13,17 @@
     var devWorkspaceSelect = document.getElementById('devWorkspaceSelect');
     var workspaceDemoContext = document.getElementById('workspaceDemoContext');
     var workspaceDevTools = document.getElementById('workspaceDevTools');
+    var workspaceDemoBrandPortfolio = document.getElementById('workspaceDemoBrandPortfolio');
+    var devBrandPortfolioSelect = document.getElementById('devBrandPortfolioSelect');
     var devNavOverrideSelect = document.getElementById('devNavOverrideSelect');
     /**
      * dealality_active_workspace — real app-shell workspace context (nav + routing).
+     * dealality_demo_brand_portfolio — founder/demo showcase Brand portfolio context.
      * dc_dashboard_role_view (public/app/dashboard.js) — Command Center sample dashboard preview only.
      * Changing one must not overwrite the other.
      */
     var ACTIVE_WORKSPACE_STORAGE_KEY = 'dealality_active_workspace';
+    var DEMO_BRAND_PORTFOLIO_STORAGE_KEY = 'dealality_demo_brand_portfolio';
     /** Localhost-only nav override (admin / all) — does not replace active workspace. */
     var DEV_NAV_OVERRIDE_STORAGE_KEY = 'DEALALITY_DEV_NAV_OVERRIDE';
     var ACTIVE_WORKSPACE_ORDER = ['Owner', 'Operator', 'Brand'];
@@ -33,6 +37,8 @@
     var activeWorkspace = 'Owner';
     var showDemoModeBadge = false;
     var devNavOverride = '';
+    var demoBrandPortfolioKey = 'marriott';
+    var demoBrandPortfolioOptions = [];
 
     function formatWorkspaceUiLabel(workspaceOrRoleKey) {
         var key = String(workspaceOrRoleKey || '');
@@ -58,6 +64,8 @@
     var currentBaseRole = 'owner';
     var authenticatedRole = '';
     var isDevMode = false;
+
+    var MARKET_ALERTS_EMBED_VERSION = '1.3.4';
 
     var ROUTES = {
         '/home': { file: '/app/home.html', title: 'Home' },
@@ -91,7 +99,6 @@
         '/outreach/templates': { file: '/outreach-template-manager.html', title: 'Outreach Templates' },
         '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
         '/brand-explorer-export': { file: '/brand-explorer-export.html', title: 'Brand Explorer PDF' },
-        '/brand-library-atelier': { file: '/brand-library-atelier-north.html', title: 'Brand Explorer (Mock Up)' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
         '/franchise-fee-estimator': { file: '/franchise-fee-estimator.html', title: 'Franchise Fee Estimator' },
@@ -99,12 +106,28 @@
         '/my-brands': { file: '/all-brands-dashboard.html', title: 'My Brands' },
         '/my-operators': { file: '/my-third-party-operators-new.html', title: 'My Operators' },
         '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'My Brand Deals', roles: ['brand', 'admin'] },
+        '/ai-visibility': { file: '/ai-visibility-brand.html', title: 'Brand AI Visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+        '/ai-visibility-brand': { file: '/ai-visibility-brand.html', title: 'Brand AI Visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/third-party-operator-setup-sandbox': { file: '/third-party-operator-setup-sandbox.html', title: 'Operator Setup (Sandbox)' },
         '/brand-setup': { file: '/brand-setup.html', title: 'Brand Setup' },
         '/reports': { file: '/reports-dashboard.html', title: 'Reports' },
         '/route-map': { placeholder: true, title: 'Route Map' },
+        '/ai-intelligence-validation': {
+            file: '/ai-intelligence-validation.html',
+            title: 'Validation Scorecard',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            validationScorecard: true
+        },
+        '/ai-intelligence-golden-set-review': {
+            file: '/ai-intelligence-golden-set-review.html',
+            title: 'Golden Set Review',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            validationScorecard: true
+        },
         '/support': { file: '/app/support/index.html', title: 'Support' },
         '/support/owner-pilot-provisioning': {
             file: '/app/support/owner-pilot-provisioning.html',
@@ -171,7 +194,8 @@
                     children: [
                         { label: 'The Radar', route: '/opportunity-radar', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Market Alerts', route: '/market-alerts', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] }
+                        { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] },
+                        { label: 'Brand AI Visibility', route: '/ai-visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' }
                     ]
                 },
                 {
@@ -211,8 +235,7 @@
                         { label: 'Operator Explorer', route: '/operator-explorer', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Clause Library', route: '/clause-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Financial Term Library', route: '/financial-term-library', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Brand Explorer (Mock Up)', route: '/brand-library-atelier', roles: ['admin'] }
+                        { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] }
                     ]
                 },
                 {
@@ -261,6 +284,18 @@
                         { label: 'Owner Pilot Runbook', route: '/support/owner-pilot-provisioning', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Scoring Weight Model', route: '/support/scoring-weight-model', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Route Map', route: '/route-map', roles: ['admin'], devOnly: true },
+                        {
+                            label: 'Validation Scorecard',
+                            route: '/ai-intelligence-validation',
+                            roles: ['admin'],
+                            validationScorecard: true
+                        },
+                        {
+                            label: 'Golden Set Review',
+                            route: '/ai-intelligence-golden-set-review',
+                            roles: ['admin'],
+                            validationScorecard: true
+                        },
                         { label: 'Scout Market Map', route: '/scout-market-map', roles: ['admin'] },
                         { label: 'Deal Readiness Report (Sample)', route: '/owner-diagnostic-sample', roles: ['admin'] }
                     ]
@@ -310,7 +345,8 @@
         '/brand-library': '/brand-explorer-combined',
         '/brand-library.html': '/brand-explorer-combined',
         '/brand-explorer-combined.html': '/brand-explorer-combined',
-        '/brand-library-atelier-north.html': '/brand-library-atelier',
+        '/brand-library-atelier': '/brand-explorer-combined',
+        '/brand-library-atelier-north.html': '/brand-explorer-combined',
         '/financial-term-library.html': '/financial-term-library',
         '/clause-library.html': '/clause-library',
         '/franchise-fee-estimator.html': '/franchise-fee-estimator',
@@ -463,8 +499,20 @@
         return '';
     }
 
+    /**
+     * Render-only: use server canonicalWorkspaceOptions.
+     * Do NOT rebuild a competing list from workspaceAccess / portfolio / storage.
+     * Storage may select active workspace only if still in this list.
+     */
     function buildSwitchableWorkspaces(dealality) {
         if (!dealality) return [];
+        var canonical = dealality.canonicalWorkspaceOptions;
+        if (canonical && Array.isArray(canonical.workspaces) && canonical.workspaces.length) {
+            return ACTIVE_WORKSPACE_ORDER.filter(function (ws) {
+                return canonical.workspaces.indexOf(ws) !== -1;
+            });
+        }
+        // Production fallback when older /api/me omits canonical (no demo expansion).
         var access = Array.isArray(dealality.workspaceAccess) ? dealality.workspaceAccess : [];
         var allowed = {};
         ACTIVE_WORKSPACE_ORDER.forEach(function (ws) {
@@ -478,17 +526,9 @@
             allowed.Owner = true;
             allowed.Operator = true;
         }
-        var isDemo = !!(dealality.isDemo || (dealality.flags && dealality.flags.isDemo));
-        if (isDemo) {
-            var previews =
-                Array.isArray(dealality.demoPreviewWorkspaces) && dealality.demoPreviewWorkspaces.length
-                    ? dealality.demoPreviewWorkspaces
-                    : ['Owner', 'Operator', 'Brand'];
-            previews.forEach(function (raw) {
-                var ws = normalizeWorkspaceFromApi(raw);
-                if (ws) allowed[ws] = true;
-            });
-        }
+        if (dealality.canAccessOwnerWorkspace) allowed.Owner = true;
+        if (dealality.canAccessOperatorWorkspace) allowed.Operator = true;
+        if (dealality.canAccessBrandWorkspace) allowed.Brand = true;
         if (!Object.keys(allowed).length) {
             var legacy = normalizeRoleForShell(
                 dealality.legacyRole || dealality.role || dealality.primaryRole || ''
@@ -499,6 +539,210 @@
         return ACTIVE_WORKSPACE_ORDER.filter(function (ws) {
             return !!allowed[ws];
         });
+    }
+
+    function assertDemoWorkspaceConstellationForShell(dealality, workspaces) {
+        if (!dealality) return;
+        var expectsDemo = !!(
+            (dealality.canonicalWorkspaceOptions &&
+                dealality.canonicalWorkspaceOptions.DEMO_WORKSPACE_CONSTELLATION_EXPECTED) ||
+            dealality.demoStakeholderMode ||
+            dealality.isDemo ||
+            (dealality.flags && dealality.flags.isDemo)
+        );
+        if (!expectsDemo) return;
+        var hasBrand = workspaces && workspaces.indexOf('Brand') !== -1;
+        var hasOwner = workspaces && workspaces.indexOf('Owner') !== -1;
+        var hasOperator = workspaces && workspaces.indexOf('Operator') !== -1;
+        if (hasBrand && hasOwner && hasOperator) return;
+        if (!isDevMode) return;
+        if (typeof console !== 'undefined' && console.error) {
+            console.error(
+                'DEMO_WORKSPACE_CONSTELLATION_INVALID',
+                {
+                    workspaces: workspaces || [],
+                    source:
+                        (dealality.canonicalWorkspaceOptions &&
+                            dealality.canonicalWorkspaceOptions.source) ||
+                        'missing_canonical',
+                }
+            );
+        }
+    }
+
+    /**
+     * Normalize auth payloads: whenReady().me is { ok, data };
+     * dealality-shell-auth-ready detail is { ok, jwt, me, authorized }.
+     */
+    function normalizeMeResultPayload(raw) {
+        if (!raw || typeof raw !== 'object') return null;
+        if (raw.data && raw.data.dealality) return raw;
+        if (raw.me && raw.me.data && raw.me.data.dealality) return raw.me;
+        if (raw.dealality) {
+            return { ok: true, data: { dealality: raw.dealality } };
+        }
+        return null;
+    }
+
+    function canShowFounderNavOverrides() {
+        if (isDevMode) return true;
+        if (!meDealality) return false;
+        if (
+            meDealality.canonicalWorkspaceOptions &&
+            meDealality.canonicalWorkspaceOptions.founderNavOverridesAvailable === true
+        ) {
+            return true;
+        }
+        if (meDealality.founderNavOverridesAvailable === true) return true;
+        if (meDealality.isAdmin === true) return true;
+        if (meDealality.flags && meDealality.flags.isAdmin === true) return true;
+        // Founder constellation: demo mode with Brand in the switchable set.
+        if (
+            (meDealality.demoStakeholderMode === true || meDealality.isDemo) &&
+            switchableWorkspaces.indexOf('Brand') !== -1 &&
+            switchableWorkspaces.indexOf('Owner') !== -1
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    function canShowDemoBrandPortfolioSelector() {
+        if (!meDealality) return false;
+        if (meDealality.demoBrandPortfolioSwitchAvailable === false) return false;
+        if (
+            !(
+                meDealality.demoBrandPortfolioSwitchAvailable === true ||
+                meDealality.demoStakeholderMode === true ||
+                meDealality.isDemo ||
+                canShowFounderNavOverrides()
+            )
+        ) {
+            return false;
+        }
+        if (activeWorkspace === 'Brand') return true;
+        if (devNavOverride === 'admin' || devNavOverride === 'all') return true;
+        return false;
+    }
+
+    function getStoredDemoBrandPortfolio() {
+        try {
+            var stored =
+                (window.localStorage && window.localStorage.getItem(DEMO_BRAND_PORTFOLIO_STORAGE_KEY)) ||
+                '';
+            stored = String(stored || '').trim().toLowerCase();
+            if (stored === 'marriott' || stored === 'hilton' || stored === 'choice' || stored === 'ihg') {
+                return stored;
+            }
+        } catch (_err) {}
+        return '';
+    }
+
+    function setStoredDemoBrandPortfolio(key) {
+        try {
+            if (!window.localStorage) return;
+            var normalized = String(key || '').trim().toLowerCase();
+            if (
+                normalized !== 'marriott' &&
+                normalized !== 'hilton' &&
+                normalized !== 'choice' &&
+                normalized !== 'ihg'
+            ) {
+                window.localStorage.removeItem(DEMO_BRAND_PORTFOLIO_STORAGE_KEY);
+                return;
+            }
+            window.localStorage.setItem(DEMO_BRAND_PORTFOLIO_STORAGE_KEY, normalized);
+        } catch (_err) {}
+    }
+
+    function populateDemoBrandPortfolioSelect() {
+        if (!devBrandPortfolioSelect) return;
+        var options = demoBrandPortfolioOptions.slice();
+        if (!options.length && meDealality && Array.isArray(meDealality.demoBrandPortfolioOptions)) {
+            options = meDealality.demoBrandPortfolioOptions;
+            demoBrandPortfolioOptions = options;
+        }
+        if (!options.length) {
+            options = [
+                { companyKey: 'marriott', label: 'Marriott International' },
+                { companyKey: 'hilton', label: 'Hilton' },
+                { companyKey: 'ihg', label: 'IHG' },
+                { companyKey: 'choice', label: 'Choice Hotels' },
+            ];
+        }
+        var html = '';
+        options.forEach(function (opt) {
+            var key = opt.companyKey || opt.id || '';
+            var label = opt.label || opt.canonicalCompanyName || key;
+            html +=
+                '<option value="' +
+                escapeHtml(key) +
+                '">' +
+                escapeHtml(label) +
+                '</option>';
+        });
+        devBrandPortfolioSelect.innerHTML = html;
+        var want = demoBrandPortfolioKey || getStoredDemoBrandPortfolio() || 'marriott';
+        var keys = options.map(function (o) {
+            return o.companyKey || o.id;
+        });
+        if (keys.indexOf(want) < 0) want = keys[0] || 'marriott';
+        demoBrandPortfolioKey = want;
+        setStoredDemoBrandPortfolio(want);
+        devBrandPortfolioSelect.value = want;
+    }
+
+    function applyDemoBrandPortfolio(nextKey) {
+        var key = String(nextKey || '').trim().toLowerCase();
+        if (key !== 'marriott' && key !== 'hilton' && key !== 'choice' && key !== 'ihg') return;
+        demoBrandPortfolioKey = key;
+        setStoredDemoBrandPortfolio(key);
+        // Clear Detailed View brand selection so stale cross-portfolio IDs cannot persist.
+        try {
+            sessionStorage.removeItem('aiv_brand_selected_brand');
+        } catch (_err) {}
+        syncWorkspaceSwitcherUi();
+        // Must hard-reload the active embed. navigate() alone skips reload when the
+        // iframe is already on this route — leaving Hilton brands in memory after Choice.
+        forceReloadActiveEmbedForPortfolioSwitch();
+    }
+
+    function forceReloadActiveEmbedForPortfolioSwitch() {
+        var target = currentRoute;
+        if (!target || !ROUTES[target] || ROUTES[target].placeholder) {
+            if (ROUTES[target]) navigate(target, currentRole, false);
+            return;
+        }
+        var frame = getFrameForPath(target);
+        var embedUrl = routeToEmbedUrl(target, currentRole);
+        if (!frame) {
+            navigate(target, currentRole, false);
+            return;
+        }
+        try {
+            var u = new URL(embedUrl, window.location.origin);
+            u.searchParams.set('_demoPortfolio', demoBrandPortfolioKey || '');
+            u.searchParams.set('_ts', String(Date.now()));
+            embedUrl = u.pathname + u.search + u.hash;
+        } catch (_err) {
+            embedUrl =
+                embedUrl +
+                (embedUrl.indexOf('?') >= 0 ? '&' : '?') +
+                '_demoPortfolio=' +
+                encodeURIComponent(demoBrandPortfolioKey || '') +
+                '&_ts=' +
+                Date.now();
+        }
+        frame.removeAttribute('data-saved-src');
+        frame.src = embedUrl;
+        frame.addEventListener('load', function onPortfolioEmbedReload() {
+            frame.removeEventListener('load', onPortfolioEmbedReload);
+            broadcastJwtToActiveFrames();
+            applyEmbeddedPageOverrides(frame, target, currentRole);
+        });
+        showFrame(target);
+        updateShellHeader(target, currentRole);
+        renderNav(currentRole, searchText);
     }
 
     function getStoredActiveWorkspace() {
@@ -548,9 +792,12 @@
     }
 
     function resolveActiveWorkspaceFromContext(dealality) {
+        // Allowed list is canonical — never shrink it from storage.
         var list = buildSwitchableWorkspaces(dealality);
         var stored = getStoredActiveWorkspace();
         if (stored && list.indexOf(stored) !== -1) return stored;
+        var serverActive = normalizeWorkspaceFromApi(dealality && dealality.activeWorkspace);
+        if (serverActive && list.indexOf(serverActive) !== -1) return serverActive;
         return list[0] || 'Owner';
     }
 
@@ -561,6 +808,7 @@
 
     function resolveCurrentNavRole() {
         if (isDevMode && devNavOverride) return devNavOverride;
+        if (canShowFounderNavOverrides() && devNavOverride) return devNavOverride;
         return workspaceToNavRole(activeWorkspace);
     }
 
@@ -577,6 +825,9 @@
         var meta = ROUTES[normalizeRoute(route)];
         if (!meta || !meta.roles || !meta.roles.length) return true;
         if (role === 'admin' || role === 'all') return true;
+        if (meta.stakeholderProduct && window.DealalityStakeholderNav) {
+            return window.DealalityStakeholderNav.stakeholderProductVisible(meta.stakeholderProduct, role);
+        }
         return meta.roles.indexOf(role) !== -1;
     }
 
@@ -587,11 +838,15 @@
     function canNavigateToRoute(route) {
         var normalized = normalizeRoute(route);
         if (isInternalRunbookRoute(normalized) && !hasInternalRunbookNavAccess()) return false;
+        if (normalized === '/ai-intelligence-validation' || normalized === '/ai-intelligence-golden-set-review') {
+            return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
+        }
         if (isAdminExclusiveRoute(normalized) && !hasAdminNavAccess()) return false;
         var navRole = resolveCurrentNavRole();
         if (isRouteAllowedForRole(normalized, navRole)) return true;
         if (hasAdminNavAccess() && isRouteAllowedForRole(normalized, 'admin')) return true;
         if (isDevMode && devNavOverride === 'all' && !isAdminExclusiveRoute(normalized) && !isInternalRunbookRoute(normalized)) return true;
+        if (canShowFounderNavOverrides() && devNavOverride === 'all' && !isAdminExclusiveRoute(normalized) && !isInternalRunbookRoute(normalized)) return true;
         return false;
     }
 
@@ -615,15 +870,40 @@
         return nextRole;
     }
 
-    function applyRoleFromMe(meResult) {
+    function applyRoleFromMe(meResultRaw) {
+        var meResult = normalizeMeResultPayload(meResultRaw);
         if (!meResult || !meResult.ok || !meResult.data || !meResult.data.dealality) return false;
         var dealality = meResult.data.dealality;
         meDealality = dealality;
         meContextLoaded = true;
         switchableWorkspaces = buildSwitchableWorkspaces(dealality);
-        showDemoModeBadge = !!(dealality.isDemo || (dealality.flags && dealality.flags.isDemo));
+        assertDemoWorkspaceConstellationForShell(dealality, switchableWorkspaces);
+        showDemoModeBadge = !!(
+            dealality.isDemo ||
+            (dealality.flags && dealality.flags.isDemo) ||
+            dealality.demoStakeholderMode
+        );
+        if (Array.isArray(dealality.demoBrandPortfolioOptions)) {
+            demoBrandPortfolioOptions = dealality.demoBrandPortfolioOptions;
+        }
+        var storedPortfolio = getStoredDemoBrandPortfolio();
+        if (storedPortfolio) {
+            demoBrandPortfolioKey = storedPortfolio;
+        } else if (dealality.demoBrandPortfolioKey) {
+            demoBrandPortfolioKey = String(dealality.demoBrandPortfolioKey).toLowerCase();
+            setStoredDemoBrandPortfolio(demoBrandPortfolioKey);
+        } else if (!demoBrandPortfolioKey) {
+            demoBrandPortfolioKey = 'marriott';
+            setStoredDemoBrandPortfolio(demoBrandPortfolioKey);
+        }
         activeWorkspace = resolveActiveWorkspaceFromContext(dealality);
         setStoredActiveWorkspace(activeWorkspace);
+        if (!canShowFounderNavOverrides()) {
+            devNavOverride = '';
+            setStoredDevNavOverride('');
+        } else if (!devNavOverride) {
+            devNavOverride = getStoredDevNavOverride() || '';
+        }
         var nextRole = normalizeRoleForShell(
             dealality.legacyRole || dealality.role || dealality.primaryRole || ''
         );
@@ -693,6 +973,9 @@
 
     function routeToEmbedUrl(route, role) {
         var embedQs = 'embed=1&appShell=1';
+        if (route === '/market-alerts') {
+            embedQs += '&v=' + MARKET_ALERTS_EMBED_VERSION;
+        }
         if (route === '/opportunity-radar' && role === 'operator') {
             return appendMsTokenToEmbedUrl('/operator-intelligence-radar-with-list.html?' + embedQs);
         }
@@ -819,6 +1102,12 @@
 
     function isNavChildVisible(role, child) {
         if (!isNavRouteChild(child)) return false;
+        if (child.validationScorecard) {
+            return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
+        }
+        if (child.stakeholderProduct && window.DealalityStakeholderNav) {
+            return window.DealalityStakeholderNav.stakeholderProductVisible(child.stakeholderProduct, role);
+        }
         return canSee(role, child.roles, child.devOnly, child.internalRunbookOnly);
     }
 
@@ -1121,6 +1410,11 @@
                         if (expectedRecordId !== childRecordId) {
                             mustReloadFrame = true;
                         }
+                        var expectedAssetV = expectedUrlObj.searchParams.get('v') || '';
+                        var childAssetV = childQs.get('v') || '';
+                        if (expectedAssetV !== childAssetV) {
+                            mustReloadFrame = true;
+                        }
                     }
                 } catch (_crossOrigin) {
                     /* Assume in sync if we cannot read the child (should not happen for same-origin embeds). */
@@ -1252,9 +1546,15 @@
             devWorkspaceWrap.setAttribute('data-workspace', workspaceToNavRole(activeWorkspace));
         }
         if (workspaceDemoContext) workspaceDemoContext.hidden = !showDemoModeBadge;
-        if (workspaceDevTools) workspaceDevTools.hidden = !isDevMode;
-        if (devNavOverrideSelect && isDevMode) {
+        var showFounderOverrides = canShowFounderNavOverrides();
+        if (workspaceDevTools) workspaceDevTools.hidden = !showFounderOverrides;
+        if (devNavOverrideSelect && showFounderOverrides) {
             devNavOverrideSelect.value = devNavOverride || '';
+        }
+        var showPortfolio = canShowDemoBrandPortfolioSelector();
+        if (workspaceDemoBrandPortfolio) {
+            workspaceDemoBrandPortfolio.hidden = !showPortfolio;
+            if (showPortfolio) populateDemoBrandPortfolioSelect();
         }
         var labelEl = document.querySelector('.workspace-switcher-label, .dev-workspace-label');
         if (labelEl) labelEl.textContent = 'Workspace';
@@ -1284,7 +1584,7 @@
         var normalized = String(nextOverride || '').toLowerCase();
         if (normalized && ALLOWED_DEV_NAV_OVERRIDES.indexOf(normalized) === -1) normalized = '';
         devNavOverride = normalized;
-        setStoredDevNavOverride(isDevMode ? devNavOverride : '');
+        setStoredDevNavOverride(canShowFounderNavOverrides() ? devNavOverride : '');
         currentRole = resolveCurrentNavRole();
         syncWorkspaceSwitcherUi();
         renderNav(currentRole, searchText);
@@ -1297,6 +1597,8 @@
 
     function initWorkspaceSwitcher() {
         if (!devWorkspaceWrap || !devWorkspaceSelect) return;
+        var storedPortfolio = getStoredDemoBrandPortfolio();
+        if (storedPortfolio) demoBrandPortfolioKey = storedPortfolio;
         syncWorkspaceSwitcherUi();
         devWorkspaceSelect.addEventListener('change', function () {
             var selected = devWorkspaceSelect.value || '';
@@ -1307,6 +1609,11 @@
         if (devNavOverrideSelect) {
             devNavOverrideSelect.addEventListener('change', function () {
                 applyDevNavOverride(devNavOverrideSelect.value || '');
+            });
+        }
+        if (devBrandPortfolioSelect) {
+            devBrandPortfolioSelect.addEventListener('change', function () {
+                applyDemoBrandPortfolio(devBrandPortfolioSelect.value || '');
             });
         }
     }
@@ -1353,7 +1660,11 @@
         isDevMode = computeDevMode();
         currentBaseRole = getBaseRole();
         activeWorkspace = navRoleToWorkspace(currentBaseRole) || 'Owner';
-        devNavOverride = isDevMode ? getStoredDevNavOverride() : '';
+        // Restore stored override; cleared later if founder/demo/admin overrides are not allowed.
+        devNavOverride = getStoredDevNavOverride() || '';
+        if (!isDevMode && !canShowFounderNavOverrides()) {
+            devNavOverride = '';
+        }
         currentRole = resolveCurrentNavRole();
 
         initNavEvents();

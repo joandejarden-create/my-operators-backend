@@ -1,0 +1,131 @@
+{
+  "version": "production-census-schema-v114-rooms-keys-provenance-v1",
+  "generated_at": "2026-08-05T19:56:18.219Z",
+  "mode": "apply",
+  "apply_executed": true,
+  "status": "production_census_schema_v114_rooms_keys_provenance_applied_ready_for_controlled_autopilot",
+  "duration_ms": 8695,
+  "token_masked": "patEUo…14eb",
+  "base_id_masked": "appCCU…foLk",
+  "table_id": "tbl9aY5ijiuIzzWam",
+  "field_count_baseline_before_task": 108,
+  "field_count_before": 111,
+  "field_count_after": 111,
+  "session_fields_created": [
+    {
+      "name": "Rooms Source Type",
+      "id": "fld1REDWd9zlQBswU",
+      "type": "singleSelect",
+      "created_in": "same_task_prior_attempt_before_validation_fix"
+    },
+    {
+      "name": "Rooms Reviewed Date",
+      "id": "fldOzFFDqynSm7OaH",
+      "type": "date",
+      "created_in": "same_task_prior_attempt_before_validation_fix"
+    },
+    {
+      "name": "Rooms Notes",
+      "id": "fld8OIYN43wPYgPDM",
+      "type": "multilineText",
+      "created_in": "same_task_prior_attempt_before_validation_fix"
+    }
+  ],
+  "fields_found_before": {
+    "present": [
+      "Rooms Source Type",
+      "Rooms Reviewed Date",
+      "Rooms Notes"
+    ],
+    "missing": []
+  },
+  "fields_created": [],
+  "fields_already_existing": [
+    {
+      "name": "Rooms Source Type",
+      "reason": "already_exists"
+    },
+    {
+      "name": "Rooms Reviewed Date",
+      "reason": "already_exists"
+    },
+    {
+      "name": "Rooms Notes",
+      "reason": "already_exists"
+    }
+  ],
+  "rooms_confidence_hold": {
+    "attempted": true,
+    "applied": true,
+    "already_had_hold": false,
+    "method": "typecast_seed_then_restore",
+    "meta_patch_error": {
+      "type": "INVALID_REQUEST_UNKNOWN",
+      "message": "Invalid request: parameter validation failed. Check your request data."
+    },
+    "seeded_record_id": "rec02wJ8dk7HtjPjx",
+    "restored_value": null,
+    "note": "Meta API rejects singleSelect choices PATCH; Hold created via typecast then cell restored. Final drift check must be 0."
+  },
+  "field_errors": [],
+  "existing_cell_value_drift_count": 0,
+  "validation": {
+    "record_count": 666,
+    "field_count": 111,
+    "expected_record_count": 666,
+    "rooms_keys_field_exists": true,
+    "rooms_confidence_field_exists": true,
+    "rooms_source_url_field_exists": true,
+    "new_fields_present": [
+      "Rooms Source Type",
+      "Rooms Reviewed Date",
+      "Rooms Notes"
+    ],
+    "new_fields_missing": [],
+    "rooms_confidence": {
+      "has_hold": true,
+      "choices": [
+        "Exact",
+        "High",
+        "Medium",
+        "Low",
+        "Insufficient",
+        "Unknown",
+        "Hold"
+      ]
+    },
+    "new_provenance_populated_counts": {
+      "Rooms Source Type": 0,
+      "Rooms Reviewed Date": 0,
+      "Rooms Notes": 0
+    },
+    "new_provenance_any_populated": false,
+    "rooms_keys_filled": 0,
+    "rooms_confidence_filled": 0,
+    "rooms_source_url_filled": 0,
+    "owner_filled": 0,
+    "operator_filled": 0,
+    "company_validated_field_exists": false,
+    "brand_verified_field_exists": false,
+    "note": "Company Validated / Brand Verified are Brand Explorer fields — not on Census; not requested.",
+    "pass": true
+  },
+  "validation_pass": true,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "record_writes": false,
+  "transient_typecast_for_hold_option": true,
+  "record_writes_note": "No production cell population. Hold option used transient typecast seed on blank Rooms Confidence then restore; existing_cell_value_drift_count=0.",
+  "rename_not_applied": "Rooms Confidence / Rooms Source URL naming parity rename deferred — report only",
+  "next_recommended_step": "Run Autopilot controlled: npm run census:autopilot -- --region CALA --scope active-brand-setup --mode controlled --strategy fastest-safe --run-until-complete --batch-size 250",
+  "learning_ledger_update": {
+    "entry_id": "census-schema-v114-rooms-keys-provenance-applied",
+    "ledger_entries": 33,
+    "audit_status": "dealality_batch_learning_system_ready",
+    "process_actually_learned": true
+  },
+  "tests": {
+    "test_census_autopilot": "PASS",
+    "dealality_batch_learning_audit": "dealality_batch_learning_system_ready"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "ok": true,
+  "status": "production_census_autopilot_policy_controller_v1_partial_source_remaining",
+  "objective": "census-confidence-tiered-internal-completion-v1",
+  "policy_version": "census-autopilot-approved-policy-v2-confidence-tiered-internal",
+  "confidence_tiered_policy_version": "census-confidence-tiered-internal-completion-v1",
+  "generated_at": "2026-08-08T00:25:19.547Z",
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "blanks_before": {
+    "missing_address": 621,
+    "missing_official_url": 0,
+    "missing_coordinates": 729,
+    "missing_rooms": 1033,
+    "missing_phone": 872,
+    "missing_market": 254,
+    "missing_submarket": 1010
+  },
+  "blanks_after": {
+    "missing_address": 622,
+    "missing_official_url": 6,
+    "missing_coordinates": 732,
+    "missing_rooms": 1057,
+    "missing_phone": 841,
+    "missing_market": 254,
+    "missing_submarket": 1034
+  },
+  "records_scanned": 1224,
+  "existing_records_updated": 100,
+  "fields_written_by_confidence_tier": {
+    "Medium": 76,
+    "High": 0
+  },
+  "source_type_split": {
+    "dataforseo_local_match_high_phone": 55,
+    "mapbox_permanent_medium_address": 21,
+    "mapbox_rejects": 134,
+    "secondary_rooms": 0,
+    "dataforseo_direct_coordinates": 0,
+    "census_only_inserts": 24
+  },
+  "public_safe_vs_internal_only": {
+    "public_safe_writes": 0,
+    "internal_only_writes": 100,
+    "note": "Medium confidence fields and Census Only inserts are internal-only; not public-facing"
+  },
+  "phone_provenance_schema_todo": [
+    "Phone Confidence (singleSelect: High/Medium/Low/Hold) — MISSING",
+    "Phone Source URL (url) — MISSING",
+    "Phone Source Type (singleSelect) — MISSING"
+  ],
+  "records_held": {
+    "mapbox_rejects": 134,
+    "phone_held": 841,
+    "coordinate_direct_held": 55
+  },
+  "blocker_reasons": [],
+  "pass_log": [
+    {
+      "pass": 1,
+      "name": "gap_audit",
+      "status": "ok",
+      "summary": "gaps address=621 rooms=1033 coords=729"
+    },
+    {
+      "pass": 2,
+      "name": "existing_record_enrichment",
+      "outer": 1,
+      "status": "production_census_dataforseo_local_address_scale_v1_partial_source_remaining",
+      "summary": "address=0 website=0 phone=55 updated=55"
+    },
+    {
+      "pass": 3,
+      "name": "mapbox_coordinates",
+      "outer": 1,
+      "status": "production_census_mapbox_coordinate_completion_applied_clean",
+      "summary": "mapbox_writes=21 medium=21 proposals=21 eligible=86 rejects=134"
+    },
+    {
+      "pass": 4,
+      "name": "rooms_completion",
+      "outer": 1,
+      "status": "production_census_rooms_secondary_source_wave_2_v1_partial_source_remaining",
+      "summary": "rooms=0"
+    },
+    {
+      "pass": 5,
+      "name": "market_submarket",
+      "outer": 1,
+      "status": "ok",
+      "summary": "market=0 submarket=0 held_submarket=1010"
+    },
+    {
+      "pass": 6,
+      "name": "new_hotel_discovery",
+      "outer": 1,
+      "status": "skipped_field_completion_only",
+      "summary": "discovery skipped in field-completion-only"
+    },
+    {
+      "pass": 6.6,
+      "name": "high_confidence_internal_inserts",
+      "outer": 1,
+      "status": "ok",
+      "summary": "inserts=24 selected=24 from_existing_queue"
+    },
+    {
+      "pass": 7,
+      "name": "reaudit",
+      "outer": 1,
+      "status": "ok",
+      "summary": "wrote_this_cycle=100"
+    }
+  ],
+  "estimated_cost_usd": 0.20000000000000015,
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-08T00-18-49_CALA-census-autopilot-policy-controller-v1",
+  "brand_setup_writes": 0,
+  "brand_explorer_writes": 0,
+  "owner_operator_date_writes": 0
+}

@@ -1,0 +1,5970 @@
+{
+  "version": "classifier_lab_v1",
+  "createdAt": "2026-08-15T01:26:59.263Z",
+  "priorRuns": [
+    {
+      "closedAt": "2026-08-15T01:25:23.307Z",
+      "status": "AUTONOMOUS_DEV_OPTIMIZATION_EXHAUSTED",
+      "experiments": 10
+    }
+  ],
+  "experiments": [
+    {
+      "experimentId": "lab_c02_block_profile_bullet_association",
+      "cycle": 1,
+      "classifierVersion": "lab_lab_c02_block_profile_bullet_association_c1",
+      "hypothesis": "Profile bullets under consideration (- **Brand** – long description) stay discussed unless local association cue",
+      "errorCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "codeChange": "apply lab_c02_block_profile_bullet_association",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092556451846069,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.653173408716887,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3114754098360656,
+          "recall": 0.48717948717948717,
+          "f1": 0.38,
+          "tp": 19,
+          "fp": 42,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7586206896551724,
+          "f1": 0.7357859531772576,
+          "tp": 110,
+          "fp": 44,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:27:13.873Z"
+    },
+    {
+      "experimentId": "lab_c06_neutral_soft_brand_blocks_assoc",
+      "cycle": 1,
+      "classifierVersion": "lab_lab_c06_neutral_soft_brand_blocks_assoc_c1",
+      "hypothesis": "Expand NEUTRAL_CATALOG titles for soft-brand/collection affiliation overviews",
+      "errorCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "codeChange": "apply lab_c06_neutral_soft_brand_blocks_assoc",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:27:20.909Z"
+    },
+    {
+      "experimentId": "lab_c03_expand_lead_cues",
+      "cycle": 2,
+      "classifierVersion": "lab_lab_c03_expand_lead_cues_c2",
+      "hypothesis": "Recover first from entity-local lead language: strongest option / best starting point / top recommendation",
+      "errorCluster": "MISSING_FIRST_FROM_LEAD_CUE",
+      "codeChange": "apply lab_c03_expand_lead_cues",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:27:26.561Z"
+    },
+    {
+      "experimentId": "lab_c04_rank_semantics_shortlist_variants",
+      "cycle": 2,
+      "classifierVersion": "lab_lab_c04_rank_semantics_shortlist_variants_c2",
+      "hypothesis": "Expand confirmed rank semantics: in priority order / lista priorizada / short list: / recommended order",
+      "errorCluster": "MISSING_FIRST_FROM_CONFIRMED_RANK_OR_SHORTLIST",
+      "codeChange": "apply lab_c04_rank_semantics_shortlist_variants",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:27:33.827Z"
+    },
+    {
+      "experimentId": "lab_c05_same_sentence_catalog_associated",
+      "cycle": 3,
+      "classifierVersion": "lab_lab_c05_same_sentence_catalog_associated_c3",
+      "hypothesis": "Improve associated recall: same-sentence consideration cue distance 280→360",
+      "errorCluster": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "codeChange": "apply lab_c05_same_sentence_catalog_associated",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:27:38.877Z"
+    },
+    {
+      "experimentId": "lab_c08_decision_tree_confirmed_decision_set",
+      "cycle": 4,
+      "classifierVersion": "lab_lab_c08_decision_tree_confirmed_decision_set_c4",
+      "hypothesis": "confirmedDecisionSet on CONSIDERATION_SET_SECTION → associated when cue flag missed",
+      "errorCluster": "MISSING_ASSOCIATED_RECALL",
+      "codeChange": "apply lab_c08_decision_tree_confirmed_decision_set",
+      "affectedCases": [
+        "v2_cand_198f2e2c||Fairmont||associated_option",
+        "v2_cand_1c01c709||Fairmont||associated_option",
+        "v2_cand_529f405a||Westin||associated_option",
+        "v2_cand_729dabbb||Autograph Collection||associated_option",
+        "v2_cand_743e2af1||Kimpton Hotels||associated_option",
+        "v2_cand_b319af02||Curio Collection by Hilton||associated_option",
+        "v2_cand_ca0f5405||Kimpton Hotels||associated_option",
+        "v1_g048||Highgate||discussed"
+      ],
+      "beforeMetrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3064516129032258,
+          "recall": 0.48717948717948717,
+          "f1": 0.37623762376237624,
+          "tp": 19,
+          "fp": 43,
+          "fn": 20
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7189542483660131,
+          "recall": 0.7586206896551724,
+          "f1": 0.738255033557047,
+          "tp": 110,
+          "fp": 43,
+          "fn": 35
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [
+        "v2_cand_198f2e2c||Fairmont||associated_option",
+        "v2_cand_1c01c709||Fairmont||associated_option",
+        "v2_cand_529f405a||Westin||associated_option",
+        "v2_cand_729dabbb||Autograph Collection||associated_option",
+        "v2_cand_743e2af1||Kimpton Hotels||associated_option",
+        "v2_cand_b319af02||Curio Collection by Hilton||associated_option",
+        "v2_cand_ca0f5405||Kimpton Hotels||associated_option"
+      ],
+      "newErrors": [
+        "v1_g048||Highgate||discussed"
+      ],
+      "accepted": true,
+      "rejectionReason": null,
+      "timestamp": "2026-08-15T01:27:44.099Z"
+    },
+    {
+      "experimentId": "lab_c01_tighten_consideration_lookbehind",
+      "cycle": 5,
+      "classifierVersion": "lab_lab_c01_tighten_consideration_lookbehind_c5",
+      "hypothesis": "Reduce discussed→associated by requiring consideration lookbehind ≤80 chars and narrowing after-line association phrasing",
+      "errorCluster": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "codeChange": "apply lab_c01_tighten_consideration_lookbehind",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:27:49.028Z"
+    },
+    {
+      "experimentId": "lab_c09_strip_often_associated_from_consideration_re",
+      "cycle": 5,
+      "classifierVersion": "lab_lab_c09_strip_often_associated_from_consideration_re_c5",
+      "hypothesis": "Remove broad commonly/often/typically/frequently associated|considered from CONSIDERATION_SET_RE",
+      "errorCluster": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "codeChange": "apply lab_c09_strip_often_associated_from_consideration_re",
+      "affectedCases": [
+        "v1_g010||Autograph Collection||associated_option",
+        "v1_g011||Kimpton Hotels||associated_option",
+        "v1_g012||Curio Collection by Hilton||associated_option",
+        "v1_g039||Kimpton Hotels||associated_option",
+        "v2_cand_3fcc6422||Hilton Hotels & Resorts||associated_option"
+      ],
+      "beforeMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6241379310344828,
+        "PRECISION": 0.6241379310344828,
+        "RECALL": 0.6241379310344828,
+        "F1": 0.6241379310344828,
+        "MACRO_P": 0.7362949346405229,
+        "MACRO_R": 0.6766912287740728,
+        "MACRO_F1": 0.6706020747844883,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6141078838174274,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.328125,
+          "recall": 0.5384615384615384,
+          "f1": 0.4077669902912621,
+          "tp": 21,
+          "fp": 43,
+          "fn": 18
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7124183006535948,
+          "recall": 0.7517241379310344,
+          "f1": 0.7315436241610738,
+          "tp": 109,
+          "fp": 44,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [
+        "v1_g010||Autograph Collection||associated_option",
+        "v1_g011||Kimpton Hotels||associated_option",
+        "v1_g012||Curio Collection by Hilton||associated_option",
+        "v1_g039||Kimpton Hotels||associated_option",
+        "v2_cand_3fcc6422||Hilton Hotels & Resorts||associated_option"
+      ],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve|class_f1_regression:associated_option",
+      "timestamp": "2026-08-15T01:27:53.864Z"
+    },
+    {
+      "experimentId": "lab_c12_require_catalog_shape_for_behind_cons",
+      "cycle": 5,
+      "classifierVersion": "lab_lab_c12_require_catalog_shape_for_behind_cons_c5",
+      "hypothesis": "Lookbehind consideration only if between cue and entity has catalog separators (comma/and)",
+      "errorCluster": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "codeChange": "apply lab_c12_require_catalog_shape_for_behind_cons",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:27:58.926Z"
+    },
+    {
+      "experimentId": "lab_c10_inherit_only_short_list_items",
+      "cycle": 6,
+      "classifierVersion": "lab_lab_c10_inherit_only_short_list_items_c6",
+      "hypothesis": "Consideration section inheritance only for short list lines (≤64 chars)",
+      "errorCluster": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "codeChange": "apply lab_c10_inherit_only_short_list_items",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:28:04.470Z"
+    },
+    {
+      "experimentId": "lab_c11_disable_untitled_consideration_prefatory",
+      "cycle": 6,
+      "classifierVersion": "lab_lab_c11_disable_untitled_consideration_prefatory_c6",
+      "hypothesis": "Disable prefatory untitled retarget to CONSIDERATION (reduces whole-doc association bleed)",
+      "errorCluster": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "codeChange": "apply lab_c11_disable_untitled_consideration_prefatory",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:28:11.339Z"
+    },
+    {
+      "experimentId": "lab_c07_explicit_after_mention_160",
+      "cycle": 7,
+      "classifierVersion": "lab_lab_c07_explicit_after_mention_160_c7",
+      "hypothesis": "Recover explicit FN via after-mention same-line window end+120",
+      "errorCluster": "MISSING_EXPLICIT_POSITIVE_OR_SECTION",
+      "codeChange": "apply lab_c07_explicit_after_mention_160",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:28:16.659Z"
+    },
+    {
+      "experimentId": "lab_c13_stop_unknown_subsection_inheritance",
+      "cycle": 11,
+      "classifierVersion": "lab_lab_c13_stop_unknown_subsection_inheritance_c11",
+      "hypothesis": "Do not inherit CONSIDERATION into UNKNOWN ### parent-company subsections (profile catalogs stay discussed)",
+      "errorCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "codeChange": "apply lab_c13_stop_unknown_subsection_inheritance",
+      "affectedCases": [
+        "v2_cand_30a8281f||Autograph Collection||discussed",
+        "v2_cand_3df2487f||Vignette Collection||discussed",
+        "v2_cand_63012053||Tribute Portfolio||discussed",
+        "v2_cand_6c47a167||Autograph Collection||discussed",
+        "v2_cand_862fe000||Tribute Portfolio||discussed",
+        "v2_cand_0091dfff||Hotel Indigo||associated_option",
+        "v2_cand_141a99e1||Fairmont||associated_option",
+        "v2_cand_529f405a||Westin||associated_option",
+        "v2_cand_6fb1fc83||Kimpton Hotels||associated_option"
+      ],
+      "beforeMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6448275862068965,
+        "PRECISION": 0.6448275862068965,
+        "RECALL": 0.6448275862068965,
+        "F1": 0.6448275862068965,
+        "MACRO_P": 0.7418259657506969,
+        "MACRO_R": 0.6833716492475967,
+        "MACRO_F1": 0.6768612914404994,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6224066390041494,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3548387096774194,
+          "recall": 0.5641025641025641,
+          "f1": 0.43564356435643564,
+          "tp": 22,
+          "fp": 40,
+          "fn": 17
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7354838709677419,
+          "recall": 0.7862068965517242,
+          "f1": 0.76,
+          "tp": 114,
+          "fp": 41,
+          "fn": 31
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [
+        "v2_cand_30a8281f||Autograph Collection||discussed",
+        "v2_cand_3df2487f||Vignette Collection||discussed",
+        "v2_cand_63012053||Tribute Portfolio||discussed",
+        "v2_cand_6c47a167||Autograph Collection||discussed",
+        "v2_cand_862fe000||Tribute Portfolio||discussed"
+      ],
+      "newErrors": [
+        "v2_cand_0091dfff||Hotel Indigo||associated_option",
+        "v2_cand_141a99e1||Fairmont||associated_option",
+        "v2_cand_529f405a||Westin||associated_option",
+        "v2_cand_6fb1fc83||Kimpton Hotels||associated_option"
+      ],
+      "accepted": true,
+      "rejectionReason": null,
+      "timestamp": "2026-08-15T01:31:08.473Z"
+    },
+    {
+      "experimentId": "lab_c14_comma_catalog_without_section",
+      "cycle": 11,
+      "classifierVersion": "lab_lab_c14_comma_catalog_without_section_c11",
+      "hypothesis": "Names that appear most often / most commonly considered + comma list → associated even without section type",
+      "errorCluster": "MISSING_ASSOCIATED_RECALL",
+      "codeChange": "apply lab_c14_comma_catalog_without_section",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.36619718309859156,
+          "recall": 0.6666666666666666,
+          "f1": 0.4727272727272727,
+          "tp": 26,
+          "fp": 45,
+          "fn": 13
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7465753424657534,
+          "recall": 0.7517241379310344,
+          "f1": 0.7491408934707903,
+          "tp": 109,
+          "fp": 37,
+          "fn": 36
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:31:14.141Z"
+    },
+    {
+      "experimentId": "lab_c15_ranked_nearby_shortlist_header",
+      "cycle": 12,
+      "classifierVersion": "lab_lab_c15_ranked_nearby_shortlist_header_c12",
+      "hypothesis": "If lookbehind ≤240 has 'shortlist'/'prioriz'/'top options' and entity has list rank marker, confirm rank structure",
+      "errorCluster": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "codeChange": "apply lab_c15_ranked_nearby_shortlist_header",
+      "affectedCases": [
+        "v2_cand_935f6696||Autograph Collection||associated_option",
+        "v2_cand_e1446adf||Autograph Collection||discussed"
+      ],
+      "beforeMetrics": {
+        "ACCURACY": 0.6448275862068965,
+        "PRECISION": 0.6448275862068965,
+        "RECALL": 0.6448275862068965,
+        "F1": 0.6448275862068965,
+        "MACRO_P": 0.7418259657506969,
+        "MACRO_R": 0.6833716492475967,
+        "MACRO_F1": 0.6768612914404994,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6224066390041494,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6379310344827587,
+        "PRECISION": 0.6379310344827587,
+        "RECALL": 0.6379310344827587,
+        "F1": 0.6379310344827587,
+        "MACRO_P": 0.7244105772794298,
+        "MACRO_R": 0.6797563628736897,
+        "MACRO_F1": 0.6716985680270704,
+        "FIRST_REC": 0.8724137931034482,
+        "QUESTION_STATUS": 0.6141078838174274,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3548387096774194,
+          "recall": 0.5641025641025641,
+          "f1": 0.43564356435643564,
+          "tp": 22,
+          "fp": 40,
+          "fn": 17
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7354838709677419,
+          "recall": 0.7862068965517242,
+          "f1": 0.76,
+          "tp": 114,
+          "fp": 41,
+          "fn": 31
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 0.9333333333333333,
+          "recall": 0.28,
+          "f1": 0.4307692307692308,
+          "tp": 14,
+          "fp": 1,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7,
+          "recall": 0.4117647058823529,
+          "f1": 0.5185185185185185,
+          "tp": 7,
+          "fp": 3,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3442622950819672,
+          "recall": 0.5384615384615384,
+          "f1": 0.41999999999999993,
+          "tp": 21,
+          "fp": 40,
+          "fn": 18
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7337662337662337,
+          "recall": 0.7793103448275862,
+          "f1": 0.7558528428093645,
+          "tp": 113,
+          "fp": 41,
+          "fn": 32
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [
+        "v2_cand_935f6696||Autograph Collection||associated_option",
+        "v2_cand_e1446adf||Autograph Collection||discussed"
+      ],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:31:19.186Z"
+    },
+    {
+      "experimentId": "lab_c16_lead_from_rfp_multi_entity_first_only",
+      "cycle": 12,
+      "classifierVersion": "lab_lab_c16_lead_from_rfp_multi_entity_first_only_c12",
+      "hypothesis": "Issue an RFP to A and B: first entity after cue stays lead; co-mentions already get positive — ensure leadCue clears for non-adjacent",
+      "errorCluster": "MISSING_FIRST_RECALL",
+      "codeChange": "apply lab_c16_lead_from_rfp_multi_entity_first_only",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6448275862068965,
+        "PRECISION": 0.6448275862068965,
+        "RECALL": 0.6448275862068965,
+        "F1": 0.6448275862068965,
+        "MACRO_P": 0.7418259657506969,
+        "MACRO_R": 0.6833716492475967,
+        "MACRO_F1": 0.6768612914404994,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6224066390041494,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6448275862068965,
+        "PRECISION": 0.6448275862068965,
+        "RECALL": 0.6448275862068965,
+        "F1": 0.6448275862068965,
+        "MACRO_P": 0.7418259657506969,
+        "MACRO_R": 0.6833716492475967,
+        "MACRO_F1": 0.6768612914404994,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6224066390041494,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3548387096774194,
+          "recall": 0.5641025641025641,
+          "f1": 0.43564356435643564,
+          "tp": 22,
+          "fp": 40,
+          "fn": 17
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7354838709677419,
+          "recall": 0.7862068965517242,
+          "f1": 0.76,
+          "tp": 114,
+          "fp": 41,
+          "fn": 31
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.28,
+          "f1": 0.43750000000000006,
+          "tp": 14,
+          "fp": 0,
+          "fn": 36
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4117647058823529,
+          "f1": 0.5384615384615384,
+          "tp": 7,
+          "fp": 2,
+          "fn": 10
+        },
+        "explicit_recommendation": {
+          "precision": 0.4666666666666667,
+          "recall": 0.7368421052631579,
+          "f1": 0.5714285714285714,
+          "tp": 14,
+          "fp": 16,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.3548387096774194,
+          "recall": 0.5641025641025641,
+          "f1": 0.43564356435643564,
+          "tp": 22,
+          "fp": 40,
+          "fn": 17
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7354838709677419,
+          "recall": 0.7862068965517242,
+          "f1": 0.76,
+          "tp": 114,
+          "fp": 41,
+          "fn": 31
+        },
+        "passing_mention": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 4,
+          "fp": 1,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T01:31:23.960Z"
+    },
+    {
+      "experimentId": "lab_c17_spanish_habitualmente_consideradas",
+      "cycle": 13,
+      "classifierVersion": "lab_lab_c17_spanish_habitualmente_consideradas_c13",
+      "hypothesis": "Spanish consideration membership: habitualmente/frecuentemente/usualmente consideradas + suelen ser consideradas",
+      "errorCluster": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "codeChange": "apply lab_c17_spanish_habitualmente_consideradas",
+      "affectedCases": [
+        "v2_cand_198f2e2c||Fairmont||associated_option",
+        "v2_cand_729dabbb||Autograph Collection||associated_option",
+        "v2_cand_b319af02||Curio Collection by Hilton||associated_option",
+        "v2_cand_ca0f5405||Kimpton Hotels||associated_option",
+        "v2_cand_aa7c576a||Tribute Portfolio||discussed",
+        "v2_cand_b6ce5d3b||Autograph Collection||discussed",
+        "v2_cand_e1446adf||Autograph Collection||discussed"
+      ],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6896551724137931,
+        "PRECISION": 0.6896551724137931,
+        "RECALL": 0.6896551724137931,
+        "F1": 0.6896551724137931,
+        "MACRO_P": 0.767954262899618,
+        "MACRO_R": 0.7105551783664548,
+        "MACRO_F1": 0.7155986701989508,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.6639676113360324,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.39344262295081966,
+          "recall": 0.5581395348837209,
+          "f1": 0.4615384615384615,
+          "tp": 24,
+          "fp": 37,
+          "fn": 19
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7272727272727273,
+          "recall": 0.7724137931034483,
+          "f1": 0.7491638795986623,
+          "tp": 112,
+          "fp": 42,
+          "fn": 33
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [
+        "v2_cand_198f2e2c||Fairmont||associated_option",
+        "v2_cand_729dabbb||Autograph Collection||associated_option",
+        "v2_cand_b319af02||Curio Collection by Hilton||associated_option",
+        "v2_cand_ca0f5405||Kimpton Hotels||associated_option"
+      ],
+      "newErrors": [
+        "v2_cand_aa7c576a||Tribute Portfolio||discussed",
+        "v2_cand_b6ce5d3b||Autograph Collection||discussed",
+        "v2_cand_e1446adf||Autograph Collection||discussed"
+      ],
+      "accepted": false,
+      "rejectionReason": "unsafe_overpromotion:discussed => associated_option",
+      "timestamp": "2026-08-15T10:08:25.566Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "experimentId": "lab_c18_catalog_distance_400",
+      "cycle": 13,
+      "classifierVersion": "lab_lab_c18_catalog_distance_400_c13",
+      "hypothesis": "Same-sentence consideration catalog distance 280→400 for long como A, B, C lists",
+      "errorCluster": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "codeChange": "apply lab_c18_catalog_distance_400",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T10:08:37.248Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "experimentId": "lab_c19_neutral_soft_brand_affiliation_titles",
+      "cycle": 13,
+      "classifierVersion": "lab_lab_c19_neutral_soft_brand_affiliation_titles_c13",
+      "hypothesis": "Treat soft brand/collection affiliation overview titles as NEUTRAL_CATALOG (block assoc bleed)",
+      "errorCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "codeChange": "apply lab_c19_neutral_soft_brand_affiliation_titles",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T10:08:52.008Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "experimentId": "lab_c20_block_pipeline_partnership_assoc",
+      "cycle": 13,
+      "classifierVersion": "lab_lab_c20_block_pipeline_partnership_assoc_c13",
+      "hypothesis": "Pipeline / partnership announcement lines are descriptive, not consideration membership",
+      "errorCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "codeChange": "apply lab_c20_block_pipeline_partnership_assoc",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T10:09:04.242Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "experimentId": "lab_c21_como_catalog_after_consideration",
+      "cycle": 14,
+      "classifierVersion": "lab_lab_c21_como_catalog_after_consideration_c14",
+      "hypothesis": "Spanish/English 'como/such as' catalog after consideration cue within 360 chars → associated",
+      "errorCluster": "MISSING_ASSOCIATED_RECALL",
+      "codeChange": "apply lab_c21_como_catalog_after_consideration",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T10:09:16.832Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "experimentId": "lab_c23_block_assoc_under_parent_company_unknown",
+      "cycle": 14,
+      "classifierVersion": "lab_lab_c23_block_assoc_under_parent_company_unknown_c14",
+      "hypothesis": "Even with list child, do not force consideration cue under UNKNOWN parent-company ### headings",
+      "errorCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "codeChange": "apply lab_c23_block_assoc_under_parent_company_unknown",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T10:09:28.868Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "experimentId": "lab_c24_principales_marcas_consideradas_looser",
+      "cycle": 14,
+      "classifierVersion": "lab_lab_c24_principales_marcas_consideradas_looser_c14",
+      "hypothesis": "Broader Spanish principales marcas … consideradas (allow emoji/punct between tokens)",
+      "errorCluster": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "codeChange": "apply lab_c24_principales_marcas_consideradas_looser",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T10:09:40.435Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "experimentId": "lab_c25_descriptive_presence_blocks_assoc",
+      "cycle": 14,
+      "classifierVersion": "lab_lab_c25_descriptive_presence_blocks_assoc_c14",
+      "hypothesis": "Lines with presence/portfolio/operates descriptive verbs without local decision cue stay discussed",
+      "errorCluster": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "codeChange": "apply lab_c25_descriptive_presence_blocks_assoc",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7642342277387699,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7106153361191715,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37735849056603776,
+          "recall": 0.46511627906976744,
+          "f1": 0.4166666666666667,
+          "tp": 20,
+          "fp": 33,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7098765432098766,
+          "recall": 0.7931034482758621,
+          "f1": 0.7491856677524431,
+          "tp": 115,
+          "fp": 47,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T10:09:51.719Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "experimentId": "lab_c22_comparator_requires_entity_as_object",
+      "cycle": 15,
+      "classifierVersion": "lab_lab_c22_comparator_requires_entity_as_object_c15",
+      "hypothesis": "Suppress comparator when mention is subject of 'X is an alternative to Y' (entity before cue)",
+      "errorCluster": "COMPARATOR_BOUNDARY",
+      "codeChange": "apply lab_c22_comparator_requires_entity_as_object",
+      "affectedCases": [],
+      "beforeMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "afterMetrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "classMetricsBefore": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "classMetricsAfter": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "fixedErrors": [],
+      "newErrors": [],
+      "accepted": false,
+      "rejectionReason": "accuracy_did_not_improve",
+      "timestamp": "2026-08-15T10:10:03.797Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    }
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "targetCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "experiments": [
+        "lab_c02_block_profile_bullet_association",
+        "lab_c06_neutral_soft_brand_blocks_assoc"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 110,
+      "timestamp": "2026-08-15T01:27:20.964Z"
+    },
+    {
+      "cycle": 2,
+      "targetCluster": "MISSING_FIRST_RECALL",
+      "experiments": [
+        "lab_c03_expand_lead_cues",
+        "lab_c04_rank_semantics_shortlist_variants"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 110,
+      "timestamp": "2026-08-15T01:27:33.931Z"
+    },
+    {
+      "cycle": 3,
+      "targetCluster": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "experiments": [
+        "lab_c05_same_sentence_catalog_associated"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6206896551724138,
+        "PRECISION": 0.6206896551724138,
+        "RECALL": 0.6206896551724138,
+        "F1": 0.6206896551724138,
+        "MACRO_P": 0.7092161715343246,
+        "MACRO_R": 0.6717595066009713,
+        "MACRO_F1": 0.6530297091771275,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.5975103734439834,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 110,
+      "timestamp": "2026-08-15T01:27:38.923Z"
+    },
+    {
+      "cycle": 4,
+      "targetCluster": "MISSING_ASSOCIATED_RECALL",
+      "experiments": [
+        "lab_c08_decision_tree_confirmed_decision_set"
+      ],
+      "accepted": "lab_c08_decision_tree_confirmed_decision_set",
+      "metrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 104,
+      "timestamp": "2026-08-15T01:27:44.199Z"
+    },
+    {
+      "cycle": 5,
+      "targetCluster": "FALSE_ASSOCIATED_OVER_PROMOTION",
+      "experiments": [
+        "lab_c01_tighten_consideration_lookbehind",
+        "lab_c09_strip_often_associated_from_consideration_re",
+        "lab_c12_require_catalog_shape_for_behind_cons"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 104,
+      "timestamp": "2026-08-15T01:27:59.034Z"
+    },
+    {
+      "cycle": 6,
+      "targetCluster": "MISSING_ASSOCIATED_RECALL",
+      "experiments": [
+        "lab_c10_inherit_only_short_list_items",
+        "lab_c11_disable_untitled_consideration_prefatory"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 104,
+      "timestamp": "2026-08-15T01:28:11.436Z"
+    },
+    {
+      "cycle": 7,
+      "targetCluster": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+      "experiments": [
+        "lab_c07_explicit_after_mention_160"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6413793103448275,
+        "PRECISION": 0.6413793103448275,
+        "RECALL": 0.6413793103448275,
+        "F1": 0.6413793103448275,
+        "MACRO_P": 0.7443204040750506,
+        "MACRO_R": 0.6909362430190871,
+        "MACRO_F1": 0.6797751360895691,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6182572614107884,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 104,
+      "timestamp": "2026-08-15T01:28:16.757Z"
+    },
+    {
+      "cycle": 8,
+      "targetCluster": "COMPARATOR_BOUNDARY",
+      "experiments": [],
+      "accepted": null,
+      "timestamp": "2026-08-15T01:28:16.765Z"
+    },
+    {
+      "cycle": 9,
+      "targetCluster": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+      "experiments": [],
+      "accepted": null,
+      "timestamp": "2026-08-15T01:28:16.765Z"
+    },
+    {
+      "cycle": 10,
+      "targetCluster": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+      "experiments": [],
+      "accepted": null,
+      "timestamp": "2026-08-15T01:28:16.766Z"
+    },
+    {
+      "cycle": 11,
+      "targetCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "experiments": [
+        "lab_c13_stop_unknown_subsection_inheritance",
+        "lab_c14_comma_catalog_without_section"
+      ],
+      "accepted": "lab_c13_stop_unknown_subsection_inheritance",
+      "metrics": {
+        "ACCURACY": 0.6448275862068965,
+        "PRECISION": 0.6448275862068965,
+        "RECALL": 0.6448275862068965,
+        "F1": 0.6448275862068965,
+        "MACRO_P": 0.7418259657506969,
+        "MACRO_R": 0.6833716492475967,
+        "MACRO_F1": 0.6768612914404994,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6224066390041494,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 103,
+      "timestamp": "2026-08-15T01:31:14.204Z"
+    },
+    {
+      "cycle": 12,
+      "targetCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "experiments": [
+        "lab_c15_ranked_nearby_shortlist_header",
+        "lab_c16_lead_from_rfp_multi_entity_first_only"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6448275862068965,
+        "PRECISION": 0.6448275862068965,
+        "RECALL": 0.6448275862068965,
+        "F1": 0.6448275862068965,
+        "MACRO_P": 0.7418259657506969,
+        "MACRO_R": 0.6833716492475967,
+        "MACRO_F1": 0.6768612914404994,
+        "FIRST_REC": 0.8758620689655172,
+        "QUESTION_STATUS": 0.6224066390041494,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 103,
+      "timestamp": "2026-08-15T01:31:24.004Z"
+    },
+    {
+      "cycle": 13,
+      "targetCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "experiments": [
+        "lab_c17_spanish_habitualmente_consideradas",
+        "lab_c18_catalog_distance_400",
+        "lab_c19_neutral_soft_brand_affiliation_titles",
+        "lab_c20_block_pipeline_partnership_assoc"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 91,
+      "timestamp": "2026-08-15T10:09:04.279Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "cycle": 14,
+      "targetCluster": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+      "experiments": [
+        "lab_c21_como_catalog_after_consideration",
+        "lab_c23_block_assoc_under_parent_company_unknown",
+        "lab_c24_principales_marcas_consideradas_looser",
+        "lab_c25_descriptive_presence_blocks_assoc"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 91,
+      "timestamp": "2026-08-15T10:09:51.789Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    },
+    {
+      "cycle": 15,
+      "targetCluster": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+      "experiments": [
+        "lab_c22_comparator_requires_entity_as_object"
+      ],
+      "accepted": null,
+      "metrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 91,
+      "timestamp": "2026-08-15T10:10:03.900Z",
+      "phase": "taxonomy_resolution_lab_resume"
+    }
+  ],
+  "exhaustedClusters": {
+    "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG": {
+      "status": "DETERMINISTIC_LIMIT_REACHED",
+      "reason": "all candidates rejected",
+      "count": 13,
+      "tried": [
+        "lab_c21_como_catalog_after_consideration",
+        "lab_c23_block_assoc_under_parent_company_unknown",
+        "lab_c24_principales_marcas_consideradas_looser",
+        "lab_c25_descriptive_presence_blocks_assoc"
+      ],
+      "failStreak": 2
+    },
+    "MISSING_FIRST_RECALL": {
+      "status": "IRREDUCIBLE_AMBIGUITY",
+      "reason": "All candidate fixes rejected by acceptance rule",
+      "count": 11,
+      "tried": [
+        "lab_c03_expand_lead_cues",
+        "lab_c04_rank_semantics_shortlist_variants"
+      ]
+    },
+    "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP": {
+      "status": "IRREDUCIBLE_AMBIGUITY",
+      "reason": "all candidates rejected",
+      "count": 12,
+      "tried": [
+        "lab_c22_comparator_requires_entity_as_object"
+      ],
+      "failStreak": 1
+    },
+    "FALSE_ASSOCIATED_OVER_PROMOTION": {
+      "status": "IRREDUCIBLE_AMBIGUITY",
+      "reason": "All candidate fixes rejected by acceptance rule",
+      "count": 9,
+      "tried": [
+        "lab_c01_tighten_consideration_lookbehind",
+        "lab_c09_strip_often_associated_from_consideration_re",
+        "lab_c12_require_catalog_shape_for_behind_cons"
+      ]
+    },
+    "MISSING_ASSOCIATED_RECALL": {
+      "status": "IRREDUCIBLE_AMBIGUITY",
+      "reason": "All candidate fixes rejected by acceptance rule",
+      "count": 7,
+      "tried": [
+        "lab_c10_inherit_only_short_list_items",
+        "lab_c11_disable_untitled_consideration_prefatory"
+      ]
+    },
+    "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE": {
+      "status": "IRREDUCIBLE_AMBIGUITY",
+      "reason": "All candidate fixes rejected by acceptance rule",
+      "count": 6,
+      "tried": [
+        "lab_c07_explicit_after_mention_160"
+      ]
+    },
+    "COMPARATOR_BOUNDARY": {
+      "status": "IRREDUCIBLE_AMBIGUITY",
+      "reason": "No remaining generalized candidates for cluster",
+      "count": 5
+    },
+    "FIRST_UNDERPROMOTED_TO_ASSOCIATED": {
+      "status": "IRREDUCIBLE_AMBIGUITY",
+      "reason": "No remaining generalized candidates for cluster",
+      "count": 5
+    },
+    "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION": {
+      "status": "IRREDUCIBLE_AMBIGUITY",
+      "reason": "No remaining generalized candidates for cluster",
+      "count": 5
+    }
+  },
+  "status": "AI_INTELLIGENCE_TAXONOMY_RESOLUTION_AND_LAB_RESUME_REVIEW_REQUIRED",
+  "baseline": {
+    "metrics": {
+      "ACCURACY": 0.6206896551724138,
+      "PRECISION": 0.6206896551724138,
+      "RECALL": 0.6206896551724138,
+      "F1": 0.6206896551724138,
+      "MACRO_P": 0.7092161715343246,
+      "MACRO_R": 0.6717595066009713,
+      "MACRO_F1": 0.6530297091771275,
+      "FIRST_REC": 0.8758620689655172,
+      "QUESTION_STATUS": 0.5975103734439834,
+      "ENTITY_P": 1,
+      "ENTITY_R": 1,
+      "ENTITY_F1": 1
+    },
+    "classMetrics": {
+      "first_recommendation": {
+        "precision": 1,
+        "recall": 0.28,
+        "f1": 0.43750000000000006,
+        "tp": 14,
+        "fp": 0,
+        "fn": 36
+      },
+      "ranked_recommendation": {
+        "precision": 0.7777777777777778,
+        "recall": 0.4117647058823529,
+        "f1": 0.5384615384615384,
+        "tp": 7,
+        "fp": 2,
+        "fn": 10
+      },
+      "explicit_recommendation": {
+        "precision": 0.4666666666666667,
+        "recall": 0.7368421052631579,
+        "f1": 0.5714285714285714,
+        "tp": 14,
+        "fp": 16,
+        "fn": 5
+      },
+      "associated_option": {
+        "precision": 0.3064516129032258,
+        "recall": 0.48717948717948717,
+        "f1": 0.37623762376237624,
+        "tp": 19,
+        "fp": 43,
+        "fn": 20
+      },
+      "comparator": {
+        "precision": 0.6666666666666666,
+        "recall": 0.5714285714285714,
+        "f1": 0.6153846153846153,
+        "tp": 4,
+        "fp": 2,
+        "fn": 3
+      },
+      "discussed": {
+        "precision": 0.7189542483660131,
+        "recall": 0.7586206896551724,
+        "f1": 0.738255033557047,
+        "tp": 110,
+        "fp": 43,
+        "fn": 35
+      },
+      "passing_mention": {
+        "precision": 0.5714285714285714,
+        "recall": 0.8,
+        "f1": 0.6666666666666666,
+        "tp": 4,
+        "fp": 3,
+        "fn": 1
+      },
+      "negative_or_qualified": {
+        "precision": 0.875,
+        "recall": 1,
+        "f1": 0.9333333333333333,
+        "tp": 7,
+        "fp": 1,
+        "fn": 0
+      },
+      "source_only": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0
+      }
+    },
+    "errorCount": 110,
+    "clusters": [
+      {
+        "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+        "count": 15
+      },
+      {
+        "rootCause": "FIRST_LABELED_BUT_ONLY_EXPLICIT_POSITIVE_CUE",
+        "count": 13
+      },
+      {
+        "rootCause": "MISSING_FIRST_RECALL",
+        "count": 11
+      },
+      {
+        "rootCause": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+        "count": 9
+      },
+      {
+        "rootCause": "MISSING_ASSOCIATED_RECALL",
+        "count": 8
+      },
+      {
+        "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+        "count": 8
+      },
+      {
+        "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+        "count": 6
+      },
+      {
+        "rootCause": "COMPARATOR_BOUNDARY",
+        "count": 5
+      },
+      {
+        "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+        "count": 5
+      },
+      {
+        "rootCause": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+        "count": 5
+      },
+      {
+        "rootCause": "MISSING_EXPLICIT_POSITIVE_OR_SECTION",
+        "count": 5
+      },
+      {
+        "rootCause": "FIRST_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+        "count": 3
+      },
+      {
+        "rootCause": "MISSING_RANKED_RECALL",
+        "count": 3
+      },
+      {
+        "rootCause": "MISSING_FIRST_FROM_CONFIRMED_RANK_OR_SHORTLIST",
+        "count": 3
+      },
+      {
+        "rootCause": "PAIR_discussed_TO_ranked_recommendation",
+        "count": 2
+      },
+      {
+        "rootCause": "PAIR_associated_option_TO_passing_mention",
+        "count": 2
+      },
+      {
+        "rootCause": "FALSE_EXPLICIT_OVER_PROMOTION",
+        "count": 2
+      },
+      {
+        "rootCause": "RANKED_VS_ASSOCIATED_CONSIDERATION_LIST_TAXONOMY",
+        "count": 1
+      },
+      {
+        "rootCause": "PAIR_first_recommendation_TO_passing_mention",
+        "count": 1
+      },
+      {
+        "rootCause": "PAIR_discussed_TO_negative_or_qualified",
+        "count": 1
+      },
+      {
+        "rootCause": "PAIR_associated_option_TO_explicit_recommendation",
+        "count": 1
+      },
+      {
+        "rootCause": "PAIR_passing_mention_TO_discussed",
+        "count": 1
+      }
+    ],
+    "pairs": [
+      {
+        "pair": "discussed => associated_option",
+        "count": 28
+      },
+      {
+        "pair": "associated_option => discussed",
+        "count": 17
+      },
+      {
+        "pair": "first_recommendation => discussed",
+        "count": 14
+      },
+      {
+        "pair": "first_recommendation => explicit_recommendation",
+        "count": 13
+      },
+      {
+        "pair": "first_recommendation => associated_option",
+        "count": 8
+      },
+      {
+        "pair": "ranked_recommendation => associated_option",
+        "count": 7
+      },
+      {
+        "pair": "explicit_recommendation => discussed",
+        "count": 5
+      },
+      {
+        "pair": "ranked_recommendation => discussed",
+        "count": 3
+      },
+      {
+        "pair": "comparator => discussed",
+        "count": 3
+      },
+      {
+        "pair": "discussed => comparator",
+        "count": 2
+      },
+      {
+        "pair": "discussed => ranked_recommendation",
+        "count": 2
+      },
+      {
+        "pair": "associated_option => passing_mention",
+        "count": 2
+      },
+      {
+        "pair": "discussed => explicit_recommendation",
+        "count": 2
+      },
+      {
+        "pair": "first_recommendation => passing_mention",
+        "count": 1
+      },
+      {
+        "pair": "discussed => negative_or_qualified",
+        "count": 1
+      },
+      {
+        "pair": "associated_option => explicit_recommendation",
+        "count": 1
+      },
+      {
+        "pair": "passing_mention => discussed",
+        "count": 1
+      }
+    ],
+    "timestamp": "2026-08-15T01:27:07.060Z"
+  },
+  "final": {
+    "phase": "AI_INTELLIGENCE_TAXONOMY_RESOLUTION_AND_LAB_RESUME_COMPLETE",
+    "status": "AI_INTELLIGENCE_TAXONOMY_RESOLUTION_AND_LAB_RESUME_REVIEW_REQUIRED",
+    "stopReason": null,
+    "PRIOR_LAB_FINAL": {
+      "ACCURACY": 0.6275862068965518,
+      "PRECISION": 0.6275862068965518,
+      "RECALL": 0.6275862068965518,
+      "F1": 0.6275862068965518,
+      "MACRO_P": 0.7075690770135215,
+      "MACRO_R": 0.6670439156784839,
+      "MACRO_F1": 0.6509438593009117,
+      "FIRST_REC": 0.8758620689655172,
+      "QUESTION_STATUS": 0.6058091286307054,
+      "ENTITY_P": 1,
+      "ENTITY_R": 1,
+      "ENTITY_F1": 1
+    },
+    "GROUND_TRUTH_EFFECT_ONLY": {
+      "metrics": {
+        "ACCURACY": 0.6862068965517242,
+        "PRECISION": 0.6862068965517242,
+        "RECALL": 0.6862068965517242,
+        "F1": 0.6862068965517242,
+        "MACRO_P": 0.7639476778365667,
+        "MACRO_R": 0.702518111628506,
+        "MACRO_F1": 0.7104100901780174,
+        "FIRST_REC": 0.9310344827586207,
+        "QUESTION_STATUS": 0.659919028340081,
+        "ENTITY_P": 1,
+        "ENTITY_R": 1,
+        "ENTITY_F1": 1
+      },
+      "errorCount": 91,
+      "classMetrics": {
+        "first_recommendation": {
+          "precision": 1,
+          "recall": 0.4117647058823529,
+          "f1": 0.5833333333333334,
+          "tp": 14,
+          "fp": 0,
+          "fn": 20
+        },
+        "ranked_recommendation": {
+          "precision": 0.7777777777777778,
+          "recall": 0.4375,
+          "f1": 0.56,
+          "tp": 7,
+          "fp": 2,
+          "fn": 9
+        },
+        "explicit_recommendation": {
+          "precision": 0.9,
+          "recall": 0.84375,
+          "f1": 0.870967741935484,
+          "tp": 27,
+          "fp": 3,
+          "fn": 5
+        },
+        "associated_option": {
+          "precision": 0.37037037037037035,
+          "recall": 0.46511627906976744,
+          "f1": 0.41237113402061853,
+          "tp": 20,
+          "fp": 34,
+          "fn": 23
+        },
+        "comparator": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 4,
+          "fp": 2,
+          "fn": 3
+        },
+        "discussed": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7931034482758621,
+          "f1": 0.7516339869281046,
+          "tp": 115,
+          "fp": 46,
+          "fn": 30
+        },
+        "passing_mention": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1
+        },
+        "negative_or_qualified": {
+          "precision": 0.875,
+          "recall": 1,
+          "f1": 0.9333333333333333,
+          "tp": 7,
+          "fp": 1,
+          "fn": 0
+        },
+        "source_only": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    "RESUME_BASELINE": {
+      "ACCURACY": 0.6862068965517242,
+      "PRECISION": 0.6862068965517242,
+      "RECALL": 0.6862068965517242,
+      "F1": 0.6862068965517242,
+      "MACRO_P": 0.7639476778365667,
+      "MACRO_R": 0.702518111628506,
+      "MACRO_F1": 0.7104100901780174,
+      "FIRST_REC": 0.9310344827586207,
+      "QUESTION_STATUS": 0.659919028340081,
+      "ENTITY_P": 1,
+      "ENTITY_R": 1,
+      "ENTITY_F1": 1
+    },
+    "FINAL": {
+      "ACCURACY": 0.6862068965517242,
+      "PRECISION": 0.6862068965517242,
+      "RECALL": 0.6862068965517242,
+      "F1": 0.6862068965517242,
+      "MACRO_P": 0.7639476778365667,
+      "MACRO_R": 0.702518111628506,
+      "MACRO_F1": 0.7104100901780174,
+      "FIRST_REC": 0.9310344827586207,
+      "QUESTION_STATUS": 0.659919028340081,
+      "ENTITY_P": 1,
+      "ENTITY_R": 1,
+      "ENTITY_F1": 1
+    },
+    "CLASS_METRICS": {
+      "first_recommendation": {
+        "precision": 1,
+        "recall": 0.4117647058823529,
+        "f1": 0.5833333333333334,
+        "tp": 14,
+        "fp": 0,
+        "fn": 20
+      },
+      "ranked_recommendation": {
+        "precision": 0.7777777777777778,
+        "recall": 0.4375,
+        "f1": 0.56,
+        "tp": 7,
+        "fp": 2,
+        "fn": 9
+      },
+      "explicit_recommendation": {
+        "precision": 0.9,
+        "recall": 0.84375,
+        "f1": 0.870967741935484,
+        "tp": 27,
+        "fp": 3,
+        "fn": 5
+      },
+      "associated_option": {
+        "precision": 0.37037037037037035,
+        "recall": 0.46511627906976744,
+        "f1": 0.41237113402061853,
+        "tp": 20,
+        "fp": 34,
+        "fn": 23
+      },
+      "comparator": {
+        "precision": 0.6666666666666666,
+        "recall": 0.5714285714285714,
+        "f1": 0.6153846153846153,
+        "tp": 4,
+        "fp": 2,
+        "fn": 3
+      },
+      "discussed": {
+        "precision": 0.7142857142857143,
+        "recall": 0.7931034482758621,
+        "f1": 0.7516339869281046,
+        "tp": 115,
+        "fp": 46,
+        "fn": 30
+      },
+      "passing_mention": {
+        "precision": 0.5714285714285714,
+        "recall": 0.8,
+        "f1": 0.6666666666666666,
+        "tp": 4,
+        "fp": 3,
+        "fn": 1
+      },
+      "negative_or_qualified": {
+        "precision": 0.875,
+        "recall": 1,
+        "f1": 0.9333333333333333,
+        "tp": 7,
+        "fp": 1,
+        "fn": 0
+      },
+      "source_only": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0
+      }
+    },
+    "confusionPairs": [
+      {
+        "pair": "discussed => associated_option",
+        "count": 23
+      },
+      {
+        "pair": "associated_option => discussed",
+        "count": 20
+      },
+      {
+        "pair": "first_recommendation => discussed",
+        "count": 14
+      },
+      {
+        "pair": "ranked_recommendation => associated_option",
+        "count": 6
+      },
+      {
+        "pair": "first_recommendation => associated_option",
+        "count": 5
+      },
+      {
+        "pair": "explicit_recommendation => discussed",
+        "count": 5
+      },
+      {
+        "pair": "ranked_recommendation => discussed",
+        "count": 3
+      },
+      {
+        "pair": "comparator => discussed",
+        "count": 3
+      },
+      {
+        "pair": "discussed => comparator",
+        "count": 2
+      },
+      {
+        "pair": "discussed => ranked_recommendation",
+        "count": 2
+      },
+      {
+        "pair": "associated_option => passing_mention",
+        "count": 2
+      },
+      {
+        "pair": "discussed => explicit_recommendation",
+        "count": 2
+      },
+      {
+        "pair": "first_recommendation => passing_mention",
+        "count": 1
+      },
+      {
+        "pair": "discussed => negative_or_qualified",
+        "count": 1
+      },
+      {
+        "pair": "associated_option => explicit_recommendation",
+        "count": 1
+      },
+      {
+        "pair": "passing_mention => discussed",
+        "count": 1
+      }
+    ],
+    "ADDITIONAL_CYCLES": 10,
+    "EXPERIMENTS_TESTED_ADDITIONAL": 9,
+    "ACCEPTED_ADDITIONAL": 0,
+    "REJECTED_ADDITIONAL": 9,
+    "EXPERIMENTS_TESTED_TOTAL": 25,
+    "ACCEPTED_TOTAL": 2,
+    "REJECTED_TOTAL": 23,
+    "ERRORS_BEFORE_LAB_RESUME": 91,
+    "ERRORS_AFTER_LAB_RESUME": 91,
+    "ERRORS_BEFORE_TAXONOMY_GT": 108,
+    "RESOLVED_CLUSTERS": [],
+    "UNRESOLVED_CLUSTERS": [
+      {
+        "rootCause": "FALSE_ASSOCIATED_FROM_NEUTRAL_OR_PROFILE_CATALOG",
+        "count": 13,
+        "status": "DETERMINISTIC_LIMIT_REACHED"
+      },
+      {
+        "rootCause": "MISSING_ASSOCIATED_FROM_DECISION_SET_MEMBERSHIP",
+        "count": 12,
+        "status": "DETERMINISTIC_LIMIT_REACHED"
+      },
+      {
+        "rootCause": "MISSING_FIRST_RECALL",
+        "count": 11,
+        "status": "DETERMINISTIC_LIMIT_REACHED"
+      },
+      {
+        "rootCause": "MISSING_ASSOCIATED_RECALL",
+        "count": 8,
+        "status": "DETERMINISTIC_LIMIT_REACHED"
+      },
+      {
+        "rootCause": "FALSE_ASSOCIATED_OVER_PROMOTION",
+        "count": 7,
+        "status": "DETERMINISTIC_LIMIT_REACHED"
+      },
+      {
+        "rootCause": "MISSING_RANKED_FROM_CONFIRMED_STRUCTURE",
+        "count": 6,
+        "status": "DETERMINISTIC_LIMIT_REACHED"
+      },
+      {
+        "rootCause": "COMPARATOR_BOUNDARY",
+        "count": 5,
+        "status": "DETERMINISTIC_LIMIT_REACHED"
+      },
+      {
+        "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED",
+        "count": 5,
+        "status": "HUMAN_GOVERNANCE_REQUIRED"
+      },
+      {
+        "rootCause": "MISSING_EXPLICIT_POSITIVE_OR_SECTION",
+        "count": 5,
+        "status": "DETERMINISTIC_LIMIT_REACHED"
+      },
+      {
+        "rootCause": "FALSE_ASSOCIATED_FROM_BROAD_CONSIDERATION_PROPAGATION",
+        "count": 3,
+        "status": "IRREDUCIBLE_AMBIGUITY"
+      },
+      {
+        "rootCause": "MISSING_RANKED_RECALL",
+        "count": 3,
+        "status": "OPEN"
+      },
+      {
+        "rootCause": "MISSING_FIRST_FROM_CONFIRMED_RANK_OR_SHORTLIST",
+        "count": 3,
+        "status": "OPEN"
+      },
+      {
+        "rootCause": "PAIR_discussed_TO_ranked_recommendation",
+        "count": 2,
+        "status": "OPEN"
+      },
+      {
+        "rootCause": "PAIR_associated_option_TO_passing_mention",
+        "count": 2,
+        "status": "OPEN"
+      },
+      {
+        "rootCause": "FALSE_EXPLICIT_OVER_PROMOTION",
+        "count": 2,
+        "status": "OPEN"
+      },
+      {
+        "rootCause": "PAIR_first_recommendation_TO_passing_mention",
+        "count": 1,
+        "status": "OPEN"
+      },
+      {
+        "rootCause": "PAIR_discussed_TO_negative_or_qualified",
+        "count": 1,
+        "status": "OPEN"
+      },
+      {
+        "rootCause": "PAIR_associated_option_TO_explicit_recommendation",
+        "count": 1,
+        "status": "OPEN"
+      },
+      {
+        "rootCause": "PAIR_passing_mention_TO_discussed",
+        "count": 1,
+        "status": "OPEN"
+      }
+    ],
+    "DETERMINISTIC_LIMIT_REACHED": "YES",
+    "HYBRID_CLASSIFIER_CANDIDATE_ANALYSIS": {
+      "DETERMINISTIC_CLEAR_CASES": 57,
+      "AMBIGUOUS_CASES": 34,
+      "POTENTIAL_ADJUDICATOR_CASES": 34,
+      "architecture": "deterministic evidence extraction → deterministic role when evidence decisive → constrained adjudicator only when evidence state is ambiguous → adjudicator chooses ONLY from governed taxonomy → full evidence trace → deterministic validation of returned enum",
+      "HYBRID_RECOMMENDED_FOR_NEXT_PHASE": true
+    },
+    "GROUND_TRUTH_REVIEW_NEEDED": [
+      {
+        "caseId": "v2_cand_035ffe13",
+        "entity": "Small Luxury Hotels of the World",
+        "humanRole": "first_recommendation",
+        "predictedRole": "associated_option",
+        "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED"
+      },
+      {
+        "caseId": "v2_cand_14651e14",
+        "entity": "Hilton Hotels & Resorts",
+        "humanRole": "first_recommendation",
+        "predictedRole": "associated_option",
+        "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED"
+      },
+      {
+        "caseId": "v2_cand_2e0a4ca6",
+        "entity": "Preferred Hotels & Resorts",
+        "humanRole": "first_recommendation",
+        "predictedRole": "associated_option",
+        "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED"
+      },
+      {
+        "caseId": "v2_cand_359453c0",
+        "entity": "Preferred Hotels & Resorts",
+        "humanRole": "first_recommendation",
+        "predictedRole": "associated_option",
+        "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED"
+      },
+      {
+        "caseId": "v2_cand_3c28453a",
+        "entity": "Handwritten Collection",
+        "humanRole": "first_recommendation",
+        "predictedRole": "associated_option",
+        "rootCause": "FIRST_UNDERPROMOTED_TO_ASSOCIATED"
+      }
+    ],
+    "gates": {
+      "ENTITY_GATE": "PASS",
+      "RECOMMENDATION_GATE": "FAIL",
+      "FIRST_REC_GATE": "FAIL",
+      "CLASS_BALANCE_STATUS": "WEAK"
+    },
+    "NEXT_STEP": "HYBRID_CLASSIFIER_DESIGN_RECOMMENDED",
+    "HOLDOUT_ACCESSED": "NO",
+    "HOLDOUT_CASES_INSPECTED": 0,
+    "HOLDOUT_METRICS_RUN": "NO",
+    "hardGuards": {
+      "LIVE_PROVIDER_CALLS": 0,
+      "NEW_MONITORING": 0,
+      "PUBLIC_CRAWL": 0,
+      "HOLDOUT_ACCESS": 0,
+      "HOLDOUT_TUNING": 0,
+      "UNAUTHORIZED_GT_CHANGES": 0,
+      "THRESHOLD_LOWERING": 0,
+      "CASE_SPECIFIC_CLASSIFIER_RULES": 0,
+      "AIRTABLE_WRITES": 0,
+      "SCHEMA_CHANGES": 0,
+      "DEPLOYS": 0
+    },
+    "taxonomyResolution": {
+      "TOTAL": 17,
+      "KEEP": 0,
+      "AMEND": 17,
+      "DEFER": 0,
+      "BY_TRANSITION": {
+        "first_recommendation => explicit_recommendation": 13,
+        "first_recommendation => associated_option": 3,
+        "ranked_recommendation => associated_option": 1
+      },
+      "DEV_N": 290
+    },
+    "NEXT_STEP_RATIONALE": "Deterministic lab resume accepted 0/9; DETERMINISTIC_LIMIT_REACHED. Residual FIRST_UNDERPROMOTED_TO_ASSOCIATED (5) still need governed GT review under Rules 1-5, but majority residual mass is semantic associated/discussed/first ambiguity suited to constrained adjudicator."
+  },
+  "updatedAt": "2026-08-15T10:11:35.856Z",
+  "resumePhase": "taxonomy_resolution_lab_resume"
+}

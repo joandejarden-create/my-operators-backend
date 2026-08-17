@@ -1,0 +1,178 @@
+{
+  "version": "wave13-so-section-pattern-failures-v1",
+  "generatedAt": "2026-07-28T09:58:38.196Z",
+  "dryRun": true,
+  "writePerformed": false,
+  "brandSlug": "so-hotels-and-resorts",
+  "recordId": "recTJdPlr4mDs9app",
+  "sourcesRead": [
+    "reports/brand-explorer-tab-factory-audit.json",
+    "reports/brand-explorer-wave13-so-hold-remediation.json",
+    "reports/brand-explorer-wave13-so-public-release.json",
+    "reports/brand-explorer-wave13-source-pack-so-hotels-and-resorts.md"
+  ],
+  "priorReadyStatement": "wave13_so_status_and_release_fields_applied_universe_46_pvql_blocked_on_section_pattern_parity",
+  "holdRemediationVersion": "wave13-so-hold-remediation-v1",
+  "tabFactoryAuditPass": false,
+  "sectionPatternPass": false,
+  "issues": [
+    {
+      "brand": "SO/",
+      "brandSlug": "so-hotels-and-resorts",
+      "recordIdBasics": "recTJdPlr4mDs9app",
+      "section": "Recent Momentum",
+      "slotKey": "footprint.momentum",
+      "recordId": "(live presentation rows — resolve at apply)",
+      "field": "Title / Body dateLine",
+      "failureType": "dated_cards_below_min",
+      "currentValue": "dateLine values Directory / Collection (structured but undated vs year/month gate); datedCount=0",
+      "requiredPattern": "≥2 cards with title + year/month dateLine (e.g. Mar 2026) + geography + owner summary + https source; no raw URL in prose",
+      "proposedFix": "Rebuild 2 momentum cards from source pack: Accor Brandbook Mar 2026 + SO/ Paris brand-site listing 2025 (International Reference)",
+      "sourceSupport": "reports/brand-explorer-wave13-source-pack-so-hotels-and-resorts.md Recent Momentum candidates",
+      "metrics": {
+        "cardCount": 2,
+        "titledCount": 2,
+        "datedCount": 0,
+        "geoSignalCount": 2,
+        "ownerSignalCount": 2,
+        "urlCount": 2,
+        "labeled": true,
+        "labelPreview": "Recent openings & pipeline · linked announcements"
+      },
+      "failures": [
+        "dated_cards_below_min:0"
+      ]
+    },
+    {
+      "brand": "SO/",
+      "brandSlug": "so-hotels-and-resorts",
+      "recordIdBasics": "recTJdPlr4mDs9app",
+      "section": "Geographic Footprint",
+      "slotKey": "footprint.region.mea",
+      "recordId": "(empty MEA panel — resolve at apply)",
+      "field": "Body / Active / External Display Status",
+      "failureType": "empty_mea_region_panel",
+      "currentValue": "footprint.region.mea visible with empty body (words=0)",
+      "requiredPattern": "Fill with source-supported MEA copy OR suppress (Active=false + Do Not Display). No empty visible panel.",
+      "proposedFix": "No source-supported SO/ MEA operating inventory — suppress MEA panel cleanly",
+      "sourceSupport": "Source pack CALA/MEA: none_found; hold remediation geo package omitted MEA intentionally",
+      "metrics": {
+        "geoWords": 49,
+        "filledRegionCount": 4,
+        "emptyRegionCount": 1,
+        "regions": [
+          {
+            "slot": "footprint.region.am",
+            "empty": false,
+            "words": 33,
+            "title": "Americas Diligence"
+          },
+          {
+            "slot": "footprint.region.cala",
+            "empty": false,
+            "words": 35,
+            "title": "CALA"
+          },
+          {
+            "slot": "footprint.region.eu",
+            "empty": false,
+            "words": 51,
+            "title": "Europe"
+          },
+          {
+            "slot": "footprint.region.mea",
+            "empty": true,
+            "words": 0,
+            "title": ""
+          },
+          {
+            "slot": "footprint.region.apac",
+            "empty": false,
+            "words": 37,
+            "title": "Asia Pacific / Indian Ocean"
+          }
+        ]
+      },
+      "failures": [
+        "footprint_not_brand_specific"
+      ]
+    },
+    {
+      "brand": "SO/",
+      "brandSlug": "so-hotels-and-resorts",
+      "recordIdBasics": "recTJdPlr4mDs9app",
+      "section": "Geographic Footprint",
+      "slotKey": "footprint.geo_intro (+ regions)",
+      "recordId": "(geo_intro + region rows)",
+      "field": "Body",
+      "failureType": "footprint_not_brand_specific",
+      "currentValue": "brandSpecific() tokens for Basics name SO/ collapse to slug token 'resorts'; corpus often lacks 'resorts'",
+      "requiredPattern": "Brand-specific geo_intro + ≥3 filled regions; SO/ Hotels & Resorts / resorts language present",
+      "proposedFix": "Refresh geo_intro (+ keep filled EU/APAC/AM/CALA) with explicit SO/ Hotels & Resorts / resorts wording; suppress MEA",
+      "sourceSupport": "so-hotels.com Paris/Maldives + Accor SO/ brand page (International Reference)",
+      "metrics": {
+        "geoWords": 49,
+        "filledRegionCount": 4,
+        "emptyRegionCount": 1,
+        "regions": [
+          {
+            "slot": "footprint.region.am",
+            "empty": false,
+            "words": 33,
+            "title": "Americas Diligence"
+          },
+          {
+            "slot": "footprint.region.cala",
+            "empty": false,
+            "words": 35,
+            "title": "CALA"
+          },
+          {
+            "slot": "footprint.region.eu",
+            "empty": false,
+            "words": 51,
+            "title": "Europe"
+          },
+          {
+            "slot": "footprint.region.mea",
+            "empty": true,
+            "words": 0,
+            "title": ""
+          },
+          {
+            "slot": "footprint.region.apac",
+            "empty": false,
+            "words": 37,
+            "title": "Asia Pacific / Indian Ocean"
+          }
+        ]
+      },
+      "failures": [
+        "footprint_not_brand_specific"
+      ]
+    },
+    {
+      "brand": "SO/",
+      "brandSlug": "so-hotels-and-resorts",
+      "recordIdBasics": "recTJdPlr4mDs9app",
+      "section": "Growth Priorities",
+      "slotKey": "footprint.growth_editorial / footprint.growth_themes / footprint.growth_fit",
+      "recordId": "(growth slots — resolve at apply)",
+      "field": "Body",
+      "failureType": "growth_priorities_not_brand_specific",
+      "currentValue": "Themes present (5) + editorial ~32 words but brandSpecific fails (missing 'resorts' token match)",
+      "requiredPattern": "≥2 theme chips + ≥30-word SO/-specific growth editorial (fashion/design-led hotels and resorts, destination energy, F&B intensity)",
+      "proposedFix": "Rewrite growth_themes + growth_editorial/fit as SO/ Hotels & Resorts selective luxury lifestyle growth — distinguish from Mama Shelter / Fairmont / MGallery / generic Accor",
+      "sourceSupport": "Accor Brandbook + SO/ brand page positioning",
+      "metrics": {
+        "themeCount": 5,
+        "editorialWords": 32
+      },
+      "failures": [
+        "growth_priorities_not_brand_specific"
+      ]
+    }
+  ],
+  "issueCount": 4,
+  "readyForCleanupPlan": true
+}

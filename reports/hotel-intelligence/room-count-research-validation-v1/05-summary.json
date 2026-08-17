@@ -1,0 +1,63 @@
+{
+  "marker": "ROOM_COUNT_RESEARCH_ENGINE_COMPLETE",
+  "safety": {
+    "airtable_writes": 0,
+    "census_writes": 0,
+    "brand_explorer_writes": 0,
+    "automatic_merges": 0,
+    "schema_changes": 0,
+    "secrets_exposed": false
+  },
+  "sample": {
+    "frozen_seed": "hotel-intelligence-cala-validation-v1",
+    "researched": 100,
+    "hbx_linked_in_sample": 72,
+    "missing_rooms_in_frozen": 375
+  },
+  "recovery": {
+    "resolved": 41,
+    "resolved_pct": 41,
+    "high_confidence": 23,
+    "high_confidence_pct": 23,
+    "conflicts": 7,
+    "no_evidence": 59,
+    "manual_review": 84,
+    "manual_review_pct": 84
+  },
+  "performance": {
+    "total_searches": 200,
+    "total_pages_fetched": 190,
+    "avg_searches_per_hotel": 2,
+    "avg_pages_per_hotel": 1.9,
+    "avg_sources_inspected": 20.16,
+    "runtime_ms": 1326786,
+    "avg_runtime_ms": 13268
+  },
+  "scale_projection": {
+    "1000": {
+      "high_confidence_est": 230,
+      "manual_review_est": 840,
+      "searches_est": 2000
+    },
+    "5956": {
+      "high_confidence_est": 1326,
+      "manual_review_est": 4843,
+      "searches_est": 11530
+    },
+    "10000": {
+      "high_confidence_est": 2300,
+      "manual_review_est": 8400,
+      "searches_est": 20000
+    },
+    "note": "Extrapolation from this controlled run only",
+    "cost": "UNKNOWN USD; SerpApi search units observed via account delta if measured separately"
+  },
+  "recommended_production_workflow": [
+    "1. Only research hotels missing Rooms/Keys with resolved identity",
+    "2. Prefer official website fetch first (0 SerpApi if page yields High)",
+    "3. Cap SerpApi google searches (2–3) per hotel; never crawl",
+    "4. Stage evidence + quotes; require human review for CONFLICT / <0.85",
+    "5. When Hotelbeds LIVE returns roomsNumber, treat as validator (agreement boost)",
+    "6. Auto-accept only after separate founder policy (≥0.85 + official + no conflict)"
+  ]
+}

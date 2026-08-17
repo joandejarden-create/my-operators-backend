@@ -1,0 +1,406 @@
+{
+  "writerVersion": "v33G",
+  "stagingRunId": "v33G-woodspring-founder-visual-correction",
+  "v33gWriterExists": true,
+  "generatedAt": "2026-07-13T22:04:19.149Z",
+  "mode": "dry-run",
+  "brand": {
+    "slug": "woodspring-suites",
+    "recordId": "recsOd51NzRPYsMko",
+    "name": "WoodSpring Suites"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "live Airtable presentation rows (WoodSpring)",
+    "live Brand Asset Registry (WoodSpring)",
+    "live Brand Library API response"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-woodspring-founder-visual-correction-writer.js",
+    "scripts/brand-explorer-woodspring-founder-visual-correction-writer.mjs",
+    "docs/data-intelligence/brand-explorer-woodspring-founder-visual-correction-writer-v33G.md",
+    "reports/brand-explorer-woodspring-founder-visual-correction-writer.md",
+    "reports/brand-explorer-woodspring-founder-visual-correction-writer.json",
+    "package.json"
+  ],
+  "scenarioRenderingAudit": [
+    {
+      "recordId": "recrnaRxigUSoDDTJ",
+      "slotKey": "overview.scenario.3",
+      "title": "Extended-Portfolio Fee Discipline",
+      "body": "Owners comparing extended-stay brands in a corridor—WoodSpring fits when weekly-stay demand, simple suite operations, and Choice distribution support a practical extended-stay operating model without upscale public-space intensity.",
+      "externalDisplayStatus": "Do Not Display",
+      "active": true,
+      "visible": false,
+      "imageStatus": "attachment_present",
+      "registryLinkIds": [],
+      "inApi": false,
+      "inApiBlocksForSlot": [],
+      "isUiWinner": false,
+      "isQuarantined": true,
+      "isCleanReplacement": false,
+      "staleFallbackRisk": false
+    }
+  ],
+  "scenario3RootCause": [
+    "atelier_hardcoded_title_fallback — no winning API block supplies title for overview.scenario.3",
+    "atelier_image_placeholder — explorerFirstBlock(overview.scenario.3).imageUrl is empty",
+    "api_slot_absent — no overview.scenario.3 rows pass Brand Library API filters (Active + External Display Status)",
+    "clean_scenario3_row_missing — only quarantined or hidden overview.scenario.3 rows exist in Airtable"
+  ],
+  "scenario3Decision": {
+    "action": "create_and_materialize_scenario3_image",
+    "imageDecision": "materialize_from_approved_registry_source_url",
+    "rationale": "Preserve existing approved scenario image; patch title/body only."
+  },
+  "scenarioRowsPatched": [],
+  "scenarioRowsCreated": [
+    "recc5VUX0jh58II0E"
+  ],
+  "scenarioRowsHidden": [],
+  "scenario3RegistryAssetId": "rec0bZAeIQ8le0tna",
+  "presentationCreates": [
+    {
+      "fields": {
+        "Slot Key": "overview.scenario.3",
+        "Title": "Extended-Stay Competitive Positioning",
+        "Body": "Owners comparing extended-stay brands in a market should diligence weekly-stay demand, kitchen-equipped room expectations, operating simplicity, Choice platform fit, and local competitive supply.",
+        "Brand Name": "WoodSpring Suites",
+        "Brand": [
+          "recsOd51NzRPYsMko"
+        ],
+        "Active": true,
+        "Sort Order": 3,
+        "Brand Asset Registry": [
+          "rec0bZAeIQ8le0tna"
+        ]
+      },
+      "slotKey": "overview.scenario.3",
+      "reason": "create_missing_clean_scenario3_row",
+      "projectedRecordId": "recc5VUX0jh58II0E",
+      "projectedImageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+    }
+  ],
+  "presentationImagePatches": [
+    {
+      "recordId": "recc5VUX0jh58II0E",
+      "slotKey": "overview.scenario.3",
+      "fields": {
+        "Image": [
+          {
+            "url": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+          }
+        ]
+      },
+      "reason": "materialize_scenario3_from_approved_registry",
+      "sourceUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg",
+      "pendingCreate": true
+    }
+  ],
+  "bestAtBeforeAfter": [
+    {
+      "slotKey": "overview.bestAt.1",
+      "recordId": "recn2dAqBL4QifP0J",
+      "beforeTitle": "Markets that support extended-stay ADR and required amenity stack.",
+      "beforeBody": "Markets that support extended-stay ADR and required amenity stack.",
+      "afterTitle": "Weekly & Longer-Stay Demand",
+      "afterBody": "Markets with recurring weekly and longer-stay demand from workforce, relocation, project-based, or other extended-stay use cases.",
+      "riskyBefore": true,
+      "riskyAfter": false
+    },
+    {
+      "slotKey": "overview.bestAt.2",
+      "recordId": "recEZp6p4J1UKNcAX",
+      "beforeTitle": "Owners who model net contribution after fees, loyalty, and channel mix.",
+      "beforeBody": "Owners who model net contribution after fees, loyalty, and channel mix.",
+      "afterTitle": "Extended-Stay Brand Comparison",
+      "afterBody": "Owners comparing extended-stay brand fit, local supply, operating model simplicity, and Choice platform participation.",
+      "riskyBefore": true,
+      "riskyAfter": false
+    },
+    {
+      "slotKey": "overview.bestAt.3",
+      "recordId": "rec0q1bEmyVXSNJZw",
+      "beforeTitle": "Operators with tier-appropriate QA and opening discipline.",
+      "beforeBody": "Operators with tier-appropriate QA and opening discipline.",
+      "afterTitle": "Practical Extended-Stay Operations",
+      "afterBody": "Operators prepared for a practical extended-stay service model, kitchen-equipped room expectations, and disciplined property-level execution.",
+      "riskyBefore": true,
+      "riskyAfter": false
+    }
+  ],
+  "registryTraceability": [
+    {
+      "presentationRecordId": "recI3cbO8mOhEpo1W",
+      "label": "Orlando opening",
+      "slotKey": "footprint.openings",
+      "beforeRegistryId": null,
+      "afterRegistryId": "rec9Z0MraEaBj797S",
+      "propertySpecific": true,
+      "canonicalSourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+      "canonicalSourceUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg"
+    },
+    {
+      "presentationRecordId": "recpNB0KoPq6y3Mhs",
+      "label": "Charlotte opening",
+      "slotKey": "footprint.openings",
+      "beforeRegistryId": null,
+      "afterRegistryId": "rec0bZAeIQ8le0tna",
+      "propertySpecific": true,
+      "canonicalSourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+      "canonicalSourceUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+    },
+    {
+      "presentationRecordId": "rec4Eqp9lwXSP7UQE",
+      "label": "Raleigh opening",
+      "slotKey": "footprint.openings",
+      "beforeRegistryId": null,
+      "afterRegistryId": "recFo5RWZn3FPmCNp",
+      "propertySpecific": true,
+      "canonicalSourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+      "canonicalSourceUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg"
+    },
+    {
+      "presentationRecordId": "rechUn7nwlxjW1jyV",
+      "label": "Gallery 1",
+      "slotKey": "materials.gallery.1",
+      "beforeRegistryId": null,
+      "afterRegistryId": "recXQEgBfOD5Uim3b",
+      "propertySpecific": true,
+      "canonicalSourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+      "canonicalSourceUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg"
+    },
+    {
+      "presentationRecordId": "recXfIGZUrwap6AIK",
+      "label": "Gallery 2",
+      "slotKey": "materials.gallery.2",
+      "beforeRegistryId": null,
+      "afterRegistryId": "recdK5ZpOBSQMWAZQ",
+      "propertySpecific": true,
+      "canonicalSourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+      "canonicalSourceUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+    },
+    {
+      "presentationRecordId": "recJokIWQxU64gVsl",
+      "label": "Gallery 3",
+      "slotKey": "materials.gallery.3",
+      "beforeRegistryId": null,
+      "afterRegistryId": "recJn99B9SyNbg3qd",
+      "propertySpecific": true,
+      "canonicalSourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+      "canonicalSourceUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg"
+    }
+  ],
+  "presentationCopyPatches": [
+    {
+      "recordId": "recn2dAqBL4QifP0J",
+      "slotKey": "overview.bestAt.1",
+      "fields": {
+        "Title": "Weekly & Longer-Stay Demand",
+        "Body": "Markets with recurring weekly and longer-stay demand from workforce, relocation, project-based, or other extended-stay use cases."
+      },
+      "reason": "remove_risky_bestat_language"
+    },
+    {
+      "recordId": "recEZp6p4J1UKNcAX",
+      "slotKey": "overview.bestAt.2",
+      "fields": {
+        "Title": "Extended-Stay Brand Comparison",
+        "Body": "Owners comparing extended-stay brand fit, local supply, operating model simplicity, and Choice platform participation."
+      },
+      "reason": "remove_risky_bestat_language"
+    },
+    {
+      "recordId": "rec0q1bEmyVXSNJZw",
+      "slotKey": "overview.bestAt.3",
+      "fields": {
+        "Title": "Practical Extended-Stay Operations",
+        "Body": "Operators prepared for a practical extended-stay service model, kitchen-equipped room expectations, and disciplined property-level execution."
+      },
+      "reason": "remove_risky_bestat_language"
+    }
+  ],
+  "presentationHidePatches": [],
+  "presentationRegistryLinkPatches": [
+    {
+      "recordId": "recI3cbO8mOhEpo1W",
+      "slotKey": "footprint.openings",
+      "fields": {
+        "Brand Asset Registry": [
+          "rec9Z0MraEaBj797S"
+        ]
+      },
+      "reason": "property_specific_registry_traceability",
+      "canonicalRegistryId": "rec9Z0MraEaBj797S"
+    },
+    {
+      "recordId": "recpNB0KoPq6y3Mhs",
+      "slotKey": "footprint.openings",
+      "fields": {
+        "Brand Asset Registry": [
+          "rec0bZAeIQ8le0tna"
+        ]
+      },
+      "reason": "property_specific_registry_traceability",
+      "canonicalRegistryId": "rec0bZAeIQ8le0tna"
+    },
+    {
+      "recordId": "rec4Eqp9lwXSP7UQE",
+      "slotKey": "footprint.openings",
+      "fields": {
+        "Brand Asset Registry": [
+          "recFo5RWZn3FPmCNp"
+        ]
+      },
+      "reason": "property_specific_registry_traceability",
+      "canonicalRegistryId": "recFo5RWZn3FPmCNp"
+    },
+    {
+      "recordId": "rechUn7nwlxjW1jyV",
+      "slotKey": "materials.gallery.1",
+      "fields": {
+        "Brand Asset Registry": [
+          "recXQEgBfOD5Uim3b"
+        ]
+      },
+      "reason": "property_specific_registry_traceability",
+      "canonicalRegistryId": "recXQEgBfOD5Uim3b"
+    },
+    {
+      "recordId": "recXfIGZUrwap6AIK",
+      "slotKey": "materials.gallery.2",
+      "fields": {
+        "Brand Asset Registry": [
+          "recdK5ZpOBSQMWAZQ"
+        ]
+      },
+      "reason": "property_specific_registry_traceability",
+      "canonicalRegistryId": "recdK5ZpOBSQMWAZQ"
+    },
+    {
+      "recordId": "recJokIWQxU64gVsl",
+      "slotKey": "materials.gallery.3",
+      "fields": {
+        "Brand Asset Registry": [
+          "recJn99B9SyNbg3qd"
+        ]
+      },
+      "reason": "property_specific_registry_traceability",
+      "canonicalRegistryId": "recJn99B9SyNbg3qd"
+    }
+  ],
+  "imageFieldsUntouched": false,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedAfter": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedUntouched": true,
+  "uiScenario3Before": {
+    "slotKey": "overview.scenario.3",
+    "title": "Boutique Resort Adjacency",
+    "body": "Stay occasions spanning work crews, healthcare, relocation, and residential transitions.",
+    "imageUrl": "",
+    "hasImage": false,
+    "showsImagePlaceholder": true,
+    "winningRecordId": null,
+    "usesHardcodedTitleFallback": true,
+    "usesHardcodedBodyFallback": false
+  },
+  "uiScenario3After": {
+    "slotKey": "overview.scenario.3",
+    "title": "Extended-Stay Competitive Positioning",
+    "body": "Owners comparing extended-stay brands in a market should diligence weekly-stay demand, kitchen-equipped room expectations, operating simplicity, Choice platform fit, and local competitive supply.",
+    "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg",
+    "hasImage": true,
+    "showsImagePlaceholder": false,
+    "winningRecordId": "recc5VUX0jh58II0E",
+    "usesHardcodedTitleFallback": false,
+    "usesHardcodedBodyFallback": false
+  },
+  "uiBestAtBefore": [
+    {
+      "slotKey": "overview.bestAt.1",
+      "title": "Markets that support extended-stay ADR and required amenity stack.",
+      "body": "Markets that support extended-stay ADR and required amenity stack.: Markets that support extended-stay ADR and required amenity stack.",
+      "winningRecordId": "recn2dAqBL4QifP0J",
+      "usesHardcodedTitleFallback": false,
+      "usesHardcodedBodyFallback": false,
+      "hasRiskyLanguage": true
+    },
+    {
+      "slotKey": "overview.bestAt.2",
+      "title": "Owners who model net contribution after fees, loyalty, and channel mix.",
+      "body": "Owners who model net contribution after fees, loyalty, and channel mix.: Owners who model net contribution after fees, loyalty, and channel mix.",
+      "winningRecordId": "recEZp6p4J1UKNcAX",
+      "usesHardcodedTitleFallback": false,
+      "usesHardcodedBodyFallback": false,
+      "hasRiskyLanguage": true
+    },
+    {
+      "slotKey": "overview.bestAt.3",
+      "title": "Operators with tier-appropriate QA and opening discipline.",
+      "body": "Operators with tier-appropriate QA and opening discipline.: Operators with tier-appropriate QA and opening discipline.",
+      "winningRecordId": "rec0q1bEmyVXSNJZw",
+      "usesHardcodedTitleFallback": false,
+      "usesHardcodedBodyFallback": false,
+      "hasRiskyLanguage": true
+    }
+  ],
+  "uiBestAtAfter": [
+    {
+      "slotKey": "overview.bestAt.1",
+      "title": "Weekly & Longer-Stay Demand",
+      "body": "Weekly & Longer-Stay Demand: Markets with recurring weekly and longer-stay demand from workforce, relocation, project-based, or other extended-stay use cases.",
+      "winningRecordId": "recn2dAqBL4QifP0J",
+      "usesHardcodedTitleFallback": false,
+      "usesHardcodedBodyFallback": false,
+      "hasRiskyLanguage": false
+    },
+    {
+      "slotKey": "overview.bestAt.2",
+      "title": "Extended-Stay Brand Comparison",
+      "body": "Extended-Stay Brand Comparison: Owners comparing extended-stay brand fit, local supply, operating model simplicity, and Choice platform participation.",
+      "winningRecordId": "recEZp6p4J1UKNcAX",
+      "usesHardcodedTitleFallback": false,
+      "usesHardcodedBodyFallback": false,
+      "hasRiskyLanguage": false
+    },
+    {
+      "slotKey": "overview.bestAt.3",
+      "title": "Practical Extended-Stay Operations",
+      "body": "Practical Extended-Stay Operations: Operators prepared for a practical extended-stay service model, kitchen-equipped room expectations, and disciplined property-level execution.",
+      "winningRecordId": "rec0q1bEmyVXSNJZw",
+      "usesHardcodedTitleFallback": false,
+      "usesHardcodedBodyFallback": false,
+      "hasRiskyLanguage": false
+    }
+  ],
+  "projectedUiConfirmation": {
+    "scenario3Title": "Extended-Stay Competitive Positioning",
+    "scenario3ImagePlaceholder": false,
+    "riskyBestAtLanguage": false,
+    "propertySpecificOpeningLinks": true,
+    "boutiqueResortLanguage": false
+  },
+  "dryRunClean": true,
+  "applyBlockers": [],
+  "applyResults": {
+    "patched": [],
+    "created": [],
+    "errors": []
+  },
+  "expectedFinalQaResult": "almost_ready",
+  "expectedFinalQaScore": 88,
+  "expectedCompleteBuildResult": "almost_ready_or_blocked",
+  "expectedVisualDefectResult": "4 defects (critical 0, high 3)",
+  "exactApplyCommand": "npm run brand-explorer-woodspring-founder-visual-correction-writer -- --brand woodspring-suites --apply --approve-brand-explorer-v33G-woodspring-founder-visual-correction --confirm-no-company-validation-claim --confirm-no-source-library-changes --confirm-no-summary-url-field --confirm-no-momentum-proof-standard-changes --confirm-woodspring-only",
+  "exactDryRunCommand": "npm run brand-explorer-woodspring-founder-visual-correction-writer -- --brand woodspring-suites --dry-run",
+  "airtableModified": false,
+  "markdown": "# Brand Explorer WoodSpring Founder Visual QA Correction v33G\n\n- Generated: 2026-07-13T22:04:19.149Z\n- Mode: **dry-run**\n- Dry-run clean: **yes**\n- Image fields untouched: **no**\n- Company Validated untouched: **yes**\n\n## Scenario rendering audit\n- `recrnaRxigUSoDDTJ` **overview.scenario.3** — title: Extended-Portfolio Fee Discipline; display: Do Not Display; API: no; UI winner: no; image: attachment_present\n\n## Root cause — Boutique Resort Adjacency / IMAGE placeholder\n- atelier_hardcoded_title_fallback — no winning API block supplies title for overview.scenario.3\n- atelier_image_placeholder — explorerFirstBlock(overview.scenario.3).imageUrl is empty\n- api_slot_absent — no overview.scenario.3 rows pass Brand Library API filters (Active + External Display Status)\n- clean_scenario3_row_missing — only quarantined or hidden overview.scenario.3 rows exist in Airtable\n\n## Scenario 3 decision\n- Action: **create_and_materialize_scenario3_image**\n- Image decision: **materialize_from_approved_registry_source_url**\n- Rationale: Preserve existing approved scenario image; patch title/body only.\n\n## overview.bestAt before/after\n### overview.bestAt.1\n- Before title: Markets that support extended-stay ADR and required amenity stack.\n- After title: Weekly & Longer-Stay Demand\n- Before body: Markets that support extended-stay ADR and required amenity stack.\n- After body: Markets with recurring weekly and longer-stay demand from workforce, relocation, project-based, or other extended-stay use cases.\n### overview.bestAt.2\n- Before title: Owners who model net contribution after fees, loyalty, and channel mix.\n- After title: Extended-Stay Brand Comparison\n- Before body: Owners who model net contribution after fees, loyalty, and channel mix.\n- After body: Owners comparing extended-stay brand fit, local supply, operating model simplicity, and Choice platform participation.\n### overview.bestAt.3\n- Before title: Operators with tier-appropriate QA and opening discipline.\n- After title: Practical Extended-Stay Operations\n- Before body: Operators with tier-appropriate QA and opening discipline.\n- After body: Operators prepared for a practical extended-stay service model, kitchen-equipped room expectations, and disciplined property-level execution.\n\n## Registry traceability before/after\n- `recI3cbO8mOhEpo1W` Orlando opening — before: (none); after: rec9Z0MraEaBj797S; property-specific: yes\n- `recpNB0KoPq6y3Mhs` Charlotte opening — before: (none); after: rec0bZAeIQ8le0tna; property-specific: yes\n- `rec4Eqp9lwXSP7UQE` Raleigh opening — before: (none); after: recFo5RWZn3FPmCNp; property-specific: yes\n- `rechUn7nwlxjW1jyV` Gallery 1 — before: (none); after: recXQEgBfOD5Uim3b; property-specific: yes\n- `recXfIGZUrwap6AIK` Gallery 2 — before: (none); after: recdK5ZpOBSQMWAZQ; property-specific: yes\n- `recJokIWQxU64gVsl` Gallery 3 — before: (none); after: recJn99B9SyNbg3qd; property-specific: yes\n\n## Patches — copy: 3, registry: 6, hide: 0\n\n## Projected UI confirmation\n- Scenario 3 title: Extended-Stay Competitive Positioning\n- Scenario 3 IMAGE placeholder: no\n- Risky bestAt language remains: no\n- Property-specific opening registry links: yes\n\n```bash\nnpm run brand-explorer-woodspring-founder-visual-correction-writer -- --brand woodspring-suites --apply --approve-brand-explorer-v33G-woodspring-founder-visual-correction --confirm-no-company-validation-claim --confirm-no-source-library-changes --confirm-no-summary-url-field --confirm-no-momentum-proof-standard-changes --confirm-woodspring-only\n```"
+}

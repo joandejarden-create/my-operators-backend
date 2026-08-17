@@ -1,0 +1,223 @@
+{
+  "generatedAt": "2026-07-13T12:30:53.500Z",
+  "mode": "dry-run",
+  "orchestratorVersion": "2",
+  "brand": {
+    "slug": "everhome-suites",
+    "recordId": "recqkkrsevi4r9ibj",
+    "name": "Everhome Suites",
+    "resolution": {
+      "inputTarget": "everhome-suites",
+      "resolvedBrandName": "Everhome Suites",
+      "resolvedRecordId": "recqkkrsevi4r9ibj",
+      "resolvedSlug": "everhome-suites",
+      "resolutionSource": "expansion_backlog",
+      "parentCompany": "Choice Hotels International",
+      "parentFamily": "Choice (source-confirmed)",
+      "wave": 6,
+      "ambiguous": false,
+      "error": null,
+      "suggestedMatches": []
+    }
+  },
+  "resolution": {
+    "inputTarget": "everhome-suites",
+    "resolvedBrandName": "Everhome Suites",
+    "resolvedRecordId": "recqkkrsevi4r9ibj",
+    "resolvedSlug": "everhome-suites",
+    "resolutionSource": "expansion_backlog",
+    "parentCompany": "Choice Hotels International",
+    "parentFamily": "Choice (source-confirmed)",
+    "wave": 6,
+    "ambiguous": false,
+    "error": null,
+    "suggestedMatches": []
+  },
+  "targetQuality": "active-profile",
+  "halted": false,
+  "haltReason": "",
+  "completedBatches": [],
+  "stageResults": [
+    {
+      "stage": "profile_inspection",
+      "status": "complete",
+      "summary": {
+        "brandName": "Everhome Suites",
+        "recordId": "recqkkrsevi4r9ibj",
+        "companyValidated": null,
+        "companyValidationDate": null
+      }
+    },
+    {
+      "stage": "source_inventory",
+      "status": "complete",
+      "summary": {
+        "sourceCount": 12,
+        "approvedForExplorer": 12
+      }
+    },
+    {
+      "stage": "fact_inventory",
+      "status": "complete",
+      "summary": {
+        "factCount": 8,
+        "approved": 6,
+        "pending": 0
+      }
+    },
+    {
+      "stage": "brand_residences_legacy_migration",
+      "status": "complete",
+      "summary": {
+        "alreadySynced": 1,
+        "migrateFromLegacy": 0,
+        "conflicts": 0,
+        "noDataDefault": 0,
+        "sourceBackedPreserved": 0,
+        "wouldUpdate": 0
+      },
+      "command": "npm run brand-residences-legacy-migration-writer -- --brand everhome-suites --dry-run",
+      "futureSetupWritesToBrandBasicsOnly": true
+    },
+    {
+      "stage": "required_section_contract",
+      "status": "complete",
+      "summary": {
+        "readinessScore": 100,
+        "ready": true,
+        "sectionsReady": 8,
+        "sectionsTotal": 8,
+        "nextWriters": []
+      },
+      "command": "npm run brand-explorer-required-section-population-contract -- --brand everhome-suites --dry-run"
+    },
+    {
+      "stage": "visual_defect_audit",
+      "status": "complete",
+      "summary": {
+        "defects": {
+          "total": 1,
+          "critical": 0,
+          "high": 0,
+          "medium": 1,
+          "low": 0,
+          "missingImage": 0,
+          "emptyBullet": 0,
+          "titleOnlyOrThin": 0,
+          "placeholderGeneric": 0,
+          "sortOrder": 1
+        },
+        "comparableToCurio": true,
+        "nextBatch": "v24D_sort_order_correction"
+      },
+      "command": "npm run brand-explorer-visual-display-defect-audit -- --brand everhome-suites --dry-run"
+    },
+    {
+      "stage": "brand-explorer-required-section-source-capture-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-required-section-source-capture-package -- --brand recqkkrsevi4r9ibj --dry-run"
+    },
+    {
+      "stage": "brand-explorer-evidence-fact-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-evidence-fact-review-package -- --brand recqkkrsevi4r9ibj --dry-run"
+    },
+    {
+      "stage": "brand-explorer-openings-momentum-row-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-openings-momentum-row-review-package -- --brand recqkkrsevi4r9ibj --dry-run"
+    },
+    {
+      "stage": "final_qa_auditor",
+      "status": "complete",
+      "summary": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 97,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 100,
+        "visualCompletenessScore": 97,
+        "overallNumeric": 99,
+        "overallActiveProfileReadiness": "ready"
+      },
+      "command": "npm run brand-explorer-final-qa-auditor -- --brand everhome-suites --dry-run"
+    }
+  ],
+  "blockers": [],
+  "tributeExpectedRemaining": [],
+  "stagedApplyCommands": [],
+  "nextRequiredWriter": "v24D_sort_order_correction",
+  "finalQaScores": {
+    "requiredSectionReadinessScore": 100,
+    "presentationQualityScore": 97,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 100,
+    "visualCompletenessScore": 97,
+    "overallNumeric": 99,
+    "overallActiveProfileReadiness": "ready"
+  },
+  "contractReadinessScore": 100,
+  "requiredSectionStatus": {
+    "score": 100,
+    "ready": true,
+    "sectionsReady": 8,
+    "sectionsTotal": 8
+  },
+  "visualQaStatus": {
+    "score": 97,
+    "comparableToReference": true,
+    "defectCounts": {
+      "total": 1,
+      "critical": 0,
+      "high": 0,
+      "medium": 1,
+      "low": 0,
+      "missingImage": 0,
+      "emptyBullet": 0,
+      "titleOnlyOrThin": 0,
+      "placeholderGeneric": 0,
+      "sortOrder": 1
+    },
+    "recommendedNextBatch": "v24D_sort_order_correction"
+  },
+  "governanceStatus": {
+    "governedPlatformReady": true,
+    "sourceCount": 12,
+    "approvedExplorerSources": 12,
+    "explorerFactCount": 8,
+    "pendingFacts": 0,
+    "sourceEvidenceNeeded": true,
+    "factApprovalNeeded": false,
+    "founderReviewNeeded": false
+  },
+  "governedPlatformReady": true,
+  "readyForActiveProfile": true,
+  "readinessBand": "ready",
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "companyValidationDateSnapshot": null,
+  "exactDryRunCommand": "npm run brand-explorer-complete-build -- --brand everhome-suites --dry-run --target-quality active-profile",
+  "exactApplyCommand": "npm run brand-explorer-complete-build -- --brand everhome-suites --apply-approved --approve-brand-explorer-complete-build --target-quality active-profile",
+  "reportBasename": "brand-explorer-complete-build-everhome-suites",
+  "applySafety": {
+    "safeForApplyApproved": false,
+    "applyBlockReasons": [],
+    "applySkippedReasons": [
+      "No gated apply commands or brand not active-profile ready"
+    ],
+    "applyCommandsEligible": [],
+    "governanceSnapshot": {
+      "companyValidated": null,
+      "governedPlatformReady": true,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": false,
+      "pendingFacts": 0,
+      "internalFacts": 0,
+      "fddFacts": 0
+    }
+  },
+  "applyExecutionLog": [],
+  "airtableModified": false
+}

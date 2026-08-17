@@ -1,0 +1,83 @@
+{
+  "run": {
+    "run_id": "run_2026-08-04T21-53-21-763Z_5029e2c0",
+    "run_type": "daily_lightweight",
+    "started_at": "2026-08-04T21:53:21.766Z",
+    "completed_at": "2026-08-04T21:53:33.156Z",
+    "cohort": "indigo_kimpton_mexico",
+    "brand_family": "ihg",
+    "records_checked": 16,
+    "pilot_records_checked": 35,
+    "high_confidence_changes": 2,
+    "review_candidates": 24,
+    "directory_gaps": 1,
+    "stale_candidates": 11,
+    "errors": [],
+    "source_failures": [],
+    "runtime_ms": 11390,
+    "external_cost_usd": 0,
+    "engine_version": "shadow-operations-v1",
+    "config_version": "shadow-ops-config-v1",
+    "suppressed_dupes": 3
+  },
+  "metrics": {
+    "safety": {
+      "material_false_positives": null,
+      "reviewed_false_positives": null,
+      "bad_reflag_rate": null,
+      "note": "FP rates filled after steward review cycles"
+    },
+    "discovery": {
+      "status_changes_found": 4,
+      "missing_census_records": 4,
+      "activation_candidates": 4,
+      "cross_table_inconsistencies": 0,
+      "image_issues": 20
+    },
+    "efficiency": {
+      "hotels_checked": 51,
+      "brands_checked": 7,
+      "elapsed_ms": 11390,
+      "hotels_per_minute": 268.66,
+      "brands_per_minute": 36.87,
+      "external_cost_usd": 0,
+      "source_success_rate": 0.235
+    },
+    "steward_workload": {
+      "queue_items_created": 61,
+      "p0": 0,
+      "p1": 7,
+      "p2": 54,
+      "p3": 0,
+      "approval_rate": null,
+      "rejection_rate": null,
+      "needs_more_research_rate": null,
+      "average_queue_age_days": null
+    },
+    "source_reliability": {
+      "available": 12,
+      "blocked": 0,
+      "failed": 0,
+      "empty": 39,
+      "not_applicable": 0,
+      "fallback_used": 0
+    }
+  },
+  "goNoGo": {
+    "material_fp_near_zero": true,
+    "no_unreviewed_auto_writes": true,
+    "dedup_functioning": true,
+    "blocked_source_logic_safe": true,
+    "review_queue_understandable": true,
+    "source_provenance_retained": true,
+    "failures_do_not_fake_changes": true,
+    "expand_beyond_indigo_kimpton": "NOT YET — recommend next cohort only after steward cycle on this queue",
+    "recommended_next_cohort": "IHG adjacent Mexico (e.g. Crowne Plaza / Staybridge) OR Choice Ascend/Comfort MX sample — still read-only"
+  },
+  "queueStats": {
+    "created": 61,
+    "updated": 4,
+    "superseded": 0,
+    "total": 61
+  }
+}

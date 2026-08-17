@@ -1,0 +1,148 @@
+{
+  "field": "Submarket",
+  "answers": {
+    "1_researched": "YES — Dealality geography resolver ran for all 150; submarket matched for subset",
+    "2_staging_nonblank_count": 46,
+    "3_primary_source": "dealality_geography (proposeCensusSubmarketCorridor)",
+    "4_match_confidence": "High (identity); geography submarket_confidence Medium|No Match when present",
+    "5_source_rights_status": "dealality/official ALLOWED for auto geography fields",
+    "6_write_class": "AUTO_WRITE_SAFE",
+    "7_in_phase1_mutation_manifest": true,
+    "8_why_not_if_not": null,
+    "9_airtable_field_mapping": true,
+    "10_type_select_blocked": false,
+    "11_writer_intentionally_suppressed": false,
+    "12_expected_or_bug": "EXPECTED"
+  },
+  "staging_nonblank_count": 46,
+  "dry_run_mutation_count": 46,
+  "tx_written_count": 46,
+  "post_write_inserted": {
+    "inserted_records": 115,
+    "blank": 80,
+    "nonblank": 35
+  },
+  "schema": {
+    "name": "Submarket",
+    "type": "singleLineText",
+    "id": "fldPANZ60nzvxbGOQ"
+  },
+  "mapping": {
+    "golden_census_field": "Submarket",
+    "airtable_field": "Submarket",
+    "type": "singleLineText",
+    "exists_on_live_schema": true,
+    "write_class": "AUTO_WRITE_SAFE",
+    "source_requirement": "dealality_geography",
+    "current_write_support": true,
+    "in_autopilot_allowlist": true,
+    "in_insert_allowlist": true,
+    "forbidden": false
+  },
+  "policy": {
+    "inAuto": true,
+    "inCorr": false,
+    "inBlocked": false,
+    "inInsertAllow": true,
+    "classifierAdds": true
+  },
+  "blank_reason_code": "A. RESEARCH VALUE NOT FOUND",
+  "expected_or_bug": "EXPECTED",
+  "staging_keys_sample": [
+    {
+      "property_identity_key": "ind_ihg_ar_cbaar",
+      "family": "IHG",
+      "value": "Córdoba",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_ihg_ar_buept",
+      "family": "IHG",
+      "value": "Buenos Aires",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_ihg_jm_ghrgr",
+      "family": "IHG",
+      "value": "Montego Bay",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_ihg_jm_rohhb",
+      "family": "IHG",
+      "value": "Montego Bay",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_ihg_jm_roarh",
+      "family": "IHG",
+      "value": "Montego Bay",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_hilton_br_bhzbrgi",
+      "family": "Hilton",
+      "value": "Belo Horizonte",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_hilton_br_grueslx",
+      "family": "Hilton",
+      "value": "São Paulo",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_hilton_br_grujapy",
+      "family": "Hilton",
+      "value": "São Paulo",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_hilton_br_saodtdt",
+      "family": "Hilton",
+      "value": "São Paulo",
+      "source_type": "official_brand_directory"
+    },
+    {
+      "property_identity_key": "ind_hilton_br_saocrqq",
+      "family": "Hilton",
+      "value": "São Paulo",
+      "source_type": "official_brand_directory"
+    }
+  ],
+  "by_country": {
+    "Brazil": {
+      "n": 67,
+      "submarket_nonblank": 19
+    },
+    "Argentina": {
+      "n": 27,
+      "submarket_nonblank": 8
+    },
+    "Jamaica": {
+      "n": 8,
+      "submarket_nonblank": 7
+    },
+    "Barbados": {
+      "n": 3,
+      "submarket_nonblank": 1
+    },
+    "Dominican Republic": {
+      "n": 1,
+      "submarket_nonblank": 0
+    },
+    "Costa Rica": {
+      "n": 9,
+      "submarket_nonblank": 0
+    },
+    "Mexico": {
+      "n": 35,
+      "submarket_nonblank": 11
+    }
+  },
+  "submarket_reasons": {
+    "no_corridor_match": 104,
+    "exact_city_submarket_label": 46
+  },
+  "golden_v1_2_note": "Golden Census V1.2 Market/Submarket 100% was a different cohort/pipeline. V3 pilot re-resolved geography from discovery city labels (often postal codes / admin regions) → 104/150 No Match."
+}

@@ -1,0 +1,254 @@
+/* How We Do It — scroll-led process story (v20260730c)
+   Namespace: dealality-process_* — larger product visuals */
+#oh-how-we-do-it.dealality-process_section,
+#oh-how-we-do-it{
+  position:relative!important;
+  overflow:visible!important;
+  padding:96px 1.5rem 88px!important;
+  background:#080F25!important;
+  color:#e8ecf5!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+}
+#oh-how-we-do-it .dealality-process_glow{
+  position:absolute!important;left:50%!important;top:16%!important;
+  width:min(92vw,980px)!important;height:360px!important;
+  transform:translate(-50%,-50%)!important;border-radius:50%!important;
+  background:radial-gradient(ellipse at center,rgba(108,114,255,.16) 0%,rgba(108,114,255,.05) 46%,transparent 72%)!important;
+  filter:blur(40px)!important;pointer-events:none!important;z-index:0!important;
+}
+#oh-how-we-do-it .dealality-process_inner{
+  position:relative!important;z-index:1!important;max-width:1120px!important;margin:0 auto!important;
+}
+#oh-how-we-do-it .dealality-process_intro{margin:0 0 48px!important;max-width:720px!important}
+#oh-how-we-do-it .dealality-process_eyebrow{
+  display:inline-flex!important;align-items:center!important;gap:10px!important;flex-wrap:wrap!important;margin:0 0 18px!important;
+}
+#oh-how-we-do-it .dealality-process_eyebrow-pill{
+  display:inline-flex!important;align-items:center!important;padding:.35rem .85rem!important;
+  border:1px solid rgba(108,114,255,.28)!important;border-radius:999px!important;
+  background:rgba(108,114,255,.1)!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:.78rem!important;font-weight:700!important;letter-spacing:.02em!important;color:#B8BCFF!important;
+}
+#oh-how-we-do-it .dealality-process_eyebrow-right{
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:.9rem!important;font-weight:500!important;color:rgba(255,255,255,.55)!important;
+}
+#oh-how-we-do-it .dealality-process_h2{
+  margin:0 0 16px!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:clamp(1.7rem,3.1vw,2.5rem)!important;font-weight:800!important;
+  line-height:1.15!important;letter-spacing:-.03em!important;color:#fff!important;
+}
+#oh-how-we-do-it .dealality-process_lead{
+  margin:0!important;max-width:38rem!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:1.05rem!important;line-height:1.65!important;color:rgba(255,255,255,.62)!important;
+}
+#oh-how-we-do-it .dealality-process_runway{
+  position:relative!important;height:calc(var(--oh-how-steps,5) * 95vh)!important;margin:0 0 56px!important;
+}
+#oh-how-we-do-it .dealality-process_layout{
+  position:sticky!important;top:72px!important;
+  display:grid!important;grid-template-columns:minmax(220px,.26fr) minmax(0,.74fr)!important;
+  gap:28px 36px!important;align-items:start!important;min-height:min(82vh,780px)!important;
+}
+#oh-how-we-do-it .dealality-process_nav{
+  position:relative!important;display:flex!important;flex-direction:column!important;gap:6px!important;padding:4px 0 4px 18px!important;
+}
+#oh-how-we-do-it .dealality-process_progress{
+  position:absolute!important;left:5px!important;top:10px!important;bottom:10px!important;width:2px!important;
+  background:rgba(255,255,255,.1)!important;border-radius:2px!important;overflow:hidden!important;
+}
+#oh-how-we-do-it .dealality-process_progress > span{
+  display:block!important;width:100%!important;height:0%;background:linear-gradient(180deg,#8B90FF,#6C72FF)!important;
+  transition:height .25s ease!important;
+}
+#oh-how-we-do-it .dealality-process_nav-item{
+  appearance:none!important;-webkit-appearance:none!important;border:0!important;background:transparent!important;
+  color:rgba(255,255,255,.48)!important;text-align:left!important;cursor:pointer!important;
+  display:grid!important;grid-template-columns:auto 1fr!important;gap:10px!important;align-items:start!important;
+  padding:10px 8px!important;border-radius:10px!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  transition:color .2s ease,background .2s ease!important;
+}
+#oh-how-we-do-it .dealality-process_nav-item:hover{color:rgba(255,255,255,.78)!important;background:rgba(255,255,255,.03)!important}
+#oh-how-we-do-it .dealality-process_nav-item:focus-visible{outline:2px solid #6C72FF!important;outline-offset:2px!important}
+#oh-how-we-do-it .dealality-process_nav-item.is-active{color:#fff!important;background:rgba(108,114,255,.1)!important}
+#oh-how-we-do-it .dealality-process_nav-item.is-done{color:rgba(255,255,255,.7)!important}
+#oh-how-we-do-it .dealality-process_nav-num{
+  font-size:.78rem!important;font-weight:700!important;letter-spacing:.04em!important;color:#8B90FF!important;min-width:1.6em!important;
+}
+#oh-how-we-do-it .dealality-process_nav-item.is-active .dealality-process_nav-num{color:#B8BCFF!important}
+#oh-how-we-do-it .dealality-process_nav-label{
+  font-size:.92rem!important;font-weight:650!important;line-height:1.35!important;
+}
+#oh-how-we-do-it .dealality-process_content{min-width:0!important}
+#oh-how-we-do-it .dealality-process_step{
+  display:none!important;opacity:0!important;transform:translateY(10px)!important;
+  transition:opacity .28s ease,transform .28s ease!important;
+}
+#oh-how-we-do-it .dealality-process_step.is-active{
+  display:block!important;opacity:1!important;transform:none!important;
+}
+#oh-how-we-do-it .dealality-process_kicker{
+  margin:0 0 8px!important;font-size:.78rem!important;font-weight:700!important;letter-spacing:.08em!important;
+  text-transform:uppercase!important;color:#8B90FF!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+}
+#oh-how-we-do-it .dealality-process_step-title{
+  margin:0 0 10px!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:clamp(1.35rem,2.2vw,1.85rem)!important;font-weight:800!important;line-height:1.2!important;color:#fff!important;
+}
+#oh-how-we-do-it .dealality-process_primary{
+  margin:0 0 10px!important;font-size:1.05rem!important;font-weight:600!important;line-height:1.45!important;color:rgba(255,255,255,.88)!important;
+}
+#oh-how-we-do-it .dealality-process_support{
+  margin:0 0 18px!important;font-size:.95rem!important;line-height:1.6!important;color:rgba(255,255,255,.58)!important;max-width:40rem!important;
+}
+#oh-how-we-do-it .dealality-process_visual{
+  position:relative!important;border-radius:18px!important;border:1px solid rgba(255,255,255,.12)!important;
+  background:linear-gradient(180deg,rgba(17,27,58,.98),rgba(10,16,36,.99))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 22px 56px rgba(0,0,0,.34)!important;
+  overflow:hidden!important;min-height:360px!important;margin:0 0 16px!important;
+}
+#oh-how-we-do-it .dealality-process_visual.is-large{min-height:420px!important}
+#oh-how-we-do-it .dealality-process_visual.is-compare{min-height:460px!important}
+#oh-how-we-do-it .dealality-process_chrome{
+  display:flex!important;align-items:center!important;gap:8px!important;
+  padding:10px 14px!important;border-bottom:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(8,15,37,.65)!important;
+}
+#oh-how-we-do-it .dealality-process_chrome span{
+  width:8px!important;height:8px!important;border-radius:50%!important;background:rgba(255,255,255,.22)!important;
+}
+#oh-how-we-do-it .dealality-process_chrome span:nth-child(1){background:#ff5f57!important}
+#oh-how-we-do-it .dealality-process_chrome span:nth-child(2){background:#febc2e!important}
+#oh-how-we-do-it .dealality-process_chrome span:nth-child(3){background:#28c840!important}
+#oh-how-we-do-it .dealality-process_chrome em{
+  margin-left:8px!important;font-style:normal!important;font-size:.72rem!important;
+  letter-spacing:.04em!important;color:rgba(255,255,255,.45)!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+}
+#oh-how-we-do-it .dealality-process_shot{
+  max-height:180px!important;overflow:hidden!important;border-bottom:1px solid rgba(255,255,255,.06)!important;
+}
+#oh-how-we-do-it .dealality-process_shot.is-compare-shot{max-height:210px!important}
+#oh-how-we-do-it .dealality-process_visual img,
+#oh-how-we-do-it .dealality-process_shot img{
+  display:block!important;width:100%!important;height:100%!important;max-height:210px!important;
+  object-fit:cover!important;object-position:top left!important;
+}
+#oh-how-we-do-it .dealality-process_panel{padding:18px 18px 16px!important;display:grid!important;gap:12px!important}
+#oh-how-we-do-it .dealality-process_panel-head{
+  display:flex!important;justify-content:space-between!important;gap:12px!important;align-items:center!important;flex-wrap:wrap!important;
+}
+#oh-how-we-do-it .dealality-process_chip{
+  display:inline-flex!important;align-items:center!important;padding:4px 10px!important;border-radius:999px!important;
+  border:1px solid rgba(108,114,255,.28)!important;background:rgba(108,114,255,.12)!important;
+  color:#B8BCFF!important;font-size:.72rem!important;font-weight:700!important;
+}
+#oh-how-we-do-it .dealality-process_meta{font-size:.78rem!important;color:rgba(255,255,255,.5)!important}
+#oh-how-we-do-it .dealality-process_hero-stat{
+  display:flex!important;flex-direction:column!important;gap:4px!important;
+  padding:14px 14px!important;border-radius:12px!important;
+  border:1px solid rgba(108,114,255,.22)!important;
+  background:linear-gradient(135deg,rgba(108,114,255,.16),rgba(255,255,255,.03))!important;
+}
+#oh-how-we-do-it .dealality-process_hero-stat strong{font-size:1.35rem!important;color:#fff!important;letter-spacing:-.02em!important}
+#oh-how-we-do-it .dealality-process_hero-stat span{font-size:.82rem!important;color:rgba(255,255,255,.55)!important}
+#oh-how-we-do-it .dealality-process_progress-bar{
+  height:6px!important;border-radius:999px!important;background:rgba(255,255,255,.08)!important;overflow:hidden!important;
+}
+#oh-how-we-do-it .dealality-process_progress-bar i{
+  display:block!important;height:100%!important;border-radius:inherit!important;
+  background:linear-gradient(90deg,#8B90FF,#6C72FF)!important;
+}
+#oh-how-we-do-it .dealality-process_rows{display:grid!important;gap:8px!important}
+#oh-how-we-do-it .dealality-process_row{
+  display:grid!important;grid-template-columns:1.1fr 1fr!important;gap:10px!important;align-items:center!important;
+  padding:11px 12px!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.07)!important;
+  background:rgba(255,255,255,.025)!important;
+}
+#oh-how-we-do-it .dealality-process_row strong{font-size:.86rem!important;font-weight:650!important;color:#fff!important}
+#oh-how-we-do-it .dealality-process_row span{font-size:.8rem!important;color:rgba(255,255,255,.55)!important;text-align:right!important}
+#oh-how-we-do-it .dealality-process_paths{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
+#oh-how-we-do-it .dealality-process_path{
+  padding:14px!important;border-radius:12px!important;border:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(8,15,37,.55)!important;min-height:104px!important;
+}
+#oh-how-we-do-it .dealality-process_path strong{display:block!important;color:#fff!important;font-size:.86rem!important;margin:0 0 6px!important}
+#oh-how-we-do-it .dealality-process_path span{display:block!important;color:rgba(255,255,255,.5)!important;font-size:.76rem!important;line-height:1.4!important}
+#oh-how-we-do-it .dealality-process_compare{
+  display:grid!important;grid-template-columns:1.1fr repeat(3,minmax(0,1fr))!important;gap:1px!important;
+  background:rgba(255,255,255,.08)!important;border-radius:12px!important;overflow:hidden!important;
+}
+#oh-how-we-do-it .dealality-process_compare > *{
+  background:#0d1530!important;padding:11px 12px!important;font-size:.8rem!important;color:rgba(255,255,255,.7)!important;
+}
+#oh-how-we-do-it .dealality-process_compare .is-head{color:#fff!important;font-weight:700!important;background:#111b3a!important}
+#oh-how-we-do-it .dealality-process_compare .is-gap{color:#F0C674!important}
+#oh-how-we-do-it .dealality-process_labels{
+  display:flex!important;flex-wrap:wrap!important;gap:8px!important;margin:0!important;padding:0!important;list-style:none!important;
+}
+#oh-how-we-do-it .dealality-process_labels li{
+  padding:6px 10px!important;border-radius:999px!important;border:1px solid rgba(255,255,255,.1)!important;
+  background:rgba(255,255,255,.03)!important;font-size:.74rem!important;font-weight:600!important;color:rgba(255,255,255,.68)!important;
+}
+#oh-how-we-do-it .dealality-process_cta{
+  margin-top:8px!important;padding:28px 24px!important;border-radius:16px!important;
+  border:1px solid rgba(255,255,255,.1)!important;
+  background:linear-gradient(135deg,rgba(108,114,255,.12),rgba(17,27,58,.4) 55%,rgba(8,15,37,.2))!important;
+  text-align:left!important;
+}
+#oh-how-we-do-it .dealality-process_cta h3{
+  margin:0 0 10px!important;font-size:clamp(1.25rem,2vw,1.55rem)!important;font-weight:800!important;color:#fff!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+}
+#oh-how-we-do-it .dealality-process_cta p{
+  margin:0 0 18px!important;max-width:40rem!important;font-size:.95rem!important;line-height:1.6!important;color:rgba(255,255,255,.6)!important;
+}
+#oh-how-we-do-it .dealality-process_cta-row{display:flex!important;flex-wrap:wrap!important;gap:12px!important}
+#oh-how-we-do-it .dealality-process_btn{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-height:44px!important;padding:0 18px!important;border-radius:10px!important;border:0!important;cursor:pointer!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;font-size:.92rem!important;font-weight:700!important;
+  text-decoration:none!important;
+}
+#oh-how-we-do-it .dealality-process_btn-primary{background:#6C72FF!important;color:#fff!important}
+#oh-how-we-do-it .dealality-process_btn-primary:hover{background:#7B80FF!important}
+#oh-how-we-do-it .dealality-process_btn-secondary{
+  background:transparent!important;color:#fff!important;border:1px solid rgba(255,255,255,.18)!important;
+}
+#oh-how-we-do-it .dealality-process_sr{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;border:0!important;
+}
+@media(max-width:960px){
+  #oh-how-we-do-it{padding:72px 1.25rem 64px!important}
+  #oh-how-we-do-it .dealality-process_runway{height:auto!important;margin:0 0 36px!important}
+  #oh-how-we-do-it .dealality-process_layout{
+    position:static!important;display:flex!important;flex-direction:column!important;gap:20px!important;min-height:0!important;
+  }
+  #oh-how-we-do-it .dealality-process_nav{flex-direction:row!important;flex-wrap:wrap!important;padding:0!important;gap:8px!important}
+  #oh-how-we-do-it .dealality-process_progress{display:none!important}
+  #oh-how-we-do-it .dealality-process_nav-item{padding:8px 10px!important;border:1px solid rgba(255,255,255,.08)!important}
+  #oh-how-we-do-it .dealality-process_step{display:block!important;opacity:1!important;transform:none!important;margin:0 0 28px!important}
+  #oh-how-we-do-it .dealality-process_paths{grid-template-columns:1fr!important}
+  #oh-how-we-do-it .dealality-process_compare{grid-template-columns:1.2fr 1fr 1fr 1fr!important;font-size:.7rem!important}
+  #oh-how-we-do-it .dealality-process_row{grid-template-columns:1fr!important}
+  #oh-how-we-do-it .dealality-process_row span{text-align:left!important}
+  #oh-how-we-do-it .dealality-process_visual.is-large,
+  #oh-how-we-do-it .dealality-process_visual.is-compare{min-height:0!important}
+}
+@media(max-width:640px){
+  #oh-how-we-do-it .dealality-process_compare{display:block!important}
+  #oh-how-we-do-it .dealality-process_compare > *{border-bottom:1px solid rgba(255,255,255,.06)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #oh-how-we-do-it .dealality-process_step,
+  #oh-how-we-do-it .dealality-process_progress > span,
+  #oh-how-we-do-it .dealality-process_nav-item{transition:none!important}
+}

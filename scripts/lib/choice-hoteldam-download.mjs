@@ -22,11 +22,22 @@ const BROWSER_HEADERS = {
  * @param {string} [propertyPageUrl]
  * @param {{ usePuppeteer?: boolean }} [opts]
  */
-export async function downloadHoteldamImage(imageUrl, propertyPageUrl = "", opts = {}) {
+/**
+ * Download hoteldam image bytes (direct fetch, then optional Puppeteer).
+ * @param {string} imageUrl
+ * @param {string} [propertyPageUrl]
+ * @param {{ usePuppeteer?: boolean }} [opts]
+ * @returns {Promise<{ buffer: Buffer, contentType: string } | null>}
+ */
+export async function fetchHoteldamImageBytes(imageUrl, propertyPageUrl = "", opts = {}) {
   const direct = await fetchBytes(imageUrl);
   if (direct) return direct;
   if (!opts.usePuppeteer || !propertyPageUrl) return null;
   return downloadFromPropertyPage(propertyPageUrl, imageUrl);
+}
+
+export async function downloadHoteldamImage(imageUrl, propertyPageUrl = "", opts = {}) {
+  return fetchHoteldamImageBytes(imageUrl, propertyPageUrl, opts);
 }
 
 /**

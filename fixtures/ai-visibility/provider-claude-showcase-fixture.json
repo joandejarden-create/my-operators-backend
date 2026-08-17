@@ -1,0 +1,44 @@
+{
+  "fixtureVersion": "ai_visibility_provider_claude_fixture_v1",
+  "provider": "claude",
+  "model": "claude-sonnet-4-6",
+  "raw": {
+    "id": "msg_fixture_claude_001",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-4-6",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "web_search_tool_result",
+        "tool_use_id": "toolu_fixture_001",
+        "content": [
+          {
+            "type": "web_search_result",
+            "url": "https://example.com/cala-lifestyle-brands",
+            "title": "CALA Lifestyle Hotel Brands",
+            "page_age": "2026-02-01"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "text": "For lifestyle positioning in CALA, owners frequently evaluate Kimpton, Moxy, and Autograph Collection.",
+        "citations": [
+          {
+            "type": "web_search_result_location",
+            "url": "https://example.com/cala-lifestyle-brands",
+            "title": "CALA Lifestyle Hotel Brands",
+            "cited_text": "Kimpton and Autograph remain common lifestyle recommendations.",
+            "start_char_index": 52,
+            "end_char_index": 98
+          }
+        ]
+      }
+    ],
+    "usage": {
+      "input_tokens": 110,
+      "output_tokens": 72
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "version": "hotel-census-external-source-options-v1",
+  "generated_at": "2026-08-07T18:00:00.000Z",
+  "integration_status": "evaluation_only_no_writes",
+  "secondary_default": false,
+  "env_flag": "ENABLE_SECONDARY_HOTEL_DATA_SOURCES",
+  "webhound_as_census_sot": false,
+  "mapbox_as_address_source": false,
+  "sources": [
+    {
+      "id": "official_parent_brand",
+      "recommendation": "primary",
+      "fields": ["address", "phone", "hotel_url", "rooms", "coords_rare"],
+      "storage": "public_pages_respect_tos",
+      "cost": "ops"
+    },
+    {
+      "id": "mapbox_permanent",
+      "recommendation": "coords_only_after_high_address",
+      "fields": ["coordinates"],
+      "storage": "allowed_with_permanent_terms",
+      "cost": "paid"
+    },
+    {
+      "id": "google_places",
+      "recommendation": "hold_legal_storage_review",
+      "fields": ["address", "phone", "coordinates", "hotel_url_sometimes"],
+      "storage": "restricted_without_review",
+      "cost": "paid"
+    },
+    {
+      "id": "costar_str",
+      "recommendation": "internal_only_if_licensed_never_product_facing",
+      "fields": ["address", "phone", "rooms", "coordinates", "hotel_url_sometimes"],
+      "storage": "licensed",
+      "cost": "high"
+    },
+    {
+      "id": "data_appeal_like",
+      "recommendation": "evaluate_under_secondary_policy",
+      "fields": ["address", "phone", "rooms_sometimes", "coordinates"],
+      "storage": "license_dependent",
+      "cost": "mid_high"
+    },
+    {
+      "id": "geoapify_foursquare_here_tomtom",
+      "recommendation": "secondary_coords_poi_after_license",
+      "fields": ["address", "phone_sometimes", "coordinates"],
+      "storage": "license_dependent",
+      "cost": "paid"
+    },
+    {
+      "id": "tourism_board_open_data",
+      "recommendation": "secondary_sparse_markets_property_exact",
+      "fields": ["address_sometimes", "rooms_sometimes"],
+      "storage": "often_open",
+      "cost": "free_low"
+    },
+    {
+      "id": "owner_developer_sites",
+      "recommendation": "secondary_exact_property_match",
+      "fields": ["address", "phone", "rooms", "hotel_url"],
+      "storage": "public",
+      "cost": "ops"
+    }
+  ],
+  "founder_decisions_needed": [
+    "Approve or reject Google Places storage for Census",
+    "Approve or reject one licensed hospitality dataset for secondary address/phone",
+    "Confirm CoStar remains non-product-facing only"
+  ]
+}

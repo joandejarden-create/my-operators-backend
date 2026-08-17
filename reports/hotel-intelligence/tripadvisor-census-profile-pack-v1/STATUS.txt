@@ -1,0 +1,33 @@
+TRIPADVISOR_CENSUS_PROFILE_PACK_V1_COMPLETE
+
+CENSUS_TOTAL: 15485
+PILOT_HOTELS: 100
+
+CURRENT_CENSUS_FIELDS: 146
+NEW_CENSUS_FIELDS_ADDED: 0
+NEW_PROVENANCE_FIELDS_OR_TABLES: 0 (local external-ids + evidence-store + apify ledger HOTEL_PROFILE use case)
+
+SAFE_GAP_FIELDS_APPROVED: Official Property URL, Phone, Address, Latitude, Longitude
+CONDITIONAL_FIELDS: Hotel Class / Segment, Property Type, City, State / Region, Amenities - Structured Tags, Email (after schema)
+CANDIDATE_ONLY_FIELDS: Rooms / Keys
+
+PROFILE_PACK_FIELDS: rating, number_of_reviews, ranking_position, ranking_denominator, guest_ranking_percentile, hotel_class, amenities, category_review_scores, rating_histogram, price_level, price_range, traveler_choice_award, contact_observations
+
+PROPOSED_WRITES: 248
+EXECUTED_WRITES: 0
+BLOCKED_WRITES: 38
+CONFLICTS: 27 existing_non_null_blocked + 11 aggregator_or_social_host
+
+COMPLETENESS_IMPROVEMENT_BY_FIELD: actual none (0 writes); if Tier A applied — Address 63.3→63.6, Lat/Lng 5.4→5.7, Website 51.9→52.1, Phone 80.0→80.3 (census-wide); strong per matched hotel
+
+PROFILE_PACK_COVERAGE: rating 93.9%, reviews 100%, ranking 93.9%, guest_rank_pct 93.9%, amenities 91.8%, category 93.9%, price 83.7%, hotel_class 100%, contact 100% (of 49 matched)
+
+TOTAL_APIFY_COST: $0.1743
+COST_PER_HOTEL: $0.001743
+COST_PER_FIELD_RECOVERED: $0.000876 (if Tier A applied; $null written)
+
+FIELD_SCALE_DECISIONS: Address/Lat/Lng/Website/Phone=SCALE; Hotel Class/Property Type/Amenities/State/City/Email=CONDITIONAL; Rooms=CANDIDATE_ONLY; Brand=DO_NOT_SCALE_FROM_TA; Rank/Rating/Price=HI_ONLY; OVERALL=SCALE_SELECTED_FIELDS
+
+PRODUCTION_SAFETY_STATUS: MANIFEST_ONLY
+
+RECOMMENDED_NEXT_STEP: Founder review Tier A manifest for 49 matched hotels → enable write flags + apply Tier A null-fills only; improve hotel-like identity resolution for unmatched; keep rooms candidate-only; persist Profile Packs for future Comp Set/Alerts without building those UIs yet

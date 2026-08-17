@@ -1,0 +1,1464 @@
+{
+  "generatedAt": "2026-07-06T19:12:39.595Z",
+  "mode": "apply",
+  "brandId": "recWPEvxBQxVVzSq3",
+  "brandName": "Radisson Blu by Choice",
+  "sourceIds": [
+    "recC9utJdNaKWR56k",
+    "recH1ZepKU6zJp7M2",
+    "recWGLvwnDn0v5rmL",
+    "reczafLghta09o2sB"
+  ],
+  "allowlistedSourceIds": [
+    "recC9utJdNaKWR56k",
+    "recH1ZepKU6zJp7M2",
+    "recWGLvwnDn0v5rmL",
+    "reczafLghta09o2sB"
+  ],
+  "targetFactKeys": [
+    "be.identity.brandName",
+    "be.identity.parentCompany",
+    "be.positioning.summary",
+    "be.positioning.tagline",
+    "be.positioning.guestPromise",
+    "be.overview.developmentModel",
+    "be.overview.whyValue",
+    "be.positioning.history",
+    "be.overview.typicalUseCase",
+    "be.footprint.americasHotels",
+    "be.footprint.geoIntro",
+    "be.loyalty.programName"
+  ],
+  "primaryTargetFactKeys": [
+    "be.identity.brandName",
+    "be.identity.parentCompany",
+    "be.positioning.summary",
+    "be.positioning.tagline",
+    "be.positioning.guestPromise",
+    "be.overview.developmentModel",
+    "be.overview.whyValue"
+  ],
+  "secondaryTargetFactKeys": [
+    "be.positioning.history",
+    "be.overview.typicalUseCase",
+    "be.footprint.americasHotels",
+    "be.footprint.geoIntro",
+    "be.loyalty.programName"
+  ],
+  "defaultTargetFactKeys": [
+    "be.identity.brandName",
+    "be.identity.parentCompany",
+    "be.positioning.summary",
+    "be.positioning.tagline",
+    "be.positioning.guestPromise",
+    "be.overview.developmentModel",
+    "be.overview.whyValue",
+    "be.positioning.history",
+    "be.overview.typicalUseCase",
+    "be.footprint.americasHotels",
+    "be.footprint.geoIntro",
+    "be.loyalty.programName"
+  ],
+  "userRequestedKeyMapping": [
+    {
+      "requested": "be.snapshot.brandName",
+      "registryKey": "be.identity.brandName",
+      "supported": true
+    },
+    {
+      "requested": "be.snapshot.parentCompany",
+      "registryKey": "be.identity.parentCompany",
+      "supported": true
+    },
+    {
+      "requested": "be.positioning.summary",
+      "registryKey": "be.positioning.summary",
+      "supported": true
+    },
+    {
+      "requested": "be.positioning.segment",
+      "registryKey": null,
+      "supported": false,
+      "note": "No brand PI registry key; capture segment language in be.positioning.summary."
+    },
+    {
+      "requested": "be.positioning.chainScale",
+      "registryKey": null,
+      "supported": false,
+      "note": "Hotel Chain Scale is Brand Setup — not a PI fact key; use upper-upscale in be.positioning.summary."
+    },
+    {
+      "requested": "be.ownerConsiderations.developmentPositioning",
+      "registryKey": "be.overview.whyValue",
+      "supported": true
+    },
+    {
+      "requested": "be.standards.conversionConsiderations",
+      "registryKey": "be.overview.developmentModel",
+      "supported": true
+    },
+    {
+      "requested": "be.markets.regionsSupported",
+      "registryKey": "be.footprint.americasHotels",
+      "supported": true,
+      "note": "Brand registry uses be.footprint.americasHotels / geoIntro — not op.markets.regionsSupported."
+    },
+    {
+      "requested": "be.brandFamily.context",
+      "registryKey": null,
+      "supported": false,
+      "note": "No registry key; ownership disclaimer may inform be.footprint.geoIntro when source-backed."
+    },
+    {
+      "requested": "be.development.model",
+      "registryKey": "be.overview.developmentModel",
+      "supported": true
+    }
+  ],
+  "keyPlan": [
+    {
+      "fieldKey": "be.identity.brandName",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Brand Name",
+      "explorerSection": "Brand Identity"
+    },
+    {
+      "fieldKey": "be.identity.parentCompany",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Parent Company",
+      "explorerSection": "Parent Company"
+    },
+    {
+      "fieldKey": "be.positioning.summary",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Brand Positioning",
+      "explorerSection": "Brand Positioning"
+    },
+    {
+      "fieldKey": "be.positioning.tagline",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Brand Tagline",
+      "explorerSection": "Tagline"
+    },
+    {
+      "fieldKey": "be.positioning.guestPromise",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Brand Customer Promise",
+      "explorerSection": "Guest Promise"
+    },
+    {
+      "fieldKey": "be.overview.developmentModel",
+      "priority": "P1",
+      "registrySupported": true,
+      "displayLabel": "Development Model",
+      "explorerSection": "Development Model"
+    },
+    {
+      "fieldKey": "be.overview.whyValue",
+      "priority": "P1",
+      "registrySupported": true,
+      "displayLabel": "Why Owners Choose Brand",
+      "explorerSection": "Why Value"
+    },
+    {
+      "fieldKey": "be.positioning.history",
+      "priority": "P2",
+      "registrySupported": true,
+      "displayLabel": "Brand History",
+      "explorerSection": "Brand History"
+    },
+    {
+      "fieldKey": "be.overview.typicalUseCase",
+      "priority": "P2",
+      "registrySupported": true,
+      "displayLabel": "Typical Use Case",
+      "explorerSection": "Target Guest"
+    },
+    {
+      "fieldKey": "be.footprint.americasHotels",
+      "priority": "P1",
+      "registrySupported": true,
+      "displayLabel": "Americas Hotel Count",
+      "explorerSection": "Americas Hotels"
+    },
+    {
+      "fieldKey": "be.footprint.geoIntro",
+      "priority": "P2",
+      "registrySupported": true,
+      "displayLabel": "Footprint Summary",
+      "explorerSection": "Geographic Intro"
+    },
+    {
+      "fieldKey": "be.loyalty.programName",
+      "priority": "P2",
+      "registrySupported": true,
+      "displayLabel": "Loyalty Program",
+      "explorerSection": "Program Name"
+    }
+  ],
+  "limitFacts": null,
+  "allHtmlTextClean": true,
+  "regionOwnershipCaveats": [
+    "PI package scoped to Radisson Blu by Choice (Americas) — recWPEvxBQxVVzSq3.",
+    "Choice Hotels owns/franchises Radisson Blu in the Americas; Radisson Hotel Group operates the brand elsewhere.",
+    "Do not import RHG global portfolio counts unless a Choice source states Americas scope.",
+    "Separate Brand Basics row exists for RHG-global Radisson Blu — do not cross-link sources."
+  ],
+  "extractionQualityAssessment": {
+    "allHtmlTextClean": true,
+    "readableSourceCount": 3,
+    "substantiveFactCount": 5,
+    "hasBrandName": true,
+    "hasParentCompany": true,
+    "hasAmericasFootprint": true,
+    "hasOwnershipCaveat": true,
+    "overall": "good_for_steward_review",
+    "applyRecommended": true,
+    "governancePublishStillBlocked": true,
+    "governanceBlockReason": "Facts must be created, human-approved, and governance publish dry-run must pass. No governance apply from this script.",
+    "platformIntelligenceNotes": [
+      "Approved facts can feed Brand Explorer trust chip evidence and BAS brand-fit reads.",
+      "Americas-scoped footprint facts support Scout/Radar corridor context without RHG global overclaim.",
+      "Owner/development positioning facts support Deal Readiness owner-education prompts (read-only).",
+      "Ownership disclaimer fact supports alignment snapshots when region scope is ambiguous."
+    ]
+  },
+  "recommendationNote": "Apply completed — facts remain Pending; steward review required.",
+  "existingFacts": {
+    "rows": [],
+    "existingCount": 0
+  },
+  "sourcePreviews": [
+    {
+      "sourceId": "recC9utJdNaKWR56k",
+      "sourceTitle": "Radisson Blu Choice development brand page",
+      "sourceUrl": "https://www.choicehotelsdevelopment.com/our-brands/upper-upscale/radisson-blu",
+      "validation": {
+        "ok": true,
+        "reasons": []
+      },
+      "keyPlan": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Name",
+          "explorerSection": "Brand Identity"
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Parent Company",
+          "explorerSection": "Parent Company"
+        },
+        {
+          "fieldKey": "be.positioning.summary",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Positioning",
+          "explorerSection": "Brand Positioning"
+        },
+        {
+          "fieldKey": "be.positioning.tagline",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Tagline",
+          "explorerSection": "Tagline"
+        },
+        {
+          "fieldKey": "be.positioning.guestPromise",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Customer Promise",
+          "explorerSection": "Guest Promise"
+        },
+        {
+          "fieldKey": "be.overview.developmentModel",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Development Model",
+          "explorerSection": "Development Model"
+        },
+        {
+          "fieldKey": "be.overview.whyValue",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Why Owners Choose Brand",
+          "explorerSection": "Why Value"
+        },
+        {
+          "fieldKey": "be.positioning.history",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Brand History",
+          "explorerSection": "Brand History"
+        },
+        {
+          "fieldKey": "be.overview.typicalUseCase",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Typical Use Case",
+          "explorerSection": "Target Guest"
+        },
+        {
+          "fieldKey": "be.footprint.americasHotels",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Americas Hotel Count",
+          "explorerSection": "Americas Hotels"
+        },
+        {
+          "fieldKey": "be.footprint.geoIntro",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Footprint Summary",
+          "explorerSection": "Geographic Intro"
+        },
+        {
+          "fieldKey": "be.loyalty.programName",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Loyalty Program",
+          "explorerSection": "Program Name"
+        }
+      ],
+      "supportedKeys": [
+        "be.identity.brandName",
+        "be.identity.parentCompany",
+        "be.positioning.summary",
+        "be.positioning.tagline",
+        "be.positioning.guestPromise",
+        "be.overview.developmentModel",
+        "be.overview.whyValue",
+        "be.positioning.history",
+        "be.overview.typicalUseCase",
+        "be.footprint.americasHotels",
+        "be.footprint.geoIntro",
+        "be.loyalty.programName"
+      ],
+      "unsupportedKeys": [],
+      "previewAvailable": true,
+      "previewSkippedReason": null,
+      "documentKind": "html",
+      "classificationRole": "public_web",
+      "extractor": "brand_rules",
+      "textLength": 25,
+      "htmlTextClean": true,
+      "rawCandidateCount": 2,
+      "previewCandidates": [],
+      "skippedCandidates": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "sourceId": "recC9utJdNaKWR56k",
+          "extractedValuePreview": "Not confirmed in available sources.",
+          "reasons": [
+            "gap_copy",
+            "gap_or_skipped",
+            "weak_evidence"
+          ]
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "sourceId": "recC9utJdNaKWR56k",
+          "extractedValuePreview": "Not confirmed in available sources.",
+          "reasons": [
+            "gap_copy",
+            "gap_or_skipped",
+            "weak_evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "recH1ZepKU6zJp7M2",
+      "sourceTitle": "Radisson Blu Choice consumer brand page",
+      "sourceUrl": "https://www.choicehotels.com/radisson-blu",
+      "validation": {
+        "ok": true,
+        "reasons": []
+      },
+      "keyPlan": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Name",
+          "explorerSection": "Brand Identity"
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Parent Company",
+          "explorerSection": "Parent Company"
+        },
+        {
+          "fieldKey": "be.positioning.summary",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Positioning",
+          "explorerSection": "Brand Positioning"
+        },
+        {
+          "fieldKey": "be.positioning.tagline",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Tagline",
+          "explorerSection": "Tagline"
+        },
+        {
+          "fieldKey": "be.positioning.guestPromise",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Customer Promise",
+          "explorerSection": "Guest Promise"
+        },
+        {
+          "fieldKey": "be.overview.developmentModel",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Development Model",
+          "explorerSection": "Development Model"
+        },
+        {
+          "fieldKey": "be.overview.whyValue",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Why Owners Choose Brand",
+          "explorerSection": "Why Value"
+        },
+        {
+          "fieldKey": "be.positioning.history",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Brand History",
+          "explorerSection": "Brand History"
+        },
+        {
+          "fieldKey": "be.overview.typicalUseCase",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Typical Use Case",
+          "explorerSection": "Target Guest"
+        },
+        {
+          "fieldKey": "be.footprint.americasHotels",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Americas Hotel Count",
+          "explorerSection": "Americas Hotels"
+        },
+        {
+          "fieldKey": "be.footprint.geoIntro",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Footprint Summary",
+          "explorerSection": "Geographic Intro"
+        },
+        {
+          "fieldKey": "be.loyalty.programName",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Loyalty Program",
+          "explorerSection": "Program Name"
+        }
+      ],
+      "supportedKeys": [
+        "be.identity.brandName",
+        "be.identity.parentCompany",
+        "be.positioning.summary",
+        "be.positioning.tagline",
+        "be.positioning.guestPromise",
+        "be.overview.developmentModel",
+        "be.overview.whyValue",
+        "be.positioning.history",
+        "be.overview.typicalUseCase",
+        "be.footprint.americasHotels",
+        "be.footprint.geoIntro",
+        "be.loyalty.programName"
+      ],
+      "unsupportedKeys": [],
+      "previewAvailable": true,
+      "previewSkippedReason": null,
+      "documentKind": "html",
+      "classificationRole": "public_web",
+      "extractor": "brand_rules",
+      "textLength": 3554,
+      "htmlTextClean": true,
+      "rawCandidateCount": 2,
+      "previewCandidates": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "priority": "P0",
+          "extractedValuePreview": "Radisson Blu",
+          "evidencePreview": "Radisson Blu® by Choice Hotels.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.loyalty.programName",
+          "priority": "P2",
+          "extractedValuePreview": "Choice Privileges",
+          "evidencePreview": "Choice Privileges",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        }
+      ],
+      "skippedCandidates": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "sourceId": "recH1ZepKU6zJp7M2",
+          "extractedValuePreview": "Not confirmed in available sources.",
+          "reasons": [
+            "gap_copy",
+            "gap_or_skipped",
+            "weak_evidence"
+          ]
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "sourceId": "recH1ZepKU6zJp7M2",
+          "extractedValuePreview": "Not confirmed in available sources.",
+          "reasons": [
+            "gap_copy",
+            "gap_or_skipped",
+            "weak_evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "recWGLvwnDn0v5rmL",
+      "sourceTitle": "Radisson Blu Choice press kit Americas",
+      "sourceUrl": "https://media.choicehotels.com/Radisson-blu-press-kit",
+      "validation": {
+        "ok": true,
+        "reasons": []
+      },
+      "keyPlan": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Name",
+          "explorerSection": "Brand Identity"
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Parent Company",
+          "explorerSection": "Parent Company"
+        },
+        {
+          "fieldKey": "be.positioning.summary",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Positioning",
+          "explorerSection": "Brand Positioning"
+        },
+        {
+          "fieldKey": "be.positioning.tagline",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Tagline",
+          "explorerSection": "Tagline"
+        },
+        {
+          "fieldKey": "be.positioning.guestPromise",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Customer Promise",
+          "explorerSection": "Guest Promise"
+        },
+        {
+          "fieldKey": "be.overview.developmentModel",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Development Model",
+          "explorerSection": "Development Model"
+        },
+        {
+          "fieldKey": "be.overview.whyValue",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Why Owners Choose Brand",
+          "explorerSection": "Why Value"
+        },
+        {
+          "fieldKey": "be.positioning.history",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Brand History",
+          "explorerSection": "Brand History"
+        },
+        {
+          "fieldKey": "be.overview.typicalUseCase",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Typical Use Case",
+          "explorerSection": "Target Guest"
+        },
+        {
+          "fieldKey": "be.footprint.americasHotels",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Americas Hotel Count",
+          "explorerSection": "Americas Hotels"
+        },
+        {
+          "fieldKey": "be.footprint.geoIntro",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Footprint Summary",
+          "explorerSection": "Geographic Intro"
+        },
+        {
+          "fieldKey": "be.loyalty.programName",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Loyalty Program",
+          "explorerSection": "Program Name"
+        }
+      ],
+      "supportedKeys": [
+        "be.identity.brandName",
+        "be.identity.parentCompany",
+        "be.positioning.summary",
+        "be.positioning.tagline",
+        "be.positioning.guestPromise",
+        "be.overview.developmentModel",
+        "be.overview.whyValue",
+        "be.positioning.history",
+        "be.overview.typicalUseCase",
+        "be.footprint.americasHotels",
+        "be.footprint.geoIntro",
+        "be.loyalty.programName"
+      ],
+      "unsupportedKeys": [],
+      "previewAvailable": true,
+      "previewSkippedReason": null,
+      "documentKind": "html",
+      "classificationRole": "public_web",
+      "extractor": "brand_rules",
+      "textLength": 3874,
+      "htmlTextClean": true,
+      "rawCandidateCount": 2,
+      "previewCandidates": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "priority": "P0",
+          "extractedValuePreview": "Radisson Blu",
+          "evidencePreview": "Radisson Blu",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "priority": "P0",
+          "extractedValuePreview": "Choice Hotels International",
+          "evidencePreview": "owned in the Americas regions by Choice Hotels.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.positioning.summary",
+          "priority": "P0",
+          "extractedValuePreview": "Upper-upscale hospitality brand combining style with substance, innovation with comfort, and a sense of belonging in an elevated environment.",
+          "evidencePreview": "upper-upscale and full-service experience, located in key urban and resort destinations in the Americas.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.positioning.guestPromise",
+          "priority": "P0",
+          "extractedValuePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment.",
+          "evidencePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.footprint.americasHotels",
+          "priority": "P1",
+          "extractedValuePreview": "10 hotels (2,433 rooms) in operation in the Americas",
+          "evidencePreview": "10 hotels with a combined 2,433 rooms in operation a in the Americas as of September 30, 2024.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.footprint.geoIntro",
+          "priority": "P2",
+          "extractedValuePreview": "Americas: Radisson Blu franchised by Choice Hotels International. Outside the Americas: Radisson Hotel Group (separate company).",
+          "evidencePreview": "Outside of the Americas, the brands are owned by Radisson Hotel Group, an unaffiliated company headquartered in Belgium.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        }
+      ],
+      "skippedCandidates": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "sourceId": "recWGLvwnDn0v5rmL",
+          "extractedValuePreview": "Not confirmed in available sources.",
+          "reasons": [
+            "gap_copy",
+            "gap_or_skipped",
+            "weak_evidence"
+          ]
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "sourceId": "recWGLvwnDn0v5rmL",
+          "extractedValuePreview": "Not confirmed in available sources.",
+          "reasons": [
+            "gap_copy",
+            "gap_or_skipped",
+            "weak_evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "reczafLghta09o2sB",
+      "sourceTitle": "Radisson Blu Choice development one-pager",
+      "sourceUrl": "",
+      "validation": {
+        "ok": true,
+        "reasons": []
+      },
+      "keyPlan": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Name",
+          "explorerSection": "Brand Identity"
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Parent Company",
+          "explorerSection": "Parent Company"
+        },
+        {
+          "fieldKey": "be.positioning.summary",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Positioning",
+          "explorerSection": "Brand Positioning"
+        },
+        {
+          "fieldKey": "be.positioning.tagline",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Tagline",
+          "explorerSection": "Tagline"
+        },
+        {
+          "fieldKey": "be.positioning.guestPromise",
+          "priority": "P0",
+          "registrySupported": true,
+          "displayLabel": "Brand Customer Promise",
+          "explorerSection": "Guest Promise"
+        },
+        {
+          "fieldKey": "be.overview.developmentModel",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Development Model",
+          "explorerSection": "Development Model"
+        },
+        {
+          "fieldKey": "be.overview.whyValue",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Why Owners Choose Brand",
+          "explorerSection": "Why Value"
+        },
+        {
+          "fieldKey": "be.positioning.history",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Brand History",
+          "explorerSection": "Brand History"
+        },
+        {
+          "fieldKey": "be.overview.typicalUseCase",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Typical Use Case",
+          "explorerSection": "Target Guest"
+        },
+        {
+          "fieldKey": "be.footprint.americasHotels",
+          "priority": "P1",
+          "registrySupported": true,
+          "displayLabel": "Americas Hotel Count",
+          "explorerSection": "Americas Hotels"
+        },
+        {
+          "fieldKey": "be.footprint.geoIntro",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Footprint Summary",
+          "explorerSection": "Geographic Intro"
+        },
+        {
+          "fieldKey": "be.loyalty.programName",
+          "priority": "P2",
+          "registrySupported": true,
+          "displayLabel": "Loyalty Program",
+          "explorerSection": "Program Name"
+        }
+      ],
+      "supportedKeys": [
+        "be.identity.brandName",
+        "be.identity.parentCompany",
+        "be.positioning.summary",
+        "be.positioning.tagline",
+        "be.positioning.guestPromise",
+        "be.overview.developmentModel",
+        "be.overview.whyValue",
+        "be.positioning.history",
+        "be.overview.typicalUseCase",
+        "be.footprint.americasHotels",
+        "be.footprint.geoIntro",
+        "be.loyalty.programName"
+      ],
+      "unsupportedKeys": [],
+      "previewAvailable": true,
+      "previewSkippedReason": null,
+      "documentKind": "pdf",
+      "classificationRole": "overview_en",
+      "extractor": "brand_rules",
+      "textLength": 2675,
+      "htmlTextClean": true,
+      "rawCandidateCount": 2,
+      "previewCandidates": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "priority": "P0",
+          "extractedValuePreview": "Radisson Blu",
+          "evidencePreview": "Radisson Blu \r\nbrings distinctive design to top urban and resort markets.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.positioning.summary",
+          "priority": "P0",
+          "extractedValuePreview": "Upper-upscale hospitality brand combining style with substance, innovation with comfort, and a sense of belonging in an elevated environment.",
+          "evidencePreview": "upper upscale brand that appeals to the inspired professional –  \r\nallergic to boring our guest finds traditional spaces uninspired.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.positioning.tagline",
+          "priority": "P0",
+          "extractedValuePreview": "Think in Black & White Blu",
+          "evidencePreview": "THINK IN BLACK & WHITE BLU",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.positioning.guestPromise",
+          "priority": "P0",
+          "extractedValuePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment.",
+          "evidencePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.overview.developmentModel",
+          "priority": "P1",
+          "extractedValuePreview": "Development types include new construction, conversions, adaptive reuse (per Choice brand materials).",
+          "evidencePreview": "new build, adaptive reuse or conversion, Radisson Blu \r\nbrings distinctive design to top urban and resort markets.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.overview.whyValue",
+          "priority": "P1",
+          "extractedValuePreview": "Whether new build, adaptive reuse or conversion, Radisson Blu brings distinctive design to top urban and resort markets.",
+          "evidencePreview": "Whether new build, adaptive reuse or conversion, Radisson Blu \r\nbrings distinctive design to top urban and resort markets.",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.footprint.americasHotels",
+          "priority": "P1",
+          "extractedValuePreview": "10 hotels in the Americas (3 domestic, 7 international)",
+          "evidencePreview": "AMERICAS BRAND PRESENCE 10 in the Americas (3 Domestic, 7 International) Pipeline: 1 U.S., 4 International (YE 2023) Radisson Blu Toron",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        },
+        {
+          "fieldKey": "be.overview.typicalUseCase",
+          "priority": "P2",
+          "extractedValuePreview": "The Inspired Professional — upper-upscale guest seeking distinctive, non-boring hospitality experiences.",
+          "evidencePreview": "TARGET GUEST The Inspired Professional",
+          "extractionType": "Directly Stated",
+          "confidenceLevel": "High",
+          "confidenceScore": 80,
+          "dataGap": "No",
+          "enriched": true,
+          "wouldWriteOnApply": true
+        }
+      ],
+      "skippedCandidates": [
+        {
+          "fieldKey": "be.identity.brandName",
+          "sourceId": "reczafLghta09o2sB",
+          "extractedValuePreview": "Not confirmed in available sources.",
+          "reasons": [
+            "gap_copy",
+            "gap_or_skipped",
+            "weak_evidence"
+          ]
+        },
+        {
+          "fieldKey": "be.identity.parentCompany",
+          "sourceId": "reczafLghta09o2sB",
+          "extractedValuePreview": "Not confirmed in available sources.",
+          "reasons": [
+            "gap_copy",
+            "gap_or_skipped",
+            "weak_evidence"
+          ]
+        }
+      ]
+    }
+  ],
+  "wouldWrite": {
+    "targetFactKeys": [
+      "be.identity.brandName",
+      "be.identity.parentCompany",
+      "be.positioning.summary",
+      "be.positioning.tagline",
+      "be.positioning.guestPromise",
+      "be.overview.developmentModel",
+      "be.overview.whyValue",
+      "be.positioning.history",
+      "be.overview.typicalUseCase",
+      "be.footprint.americasHotels",
+      "be.footprint.geoIntro",
+      "be.loyalty.programName"
+    ],
+    "unsupportedRegistryKeys": [],
+    "duplicateWarnings": [
+      {
+        "fieldKey": "be.identity.brandName",
+        "sourceId": "recH1ZepKU6zJp7M2",
+        "extractedValuePreview": "Radisson Blu",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.brandName",
+        "sourceId": "reczafLghta09o2sB",
+        "extractedValuePreview": "Radisson Blu",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      },
+      {
+        "fieldKey": "be.positioning.summary",
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "Upper-upscale hospitality brand combining style with substance, innovation with comfort, and a sense of belonging in an elevated environment.",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      },
+      {
+        "fieldKey": "be.positioning.guestPromise",
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment.",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      },
+      {
+        "fieldKey": "be.footprint.americasHotels",
+        "sourceId": "reczafLghta09o2sB",
+        "extractedValuePreview": "10 hotels in the Americas (3 domestic, 7 international)",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      }
+    ],
+    "factRowsWouldCreate": [
+      {
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "sourceTitle": "Radisson Blu Choice press kit Americas",
+        "fieldKey": "be.identity.brandName",
+        "priority": "P0",
+        "extractedValuePreview": "Radisson Blu",
+        "evidencePreview": "Radisson Blu",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "sourceTitle": "Radisson Blu Choice press kit Americas",
+        "fieldKey": "be.identity.parentCompany",
+        "priority": "P0",
+        "extractedValuePreview": "Choice Hotels International",
+        "evidencePreview": "owned in the Americas regions by Choice Hotels.",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "reczafLghta09o2sB",
+        "sourceTitle": "Radisson Blu Choice development one-pager",
+        "fieldKey": "be.positioning.summary",
+        "priority": "P0",
+        "extractedValuePreview": "Upper-upscale hospitality brand combining style with substance, innovation with comfort, and a sense of belonging in an elevated environment.",
+        "evidencePreview": "upper upscale brand that appeals to the inspired professional –  \r\nallergic to boring our guest finds traditional spaces uninspired.",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "reczafLghta09o2sB",
+        "sourceTitle": "Radisson Blu Choice development one-pager",
+        "fieldKey": "be.positioning.guestPromise",
+        "priority": "P0",
+        "extractedValuePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment.",
+        "evidencePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment.",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "sourceTitle": "Radisson Blu Choice press kit Americas",
+        "fieldKey": "be.footprint.americasHotels",
+        "priority": "P1",
+        "extractedValuePreview": "10 hotels (2,433 rooms) in operation in the Americas",
+        "evidencePreview": "10 hotels with a combined 2,433 rooms in operation a in the Americas as of September 30, 2024.",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "sourceTitle": "Radisson Blu Choice press kit Americas",
+        "fieldKey": "be.footprint.geoIntro",
+        "priority": "P2",
+        "extractedValuePreview": "Americas: Radisson Blu franchised by Choice Hotels International. Outside the Americas: Radisson Hotel Group (separate company).",
+        "evidencePreview": "Outside of the Americas, the brands are owned by Radisson Hotel Group, an unaffiliated company headquartered in Belgium.",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "reczafLghta09o2sB",
+        "sourceTitle": "Radisson Blu Choice development one-pager",
+        "fieldKey": "be.positioning.tagline",
+        "priority": "P0",
+        "extractedValuePreview": "Think in Black & White Blu",
+        "evidencePreview": "THINK IN BLACK & WHITE BLU",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "reczafLghta09o2sB",
+        "sourceTitle": "Radisson Blu Choice development one-pager",
+        "fieldKey": "be.overview.developmentModel",
+        "priority": "P1",
+        "extractedValuePreview": "Development types include new construction, conversions, adaptive reuse (per Choice brand materials).",
+        "evidencePreview": "new build, adaptive reuse or conversion, Radisson Blu \r\nbrings distinctive design to top urban and resort markets.",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "reczafLghta09o2sB",
+        "sourceTitle": "Radisson Blu Choice development one-pager",
+        "fieldKey": "be.overview.whyValue",
+        "priority": "P1",
+        "extractedValuePreview": "Whether new build, adaptive reuse or conversion, Radisson Blu brings distinctive design to top urban and resort markets.",
+        "evidencePreview": "Whether new build, adaptive reuse or conversion, Radisson Blu \r\nbrings distinctive design to top urban and resort markets.",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "reczafLghta09o2sB",
+        "sourceTitle": "Radisson Blu Choice development one-pager",
+        "fieldKey": "be.overview.typicalUseCase",
+        "priority": "P2",
+        "extractedValuePreview": "The Inspired Professional — upper-upscale guest seeking distinctive, non-boring hospitality experiences.",
+        "evidencePreview": "TARGET GUEST The Inspired Professional",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      },
+      {
+        "sourceId": "recH1ZepKU6zJp7M2",
+        "sourceTitle": "Radisson Blu Choice consumer brand page",
+        "fieldKey": "be.loyalty.programName",
+        "priority": "P2",
+        "extractedValuePreview": "Choice Privileges",
+        "evidencePreview": "Choice Privileges",
+        "extractionType": "Directly Stated",
+        "confidenceLevel": "High",
+        "enriched": true
+      }
+    ],
+    "factRowsSkipped": [
+      {
+        "fieldKey": "be.identity.brandName",
+        "sourceId": "recC9utJdNaKWR56k",
+        "extractedValuePreview": "Not confirmed in available sources.",
+        "reasons": [
+          "gap_copy",
+          "gap_or_skipped",
+          "weak_evidence"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.parentCompany",
+        "sourceId": "recC9utJdNaKWR56k",
+        "extractedValuePreview": "Not confirmed in available sources.",
+        "reasons": [
+          "gap_copy",
+          "gap_or_skipped",
+          "weak_evidence"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.brandName",
+        "sourceId": "recH1ZepKU6zJp7M2",
+        "extractedValuePreview": "Not confirmed in available sources.",
+        "reasons": [
+          "gap_copy",
+          "gap_or_skipped",
+          "weak_evidence"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.parentCompany",
+        "sourceId": "recH1ZepKU6zJp7M2",
+        "extractedValuePreview": "Not confirmed in available sources.",
+        "reasons": [
+          "gap_copy",
+          "gap_or_skipped",
+          "weak_evidence"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.brandName",
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "Not confirmed in available sources.",
+        "reasons": [
+          "gap_copy",
+          "gap_or_skipped",
+          "weak_evidence"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.parentCompany",
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "Not confirmed in available sources.",
+        "reasons": [
+          "gap_copy",
+          "gap_or_skipped",
+          "weak_evidence"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.brandName",
+        "sourceId": "reczafLghta09o2sB",
+        "extractedValuePreview": "Not confirmed in available sources.",
+        "reasons": [
+          "gap_copy",
+          "gap_or_skipped",
+          "weak_evidence"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.parentCompany",
+        "sourceId": "reczafLghta09o2sB",
+        "extractedValuePreview": "Not confirmed in available sources.",
+        "reasons": [
+          "gap_copy",
+          "gap_or_skipped",
+          "weak_evidence"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.brandName",
+        "sourceId": "recH1ZepKU6zJp7M2",
+        "extractedValuePreview": "Radisson Blu",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      },
+      {
+        "fieldKey": "be.identity.brandName",
+        "sourceId": "reczafLghta09o2sB",
+        "extractedValuePreview": "Radisson Blu",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      },
+      {
+        "fieldKey": "be.positioning.summary",
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "Upper-upscale hospitality brand combining style with substance, innovation with comfort, and a sense of belonging in an elevated environment.",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      },
+      {
+        "fieldKey": "be.positioning.guestPromise",
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment.",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      },
+      {
+        "fieldKey": "be.footprint.americasHotels",
+        "sourceId": "reczafLghta09o2sB",
+        "extractedValuePreview": "10 hotels in the Americas (3 domestic, 7 international)",
+        "reasons": [
+          "duplicate_field_key_keep_best"
+        ]
+      }
+    ],
+    "sourcesWouldPatch": [
+      {
+        "sourceId": "recH1ZepKU6zJp7M2",
+        "sourceTitle": "Radisson Blu Choice consumer brand page",
+        "fields": {
+          "status": "Extracted",
+          "extractionRunId": "(assigned on apply)",
+          "notesAppend": "Radisson Blu by Choice narrow extraction allowlist (Americas)."
+        }
+      },
+      {
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "sourceTitle": "Radisson Blu Choice press kit Americas",
+        "fields": {
+          "status": "Extracted",
+          "extractionRunId": "(assigned on apply)",
+          "notesAppend": "Radisson Blu by Choice narrow extraction allowlist (Americas)."
+        }
+      },
+      {
+        "sourceId": "reczafLghta09o2sB",
+        "sourceTitle": "Radisson Blu Choice development one-pager",
+        "fields": {
+          "status": "Extracted",
+          "extractionRunId": "(assigned on apply)",
+          "notesAppend": "Radisson Blu by Choice narrow extraction allowlist (Americas)."
+        }
+      }
+    ],
+    "factsWouldCreateCount": 11,
+    "doesNotWrite": [
+      "Human Review Status = Approved (facts remain Pending)",
+      "Approved for Explorer Use changes",
+      "Brand Setup profile governance fields",
+      "Company Validated / Company Validation Date",
+      "External Display Status / Show Trust Label",
+      "Published Explorer Fields / platform field publishing",
+      "Governance publish",
+      "RHG-global portfolio facts without Americas Choice evidence",
+      "Apply without --approve-radisson-blu-extract"
+    ]
+  },
+  "applyResult": {
+    "runId": "pi-radisson-blu-a035a762",
+    "batchNote": "Radisson Blu by Choice narrow extraction allowlist (Americas).",
+    "sourcesPatched": [
+      {
+        "sourceId": "recH1ZepKU6zJp7M2",
+        "sourceTitle": "Radisson Blu Choice consumer brand page",
+        "patch": {
+          "Status": "Extracted",
+          "Extraction Run ID": "pi-radisson-blu-a035a762",
+          "Notes": "Captured via download-partner-reference-material.mjs\nRadisson Blu by Choice narrow extraction allowlist (Americas). run pi-radisson-blu-a035a762"
+        },
+        "factsCreated": 1
+      },
+      {
+        "sourceId": "recWGLvwnDn0v5rmL",
+        "sourceTitle": "Radisson Blu Choice press kit Americas",
+        "patch": {
+          "Status": "Extracted",
+          "Extraction Run ID": "pi-radisson-blu-a035a762",
+          "Notes": "Captured via download-partner-reference-material.mjs\nRadisson Blu by Choice narrow extraction allowlist (Americas). run pi-radisson-blu-a035a762"
+        },
+        "factsCreated": 4
+      },
+      {
+        "sourceId": "reczafLghta09o2sB",
+        "sourceTitle": "Radisson Blu Choice development one-pager",
+        "patch": {
+          "Status": "Extracted",
+          "Extraction Run ID": "pi-radisson-blu-a035a762",
+          "Notes": "Choice company development one-pager (Americas franchise footprint; CALA brand-studio origin). Replaces non-extractable Salesforce dev-site shell recC9utJdNaKWR56k for development-model facts.\nRadisson Blu by Choice narrow extraction allowlist (Americas). run pi-radisson-blu-a035a762"
+        },
+        "factsCreated": 6
+      }
+    ],
+    "factsCreated": [
+      {
+        "id": "recEog0ehiJXRLYpo",
+        "fieldName": "be.loyalty.programName",
+        "sourceRecordId": "recH1ZepKU6zJp7M2",
+        "extractedValuePreview": "Choice Privileges"
+      },
+      {
+        "id": "recvWRRmv34gmlGjg",
+        "fieldName": "be.identity.brandName",
+        "sourceRecordId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "Radisson Blu"
+      },
+      {
+        "id": "recNiYMnYCfTHRIRH",
+        "fieldName": "be.identity.parentCompany",
+        "sourceRecordId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "Choice Hotels International"
+      },
+      {
+        "id": "recYI7VbRqpoQiXaT",
+        "fieldName": "be.footprint.americasHotels",
+        "sourceRecordId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "10 hotels (2,433 rooms) in operation in the Americas"
+      },
+      {
+        "id": "recACl3QtRPOU3WDp",
+        "fieldName": "be.footprint.geoIntro",
+        "sourceRecordId": "recWGLvwnDn0v5rmL",
+        "extractedValuePreview": "Americas: Radisson Blu franchised by Choice Hotels International. Outside the Americas: Radisson Hotel Group (separate c"
+      },
+      {
+        "id": "recrA3bkXdudXqLjy",
+        "fieldName": "be.positioning.summary",
+        "sourceRecordId": "reczafLghta09o2sB",
+        "extractedValuePreview": "Upper-upscale hospitality brand combining style with substance, innovation with comfort, and a sense of belonging in an "
+      },
+      {
+        "id": "recIHV1SkE26IhoeU",
+        "fieldName": "be.positioning.guestPromise",
+        "sourceRecordId": "reczafLghta09o2sB",
+        "extractedValuePreview": "combines style with substance, innovation with comfort and a sense of belonging in an elevated environment."
+      },
+      {
+        "id": "rec2kjKqnRhPOPRG1",
+        "fieldName": "be.positioning.tagline",
+        "sourceRecordId": "reczafLghta09o2sB",
+        "extractedValuePreview": "Think in Black & White Blu"
+      },
+      {
+        "id": "recaG5xyM9Tf6KY6a",
+        "fieldName": "be.overview.developmentModel",
+        "sourceRecordId": "reczafLghta09o2sB",
+        "extractedValuePreview": "Development types include new construction, conversions, adaptive reuse (per Choice brand materials)."
+      },
+      {
+        "id": "recPGX8dxsNBmfuUE",
+        "fieldName": "be.overview.whyValue",
+        "sourceRecordId": "reczafLghta09o2sB",
+        "extractedValuePreview": "Whether new build, adaptive reuse or conversion, Radisson Blu brings distinctive design to top urban and resort markets."
+      },
+      {
+        "id": "recYBYbTXH1AkGvzG",
+        "fieldName": "be.overview.typicalUseCase",
+        "sourceRecordId": "reczafLghta09o2sB",
+        "extractedValuePreview": "The Inspired Professional — upper-upscale guest seeking distinctive, non-boring hospitality experiences."
+      }
+    ],
+    "skipped": [
+      {
+        "sourceId": "recC9utJdNaKWR56k",
+        "type": "source",
+        "reasons": [
+          "no_clean_candidates"
+        ]
+      }
+    ]
+  },
+  "postApplyCommand": "npm run steward-partner-intelligence -- --entity-type brand --target-rec-id recWPEvxBQxVVzSq3 --dry-run --recompute",
+  "refuses": [
+    "Sources outside allowlist",
+    "RHG-global footprint without Americas Choice evidence",
+    "Approving sources or facts",
+    "Brand Setup governance / Company Validated",
+    "Governance publish / platform field publishing",
+    "Apply without --approve-radisson-blu-extract"
+  ]
+}

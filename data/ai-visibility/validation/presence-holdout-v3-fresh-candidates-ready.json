@@ -1,0 +1,86 @@
+{
+  "phase": "PRESENCE_HOLDOUT_V3_FRESH_CANDIDATES_READY",
+  "status": "PRESENCE_HOLDOUT_V3_FRESH_VALIDATION_POOL_READY",
+  "batchId": "presence_validation_holdout_v3_candidate_batch_v1",
+  "NEW_RESPONSES": 109,
+  "TOTAL_CANDIDATES": 466,
+  "PRIMARY_REVIEW_QUEUE": 170,
+  "POTENTIAL_PRESENT": 311,
+  "POTENTIAL_NOT_PRESENT": 155,
+  "UNIQUE_RESPONSE_N": 109,
+  "PROVIDER_COVERAGE": {
+    "openai": 116,
+    "gemini": 103,
+    "perplexity": 126,
+    "claude": 121
+  },
+  "LANGUAGE_COVERAGE": {
+    "en": 293,
+    "es": 173
+  },
+  "GEOGRAPHY_COVERAGE": {
+    "Global": 101,
+    "CALA": 159,
+    "Europe": 53,
+    "North America": 40,
+    "Mexico": 113
+  },
+  "NEGATIVE_CONTROL_CATEGORIES": {
+    "PARENT_CHILD": 0,
+    "SIBLING": 92,
+    "GENERIC_COLLECTION": 24,
+    "GEOGRAPHIC_PLAYA": 20,
+    "ORDINARY_LANGUAGE_FALSE_FRIEND": 0,
+    "SIMILAR_NAME": 0,
+    "SHORT_NAME_AMBIGUITY": 0,
+    "PARENT_CONTEXT_WITHOUT_TARGET": 0,
+    "NO_ENTITY_OCCURRENCE": 12,
+    "OTHER": 7
+  },
+  "DUPLICATES_REJECTED": 0,
+  "LEAKAGE_REJECTED": 0,
+  "ACTUAL_MODELS_USED": {
+    "openai": [
+      "gpt-4.1"
+    ],
+    "gemini": [
+      "gemini-3.6-flash"
+    ],
+    "perplexity": [
+      "sonar"
+    ],
+    "claude": [
+      "claude-sonnet-4-6"
+    ]
+  },
+  "ESTIMATED_SPENT_USD": 23.6774,
+  "ERRORS": 3,
+  "REJECTED": 0,
+  "HUMAN_REVIEW_ROUTE": "/ai-intelligence-presence-validation-review",
+  "EXPORT_READY": "YES",
+  "HUMAN_REVIEW_REQUIRED": "YES",
+  "HOLDOUT_V3_SELECTION_ALLOWED": "NO",
+  "HOLDOUT_V3_FREEZE_ALLOWED": "NO",
+  "HOLDOUT_V3_SCORING_ALLOWED": "NO",
+  "NEXT_ACTION": "EXPORT_FRESH_HOLDOUT_V3_PRESENCE_REVIEW_BATCH",
+  "FINAL_TARGET_REMINDER": {
+    "PAIR_N": 100,
+    "PRESENT": 60,
+    "NOT_PRESENT": 40,
+    "UNIQUE_RESPONSES": ">=80"
+  },
+  "hardGuards": {
+    "HOLDOUT_V2_CHANGES": 0,
+    "ENTITY_RESOLVER_CHANGES": 0,
+    "ALIAS_CHANGES": 0,
+    "HOLDOUT_V3_SELECTION": 0,
+    "HOLDOUT_V3_FREEZE": 0,
+    "HOLDOUT_V3_SCORING": 0,
+    "REGIONALIZATION_EXECUTION": 0,
+    "AIRTABLE_WRITES": 0,
+    "DEPLOYS": 0
+  },
+  "PRIMARY_UNIQUE_RESPONSES": 86,
+  "TOTAL_CANDIDATES_UNIVERSE": 466,
+  "NOTE": "Primary queue capped ~170 pairs / response-atomic max 2 for human review; full universe retained for All filter."
+}

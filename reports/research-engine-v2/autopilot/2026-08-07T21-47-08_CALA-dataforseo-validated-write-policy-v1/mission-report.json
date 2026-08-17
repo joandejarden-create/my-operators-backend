@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "status": "production_census_dataforseo_validated_write_policy_v1_partial_source_remaining",
+  "objective": "dataforseo-validated-write-policy-v1",
+  "version": "dataforseo-validated-write-policy-v1",
+  "generated_at": "2026-08-07T21:47:59.407Z",
+  "gates": {
+    "ok": true,
+    "blockers": [],
+    "dataforseo_is_source_of_truth": false,
+    "serp_snippet_writes_allowed": false,
+    "url_writes": true,
+    "rooms_writes": true,
+    "address_writes": false,
+    "phone_writes": false,
+    "coordinate_writes": false,
+    "maps_writes": false,
+    "travel_weekly_direct_writes": false,
+    "candidates_only": false,
+    "validated_writes": true
+  },
+  "candidates_path": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T21-05-20_CALA-dataforseo-discovery-pilot-v2\\per-record-candidates.json",
+  "candidates_reviewed": 0,
+  "candidates_validated": 0,
+  "official_url_writes": 0,
+  "hotel_official_accepted": 0,
+  "hotel_official_rejected": 0,
+  "rooms_writes": 0,
+  "rooms_source_type_split": {},
+  "rooms_confidence_split": {},
+  "rejected_reasons": {
+    "census_record_not_found": 200
+  },
+  "records_updated": 0,
+  "records_proposed": 0,
+  "fields_written": [],
+  "address_phone_maps_held": 0,
+  "airtable_writes": 0,
+  "census_writes": 0,
+  "brand_setup_writes": 0,
+  "brand_explorer_writes": 0,
+  "write_errors": [],
+  "next_policy_decision": "Decide whether to approve Google Maps contact/geo candidate validation, Travel Weekly secondary rooms, and scale validated URL/rooms promotion beyond the 200-record v2 set.",
+  "scale_estimate_notes": "If yield holds: ~0 Official Property URL writes and ~0 Rooms writes across 1,224 incomplete records (fetch+validate cost dominates; DataForSEO SERP not re-run).",
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T21-47-08_CALA-dataforseo-validated-write-policy-v1",
+  "enable_production_writes": true
+}

@@ -1,0 +1,1618 @@
+{
+  "version": "v39",
+  "gateVersion": "v39",
+  "planVersion": "v39",
+  "generatedAt": "2026-07-21T11:20:56.525Z",
+  "dryRun": true,
+  "brands": [
+    "everhome-suites",
+    "kimpton",
+    "radisson-individuals-by-choice"
+  ],
+  "liveApiIsSourceOfTruth": true,
+  "brandResults": [
+    {
+      "brandSlug": "everhome-suites",
+      "recordId": "recqkkrsevi4r9ibj",
+      "brandName": "Everhome Suites",
+      "cohort": "primary_release",
+      "dryRun": true,
+      "displayState": "draft_applied_with_defects",
+      "shouldRenderFullProfile": false,
+      "gateInventory": {
+        "version": "v39",
+        "brandSlug": "everhome-suites",
+        "galleryCount": 6,
+        "openingsCount": 4,
+        "scenarioCount": 3,
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "gates": [
+          {
+            "name": "brand_record_exists",
+            "pass": true,
+            "expected": "Airtable Brand Basics record",
+            "actual": "recqkkrsevi4r9ibj",
+            "sourceOfTruth": "Brand Library API / ACTIVE_PROFILE_BRAND_CONFIGS",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "factory_config_exists",
+            "pass": true,
+            "expected": "ACTIVE_PROFILE_BRAND_CONFIGS entry",
+            "actual": "everhome-suites",
+            "sourceOfTruth": "brand-explorer-active-profile-brand-config.js / discovery config",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "source_library_coverage_ready",
+            "pass": true,
+            "expected": ">=3 approved registry/source-backed assets OR mature presentation set",
+            "actual": {
+              "approvedRegistryCount": 13,
+              "presentationBlockCount": 213
+            },
+            "sourceOfTruth": "Brand Asset Registry / Presentation",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "brand_knowledge_pack_ready",
+            "pass": true,
+            "expected": "Brand Basics loaded",
+            "actual": true,
+            "sourceOfTruth": "Brand Basics",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "visual_asset_pack_ready",
+            "pass": true,
+            "expected": "asset-pack dry-run consumable OR live 6/6 + 3/3 imageUrl",
+            "actual": {
+              "assetPackSummary": {
+                "galleryReady": "6/6",
+                "propertyExamplesReady": "0/3",
+                "scenariosWithImage": "3/3",
+                "galleryPoolSize": 6,
+                "partialReadiness": true,
+                "readinessBand": "blocked_missing_catalog",
+                "canProceedWithConfigOnly": false,
+                "canProceedWithConfigAndAssetPack": false,
+                "customCodeRequired": true
+              },
+              "galleryCount": 6,
+              "openingsCount": 4
+            },
+            "sourceOfTruth": "asset-pack builder + live Presentation imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "gallery_six_imageurl",
+            "pass": true,
+            "expected": "6/6 materials.gallery.* with imageUrl",
+            "actual": "6/6",
+            "sourceOfTruth": "Brand Library API brandExplorer.blocks imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "property_examples_three_imageurl",
+            "pass": true,
+            "expected": "3/3 footprint.openings with imageUrl",
+            "actual": "4/3",
+            "sourceOfTruth": "Brand Library API brandExplorer.blocks imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "scenario_cards_no_placeholders",
+            "pass": true,
+            "expected": "overview.scenario.1–3 with body + imageUrl, no placeholders",
+            "actual": {
+              "scenarioCount": 3,
+              "hasPlaceholders": false
+            },
+            "sourceOfTruth": "Presentation overview.scenario.*",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "full_tab_content_contract",
+            "pass": true,
+            "expected": "full tab contract pass",
+            "actual": "not_evaluated",
+            "sourceOfTruth": "brand-explorer-full-tab-content-contract / factory rules",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_owner_copy_rules",
+            "pass": true,
+            "expected": "external_owner_readiness pass",
+            "actual": {
+              "pass": true,
+              "blockers": []
+            },
+            "sourceOfTruth": "evaluateExternalOwnerReadinessRule(presentation)",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_forbidden_strings",
+            "pass": true,
+            "expected": "0 forbidden strings in rendered external DOM",
+            "actual": {
+              "forbiddenStringsFound": 0,
+              "externalQualityLockPass": true
+            },
+            "sourceOfTruth": "v38 external quality lock DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_empty_cards",
+            "pass": true,
+            "expected": "0 empty owner-facing cards when unlocked",
+            "actual": 0,
+            "sourceOfTruth": "v38 DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_internal_notes",
+            "pass": true,
+            "expected": "no Output Note / internal review language externally",
+            "actual": false,
+            "sourceOfTruth": "v38 DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "founder_visual_review_passed",
+            "pass": false,
+            "expected": "Founder Visual Review Pass = true / Pass",
+            "actual": {
+              "founderVisualReviewPass": null,
+              "basics": null
+            },
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "rootCause": "founder_visual_review_not_passed",
+            "issueType": "true_issue",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "active_profile_approval_set",
+            "pass": false,
+            "expected": "Ready for Active Profile / Active Profile Approved = true",
+            "actual": {
+              "readyForActiveProfile": null,
+              "activeProfileApproved": null,
+              "basicsReady": null,
+              "basicsApproved": null
+            },
+            "sourceOfTruth": "Brand Basics active-profile approval fields",
+            "rootCause": "active_profile_not_approved",
+            "issueType": "true_issue",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "should_render_full_profile",
+            "pass": false,
+            "expected": true,
+            "actual": false,
+            "sourceOfTruth": "Brand Library API shouldRenderFullProfile",
+            "rootCause": "display_state_locked",
+            "issueType": "true_issue",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "display_state_release_ready",
+            "pass": false,
+            "expected": "active_profile_ready | external_owner_ready",
+            "actual": "draft_applied_with_defects",
+            "sourceOfTruth": "resolveBrandExplorerDisplayState",
+            "rootCause": "display_state_not_release_ready",
+            "issueType": "true_issue",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "render_contract_pass",
+            "pass": false,
+            "expected": true,
+            "actual": false,
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "rootCause": "render_contract_fail",
+            "issueType": "true_issue",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          }
+        ],
+        "failedGates": [
+          "founder_visual_review_passed",
+          "active_profile_approval_set",
+          "should_render_full_profile",
+          "display_state_release_ready",
+          "render_contract_pass"
+        ],
+        "failedGateDetails": [
+          {
+            "name": "founder_visual_review_passed",
+            "pass": false,
+            "expected": "Founder Visual Review Pass = true / Pass",
+            "actual": {
+              "founderVisualReviewPass": null,
+              "basics": null
+            },
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "rootCause": "founder_visual_review_not_passed",
+            "issueType": "true_issue",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "active_profile_approval_set",
+            "pass": false,
+            "expected": "Ready for Active Profile / Active Profile Approved = true",
+            "actual": {
+              "readyForActiveProfile": null,
+              "activeProfileApproved": null,
+              "basicsReady": null,
+              "basicsApproved": null
+            },
+            "sourceOfTruth": "Brand Basics active-profile approval fields",
+            "rootCause": "active_profile_not_approved",
+            "issueType": "true_issue",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "should_render_full_profile",
+            "pass": false,
+            "expected": true,
+            "actual": false,
+            "sourceOfTruth": "Brand Library API shouldRenderFullProfile",
+            "rootCause": "display_state_locked",
+            "issueType": "true_issue",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "display_state_release_ready",
+            "pass": false,
+            "expected": "active_profile_ready | external_owner_ready",
+            "actual": "draft_applied_with_defects",
+            "sourceOfTruth": "resolveBrandExplorerDisplayState",
+            "rootCause": "display_state_not_release_ready",
+            "issueType": "true_issue",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "render_contract_pass",
+            "pass": false,
+            "expected": true,
+            "actual": false,
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "rootCause": "render_contract_fail",
+            "issueType": "true_issue",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          }
+        ],
+        "passCount": 13,
+        "failCount": 5,
+        "allRequiredPass": false
+      },
+      "reconciliation": {
+        "brandSlug": "everhome-suites",
+        "reportReady": true,
+        "apiReady": false,
+        "liveIsSourceOfTruth": true,
+        "mismatches": [
+          {
+            "class": "report_ready_but_api_locked",
+            "detail": "complete-build/final-QA report says ready but live API shouldRenderFullProfile is false",
+            "failedGates": [
+              "founder_visual_review_passed",
+              "active_profile_approval_set",
+              "should_render_full_profile",
+              "display_state_release_ready",
+              "render_contract_pass"
+            ]
+          },
+          {
+            "class": "active_approval_missing",
+            "detail": "Brand Basics active-profile approval fields not set"
+          },
+          {
+            "class": "legacy_ready_signal_not_connected",
+            "detail": "Report readyForActiveProfile not wired to live Active Profile Approved field"
+          },
+          {
+            "class": "registry_ready_but_render_locked",
+            "detail": "Render contract fails despite gallery imageUrls present"
+          }
+        ],
+        "mismatchClasses": [
+          "report_ready_but_api_locked",
+          "active_approval_missing",
+          "legacy_ready_signal_not_connected",
+          "registry_ready_but_render_locked"
+        ],
+        "v38DisplayState": "draft_applied_with_defects",
+        "v36cExternalOwner": null,
+        "visualDefectSummary": null
+      },
+      "classification": {
+        "outcome": "false_blocker_due_to_mapping",
+        "reason": "Report ready signal not connected to live Active Profile Approved — mapping/approval write only"
+      },
+      "releasePlan": {
+        "version": "v39",
+        "brandSlug": "everhome-suites",
+        "cohort": "primary_release",
+        "currentDisplayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "releaseOutcome": "false_blocker_due_to_mapping",
+        "releaseOutcomeReason": "Report ready signal not connected to live Active Profile Approved — mapping/approval write only",
+        "failedGates": [
+          "founder_visual_review_passed",
+          "active_profile_approval_set",
+          "should_render_full_profile",
+          "display_state_release_ready",
+          "render_contract_pass"
+        ],
+        "remediationItems": [
+          {
+            "gate": "founder_visual_review_passed",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "active_profile_approval_set",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "should_render_full_profile",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "display_state_release_ready",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "render_contract_pass",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          }
+        ],
+        "requiredWrites": [
+          "Founder Visual Review Pass",
+          "Ready for Active Profile",
+          "Active Profile Approved"
+        ],
+        "founderConfirmationRequired": true,
+        "genericReleaseApplyCanHandle": true,
+        "brandSpecificPatchNeeded": false,
+        "allowedNextAction": "mapping_fix_required",
+        "exactAllowedNextCommand": "Code/mapping fix: connect complete-build readyForActiveProfile to live Active Profile Approved fields — then re-audit",
+        "blockedCommands": [
+          "brand-explorer-active-release-apply (until gates pass)",
+          "any Company Validated write",
+          "Source Library writes from this pipeline"
+        ],
+        "activeReleaseApplyDesign": {
+          "command": "npm run brand-explorer-active-release-apply -- --brands everhome-suites --apply --approve-brand-explorer-active-release --confirm-founder-visual-review-passed --confirm-external-quality-lock-passed --confirm-six-gallery-imageurls --confirm-three-property-example-imageurls --confirm-no-company-validation-claim --confirm-no-forbidden-owner-copy --confirm-brand-only",
+          "writesAllowed": [
+            "Ready for Active Profile",
+            "Active Profile Approved",
+            "Active Profile Approved Date",
+            "Founder Visual Review Pass (if separately confirmed)"
+          ],
+          "writesForbidden": [
+            "Company Validated",
+            "Company Validation Date",
+            "Source Library",
+            "Brand Asset Registry (unless separately gated)",
+            "Presentation copy/images (unless separately gated)"
+          ],
+          "preconditions": [
+            "external quality lock pass for unlocked DOM",
+            "6/6 gallery imageUrl",
+            "3/3 property example imageUrl",
+            "no forbidden owner copy",
+            "founder visual review passed"
+          ],
+          "status": "designed_not_executed"
+        },
+        "mismatchClasses": [
+          "report_ready_but_api_locked",
+          "active_approval_missing",
+          "legacy_ready_signal_not_connected",
+          "registry_ready_but_render_locked"
+        ],
+        "qualityLockPass": true,
+        "readyForActiveApproval": false,
+        "companyValidatedUntouched": true
+      },
+      "qualityLock": {
+        "externalQualityLockPass": true,
+        "forbiddenStringsFound": 0,
+        "emptyCardsFound": 0,
+        "helperTextFound": false,
+        "internalNotesFound": false,
+        "profileInPreparationRendered": true,
+        "tabsRenderedExternally": []
+      },
+      "reportSignals": {
+        "completeBuildReadyForActiveProfile": true,
+        "completeBuildGeneratedAt": "2026-07-13T12:30:53.500Z",
+        "finalQaPass": null,
+        "v38DisplayState": "draft_applied_with_defects"
+      },
+      "readyForActiveApproval": false,
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandSlug": "kimpton",
+      "recordId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "cohort": "primary_release",
+      "dryRun": true,
+      "displayState": "draft_applied_with_defects",
+      "shouldRenderFullProfile": false,
+      "gateInventory": {
+        "version": "v39",
+        "brandSlug": "kimpton",
+        "galleryCount": 6,
+        "openingsCount": 5,
+        "scenarioCount": 3,
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "gates": [
+          {
+            "name": "brand_record_exists",
+            "pass": true,
+            "expected": "Airtable Brand Basics record",
+            "actual": "recCKuXCmGvxHPfb3",
+            "sourceOfTruth": "Brand Library API / ACTIVE_PROFILE_BRAND_CONFIGS",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "factory_config_exists",
+            "pass": true,
+            "expected": "ACTIVE_PROFILE_BRAND_CONFIGS entry",
+            "actual": "kimpton",
+            "sourceOfTruth": "brand-explorer-active-profile-brand-config.js / discovery config",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "source_library_coverage_ready",
+            "pass": true,
+            "expected": ">=3 approved registry/source-backed assets OR mature presentation set",
+            "actual": {
+              "approvedRegistryCount": 0,
+              "presentationBlockCount": 201
+            },
+            "sourceOfTruth": "Brand Asset Registry / Presentation",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "brand_knowledge_pack_ready",
+            "pass": true,
+            "expected": "Brand Basics loaded",
+            "actual": true,
+            "sourceOfTruth": "Brand Basics",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "visual_asset_pack_ready",
+            "pass": true,
+            "expected": "asset-pack dry-run consumable OR live 6/6 + 3/3 imageUrl",
+            "actual": {
+              "assetPackSummary": null,
+              "galleryCount": 6,
+              "openingsCount": 5
+            },
+            "sourceOfTruth": "asset-pack builder + live Presentation imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "gallery_six_imageurl",
+            "pass": true,
+            "expected": "6/6 materials.gallery.* with imageUrl",
+            "actual": "6/6",
+            "sourceOfTruth": "Brand Library API brandExplorer.blocks imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "property_examples_three_imageurl",
+            "pass": true,
+            "expected": "3/3 footprint.openings with imageUrl",
+            "actual": "5/3",
+            "sourceOfTruth": "Brand Library API brandExplorer.blocks imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "scenario_cards_no_placeholders",
+            "pass": true,
+            "expected": "overview.scenario.1–3 with body + imageUrl, no placeholders",
+            "actual": {
+              "scenarioCount": 3,
+              "hasPlaceholders": false
+            },
+            "sourceOfTruth": "Presentation overview.scenario.*",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "full_tab_content_contract",
+            "pass": true,
+            "expected": "full tab contract pass",
+            "actual": "not_evaluated",
+            "sourceOfTruth": "brand-explorer-full-tab-content-contract / factory rules",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_owner_copy_rules",
+            "pass": true,
+            "expected": "external_owner_readiness pass",
+            "actual": {
+              "pass": true,
+              "blockers": []
+            },
+            "sourceOfTruth": "evaluateExternalOwnerReadinessRule(presentation)",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_forbidden_strings",
+            "pass": true,
+            "expected": "0 forbidden strings in rendered external DOM",
+            "actual": {
+              "forbiddenStringsFound": 0,
+              "externalQualityLockPass": true
+            },
+            "sourceOfTruth": "v38 external quality lock DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_empty_cards",
+            "pass": true,
+            "expected": "0 empty owner-facing cards when unlocked",
+            "actual": 0,
+            "sourceOfTruth": "v38 DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_internal_notes",
+            "pass": true,
+            "expected": "no Output Note / internal review language externally",
+            "actual": false,
+            "sourceOfTruth": "v38 DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "founder_visual_review_passed",
+            "pass": false,
+            "expected": "Founder Visual Review Pass = true / Pass",
+            "actual": {
+              "founderVisualReviewPass": null,
+              "basics": null
+            },
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "rootCause": "founder_visual_review_not_passed",
+            "issueType": "true_issue",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "active_profile_approval_set",
+            "pass": false,
+            "expected": "Ready for Active Profile / Active Profile Approved = true",
+            "actual": {
+              "readyForActiveProfile": null,
+              "activeProfileApproved": null,
+              "basicsReady": null,
+              "basicsApproved": null
+            },
+            "sourceOfTruth": "Brand Basics active-profile approval fields",
+            "rootCause": "active_profile_not_approved",
+            "issueType": "true_issue",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "should_render_full_profile",
+            "pass": false,
+            "expected": true,
+            "actual": false,
+            "sourceOfTruth": "Brand Library API shouldRenderFullProfile",
+            "rootCause": "display_state_locked",
+            "issueType": "true_issue",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "display_state_release_ready",
+            "pass": false,
+            "expected": "active_profile_ready | external_owner_ready",
+            "actual": "draft_applied_with_defects",
+            "sourceOfTruth": "resolveBrandExplorerDisplayState",
+            "rootCause": "display_state_not_release_ready",
+            "issueType": "true_issue",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "render_contract_pass",
+            "pass": false,
+            "expected": true,
+            "actual": "not_evaluated",
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "rootCause": "render_contract_fail",
+            "issueType": "true_issue",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          }
+        ],
+        "failedGates": [
+          "founder_visual_review_passed",
+          "active_profile_approval_set",
+          "should_render_full_profile",
+          "display_state_release_ready",
+          "render_contract_pass"
+        ],
+        "failedGateDetails": [
+          {
+            "name": "founder_visual_review_passed",
+            "pass": false,
+            "expected": "Founder Visual Review Pass = true / Pass",
+            "actual": {
+              "founderVisualReviewPass": null,
+              "basics": null
+            },
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "rootCause": "founder_visual_review_not_passed",
+            "issueType": "true_issue",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "active_profile_approval_set",
+            "pass": false,
+            "expected": "Ready for Active Profile / Active Profile Approved = true",
+            "actual": {
+              "readyForActiveProfile": null,
+              "activeProfileApproved": null,
+              "basicsReady": null,
+              "basicsApproved": null
+            },
+            "sourceOfTruth": "Brand Basics active-profile approval fields",
+            "rootCause": "active_profile_not_approved",
+            "issueType": "true_issue",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "should_render_full_profile",
+            "pass": false,
+            "expected": true,
+            "actual": false,
+            "sourceOfTruth": "Brand Library API shouldRenderFullProfile",
+            "rootCause": "display_state_locked",
+            "issueType": "true_issue",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "display_state_release_ready",
+            "pass": false,
+            "expected": "active_profile_ready | external_owner_ready",
+            "actual": "draft_applied_with_defects",
+            "sourceOfTruth": "resolveBrandExplorerDisplayState",
+            "rootCause": "display_state_not_release_ready",
+            "issueType": "true_issue",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "render_contract_pass",
+            "pass": false,
+            "expected": true,
+            "actual": "not_evaluated",
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "rootCause": "render_contract_fail",
+            "issueType": "true_issue",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          }
+        ],
+        "passCount": 13,
+        "failCount": 5,
+        "allRequiredPass": false
+      },
+      "reconciliation": {
+        "brandSlug": "kimpton",
+        "reportReady": true,
+        "apiReady": false,
+        "liveIsSourceOfTruth": true,
+        "mismatches": [
+          {
+            "class": "report_ready_but_api_locked",
+            "detail": "complete-build/final-QA report says ready but live API shouldRenderFullProfile is false",
+            "failedGates": [
+              "founder_visual_review_passed",
+              "active_profile_approval_set",
+              "should_render_full_profile",
+              "display_state_release_ready",
+              "render_contract_pass"
+            ]
+          },
+          {
+            "class": "active_approval_missing",
+            "detail": "Brand Basics active-profile approval fields not set"
+          },
+          {
+            "class": "legacy_ready_signal_not_connected",
+            "detail": "Report readyForActiveProfile not wired to live Active Profile Approved field"
+          },
+          {
+            "class": "registry_ready_but_render_locked",
+            "detail": "Render contract fails despite gallery imageUrls present"
+          }
+        ],
+        "mismatchClasses": [
+          "report_ready_but_api_locked",
+          "active_approval_missing",
+          "legacy_ready_signal_not_connected",
+          "registry_ready_but_render_locked"
+        ],
+        "v38DisplayState": "draft_applied_with_defects",
+        "v36cExternalOwner": null,
+        "visualDefectSummary": null
+      },
+      "classification": {
+        "outcome": "false_blocker_due_to_mapping",
+        "reason": "Report ready signal not connected to live Active Profile Approved — mapping/approval write only"
+      },
+      "releasePlan": {
+        "version": "v39",
+        "brandSlug": "kimpton",
+        "cohort": "primary_release",
+        "currentDisplayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "releaseOutcome": "false_blocker_due_to_mapping",
+        "releaseOutcomeReason": "Report ready signal not connected to live Active Profile Approved — mapping/approval write only",
+        "failedGates": [
+          "founder_visual_review_passed",
+          "active_profile_approval_set",
+          "should_render_full_profile",
+          "display_state_release_ready",
+          "render_contract_pass"
+        ],
+        "remediationItems": [
+          {
+            "gate": "founder_visual_review_passed",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "active_profile_approval_set",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "should_render_full_profile",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "display_state_release_ready",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "render_contract_pass",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          }
+        ],
+        "requiredWrites": [
+          "Founder Visual Review Pass",
+          "Ready for Active Profile",
+          "Active Profile Approved"
+        ],
+        "founderConfirmationRequired": true,
+        "genericReleaseApplyCanHandle": true,
+        "brandSpecificPatchNeeded": false,
+        "allowedNextAction": "mapping_fix_required",
+        "exactAllowedNextCommand": "Code/mapping fix: connect complete-build readyForActiveProfile to live Active Profile Approved fields — then re-audit",
+        "blockedCommands": [
+          "brand-explorer-active-release-apply (until gates pass)",
+          "any Company Validated write",
+          "Source Library writes from this pipeline"
+        ],
+        "activeReleaseApplyDesign": {
+          "command": "npm run brand-explorer-active-release-apply -- --brands kimpton --apply --approve-brand-explorer-active-release --confirm-founder-visual-review-passed --confirm-external-quality-lock-passed --confirm-six-gallery-imageurls --confirm-three-property-example-imageurls --confirm-no-company-validation-claim --confirm-no-forbidden-owner-copy --confirm-brand-only",
+          "writesAllowed": [
+            "Ready for Active Profile",
+            "Active Profile Approved",
+            "Active Profile Approved Date",
+            "Founder Visual Review Pass (if separately confirmed)"
+          ],
+          "writesForbidden": [
+            "Company Validated",
+            "Company Validation Date",
+            "Source Library",
+            "Brand Asset Registry (unless separately gated)",
+            "Presentation copy/images (unless separately gated)"
+          ],
+          "preconditions": [
+            "external quality lock pass for unlocked DOM",
+            "6/6 gallery imageUrl",
+            "3/3 property example imageUrl",
+            "no forbidden owner copy",
+            "founder visual review passed"
+          ],
+          "status": "designed_not_executed"
+        },
+        "mismatchClasses": [
+          "report_ready_but_api_locked",
+          "active_approval_missing",
+          "legacy_ready_signal_not_connected",
+          "registry_ready_but_render_locked"
+        ],
+        "qualityLockPass": true,
+        "readyForActiveApproval": false,
+        "companyValidatedUntouched": true
+      },
+      "qualityLock": {
+        "externalQualityLockPass": true,
+        "forbiddenStringsFound": 0,
+        "emptyCardsFound": 0,
+        "helperTextFound": false,
+        "internalNotesFound": false,
+        "profileInPreparationRendered": true,
+        "tabsRenderedExternally": []
+      },
+      "reportSignals": {
+        "completeBuildReadyForActiveProfile": true,
+        "completeBuildGeneratedAt": "2026-07-10T13:43:47.962Z",
+        "finalQaPass": null,
+        "v38DisplayState": "draft_applied_with_defects"
+      },
+      "readyForActiveApproval": false,
+      "companyValidatedUntouched": true
+    },
+    {
+      "brandSlug": "radisson-individuals-by-choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "cohort": "primary_release",
+      "dryRun": true,
+      "displayState": "draft_applied_with_defects",
+      "shouldRenderFullProfile": false,
+      "gateInventory": {
+        "version": "v39",
+        "brandSlug": "radisson-individuals-by-choice",
+        "galleryCount": 6,
+        "openingsCount": 3,
+        "scenarioCount": 3,
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "gates": [
+          {
+            "name": "brand_record_exists",
+            "pass": true,
+            "expected": "Airtable Brand Basics record",
+            "actual": "recRyvM8OmLlDj9G7",
+            "sourceOfTruth": "Brand Library API / ACTIVE_PROFILE_BRAND_CONFIGS",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "factory_config_exists",
+            "pass": true,
+            "expected": "ACTIVE_PROFILE_BRAND_CONFIGS entry",
+            "actual": "radisson-individuals-by-choice",
+            "sourceOfTruth": "brand-explorer-active-profile-brand-config.js / discovery config",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "source_library_coverage_ready",
+            "pass": true,
+            "expected": ">=3 approved registry/source-backed assets OR mature presentation set",
+            "actual": {
+              "approvedRegistryCount": 31,
+              "presentationBlockCount": 219
+            },
+            "sourceOfTruth": "Brand Asset Registry / Presentation",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "brand_knowledge_pack_ready",
+            "pass": true,
+            "expected": "Brand Basics loaded",
+            "actual": true,
+            "sourceOfTruth": "Brand Basics",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "visual_asset_pack_ready",
+            "pass": true,
+            "expected": "asset-pack dry-run consumable OR live 6/6 + 3/3 imageUrl",
+            "actual": {
+              "assetPackSummary": null,
+              "galleryCount": 6,
+              "openingsCount": 3
+            },
+            "sourceOfTruth": "asset-pack builder + live Presentation imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "gallery_six_imageurl",
+            "pass": true,
+            "expected": "6/6 materials.gallery.* with imageUrl",
+            "actual": "6/6",
+            "sourceOfTruth": "Brand Library API brandExplorer.blocks imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "property_examples_three_imageurl",
+            "pass": true,
+            "expected": "3/3 footprint.openings with imageUrl",
+            "actual": "3/3",
+            "sourceOfTruth": "Brand Library API brandExplorer.blocks imageUrl",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "scenario_cards_no_placeholders",
+            "pass": true,
+            "expected": "overview.scenario.1–3 with body + imageUrl, no placeholders",
+            "actual": {
+              "scenarioCount": 3,
+              "hasPlaceholders": false
+            },
+            "sourceOfTruth": "Presentation overview.scenario.*",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "full_tab_content_contract",
+            "pass": true,
+            "expected": "full tab contract pass",
+            "actual": "not_evaluated",
+            "sourceOfTruth": "brand-explorer-full-tab-content-contract / factory rules",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_owner_copy_rules",
+            "pass": true,
+            "expected": "external_owner_readiness pass",
+            "actual": {
+              "pass": true,
+              "blockers": []
+            },
+            "sourceOfTruth": "evaluateExternalOwnerReadinessRule(presentation)",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_forbidden_strings",
+            "pass": true,
+            "expected": "0 forbidden strings in rendered external DOM",
+            "actual": {
+              "forbiddenStringsFound": 0,
+              "externalQualityLockPass": true
+            },
+            "sourceOfTruth": "v38 external quality lock DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_empty_cards",
+            "pass": true,
+            "expected": "0 empty owner-facing cards when unlocked",
+            "actual": 0,
+            "sourceOfTruth": "v38 DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "external_dom_no_internal_notes",
+            "pass": true,
+            "expected": "no Output Note / internal review language externally",
+            "actual": false,
+            "sourceOfTruth": "v38 DOM scan",
+            "rootCause": null,
+            "issueType": null,
+            "remediation": null,
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "founder_visual_review_passed",
+            "pass": false,
+            "expected": "Founder Visual Review Pass = true / Pass",
+            "actual": {
+              "founderVisualReviewPass": null,
+              "basics": null
+            },
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "rootCause": "founder_visual_review_not_passed",
+            "issueType": "true_issue",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "active_profile_approval_set",
+            "pass": false,
+            "expected": "Ready for Active Profile / Active Profile Approved = true",
+            "actual": {
+              "readyForActiveProfile": null,
+              "activeProfileApproved": null,
+              "basicsReady": null,
+              "basicsApproved": null
+            },
+            "sourceOfTruth": "Brand Basics active-profile approval fields",
+            "rootCause": "active_profile_not_approved",
+            "issueType": "true_issue",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "should_render_full_profile",
+            "pass": false,
+            "expected": true,
+            "actual": false,
+            "sourceOfTruth": "Brand Library API shouldRenderFullProfile",
+            "rootCause": "display_state_locked",
+            "issueType": "true_issue",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "display_state_release_ready",
+            "pass": false,
+            "expected": "active_profile_ready | external_owner_ready",
+            "actual": "draft_applied_with_defects",
+            "sourceOfTruth": "resolveBrandExplorerDisplayState",
+            "rootCause": "display_state_not_release_ready",
+            "issueType": "true_issue",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "render_contract_pass",
+            "pass": false,
+            "expected": true,
+            "actual": "not_evaluated",
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "rootCause": "render_contract_fail",
+            "issueType": "true_issue",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          }
+        ],
+        "failedGates": [
+          "founder_visual_review_passed",
+          "active_profile_approval_set",
+          "should_render_full_profile",
+          "display_state_release_ready",
+          "render_contract_pass"
+        ],
+        "failedGateDetails": [
+          {
+            "name": "founder_visual_review_passed",
+            "pass": false,
+            "expected": "Founder Visual Review Pass = true / Pass",
+            "actual": {
+              "founderVisualReviewPass": null,
+              "basics": null
+            },
+            "sourceOfTruth": "Brand Basics Founder Visual Review fields",
+            "rootCause": "founder_visual_review_not_passed",
+            "issueType": "true_issue",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "active_profile_approval_set",
+            "pass": false,
+            "expected": "Ready for Active Profile / Active Profile Approved = true",
+            "actual": {
+              "readyForActiveProfile": null,
+              "activeProfileApproved": null,
+              "basicsReady": null,
+              "basicsApproved": null
+            },
+            "sourceOfTruth": "Brand Basics active-profile approval fields",
+            "rootCause": "active_profile_not_approved",
+            "issueType": "true_issue",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "should_render_full_profile",
+            "pass": false,
+            "expected": true,
+            "actual": false,
+            "sourceOfTruth": "Brand Library API shouldRenderFullProfile",
+            "rootCause": "display_state_locked",
+            "issueType": "true_issue",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "display_state_release_ready",
+            "pass": false,
+            "expected": "active_profile_ready | external_owner_ready",
+            "actual": "draft_applied_with_defects",
+            "sourceOfTruth": "resolveBrandExplorerDisplayState",
+            "rootCause": "display_state_not_release_ready",
+            "issueType": "true_issue",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false
+          },
+          {
+            "name": "render_contract_pass",
+            "pass": false,
+            "expected": true,
+            "actual": "not_evaluated",
+            "sourceOfTruth": "extendAssetPackWithRenderReadiness",
+            "rootCause": "render_contract_fail",
+            "issueType": "true_issue",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false
+          }
+        ],
+        "passCount": 13,
+        "failCount": 5,
+        "allRequiredPass": false
+      },
+      "reconciliation": {
+        "brandSlug": "radisson-individuals-by-choice",
+        "reportReady": true,
+        "apiReady": false,
+        "liveIsSourceOfTruth": true,
+        "mismatches": [
+          {
+            "class": "report_ready_but_api_locked",
+            "detail": "complete-build/final-QA report says ready but live API shouldRenderFullProfile is false",
+            "failedGates": [
+              "founder_visual_review_passed",
+              "active_profile_approval_set",
+              "should_render_full_profile",
+              "display_state_release_ready",
+              "render_contract_pass"
+            ]
+          },
+          {
+            "class": "active_approval_missing",
+            "detail": "Brand Basics active-profile approval fields not set"
+          },
+          {
+            "class": "legacy_ready_signal_not_connected",
+            "detail": "Report readyForActiveProfile not wired to live Active Profile Approved field"
+          },
+          {
+            "class": "registry_ready_but_render_locked",
+            "detail": "Render contract fails despite gallery imageUrls present"
+          }
+        ],
+        "mismatchClasses": [
+          "report_ready_but_api_locked",
+          "active_approval_missing",
+          "legacy_ready_signal_not_connected",
+          "registry_ready_but_render_locked"
+        ],
+        "v38DisplayState": "draft_applied_with_defects",
+        "v36cExternalOwner": null,
+        "visualDefectSummary": null
+      },
+      "classification": {
+        "outcome": "false_blocker_due_to_mapping",
+        "reason": "Report ready signal not connected to live Active Profile Approved — mapping/approval write only"
+      },
+      "releasePlan": {
+        "version": "v39",
+        "brandSlug": "radisson-individuals-by-choice",
+        "cohort": "primary_release",
+        "currentDisplayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "releaseOutcome": "false_blocker_due_to_mapping",
+        "releaseOutcomeReason": "Report ready signal not connected to live Active Profile Approved — mapping/approval write only",
+        "failedGates": [
+          "founder_visual_review_passed",
+          "active_profile_approval_set",
+          "should_render_full_profile",
+          "display_state_release_ready",
+          "render_contract_pass"
+        ],
+        "remediationItems": [
+          {
+            "gate": "founder_visual_review_passed",
+            "remediation": "Run founder visual review and record Pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "active_profile_approval_set",
+            "remediation": "Gated active-release apply after founder + DOM gates pass",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "should_render_full_profile",
+            "remediation": "Satisfy active_profile_ready / external_owner_ready gates",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "display_state_release_ready",
+            "remediation": "Clear failed gates so display state advances",
+            "airtableWriteRequired": false,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          },
+          {
+            "gate": "render_contract_pass",
+            "remediation": "Ensure Presentation imageUrl matches registry/render readiness",
+            "airtableWriteRequired": true,
+            "codeChangeRequired": false,
+            "issueType": "true_issue"
+          }
+        ],
+        "requiredWrites": [
+          "Founder Visual Review Pass",
+          "Ready for Active Profile",
+          "Active Profile Approved"
+        ],
+        "founderConfirmationRequired": true,
+        "genericReleaseApplyCanHandle": true,
+        "brandSpecificPatchNeeded": false,
+        "allowedNextAction": "mapping_fix_required",
+        "exactAllowedNextCommand": "Code/mapping fix: connect complete-build readyForActiveProfile to live Active Profile Approved fields — then re-audit",
+        "blockedCommands": [
+          "brand-explorer-active-release-apply (until gates pass)",
+          "any Company Validated write",
+          "Source Library writes from this pipeline"
+        ],
+        "activeReleaseApplyDesign": {
+          "command": "npm run brand-explorer-active-release-apply -- --brands radisson-individuals-by-choice --apply --approve-brand-explorer-active-release --confirm-founder-visual-review-passed --confirm-external-quality-lock-passed --confirm-six-gallery-imageurls --confirm-three-property-example-imageurls --confirm-no-company-validation-claim --confirm-no-forbidden-owner-copy --confirm-brand-only",
+          "writesAllowed": [
+            "Ready for Active Profile",
+            "Active Profile Approved",
+            "Active Profile Approved Date",
+            "Founder Visual Review Pass (if separately confirmed)"
+          ],
+          "writesForbidden": [
+            "Company Validated",
+            "Company Validation Date",
+            "Source Library",
+            "Brand Asset Registry (unless separately gated)",
+            "Presentation copy/images (unless separately gated)"
+          ],
+          "preconditions": [
+            "external quality lock pass for unlocked DOM",
+            "6/6 gallery imageUrl",
+            "3/3 property example imageUrl",
+            "no forbidden owner copy",
+            "founder visual review passed"
+          ],
+          "status": "designed_not_executed"
+        },
+        "mismatchClasses": [
+          "report_ready_but_api_locked",
+          "active_approval_missing",
+          "legacy_ready_signal_not_connected",
+          "registry_ready_but_render_locked"
+        ],
+        "qualityLockPass": true,
+        "readyForActiveApproval": false,
+        "companyValidatedUntouched": true
+      },
+      "qualityLock": {
+        "externalQualityLockPass": true,
+        "forbiddenStringsFound": 0,
+        "emptyCardsFound": 0,
+        "helperTextFound": false,
+        "internalNotesFound": false,
+        "profileInPreparationRendered": true,
+        "tabsRenderedExternally": []
+      },
+      "reportSignals": {
+        "completeBuildReadyForActiveProfile": true,
+        "completeBuildGeneratedAt": "2026-07-11T00:34:17.702Z",
+        "finalQaPass": null,
+        "v38DisplayState": "draft_applied_with_defects"
+      },
+      "readyForActiveApproval": false,
+      "companyValidatedUntouched": true
+    }
+  ],
+  "incompleteControl": {
+    "version": "v39",
+    "brandsChecked": [],
+    "allControlPass": true,
+    "rows": []
+  },
+  "activeReleaseApplyDesign": {
+    "command": "npm run brand-explorer-active-release-apply -- --brands everhome-suites,kimpton,radisson-individuals-by-choice --apply --approve-brand-explorer-active-release --confirm-founder-visual-review-passed --confirm-external-quality-lock-passed --confirm-six-gallery-imageurls --confirm-three-property-example-imageurls --confirm-no-company-validation-claim --confirm-no-forbidden-owner-copy --confirm-brand-only",
+    "writesAllowed": [
+      "Ready for Active Profile",
+      "Active Profile Approved",
+      "Active Profile Approved Date",
+      "Founder Visual Review Pass (if separately confirmed)"
+    ],
+    "writesForbidden": [
+      "Company Validated",
+      "Company Validation Date",
+      "Source Library",
+      "Brand Asset Registry (unless separately gated)",
+      "Presentation copy/images (unless separately gated)"
+    ],
+    "preconditions": [
+      "external quality lock pass for unlocked DOM",
+      "6/6 gallery imageUrl",
+      "3/3 property example imageUrl",
+      "no forbidden owner copy",
+      "founder visual review passed"
+    ],
+    "status": "designed_not_executed"
+  },
+  "summary": {
+    "brandsAudited": 3,
+    "primaryCount": 3,
+    "incompleteCount": 0,
+    "safeToUnlockAfterApproval": 0,
+    "remediationRequired": 0,
+    "mappingFixRequired": 3,
+    "notOwnerReady": 0,
+    "incompleteControlPass": true,
+    "applyExecuted": false
+  },
+  "guardrails": {
+    "airtableWrites": false,
+    "presentationWrites": false,
+    "registryWrites": false,
+    "sourceLibraryWrites": false,
+    "companyValidatedChanges": false,
+    "activeProfileApproval": false,
+    "activeReleaseApply": false
+  },
+  "regression": [
+    {
+      "args": [
+        "test:brand-explorer-external-quality-lock",
+        "--",
+        "--brands",
+        "everhome-suites,kimpton,radisson-individuals-by-choice"
+      ],
+      "status": "pass",
+      "exitCode": 0,
+      "stderrTail": ""
+    },
+    {
+      "args": [
+        "test:brand-explorer-active-profile-staged-apply"
+      ],
+      "status": "pass",
+      "exitCode": 0,
+      "stderrTail": ""
+    },
+    {
+      "args": [
+        "test:partner-intelligence-publish-readiness"
+      ],
+      "status": "pass",
+      "exitCode": 0,
+      "stderrTail": ""
+    },
+    {
+      "args": [
+        "test:partner-intelligence-profile-governance-publish"
+      ],
+      "status": "pass",
+      "exitCode": 0,
+      "stderrTail": ""
+    }
+  ]
+}

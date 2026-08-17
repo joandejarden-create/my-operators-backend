@@ -1,0 +1,866 @@
+{
+  "version": "v43",
+  "generatedAt": "2026-07-22T06:51:18.265Z",
+  "dryRun": false,
+  "applyRequested": true,
+  "applyExecuted": true,
+  "applyBlocked": false,
+  "applyGateCheck": {
+    "allowed": true,
+    "blockers": [],
+    "missingFlags": []
+  },
+  "brands": [
+    "hotel-indigo",
+    "mgallery-collection",
+    "small-luxury-hotels-of-the-world"
+  ],
+  "fieldDiscovery": {
+    "table": "Brand Setup - Brand Basics",
+    "tableId": "tbl1x6S7I7JwTcRdV",
+    "fieldCount": 81,
+    "expectedReleaseFields": [
+      {
+        "name": "Founder Visual Review Pass",
+        "expectedType": "checkbox",
+        "exists": true,
+        "liveType": "checkbox",
+        "liveId": "fldHbVI64q7bcy210",
+        "role": "founder_visual_review_passed"
+      },
+      {
+        "name": "Active Profile Approved",
+        "expectedType": "checkbox",
+        "exists": true,
+        "liveType": "checkbox",
+        "liveId": "fldzOUf95D0yzbMXA",
+        "role": "active_profile_approval"
+      },
+      {
+        "name": "Active Profile Approved Date",
+        "expectedType": "date",
+        "exists": true,
+        "liveType": "date",
+        "liveId": "fldeT66vtwlDfRcAD",
+        "role": "release_timestamp"
+      },
+      {
+        "name": "Ready for Active Profile",
+        "expectedType": "checkbox",
+        "exists": true,
+        "liveType": "checkbox",
+        "liveId": "fldn0gnX5Noy7gjII",
+        "role": "active_profile_approval"
+      }
+    ],
+    "presentReleaseFields": [
+      "Founder Visual Review Pass",
+      "Active Profile Approved",
+      "Active Profile Approved Date",
+      "Ready for Active Profile"
+    ],
+    "missingReleaseFields": [],
+    "relatedLiveFields": [
+      {
+        "id": "fldepo4RT7XgkZlKI",
+        "name": "Parent Company",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldcLuyT6yvJfUMcW",
+        "name": "Original Parent Company",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldldVkuhOoRqYlXF",
+        "name": "Company Profile",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fld7AXam2MzoGDkYL",
+        "name": "Company Profile 2",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldrKp9j2To98W3kt",
+        "name": "Brand Setup - Brand Explorer Presentation",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldpsqPz8aZFE2Byv",
+        "name": "Explorer Hero Verification",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld88FpdZaXZ31ulT",
+        "name": "Explorer Hero Data Source",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldJ4EjLnD6RRnETS",
+        "name": "Brand Explorer Favorites",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldbbcJ2tPRxXGpvX",
+        "name": "Partner Intelligence - Published Explorer Fields",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldij99nmkIF84Hbp",
+        "name": "Validation Status",
+        "type": "singleSelect"
+      },
+      {
+        "id": "fldxmEXgng7xt4OcH",
+        "name": "Company Validated",
+        "type": "checkbox"
+      },
+      {
+        "id": "fldOstMV9TQk1pprM",
+        "name": "External Display Status",
+        "type": "singleSelect"
+      },
+      {
+        "id": "fldJUo3OF9zNMueJS",
+        "name": "Company Validation Date",
+        "type": "date"
+      },
+      {
+        "id": "fldeT66vtwlDfRcAD",
+        "name": "Active Profile Approved Date",
+        "type": "date"
+      },
+      {
+        "id": "fldHbVI64q7bcy210",
+        "name": "Founder Visual Review Pass",
+        "type": "checkbox"
+      },
+      {
+        "id": "fldzOUf95D0yzbMXA",
+        "name": "Active Profile Approved",
+        "type": "checkbox"
+      },
+      {
+        "id": "fldn0gnX5Noy7gjII",
+        "name": "Ready for Active Profile",
+        "type": "checkbox"
+      }
+    ],
+    "companyValidatedFieldExists": true,
+    "companyValidationDateExists": true,
+    "canWriteReleaseWithoutSchemaCreate": true,
+    "ensurePlan": [],
+    "note": "All expected release fields exist on Brand Basics."
+  },
+  "schemaEnsure": null,
+  "brandResults": [
+    {
+      "brandSlug": "hotel-indigo",
+      "brandName": "Hotel Indigo",
+      "recordId": "recegXrqaPiSLGCIe",
+      "cohort": "primary",
+      "fieldDiscoverySummary": {
+        "present": [
+          "Founder Visual Review Pass",
+          "Active Profile Approved",
+          "Active Profile Approved Date",
+          "Ready for Active Profile"
+        ],
+        "missing": []
+      },
+      "currentReleaseFieldValues": {
+        "founderVisualReviewPass": false,
+        "activeProfileApproved": false,
+        "readyForActiveProfile": false,
+        "activeProfileApprovedDate": null,
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "validationStatus": null,
+        "externalDisplayStatus": null,
+        "brandStatus": "Active"
+      },
+      "priorFounderRecommendation": {
+        "v42": "approve_for_active_release",
+        "v42a": null,
+        "v42aR1": null,
+        "approveForActiveRelease": true
+      },
+      "os": {
+        "canonicalState": "founder_review_ready",
+        "allowedNextAction": "founder_visual_review",
+        "error": null
+      },
+      "liveDisplay": {
+        "brandExplorerDisplayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "blockers": [
+          "not_company_validated",
+          "founder_visual_review_not_passed",
+          "active_profile_not_approved"
+        ]
+      },
+      "visuals": {
+        "galleryCount": 6,
+        "openingsCount": 3,
+        "galleryReady": true,
+        "openingsReady": true
+      },
+      "copyGates": {
+        "internalForbidden": [],
+        "internalOwnerHits": [],
+        "internalClean": true
+      },
+      "externalLock": {
+        "pass": true,
+        "profileInPreparation": true,
+        "tabsRendered": 0
+      },
+      "preApplyGate": {
+        "pass": true,
+        "failed": [],
+        "checks": [
+          {
+            "name": "os_release_eligible",
+            "pass": true,
+            "detail": "OS founder_review_ready + prior founder packet recommendation approve_for_active_release (v42/v42A)"
+          },
+          {
+            "name": "founder_visual_review_attested",
+            "pass": true,
+            "detail": "CLI --confirm-founder-visual-review-passed"
+          },
+          {
+            "name": "internal_preview_owner_copy_clean",
+            "pass": true,
+            "detail": "clean"
+          },
+          {
+            "name": "external_quality_lock_pass",
+            "pass": true,
+            "detail": "prep=true fullNow=false"
+          },
+          {
+            "name": "gallery_six_imageurl",
+            "pass": true,
+            "detail": "6/6"
+          },
+          {
+            "name": "property_examples_three_imageurl",
+            "pass": true,
+            "detail": "3/3"
+          },
+          {
+            "name": "company_validated_untouched",
+            "pass": true,
+            "detail": "Company Validated=false (will not write)"
+          },
+          {
+            "name": "release_fields_available_or_creatable",
+            "pass": true,
+            "detail": "fields present"
+          },
+          {
+            "name": "projected_full_profile_after_release",
+            "pass": true,
+            "detail": "projectedState=active_profile_ready blockers=not_company_validated"
+          }
+        ]
+      },
+      "releasePatch": {
+        "fields": {
+          "Founder Visual Review Pass": true,
+          "Active Profile Approved": true,
+          "Ready for Active Profile": true,
+          "Active Profile Approved Date": "2026-07-22"
+        },
+        "mapping": [
+          {
+            "airtableField": "Founder Visual Review Pass",
+            "before": false,
+            "after": true,
+            "role": "founder_visual_review_passed"
+          },
+          {
+            "airtableField": "Active Profile Approved",
+            "before": false,
+            "after": true,
+            "role": "active_profile_approval"
+          },
+          {
+            "airtableField": "Ready for Active Profile",
+            "before": false,
+            "after": true,
+            "role": "active_profile_approval_alias"
+          },
+          {
+            "airtableField": "Active Profile Approved Date",
+            "before": null,
+            "after": "2026-07-22",
+            "role": "release_timestamp"
+          }
+        ]
+      },
+      "fieldMapping": [
+        {
+          "airtableField": "Founder Visual Review Pass",
+          "before": false,
+          "after": true,
+          "role": "founder_visual_review_passed"
+        },
+        {
+          "airtableField": "Active Profile Approved",
+          "before": false,
+          "after": true,
+          "role": "active_profile_approval"
+        },
+        {
+          "airtableField": "Ready for Active Profile",
+          "before": false,
+          "after": true,
+          "role": "active_profile_approval_alias"
+        },
+        {
+          "airtableField": "Active Profile Approved Date",
+          "before": null,
+          "after": "2026-07-22",
+          "role": "release_timestamp"
+        }
+      ],
+      "projectedAfterRelease": {
+        "brandExplorerDisplayState": "active_profile_ready",
+        "shouldRenderFullProfile": true,
+        "blockers": [
+          "not_company_validated"
+        ],
+        "completeness": {
+          "hasPresentationRows": true,
+          "hasScenarioRows": true,
+          "galleryCount": 6,
+          "galleryRequired": 6,
+          "openingsCount": 3,
+          "openingsRequired": 3,
+          "visualsReady": true,
+          "stagingFallbackRisk": false,
+          "companyValidated": false,
+          "activeProfileApproved": true,
+          "founderVisualReviewPass": true,
+          "externalOwnerRulePass": true,
+          "renderContractPass": null,
+          "fullTabContractPass": null,
+          "readinessGates": null
+        }
+      },
+      "applyResult": {
+        "ok": true,
+        "recordId": "recegXrqaPiSLGCIe",
+        "fieldsWritten": [
+          "Founder Visual Review Pass",
+          "Active Profile Approved",
+          "Ready for Active Profile",
+          "Active Profile Approved Date"
+        ]
+      },
+      "postApply": {
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "externalProfileInPreparation": true,
+        "tabsRenderedExternally": 0,
+        "externalForbidden": []
+      },
+      "guardrails": {
+        "contentWrites": false,
+        "companyValidatedChanges": false,
+        "sourceLibraryChanges": false,
+        "registryChanges": false,
+        "imageFieldChanges": false,
+        "incompleteUnlock": false
+      }
+    },
+    {
+      "brandSlug": "mgallery-collection",
+      "brandName": "MGallery Collection",
+      "recordId": "recrWCD1LMqu864oU",
+      "cohort": "primary",
+      "fieldDiscoverySummary": {
+        "present": [
+          "Founder Visual Review Pass",
+          "Active Profile Approved",
+          "Active Profile Approved Date",
+          "Ready for Active Profile"
+        ],
+        "missing": []
+      },
+      "currentReleaseFieldValues": {
+        "founderVisualReviewPass": false,
+        "activeProfileApproved": false,
+        "readyForActiveProfile": false,
+        "activeProfileApprovedDate": null,
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "validationStatus": null,
+        "externalDisplayStatus": null,
+        "brandStatus": "Active"
+      },
+      "priorFounderRecommendation": {
+        "v42": "approve_for_active_release",
+        "v42a": null,
+        "v42aR1": null,
+        "approveForActiveRelease": true
+      },
+      "os": {
+        "canonicalState": "founder_review_ready",
+        "allowedNextAction": "founder_visual_review",
+        "error": null
+      },
+      "liveDisplay": {
+        "brandExplorerDisplayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "blockers": [
+          "not_company_validated",
+          "founder_visual_review_not_passed",
+          "active_profile_not_approved"
+        ]
+      },
+      "visuals": {
+        "galleryCount": 6,
+        "openingsCount": 3,
+        "galleryReady": true,
+        "openingsReady": true
+      },
+      "copyGates": {
+        "internalForbidden": [],
+        "internalOwnerHits": [],
+        "internalClean": true
+      },
+      "externalLock": {
+        "pass": true,
+        "profileInPreparation": true,
+        "tabsRendered": 0
+      },
+      "preApplyGate": {
+        "pass": true,
+        "failed": [],
+        "checks": [
+          {
+            "name": "os_release_eligible",
+            "pass": true,
+            "detail": "OS founder_review_ready + prior founder packet recommendation approve_for_active_release (v42/v42A)"
+          },
+          {
+            "name": "founder_visual_review_attested",
+            "pass": true,
+            "detail": "CLI --confirm-founder-visual-review-passed"
+          },
+          {
+            "name": "internal_preview_owner_copy_clean",
+            "pass": true,
+            "detail": "clean"
+          },
+          {
+            "name": "external_quality_lock_pass",
+            "pass": true,
+            "detail": "prep=true fullNow=false"
+          },
+          {
+            "name": "gallery_six_imageurl",
+            "pass": true,
+            "detail": "6/6"
+          },
+          {
+            "name": "property_examples_three_imageurl",
+            "pass": true,
+            "detail": "3/3"
+          },
+          {
+            "name": "company_validated_untouched",
+            "pass": true,
+            "detail": "Company Validated=false (will not write)"
+          },
+          {
+            "name": "release_fields_available_or_creatable",
+            "pass": true,
+            "detail": "fields present"
+          },
+          {
+            "name": "projected_full_profile_after_release",
+            "pass": true,
+            "detail": "projectedState=active_profile_ready blockers=not_company_validated"
+          }
+        ]
+      },
+      "releasePatch": {
+        "fields": {
+          "Founder Visual Review Pass": true,
+          "Active Profile Approved": true,
+          "Ready for Active Profile": true,
+          "Active Profile Approved Date": "2026-07-22"
+        },
+        "mapping": [
+          {
+            "airtableField": "Founder Visual Review Pass",
+            "before": false,
+            "after": true,
+            "role": "founder_visual_review_passed"
+          },
+          {
+            "airtableField": "Active Profile Approved",
+            "before": false,
+            "after": true,
+            "role": "active_profile_approval"
+          },
+          {
+            "airtableField": "Ready for Active Profile",
+            "before": false,
+            "after": true,
+            "role": "active_profile_approval_alias"
+          },
+          {
+            "airtableField": "Active Profile Approved Date",
+            "before": null,
+            "after": "2026-07-22",
+            "role": "release_timestamp"
+          }
+        ]
+      },
+      "fieldMapping": [
+        {
+          "airtableField": "Founder Visual Review Pass",
+          "before": false,
+          "after": true,
+          "role": "founder_visual_review_passed"
+        },
+        {
+          "airtableField": "Active Profile Approved",
+          "before": false,
+          "after": true,
+          "role": "active_profile_approval"
+        },
+        {
+          "airtableField": "Ready for Active Profile",
+          "before": false,
+          "after": true,
+          "role": "active_profile_approval_alias"
+        },
+        {
+          "airtableField": "Active Profile Approved Date",
+          "before": null,
+          "after": "2026-07-22",
+          "role": "release_timestamp"
+        }
+      ],
+      "projectedAfterRelease": {
+        "brandExplorerDisplayState": "active_profile_ready",
+        "shouldRenderFullProfile": true,
+        "blockers": [
+          "not_company_validated"
+        ],
+        "completeness": {
+          "hasPresentationRows": true,
+          "hasScenarioRows": true,
+          "galleryCount": 6,
+          "galleryRequired": 6,
+          "openingsCount": 3,
+          "openingsRequired": 3,
+          "visualsReady": true,
+          "stagingFallbackRisk": false,
+          "companyValidated": false,
+          "activeProfileApproved": true,
+          "founderVisualReviewPass": true,
+          "externalOwnerRulePass": true,
+          "renderContractPass": null,
+          "fullTabContractPass": null,
+          "readinessGates": null
+        }
+      },
+      "applyResult": {
+        "ok": true,
+        "recordId": "recrWCD1LMqu864oU",
+        "fieldsWritten": [
+          "Founder Visual Review Pass",
+          "Active Profile Approved",
+          "Ready for Active Profile",
+          "Active Profile Approved Date"
+        ]
+      },
+      "postApply": {
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "externalProfileInPreparation": true,
+        "tabsRenderedExternally": 0,
+        "externalForbidden": []
+      },
+      "guardrails": {
+        "contentWrites": false,
+        "companyValidatedChanges": false,
+        "sourceLibraryChanges": false,
+        "registryChanges": false,
+        "imageFieldChanges": false,
+        "incompleteUnlock": false
+      }
+    },
+    {
+      "brandSlug": "small-luxury-hotels-of-the-world",
+      "brandName": "Small Luxury Hotels of the World",
+      "recordId": "recjjSnY2opb8P4DG",
+      "cohort": "primary",
+      "fieldDiscoverySummary": {
+        "present": [
+          "Founder Visual Review Pass",
+          "Active Profile Approved",
+          "Active Profile Approved Date",
+          "Ready for Active Profile"
+        ],
+        "missing": []
+      },
+      "currentReleaseFieldValues": {
+        "founderVisualReviewPass": false,
+        "activeProfileApproved": false,
+        "readyForActiveProfile": false,
+        "activeProfileApprovedDate": null,
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "validationStatus": null,
+        "externalDisplayStatus": null,
+        "brandStatus": "Active"
+      },
+      "priorFounderRecommendation": {
+        "v42": "approve_for_active_release",
+        "v42a": null,
+        "v42aR1": null,
+        "approveForActiveRelease": true
+      },
+      "os": {
+        "canonicalState": "founder_review_ready",
+        "allowedNextAction": "founder_visual_review",
+        "error": null
+      },
+      "liveDisplay": {
+        "brandExplorerDisplayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "blockers": [
+          "not_company_validated",
+          "founder_visual_review_not_passed",
+          "active_profile_not_approved"
+        ]
+      },
+      "visuals": {
+        "galleryCount": 6,
+        "openingsCount": 3,
+        "galleryReady": true,
+        "openingsReady": true
+      },
+      "copyGates": {
+        "internalForbidden": [],
+        "internalOwnerHits": [],
+        "internalClean": true
+      },
+      "externalLock": {
+        "pass": true,
+        "profileInPreparation": true,
+        "tabsRendered": 0
+      },
+      "preApplyGate": {
+        "pass": true,
+        "failed": [],
+        "checks": [
+          {
+            "name": "os_release_eligible",
+            "pass": true,
+            "detail": "OS founder_review_ready + prior founder packet recommendation approve_for_active_release (v42/v42A)"
+          },
+          {
+            "name": "founder_visual_review_attested",
+            "pass": true,
+            "detail": "CLI --confirm-founder-visual-review-passed"
+          },
+          {
+            "name": "internal_preview_owner_copy_clean",
+            "pass": true,
+            "detail": "clean"
+          },
+          {
+            "name": "external_quality_lock_pass",
+            "pass": true,
+            "detail": "prep=true fullNow=false"
+          },
+          {
+            "name": "gallery_six_imageurl",
+            "pass": true,
+            "detail": "6/6"
+          },
+          {
+            "name": "property_examples_three_imageurl",
+            "pass": true,
+            "detail": "3/3"
+          },
+          {
+            "name": "company_validated_untouched",
+            "pass": true,
+            "detail": "Company Validated=false (will not write)"
+          },
+          {
+            "name": "release_fields_available_or_creatable",
+            "pass": true,
+            "detail": "fields present"
+          },
+          {
+            "name": "projected_full_profile_after_release",
+            "pass": true,
+            "detail": "projectedState=active_profile_ready blockers=not_company_validated"
+          }
+        ]
+      },
+      "releasePatch": {
+        "fields": {
+          "Founder Visual Review Pass": true,
+          "Active Profile Approved": true,
+          "Ready for Active Profile": true,
+          "Active Profile Approved Date": "2026-07-22"
+        },
+        "mapping": [
+          {
+            "airtableField": "Founder Visual Review Pass",
+            "before": false,
+            "after": true,
+            "role": "founder_visual_review_passed"
+          },
+          {
+            "airtableField": "Active Profile Approved",
+            "before": false,
+            "after": true,
+            "role": "active_profile_approval"
+          },
+          {
+            "airtableField": "Ready for Active Profile",
+            "before": false,
+            "after": true,
+            "role": "active_profile_approval_alias"
+          },
+          {
+            "airtableField": "Active Profile Approved Date",
+            "before": null,
+            "after": "2026-07-22",
+            "role": "release_timestamp"
+          }
+        ]
+      },
+      "fieldMapping": [
+        {
+          "airtableField": "Founder Visual Review Pass",
+          "before": false,
+          "after": true,
+          "role": "founder_visual_review_passed"
+        },
+        {
+          "airtableField": "Active Profile Approved",
+          "before": false,
+          "after": true,
+          "role": "active_profile_approval"
+        },
+        {
+          "airtableField": "Ready for Active Profile",
+          "before": false,
+          "after": true,
+          "role": "active_profile_approval_alias"
+        },
+        {
+          "airtableField": "Active Profile Approved Date",
+          "before": null,
+          "after": "2026-07-22",
+          "role": "release_timestamp"
+        }
+      ],
+      "projectedAfterRelease": {
+        "brandExplorerDisplayState": "active_profile_ready",
+        "shouldRenderFullProfile": true,
+        "blockers": [
+          "not_company_validated"
+        ],
+        "completeness": {
+          "hasPresentationRows": true,
+          "hasScenarioRows": true,
+          "galleryCount": 6,
+          "galleryRequired": 6,
+          "openingsCount": 3,
+          "openingsRequired": 3,
+          "visualsReady": true,
+          "stagingFallbackRisk": false,
+          "companyValidated": false,
+          "activeProfileApproved": true,
+          "founderVisualReviewPass": true,
+          "externalOwnerRulePass": true,
+          "renderContractPass": null,
+          "fullTabContractPass": null,
+          "readinessGates": null
+        }
+      },
+      "applyResult": {
+        "ok": true,
+        "recordId": "recjjSnY2opb8P4DG",
+        "fieldsWritten": [
+          "Founder Visual Review Pass",
+          "Active Profile Approved",
+          "Ready for Active Profile",
+          "Active Profile Approved Date"
+        ]
+      },
+      "postApply": {
+        "displayState": "draft_applied_with_defects",
+        "shouldRenderFullProfile": false,
+        "externalProfileInPreparation": true,
+        "tabsRenderedExternally": 0,
+        "externalForbidden": []
+      },
+      "guardrails": {
+        "contentWrites": false,
+        "companyValidatedChanges": false,
+        "sourceLibraryChanges": false,
+        "registryChanges": false,
+        "imageFieldChanges": false,
+        "incompleteUnlock": false
+      }
+    }
+  ],
+  "incompleteControl": {
+    "allLocked": true,
+    "results": []
+  },
+  "summary": {
+    "brands": 3,
+    "preApplyPassCount": 3,
+    "projectedFullProfileCount": 3,
+    "recordsPatched": 3,
+    "applyErrors": 0,
+    "incompleteLocked": true,
+    "releaseFieldsMissing": [],
+    "schemaModified": false,
+    "anyContentWrite": false,
+    "anyCompanyValidatedWrite": false
+  },
+  "exactApplyCommand": "npm run brand-explorer-v43-active-release-apply -- --brands hotel-indigo,mgallery-collection,small-luxury-hotels-of-the-world --apply --approve-brand-explorer-v43-active-release --confirm-founder-visual-review-passed --confirm-external-quality-lock-passed --confirm-internal-preview-owner-copy-clean --confirm-six-gallery-imageurls --confirm-three-property-example-imageurls --confirm-no-company-validation-claim --confirm-no-content-writes --confirm-no-source-library-changes --confirm-no-registry-changes --confirm-brand-only",
+  "guardrails": {
+    "contentWrites": false,
+    "companyValidatedChanges": false,
+    "sourceLibraryChanges": false,
+    "registryChanges": false,
+    "imageFieldChanges": false,
+    "incompleteUnlock": false,
+    "allowedBasicsFields": [
+      "Founder Visual Review Pass",
+      "Active Profile Approved",
+      "Active Profile Approved Date",
+      "Ready for Active Profile"
+    ],
+    "forbiddenBasicsFields": [
+      "Company Validated",
+      "Company Validation Date",
+      "Validation Status",
+      "Title",
+      "Body",
+      "Image",
+      "Images",
+      "Scenario Image"
+    ]
+  }
+}

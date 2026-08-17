@@ -1,0 +1,27 @@
+{
+  "version": "research-firewall-test-v2.3",
+  "all_pass": true,
+  "results": [
+    {
+      "test": "discovery_blocked",
+      "pass": true,
+      "code": "CVENT_FIREWALL_DISCOVERY"
+    },
+    {
+      "test": "comparison_pre_independent_blocked",
+      "pass": true,
+      "code": "CVENT_FIREWALL_PRE_INDEPENDENT_FREEZE"
+    },
+    {
+      "test": "comparison_post_unlock_allowed",
+      "pass": true
+    }
+  ],
+  "firewall_state_after_cvent_freeze": {
+    "freezeComplete": true,
+    "independentFreezeComplete": false,
+    "comparisonUnlocked": false,
+    "outDir": "C:\\Dev\\deal-capture-proxy\\data\\research-engine-v2\\census-autopilot-v2-3-independent-universe"
+  },
+  "note": "Independent discovery must FAIL CLOSED if it requests Cvent"
+}

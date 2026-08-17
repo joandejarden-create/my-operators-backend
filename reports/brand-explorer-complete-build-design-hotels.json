@@ -1,0 +1,296 @@
+{
+  "generatedAt": "2026-07-15T08:53:43.500Z",
+  "mode": "dry-run",
+  "orchestratorVersion": "2",
+  "brand": {
+    "slug": "design-hotels",
+    "recordId": "rec02zPClpWUTCyXM",
+    "name": "Design Hotels",
+    "resolution": {
+      "inputTarget": "design-hotels",
+      "resolvedBrandName": "Design Hotels",
+      "resolvedRecordId": "rec02zPClpWUTCyXM",
+      "resolvedSlug": "design-hotels",
+      "resolutionSource": "expansion_backlog",
+      "parentCompany": "Marriott International, Inc.",
+      "parentFamily": "Marriott affiliate (source-confirmed)",
+      "wave": 1,
+      "ambiguous": false,
+      "error": null,
+      "suggestedMatches": []
+    }
+  },
+  "resolution": {
+    "inputTarget": "design-hotels",
+    "resolvedBrandName": "Design Hotels",
+    "resolvedRecordId": "rec02zPClpWUTCyXM",
+    "resolvedSlug": "design-hotels",
+    "resolutionSource": "expansion_backlog",
+    "parentCompany": "Marriott International, Inc.",
+    "parentFamily": "Marriott affiliate (source-confirmed)",
+    "wave": 1,
+    "ambiguous": false,
+    "error": null,
+    "suggestedMatches": []
+  },
+  "targetQuality": "active-profile",
+  "halted": true,
+  "haltReason": "critical_visual_defects",
+  "completedBatches": [],
+  "stageResults": [
+    {
+      "stage": "profile_inspection",
+      "status": "complete",
+      "summary": {
+        "brandName": "Design Hotels",
+        "recordId": "rec02zPClpWUTCyXM",
+        "companyValidated": null,
+        "companyValidationDate": null
+      }
+    },
+    {
+      "stage": "source_inventory",
+      "status": "complete",
+      "summary": {
+        "sourceCount": 10,
+        "approvedForExplorer": 10
+      }
+    },
+    {
+      "stage": "fact_inventory",
+      "status": "complete",
+      "summary": {
+        "factCount": 0,
+        "approved": 0,
+        "pending": 0
+      }
+    },
+    {
+      "stage": "brand_residences_legacy_migration",
+      "status": "blocked",
+      "summary": {
+        "alreadySynced": 0,
+        "migrateFromLegacy": 0,
+        "conflicts": 1,
+        "noDataDefault": 0,
+        "sourceBackedPreserved": 0,
+        "wouldUpdate": 0
+      },
+      "command": "npm run brand-residences-legacy-migration-writer -- --brand design-hotels --dry-run",
+      "futureSetupWritesToBrandBasicsOnly": true
+    },
+    {
+      "stage": "required_section_contract",
+      "status": "blocked",
+      "summary": {
+        "readinessScore": 38,
+        "ready": false,
+        "sectionsReady": 3,
+        "sectionsTotal": 8,
+        "nextWriters": [
+          "1) row creation writer",
+          "2) source capture writer",
+          "3) standards founder-review package",
+          "4) fact approval writer",
+          "5) brand-explorer-tribute-geographic-footprint-refinement-writer"
+        ]
+      },
+      "command": "npm run brand-explorer-required-section-population-contract -- --brand design-hotels --dry-run"
+    },
+    {
+      "stage": "visual_defect_audit",
+      "status": "blocked",
+      "summary": {
+        "defects": {
+          "total": 5,
+          "critical": 2,
+          "high": 1,
+          "medium": 2,
+          "low": 0,
+          "missingImage": 0,
+          "emptyBullet": 1,
+          "titleOnlyOrThin": 1,
+          "placeholderGeneric": 1,
+          "sortOrder": 1
+        },
+        "comparableToCurio": false,
+        "nextBatch": "v24C_source_evidence_work"
+      },
+      "command": "npm run brand-explorer-visual-display-defect-audit -- --brand design-hotels --dry-run"
+    },
+    {
+      "stage": "final_qa_auditor",
+      "status": "blocked",
+      "summary": {
+        "requiredSectionReadinessScore": 38,
+        "presentationQualityScore": 44,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 100,
+        "visualCompletenessScore": 56,
+        "overallNumeric": 62,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "command": "npm run brand-explorer-final-qa-auditor -- --brand design-hotels --dry-run"
+    }
+  ],
+  "blockers": [
+    {
+      "type": "required_section",
+      "section": "Openings / Examples / Properties",
+      "classification": "required_backfill",
+      "message": "Insufficient complete openings rows.",
+      "category": "data",
+      "recommendedWriter": "row creation writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Recent Momentum",
+      "classification": "required_backfill",
+      "message": "No minimum set of dated/source-backed momentum rows.",
+      "category": "data",
+      "recommendedWriter": "source capture writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Standard Detail / Where Available",
+      "classification": "required_backfill + founder_review_required",
+      "message": "No approved external-display-safe standards owner table package.",
+      "category": "founder_legal_review",
+      "recommendedWriter": "standards founder-review package"
+    },
+    {
+      "type": "required_section",
+      "section": "Loyalty Program",
+      "classification": "required_backfill + fact_approval_required",
+      "message": "Required loyalty mechanics/proof coverage incomplete.",
+      "category": "source",
+      "recommendedWriter": "fact approval writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Geographic Footprint",
+      "classification": "required_refinement",
+      "message": "Regional copy still template-thin.",
+      "category": "data",
+      "recommendedWriter": "brand-explorer-tribute-geographic-footprint-refinement-writer"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Key Watchouts",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24C_source_evidence_work"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Standard Detail, Where Available",
+      "severity": "critical",
+      "category": "frontend",
+      "recommendedWriter": "v24C_source_evidence_work"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Standard Detail, Where Available",
+      "severity": "critical",
+      "category": "frontend",
+      "recommendedWriter": "v24C_source_evidence_work"
+    }
+  ],
+  "tributeExpectedRemaining": [],
+  "stagedApplyCommands": [
+    {
+      "section": "Standard Detail / Where Available",
+      "blockerType": "required_section",
+      "dryRunCommand": "npm run brand-explorer-tribute-standard-detail-table-writer -- --brand design-hotels --dry-run",
+      "applyCommand": null,
+      "requiresApproval": true,
+      "requiresFounderReview": true
+    },
+    {
+      "section": "Geographic Footprint",
+      "blockerType": "required_section",
+      "dryRunCommand": "npm run brand-explorer-display-content-completion-writer -- --brand design-hotels --dry-run",
+      "applyCommand": null,
+      "requiresApproval": true,
+      "requiresFounderReview": false
+    }
+  ],
+  "nextRequiredWriter": "row creation writer",
+  "finalQaScores": {
+    "requiredSectionReadinessScore": 38,
+    "presentationQualityScore": 44,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 100,
+    "visualCompletenessScore": 56,
+    "overallNumeric": 62,
+    "overallActiveProfileReadiness": "blocked"
+  },
+  "contractReadinessScore": 38,
+  "requiredSectionStatus": {
+    "score": 38,
+    "ready": false,
+    "sectionsReady": 3,
+    "sectionsTotal": 8
+  },
+  "visualQaStatus": {
+    "score": 56,
+    "comparableToReference": false,
+    "defectCounts": {
+      "total": 5,
+      "critical": 2,
+      "high": 1,
+      "medium": 2,
+      "low": 0,
+      "missingImage": 0,
+      "emptyBullet": 1,
+      "titleOnlyOrThin": 1,
+      "placeholderGeneric": 1,
+      "sortOrder": 1
+    },
+    "recommendedNextBatch": "v24C_source_evidence_work"
+  },
+  "governanceStatus": {
+    "governedPlatformReady": true,
+    "sourceCount": 10,
+    "approvedExplorerSources": 10,
+    "explorerFactCount": 0,
+    "pendingFacts": 0,
+    "sourceEvidenceNeeded": true,
+    "factApprovalNeeded": true,
+    "founderReviewNeeded": true
+  },
+  "governedPlatformReady": true,
+  "readyForActiveProfile": false,
+  "readinessBand": "blocked",
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "companyValidationDateSnapshot": null,
+  "exactDryRunCommand": "npm run brand-explorer-complete-build -- --brand design-hotels --dry-run --target-quality active-profile",
+  "exactApplyCommand": "npm run brand-explorer-complete-build -- --brand design-hotels --apply-approved --approve-brand-explorer-complete-build --target-quality active-profile",
+  "reportBasename": "brand-explorer-complete-build-design-hotels",
+  "applySafety": {
+    "safeForApplyApproved": false,
+    "applyBlockReasons": [
+      "2 critical Final QA defect(s) remain",
+      "Required sections are not ready",
+      "Human/founder/legal review is required"
+    ],
+    "applySkippedReasons": [
+      "2 critical Final QA defect(s) remain",
+      "Required sections are not ready",
+      "Human/founder/legal review is required"
+    ],
+    "applyCommandsEligible": [],
+    "governanceSnapshot": {
+      "companyValidated": null,
+      "governedPlatformReady": true,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": true,
+      "pendingFacts": 0,
+      "internalFacts": 0,
+      "fddFacts": 0
+    }
+  },
+  "applyExecutionLog": [],
+  "airtableModified": false
+}

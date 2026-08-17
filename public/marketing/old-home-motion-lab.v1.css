@@ -1,0 +1,243 @@
+/**
+ * Dealality Old Home — Motion Lab (local preview only)
+ * Levels: off | light | medium | bold
+ * Styles: rise | cascade | scale | slide | clip
+ * Scroll aids: cue | early | depth
+ * Respects prefers-reduced-motion.
+ */
+
+/* ── Level tokens ── */
+html[data-oh-motion="light"] {
+  --oh-motion-duration: 0.4s;
+  --oh-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --oh-motion-y: 14px;
+  --oh-motion-x: 12px;
+  --oh-motion-scale: 0.985;
+  --oh-motion-stagger: 50ms;
+  --oh-motion-clip: 12%;
+  --oh-lift-y: -2px;
+}
+
+html[data-oh-motion="medium"] {
+  --oh-motion-duration: 0.55s;
+  --oh-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --oh-motion-y: 28px;
+  --oh-motion-x: 20px;
+  --oh-motion-scale: 0.96;
+  --oh-motion-stagger: 70ms;
+  --oh-motion-clip: 22%;
+  --oh-lift-y: -3px;
+}
+
+html[data-oh-motion="bold"] {
+  --oh-motion-duration: 0.7s;
+  --oh-motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --oh-motion-y: 44px;
+  --oh-motion-x: 28px;
+  --oh-motion-scale: 0.94;
+  --oh-motion-stagger: 90ms;
+  --oh-motion-clip: 32%;
+  --oh-lift-y: -4px;
+}
+
+/* ── Base reveal (shared) ── */
+html[data-oh-motion]:not([data-oh-motion="0"]):not([data-oh-motion="off"]) .oh-m-reveal {
+  opacity: 0;
+  transition:
+    opacity var(--oh-motion-duration) var(--oh-motion-ease),
+    transform var(--oh-motion-duration) var(--oh-motion-ease),
+    clip-path var(--oh-motion-duration) var(--oh-motion-ease),
+    filter var(--oh-motion-duration) var(--oh-motion-ease);
+  transition-delay: calc(var(--oh-m-i, 0) * var(--oh-motion-stagger));
+  will-change: opacity, transform;
+}
+
+html[data-oh-motion]:not([data-oh-motion="0"]):not([data-oh-motion="off"]) .oh-m-reveal.is-in {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+  filter: none;
+  will-change: auto;
+}
+
+/* Style: rise (default) — from below, pulls eye down */
+html[data-oh-motion-style="rise"] .oh-m-reveal {
+  transform: translate3d(0, var(--oh-motion-y), 0);
+}
+
+/* Style: cascade — stronger downward stagger feel + slight blur until in */
+html[data-oh-motion-style="cascade"] .oh-m-reveal {
+  transform: translate3d(0, calc(var(--oh-motion-y) * 1.15), 0);
+  filter: blur(2px);
+}
+html[data-oh-motion-style="cascade"] .oh-m-reveal.is-in {
+  filter: blur(0);
+}
+
+/* Style: scale — soft grow into place */
+html[data-oh-motion-style="scale"] .oh-m-reveal {
+  transform: translate3d(0, calc(var(--oh-motion-y) * 0.55), 0) scale(var(--oh-motion-scale));
+}
+
+/* Style: slide — from left, still rises a little */
+html[data-oh-motion-style="slide"] .oh-m-reveal {
+  transform: translate3d(calc(var(--oh-motion-x) * -1), calc(var(--oh-motion-y) * 0.4), 0);
+}
+
+/* Style: clip — wipe upward (content seems to rise into frame) */
+html[data-oh-motion-style="clip"] .oh-m-reveal {
+  transform: translate3d(0, calc(var(--oh-motion-y) * 0.35), 0);
+  clip-path: inset(var(--oh-motion-clip) 0 0 0);
+}
+
+/* Soft hover lift */
+html[data-oh-motion]:not([data-oh-motion="0"]):not([data-oh-motion="off"]) .oh-m-lift {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+html[data-oh-motion]:not([data-oh-motion="0"]):not([data-oh-motion="off"]) .oh-m-lift:hover {
+  transform: translateY(var(--oh-lift-y, -2px));
+  border-color: rgba(155, 138, 251, 0.28);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+/* ── Scroll encouragement: depth (upcoming content stays dimmer) ── */
+html[data-oh-depth="1"][data-oh-motion]:not([data-oh-motion="0"]):not([data-oh-motion="off"]) .oh-m-reveal:not(.is-in) {
+  opacity: 0.18;
+}
+
+/* ── Scroll cue under hero ── */
+#oh-scroll-cue {
+  display: none;
+  justify-content: center;
+  margin: -0.5rem 0 0.25rem;
+  padding: 0 1.5rem 1.5rem;
+  pointer-events: none;
+}
+html[data-oh-scroll-cue="1"] #oh-scroll-cue {
+  display: flex;
+}
+#oh-scroll-cue .oh-scroll-cue-inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(196, 181, 253, 0.72);
+  font: 550 0.78rem/1.2 "Inter Tight", system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+#oh-scroll-cue .oh-scroll-cue-chev {
+  width: 18px;
+  height: 18px;
+  border-right: 2px solid rgba(168, 173, 255, 0.75);
+  border-bottom: 2px solid rgba(168, 173, 255, 0.75);
+  transform: rotate(45deg);
+  opacity: 0.85;
+}
+html[data-oh-scroll-cue="1"][data-oh-motion]:not([data-oh-motion="0"]):not([data-oh-motion="off"]) #oh-scroll-cue .oh-scroll-cue-chev {
+  animation: ohScrollCueBob 1.6s ease-in-out infinite;
+}
+@keyframes ohScrollCueBob {
+  0%, 100% { transform: translateY(0) rotate(45deg); opacity: 0.45; }
+  50% { transform: translateY(7px) rotate(45deg); opacity: 1; }
+}
+html[data-oh-scroll-cue="1"].oh-scrolled-past-hero #oh-scroll-cue {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+/* ── Edge fade hint at bottom of viewport (more below) ── */
+html[data-oh-edge="1"] body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 72px;
+  pointer-events: none;
+  z-index: 40;
+  background: linear-gradient(to top, rgba(8, 15, 37, 0.72), transparent);
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+html[data-oh-edge="1"].oh-near-page-end body::after {
+  opacity: 0;
+}
+
+/* Off / reduced motion */
+html[data-oh-motion="0"] .oh-m-reveal,
+html[data-oh-motion="off"] .oh-m-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+html[data-oh-motion="0"] .oh-m-lift,
+html[data-oh-motion="off"] .oh-m-lift,
+html[data-oh-motion="0"] .oh-m-lift:hover,
+html[data-oh-motion="off"] .oh-m-lift:hover {
+  transition: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Per-section off — force final state (toggle in Motion Lab) */
+html[data-oh-sec-about="0"] .oh-m-reveal[data-oh-sec="about"],
+html[data-oh-sec-perspectives="0"] .oh-m-reveal[data-oh-sec="perspectives"],
+html[data-oh-sec-how="0"] .oh-m-reveal[data-oh-sec="how"],
+html[data-oh-sec-features="0"] .oh-m-reveal[data-oh-sec="features"],
+html[data-oh-sec-modules="0"] .oh-m-reveal[data-oh-sec="modules"],
+html[data-oh-sec-testimonials="0"] .oh-m-reveal[data-oh-sec="testimonials"],
+html[data-oh-sec-pricing="0"] .oh-m-reveal[data-oh-sec="pricing"],
+html[data-oh-sec-faq="0"] .oh-m-reveal[data-oh-sec="faq"],
+html[data-oh-sec-insights="0"] .oh-m-reveal[data-oh-sec="insights"],
+html[data-oh-sec-cta="0"] .oh-m-reveal[data-oh-sec="cta"],
+.oh-m-reveal.oh-m-forced {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+html[data-oh-sec-hero="0"] #oh-scroll-cue,
+html[data-oh-scroll-cue="0"] #oh-scroll-cue {
+  display: none !important;
+}
+
+/* Benefits (6) — slightly stronger cascade when section on + style rise/cascade */
+html[data-oh-sec-modules="1"][data-oh-motion]:not([data-oh-motion="0"]):not([data-oh-motion="off"])
+  #modules-grid
+  > article.oh-m-reveal:not(.is-in),
+html[data-oh-sec-modules="1"][data-oh-motion]:not([data-oh-motion="0"]):not([data-oh-motion="off"])
+  #modules-grid-platform
+  > article.oh-m-reveal:not(.is-in) {
+  transform: translate3d(0, calc(var(--oh-motion-y) * 1.2), 0);
+}
+
+/* Pricing — Owners card lands first (lower delay already via --oh-m-i) */
+html[data-oh-sec-pricing="1"] #pricing-card-owners.oh-m-reveal:not(.is-in) {
+  transform: translate3d(0, calc(var(--oh-motion-y) * 0.85), 0) scale(0.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-oh-motion] .oh-m-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  html[data-oh-motion] .oh-m-lift,
+  html[data-oh-motion] .oh-m-lift:hover {
+    transition: none !important;
+    transform: none !important;
+  }
+  #oh-scroll-cue .oh-scroll-cue-chev {
+    animation: none !important;
+  }
+}

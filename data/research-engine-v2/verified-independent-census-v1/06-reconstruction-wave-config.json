@@ -1,0 +1,140 @@
+{
+  "config_version": "vic-wave-config-v1",
+  "field_research_plans": {
+    "rooms": {
+      "field": "rooms",
+      "never": [
+        "infer from room-type listing counts",
+        "legacy census rooms"
+      ],
+      "priority": [
+        "official property page",
+        "official development page",
+        "owner announcement",
+        "operator page",
+        "official press release",
+        "high-quality trade source (corroboration)"
+      ]
+    },
+    "openDate": {
+      "field": "Open Date",
+      "kinds": [
+        "announced",
+        "expected",
+        "actual",
+        "now_open"
+      ],
+      "priority": [
+        "official opening announcement",
+        "official hotel page",
+        "parent/company release",
+        "owner/operator release",
+        "reliable dated trade press"
+      ]
+    },
+    "managementCompany": {
+      "field": "Management Company",
+      "never": [
+        "infer operator from brand affiliation"
+      ],
+      "priority": [
+        "operator official portfolio",
+        "owner announcement",
+        "operator press release",
+        "brand development announcement",
+        "management agreement announcement"
+      ]
+    },
+    "owner": {
+      "field": "Owner",
+      "escalate": [
+        "opaque UBO"
+      ],
+      "priority": [
+        "owner official source",
+        "transaction announcement",
+        "official development source",
+        "first-party validation",
+        "public corporate/government source where permitted"
+      ]
+    },
+    "amenities": {
+      "field": "Amenities",
+      "values": [
+        "Yes",
+        "No — Explicit",
+        "Unknown",
+        "Conflicting Evidence"
+      ],
+      "rule": "Absence from one page ≠ No"
+    },
+    "coordinates": {
+      "fields": [
+        "Latitude",
+        "Longitude"
+      ],
+      "never": [
+        "copy legacy lat/lng"
+      ],
+      "priority": [
+        "official property coordinates",
+        "permitted independent geocode of official address"
+      ]
+    },
+    "marketSubmarket": {
+      "fields": [
+        "Market",
+        "Submarket"
+      ],
+      "rule": "Do not recreate STR market definitions from legacy; use Dealality-owned geography or Legal/Source Review Required"
+    }
+  },
+  "waves": [
+    {
+      "id": "wave1_ihg_mexico_all",
+      "group": "IHG",
+      "geography": "Mexico",
+      "brands": null,
+      "researchProfile": "full_census",
+      "legacyComparisonAfterFreeze": true,
+      "firstPartyValidationEligible": true,
+      "targetFields": "MATERIAL_CENSUS_FIELDS"
+    },
+    {
+      "id": "wave1b_ihg_cala",
+      "group": "IHG",
+      "geography": "CALA",
+      "brands": null,
+      "researchProfile": "full_census",
+      "legacyComparisonAfterFreeze": true,
+      "status": "planned"
+    },
+    {
+      "id": "wave2_hilton_mexico",
+      "group": "Hilton",
+      "geography": "Mexico",
+      "status": "planned_needs_directory_extract"
+    },
+    {
+      "id": "wave2_marriott_mexico",
+      "group": "Marriott",
+      "geography": "Mexico",
+      "status": "planned_expand_soft_brand_extract"
+    },
+    {
+      "id": "wave2_choice_mexico",
+      "group": "Choice",
+      "geography": "Mexico",
+      "status": "planned"
+    }
+  ],
+  "active_benchmark": {
+    "id": "wave1_ihg_mexico_all",
+    "group": "IHG",
+    "geography": "Mexico",
+    "brands": null,
+    "researchProfile": "full_census",
+    "legacyComparisonAfterFreeze": true,
+    "firstPartyValidationEligible": true
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "status": "dry_run",
+  "hard_rule": "Curated Medium only; no mx226→mx086 copy; Mapbox coords only; never invent",
+  "generated_at": "2026-08-07T19:45:20.054Z",
+  "scanned": 4,
+  "proposal_count": 2,
+  "patched_count": 0,
+  "steward_count": 2,
+  "mapbox_lookups": 2,
+  "airtable_writes": false,
+  "proposals": [
+    {
+      "id": "rec2mY62wnBxrSb3h",
+      "property_name": "Comfort Inn & Suites Veracruz",
+      "identity_key": "ind_choice_mx_mx073",
+      "city": "Veracruz",
+      "country": "Mexico",
+      "patch": {
+        "Address": "Blvd. Manuel Ávila Camacho 2221, Ignacio Zaragoza, 91910 Veracruz, Veracruz, Mexico",
+        "Address Confidence": "Medium",
+        "Address Source URL": "https://directoriodehoteles.com.mx/listado.php?id=3425",
+        "Last Reviewed Date": "2026-08-07",
+        "Latitude": 19.182829,
+        "Longitude": -96.124778,
+        "Coordinate Source Type": "official_address_geocode",
+        "Coordinate Confidence": "High",
+        "Geocode Provider": "Mapbox",
+        "Geocode Method": "permanent_geocoding_curated_address",
+        "Geocode Reviewed Date": "2026-08-07"
+      },
+      "reasons": [
+        "address_from_curated_multi_source_medium",
+        "hotel_directory_mx073_avila_camacho_2221",
+        "mxfirmas_choice_url_mx073",
+        "vivehotels_comfort_inn_veracruz_location",
+        "coords_from_mapbox:mapbox_permanent_address_shared_token"
+      ]
+    },
+    {
+      "id": "recabSgALHHvys0In",
+      "property_name": "Comfort Inn & Suites Irapuato",
+      "identity_key": "ind_choice_mx_mx092",
+      "city": "Irapuato",
+      "country": "Mexico",
+      "patch": {
+        "Address": "Blvd. Villas de Irapuato 1502, 36643 Irapuato, Guanajuato, Mexico",
+        "Address Confidence": "Medium",
+        "Address Source URL": "https://www.choicehotels.com/en-ca/guanajuato/irapuato/top-rated-hotels",
+        "Last Reviewed Date": "2026-08-07"
+      },
+      "reasons": [
+        "address_from_curated_multi_source_medium",
+        "choice_listing_snippet_mx092_villas_1502",
+        "hotel_directory_corroboration",
+        "mx_business_registry_confort_inn_building_36643",
+        "mapbox_low_confidence:place_mismatch"
+      ]
+    }
+  ],
+  "steward": [
+    {
+      "id": "rec0qmO7Xj7uyjWLZ",
+      "name": "Comfort Inn & Suites Querétaro",
+      "key": "ind_choice_mx_mx086",
+      "city": "Querétaro",
+      "reasons": [
+        "not_in_live_choice_cala_regional",
+        "live_queretaro_comfort_inn_is_mx226_already_addressed",
+        "do_not_copy_mx226_address_onto_mx086_without_identity_retire_or_merge"
+      ]
+    },
+    {
+      "id": "recoKIP6S1Gh5fSXb",
+      "name": "Ascend Hotel Collection Zacatecas",
+      "key": "ind_choice_mx_mx104",
+      "city": "Zacatecas",
+      "reasons": [
+        "not_in_live_choice_cala_regional",
+        "no_ascend_zacatecas_street_evidence",
+        "likely_soft_brand_placeholder_or_pipeline"
+      ]
+    }
+  ]
+}

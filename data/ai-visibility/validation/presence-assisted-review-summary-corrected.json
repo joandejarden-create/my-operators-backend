@@ -1,0 +1,47 @@
+{
+  "phase": "PRESENCE_ASSISTED_REVIEW_SUMMARY_CORRECTED",
+  "status": "PRESENCE_ASSISTED_REVIEW_SUMMARY_FIX_PASS",
+  "correctedAt": "2026-08-15T15:12:00.000Z",
+  "HUMAN_FINAL_LABELS_CHANGED": 0,
+  "REAPPROVAL_PERFORMED": false,
+  "fixes": [
+    "Accepted vs Changed now compares human final to assisted proposal (includes BULK_ACCEPTED_ASSISTED_PROPOSAL)",
+    "Already-reviewed cases excluded from MANUAL_REVIEW_REQUIRED and BULK_APPROVAL_ELIGIBLE (mutually exclusive)",
+    "Canopy-style system disagreements that matched assisted proposal count as ACCEPTED"
+  ],
+  "humanFinals": {
+    "TOTAL_FINALIZED": 191,
+    "PRESENT": 97,
+    "NOT_PRESENT": 94,
+    "INVALID": 0,
+    "DEFERRED": 0
+  },
+  "openai": {
+    "FINALIZED": 48,
+    "PRESENT": 24,
+    "NOT_PRESENT": 24,
+    "HUMAN_APPROVAL_CONFIRMED": true
+  },
+  "assistedReview": {
+    "TOTAL_ASSISTED": 191,
+    "ACCEPTED": 191,
+    "CHANGED": 0,
+    "ALREADY_REVIEWED": 191,
+    "ASSISTED_REMAINING": 0,
+    "BULK_APPROVAL_ELIGIBLE": 0,
+    "MANUAL_REVIEW_REQUIRED": 0
+  },
+  "HUMAN_ACTION_COUNTS": {
+    "BULK_ACCEPTED_ASSISTED_PROPOSAL": 189,
+    "CHANGED_ASSISTED_PROPOSAL": 2
+  },
+  "noteOnChangedAction": "2 stored humanAction=CHANGED_ASSISTED_PROPOSAL (Canopy) still match assisted PRESENT — counted as ACCEPTED in summary; audit history not rewritten",
+  "candidateUniverse": {
+    "TOTAL_CANDIDATES": 416,
+    "PRIMARY_REVIEWED": 191,
+    "UNREVIEWED": 225,
+    "NON_PRIMARY_RESERVE": 225,
+    "DO_REMAINING_CASES_BLOCK_HOLDOUT_V2": false
+  },
+  "NEXT_STEP": "READY_FOR_PRESENCE_VALIDATION_POOL_READINESS_AUDIT"
+}

@@ -1,0 +1,43 @@
+{
+  "staging_migration_ready": true,
+  "production_overwrite_ready": false,
+  "required_steward_review_before_production": [
+    "Marriott Brand Unconfirmed overlay decisions",
+    "Cross-family rejected fuzzy / insufficient pairs",
+    "Campus annex distinctness",
+    "Field mapping validation for staging table only"
+  ],
+  "fields_safe_to_migrate": [
+    "family",
+    "brand",
+    "property name",
+    "canonical name",
+    "city",
+    "state / region",
+    "country",
+    "source URL",
+    "source type",
+    "source lineage",
+    "as-of discovery date",
+    "identity key",
+    "confidence classification",
+    "Property ID / MARSHA / ctyhocn where present"
+  ],
+  "fields_unsafe_to_migrate": [
+    "rooms where missing",
+    "owner",
+    "operator",
+    "open date",
+    "coordinates where missing",
+    "brand-unconfirmed records without overlay confirmation",
+    "temporal start dates",
+    "images / first-party media"
+  ],
+  "overlay_brand_exception": {
+    "independent_record_id": "ind_marriott_mx_mexmc",
+    "freeze_brand": "Marriott Bonvoy — Brand Unconfirmed",
+    "overlay_brand": "Marriott Hotels",
+    "note": "Staging may use overlay brand if steward accepts; freeze row unchanged"
+  },
+  "posture": "staging migration only — no production overwrite"
+}

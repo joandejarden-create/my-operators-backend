@@ -1,0 +1,104 @@
+{
+  "phase": "PRESENCE_HOLDOUT_V3_SELECTION_AND_FREEZE_COMPLETE",
+  "status": "PRESENCE_HOLDOUT_V3_SELECTION_AND_FREEZE_PASS",
+  "DRY_RUN": false,
+  "VERSION": "ai_intelligence_presence_holdout_v3",
+  "PAIR_N": 100,
+  "UNIQUE_RESPONSE_N": 86,
+  "PRESENT": 60,
+  "NOT_PRESENT": 40,
+  "PROVIDERS": {
+    "CLAUDE": 28,
+    "PERPLEXITY": 24,
+    "OPENAI": 23,
+    "GEMINI": 25
+  },
+  "LANGUAGES": {
+    "ENGLISH": 69,
+    "SPANISH": 31
+  },
+  "GEOGRAPHIES": {
+    "CALA": 27,
+    "MEXICO": 28,
+    "NORTH_AMERICA": 11,
+    "GLOBAL": 19,
+    "EUROPE": 15
+  },
+  "NEGATIVE_CONTROLS": {
+    "SIBLING_TARGET_ABSENT": 23,
+    "PARENT_CHILD": 2,
+    "GENERIC_COLLECTION": 7,
+    "GEOGRAPHIC_PLAYA": 4,
+    "NO_ENTITY": 4,
+    "COMMON_LANGUAGE_COLLISION": 0,
+    "SHORT_NAME_AMBIGUITY": 0,
+    "OTHER": 0
+  },
+  "CONTEXTUAL_COVERAGE": {
+    "shortened_brand_names": 4,
+    "parent_context_resolution": 25,
+    "brand_family_lists": 91,
+    "common_language_collisions": 16,
+    "FRESH_RELATIVE_TO_HOLDOUT_V2": "YES"
+  },
+  "SELECTION": {
+    "ALGORITHM": "selectHoldoutV3WithUniqueResponsePriority — maximize unique responses after 60/40; soft provider/language/geography guidance; response-atomic; caseId lexicographic tie-break; no resolver prediction inspection",
+    "VERSION": "presence_holdout_v3_unique_response_priority_select_v1",
+    "SEED": "presence_holdout_v3_freeze_20260815_readiness_pass"
+  },
+  "RESPONSE_LEVEL_ATOMICITY": "PASS",
+  "MAX_PAIRS_PER_RESPONSE": 2,
+  "UNIQUE_CASE_ID_COUNT": 100,
+  "UNIQUE_ENTITY_RESPONSE_PAIR_COUNT": 100,
+  "MANIFEST_INTEGRITY": "PASS",
+  "SEAL": {
+    "MANIFEST": "data/ai-visibility/validation/ai-intelligence-presence-holdout-v3.json",
+    "MANIFEST_HASH": "a67b79dee7716b086cf30a88b35feb66e04c4737b1f3128a4673dd173b47dcae",
+    "CONTENT_HASH": "155a6ad121809c38de29afdaba96fab4f891836e5bddd26907f450bf9fb7ba44",
+    "FRESH_RESPONSES": true,
+    "USED_FOR_TUNING": false,
+    "PREDICTIONS_EXPOSED": false,
+    "SCORED": false,
+    "HOLDOUT_V3_SEALED": true
+  },
+  "RESERVE": {
+    "PAIR_N": 0,
+    "UNIQUE_RESPONSE_N": 0,
+    "PRESENT": 0,
+    "NOT_PRESENT": 0,
+    "SOURCE_RESPONSE_OVERLAP_WITH_HOLDOUT": 0,
+    "HOLDOUT_SAME_RESPONSE_REMAINDER": 70
+  },
+  "SCORECARD": {
+    "PRESENCE_DEV": "PASS",
+    "HOLDOUT_V1": "INSPECTED_DIAGNOSTIC",
+    "HOLDOUT_V2": "SCORED_FAIL",
+    "HOLDOUT_V3": "READY_UNSCORED",
+    "PRESENCE_PRODUCTION_READINESS": "NOT_READY",
+    "RECOMMENDED": "NOT_READY",
+    "FIRST_RECOMMENDATION": "NOT_READY",
+    "NEGATIVE": "NOT_READY",
+    "COMPARATOR": "NOT_READY"
+  },
+  "REGIONALIZATION": {
+    "STATUS": "PLANNED_AFTER_PRESENCE_CERTIFICATION",
+    "EXECUTED": false,
+    "PROVIDER_CALLS": 0
+  },
+  "HARD_GUARDS": {
+    "HOLDOUT_V3_SCORING": 0,
+    "PREDICTIONS_EXPOSED": 0,
+    "ENTITY_RESOLVER_CHANGES": 0,
+    "ALIAS_CHANGES": 0,
+    "GROUND_TRUTH_CHANGES": 0,
+    "HUMAN_LABEL_CHANGES": 0,
+    "HOLDOUT_V2_CHANGES": 0,
+    "HOLDOUT_V2_RESCORE": 0,
+    "PROVIDER_CALLS": 0,
+    "REGIONALIZATION_EXECUTION": 0,
+    "AIRTABLE_WRITES": 0,
+    "DEPLOYS": 0
+  },
+  "NEXT_STEP": "READY_FOR_ONE_TIME_PRESENCE_HOLDOUT_V3_SCORE",
+  "batchId": "presence_validation_holdout_v3_candidate_batch_v1"
+}

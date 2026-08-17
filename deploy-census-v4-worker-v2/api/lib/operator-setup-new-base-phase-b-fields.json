@@ -1,0 +1,147 @@
+{
+  "phaseBVersion": "2026-05-25",
+  "description": "High-priority Operator Setup new-base writer mappings for OAS, Operator Explorer, and Operator Strategy. Master admin fields are also written via createOrUpdateOperatorMaster adminMap in operator-setup-new-base-writer.js.",
+  "skipped": [
+    {
+      "form_name": "companyLogo",
+      "reason": "File upload is multipart on intake; new-base writer has no attachment pipeline for companyLogo yet. Explorer reads pf.companyLogo when present from manual Airtable upload or future phase."
+    },
+    {
+      "form_name": "dealTermsOptIn",
+      "reason": "Needs Decision — no product decision on operator vs admin control."
+    },
+    {
+      "form_name": "diligenceQaOptIn",
+      "reason": "Needs Decision — no product decision on operator vs admin control."
+    }
+  ],
+  "masterWriterHardcoded": [
+    {
+      "table_name": "Operator Setup - Master",
+      "form_name": "companyName",
+      "airtable_field_name": "company_name",
+      "airtable_type": "singleLineText",
+      "writerPath": "createOrUpdateOperatorMaster"
+    },
+    {
+      "table_name": "Operator Setup - Master",
+      "form_name": "dataConfidenceLevel",
+      "airtable_field_name": "Data Confidence Level",
+      "airtable_type": "singleSelect",
+      "writerPath": "createOrUpdateOperatorMaster.adminMap"
+    },
+    {
+      "table_name": "Operator Setup - Master",
+      "form_name": "sourceType",
+      "airtable_field_name": "Source Type",
+      "airtable_type": "multipleSelects",
+      "writerPath": "createOrUpdateOperatorMaster.adminMap"
+    },
+    {
+      "table_name": "Operator Setup - Master",
+      "form_name": "lastUpdatedDate",
+      "airtable_field_name": "Last Updated Date",
+      "airtable_type": "date",
+      "writerPath": "createOrUpdateOperatorMaster.adminMap"
+    }
+  ],
+  "rows": [
+    {
+      "table_name": "Operator Setup - Profile & Positioning",
+      "form_name": "companyName",
+      "airtable_field_name": "company_name",
+      "airtable_type": "singleLineText"
+    },
+    {
+      "table_name": "Operator Setup - Profile & Positioning",
+      "form_name": "companyDescription",
+      "airtable_field_name": "companyDescription",
+      "airtable_type": "longText"
+    },
+    {
+      "table_name": "Operator Setup - Profile & Positioning",
+      "form_name": "website",
+      "airtable_field_name": "website",
+      "airtable_type": "url"
+    },
+    {
+      "table_name": "Operator Setup - Profile & Positioning",
+      "form_name": "headquarters",
+      "airtable_field_name": "headquarters",
+      "airtable_type": "singleLineText"
+    },
+    {
+      "table_name": "Operator Setup - Profile & Positioning",
+      "form_name": "primaryServiceModel",
+      "airtable_field_name": "primaryServiceModel",
+      "airtable_type": "singleSelect"
+    },
+    {
+      "table_name": "Operator Setup - Profile & Positioning",
+      "form_name": "yearEstablished",
+      "airtable_field_name": "yearEstablished",
+      "airtable_type": "number"
+    },
+    {
+      "table_name": "Operator Setup - Profile & Positioning",
+      "form_name": "yearsInBusiness",
+      "airtable_field_name": "yearsInBusiness",
+      "airtable_type": "number"
+    },
+    {
+      "table_name": "Operator Setup - Platform & Markets",
+      "form_name": "companyName",
+      "airtable_field_name": "company_name",
+      "airtable_type": "singleLineText"
+    },
+    {
+      "table_name": "Operator Setup - Platform & Markets",
+      "form_name": "chainScale",
+      "airtable_field_name": "chainScale",
+      "airtable_type": "singleLineText"
+    },
+    {
+      "table_name": "Operator Setup - Platform & Markets",
+      "form_name": "specificMarkets",
+      "airtable_field_name": "specificMarkets",
+      "airtable_type": "longText"
+    },
+    {
+      "table_name": "Operator Setup - Platform & Markets",
+      "form_name": "regions",
+      "airtable_field_name": "specificMarkets",
+      "airtable_type": "longText",
+      "note": "Form multiselect regions → specificMarkets long text (writer coerces array to CSV)"
+    },
+    {
+      "table_name": "Operator Setup - Platform & Markets",
+      "form_name": "totalProperties",
+      "airtable_field_name": "totalProperties",
+      "airtable_type": "singleLineText"
+    },
+    {
+      "table_name": "Operator Setup - Platform & Markets",
+      "form_name": "totalRooms",
+      "airtable_field_name": "totalRooms",
+      "airtable_type": "singleLineText"
+    },
+    {
+      "table_name": "Operator Setup - Platform & Markets",
+      "form_name": "brandsPortfolioDetail",
+      "airtable_field_name": "Brands Portfolio Detail",
+      "airtable_type": "longText"
+    }
+  ],
+  "blocked": [
+    {
+      "table_name": "Operator Setup - Commercial Fit & Terms",
+      "airtable_field_name": "company_name",
+      "reason": "Column in schema backup but not present on live base (Meta API 2026-05-25). Strategy/OAS use Master + Profile company_name."
+    },
+    {
+      "table_name": "Operator Setup - Governance, Delivery & Diligence",
+      "airtable_field_name": "company_name",
+      "reason": "Column in schema backup but not present on live base (Meta API 2026-05-25)."
+    }
+  ]
+}

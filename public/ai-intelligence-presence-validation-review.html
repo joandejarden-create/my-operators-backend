@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Presence Validation Review</title>
+  <style>
+    :root {
+      --ink: #1c241e;
+      --muted: #5a645c;
+      --line: #d0d8d1;
+      --bg: #eef2ef;
+      --card: #fff;
+      --accent: #2f5d3a;
+      --warn: #8a4b12;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      color: var(--ink);
+      background: linear-gradient(165deg, #e4ebe5 0%, var(--bg) 40%, #f7f8f6 100%);
+      min-height: 100vh;
+    }
+    header {
+      position: sticky; top: 0; z-index: 5;
+      padding: 1rem 1.25rem;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    h1 { margin: 0; font-size: 1.25rem; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem; }
+    .progress {
+      display: flex; flex-wrap: wrap; gap: 0.5rem 1rem;
+      margin-top: 0.75rem; font-size: 0.88rem; font-family: ui-monospace, Consolas, monospace;
+    }
+    .progress span { color: var(--muted); }
+    .progress strong { color: var(--ink); }
+    .keys {
+      margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted);
+    }
+    kbd {
+      display: inline-block; padding: 0.1rem 0.35rem;
+      border: 1px solid var(--line); border-radius: 3px;
+      background: #fafcfa; font-size: 0.8rem;
+    }
+    main { max-width: 920px; margin: 0 auto; padding: 1rem 1.25rem 4rem; }
+    .filters {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;
+    }
+    .filters select, .filters input {
+      padding: 0.35rem 0.5rem; border: 1px solid var(--line); border-radius: 4px;
+      font: inherit; background: #fff;
+    }
+    .banner {
+      padding: 0.75rem 1rem; margin-bottom: 1rem;
+      border: 1px solid #e0c9a8; background: #fff7ec; color: var(--warn);
+      border-radius: 6px; font-size: 0.92rem;
+    }
+    .case {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 8px; overflow: hidden;
+    }
+    .meta {
+      padding: 0.9rem 1rem; border-bottom: 1px solid var(--line);
+      display: grid; gap: 0.2rem;
+    }
+    .meta .entity { font-size: 1.15rem; font-weight: 650; }
+    .meta .row { color: var(--muted); font-size: 0.88rem; font-family: ui-monospace, Consolas, monospace; }
+    .prompt {
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--line);
+      background: #f7faf7; font-size: 0.95rem;
+    }
+    .response {
+      margin: 0; padding: 1rem; max-height: 420px; overflow: auto;
+      white-space: pre-wrap; word-break: break-word;
+      font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.92rem;
+      line-height: 1.5; border-bottom: 1px solid var(--line);
+    }
+    .guidance {
+      padding: 0.75rem 1rem; font-size: 0.88rem; color: var(--muted);
+      border-bottom: 1px solid var(--line);
+    }
+    .guidance ul { margin: 0.35rem 0 0; padding-left: 1.1rem; }
+    .actions {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 1rem;
+    }
+    button {
+      font: inherit; cursor: pointer; border-radius: 5px;
+      border: 1px solid var(--line); padding: 0.55rem 0.9rem; background: #fff;
+    }
+    button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    button.warn { background: #fff4e8; border-color: #e6c39a; }
+    button:focus { outline: 2px solid #7aa889; outline-offset: 1px; }
+    .assist {
+      padding: 0.5rem 1rem 1rem; font-size: 0.82rem; color: var(--muted);
+    }
+    .empty { padding: 2rem; text-align: center; color: var(--muted); }
+    .state { margin: 0.5rem 0; font-size: 0.9rem; }
+    .state.error { color: #8b1e1e; }
+    .export-box {
+      margin-bottom: 1rem;
+      padding: 0.75rem 1rem;
+      border: 1px dashed var(--line);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.7);
+    }
+    .export-box h2 {
+      margin: 0 0 0.45rem;
+      font-size: 0.95rem;
+      font-weight: 650;
+    }
+    .export-row {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
+      margin-top: 0.4rem;
+    }
+    .export-meta {
+      margin-top: 0.45rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .export-box button.selected {
+      border-color: var(--accent);
+      background: #e8f0ea;
+    }
+    .export-note {
+      margin: 0.35rem 0 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .assisted-box {
+      margin: 0;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: #f4f7fb;
+      font-size: 0.9rem;
+    }
+    .assisted-box.disagree {
+      background: #fff4e8;
+      border-left: 3px solid #c47a2b;
+    }
+    .assisted-box .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      color: #6b3d0e;
+      margin-bottom: 0.35rem;
+    }
+    .triptych {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .triptych div {
+      padding: 0.4rem 0.5rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+    .triptych strong { display: block; color: var(--muted); font-weight: 600; margin-bottom: 0.15rem; }
+    @media (max-width: 700px) {
+      .triptych { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Presence Validation Review</h1>
+    <p class="sub">Does this specific canonical entity actually appear in the response? Founder/admin only. System suggestion is not ground truth.</p>
+    <div class="progress" id="progress"></div>
+    <div class="keys">
+      <kbd>A</kbd> Accept proposal · <kbd>Y</kbd> Present · <kbd>N</kbd> Not Present · <kbd>I</kbd> Invalid · <kbd>D</kbd> Defer · auto-next
+    </div>
+  </header>
+  <main>
+    <div class="banner">
+      PRESENT = specific canonical entity is represented. Geographic “Playa”, bare “IHG”, bare “Marriott”, or generic “collection” are not enough for those companies/brands.
+    </div>
+    <div class="filters">
+      <select id="fStatus">
+        <option value="pending">Pending</option>
+        <option value="reviewed">Reviewed</option>
+        <option value="all">All</option>
+      </select>
+      <select id="fProvider"><option value="">Provider</option></select>
+      <select id="fLanguage"><option value="">Language</option></select>
+      <select id="fGeo"><option value="">Geography</option></select>
+      <select id="fType">
+        <option value="">Candidate type</option>
+        <option value="PRESENCE_TRUE">Potential Present</option>
+        <option value="PRESENCE_FALSE">Potential Absent</option>
+      </select>
+      <select id="fPrimary">
+        <option value="1">Primary queue (~150)</option>
+        <option value="0">All candidates</option>
+      </select>
+      <select id="fAssisted">
+        <option value="all">Assisted: All</option>
+        <option value="assisted">Has assisted proposal</option>
+        <option value="agreement">Agreement with system</option>
+        <option value="disagreement">Disagreement with system</option>
+        <option value="manual">Manual review required</option>
+        <option value="bulk_eligible">Bulk-approval eligible</option>
+        <option value="none">No assisted proposal</option>
+      </select>
+      <input id="reviewer" placeholder="Reviewer email" style="min-width:12rem" />
+    </div>
+    <div class="export-box" id="bulkBox">
+      <h2>Assisted Review Summary</h2>
+      <div class="export-meta" id="bulkSummary">Loading classification…</div>
+      <div class="export-row" style="margin-top:0.55rem">
+        <button type="button" id="btnReviewBulkSet">Review bulk approval set</button>
+        <button type="button" id="btnDownloadEligibleIds">Download eligible case IDs</button>
+        <button type="button" class="primary" id="btnApproveEligible">Approve eligible assisted proposals</button>
+      </div>
+      <div id="bulkDetail" class="export-meta" hidden></div>
+      <div id="bulkConfirm" hidden style="margin-top:0.65rem;padding:0.65rem;border:1px solid #e0c9a8;background:#fff7ec;border-radius:6px;">
+        <p id="bulkConfirmText" style="margin:0 0 0.5rem;"></p>
+        <div class="export-row">
+          <button type="button" class="primary" id="btnConfirmBulk">Confirm bulk approval</button>
+          <button type="button" id="btnCancelBulk">Cancel</button>
+        </div>
+      </div>
+      <p class="export-note">Bulk approval requires explicit confirmation. Disagreements / INVALID / DEFER never bulk-approve.</p>
+    </div>
+    <div class="export-box" id="exportBox">
+      <h2>Export Review Batch</h2>
+      <div class="export-row">
+        <button type="button" data-limit="25" class="limitBtn selected">25</button>
+        <button type="button" data-limit="50" class="limitBtn">50</button>
+        <button type="button" data-limit="100" class="limitBtn">100</button>
+        <button type="button" data-limit="all" class="limitBtn">All</button>
+      </div>
+      <div class="export-row">
+        <button type="button" id="btnExportPendingMd">Export Pending · MD</button>
+        <button type="button" id="btnExportPendingJson">Export Pending · JSON</button>
+        <button type="button" id="btnExportFilterMd">Export Current Filter · MD</button>
+        <button type="button" id="btnExportFilterJson">Export Current Filter · JSON</button>
+      </div>
+      <div class="export-meta" id="exportMeta">Cases in export: — · Unique responses: —</div>
+      <p class="export-note">ChatGPT drafts are assistance only — never auto-applied as human ground truth.</p>
+    </div>
+    <div class="state" id="state" hidden></div>
+    <div id="card"></div>
+  </main>
+  <script src="/js/dealality-memberstack-auth.js" defer></script>
+  <script src="/js/ai-visibility/ai-intelligence-presence-validation-review.js" defer></script>
+</body>
+</html>

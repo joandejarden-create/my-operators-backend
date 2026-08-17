@@ -1,0 +1,269 @@
+{
+  "version": "ai_intelligence_classifier_hardening_1_entity_dev_result_v1",
+  "generatedAt": "2026-08-14T23:29:11.154Z",
+  "HOLDOUT_ACCESSED": false,
+  "HOLDOUT_CASES_INSPECTED": 0,
+  "HOLDOUT_METRICS_RUN": false,
+  "DEV_N": 302,
+  "HOLDOUT_N_SEALED": 93,
+  "universeEntityCount": 35,
+  "developmentBaseline": {
+    "note": "Excerpt-only scoring with expanded Golden Set entity index (pre-hydration)",
+    "ENTITY_PRECISION": 1,
+    "ENTITY_RECALL": 0.6126,
+    "ENTITY_F1": 0.7598,
+    "ENTITY_FALSE_NEGATIVES": 117,
+    "ENTITY_FALSE_POSITIVES": 0,
+    "RECOMMENDATION_ACCURACY": 0.4437,
+    "FIRST_RECOMMENDATION_ACCURACY": 0.9073,
+    "QUESTION_STATUS_ACCURACY": 0.3095
+  },
+  "priorAuditBaseline": {
+    "ENTITY_PRECISION": 1,
+    "ENTITY_RECALL": 0.5364,
+    "ENTITY_F1": 0.6983,
+    "ENTITY_FALSE_NEGATIVES": 140
+  },
+  "rootCauses": {
+    "ENTITY_INDEX_MISSING": "Phase 2C universe had 17 brands; Golden Set subjects need 31+",
+    "TRUNCATED_EXTRACTION": "Scoring used rawResponseExcerpt (~1200 chars); full store rawText often 5–10k and contains the entity",
+    "CANONICAL_NAME_VARIANT": "Partial — short aliases + markdown; addressed via overlay + stripMarkdown"
+  },
+  "providerNormalization": {
+    "note": "Provider rawText in monitoring store preserves brand text; loss was golden-set excerpt truncation for scoring, not adapter drop.",
+    "OPENAI": {
+      "TEXT_LOSS_FOUND": "EXCERPT_TRUNCATION_IN_SCORING",
+      "ENTITY_BEARING_TEXT_DROPPED": "YES_WHEN_LATE_IN_ANSWER"
+    },
+    "GEMINI": {
+      "TEXT_LOSS_FOUND": "EXCERPT_TRUNCATION_IN_SCORING",
+      "ENTITY_BEARING_TEXT_DROPPED": "YES_WHEN_LATE_IN_ANSWER"
+    },
+    "PERPLEXITY": {
+      "TEXT_LOSS_FOUND": "EXCERPT_TRUNCATION_IN_SCORING",
+      "ENTITY_BEARING_TEXT_DROPPED": "YES_WHEN_LATE_IN_ANSWER"
+    },
+    "CLAUDE": {
+      "TEXT_LOSS_FOUND": "EXCERPT_TRUNCATION_IN_SCORING",
+      "ENTITY_BEARING_TEXT_DROPPED": "YES_WHEN_LATE_IN_ANSWER"
+    },
+    "FIXES": [
+      "hydrateGoldenSetCasesForScoring loads full monitoring-store rawText by batchId+responseId",
+      "buildGoldenSetScoringEntityIndex expands subject universe",
+      "stripMarkdownNoiseForEntityMatch before span search",
+      "runtime alias overlay short forms (collision-safe)"
+    ]
+  },
+  "resolverFixes": {
+    "NORMALIZATION_FIXES": [
+      "stripMarkdownNoiseForEntityMatch",
+      "NFKD accent folding (existing)"
+    ],
+    "ALIASES_ADDED": [
+      "Kimpton",
+      "Tapestry Collection",
+      "Tapestry",
+      "Preferred Hotels",
+      "SLH",
+      "Small Luxury Hotels",
+      "Vignette",
+      "Courtyard",
+      "Curio Collection",
+      "Curio",
+      "Autograph"
+    ],
+    "ALIASES_REJECTED": [
+      "Preferred",
+      "Collection",
+      "Hotels",
+      "Luxury",
+      "Playa",
+      "IHG"
+    ],
+    "COLLISION_PROTECTIONS": [
+      "blockedBareParents",
+      "longest-alias-first",
+      "rejected generic aliases",
+      "rejected Playa (Spanish beach/place collision)"
+    ],
+    "PARENT_BRAND_PROTECTIONS": [
+      "Hilton/Marriott/Hyatt/IHG/Accor/Wyndham remain blocked bare parents"
+    ]
+  },
+  "remainingEntityFailureClusters": [
+    {
+      "PATTERN": "Playa Hotels & Resorts",
+      "COUNT": 10,
+      "CASE_IDS": [
+        "v2_cand_1674948a",
+        "v2_cand_17d64be9",
+        "v2_cand_27ec7204",
+        "v2_cand_2dd0fd2a",
+        "v2_cand_3515312a",
+        "v2_cand_465be86c",
+        "v2_cand_4cf733c7",
+        "v2_cand_52172a1d",
+        "v2_cand_8d9c220b",
+        "v2_cand_adfdf95e"
+      ],
+      "PROVIDERS": [
+        "perplexity",
+        "gemini",
+        "claude"
+      ],
+      "LANGUAGES": [
+        "es",
+        "en"
+      ],
+      "FAILURE_REASON": "SUBJECT_ABSENT_OR_SPANISH_PLAYA_AMBIGUITY — response has beach/place 'playa' only; bare Playa alias rejected"
+    },
+    {
+      "PATTERN": "IHG Hotels & Resorts (Managed)",
+      "COUNT": 2,
+      "CASE_IDS": [
+        "v2_cand_5ae0142a",
+        "v2_cand_a07ee6c3"
+      ],
+      "PROVIDERS": [
+        "claude"
+      ],
+      "LANGUAGES": [
+        "en"
+      ],
+      "FAILURE_REASON": "PARENT_PREFIX_BLOCKED — text uses bare IHG; mapping to IHG Hotels & Resorts (Managed) rejected"
+    }
+  ],
+  "developmentAfter": {
+    "ENTITY_PRECISION": 1,
+    "ENTITY_RECALL": 0.9603,
+    "ENTITY_F1": 0.9797,
+    "ENTITY_FALSE_NEGATIVES": 12,
+    "ENTITY_FALSE_POSITIVES": 0,
+    "hydrationStats": {
+      "total": 302,
+      "hydratedFromStore": 252,
+      "excerptOnly": 50,
+      "missing": 0,
+      "bytesGained": 1079850
+    }
+  },
+  "subgroups": {
+    "PROVIDER": {
+      "openai": {
+        "n": 38,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 1,
+        "RECOMMENDATION_ACCURACY": 0.3684,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9474
+      },
+      "gemini": {
+        "n": 77,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.9221,
+        "RECOMMENDATION_ACCURACY": 0.8052,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.974
+      },
+      "perplexity": {
+        "n": 65,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.9846,
+        "RECOMMENDATION_ACCURACY": 0.7077,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9385
+      },
+      "claude": {
+        "n": 72,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.9306,
+        "RECOMMENDATION_ACCURACY": 0.5694,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9306
+      }
+    },
+    "LANGUAGE": {
+      "en": {
+        "n": 125,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.976,
+        "RECOMMENDATION_ACCURACY": 0.544,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.944
+      },
+      "es": {
+        "n": 127,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.9291,
+        "RECOMMENDATION_ACCURACY": 0.748,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9528
+      }
+    },
+    "GEOGRAPHY": {
+      "GLOBAL": {
+        "n": 31,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.9677,
+        "RECOMMENDATION_ACCURACY": 0.6129,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9355
+      },
+      "CALA": {
+        "n": 84,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.9524,
+        "RECOMMENDATION_ACCURACY": 0.7619,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9643
+      },
+      "MEXICO": {
+        "n": 91,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.9341,
+        "RECOMMENDATION_ACCURACY": 0.6264,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9341
+      },
+      "EUROPE": {
+        "n": 22,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 0.9545,
+        "RECOMMENDATION_ACCURACY": 0.4091,
+        "FIRST_RECOMMENDATION_ACCURACY": 0.9091
+      },
+      "NORTH_AMERICA": {
+        "n": 24,
+        "ENTITY_PRECISION": 1,
+        "ENTITY_RECALL": 1,
+        "RECOMMENDATION_ACCURACY": 0.5833,
+        "FIRST_RECOMMENDATION_ACCURACY": 1
+      }
+    }
+  },
+  "cascadeEffect": {
+    "RECOMMENDATION_ACCURACY_BEFORE": 0.4437,
+    "RECOMMENDATION_ACCURACY_AFTER": 0.6987,
+    "FIRST_REC_ACCURACY_BEFORE": 0.9073,
+    "FIRST_REC_ACCURACY_AFTER": 0.9536,
+    "QUESTION_STATUS_ACCURACY_BEFORE": 0.3095,
+    "QUESTION_STATUS_ACCURACY_AFTER": 0.5952
+  },
+  "remainingErrors": {
+    "ENTITY": 12,
+    "RECOMMENDATION": 91,
+    "FIRST_REC": 13,
+    "QUESTION_STATUS": 102,
+    "BY_PATTERN": {
+      "FIRST_RECOMMENDATION_MISSED": 13,
+      "RECOMMENDATION_STATUS_MISMATCH": 78,
+      "QUESTION_STATUS_MISMATCH": 102,
+      "ALIAS_RESOLUTION_ERROR": 12
+    }
+  },
+  "entityGate": false,
+  "ENTITY_GATE_STATUS": "ENTITY_GATE_REVIEW_REQUIRED",
+  "activity": {
+    "LIVE_PROVIDER_CALLS": 0,
+    "NEW_MONITORING": 0,
+    "PUBLIC_CRAWL": 0,
+    "GOLDEN_SET_LABEL_CHANGES": 0,
+    "HOLDOUT_TUNING": 0,
+    "RECOMMENDATION_CLASSIFIER_CHANGES": 0,
+    "QUESTION_STATUS_LOGIC_CHANGES": 0,
+    "AIRTABLE_WRITES": 0,
+    "SCHEMA_CHANGES": 0,
+    "DEPLOYS": 0
+  }
+}

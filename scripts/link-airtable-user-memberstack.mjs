@@ -1,37 +1,46 @@
 #!/usr/bin/env node
 /**
- * Link an Airtable Users row to a Memberstack member id (Unique Webflow ID + slug).
+ * Link Airtable Users row to Memberstack member id (legacy fields: Unique Webflow ID + Slug).
  *
  * Usage:
- *   node scripts/link-airtable-user-memberstack.mjs --email owner@example.com --memberstack-id mem_sb_xxxxx
- *   node scripts/link-airtable-user-memberstack.mjs --record-id recXXXXXXXX --memberstack-id mem_sb_xxxxx
+ *   node scripts/link-airtable-user-memberstack.mjs --email owner@example.com --memberstack-id mem_XXXXX
+ *   node scripts/link-airtable-user-memberstack.mjs --record-id recXXXXXXXX --memberstack-id mem_XXXXX --dry-run
  *
- * Requires AIRTABLE_API_KEY and AIRTABLE_BASE_ID (loads .env / .env.local via load-env).
+ * Rejects mem_sb_ test ids unless --allow-test-memberstack-id (loud warning).
  */
-
 import "../load-env.js";
 import Airtable from "airtable";
+import {
+  MEMBERSTACK_MEMBER_ID_FIELD_NAMES,
+  memberstackIdLabel,
+  memberstackSlugLabel,
+} from "../lib/pilot-provisioning/pilot-field-registry.js";
+import { isTestMemberstackId } from "../lib/pilot-provisioning/pilot-validators.js";
 
 const USERS_TABLE = process.env.AIRTABLE_INTAKE_USERS_TABLE || "tbl6shiyz2wdUqE5F";
 const EMAIL_FIELD = process.env.AIRTABLE_INTAKE_USERS_EMAIL_FIELD || "fldBl7IXEscwkMhnZ";
-const MS_ID_FIELD =
-  process.env.AIRTABLE_INTAKE_USERS_UNIQUE_WEBFLOW_ID_FIELD || "flddTfp7oLdcPwBIC";
-/** Airtable column is "Slug" (fldEgbHu5MvfyrxgE) — not lowercase "slug". */
-const SLUG_FIELD =
-  process.env.AIRTABLE_USERS_SLUG_FIELD || "fldEgbHu5MvfyrxgE";
+const MS_ID_FIELD = MEMBERSTACK_MEMBER_ID_FIELD_NAMES.primaryFieldId;
+const SLUG_FIELD = MEMBERSTACK_MEMBER_ID_FIELD_NAMES.mirrorFieldId;
 
 function escapeFormula(value) {
   return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
 function parseArgs(argv) {
-  const out = { email: null, recordId: null, memberstackId: null, dryRun: false };
+  const out = {
+    email: null,
+    recordId: null,
+    memberstackId: null,
+    dryRun: false,
+    allowTestMemberstackId: false,
+  };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--email" && argv[i + 1]) out.email = argv[++i];
     else if (a === "--record-id" && argv[i + 1]) out.recordId = argv[++i];
     else if ((a === "--memberstack-id" || a === "--mem") && argv[i + 1]) out.memberstackId = argv[++i];
     else if (a === "--dry-run") out.dryRun = true;
+    else if (a === "--allow-test-memberstack-id") out.allowTestMemberstackId = true;
     else if (a === "--help" || a === "-h") out.help = true;
   }
   return out;
@@ -41,9 +50,10 @@ async function main() {
   const args = parseArgs(process.argv);
   if (args.help || !args.memberstackId || (!args.email && !args.recordId)) {
     console.log(`Usage:
-  node scripts/link-airtable-user-memberstack.mjs --email <email> --memberstack-id mem_sb_...
-  node scripts/link-airtable-user-memberstack.mjs --record-id rec... --memberstack-id mem_sb_...
-  --dry-run   print only, do not update Airtable`);
+  node scripts/link-airtable-user-memberstack.mjs --email <email> --memberstack-id mem_...
+  node scripts/link-airtable-user-memberstack.mjs --record-id rec... --memberstack-id mem_...
+  --dry-run                      print only, do not update Airtable
+  --allow-test-memberstack-id    allow mem_sb_ (Test Mode) — NOT for production rows`);
     process.exit(args.help ? 0 : 1);
   }
 
@@ -56,7 +66,25 @@ async function main() {
 
   const msId = String(args.memberstackId).trim();
   if (!msId.startsWith("mem_")) {
-    console.warn("Warning: memberstack id usually starts with mem_sb_ or mem_");
+    console.error("ERROR: Memberstack member id must start with mem_");
+    process.exit(1);
+  }
+
+  if (isTestMemberstackId(msId) && !args.allowTestMemberstackId) {
+    console.error(`
+ERROR: Refusing to write Test Mode member id (${msId}) to Airtable Users.
+Never paste mem_sb_ into production Airtable Users rows.
+
+For localhost-only sandbox testing, re-run with --allow-test-memberstack-id (not for pilot/production).
+`);
+    process.exit(1);
+  }
+
+  if (isTestMemberstackId(msId) && args.allowTestMemberstackId) {
+    console.warn(`
+*** WARNING ***
+Writing Test Mode mem_sb_ id to Airtable. Do NOT use for production pilot users.
+`);
   }
 
   const base = new Airtable({ apiKey }).base(baseId);
@@ -79,6 +107,9 @@ async function main() {
     [SLUG_FIELD]: msId,
   };
 
+  console.log("Memberstack member id:", msId);
+  console.log("Will set both:", memberstackIdLabel(), "and", memberstackSlugLabel());
+
   if (args.dryRun) {
     console.log("Dry run — would PATCH", recordId, patch);
     return;
@@ -86,7 +117,6 @@ async function main() {
 
   const updated = await base(USERS_TABLE).update(recordId, patch, { typecast: true });
   console.log("Updated Users row:", updated.id);
-  console.log("  Unique Webflow ID / slug set to:", msId);
 }
 
 main().catch((err) => {

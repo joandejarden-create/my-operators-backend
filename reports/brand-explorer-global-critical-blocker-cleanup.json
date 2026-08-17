@@ -1,0 +1,68 @@
+{
+  "version": "global-critical-blocker-cleanup-v2",
+  "generatedAt": "2026-07-29T13:27:46.123Z",
+  "dryRun": false,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "criticalFindingCount": 1,
+  "brandsTouched": [
+    "so-hotels-and-resorts"
+  ],
+  "patchCount": 2,
+  "applyResult": {
+    "applied": 2,
+    "errors": []
+  },
+  "brandPlans": [
+    {
+      "brandSlug": "so-hotels-and-resorts",
+      "brandName": "SO/",
+      "recordId": "recTJdPlr4mDs9app",
+      "failureCount": 1,
+      "patchCount": 2,
+      "skipped": null,
+      "patches": [
+        {
+          "action": "PATCH",
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "recordId": "recu9wFX1FjuXPY0R",
+          "brandSlug": "so-hotels-and-resorts",
+          "slotKey": "standards.requirement",
+          "fields": {
+            "Body": "The property should present a credible SO/ Hotels & Resorts experience through rooms, public spaces, arrival, and overall design aligned to a Fashion-led luxury lifestyle collection (Ennismore)."
+          },
+          "before": {
+            "title": "Design & guest promise review",
+            "body": "The property should present a credible SO/ Hotels & Resorts experience through rooms, public spaces, arrival, and overall design aligned to a Fashion-led luxury"
+          },
+          "after": {
+            "title": "Design & guest promise review",
+            "body": "The property should present a credible SO/ Hotels & Resorts experience through rooms, public spaces, arrival, and overall design aligned to a Fashion-led luxury",
+            "hidden": false
+          }
+        },
+        {
+          "action": "PATCH",
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "recordId": "recYGriGWJnS5nAHq",
+          "brandSlug": "so-hotels-and-resorts",
+          "slotKey": "operations.operator_compat.summary",
+          "fields": {
+            "Body": "Do not create Brand Basics in. The operator should have demonstrated capability with SO/ Hotels & Resorts or a comparable brand in the same tier and operating-model category, while maintaining Accor / Ennismore (lifestyle collective) systems and quality obligations."
+          },
+          "before": {
+            "title": "Third-Party Operator Compatibility",
+            "body": "Do not create Brand Basics in Stage 3 — recommendation only. The operator should have demonstrated capability with SO/ Hotels & Resorts or a comparable brand in"
+          },
+          "after": {
+            "title": "Third-Party Operator Compatibility",
+            "body": "Do not create Brand Basics in. The operator should have demonstrated capability with SO/ Hotels & Resorts or a comparable brand in the same tier and operating-m",
+            "hidden": false
+          }
+        }
+      ]
+    }
+  ],
+  "readyStatement": "global_active_critical_semantic_blockers_clean",
+  "freezeNote": "Do not freeze 54 in this task — Critical cleanup only; High/Medium remain for later review."
+}

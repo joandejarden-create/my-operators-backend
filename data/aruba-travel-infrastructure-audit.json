@@ -1,0 +1,100 @@
+{
+  "auditedAt": "2026-06-24T13:29:11.014Z",
+  "country": "Aruba",
+  "market": "Aruba Countrywide",
+  "keywords": [
+    "aruba",
+    "oranjestad",
+    "palm beach",
+    "eagle beach",
+    "noord",
+    "san nicolas",
+    "baby beach",
+    "queen beatrix",
+    "beatrix",
+    "cruise",
+    "port aruba",
+    "barcadera",
+    "arashi",
+    "malmok",
+    "california lighthouse",
+    "renaissance",
+    "aua",
+    "bubali"
+  ],
+  "summary": {
+    "countryTravelInfrastructureTotal": 2,
+    "marketMatchedRecords": 2,
+    "existingExpectedNodes": 2,
+    "likelyMissingNodes": 6,
+    "duplicateCandidates": 0,
+    "weakSubmarketRecords": 2,
+    "governanceBackfillCandidates": 0,
+    "additionalFixtureRecommended": true,
+    "mexicoTravelInfrastructureTotal": 2
+  },
+  "existingMatchingRecords": [
+    {
+      "name": "Oranjestad Cruise Port",
+      "pointType": "Cruise Port",
+      "city": "Oranjestad",
+      "submarket": "",
+      "latitude": 12.5186,
+      "longitude": -70.0358,
+      "sourceReference": "https://www.openstreetmap.org/?mlat=12.5186&mlon=-70.0358&zoom=13",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "Oranjestad Queen Beatrix Airport",
+      "pointType": "Airport",
+      "city": "Oranjestad",
+      "submarket": "",
+      "latitude": 12.5014,
+      "longitude": -70.0152,
+      "sourceReference": "https://en.wikipedia.org/wiki/Queen_Beatrix_International_Airport",
+      "dataConfidence": "High"
+    }
+  ],
+  "expectedNodeCoverage": [
+    {
+      "label": "Queen Beatrix International Airport / AUA",
+      "name": "Oranjestad Queen Beatrix Airport",
+      "city": "Oranjestad",
+      "submarket": "",
+      "pointType": "Airport"
+    },
+    {
+      "label": "Oranjestad cruise port",
+      "name": "Oranjestad Cruise Port",
+      "city": "Oranjestad",
+      "submarket": "",
+      "pointType": "Cruise Port"
+    }
+  ],
+  "likelyMissingRecords": [
+    "Aruba Ports Authority / port access",
+    "Palm Beach hotel corridor access",
+    "Eagle Beach / low-rise corridor access",
+    "San Nicolas / Baby Beach access",
+    "Arashi / Malmok access",
+    "Marina / ferry island access"
+  ],
+  "duplicateCandidates": [],
+  "weakSubmarketRecords": [
+    {
+      "name": "Oranjestad Cruise Port",
+      "city": "Oranjestad",
+      "submarket": ""
+    },
+    {
+      "name": "Oranjestad Queen Beatrix Airport",
+      "city": "Oranjestad",
+      "submarket": ""
+    }
+  ],
+  "governanceBackfillCandidates": [],
+  "notes": [
+    "Demand anchors should not duplicate TI airports/ferries unless explicitly DA-relevant.",
+    "Do not import TI from this audit unless gaps are confirmed and fixture is prepared."
+  ]
+}

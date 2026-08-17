@@ -1,0 +1,324 @@
+/* Old Home — How We Do It (Gobiz-style scroll timeline, Dealality skin) */
+#oh-how-we-do-it{
+  position:relative!important;
+  overflow:visible!important;
+  padding:96px 1.5rem 0!important;
+  background:#080F25!important;
+  color:#e8ecf5!important;
+  border-top:1px solid rgba(255,255,255,.07)!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+}
+#oh-how-we-do-it .oh-how-glow{
+  position:absolute!important;
+  left:50%!important;
+  top:18%!important;
+  width:min(92vw,980px)!important;
+  height:360px!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:radial-gradient(ellipse at center,rgba(108,114,255,.16) 0%,rgba(108,114,255,.05) 46%,transparent 72%)!important;
+  filter:blur(40px)!important;
+  pointer-events:none!important;
+  z-index:0!important;
+}
+#oh-how-we-do-it .oh-how-inner{
+  position:relative!important;
+  z-index:1!important;
+  max-width:1120px!important;
+  margin:0 auto!important;
+}
+#oh-how-we-do-it .oh-how-head{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)!important;
+  gap:28px 48px!important;
+  align-items:end!important;
+  margin:0 0 48px!important;
+}
+#oh-how-we-do-it .oh-how-badge{
+  display:inline-flex!important;
+  margin:0 0 14px!important;
+  padding:.35rem .85rem!important;
+  border:1px solid rgba(108,114,255,.28)!important;
+  border-radius:999px!important;
+  background:rgba(108,114,255,.1)!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:.72rem!important;
+  font-weight:700!important;
+  letter-spacing:.07em!important;
+  text-transform:uppercase!important;
+  color:#8B90FF!important;
+}
+#oh-how-we-do-it .oh-how-h2{
+  margin:0!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:clamp(1.7rem,3.1vw,2.5rem)!important;
+  font-weight:800!important;
+  line-height:1.15!important;
+  letter-spacing:-.03em!important;
+  color:#fff!important;
+  max-width:14em!important;
+}
+#oh-how-we-do-it .oh-how-lead{
+  margin:0!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:1.05rem!important;
+  line-height:1.65!important;
+  color:rgba(255,255,255,.62)!important;
+  max-width:34rem!important;
+}
+
+/* Desktop: tall scroll runway; sticky stage stays in view */
+#oh-how-we-do-it .oh-how-runway{
+  position:relative!important;
+  height:calc(var(--oh-how-steps,5) * 85vh)!important;
+  margin:0 0 72px!important;
+}
+#oh-how-we-do-it .oh-how-stage{
+  position:sticky!important;
+  top:96px!important;
+  display:grid!important;
+  grid-template-columns:minmax(220px,.88fr) minmax(0,1.22fr)!important;
+  gap:28px 40px!important;
+  align-items:start!important;
+  padding-bottom:24px!important;
+}
+#oh-how-we-do-it .oh-how-trail{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+  padding:8px 0!important;
+  min-height:420px!important;
+}
+#oh-how-we-do-it .oh-how-trail-line{
+  position:absolute!important;
+  left:27px!important;
+  top:18px!important;
+  bottom:18px!important;
+  width:2px!important;
+  background:rgba(255,255,255,.1)!important;
+  border-radius:999px!important;
+  overflow:hidden!important;
+}
+#oh-how-we-do-it .oh-how-trail-progress{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  width:100%!important;
+  height:0%!important;
+  background:linear-gradient(180deg,#6C72FF 0%,#8B90FF 100%)!important;
+  box-shadow:0 0 14px rgba(108,114,255,.45)!important;
+  transition:height .18s linear!important;
+}
+#oh-how-we-do-it .oh-how-dot{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:54px minmax(0,1fr)!important;
+  gap:14px!important;
+  align-items:center!important;
+  min-height:72px!important;
+  margin:0!important;
+  padding:8px 0!important;
+  border:0!important;
+  background:transparent!important;
+  color:inherit!important;
+  text-align:left!important;
+  cursor:pointer!important;
+  font:inherit!important;
+}
+#oh-how-we-do-it .oh-how-dot:focus-visible{
+  outline:2px solid #6C72FF!important;
+  outline-offset:4px!important;
+  border-radius:10px!important;
+}
+#oh-how-we-do-it .oh-how-num{
+  position:relative!important;
+  z-index:1!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:54px!important;
+  height:54px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  background:#0D1530!important;
+  color:rgba(255,255,255,.55)!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:1rem!important;
+  font-weight:700!important;
+  letter-spacing:-.02em!important;
+  transition:border-color .2s ease,background .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease!important;
+}
+#oh-how-we-do-it .oh-how-dot.is-active .oh-how-num,
+#oh-how-we-do-it .oh-how-dot.is-done .oh-how-num{
+  border-color:rgba(108,114,255,.55)!important;
+  background:rgba(108,114,255,.16)!important;
+  color:#fff!important;
+  box-shadow:0 0 0 4px rgba(108,114,255,.12),0 0 22px rgba(108,114,255,.22)!important;
+}
+#oh-how-we-do-it .oh-how-dot.is-active .oh-how-num{transform:scale(1.06)!important}
+#oh-how-we-do-it .oh-how-dot-label{
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:.98rem!important;
+  font-weight:650!important;
+  line-height:1.35!important;
+  color:rgba(255,255,255,.48)!important;
+  transition:color .2s ease!important;
+}
+#oh-how-we-do-it .oh-how-dot.is-active .oh-how-dot-label,
+#oh-how-we-do-it .oh-how-dot.is-done .oh-how-dot-label{color:#fff!important}
+#oh-how-we-do-it .oh-how-panels{
+  position:relative!important;
+  min-height:460px!important;
+}
+#oh-how-we-do-it .oh-how-panel{
+  display:none!important;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)!important;
+  gap:18px!important;
+  align-items:stretch!important;
+  padding:18px!important;
+  border-radius:18px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:#0D1530!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.28)!important;
+}
+#oh-how-we-do-it .oh-how-panel.is-active{
+  display:grid!important;
+  animation:oh-how-in .4s ease both!important;
+}
+@keyframes oh-how-in{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+#oh-how-we-do-it .oh-how-media{
+  position:relative!important;
+  overflow:hidden!important;
+  min-height:280px!important;
+  border-radius:14px!important;
+  border:1px solid rgba(255,255,255,.07)!important;
+  background:#111B3A!important;
+}
+#oh-how-we-do-it .oh-how-media img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:280px!important;
+  object-fit:cover!important;
+  object-position:top left!important;
+}
+#oh-how-we-do-it .oh-how-decision{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:.7rem!important;
+  min-height:280px!important;
+  padding:1.6rem!important;
+  border-radius:14px!important;
+  border:1px solid rgba(108,114,255,.28)!important;
+  background:linear-gradient(160deg,rgba(108,114,255,.14),rgba(17,27,58,.9))!important;
+  color:#e8ecf5!important;
+}
+#oh-how-we-do-it .oh-how-decision strong{
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:1.05rem!important;
+  color:#fff!important;
+}
+#oh-how-we-do-it .oh-how-decision p{
+  margin:0!important;
+  font-size:.95rem!important;
+  line-height:1.55!important;
+  color:rgba(255,255,255,.7)!important;
+}
+#oh-how-we-do-it .oh-how-copy{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:12px!important;
+  padding:8px 6px!important;
+  text-align:left!important;
+}
+#oh-how-we-do-it .oh-how-step-kicker{
+  margin:0!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:.78rem!important;
+  font-weight:700!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+  color:#8B90FF!important;
+}
+#oh-how-we-do-it .oh-how-step-title{
+  margin:0!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:clamp(1.25rem,2.2vw,1.65rem)!important;
+  font-weight:750!important;
+  line-height:1.2!important;
+  letter-spacing:-.02em!important;
+  color:#fff!important;
+}
+#oh-how-we-do-it .oh-how-step-body{
+  margin:0!important;
+  font-family:"Plus Jakarta Sans","Inter Tight",system-ui,sans-serif!important;
+  font-size:.98rem!important;
+  line-height:1.65!important;
+  color:rgba(255,255,255,.62)!important;
+}
+#oh-how-we-do-it .oh-how-sr{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+
+/* Mobile: stack all steps — no horizontal scroll, no tall runway */
+@media (max-width:960px){
+  #oh-how-we-do-it{padding:72px 1.25rem 64px!important}
+  #oh-how-we-do-it .oh-how-head{
+    grid-template-columns:1fr!important;
+    gap:14px!important;
+    margin-bottom:28px!important;
+  }
+  #oh-how-we-do-it .oh-how-runway{
+    height:auto!important;
+    margin:0!important;
+  }
+  #oh-how-we-do-it .oh-how-stage{
+    position:static!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:18px!important;
+    top:auto!important;
+  }
+  #oh-how-we-do-it .oh-how-trail{
+    min-height:0!important;
+    display:none!important; /* trail is redundant when all panels stack */
+  }
+  #oh-how-we-do-it .oh-how-panels{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:14px!important;
+    min-height:0!important;
+  }
+  #oh-how-we-do-it .oh-how-panel,
+  #oh-how-we-do-it .oh-how-panel.is-active{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    animation:none!important;
+  }
+  #oh-how-we-do-it .oh-how-panel[hidden]{display:grid!important}
+  #oh-how-we-do-it .oh-how-media,
+  #oh-how-we-do-it .oh-how-media img,
+  #oh-how-we-do-it .oh-how-decision{min-height:200px!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #oh-how-we-do-it .oh-how-panel.is-active{animation:none!important}
+  #oh-how-we-do-it .oh-how-trail-progress,
+  #oh-how-we-do-it .oh-how-num{transition:none!important}
+  #oh-how-we-do-it .oh-how-runway{height:auto!important}
+  #oh-how-we-do-it .oh-how-stage{position:static!important}
+}

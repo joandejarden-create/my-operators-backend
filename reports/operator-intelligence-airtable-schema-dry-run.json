@@ -1,0 +1,62 @@
+{
+  "mode": "dry-run-only",
+  "applied": false,
+  "generatedAt": "2026-08-03T20:45:00.000Z",
+  "groups": {
+    "A_existing_fields_safe_populate": [
+      {
+        "operation": "populate_existing",
+        "table": "Operator Setup - Platform & Markets",
+        "field": "Active Countries",
+        "operators": ["Arbor", "GHL", "Playa", "Aimbridge"],
+        "founderApprovalRequired": true,
+        "manualReviewRequired": false,
+        "rollbackApproach": "Restore snapshot"
+      },
+      {
+        "operation": "populate_existing",
+        "table": "Operator Setup - Commercial Fit & Terms",
+        "field": "Management Structures Supported",
+        "operators": ["GHL", "Playa", "Aimbridge"],
+        "founderApprovalRequired": true,
+        "manualReviewRequired": false,
+        "rollbackApproach": "Restore snapshot"
+      }
+    ],
+    "B_normalization": [
+      {
+        "operation": "normalize",
+        "table": "Operator Setup - Platform & Markets",
+        "field": "Active Countries",
+        "operators": ["Cenote Azul"],
+        "currentValue": "8-country list",
+        "proposedValue": "Demote unsupported countries pending property evidence",
+        "founderApprovalRequired": true,
+        "manualReviewRequired": true,
+        "conflictStatus": "unsupported_current_value"
+      }
+    ],
+    "C_new_claim_evidence_architecture": [
+      {
+        "operation": "create_table",
+        "table": "Operator Claims (proposed)",
+        "founderApprovalRequired": true,
+        "requiredForScaling": true,
+        "requiredForCalibrationPersistence": false
+      },
+      {
+        "operation": "extend_or_reuse",
+        "table": "Partner Intelligence Source Library",
+        "founderApprovalRequired": true,
+        "requiredForScaling": true
+      },
+      {
+        "operation": "extend_fields",
+        "table": "Operator Setup - Case Studies",
+        "field": "Why Comparable / Comparability Strength",
+        "founderApprovalRequired": true
+      }
+    ]
+  },
+  "explicitNonGoals": ["Operator Deal Requests as shortlist", "AI-as-evidence", "performance invent"]
+}

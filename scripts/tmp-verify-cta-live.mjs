@@ -1,0 +1,12 @@
+const r = await fetch("https://www.dealality.com/old-home?nocache=" + Date.now());
+const t = await r.text();
+const i = t.indexOf('id="cta-band-h2"');
+console.log(t.slice(i, i + 280));
+console.log("---");
+const j = t.indexOf('id="cta-band-lead"');
+console.log(t.slice(j, j + 260));
+console.log("---css---");
+const m = t.match(/dealality-old-home-dark\.v[a-z0-9]+/i);
+console.log(m && m[0]);
+console.log("has Hotel Pitches", t.includes("Hotel Pitches"));
+console.log("has confidential owner-controlled process for hotel", t.includes("confidential, owner-controlled process for hotel"));

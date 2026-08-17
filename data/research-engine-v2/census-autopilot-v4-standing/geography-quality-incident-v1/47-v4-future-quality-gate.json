@@ -1,0 +1,22 @@
+{
+  "version": "v4-future-quality-gate-v1",
+  "checks": [
+    "PROPERTY_IDENTITY",
+    "FIELD_SEMANTICS",
+    "SOURCE_ELIGIBILITY",
+    "CROSS_FIELD_CONSISTENCY",
+    "CURRENT_AFFILIATION",
+    "GEOGRAPHY_COHERENCE",
+    "WRITE_SAFETY"
+  ],
+  "principle": "Completeness AFTER validity; blank > wrong",
+  "circuit_break_on_semantic_violation": true,
+  "implemented": true,
+  "sample_eval": {
+    "version": "v4-future-quality-gate-v1",
+    "pass": true,
+    "failures": [],
+    "principle": "Completeness comes AFTER validity. Blank preferred over wrong.",
+    "circuit_break_on_semantic_violation": true
+  }
+}

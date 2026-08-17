@@ -1,0 +1,766 @@
+{
+  "version": "census-cvent-latam-harvest-v1",
+  "client_version": "census-cvent-venue-client-v4",
+  "harvester_version": "census-cvent-country-results-harvester-v1",
+  "matcher_version": "census-cvent-latam-matcher-v1",
+  "registry_version": "census-cvent-latam-country-registry-v1",
+  "generated_at": "2026-08-08T09:30:09.249Z",
+  "mode": "inventory_only",
+  "coverage_note": "Cvent is a meetings/event venue inventory — not a complete national hotel census.",
+  "hard_rules": [
+    "Never write Opening Date / Renovation Date (Built/Renovated → Notes only)",
+    "Never map meeting rooms → Rooms / Keys",
+    "Never write Cvent lat/lng to Latitude/Longitude",
+    "Inserts are Census Only + Human Review Required"
+  ],
+  "probe": {
+    "scanned": 49,
+    "viable_count": 48,
+    "total_venues_reported": 14175,
+    "viable": [
+      {
+        "country": "Mexico",
+        "slug": "Mexico",
+        "totalCount": 3189,
+        "status": 200
+      },
+      {
+        "country": "Guatemala",
+        "slug": "Guatemala",
+        "totalCount": 93,
+        "status": 200
+      },
+      {
+        "country": "Belize",
+        "slug": "Belize",
+        "totalCount": 124,
+        "status": 200
+      },
+      {
+        "country": "El Salvador",
+        "slug": "El-Salvador",
+        "totalCount": 33,
+        "status": 200
+      },
+      {
+        "country": "Honduras",
+        "slug": "Honduras",
+        "totalCount": 67,
+        "status": 200
+      },
+      {
+        "country": "Nicaragua",
+        "slug": "Nicaragua",
+        "totalCount": 51,
+        "status": 200
+      },
+      {
+        "country": "Costa Rica",
+        "slug": "Costa-Rica",
+        "totalCount": 376,
+        "status": 200
+      },
+      {
+        "country": "Panama",
+        "slug": "Panama",
+        "totalCount": 195,
+        "status": 200
+      },
+      {
+        "country": "Puerto Rico",
+        "slug": "Puerto-Rico",
+        "totalCount": 136,
+        "status": 200
+      },
+      {
+        "country": "Dominican Republic",
+        "slug": "Dominican-Republic",
+        "totalCount": 291,
+        "status": 200
+      },
+      {
+        "country": "Haiti",
+        "slug": "Haiti",
+        "totalCount": 19,
+        "status": 200
+      },
+      {
+        "country": "Jamaica",
+        "slug": "Jamaica",
+        "totalCount": 212,
+        "status": 200
+      },
+      {
+        "country": "Bahamas",
+        "slug": "Bahamas",
+        "totalCount": 103,
+        "status": 200
+      },
+      {
+        "country": "Trinidad and Tobago",
+        "slug": "Trinidad-and-Tobago",
+        "totalCount": 22,
+        "status": 200
+      },
+      {
+        "country": "Barbados",
+        "slug": "Barbados",
+        "totalCount": 84,
+        "status": 200
+      },
+      {
+        "country": "Aruba",
+        "slug": "Aruba",
+        "totalCount": 46,
+        "status": 200
+      },
+      {
+        "country": "Curaçao",
+        "slug": "Curacao",
+        "totalCount": 60,
+        "status": 200
+      },
+      {
+        "country": "Bonaire",
+        "slug": "Bonaire",
+        "totalCount": 59,
+        "status": 200
+      },
+      {
+        "country": "Cayman Islands",
+        "slug": "Cayman-Islands",
+        "totalCount": 49,
+        "status": 200
+      },
+      {
+        "country": "Turks and Caicos",
+        "slug": "Turks-and-Caicos",
+        "totalCount": 58,
+        "status": 200
+      },
+      {
+        "country": "Saint Lucia",
+        "slug": "Saint-Lucia",
+        "totalCount": 52,
+        "status": 200
+      },
+      {
+        "country": "Antigua and Barbuda",
+        "slug": "Antigua-and-Barbuda",
+        "totalCount": 41,
+        "status": 200
+      },
+      {
+        "country": "Grenada",
+        "slug": "Grenada",
+        "totalCount": 29,
+        "status": 200
+      },
+      {
+        "country": "Saint Vincent and the Grenadines",
+        "slug": "Saint-Vincent-and-the-Grenadines",
+        "totalCount": 27,
+        "status": 200
+      },
+      {
+        "country": "Dominica",
+        "slug": "Dominica",
+        "totalCount": 25,
+        "status": 200
+      },
+      {
+        "country": "Saint Kitts and Nevis",
+        "slug": "Saint-Kitts-and-Nevis",
+        "totalCount": 21,
+        "status": 200
+      },
+      {
+        "country": "British Virgin Islands",
+        "slug": "British-Virgin-Islands",
+        "totalCount": 30,
+        "status": 200
+      },
+      {
+        "country": "U.S. Virgin Islands",
+        "slug": "US-Virgin-Islands",
+        "totalCount": 58,
+        "status": 200
+      },
+      {
+        "country": "Martinique",
+        "slug": "Martinique",
+        "totalCount": 68,
+        "status": 200
+      },
+      {
+        "country": "Guadeloupe",
+        "slug": "Guadeloupe",
+        "totalCount": 33,
+        "status": 200
+      },
+      {
+        "country": "Sint Maarten",
+        "slug": "Sint-Maarten",
+        "totalCount": 107,
+        "status": 200
+      },
+      {
+        "country": "Saint Martin",
+        "slug": "Saint-Martin",
+        "totalCount": 107,
+        "status": 200
+      },
+      {
+        "country": "Anguilla",
+        "slug": "Anguilla",
+        "totalCount": 29,
+        "status": 200
+      },
+      {
+        "country": "Montserrat",
+        "slug": "Montserrat",
+        "totalCount": 52,
+        "status": 200
+      },
+      {
+        "country": "Saint Barthélemy",
+        "slug": "Saint-Barthelemy",
+        "totalCount": 117,
+        "status": 200
+      },
+      {
+        "country": "Colombia",
+        "slug": "Colombia",
+        "totalCount": 686,
+        "status": 200
+      },
+      {
+        "country": "Venezuela",
+        "slug": "Venezuela",
+        "totalCount": 40,
+        "status": 200
+      },
+      {
+        "country": "Guyana",
+        "slug": "Guyana",
+        "totalCount": 16,
+        "status": 200
+      },
+      {
+        "country": "Suriname",
+        "slug": "Suriname",
+        "totalCount": 16,
+        "status": 200
+      },
+      {
+        "country": "French Guiana",
+        "slug": "French-Guiana",
+        "totalCount": 8,
+        "status": 200
+      },
+      {
+        "country": "Ecuador",
+        "slug": "Ecuador",
+        "totalCount": 139,
+        "status": 200
+      },
+      {
+        "country": "Peru",
+        "slug": "Peru",
+        "totalCount": 364,
+        "status": 200
+      },
+      {
+        "country": "Bolivia",
+        "slug": "Bolivia",
+        "totalCount": 58,
+        "status": 200
+      },
+      {
+        "country": "Brazil",
+        "slug": "Brazil",
+        "totalCount": 5313,
+        "status": 200
+      },
+      {
+        "country": "Paraguay",
+        "slug": "Paraguay",
+        "totalCount": 107,
+        "status": 200
+      },
+      {
+        "country": "Chile",
+        "slug": "Chile",
+        "totalCount": 379,
+        "status": 200
+      },
+      {
+        "country": "Argentina",
+        "slug": "Argentina",
+        "totalCount": 938,
+        "status": 200
+      },
+      {
+        "country": "Uruguay",
+        "slug": "Uruguay",
+        "totalCount": 48,
+        "status": 200
+      }
+    ]
+  },
+  "inventory": {
+    "countries": 48,
+    "hotel_url_total": 9677,
+    "by_country": [
+      {
+        "country": "Mexico",
+        "slug": "Mexico",
+        "totalCount": 3189,
+        "hotel_url_count": 2948,
+        "skipped_non_hotel_count": 3251,
+        "pages_fetched": 128,
+        "from_cache": false
+      },
+      {
+        "country": "Guatemala",
+        "slug": "Guatemala",
+        "totalCount": 93,
+        "hotel_url_count": 86,
+        "skipped_non_hotel_count": 98,
+        "pages_fetched": 4,
+        "from_cache": false
+      },
+      {
+        "country": "Belize",
+        "slug": "Belize",
+        "totalCount": 124,
+        "hotel_url_count": 123,
+        "skipped_non_hotel_count": 125,
+        "pages_fetched": 5,
+        "from_cache": false
+      },
+      {
+        "country": "El Salvador",
+        "slug": "El-Salvador",
+        "totalCount": 33,
+        "hotel_url_count": 30,
+        "skipped_non_hotel_count": 36,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Honduras",
+        "slug": "Honduras",
+        "totalCount": 67,
+        "hotel_url_count": 60,
+        "skipped_non_hotel_count": 72,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Nicaragua",
+        "slug": "Nicaragua",
+        "totalCount": 51,
+        "hotel_url_count": 46,
+        "skipped_non_hotel_count": 56,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Costa Rica",
+        "slug": "Costa-Rica",
+        "totalCount": 376,
+        "hotel_url_count": 121,
+        "skipped_non_hotel_count": 129,
+        "pages_fetched": 6,
+        "from_cache": false
+      },
+      {
+        "country": "Panama",
+        "slug": "Panama",
+        "totalCount": 195,
+        "hotel_url_count": 181,
+        "skipped_non_hotel_count": 205,
+        "pages_fetched": 8,
+        "from_cache": false
+      },
+      {
+        "country": "Puerto Rico",
+        "slug": "Puerto-Rico",
+        "totalCount": 136,
+        "hotel_url_count": 118,
+        "skipped_non_hotel_count": 154,
+        "pages_fetched": 6,
+        "from_cache": false
+      },
+      {
+        "country": "Dominican Republic",
+        "slug": "Dominican-Republic",
+        "totalCount": 291,
+        "hotel_url_count": 279,
+        "skipped_non_hotel_count": 327,
+        "pages_fetched": 12,
+        "from_cache": false
+      },
+      {
+        "country": "Haiti",
+        "slug": "Haiti",
+        "totalCount": 19,
+        "hotel_url_count": 19,
+        "skipped_non_hotel_count": 37,
+        "pages_fetched": 1,
+        "from_cache": false
+      },
+      {
+        "country": "Jamaica",
+        "slug": "Jamaica",
+        "totalCount": 212,
+        "hotel_url_count": 193,
+        "skipped_non_hotel_count": 266,
+        "pages_fetched": 9,
+        "from_cache": false
+      },
+      {
+        "country": "Bahamas",
+        "slug": "Bahamas",
+        "totalCount": 103,
+        "hotel_url_count": 94,
+        "skipped_non_hotel_count": 144,
+        "pages_fetched": 5,
+        "from_cache": false
+      },
+      {
+        "country": "Trinidad and Tobago",
+        "slug": "Trinidad-and-Tobago",
+        "totalCount": 22,
+        "hotel_url_count": 19,
+        "skipped_non_hotel_count": 42,
+        "pages_fetched": 1,
+        "from_cache": false
+      },
+      {
+        "country": "Barbados",
+        "slug": "Barbados",
+        "totalCount": 84,
+        "hotel_url_count": 80,
+        "skipped_non_hotel_count": 123,
+        "pages_fetched": 4,
+        "from_cache": false
+      },
+      {
+        "country": "Aruba",
+        "slug": "Aruba",
+        "totalCount": 46,
+        "hotel_url_count": 42,
+        "skipped_non_hotel_count": 74,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Curaçao",
+        "slug": "Curacao",
+        "totalCount": 60,
+        "hotel_url_count": 52,
+        "skipped_non_hotel_count": 89,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Bonaire",
+        "slug": "Bonaire",
+        "totalCount": 59,
+        "hotel_url_count": 51,
+        "skipped_non_hotel_count": 83,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Cayman Islands",
+        "slug": "Cayman-Islands",
+        "totalCount": 49,
+        "hotel_url_count": 43,
+        "skipped_non_hotel_count": 82,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Turks and Caicos",
+        "slug": "Turks-and-Caicos",
+        "totalCount": 58,
+        "hotel_url_count": 57,
+        "skipped_non_hotel_count": 86,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Saint Lucia",
+        "slug": "Saint-Lucia",
+        "totalCount": 52,
+        "hotel_url_count": 48,
+        "skipped_non_hotel_count": 87,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Antigua and Barbuda",
+        "slug": "Antigua-and-Barbuda",
+        "totalCount": 41,
+        "hotel_url_count": 40,
+        "skipped_non_hotel_count": 67,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Grenada",
+        "slug": "Grenada",
+        "totalCount": 29,
+        "hotel_url_count": 26,
+        "skipped_non_hotel_count": 59,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Saint Vincent and the Grenadines",
+        "slug": "Saint-Vincent-and-the-Grenadines",
+        "totalCount": 27,
+        "hotel_url_count": 25,
+        "skipped_non_hotel_count": 55,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Dominica",
+        "slug": "Dominica",
+        "totalCount": 25,
+        "hotel_url_count": 23,
+        "skipped_non_hotel_count": 45,
+        "pages_fetched": 1,
+        "from_cache": false
+      },
+      {
+        "country": "Saint Kitts and Nevis",
+        "slug": "Saint-Kitts-and-Nevis",
+        "totalCount": 21,
+        "hotel_url_count": 18,
+        "skipped_non_hotel_count": 42,
+        "pages_fetched": 1,
+        "from_cache": false
+      },
+      {
+        "country": "British Virgin Islands",
+        "slug": "British-Virgin-Islands",
+        "totalCount": 30,
+        "hotel_url_count": 25,
+        "skipped_non_hotel_count": 58,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "U.S. Virgin Islands",
+        "slug": "US-Virgin-Islands",
+        "totalCount": 58,
+        "hotel_url_count": 51,
+        "skipped_non_hotel_count": 92,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Martinique",
+        "slug": "Martinique",
+        "totalCount": 68,
+        "hotel_url_count": 64,
+        "skipped_non_hotel_count": 102,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Guadeloupe",
+        "slug": "Guadeloupe",
+        "totalCount": 33,
+        "hotel_url_count": 32,
+        "skipped_non_hotel_count": 59,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Sint Maarten",
+        "slug": "Sint-Maarten",
+        "totalCount": 107,
+        "hotel_url_count": 100,
+        "skipped_non_hotel_count": 146,
+        "pages_fetched": 5,
+        "from_cache": false
+      },
+      {
+        "country": "Saint Martin",
+        "slug": "Saint-Martin",
+        "totalCount": 107,
+        "hotel_url_count": 100,
+        "skipped_non_hotel_count": 148,
+        "pages_fetched": 5,
+        "from_cache": false
+      },
+      {
+        "country": "Anguilla",
+        "slug": "Anguilla",
+        "totalCount": 29,
+        "hotel_url_count": 25,
+        "skipped_non_hotel_count": 58,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Montserrat",
+        "slug": "Montserrat",
+        "totalCount": 52,
+        "hotel_url_count": 50,
+        "skipped_non_hotel_count": 87,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Saint Barthélemy",
+        "slug": "Saint-Barthelemy",
+        "totalCount": 117,
+        "hotel_url_count": 108,
+        "skipped_non_hotel_count": 159,
+        "pages_fetched": 5,
+        "from_cache": false
+      },
+      {
+        "country": "Colombia",
+        "slug": "Colombia",
+        "totalCount": 686,
+        "hotel_url_count": 624,
+        "skipped_non_hotel_count": 696,
+        "pages_fetched": 28,
+        "from_cache": false
+      },
+      {
+        "country": "Venezuela",
+        "slug": "Venezuela",
+        "totalCount": 40,
+        "hotel_url_count": 36,
+        "skipped_non_hotel_count": 42,
+        "pages_fetched": 2,
+        "from_cache": false
+      },
+      {
+        "country": "Guyana",
+        "slug": "Guyana",
+        "totalCount": 16,
+        "hotel_url_count": 16,
+        "skipped_non_hotel_count": 16,
+        "pages_fetched": 1,
+        "from_cache": false
+      },
+      {
+        "country": "Suriname",
+        "slug": "Suriname",
+        "totalCount": 16,
+        "hotel_url_count": 15,
+        "skipped_non_hotel_count": 17,
+        "pages_fetched": 1,
+        "from_cache": false
+      },
+      {
+        "country": "French Guiana",
+        "slug": "French-Guiana",
+        "totalCount": 8,
+        "hotel_url_count": 8,
+        "skipped_non_hotel_count": 8,
+        "pages_fetched": 1,
+        "from_cache": false
+      },
+      {
+        "country": "Ecuador",
+        "slug": "Ecuador",
+        "totalCount": 139,
+        "hotel_url_count": 105,
+        "skipped_non_hotel_count": 119,
+        "pages_fetched": 6,
+        "from_cache": false
+      },
+      {
+        "country": "Peru",
+        "slug": "Peru",
+        "totalCount": 364,
+        "hotel_url_count": 347,
+        "skipped_non_hotel_count": 377,
+        "pages_fetched": 15,
+        "from_cache": false
+      },
+      {
+        "country": "Bolivia",
+        "slug": "Bolivia",
+        "totalCount": 58,
+        "hotel_url_count": 58,
+        "skipped_non_hotel_count": 58,
+        "pages_fetched": 3,
+        "from_cache": false
+      },
+      {
+        "country": "Brazil",
+        "slug": "Brazil",
+        "totalCount": 5313,
+        "hotel_url_count": 2233,
+        "skipped_non_hotel_count": 2314,
+        "pages_fetched": 92,
+        "from_cache": false
+      },
+      {
+        "country": "Paraguay",
+        "slug": "Paraguay",
+        "totalCount": 107,
+        "hotel_url_count": 102,
+        "skipped_non_hotel_count": 107,
+        "pages_fetched": 5,
+        "from_cache": false
+      },
+      {
+        "country": "Chile",
+        "slug": "Chile",
+        "totalCount": 379,
+        "hotel_url_count": 362,
+        "skipped_non_hotel_count": 392,
+        "pages_fetched": 16,
+        "from_cache": false
+      },
+      {
+        "country": "Argentina",
+        "slug": "Argentina",
+        "totalCount": 938,
+        "hotel_url_count": 351,
+        "skipped_non_hotel_count": 395,
+        "pages_fetched": 16,
+        "from_cache": false
+      },
+      {
+        "country": "Uruguay",
+        "slug": "Uruguay",
+        "totalCount": 48,
+        "hotel_url_count": 43,
+        "skipped_non_hotel_count": 47,
+        "pages_fetched": 2,
+        "from_cache": false
+      }
+    ]
+  },
+  "parsed_count": 0,
+  "parse_ok_count": 0,
+  "update_proposal_count": 0,
+  "insert_proposal_count": 0,
+  "skipped_count": 0,
+  "update_proposals": [],
+  "insert_proposals": [],
+  "skipped": [],
+  "parsed_sample": [],
+  "apply": {
+    "attempted": false,
+    "reason": "dry_run_default",
+    "enableUpdates": false,
+    "enableInserts": false,
+    "env_ok": true,
+    "confirms_ok": false
+  }
+}

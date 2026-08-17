@@ -1,0 +1,581 @@
+{
+  "version": "wave13-public-six-geo-momentum-failures-v1",
+  "generatedAt": "2026-07-27T20:59:31.351Z",
+  "sourceReports": [
+    "reports/brand-explorer-tab-factory-audit.json",
+    "reports/brand-explorer-wave13-value-scenario-pattern-cleanup.md"
+  ],
+  "scope": [
+    "mama-shelter",
+    "mercure",
+    "ibis",
+    "novotel",
+    "pullman",
+    "fairmont-hotels-and-resorts"
+  ],
+  "excluded": [
+    "so-hotels-and-resorts",
+    "the-house-of-originals",
+    "morgans-originals",
+    "radisson-collection",
+    "protected-39"
+  ],
+  "summary": {
+    "failureRows": 36,
+    "brandsWithFailures": 6
+  },
+  "failures": [
+    {
+      "brand": "mama-shelter",
+      "brandName": "Mama Shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "section": "geographic_footprint",
+      "field": "footprint.region.am",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.am with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mama-shelter",
+      "brandName": "Mama Shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "section": "geographic_footprint",
+      "field": "footprint.region.eu",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.eu with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mama-shelter",
+      "brandName": "Mama Shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "section": "geographic_footprint",
+      "field": "footprint.region.mea",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.mea with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mama-shelter",
+      "brandName": "Mama Shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "section": "geographic_footprint",
+      "field": "footprint.region.apac",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.apac with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mama-shelter",
+      "brandName": "Mama Shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "section": "geographic_footprint",
+      "field": "footprint.region.*",
+      "failureType": "filled_regions_below_min",
+      "currentValue": "filledRegionCount=1",
+      "requiredPattern": "≥3 filled regional cards (am/cala/eu/mea/apac as relevant)",
+      "proposedFix": "Fill at least 3 source-supported regions (keep CALA; add EU/AM/APAC/MEA from propertyExamples)",
+      "sourceSupport": "Wave 13 source packs",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mama-shelter",
+      "brandName": "Mama Shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "section": "recent_momentum",
+      "field": "footprint.momentum",
+      "failureType": "momentum_structure",
+      "currentValue": "{\"cardCount\":2,\"titledCount\":2,\"datedCount\":1,\"geoSignalCount\":2,\"ownerSignalCount\":2,\"urlCount\":0,\"labeled\":true,\"labelPreview\":\"Recent Momentum\"}",
+      "requiredPattern": "≥2 titled cards; structured dateLine (YYYY|Mon YYYY|Qn YYYY|Pipeline); trailing https announcement URL; geography; owner summary; no raw-URL-only bodies",
+      "proposedFix": "Replace momentum cards via buildRecentMomentumCard from source-pack recentMomentumCandidates + CALA property proof",
+      "sourceSupport": "Wave 13 source pack recentMomentumCandidates + propertyExamples",
+      "auditFailures": [
+        "dated_cards_below_min:1",
+        "linked_announcement_url_below_min:0",
+        "structured_date_line_below_min:0"
+      ]
+    },
+    {
+      "brand": "mercure",
+      "brandName": "Mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "section": "geographic_footprint",
+      "field": "footprint.region.am",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.am with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mercure",
+      "brandName": "Mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "section": "geographic_footprint",
+      "field": "footprint.region.eu",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.eu with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mercure",
+      "brandName": "Mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "section": "geographic_footprint",
+      "field": "footprint.region.mea",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.mea with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mercure",
+      "brandName": "Mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "section": "geographic_footprint",
+      "field": "footprint.region.apac",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.apac with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mercure",
+      "brandName": "Mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "section": "geographic_footprint",
+      "field": "footprint.region.*",
+      "failureType": "filled_regions_below_min",
+      "currentValue": "filledRegionCount=1",
+      "requiredPattern": "≥3 filled regional cards (am/cala/eu/mea/apac as relevant)",
+      "proposedFix": "Fill at least 3 source-supported regions (keep CALA; add EU/AM/APAC/MEA from propertyExamples)",
+      "sourceSupport": "Wave 13 source packs",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "mercure",
+      "brandName": "Mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "section": "recent_momentum",
+      "field": "footprint.momentum",
+      "failureType": "momentum_structure",
+      "currentValue": "{\"cardCount\":3,\"titledCount\":3,\"datedCount\":0,\"geoSignalCount\":3,\"ownerSignalCount\":3,\"urlCount\":0,\"labeled\":true,\"labelPreview\":\"Recent Momentum\"}",
+      "requiredPattern": "≥2 titled cards; structured dateLine (YYYY|Mon YYYY|Qn YYYY|Pipeline); trailing https announcement URL; geography; owner summary; no raw-URL-only bodies",
+      "proposedFix": "Replace momentum cards via buildRecentMomentumCard from source-pack recentMomentumCandidates + CALA property proof",
+      "sourceSupport": "Wave 13 source pack recentMomentumCandidates + propertyExamples",
+      "auditFailures": [
+        "dated_cards_below_min:0",
+        "linked_announcement_url_below_min:0",
+        "structured_date_line_below_min:0"
+      ]
+    },
+    {
+      "brand": "ibis",
+      "brandName": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "section": "geographic_footprint",
+      "field": "footprint.region.am",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.am with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "ibis",
+      "brandName": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "section": "geographic_footprint",
+      "field": "footprint.region.eu",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.eu with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "ibis",
+      "brandName": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "section": "geographic_footprint",
+      "field": "footprint.region.mea",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.mea with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "ibis",
+      "brandName": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "section": "geographic_footprint",
+      "field": "footprint.region.apac",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.apac with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "ibis",
+      "brandName": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "section": "geographic_footprint",
+      "field": "footprint.region.*",
+      "failureType": "filled_regions_below_min",
+      "currentValue": "filledRegionCount=1",
+      "requiredPattern": "≥3 filled regional cards (am/cala/eu/mea/apac as relevant)",
+      "proposedFix": "Fill at least 3 source-supported regions (keep CALA; add EU/AM/APAC/MEA from propertyExamples)",
+      "sourceSupport": "Wave 13 source packs",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "ibis",
+      "brandName": "ibis",
+      "recordId": "reclFXbpZ5XzLWbGP",
+      "section": "recent_momentum",
+      "field": "footprint.momentum",
+      "failureType": "momentum_structure",
+      "currentValue": "{\"cardCount\":2,\"titledCount\":2,\"datedCount\":1,\"geoSignalCount\":2,\"ownerSignalCount\":2,\"urlCount\":0,\"labeled\":true,\"labelPreview\":\"Recent Momentum\"}",
+      "requiredPattern": "≥2 titled cards; structured dateLine (YYYY|Mon YYYY|Qn YYYY|Pipeline); trailing https announcement URL; geography; owner summary; no raw-URL-only bodies",
+      "proposedFix": "Replace momentum cards via buildRecentMomentumCard from source-pack recentMomentumCandidates + CALA property proof",
+      "sourceSupport": "Wave 13 source pack recentMomentumCandidates + propertyExamples",
+      "auditFailures": [
+        "dated_cards_below_min:1",
+        "linked_announcement_url_below_min:0",
+        "structured_date_line_below_min:0"
+      ]
+    },
+    {
+      "brand": "novotel",
+      "brandName": "Novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "section": "geographic_footprint",
+      "field": "footprint.region.am",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.am with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "novotel",
+      "brandName": "Novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "section": "geographic_footprint",
+      "field": "footprint.region.eu",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.eu with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "novotel",
+      "brandName": "Novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "section": "geographic_footprint",
+      "field": "footprint.region.mea",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.mea with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "novotel",
+      "brandName": "Novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "section": "geographic_footprint",
+      "field": "footprint.region.apac",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.apac with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "novotel",
+      "brandName": "Novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "section": "geographic_footprint",
+      "field": "footprint.region.*",
+      "failureType": "filled_regions_below_min",
+      "currentValue": "filledRegionCount=1",
+      "requiredPattern": "≥3 filled regional cards (am/cala/eu/mea/apac as relevant)",
+      "proposedFix": "Fill at least 3 source-supported regions (keep CALA; add EU/AM/APAC/MEA from propertyExamples)",
+      "sourceSupport": "Wave 13 source packs",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "novotel",
+      "brandName": "Novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "section": "recent_momentum",
+      "field": "footprint.momentum",
+      "failureType": "momentum_structure",
+      "currentValue": "{\"cardCount\":2,\"titledCount\":2,\"datedCount\":1,\"geoSignalCount\":2,\"ownerSignalCount\":2,\"urlCount\":0,\"labeled\":true,\"labelPreview\":\"Recent Momentum\"}",
+      "requiredPattern": "≥2 titled cards; structured dateLine (YYYY|Mon YYYY|Qn YYYY|Pipeline); trailing https announcement URL; geography; owner summary; no raw-URL-only bodies",
+      "proposedFix": "Replace momentum cards via buildRecentMomentumCard from source-pack recentMomentumCandidates + CALA property proof",
+      "sourceSupport": "Wave 13 source pack recentMomentumCandidates + propertyExamples",
+      "auditFailures": [
+        "dated_cards_below_min:1",
+        "linked_announcement_url_below_min:0",
+        "structured_date_line_below_min:0"
+      ]
+    },
+    {
+      "brand": "pullman",
+      "brandName": "Pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "section": "geographic_footprint",
+      "field": "footprint.region.am",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.am with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "pullman",
+      "brandName": "Pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "section": "geographic_footprint",
+      "field": "footprint.region.eu",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.eu with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "pullman",
+      "brandName": "Pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "section": "geographic_footprint",
+      "field": "footprint.region.mea",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.mea with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "pullman",
+      "brandName": "Pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "section": "geographic_footprint",
+      "field": "footprint.region.apac",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.apac with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "pullman",
+      "brandName": "Pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "section": "geographic_footprint",
+      "field": "footprint.region.*",
+      "failureType": "filled_regions_below_min",
+      "currentValue": "filledRegionCount=1",
+      "requiredPattern": "≥3 filled regional cards (am/cala/eu/mea/apac as relevant)",
+      "proposedFix": "Fill at least 3 source-supported regions (keep CALA; add EU/AM/APAC/MEA from propertyExamples)",
+      "sourceSupport": "Wave 13 source packs",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "pullman",
+      "brandName": "Pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "section": "recent_momentum",
+      "field": "footprint.momentum",
+      "failureType": "momentum_structure",
+      "currentValue": "{\"cardCount\":2,\"titledCount\":2,\"datedCount\":1,\"geoSignalCount\":2,\"ownerSignalCount\":2,\"urlCount\":0,\"labeled\":true,\"labelPreview\":\"Recent Momentum\"}",
+      "requiredPattern": "≥2 titled cards; structured dateLine (YYYY|Mon YYYY|Qn YYYY|Pipeline); trailing https announcement URL; geography; owner summary; no raw-URL-only bodies",
+      "proposedFix": "Replace momentum cards via buildRecentMomentumCard from source-pack recentMomentumCandidates + CALA property proof",
+      "sourceSupport": "Wave 13 source pack recentMomentumCandidates + propertyExamples",
+      "auditFailures": [
+        "dated_cards_below_min:1",
+        "linked_announcement_url_below_min:0",
+        "structured_date_line_below_min:0"
+      ]
+    },
+    {
+      "brand": "fairmont-hotels-and-resorts",
+      "brandName": "Fairmont",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "section": "geographic_footprint",
+      "field": "footprint.region.am",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.am with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "fairmont-hotels-and-resorts",
+      "brandName": "Fairmont",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "section": "geographic_footprint",
+      "field": "footprint.region.eu",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.eu with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "fairmont-hotels-and-resorts",
+      "brandName": "Fairmont",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "section": "geographic_footprint",
+      "field": "footprint.region.mea",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.mea with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "fairmont-hotels-and-resorts",
+      "brandName": "Fairmont",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "section": "geographic_footprint",
+      "field": "footprint.region.apac",
+      "failureType": "empty_or_missing_region_card",
+      "currentValue": "(missing/empty)",
+      "requiredPattern": "≥3 filled region cards with ≥12-word owner-facing body; brand-specific geo_intro ≥30 words",
+      "proposedFix": "Create/patch footprint.region.apac with source-supported region Title+Body+Case Summary Tags",
+      "sourceSupport": "Wave 13 source pack propertyExamples + official Accor brand/development pages",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "fairmont-hotels-and-resorts",
+      "brandName": "Fairmont",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "section": "geographic_footprint",
+      "field": "footprint.region.*",
+      "failureType": "filled_regions_below_min",
+      "currentValue": "filledRegionCount=1",
+      "requiredPattern": "≥3 filled regional cards (am/cala/eu/mea/apac as relevant)",
+      "proposedFix": "Fill at least 3 source-supported regions (keep CALA; add EU/AM/APAC/MEA from propertyExamples)",
+      "sourceSupport": "Wave 13 source packs",
+      "auditFailures": [
+        "filled_regions_below_min:1"
+      ]
+    },
+    {
+      "brand": "fairmont-hotels-and-resorts",
+      "brandName": "Fairmont",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "section": "recent_momentum",
+      "field": "footprint.momentum",
+      "failureType": "momentum_structure",
+      "currentValue": "{\"cardCount\":2,\"titledCount\":2,\"datedCount\":0,\"geoSignalCount\":2,\"ownerSignalCount\":2,\"urlCount\":0,\"labeled\":true,\"labelPreview\":\"Recent Momentum\"}",
+      "requiredPattern": "≥2 titled cards; structured dateLine (YYYY|Mon YYYY|Qn YYYY|Pipeline); trailing https announcement URL; geography; owner summary; no raw-URL-only bodies",
+      "proposedFix": "Replace momentum cards via buildRecentMomentumCard from source-pack recentMomentumCandidates + CALA property proof",
+      "sourceSupport": "Wave 13 source pack recentMomentumCandidates + propertyExamples",
+      "auditFailures": [
+        "dated_cards_below_min:0",
+        "linked_announcement_url_below_min:0",
+        "structured_date_line_below_min:0"
+      ]
+    }
+  ]
+}

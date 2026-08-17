@@ -1,0 +1,118 @@
+{
+  "version": "census-autopilot-queue-orchestrator-v1",
+  "mode": "controlled",
+  "strategy": "fastest-safe",
+  "targeted_queue": null,
+  "queues_planned": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_name_cleanup",
+    "property_type_asset_context",
+    "rooms_keys",
+    "coordinate_resolution"
+  ],
+  "queues_executed": [],
+  "queues_skipped": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_name_cleanup",
+    "property_type_asset_context",
+    "rooms_keys"
+  ],
+  "queues_soft_deferred": [
+    "coordinate_resolution"
+  ],
+  "queue_results": [
+    {
+      "queue_id": "description_extraction",
+      "status": "skipped_exhausted",
+      "high_proposals": 0,
+      "eligible_scanned": 341,
+      "notes": [
+        "no_high_confidence_proposals"
+      ]
+    },
+    {
+      "queue_id": "amenities_extraction",
+      "status": "skipped_exhausted",
+      "high_proposals": 0,
+      "eligible_scanned": 341,
+      "notes": [
+        "no_high_confidence_proposals"
+      ]
+    },
+    {
+      "queue_id": "radar_public_readiness",
+      "status": "skipped_exhausted",
+      "high_proposals": 0,
+      "eligible_scanned": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ]
+    },
+    {
+      "queue_id": "address_confirmation",
+      "status": "skipped_exhausted",
+      "high_proposals": 0,
+      "eligible_scanned": 0,
+      "notes": [
+        "geocode_calls_disabled_in_address_queue_geocodeLimit=0",
+        "no_high_confidence_proposals"
+      ]
+    },
+    {
+      "queue_id": "property_name_cleanup",
+      "status": "skipped_exhausted",
+      "high_proposals": 0,
+      "eligible_scanned": 2,
+      "notes": [
+        "no_high_confidence_proposals"
+      ]
+    },
+    {
+      "queue_id": "property_type_asset_context",
+      "status": "skipped_exhausted",
+      "high_proposals": 0,
+      "eligible_scanned": 0,
+      "notes": [
+        "no_high_confidence_proposals"
+      ]
+    },
+    {
+      "queue_id": "rooms_keys",
+      "status": "skipped_exhausted",
+      "high_proposals": 0,
+      "eligible_scanned": 420,
+      "notes": [
+        "no_high_confidence_proposals"
+      ]
+    },
+    {
+      "queue_id": "coordinate_resolution",
+      "status": "soft_deferred",
+      "high_proposals": 0,
+      "eligible_scanned": 0,
+      "notes": [
+        "geocode_provider_or_storage_terms_missing"
+      ]
+    }
+  ],
+  "total_high_proposals": 0,
+  "runtime_ms": 336439,
+  "airtable_writes": false,
+  "fetch_limit_description": 40,
+  "reports_attached": {
+    "description": true,
+    "lane2": true,
+    "rooms": true,
+    "property_name_cleanup": true,
+    "address": true
+  },
+  "run_id": "2026-08-05_21-04-23-CALA-active-brands",
+  "scope": "active-brand-setup",
+  "region": "CALA"
+}

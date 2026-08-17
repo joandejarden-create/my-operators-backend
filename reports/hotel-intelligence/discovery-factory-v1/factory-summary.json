@@ -1,0 +1,395 @@
+{
+  "marker": "DEALALITY_DISCOVERY_FACTORY_V1_COMPLETE",
+  "safety": {
+    "ENABLE_HOTEL_INTELLIGENCE_AIRTABLE_WRITES": "0",
+    "ENABLE_HBX_CENSUS_WRITES": "0"
+  },
+  "metrics": {
+    "hotels_before": 5956,
+    "hotels_after_production": 5956,
+    "candidates_processed": 250,
+    "ready_for_import": 91,
+    "review_required": 156,
+    "rejected": 0,
+    "matched_existing": 3,
+    "duplicates_prevented": 3,
+    "duplicate_rate_pct": 1.2,
+    "avg_identity_confidence": 0.907,
+    "avg_processing_ms": 990,
+    "tier_a_pct": 36.4,
+    "tier_b_pct": 62.4,
+    "tier_c_pct": 1.2,
+    "review_burden_pct": 62.4
+  },
+  "validation": {
+    "sample_size": 25,
+    "city_present_pct": 100,
+    "canonical_id_pct": 100,
+    "conf_ge_0_70_pct": 100,
+    "url_name_agree_in_sample": 2,
+    "tier_a_share_pct": 36.4,
+    "duplicate_rate_pct": 1.2,
+    "quality_pass": true,
+    "sample": [
+      {
+        "name": "grand hyatt sao paulo",
+        "city": "São Paulo",
+        "city_method": "cvent_url_and_name_agree",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.99,
+        "hotel_id": "dhl_06FYPHMBMWBRMCR55PJQ98S8CH"
+      },
+      {
+        "name": "brasil tropical hotel residence",
+        "city": "Fortaleza",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPHWQGGQGAP2BWR0C1GYAQM"
+      },
+      {
+        "name": "hotel araguaia goiania",
+        "city": "Goiânia",
+        "city_method": "cvent_url_and_name_agree",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.99,
+        "hotel_id": "dhl_06FYPJ1WHRBJB4TYFDEQS2HYA7"
+      },
+      {
+        "name": "ritz suites hotel",
+        "city": "Maceió",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPJ81GCS71AW2WA1R6KWYBH"
+      },
+      {
+        "name": "hotel mocambique",
+        "city": "Florianópolis",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPJCGM4NJCNMJ2YQVKS6ZFW"
+      },
+      {
+        "name": "real palace hotel",
+        "city": "Rio de Janeiro",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPJDNY0G8KZFS81PCWFE5HX"
+      },
+      {
+        "name": "hotel gran corona",
+        "city": "São Paulo",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPJEMY43F6Y4P35KVQ7Z1WP"
+      },
+      {
+        "name": "tropical barra hotel",
+        "city": "Rio de Janeiro",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPJFDAWBTD8ZGM224P48H7H"
+      },
+      {
+        "name": "hotel dez de julho",
+        "city": "Manaus",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPJG1NCZG4YJ56CXT3TP2TH"
+      },
+      {
+        "name": "metropolis apart hotel",
+        "city": "Porto Alegre",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPJH13GD06HW3KTRFYDY5HD"
+      },
+      {
+        "name": "capcana hotel",
+        "city": "São Paulo",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_A",
+        "stage_status": "READY_FOR_IMPORT",
+        "identity_confidence": 0.968,
+        "hotel_id": "dhl_06FYPJHPBC39JKE06WJGGF2XKA"
+      },
+      {
+        "name": "bristol pampulha lieu",
+        "city": "Belo Horizonte",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_B",
+        "stage_status": "REVIEW_REQUIRED",
+        "identity_confidence": 0.893,
+        "hotel_id": "dhl_06FYPHWCR07GKDZQQKP5E0G87V"
+      },
+      {
+        "name": "plaza inn flat araxa",
+        "city": "Araxa",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_B",
+        "stage_status": "REVIEW_REQUIRED",
+        "identity_confidence": 0.878,
+        "hotel_id": "dhl_06FYPJ0BHCXRPEGJH44WRQCPPK"
+      },
+      {
+        "name": "hotel do lago",
+        "city": "Guaira",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_B",
+        "stage_status": "REVIEW_REQUIRED",
+        "identity_confidence": 0.878,
+        "hotel_id": "dhl_06FYPJ3P3M0287R79RVZ4520CQ"
+      },
+      {
+        "name": "pipa ocean view",
+        "city": "Natal",
+        "city_method": "cvent_url_venues_slug",
+        "tier": "TIER_B",
+        "stage_status": "REVIEW_REQUIRED",
+        "identity_confidence": 0.893,
+        "hotel_id": "dhl_06FYPJ6GPRB18TJE29VH9AF62B"
+      }
+    ],
+    "verdict": "APPROVE_EXPANSION_SCALING"
+  },
+  "growth": {
+    "production_now": 5956,
+    "if_import_ready_only": 6047,
+    "milestones": {
+      "m1_10000": {
+        "remaining": 4044,
+        "pct": 59.6
+      },
+      "m2_12500": {
+        "remaining": 6544,
+        "pct": 47.6
+      },
+      "m3_15000": {
+        "remaining": 9044,
+        "pct": 39.7
+      }
+    },
+    "note": "Growth assumes future approved imports of READY_FOR_IMPORT only; review items excluded.",
+    "prior_review_burden_baseline_pct": 98.8,
+    "current_review_burden_pct": 62.4,
+    "review_reduction_pp": 36.4
+  },
+  "top_queue": [
+    {
+      "country": "Brazil",
+      "priority_score": 84.6,
+      "components": {
+        "missing_hotels_estimate": 4842,
+        "coverage_pct": 9.3,
+        "strategic_importance": 1,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 494,
+      "estimated_universe": 5336,
+      "discovery_candidates": 4842,
+      "why": "gap≈4842; coverage 9.3%; strategic 1; sources 1; HBX unavailable",
+      "rank": 1
+    },
+    {
+      "country": "Argentina",
+      "priority_score": 48.7,
+      "components": {
+        "missing_hotels_estimate": 788,
+        "coverage_pct": 14.1,
+        "strategic_importance": 0.85,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 129,
+      "estimated_universe": 917,
+      "discovery_candidates": 788,
+      "why": "gap≈788; coverage 14.1%; strategic 0.85; sources 1; HBX unavailable",
+      "rank": 2
+    },
+    {
+      "country": "Mexico",
+      "priority_score": 45.2,
+      "components": {
+        "missing_hotels_estimate": 1433,
+        "coverage_pct": 60.3,
+        "strategic_importance": 0.95,
+        "source_availability": 1,
+        "review_burden": 0.25,
+        "expected_duplicate_rate": 0.15
+      },
+      "flag": "PARTIAL",
+      "current_census": 2181,
+      "estimated_universe": 3614,
+      "discovery_candidates": 1433,
+      "why": "gap≈1433; coverage 60.3%; strategic 0.95; sources 1",
+      "rank": 3
+    },
+    {
+      "country": "Peru",
+      "priority_score": 42.9,
+      "components": {
+        "missing_hotels_estimate": 303,
+        "coverage_pct": 15.8,
+        "strategic_importance": 0.75,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 57,
+      "estimated_universe": 360,
+      "discovery_candidates": 303,
+      "why": "gap≈303; coverage 15.8%; strategic 0.75; sources 1; HBX unavailable",
+      "rank": 4
+    },
+    {
+      "country": "Turks and Caicos",
+      "priority_score": 41.9,
+      "components": {
+        "missing_hotels_estimate": 57,
+        "coverage_pct": 0,
+        "strategic_importance": 0.55,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 0,
+      "estimated_universe": 57,
+      "discovery_candidates": 57,
+      "why": "gap≈57; coverage 0%; strategic 0.55; sources 1; HBX unavailable",
+      "rank": 5
+    },
+    {
+      "country": "Chile",
+      "priority_score": 41.8,
+      "components": {
+        "missing_hotels_estimate": 311,
+        "coverage_pct": 17.3,
+        "strategic_importance": 0.7,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 65,
+      "estimated_universe": 376,
+      "discovery_candidates": 311,
+      "why": "gap≈311; coverage 17.3%; strategic 0.7; sources 1; HBX unavailable",
+      "rank": 6
+    },
+    {
+      "country": "Martinique",
+      "priority_score": 41.2,
+      "components": {
+        "missing_hotels_estimate": 64,
+        "coverage_pct": 0,
+        "strategic_importance": 0.5,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 0,
+      "estimated_universe": 64,
+      "discovery_candidates": 64,
+      "why": "gap≈64; coverage 0%; strategic 0.5; sources 1; HBX unavailable",
+      "rank": 7
+    },
+    {
+      "country": "Bonaire",
+      "priority_score": 41.1,
+      "components": {
+        "missing_hotels_estimate": 51,
+        "coverage_pct": 0,
+        "strategic_importance": 0.5,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 0,
+      "estimated_universe": 51,
+      "discovery_candidates": 51,
+      "why": "gap≈51; coverage 0%; strategic 0.5; sources 1; HBX unavailable",
+      "rank": 8
+    },
+    {
+      "country": "U.S. Virgin Islands",
+      "priority_score": 41.1,
+      "components": {
+        "missing_hotels_estimate": 51,
+        "coverage_pct": 0,
+        "strategic_importance": 0.5,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 0,
+      "estimated_universe": 51,
+      "discovery_candidates": 51,
+      "why": "gap≈51; coverage 0%; strategic 0.5; sources 1; HBX unavailable",
+      "rank": 9
+    },
+    {
+      "country": "Montserrat",
+      "priority_score": 41.1,
+      "components": {
+        "missing_hotels_estimate": 50,
+        "coverage_pct": 0,
+        "strategic_importance": 0.5,
+        "source_availability": 1,
+        "review_burden": 0.7,
+        "expected_duplicate_rate": 0.04
+      },
+      "flag": "POOR",
+      "current_census": 0,
+      "estimated_universe": 50,
+      "discovery_candidates": 50,
+      "why": "gap≈50; coverage 0%; strategic 0.5; sources 1; HBX unavailable",
+      "rank": 10
+    }
+  ],
+  "next_country": {
+    "country": "Argentina",
+    "priority_score": 48.7,
+    "components": {
+      "missing_hotels_estimate": 788,
+      "coverage_pct": 14.1,
+      "strategic_importance": 0.85,
+      "source_availability": 1,
+      "review_burden": 0.7,
+      "expected_duplicate_rate": 0.04
+    },
+    "flag": "POOR",
+    "current_census": 129,
+    "estimated_universe": 917,
+    "discovery_candidates": 788,
+    "why": "gap≈788; coverage 14.1%; strategic 0.85; sources 1; HBX unavailable",
+    "rank": 2
+  },
+  "recommended_batches": "1. **Brazil +500** — factory batch, validate Tier A ≥15% and dup rate <5%\n2. **Brazil +1,000** — validate again\n3. **Brazil remaining holds** — checkpoint dashboard\n4. Auto-select next country by priority score (currently **Argentina**) — still no import\n5. Import gate separate: only `READY_FOR_IMPORT` with explicit ENABLE flag + founder approval"
+}

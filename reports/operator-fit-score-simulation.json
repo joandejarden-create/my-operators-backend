@@ -1,0 +1,2193 @@
+{
+  "auditUtility": "audit-operator-fit-score-simulation",
+  "mode": "synthetic-local-no-airtable",
+  "generatedAt": "2026-08-03T19:21:50.634Z",
+  "weights": {
+    "geographyMarkets": 18,
+    "chainScale": 8,
+    "assetProjectStageFit": 14,
+    "dealStructureAssignment": 12,
+    "feeCommercial": 10,
+    "serviceOfferings": 8,
+    "systemsReporting": 6,
+    "ownerRelations": 6,
+    "brandPortfolioRelevance": 6,
+    "negativeFitPenalty": 2
+  },
+  "operatorFixtureCount": 8,
+  "scenarioCount": 8,
+  "scenarios": [
+    {
+      "scenarioId": "upper-upscale-urban-new-build",
+      "label": "Upper-upscale urban new build",
+      "distribution": {
+        "count": 8,
+        "mean": 79.5,
+        "median": 80.3,
+        "min": 68.9,
+        "max": 89.3,
+        "stdev": 6.4,
+        "withinFiveOfTop": 2
+      },
+      "ranking": [
+        {
+          "rank": 1,
+          "operatorId": "generic-full-service-claims",
+          "operatorName": "Generic Full-Service Claims Co",
+          "score": 89.3,
+          "note": "Claims all table-stakes services; broad geography; no niche signal"
+        },
+        {
+          "rank": 2,
+          "operatorId": "sparse-data-operator",
+          "operatorName": "Sparse Data Operator",
+          "score": 84.9,
+          "note": "Missing most structured fields — should exclude factors / lower confidence"
+        },
+        {
+          "rank": 3,
+          "operatorId": "institutional-reporting-platform",
+          "operatorName": "Institutional Reporting Platform",
+          "score": 84.2,
+          "note": "Strong governance/reporting; average asset niche"
+        },
+        {
+          "rank": 4,
+          "operatorId": "cala-resort-luxury",
+          "operatorName": "CALA Resort Luxury Operator",
+          "score": 81.7,
+          "note": "Resort / all-inclusive / luxury leisure depth"
+        },
+        {
+          "rank": 5,
+          "operatorId": "wrong-geo-broad-claims",
+          "operatorName": "Wrong-Geo Broad Claims",
+          "score": 78.9,
+          "note": "Claims all services but wrong geography vs most CALA deals"
+        },
+        {
+          "rank": 6,
+          "operatorId": "turnaround-specialist",
+          "operatorName": "Caribbean Turnaround Specialist",
+          "score": 74.9,
+          "note": "Repositioning / underperformance focus; narrower footprint"
+        },
+        {
+          "rank": 7,
+          "operatorId": "yucatan-select-specialist",
+          "operatorName": "Yucatán Select Specialist",
+          "score": 73.3,
+          "note": "Strong Mexico select-service / conversion niche"
+        },
+        {
+          "rank": 8,
+          "operatorId": "commercial-support-only",
+          "operatorName": "Commercial Support Boutique",
+          "score": 68.9,
+          "note": "Sales/RM only — weak for full management mandates"
+        }
+      ],
+      "factorAverages": [
+        {
+          "factor": "assetProjectStageFit",
+          "weight": 14,
+          "avgScore": 39.1,
+          "scoredCount": 7
+        },
+        {
+          "factor": "brandPortfolioRelevance",
+          "weight": 6,
+          "avgScore": 74.3,
+          "scoredCount": 7
+        },
+        {
+          "factor": "feeCommercial",
+          "weight": 10,
+          "avgScore": 75,
+          "scoredCount": 7
+        },
+        {
+          "factor": "geographyMarkets",
+          "weight": 18,
+          "avgScore": 84,
+          "scoredCount": 8
+        },
+        {
+          "factor": "systemsReporting",
+          "weight": 6,
+          "avgScore": 84.9,
+          "scoredCount": 7
+        },
+        {
+          "factor": "ownerRelations",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "chainScale",
+          "weight": 8,
+          "avgScore": 91.3,
+          "scoredCount": 8
+        },
+        {
+          "factor": "serviceOfferings",
+          "weight": 8,
+          "avgScore": 91.4,
+          "scoredCount": 7
+        },
+        {
+          "factor": "dealStructureAssignment",
+          "weight": 12,
+          "avgScore": 92.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "negativeFitPenalty",
+          "weight": 2,
+          "avgScore": 100,
+          "scoredCount": 8
+        }
+      ],
+      "nonDifferentiatingFactors": [
+        "brandPortfolioRelevance",
+        "feeCommercial",
+        "geographyMarkets",
+        "systemsReporting",
+        "ownerRelations",
+        "chainScale",
+        "serviceOfferings",
+        "dealStructureAssignment",
+        "negativeFitPenalty"
+      ],
+      "anomalies": [
+        "Generic capability claimant ranked #1",
+        "Sparse-data operator scored 84.9 at/above median",
+        "Low stdev (6.4) — clustering"
+      ],
+      "topBreakdownSample": {
+        "geographyMarkets": {
+          "label": "Geography & Markets",
+          "weight": 18,
+          "brandValue": "Countries: Mexico, Colombia, Panama, Dominican Republic, Puerto Rico; Markets: Mexico City, Cancún, Bogotá, Panama City, Punta Cana, San Juan, Monterrey, Mérida",
+          "dealValue": "Country: Mexico; City: Mexico City; Requirement: Active country operations required",
+          "note": "Uses Market Presence Requirement with Active Countries / Active Markets when available.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented presence in the deal city/market.",
+          "includedInDenominator": true
+        },
+        "chainScale": {
+          "label": "Chain Scale",
+          "weight": 8,
+          "brandValue": "Supported chain scales: Upper Midscale, Upscale, Upper Upscale, Luxury",
+          "dealValue": "Hotel Chain Scale: Upper Upscale",
+          "note": "Checks whether the operator works in the same chain-scale band.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "assetProjectStageFit": {
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "brandValue": "Best-fit assets: Urban, Resort, Mixed-Use, Conversion, New Build; Stages: New Build, Conversion / Reflag, Stabilized, Renovation, Full pre-opening, Extensive",
+          "dealValue": "Project: New Build; Stage: Pre-development / Planning; Timeline: Pre-development; Pre-opening needed: Yes — full pre-opening",
+          "note": "Combines project type, development stage/timeline, and pre-opening capability signals.",
+          "score": 57.5,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "dealStructureAssignment": {
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "brandValue": "Accepted structures: Full third-party management, Franchise support, Brand-managed, Commercial-only support, Pre-opening / transition support, Asset management support, Competitive base + incentive fees, Full RM",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management",
+          "note": "Compares operating model and preferred management structures to operator-supported structures (brand agreement is not treated as conflicting with third-party operations).",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure appears directionally aligned with the deal's third-party management path. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "includedInDenominator": true
+        },
+        "feeCommercial": {
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "brandValue": "Commercial terms: Competitive base + incentive fees",
+          "dealValue": "Fee expectations: Royalty 4-5%; Marketing 2%; Legacy structure Franchise Only",
+          "note": "Uses available fee expectations and operator commercial positioning.",
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "serviceOfferings": {
+          "label": "Service Offerings",
+          "weight": 8,
+          "brandValue": "Services/capabilities: Full hotel management, Pre-opening planning, Revenue management, Sales, Marketing, Procurement, Accounting / finance support, Owner reporting, HR / training, Digital distribution, Brand compliance support, F&B management, Asset management support",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Owner reporting",
+          "note": "Compares structured Required/Must-Have Operator Services (and scope) to operator Offered Services and capability fields.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Documented operator services overlap with the deal's structured must-have service requirements.",
+          "includedInDenominator": true
+        },
+        "systemsReporting": {
+          "label": "Systems & Reporting",
+          "weight": 6,
+          "brandValue": "Systems/reporting: PMS, RMS, BI; Institutional monthly package; Monthly owner meeting",
+          "dealValue": "Owner reporting expectation: Institutional monthly package",
+          "note": "Compares structured owner reporting expectations to operator reporting/governance fields.",
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Owner reporting capability appears relevant to the deal's Institutional monthly package expectation.",
+          "includedInDenominator": true
+        },
+        "ownerRelations": {
+          "label": "Owner Relations",
+          "weight": 6,
+          "brandValue": "collaborative monthly reporting with owner refs",
+          "dealValue": "Owner control: High oversight / approval rights; Owner priority: responsive communication and collaboration",
+          "note": "Uses owner-relations signals such as response style, collaboration mode, and references.",
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "brandPortfolioRelevance": {
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "brandValue": "Brands managed: Marriott, Hilton, Hyatt, IHG, Courtyard, Hampton",
+          "dealValue": "Preferred brands: Marriott, Hilton",
+          "note": "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "negativeFitPenalty": {
+          "label": "Negative-Fit Penalty",
+          "weight": 2,
+          "brandValue": "Less ideal situations: —",
+          "dealValue": "Top deal breakers: No local presence",
+          "note": "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        }
+      }
+    },
+    {
+      "scenarioId": "luxury-leisure-resort",
+      "label": "Luxury leisure resort",
+      "distribution": {
+        "count": 8,
+        "mean": 68.2,
+        "median": 68.9,
+        "min": 45.1,
+        "max": 87.8,
+        "stdev": 14.3,
+        "withinFiveOfTop": 2
+      },
+      "ranking": [
+        {
+          "rank": 1,
+          "operatorId": "cala-resort-luxury",
+          "operatorName": "CALA Resort Luxury Operator",
+          "score": 87.8,
+          "note": "Resort / all-inclusive / luxury leisure depth"
+        },
+        {
+          "rank": 2,
+          "operatorId": "generic-full-service-claims",
+          "operatorName": "Generic Full-Service Claims Co",
+          "score": 85.8,
+          "note": "Claims all table-stakes services; broad geography; no niche signal"
+        },
+        {
+          "rank": 3,
+          "operatorId": "wrong-geo-broad-claims",
+          "operatorName": "Wrong-Geo Broad Claims",
+          "score": 75.4,
+          "note": "Claims all services but wrong geography vs most CALA deals"
+        },
+        {
+          "rank": 4,
+          "operatorId": "turnaround-specialist",
+          "operatorName": "Caribbean Turnaround Specialist",
+          "score": 74.5,
+          "note": "Repositioning / underperformance focus; narrower footprint"
+        },
+        {
+          "rank": 5,
+          "operatorId": "yucatan-select-specialist",
+          "operatorName": "Yucatán Select Specialist",
+          "score": 63.2,
+          "note": "Strong Mexico select-service / conversion niche"
+        },
+        {
+          "rank": 6,
+          "operatorId": "institutional-reporting-platform",
+          "operatorName": "Institutional Reporting Platform",
+          "score": 61.4,
+          "note": "Strong governance/reporting; average asset niche"
+        },
+        {
+          "rank": 7,
+          "operatorId": "commercial-support-only",
+          "operatorName": "Commercial Support Boutique",
+          "score": 52.7,
+          "note": "Sales/RM only — weak for full management mandates"
+        },
+        {
+          "rank": 8,
+          "operatorId": "sparse-data-operator",
+          "operatorName": "Sparse Data Operator",
+          "score": 45.1,
+          "note": "Missing most structured fields — should exclude factors / lower confidence"
+        }
+      ],
+      "factorAverages": [
+        {
+          "factor": "brandPortfolioRelevance",
+          "weight": 6,
+          "avgScore": 35.7,
+          "scoredCount": 7
+        },
+        {
+          "factor": "assetProjectStageFit",
+          "weight": 14,
+          "avgScore": 46.5,
+          "scoredCount": 7
+        },
+        {
+          "factor": "chainScale",
+          "weight": 8,
+          "avgScore": 53.1,
+          "scoredCount": 8
+        },
+        {
+          "factor": "geographyMarkets",
+          "weight": 18,
+          "avgScore": 66.5,
+          "scoredCount": 8
+        },
+        {
+          "factor": "feeCommercial",
+          "weight": 10,
+          "avgScore": 75,
+          "scoredCount": 7
+        },
+        {
+          "factor": "systemsReporting",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "ownerRelations",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "serviceOfferings",
+          "weight": 8,
+          "avgScore": 91.4,
+          "scoredCount": 7
+        },
+        {
+          "factor": "dealStructureAssignment",
+          "weight": 12,
+          "avgScore": 92.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "negativeFitPenalty",
+          "weight": 2,
+          "avgScore": 100,
+          "scoredCount": 8
+        }
+      ],
+      "nonDifferentiatingFactors": [
+        "feeCommercial",
+        "systemsReporting",
+        "ownerRelations",
+        "serviceOfferings",
+        "dealStructureAssignment",
+        "negativeFitPenalty"
+      ],
+      "anomalies": [],
+      "topBreakdownSample": {
+        "geographyMarkets": {
+          "label": "Geography & Markets",
+          "weight": 18,
+          "brandValue": "Countries: Dominican Republic, Mexico, Puerto Rico; Markets: Punta Cana, Cancún, San Juan",
+          "dealValue": "Country: Dominican Republic; City: Punta Cana; Requirement: Active country operations required",
+          "note": "Uses Market Presence Requirement with Active Countries / Active Markets when available.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented presence in the deal city/market.",
+          "includedInDenominator": true
+        },
+        "chainScale": {
+          "label": "Chain Scale",
+          "weight": 8,
+          "brandValue": "Supported chain scales: Upscale, Upper Upscale, Luxury",
+          "dealValue": "Hotel Chain Scale: Luxury",
+          "note": "Checks whether the operator works in the same chain-scale band.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "assetProjectStageFit": {
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "brandValue": "Best-fit assets: Resort, All-inclusive, Leisure; Stages: New Build, Stabilized, Renovation, Full pre-opening, Extensive",
+          "dealValue": "Project: New Build; Stage: Under Construction; Timeline: Under construction",
+          "note": "Combines project type, development stage/timeline, and pre-opening capability signals.",
+          "score": 47.9,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "dealStructureAssignment": {
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "brandValue": "Accepted structures: Full third-party management, Brand-managed, Hybrid / project-specific, Resort management fee schedule",
+          "dealValue": "Brand agreement: Management | Operating model: Brand-managed | Preferred management: Brand-managed; Full third-party management",
+          "note": "Compares operating model and preferred management structures to operator-supported structures (brand agreement is not treated as conflicting with third-party operations).",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure appears directionally aligned with the deal's third-party management path.",
+          "includedInDenominator": true
+        },
+        "feeCommercial": {
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "brandValue": "Commercial terms: Resort management fee schedule",
+          "dealValue": "Fee expectations: Royalty 5%; Marketing 3%",
+          "note": "Uses available fee expectations and operator commercial positioning.",
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "serviceOfferings": {
+          "label": "Service Offerings",
+          "weight": 8,
+          "brandValue": "Services/capabilities: Full hotel management, F&B management, Pre-opening planning, Revenue management, Sales, Owner reporting",
+          "dealValue": "Must-have services: Full hotel management, F&B management, Pre-opening planning, Revenue management",
+          "note": "Compares structured Required/Must-Have Operator Services (and scope) to operator Offered Services and capability fields.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Documented operator services overlap with the deal's structured must-have service requirements.",
+          "includedInDenominator": true
+        },
+        "systemsReporting": {
+          "label": "Systems & Reporting",
+          "weight": 6,
+          "brandValue": "Systems/reporting: PMS, RMS, CRM; Institutional monthly package",
+          "dealValue": "—",
+          "note": "Generic systems/reporting when deal expectation not specified.",
+          "score": 90,
+          "fieldSource": "legacy",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "ownerRelations": {
+          "label": "Owner Relations",
+          "weight": 6,
+          "brandValue": "weekly collaborative owner advisory",
+          "dealValue": "Owner priority: responsive communication and collaboration",
+          "note": "Uses owner-relations signals such as response style, collaboration mode, and references.",
+          "score": 90,
+          "fieldSource": "default",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "brandPortfolioRelevance": {
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "brandValue": "Brands managed: Ritz-Carlton, Four Seasons, Marriott",
+          "dealValue": "Preferred brands: Four Seasons, Ritz-Carlton",
+          "note": "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "negativeFitPenalty": {
+          "label": "Negative-Fit Penalty",
+          "weight": 2,
+          "brandValue": "Less ideal situations: Airport select-service; limited-service conversions",
+          "dealValue": "Top deal breakers: —",
+          "note": "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        }
+      }
+    },
+    {
+      "scenarioId": "select-service-conversion",
+      "label": "Select-service conversion",
+      "distribution": {
+        "count": 8,
+        "mean": 75.7,
+        "median": 74.8,
+        "min": 61.9,
+        "max": 87.8,
+        "stdev": 9.6,
+        "withinFiveOfTop": 3
+      },
+      "ranking": [
+        {
+          "rank": 1,
+          "operatorId": "generic-full-service-claims",
+          "operatorName": "Generic Full-Service Claims Co",
+          "score": 87.8,
+          "note": "Claims all table-stakes services; broad geography; no niche signal"
+        },
+        {
+          "rank": 2,
+          "operatorId": "yucatan-select-specialist",
+          "operatorName": "Yucatán Select Specialist",
+          "score": 87.8,
+          "note": "Strong Mexico select-service / conversion niche"
+        },
+        {
+          "rank": 3,
+          "operatorId": "institutional-reporting-platform",
+          "operatorName": "Institutional Reporting Platform",
+          "score": 83.7,
+          "note": "Strong governance/reporting; average asset niche"
+        },
+        {
+          "rank": 4,
+          "operatorId": "wrong-geo-broad-claims",
+          "operatorName": "Wrong-Geo Broad Claims",
+          "score": 76.1,
+          "note": "Claims all services but wrong geography vs most CALA deals"
+        },
+        {
+          "rank": 5,
+          "operatorId": "sparse-data-operator",
+          "operatorName": "Sparse Data Operator",
+          "score": 73.4,
+          "note": "Missing most structured fields — should exclude factors / lower confidence"
+        },
+        {
+          "rank": 6,
+          "operatorId": "cala-resort-luxury",
+          "operatorName": "CALA Resort Luxury Operator",
+          "score": 72.3,
+          "note": "Resort / all-inclusive / luxury leisure depth"
+        },
+        {
+          "rank": 7,
+          "operatorId": "commercial-support-only",
+          "operatorName": "Commercial Support Boutique",
+          "score": 62.4,
+          "note": "Sales/RM only — weak for full management mandates"
+        },
+        {
+          "rank": 8,
+          "operatorId": "turnaround-specialist",
+          "operatorName": "Caribbean Turnaround Specialist",
+          "score": 61.9,
+          "note": "Repositioning / underperformance focus; narrower footprint"
+        }
+      ],
+      "factorAverages": [
+        {
+          "factor": "assetProjectStageFit",
+          "weight": 14,
+          "avgScore": 38.7,
+          "scoredCount": 7
+        },
+        {
+          "factor": "chainScale",
+          "weight": 8,
+          "avgScore": 62.5,
+          "scoredCount": 8
+        },
+        {
+          "factor": "brandPortfolioRelevance",
+          "weight": 6,
+          "avgScore": 67.9,
+          "scoredCount": 7
+        },
+        {
+          "factor": "feeCommercial",
+          "weight": 10,
+          "avgScore": 75,
+          "scoredCount": 7
+        },
+        {
+          "factor": "geographyMarkets",
+          "weight": 18,
+          "avgScore": 84,
+          "scoredCount": 8
+        },
+        {
+          "factor": "serviceOfferings",
+          "weight": 8,
+          "avgScore": 89.3,
+          "scoredCount": 7
+        },
+        {
+          "factor": "systemsReporting",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "ownerRelations",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "dealStructureAssignment",
+          "weight": 12,
+          "avgScore": 92.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "negativeFitPenalty",
+          "weight": 2,
+          "avgScore": 100,
+          "scoredCount": 8
+        }
+      ],
+      "nonDifferentiatingFactors": [
+        "feeCommercial",
+        "geographyMarkets",
+        "serviceOfferings",
+        "systemsReporting",
+        "ownerRelations",
+        "dealStructureAssignment",
+        "negativeFitPenalty"
+      ],
+      "anomalies": [
+        "Generic capability claimant ranked #1"
+      ],
+      "topBreakdownSample": {
+        "geographyMarkets": {
+          "label": "Geography & Markets",
+          "weight": 18,
+          "brandValue": "Countries: Mexico, Colombia, Panama, Dominican Republic, Puerto Rico; Markets: Mexico City, Cancún, Bogotá, Panama City, Punta Cana, San Juan, Monterrey, Mérida",
+          "dealValue": "Country: Mexico; City: Cancún; Requirement: Active country operations required",
+          "note": "Uses Market Presence Requirement with Active Countries / Active Markets when available.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented presence in the deal city/market.",
+          "includedInDenominator": true
+        },
+        "chainScale": {
+          "label": "Chain Scale",
+          "weight": 8,
+          "brandValue": "Supported chain scales: Upper Midscale, Upscale, Upper Upscale, Luxury",
+          "dealValue": "Hotel Chain Scale: Upper Midscale",
+          "note": "Checks whether the operator works in the same chain-scale band.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "assetProjectStageFit": {
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "brandValue": "Best-fit assets: Urban, Resort, Mixed-Use, Conversion, New Build; Stages: New Build, Conversion / Reflag, Stabilized, Renovation, Full pre-opening, Extensive",
+          "dealValue": "Project: Conversion / Reflag; Stage: Existing / Operating; Timeline: Near-term opening",
+          "note": "Combines project type, development stage/timeline, and pre-opening capability signals.",
+          "score": 47.9,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "dealStructureAssignment": {
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "brandValue": "Accepted structures: Full third-party management, Franchise support, Brand-managed, Commercial-only support, Pre-opening / transition support, Asset management support, Competitive base + incentive fees, Full RM",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator",
+          "note": "Compares operating model and preferred management structures to operator-supported structures (brand agreement is not treated as conflicting with third-party operations).",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure appears directionally aligned with the deal's third-party management path. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "includedInDenominator": true
+        },
+        "feeCommercial": {
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "brandValue": "Commercial terms: Competitive base + incentive fees",
+          "dealValue": "Fee expectations: Royalty 5%; Legacy structure Franchise Only",
+          "note": "Uses available fee expectations and operator commercial positioning.",
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "serviceOfferings": {
+          "label": "Service Offerings",
+          "weight": 8,
+          "brandValue": "Services/capabilities: Full hotel management, Pre-opening planning, Revenue management, Sales, Marketing, Procurement, Accounting / finance support, Owner reporting, HR / training, Digital distribution, Brand compliance support, F&B management, Asset management support",
+          "dealValue": "Must-have services: Full hotel management, Brand compliance support, Revenue management, Owner reporting",
+          "note": "Compares structured Required/Must-Have Operator Services (and scope) to operator Offered Services and capability fields.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Documented operator services overlap with the deal's structured must-have service requirements.",
+          "includedInDenominator": true
+        },
+        "systemsReporting": {
+          "label": "Systems & Reporting",
+          "weight": 6,
+          "brandValue": "Systems/reporting: PMS, RMS, BI; Institutional monthly package; Monthly owner meeting",
+          "dealValue": "—",
+          "note": "Generic systems/reporting when deal expectation not specified.",
+          "score": 90,
+          "fieldSource": "legacy",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "ownerRelations": {
+          "label": "Owner Relations",
+          "weight": 6,
+          "brandValue": "collaborative monthly reporting with owner refs",
+          "dealValue": "Owner priority: responsive communication and collaboration",
+          "note": "Uses owner-relations signals such as response style, collaboration mode, and references.",
+          "score": 90,
+          "fieldSource": "default",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "brandPortfolioRelevance": {
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "brandValue": "Brands managed: Marriott, Hilton, Hyatt, IHG, Courtyard, Hampton",
+          "dealValue": "Preferred brands: Courtyard, Hampton",
+          "note": "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "negativeFitPenalty": {
+          "label": "Negative-Fit Penalty",
+          "weight": 2,
+          "brandValue": "Less ideal situations: —",
+          "dealValue": "Top deal breakers: —",
+          "note": "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        }
+      }
+    },
+    {
+      "scenarioId": "mixed-use-branded-residences",
+      "label": "Mixed-use hotel with branded residences",
+      "distribution": {
+        "count": 8,
+        "mean": 72,
+        "median": 68.3,
+        "min": 60.5,
+        "max": 86.2,
+        "stdev": 8.3,
+        "withinFiveOfTop": 2
+      },
+      "ranking": [
+        {
+          "rank": 1,
+          "operatorId": "generic-full-service-claims",
+          "operatorName": "Generic Full-Service Claims Co",
+          "score": 86.2,
+          "note": "Claims all table-stakes services; broad geography; no niche signal"
+        },
+        {
+          "rank": 2,
+          "operatorId": "institutional-reporting-platform",
+          "operatorName": "Institutional Reporting Platform",
+          "score": 83.6,
+          "note": "Strong governance/reporting; average asset niche"
+        },
+        {
+          "rank": 3,
+          "operatorId": "wrong-geo-broad-claims",
+          "operatorName": "Wrong-Geo Broad Claims",
+          "score": 74.5,
+          "note": "Claims all services but wrong geography vs most CALA deals"
+        },
+        {
+          "rank": 4,
+          "operatorId": "yucatan-select-specialist",
+          "operatorName": "Yucatán Select Specialist",
+          "score": 68.3,
+          "note": "Strong Mexico select-service / conversion niche"
+        },
+        {
+          "rank": 5,
+          "operatorId": "cala-resort-luxury",
+          "operatorName": "CALA Resort Luxury Operator",
+          "score": 68.3,
+          "note": "Resort / all-inclusive / luxury leisure depth"
+        },
+        {
+          "rank": 6,
+          "operatorId": "turnaround-specialist",
+          "operatorName": "Caribbean Turnaround Specialist",
+          "score": 68.3,
+          "note": "Repositioning / underperformance focus; narrower footprint"
+        },
+        {
+          "rank": 7,
+          "operatorId": "sparse-data-operator",
+          "operatorName": "Sparse Data Operator",
+          "score": 66.6,
+          "note": "Missing most structured fields — should exclude factors / lower confidence"
+        },
+        {
+          "rank": 8,
+          "operatorId": "commercial-support-only",
+          "operatorName": "Commercial Support Boutique",
+          "score": 60.5,
+          "note": "Sales/RM only — weak for full management mandates"
+        }
+      ],
+      "factorAverages": [
+        {
+          "factor": "brandPortfolioRelevance",
+          "weight": 6,
+          "avgScore": 31.4,
+          "scoredCount": 7
+        },
+        {
+          "factor": "assetProjectStageFit",
+          "weight": 14,
+          "avgScore": 47.1,
+          "scoredCount": 7
+        },
+        {
+          "factor": "geographyMarkets",
+          "weight": 18,
+          "avgScore": 61,
+          "scoredCount": 8
+        },
+        {
+          "factor": "feeCommercial",
+          "weight": 10,
+          "avgScore": 75,
+          "scoredCount": 7
+        },
+        {
+          "factor": "serviceOfferings",
+          "weight": 8,
+          "avgScore": 78.9,
+          "scoredCount": 7
+        },
+        {
+          "factor": "systemsReporting",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "ownerRelations",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "dealStructureAssignment",
+          "weight": 12,
+          "avgScore": 92.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "chainScale",
+          "weight": 8,
+          "avgScore": 100,
+          "scoredCount": 8
+        },
+        {
+          "factor": "negativeFitPenalty",
+          "weight": 2,
+          "avgScore": 100,
+          "scoredCount": 8
+        }
+      ],
+      "nonDifferentiatingFactors": [
+        "feeCommercial",
+        "serviceOfferings",
+        "systemsReporting",
+        "ownerRelations",
+        "dealStructureAssignment",
+        "chainScale",
+        "negativeFitPenalty"
+      ],
+      "anomalies": [
+        "Generic capability claimant ranked #1"
+      ],
+      "topBreakdownSample": {
+        "geographyMarkets": {
+          "label": "Geography & Markets",
+          "weight": 18,
+          "brandValue": "Countries: Mexico, Colombia, Panama, Dominican Republic, Puerto Rico; Markets: Mexico City, Cancún, Bogotá, Panama City, Punta Cana, San Juan, Monterrey, Mérida",
+          "dealValue": "Country: Panama; City: Panama City",
+          "note": "Uses Market Presence Requirement with Active Countries / Active Markets when available.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented presence in the deal city/market.",
+          "includedInDenominator": true
+        },
+        "chainScale": {
+          "label": "Chain Scale",
+          "weight": 8,
+          "brandValue": "Supported chain scales: Upper Midscale, Upscale, Upper Upscale, Luxury",
+          "dealValue": "Hotel Chain Scale: Upscale",
+          "note": "Checks whether the operator works in the same chain-scale band.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "assetProjectStageFit": {
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "brandValue": "Best-fit assets: Urban, Resort, Mixed-Use, Conversion, New Build; Stages: New Build, Conversion / Reflag, Stabilized, Renovation, Full pre-opening, Extensive",
+          "dealValue": "Project: Mixed-Use Hospitality Project",
+          "note": "Combines project type, development stage/timeline, and pre-opening capability signals.",
+          "score": 70,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "dealStructureAssignment": {
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "brandValue": "Accepted structures: Full third-party management, Franchise support, Brand-managed, Commercial-only support, Pre-opening / transition support, Asset management support, Competitive base + incentive fees, Full RM",
+          "dealValue": "Brand agreement: Franchise | Operating model: Hybrid / project-specific | Preferred management: Full third-party management; Franchise with third-party operator",
+          "note": "Compares operating model and preferred management structures to operator-supported structures (brand agreement is not treated as conflicting with third-party operations).",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure appears directionally aligned with the deal's third-party management path. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "includedInDenominator": true
+        },
+        "feeCommercial": {
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "brandValue": "Commercial terms: Competitive base + incentive fees",
+          "dealValue": "Fee expectations: Royalty 4%",
+          "note": "Uses available fee expectations and operator commercial positioning.",
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "serviceOfferings": {
+          "label": "Service Offerings",
+          "weight": 8,
+          "brandValue": "Services/capabilities: Full hotel management, Pre-opening planning, Revenue management, Sales, Marketing, Procurement, Accounting / finance support, Owner reporting, HR / training, Digital distribution, Brand compliance support, F&B management, Asset management support",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Owner reporting, Asset management support",
+          "note": "Compares structured Required/Must-Have Operator Services (and scope) to operator Offered Services and capability fields.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Documented operator services overlap with the deal's structured must-have service requirements.",
+          "includedInDenominator": true
+        },
+        "systemsReporting": {
+          "label": "Systems & Reporting",
+          "weight": 6,
+          "brandValue": "Systems/reporting: PMS, RMS, BI; Institutional monthly package; Monthly owner meeting",
+          "dealValue": "—",
+          "note": "Generic systems/reporting when deal expectation not specified.",
+          "score": 90,
+          "fieldSource": "legacy",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "ownerRelations": {
+          "label": "Owner Relations",
+          "weight": 6,
+          "brandValue": "collaborative monthly reporting with owner refs",
+          "dealValue": "Owner priority: responsive communication and collaboration",
+          "note": "Uses owner-relations signals such as response style, collaboration mode, and references.",
+          "score": 90,
+          "fieldSource": "default",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "brandPortfolioRelevance": {
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "brandValue": "Brands managed: Marriott, Hilton, Hyatt, IHG, Courtyard, Hampton",
+          "dealValue": "Preferred brands: W Hotels, Kimpton",
+          "note": "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+          "score": 25,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "negativeFitPenalty": {
+          "label": "Negative-Fit Penalty",
+          "weight": 2,
+          "brandValue": "Less ideal situations: —",
+          "dealValue": "Top deal breakers: —",
+          "note": "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        }
+      }
+    },
+    {
+      "scenarioId": "large-group-convention",
+      "label": "Large group and convention hotel",
+      "distribution": {
+        "count": 8,
+        "mean": 70.8,
+        "median": 71.1,
+        "min": 56.6,
+        "max": 85,
+        "stdev": 9.5,
+        "withinFiveOfTop": 2
+      },
+      "ranking": [
+        {
+          "rank": 1,
+          "operatorId": "generic-full-service-claims",
+          "operatorName": "Generic Full-Service Claims Co",
+          "score": 85,
+          "note": "Claims all table-stakes services; broad geography; no niche signal"
+        },
+        {
+          "rank": 2,
+          "operatorId": "institutional-reporting-platform",
+          "operatorName": "Institutional Reporting Platform",
+          "score": 83,
+          "note": "Strong governance/reporting; average asset niche"
+        },
+        {
+          "rank": 3,
+          "operatorId": "wrong-geo-broad-claims",
+          "operatorName": "Wrong-Geo Broad Claims",
+          "score": 74.6,
+          "note": "Claims all services but wrong geography vs most CALA deals"
+        },
+        {
+          "rank": 4,
+          "operatorId": "turnaround-specialist",
+          "operatorName": "Caribbean Turnaround Specialist",
+          "score": 72.6,
+          "note": "Repositioning / underperformance focus; narrower footprint"
+        },
+        {
+          "rank": 5,
+          "operatorId": "cala-resort-luxury",
+          "operatorName": "CALA Resort Luxury Operator",
+          "score": 69.6,
+          "note": "Resort / all-inclusive / luxury leisure depth"
+        },
+        {
+          "rank": 6,
+          "operatorId": "yucatan-select-specialist",
+          "operatorName": "Yucatán Select Specialist",
+          "score": 65.2,
+          "note": "Strong Mexico select-service / conversion niche"
+        },
+        {
+          "rank": 7,
+          "operatorId": "commercial-support-only",
+          "operatorName": "Commercial Support Boutique",
+          "score": 60,
+          "note": "Sales/RM only — weak for full management mandates"
+        },
+        {
+          "rank": 8,
+          "operatorId": "sparse-data-operator",
+          "operatorName": "Sparse Data Operator",
+          "score": 56.6,
+          "note": "Missing most structured fields — should exclude factors / lower confidence"
+        }
+      ],
+      "factorAverages": [
+        {
+          "factor": "assetProjectStageFit",
+          "weight": 14,
+          "avgScore": 30,
+          "scoredCount": 7
+        },
+        {
+          "factor": "brandPortfolioRelevance",
+          "weight": 6,
+          "avgScore": 59.3,
+          "scoredCount": 7
+        },
+        {
+          "factor": "geographyMarkets",
+          "weight": 18,
+          "avgScore": 61,
+          "scoredCount": 8
+        },
+        {
+          "factor": "feeCommercial",
+          "weight": 10,
+          "avgScore": 75,
+          "scoredCount": 7
+        },
+        {
+          "factor": "systemsReporting",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "ownerRelations",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "chainScale",
+          "weight": 8,
+          "avgScore": 91.3,
+          "scoredCount": 8
+        },
+        {
+          "factor": "dealStructureAssignment",
+          "weight": 12,
+          "avgScore": 92.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "serviceOfferings",
+          "weight": 8,
+          "avgScore": 93.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "negativeFitPenalty",
+          "weight": 2,
+          "avgScore": 100,
+          "scoredCount": 8
+        }
+      ],
+      "nonDifferentiatingFactors": [
+        "feeCommercial",
+        "systemsReporting",
+        "ownerRelations",
+        "chainScale",
+        "dealStructureAssignment",
+        "serviceOfferings",
+        "negativeFitPenalty"
+      ],
+      "anomalies": [
+        "Generic capability claimant ranked #1"
+      ],
+      "topBreakdownSample": {
+        "geographyMarkets": {
+          "label": "Geography & Markets",
+          "weight": 18,
+          "brandValue": "Countries: Mexico, Colombia, Panama, Dominican Republic, Puerto Rico; Markets: Mexico City, Cancún, Bogotá, Panama City, Punta Cana, San Juan, Monterrey, Mérida",
+          "dealValue": "Country: Colombia; City: Bogotá",
+          "note": "Uses Market Presence Requirement with Active Countries / Active Markets when available.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented presence in the deal city/market.",
+          "includedInDenominator": true
+        },
+        "chainScale": {
+          "label": "Chain Scale",
+          "weight": 8,
+          "brandValue": "Supported chain scales: Upper Midscale, Upscale, Upper Upscale, Luxury",
+          "dealValue": "Hotel Chain Scale: Upper Upscale",
+          "note": "Checks whether the operator works in the same chain-scale band.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "assetProjectStageFit": {
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "brandValue": "Best-fit assets: Urban, Resort, Mixed-Use, Conversion, New Build; Stages: New Build, Conversion / Reflag, Stabilized, Renovation, Full pre-opening, Extensive",
+          "dealValue": "Project: Existing Operating Hotel",
+          "note": "Combines project type, development stage/timeline, and pre-opening capability signals.",
+          "score": 30,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "dealStructureAssignment": {
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "brandValue": "Accepted structures: Full third-party management, Franchise support, Brand-managed, Commercial-only support, Pre-opening / transition support, Asset management support, Competitive base + incentive fees, Full RM",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Full third-party management",
+          "note": "Compares operating model and preferred management structures to operator-supported structures (brand agreement is not treated as conflicting with third-party operations).",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure appears directionally aligned with the deal's third-party management path. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "includedInDenominator": true
+        },
+        "feeCommercial": {
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "brandValue": "Commercial terms: Competitive base + incentive fees",
+          "dealValue": "Fee expectations: Royalty 4%",
+          "note": "Uses available fee expectations and operator commercial positioning.",
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "serviceOfferings": {
+          "label": "Service Offerings",
+          "weight": 8,
+          "brandValue": "Services/capabilities: Full hotel management, Pre-opening planning, Revenue management, Sales, Marketing, Procurement, Accounting / finance support, Owner reporting, HR / training, Digital distribution, Brand compliance support, F&B management, Asset management support",
+          "dealValue": "Must-have services: Full hotel management, Sales, Revenue management, Owner reporting",
+          "note": "Compares structured Required/Must-Have Operator Services (and scope) to operator Offered Services and capability fields.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Documented operator services overlap with the deal's structured must-have service requirements.",
+          "includedInDenominator": true
+        },
+        "systemsReporting": {
+          "label": "Systems & Reporting",
+          "weight": 6,
+          "brandValue": "Systems/reporting: PMS, RMS, BI; Institutional monthly package; Monthly owner meeting",
+          "dealValue": "—",
+          "note": "Generic systems/reporting when deal expectation not specified.",
+          "score": 90,
+          "fieldSource": "legacy",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "ownerRelations": {
+          "label": "Owner Relations",
+          "weight": 6,
+          "brandValue": "collaborative monthly reporting with owner refs",
+          "dealValue": "Owner priority: responsive communication and collaboration",
+          "note": "Uses owner-relations signals such as response style, collaboration mode, and references.",
+          "score": 90,
+          "fieldSource": "default",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "brandPortfolioRelevance": {
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "brandValue": "Brands managed: Marriott, Hilton, Hyatt, IHG, Courtyard, Hampton",
+          "dealValue": "Preferred brands: Hyatt, Hilton",
+          "note": "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "negativeFitPenalty": {
+          "label": "Negative-Fit Penalty",
+          "weight": 2,
+          "brandValue": "Less ideal situations: —",
+          "dealValue": "Top deal breakers: —",
+          "note": "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        }
+      }
+    },
+    {
+      "scenarioId": "independent-lifestyle-soft-brand",
+      "label": "Independent lifestyle hotel considering soft brand",
+      "distribution": {
+        "count": 8,
+        "mean": 74.2,
+        "median": 70.9,
+        "min": 59.1,
+        "max": 94.9,
+        "stdev": 12.4,
+        "withinFiveOfTop": 2
+      },
+      "ranking": [
+        {
+          "rank": 1,
+          "operatorId": "sparse-data-operator",
+          "operatorName": "Sparse Data Operator",
+          "score": 94.9,
+          "note": "Missing most structured fields — should exclude factors / lower confidence"
+        },
+        {
+          "rank": 2,
+          "operatorId": "commercial-support-only",
+          "operatorName": "Commercial Support Boutique",
+          "score": 90.6,
+          "note": "Sales/RM only — weak for full management mandates"
+        },
+        {
+          "rank": 3,
+          "operatorId": "generic-full-service-claims",
+          "operatorName": "Generic Full-Service Claims Co",
+          "score": 78.8,
+          "note": "Claims all table-stakes services; broad geography; no niche signal"
+        },
+        {
+          "rank": 4,
+          "operatorId": "institutional-reporting-platform",
+          "operatorName": "Institutional Reporting Platform",
+          "score": 71,
+          "note": "Strong governance/reporting; average asset niche"
+        },
+        {
+          "rank": 5,
+          "operatorId": "yucatan-select-specialist",
+          "operatorName": "Yucatán Select Specialist",
+          "score": 70.8,
+          "note": "Strong Mexico select-service / conversion niche"
+        },
+        {
+          "rank": 6,
+          "operatorId": "cala-resort-luxury",
+          "operatorName": "CALA Resort Luxury Operator",
+          "score": 69,
+          "note": "Resort / all-inclusive / luxury leisure depth"
+        },
+        {
+          "rank": 7,
+          "operatorId": "turnaround-specialist",
+          "operatorName": "Caribbean Turnaround Specialist",
+          "score": 59.1,
+          "note": "Repositioning / underperformance focus; narrower footprint"
+        },
+        {
+          "rank": 8,
+          "operatorId": "wrong-geo-broad-claims",
+          "operatorName": "Wrong-Geo Broad Claims",
+          "score": 59.1,
+          "note": "Claims all services but wrong geography vs most CALA deals"
+        }
+      ],
+      "factorAverages": [
+        {
+          "factor": "assetProjectStageFit",
+          "weight": 14,
+          "avgScore": 33.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "brandPortfolioRelevance",
+          "weight": 6,
+          "avgScore": 35.7,
+          "scoredCount": 7
+        },
+        {
+          "factor": "dealStructureAssignment",
+          "weight": 12,
+          "avgScore": 62.9,
+          "scoredCount": 7
+        },
+        {
+          "factor": "geographyMarkets",
+          "weight": 18,
+          "avgScore": 83,
+          "scoredCount": 8
+        },
+        {
+          "factor": "serviceOfferings",
+          "weight": 8,
+          "avgScore": 88.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "systemsReporting",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "ownerRelations",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "chainScale",
+          "weight": 8,
+          "avgScore": 100,
+          "scoredCount": 8
+        },
+        {
+          "factor": "negativeFitPenalty",
+          "weight": 2,
+          "avgScore": 100,
+          "scoredCount": 8
+        }
+      ],
+      "nonDifferentiatingFactors": [
+        "geographyMarkets",
+        "serviceOfferings",
+        "systemsReporting",
+        "ownerRelations",
+        "chainScale",
+        "negativeFitPenalty"
+      ],
+      "anomalies": [
+        "Sparse-data operator scored 94.9 at/above median"
+      ],
+      "topBreakdownSample": {
+        "geographyMarkets": {
+          "label": "Geography & Markets",
+          "weight": 18,
+          "brandValue": "Countries: Mexico; Markets: —",
+          "dealValue": "Country: Mexico; City: Mérida",
+          "note": "Uses Market Presence Requirement with Active Countries / Active Markets when available.",
+          "score": 92,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented country or city-level presence.",
+          "includedInDenominator": true
+        },
+        "chainScale": {
+          "label": "Chain Scale",
+          "weight": 8,
+          "brandValue": "Supported chain scales: Upscale",
+          "dealValue": "Hotel Chain Scale: Upscale",
+          "note": "Checks whether the operator works in the same chain-scale band.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "assetProjectStageFit": {
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "brandValue": "Best-fit assets: —; Stages: —",
+          "dealValue": "Project: Existing Operating Hotel",
+          "note": "Insufficient asset/stage inputs.",
+          "score": "—",
+          "fieldSource": "location",
+          "missingDataClass": "excluded",
+          "rationale": null,
+          "includedInDenominator": false
+        },
+        "dealStructureAssignment": {
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "brandValue": "Accepted structures: —",
+          "dealValue": "Brand agreement: Soft brand / collection affiliation | Operating model: Owner-operated | Preferred management: Owner-operated with commercial support; Commercial-only support",
+          "note": "Operator management structures are not documented — excluded from weighted score; validation needed.",
+          "score": "—",
+          "fieldSource": "structured",
+          "missingDataClass": "needs_validation",
+          "rationale": "Management structure requires validation because the operator profile does not yet document supported agreement structures.",
+          "includedInDenominator": false
+        },
+        "feeCommercial": {
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "brandValue": "Commercial terms: —",
+          "dealValue": "Fee expectations: —",
+          "note": "Uses available fee expectations and operator commercial positioning.",
+          "score": "—",
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": false
+        },
+        "serviceOfferings": {
+          "label": "Service Offerings",
+          "weight": 8,
+          "brandValue": "Services/capabilities: —",
+          "dealValue": "Must-have services: Sales, Revenue management, Brand compliance support",
+          "note": "Operator services not documented — excluded from weighted score.",
+          "score": "—",
+          "fieldSource": "structured",
+          "missingDataClass": "needs_validation",
+          "rationale": "Required operator services cannot be validated until operator service offerings are documented.",
+          "includedInDenominator": false
+        },
+        "systemsReporting": {
+          "label": "Systems & Reporting",
+          "weight": 6,
+          "brandValue": "Systems/reporting: —",
+          "dealValue": "—",
+          "note": "No owner reporting expectation documented on deal.",
+          "score": "—",
+          "fieldSource": "none",
+          "missingDataClass": "excluded",
+          "rationale": null,
+          "includedInDenominator": false
+        },
+        "ownerRelations": {
+          "label": "Owner Relations",
+          "weight": 6,
+          "brandValue": "—",
+          "dealValue": "Owner control: Owner-operated with light commercial support; Owner priority: responsive communication and collaboration",
+          "note": "Uses owner-relations signals such as response style, collaboration mode, and references.",
+          "score": "—",
+          "fieldSource": "structured",
+          "missingDataClass": "needs_validation",
+          "rationale": null,
+          "includedInDenominator": false
+        },
+        "brandPortfolioRelevance": {
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "brandValue": "Brands managed: —",
+          "dealValue": "Preferred brands: Design Hotels, Autograph",
+          "note": "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+          "score": "—",
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": false
+        },
+        "negativeFitPenalty": {
+          "label": "Negative-Fit Penalty",
+          "weight": 2,
+          "brandValue": "Less ideal situations: —",
+          "dealValue": "Top deal breakers: —",
+          "note": "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        }
+      }
+    },
+    {
+      "scenarioId": "turnaround-underperforming",
+      "label": "Underperforming hotel requiring turnaround",
+      "distribution": {
+        "count": 8,
+        "mean": 75.4,
+        "median": 74.9,
+        "min": 60.3,
+        "max": 87.8,
+        "stdev": 9.4,
+        "withinFiveOfTop": 3
+      },
+      "ranking": [
+        {
+          "rank": 1,
+          "operatorId": "turnaround-specialist",
+          "operatorName": "Caribbean Turnaround Specialist",
+          "score": 87.8,
+          "note": "Repositioning / underperformance focus; narrower footprint"
+        },
+        {
+          "rank": 2,
+          "operatorId": "generic-full-service-claims",
+          "operatorName": "Generic Full-Service Claims Co",
+          "score": 85.3,
+          "note": "Claims all table-stakes services; broad geography; no niche signal"
+        },
+        {
+          "rank": 3,
+          "operatorId": "cala-resort-luxury",
+          "operatorName": "CALA Resort Luxury Operator",
+          "score": 85.3,
+          "note": "Resort / all-inclusive / luxury leisure depth"
+        },
+        {
+          "rank": 4,
+          "operatorId": "institutional-reporting-platform",
+          "operatorName": "Institutional Reporting Platform",
+          "score": 74.9,
+          "note": "Strong governance/reporting; average asset niche"
+        },
+        {
+          "rank": 5,
+          "operatorId": "wrong-geo-broad-claims",
+          "operatorName": "Wrong-Geo Broad Claims",
+          "score": 74.9,
+          "note": "Claims all services but wrong geography vs most CALA deals"
+        },
+        {
+          "rank": 6,
+          "operatorId": "yucatan-select-specialist",
+          "operatorName": "Yucatán Select Specialist",
+          "score": 68.5,
+          "note": "Strong Mexico select-service / conversion niche"
+        },
+        {
+          "rank": 7,
+          "operatorId": "sparse-data-operator",
+          "operatorName": "Sparse Data Operator",
+          "score": 66.6,
+          "note": "Missing most structured fields — should exclude factors / lower confidence"
+        },
+        {
+          "rank": 8,
+          "operatorId": "commercial-support-only",
+          "operatorName": "Commercial Support Boutique",
+          "score": 60.3,
+          "note": "Sales/RM only — weak for full management mandates"
+        }
+      ],
+      "factorAverages": [
+        {
+          "factor": "assetProjectStageFit",
+          "weight": 14,
+          "avgScore": 34.1,
+          "scoredCount": 7
+        },
+        {
+          "factor": "geographyMarkets",
+          "weight": 18,
+          "avgScore": 67.5,
+          "scoredCount": 8
+        },
+        {
+          "factor": "feeCommercial",
+          "weight": 10,
+          "avgScore": 75,
+          "scoredCount": 7
+        },
+        {
+          "factor": "brandPortfolioRelevance",
+          "weight": 6,
+          "avgScore": 78.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "systemsReporting",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "ownerRelations",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "dealStructureAssignment",
+          "weight": 12,
+          "avgScore": 92.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "serviceOfferings",
+          "weight": 8,
+          "avgScore": 93.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "chainScale",
+          "weight": 8,
+          "avgScore": 100,
+          "scoredCount": 8
+        },
+        {
+          "factor": "negativeFitPenalty",
+          "weight": 2,
+          "avgScore": 100,
+          "scoredCount": 8
+        }
+      ],
+      "nonDifferentiatingFactors": [
+        "feeCommercial",
+        "brandPortfolioRelevance",
+        "systemsReporting",
+        "ownerRelations",
+        "dealStructureAssignment",
+        "serviceOfferings",
+        "chainScale",
+        "negativeFitPenalty"
+      ],
+      "anomalies": [],
+      "topBreakdownSample": {
+        "geographyMarkets": {
+          "label": "Geography & Markets",
+          "weight": 18,
+          "brandValue": "Countries: Puerto Rico, Dominican Republic; Markets: San Juan, Santo Domingo",
+          "dealValue": "Country: Puerto Rico; City: San Juan",
+          "note": "Uses Market Presence Requirement with Active Countries / Active Markets when available.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented presence in the deal city/market.",
+          "includedInDenominator": true
+        },
+        "chainScale": {
+          "label": "Chain Scale",
+          "weight": 8,
+          "brandValue": "Supported chain scales: Upscale, Upper Upscale",
+          "dealValue": "Hotel Chain Scale: Upscale",
+          "note": "Checks whether the operator works in the same chain-scale band.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "assetProjectStageFit": {
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "brandValue": "Best-fit assets: Urban, Resort, Renovation; Stages: Renovation, Conversion / Reflag, Stabilized, Turnaround",
+          "dealValue": "Project: Renovation / Repositioning; Stage: Existing / Operating",
+          "note": "Combines project type, development stage/timeline, and pre-opening capability signals.",
+          "score": 47.9,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "dealStructureAssignment": {
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "brandValue": "Accepted structures: Full third-party management, Higher base during turnaround + incentive",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Full third-party management",
+          "note": "Compares operating model and preferred management structures to operator-supported structures (brand agreement is not treated as conflicting with third-party operations).",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure appears directionally aligned with the deal's third-party management path. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "includedInDenominator": true
+        },
+        "feeCommercial": {
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "brandValue": "Commercial terms: Higher base during turnaround + incentive",
+          "dealValue": "Fee expectations: Royalty 5%",
+          "note": "Uses available fee expectations and operator commercial positioning.",
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "serviceOfferings": {
+          "label": "Service Offerings",
+          "weight": 8,
+          "brandValue": "Services/capabilities: Full hotel management, Revenue management, Sales, Owner reporting, Pre-opening planning",
+          "dealValue": "Must-have services: Full hotel management, Revenue management, Sales, Owner reporting",
+          "note": "Compares structured Required/Must-Have Operator Services (and scope) to operator Offered Services and capability fields.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Documented operator services overlap with the deal's structured must-have service requirements.",
+          "includedInDenominator": true
+        },
+        "systemsReporting": {
+          "label": "Systems & Reporting",
+          "weight": 6,
+          "brandValue": "Systems/reporting: PMS, RMS, BI; Institutional monthly package",
+          "dealValue": "—",
+          "note": "Generic systems/reporting when deal expectation not specified.",
+          "score": 90,
+          "fieldSource": "legacy",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "ownerRelations": {
+          "label": "Owner Relations",
+          "weight": 6,
+          "brandValue": "weekly collaborative",
+          "dealValue": "Owner priority: responsive communication and collaboration",
+          "note": "Uses owner-relations signals such as response style, collaboration mode, and references.",
+          "score": 90,
+          "fieldSource": "default",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "brandPortfolioRelevance": {
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "brandValue": "Brands managed: Marriott, Hilton",
+          "dealValue": "Preferred brands: Marriott",
+          "note": "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "negativeFitPenalty": {
+          "label": "Negative-Fit Penalty",
+          "weight": 2,
+          "brandValue": "Less ideal situations: Greenfield luxury with no local ops team",
+          "dealValue": "Top deal breakers: No turnaround experience, No local presence",
+          "note": "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        }
+      }
+    },
+    {
+      "scenarioId": "institutional-lender-reporting",
+      "label": "Institutionally owned hotel requiring lender-grade reporting",
+      "distribution": {
+        "count": 8,
+        "mean": 74,
+        "median": 73.4,
+        "min": 60,
+        "max": 85,
+        "stdev": 8.7,
+        "withinFiveOfTop": 3
+      },
+      "ranking": [
+        {
+          "rank": 1,
+          "operatorId": "institutional-reporting-platform",
+          "operatorName": "Institutional Reporting Platform",
+          "score": 85,
+          "note": "Strong governance/reporting; average asset niche"
+        },
+        {
+          "rank": 2,
+          "operatorId": "generic-full-service-claims",
+          "operatorName": "Generic Full-Service Claims Co",
+          "score": 83.7,
+          "note": "Claims all table-stakes services; broad geography; no niche signal"
+        },
+        {
+          "rank": 3,
+          "operatorId": "yucatan-select-specialist",
+          "operatorName": "Yucatán Select Specialist",
+          "score": 82.2,
+          "note": "Strong Mexico select-service / conversion niche"
+        },
+        {
+          "rank": 4,
+          "operatorId": "sparse-data-operator",
+          "operatorName": "Sparse Data Operator",
+          "score": 73.4,
+          "note": "Missing most structured fields — should exclude factors / lower confidence"
+        },
+        {
+          "rank": 5,
+          "operatorId": "wrong-geo-broad-claims",
+          "operatorName": "Wrong-Geo Broad Claims",
+          "score": 73.3,
+          "note": "Claims all services but wrong geography vs most CALA deals"
+        },
+        {
+          "rank": 6,
+          "operatorId": "cala-resort-luxury",
+          "operatorName": "CALA Resort Luxury Operator",
+          "score": 71.7,
+          "note": "Resort / all-inclusive / luxury leisure depth"
+        },
+        {
+          "rank": 7,
+          "operatorId": "turnaround-specialist",
+          "operatorName": "Caribbean Turnaround Specialist",
+          "score": 62.9,
+          "note": "Repositioning / underperformance focus; narrower footprint"
+        },
+        {
+          "rank": 8,
+          "operatorId": "commercial-support-only",
+          "operatorName": "Commercial Support Boutique",
+          "score": 60,
+          "note": "Sales/RM only — weak for full management mandates"
+        }
+      ],
+      "factorAverages": [
+        {
+          "factor": "assetProjectStageFit",
+          "weight": 14,
+          "avgScore": 30,
+          "scoredCount": 7
+        },
+        {
+          "factor": "brandPortfolioRelevance",
+          "weight": 6,
+          "avgScore": 62.1,
+          "scoredCount": 7
+        },
+        {
+          "factor": "chainScale",
+          "weight": 8,
+          "avgScore": 62.5,
+          "scoredCount": 8
+        },
+        {
+          "factor": "feeCommercial",
+          "weight": 10,
+          "avgScore": 75,
+          "scoredCount": 7
+        },
+        {
+          "factor": "geographyMarkets",
+          "weight": 18,
+          "avgScore": 83,
+          "scoredCount": 8
+        },
+        {
+          "factor": "systemsReporting",
+          "weight": 6,
+          "avgScore": 84.9,
+          "scoredCount": 7
+        },
+        {
+          "factor": "ownerRelations",
+          "weight": 6,
+          "avgScore": 90,
+          "scoredCount": 7
+        },
+        {
+          "factor": "dealStructureAssignment",
+          "weight": 12,
+          "avgScore": 92.6,
+          "scoredCount": 7
+        },
+        {
+          "factor": "serviceOfferings",
+          "weight": 8,
+          "avgScore": 94.3,
+          "scoredCount": 7
+        },
+        {
+          "factor": "negativeFitPenalty",
+          "weight": 2,
+          "avgScore": 100,
+          "scoredCount": 8
+        }
+      ],
+      "nonDifferentiatingFactors": [
+        "feeCommercial",
+        "geographyMarkets",
+        "systemsReporting",
+        "ownerRelations",
+        "dealStructureAssignment",
+        "serviceOfferings",
+        "negativeFitPenalty"
+      ],
+      "anomalies": [
+        "Sparse-data operator scored 73.4 at/above median"
+      ],
+      "topBreakdownSample": {
+        "geographyMarkets": {
+          "label": "Geography & Markets",
+          "weight": 18,
+          "brandValue": "Countries: Mexico, Colombia, Panama; Markets: Monterrey, Mexico City, Bogotá, Panama City",
+          "dealValue": "Country: Mexico; City: Monterrey",
+          "note": "Uses Market Presence Requirement with Active Countries / Active Markets when available.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented presence in the deal city/market.",
+          "includedInDenominator": true
+        },
+        "chainScale": {
+          "label": "Chain Scale",
+          "weight": 8,
+          "brandValue": "Supported chain scales: Upper Midscale, Upscale, Upper Upscale",
+          "dealValue": "Hotel Chain Scale: Upper Midscale",
+          "note": "Checks whether the operator works in the same chain-scale band.",
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "assetProjectStageFit": {
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "brandValue": "Best-fit assets: Urban, Select-service, Mixed-Use; Stages: Stabilized, New Build, Conversion / Reflag",
+          "dealValue": "Project: Existing Operating Hotel",
+          "note": "Combines project type, development stage/timeline, and pre-opening capability signals.",
+          "score": 30,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "dealStructureAssignment": {
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "brandValue": "Accepted structures: Full third-party management, Franchise support, Asset management support, Transparent fee schedule with owner audit rights",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Full third-party management; Franchise with third-party operator",
+          "note": "Compares operating model and preferred management structures to operator-supported structures (brand agreement is not treated as conflicting with third-party operations).",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure appears directionally aligned with the deal's third-party management path. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "includedInDenominator": true
+        },
+        "feeCommercial": {
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "brandValue": "Commercial terms: Transparent fee schedule with owner audit rights",
+          "dealValue": "Fee expectations: Royalty 5%; Marketing 2%",
+          "note": "Uses available fee expectations and operator commercial positioning.",
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "serviceOfferings": {
+          "label": "Service Offerings",
+          "weight": 8,
+          "brandValue": "Services/capabilities: Full hotel management, Owner reporting, Accounting / finance support, Revenue management, Sales, Brand compliance support",
+          "dealValue": "Must-have services: Full hotel management, Owner reporting, Revenue management, Accounting / finance support",
+          "note": "Compares structured Required/Must-Have Operator Services (and scope) to operator Offered Services and capability fields.",
+          "score": 100,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Documented operator services overlap with the deal's structured must-have service requirements.",
+          "includedInDenominator": true
+        },
+        "systemsReporting": {
+          "label": "Systems & Reporting",
+          "weight": 6,
+          "brandValue": "Systems/reporting: PMS, RMS, ERP, Owner portal; Institutional monthly package; Monthly board pack",
+          "dealValue": "Owner reporting expectation: Institutional monthly package",
+          "note": "Compares structured owner reporting expectations to operator reporting/governance fields.",
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Owner reporting capability appears relevant to the deal's Institutional monthly package expectation.",
+          "includedInDenominator": true
+        },
+        "ownerRelations": {
+          "label": "Owner Relations",
+          "weight": 6,
+          "brandValue": "monthly collaborative owner refs advisory",
+          "dealValue": "Owner control: Institutional / lender-grade oversight; Owner priority: responsive communication and collaboration",
+          "note": "Uses owner-relations signals such as response style, collaboration mode, and references.",
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "brandPortfolioRelevance": {
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "brandValue": "Brands managed: Courtyard, Hampton, Holiday Inn Express, Hilton, Marriott",
+          "dealValue": "Preferred brands: Courtyard, Hampton, Holiday Inn Express",
+          "note": "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        },
+        "negativeFitPenalty": {
+          "label": "Negative-Fit Penalty",
+          "weight": 2,
+          "brandValue": "Less ideal situations: —",
+          "dealValue": "Top deal breakers: —",
+          "note": "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null,
+          "includedInDenominator": true
+        }
+      }
+    }
+  ],
+  "crossScenarioFindings": {
+    "genericRankedFirstCount": 4,
+    "avgStdev": 9.8,
+    "avgWithinFiveOfTop": 2.4,
+    "factorsOftenNonDifferentiating": [
+      {
+        "factor": "systemsReporting",
+        "scenarioHits": 8
+      },
+      {
+        "factor": "ownerRelations",
+        "scenarioHits": 8
+      },
+      {
+        "factor": "serviceOfferings",
+        "scenarioHits": 8
+      },
+      {
+        "factor": "negativeFitPenalty",
+        "scenarioHits": 8
+      },
+      {
+        "factor": "feeCommercial",
+        "scenarioHits": 7
+      },
+      {
+        "factor": "dealStructureAssignment",
+        "scenarioHits": 7
+      },
+      {
+        "factor": "chainScale",
+        "scenarioHits": 5
+      },
+      {
+        "factor": "geographyMarkets",
+        "scenarioHits": 4
+      },
+      {
+        "factor": "brandPortfolioRelevance",
+        "scenarioHits": 2
+      }
+    ]
+  }
+}

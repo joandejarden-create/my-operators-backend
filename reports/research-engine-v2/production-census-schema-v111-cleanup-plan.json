@@ -1,0 +1,2632 @@
+{
+  "version": "production-census-schema-v111-cleanup-plan-v1",
+  "generated_at": "2026-08-05T10:39:28.266Z",
+  "mode": "read_only",
+  "airtable_writes": false,
+  "schema_mutations": false,
+  "status": "production_census_schema_v111_requires_founder_decisions",
+  "executive_summary": {
+    "verdict": "production_census_schema_v111_requires_founder_decisions",
+    "headline": "Cleanup plan ready: founder decisions required on Last Reviewed Date rename, amenity hide-vs-delete, and Resort/Extended Stay naming before enrichment.",
+    "amenities": "6 over-modeled amenity flags exist and are blank across all 666 records — recommend hide from default views (or delete with approval).",
+    "naming": "Align Last Verified Date → Last Reviewed Date; keep Owner Name and Operator / Management Company as Census-specific.",
+    "enrichment": "Do not start enrichment until founder approves v1.1.1 structure decisions."
+  },
+  "schema_status": {
+    "base": "Deal Capture Platform",
+    "base_id_masked": "appCCU…foLk",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam",
+    "record_count": 666,
+    "field_count": 95,
+    "production_use_status": "Census Only / Not Owner-Facing",
+    "enrichment_not_started": 666,
+    "human_review_true": 4,
+    "freeze_hash": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+    "amenity_fields_all_blank": true
+  },
+  "naming_conventions": {
+    "brand_basics": {
+      "table": "Brand Setup - Brand Basics",
+      "exists": true,
+      "fields": [
+        {
+          "name": "Brand Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand_Basics_ID",
+          "type": "autoNumber"
+        },
+        {
+          "name": "Brand Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Parent Company",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Original Parent Company",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Region Offered",
+          "type": "multipleSelects"
+        },
+        {
+          "name": "Brand Architecture",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Brand Model",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Year Brand Launched",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand Website",
+          "type": "url"
+        },
+        {
+          "name": "Brand Development Stage",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Brand Positioning",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand Tagline",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand Customer Promise",
+          "type": "multilineText"
+        },
+        {
+          "name": "Brand Value Proposition",
+          "type": "multilineText"
+        },
+        {
+          "name": "Brand Pillars",
+          "type": "multilineText"
+        },
+        {
+          "name": "Key Brand Differentiators",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand History",
+          "type": "multilineText"
+        },
+        {
+          "name": "Brand Setup - Brand Footprint",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Project Fit",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Fee Structure",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Operational Support",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Legal Terms",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Deal Terms",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Brand Standards",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Sustainability & ESG",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Company Profile",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Company Profile 2",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Portfolio & Performance",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Loyalty & Commercial",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Operator Basics",
+          "type": "singleLineText"
+        },
+        {
+          "name": "3rd Party Operator - Representative Properties",
+          "type": "singleLineText"
+        },
+        {
+          "name": "3rd Party Operator - Representative Properties 2",
+          "type": "singleLineText"
+        },
+        {
+          "name": "3rd Party Operator - Case Examples",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Operator Setup - Profile & Positioning",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Setup - Brand Explorer Presentation",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Explorer Hero Data Source",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand Explorer Favorites",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "User Management",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Partner Intelligence - Source Library",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Partner Intelligence - Source Library",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Validation Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Source Type",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Source Region",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Evidence Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Company Validated",
+          "type": "checkbox"
+        },
+        {
+          "name": "Reviewed By",
+          "type": "singleLineText"
+        },
+        {
+          "name": "External Display Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Internal Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Last Reviewed Date",
+          "type": "date"
+        },
+        {
+          "name": "Company Validation Date",
+          "type": "date"
+        },
+        {
+          "name": "Partner Intelligence - Brand Asset Registry",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Branded Residences Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Branded Residences Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Branded Residences Source URL",
+          "type": "url"
+        },
+        {
+          "name": "Branded Residences Review Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Founder Visual Review Pass",
+          "type": "checkbox"
+        }
+      ]
+    },
+    "brand_presentation": {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "exists": true,
+      "fields": [
+        {
+          "name": "Slot Key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Case Summary Owner Objective",
+          "type": "multilineText"
+        },
+        {
+          "name": "Case Summary Brand Relevance",
+          "type": "multilineText"
+        },
+        {
+          "name": "Validation Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Source Type",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Source Region",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Evidence Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Company Validated",
+          "type": "checkbox"
+        },
+        {
+          "name": "Reviewed By",
+          "type": "singleLineText"
+        },
+        {
+          "name": "External Display Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Internal Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Last Reviewed Date",
+          "type": "date"
+        },
+        {
+          "name": "Company Validation Date",
+          "type": "date"
+        }
+      ]
+    },
+    "company_profile": {
+      "table": "Company Profile",
+      "exists": true,
+      "fields": [
+        {
+          "name": "Company_ID",
+          "type": "autoNumber"
+        },
+        {
+          "name": "Company Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Company Type",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Company Type Tags",
+          "type": "multipleSelects"
+        },
+        {
+          "name": "Third-Party Management Availability",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Owner Profile Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Operator Profile Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Core Profile Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Developer Profile Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Company Website",
+          "type": "url"
+        },
+        {
+          "name": "Company HQ Country",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Company Overview",
+          "type": "multilineText"
+        },
+        {
+          "name": "Additional Office Regions",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brands You Operate / Support",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Company's role in the hotel ecosystem",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Company Platform Visibility",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Company Address",
+          "type": "multilineText"
+        },
+        {
+          "name": "Brand Name (from Brands You Operate / Support)",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Brand_Basics_ID (from Brand Name (from Brands You Operate / Support))",
+          "type": "multipleLookupValues"
+        }
+      ]
+    },
+    "hotel_ownership": {
+      "table": "Hotel Ownership",
+      "exists": true,
+      "fields": [
+        {
+          "name": "Owner/Operator Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Brand",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Property Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "City/State",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Country",
+          "type": "singleSelect"
+        }
+      ]
+    },
+    "operator_master": {
+      "table": "Operator Setup - Master",
+      "exists": true,
+      "fields": [
+        {
+          "name": "company_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "operator_id",
+          "type": "singleLineText"
+        },
+        {
+          "name": "submission_status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Operator Setup - Profile & Positioning",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Commercial Fit & Terms",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Leadership Team Members",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Diligence QA",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Governance, Delivery & Diligence",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Platform & Markets",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Case Studies",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Source Type",
+          "type": "multipleSelects"
+        },
+        {
+          "name": "Explorer Hero Data Source",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Operator Deal Requests",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Explorer Materials",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Leadership Platform",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Infrastructure Platform",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Engagement & Reporting",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Operating Platform",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Setup - Brand Relationships",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Partner Intelligence - Source Library",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Validation Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Source Region",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Last Reviewed Date",
+          "type": "date"
+        },
+        {
+          "name": "Evidence Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Company Validated",
+          "type": "checkbox"
+        },
+        {
+          "name": "Company Validation Date",
+          "type": "date"
+        },
+        {
+          "name": "Reviewed By",
+          "type": "singleLineText"
+        },
+        {
+          "name": "External Display Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Internal Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Operator Intelligence - Claims",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Intelligence - Market Presence",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "Operator Fit - Shortlist",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    "operator_profile": {
+      "table": "Operator Setup - Profile & Positioning",
+      "exists": true,
+      "fields": [
+        {
+          "name": "company_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Operator",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "companyDescription",
+          "type": "multilineText"
+        },
+        {
+          "name": "companySize",
+          "type": "singleSelect"
+        },
+        {
+          "name": "companyTagline",
+          "type": "singleLineText"
+        },
+        {
+          "name": "companyHistory",
+          "type": "multilineText"
+        },
+        {
+          "name": "managementPhilosophy",
+          "type": "multilineText"
+        },
+        {
+          "name": "missionStatement",
+          "type": "multilineText"
+        },
+        {
+          "name": "brands",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "additionalBrands",
+          "type": "multilineText"
+        },
+        {
+          "name": "companyLogo",
+          "type": "multipleAttachments"
+        },
+        {
+          "name": "propertyTypes",
+          "type": "multipleSelects"
+        },
+        {
+          "name": "brand_narrative_compliance",
+          "type": "multilineText"
+        },
+        {
+          "name": "brand_narrative_relationship",
+          "type": "multilineText"
+        },
+        {
+          "name": "brand_signal_audit",
+          "type": "singleSelect"
+        },
+        {
+          "name": "brand_signal_reflag",
+          "type": "singleSelect"
+        },
+        {
+          "name": "brand_signal_franchise_align",
+          "type": "singleSelect"
+        },
+        {
+          "name": "brand_signal_soft_retention",
+          "type": "singleSelect"
+        },
+        {
+          "name": "capitalStatus",
+          "type": "multipleSelects"
+        },
+        {
+          "name": "numberOfBrands",
+          "type": "number"
+        },
+        {
+          "name": "marketExpansionRampTimeMonths",
+          "type": "number"
+        },
+        {
+          "name": "Brand Families Operated",
+          "type": "multipleSelects"
+        },
+        {
+          "name": "Soft Brand / Lifestyle Experience",
+          "type": "singleSelect"
+        },
+        {
+          "name": "brand_portfolio_mix_json",
+          "type": "multilineText"
+        },
+        {
+          "name": "brand_relationship_depth_json",
+          "type": "multilineText"
+        },
+        {
+          "name": "brand_execution_capabilities_json",
+          "type": "multilineText"
+        },
+        {
+          "name": "brand_governance_compliance_json",
+          "type": "multilineText"
+        },
+        {
+          "name": "brand_soft_independent_narrative",
+          "type": "multilineText"
+        },
+        {
+          "name": "brand_conversion_project_count",
+          "type": "singleLineText"
+        },
+        {
+          "name": "brandedVsIndependentMix",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    "legacy_hotel_census": {
+      "table": "Hotel Census",
+      "exists": true,
+      "fields": [
+        {
+          "name": "name",
+          "type": "multilineText"
+        },
+        {
+          "name": "Parent Company",
+          "type": "multilineText"
+        },
+        {
+          "name": "status",
+          "type": "multipleSelects"
+        },
+        {
+          "name": "Property ID",
+          "type": "multilineText"
+        },
+        {
+          "name": "city",
+          "type": "multilineText"
+        },
+        {
+          "name": "country",
+          "type": "multilineText"
+        },
+        {
+          "name": "rooms",
+          "type": "number"
+        },
+        {
+          "name": "Property Type",
+          "type": "multilineText"
+        },
+        {
+          "name": "Dealality Market",
+          "type": "multilineText"
+        },
+        {
+          "name": "Region",
+          "type": "multilineText"
+        },
+        {
+          "name": "Market",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Submarket",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Amenities",
+          "type": "multilineText"
+        },
+        {
+          "name": "Management Company",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Mailing City",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Mailing Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Mailing State",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management Address 1",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management Address 2",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management City",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management Contact Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management Contact Title",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management Email",
+          "type": "email"
+        },
+        {
+          "name": "Management Phone",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management Postal Code",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management State",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Management Website",
+          "type": "url"
+        },
+        {
+          "name": "Owner Address 1",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner Address 2",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner City",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner Company",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner Contact Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner Contact Title",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner Email",
+          "type": "email"
+        },
+        {
+          "name": "Owner Phone",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner Postal Code",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner State",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Owner Website",
+          "type": "url"
+        },
+        {
+          "name": "State",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Include in Brand Explorer",
+          "type": "checkbox"
+        }
+      ]
+    },
+    "verified_independent": {
+      "table": "Verified Independent Hotel Census",
+      "exists": true,
+      "fields": [
+        {
+          "name": "Verified Hotel Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Verified Address",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Verified City",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Verified State",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Verified Country",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Verified Postal Code",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Verified Latitude",
+          "type": "number"
+        },
+        {
+          "name": "Verified Longitude",
+          "type": "number"
+        },
+        {
+          "name": "Verified Website",
+          "type": "url"
+        },
+        {
+          "name": "Verified Phone",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Verified Brand Label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Approval Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Census Reconciliation Status",
+          "type": "singleSelect"
+        },
+        {
+          "name": "Verified Dedupe Key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Primary Source Candidate",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    "canonical": {
+      "brand_name": "Brand Name",
+      "last_reviewed_date": "Last Reviewed Date",
+      "confidence_level": "Confidence Level",
+      "validation_status": "Validation Status",
+      "source_type": "Source Type",
+      "company_name": "Company Name",
+      "company_type": "Company Type",
+      "management_company_legacy": "Management Company",
+      "owner_company_legacy": "Owner Company",
+      "rooms_legacy": "rooms",
+      "amenities_legacy": "Amenities",
+      "market_legacy": "Market",
+      "submarket_legacy": "Submarket"
+    }
+  },
+  "naming_alignment": [
+    {
+      "current_field": "Property Name",
+      "similar_existing_field": "Property Name / Brand Name / Verified Hotel Name",
+      "existing_table": "Hotel Ownership / Brand Basics / VIC stub",
+      "classification": "keep_as_is",
+      "recommended_final_name": "Property Name",
+      "reason": "Correct property-master label; Brand Name is brand-level.",
+      "risk": "none",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": null
+    },
+    {
+      "current_field": "Canonical Property Name",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Canonical Property Name",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Property Identity Key",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Property Identity Key",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Family / Source Family",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Family / Source Family",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Country",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Country",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "State / Region",
+      "similar_existing_field": "Region Offered / Region / Verified State / State",
+      "existing_table": "Brand Basics / Hotel Census / VIC stub",
+      "classification": "census_specific_name_ok",
+      "recommended_final_name": "State / Region",
+      "reason": "Geo admin for property; not Brand Region Offered. Keep.",
+      "risk": "none",
+      "founder_decision_needed": false,
+      "decision_id": "F_state_region",
+      "bucket": null
+    },
+    {
+      "current_field": "City",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "City",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Address",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Address",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Latitude",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Latitude",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Longitude",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Longitude",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Phone",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Phone",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Official Property URL",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Official Property URL",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Source URL",
+      "similar_existing_field": "Brand Website / Branded Residences Source URL",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "keep_as_is",
+      "recommended_final_name": "Source URL",
+      "reason": "Source URL is the standard; do not add Source Link.",
+      "risk": "none",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": null
+    },
+    {
+      "current_field": "Source Type",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Source Type",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Source Confidence",
+      "similar_existing_field": "Confidence Level",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate",
+      "recommended_final_name": "Source Confidence",
+      "reason": "Keep; document vs Relationship Confidence and Data Confidence Tier.",
+      "risk": "low",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": null
+    },
+    {
+      "current_field": "Discovery Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Discovery Date",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "VIC Freeze Hash",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "VIC Freeze Hash",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Data Eligible",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Data Eligible",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Identity Confidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Identity Confidence",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Production Use Status",
+      "similar_existing_field": "Brand Status / External Display Status",
+      "existing_table": "Brand Basics",
+      "classification": "do_not_change",
+      "recommended_final_name": "Production Use Status",
+      "reason": "Must stay distinct from Brand Status.",
+      "risk": "high_if_renamed",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": null
+    },
+    {
+      "current_field": "Current Brand",
+      "similar_existing_field": "Brand Name",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "census_specific_name_ok",
+      "recommended_final_name": "Current Brand",
+      "reason": "Property affiliation snapshot; not Brand Basics Brand Name.",
+      "risk": "low",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": null
+    },
+    {
+      "current_field": "Brand Family",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Brand Family",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Brand Explorer Slug if mapped",
+      "similar_existing_field": "(code-derived slug)",
+      "existing_table": "Brand Explorer runtime",
+      "classification": "rename_recommended",
+      "recommended_final_name": "Brand Explorer Slug",
+      "reason": "Drop 'if mapped' suffix for clarity; optional v1.1.1 rename.",
+      "risk": "low",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": "B"
+    },
+    {
+      "current_field": "Affiliation Status",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Affiliation Status",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Affiliation As-Of Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Affiliation As-Of Date",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Affiliation Start Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Affiliation Start Date",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Prior Brand",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Prior Brand",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Future Opening Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Future Opening Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Brand Confidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Brand Confidence",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Steward Review Status",
+      "similar_existing_field": "Validation Status",
+      "existing_table": "Brand Basics",
+      "classification": "do_not_change",
+      "recommended_final_name": "Steward Review Status",
+      "reason": "Census steward lane specific.",
+      "risk": "medium_if_renamed",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": null
+    },
+    {
+      "current_field": "Hotel Property Brand Affiliations",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Hotel Property Brand Affiliations",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Hotel Property Source Evidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Hotel Property Source Evidence",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Hotel Property Steward Review",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Hotel Property Steward Review",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Hotel Description - Source Text",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Hotel Description - Source Text",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Hotel Description - AI Summary",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Hotel Description - AI Summary",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Short Property Summary",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Short Property Summary",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Property Positioning",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Property Positioning",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Hotel Class / Segment",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Hotel Class / Segment",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Property Type",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Property Type",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Asset Context",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Asset Context",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Market / Submarket",
+      "similar_existing_field": "Market / Submarket / Dealality Market",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate",
+      "recommended_final_name": "Market / Submarket (short-term) → later Dealality Market + Submarket",
+      "reason": "Combined field OK for now; long-term split to Dealality geography.",
+      "risk": "low",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": "C"
+    },
+    {
+      "current_field": "Amenities - Source Text",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Amenities - Source Text",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Amenities - Structured Tags",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Amenities - Structured Tags",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "F&B Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "F&B Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Meeting Space Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Meeting Space Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Fitness Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Fitness Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Pool Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Pool Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Resort Amenities Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Resort Amenities Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Extended Stay Amenity Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Extended Stay Amenity Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Parking Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Parking Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Airport Shuttle Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Airport Shuttle Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Spa Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Spa Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Beach / Waterfront Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Beach / Waterfront Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Branded Residences Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Branded Residences Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Mixed-Use Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Mixed-Use Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Rooms / Keys",
+      "similar_existing_field": "rooms",
+      "existing_table": "Hotel Census",
+      "classification": "founder_decision_needed",
+      "recommended_final_name": "Rooms / Keys (preferred) OR Rooms",
+      "reason": "Rooms / Keys is clearer than legacy rooms. No Key Count field in Brand/Company Setup. Prefer keep Rooms / Keys.",
+      "risk": "low",
+      "founder_decision_needed": true,
+      "decision_id": "B_rooms_keys",
+      "bucket": null
+    },
+    {
+      "current_field": "Rooms Source URL",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Rooms Source URL",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Rooms Confidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Rooms Confidence",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Building / Asset Notes",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Building / Asset Notes",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Opening Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Opening Date",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Opening Date Source URL",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Opening Date Source URL",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Renovation / Conversion Status",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Renovation / Conversion Status",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Renovation / Conversion Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Renovation / Conversion Date",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Renovation / Conversion Source URL",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Renovation / Conversion Source URL",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Owner Name",
+      "similar_existing_field": "Owner Company / Owner/Operator Name / Company Name",
+      "existing_table": "Hotel Census / Hotel Ownership / Company Profile",
+      "classification": "census_specific_name_ok",
+      "recommended_final_name": "Owner Name",
+      "reason": "Keep Census-specific. Company Name stays on Company Profile; link later via enrichment, do not rename Owner Name to Company Name.",
+      "risk": "medium_if_renamed_to_company_name",
+      "founder_decision_needed": true,
+      "decision_id": "D_owner_name",
+      "bucket": null
+    },
+    {
+      "current_field": "Owner Type",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Owner Type",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Owner Source URL",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Owner Source URL",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Owner Confidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Owner Confidence",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Developer Name",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Developer Name",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Developer Source URL",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Developer Source URL",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Developer Confidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Developer Confidence",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Ownership Review Status",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Ownership Review Status",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Operator / Management Company",
+      "similar_existing_field": "Management Company / company_name",
+      "existing_table": "Hotel Census / Operator Setup - Master",
+      "classification": "founder_decision_needed",
+      "recommended_final_name": "Operator / Management Company (keep) OR Management Company",
+      "reason": "Slash form is explicit for property-level ops. Aligning to Management Company matches legacy Hotel Census; company_name is Operator Setup entity naming — different layer.",
+      "risk": "medium",
+      "founder_decision_needed": true,
+      "decision_id": "C_operator_management",
+      "bucket": null
+    },
+    {
+      "current_field": "Operator Type",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Operator Type",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Management Model",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Management Model",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Operator Source URL",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Operator Source URL",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Operator Confidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Operator Confidence",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Operator Review Status",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Operator Review Status",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Possible Operator Target",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Possible Operator Target",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Independent Hotel Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Independent Hotel Flag",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Independent Classification",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Independent Classification",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Brand-Unassigned Reason",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Brand-Unassigned Reason",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Possible Soft-Brand Candidate",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Possible Soft-Brand Candidate",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Possible Brand Conversion Candidate",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Possible Brand Conversion Candidate",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Possible Owner Outreach Target",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Possible Owner Outreach Target",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Possible Financing Target",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Possible Financing Target",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Possible Dealality Opportunity",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Possible Dealality Opportunity",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Data Confidence Tier",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Data Confidence Tier",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Relationship Confidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Relationship Confidence",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Last Verified Date",
+      "similar_existing_field": "Last Reviewed Date",
+      "existing_table": "Brand Setup - Brand Basics / Operator Setup - Master",
+      "classification": "rename_recommended",
+      "recommended_final_name": "Last Reviewed Date",
+      "reason": "Align with Brand/Operator Setup common name before enrichment starts.",
+      "risk": "low",
+      "founder_decision_needed": true,
+      "decision_id": "A_last_verified_date",
+      "bucket": "B"
+    },
+    {
+      "current_field": "Next Review Needed",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Next Review Needed",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Enrichment Status",
+      "similar_existing_field": "Validation Status",
+      "existing_table": "Brand Basics",
+      "classification": "do_not_change",
+      "recommended_final_name": "Enrichment Status",
+      "reason": "Enrichment lane progress ≠ validation.",
+      "risk": "medium_if_renamed",
+      "founder_decision_needed": false,
+      "decision_id": null,
+      "bucket": null
+    },
+    {
+      "current_field": "Enrichment Priority",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Enrichment Priority",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Human Review Required",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Human Review Required",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    },
+    {
+      "current_field": "Notes for Steward",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "keep_as_is",
+      "recommended_final_name": "Notes for Steward",
+      "reason": "No conflicting Brand/Company Setup convention requiring change.",
+      "risk": "none",
+      "founder_decision_needed": false
+    }
+  ],
+  "amenities_review": [
+    {
+      "amenity_field": "Amenities - Source Text",
+      "classification": "keep_as_primary_amenity_field",
+      "recommendation": "keep",
+      "filled_count": 0,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "reason": "Primary amenity model.",
+      "delete_safe_if_blank": false
+    },
+    {
+      "amenity_field": "Amenities - Structured Tags",
+      "classification": "keep_as_primary_amenity_field",
+      "recommendation": "keep",
+      "filled_count": 0,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "reason": "Primary amenity model.",
+      "delete_safe_if_blank": false
+    },
+    {
+      "amenity_field": "F&B Flag",
+      "classification": "keep_as_strategic_flag",
+      "recommendation": "keep",
+      "recommended_final_name": "F&B Flag",
+      "filled_count": 0,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "reason": "Strategic flag in preferred final amenity model.",
+      "founder_decision_needed": false,
+      "delete_safe_if_blank": false
+    },
+    {
+      "amenity_field": "Meeting Space Flag",
+      "classification": "keep_as_strategic_flag",
+      "recommendation": "keep",
+      "recommended_final_name": "Meeting Space Flag",
+      "filled_count": 0,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "reason": "Strategic flag in preferred final amenity model.",
+      "founder_decision_needed": false,
+      "delete_safe_if_blank": false
+    },
+    {
+      "amenity_field": "Fitness Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js",
+        "docs/data-intelligence/production-census-v11-post-apply-review.md"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Pool Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js",
+        "docs/data-intelligence/production-census-v11-post-apply-review.md"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Resort Amenities Flag",
+      "classification": "rename_recommended",
+      "recommendation": "rename_later",
+      "recommended_final_name": "Resort / Leisure Flag",
+      "filled_count": 0,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "reason": "Strategic flag; align name to preferred model (Resort / Leisure Flag).",
+      "founder_decision_needed": true,
+      "delete_safe_if_blank": false
+    },
+    {
+      "amenity_field": "Extended Stay Amenity Flag",
+      "classification": "rename_recommended",
+      "recommendation": "rename_later",
+      "recommended_final_name": "Extended Stay Flag",
+      "filled_count": 0,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "reason": "Strategic flag; align name to preferred model (Extended Stay Flag).",
+      "founder_decision_needed": true,
+      "delete_safe_if_blank": false
+    },
+    {
+      "amenity_field": "Parking Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Airport Shuttle Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Spa Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Beach / Waterfront Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Branded Residences Flag",
+      "classification": "keep_as_strategic_flag",
+      "recommendation": "keep",
+      "recommended_final_name": "Branded Residences Flag",
+      "filled_count": 0,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "reason": "Strategic flag in preferred final amenity model.",
+      "founder_decision_needed": false,
+      "delete_safe_if_blank": false
+    },
+    {
+      "amenity_field": "Mixed-Use Flag",
+      "classification": "keep_as_strategic_flag",
+      "recommendation": "keep",
+      "recommended_final_name": "Mixed-Use Flag",
+      "filled_count": 0,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "reason": "Strategic flag in preferred final amenity model.",
+      "founder_decision_needed": false,
+      "delete_safe_if_blank": false
+    }
+  ],
+  "overmodeled_amenity_fields": [
+    {
+      "amenity_field": "Fitness Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js",
+        "docs/data-intelligence/production-census-v11-post-apply-review.md"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Pool Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js",
+        "docs/data-intelligence/production-census-v11-post-apply-review.md"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Parking Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Airport Shuttle Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Spa Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    },
+    {
+      "amenity_field": "Beach / Waterfront Flag",
+      "classification": "move_to_structured_tags_later",
+      "recommendation": "hide_from_default_view_later_or_delete_candidate_if_blank",
+      "filled_count": 0,
+      "blank_across_all_666": true,
+      "script_references": [
+        "lib/research-engine-v2/production-census-schema-v11.js"
+      ],
+      "would_deleting_break_brand_explorer": false,
+      "would_deleting_require_script_updates": true,
+      "reason": "Over-modeled vs preferred Structured Tags model. Blank today. Prefer hide from default views; founder decides delete vs keep deferred.",
+      "founder_decision_needed": true,
+      "delete_candidate_if_blank": true,
+      "delete_safe_if_blank": true
+    }
+  ],
+  "founder_decisions": [
+    {
+      "id": "A_last_verified_date",
+      "question": "Rename Last Verified Date → Last Reviewed Date to match Brand/Operator Setup?",
+      "options": [
+        "rename_to_Last_Reviewed_Date",
+        "keep_Last_Verified_Date",
+        "document_alias_only"
+      ],
+      "recommendation": "rename_to_Last_Reviewed_Date",
+      "timing": "before_enrichment"
+    },
+    {
+      "id": "B_rooms_keys",
+      "question": "Keep Rooms / Keys or rename to Rooms (legacy Hotel Census)?",
+      "options": [
+        "keep_Rooms_/_Keys",
+        "rename_to_Rooms"
+      ],
+      "recommendation": "keep_Rooms_/_Keys",
+      "timing": "before_enrichment"
+    },
+    {
+      "id": "C_operator_management",
+      "question": "Keep Operator / Management Company or rename to Management Company?",
+      "options": [
+        "keep_Operator_/_Management_Company",
+        "rename_to_Management_Company"
+      ],
+      "recommendation": "keep_Operator_/_Management_Company",
+      "timing": "before_enrichment"
+    },
+    {
+      "id": "D_owner_name",
+      "question": "Keep Owner Name (Census-specific) vs confusing with Company Name?",
+      "options": [
+        "keep_Owner_Name",
+        "document_relationship_to_Company_Profile"
+      ],
+      "recommendation": "keep_Owner_Name",
+      "timing": "before_enrichment"
+    },
+    {
+      "id": "E_source_url",
+      "question": "Confirm Source URL (not Source Link) as standard?",
+      "options": [
+        "keep_Source_URL"
+      ],
+      "recommendation": "keep_Source_URL",
+      "timing": "immediate_docs_only"
+    },
+    {
+      "id": "F_state_region",
+      "question": "Keep State / Region as property geo (vs Brand Region Offered)?",
+      "options": [
+        "keep_State_/_Region"
+      ],
+      "recommendation": "keep_State_/_Region",
+      "timing": "immediate_docs_only"
+    },
+    {
+      "id": "G_amenity_overmodel",
+      "question": "For blank over-modeled amenity flags (Fitness/Pool/Parking/Shuttle/Spa/Beach): hide from views, delete, or keep deferred?",
+      "options": [
+        "hide_from_default_views",
+        "delete_blank_fields",
+        "keep_deferred"
+      ],
+      "recommendation": "hide_from_default_views",
+      "timing": "before_enrichment",
+      "note": "All 6 are blank across 666 records. Deleting is low data risk but needs schema write + script map updates. Hiding is safest."
+    },
+    {
+      "id": "H_resort_extended_naming",
+      "question": "Rename Resort Amenities Flag → Resort / Leisure Flag and Extended Stay Amenity Flag → Extended Stay Flag?",
+      "options": [
+        "rename_both",
+        "keep_current",
+        "rename_later_after_enrichment"
+      ],
+      "recommendation": "rename_both",
+      "timing": "before_enrichment"
+    }
+  ],
+  "action_plan": {
+    "A_safe_to_apply_now": [
+      {
+        "action": "document_field_roles",
+        "field": "(docs)",
+        "reason": "Document Source Confidence vs Relationship Confidence vs Data Confidence Tier; Production Use Status vs Brand Status",
+        "risk": "none",
+        "requires_schema_change": false,
+        "requires_record_migration": false,
+        "recommended_timing": "now",
+        "bucket": "A"
+      },
+      {
+        "action": "confirm_source_url_standard",
+        "field": "Source URL",
+        "reason": "Do not introduce Source Link",
+        "risk": "none",
+        "requires_schema_change": false,
+        "requires_record_migration": false,
+        "recommended_timing": "now",
+        "bucket": "A"
+      }
+    ],
+    "B_founder_decision_required": [
+      {
+        "action": "rename_field",
+        "field": "Last Verified Date",
+        "reason": "Align to Brand/Operator Last Reviewed Date",
+        "risk": "low",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "rename_field",
+        "field": "Brand Explorer Slug if mapped",
+        "reason": "Simplify to Brand Explorer Slug",
+        "risk": "low",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "rename_field",
+        "field": "Resort Amenities Flag",
+        "reason": "Align to Resort / Leisure Flag",
+        "risk": "low",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "rename_field",
+        "field": "Extended Stay Amenity Flag",
+        "reason": "Align to Extended Stay Flag",
+        "risk": "low",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "hide_or_delete_blank_overmodeled_flags",
+        "field": "Fitness Flag, Pool Flag, Parking Flag, Airport Shuttle Flag, Spa Flag, Beach / Waterfront Flag",
+        "reason": "Blank across 666; prefer Structured Tags; hide safest, delete only with founder OK",
+        "risk": "low_if_hide / medium_if_delete",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "keep_owner_operator_names",
+        "field": "Owner Name; Operator / Management Company",
+        "reason": "Census-specific property relationships; do not conflate with Company Profile Company Name",
+        "risk": "high_if_wrongly_renamed",
+        "requires_schema_change": false,
+        "requires_record_migration": false,
+        "recommended_timing": "confirm_then_keep",
+        "bucket": "B"
+      }
+    ],
+    "C_defer_until_after_enrichment": [
+      {
+        "action": "split_market_submarket_later",
+        "field": "Market / Submarket",
+        "reason": "Long-term Dealality Market + corridor Submarket",
+        "risk": "medium",
+        "requires_schema_change": true,
+        "requires_record_migration": true,
+        "recommended_timing": "after_enrichment",
+        "bucket": "C"
+      }
+    ],
+    "D_do_not_change": [
+      {
+        "action": "do_not_change",
+        "field": "Production Use Status; Enrichment Status; Steward Review Status; Property Name; Source URL",
+        "reason": "Correct Census-specific or already aligned",
+        "risk": "high_if_changed",
+        "requires_schema_change": false,
+        "requires_record_migration": false,
+        "recommended_timing": "never_or_docs_only",
+        "bucket": "D"
+      }
+    ],
+    "all": [
+      {
+        "action": "document_field_roles",
+        "field": "(docs)",
+        "reason": "Document Source Confidence vs Relationship Confidence vs Data Confidence Tier; Production Use Status vs Brand Status",
+        "risk": "none",
+        "requires_schema_change": false,
+        "requires_record_migration": false,
+        "recommended_timing": "now",
+        "bucket": "A"
+      },
+      {
+        "action": "confirm_source_url_standard",
+        "field": "Source URL",
+        "reason": "Do not introduce Source Link",
+        "risk": "none",
+        "requires_schema_change": false,
+        "requires_record_migration": false,
+        "recommended_timing": "now",
+        "bucket": "A"
+      },
+      {
+        "action": "rename_field",
+        "field": "Last Verified Date",
+        "reason": "Align to Brand/Operator Last Reviewed Date",
+        "risk": "low",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "rename_field",
+        "field": "Brand Explorer Slug if mapped",
+        "reason": "Simplify to Brand Explorer Slug",
+        "risk": "low",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "rename_field",
+        "field": "Resort Amenities Flag",
+        "reason": "Align to Resort / Leisure Flag",
+        "risk": "low",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "rename_field",
+        "field": "Extended Stay Amenity Flag",
+        "reason": "Align to Extended Stay Flag",
+        "risk": "low",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "hide_or_delete_blank_overmodeled_flags",
+        "field": "Fitness Flag, Pool Flag, Parking Flag, Airport Shuttle Flag, Spa Flag, Beach / Waterfront Flag",
+        "reason": "Blank across 666; prefer Structured Tags; hide safest, delete only with founder OK",
+        "risk": "low_if_hide / medium_if_delete",
+        "requires_schema_change": true,
+        "requires_record_migration": false,
+        "recommended_timing": "after_founder_approval",
+        "bucket": "B"
+      },
+      {
+        "action": "keep_owner_operator_names",
+        "field": "Owner Name; Operator / Management Company",
+        "reason": "Census-specific property relationships; do not conflate with Company Profile Company Name",
+        "risk": "high_if_wrongly_renamed",
+        "requires_schema_change": false,
+        "requires_record_migration": false,
+        "recommended_timing": "confirm_then_keep",
+        "bucket": "B"
+      },
+      {
+        "action": "split_market_submarket_later",
+        "field": "Market / Submarket",
+        "reason": "Long-term Dealality Market + corridor Submarket",
+        "risk": "medium",
+        "requires_schema_change": true,
+        "requires_record_migration": true,
+        "recommended_timing": "after_enrichment",
+        "bucket": "C"
+      },
+      {
+        "action": "do_not_change",
+        "field": "Production Use Status; Enrichment Status; Steward Review Status; Property Name; Source URL",
+        "reason": "Correct Census-specific or already aligned",
+        "risk": "high_if_changed",
+        "requires_schema_change": false,
+        "requires_record_migration": false,
+        "recommended_timing": "never_or_docs_only",
+        "bucket": "D"
+      }
+    ]
+  },
+  "suggested_views": [
+    {
+      "name": "Census - Core Identity",
+      "fields": [
+        "Property Name",
+        "Current Brand",
+        "City",
+        "State / Region",
+        "Country",
+        "Affiliation Status",
+        "Production Use Status",
+        "Data Confidence Tier",
+        "Enrichment Status",
+        "Human Review Required"
+      ]
+    },
+    {
+      "name": "Census - Enrichment",
+      "fields": [
+        "Property Name",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary",
+        "Amenities - Structured Tags",
+        "Property Type",
+        "Asset Context",
+        "Market / Submarket",
+        "Enrichment Status",
+        "Enrichment Priority"
+      ]
+    },
+    {
+      "name": "Census - Owner Operator",
+      "fields": [
+        "Property Name",
+        "Owner Name",
+        "Owner Confidence",
+        "Operator / Management Company",
+        "Operator Confidence",
+        "Ownership Review Status",
+        "Operator Review Status"
+      ]
+    },
+    {
+      "name": "Census - Steward Review",
+      "fields": [
+        "Property Name",
+        "Human Review Required",
+        "Notes for Steward",
+        "Brand-Unassigned Reason",
+        "Enrichment Priority"
+      ]
+    }
+  ],
+  "brand_explorer_safety": {
+    "gate_results": [
+      {
+        "cmd": "full_chain",
+        "ok": true,
+        "exit_code": 0
+      }
+    ],
+    "active_universe": 62,
+    "semantic": {
+      "activeCount": 62,
+      "severityTotals": {
+        "critical": 0,
+        "high": 0,
+        "medium": 0,
+        "low": 0
+      },
+      "freezeDecision": "ready_to_freeze_62_semantic_qa_clean"
+    },
+    "pvql": {
+      "overallPass": true,
+      "publicFullProfileCount": 62,
+      "scopedCount": 62,
+      "universeActiveCount": 62,
+      "brandsFilter": null,
+      "hardFails": [],
+      "notPublicFull": []
+    },
+    "overall_pass": true,
+    "momentum_and_mandatory": "PASS (chain exit 0)"
+  },
+  "frozen_artifacts": {
+    "vic": {
+      "file_count": 29,
+      "aggregate_sha256": "b0ba978dd42c55efe30907d2929610582ff7a7086130d583dff6faf09475f482"
+    },
+    "frozen_62": [
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.json",
+        "exists": true,
+        "sha256": "87e2870b719327167d39564b45039227e37b1d3be518705da290c3469e50f8b7"
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-62-active-public-full-baseline.js",
+        "exists": true,
+        "sha256": "7bc5f0d6cca57b7aad0f141f8b56d3528e6fbb634327ce3945b182360966ac7c"
+      }
+    ]
+  },
+  "recommended_next_step": "Founder decides A–H (especially Last Reviewed Date rename + amenity hide/delete + Resort/Extended Stay renames). Then run a separate apply command for approved v1.1.1 changes only. Enrichment stays blocked until then."
+}

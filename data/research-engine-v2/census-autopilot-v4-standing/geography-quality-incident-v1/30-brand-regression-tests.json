@@ -1,0 +1,82 @@
+{
+  "run_at": "2026-08-08T17:16:24.240Z",
+  "choice_regression": {
+    "pass": true,
+    "cases": [
+      {
+        "name": "source_adapter_choice_not_current_brand",
+        "pass": true
+      },
+      {
+        "name": "url_brand_confirmed_auto_write",
+        "pass": true
+      },
+      {
+        "name": "medium_match_cannot_write",
+        "pass": true
+      }
+    ]
+  },
+  "cross_family_parent_vs_brand": {
+    "pass": true,
+    "cases": [
+      {
+        "family": "Choice",
+        "family_as_brand_blocked": true,
+        "expanded_parent_as_brand_blocked": true,
+        "property_level_brand_allowed": true
+      },
+      {
+        "family": "IHG",
+        "family_as_brand_blocked": true,
+        "expanded_parent_as_brand_blocked": true,
+        "property_level_brand_allowed": true
+      },
+      {
+        "family": "Hilton",
+        "family_as_brand_blocked": true,
+        "expanded_parent_as_brand_blocked": true,
+        "property_level_brand_allowed": true
+      },
+      {
+        "family": "Marriott",
+        "family_as_brand_blocked": true,
+        "expanded_parent_as_brand_blocked": true,
+        "property_level_brand_allowed": true
+      },
+      {
+        "family": "Hyatt",
+        "family_as_brand_blocked": true,
+        "expanded_parent_as_brand_blocked": true,
+        "property_level_brand_allowed": true
+      },
+      {
+        "family": "Accor",
+        "family_as_brand_blocked": true,
+        "expanded_parent_as_brand_blocked": true,
+        "property_level_brand_allowed": true
+      },
+      {
+        "family": "Wyndham",
+        "family_as_brand_blocked": true,
+        "expanded_parent_as_brand_blocked": true,
+        "property_level_brand_allowed": true
+      },
+      {
+        "family": "Minor",
+        "family_as_brand_blocked": true,
+        "expanded_parent_as_brand_blocked": true,
+        "property_level_brand_allowed": true
+      }
+    ],
+    "version": "current-affiliation-gate-v1"
+  },
+  "required": {
+    "medium_fuzzy_cannot_write_current_brand": true,
+    "brand_explorer_cannot_override": true,
+    "parent_cannot_auto_populate_current_brand": true,
+    "no_cvent_brand_evidence": true,
+    "no_legacy_brand_evidence": true
+  },
+  "pass": true
+}

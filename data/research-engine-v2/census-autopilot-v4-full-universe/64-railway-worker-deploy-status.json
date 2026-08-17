@@ -1,0 +1,37 @@
+{
+  "status": "production_census_v4_railway_worker_deployed_persistent_runtime_complete",
+  "generated_at": "2026-08-09T02:00:00.000Z",
+  "railway": {
+    "project": "devoted-spontaneity",
+    "project_id": "7fd03f41-604f-488c-a572-fad42ebbed42",
+    "environment": "production",
+    "service_name": "Dealality Census Worker",
+    "service_id": "e1b3fcc5-b7e4-4b7b-98c4-da34927f1d14",
+    "deployment_id": "41ecf248-c717-4dc1-ad54-ea65d425c995",
+    "start_command": "npm run census:v4-full-build-worker",
+    "restart_policy": "ON_FAILURE",
+    "node": "22.x (NIXPACKS_NODE_VERSION=22)",
+    "volume": {
+      "name": "dealality-census worker-volume",
+      "mount": "/app/data/research-engine-v2/census-autopilot-v4-full-universe"
+    },
+    "dashboard": "https://railway.com/project/7fd03f41-604f-488c-a572-fad42ebbed42/service/e1b3fcc5-b7e4-4b7b-98c4-da34927f1d14"
+  },
+  "verified": {
+    "service_online": true,
+    "persistent_supervisor_started": true,
+    "reports_assets_hydrated_from_lib": true,
+    "volume_attached": true,
+    "controller_reached_official_directory_discovery": true,
+    "local_supervisor_stopped": true,
+    "railway_worker_id_in_logs": "v4w_706037fe7429_15_47b2dd26",
+    "controller_boundary_restart_observed": true,
+    "hard_kill_then_run_2": true,
+    "enable_flags": {
+      "ENABLE_CENSUS_V4_WORKER": "1",
+      "ENABLE_CENSUS_AUTOPILOT_V4": true,
+      "ENABLE_VERIFIED_CENSUS_WRITES": true
+    }
+  },
+  "known_limitation": "Official directory discoverCalaProperties hangs on Railway egress after [discover] countries=38; supervisor hard-kills after V4_MAX_RUNTIME_MS+grace and relaunches (run #2 observed). Investigate Railway outbound/network for parent directory fetches."
+}

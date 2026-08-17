@@ -1,0 +1,518 @@
+{
+  "run_type": "webhound_active_brand_coverage_gap_pass",
+  "generated_at": "2026-08-06T00:35:48.876Z",
+  "final_status": "webhound_active_brand_coverage_gap_pass_complete_ready_for_adapter_queue",
+  "executive_recommendation": "C",
+  "executive_recommendation_label": "Add several low-effort adapters together",
+  "executive_recommendation_detail": "Wire Accor + Wyndham into Autopilot source_discovery next (existing extractors). Then Preferred as new soft-brand adapter. Defer BWH/SLH/Bunkhouse. Marriott/IHG/Hilton/Choice already wired — do not re-Webhound them.",
+  "production_writes": false,
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "webhound_used_as": "learning_input_only",
+  "webhound_session": {
+    "id": "0abff16f-9e6e-4203-ae91-9ec79556cea6",
+    "url": "https://webhound.ai/session/0abff16f-9e6e-4203-ae91-9ec79556cea6",
+    "budget_usd": 5,
+    "cost_usd": 5,
+    "completion_reason": "budget_complete",
+    "sources": 43,
+    "claims": 96
+  },
+  "code_probe_path": "reports/research-engine-v2/webhound-active-brand-coverage-gap-code-probe.json",
+  "gap_list_path": "reports/research-engine-v2/active-brand-discovery-coverage-gap-list.json",
+  "parents_reviewed": [
+    "Accor",
+    "Wyndham",
+    "BWH Hotels",
+    "Preferred Hotels & Resorts",
+    "SLH",
+    "Bunkhouse"
+  ],
+  "brands_reviewed": [
+    "design-hotels",
+    "fairmont-hotels-and-resorts",
+    "ibis",
+    "mama-shelter",
+    "mercure",
+    "mgallery-collection",
+    "novotel",
+    "pullman",
+    "so-hotels-and-resorts",
+    "dazzler-by-wyndham",
+    "everhome-suites",
+    "trademark-collection-by-wyndham",
+    "woodspring-suites",
+    "bw-premier-collection",
+    "bw-signature-collection",
+    "preferred-hotels-and-resorts",
+    "small-luxury-hotels-of-the-world",
+    "bunkhouse-hotels"
+  ],
+  "excluded_supported_parents": [
+    "Marriott",
+    "IHG",
+    "Hilton",
+    "Choice"
+  ],
+  "coverage_gaps": [
+    {
+      "parent_company": "Accor",
+      "brand_family": "Accor",
+      "brands": [
+        "design-hotels",
+        "fairmont-hotels-and-resorts",
+        "ibis",
+        "mama-shelter",
+        "mercure",
+        "mgallery-collection",
+        "novotel",
+        "pullman",
+        "so-hotels-and-resorts"
+      ],
+      "countries_sampled": [
+        "Mexico",
+        "Colombia",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "official_discovery_sources": [
+        "https://all.accor.com/sitemap-fh.en.xml",
+        "https://all.accor.com/a/en/destination/continent/hotels-south-america-c02.html",
+        "https://all.accor.com/a/en/destination/continent/hotels-central-america-c10.html",
+        "https://all.accor.com/a/en/destination/continent/hotels-north-america-c01.html"
+      ],
+      "property_url_patterns": [
+        "https://all.accor.com/hotel/{CODE}/index.en.shtml"
+      ],
+      "property_id_patterns": [
+        "/hotel/([0-9A-Za-z]+)/",
+        "4-digit numeric or 4-char alphanumeric"
+      ],
+      "fields_available": {
+        "property_name": "yes_listing+detail",
+        "brand": "yes_detail_svg_or_text",
+        "city": "yes_detail_address",
+        "country": "yes_detail_address",
+        "address": "yes_detail",
+        "coordinates": "yes_google_static_maps_url_or_jsonld",
+        "description": "yes_detail",
+        "amenities": "yes_detail_jsonld_or_html",
+        "rooms_keys": "unreliable_prose_only"
+      },
+      "fetch_status": "ok_sitemap_and_continent_browse",
+      "blocked_reasons": [
+        "short_continent_paths_without_/a/en/destination/_403"
+      ],
+      "recommended_adapter": "extend_existing_wire_autopilot",
+      "code_vs_webhound": "already_partial_extractor_exists",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire lib/accor-brand-directory-extract.js + accor-continent-directory-extract.js into census-autopilot-source-discovery",
+        "Prefer continent JSON-LD ItemList for CALA browse; sitemap for global identity index",
+        "Do not use short /hotels-*-c0N paths (403)"
+      ],
+      "classification": "new_adapter_needed"
+    },
+    {
+      "parent_company": "Wyndham",
+      "brand_family": "Wyndham",
+      "brands": [
+        "dazzler-by-wyndham",
+        "everhome-suites",
+        "trademark-collection-by-wyndham",
+        "woodspring-suites"
+      ],
+      "countries_sampled": [
+        "Mexico",
+        "Dominican Republic",
+        "Panama",
+        "Costa Rica",
+        "Colombia"
+      ],
+      "official_discovery_sources": [
+        "https://www.wyndhamhotels.com/sitemap.xml",
+        "https://www.wyndhamhotels.com/sitemap_en-us_{brand}_properties_1.xml",
+        "https://www.wyndhamhotels.com/{brand}/locations"
+      ],
+      "property_url_patterns": [
+        "https://www.wyndhamhotels.com/{brand}/{city}-{region}-{country}/{slug}/overview"
+      ],
+      "property_id_patterns": [
+        "5-digit numeric in CDN paths",
+        "property slug"
+      ],
+      "fields_available": {
+        "property_name": "yes",
+        "brand": "yes_url_path",
+        "city": "yes",
+        "country": "yes_path_or_jsonld_or_address",
+        "address": "yes_overview",
+        "coordinates": "sometimes_maps_url",
+        "description": "yes",
+        "amenities": "yes",
+        "rooms_keys": "no"
+      },
+      "fetch_status": "ok_property_sitemaps",
+      "blocked_reasons": [],
+      "recommended_adapter": "extend_existing_wire_autopilot_cala_brands",
+      "code_vs_webhound": "already_partial_extractor_exists",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire lib/wyndham-brand-directory-extract.js into Autopilot source_discovery",
+        "CALA filter MUST use page country metadata — never naive path keywords (panama-city-florida false positive)",
+        "Scope CALA to Trademark + main Wyndham brands; Dazzler/WoodSpring low/no CALA"
+      ],
+      "classification": "new_adapter_needed"
+    },
+    {
+      "parent_company": "BWH Hotels",
+      "brand_family": "BWH Hotels",
+      "brands": [
+        "bw-premier-collection",
+        "bw-signature-collection"
+      ],
+      "countries_sampled": [
+        "Mexico",
+        "Colombia",
+        "Costa Rica"
+      ],
+      "official_discovery_sources": [
+        "https://www.bestwestern.com/sitemap.xml",
+        "https://www.bestwestern.com/etc/seo/bestwestern/hotels-details.xml"
+      ],
+      "property_url_patterns": [
+        "/en_US/book/hotels-in-{city}/{slug}/propertyCode.{NNNNN}.html",
+        "/en_US/book/hotel-details.{NNNNN}.html"
+      ],
+      "property_id_patterns": [
+        "propertyCode.(\\d{4,6})"
+      ],
+      "fields_available": {
+        "property_name": "yes_from_slug_destination",
+        "brand": "infer_from_slug",
+        "city": "yes_path",
+        "country": "destination_context",
+        "address": "unreliable_live_403",
+        "coordinates": "unknown",
+        "description": "unreliable_live_403",
+        "amenities": "unreliable_live_403",
+        "rooms_keys": "unknown"
+      },
+      "fetch_status": "sitemap_ok_property_pages_403",
+      "blocked_reasons": [
+        "bestwestern_property_pages_captcha_or_403"
+      ],
+      "recommended_adapter": "steward_seed_plus_sitemap_metadata",
+      "code_vs_webhound": "partial_seed_extractor_exists",
+      "confidence": "medium",
+      "code_tasks": [
+        "Keep fixtures/bwh-cala-directory-seed.json + URL/code discovery from hotels-details.xml",
+        "Do not auto-insert from blocked property HTML",
+        "Steward review for BW Premier/Signature CALA"
+      ],
+      "classification": "blocked_source"
+    },
+    {
+      "parent_company": "Preferred Hotels & Resorts",
+      "brand_family": "Preferred Hotels & Resorts",
+      "brands": [
+        "preferred-hotels-and-resorts"
+      ],
+      "countries_sampled": [
+        "Mexico",
+        "Dominican Republic"
+      ],
+      "official_discovery_sources": [
+        "https://preferredhotels.com/directory",
+        "https://preferredhotels.com/search/country/{country}"
+      ],
+      "property_url_patterns": [
+        "https://preferredhotels.com/hotels/{country}/{slug}"
+      ],
+      "property_id_patterns": [
+        "/book/hotel/{numeric_id}"
+      ],
+      "fields_available": {
+        "property_name": "yes_directory",
+        "brand": "collection_tier",
+        "city": "yes",
+        "country": "yes",
+        "address": "yes_property_page",
+        "coordinates": "no_reliable",
+        "description": "yes",
+        "amenities": "yes",
+        "rooms_keys": "yes_directory_often"
+      },
+      "fetch_status": "ok_static_directory",
+      "blocked_reasons": [],
+      "recommended_adapter": "build_new_adapter",
+      "code_vs_webhound": "no_existing_autopilot_module",
+      "confidence": "high",
+      "code_tasks": [
+        "Build Preferred directory parser from preferredhotels.com/directory",
+        "Property pages for address; optional official PDF for room count",
+        "Soft-brand matching rules for Census Affiliation"
+      ],
+      "classification": "new_adapter_needed"
+    },
+    {
+      "parent_company": "SLH",
+      "brand_family": "SLH",
+      "brands": [
+        "small-luxury-hotels-of-the-world"
+      ],
+      "countries_sampled": [
+        "Mexico",
+        "Costa Rica"
+      ],
+      "official_discovery_sources": [
+        "https://slh.com/explore-hotels",
+        "https://slh.com/americas/{country-or-region}"
+      ],
+      "property_url_patterns": [
+        "https://slh.com/hotels/{slug}"
+      ],
+      "property_id_patterns": [
+        "imgix numeric auxiliary only"
+      ],
+      "fields_available": {
+        "property_name": "yes",
+        "brand": "SLH",
+        "city": "yes",
+        "country": "yes_context",
+        "address": "often_missing",
+        "coordinates": "no",
+        "description": "yes",
+        "amenities": "weak",
+        "rooms_keys": "sometimes"
+      },
+      "fetch_status": "partial_dynamic_discovery",
+      "blocked_reasons": [
+        "no_xml_sitemap",
+        "weak_address_payload"
+      ],
+      "recommended_adapter": "steward_only_lightweight",
+      "code_vs_webhound": "no_existing_module",
+      "confidence": "medium",
+      "code_tasks": [
+        "Defer full adapter; steward discovery if needed"
+      ],
+      "classification": "generic_extractor_can_handle"
+    },
+    {
+      "parent_company": "Bunkhouse",
+      "brand_family": "Bunkhouse",
+      "brands": [
+        "bunkhouse-hotels"
+      ],
+      "countries_sampled": [
+        "Mexico"
+      ],
+      "official_discovery_sources": [
+        "https://www.bunkhousehotels.com"
+      ],
+      "property_url_patterns": [
+        "inconsistent slug paths"
+      ],
+      "property_id_patterns": [],
+      "fields_available": {
+        "property_name": "yes",
+        "brand": "Bunkhouse",
+        "city": "yes",
+        "country": "limited",
+        "address": "not_established",
+        "coordinates": "not_established",
+        "description": "yes_short",
+        "amenities": "not_established",
+        "rooms_keys": "no"
+      },
+      "fetch_status": "ok_homepage_spa",
+      "blocked_reasons": [
+        "no_sitemap",
+        "tiny_cala_portfolio"
+      ],
+      "recommended_adapter": "steward_only",
+      "code_vs_webhound": "webhound_not_useful",
+      "confidence": "high",
+      "code_tasks": [
+        "Manually steward Mexico properties if needed; no Autopilot adapter"
+      ],
+      "classification": "do_not_use"
+    }
+  ],
+  "adapter_build_queue": [
+    {
+      "rank": 1,
+      "parent": "Accor",
+      "action": "wire_existing_extractor_to_autopilot",
+      "effort": "low",
+      "why": "Extractors + continent JSON-LD already exist; 9 Active brands"
+    },
+    {
+      "rank": 2,
+      "parent": "Wyndham",
+      "action": "wire_existing_extractor_to_autopilot",
+      "effort": "low",
+      "why": "Property sitemaps live; Trademark CALA strong; avoid path false positives"
+    },
+    {
+      "rank": 3,
+      "parent": "Preferred Hotels & Resorts",
+      "action": "build_new_directory_adapter",
+      "effort": "medium",
+      "why": "Static /directory is rich; soft-brand Active Setup gap"
+    },
+    {
+      "rank": 4,
+      "parent": "BWH Hotels",
+      "action": "defer_steward_seed",
+      "effort": "blocked_live",
+      "why": "hotels-details.xml OK but property pages 403"
+    },
+    {
+      "rank": 5,
+      "parent": "SLH",
+      "action": "defer_steward",
+      "effort": "high_low_value",
+      "why": "Weak address/GPS; dynamic discovery"
+    },
+    {
+      "rank": 6,
+      "parent": "Bunkhouse",
+      "action": "defer_manual",
+      "effort": "n/a",
+      "why": "Tiny CALA portfolio"
+    }
+  ],
+  "do_not_use_sources": [
+    "OTAs / metasearch",
+    "TripAdvisor as SoT",
+    "Wikipedia lists",
+    "CoStar",
+    "VIC as production table",
+    "Webhound as Census SoT",
+    "Accor short continent paths without /a/en/destination/",
+    "bestwestern hotel-search.html as primary",
+    "Wyndham path keyword CALA filter (panama-city-florida false positives)"
+  ],
+  "do_not_learn_noise": [
+    "Webhound Accor/Wyndham property count undercounts vs Dealality code probes",
+    "Webhound claim of zero Accor JSON-LD conflicts with Dealality continent ItemList + property JSON-LD parsers — trust code probe",
+    "Investor press release hotel counts",
+    "OTA prices / TripAdvisor ratings as identity",
+    "owner/operator/developer/dates",
+    "Company Validated / Brand Verified",
+    "Recent Momentum"
+  ],
+  "recommended_next_code_changes": [
+    "census-autopilot-accor-cala-discovery-adapter.js wired from existing Accor extractors",
+    "census-autopilot-wyndham-cala-discovery-adapter.js with country JSON-LD CALA filter",
+    "Infer Parent Company for Active Brand Setup control list from slug map (IHG/Accor currently blank → skipped)",
+    "Preferred directory adapter after Accor+Wyndham"
+  ],
+  "comparison_to_current_code": {
+    "Marriott": "already_supported",
+    "IHG": "already_supported",
+    "Hilton": "already_supported",
+    "Choice": "already_supported",
+    "Accor": "new_adapter_needed_extend_existing",
+    "Wyndham": "new_adapter_needed_extend_existing",
+    "BWH Hotels": "blocked_source_partial_seed",
+    "Preferred Hotels & Resorts": "new_adapter_needed",
+    "SLH": "generic_extractor_can_handle_or_steward",
+    "Bunkhouse": "do_not_use_adapter"
+  },
+  "code_probe_highlights": {
+    "accor_continent_page1": {
+      "southAmerica": {
+        "url": "https://all.accor.com/a/en/destination/continent/hotels-south-america-c02.html",
+        "status": 200,
+        "ok": true,
+        "count": 300,
+        "sample": [
+          {
+            "propertyId": "8644",
+            "propertyUrl": "https://all.accor.com/hotel/8644/index.en.shtml",
+            "inferredHotelName": "ibis Sinop",
+            "source": "accor_continent_browse"
+          },
+          {
+            "propertyId": "B9G7",
+            "propertyUrl": "https://all.accor.com/hotel/B9G7/index.en.shtml",
+            "inferredHotelName": "IBIS TANGARA DA SERRA",
+            "source": "accor_continent_browse"
+          },
+          {
+            "propertyId": "9624",
+            "propertyUrl": "https://all.accor.com/hotel/9624/index.en.shtml",
+            "inferredHotelName": "Ibis Budget Parauapebas",
+            "source": "accor_continent_browse"
+          }
+        ]
+      },
+      "centralAmerica": {
+        "url": "https://all.accor.com/a/en/destination/continent/hotels-central-america-c10.html",
+        "status": 200,
+        "ok": true,
+        "count": 151,
+        "sample": [
+          {
+            "propertyId": "9252",
+            "propertyUrl": "https://all.accor.com/hotel/9252/index.en.shtml",
+            "inferredHotelName": "Novotel Panama City",
+            "source": "accor_continent_browse"
+          },
+          {
+            "propertyId": "9156",
+            "propertyUrl": "https://all.accor.com/hotel/9156/index.en.shtml",
+            "inferredHotelName": "Sofitel Legend Casco Viejo - Panama City",
+            "source": "accor_continent_browse"
+          },
+          {
+            "propertyId": "B1T9",
+            "propertyUrl": "https://all.accor.com/hotel/B1T9/index.en.shtml",
+            "inferredHotelName": "Banyan Tree Mayakoba",
+            "source": "accor_continent_browse"
+          }
+        ]
+      },
+      "northAmerica": {
+        "url": "https://all.accor.com/a/en/destination/continent/hotels-north-america-c01.html",
+        "status": 200,
+        "ok": true,
+        "count": 131,
+        "sample": [
+          {
+            "propertyId": "A559",
+            "propertyUrl": "https://all.accor.com/hotel/A559/index.en.shtml",
+            "inferredHotelName": "Fairmont Hotel Macdonald",
+            "source": "accor_continent_browse"
+          },
+          {
+            "propertyId": "A555",
+            "propertyUrl": "https://all.accor.com/hotel/A555/index.en.shtml",
+            "inferredHotelName": "Fairmont Palliser",
+            "source": "accor_continent_browse"
+          },
+          {
+            "propertyId": "A592",
+            "propertyUrl": "https://all.accor.com/hotel/A592/index.en.shtml",
+            "inferredHotelName": "Fairmont Winnipeg",
+            "source": "accor_continent_browse"
+          }
+        ]
+      }
+    },
+    "accor_sitemap_hotels": 5895,
+    "wyndham_property_sitemaps": 227,
+    "bwh_live_status": {
+      "url": "https://www.bestwestern.com/en_US/book/hotels-in-kingston/terra-nova-bw-premier-collection/propertyCode.71034.html",
+      "status": 403,
+      "ok": false,
+      "bytes": 778,
+      "note": "likely_blocked_or_missing"
+    }
+  }
+}

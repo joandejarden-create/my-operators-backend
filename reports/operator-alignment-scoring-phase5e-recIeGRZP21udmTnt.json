@@ -1,0 +1,1883 @@
+{
+  "phase": "5E",
+  "dealId": "recIeGRZP21udmTnt",
+  "generatedAt": "2026-05-25T17:47:43.892Z",
+  "dealNormalized": {
+    "brandAgreementStructure": "Franchise",
+    "operatingModel": "Third-party managed",
+    "preferredManagementStructure": [
+      "Franchise with third-party operator",
+      "Full third-party management"
+    ],
+    "mustHaveOperatorServices": [
+      "Full hotel management",
+      "Pre-opening planning",
+      "Revenue management",
+      "Sales",
+      "Brand compliance support",
+      "Owner reporting"
+    ],
+    "marketPresenceRequirement": "Active country operations required",
+    "fieldSources": {
+      "brandAgreementStructure": "structured_si",
+      "operatingModel": "structured_si",
+      "preferredManagementStructure": "structured_si",
+      "operatorScope": "structured_si",
+      "requiredOperatorServices": "structured_si",
+      "mustHaveOperatorServices": "structured_si",
+      "niceToHaveOperatorServices": "structured_si",
+      "legacyMustHaves": "legacy_si",
+      "marketPresenceRequirement": "structured_si",
+      "preOpeningSupportNeeded": "structured_si",
+      "ownerReportingExpectations": "structured_si",
+      "ownerControlPreference": "structured_si",
+      "commercialPriority": "structured_si",
+      "fbComplexity": "structured_deals",
+      "openingTimeline": "structured_deals"
+    },
+    "legacyDealStructure": "Franchise Only"
+  },
+  "comparison": {
+    "beforeAvgScore": 64.14,
+    "afterAvgScore": 71.8,
+    "beforeRange": {
+      "min": 54,
+      "max": 69.4
+    },
+    "afterRange": {
+      "min": 65.6,
+      "max": 75.6
+    }
+  },
+  "operatorCount": 10,
+  "scoreDistribution": {
+    "80+": 0,
+    "65-79": 10,
+    "50-64": 0,
+    "35-49": 0,
+    "<35": 0,
+    "null": 0
+  },
+  "top10": [
+    {
+      "company": "Cenote Azul Operadores",
+      "score": 75.6,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "chainScale",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations"
+      ],
+      "limited": [
+        "serviceOfferings"
+      ],
+      "missing": [
+        "brandPortfolioRelevance"
+      ],
+      "suppressors": [
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "geographyMarkets",
+          "label": "Geography & Markets",
+          "weight": 18,
+          "score": 88,
+          "drag": 216,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented Mexico presence."
+        },
+        {
+          "key": "ownerRelations",
+          "label": "Owner Relations",
+          "weight": 6,
+          "score": 70,
+          "drag": 180,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Potential alignment on chain scale based on available inputs.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": "—",
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": false,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Antillano Norte Hospitality Group",
+      "score": 75.6,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "chainScale",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations"
+      ],
+      "limited": [
+        "serviceOfferings"
+      ],
+      "missing": [
+        "brandPortfolioRelevance"
+      ],
+      "suppressors": [
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "geographyMarkets",
+          "label": "Geography & Markets",
+          "weight": 18,
+          "score": 88,
+          "drag": 216,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented Mexico presence."
+        },
+        {
+          "key": "ownerRelations",
+          "label": "Owner Relations",
+          "weight": 6,
+          "score": 70,
+          "drag": 180,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Potential alignment on chain scale based on available inputs.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": "—",
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": false,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Viento Sur Gestión Hotelera",
+      "score": 75.2,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "chainScale",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations",
+        "brandPortfolioRelevance"
+      ],
+      "limited": [
+        "serviceOfferings"
+      ],
+      "missing": [],
+      "suppressors": [
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "geographyMarkets",
+          "label": "Geography & Markets",
+          "weight": 18,
+          "score": 88,
+          "drag": 216,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented Mexico presence."
+        },
+        {
+          "key": "ownerRelations",
+          "label": "Owner Relations",
+          "weight": 6,
+          "score": 70,
+          "drag": 180,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Potential alignment on chain scale based on available inputs.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": 70,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Mangle Azul Hospitalidad",
+      "score": 72.2,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "chainScale",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations"
+      ],
+      "limited": [
+        "serviceOfferings",
+        "brandPortfolioRelevance"
+      ],
+      "missing": [],
+      "suppressors": [
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "brandPortfolioRelevance",
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "score": 25,
+          "drag": 450,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "geographyMarkets",
+          "label": "Geography & Markets",
+          "weight": 18,
+          "score": 88,
+          "drag": 216,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented Mexico presence."
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Potential alignment on chain scale based on available inputs.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": 25,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Panamerican Lodging Partners S.A.",
+      "score": 72.2,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "chainScale",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations"
+      ],
+      "limited": [
+        "serviceOfferings",
+        "brandPortfolioRelevance"
+      ],
+      "missing": [],
+      "suppressors": [
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "brandPortfolioRelevance",
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "score": 25,
+          "drag": 450,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "geographyMarkets",
+          "label": "Geography & Markets",
+          "weight": 18,
+          "score": 88,
+          "drag": 216,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented Mexico presence."
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Potential alignment on chain scale based on available inputs.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": 25,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Barrio Hotelero CDMX",
+      "score": 72.2,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "chainScale",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations"
+      ],
+      "limited": [
+        "serviceOfferings",
+        "brandPortfolioRelevance"
+      ],
+      "missing": [],
+      "suppressors": [
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "brandPortfolioRelevance",
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "score": 25,
+          "drag": 450,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "geographyMarkets",
+          "label": "Geography & Markets",
+          "weight": 18,
+          "score": 88,
+          "drag": 216,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented Mexico presence."
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Potential alignment on chain scale based on available inputs.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": 25,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Metro Lodging São Paulo",
+      "score": 72.2,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "chainScale",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations"
+      ],
+      "limited": [
+        "serviceOfferings",
+        "brandPortfolioRelevance"
+      ],
+      "missing": [],
+      "suppressors": [
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "brandPortfolioRelevance",
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "score": 25,
+          "drag": 450,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "geographyMarkets",
+          "label": "Geography & Markets",
+          "weight": 18,
+          "score": 88,
+          "drag": 216,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented Mexico presence."
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Potential alignment on chain scale based on available inputs.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 100,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": 25,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Río Plata Hotel Partners",
+      "score": 69.1,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "chainScale",
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations"
+      ],
+      "limited": [
+        "serviceOfferings",
+        "brandPortfolioRelevance"
+      ],
+      "missing": [],
+      "suppressors": [
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "brandPortfolioRelevance",
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "score": 25,
+          "drag": 450,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "chainScale",
+          "label": "Chain Scale",
+          "weight": 8,
+          "score": 65,
+          "drag": 280,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Conditional alignment signal on chain scale — validation may be needed.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 65,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": 25,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Hotel Equities (CALA)",
+      "score": 67.6,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": "—",
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "feeCommercial",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "brandPortfolioRelevance"
+      ],
+      "limited": [
+        "chainScale"
+      ],
+      "missing": [
+        "serviceOfferings",
+        "systemsReporting",
+        "ownerRelations"
+      ],
+      "suppressors": [
+        {
+          "key": "chainScale",
+          "label": "Chain Scale",
+          "weight": 8,
+          "score": 25,
+          "drag": 600,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 57.5,
+          "drag": 595,
+          "fieldSource": "structured",
+          "missingDataClass": "needs_validation",
+          "rationale": "Pre-opening support is required on the deal — operator pre-opening capability needs validation."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "brandPortfolioRelevance",
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "score": 55,
+          "drag": 270,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "geographyMarkets",
+          "label": "Geography & Markets",
+          "weight": 18,
+          "score": 88,
+          "drag": 216,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Market alignment is supported by documented Mexico presence."
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Limited alignment signal on chain scale with current inputs.",
+        "Pre-opening support is required on the deal — operator pre-opening capability needs validation.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Required operator services cannot be validated until operator service offerings are documented."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 25,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 57.5,
+          "fieldSource": "structured",
+          "missingDataClass": "needs_validation",
+          "includedInDenominator": true,
+          "rationale": "Pre-opening support is required on the deal — operator pre-opening capability needs validation.",
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": "—",
+          "fieldSource": "structured",
+          "missingDataClass": "needs_validation",
+          "includedInDenominator": false,
+          "rationale": "Required operator services cannot be validated until operator service offerings are documented.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": "—",
+          "fieldSource": "structured",
+          "missingDataClass": "needs_validation",
+          "includedInDenominator": false,
+          "rationale": "Owner reporting capability appears relevant to the deal expectation — operator reporting level needs validation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": "—",
+          "fieldSource": "structured",
+          "missingDataClass": "needs_validation",
+          "includedInDenominator": false,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": 55,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    },
+    {
+      "company": "Oro Verde Lodge & Hotel Operators",
+      "score": 65.6,
+      "band": "Moderate Alignment Signals",
+      "structureScore": 72,
+      "structureSource": "structured",
+      "structureRationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+      "serviceScore": 44.3,
+      "serviceSource": "structured",
+      "geoScore": 88,
+      "strong": [
+        "geographyMarkets",
+        "feeCommercial",
+        "systemsReporting",
+        "negativeFitPenalty"
+      ],
+      "conditional": [
+        "assetProjectStageFit",
+        "dealStructureAssignment",
+        "ownerRelations"
+      ],
+      "limited": [
+        "chainScale",
+        "serviceOfferings",
+        "brandPortfolioRelevance"
+      ],
+      "missing": [],
+      "suppressors": [
+        {
+          "key": "chainScale",
+          "label": "Chain Scale",
+          "weight": 8,
+          "score": 25,
+          "drag": 600,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "assetProjectStageFit",
+          "label": "Asset / Project / Stage Fit",
+          "weight": 14,
+          "score": 59.8,
+          "drag": 562.8000000000001,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "brandPortfolioRelevance",
+          "label": "Brand / Portfolio Relevance",
+          "weight": 6,
+          "score": 25,
+          "drag": 450,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "rationale": null
+        },
+        {
+          "key": "serviceOfferings",
+          "label": "Service Offerings",
+          "weight": 8,
+          "score": 44.3,
+          "drag": 445.6,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended."
+        },
+        {
+          "key": "dealStructureAssignment",
+          "label": "Deal Structure / Assignment",
+          "weight": 12,
+          "score": 72,
+          "drag": 336,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path."
+        },
+        {
+          "key": "feeCommercial",
+          "label": "Fee / Commercial",
+          "weight": 10,
+          "score": 75,
+          "drag": 250,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "rationale": null
+        }
+      ],
+      "alignmentSignals": [
+        "Market alignment is supported by documented Mexico presence.",
+        "Limited alignment signal on chain scale with current inputs.",
+        "Conditional alignment signal on asset / project / stage fit — validation may be needed.",
+        "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+        "Potential alignment on fee / commercial based on available inputs.",
+        "Limited alignment signal on service offerings with current inputs."
+      ],
+      "factorFieldAudit": {
+        "geographyMarkets": {
+          "score": 88,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Market alignment is supported by documented Mexico presence.",
+          "dealValue": "Country: Mexico; Requirement: Active country operations required"
+        },
+        "chainScale": {
+          "score": 25,
+          "fieldSource": "location",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Hotel Chain Scale: Upper Midscale"
+        },
+        "assetProjectStageFit": {
+          "score": 59.8,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Project: New Build; Stage: Land Under Control Only; Timeline: Pre-development; Pre-opening needed: Yes"
+        },
+        "dealStructureAssignment": {
+          "score": 72,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+          "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+        },
+        "feeCommercial": {
+          "score": 75,
+          "fieldSource": "legacy_mp",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Fee expectations: Royalty 4% - 5%; Marketing 3% - 4%; Loyalty 3% - 4%; Legacy structure Franchise Only"
+        },
+        "serviceOfferings": {
+          "score": 44.3,
+          "fieldSource": "structured",
+          "missingDataClass": "data_gap",
+          "includedInDenominator": true,
+          "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+          "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+        },
+        "systemsReporting": {
+          "score": 90,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": "Owner reporting capability appears relevant to the deal's Monthly operating review expectation.",
+          "dealValue": "Owner reporting expectation: Monthly operating review"
+        },
+        "ownerRelations": {
+          "score": 70,
+          "fieldSource": "structured",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Owner control: Shared control; Owner priority: responsive communication and collaboration"
+        },
+        "brandPortfolioRelevance": {
+          "score": 25,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Preferred brands: Hilton Garden Inn, Courtyard by Marriott, Hyatt Place, Fairfield Inn & Suites"
+        },
+        "negativeFitPenalty": {
+          "score": 100,
+          "fieldSource": "structured_si",
+          "missingDataClass": null,
+          "includedInDenominator": true,
+          "rationale": null,
+          "dealValue": "Top deal breakers: High Fees or Unfavorable Economics, Other"
+        }
+      }
+    }
+  ],
+  "avgScore": 71.8,
+  "sampleStructureFactor": {
+    "score": 72,
+    "fieldSource": "structured",
+    "missingDataClass": null,
+    "includedInDenominator": true,
+    "rationale": "Management structure shows partial overlap — confirm franchise vs operator responsibilities. Brand agreement is franchise; this is evaluated separately from third-party operating path.",
+    "dealValue": "Brand agreement: Franchise | Operating model: Third-party managed | Preferred management: Franchise with third-party operator; Full third-party management | Operator scope: Full management; Pre-opening support; Brand compliance support; Owner reporting; Technical services coordination"
+  },
+  "sampleServiceFactor": {
+    "score": 44.3,
+    "fieldSource": "structured",
+    "missingDataClass": "data_gap",
+    "includedInDenominator": true,
+    "rationale": "Limited documented overlap with structured service requirements — validation recommended.",
+    "dealValue": "Must-have services: Full hotel management, Pre-opening planning, Revenue management, Sales, Brand compliance support, Owner reporting | From operator scope: Full hotel management, Pre-opening planning, Brand compliance support, Owner reporting, Technical services coordination"
+  }
+}

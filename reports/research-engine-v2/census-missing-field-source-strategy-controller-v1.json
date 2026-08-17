@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "status": "production_census_missing_field_source_strategy_controller_v1_partial_network_remaining",
+  "parent_statuses": [
+    "production_census_v4_full_build_resumed_after_railway_discovery_fix_complete",
+    "production_census_v4_full_build_partial_source_remaining",
+    "production_census_v4_full_build_partial_network_remaining"
+  ],
+  "objective": "census-missing-field-source-strategy-controller-v1",
+  "version": "census-missing-field-source-strategy-controller-v1",
+  "generated_at": "2026-08-09T10:52:00.000Z",
+  "railway_deploy": "765fc2e7",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "discovery_partial": {
+    "discovery_units_completed": 234,
+    "discovery_units_timed_out": 1,
+    "discovery_units_failed": 0,
+    "discovered_count": 1245,
+    "discovery_lane_status": "official_directory_discovery_partial_network_remaining",
+    "last_stall": {
+      "family": "Hilton",
+      "country": "Mexico",
+      "skip_reason": "timeout"
+    }
+  },
+  "records_scanned": 2561,
+  "existing_records_updated": 276,
+  "inserts": 0,
+  "address_writes": 5,
+  "website_writes": 0,
+  "phone_writes": 0,
+  "mapbox_coordinate_writes": 0,
+  "rooms_writes": 0,
+  "market_writes": 269,
+  "submarket_writes": 0,
+  "fields_written_by_confidence_tier": {
+    "Medium": 5,
+    "High": 269
+  },
+  "gaps_before_sample": {
+    "address_complete": 846,
+    "missing_address_eligible": 1820
+  },
+  "brand_explorer_writes": 0,
+  "brand_setup_writes": 0,
+  "owner_operator_date_writes": 0,
+  "recent_momentum_writes": 0,
+  "company_validated_writes": 0,
+  "brand_verified_writes": 0,
+  "source_network_partials": [
+    "Hilton/Mexico brand crawl timeout on Railway egress (skip-on-timeout)",
+    "Choice regional fetches historically slow/blocked on Railway egress"
+  ],
+  "policy_blockers": [],
+  "remaining_actionable": "field_strategy continues each supervisor cycle (batch=20); ~1815 address gaps remain; Mapbox pending after more validated addresses; rooms still source-gated",
+  "next_source_investment": "Hilton Mexico brand crawl cache seed; Choice regional extracts offline; continue DFS match_high address/website/phone Medium internal; Mapbox Permanent after validated address; rooms from official factsheet/PDF + tourism registry.",
+  "validation": {
+    "test:census-autopilot": "pass",
+    "test:dataforseo-discovery-pilot": "pass",
+    "test:census-brand-governance-scope": "pass",
+    "dealality:batch-learning-audit": "pass"
+  }
+}

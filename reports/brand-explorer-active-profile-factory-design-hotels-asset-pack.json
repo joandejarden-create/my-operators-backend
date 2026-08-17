@@ -1,0 +1,746 @@
+{
+  "factoryVersion": "v34D",
+  "brandConfigVersion": "v35B",
+  "stage": "asset-pack",
+  "generatedAt": "2026-07-14T17:00:30.910Z",
+  "brand": {
+    "slug": "design-hotels",
+    "recordId": "rec02zPClpWUTCyXM",
+    "name": "Design Hotels",
+    "parentCompany": "Marriott International, Inc.",
+    "consumerUrl": "https://www.designhotels.com/"
+  },
+  "activeProfileConfig": {
+    "slug": "design-hotels",
+    "recordId": "rec02zPClpWUTCyXM",
+    "brandFamily": "marriott-affiliate-collection",
+    "propertyExampleStrategy": "lifestyle_property_page_probe",
+    "galleryMinimum": 6
+  },
+  "mode": "dry-run",
+  "guardrails": {
+    "companyValidatedNeverAuto": true,
+    "imageApprovalNotCompanyValidation": true,
+    "noSummaryUrlWrites": true,
+    "registryOnlyNotVisibleReadiness": true,
+    "founderVisualReviewRequiredForApply": true,
+    "stagedApplyWorkflow": "apply-draft → founder-review → apply-approved",
+    "galleryMinimum": 6
+  },
+  "factoryRules": {
+    "factoryVersion": "v34D",
+    "pass": false,
+    "rules": {
+      "gallery": {
+        "ruleId": "gallery_minimum_six_visible",
+        "pass": false,
+        "minimum": 6,
+        "visibleInApi": 0,
+        "withImageUrl": 0,
+        "missingImageUrl": [],
+        "logoOrGenericSlots": [],
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_0"
+        ]
+      },
+      "propertyExamples": {
+        "ruleId": "property_example_real_hotel_images",
+        "pass": false,
+        "visibleOpeningCards": 0,
+        "defects": [],
+        "blockers": []
+      },
+      "scenarioImages": {
+        "ruleId": "scenario_no_image_placeholder",
+        "pass": false,
+        "visibleScenarioCards": 0,
+        "placeholderSlots": [],
+        "staleFallbackTitles": false,
+        "blockers": [
+          "no_visible_scenario_cards_in_api"
+        ]
+      },
+      "registryTraceability": {
+        "ruleId": "registry_traceability",
+        "pass": true,
+        "visualSlotsChecked": 0,
+        "gaps": [],
+        "blockers": []
+      },
+      "uiFallback": {
+        "ruleId": "ui_fallback_preference",
+        "pass": false,
+        "risks": [
+          {
+            "surface": "overview.scenario.1",
+            "issue": "atelier_hardcoded_scenario_fallback_risk",
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "surface": "overview.scenario.2",
+            "issue": "atelier_hardcoded_scenario_fallback_risk",
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "surface": "overview.scenario.3",
+            "issue": "atelier_hardcoded_scenario_fallback_risk",
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          }
+        ],
+        "blockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ]
+      },
+      "copySafety": {
+        "ruleId": "copy_safety",
+        "pass": true,
+        "findings": [],
+        "highCount": 0,
+        "blockers": []
+      },
+      "standardDetail": {
+        "ruleId": "standard_detail_governance",
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false,
+        "blockers": []
+      }
+    },
+    "imageGovernanceDefects": [],
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_0",
+      "no_visible_scenario_cards_in_api",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+    ],
+    "galleryMinimum": 6,
+    "visibleGalleryCount": 0
+  },
+  "assetPack": {
+    "assetPackVersion": "v34B",
+    "brandSlug": "design-hotels",
+    "brandConfig": {
+      "slug": "design-hotels",
+      "recordId": "rec02zPClpWUTCyXM",
+      "name": "Design Hotels",
+      "brandFamily": "marriott-affiliate-collection",
+      "geographicFallbackRule": "global_property_examples_from_official_directory",
+      "propertyExampleStrategy": "lifestyle_property_page_probe",
+      "galleryMinimum": 6,
+      "propertyExampleMinimum": 3,
+      "scenarioMinimum": 3
+    },
+    "gallery": [
+      {
+        "slotKey": "materials.gallery.1",
+        "intendedSlot": "materials.gallery.1",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/colombia/medellin/wake-biohotel/",
+        "imageUrl": "https://www.designhotels.com/media/v51i1imq/t-generic-01-wake-biohotel-medellin-colombia.jpg?height=1280&v=1dcb6de75261fe0",
+        "registryRowCandidate": "(new registry for materials.gallery.1)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "wake-biohotel",
+        "propertyName": "",
+        "notes": "lifestyle_property_page_probe",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.2",
+        "intendedSlot": "materials.gallery.2",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/condesa-df/",
+        "imageUrl": "https://www.designhotels.com/media/tmic440h/condesadf-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3d78bb81ff0",
+        "registryRowCandidate": "(new registry for materials.gallery.2)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "condesa-df",
+        "propertyName": "",
+        "notes": "lifestyle_property_page_probe",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.3",
+        "intendedSlot": "materials.gallery.3",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/ecuador/quito/carlota/",
+        "imageUrl": "https://www.designhotels.com/media/1n4p01os/carlota-quito-equador-t-jpg.jpg?height=1280&v=1d8b3d1f32fea10",
+        "registryRowCandidate": "(new registry for materials.gallery.3)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "carlota",
+        "propertyName": "",
+        "notes": "lifestyle_property_page_probe",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.4",
+        "intendedSlot": "materials.gallery.4",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/colombia/medellin/wake-medellin/",
+        "imageUrl": "https://www.designhotels.com/media/cqzpvllq/t-generic-01-wake-medellin-colombia.jpg?rxy=0.46120139588123615,0.6754416727403428&height=1280&v=1dcc1b018061950",
+        "registryRowCandidate": "(new registry for materials.gallery.4)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "wake-medellin",
+        "propertyName": "",
+        "notes": "lifestyle_property_page_probe",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.5",
+        "intendedSlot": "materials.gallery.5",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/downtown-mexico/",
+        "imageUrl": "https://www.designhotels.com/media/iffpsa2q/downtownmexico-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3da1a934090",
+        "registryRowCandidate": "(new registry for materials.gallery.5)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "downtown-mexico",
+        "propertyName": "",
+        "notes": "lifestyle_property_page_probe",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.6",
+        "intendedSlot": "materials.gallery.6",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/habita/",
+        "imageUrl": "https://www.designhotels.com/media/iwwln0v4/habita-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3d70090f4b0",
+        "registryRowCandidate": "(new registry for materials.gallery.6)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "habita",
+        "propertyName": "",
+        "notes": "lifestyle_property_page_probe",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "propertyExamples": [
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Wake BioHotel",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/colombia/medellin/wake-biohotel/",
+        "imageUrl": "https://www.designhotels.com/media/v51i1imq/t-generic-01-wake-biohotel-medellin-colombia.jpg?height=1280&v=1dcb6de75261fe0",
+        "registryRowCandidate": "(new registry for wake-biohotel)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "wake-biohotel",
+        "propertyName": "Wake BioHotel",
+        "notes": "Official property page hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Condesa DF",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/condesa-df/",
+        "imageUrl": "https://www.designhotels.com/media/tmic440h/condesadf-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3d78bb81ff0",
+        "registryRowCandidate": "(new registry for condesa-df)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "condesa-df",
+        "propertyName": "Condesa DF",
+        "notes": "Official property page hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Carlota",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/ecuador/quito/carlota/",
+        "imageUrl": "https://www.designhotels.com/media/1n4p01os/carlota-quito-equador-t-jpg.jpg?height=1280&v=1d8b3d1f32fea10",
+        "registryRowCandidate": "(new registry for carlota)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "carlota",
+        "propertyName": "Carlota",
+        "notes": "Official property page hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "scenarios": [
+      {
+        "slotKey": "overview.scenario.1",
+        "intendedSlot": "overview.scenario.1",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/colombia/medellin/wake-biohotel/",
+        "imageUrl": "https://www.designhotels.com/media/v51i1imq/t-generic-01-wake-biohotel-medellin-colombia.jpg?height=1280&v=1dcb6de75261fe0",
+        "registryRowCandidate": "(new row for overview.scenario.1)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "wake-biohotel",
+        "propertyName": "Design-Led Independent Hotel",
+        "notes": "copy package available",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "overview.scenario.2",
+        "intendedSlot": "overview.scenario.2",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/condesa-df/",
+        "imageUrl": "https://www.designhotels.com/media/tmic440h/condesadf-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3d78bb81ff0",
+        "registryRowCandidate": "(new row for overview.scenario.2)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "condesa-df",
+        "propertyName": "Conversion With Design Integrity",
+        "notes": "copy package available",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "overview.scenario.3",
+        "intendedSlot": "overview.scenario.3",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/ecuador/quito/carlota/",
+        "imageUrl": "https://www.designhotels.com/media/1n4p01os/carlota-quito-equador-t-jpg.jpg?height=1280&v=1d8b3d1f32fea10",
+        "registryRowCandidate": "(new row for overview.scenario.3)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "carlota",
+        "propertyName": "Urban Cultural Destination",
+        "notes": "copy package available",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "momentumSources": [
+      {
+        "slotKey": "footprint.momentum",
+        "intendedSlot": "momentum_source_1",
+        "sourcePageUrl": "https://www.designhotels.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "text_source",
+        "approvalStatus": "source_candidate",
+        "renderReadiness": "copy_only",
+        "assetRole": "momentum",
+        "notes": "Momentum narrative source — no image required"
+      },
+      {
+        "slotKey": "footprint.momentum",
+        "intendedSlot": "momentum_source_2",
+        "sourcePageUrl": "https://www.marriott.com/marriott-brands/design-hotels.mi",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "text_source",
+        "approvalStatus": "source_candidate",
+        "renderReadiness": "copy_only",
+        "assetRole": "momentum",
+        "notes": "Momentum narrative source — no image required"
+      }
+    ],
+    "standardDetailSources": [
+      {
+        "slotKey": "standard_detail",
+        "intendedSlot": "standard_detail / where_available",
+        "sourcePageUrl": "https://www.designhotels.com/",
+        "imageUrl": "",
+        "sourceConfidence": "medium",
+        "approvalStatus": "pending_governance_review",
+        "renderReadiness": "governance_gate",
+        "assetRole": "standard_detail",
+        "notes": "Requires founder governance review before apply"
+      }
+    ],
+    "proofSupport": [
+      {
+        "slotKey": "overview.proof.1",
+        "intendedSlot": "overview.proof.1",
+        "sourcePageUrl": "https://www.designhotels.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.2",
+        "intendedSlot": "overview.proof.2",
+        "sourcePageUrl": "https://www.designhotels.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.3",
+        "intendedSlot": "overview.proof.3",
+        "sourcePageUrl": "https://www.designhotels.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.4",
+        "intendedSlot": "overview.proof.4",
+        "sourcePageUrl": "https://www.designhotels.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.5",
+        "intendedSlot": "overview.proof.5",
+        "sourcePageUrl": "https://www.designhotels.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.6",
+        "intendedSlot": "overview.proof.6",
+        "sourcePageUrl": "https://www.designhotels.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "low",
+        "approvalStatus": "needs_copy",
+        "renderReadiness": "needs_review",
+        "assetRole": "proof_card"
+      }
+    ],
+    "registryCandidateMapping": [
+      {
+        "slotKey": "materials.gallery.1",
+        "intendedSlot": "materials.gallery.1",
+        "registryRowCandidate": "(new registry for materials.gallery.1)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/colombia/medellin/wake-biohotel/",
+        "imageUrl": "https://www.designhotels.com/media/v51i1imq/t-generic-01-wake-biohotel-medellin-colombia.jpg?height=1280&v=1dcb6de75261fe0"
+      },
+      {
+        "slotKey": "materials.gallery.2",
+        "intendedSlot": "materials.gallery.2",
+        "registryRowCandidate": "(new registry for materials.gallery.2)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/condesa-df/",
+        "imageUrl": "https://www.designhotels.com/media/tmic440h/condesadf-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3d78bb81ff0"
+      },
+      {
+        "slotKey": "materials.gallery.3",
+        "intendedSlot": "materials.gallery.3",
+        "registryRowCandidate": "(new registry for materials.gallery.3)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/ecuador/quito/carlota/",
+        "imageUrl": "https://www.designhotels.com/media/1n4p01os/carlota-quito-equador-t-jpg.jpg?height=1280&v=1d8b3d1f32fea10"
+      },
+      {
+        "slotKey": "materials.gallery.4",
+        "intendedSlot": "materials.gallery.4",
+        "registryRowCandidate": "(new registry for materials.gallery.4)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/colombia/medellin/wake-medellin/",
+        "imageUrl": "https://www.designhotels.com/media/cqzpvllq/t-generic-01-wake-medellin-colombia.jpg?rxy=0.46120139588123615,0.6754416727403428&height=1280&v=1dcc1b018061950"
+      },
+      {
+        "slotKey": "materials.gallery.5",
+        "intendedSlot": "materials.gallery.5",
+        "registryRowCandidate": "(new registry for materials.gallery.5)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/downtown-mexico/",
+        "imageUrl": "https://www.designhotels.com/media/iffpsa2q/downtownmexico-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3da1a934090"
+      },
+      {
+        "slotKey": "materials.gallery.6",
+        "intendedSlot": "materials.gallery.6",
+        "registryRowCandidate": "(new registry for materials.gallery.6)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/habita/",
+        "imageUrl": "https://www.designhotels.com/media/iwwln0v4/habita-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3d70090f4b0"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Wake BioHotel",
+        "registryRowCandidate": "(new registry for wake-biohotel)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/colombia/medellin/wake-biohotel/",
+        "imageUrl": "https://www.designhotels.com/media/v51i1imq/t-generic-01-wake-biohotel-medellin-colombia.jpg?height=1280&v=1dcb6de75261fe0"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Condesa DF",
+        "registryRowCandidate": "(new registry for condesa-df)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/condesa-df/",
+        "imageUrl": "https://www.designhotels.com/media/tmic440h/condesadf-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3d78bb81ff0"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — Carlota",
+        "registryRowCandidate": "(new registry for carlota)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/ecuador/quito/carlota/",
+        "imageUrl": "https://www.designhotels.com/media/1n4p01os/carlota-quito-equador-t-jpg.jpg?height=1280&v=1d8b3d1f32fea10"
+      },
+      {
+        "slotKey": "overview.scenario.1",
+        "intendedSlot": "overview.scenario.1",
+        "registryRowCandidate": "(new row for overview.scenario.1)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/colombia/medellin/wake-biohotel/",
+        "imageUrl": "https://www.designhotels.com/media/v51i1imq/t-generic-01-wake-biohotel-medellin-colombia.jpg?height=1280&v=1dcb6de75261fe0"
+      },
+      {
+        "slotKey": "overview.scenario.2",
+        "intendedSlot": "overview.scenario.2",
+        "registryRowCandidate": "(new row for overview.scenario.2)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/mexico/mexico-city/condesa-df/",
+        "imageUrl": "https://www.designhotels.com/media/tmic440h/condesadf-mexicocity-mexico-t-jpg.jpg?height=1280&v=1d8b3d78bb81ff0"
+      },
+      {
+        "slotKey": "overview.scenario.3",
+        "intendedSlot": "overview.scenario.3",
+        "registryRowCandidate": "(new row for overview.scenario.3)",
+        "sourcePageUrl": "https://www.designhotels.com/hotels/ecuador/quito/carlota/",
+        "imageUrl": "https://www.designhotels.com/media/1n4p01os/carlota-quito-equador-t-jpg.jpg?height=1280&v=1d8b3d1f32fea10"
+      }
+    ],
+    "summary": {
+      "galleryReady": "6/6",
+      "propertyExamplesReady": "3/3",
+      "scenariosWithImage": "3/3",
+      "galleryPoolSize": 6,
+      "partialReadiness": false,
+      "readinessBand": "full",
+      "canProceedWithConfigOnly": false,
+      "canProceedWithConfigAndAssetPack": true,
+      "customCodeRequired": false
+    },
+    "enforcement": {
+      "galleryMinimum": 6,
+      "propertyExampleMinimum": 3,
+      "propertyExamplesPartialAllowed": true,
+      "noLogoLifestyleAsPropertyExamples": true,
+      "usFallbackLabeled": false
+    }
+  },
+  "draftPlan": null,
+  "copyGovernancePlan": null,
+  "approvedSourcesCount": 0,
+  "applyResult": null,
+  "legacyWriterChainReference": [],
+  "finalQa": null,
+  "visualDefects": null,
+  "completeBuild": {
+    "readyForActiveProfile": false,
+    "readinessBand": "blocked"
+  },
+  "suburbanReadiness": null,
+  "applyApproved": {
+    "allowed": false,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-approved -- --brand design-hotels --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+    "blockers": []
+  },
+  "applyDraft": {
+    "allowed": true,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-draft -- --brand design-hotels --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+    "blockers": [],
+    "writesActiveProfileApproval": false
+  },
+  "stagedApplyVersion": "v34D",
+  "founderVisualReview": {
+    "stagedApplyVersion": "v34D",
+    "pass": false,
+    "checks": [
+      {
+        "id": "gallery_six_visible",
+        "label": "6 gallery images visible with imageUrl",
+        "pass": false,
+        "detail": "0/6"
+      },
+      {
+        "id": "property_examples_hotel_images",
+        "label": "3 property examples visible with hotel images",
+        "pass": false,
+        "detail": "0 cards"
+      },
+      {
+        "id": "no_logo_lifestyle_property_images",
+        "label": "No logo/lifestyle/generic property images",
+        "pass": true,
+        "detail": "gallery + property scan"
+      },
+      {
+        "id": "scenario_no_placeholders",
+        "label": "No IMAGE placeholders on scenario cards",
+        "pass": false,
+        "detail": "ok"
+      },
+      {
+        "id": "copy_safety",
+        "label": "No FDD / Item 19 / ADR / RevPAR / net contribution language",
+        "pass": true,
+        "detail": "0 high findings"
+      },
+      {
+        "id": "standard_detail_governance",
+        "label": "Standard detail governance visible and safe",
+        "pass": true,
+        "detail": "unknown"
+      },
+      {
+        "id": "company_validated_untouched",
+        "label": "Company Validated untouched",
+        "pass": true,
+        "detail": "before=false after=false"
+      },
+      {
+        "id": "registry_traceability",
+        "label": "Registry traceability for visual slots",
+        "pass": true,
+        "detail": "0 gaps"
+      },
+      {
+        "id": "ui_fallback_risk",
+        "label": "No stale UI fallback titles",
+        "pass": false,
+        "detail": "3 risks"
+      }
+    ],
+    "failedChecks": [
+      {
+        "id": "gallery_six_visible",
+        "label": "6 gallery images visible with imageUrl",
+        "pass": false,
+        "detail": "0/6"
+      },
+      {
+        "id": "property_examples_hotel_images",
+        "label": "3 property examples visible with hotel images",
+        "pass": false,
+        "detail": "0 cards"
+      },
+      {
+        "id": "scenario_no_placeholders",
+        "label": "No IMAGE placeholders on scenario cards",
+        "pass": false,
+        "detail": "ok"
+      },
+      {
+        "id": "ui_fallback_risk",
+        "label": "No stale UI fallback titles",
+        "pass": false,
+        "detail": "3 risks"
+      }
+    ],
+    "blockers": [
+      "founder_visual_check_failed:gallery_six_visible",
+      "founder_visual_check_failed:property_examples_hotel_images",
+      "founder_visual_check_failed:scenario_no_placeholders",
+      "founder_visual_check_failed:ui_fallback_risk"
+    ],
+    "highBlockerCount": 0
+  },
+  "draftApplyValidation": {
+    "stage": "apply-draft",
+    "allowed": true,
+    "blockers": [],
+    "missingFlagsForApply": [
+      "approveBrandExplorerActiveProfileDraft",
+      "founderVisualReview",
+      "confirmNoCompanyValidationClaim",
+      "confirmNoSummaryUrlField",
+      "confirmBrandOnly",
+      "confirmOfficialSourceImagesOnly",
+      "confirmMinimumSixVisibleGalleryImages",
+      "confirmPropertyExamplesHaveHotelImages",
+      "confirmNoLogoLifestylePropertyImages",
+      "confirmStandardDetailGovernanceReviewed"
+    ],
+    "requiredFlags": [
+      "approveBrandExplorerActiveProfileDraft",
+      "founderVisualReview",
+      "confirmNoCompanyValidationClaim",
+      "confirmNoSummaryUrlField",
+      "confirmBrandOnly",
+      "confirmOfficialSourceImagesOnly",
+      "confirmMinimumSixVisibleGalleryImages",
+      "confirmPropertyExamplesHaveHotelImages",
+      "confirmNoLogoLifestylePropertyImages",
+      "confirmStandardDetailGovernanceReviewed"
+    ],
+    "writesActiveProfileApproval": false,
+    "setsReadyForActiveProfile": false
+  },
+  "activeApprovalValidation": {
+    "stage": "apply-approved",
+    "allowed": true,
+    "blockers": [],
+    "missingFlagsForApply": [
+      "approveBrandExplorerActiveProfile",
+      "confirmFounderVisualReviewPassed",
+      "confirmNoCompanyValidationClaim",
+      "confirmBrandOnly"
+    ],
+    "requiredFlags": [
+      "approveBrandExplorerActiveProfile",
+      "confirmFounderVisualReviewPassed",
+      "confirmNoCompanyValidationClaim",
+      "confirmBrandOnly"
+    ],
+    "writesDraftContent": false
+  },
+  "postDraftApply": null,
+  "postDraftFactoryRules": null,
+  "founderVisualReviewMarkdown": "# Founder Visual Review v34D\n\n- Brand: **Design Hotels** (`design-hotels`)\n- Generated: 2026-07-14T17:00:30.912Z\n- Overall: **FAIL**\n\n## Live Brand Explorer checks\n- **FAIL** — 6 gallery images visible with imageUrl (0/6)\n- **FAIL** — 3 property examples visible with hotel images (0 cards)\n- **PASS** — No logo/lifestyle/generic property images (gallery + property scan)\n- **FAIL** — No IMAGE placeholders on scenario cards (ok)\n- **PASS** — No FDD / Item 19 / ADR / RevPAR / net contribution language (0 high findings)\n- **PASS** — Standard detail governance visible and safe (unknown)\n- **PASS** — Company Validated untouched (before=false after=false)\n- **PASS** — Registry traceability for visual slots (0 gaps)\n- **FAIL** — No stale UI fallback titles (3 risks)\n\n## Failed checks\n- `gallery_six_visible`: 6 gallery images visible with imageUrl\n- `property_examples_hotel_images`: 3 property examples visible with hotel images\n- `scenario_no_placeholders`: No IMAGE placeholders on scenario cards\n- `ui_fallback_risk`: No stale UI fallback titles\n\n## Stage 1 — Draft apply\n- Allowed (apply mode): **yes**\n- Flags required for apply: approveBrandExplorerActiveProfileDraft, founderVisualReview, confirmNoCompanyValidationClaim, confirmNoSummaryUrlField, confirmBrandOnly, confirmOfficialSourceImagesOnly, confirmMinimumSixVisibleGalleryImages, confirmPropertyExamplesHaveHotelImages, confirmNoLogoLifestylePropertyImages, confirmStandardDetailGovernanceReviewed\n```bash\nnpm run brand-explorer-active-profile-apply-draft -- --brand design-hotels --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed\n```\n\n## Stage 2 — Founder visual review (this report)\nBlocked. Fix issues or re-run draft apply, then re-run founder visual review.\n\n## Stage 3 — Active approval\n- Allowed: **no**\n- blocker: founder_visual_review_not_passed\n- Flags required for apply: approveBrandExplorerActiveProfile, confirmFounderVisualReviewPassed, confirmNoCompanyValidationClaim, confirmBrandOnly\n\n## Workflow separation\n1. **apply-draft** — writes gallery, property examples, scenarios, copy governance, visibility; does **not** approve active profile.\n2. **founder-review** — live rendered checks (this report).\n3. **apply-approved** — records active-profile approval only after visual review passes.",
+  "markdown": "# Brand Explorer Active Profile Founder Review v34D\n\n- Brand: **Design Hotels** (`design-hotels`)\n- Generated: 2026-07-14T17:00:30.913Z\n- Factory pass: **no**\n\n## Visual readiness\n- Gallery (6 visible + imageUrl): **FAIL** (0/6)\n- Property examples: **FAIL**\n- Scenario cards (no IMAGE placeholder): **FAIL**\n- Registry traceability: **PASS**\n- UI fallback risk: **FAIL**\n- Copy safety: **PASS**\n- Standard Detail governance: **PASS**\n\n## Property cards (asset pack)\n- **Wake BioHotel**: image ✓ | needs_materialization\n- **Condesa DF**: image ✓ | needs_materialization\n- **Carlota**: image ✓ | needs_materialization\n\n## Gallery image pack\n- `materials.gallery.1`: source found | needs_materialization\n- `materials.gallery.2`: source found | needs_materialization\n- `materials.gallery.3`: source found | needs_materialization\n- `materials.gallery.4`: source found | needs_materialization\n- `materials.gallery.5`: source found | needs_materialization\n- `materials.gallery.6`: source found | needs_materialization\n\n## Scenario cards\n- `overview.scenario.1`: image ✓ | copy package available\n- `overview.scenario.2`: image ✓ | copy package available\n- `overview.scenario.3`: image ✓ | copy package available\n\n## Proof cards\n- `overview.proof.1`: needs_review\n- `overview.proof.2`: needs_review\n- `overview.proof.3`: needs_review\n- `overview.proof.4`: needs_review\n- `overview.proof.5`: needs_review\n- `overview.proof.6`: needs_review\n\n## What will be applied (dry-run draft)\n- Presentation patches: **0**\n- Registry creates: **0**\n- Sections: (none)\n\n## Remains human-reviewed\n\n## Blockers\n- need_6_visible_gallery_imageUrl_got_0\n- no_visible_scenario_cards_in_api\n- atelier_hardcoded_scenario_fallback_risk:overview.scenario.1\n- atelier_hardcoded_scenario_fallback_risk:overview.scenario.2\n- atelier_hardcoded_scenario_fallback_risk:overview.scenario.3\n\n## Staged apply workflow (v34D)\n\n### Stage 1 — Draft apply (preview writes)\n_Run after dry-runs are clean. Does not approve active profile._\n```bash\nnpm run brand-explorer-active-profile-apply-draft -- --brand design-hotels --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed\n```\n\n### Stage 2 — Founder visual review\n```bash\nnpm run brand-explorer-active-profile-founder-review -- --brand design-hotels --dry-run\n```\n\n### Stage 3 — Active approval\n_Blocked until founder visual review passes._",
+  "assetPackMarkdown": "# Active Profile Asset Pack v34B\n\n- Brand: **Design Hotels** (`design-hotels`)\n- Readiness: **full**\n- Gallery: 6/6\n- Property examples: 3/3\n- Scenarios with image: 3/3\n\n## Gallery assets\n### materials.gallery.1\n- Source page: https://www.designhotels.com/hotels/colombia/medellin/wake-biohotel/\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.1)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n\n### materials.gallery.2\n- Source page: https://www.designhotels.com/hotels/mexico/mexico-city/condesa-df/\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.2)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n\n### materials.gallery.3\n- Source page: https://www.designhotels.com/hotels/ecuador/quito/carlota/\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.3)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n\n### materials.gallery.4\n- Source page: https://www.designhotels.com/hotels/colombia/medellin/wake-medellin/\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.4)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n\n### materials.gallery.5\n- Source page: https://www.designhotels.com/hotels/mexico/mexico-city/downtown-mexico/\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.5)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n\n### materials.gallery.6\n- Source page: https://www.designhotels.com/hotels/mexico/mexico-city/habita/\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.6)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n",
+  "draftMarkdown": null,
+  "copyGovernanceMarkdown": null,
+  "founderQueueAuditMarkdown": null
+}

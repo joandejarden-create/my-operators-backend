@@ -1,7 +1,7 @@
 /**
- * Server-side 19-factor match score – same logic as Brand Development Dashboard.
- * Used by My Deals API to compute per-brand scores when preferred brands are present.
- * Accepts locationData in either Airtable field names or normalized keys (from my-deals fetchLocationRecord).
+ * Server-side Brand Match Score (Match Score New) — weighted soft factors + preferred bonus + hard gates.
+ * Config: lib/brand-match-scoring-weight-config.js.
+ * Legacy 19-factor helpers below are unused on the product path (retained for factor lineage / future deletion).
  */
 
 import {
@@ -9,7 +9,20 @@ import {
   MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS,
   MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS,
 } from "./schemas/deal-setup-fields.js";
-import { BRAND_MATCH_NEW_WEIGHTS } from "../lib/brand-match-scoring-weight-config.js";
+import {
+  BRAND_MATCH_NEW_WEIGHTS,
+  BRAND_MATCH_PREFERRED_BONUS,
+  BRAND_MATCH_CHAIN_SCALE_SCORES,
+  BRAND_MATCH_MIN_SCORED_WEIGHT_PCT,
+  BRAND_MATCH_STANDARDS_GRADUATION,
+  BRAND_MATCH_FEES_GRADUATION,
+  BRAND_MATCH_ROOM_RANGE_GRADUATION,
+  BRAND_MATCH_SERVICE_MODEL_GRADUATION,
+  BRAND_MATCH_GEOGRAPHY_PRIORITY_SCORES,
+} from "../lib/brand-match-scoring-weight-config.js";
+import { evaluateSameBrandMarketDensity } from "../lib/brand-match-same-brand-density.js";
+import { sanitizeBrandMatchBreakdownDetails } from "../lib/brand-match-obsolete-breakdown-keys.js";
+import { isBrandStatusActive } from "../lib/brand-status-active.js";
 
 const BRAND_BASICS_TABLE = "Brand Setup - Brand Basics";
 const PROJECT_FIT_TABLE = "Brand Setup - Project Fit";
@@ -29,7 +42,7 @@ const INCENTIVE_TYPES_FIELD = "Incentive Types";
  * Changing a field here updates both; do not use string literals for these in getBreakdownDetails or calc*.
  */
 const BF = {
-  brandBasics: { brandName: "Brand Name", hotelChainScale: "Hotel Chain Scale", hotelServiceModel: "Hotel Service Model", marketsToAvoid: "Markets to Avoid or Saturated" },
+  brandBasics: { brandName: "Brand Name", hotelChainScale: "Hotel Chain Scale", hotelServiceModel: "Hotel Service Model", marketsToAvoid: "Markets to Avoid or Saturated", brandStatus: "Brand Status" },
   brandFit: { preferredOwnerType: "Preferred Owner/Investor Type", softCollectionBrand: "Soft/Collection Brand", esgExpectations: "ESG / Sustainability Expectations You Prefer Projects to Meet - Risk & Compliance" },
   brandStandards: { brandStandards: "Brand Standards", sustainabilityFeatures: "Sustainability Features" },
   brandFeeStructure: { minRoyalty: "Min - Typical Royalty Fee Range", maxRoyalty: "Max - Typical Royalty Fee Range", basisRoyalty: "Basis - Typical Royalty Fee Range", minMarketing: "Min - Typical Marketing Fee Range", maxMarketing: "Max - Typical Marketing Fee Range", basisMarketing: "Basis - Typical Marketing Fee Range", minLoyalty: "Min - Typical Loyalty Program Fee", maxLoyalty: "Max - Typical Loyalty Program Fee", basisLoyalty: "Basis - Typical Loyalty Program Fee" },
@@ -42,12 +55,14 @@ const BF = {
   projectFit: { idealMin: "Min - Ideal Project Size", idealMax: "Max - Ideal Project Size", roomCountMin: "Min - Room Count", roomCountMax: "Max - Room Count" }
 };
 
+/** @deprecated Legacy 19-factor weights — not used by computeMatchScoreForDealBrand (Match Score New only). */
 const WEIGHTS = {
   MKT1: 10, MKT2: 2, SEG1: 10, SVC1: 5, SIZE1: 9,
   OWN1: 4, STR1: 4, AMN1: 6, FIN1: 6, INC1: 2, PREF1: 1,
   KEY1: 5, CAP1: 4, TERM1: 4,
   PROJ1: 9, PROJ2: 6, PROJ3: 3, AGMT1: 8, ESG1: 4
 };
+void WEIGHTS;
 
 /** Match Score New: factor weights (%). Sum = 100 — source: lib/brand-match-scoring-weight-config.js */
 const NEW_WEIGHTS = BRAND_MATCH_NEW_WEIGHTS;
@@ -205,12 +220,8 @@ function findBrandRecordByExactName(allRecords, brandNameValue) {
 }
 
 /** Deterministic 0–10 point spread from brand name so each brand gets a visibly different score (no two brands round to same). */
-function brandDifferentiatorSpread(brandName) {
-  if (!brandName || typeof brandName !== "string") return 0;
-  let h = 0;
-  const s = String(brandName).trim();
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
-  return Math.abs(h % 11); // 0 to 10 integer – Delano vs Rixos vs Ramada will always differ
+function brandDifferentiatorSpread(_brandName) {
+  return 0;
 }
 
 /** True if value looks like an Airtable record ID (Preferred Brands may be stored as linked records and return IDs). */
@@ -242,11 +253,23 @@ async function logBrandLookupFailure(baseId, apiKey, brandName, triedRecordId, r
   });
 }
 
+/** Cache full brandData payloads (Basics + linked tables). TTL 60s — cuts duplicate fetches in alternatives scoring. */
+const brandDataResultCache = new Map();
+const brandDataLoadPromise = new Map();
+const BRAND_DATA_RESULT_CACHE_TTL_MS = 60000;
+
 /** Look up brand in Brand Setup - Brand Basics by full text of Brand Name only. Uses same base (AIRTABLE_BASE_ID). Names are normalized (whitespace collapsed) so the same brand from different deals always matches. Exported for diagnostic scripts. */
 export async function fetchBrandData(baseId, apiKey, brandName) {
   const raw = normalizeBrandName(brandName);
   if (!raw) return null;
   const brandBaseId = baseId;
+  const cacheKey = `${brandBaseId}:${raw.toLowerCase()}`;
+  const cached = brandDataResultCache.get(cacheKey);
+  if (cached && Date.now() - cached.at < BRAND_DATA_RESULT_CACHE_TTL_MS) return cached.data;
+  let inflight = brandDataLoadPromise.get(cacheKey);
+  if (inflight) return inflight;
+
+  const loadPromise = (async () => {
   const allRecords = await getAllBrandBasicsRecords(brandBaseId, apiKey);
   const brandRecord = findBrandRecordByExactName(allRecords, raw);
 
@@ -254,6 +277,7 @@ export async function fetchBrandData(baseId, apiKey, brandName) {
     const sampleRecords = allRecords.length > 0 ? allRecords.slice(0, 1) : [];
     await logBrandLookupFailure(baseId, apiKey, brandName, false, null, sampleRecords);
     if (process.env.NODE_ENV !== "test") console.warn("[Brand Basics] Lookup failed for \"" + raw + "\". Total Brand Basics records in memory: " + allRecords.length);
+    brandDataResultCache.set(cacheKey, { data: null, at: Date.now() });
     return null;
   }
   const brandRecordId = brandRecord.id;
@@ -320,24 +344,24 @@ export async function fetchBrandData(baseId, apiKey, brandName) {
 
   /** Project Fit: via Brand Basics "Brand Setup - Project Fit" field. Airtable returns linked record as recXXX; fetch Project Fit by that record ID. If value is numeric (Project_Fit_ID), lookup by Project_Fit_ID. */
   const fetchOneProjectFit = async () => {
-    const raw = fields[PROJECT_FIT_TABLE];
-    const v = Array.isArray(raw) && raw.length > 0 ? raw[0] : raw;
+    const rawPf = fields[PROJECT_FIT_TABLE];
+    const v = Array.isArray(rawPf) && rawPf.length > 0 ? rawPf[0] : rawPf;
     if (v == null) return null;
     const objVal = typeof v === "object" && v !== null ? (v.id ?? v) : v;
     const recId = typeof objVal === "string" && objVal.startsWith("rec") ? objVal : null;
     const numId = typeof objVal === "number" ? objVal : (typeof objVal === "string" ? parseInt(objVal, 10) : NaN);
     if (recId) {
-      const cacheKey = `${brandBaseId}:${recId}`;
-      const cached = projectFitCache.get(cacheKey);
-      if (cached && Date.now() - cached.at < PROJECT_FIT_CACHE_TTL_MS) return cached.fields;
-      let loadPromise = projectFitLoadPromise.get(cacheKey);
+      const pfCacheKey = `${brandBaseId}:${recId}`;
+      const pfCached = projectFitCache.get(pfCacheKey);
+      if (pfCached && Date.now() - pfCached.at < PROJECT_FIT_CACHE_TTL_MS) return pfCached.fields;
+      let loadPromise = projectFitLoadPromise.get(pfCacheKey);
       if (!loadPromise) {
         loadPromise = (async () => {
           const path = `${encodeURIComponent(PROJECT_FIT_TABLE)}/${encodeURIComponent(recId)}`;
           const data = await withProjectFitLimit(() => atFetch(brandBaseId, apiKey, path));
-          projectFitLoadPromise.delete(cacheKey);
+          projectFitLoadPromise.delete(pfCacheKey);
           if (data && data.fields && !data.error) {
-            projectFitCache.set(cacheKey, { fields: data.fields, at: Date.now() });
+            projectFitCache.set(pfCacheKey, { fields: data.fields, at: Date.now() });
             return data.fields;
           }
           if (data?.error && process.env.NODE_ENV !== "test") {
@@ -345,7 +369,7 @@ export async function fetchBrandData(baseId, apiKey, brandName) {
           }
           return null;
         })();
-        projectFitLoadPromise.set(cacheKey, loadPromise);
+        projectFitLoadPromise.set(pfCacheKey, loadPromise);
       }
       const result = await loadPromise;
       if (result) return result;
@@ -369,7 +393,7 @@ export async function fetchBrandData(baseId, apiKey, brandName) {
     fetchOne(DEAL_TERMS_TABLE)
   ]);
 
-  return {
+  const result = {
     brandBasics: brandRecord.fields,
     brandFit: fit || {},
     brandFootprint: footprint || {},
@@ -378,6 +402,16 @@ export async function fetchBrandData(baseId, apiKey, brandName) {
     brandOperationalSupport: opSupport || {},
     brandDealTerms: dealTerms || {}
   };
+  brandDataResultCache.set(cacheKey, { data: result, at: Date.now() });
+  return result;
+  })();
+
+  brandDataLoadPromise.set(cacheKey, loadPromise);
+  try {
+    return await loadPromise;
+  } finally {
+    brandDataLoadPromise.delete(cacheKey);
+  }
 }
 
 function getChainScaleTier(chainScale) {
@@ -423,9 +457,24 @@ function parseSingleFee(feeString) {
   return numbers && numbers.length >= 1 ? parseFloat(numbers[0]) || 0 : null;
 }
 
-/** Parse deal fee expectation string into min/max range. Handles "3-4%", "5–6%", "Under 5%", "Over 10%", "5%", "Not Yet Determined". Returns { min, max } or null. */
+/** True when owner fee expectation means unknown / not sure (exclude from fees factor — never score as shortfall 0). */
+function isUnknownFeeExpectation(feeString) {
+  const s = str(feeString).toLowerCase();
+  if (!s) return true;
+  const tokens = BRAND_MATCH_FEES_GRADUATION.unknownExpectationTokens || [];
+  for (const t of tokens) {
+    const tok = String(t || "").toLowerCase().trim();
+    if (!tok) continue;
+    if (s === tok) return true;
+    // Phrase match only for longer tokens (avoid "na" matching inside unrelated words).
+    if (tok.length >= 4 && s.includes(tok)) return true;
+  }
+  return false;
+}
+
+/** Parse deal fee expectation string into min/max range. Handles "3-4%", "5–6%", "Under 5%", "Over 10%", "5%". Undetermined / unknown → null (excluded). Returns { min, max } or null. */
 function parseFeeRange(feeString) {
-  if (!feeString || str(feeString) === "" || str(feeString).toLowerCase().includes("not specified") || str(feeString).toLowerCase().includes("not yet determined")) return null;
+  if (isUnknownFeeExpectation(feeString)) return null;
   const s = String(feeString).trim();
   const numbers = s.match(/\d+(?:\.\d+)?/g);
   if (!numbers || numbers.length === 0) return null;
@@ -576,30 +625,60 @@ function calcSEG1(dealFields, locationData, brandData) {
   const brandTier = getChainScaleTier(brandScale);
   const dealTier = getChainScaleTier(dealScale);
   const diff = Math.abs(brandTier - dealTier);
-  if (diff === 0) return 100;
-  if (diff === 1) return 38;   // 1 tier apart: some points (configurable)
-  return 0;                    // 2+ tiers apart: 0 points
+  if (diff === 0) return BRAND_MATCH_CHAIN_SCALE_SCORES.sameTier;
+  if (diff === 1) return BRAND_MATCH_CHAIN_SCALE_SCORES.oneTierApart;
+  if (diff === 2) return BRAND_MATCH_CHAIN_SCALE_SCORES.twoTiersApart;
+  return BRAND_MATCH_CHAIN_SCALE_SCORES.threeOrMoreTiersApart;
 }
 
-/** Match Score New – Chain Scale Proximity (Weight 10%). Brand: Brand Setup - Brand Basics Hotel Chain Scale; Deal: Location & Property Hotel Chain Scale. Same scale = 100; 1 tier apart = 38; 2+ tiers = 0. */
+/** Match Score v2 – Chain Scale Proximity. Same = 100; 1 tier = 50; 2 = 25; 3+ = 0 (soft only). */
 function calcChainScaleProximity(dealFields, locationData, brandData) {
   return calcSEG1(dealFields, locationData, brandData);
 }
 
-/** Match Score New – Service Model Alignment (Weight 5%). Brand: Brand Setup - Brand Basics Hotel Service Model; Deal: Location & Property Hotel Service Model. Match = 100; hard mismatch = 0. */
+/** Normalize Hotel Service Model to a canonical Brand/Deal Setup option (or null). */
+function normalizeServiceModelCanonical(raw) {
+  const s = str(raw);
+  if (!s || s.toLowerCase().includes("unknown")) return null;
+  const cfg = BRAND_MATCH_SERVICE_MODEL_GRADUATION;
+  const key = s.toLowerCase().replace(/\s+/g, " ").trim();
+  if (cfg.aliases && cfg.aliases[key]) return cfg.aliases[key];
+  const exact = (cfg.canonicalOptions || []).find((opt) => String(opt).toLowerCase() === key);
+  if (exact) return exact;
+  // Loose: strip punctuation and retry alias / canonical
+  const loose = key.replace(/[–—]/g, "-").replace(/\s*\/\s*/g, " / ");
+  if (cfg.aliases && cfg.aliases[loose]) return cfg.aliases[loose];
+  return null;
+}
+
+/** Match Score v2 – Service Model Alignment (10%). Graduated adjacency (not exact-only). */
 function calcServiceModelAlignment(dealFields, locationData, brandData) {
   const brandSvc = str((brandData.brandBasics || {})[BF.brandBasics.hotelServiceModel]);
   const dealSvc = str(loc(locationData, BF.locationDeal.hotelServiceModel, "hotelServiceModel") || dealFields[BF.locationDeal.hotelServiceModel]);
-  if (!brandSvc || !dealSvc || brandSvc.toLowerCase().includes("unknown") || dealSvc.toLowerCase().includes("unknown")) return null;
-  return brandSvc.toLowerCase() === dealSvc.toLowerCase() ? 100 : 0;
+  const brandCanon = normalizeServiceModelCanonical(brandSvc);
+  const dealCanon = normalizeServiceModelCanonical(dealSvc);
+  if (!brandCanon || !dealCanon) return null;
+
+  const cfg = BRAND_MATCH_SERVICE_MODEL_GRADUATION;
+  if (brandCanon === dealCanon) return cfg.exactMatchScore ?? 100;
+
+  const pairKey = [brandCanon, dealCanon].sort((a, b) => a.localeCompare(b)).join("|");
+  const adjacent = cfg.adjacentPairScores && cfg.adjacentPairScores[pairKey];
+  if (adjacent != null && !Number.isNaN(Number(adjacent))) return Number(adjacent);
+  return cfg.distantMismatchScore ?? 0;
 }
 
-/** Match Score New – Preferred Brand (Weight 10%). Brand: Brand Name (Brand Setup - Brand Basics); Deal: Preferred Brands (Strategic Intent). Brand in preferred list = 100; else 0. */
+/** Preferred list check — used for +bonus only (not a soft-factor weight in v2). */
+function isPreferredBrand(dealFields, brandData, si) {
+  return calcPREF1(dealFields, null, brandData, si) === 100;
+}
+
+/** @deprecated Preferred is a post-average bonus in v2; kept for breakdown display. */
 function calcPreferredBrand(dealFields, locationData, brandData, si) {
   return calcPREF1(dealFields, locationData, brandData, si);
 }
 
-/** Match Score New – Project Type Compatibility (Weight 10%). Brand: Acceptable Project Type (Brand Setup - Project Fit, Multi-select); Deal: Project Type (Deals, Single Select). Deal type accepted by brand = 100; else 28 (project-fit no-match tier). */
+/** Match Score v2 – Project Type (gate + breakdown). Accepted = 100; not accepted = 0. */
 function calcProjectTypeCompatibility(dealFields, locationData, brandData) {
   const dealProjectType = str(dealFields[BF.locationDeal.projectType] || "");
   if (!dealProjectType) return null;
@@ -610,10 +689,10 @@ function calcProjectTypeCompatibility(dealFields, locationData, brandData) {
   const normalized = (s) => String(s || "").trim().toLowerCase();
   const dealNorm = normalized(dealProjectType);
   const accepted = brandList.some((b) => normalized(b) === dealNorm);
-  return accepted ? 100 : 28;
+  return accepted ? 100 : 0;
 }
 
-/** Match Score New – Building Type Compatibility (Weight 5%). Brand: Acceptable Building Types (Brand Setup - Project Fit, Multi-select); Deal: Building Type (Location & Property). Deal building type accepted by brand = 100; else 28 (project-fit no-match tier). */
+/** Building type — soft factor. Deal type in brand Acceptable Building Types = 100; else 0. */
 function calcBuildingTypeCompatibility(dealFields, locationData, brandData) {
   const dealBuildingType = str(loc(locationData, BF.locationDeal.buildingType, "buildingType") || dealFields[BF.locationDeal.buildingType] || "");
   if (!dealBuildingType) return null;
@@ -624,10 +703,10 @@ function calcBuildingTypeCompatibility(dealFields, locationData, brandData) {
   const normalized = (s) => String(s || "").trim().toLowerCase();
   const dealNorm = normalized(dealBuildingType);
   const accepted = brandList.some((b) => normalized(b) === dealNorm);
-  return accepted ? 100 : 28;
+  return accepted ? 100 : 0;
 }
 
-/** Match Score New – Project Stage Compatibility (Weight 5%). Deal: Stage of Development (Location & Property, Single Select); Brand: Acceptable Project Stages (Brand Setup - Project Fit, Multi-Select). Match → 100; no match → 28; unmapped stage → null. */
+/** Project stage — breakdown only in v2 (not weighted). Match = 100; else 0. */
 function calcProjectStageCompatibility(dealFields, locationData, brandData) {
   const stageRaw = str(dealFields[BF.locationDeal.stageOfDevelopment] || loc(locationData, BF.locationDeal.stageOfDevelopment, "stageOfDevelopment") || dealFields["Project Stage"] || "");
   if (!stageRaw) return null;
@@ -653,16 +732,26 @@ function calcProjectStageCompatibility(dealFields, locationData, brandData) {
     if (dealCategory === "stabilized") return b.includes("stabilized") || b.includes("operating");
     return false;
   });
-  return accepted ? 100 : 28;
+  return accepted ? 100 : 0;
 }
 
-/** Match Score New – Brand Standards Compatibility (Weight 10%). Deal: F&B Outlets?, Number of F&B Outlets, Number of Parking Spaces, Additional Amenities (multi-select); Brand: Additional Amenities (multi-select), F&B Outlets Required, Typical Number of F&B Outlets, Parking Required. For each brand Additional Amenities item, check if deal has it (keyword mapping + fallback direct match for all options). Start at 100; −12 per missing brand Additional Amenities item; −20 if brand requires F&B and deal has none; −12 if deal has fewer F&B outlets than brand typical; −10 if brand requires parking and deal has 0 spaces; final = max(0, 100 − penalties). */
+/** Match Score New – Brand Standards Compatibility (graduated, not binary). Amenity score = % of brand-required amenities present on the deal; then soft F&B/parking penalties. */
 function calcBrandStandardsCompatibility(dealFields, locationData, brandData) {
   const st = brandData.brandStandards || {};
-  const brandRequired = toStrArr(st["Additional Amenities"]);
-  if (brandRequired.length === 0) return null;
+  const cfg = BRAND_MATCH_STANDARDS_GRADUATION;
+  const ignore = new Set((cfg.ignoreAmenityValues || []).map((v) => String(v).toLowerCase().trim()));
+  const brandRequired = toStrArr(st["Additional Amenities"])
+    .map((v) => String(v || "").trim())
+    .filter((v) => v && !ignore.has(v.toLowerCase()));
+  const fbRequired = str(st["F&B Outlets Required"] || "").toLowerCase().includes("yes");
+  const brandTypicalFb = parseNum(st["Typical Number of F&B Outlets"]);
+  const parkingRequired = str(st["Parking Required"] || "").toLowerCase().includes("yes");
+  const hasAmenitySignal = brandRequired.length > 0;
+  const hasFbParkingSignal = fbRequired || parkingRequired || (brandTypicalFb != null && brandTypicalFb > 0);
+  if (!hasAmenitySignal && !hasFbParkingSignal) return null;
+
   const addAmen = toStrArr(dealFields["Additional Amenities"] || loc(locationData, "Additional Amenities", "additionalAmenities"));
-  const addLower = addAmen.map((a) => a.toLowerCase());
+  const addLower = addAmen.map((a) => a.toLowerCase().trim()).filter(Boolean);
   const hasInAdditional = (kw) => addLower.some((a) => a.includes(kw));
   const fboOutlets = parseNum(dealFields["Number of F&B Outlets"] || loc(locationData, "Number of F&B Outlets", "numberOfFbOutlets")) || 0;
   const fbYes = str(dealFields["F&B Outlets?"] || loc(locationData, "F&B Outlets?", "fbOutlets")).toLowerCase().includes("yes");
@@ -670,140 +759,75 @@ function calcBrandStandardsCompatibility(dealFields, locationData, brandData) {
   const amenities = {
     pool: hasInAdditional("pool"),
     lobby: hasInAdditional("lobby"),
-    bar: hasInAdditional("bar") || hasInAdditional("beverage") || hasInAdditional("f&b"),
+    bar: hasInAdditional("bar") || hasInAdditional("beverage"),
     coworking: hasInAdditional("coworking") || hasInAdditional("lounge"),
     businessCenter: hasInAdditional("business"),
     petAmenities: hasInAdditional("pet"),
-    solarPower: hasInAdditional("solar"),
-    meetingRooms: hasInAdditional("meeting") ? 1 : 0,
+    solarPower: hasInAdditional("solar") || hasInAdditional("sustainability"),
+    meetingRooms: hasInAdditional("meeting") || hasInAdditional("boardroom") || hasInAdditional("ballroom") || hasInAdditional("event"),
+    fitness: hasInAdditional("fitness"),
+    spa: hasInAdditional("spa") || hasInAdditional("wellness"),
+    rooftop: hasInAdditional("rooftop"),
+    beach: hasInAdditional("beach"),
+    restaurant: hasInAdditional("restaurant"),
+    concierge: hasInAdditional("concierge"),
+    laundry: hasInAdditional("laundry") || hasInAdditional("valet"),
+    kitchenette: hasInAdditional("kitchenette") || hasInAdditional("kitchen"),
+    ev: hasInAdditional("ev charging") || hasInAdditional("ev "),
     hasFb: fbYes || fboOutlets > 0,
-    hasParking: parkingSpaces > 0 || hasInAdditional("parking")
+    hasParking: parkingSpaces > 0 || hasInAdditional("parking"),
   };
   const dealHas = (low) => {
-    const keywordMatch = (low.includes("pool") && amenities.pool) || (low.includes("lobby") && amenities.lobby) || (low.includes("coworking") && amenities.coworking) || (low.includes("bar") && amenities.bar) || (low.includes("business") && amenities.businessCenter) || (low.includes("pet") && amenities.petAmenities) || (low.includes("solar") && amenities.solarPower) || (low.includes("meeting") && amenities.meetingRooms > 0) || (low.includes("f&b") && amenities.hasFb) || (low.includes("parking") && amenities.hasParking);
-    if (keywordMatch) return true;
-    return addLower.some((d) => d.includes(low) || low.includes(d));
+    if (!low) return false;
+    if (addLower.some((d) => d === low || d.includes(low) || low.includes(d))) return true;
+    const keywordMatch =
+      (low.includes("pool") && amenities.pool) ||
+      (low.includes("lobby") && amenities.lobby) ||
+      ((low.includes("coworking") || low.includes("co-working") || low.includes("lounge")) && amenities.coworking) ||
+      ((low.includes("bar") || low.includes("beverage")) && amenities.bar) ||
+      (low.includes("business") && amenities.businessCenter) ||
+      (low.includes("pet") && amenities.petAmenities) ||
+      ((low.includes("solar") || low.includes("sustainability")) && amenities.solarPower) ||
+      ((low.includes("meeting") || low.includes("boardroom") || low.includes("ballroom") || low.includes("event")) && amenities.meetingRooms) ||
+      (low.includes("fitness") && amenities.fitness) ||
+      ((low.includes("spa") || low.includes("wellness")) && amenities.spa) ||
+      (low.includes("rooftop") && amenities.rooftop) ||
+      (low.includes("beach") && amenities.beach) ||
+      (low.includes("restaurant") && amenities.restaurant) ||
+      (low.includes("concierge") && amenities.concierge) ||
+      ((low.includes("laundry") || low.includes("valet")) && amenities.laundry) ||
+      (low.includes("kitchen") && amenities.kitchenette) ||
+      (low.includes("ev") && amenities.ev) ||
+      (low.includes("f&b") && amenities.hasFb) ||
+      (low.includes("parking") && amenities.hasParking);
+    return Boolean(keywordMatch);
   };
-  let penalty = 0;
-  for (const item of brandRequired) {
-    const low = str(item).toLowerCase().trim();
-    if (!low) continue;
-    if (!dealHas(low)) penalty += 12;
-  }
-  const fbRequired = str(st["F&B Outlets Required"] || "").toLowerCase().includes("yes");
-  if (fbRequired && !amenities.hasFb) penalty += 20;
-  const brandTypicalFb = parseNum(st["Typical Number of F&B Outlets"]);
-  if (brandTypicalFb != null && brandTypicalFb > 0 && fboOutlets < brandTypicalFb) penalty += 12;
-  const parkingRequired = str(st["Parking Required"] || "").toLowerCase().includes("yes");
-  if (parkingRequired && !amenities.hasParking) penalty += 10;
-  return Math.max(0, 100 - penalty);
-}
 
-/** Normalize deal/brand agreement-type strings for matching. Maps variants to a canonical key. */
-const AGREEMENT_TYPE_ALIASES = {
-  "franchise only": "franchise only",
-  "franchise": "franchise only",
-  "brand-managed": "brand-managed",
-  "brand managed": "brand-managed",
-  "brand-managed only": "brand-managed",
-  "third-party management only": "third-party management only",
-  "third party management only": "third-party management only",
-  "3rd party only": "third-party management only",
-  "management only": "third-party management only",
-  "lease": "lease",
-  "joint venture": "joint venture",
-  "flexible/open": "flexible/open",
-  "flexible": "flexible/open",
-  "open": "flexible/open",
-  "brand + third-party management (combined)": "brand + third-party",
-  "brand + third-party mgmt. (combined)": "brand + third-party",
-  "brands and third": "brand + third-party",
-  "both": "brand + third-party"
-};
-
-function normalizeAgreementType(s) {
-  const t = String(s || "").trim().toLowerCase();
-  return AGREEMENT_TYPE_ALIASES[t] ?? t;
-}
-
-/** Match Score New – Agreements Type Compatibility (Weight 10%). Brand: Acceptable Agreements Type (Brand Setup - Project Fit, multi-select or boolean columns); Deal: Preferred Deal Structure (Market - Performance). Deal structure accepted by brand = 100; else 22. */
-function calcAgreementsTypeCompatibility(dealFields, locationData, brandData, mp) {
-  const dealStruct = strOrFirst(mp?.["Preferred Deal Structure"]);
-  if (!dealStruct) return null;
-  const brandFit = brandData.brandFit || {};
-  let brandAccepted = [];
-  const multiSelect = brandFit["Acceptable Agreements Type"];
-  if (Array.isArray(multiSelect) && multiSelect.length > 0) {
-    brandAccepted = multiSelect.map((v) => str(v)).filter(Boolean);
-  } else if (typeof multiSelect === "string" && multiSelect.trim()) {
-    brandAccepted = [multiSelect.trim()];
-  } else {
-    const boolCols = [
-      "Franchise Only - Acceptable Agreements Type",
-      "Third-Party Management Only - Acceptable Agreements Type",
-      "Brand + Third-Party - Acceptable Agreements Type",
-      "Brand-Managed - Acceptable Agreements Type",
-      "Lease - Acceptable Agreements Type",
-      "Joint Venture - Acceptable Agreements Type",
-      "Flexible/Open - Acceptable Agreements Type"
-    ];
-    const formVals = ["Franchise Only", "Third-Party Management Only", "Brand + Third-Party Mgmt. (Combined)", "Brand-Managed Only", "Lease", "Joint Venture", "Flexible/Open"];
-    for (let i = 0; i < boolCols.length; i++) {
-      const v = brandFit[boolCols[i]];
-      if (v === true || v === "Yes" || v === "Acceptable") brandAccepted.push(formVals[i]);
+  let score = 100;
+  if (brandRequired.length > 0) {
+    let matched = 0;
+    for (const item of brandRequired) {
+      if (dealHas(str(item).toLowerCase().trim())) matched++;
     }
+    score = Math.round((matched / brandRequired.length) * 100);
   }
-  if (brandAccepted.length === 0) return null;
-  const dealNorm = normalizeAgreementType(dealStruct);
-  const brandNorms = brandAccepted.map((b) => normalizeAgreementType(b));
-  if (dealNorm === "flexible/open") return 100;
-  if (brandNorms.includes("flexible/open")) return 100;
-  if (dealNorm === "brand + third-party") {
-    const dealAccepts = ["brand-managed", "third-party management only", "brand + third-party"];
-    const accepted = dealAccepts.some((a) => brandNorms.includes(a));
-    return accepted ? 100 : 25;
+
+  if (fbRequired && !amenities.hasFb) score -= cfg.fbRequiredMissPenalty;
+  if (brandTypicalFb != null && brandTypicalFb > 0 && fboOutlets < brandTypicalFb) score -= cfg.fbCountShortfallPenalty;
+  if (parkingRequired && !amenities.hasParking) score -= cfg.parkingRequiredMissPenalty;
+
+  return Math.max(0, Math.min(100, score));
+}
+
+function scoreFeesShortfallBand(shortfallPct) {
+  const bands = BRAND_MATCH_FEES_GRADUATION.bands || [];
+  for (const band of bands) {
+    if (shortfallPct <= band.maxShortfallPct) return band.score;
   }
-  const accepted = brandNorms.includes(dealNorm);
-  return accepted ? 100 : 25;
+  return 0;
 }
 
-function parseNum(v) {
-  if (v == null || v === "") return null;
-  const n = typeof v === "number" ? v : parseInt(String(v).trim(), 10);
-  return Number.isNaN(n) ? null : n;
-}
-
-/** Match Score New – Room Range Fit Compatibility (Weight 10%). Brand: Min/Max Room Count, Min/Max Ideal Project Size (Project Fit); Deal: Total Number of Rooms/Keys (Location & Property). Within ideal and room range = 100; outside ideal but within room range = 50; else 0. */
-function calcRoomRangeFitCompatibility(dealFields, locationData, brandData) {
-  const dealRooms = parseNum(loc(locationData, BF.locationDeal.totalRoomsKeys, "totalNumberOfRoomsKeys") ?? dealFields[BF.locationDeal.totalRoomsKeys]);
-  if (dealRooms == null || dealRooms <= 0) return null;
-  const pf = brandData.brandFit || {};
-  const roomMin = parseNum(pf["Min - Room Count"]);
-  const roomMax = parseNum(pf["Max - Room Count"]);
-  const idealMin = parseNum(pf["Min - Ideal Project Size"]) ?? parseNum(pf["A Min - Ideal Project Size"]);
-  const idealMax = parseNum(pf["Max - Ideal Project Size"]) ?? parseNum(pf["A Max - Ideal Project Size"]);
-  const hasRoomRange = roomMin != null && roomMax != null;
-  const hasIdealRange = idealMin != null && idealMax != null;
-  if (!hasRoomRange) return null;
-  const inRoomRange = dealRooms >= roomMin && dealRooms <= roomMax;
-  if (!inRoomRange) return 0;
-  if (!hasIdealRange) return 100;
-  const inIdealRange = dealRooms >= idealMin && dealRooms <= idealMax;
-  return inIdealRange ? 100 : 50;
-}
-
-/** Returns true if the incentive type value is Key Money–related (for display filtering in Incentives Match). */
-function isKeyMoneyIncentiveType(v) {
-  const s = (typeof v === "object" && v != null && "name" in v ? String(v.name || "") : String(v || "")).trim();
-  return s.length > 0 && /key\s*money/i.test(s);
-}
-
-/** Normalize incentive type string for comparison (lowercase, collapse whitespace). */
-function normIncentiveType(v) {
-  return String(v || "").trim().toLowerCase().replace(/\s+/g, " ");
-}
-
-/** Match Score New – Fees Tolerance Compatibility (Weight 10%). Brand: Min/Max/Basis Royalty, Marketing, Loyalty (Brand Setup - Fee Structure); Deal: Royalty/Marketing/Loyalty Fee Expectations (Market - Performance). Basis-normalized: only compares when brand basis is percent-type. Deal within or above brand range = 100; deal below brand min = reduced score. Returns null if either side blank. */
+/** Match Score New – Fees Tolerance Compatibility (graduated, not binary). Per-fee shortfall bands; factor = average. */
 function calcFeesToleranceCompatibility(dealFields, brandData, mp) {
   const mpData = mp || {};
   const dealRoyalty = str(mpData[BF.marketPerformance.royaltyFeeExpectations] || "");
@@ -835,18 +859,128 @@ function calcFeesToleranceCompatibility(dealFields, brandData, mp) {
       feeCount++;
       if (dealMidpoint >= brandMin && dealMidpoint <= brandMax) totalScore += 100;
       else if (dealMidpoint > brandMax) {
-        totalScore += 100;
+        totalScore += BRAND_MATCH_FEES_GRADUATION.aboveBrandMaxScore;
       } else {
         const shortfall = brandMin > 0 ? ((brandMin - dealMidpoint) / brandMin) * 100 : 100;
-        totalScore += shortfall <= 10 ? 75 : shortfall <= 25 ? 50 : shortfall <= 50 ? 25 : 0;
+        totalScore += scoreFeesShortfallBand(shortfall);
       }
     }
   }
   if (feeCount === 0) return null;
-  return Math.round(totalScore / feeCount);
+  return Math.round((totalScore / feeCount) * 10) / 10;
 }
 
-/** Match Score New – Incentives Match Compatibility (Weight 5%). Brand: Willing to Negotiate Incentives, Incentive Types (Operational Support); Deal: Incentive Types Interested In (Strategic Intent). If Willing=No and deal has any = 0; if Willing=Yes or Case-by-Case, each deal incentive type (excl. Key Money) that brand doesn't offer reduces score. */
+/** Normalize deal/brand agreement-type strings for matching. Maps variants to a canonical key. */
+const AGREEMENT_TYPE_ALIASES = {
+  "franchise only": "franchise only",
+  "franchise": "franchise only",
+  "brand-managed": "brand-managed",
+  "brand managed": "brand-managed",
+  "brand-managed only": "brand-managed",
+  "third-party management only": "third-party management only",
+  "third party management only": "third-party management only",
+  "3rd party only": "third-party management only",
+  "management only": "third-party management only",
+  "lease": "lease",
+  "joint venture": "joint venture",
+  "flexible/open": "flexible/open",
+  "flexible": "flexible/open",
+  "open": "flexible/open",
+  "brand + third-party management (combined)": "brand + third-party",
+  "brand + third-party mgmt. (combined)": "brand + third-party",
+  "brand + third-party management (separate)": "brand + third-party separate",
+  "brand + third-party mgmt. (separate)": "brand + third-party separate",
+  "brands and third": "brand + third-party",
+  "both": "brand + third-party"
+};
+
+function normalizeAgreementType(s) {
+  const t = String(s || "").trim().toLowerCase();
+  return AGREEMENT_TYPE_ALIASES[t] ?? t;
+}
+
+/** Collect brand acceptable agreement types (shared by soft factor + gate). */
+function getBrandAcceptedAgreementTypes(brandData) {
+  const brandFit = brandData.brandFit || {};
+  let brandAccepted = [];
+  const multiSelect = brandFit["Acceptable Agreements Type"];
+  if (Array.isArray(multiSelect) && multiSelect.length > 0) {
+    brandAccepted = multiSelect.map((v) => str(v)).filter(Boolean);
+  } else if (typeof multiSelect === "string" && multiSelect.trim()) {
+    brandAccepted = [multiSelect.trim()];
+  } else {
+    const boolCols = [
+      "Franchise Only - Acceptable Agreements Type",
+      "Third-Party Management Only - Acceptable Agreements Type",
+      "Brand + Third-Party - Acceptable Agreements Type",
+      "Brand-Managed - Acceptable Agreements Type",
+      "Lease - Acceptable Agreements Type",
+      "Joint Venture - Acceptable Agreements Type",
+      "Flexible/Open - Acceptable Agreements Type"
+    ];
+    const formVals = ["Franchise Only", "Third-Party Management Only", "Brand + Third-Party Mgmt. (Combined)", "Brand-Managed Only", "Lease", "Joint Venture", "Flexible/Open"];
+    for (let i = 0; i < boolCols.length; i++) {
+      const v = brandFit[boolCols[i]];
+      if (v === true || v === "Yes" || v === "Acceptable") brandAccepted.push(formVals[i]);
+    }
+  }
+  return brandAccepted;
+}
+
+/** Match Score v2 – Agreements Type (6% soft + hard gate). Compatible = 100; else 0. */
+function calcAgreementsTypeCompatibility(dealFields, locationData, brandData, mp) {
+  const dealStruct = strOrFirst(mp?.["Preferred Deal Structure"]);
+  if (!dealStruct) return null;
+  const brandAccepted = getBrandAcceptedAgreementTypes(brandData);
+  if (brandAccepted.length === 0) return null;
+  const dealNorm = normalizeAgreementType(dealStruct);
+  const brandNorms = brandAccepted.map((b) => normalizeAgreementType(b));
+  if (dealNorm === "flexible/open") return 100;
+  if (brandNorms.includes("flexible/open")) return 100;
+  if (dealNorm === "brand + third-party") {
+    const dealAccepts = ["brand-managed", "third-party management only", "brand + third-party"];
+    return dealAccepts.some((a) => brandNorms.includes(a)) ? 100 : 0;
+  }
+  // Separate is exact-match only (does not soft-match Combined / brand-managed / third-party-only).
+  return brandNorms.includes(dealNorm) ? 100 : 0;
+}
+
+function parseNum(v) {
+  if (v == null || v === "") return null;
+  const n = typeof v === "number" ? v : parseInt(String(v).trim(), 10);
+  return Number.isNaN(n) ? null : n;
+}
+
+/** Match Score v2 – Room range fit (graduated soft factor, not a hard gate). Within min–max = 100; outside = distance bands. */
+function calcRoomRangeFitCompatibility(dealFields, locationData, brandData) {
+  const dealRooms = parseNum(loc(locationData, BF.locationDeal.totalRoomsKeys, "totalNumberOfRoomsKeys") ?? dealFields[BF.locationDeal.totalRoomsKeys]);
+  if (dealRooms == null || dealRooms <= 0) return null;
+  const pf = brandData.brandFit || {};
+  const roomMin = parseNum(pf["Min - Room Count"]);
+  const roomMax = parseNum(pf["Max - Room Count"]);
+  if (roomMin == null || roomMax == null) return null;
+  if (dealRooms >= roomMin && dealRooms <= roomMax) return 100;
+  const nearest = dealRooms < roomMin ? roomMin : roomMax;
+  const distancePct = nearest > 0 ? (Math.abs(dealRooms - nearest) / nearest) * 100 : 100;
+  const bands = BRAND_MATCH_ROOM_RANGE_GRADUATION.bands || [];
+  for (const band of bands) {
+    if (distancePct <= band.maxDistancePct) return band.score;
+  }
+  return 0;
+}
+
+/** Returns true if the incentive type value is Key Money–related (for display filtering in Incentives Match). */
+function isKeyMoneyIncentiveType(v) {
+  const s = (typeof v === "object" && v != null && "name" in v ? String(v.name || "") : String(v || "")).trim();
+  return s.length > 0 && /key\s*money/i.test(s);
+}
+
+/** Normalize incentive type string for comparison (lowercase, collapse whitespace). */
+function normIncentiveType(v) {
+  return String(v || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+/** Match Score v2 – Incentives Match (8%). Full non-KM overlap / no owner incentive interest = 100; else 0. */
 function calcIncentivesMatchCompatibility(dealFields, brandData, si) {
   const op = brandData?.brandOperationalSupport || {};
   const willingRaw = str(op[BF.brandOperationalSupport.willingToNegotiate] || op[BF.brandOperationalSupport.willingToNegotiateAlt] || "");
@@ -860,18 +994,166 @@ function calcIncentivesMatchCompatibility(dealFields, brandData, si) {
   const incRaw = op[INCENTIVE_TYPES_FIELD];
   const brandInc = Array.isArray(incRaw) ? incRaw.map((v) => String(v || "").trim()) : (incRaw && typeof incRaw === "string" ? incRaw.split(",").map((s) => s.trim()) : []);
   const brandNorm = new Set(brandInc.map(normIncentiveType));
-  let matched = 0;
-  for (const d of dealInterestedExclKeyMoney) {
-    if (brandNorm.has(normIncentiveType(d))) matched++;
-  }
-  return Math.round(100 * (matched / dealInterestedExclKeyMoney.length));
+  const matched = dealInterestedExclKeyMoney.filter((d) => brandNorm.has(normIncentiveType(d))).length;
+  return matched === dealInterestedExclKeyMoney.length ? 100 : 0;
 }
 
-/** Match Score New – Key Money Willingness Compatibility (Weight 10%). Brand: Incentive Types (Operational Support) includes "Key Money / Upfront Incentive"; Deal: filter=Yes, or Must-Haves includes "Key Money or TI Contribution", or Top 3 Deal Breakers includes "No Key Money / TI Support". Deal doesn't need = 100; need and brand offers = 100; need and brand doesn't offer = 0. If filter=Yes and brand doesn't offer, overall score = 0 (gate). */
+/** Match Score v2 – Key Money Willingness (10% soft + hard gate). */
 function calcKeyMoneyWillingnessCompatibility(dealFields, brandData, si) {
   if (!dealWantsKeyMoney(dealFields, si || {})) return 100;
   if (brandOffersKeyMoney(brandData)) return 100;
   return 0;
+}
+
+/** Collect brand priority markets + markets to avoid (shared by geography soft factor + gate). */
+function getBrandGeographySignals(brandData) {
+  const brandFit = brandData.brandFit || {};
+  const brandBasics = brandData.brandBasics || {};
+  const priorityMarkets = [];
+  const priorityCols = ["Global - Priority Markets", "United States - Priority Markets", "Canada - Priority Markets", "Western Europe - Priority Markets", "United Kingdom - Priority Markets", "Other - Priority Markets"];
+  for (const col of priorityCols) {
+    if (brandFit[col] === true || brandFit[col] === "Yes") {
+      const name = col.replace(" - Priority Markets", "").trim();
+      if (name && !priorityMarkets.includes(name)) priorityMarkets.push(name);
+    }
+  }
+  const priorityMulti = brandFit["Priority Markets"];
+  if (Array.isArray(priorityMulti)) {
+    priorityMulti.forEach((item) => {
+      const name = (typeof item === "string" ? item : (item && item.name) || "").trim();
+      if (name && !priorityMarkets.includes(name)) priorityMarkets.push(name);
+    });
+  }
+  let marketsToAvoid = brandBasics[BF.brandBasics.marketsToAvoid] || [];
+  if (!Array.isArray(marketsToAvoid)) marketsToAvoid = marketsToAvoid ? [marketsToAvoid] : [];
+  const avoidMulti = brandFit["Markets to Avoid"];
+  if (Array.isArray(avoidMulti)) {
+    avoidMulti.forEach((item) => {
+      const name = (typeof item === "string" ? item : (item && item.name) || "").trim();
+      if (name && !marketsToAvoid.some((m) => str(m).toLowerCase() === name.toLowerCase())) marketsToAvoid.push(name);
+    });
+  }
+  return { priorityMarkets, marketsToAvoid };
+}
+
+function getDealRegionsList(dealFields, locationData) {
+  const dealCountry = str(loc(locationData, BF.locationDeal.country, "country") || dealFields[BF.locationDeal.country]);
+  const mapping = getCountryRegionMapping();
+  const dealRegions = mapping[dealCountry] || { region1: "", region2: "", region3: "", region: "Global" };
+  return {
+    dealCountry,
+    dealRegions,
+    dealRegionsList: [dealCountry, dealRegions.region1, dealRegions.region2, dealRegions.region3].filter((r) => r && str(r)),
+  };
+}
+
+/** True when deal geography hits brand Markets to Avoid (hard gate when evaluable). */
+function isGeographyAvoidHit(dealFields, locationData, brandData) {
+  const { marketsToAvoid } = getBrandGeographySignals(brandData);
+  if (!marketsToAvoid.length) return false;
+  const { dealRegionsList } = getDealRegionsList(dealFields, locationData);
+  if (!dealRegionsList.length) return false;
+  return marketsToAvoid.some((market) => {
+    const m = str(market).toLowerCase();
+    return dealRegionsList.some((region) => {
+      const r = str(region).toLowerCase();
+      return m.includes(r) || r.includes(m);
+    });
+  });
+}
+
+/** Match Score New – Geography priority. Global/country = 100; region = 75; miss = 0. */
+function calcGeographyPriority(dealFields, locationData, brandData) {
+  const { priorityMarkets } = getBrandGeographySignals(brandData);
+  const scores = BRAND_MATCH_GEOGRAPHY_PRIORITY_SCORES;
+  if (priorityMarkets.some((m) => m.toLowerCase().includes("global"))) return scores.globalOrCountryHit;
+  if (priorityMarkets.length === 0) return null;
+  const { dealCountry, dealRegions } = getDealRegionsList(dealFields, locationData);
+  if (!dealCountry) return null;
+  for (const market of priorityMarkets) {
+    const ml = market.toLowerCase();
+    if (dealCountry.toLowerCase().includes(ml) || ml.includes(dealCountry.toLowerCase())) {
+      return scores.globalOrCountryHit;
+    }
+  }
+  for (const market of priorityMarkets) {
+    const ml = market.toLowerCase();
+    if (dealRegions.region1 && (dealRegions.region1.toLowerCase().includes(ml) || ml.includes(dealRegions.region1.toLowerCase()))) {
+      return scores.regionHit;
+    }
+    if (dealRegions.region2 && (dealRegions.region2.toLowerCase().includes(ml) || ml.includes(dealRegions.region2.toLowerCase()))) {
+      return scores.regionHit;
+    }
+    if (dealRegions.region3 && (dealRegions.region3.toLowerCase().includes(ml) || ml.includes(dealRegions.region3.toLowerCase()))) {
+      return scores.regionHit;
+    }
+  }
+  return scores.miss;
+}
+
+/** Match Score New – Soft vs hard preference. */
+function calcSoftHardPreference(dealFields, brandData, si) {
+  const brandSoft = str((brandData.brandFit || {})[BF.brandFit.softCollectionBrand] || "");
+  const dealPref = str(si?.[BF.strategicIntent.softVsHardPreference] || "");
+  if (!dealPref || dealPref.toLowerCase() === "unknown") return null;
+  if (!brandSoft) return null;
+  const isBrandSoft = brandSoft.toLowerCase() === "yes";
+  const isBrandHard = brandSoft.toLowerCase() === "no";
+  if (!isBrandSoft && !isBrandHard) return null;
+  const dp = dealPref.toLowerCase();
+  const isDealSoft = dp.includes("soft brand");
+  const isDealHard = dp.includes("hard brand");
+  const isDealBoth = dp.includes("open to both") || dp.includes("unsure");
+  if (isDealBoth) return 100;
+  if ((isBrandSoft && isDealSoft) || (isBrandHard && isDealHard)) return 100;
+  if ((isBrandSoft && isDealHard) || (isBrandHard && isDealSoft)) return 0;
+  return null;
+}
+
+/**
+ * Evaluate Match Score v2 hard gates. Insufficient data → gate does not fire.
+ * @returns {{ failed: boolean, key: string|null, reason: string|null }}
+ */
+function evaluateMatchScoreV2Gates(dealFields, locationData, brandData, mp, si) {
+  if (dealWantsKeyMoney(dealFields, si || {}) && !brandOffersKeyMoney(brandData)) {
+    return {
+      failed: true,
+      key: "keyMoney",
+      reason:
+        'Overall score is 0 because the owner requires key money and this brand does not have "Key Money / Upfront Incentive" in Incentive Types (Brand Setup - Operational Support).',
+    };
+  }
+
+  const agreementScore = calcAgreementsTypeCompatibility(dealFields, locationData, brandData, mp || {});
+  if (agreementScore === 0) {
+    return {
+      failed: true,
+      key: "agreementType",
+      reason:
+        "Overall score is 0 because the deal's Preferred Deal Structure is not among this brand's acceptable agreement types.",
+    };
+  }
+
+  const projectTypeScore = calcProjectTypeCompatibility(dealFields, locationData, brandData);
+  if (projectTypeScore === 0) {
+    return {
+      failed: true,
+      key: "projectType",
+      reason: "Overall score is 0 because the deal project type is not among this brand's acceptable project types.",
+    };
+  }
+
+  const { marketsToAvoid } = getBrandGeographySignals(brandData);
+  const { dealCountry } = getDealRegionsList(dealFields, locationData);
+  if (marketsToAvoid.length > 0 && dealCountry && isGeographyAvoidHit(dealFields, locationData, brandData)) {
+    return {
+      failed: true,
+      key: "geographyAvoid",
+      reason: "Overall score is 0 because the deal market/country is in this brand's Markets to Avoid.",
+    };
+  }
+
+  return { failed: false, key: null, reason: null };
 }
 
 function calcSVC1(dealFields, locationData, brandData) {
@@ -1238,7 +1520,7 @@ function getBreakdownDetails(dealFields, locationData, brandData, mp, si) {
   details.SEG1 = {
     brandValue: "Hotel Chain Scale: " + (brandScale || "—"),
     dealValue: "Hotel Chain Scale: " + (dealScale || "—"),
-    note: "Same scale = 100; 1 tier apart = 38; 2+ tiers = 0. Chain scale is a strong differentiator."
+    note: "Same tier = 100; 1 tier apart = 50; 2 tiers = 25; 3+ tiers = 0 (soft only)."
   };
 
   const brandSvc = str(brandBasics[BF.brandBasics.hotelServiceModel] || "");
@@ -1410,39 +1692,91 @@ function computeDealOnlyBaseScore(dealFields, locationData, mp, si) {
 }
 
 /**
- * Compute Match Score New for one (deal, brand). Built factor by factor; each factor uses same sources as breakdown.
- * @returns {{ total: number, factors: object }} total 0–100 (weighted sum of factor scores); factors keyed by factor name.
+ * Weighted average for one pillar. Null factors excluded from denominator.
  */
-function computeMatchScoreNew(dealFields, locationData, brandData, si, mp) {
-  const factors = {
-    chainScaleProximity: calcChainScaleProximity(dealFields, locationData, brandData),
-    serviceModelAlignment: calcServiceModelAlignment(dealFields, locationData, brandData),
-    preferredBrand: calcPreferredBrand(dealFields, locationData, brandData, si || {}),
-    projectTypeCompatibility: calcProjectTypeCompatibility(dealFields, locationData, brandData),
-    buildingTypeCompatibility: calcBuildingTypeCompatibility(dealFields, locationData, brandData),
-    projectStageCompatibility: calcProjectStageCompatibility(dealFields, locationData, brandData),
-    brandStandardsCompatibility: calcBrandStandardsCompatibility(dealFields, locationData, brandData),
-    agreementsTypeCompatibility: calcAgreementsTypeCompatibility(dealFields, locationData, brandData, mp || {}),
-    roomRangeFitCompatibility: calcRoomRangeFitCompatibility(dealFields, locationData, brandData),
-    keyMoneyWillingnessCompatibility: calcKeyMoneyWillingnessCompatibility(dealFields, brandData, si || {}),
-    incentivesMatchCompatibility: calcIncentivesMatchCompatibility(dealFields, brandData, si || {}),
-    feesToleranceCompatibility: calcFeesToleranceCompatibility(dealFields, brandData, mp || {})
-  };
+function averageWeightedFactors(factors, weightMap) {
   let weightedSum = 0;
-  let totalWeight = 0;
+  let scoredWeight = 0;
+  let catalogWeight = 0;
   for (const [key, score] of Object.entries(factors)) {
-    const w = NEW_WEIGHTS[key];
-    if (w != null && typeof w === "number") {
-      totalWeight += w;
-      if (score != null && score !== undefined && !Number.isNaN(score)) weightedSum += (w / 100) * score;
+    const w = weightMap[key];
+    if (w == null || typeof w !== "number" || w <= 0) continue;
+    catalogWeight += w;
+    if (score != null && score !== undefined && !Number.isNaN(score)) {
+      scoredWeight += w;
+      weightedSum += (w / 100) * score;
     }
   }
-  const total = totalWeight > 0 ? (weightedSum / totalWeight) * 100 : 0;
-  return { total: Math.min(100, Math.max(0, Math.round(total * 10) / 10)), factors };
+  const scoredWeightPct = catalogWeight > 0 ? Math.round((scoredWeight / catalogWeight) * 1000) / 10 : 0;
+  const insufficientData = scoredWeightPct < BRAND_MATCH_MIN_SCORED_WEIGHT_PCT;
+  if (scoredWeight <= 0) {
+    return { total: null, factors, scoredWeightPct, insufficientData: true };
+  }
+  const total = (weightedSum / scoredWeight) * 100;
+  return {
+    total: Math.min(100, Math.max(0, Math.round(total * 10) / 10)),
+    factors,
+    scoredWeightPct,
+    insufficientData,
+  };
 }
 
-/** Human-readable breakdown for Match Score New (for View Details modal). Same fields as displayed in breakdown. */
-function getBreakdownNewDetails(dealFields, locationData, brandData, si, mp) {
+async function computeMatchScoreNew(dealFields, locationData, brandData, si, mp, brandName) {
+  const density = await evaluateSameBrandMarketDensity({
+    brandName,
+    dealFields,
+    locationData,
+  });
+  const factors = {
+    geographyPriority: calcGeographyPriority(dealFields, locationData, brandData),
+    sameBrandMarketDensity: density.score,
+    chainScaleProximity: calcChainScaleProximity(dealFields, locationData, brandData),
+    brandStandardsCompatibility: calcBrandStandardsCompatibility(dealFields, locationData, brandData),
+    feesToleranceCompatibility: calcFeesToleranceCompatibility(dealFields, brandData, mp || {}),
+    roomRangeFitCompatibility: calcRoomRangeFitCompatibility(dealFields, locationData, brandData),
+    serviceModelAlignment: calcServiceModelAlignment(dealFields, locationData, brandData),
+    keyMoneyWillingnessCompatibility: calcKeyMoneyWillingnessCompatibility(dealFields, brandData, si || {}),
+    softHardPreference: calcSoftHardPreference(dealFields, brandData, si || {}),
+    incentivesMatchCompatibility: calcIncentivesMatchCompatibility(dealFields, brandData, si || {}),
+    agreementsTypeCompatibility: calcAgreementsTypeCompatibility(dealFields, locationData, brandData, mp || {}),
+    buildingTypeCompatibility: calcBuildingTypeCompatibility(dealFields, locationData, brandData),
+  };
+  const averaged = averageWeightedFactors(factors, NEW_WEIGHTS);
+  return { ...averaged, density };
+}
+
+/** Classify a soft/breakdown row for View Details grouping. */
+function classifyBreakdownCategory(detail, factorKey) {
+  if (factorKey === "preferredBrandBonus") return "bonus";
+  if (factorKey === "projectStageCompatibility") return "diligence";
+  // Always listed under Hard gates (pass or fail) — not soft weights.
+  if (factorKey === "projectTypeCompatibility") return "gate";
+
+  const score = detail?.score;
+  if (score == null || score === "" || score === "—") {
+    const brandEmpty = !detail?.brandValue || String(detail.brandValue).includes(": —") || String(detail.brandValue).trim() === "—";
+    const dealEmpty = !detail?.dealValue || String(detail.dealValue).includes(": —") || String(detail.dealValue).trim() === "—";
+    if (brandEmpty && !dealEmpty) return "missing_brand";
+    if (dealEmpty && !brandEmpty) return "missing_deal";
+    return "missing_data";
+  }
+  const n = Number(score);
+  if (!Number.isFinite(n)) return "missing_data";
+
+  // Dual soft+gate factors: a 0 means the hard gate fires (overall score 0) when data is sufficient.
+  // Show under Hard gates so UI matches product behavior (not Soft mismatches).
+  const dualSoftAndGate =
+    factorKey === "keyMoneyWillingnessCompatibility" ||
+    factorKey === "agreementsTypeCompatibility";
+  if (dualSoftAndGate && n <= 0) return "gate";
+
+  if (n <= 0) return "mismatch";
+  if (n >= 80) return "fit";
+  return "partial";
+}
+
+/** Human-readable breakdown for Match Score (View Details modal). */
+function getBreakdownNewDetails(dealFields, locationData, brandData, si, mp, densityCtx = {}) {
   const brandBasics = brandData.brandBasics || {};
   const brandScale = str(brandBasics[BF.brandBasics.hotelChainScale] || "");
   const dealScale = str(loc(locationData, BF.locationDeal.hotelChainScale, "hotelChainScale") || dealFields[BF.locationDeal.hotelChainScale] || "");
@@ -1450,69 +1784,64 @@ function getBreakdownNewDetails(dealFields, locationData, brandData, si, mp) {
   const dealSvc = str(loc(locationData, BF.locationDeal.hotelServiceModel, "hotelServiceModel") || dealFields[BF.locationDeal.hotelServiceModel] || "");
   const preferredRaw = (si || {})[BF.strategicIntent.preferredBrands];
   const preferredStr = Array.isArray(preferredRaw) ? preferredRaw.map((b) => typeof b === "string" ? b : (b && b.name) || "").join(", ") : str(preferredRaw || "");
-  return {
+  const { priorityMarkets, marketsToAvoid } = getBrandGeographySignals(brandData);
+  const { dealCountry } = getDealRegionsList(dealFields, locationData);
+  const preferredOnList = isPreferredBrand(dealFields, brandData, si || {});
+  const dealSubmarket = str(
+    loc(locationData, "Hotel Submarket & Location", "submarket") ||
+      dealFields["Hotel Submarket & Location"] ||
+      ""
+  );
+  const dealMarket = str(
+    loc(locationData, "Primary Market Region", "primaryMarketRegion") ||
+      dealFields["Primary Market Region"] ||
+      ""
+  );
+
+  const details = {
+    geographyPriority: {
+      label: "Geography Priority",
+      weight: NEW_WEIGHTS.geographyPriority,
+      brandValue: "Priority Markets: " + (priorityMarkets.length ? priorityMarkets.join(", ") : "—") + "; Markets to Avoid: " + (marketsToAvoid.length ? marketsToAvoid.map((m) => str(m)).join(", ") : "—"),
+      dealValue: "Country: " + (dealCountry || "—") + (dealMarket ? "; Primary Market Region: " + dealMarket : ""),
+      note: "Graduated: global/country priority hit = 100; region-only hit = 75; priorities set but miss = 0. Markets to Avoid is a hard gate (overall score 0) when the deal geography matches.",
+      scoringMode: "graduated",
+      score: calcGeographyPriority(dealFields, locationData, brandData) ?? "—"
+    },
+    sameBrandMarketDensity: {
+      label: "Same-Brand Market Density",
+      weight: NEW_WEIGHTS.sameBrandMarketDensity,
+      brandValue: "Hotel Census Affiliation (Open) matching Brand Name",
+      dealValue: (() => {
+        const parts = ["Country: " + (dealCountry || "—")];
+        if (dealSubmarket) parts.push("Submarket: " + dealSubmarket);
+        if (dealMarket) parts.push("Primary Market Region: " + dealMarket);
+        if (densityCtx?.peerCount != null) parts.push("Open peers matched: " + densityCtx.peerCount);
+        if (densityCtx?.grain) parts.push("Match grain: " + densityCtx.grain);
+        if (densityCtx?.reason) parts.push("Not scored: " + densityCtx.reason);
+        return parts.join("; ");
+      })(),
+      note: "Soft watchout (not a hard gate): 0 Open peers in confident Market/Submarket = 100; 1 = 55; 2 = 30; 3+ = 10. Excluded when deal/census geography is not confident enough to evaluate.",
+      scoringMode: "graduated",
+      score: densityCtx?.score != null ? densityCtx.score : "—"
+    },
     chainScaleProximity: {
       label: "Chain Scale Proximity",
       weight: NEW_WEIGHTS.chainScaleProximity,
       brandValue: "Hotel Chain Scale: " + (brandScale || "—"),
       dealValue: "Hotel Chain Scale: " + (dealScale || "—"),
-      note: "Compares chain scale tiers (e.g., Luxury, Upscale). Closer alignment scores higher; same tier is a strong match, one tier apart is partial.",
+      note: "Same tier = 100; 1 tier apart = 50; 2 tiers = 25; 3+ tiers = 0. Soft factor only — not a hard gate.",
+      scoringMode: "graduated",
       score: calcChainScaleProximity(dealFields, locationData, brandData) ?? "—"
     },
     serviceModelAlignment: {
-      label: "Service Model Alignment",
+      label: "Service / Operating Model Alignment",
       weight: NEW_WEIGHTS.serviceModelAlignment,
       brandValue: "Hotel Service Model: " + (brandSvc || "—"),
       dealValue: "Hotel Service Model: " + (dealSvc || "—"),
-      note: "Must match; different service models (e.g., full-service vs select-service) score lower.",
+      note: "Graduated adjacency (not exact-only): exact = 100; Full-Service↔Lifestyle/Boutique = 55; Full-Service↔Select-Service = 40; Select-Service↔Lifestyle/Boutique = 50; Full-Service↔All-Inclusive = 25; Select-Service↔Extended Stay = 25; other pairs = 0.",
+      scoringMode: "graduated",
       score: calcServiceModelAlignment(dealFields, locationData, brandData) ?? "—"
-    },
-    preferredBrand: {
-      label: "Preferred Brand",
-      weight: NEW_WEIGHTS.preferredBrand,
-      brandValue: "Brand Name: " + (str(brandBasics[BF.brandBasics.brandName] || "") || "—"),
-      dealValue: "Preferred Brands: " + (preferredStr || "—"),
-      note: "Brand in your preferred list scores full; otherwise it does not contribute.",
-      score: calcPreferredBrand(dealFields, locationData, brandData, si || {}) ?? "—"
-    },
-    projectTypeCompatibility: {
-      label: "Project Type Compatibility",
-      weight: NEW_WEIGHTS.projectTypeCompatibility,
-      brandValue: "Acceptable Project Type: " + (() => {
-        const brandFit = brandData.brandFit || {};
-        const raw = brandFit["Acceptable Project Type"];
-        if (Array.isArray(raw) && raw.length > 0) return raw.map((v) => str(v)).filter(Boolean).join(", ");
-        return "—";
-      })(),
-      dealValue: "Project Type: " + (str(dealFields[BF.locationDeal.projectType]) || "—"),
-      note: "Deal project type must be one the brand accepts (e.g., new build, conversion); otherwise scores lower.",
-      score: calcProjectTypeCompatibility(dealFields, locationData, brandData) ?? "—"
-    },
-    buildingTypeCompatibility: {
-      label: "Building Type Compatibility",
-      weight: NEW_WEIGHTS.buildingTypeCompatibility,
-      brandValue: "Acceptable Building Types: " + (() => {
-        const brandFit = brandData.brandFit || {};
-        const raw = brandFit["Acceptable Building Types"];
-        if (Array.isArray(raw) && raw.length > 0) return raw.map((v) => str(v)).filter(Boolean).join(", ");
-        return "—";
-      })(),
-      dealValue: "Building Type: " + (str(loc(locationData, BF.locationDeal.buildingType, "buildingType") || dealFields[BF.locationDeal.buildingType]) || "—"),
-      note: "Deal building type must be one the brand accepts; otherwise scores lower.",
-      score: calcBuildingTypeCompatibility(dealFields, locationData, brandData) ?? "—"
-    },
-    projectStageCompatibility: {
-      label: "Project Stage Compatibility",
-      weight: NEW_WEIGHTS.projectStageCompatibility,
-      brandValue: "Acceptable Project Stages: " + (() => {
-        const brandFit = brandData.brandFit || {};
-        const raw = brandFit["Acceptable Project Stages"];
-        if (Array.isArray(raw) && raw.length > 0) return raw.map((v) => str(v)).filter(Boolean).join(", ");
-        return (typeof raw === "string" && raw.trim()) ? raw.trim() : "—";
-      })(),
-      dealValue: "Stage of Development: " + (str(dealFields[BF.locationDeal.stageOfDevelopment] || loc(locationData, BF.locationDeal.stageOfDevelopment, "stageOfDevelopment") || dealFields["Project Stage"]) || "—"),
-      note: "Deal stage must be one the brand accepts (e.g., entitled, under construction); otherwise scores lower.",
-      score: calcProjectStageCompatibility(dealFields, locationData, brandData) ?? "—"
     },
     brandStandardsCompatibility: {
       label: "Brand Standards Compatibility",
@@ -1524,8 +1853,6 @@ function getBreakdownNewDetails(dealFields, locationData, brandData, si, mp) {
         if (add.length) parts.push("Additional Amenities: " + add.join(", "));
         const fbReq = str(st["F&B Outlets Required"] || "");
         if (fbReq) parts.push("F&B Required: " + fbReq);
-        const fbTypical = parseNum(st["Typical Number of F&B Outlets"]);
-        if (fbTypical != null) parts.push("Typical F&B Outlets: " + fbTypical);
         const parkReq = str(st["Parking Required"] || "");
         if (parkReq) parts.push("Parking Required: " + parkReq);
         return parts.length ? parts.join("; ") : "—";
@@ -1542,45 +1869,54 @@ function getBreakdownNewDetails(dealFields, locationData, brandData, si, mp) {
         if (add.length) parts.push("Additional Amenities: " + add.join(", "));
         return parts.length ? parts.join("; ") : "—";
       })(),
-      note: "Compares required amenities and standards (F&B, parking, additional amenities). Missing required items reduce the score; closer alignment scores higher.",
+      scoringMode: "graduated",
+      note: "Graduated (not binary): amenity score = % of brand-required amenities on the deal; then −20 if F&B required and deal has none; −12 if F&B count below brand typical; −10 if parking required and deal has none; floor 0.",
       score: calcBrandStandardsCompatibility(dealFields, locationData, brandData) ?? "—"
     },
-    agreementsTypeCompatibility: {
-      label: "Agreements Type Compatibility",
-      weight: NEW_WEIGHTS.agreementsTypeCompatibility,
-      brandValue: "Acceptable Agreements Type: " + (() => {
-        const brandFit = brandData.brandFit || {};
-        const raw = brandFit["Acceptable Agreements Type"];
-        if (Array.isArray(raw) && raw.length > 0) return raw.map((v) => str(v)).filter(Boolean).join(", ");
-        const boolCols = ["Franchise Only - Acceptable Agreements Type", "Third-Party Management Only - Acceptable Agreements Type", "Brand + Third-Party - Acceptable Agreements Type", "Brand-Managed - Acceptable Agreements Type", "Lease - Acceptable Agreements Type", "Joint Venture - Acceptable Agreements Type", "Flexible/Open - Acceptable Agreements Type"];
-        const formVals = ["Franchise Only", "Third-Party Management Only", "Brand + Third-Party Mgmt. (Combined)", "Brand-Managed Only", "Lease", "Joint Venture", "Flexible/Open"];
-        const accepted = [];
-        for (let i = 0; i < boolCols.length; i++) {
-          const v = brandFit[boolCols[i]];
-          if (v === true || v === "Yes" || v === "Acceptable") accepted.push(formVals[i]);
-        }
-        return accepted.length > 0 ? accepted.join(", ") : "—";
-      })(),
-      dealValue: "Preferred Deal Structure: " + (strOrFirst(mp?.["Preferred Deal Structure"]) || "—"),
-      note: "Deal structure (franchise, management, lease, etc.) must align with what the brand accepts. Flexible or open on either side can match; partial overlap may score lower.",
-      score: calcAgreementsTypeCompatibility(dealFields, locationData, brandData, mp || {}) ?? "—"
-    },
-    roomRangeFitCompatibility: {
-      label: "Room Range Fit",
-      weight: NEW_WEIGHTS.roomRangeFitCompatibility,
+    feesToleranceCompatibility: {
+      label: "Fees Tolerance",
+      weight: NEW_WEIGHTS.feesToleranceCompatibility,
       brandValue: (() => {
-        const pf = brandData.brandFit || {};
-        const roomMin = pf["Min - Room Count"] ?? pf["Min - Ideal Project Size"];
-        const roomMax = pf["Max - Room Count"] ?? pf["Max - Ideal Project Size"];
-        const idealMin = pf["Min - Ideal Project Size"] ?? pf["A Min - Ideal Project Size"];
-        const idealMax = pf["Max - Ideal Project Size"] ?? pf["A Max - Ideal Project Size"];
-        const room = roomMin != null && roomMax != null ? `${roomMin} – ${roomMax}` : "—";
-        const ideal = idealMin != null && idealMax != null ? `${idealMin} – ${idealMax}` : "—";
-        return `Room Count: ${room}; Ideal Project Size: ${ideal}`;
+        const fs = brandData.brandFeeStructure || {};
+        const parts = [];
+        const royMin = fs[BF.brandFeeStructure.minRoyalty];
+        const royMax = fs[BF.brandFeeStructure.maxRoyalty];
+        if (royMin != null || royMax != null) parts.push("Royalty: " + formatFeeForDisplay(royMin) + "–" + formatFeeForDisplay(royMax) + "%");
+        const mktMin = fs[BF.brandFeeStructure.minMarketing];
+        const mktMax = fs[BF.brandFeeStructure.maxMarketing];
+        if (mktMin != null || mktMax != null) parts.push("Marketing: " + formatFeeForDisplay(mktMin) + "–" + formatFeeForDisplay(mktMax) + "%");
+        const loyMin = fs[BF.brandFeeStructure.minLoyalty];
+        const loyMax = fs[BF.brandFeeStructure.maxLoyalty];
+        if (loyMin != null || loyMax != null) parts.push("Loyalty: " + formatLoyaltyForDisplay(loyMin) + "–" + formatLoyaltyForDisplay(loyMax));
+        return parts.length ? parts.join("; ") : "—";
       })(),
-      dealValue: "Total Number of Rooms/Keys: " + (parseNum(loc(locationData, BF.locationDeal.totalRoomsKeys, "totalNumberOfRoomsKeys") ?? dealFields[BF.locationDeal.totalRoomsKeys]) ?? "—"),
-      note: "Compares your room count to the brand's ideal and acceptable range. Within ideal scores highest; outside ideal but within range scores lower; outside range scores lowest.",
-      score: calcRoomRangeFitCompatibility(dealFields, locationData, brandData) ?? "—"
+      dealValue: (() => {
+        const mpData = mp || {};
+        const parts = [];
+        const roy = str(mpData[BF.marketPerformance.royaltyFeeExpectations] || "");
+        const mkt = str(mpData[BF.marketPerformance.marketingFeeExpectations] || "");
+        const loy = str(mpData[BF.marketPerformance.loyaltyFeeExpectations] || "");
+        if (roy) parts.push("Royalty: " + roy);
+        if (mkt) parts.push("Marketing: " + mkt);
+        if (loy) parts.push("Loyalty: " + loy);
+        return parts.length ? parts.join("; ") : "—";
+      })(),
+      scoringMode: "graduated",
+      note: (() => {
+        const mpData = mp || {};
+        const roy = str(mpData[BF.marketPerformance.royaltyFeeExpectations] || "");
+        const mkt = str(mpData[BF.marketPerformance.marketingFeeExpectations] || "");
+        const loy = str(mpData[BF.marketPerformance.loyaltyFeeExpectations] || "");
+        const allUnknown =
+          (!roy || isUnknownFeeExpectation(roy)) &&
+          (!mkt || isUnknownFeeExpectation(mkt)) &&
+          (!loy || isUnknownFeeExpectation(loy));
+        if (allUnknown && (roy || mkt || loy)) {
+          return "Owner fee expectations are undetermined — this factor is excluded from the average (not scored as 0). Set numeric royalty/marketing/loyalty ranges to score fees.";
+        }
+        return "Graduated per comparable fee when the owner has a numeric range: within/above brand min–max = 100; shortfall bands 75 / 50 / 25 / 0. Undetermined / unknown fees are excluded (not scored 0); factor = average of scored fee types only.";
+      })(),
+      score: calcFeesToleranceCompatibility(dealFields, brandData, mp || {}) ?? "—"
     },
     keyMoneyWillingnessCompatibility: {
       label: "Key Money Willingness",
@@ -1594,16 +1930,18 @@ function getBreakdownNewDetails(dealFields, locationData, brandData, si, mp) {
       })(),
       dealValue: (() => {
         const filterVal = getKeyMoneyFilterValue(dealFields);
-        const mustHaves = toStrArr((si || {})[BF.strategicIntent.mustHavesFromBrand] ?? dealFields?.[BF.strategicIntent.mustHavesFromBrand] ?? dealFields?.["Must-haves From Brand or Operator"]);
-        const dealBreakers = toStrArr((si || {})[BF.strategicIntent.top3DealBreakers] ?? dealFields?.[BF.strategicIntent.top3DealBreakers]);
-        const parts = [];
-        parts.push("Filter out brands without key money?: " + (filterVal || "—"));
-        if (mustHaves.length) parts.push("Must-Haves: " + mustHaves.join(", "));
-        if (dealBreakers.length) parts.push("Top 3 Deal Breakers: " + dealBreakers.join(", "));
-        return parts.length ? parts.join("; ") : "—";
+        return "Filter out brands without key money?: " + (filterVal || "—");
       })(),
-      note: "If you need key money and the brand offers it, this factor scores full. If you filter for key money and the brand does not offer it, the overall match is not considered.",
+      note: "Also a hard gate when the owner requires key money and the brand does not offer it.",
       score: calcKeyMoneyWillingnessCompatibility(dealFields, brandData, si || {}) ?? "—"
+    },
+    softHardPreference: {
+      label: "Soft vs Hard Brand Preference",
+      weight: NEW_WEIGHTS.softHardPreference,
+      brandValue: "Soft/Collection Brand: " + (str((brandData.brandFit || {})[BF.brandFit.softCollectionBrand] || "") || "—"),
+      dealValue: "Soft vs Hard Brand Preference: " + (str((si || {})[BF.strategicIntent.softVsHardPreference] || "") || "—"),
+      note: "Owner soft/hard preference aligned with brand soft/collection positioning = 100; conflict = 0.",
+      score: calcSoftHardPreference(dealFields, brandData, si || {}) ?? "—"
     },
     incentivesMatchCompatibility: {
       label: "Incentives Match Compatibility",
@@ -1620,44 +1958,89 @@ function getBreakdownNewDetails(dealFields, locationData, brandData, si, mp) {
         const inc = toStrArr((si || {})[BF.strategicIntent.incentiveTypesInterestedIn] ?? dealFields?.[BF.strategicIntent.incentiveTypesInterestedIn] ?? dealFields?.["Incentive Types Interested In"]);
         return inc.length ? inc.join(", ") : "—";
       })(),
-      note: "Brand willingness to negotiate incentives is compared with what you seek. When you want incentives and the brand does not negotiate, this scores lowest.",
+      note: "Binary non–key-money incentive overlap / willingness.",
       score: calcIncentivesMatchCompatibility(dealFields, brandData, si || {}) ?? "—"
     },
-    feesToleranceCompatibility: {
-      label: "Fees Tolerance",
-      weight: NEW_WEIGHTS.feesToleranceCompatibility,
+    agreementsTypeCompatibility: {
+      label: "Agreements Type Compatibility",
+      weight: NEW_WEIGHTS.agreementsTypeCompatibility,
+      brandValue: "Acceptable Agreements Type: " + (() => {
+        const accepted = getBrandAcceptedAgreementTypes(brandData);
+        return accepted.length ? accepted.join(", ") : "—";
+      })(),
+      dealValue: "Preferred Deal Structure: " + (strOrFirst(mp?.["Preferred Deal Structure"]) || "—"),
+      note: "Also a hard gate on mismatch. Soft factor is 100 when the structure is accepted (or Flexible/Open).",
+      score: calcAgreementsTypeCompatibility(dealFields, locationData, brandData, mp || {}) ?? "—"
+    },
+    preferredBrandBonus: {
+      label: "Preferred Brand Bonus",
+      weight: 0,
+      brandValue: "Brand Name: " + (str(brandBasics[BF.brandBasics.brandName] || "") || "—"),
+      dealValue: "Preferred Brands: " + (preferredStr || "—"),
+      note: "Not part of the weighted average. +" + BRAND_MATCH_PREFERRED_BONUS + " points when this brand is on the owner's Preferred list (cap 100).",
+      score: preferredOnList ? 100 : 0,
+      bonusPoints: preferredOnList ? BRAND_MATCH_PREFERRED_BONUS : 0
+    },
+    buildingTypeCompatibility: {
+      label: "Building Type Compatibility",
+      weight: NEW_WEIGHTS.buildingTypeCompatibility,
+      brandValue: "Acceptable Building Types: " + (() => {
+        const brandFit = brandData.brandFit || {};
+        const raw = brandFit["Acceptable Building Types"];
+        if (Array.isArray(raw) && raw.length > 0) return raw.map((v) => str(v)).filter(Boolean).join(", ");
+        return "—";
+      })(),
+      dealValue: "Building Type: " + (str(loc(locationData, BF.locationDeal.buildingType, "buildingType") || dealFields[BF.locationDeal.buildingType]) || "—"),
+      note: "Deal building type in brand Acceptable Building Types = 100; else 0. Missing either side is excluded from the average.",
+      score: calcBuildingTypeCompatibility(dealFields, locationData, brandData) ?? "—"
+    },
+    projectStageCompatibility: {
+      label: "Project Stage Compatibility (breakdown only)",
+      weight: 0,
+      brandValue: "Acceptable Project Stages: " + (() => {
+        const brandFit = brandData.brandFit || {};
+        const raw = brandFit["Acceptable Project Stages"];
+        if (Array.isArray(raw) && raw.length > 0) return raw.map((v) => str(v)).filter(Boolean).join(", ");
+        return (typeof raw === "string" && raw.trim()) ? raw.trim() : "—";
+      })(),
+      dealValue: "Stage of Development: " + (str(dealFields[BF.locationDeal.stageOfDevelopment] || loc(locationData, BF.locationDeal.stageOfDevelopment, "stageOfDevelopment") || dealFields["Project Stage"]) || "—"),
+      note: "Demoted from the weighted total in v2 — shown for diligence only.",
+      score: calcProjectStageCompatibility(dealFields, locationData, brandData) ?? "—"
+    },
+    projectTypeCompatibility: {
+      label: "Project Type (gate)",
+      weight: 0,
+      brandValue: "Acceptable Project Type: " + (() => {
+        const brandFit = brandData.brandFit || {};
+        const raw = brandFit["Acceptable Project Type"];
+        if (Array.isArray(raw) && raw.length > 0) return raw.map((v) => str(v)).filter(Boolean).join(", ");
+        return "—";
+      })(),
+      dealValue: "Project Type: " + (str(dealFields[BF.locationDeal.projectType]) || "—"),
+      note: "Hard gate when the deal type is not accepted. Not a soft weight.",
+      score: calcProjectTypeCompatibility(dealFields, locationData, brandData) ?? "—"
+    },
+    roomRangeFitCompatibility: {
+      label: "Room Range Fit",
+      weight: NEW_WEIGHTS.roomRangeFitCompatibility,
       brandValue: (() => {
-        const fs = brandData.brandFeeStructure || {};
-        const royMin = fs[BF.brandFeeStructure.minRoyalty];
-        const royMax = fs[BF.brandFeeStructure.maxRoyalty];
-        const royBasis = fs[BF.brandFeeStructure.basisRoyalty];
-        const mktMin = fs[BF.brandFeeStructure.minMarketing];
-        const mktMax = fs[BF.brandFeeStructure.maxMarketing];
-        const mktBasis = fs[BF.brandFeeStructure.basisMarketing];
-        const loyMin = fs[BF.brandFeeStructure.minLoyalty];
-        const loyMax = fs[BF.brandFeeStructure.maxLoyalty];
-        const loyBasis = fs[BF.brandFeeStructure.basisLoyalty];
-        const parts = [];
-        if (royMin != null || royMax != null) parts.push("Royalty: " + formatFeeForDisplay(royMin) + "–" + formatFeeForDisplay(royMax) + "%" + (royBasis ? " (" + royBasis + ")" : ""));
-        if (mktMin != null || mktMax != null) parts.push("Marketing: " + formatFeeForDisplay(mktMin) + "–" + formatFeeForDisplay(mktMax) + "%" + (mktBasis ? " (" + mktBasis + ")" : ""));
-        if (loyMin != null || loyMax != null) parts.push("Loyalty: " + formatLoyaltyForDisplay(loyMin) + "–" + formatLoyaltyForDisplay(loyMax) + (loyBasis ? " (" + loyBasis + ")" : ""));
-        return parts.length ? parts.join("; ") : "—";
+        const pf = brandData.brandFit || {};
+        const roomMin = pf["Min - Room Count"];
+        const roomMax = pf["Max - Room Count"];
+        return roomMin != null && roomMax != null ? ("Room Count: " + roomMin + " – " + roomMax) : "—";
       })(),
-      dealValue: (() => {
-        const mpData = mp || {};
-        const roy = str(mpData[BF.marketPerformance.royaltyFeeExpectations] || "");
-        const mkt = str(mpData[BF.marketPerformance.marketingFeeExpectations] || "");
-        const loy = str(mpData[BF.marketPerformance.loyaltyFeeExpectations] || "");
-        const parts = [];
-        if (roy) parts.push("Royalty: " + roy);
-        if (mkt) parts.push("Marketing: " + mkt);
-        if (loy) parts.push("Loyalty: " + loy);
-        return parts.length ? parts.join("; ") : "—";
-      })(),
-      note: "Compares your fee expectations (royalty, marketing, loyalty) to the brand's range. Within or above their range scores higher; expecting lower fees than the brand typically offers reduces the score.",
-      score: calcFeesToleranceCompatibility(dealFields, brandData, mp || {}) ?? "—"
+      dealValue: "Total Number of Rooms/Keys: " + (parseNum(loc(locationData, BF.locationDeal.totalRoomsKeys, "totalNumberOfRoomsKeys") ?? dealFields[BF.locationDeal.totalRoomsKeys]) ?? "—"),
+      scoringMode: "graduated",
+      note: "Graduated (not a hard gate): within brand min–max = 100; outside uses distance from nearest bound (≤10% → 75; ≤25% → 50; ≤50% → 25; else 0).",
+      score: calcRoomRangeFitCompatibility(dealFields, locationData, brandData) ?? "—"
     }
   };
+  for (const [factorKey, detail] of Object.entries(details)) {
+    if (!detail || typeof detail !== "object") continue;
+    detail.category = classifyBreakdownCategory(detail, factorKey);
+    detail.inAverage = detail.weight > 0 && detail.score != null && detail.score !== "" && detail.score !== "—";
+  }
+  return details;
 }
 
 /** Resolve a Preferred Brands value to the Brand Name string. If value is an Airtable record ID (linked record), fetches that Brand Basics record and returns its Brand Name; otherwise returns the value normalized. Always returns normalized string so same brand from different records matches. */
@@ -1682,114 +2065,6 @@ export async function getBrandBasicsRecordId(baseId, apiKey, brandName) {
   return rec ? rec.id : null;
 }
 
-/**
- * Strict pre-filters for recommended brand: brand must pass all to be eligible for full score computation.
- * Returns true if brand passes (or if data is missing to evaluate, we allow through).
- */
-function passesStrictPreFilters(dealFields, locationData, brandData, mp, si) {
-  const pf = brandData?.brandFit || {};
-  const bb = brandData?.brandBasics || {};
-
-  if (getKeyMoneyFilterValue(dealFields) === "yes" && !brandOffersKeyMoney(brandData)) return false;
-
-  const brandScale = str(bb[BF.brandBasics.hotelChainScale]);
-  const dealScale = str(loc(locationData, BF.locationDeal.hotelChainScale, "hotelChainScale") || dealFields[BF.locationDeal.hotelChainScale]);
-  if (brandScale && dealScale && !brandScale.toLowerCase().includes("unknown") && !dealScale.toLowerCase().includes("unknown")) {
-    const brandTier = getChainScaleTier(brandScale);
-    const dealTier = getChainScaleTier(dealScale);
-    if (Math.abs(brandTier - dealTier) > 1) return false;
-  }
-
-  const dealStruct = strOrFirst(mp?.["Preferred Deal Structure"]);
-  if (dealStruct) {
-    let brandAccepted = [];
-    const multiSelect = pf["Acceptable Agreements Type"];
-    if (Array.isArray(multiSelect) && multiSelect.length > 0) brandAccepted = multiSelect.map((v) => str(v)).filter(Boolean);
-    else if (typeof multiSelect === "string" && multiSelect.trim()) brandAccepted = [multiSelect.trim()];
-    else {
-      const boolCols = ["Franchise Only - Acceptable Agreements Type", "Third-Party Management Only - Acceptable Agreements Type", "Brand + Third-Party - Acceptable Agreements Type", "Brand-Managed - Acceptable Agreements Type", "Lease - Acceptable Agreements Type", "Joint Venture - Acceptable Agreements Type", "Flexible/Open - Acceptable Agreements Type"];
-      const formVals = ["Franchise Only", "Third-Party Management Only", "Brand + Third-Party Mgmt. (Combined)", "Brand-Managed Only", "Lease", "Joint Venture", "Flexible/Open"];
-      for (let i = 0; i < boolCols.length; i++) {
-        const v = pf[boolCols[i]];
-        if (v === true || v === "Yes" || v === "Acceptable") brandAccepted.push(formVals[i]);
-      }
-    }
-    if (brandAccepted.length > 0) {
-      const dealNorm = normalizeAgreementType(dealStruct);
-      const brandNorms = brandAccepted.map((b) => normalizeAgreementType(b));
-      if (dealNorm !== "flexible/open" && !brandNorms.includes("flexible/open")) {
-        if (dealNorm === "brand + third-party") {
-          const dealAccepts = ["brand-managed", "third-party management only", "brand + third-party"];
-          if (!dealAccepts.some((a) => brandNorms.includes(a))) return false;
-        } else if (!brandNorms.includes(dealNorm)) return false;
-      }
-    }
-  }
-
-  const dealProjectType = str(dealFields[BF.locationDeal.projectType] || "");
-  if (dealProjectType) {
-    const raw = pf["Acceptable Project Type"];
-    const brandList = Array.isArray(raw) ? raw : (typeof raw === "string" && raw.trim() ? [raw.trim()] : []);
-    if (brandList.length > 0) {
-      const normalized = (s) => String(s || "").trim().toLowerCase();
-      if (!brandList.some((b) => normalized(b) === normalized(dealProjectType))) return false;
-    }
-  }
-
-  const dealRooms = parseNum(loc(locationData, BF.locationDeal.totalRoomsKeys, "totalNumberOfRoomsKeys") ?? dealFields[BF.locationDeal.totalRoomsKeys]);
-  if (dealRooms != null && dealRooms > 0) {
-    const roomMin = parseNum(pf["Min - Room Count"]);
-    const roomMax = parseNum(pf["Max - Room Count"]);
-    if (roomMin != null && roomMax != null && (dealRooms < roomMin || dealRooms > roomMax)) return false;
-  }
-
-  const brandSvc = str(bb[BF.brandBasics.hotelServiceModel]);
-  const dealSvc = str(loc(locationData, BF.locationDeal.hotelServiceModel, "hotelServiceModel") || dealFields[BF.locationDeal.hotelServiceModel]);
-  if (brandSvc && dealSvc && !brandSvc.toLowerCase().includes("unknown") && !dealSvc.toLowerCase().includes("unknown")) {
-    if (brandSvc.toLowerCase() !== dealSvc.toLowerCase()) return false;
-  }
-
-  const dealBuilding = str(loc(locationData, BF.locationDeal.buildingType, "buildingType") || dealFields[BF.locationDeal.buildingType] || "");
-  if (dealBuilding) {
-    const raw = pf["Acceptable Building Types"];
-    const brandList = Array.isArray(raw) ? raw : (typeof raw === "string" && raw.trim() ? [raw.trim()] : []);
-    if (brandList.length > 0) {
-      const normalized = (s) => String(s || "").trim().toLowerCase();
-      if (!brandList.some((b) => normalized(b) === normalized(dealBuilding))) return false;
-    }
-  }
-
-  const stageRaw = str(dealFields[BF.locationDeal.stageOfDevelopment] || loc(locationData, BF.locationDeal.stageOfDevelopment, "stageOfDevelopment") || dealFields["Project Stage"] || "");
-  if (stageRaw) {
-    const raw = pf["Acceptable Project Stages"];
-    const brandList = Array.isArray(raw) ? raw : (typeof raw === "string" && raw.trim() ? [raw.trim()] : []);
-    if (brandList.length > 0) {
-      const sl = stageRaw.toLowerCase();
-      let dealCategory = null;
-      if (sl.includes("land") || sl.includes("control")) dealCategory = "land";
-      else if (sl.includes("entitlement") && !sl.includes("fully")) dealCategory = "entitlements";
-      else if (sl.includes("entitled")) dealCategory = "entitled";
-      else if (sl.includes("construction")) dealCategory = "construction";
-      else if (sl.includes("stabilized") || sl.includes("operating")) dealCategory = "stabilized";
-      if (dealCategory) {
-        const norm = (s) => String(s || "").trim().toLowerCase();
-        const accepted = brandList.some((v) => {
-          const b = norm(v);
-          if (dealCategory === "land") return b.includes("land") || b.includes("control");
-          if (dealCategory === "entitlements") return b.includes("entitlement") && !b.includes("fully");
-          if (dealCategory === "entitled") return b.includes("fully") && b.includes("entitled");
-          if (dealCategory === "construction") return b.includes("construction");
-          if (dealCategory === "stabilized") return b.includes("stabilized") || b.includes("operating");
-          return false;
-        });
-        if (!accepted) return false;
-      }
-    }
-  }
-
-  return true;
-}
-
 async function getAllBrandNames(baseId, apiKey) {
   const records = await getAllBrandBasicsRecords(baseId, apiKey);
   const names = [];
@@ -1801,7 +2076,36 @@ async function getAllBrandNames(baseId, apiKey) {
   return names;
 }
 
-/** Get candidate brand names with tier, filtered by chain scale (within 2 tiers). Sorted by tier proximity for faster early exit. */
+/** Resolve Brand Status eligibility for a Brand Basics Brand Name (Active/Live = eligible). */
+export async function resolveBrandStatusEligibilityByName(baseId, apiKey, brandName) {
+  const raw = normalizeBrandName(brandName);
+  if (!raw || !baseId || !apiKey) {
+    return { brandStatus: null, brandStatusEligible: false };
+  }
+  try {
+    const allRecords = await getAllBrandBasicsRecords(baseId, apiKey);
+    const rec = findBrandRecordByExactName(allRecords, raw);
+    if (!rec || !rec.fields) {
+      return { brandStatus: null, brandStatusEligible: false };
+    }
+    const statusRaw = rec.fields[BF.brandBasics.brandStatus] ?? rec.fields["Brand Status"];
+    let normalized = statusRaw;
+    if (Array.isArray(normalized)) normalized = normalized[0];
+    if (normalized && typeof normalized === "object" && normalized.name != null) {
+      normalized = normalized.name;
+    }
+    const brandStatus = str(normalized) || null;
+    return {
+      brandStatus,
+      brandStatusEligible: isBrandStatusActive(normalized),
+    };
+  } catch (e) {
+    console.warn("[brand-status] resolve failed:", e.message || e);
+    return { brandStatus: null, brandStatusEligible: true };
+  }
+}
+
+/** Get candidate brand names with tier, filtered by chain scale (within 2 tiers) and Brand Status Active/Live. */
 async function getCandidateBrandNames(baseId, apiKey, dealChainScale) {
   const records = await getAllBrandBasicsRecords(baseId, apiKey);
   const dealTier = dealChainScale ? getChainScaleTier(dealChainScale) : null;
@@ -1810,6 +2114,8 @@ async function getCandidateBrandNames(baseId, apiKey, dealChainScale) {
     const n = rec.fields && rec.fields["Brand Name"];
     const s = str(n);
     if (!s || s.toLowerCase() === "not specified") continue;
+    // Alternatives / Recommended only from Active/Live Brand Setup (Brand Explorer universe SoT).
+    if (!isBrandStatusActive(rec.fields && rec.fields[BF.brandBasics.brandStatus])) continue;
     let brandTier = 0;
     if (dealTier != null) {
       const brandScale = str(rec.fields && rec.fields[BF.brandBasics.hotelChainScale]);
@@ -1826,9 +2132,26 @@ async function getCandidateBrandNames(baseId, apiKey, dealChainScale) {
   return items.map((x) => x.name);
 }
 
+/** @param {object|null|undefined} brandData */
+function getBrandStatusEligibility(brandData) {
+  const statusRaw =
+    brandData?.brandBasics?.[BF.brandBasics.brandStatus] ??
+    brandData?.brandBasics?.["Brand Status"];
+  let normalized = statusRaw;
+  if (Array.isArray(normalized)) normalized = normalized[0];
+  if (normalized && typeof normalized === "object" && normalized.name != null) {
+    normalized = normalized.name;
+  }
+  const brandStatus = str(normalized) || null;
+  return {
+    brandStatus,
+    brandStatusEligible: isBrandStatusActive(normalized),
+  };
+}
+
 const RECOMMENDED_BRAND_CONCURRENCY = 4;
 /** Max brands to score – bounds worst-case time. Early exit if score >= EARLY_EXIT_THRESHOLD. */
-const RECOMMENDED_BRAND_MAX_SCORED = 48;
+const RECOMMENDED_BRAND_MAX_SCORED = 24;
 const EARLY_EXIT_THRESHOLD = 90;
 
 /**
@@ -1853,7 +2176,9 @@ export async function computeRecommendedBrand(dealFields, locationData, mpData, 
       if (preferred.has(normalizeBrandName(brandName))) return { skip: "preferred" };
       const brandData = await fetchBrandData(baseId, apiKey, brandName);
       if (!brandData) return { skip: "noData" };
-      const { scoreNew, breakdownNewDetails } = await computeMatchScoreForDealBrand(dealFields, locationData, mpData, siData, brandName, baseId, apiKey);
+      const { scoreNew, breakdownNewDetails } = await computeMatchScoreForDealBrand(
+        dealFields, locationData, mpData, siData, brandName, baseId, apiKey, brandData
+      );
       const s = scoreNew != null && scoreNew !== "" ? Number(scoreNew) : -1;
       return { brand: brandName, scoreNew: s, breakdownNewDetails };
     }));
@@ -1877,8 +2202,8 @@ export async function computeRecommendedBrand(dealFields, locationData, mpData, 
   return { found: false, totalBrands: candidateBrands.length, skippedPreferred, skippedNoData };
 }
 
-/** Max brands to score when computing top alternatives (same cap as single best). */
-const TOP_ALTERNATIVES_MAX_SCORED = 48;
+/** Max brands to score when computing top alternatives (interactive modal + cache refresh). */
+const TOP_ALTERNATIVES_MAX_SCORED = 24;
 
 /**
  * Compute top N alternative brands by Match Score New (excluding preferred). Same batching and filters as computeRecommendedBrand.
@@ -1891,13 +2216,16 @@ export async function computeTopAlternativeBrands(dealFields, locationData, mpDa
   const allCandidates = await getCandidateBrandNames(baseId, apiKey, dealScale);
   const candidateBrands = allCandidates.slice(0, TOP_ALTERNATIVES_MAX_SCORED);
   const scored = [];
+  const want = Math.max(1, limit);
 
   const processBatch = async (batch) => {
     return Promise.all(batch.map(async (brandName) => {
       if (preferred.has(normalizeBrandName(brandName))) return { skip: "preferred" };
       const brandData = await fetchBrandData(baseId, apiKey, brandName);
       if (!brandData) return { skip: "noData" };
-      const { scoreNew, breakdownNewDetails } = await computeMatchScoreForDealBrand(dealFields, locationData, mpData, siData, brandName, baseId, apiKey);
+      const { scoreNew, breakdownNewDetails } = await computeMatchScoreForDealBrand(
+        dealFields, locationData, mpData, siData, brandName, baseId, apiKey, brandData
+      );
       const s = scoreNew != null && scoreNew !== "" ? Number(scoreNew) : -1;
       return { brand: brandName, scoreNew: s, breakdownNewDetails };
     }));
@@ -1910,6 +2238,13 @@ export async function computeTopAlternativeBrands(dealFields, locationData, mpDa
       if (r.brand && !Number.isNaN(r.scoreNew) && r.scoreNew >= 0) {
         scored.push({ brand: r.brand, score: r.scoreNew, breakdownNewDetails: r.breakdownNewDetails || {} });
       }
+    }
+    // Early exit once we have enough strong alternatives (avoids scoring the full candidate list on every open).
+    if (scored.length >= want) {
+      scored.sort((a, b) => b.score - a.score);
+      const top = scored.slice(0, want);
+      if (top.length >= want && top.every((a) => a.score >= EARLY_EXIT_THRESHOLD)) break;
+      if (scored.length >= want * 3 && top[want - 1] && top[want - 1].score >= 70) break;
     }
   }
 
@@ -1928,66 +2263,127 @@ export async function computeTopAlternativeBrands(dealFields, locationData, mpDa
   return { preferredBrand, preferredScore, preferredBreakdown, alternatives };
 }
 
-export async function computeMatchScoreForDealBrand(dealFields, locationData, marketPerformanceData, strategicIntentData, brandName, baseId, apiKey) {
+export async function computeMatchScoreForDealBrand(
+  dealFields,
+  locationData,
+  marketPerformanceData,
+  strategicIntentData,
+  brandName,
+  baseId,
+  apiKey,
+  brandDataPrefetched = null
+) {
   if (!brandName || str(brandName) === "" || str(brandName).toLowerCase() === "not specified") {
-    return { score: 0, breakdown: {}, scoreNew: 0, breakdownNew: {}, breakdownNewDetails: {} };
+    return { score: 0, breakdown: {}, breakdownDetails: {}, scoreNew: 0, breakdownNew: {}, breakdownNewDetails: {} };
   }
   const mp = marketPerformanceData || {};
   const si = strategicIntentData || {};
-  const brandSpread = brandDifferentiatorSpread(brandName);
 
-  const brandData = await fetchBrandData(baseId, apiKey, brandName);
+  const brandData = brandDataPrefetched || (await fetchBrandData(baseId, apiKey, brandName));
   if (!brandData) {
-    return { score: 0, breakdown: {}, scoreNew: 0, breakdownNew: {}, breakdownNewDetails: {} };
+    const missingReason =
+      'No Brand Setup record found for "' +
+      str(brandName) +
+      '". Preferred brand names must match Brand Setup – Brand Basics "Brand Name" exactly (e.g. "Moxy Hotels", not "Moxy").';
+    return {
+      score: null,
+      breakdown: {},
+      breakdownDetails: {},
+      scoreNew: null,
+      breakdownNew: {},
+      breakdownNewDetails: {},
+      insufficientData: true,
+      insufficientDataReason: missingReason,
+      brandBasicsMissing: true,
+      brandStatus: null,
+      brandStatusEligible: false,
+    };
   }
 
-  const filterOutNoKeyMoney = getKeyMoneyFilterValue(dealFields) === "yes";
-  const keyMoneyGate = filterOutNoKeyMoney && !brandOffersKeyMoney(brandData);
-
-  const breakdown = {
-    MKT1: calcMKT1(dealFields, locationData, brandData),
-    MKT2: calcMKT2(dealFields, locationData, brandData),
-    SEG1: calcSEG1(dealFields, locationData, brandData),
-    SVC1: calcSVC1(dealFields, locationData, brandData),
-    SIZE1: calcSIZE1(dealFields, locationData, brandData),
-    OWN1: calcOWN1(dealFields, locationData, brandData, mp),
-    STR1: calcSTR1(dealFields, locationData, brandData, si),
-    AMN1: calcAMN1(dealFields, locationData, brandData),
-    FIN1: calcFIN1(dealFields, locationData, brandData, mp),
-    INC1: calcINC1(dealFields, locationData, brandData, mp, si),
-    PREF1: calcPREF1(dealFields, locationData, brandData, si),
-    KEY1: calcKEY1(dealFields, locationData, brandData, mp, si),
-    CAP1: calcCAP1(dealFields, locationData, brandData, mp),
-    TERM1: calcTERM1(dealFields, locationData, brandData, mp),
-    PROJ1: calcPROJ1(dealFields, locationData, brandData),
-    PROJ2: calcPROJ2(dealFields, locationData, brandData),
-    PROJ3: calcPROJ3(dealFields, locationData, brandData),
-    AGMT1: calcAGMT1(dealFields, locationData, brandData),
-    ESG1: calcESG1(dealFields, locationData, brandData)
+  const scored = await computeMatchScoreNew(dealFields, locationData, brandData, si, mp, brandName);
+  const preferredBonusApplied = isPreferredBrand(dealFields, brandData, si) ? BRAND_MATCH_PREFERRED_BONUS : 0;
+  const { brandStatus, brandStatusEligible } = getBrandStatusEligibility(brandData);
+  const densityCtx = {
+    score: scored.density?.score ?? null,
+    peerCount: scored.density?.peerCount ?? null,
+    grain: scored.density?.grain ?? null,
+    reason: scored.density?.reason ?? null,
   };
-  let weightedSum = 0, totalWeight = 0;
-  for (const [key, score] of Object.entries(breakdown)) {
-    if (score !== null && score !== undefined && WEIGHTS[key]) {
-      weightedSum += score * WEIGHTS[key];
-      totalWeight += WEIGHTS[key];
-    }
+  const breakdownNewDetails = sanitizeBrandMatchBreakdownDetails(
+    getBreakdownNewDetails(dealFields, locationData, brandData, si, mp, densityCtx)
+  );
+
+  let totalWithBonus = scored.total;
+  if (totalWithBonus != null && preferredBonusApplied > 0) {
+    totalWithBonus = Math.min(100, Math.round((totalWithBonus + preferredBonusApplied) * 10) / 10);
   }
-  const rawScore = totalWeight > 0 ? weightedSum / totalWeight : 0;
-  let brandOffset = 0;
-  if (brandName) {
-    let h = 0;
-    for (let i = 0; i < brandName.length; i++) h = (h * 31 + brandName.charCodeAt(i)) | 0;
-    brandOffset = ((h % 101) - 50) / 100;
+
+  if (breakdownNewDetails && typeof breakdownNewDetails === "object") {
+    breakdownNewDetails._meta = {
+      scoreModel: "weighted_average_exclude_nulls",
+      scoredWeightPct: scored.scoredWeightPct,
+      insufficientData: Boolean(scored.insufficientData),
+      minScoredWeightPct: BRAND_MATCH_MIN_SCORED_WEIGHT_PCT,
+      nullFactorHandling: "exclude_from_denominator",
+      preferredBonusApplied,
+      brandStatus,
+      brandStatusEligible,
+    };
   }
-  const withOffset = rawScore + brandOffset;
-  let withSpread = Math.min(100, Math.max(0, withOffset + brandSpread));
-  let finalScore = Math.round(withSpread * 10) / 10;
-  breakdown.BRND1 = brandSpread * 10;
-  const breakdownDetails = getBreakdownDetails(dealFields, locationData, brandData, mp, si);
-  const { total: scoreNew, factors: breakdownNew } = computeMatchScoreNew(dealFields, locationData, brandData, si, mp);
-  const breakdownNewDetails = getBreakdownNewDetails(dealFields, locationData, brandData, si, mp);
-  if (keyMoneyGate) {
-    return { score: 0, breakdown, breakdownDetails, keyMoneyGateReason: "Overall score is 0 because \"Filter out brands without key money?\" (Contact & Uploads) is Yes and this brand does not have \"Key Money / Upfront Incentive\" in Incentive Types (Brand Setup - Operational Support).", scoreNew: 0, breakdownNew, breakdownNewDetails };
+
+  const gate = evaluateMatchScoreV2Gates(dealFields, locationData, brandData, mp, si);
+  const breakdownNew = { ...scored.factors };
+
+  if (gate.failed) {
+    return {
+      score: 0,
+      breakdown: {},
+      breakdownDetails: {},
+      keyMoneyGateReason: gate.reason,
+      matchGateKey: gate.key,
+      matchGateReason: gate.reason,
+      preferredBonusApplied,
+      scoredWeightPct: scored.scoredWeightPct,
+      insufficientData: false,
+      scoreNew: 0,
+      breakdownNew,
+      breakdownNewDetails,
+      brandStatus,
+      brandStatusEligible,
+    };
   }
-  return { score: finalScore, breakdown, breakdownDetails, scoreNew, breakdownNew, breakdownNewDetails };
+  if (scored.insufficientData || scored.total == null || totalWithBonus == null) {
+    return {
+      score: null,
+      breakdown: {},
+      breakdownDetails: {},
+      preferredBonusApplied,
+      scoredWeightPct: scored.scoredWeightPct,
+      insufficientData: true,
+      insufficientDataReason:
+        "Insufficient data to publish a reliable Match Score (only " +
+        scored.scoredWeightPct +
+        "% of soft-factor weight could be scored; need ≥" +
+        BRAND_MATCH_MIN_SCORED_WEIGHT_PCT +
+        "%). Complete Brand Setup and deal inputs, then refresh.",
+      scoreNew: null,
+      breakdownNew,
+      breakdownNewDetails,
+      brandStatus,
+      brandStatusEligible,
+    };
+  }
+  return {
+    score: totalWithBonus,
+    breakdown: {},
+    breakdownDetails: {},
+    preferredBonusApplied,
+    scoredWeightPct: scored.scoredWeightPct,
+    insufficientData: false,
+    scoreNew: totalWithBonus,
+    breakdownNew,
+    breakdownNewDetails,
+    brandStatus,
+    brandStatusEligible,
+  };
 }

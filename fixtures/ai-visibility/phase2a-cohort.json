@@ -1,0 +1,240 @@
+{
+  "cohortId": "ai_visibility_phase2a_v1",
+  "label": "CONTROLLED VALIDATION SAMPLE — NOT PRODUCTION BENCHMARK",
+  "provider": "openai",
+  "notes": [
+    "Brand names must match Brand Basics Active/Live exactly.",
+    "Hyatt family and JW Marriott were not Active/Live at cohort freeze — excluded (not invented).",
+    "Parent/soft-brand collision coverage uses Marriott + Hilton families instead."
+  ],
+  "brands": [
+    "Autograph Collection",
+    "Tribute Portfolio",
+    "Marriott Hotels",
+    "AC Hotels by Marriott",
+    "Hilton Hotels & Resorts",
+    "Curio Collection by Hilton",
+    "Canopy by Hilton",
+    "Tapestry Collection by Hilton",
+    "Hotel Indigo",
+    "Kimpton Hotels",
+    "Design Hotels",
+    "Ascend Hotel Collection",
+    "Westin"
+  ],
+  "operators": [
+    "Arbor Lodging (CALA)",
+    "Hotel Equities (CALA)",
+    "Aimbridge Hospitality (LATAM)",
+    "Highgate",
+    "GHL Hoteles (GHL Holding)"
+  ],
+  "prompts": [
+    {
+      "promptId": "p2a_brand_mx_upper_upscale_v1",
+      "version": "1",
+      "intentTerritory": "Brand Selection",
+      "stakeholderRelevance": [
+        "brand",
+        "owner"
+      ],
+      "geography": "Mexico",
+      "country": "Mexico",
+      "region": "CALA",
+      "entityScope": "brand",
+      "active": true,
+      "text": "Which upper-upscale hotel brands should an owner consider for a 180-room conversion in Mexico?",
+      "geographyScope": "country"
+    },
+    {
+      "promptId": "p2a_brand_mx_conversion_v1",
+      "version": "1",
+      "intentTerritory": "Conversion",
+      "stakeholderRelevance": [
+        "brand",
+        "owner"
+      ],
+      "geography": "Mexico",
+      "country": "Mexico",
+      "region": "CALA",
+      "entityScope": "brand",
+      "active": true,
+      "text": "Which hotel brands are commonly considered for upper-upscale hotel conversions in Mexico?",
+      "geographyScope": "country"
+    },
+    {
+      "promptId": "p2a_brand_latam_mixed_use_v1",
+      "version": "1",
+      "intentTerritory": "Mixed Use",
+      "stakeholderRelevance": [
+        "brand",
+        "owner"
+      ],
+      "geography": "Latin America",
+      "region": "CALA",
+      "entityScope": "brand",
+      "active": true,
+      "text": "Which hotel brands are commonly considered for mixed-use hotel developments in Latin America?",
+      "geographyScope": "region"
+    },
+    {
+      "promptId": "p2a_brand_mx_branded_residences_v1",
+      "version": "1",
+      "intentTerritory": "Branded Residences",
+      "stakeholderRelevance": [
+        "brand",
+        "owner"
+      ],
+      "geography": "Mexico",
+      "country": "Mexico",
+      "region": "CALA",
+      "entityScope": "brand",
+      "active": true,
+      "text": "Which hotel brands are commonly associated with branded residence development in Mexico?",
+      "geographyScope": "country"
+    },
+    {
+      "promptId": "p2a_brand_caribbean_luxury_v1",
+      "version": "1",
+      "intentTerritory": "Chain Scale / Positioning",
+      "stakeholderRelevance": [
+        "brand",
+        "owner"
+      ],
+      "geography": "Caribbean",
+      "region": "CALA",
+      "entityScope": "brand",
+      "active": true,
+      "text": "Which luxury and upper-upscale hotel brands are commonly considered for resort developments in the Caribbean?",
+      "geographyScope": "subregion",
+      "subregion": "Caribbean"
+    },
+    {
+      "promptId": "p2a_brand_soft_brand_conversion_v1",
+      "version": "1",
+      "intentTerritory": "Conversion",
+      "stakeholderRelevance": [
+        "brand",
+        "owner"
+      ],
+      "geography": "Latin America",
+      "region": "CALA",
+      "entityScope": "brand",
+      "active": true,
+      "text": "Which soft-brand or collection brands are commonly considered when an owner wants affiliation flexibility for a conversion in Latin America?",
+      "geographyScope": "region"
+    },
+    {
+      "promptId": "p2a_brand_lifestyle_urban_v1",
+      "version": "1",
+      "intentTerritory": "Brand Selection",
+      "stakeholderRelevance": [
+        "brand",
+        "owner"
+      ],
+      "geography": "Mexico",
+      "country": "Mexico",
+      "region": "CALA",
+      "entityScope": "brand",
+      "active": true,
+      "text": "Which lifestyle hotel brands should an owner consider for an urban hotel project in Mexico City?",
+      "geographyScope": "country"
+    },
+    {
+      "promptId": "p2a_brand_select_service_v1",
+      "version": "1",
+      "intentTerritory": "Development Strategy",
+      "stakeholderRelevance": [
+        "brand",
+        "owner"
+      ],
+      "geography": "Caribbean",
+      "region": "CALA",
+      "entityScope": "brand",
+      "active": true,
+      "text": "Which select-service hotel brands are commonly considered for new-build projects in the Caribbean?",
+      "geographyScope": "subregion",
+      "subregion": "Caribbean"
+    },
+    {
+      "promptId": "p2a_op_caribbean_full_service_v1",
+      "version": "1",
+      "intentTerritory": "Operator Selection",
+      "stakeholderRelevance": [
+        "operator",
+        "owner"
+      ],
+      "geography": "Caribbean",
+      "region": "CALA",
+      "entityScope": "operator",
+      "active": true,
+      "text": "Which third-party hotel operators should an owner consider for a full-service hotel in the Caribbean?",
+      "geographyScope": "subregion",
+      "subregion": "Caribbean"
+    },
+    {
+      "promptId": "p2a_op_mx_lifestyle_v1",
+      "version": "1",
+      "intentTerritory": "Operator Selection",
+      "stakeholderRelevance": [
+        "operator",
+        "owner"
+      ],
+      "geography": "Mexico",
+      "country": "Mexico",
+      "region": "CALA",
+      "entityScope": "operator",
+      "active": true,
+      "text": "Which hotel operators have experience with lifestyle hotels in Mexico or the Caribbean?",
+      "geographyScope": "country"
+    },
+    {
+      "promptId": "p2a_op_caribbean_resort_v1",
+      "version": "1",
+      "intentTerritory": "Operator Selection",
+      "stakeholderRelevance": [
+        "operator",
+        "owner"
+      ],
+      "geography": "Caribbean",
+      "region": "CALA",
+      "entityScope": "operator",
+      "active": true,
+      "text": "Which third-party hotel management companies are commonly considered for resorts in the Caribbean?",
+      "geographyScope": "subregion",
+      "subregion": "Caribbean"
+    },
+    {
+      "promptId": "p2a_op_latam_hma_v1",
+      "version": "1",
+      "intentTerritory": "HMA vs Franchise",
+      "stakeholderRelevance": [
+        "operator",
+        "owner"
+      ],
+      "geography": "Latin America",
+      "region": "CALA",
+      "entityScope": "operator",
+      "active": true,
+      "text": "Which third-party hotel operators are commonly considered for hotel management agreements in Latin America?",
+      "geographyScope": "region"
+    },
+    {
+      "promptId": "p2a_both_mx_conversion_team_v1",
+      "version": "1",
+      "intentTerritory": "Conversion",
+      "stakeholderRelevance": [
+        "brand",
+        "operator",
+        "owner"
+      ],
+      "geography": "Mexico",
+      "country": "Mexico",
+      "region": "CALA",
+      "entityScope": "both",
+      "active": true,
+      "text": "For a mid-size hotel conversion in Mexico, which hotel brands and which third-party operators are commonly considered together during early owner evaluation?",
+      "geographyScope": "country"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manual Process Problem Section — Local Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,550&family=Inter+Tight:wght@450;500;550;600;650&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../public/marketing/old-home-manual-process.v1.css" />
+  <style>
+    html, body { margin: 0; background: #050a16; }
+    .preview-chrome {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px 24px 0;
+      color: rgba(255,255,255,.4);
+      font: 12px/1.4 "Inter Tight", system-ui, sans-serif;
+    }
+    .preview-chrome strong { color: rgba(255,255,255,.65); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="preview-chrome">
+    <strong>Local preview only</strong> — not published · not on Webflow ·
+    <span id="preview-width"></span>
+  </div>
+  <!--# include would not work; inline via fetch for local review -->
+  <div id="preview-mount"></div>
+  <script>
+    (function () {
+      var el = document.getElementById("preview-width");
+      function tick() {
+        if (el) el.textContent = "viewport " + window.innerWidth + "px";
+      }
+      tick();
+      window.addEventListener("resize", tick);
+      fetch("../public/marketing/old-home-manual-process.v1.html")
+        .then(function (r) {
+          if (!r.ok) throw new Error("Failed to load section HTML");
+          return r.text();
+        })
+        .then(function (html) {
+          document.getElementById("preview-mount").innerHTML = html;
+          var s = document.createElement("script");
+          s.src = "../public/marketing/old-home-manual-process.v1.js";
+          document.body.appendChild(s);
+        })
+        .catch(function (err) {
+          document.getElementById("preview-mount").innerHTML =
+            '<p style="color:#fdb52a;padding:40px;font-family:system-ui">Could not load section. Open this file via a local static server so fetch works, or use the inline preview.</p>';
+          console.warn(err);
+        });
+    })();
+  </script>
+</body>
+</html>

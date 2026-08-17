@@ -1,0 +1,1092 @@
+/**
+ * Dealality — Manual Process problem section (local preview v1.1 — compression)
+ * Scope: #dealality-manual-process only. No global leakage.
+ * Copy / meaning / colors / line behavior unchanged from v1.
+ */
+#dealality-manual-process {
+  --dmp-bg: #080f25;
+  --dmp-surface: #0c142c;
+  --dmp-surface-2: #090f22;
+  --dmp-border: rgba(155, 138, 251, 0.28);
+  --dmp-border-soft: rgba(255, 255, 255, 0.1);
+  --dmp-text: #ffffff;
+  --dmp-muted: rgba(255, 255, 255, 0.62);
+  --dmp-muted-2: rgba(255, 255, 255, 0.5);
+  --dmp-lavender: #9b8afb;
+  --dmp-lavender-bright: #c4b5fd;
+  --dmp-indigo: #6c72ff;
+  --dmp-indigo-deep: #4f46a5;
+  --dmp-yellow: #fdb52a;
+  --dmp-yellow-hover: #ffc04d;
+  --dmp-radius: 16px;
+  --dmp-max: 1180px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 56px 24px 52px;
+  background: var(--dmp-bg);
+  color: var(--dmp-text);
+  font-family: "Inter Tight", "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: visible;
+  overflow-y: visible;
+}
+
+#dealality-manual-process *,
+#dealality-manual-process *::before,
+#dealality-manual-process *::after {
+  box-sizing: border-box;
+}
+
+#dealality-manual-process .dmp-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--dmp-max);
+  margin: 0 auto;
+}
+
+#dealality-manual-process .dmp-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* —— Header —— */
+#dealality-manual-process .dmp-header {
+  text-align: center;
+  max-width: 54rem;
+  margin: 0 auto 26px;
+}
+
+#dealality-manual-process .dmp-badges {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 14px;
+}
+
+#dealality-manual-process .dmp-badge {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 15, 37, 0.92);
+  padding: 5px 15px 5px 5px;
+  box-shadow:
+    0 0 0 1px rgba(109, 92, 216, 0.1),
+    0 0 28px rgba(109, 92, 216, 0.18);
+}
+
+#dealality-manual-process .dmp-badge-left {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 32px;
+  border-radius: 10px;
+  background: #343259;
+  color: #fff;
+  font-family: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+#dealality-manual-process .dmp-badge-right {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 15px;
+  color: #fff;
+  font-family: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+#dealality-manual-process .dmp-eyebrow {
+  display: none !important;
+}
+
+#dealality-manual-process .dmp-h2 {
+  margin: 0 auto 18px;
+  max-width: min(54rem, 100%);
+  color: #fff;
+  font-family: "Plus Jakarta Sans", "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(26px, 3.5vw, 44px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+
+#dealality-manual-process .dmp-lead {
+  display: block;
+  margin: 0 auto;
+  max-width: 42rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  font-weight: 500;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  #dealality-manual-process .dmp-badge {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 6px;
+    padding: 8px 12px;
+  }
+
+  #dealality-manual-process .dmp-badge-right {
+    margin-left: 0;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+  }
+
+  #dealality-manual-process .dmp-h2 {
+    margin-bottom: 14px;
+    font-size: clamp(1.55rem, 5.2vw, 2.25rem);
+  }
+
+  #dealality-manual-process .dmp-lead {
+    font-size: 0.98rem;
+    padding: 0 0.5rem;
+  }
+}
+
+/* —— Journey —— */
+#dealality-manual-process .dmp-journey {
+  position: relative;
+  margin: 0 0 22px;
+}
+
+#dealality-manual-process .dmp-journey-row {
+  display: grid;
+  grid-template-columns: minmax(0, 38fr) minmax(110px, 14fr) minmax(0, 16fr) minmax(100px, 12fr) minmax(0, 26fr);
+  align-items: stretch;
+  gap: 0;
+  min-height: 360px;
+}
+
+#dealality-manual-process .dmp-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+  height: 100%;
+  padding: 12px 12px 12px;
+  border-radius: var(--dmp-radius);
+  border: 1px solid var(--dmp-border);
+  background: linear-gradient(180deg, #0e1630 0%, #0a1228 100%);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.26);
+  overflow: hidden;
+}
+
+#dealality-manual-process .dmp-card--opp {
+  overflow: visible;
+  z-index: 2;
+  height: auto;
+  align-self: center;
+  padding: 12px 12px 10px;
+}
+
+#dealality-manual-process .dmp-card--manual {
+  padding: 12px 10px;
+  justify-content: center;
+  overflow: visible;
+  /* Above path dots + connectors so lines/dots tuck under left edge (Features pattern) */
+  z-index: 4;
+}
+
+/* Match Many Futures .mf-hotel-title (“120-Key Upper-Upscale Hotel”) */
+#dealality-manual-process .dmp-card-title {
+  margin: 0 0 10px;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+#dealality-manual-process .dmp-card--selected {
+  border-color: rgba(253, 181, 42, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(253, 181, 42, 0.12),
+    0 14px 32px rgba(0, 0, 0, 0.28);
+}
+
+#dealality-manual-process .dmp-card--selected .dmp-card-title {
+  color: var(--dmp-yellow);
+}
+
+/* Opportunity body — compact portrait hotel + path list; foot sits below */
+#dealality-manual-process .dmp-opp-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(132px, 0.95fr);
+  gap: 10px 12px;
+  align-items: stretch;
+  flex: 0 0 auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+#dealality-manual-process .dmp-hotel-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #06101f;
+  min-height: 0;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  height: auto;
+}
+
+#dealality-manual-process .dmp-hotel-frame img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+#dealality-manual-process .dmp-paths {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: visible;
+}
+
+#dealality-manual-process .dmp-path {
+  position: relative;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 7px 18px 7px 2px;
+  /* Push dots into the connector underlap (sit behind Manual Process edge) */
+  margin-right: -20px;
+}
+
+#dealality-manual-process .dmp-path + .dmp-path::before {
+  /* Match FAQ / About hairline dividers (.oh-faq-div) */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 16px;
+  top: 0;
+  height: 1px;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+#dealality-manual-process .dmp-path-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: rgba(255, 255, 255, 0.92);
+  opacity: 1;
+}
+
+#dealality-manual-process .dmp-path-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#dealality-manual-process .dmp-path-label {
+  min-width: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#dealality-manual-process .dmp-path-dot {
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: var(--dmp-lavender-bright);
+  box-shadow:
+    0 0 0 2px #0a1228,
+    0 0 10px rgba(155, 138, 251, 0.85),
+    0 0 18px rgba(108, 114, 255, 0.45);
+  /* Stay behind Manual Process card (Features underlap pattern) */
+  z-index: 0;
+}
+
+#dealality-manual-process .dmp-opp-foot {
+  margin: 10px 0 0;
+  color: var(--dmp-muted-2);
+  font-size: 0.74rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+/* Manual process items — icon left of label, FAQ-style dividers */
+#dealality-manual-process .dmp-manual-list {
+  list-style: none;
+  margin: 0;
+  padding: 2px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+#dealality-manual-process .dmp-manual-item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  padding: 16px 8px;
+  text-align: left;
+}
+
+#dealality-manual-process .dmp-manual-item + .dmp-manual-item {
+  /* Match FAQ / About hairline dividers (.oh-faq-div) */
+  border-top: none;
+}
+
+#dealality-manual-process .dmp-manual-item + .dmp-manual-item::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 0;
+  height: 1px;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+#dealality-manual-process .dmp-manual-icon {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  /* Match Opportunity path SVG icons */
+  color: rgba(255, 255, 255, 0.92);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
+}
+
+#dealality-manual-process .dmp-manual-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#dealality-manual-process .dmp-manual-label {
+  flex: 1 1 auto;
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 550;
+  line-height: 1.25;
+  text-transform: capitalize;
+}
+
+/* Selected direction */
+#dealality-manual-process .dmp-selected-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(253, 181, 42, 0.22);
+  background: #06101f;
+  aspect-ratio: 16 / 8.5;
+  margin-bottom: 8px;
+}
+
+#dealality-manual-process .dmp-selected-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+#dealality-manual-process .dmp-decision-mark {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 8px;
+  color: var(--dmp-yellow);
+}
+
+#dealality-manual-process .dmp-decision-mark svg {
+  width: 26px;
+  height: 26px;
+  filter: drop-shadow(0 0 6px rgba(253, 181, 42, 0.35));
+}
+
+#dealality-manual-process .dmp-questions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#dealality-manual-process .dmp-q {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  align-items: start;
+}
+
+#dealality-manual-process .dmp-q-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--dmp-yellow);
+  color: var(--dmp-yellow);
+  font-size: 0.68rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+#dealality-manual-process .dmp-q-text {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  font-weight: 450;
+  text-align: left;
+}
+
+/* Connectors — sit behind cards; overlap card edges so lines touch the border */
+#dealality-manual-process .dmp-connectors {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  align-self: stretch;
+  pointer-events: none;
+}
+
+#dealality-manual-process .dmp-connectors--desktop.dmp-connectors--in {
+  margin-left: -14px;
+  /* Deeper underlap into Manual Process so circular trails land behind its left edge */
+  margin-right: -18px;
+  width: calc(100% + 32px);
+}
+
+#dealality-manual-process .dmp-connectors--desktop.dmp-connectors--out {
+  margin-left: -10px;
+  /* Keep dead-end X marks clear of Selected Direction yellow border */
+  margin-right: 4px;
+  width: calc(100% + 6px);
+}
+
+#dealality-manual-process .dmp-connectors svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+#dealality-manual-process .dmp-line-in {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(155, 138, 251, 0.65));
+}
+
+#dealality-manual-process .dmp-line-in--dash {
+  stroke-dasharray: 4 6;
+  opacity: 0.78;
+  filter: drop-shadow(0 0 3px rgba(196, 181, 253, 0.35));
+}
+
+#dealality-manual-process .dmp-line-out-solid {
+  fill: none;
+  stroke: var(--dmp-lavender-bright);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 7px rgba(196, 181, 253, 0.6));
+}
+
+#dealality-manual-process .dmp-line-out-dot {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* Dotted / dashed — reads as meandering dead-end trails */
+  stroke-dasharray: 2.2 4.8;
+  opacity: 0.88;
+}
+
+#dealality-manual-process .dmp-dead-end {
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.18));
+}
+
+#dealality-manual-process.is-animating .dmp-line-in,
+#dealality-manual-process.is-animating .dmp-line-out-solid,
+#dealality-manual-process.is-animating .dmp-line-out-dot {
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.33, 0.1, 0.2, 1);
+}
+
+#dealality-manual-process.is-drawn .dmp-line-in,
+#dealality-manual-process.is-drawn .dmp-line-out-solid,
+#dealality-manual-process.is-drawn .dmp-line-out-dot {
+  stroke-dashoffset: 0;
+}
+
+#dealality-manual-process.is-animating .dmp-line-out-dot {
+  transition-delay: 0.55s;
+  transition-duration: 0.95s;
+}
+
+#dealality-manual-process.is-animating .dmp-line-out-solid {
+  transition-delay: 0.85s;
+  transition-duration: 0.7s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dealality-manual-process.is-animating .dmp-line-in,
+  #dealality-manual-process.is-animating .dmp-line-out-solid,
+  #dealality-manual-process.is-animating .dmp-line-out-dot,
+  #dealality-manual-process.is-drawn .dmp-line-in,
+  #dealality-manual-process.is-drawn .dmp-line-out-solid,
+  #dealality-manual-process.is-drawn .dmp-line-out-dot {
+    transition: none !important;
+  }
+
+  #dealality-manual-process .dmp-line-in,
+  #dealality-manual-process .dmp-line-out-solid {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  #dealality-manual-process .dmp-line-out-dot {
+    stroke-dasharray: 2 4.5 !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
+
+#dealality-manual-process .dmp-connectors--mobile {
+  display: none;
+}
+
+/* —— Problem cards —— */
+#dealality-manual-process .dmp-problems {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 22px;
+}
+
+#dealality-manual-process .dmp-problem {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 14px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--dmp-border-soft);
+  background: linear-gradient(180deg, #0c142c 0%, #090f22 100%);
+  text-align: left;
+}
+
+/* Match Benefits `.mod-icon` size + radial glow */
+#dealality-manual-process .dmp-problem-icon {
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  min-height: 72px;
+  margin: 0;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: none;
+  color: #9b8afb;
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(140, 146, 255, 0.55) 0%,
+    rgba(108, 114, 255, 0.22) 42%,
+    rgba(108, 114, 255, 0.06) 68%,
+    transparent 78%
+  );
+  box-shadow: 0 0 32px rgba(108, 114, 255, 0.32);
+}
+
+#dealality-manual-process .dmp-problem-icon svg {
+  display: block;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+#dealality-manual-process .dmp-problem-h {
+  margin: 0;
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+}
+
+#dealality-manual-process .dmp-problem-p {
+  margin: 0;
+  color: var(--dmp-muted);
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+#dealality-manual-process .dmp-problem-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* —— Closing box (copy + Hero-yellow demo CTA, no arrow) —— */
+#dealality-manual-process .dmp-close {
+  margin: 0;
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(108, 114, 255, 0.12),
+    rgba(17, 27, 58, 0.4) 55%,
+    rgba(8, 15, 37, 0.2)
+  );
+  text-align: left;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) auto;
+  gap: 12px 20px;
+  align-items: center;
+  max-width: none;
+}
+
+#dealality-manual-process .dmp-close-copy {
+  min-width: 0;
+  max-width: 48rem;
+}
+
+#dealality-manual-process .dmp-close-h {
+  margin: 0 0 8px;
+  color: #fff;
+  font-family: "Plus Jakarta Sans", "Inter Tight", system-ui, sans-serif;
+  font-size: clamp(1.05rem, 1.7vw, 1.28rem);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+
+#dealality-manual-process .dmp-close-p {
+  margin: 0;
+  max-width: 42rem;
+  color: rgba(255, 255, 255, 0.68);
+  font-family: "Inter Tight", system-ui, sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+#dealality-manual-process .dmp-close-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Hero Request a Demo yellow */
+#dealality-manual-process .dmp-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid #d78e2c;
+  background: #d78e2c;
+  color: #0b1220;
+  font-family: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(215, 142, 44, 0.28);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease,
+    box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+#dealality-manual-process .dmp-cta:hover {
+  background: #e09a3a;
+  border-color: #e09a3a;
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(215, 142, 44, 0.34);
+}
+
+#dealality-manual-process .dmp-cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* —— Desktop mid —— */
+@media (max-width: 1199px) {
+  #dealality-manual-process .dmp-journey-row {
+    grid-template-columns: minmax(0, 38fr) minmax(88px, 13fr) minmax(0, 17fr) minmax(80px, 11fr) minmax(0, 28fr);
+    min-height: 340px;
+  }
+
+  #dealality-manual-process .dmp-opp-body {
+    grid-template-columns: minmax(0, 1.05fr) minmax(128px, 0.95fr);
+  }
+
+  #dealality-manual-process .dmp-path-label {
+    font-size: 0.78rem;
+  }
+
+  #dealality-manual-process .dmp-manual-icon {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+  }
+
+  #dealality-manual-process .dmp-q-text {
+    font-size: 0.76rem;
+  }
+}
+
+/* —— Tablet / mobile stack —— */
+@media (max-width: 900px) {
+  #dealality-manual-process {
+    padding: 44px 16px 40px;
+  }
+
+  #dealality-manual-process .dmp-header {
+    margin-bottom: 20px;
+  }
+
+  #dealality-manual-process .dmp-journey {
+    margin-bottom: 16px;
+  }
+
+  #dealality-manual-process .dmp-journey-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 0;
+  }
+
+  #dealality-manual-process .dmp-connectors--desktop {
+    display: none;
+  }
+
+  #dealality-manual-process .dmp-connectors--mobile {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 56px;
+  }
+
+  #dealality-manual-process .dmp-connectors--mobile.dmp-connectors--out {
+    height: 64px;
+  }
+
+  #dealality-manual-process .dmp-card {
+    width: 100%;
+    padding: 12px;
+  }
+
+  #dealality-manual-process .dmp-card-title {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+
+  /* Stacked opportunity on tablet/mobile */
+  #dealality-manual-process .dmp-opp-body {
+    grid-template-columns: minmax(0, 140px) minmax(0, 1fr);
+    gap: 10px 12px;
+    align-items: stretch;
+  }
+
+  #dealality-manual-process .dmp-hotel-frame {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+
+  #dealality-manual-process .dmp-hotel-frame img {
+    object-position: center center;
+  }
+
+  #dealality-manual-process .dmp-paths {
+    gap: 0;
+    height: 100%;
+  }
+
+  #dealality-manual-process .dmp-path {
+    min-height: 0;
+    padding: 6px 14px 6px 2px;
+    margin-right: 0;
+  }
+
+  #dealality-manual-process .dmp-path-dot {
+    display: none;
+  }
+
+  #dealality-manual-process .dmp-opp-foot {
+    margin-top: 8px;
+  }
+
+  /* Manual: compact horizontal rows */
+  #dealality-manual-process .dmp-card--manual {
+    max-width: none;
+    margin: 0;
+    padding: 8px 12px;
+  }
+
+  #dealality-manual-process .dmp-manual-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 6px;
+    text-align: left;
+  }
+
+  #dealality-manual-process .dmp-manual-icon {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+  }
+
+  #dealality-manual-process .dmp-manual-label {
+    font-size: 0.95rem;
+  }
+
+  /* Selected compact */
+  #dealality-manual-process .dmp-selected-media {
+    aspect-ratio: 21 / 9;
+    margin-bottom: 8px;
+  }
+
+  #dealality-manual-process .dmp-decision-mark {
+    margin-bottom: 6px;
+  }
+
+  #dealality-manual-process .dmp-decision-mark svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  #dealality-manual-process .dmp-questions {
+    gap: 5px;
+  }
+
+  /* Problem rows — not tall cards */
+  #dealality-manual-process .dmp-problems {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  #dealality-manual-process .dmp-problem {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 12px;
+  }
+
+  #dealality-manual-process .dmp-problem-icon {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    margin: 0;
+    box-shadow: 0 0 24px rgba(108, 114, 255, 0.28);
+  }
+
+  #dealality-manual-process .dmp-problem-icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  #dealality-manual-process .dmp-problem-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  #dealality-manual-process .dmp-problem-h {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  #dealality-manual-process .dmp-problem-p {
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+  #dealality-manual-process .dmp-close {
+    padding: 16px 16px;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  #dealality-manual-process .dmp-close-actions {
+    justify-content: flex-start;
+  }
+
+  #dealality-manual-process .dmp-close-h {
+    font-size: 1.08rem;
+  }
+
+  #dealality-manual-process .dmp-close-p {
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #dealality-manual-process {
+    padding: 32px 14px 30px;
+  }
+
+  #dealality-manual-process .dmp-header {
+    margin-bottom: 16px;
+  }
+
+  #dealality-manual-process .dmp-eyebrow {
+    margin-bottom: 10px;
+  }
+
+  #dealality-manual-process .dmp-h2 {
+    margin-bottom: 10px;
+  }
+
+  #dealality-manual-process .dmp-lead {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  #dealality-manual-process .dmp-hotel-frame {
+    aspect-ratio: 3 / 4;
+  }
+
+  #dealality-manual-process .dmp-connectors--mobile {
+    height: 48px;
+  }
+
+  #dealality-manual-process .dmp-connectors--mobile.dmp-connectors--out {
+    height: 56px;
+  }
+
+  #dealality-manual-process .dmp-selected-media {
+    aspect-ratio: 2 / 1;
+  }
+
+  #dealality-manual-process .dmp-problems {
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  #dealality-manual-process .dmp-problem {
+    padding: 6px 10px;
+    gap: 8px;
+  }
+
+  #dealality-manual-process .dmp-problem-p {
+    font-size: 0.71rem;
+    line-height: 1.24;
+  }
+
+  #dealality-manual-process .dmp-close {
+    padding: 14px 14px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  #dealality-manual-process .dmp-close-actions {
+    justify-content: flex-start;
+  }
+
+  #dealality-manual-process .dmp-close-h {
+    font-size: 1.02rem;
+  }
+
+  #dealality-manual-process .dmp-close-p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 320px) {
+  #dealality-manual-process {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  #dealality-manual-process .dmp-card {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #dealality-manual-process .dmp-h2 {
+    font-size: 1.4rem;
+  }
+
+  #dealality-manual-process .dmp-path-label,
+  #dealality-manual-process .dmp-q-text {
+    font-size: 0.8rem;
+  }
+
+  #dealality-manual-process .dmp-problem-p {
+    font-size: 0.72rem;
+    line-height: 1.26;
+  }
+}

@@ -1,0 +1,1181 @@
+{
+  "version": "v3-field-gap-corrective-backfill-dry-run",
+  "run_id": "cav3_2026-08-08T15-04-05-566Z",
+  "airtable_writes": false,
+  "safe_now": [
+    {
+      "field": "Latitude",
+      "records": 60,
+      "evidence": "V2.3 freeze official_brand_directory coords (Hilton+Choice)"
+    },
+    {
+      "field": "Longitude",
+      "records": 60,
+      "evidence": "V2.3 freeze official_brand_directory coords (Hilton+Choice)"
+    }
+  ],
+  "must_wait": [
+    {
+      "field": "Address",
+      "reason": "0 approved independent staging values in V3 cohort freeze; needs official property-page research (not SerpApi until clarified)"
+    },
+    {
+      "field": "Phone",
+      "reason": "0 staging values; SerpApi persistence not approved; not in INSERT_ALLOWED_FIELDS"
+    },
+    {
+      "field": "State / Region",
+      "reason": "0 staging values; geography resolver does not emit state; needs research/derivation before backfill"
+    },
+    {
+      "field": "Submarket",
+      "reason": "46 already written. Remaining 104 are geography No Match (often weak city labels / postal codes) — needs geography improvement, not blind backfill"
+    }
+  ],
+  "proposed_mutations": [
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recS2eqNCvnMpMzzt",
+      "property_identity_key": "ind_hilton_br_saodlgi",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -20.84625,
+        "Longitude": -49.40148
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recIeqiApY4vpUB7f",
+      "property_identity_key": "ind_hilton_br_bhzbrgi",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -19.9403129872,
+        "Longitude": -43.9481879466
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recqWEMHAuXwOqyNb",
+      "property_identity_key": "ind_hilton_br_ssabhlx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -14.282438,
+        "Longitude": -38.985328
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recwhVTxdhvCv1wCb",
+      "property_identity_key": "ind_hilton_br_saoghhx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.4381922927,
+        "Longitude": -46.4965192682
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "reciLi2tq3BIhfdHT",
+      "property_identity_key": "ind_hilton_br_cghemup",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.64611111,
+        "Longitude": -46.88083333
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recfDAJGcoxauJxPl",
+      "property_identity_key": "ind_hilton_br_grueslx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.56587,
+        "Longitude": -46.66539
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "reclmLIC818pB2Pd9",
+      "property_identity_key": "ind_hilton_br_grujapy",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.5713782654,
+        "Longitude": -46.6532685354
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recjmazWm5965aBRt",
+      "property_identity_key": "ind_hilton_br_saodtdt",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.583321,
+        "Longitude": -46.679413
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recTnHMpnPIOyJA5l",
+      "property_identity_key": "ind_hilton_br_saocrqq",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.571412,
+        "Longitude": -46.646038
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recJvd1UJ4c1as7pM",
+      "property_identity_key": "ind_hilton_br_saomohh",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.609899,
+        "Longitude": -46.697311
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rec1fw79f8aUTWeK2",
+      "property_identity_key": "ind_hilton_br_cghgigi",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.664,
+        "Longitude": -46.506346
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "reccGUsfN9kRAEIAE",
+      "property_identity_key": "ind_hilton_br_qcqjlhx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -23.65438,
+        "Longitude": -45.43444
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recMdjueecIt1GM6N",
+      "property_identity_key": "ind_hilton_br_igucudt",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -25.566813,
+        "Longitude": -54.558315
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rec1XynKuinAWon0c",
+      "property_identity_key": "ind_hilton_br_cwbspqq",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -25.39438,
+        "Longitude": -49.16297
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recbLz7jisO3ixJKJ",
+      "property_identity_key": "ind_hilton_br_cwbprqq",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -25.442666,
+        "Longitude": -49.279226
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recieWhBvtiGd0XXA",
+      "property_identity_key": "ind_hilton_br_rioabhh",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -22.9719765089,
+        "Longitude": -43.3748530476
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recSeeMnCyIKgFJFl",
+      "property_identity_key": "ind_hilton_br_riotaup",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -22.9427,
+        "Longitude": -43.1815
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recpSeWA3dxVh081M",
+      "property_identity_key": "ind_hilton_br_riocchh",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -22.9645789927,
+        "Longitude": -43.1734493221
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rec671wyU1R1NCwd7",
+      "property_identity_key": "ind_hilton_br_gigerlx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -22.9820178,
+        "Longitude": -43.1902278
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recOkFJTwXp5cEM2e",
+      "property_identity_key": "ind_hilton_br_xapscru",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -27.097659,
+        "Longitude": -52.620015
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/brazil/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recMYeup6L7VS42zt",
+      "property_identity_key": "ind_hilton_ar_mdzarhh",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -32.9004436,
+        "Longitude": -68.800403
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recMyqWraIzyk8j58",
+      "property_identity_key": "ind_hilton_ar_mdzahqq",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -32.891769,
+        "Longitude": -68.838099
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rec16ilv7rZfwVir7",
+      "property_identity_key": "ind_hilton_ar_nqngigi",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -38.9418375991,
+        "Longitude": -68.0598129783
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recoifDDrVv2amzjg",
+      "property_identity_key": "ind_hilton_ar_buepihh",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -34.432932,
+        "Longitude": -58.97468
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recPkrois3zMYopVr",
+      "property_identity_key": "ind_hilton_ar_buebaqq",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -34.6204171309,
+        "Longitude": -58.3722202371
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recA0OnqiTdbnZ6XY",
+      "property_identity_key": "ind_choice_br_br033",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -23.570714,
+        "Longitude": -46.69344
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/sao-paulo/quality-inn-hotels/br033",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recvhIpsKrxiUS5TZ",
+      "property_identity_key": "ind_choice_br_br110",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -19.85066,
+        "Longitude": -43.96363
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/minas-gerais/belo-horizonte/quality-inn-hotels/br110",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rec1mPqTbmc3vDeRb",
+      "property_identity_key": "ind_choice_br_br154",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -19.941663,
+        "Longitude": -43.935182
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/minas-gerais/belo-horizonte/radisson-blu-hotels/br154",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rectyDviM3ZZN32Az",
+      "property_identity_key": "ind_choice_br_br155",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -1.45492,
+        "Longitude": -48.48917
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/para/belem/radisson-hotels/br155",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rec7A6pSNhEB3Opbp",
+      "property_identity_key": "ind_choice_br_br156",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -23.602217,
+        "Longitude": -46.693064
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/cidade-moncoes/park-inn-hotels/br156",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recNlpAO3AWj4Z7t2",
+      "property_identity_key": "ind_choice_br_br036",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -20.335075,
+        "Longitude": -40.280761
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/espirito-santo/vila-velha/quality-inn-hotels/br036",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recpCfTqOv6itFNFI",
+      "property_identity_key": "ind_choice_br_br113",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -16.47216,
+        "Longitude": -54.609642
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/mato-grosso/rondonopolis/comfort-inn-hotels/br113",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recSxNVldlnjJtoMV",
+      "property_identity_key": "ind_choice_br_br157",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -22.89949,
+        "Longitude": -47.05516
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/campinas/radisson-red-hotels/br157",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recK15jslu2dckmUo",
+      "property_identity_key": "ind_choice_br_br114",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -22.315,
+        "Longitude": -49.060833
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/bauru/comfort-inn-hotels/br114",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recm7ho3a3CIdzIPM",
+      "property_identity_key": "ind_choice_br_br158",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -25.445719,
+        "Longitude": -49.28813
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/parana/curitiba/radisson-hotels/br158",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recuQz22dL01aupFI",
+      "property_identity_key": "ind_choice_br_br115",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -20.296761,
+        "Longitude": -40.29097
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/espirito-santo/vitoria/comfort-suites-hotels/br115",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recNh2PmEgv5pR55P",
+      "property_identity_key": "ind_choice_br_br117",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -23.989079,
+        "Longitude": -46.299995
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/santos/comfort-inn-hotels/br117",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recLR4JV7dAWSjWCo",
+      "property_identity_key": "ind_choice_br_br080",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -26.306473,
+        "Longitude": -48.851206
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/santa-catarina/joinville/comfort-inn-hotels/br080",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recC9nHZIY1zW9eDz",
+      "property_identity_key": "ind_choice_br_br083",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -3.132392,
+        "Longitude": -59.984143
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/amazonas/manaus/comfort-inn-hotels/br083",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recaYlsUOlsTvMAiB",
+      "property_identity_key": "ind_choice_br_br160",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -23.5628,
+        "Longitude": -46.67015
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/sao-paulo/radisson-hotels/br160",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rectNyY16wTvelhgk",
+      "property_identity_key": "ind_choice_br_br085",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -3.126361,
+        "Longitude": -59.983845
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/amazonas/manaus/sleep-inn-hotels/br085",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rectEkaDJ3x9JqAPh",
+      "property_identity_key": "ind_choice_br_br162",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -23.55996,
+        "Longitude": -46.67655
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/pinheiros/radisson-hotels/br162",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recwRc1AxW0TVg13C",
+      "property_identity_key": "ind_choice_br_br163",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -23.57192,
+        "Longitude": -46.64645
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/jardins/radisson-hotels/br163",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rechBjz0p4PTRvezo",
+      "property_identity_key": "ind_choice_br_br164",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -30.020333,
+        "Longitude": -51.200084
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/rio-grande-do-sul/porto-alegre/park-plaza-hotels/br164",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recynLlFMAw907zWa",
+      "property_identity_key": "ind_choice_br_br008",
+      "family": "Choice",
+      "fields": {
+        "Latitude": -23.492128,
+        "Longitude": -46.846229
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.choicehotels.com/sao-paulo/barueri/quality-inn-hotels/br008",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "reclkZBEvj63oKpyf",
+      "property_identity_key": "ind_hilton_ar_buesidt",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -34.59698,
+        "Longitude": -58.3726926
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recankFKW2jDzYJyT",
+      "property_identity_key": "ind_hilton_ar_buehihh",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -34.60536047586,
+        "Longitude": -58.36363434791
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recm2CVy0z8pzROCi",
+      "property_identity_key": "ind_hilton_ar_sdegigi",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -27.783429,
+        "Longitude": -64.2659742
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recF2lKCN5fKqFeGG",
+      "property_identity_key": "ind_hilton_ar_nqncllx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -40.73467,
+        "Longitude": -71.6759
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "reczXjoViMZ3ZuE2S",
+      "property_identity_key": "ind_hilton_ar_brchxhx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -41.1339449953,
+        "Longitude": -71.3123129185
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "reczi7FIm6KEyFpTy",
+      "property_identity_key": "ind_hilton_ar_tucgigi",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -26.832682,
+        "Longitude": -65.221611
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rec0tOszMberZDZkB",
+      "property_identity_key": "ind_hilton_ar_slackgi",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -24.7929621,
+        "Longitude": -65.482922
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "reckr4v5PSFA06ejD",
+      "property_identity_key": "ind_hilton_ar_psspvlx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": -27.607655,
+        "Longitude": -56.438475
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/argentina/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recMU0Bvms03MqCst",
+      "property_identity_key": "ind_hilton_jm_mbjshlx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": 18.487597,
+        "Longitude": -77.928643
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/jamaica/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recdgHF1EGWyLJomY",
+      "property_identity_key": "ind_hilton_jm_mbjbblx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": 18.176108,
+        "Longitude": -78.032954
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/jamaica/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recv0uYp9RXL05exh",
+      "property_identity_key": "ind_hilton_jm_kinshlx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": 18.008262,
+        "Longitude": -76.784007
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/jamaica/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rec07xNs8B2wqs0HN",
+      "property_identity_key": "ind_hilton_jm_kinocup",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": 17.964159,
+        "Longitude": -76.793284
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/jamaica/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "rechIYfAGBg8n2SHL",
+      "property_identity_key": "ind_hilton_jm_kinthlx",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": 18.183947,
+        "Longitude": -76.423819
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/jamaica/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "recEa5M6cwcotgKVD",
+      "property_identity_key": "ind_hilton_bb_bgicrgv",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": 13.105623,
+        "Longitude": -59.446055
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/barbados/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "operation": "UPDATE_BLANK_FILL",
+      "airtable_record_id": "reccXFujm2fvIXYTt",
+      "property_identity_key": "ind_hilton_bb_bgihihh",
+      "family": "Hilton",
+      "fields": {
+        "Latitude": 13.0793,
+        "Longitude": -59.6124
+      },
+      "provenance": {
+        "source_class": "official_brand_directory",
+        "source_type": "official_brand_directory",
+        "source_url": "https://www.hilton.com/en/locations/barbados/",
+        "serpapi_used": false,
+        "research_run_id": "cav3_2026-08-08T15-04-05-566Z",
+        "note": "Corrective backfill from V2.3 freeze physical.lat/lng already present at Phase 1; blocked by blanket rights"
+      },
+      "write_class": "CORROBORATED_WRITE"
+    }
+  ],
+  "summary": {
+    "proposed_update_records": 60,
+    "proposed_field_writes": 120
+  }
+}

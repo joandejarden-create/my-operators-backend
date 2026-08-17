@@ -1,0 +1,1994 @@
+{
+  "version": "census-autopilot-v1-field-routing-registry",
+  "contract_source": "production-census-field-contract-v111.js#buildFieldContractEntries",
+  "plans_source": "clean-census/field-research.js#FIELD_RESEARCH_PLANS",
+  "researchable_count": 63,
+  "non_researchable_count": 32,
+  "researchable": [
+    {
+      "field": "Property Name",
+      "group": "A. Core Identity",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Canonical Property Name",
+      "group": "A. Core Identity",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Property Identity Key",
+      "group": "A. Core Identity",
+      "primary": "contract_required",
+      "tags": [
+        "internal_only",
+        "source_only"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Phone",
+      "group": "A. Core Identity",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Official Property URL",
+      "group": "A. Core Identity",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Future Opening Flag",
+      "group": "A. Core Identity",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Country",
+      "group": "B. Geography",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "State / Region",
+      "group": "B. Geography",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "City",
+      "group": "B. Geography",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Address",
+      "group": "B. Geography",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Latitude",
+      "group": "B. Geography",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Present for many rows; never invent 0,0",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "coordinates",
+        "plan": {
+          "fields": [
+            "Latitude",
+            "Longitude"
+          ],
+          "never": [
+            "copy legacy lat/lng"
+          ],
+          "priority": [
+            "official property coordinates",
+            "permitted independent geocode of official address"
+          ]
+        },
+        "note": "Present for many rows; never invent 0,0",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Longitude",
+      "group": "B. Geography",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Present for many rows; never invent 0,0",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "coordinates",
+        "plan": {
+          "fields": [
+            "Latitude",
+            "Longitude"
+          ],
+          "never": [
+            "copy legacy lat/lng"
+          ],
+          "priority": [
+            "official property coordinates",
+            "permitted independent geocode of official address"
+          ]
+        },
+        "note": "Present for many rows; never invent 0,0",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Market / Submarket",
+      "group": "B. Geography",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane — Dealality geography, not STR",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "marketSubmarket",
+        "plan": {
+          "fields": [
+            "Market",
+            "Submarket"
+          ],
+          "rule": "Do not recreate STR market definitions from legacy; use Dealality-owned geography or Legal/Source Review Required"
+        },
+        "note": "First enrichment lane — Dealality geography, not STR",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Current Brand",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "brand",
+        "plan": null,
+        "note": "Official property / brand directory",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Brand Family",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Affiliation Status",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "status",
+        "plan": null,
+        "note": "Official bookable / current property page",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Affiliation As-Of Date",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_optional",
+      "tags": [
+        "source_only"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Affiliation Start Date",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_optional",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Blocked in first enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Prior Brand",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Family / Source Family",
+      "group": "D. Source Evidence",
+      "primary": "contract_required",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Source URL",
+      "group": "D. Source Evidence",
+      "primary": "contract_required",
+      "tags": [
+        "source_only"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Source Type",
+      "group": "D. Source Evidence",
+      "primary": "contract_optional",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Discovery Date",
+      "group": "D. Source Evidence",
+      "primary": "contract_optional",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Hotel Description - Source Text",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Hotel Description - AI Summary",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane — governed AI only",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "First enrichment lane — governed AI only",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Short Property Summary",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Not in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Not in first lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Property Positioning",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Not in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Not in first lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Amenities - Source Text",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "amenities",
+        "plan": {
+          "field": "Amenities",
+          "values": [
+            "Yes",
+            "No — Explicit",
+            "Unknown",
+            "Conflicting Evidence"
+          ],
+          "rule": "Absence from one page ≠ No"
+        },
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Amenities - Structured Tags",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "amenities",
+        "plan": {
+          "field": "Amenities",
+          "values": [
+            "Yes",
+            "No — Explicit",
+            "Unknown",
+            "Conflicting Evidence"
+          ],
+          "rule": "Absence from one page ≠ No"
+        },
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "F&B Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "amenities",
+        "plan": null,
+        "note": "Official dining / property amenities pages",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Meeting Space Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "amenities",
+        "plan": null,
+        "note": "Official meetings/events pages",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Resort / Leisure Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Extended Stay Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Branded Residences Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Mixed-Use Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Fitness Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "amenities",
+        "plan": null,
+        "note": "Over-modeled — keep hidden; do not populate in first lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Pool Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "amenities",
+        "plan": null,
+        "note": "Over-modeled — keep hidden; do not populate in first lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Parking Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Over-modeled — keep hidden; do not populate in first lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Airport Shuttle Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Over-modeled — keep hidden; do not populate in first lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Spa Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "amenities",
+        "plan": null,
+        "note": "Property amenities/wellness — over-modeled flag; research evidence only",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Beach / Waterfront Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Over-modeled — keep hidden; do not populate in first lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Hotel Class / Segment",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Not in first lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Not in first lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Property Type",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Asset Context",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "First enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Rooms / Keys",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "rooms",
+        "plan": {
+          "field": "rooms",
+          "never": [
+            "infer from room-type listing counts",
+            "legacy census rooms"
+          ],
+          "priority": [
+            "official property page",
+            "official development page",
+            "owner announcement",
+            "operator page",
+            "official press release",
+            "high-quality trade source (corroboration)"
+          ]
+        },
+        "note": "Blocked in first enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Rooms Source URL",
+      "group": "G. Asset Context",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Building / Asset Notes",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Opening Date",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "openDate",
+        "plan": {
+          "field": "Open Date",
+          "kinds": [
+            "announced",
+            "expected",
+            "actual",
+            "now_open"
+          ],
+          "priority": [
+            "official opening announcement",
+            "official hotel page",
+            "parent/company release",
+            "owner/operator release",
+            "reliable dated trade press"
+          ]
+        },
+        "note": "Blocked in first enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Opening Date Source URL",
+      "group": "G. Asset Context",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Renovation / Conversion Status",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Renovation / Conversion Date",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Blocked in first enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Renovation / Conversion Source URL",
+      "group": "G. Asset Context",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Owner Name",
+      "group": "H. Owner / Developer",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "owner",
+        "plan": {
+          "field": "Owner",
+          "escalate": [
+            "opaque UBO"
+          ],
+          "priority": [
+            "owner official source",
+            "transaction announcement",
+            "official development source",
+            "first-party validation",
+            "public corporate/government source where permitted"
+          ]
+        },
+        "note": "Blocked in first enrichment lane",
+        "escalate_opaque": true,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Owner Type",
+      "group": "H. Owner / Developer",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Owner Source URL",
+      "group": "H. Owner / Developer",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Developer Name",
+      "group": "H. Owner / Developer",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": "Blocked in first enrichment lane",
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Developer Source URL",
+      "group": "H. Owner / Developer",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Operator / Management Company",
+      "group": "I. Operator / Management",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": "managementCompany",
+        "plan": {
+          "field": "Management Company",
+          "never": [
+            "infer operator from brand affiliation"
+          ],
+          "priority": [
+            "operator official portfolio",
+            "owner announcement",
+            "operator press release",
+            "brand development announcement",
+            "management agreement announcement"
+          ]
+        },
+        "note": "Blocked in first enrichment lane",
+        "escalate_opaque": true,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Operator Type",
+      "group": "I. Operator / Management",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Management Model",
+      "group": "I. Operator / Management",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Operator Source URL",
+      "group": "I. Operator / Management",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane B — Independent Property Research",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Independent Hotel Flag",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    },
+    {
+      "field": "Independent Classification",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": true,
+      "route": {
+        "preferred_lane": "Lane A — Structured Official",
+        "fallback_lane": "Lane B — Independent Property Research",
+        "escalation_lane": "Lane C — Deep Research Escalation",
+        "plan_key": null,
+        "plan": null,
+        "note": null,
+        "escalate_opaque": false,
+        "never_sources": [
+          "legacy_census",
+          "cvent",
+          "str_client_derived"
+        ]
+      }
+    }
+  ],
+  "non_researchable": [
+    {
+      "field": "Brand Explorer Slug if mapped",
+      "group": "C. Brand / Affiliation",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Brand Confidence",
+      "group": "C. Brand / Affiliation",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Source Confidence",
+      "group": "D. Source Evidence",
+      "primary": "governance_field",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "VIC Freeze Hash",
+      "group": "D. Source Evidence",
+      "primary": "contract_required",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Hotel Property Source Evidence",
+      "group": "D. Source Evidence",
+      "primary": "internal_only",
+      "tags": [],
+      "notes": "Link inverse",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Rooms Confidence",
+      "group": "G. Asset Context",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Owner Confidence",
+      "group": "H. Owner / Developer",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Developer Confidence",
+      "group": "H. Owner / Developer",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Ownership Review Status",
+      "group": "H. Owner / Developer",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Operator Confidence",
+      "group": "I. Operator / Management",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Operator Review Status",
+      "group": "I. Operator / Management",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Possible Operator Target",
+      "group": "I. Operator / Management",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Brand-Unassigned Reason",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Possible Soft-Brand Candidate",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Possible Brand Conversion Candidate",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Possible Owner Outreach Target",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Possible Financing Target",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Possible Dealality Opportunity",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Data Eligible",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Identity Confidence",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Production Use Status",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "contract_required",
+        "internal_only"
+      ],
+      "notes": "Must remain Census Only / Not Owner-Facing until product approval",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Data Confidence Tier",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Relationship Confidence",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Last Reviewed Date",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Next Review Needed",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Enrichment Status",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "contract_required"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Enrichment Priority",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Steward Review Status",
+      "group": "L. Steward Review",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Human Review Required",
+      "group": "L. Steward Review",
+      "primary": "governance_field",
+      "tags": [
+        "contract_required"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Notes for Steward",
+      "group": "L. Steward Review",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": "",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Hotel Property Brand Affiliations",
+      "group": "L. Steward Review",
+      "primary": "internal_only",
+      "tags": [],
+      "notes": "Link inverse",
+      "researchable": false,
+      "route": null
+    },
+    {
+      "field": "Hotel Property Steward Review",
+      "group": "L. Steward Review",
+      "primary": "internal_only",
+      "tags": [],
+      "notes": "Link inverse",
+      "researchable": false,
+      "route": null
+    }
+  ]
+}

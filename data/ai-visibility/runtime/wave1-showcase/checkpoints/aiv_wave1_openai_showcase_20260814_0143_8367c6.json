@@ -1,0 +1,3288 @@
+{
+  "version": "ai_visibility_wave1_orchestrator_v1",
+  "wave1Id": "aiv_wave1_openai_showcase_20260814_0143_8367c6",
+  "batchId": "aiv_wave1_openai_showcase_20260814_0143_8367c6",
+  "baselineSeriesId": "aiv_wave1_openai_peer_v2_showcase_prompts_v1",
+  "peerSetId": "peers_uu_collection_lifestyle_owner_decision_v2",
+  "peerSetVersion": "2",
+  "provider": "openai",
+  "model": "gpt-5.6",
+  "metricVersion": "ai_visibility_metrics_v1",
+  "promptLibraryVersion": "showcase_prompts_v1",
+  "planVersion": "ai_visibility_wave1_showcase_plan_v1",
+  "hardCapUsd": 125,
+  "storeRoot": "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\runtime\\wave1-showcase",
+  "status": "completed",
+  "createdAt": "2026-08-14T01:43:43.371Z",
+  "updatedAt": "2026-08-14T03:43:57.636Z",
+  "activationGate": {
+    "GLOBAL_EN_ACTIVATION_GATE": "PASS",
+    "RESULT": "PASS",
+    "REASONS": [],
+    "NOTES": [
+      "Recommendation content desirability is not an activation criterion.",
+      "Citation absence in a response is not an automatic failure (Citation Rate PARTIAL)."
+    ],
+    "COUNTS": {
+      "planned": 12,
+      "succeeded": 12,
+      "failed": 0,
+      "retries": 6,
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0,
+      "parseFailures": 0,
+      "storageFailures": 0,
+      "identityMissing": 0,
+      "resolverMalfunctions": 0,
+      "classifierMalfunctions": 0,
+      "citationCorruptions": 0
+    },
+    "COST": {
+      "GLOBAL_EN_ACTUAL": 5.48685,
+      "PROJECTION": {
+        "averagePerCall": 0.457237,
+        "projected84": 38.4079,
+        "likelyHardCapBreach": false,
+        "method": "first_slot_average_times_84",
+        "hardCapUsd": 125,
+        "plannedLogicalCalls": 84,
+        "maxAttempts": 168
+      },
+      "HARD_CAP": 125
+    },
+    "evaluatedAt": "2026-08-14T02:10:14.549Z"
+  },
+  "costLedger": {
+    "hardCapUsd": 125,
+    "actualUsd": 38.405555,
+    "inputTokens": 3998975,
+    "outputTokens": 277342,
+    "totalTokens": 4276317,
+    "providerAttempts": 95,
+    "logicalCallsCharged": 84,
+    "capBreached": false,
+    "stoppedReason": null
+  },
+  "completedFingerprints": {
+    "18c17ebfdbd7db84cf254bd9": {
+      "status": "completed",
+      "runId": "run_bac092b929f44bf6",
+      "responseId": "resp_b26553be417f47bd",
+      "evidenceId": "ev_462d6e79076f483c",
+      "slot": "GLOBAL_EN",
+      "cost": 0.30021,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T01:46:46.292Z"
+    },
+    "055e743962880bf527279eb8": {
+      "status": "completed",
+      "runId": "run_83fe4c10721f4d9b",
+      "responseId": "resp_ff8d0c668dfa4a0d",
+      "evidenceId": "ev_9cb26cd5746149ce",
+      "slot": "GLOBAL_EN",
+      "cost": 0.677,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T01:51:49.461Z"
+    },
+    "402d0d144b029951d2928339": {
+      "status": "completed",
+      "runId": "run_494630e9df9f4c66",
+      "responseId": "resp_d2a3b12829a54eec",
+      "evidenceId": "ev_f836d016d1a94365",
+      "slot": "GLOBAL_EN",
+      "cost": 0.32975,
+      "retries": 1,
+      "providerAttempts": 2,
+      "completedAt": "2026-08-14T01:57:46.880Z"
+    },
+    "ed71cf4696bf2c601838d687": {
+      "status": "completed",
+      "runId": "run_24e8030708c44678",
+      "responseId": "resp_984b739b271144be",
+      "evidenceId": "ev_65f5fce2268e434b",
+      "slot": "GLOBAL_EN",
+      "cost": 0.484615,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:00:27.900Z"
+    },
+    "3719c4ae0002b32ed27c1c36": {
+      "status": "completed",
+      "runId": "run_0d8a9b16d06a4fa5",
+      "responseId": "resp_1c15faf5e19a4fa4",
+      "evidenceId": "ev_856ac5855e924551",
+      "slot": "GLOBAL_EN",
+      "cost": 0.4365,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:01:38.600Z"
+    },
+    "2cd2b7590e082461ea905c00": {
+      "status": "completed",
+      "runId": "run_9d55f31eed7344eb",
+      "responseId": "resp_1a89e8b3739d4bf3",
+      "evidenceId": "ev_7a03df1e4d984b5c",
+      "slot": "GLOBAL_EN",
+      "cost": 0.46668,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:02:54.839Z"
+    },
+    "ae1316473634c93f4480cf2e": {
+      "status": "completed",
+      "runId": "run_43690cbe5a894a6b",
+      "responseId": "resp_04c1478d1d044416",
+      "evidenceId": "ev_8e2c34c969344572",
+      "slot": "GLOBAL_EN",
+      "cost": 0.44532,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:04:05.712Z"
+    },
+    "e9f97a0f821dc55af2ddd29d": {
+      "status": "completed",
+      "runId": "run_582d672dfc9b4c84",
+      "responseId": "resp_ae929e51b9344274",
+      "evidenceId": "ev_faa0eed4223e4507",
+      "slot": "GLOBAL_EN",
+      "cost": 0.522475,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:05:34.034Z"
+    },
+    "831b0ac0f1bac059ae8b0d76": {
+      "status": "completed",
+      "runId": "run_c891cf5b310f49dd",
+      "responseId": "resp_37ae7c60e84540f6",
+      "evidenceId": "ev_2cb45a69764642f4",
+      "slot": "GLOBAL_EN",
+      "cost": 0.6945,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:07:45.088Z"
+    },
+    "b102adf5632c7f271e6454d0": {
+      "status": "completed",
+      "runId": "run_c05edbce202144a1",
+      "responseId": "resp_91f2e88c96f64693",
+      "evidenceId": "ev_47e9e6ef3f904935",
+      "slot": "GLOBAL_EN",
+      "cost": 0.484075,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:08:53.352Z"
+    },
+    "a9dc9cb6e7c6661c964254b8": {
+      "status": "completed",
+      "runId": "run_eb9bf765374b4cc5",
+      "responseId": "resp_b8b248ca0e3c40fa",
+      "evidenceId": "ev_156b4f9baabc441b",
+      "slot": "GLOBAL_EN",
+      "cost": 0.36933,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:09:44.040Z"
+    },
+    "1b5612bdd92d0d971e4aea38": {
+      "status": "completed",
+      "runId": "run_3a56b42c749149ec",
+      "responseId": "resp_ea8a7997a8734821",
+      "evidenceId": "ev_372958a9940349fb",
+      "slot": "GLOBAL_EN",
+      "cost": 0.276395,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:10:14.542Z"
+    },
+    "d649e3838e1138fbb24dcc5e": {
+      "status": "completed",
+      "runId": "run_6333ab4d1a28484e",
+      "responseId": "resp_c006e97144ba424e",
+      "evidenceId": "ev_ed4f33b847e5410b",
+      "slot": "CALA_EN",
+      "cost": 0.38445,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:11:19.215Z"
+    },
+    "8b8a007a075cad5ed668225e": {
+      "status": "completed",
+      "runId": "run_c0e88ed186634ad4",
+      "responseId": "resp_59fa521266884c20",
+      "evidenceId": "ev_30d3b47f6ec44cf6",
+      "slot": "CALA_EN",
+      "cost": 0.310495,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:12:02.735Z"
+    },
+    "302bbc99ea62f6e668aec18d": {
+      "status": "completed",
+      "runId": "run_ec7167b6afb7433d",
+      "responseId": "resp_35764cc62dcd4fd1",
+      "evidenceId": "ev_68b9f85dfbaa4473",
+      "slot": "CALA_EN",
+      "cost": 0.56509,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:13:52.916Z"
+    },
+    "fea1cb1d789a1e75987ea3b8": {
+      "status": "completed",
+      "runId": "run_2290c82013a049d2",
+      "responseId": "resp_1a565e92032b454f",
+      "evidenceId": "ev_cbb006aef6004278",
+      "slot": "CALA_EN",
+      "cost": 0.35158,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:14:38.366Z"
+    },
+    "2b9a56cf84cffb4a586a8e31": {
+      "status": "completed",
+      "runId": "run_0b1cb9e33f704ea5",
+      "responseId": "resp_4b61323170cb4197",
+      "evidenceId": "ev_d403248f8e4e4bb6",
+      "slot": "CALA_EN",
+      "cost": 0.36916,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:15:53.131Z"
+    },
+    "0cd4393dbdd25724f1e2ad87": {
+      "status": "completed",
+      "runId": "run_624af48179844d00",
+      "responseId": "resp_0d418140dbca4247",
+      "evidenceId": "ev_a10e375d59434240",
+      "slot": "CALA_EN",
+      "cost": 0.495735,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:17:11.354Z"
+    },
+    "dd3844b28f82b38f06761b78": {
+      "status": "completed",
+      "runId": "run_a64c7586ec164b7f",
+      "responseId": "resp_a254a2a8ad41435f",
+      "evidenceId": "ev_513915cb1cfc42d8",
+      "slot": "CALA_EN",
+      "cost": 0.51162,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:18:49.080Z"
+    },
+    "a689d21d5aa9225e1c351e4d": {
+      "status": "completed",
+      "runId": "run_5a564a0d3d3b4cfc",
+      "responseId": "resp_be4047891de5492d",
+      "evidenceId": "ev_6ecafb0dff6244a7",
+      "slot": "CALA_EN",
+      "cost": 0.414605,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:19:46.330Z"
+    },
+    "2a41b12b266c4a3a4cf205f5": {
+      "status": "completed",
+      "runId": "run_255969d850604f34",
+      "responseId": "resp_5bc943dabea24906",
+      "evidenceId": "ev_cb3cd19783664c93",
+      "slot": "CALA_EN",
+      "cost": 0.50652,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:21:38.649Z"
+    },
+    "3915470c80dfd287a44aea5d": {
+      "status": "completed",
+      "runId": "run_b9753f1bce83473b",
+      "responseId": "resp_477f92a7cdc64269",
+      "evidenceId": "ev_8e3c829a72384f0a",
+      "slot": "CALA_EN",
+      "cost": 0.47565,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:22:51.768Z"
+    },
+    "05363e7ddd8d07a322e2fa52": {
+      "status": "completed",
+      "runId": "run_50a500dc888e4e23",
+      "responseId": "resp_b835e2c2cbc64ff0",
+      "evidenceId": "ev_820dbbbc6e81436b",
+      "slot": "CALA_EN",
+      "cost": 0.609435,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:24:25.445Z"
+    },
+    "f85b1a8b3ae53a7ea6d324bd": {
+      "status": "completed",
+      "runId": "run_1a6cd20868ec43c6",
+      "responseId": "resp_9112fc51d7204f72",
+      "evidenceId": "ev_d67e662802a14965",
+      "slot": "CALA_EN",
+      "cost": 0.307605,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:25:10.644Z"
+    },
+    "73f5d4b9b7f726c6f197f4f9": {
+      "status": "completed",
+      "runId": "run_b527c0c3058f4482",
+      "responseId": "resp_e554f34bc87e4c81",
+      "evidenceId": "ev_110dba9417a54c07",
+      "slot": "CALA_ES",
+      "cost": 0.571085,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:26:57.131Z"
+    },
+    "a1dd167d651629a54419938d": {
+      "status": "completed",
+      "runId": "run_b74cae5e209b4a37",
+      "responseId": "resp_3236dd6dc10d4a08",
+      "evidenceId": "ev_6d5dc758a79148e7",
+      "slot": "CALA_ES",
+      "cost": 0.3702,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:27:56.020Z"
+    },
+    "2f122c5a5218295e0356754b": {
+      "status": "completed",
+      "runId": "run_ab4d242b6d31401c",
+      "responseId": "resp_78184145533d41ab",
+      "evidenceId": "ev_1374664f385e49ce",
+      "slot": "CALA_ES",
+      "cost": 0.46961,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:29:23.941Z"
+    },
+    "7e176326a598adc0fb350693": {
+      "status": "completed",
+      "runId": "run_6aa42e3c61404c83",
+      "responseId": "resp_f44472153fe84e5b",
+      "evidenceId": "ev_94f92e7343504c10",
+      "slot": "CALA_ES",
+      "cost": 0.55532,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:31:03.447Z"
+    },
+    "ebc3520db9557ea6c1e894c6": {
+      "status": "completed",
+      "runId": "run_db858f6fbf8f4b07",
+      "responseId": "resp_a5cd3e21186d456c",
+      "evidenceId": "ev_9cd92c2246934c52",
+      "slot": "CALA_ES",
+      "cost": 0.366025,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:32:11.627Z"
+    },
+    "55283269da333a2f618250af": {
+      "status": "completed",
+      "runId": "run_e6d64587b35741f3",
+      "responseId": "resp_886826c579a044aa",
+      "evidenceId": "ev_7abb6e16705645e5",
+      "slot": "CALA_ES",
+      "cost": 0.60169,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:34:18.005Z"
+    },
+    "af736bceafe2bcde6f81d475": {
+      "status": "completed",
+      "runId": "run_b32c59287c914f32",
+      "responseId": "resp_62b217822d964796",
+      "evidenceId": "ev_fdc39ccf84fb4829",
+      "slot": "CALA_ES",
+      "cost": 0.40169,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:35:46.147Z"
+    },
+    "a3b49032a24b4390d475eb5e": {
+      "status": "completed",
+      "runId": "run_0399d10704bc47c3",
+      "responseId": "resp_c8a3227d9fb94127",
+      "evidenceId": "ev_c022178a07a54f07",
+      "slot": "CALA_ES",
+      "cost": 0.43111,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:36:59.649Z"
+    },
+    "6ca1119f8c854693469e2006": {
+      "status": "completed",
+      "runId": "run_d5a9f8e60afa485c",
+      "responseId": "resp_7c14327961d342f4",
+      "evidenceId": "ev_26e6c30b508c4248",
+      "slot": "CALA_ES",
+      "cost": 0.50586,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:38:47.576Z"
+    },
+    "f5333f67d2ae12fe9da95493": {
+      "status": "completed",
+      "runId": "run_03e7ef60d4ea4e8e",
+      "responseId": "resp_3d52b3d1940248a2",
+      "evidenceId": "ev_1eaf0a593a0b4e87",
+      "slot": "CALA_ES",
+      "cost": 0.426405,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:39:56.006Z"
+    },
+    "7352261375d085a7e51e8894": {
+      "status": "completed",
+      "runId": "run_92de104928184e62",
+      "responseId": "resp_c10894cb457b4420",
+      "evidenceId": "ev_d90cb13c78c4409d",
+      "slot": "CALA_ES",
+      "cost": 0.688335,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:42:03.964Z"
+    },
+    "286832bac77947161fc3fd75": {
+      "status": "completed",
+      "runId": "run_6aa0fc9a3c9a48fd",
+      "responseId": "resp_966f59364c2c4011",
+      "evidenceId": "ev_ca699e002f4d40c4",
+      "slot": "CALA_ES",
+      "cost": 0.40942,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:42:59.526Z"
+    },
+    "9e30d2704b3acb52433d82f2": {
+      "status": "completed",
+      "runId": "run_968516a0fba644ba",
+      "responseId": "resp_06f92ba10ab845a1",
+      "evidenceId": "ev_6f6a5cb701d2476f",
+      "slot": "EUROPE_EN",
+      "cost": 0.546645,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:44:33.285Z"
+    },
+    "4be237e6ae0516a7416521c5": {
+      "status": "completed",
+      "runId": "run_a1b11442c1ec4baa",
+      "responseId": "resp_19b7466b589b4480",
+      "evidenceId": "ev_1b9453934b8b4333",
+      "slot": "EUROPE_EN",
+      "cost": 0.45763,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:46:00.710Z"
+    },
+    "86b773bf2c784848f84e81f8": {
+      "status": "completed",
+      "runId": "run_b166173b0f0e43b7",
+      "responseId": "resp_4f26190d3f5f4248",
+      "evidenceId": "ev_4ee4b9b021864964",
+      "slot": "EUROPE_EN",
+      "cost": 0.48957,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:47:21.181Z"
+    },
+    "365f32adfaa085362ce9c0b7": {
+      "status": "completed",
+      "runId": "run_90e7891294b34f61",
+      "responseId": "resp_a087abd191034fff",
+      "evidenceId": "ev_143d18be1f174e72",
+      "slot": "EUROPE_EN",
+      "cost": 0.373425,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:48:14.664Z"
+    },
+    "2b9d382acd9c792f9c4a957a": {
+      "status": "completed",
+      "runId": "run_4c3f0c4c65474282",
+      "responseId": "resp_a84d11ab1b3e40cc",
+      "evidenceId": "ev_bc07929c8a4b4a22",
+      "slot": "EUROPE_EN",
+      "cost": 0.47507,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:49:29.371Z"
+    },
+    "7913b12f3f1595302773f491": {
+      "status": "completed",
+      "runId": "run_c766e471bde14d9e",
+      "responseId": "resp_bb25d2409a7a4749",
+      "evidenceId": "ev_2dd043d226394802",
+      "slot": "EUROPE_EN",
+      "cost": 0.45919,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:50:46.064Z"
+    },
+    "e4653c04f03dafff389864ef": {
+      "status": "completed",
+      "runId": "run_9061cb5138c34975",
+      "responseId": "resp_4b6d1623616e457f",
+      "evidenceId": "ev_cb691032d8a34254",
+      "slot": "EUROPE_EN",
+      "cost": 0.5923,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:53:08.746Z"
+    },
+    "c49bb0e85ba3abed7652c289": {
+      "status": "completed",
+      "runId": "run_0a62b4c4c3444326",
+      "responseId": "resp_3e032d538fc6474e",
+      "evidenceId": "ev_253fde506d8d43e3",
+      "slot": "EUROPE_EN",
+      "cost": 0.40534,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:54:01.154Z"
+    },
+    "1ebd9853eb0bef59418e9ad5": {
+      "status": "completed",
+      "runId": "run_9ec58afa00aa4643",
+      "responseId": "resp_a3fcc9e366404345",
+      "evidenceId": "ev_1713134616c64268",
+      "slot": "EUROPE_EN",
+      "cost": 0.557905,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:55:50.888Z"
+    },
+    "852a54c17f4332317d44d712": {
+      "status": "completed",
+      "runId": "run_864994cebece43bb",
+      "responseId": "resp_827e0b481fe74e85",
+      "evidenceId": "ev_039889d4c3a443fe",
+      "slot": "EUROPE_EN",
+      "cost": 0.499515,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:57:05.557Z"
+    },
+    "e127f8df0e82b32a065d27cd": {
+      "status": "completed",
+      "runId": "run_471210e3695545c4",
+      "responseId": "resp_b038520dd386461e",
+      "evidenceId": "ev_e012282af2bd4ac7",
+      "slot": "EUROPE_EN",
+      "cost": 0.44174,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:58:23.494Z"
+    },
+    "da2d42cec82448e3bf2a8fe9": {
+      "status": "completed",
+      "runId": "run_7cd6842cf68b4075",
+      "responseId": "resp_bdbf674325bf4c37",
+      "evidenceId": "ev_4a2ee8e7a3984e37",
+      "slot": "EUROPE_EN",
+      "cost": 0.353545,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T02:59:14.664Z"
+    },
+    "15c96ddbb19d69fbee503086": {
+      "status": "completed",
+      "runId": "run_1c6f3497a7f045cd",
+      "responseId": "resp_8e051af66e104e54",
+      "evidenceId": "ev_cac4bf11f225409e",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.405085,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:00:25.978Z"
+    },
+    "2b1f7150001569f27f555efc": {
+      "status": "completed",
+      "runId": "run_6a1690b47f1c4395",
+      "responseId": "resp_d93f964caa254513",
+      "evidenceId": "ev_04a939b873fa4a98",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.43071,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:01:33.694Z"
+    },
+    "c4db18119584b1188b9e5199": {
+      "status": "completed",
+      "runId": "run_50c1690b01014487",
+      "responseId": "resp_f8ef4cd58984429e",
+      "evidenceId": "ev_41fbbbb14af34943",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.470535,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:02:49.187Z"
+    },
+    "f99849b9c2305c0cd2d65814": {
+      "status": "completed",
+      "runId": "run_13c964410d0a4c15",
+      "responseId": "resp_39d75b5a00bf45ef",
+      "evidenceId": "ev_ae150cb07ef14461",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.42699,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:04:01.263Z"
+    },
+    "6dabdde387cfb77986826f5a": {
+      "status": "completed",
+      "runId": "run_9e6978169d1b4b61",
+      "responseId": "resp_e137bb408c9d41db",
+      "evidenceId": "ev_3523886c35b64a40",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.50984,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:05:25.132Z"
+    },
+    "ec5851153356b133238efc1d": {
+      "status": "completed",
+      "runId": "run_8c9d3da6463c45db",
+      "responseId": "resp_4e8390c30abe4aa3",
+      "evidenceId": "ev_aee2d3d2833d43df",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.415355,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:06:38.147Z"
+    },
+    "7366f37f30f94d2227fd8edc": {
+      "status": "completed",
+      "runId": "run_120f5d6d0c7b4c27",
+      "responseId": "resp_a8faf4fc4f9e4b56",
+      "evidenceId": "ev_f0876dfcf2fc4a26",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.50268,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:07:52.430Z"
+    },
+    "4776c3140a3247ac45f27ac5": {
+      "status": "completed",
+      "runId": "run_b6bc42f4053349fe",
+      "responseId": "resp_0e10d16e13744743",
+      "evidenceId": "ev_96274f78a87e4ef7",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.47027,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:09:08.337Z"
+    },
+    "d4f8b77b92be2a3e569774ee": {
+      "status": "completed",
+      "runId": "run_4269d6971aaa499f",
+      "responseId": "resp_e98819d5ad5c458f",
+      "evidenceId": "ev_fe3aa1bc6a104d19",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.58093,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:10:54.386Z"
+    },
+    "09e78fdddb84e7c6673b9e2f": {
+      "status": "completed",
+      "runId": "run_b63e27f7372641b8",
+      "responseId": "resp_315667f75bd3470b",
+      "evidenceId": "ev_9175ac8babd54dfc",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.35743,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:11:46.329Z"
+    },
+    "7c21dfedd641fcd75c181ed4": {
+      "status": "completed",
+      "runId": "run_aae2bc5dc7634b4e",
+      "responseId": "resp_499f37c1fd9c4680",
+      "evidenceId": "ev_5201949b933b4a9c",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.544745,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:13:20.607Z"
+    },
+    "442407c7e26d366d4f6783a3": {
+      "status": "completed",
+      "runId": "run_6a8de63b48214470",
+      "responseId": "resp_5a993d0b1d3f4cf7",
+      "evidenceId": "ev_785acf99aa8c42f9",
+      "slot": "NORTH_AMERICA_EN",
+      "cost": 0.34081,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:14:15.685Z"
+    },
+    "834c4784a802801ab60161a6": {
+      "status": "completed",
+      "runId": "run_687c0b3188114c11",
+      "responseId": "resp_2b43756b2c63400d",
+      "evidenceId": "ev_279268c2347046a0",
+      "slot": "MEXICO_EN",
+      "cost": 0.512905,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:15:33.533Z"
+    },
+    "0c793265bd6fb65b7f047cb8": {
+      "status": "completed",
+      "runId": "run_0f5311ee994542ba",
+      "responseId": "resp_fa2d7e4401dc440b",
+      "evidenceId": "ev_2c814c5cb4584ea4",
+      "slot": "MEXICO_EN",
+      "cost": 0.44,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:16:45.873Z"
+    },
+    "665a6d85e89010b51de9916c": {
+      "status": "completed",
+      "runId": "run_bc677ab5ebe44f77",
+      "responseId": "resp_e0c3459e59e0496b",
+      "evidenceId": "ev_c727a0ca8e5c4a8c",
+      "slot": "MEXICO_EN",
+      "cost": 0.590625,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:18:34.531Z"
+    },
+    "f9d360785f9716f8768a9739": {
+      "status": "completed",
+      "runId": "run_96bc7a968fca4fd1",
+      "responseId": "resp_87d4d219b9f343a7",
+      "evidenceId": "ev_524a551aee59464a",
+      "slot": "MEXICO_EN",
+      "cost": 0.370705,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:20:03.178Z"
+    },
+    "accc4da914ba49e33350dbf4": {
+      "status": "completed",
+      "runId": "run_cfa475d8477c4f68",
+      "responseId": "resp_50af3b31ce1b47a6",
+      "evidenceId": "ev_b8f55ee0eeec4213",
+      "slot": "MEXICO_EN",
+      "cost": 0.370835,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:21:00.494Z"
+    },
+    "29b7f74dccdd6537de58d212": {
+      "status": "completed",
+      "runId": "run_4e02d6f4d2cc4530",
+      "responseId": "resp_69fa7c8fc2da48a8",
+      "evidenceId": "ev_98612029f65e4389",
+      "slot": "MEXICO_EN",
+      "cost": 0.46285,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:22:19.308Z"
+    },
+    "d29942e86e7819ad0dbfa4b3": {
+      "status": "completed",
+      "runId": "run_6ea0122b982a40ef",
+      "responseId": "resp_cef389a0b0fb42d8",
+      "evidenceId": "ev_c401bdeb7b3a4355",
+      "slot": "MEXICO_EN",
+      "cost": 0.440105,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:23:26.338Z"
+    },
+    "e09b250a5775ff83fe944bb6": {
+      "status": "completed",
+      "runId": "run_27641bc810d14c5a",
+      "responseId": "resp_8fb25a8a0d174cfe",
+      "evidenceId": "ev_14b02346767448a0",
+      "slot": "MEXICO_EN",
+      "cost": 0.312245,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:24:09.819Z"
+    },
+    "c19837888a0e2dc15e47f477": {
+      "status": "completed",
+      "runId": "run_e812d20ae3f84fd0",
+      "responseId": "resp_aa72081f51b04e3f",
+      "evidenceId": "ev_106a057108f64bef",
+      "slot": "MEXICO_EN",
+      "cost": 0.561075,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:25:47.693Z"
+    },
+    "a11883ad1cfa0b6125b77291": {
+      "status": "completed",
+      "runId": "run_7e3e5d9499f94243",
+      "responseId": "resp_f8f40097d03f4d6b",
+      "evidenceId": "ev_6eb5273a592d4b16",
+      "slot": "MEXICO_EN",
+      "cost": 0.494975,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:27:02.166Z"
+    },
+    "bfafe179f08c5172bf6d41f3": {
+      "status": "completed",
+      "runId": "run_d1f66a8d7aa748bf",
+      "responseId": "resp_526ac58f7bbb4327",
+      "evidenceId": "ev_f1ef60f2402f4cdc",
+      "slot": "MEXICO_EN",
+      "cost": 0.366565,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:27:58.945Z"
+    },
+    "0f6edb8589da1bf7360a99c9": {
+      "status": "completed",
+      "runId": "run_e845e70fbee24447",
+      "responseId": "resp_97ac412c8fee4fb0",
+      "evidenceId": "ev_ccf997508c9d4180",
+      "slot": "MEXICO_EN",
+      "cost": 0.295995,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:28:37.402Z"
+    },
+    "494375ab3ad76d0206eb0f31": {
+      "status": "completed",
+      "runId": "run_948dfb2f1c3b4145",
+      "responseId": "resp_fcde19147aad4924",
+      "evidenceId": "ev_79c478bc9ad54451",
+      "slot": "MEXICO_ES",
+      "cost": 0.44335,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:29:51.419Z"
+    },
+    "13d715449f86fffa74c2773e": {
+      "status": "completed",
+      "runId": "run_72ac881ecfad4e13",
+      "responseId": "resp_c436de5377a9434a",
+      "evidenceId": "ev_644f378e21d34464",
+      "slot": "MEXICO_ES",
+      "cost": 0.492085,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:31:15.247Z"
+    },
+    "651acf4e93623e5e35f23b9f": {
+      "status": "completed",
+      "runId": "run_c777bfb58bd041d4",
+      "responseId": "resp_cf7e4c67e33741e2",
+      "evidenceId": "ev_02f8306a516d4de8",
+      "slot": "MEXICO_ES",
+      "cost": 0.636785,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:33:13.262Z"
+    },
+    "972e12570b44ccf8f7bacbc5": {
+      "status": "completed",
+      "runId": "run_3232ac726b854ea0",
+      "responseId": "resp_75d3719f337e413f",
+      "evidenceId": "ev_0603997a0a1645e7",
+      "slot": "MEXICO_ES",
+      "cost": 0.32689,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:34:03.919Z"
+    },
+    "c200e33a1bfd79174f2f3530": {
+      "status": "completed",
+      "runId": "run_217ceae26e5f4efc",
+      "responseId": "resp_0db054e9a0ce4cf5",
+      "evidenceId": "ev_eb54801a78bb41fc",
+      "slot": "MEXICO_ES",
+      "cost": 0.451865,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:35:17.750Z"
+    },
+    "388795632ecfc842614fd089": {
+      "status": "completed",
+      "runId": "run_ac636685621e4798",
+      "responseId": "resp_a6cbdba378ee4373",
+      "evidenceId": "ev_7f885b52875e4e35",
+      "slot": "MEXICO_ES",
+      "cost": 0.46643,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:36:42.655Z"
+    },
+    "2d160bb69c8124c7d13c01a9": {
+      "status": "completed",
+      "runId": "run_d03df69babd54517",
+      "responseId": "resp_f7ae47fae52f4105",
+      "evidenceId": "ev_76bd6f06ba2a4b1b",
+      "slot": "MEXICO_ES",
+      "cost": 0.48123,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:38:16.816Z"
+    },
+    "3ed4d74f0fbb52f02ba716ee": {
+      "status": "completed",
+      "runId": "run_c6ee223cce994b68",
+      "responseId": "resp_01b6d36b9deb4a3a",
+      "evidenceId": "ev_7b876712cc6a44ea",
+      "slot": "MEXICO_ES",
+      "cost": 0.43336,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:39:28.484Z"
+    },
+    "809634de78f91daf42681499": {
+      "status": "completed",
+      "runId": "run_418ce6441c064010",
+      "responseId": "resp_5425ef167cf24f17",
+      "evidenceId": "ev_3c03b444621a416c",
+      "slot": "MEXICO_ES",
+      "cost": 0.462925,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:40:52.253Z"
+    },
+    "bb67fa71dd031e7c1d32a374": {
+      "status": "completed",
+      "runId": "run_5bc654d3bbe44e8b",
+      "responseId": "resp_a7e833970bf744ce",
+      "evidenceId": "ev_8d2ef085777946a6",
+      "slot": "MEXICO_ES",
+      "cost": 0.457365,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:41:58.000Z"
+    },
+    "05a9d3b1b840d76be75a0e40": {
+      "status": "completed",
+      "runId": "run_368e8ce431234a3e",
+      "responseId": "resp_c4f4d44766304afe",
+      "evidenceId": "ev_a176e9d30d204a7c",
+      "slot": "MEXICO_ES",
+      "cost": 0.482585,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:43:12.251Z"
+    },
+    "4e42951e93501c23370d0313": {
+      "status": "completed",
+      "runId": "run_0a3aa162318c4912",
+      "responseId": "resp_673c6a40a3444f8b",
+      "evidenceId": "ev_ce19346f66314ca6",
+      "slot": "MEXICO_ES",
+      "cost": 0.359005,
+      "retries": 0,
+      "providerAttempts": 1,
+      "completedAt": "2026-08-14T03:43:57.516Z"
+    }
+  },
+  "failedFingerprints": {},
+  "slots": {
+    "GLOBAL_EN": {
+      "key": "GLOBAL_EN",
+      "planned": 12,
+      "succeeded": 12,
+      "failed": 0,
+      "retried": 6,
+      "attempts": 23,
+      "cost": 5.48685,
+      "status": "completed",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "CALA_EN": {
+      "key": "CALA_EN",
+      "planned": 12,
+      "succeeded": 12,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 12,
+      "cost": 5.301945,
+      "status": "completed",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "CALA_ES": {
+      "key": "CALA_ES",
+      "planned": 12,
+      "succeeded": 12,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 12,
+      "cost": 5.79675,
+      "status": "completed",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "EUROPE_EN": {
+      "key": "EUROPE_EN",
+      "planned": 12,
+      "succeeded": 12,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 12,
+      "cost": 5.651875,
+      "status": "completed",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "NORTH_AMERICA_EN": {
+      "key": "NORTH_AMERICA_EN",
+      "planned": 12,
+      "succeeded": 12,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 12,
+      "cost": 5.45538,
+      "status": "completed",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "MEXICO_EN": {
+      "key": "MEXICO_EN",
+      "planned": 12,
+      "succeeded": 12,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 12,
+      "cost": 5.21888,
+      "status": "completed",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "MEXICO_ES": {
+      "key": "MEXICO_ES",
+      "planned": 12,
+      "succeeded": 12,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 12,
+      "cost": 5.493875,
+      "status": "completed",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    }
+  },
+  "logical": {
+    "planned": 84,
+    "succeeded": 84,
+    "failedFinal": 0,
+    "notExecuted": 0,
+    "retried": 6,
+    "totalAttempts": 95,
+    "retrySuccess": 1,
+    "retryFailure": 5
+  },
+  "observations": [
+    {
+      "observationId": "obs_resp_8e3b02f9741d49d3",
+      "promptId": "p_global_uu_positioning_strategy_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recWubG3rhiS1BaWi",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recevrLJ3m6rIug3S",
+        "rec8SrT3VjRkkYTxm",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU"
+      ],
+      "recommendedEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recWubG3rhiS1BaWi",
+        "recFW9kfqKfOjv7Z1",
+        "recIPuBC50fv13zRR",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recevrLJ3m6rIug3S",
+        "rec8SrT3VjRkkYTxm"
+      ]
+    },
+    {
+      "observationId": "obs_resp_d2a3b12829a54eec",
+      "promptId": "p_global_uu_owner_shortlist_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recDwzv86TWnz2gGB",
+        "recFW9kfqKfOjv7Z1",
+        "recevrLJ3m6rIug3S",
+        "recrWCD1LMqu864oU",
+        "rec8SrT3VjRkkYTxm"
+      ],
+      "recommendedEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recWubG3rhiS1BaWi",
+        "recFW9kfqKfOjv7Z1",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recegXrqaPiSLGCIe",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_ff8d0c668dfa4a0d",
+      "promptId": "p_global_design_local_character_v1",
+      "presentEntityIds": [],
+      "recommendedEntityIds": []
+    },
+    {
+      "observationId": "obs_resp_abebab0115514142",
+      "promptId": "p_global_residences_capability_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB",
+        "recCKuXCmGvxHPfb3",
+        "recIPuBC50fv13zRR",
+        "receQkxgjlezsc1xg"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_b26553be417f47bd",
+      "promptId": "p_global_independent_affiliation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "recd8o4k1JddhkRWW",
+        "reccXxMHEh7NNRhIE",
+        "reclkgOzvAcBheUSo",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC"
+      ]
+    },
+    {
+      "observationId": "obs_resp_26dc1e75e7404577",
+      "promptId": "p_global_lifestyle_strategy_v1",
+      "presentEntityIds": [
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe",
+        "recsggfbKlJbjeRP9",
+        "reclt44apoi8co0e6",
+        "recahVIW4aCx0Ao84",
+        "recXCZCK05XXYX7Q8",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "rec7hTXwMRC81EPqz"
+      ],
+      "recommendedEntityIds": [
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "recsggfbKlJbjeRP9",
+        "reclt44apoi8co0e6",
+        "recahVIW4aCx0Ao84",
+        "recXCZCK05XXYX7Q8",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg"
+      ]
+    },
+    {
+      "observationId": "obs_resp_82a8836694704dda",
+      "promptId": "p_global_uu_owner_shortlist_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recrWCD1LMqu864oU",
+        "recsggfbKlJbjeRP9",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recevrLJ3m6rIug3S",
+        "recJhPaDVU3YUDQUt"
+      ],
+      "recommendedEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recWubG3rhiS1BaWi",
+        "recFW9kfqKfOjv7Z1",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recrWCD1LMqu864oU",
+        "recsggfbKlJbjeRP9",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC"
+      ]
+    },
+    {
+      "observationId": "obs_resp_984b739b271144be",
+      "promptId": "p_global_existing_asset_reposition_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recd8o4k1JddhkRWW",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "rec8SrT3VjRkkYTxm",
+        "recwONQTqGU1jHCsM",
+        "rechVYWQ5ikRnr99B",
+        "rec50qkCj6yt9fMPg",
+        "recFW9kfqKfOjv7Z1",
+        "recegXrqaPiSLGCIe"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1"
+      ]
+    },
+    {
+      "observationId": "obs_resp_1c15faf5e19a4fa4",
+      "promptId": "p_global_collection_affiliation_v1",
+      "presentEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "rec02zPClpWUTCyXM",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "rec7hTXwMRC81EPqz",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recdeh1NsP4gjrv80",
+        "reclkgOzvAcBheUSo",
+        "recDwzv86TWnz2gGB",
+        "rec7hTXwMRC81EPqz",
+        "recwXZ5gVZ8ZH8ekA",
+        "rec02zPClpWUTCyXM",
+        "recrWCD1LMqu864oU",
+        "reccXxMHEh7NNRhIE",
+        "recob7tgHRryRSbeO",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_1a89e8b3739d4bf3",
+      "promptId": "p_global_soft_brand_shortlist_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80"
+      ],
+      "recommendedEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "rec7hTXwMRC81EPqz",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80"
+      ]
+    },
+    {
+      "observationId": "obs_resp_04c1478d1d044416",
+      "promptId": "p_global_lifestyle_strategy_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "reclkgOzvAcBheUSo",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "recsggfbKlJbjeRP9",
+        "recXCZCK05XXYX7Q8"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "reclkgOzvAcBheUSo",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "recsggfbKlJbjeRP9",
+        "recXCZCK05XXYX7Q8"
+      ]
+    },
+    {
+      "observationId": "obs_resp_ae929e51b9344274",
+      "promptId": "p_global_uu_positioning_strategy_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recWubG3rhiS1BaWi",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recevrLJ3m6rIug3S",
+        "rec8SrT3VjRkkYTxm",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg"
+      ],
+      "recommendedEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recWubG3rhiS1BaWi",
+        "recFW9kfqKfOjv7Z1",
+        "recIPuBC50fv13zRR",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recevrLJ3m6rIug3S",
+        "rec8SrT3VjRkkYTxm"
+      ]
+    },
+    {
+      "observationId": "obs_resp_37ae7c60e84540f6",
+      "promptId": "p_global_residences_capability_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recCvV0PuZOi8c3hC",
+        "recFW9kfqKfOjv7Z1",
+        "recWubG3rhiS1BaWi",
+        "recCKuXCmGvxHPfb3",
+        "recd8o4k1JddhkRWW"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recIPuBC50fv13zRR",
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi"
+      ]
+    },
+    {
+      "observationId": "obs_resp_91f2e88c96f64693",
+      "promptId": "p_global_residences_hotel_project_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3",
+        "recXCZCK05XXYX7Q8",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "rechVYWQ5ikRnr99B",
+        "recFW9kfqKfOjv7Z1"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recIPuBC50fv13zRR",
+        "recCKuXCmGvxHPfb3"
+      ]
+    },
+    {
+      "observationId": "obs_resp_b8b248ca0e3c40fa",
+      "promptId": "p_global_affiliation_flexibility_v1",
+      "presentEntityIds": [
+        "reclkgOzvAcBheUSo",
+        "recd8o4k1JddhkRWW",
+        "rec7hTXwMRC81EPqz",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "reccXxMHEh7NNRhIE",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB"
+      ],
+      "recommendedEntityIds": [
+        "reclkgOzvAcBheUSo",
+        "recd8o4k1JddhkRWW",
+        "rec7hTXwMRC81EPqz",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "reccXxMHEh7NNRhIE",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_ea8a7997a8734821",
+      "promptId": "p_global_individuality_preservation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80",
+        "rec7hTXwMRC81EPqz"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80"
+      ]
+    },
+    {
+      "observationId": "obs_resp_c006e97144ba424e",
+      "promptId": "p_cala_existing_asset_reposition_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "recd8o4k1JddhkRWW",
+        "recn59UtkyyoYwzSz",
+        "rechVYWQ5ikRnr99B",
+        "recFW9kfqKfOjv7Z1"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "recrWCD1LMqu864oU",
+        "recd8o4k1JddhkRWW"
+      ]
+    },
+    {
+      "observationId": "obs_resp_59fa521266884c20",
+      "promptId": "p_cala_independent_affiliation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "reccXxMHEh7NNRhIE",
+        "reclkgOzvAcBheUSo",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ]
+    },
+    {
+      "observationId": "obs_resp_35764cc62dcd4fd1",
+      "promptId": "p_cala_collection_affiliation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG",
+        "rec02zPClpWUTCyXM"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recjjSnY2opb8P4DG",
+        "recwl5JOYxlChuCAr",
+        "recDwzv86TWnz2gGB",
+        "rec7hTXwMRC81EPqz"
+      ]
+    },
+    {
+      "observationId": "obs_resp_1a565e92032b454f",
+      "promptId": "p_cala_soft_brand_shortlist_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG",
+        "rec02zPClpWUTCyXM"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG",
+        "rec02zPClpWUTCyXM"
+      ]
+    },
+    {
+      "observationId": "obs_resp_4b61323170cb4197",
+      "promptId": "p_cala_design_local_character_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe",
+        "rec7hTXwMRC81EPqz",
+        "recjjSnY2opb8P4DG",
+        "recwl5JOYxlChuCAr",
+        "rec9aZp7GHtzUEg0c",
+        "recXCZCK05XXYX7Q8",
+        "recd8o4k1JddhkRWW",
+        "recwEHUotSGpfkZEJ"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCvV0PuZOi8c3hC",
+        "recCKuXCmGvxHPfb3",
+        "rec02zPClpWUTCyXM",
+        "recjjSnY2opb8P4DG",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_0d418140dbca4247",
+      "promptId": "p_cala_lifestyle_strategy_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe",
+        "recsggfbKlJbjeRP9",
+        "reclt44apoi8co0e6",
+        "recahVIW4aCx0Ao84",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCKuXCmGvxHPfb3",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "recegXrqaPiSLGCIe",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_a254a2a8ad41435f",
+      "promptId": "p_cala_uu_positioning_strategy_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recFW9kfqKfOjv7Z1",
+        "recrWCD1LMqu864oU",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "rec8SrT3VjRkkYTxm",
+        "recwEHUotSGpfkZEJ"
+      ],
+      "recommendedEntityIds": [
+        "receQkxgjlezsc1xg",
+        "recEJCTDj1zrsjPM6",
+        "recn59UtkyyoYwzSz",
+        "recWubG3rhiS1BaWi",
+        "recrWCD1LMqu864oU",
+        "recFW9kfqKfOjv7Z1",
+        "recegXrqaPiSLGCIe",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recCvV0PuZOi8c3hC",
+        "recsggfbKlJbjeRP9",
+        "recCKuXCmGvxHPfb3",
+        "rec8SrT3VjRkkYTxm"
+      ]
+    },
+    {
+      "observationId": "obs_resp_be4047891de5492d",
+      "promptId": "p_cala_uu_owner_shortlist_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "recFW9kfqKfOjv7Z1",
+        "rec8SrT3VjRkkYTxm",
+        "recwEHUotSGpfkZEJ"
+      ],
+      "recommendedEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recg8HjT5Bky7NXeV",
+        "recCvV0PuZOi8c3hC",
+        "recCKuXCmGvxHPfb3",
+        "rec8SrT3VjRkkYTxm",
+        "recwEHUotSGpfkZEJ"
+      ]
+    },
+    {
+      "observationId": "obs_resp_5bc943dabea24906",
+      "promptId": "p_cala_residences_capability_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3",
+        "recEJCTDj1zrsjPM6",
+        "recIPuBC50fv13zRR"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3",
+        "recEJCTDj1zrsjPM6",
+        "recIPuBC50fv13zRR"
+      ]
+    },
+    {
+      "observationId": "obs_resp_477f92a7cdc64269",
+      "promptId": "p_cala_residences_hotel_project_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3"
+      ]
+    },
+    {
+      "observationId": "obs_resp_b835e2c2cbc64ff0",
+      "promptId": "p_cala_affiliation_flexibility_v1",
+      "presentEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "recwl5JOYxlChuCAr",
+        "rec02zPClpWUTCyXM",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "recrWCD1LMqu864oU",
+        "rec02zPClpWUTCyXM",
+        "rec7hTXwMRC81EPqz"
+      ]
+    },
+    {
+      "observationId": "obs_resp_9112fc51d7204f72",
+      "promptId": "p_cala_individuality_preservation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "reclkgOzvAcBheUSo",
+        "rec7hTXwMRC81EPqz",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_e554f34bc87e4c81",
+      "promptId": "p_cala_existing_asset_reposition_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "recFW9kfqKfOjv7Z1",
+        "rec8SrT3VjRkkYTxm",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recWubG3rhiS1BaWi",
+        "rec3TUHT9Z4AnFp5P"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_3236dd6dc10d4a08",
+      "promptId": "p_cala_independent_affiliation_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recDwzv86TWnz2gGB",
+        "recwONQTqGU1jHCsM",
+        "recegXrqaPiSLGCIe",
+        "recrWCD1LMqu864oU",
+        "recob7tgHRryRSbeO",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recWubG3rhiS1BaWi",
+        "recFW9kfqKfOjv7Z1",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_78184145533d41ab",
+      "promptId": "p_cala_collection_affiliation_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "rec7hTXwMRC81EPqz",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG",
+        "reclkgOzvAcBheUSo"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "rec7hTXwMRC81EPqz",
+        "recCvV0PuZOi8c3hC"
+      ]
+    },
+    {
+      "observationId": "obs_resp_f44472153fe84e5b",
+      "promptId": "p_cala_soft_brand_shortlist_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "reclkgOzvAcBheUSo"
+      ]
+    },
+    {
+      "observationId": "obs_resp_a5cd3e21186d456c",
+      "promptId": "p_cala_design_local_character_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCKuXCmGvxHPfb3",
+        "rec3TUHT9Z4AnFp5P",
+        "recegXrqaPiSLGCIe",
+        "recXCZCK05XXYX7Q8",
+        "recsggfbKlJbjeRP9",
+        "reclt44apoi8co0e6",
+        "recqiHq3GHKMj8Meo"
+      ],
+      "recommendedEntityIds": [
+        "recCvV0PuZOi8c3hC",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe",
+        "recXCZCK05XXYX7Q8",
+        "recDwzv86TWnz2gGB",
+        "recsggfbKlJbjeRP9"
+      ]
+    },
+    {
+      "observationId": "obs_resp_886826c579a044aa",
+      "promptId": "p_cala_lifestyle_strategy_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec3TUHT9Z4AnFp5P",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe",
+        "recsggfbKlJbjeRP9",
+        "reclt44apoi8co0e6",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "rec02zPClpWUTCyXM",
+        "rec3TUHT9Z4AnFp5P",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe"
+      ]
+    },
+    {
+      "observationId": "obs_resp_62b217822d964796",
+      "promptId": "p_cala_uu_positioning_strategy_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recIPuBC50fv13zRR",
+        "recWubG3rhiS1BaWi",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recCvV0PuZOi8c3hC",
+        "recg8HjT5Bky7NXeV",
+        "recDwzv86TWnz2gGB",
+        "recsggfbKlJbjeRP9",
+        "recwEHUotSGpfkZEJ",
+        "rec3TUHT9Z4AnFp5P"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recIPuBC50fv13zRR",
+        "receQkxgjlezsc1xg",
+        "recWubG3rhiS1BaWi",
+        "recwEHUotSGpfkZEJ",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recDwzv86TWnz2gGB",
+        "rec3TUHT9Z4AnFp5P"
+      ]
+    },
+    {
+      "observationId": "obs_resp_c8a3227d9fb94127",
+      "promptId": "p_cala_uu_owner_shortlist_es_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "rec8SrT3VjRkkYTxm",
+        "recwEHUotSGpfkZEJ"
+      ],
+      "recommendedEntityIds": [
+        "recWubG3rhiS1BaWi",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recn59UtkyyoYwzSz",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9"
+      ]
+    },
+    {
+      "observationId": "obs_resp_7c14327961d342f4",
+      "promptId": "p_cala_residences_capability_es_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "rec3TUHT9Z4AnFp5P"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt"
+      ]
+    },
+    {
+      "observationId": "obs_resp_3d52b3d1940248a2",
+      "promptId": "p_cala_residences_hotel_project_es_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recIPuBC50fv13zRR",
+        "rec3TUHT9Z4AnFp5P",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt"
+      ]
+    },
+    {
+      "observationId": "obs_resp_c10894cb457b4420",
+      "promptId": "p_cala_affiliation_flexibility_es_v1",
+      "presentEntityIds": [
+        "recwl5JOYxlChuCAr",
+        "recob7tgHRryRSbeO",
+        "recwXZ5gVZ8ZH8ekA",
+        "reccXxMHEh7NNRhIE",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "reclkgOzvAcBheUSo"
+      ],
+      "recommendedEntityIds": [
+        "recwl5JOYxlChuCAr",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB",
+        "receQkxgjlezsc1xg",
+        "recwXZ5gVZ8ZH8ekA",
+        "recEJCTDj1zrsjPM6",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "reccXxMHEh7NNRhIE",
+        "recrWCD1LMqu864oU",
+        "reclkgOzvAcBheUSo"
+      ]
+    },
+    {
+      "observationId": "obs_resp_966f59364c2c4011",
+      "promptId": "p_cala_individuality_preservation_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "recwl5JOYxlChuCAr",
+        "rec02zPClpWUTCyXM"
+      ],
+      "recommendedEntityIds": [
+        "recwl5JOYxlChuCAr",
+        "rec02zPClpWUTCyXM",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg"
+      ]
+    },
+    {
+      "observationId": "obs_resp_06f92ba10ab845a1",
+      "promptId": "p_europe_existing_asset_reposition_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCvV0PuZOi8c3hC",
+        "rec8SrT3VjRkkYTxm",
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recWubG3rhiS1BaWi",
+        "rechVYWQ5ikRnr99B",
+        "reclkgOzvAcBheUSo",
+        "recegXrqaPiSLGCIe",
+        "recsggfbKlJbjeRP9"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCvV0PuZOi8c3hC",
+        "recg8HjT5Bky7NXeV"
+      ]
+    },
+    {
+      "observationId": "obs_resp_19b7466b589b4480",
+      "promptId": "p_europe_independent_affiliation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "rec9aZp7GHtzUEg0c",
+        "recegXrqaPiSLGCIe",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ]
+    },
+    {
+      "observationId": "obs_resp_4f26190d3f5f4248",
+      "promptId": "p_europe_collection_affiliation_v1",
+      "presentEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "rec7hTXwMRC81EPqz",
+        "rec02zPClpWUTCyXM",
+        "recwXZ5gVZ8ZH8ekA",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo",
+        "recjjSnY2opb8P4DG",
+        "recd8o4k1JddhkRWW",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "rec7hTXwMRC81EPqz",
+        "rec02zPClpWUTCyXM",
+        "recwXZ5gVZ8ZH8ekA",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_a087abd191034fff",
+      "promptId": "p_europe_soft_brand_shortlist_v1",
+      "presentEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "rec7hTXwMRC81EPqz",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "rec7hTXwMRC81EPqz",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ]
+    },
+    {
+      "observationId": "obs_resp_a84d11ab1b3e40cc",
+      "promptId": "p_europe_design_local_character_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "recDwzv86TWnz2gGB",
+        "recXCZCK05XXYX7Q8",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "recsggfbKlJbjeRP9",
+        "rec8SrT3VjRkkYTxm"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "rec02zPClpWUTCyXM"
+      ]
+    },
+    {
+      "observationId": "obs_resp_bb25d2409a7a4749",
+      "promptId": "p_europe_lifestyle_strategy_v1",
+      "presentEntityIds": [
+        "recegXrqaPiSLGCIe",
+        "recXCZCK05XXYX7Q8",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recDwzv86TWnz2gGB",
+        "recd8o4k1JddhkRWW",
+        "recCKuXCmGvxHPfb3"
+      ],
+      "recommendedEntityIds": [
+        "recegXrqaPiSLGCIe",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_4b6d1623616e457f",
+      "promptId": "p_europe_uu_positioning_strategy_v1",
+      "presentEntityIds": [
+        "recWubG3rhiS1BaWi",
+        "recFW9kfqKfOjv7Z1",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recegXrqaPiSLGCIe",
+        "recsggfbKlJbjeRP9",
+        "rec8SrT3VjRkkYTxm",
+        "recg8HjT5Bky7NXeV",
+        "recn59UtkyyoYwzSz",
+        "recIPuBC50fv13zRR",
+        "rechVYWQ5ikRnr99B"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recsggfbKlJbjeRP9",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recWubG3rhiS1BaWi",
+        "recFW9kfqKfOjv7Z1",
+        "recg8HjT5Bky7NXeV"
+      ]
+    },
+    {
+      "observationId": "obs_resp_3e032d538fc6474e",
+      "promptId": "p_europe_uu_owner_shortlist_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "rechVYWQ5ikRnr99B",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "rec8SrT3VjRkkYTxm"
+      ],
+      "recommendedEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recFW9kfqKfOjv7Z1",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "rechVYWQ5ikRnr99B",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "rec8SrT3VjRkkYTxm"
+      ]
+    },
+    {
+      "observationId": "obs_resp_a3fcc9e366404345",
+      "promptId": "p_europe_residences_capability_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recEJCTDj1zrsjPM6"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recEJCTDj1zrsjPM6"
+      ]
+    },
+    {
+      "observationId": "obs_resp_827e0b481fe74e85",
+      "promptId": "p_europe_residences_hotel_project_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB",
+        "recIPuBC50fv13zRR",
+        "recFW9kfqKfOjv7Z1",
+        "recn59UtkyyoYwzSz",
+        "receQkxgjlezsc1xg"
+      ],
+      "recommendedEntityIds": []
+    },
+    {
+      "observationId": "obs_resp_b038520dd386461e",
+      "promptId": "p_europe_affiliation_flexibility_v1",
+      "presentEntityIds": [
+        "rec7hTXwMRC81EPqz",
+        "recd8o4k1JddhkRWW",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "recob7tgHRryRSbeO",
+        "rec02zPClpWUTCyXM",
+        "recDM0LAD8jVRA2x3",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "rec7hTXwMRC81EPqz",
+        "recd8o4k1JddhkRWW",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "recob7tgHRryRSbeO",
+        "recDM0LAD8jVRA2x3",
+        "recwl5JOYxlChuCAr",
+        "rec02zPClpWUTCyXM"
+      ]
+    },
+    {
+      "observationId": "obs_resp_bdbf674325bf4c37",
+      "promptId": "p_europe_individuality_preservation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "rec7hTXwMRC81EPqz",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "recob7tgHRryRSbeO",
+        "recwXZ5gVZ8ZH8ekA",
+        "recd8o4k1JddhkRWW"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "rec7hTXwMRC81EPqz",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "recob7tgHRryRSbeO",
+        "recwXZ5gVZ8ZH8ekA",
+        "recd8o4k1JddhkRWW"
+      ]
+    },
+    {
+      "observationId": "obs_resp_8e051af66e104e54",
+      "promptId": "p_na_existing_asset_reposition_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "rec50qkCj6yt9fMPg",
+        "rechVYWQ5ikRnr99B",
+        "recg8HjT5Bky7NXeV",
+        "recn59UtkyyoYwzSz",
+        "recd8o4k1JddhkRWW"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCvV0PuZOi8c3hC",
+        "recrWCD1LMqu864oU",
+        "recegXrqaPiSLGCIe",
+        "rec50qkCj6yt9fMPg",
+        "rechVYWQ5ikRnr99B",
+        "recg8HjT5Bky7NXeV",
+        "recn59UtkyyoYwzSz",
+        "recd8o4k1JddhkRWW"
+      ]
+    },
+    {
+      "observationId": "obs_resp_d93f964caa254513",
+      "promptId": "p_na_independent_affiliation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "rec02zPClpWUTCyXM",
+        "recWubG3rhiS1BaWi",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_f8ef4cd58984429e",
+      "promptId": "p_na_collection_affiliation_v1",
+      "presentEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG",
+        "rec7hTXwMRC81EPqz"
+      ],
+      "recommendedEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ]
+    },
+    {
+      "observationId": "obs_resp_39d75b5a00bf45ef",
+      "promptId": "p_na_soft_brand_shortlist_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80",
+        "rec7hTXwMRC81EPqz",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80",
+        "rec7hTXwMRC81EPqz",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_e137bb408c9d41db",
+      "promptId": "p_na_design_local_character_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "rec9aZp7GHtzUEg0c",
+        "reclkgOzvAcBheUSo",
+        "recDwzv86TWnz2gGB",
+        "recwXZ5gVZ8ZH8ekA",
+        "recGv268Wda31PlSZ",
+        "recdeh1NsP4gjrv80",
+        "rec7hTXwMRC81EPqz",
+        "recXCZCK05XXYX7Q8"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "reclkgOzvAcBheUSo",
+        "recCvV0PuZOi8c3hC",
+        "rec9aZp7GHtzUEg0c",
+        "recDwzv86TWnz2gGB",
+        "recwXZ5gVZ8ZH8ekA"
+      ]
+    },
+    {
+      "observationId": "obs_resp_4e8390c30abe4aa3",
+      "promptId": "p_na_lifestyle_strategy_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "reccXxMHEh7NNRhIE",
+        "recegXrqaPiSLGCIe",
+        "recsggfbKlJbjeRP9",
+        "recCKuXCmGvxHPfb3",
+        "recGv268Wda31PlSZ",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo",
+        "reclt44apoi8co0e6",
+        "recXCZCK05XXYX7Q8",
+        "recwXZ5gVZ8ZH8ekA"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe",
+        "recDwzv86TWnz2gGB",
+        "recsggfbKlJbjeRP9"
+      ]
+    },
+    {
+      "observationId": "obs_resp_a8faf4fc4f9e4b56",
+      "promptId": "p_na_uu_positioning_strategy_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recWubG3rhiS1BaWi",
+        "recFW9kfqKfOjv7Z1",
+        "recWPEvxBQxVVzSq3",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recIPuBC50fv13zRR",
+        "recsggfbKlJbjeRP9",
+        "recn59UtkyyoYwzSz",
+        "receQkxgjlezsc1xg",
+        "recWubG3rhiS1BaWi",
+        "recCvV0PuZOi8c3hC",
+        "recCKuXCmGvxHPfb3",
+        "recg8HjT5Bky7NXeV",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recWPEvxBQxVVzSq3"
+      ]
+    },
+    {
+      "observationId": "obs_resp_0e10d16e13744743",
+      "promptId": "p_na_uu_owner_shortlist_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "recsggfbKlJbjeRP9",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "rechVYWQ5ikRnr99B",
+        "rec50qkCj6yt9fMPg",
+        "reccXxMHEh7NNRhIE"
+      ],
+      "recommendedEntityIds": [
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3"
+      ]
+    },
+    {
+      "observationId": "obs_resp_e98819d5ad5c458f",
+      "promptId": "p_na_residences_capability_v1",
+      "presentEntityIds": [
+        "receQkxgjlezsc1xg",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB",
+        "recCvV0PuZOi8c3hC",
+        "recIPuBC50fv13zRR",
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3",
+        "recsggfbKlJbjeRP9",
+        "recg8HjT5Bky7NXeV"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_315667f75bd3470b",
+      "promptId": "p_na_residences_hotel_project_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3",
+        "receQkxgjlezsc1xg"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3"
+      ]
+    },
+    {
+      "observationId": "obs_resp_499f37c1fd9c4680",
+      "promptId": "p_na_affiliation_flexibility_v1",
+      "presentEntityIds": [
+        "reclkgOzvAcBheUSo",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "recwl5JOYxlChuCAr",
+        "reccXxMHEh7NNRhIE",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB"
+      ],
+      "recommendedEntityIds": [
+        "reclkgOzvAcBheUSo",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "recwl5JOYxlChuCAr",
+        "receQkxgjlezsc1xg",
+        "recEJCTDj1zrsjPM6"
+      ]
+    },
+    {
+      "observationId": "obs_resp_5a993d0b1d3f4cf7",
+      "promptId": "p_na_individuality_preservation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA",
+        "rec7hTXwMRC81EPqz"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reclkgOzvAcBheUSo",
+        "recob7tgHRryRSbeO",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80"
+      ]
+    },
+    {
+      "observationId": "obs_resp_2b43756b2c63400d",
+      "promptId": "p_mx_existing_asset_reposition_v1",
+      "presentEntityIds": [
+        "recd8o4k1JddhkRWW",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recrWCD1LMqu864oU",
+        "rec8SrT3VjRkkYTxm",
+        "rec50qkCj6yt9fMPg",
+        "rechVYWQ5ikRnr99B",
+        "reccXxMHEh7NNRhIE",
+        "recDwzv86TWnz2gGB"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recd8o4k1JddhkRWW",
+        "recrWCD1LMqu864oU",
+        "rec8SrT3VjRkkYTxm"
+      ]
+    },
+    {
+      "observationId": "obs_resp_fa2d7e4401dc440b",
+      "promptId": "p_mx_independent_affiliation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "receQkxgjlezsc1xg",
+        "recEJCTDj1zrsjPM6",
+        "recwl5JOYxlChuCAr",
+        "recCvV0PuZOi8c3hC",
+        "recrWCD1LMqu864oU"
+      ]
+    },
+    {
+      "observationId": "obs_resp_e0c3459e59e0496b",
+      "promptId": "p_mx_collection_affiliation_v1",
+      "presentEntityIds": [
+        "recd8o4k1JddhkRWW",
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "rec7hTXwMRC81EPqz",
+        "recwXZ5gVZ8ZH8ekA",
+        "rec02zPClpWUTCyXM",
+        "reccXxMHEh7NNRhIE",
+        "recob7tgHRryRSbeO",
+        "recdeh1NsP4gjrv80",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "rec7hTXwMRC81EPqz",
+        "recwXZ5gVZ8ZH8ekA",
+        "recwl5JOYxlChuCAr",
+        "rec02zPClpWUTCyXM"
+      ]
+    },
+    {
+      "observationId": "obs_resp_87d4d219b9f343a7",
+      "promptId": "p_mx_soft_brand_shortlist_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recdeh1NsP4gjrv80",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ]
+    },
+    {
+      "observationId": "obs_resp_50af3b31ce1b47a6",
+      "promptId": "p_mx_design_local_character_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe",
+        "recXCZCK05XXYX7Q8",
+        "rec3TUHT9Z4AnFp5P",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ]
+    },
+    {
+      "observationId": "obs_resp_69fa7c8fc2da48a8",
+      "promptId": "p_mx_lifestyle_strategy_v1",
+      "presentEntityIds": [
+        "recGv268Wda31PlSZ",
+        "recCKuXCmGvxHPfb3",
+        "recXCZCK05XXYX7Q8",
+        "reclt44apoi8co0e6",
+        "rec02zPClpWUTCyXM",
+        "recDwzv86TWnz2gGB",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE"
+      ],
+      "recommendedEntityIds": [
+        "rec02zPClpWUTCyXM",
+        "recDwzv86TWnz2gGB",
+        "recXCZCK05XXYX7Q8",
+        "recEJCTDj1zrsjPM6",
+        "recCKuXCmGvxHPfb3",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC"
+      ]
+    },
+    {
+      "observationId": "obs_resp_cef389a0b0fb42d8",
+      "promptId": "p_mx_uu_positioning_strategy_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "rec8SrT3VjRkkYTxm",
+        "recJhPaDVU3YUDQUt"
+      ],
+      "recommendedEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recEJCTDj1zrsjPM6",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "receQkxgjlezsc1xg",
+        "recWubG3rhiS1BaWi",
+        "recegXrqaPiSLGCIe",
+        "recCvV0PuZOi8c3hC",
+        "recFW9kfqKfOjv7Z1",
+        "recsggfbKlJbjeRP9",
+        "rec8SrT3VjRkkYTxm"
+      ]
+    },
+    {
+      "observationId": "obs_resp_8fb25a8a0d174cfe",
+      "promptId": "p_mx_uu_owner_shortlist_v1",
+      "presentEntityIds": [
+        "recIPuBC50fv13zRR",
+        "recg8HjT5Bky7NXeV",
+        "recn59UtkyyoYwzSz",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "rechVYWQ5ikRnr99B",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recFW9kfqKfOjv7Z1",
+        "recwEHUotSGpfkZEJ"
+      ],
+      "recommendedEntityIds": [
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recegXrqaPiSLGCIe",
+        "recg8HjT5Bky7NXeV",
+        "recn59UtkyyoYwzSz",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "rechVYWQ5ikRnr99B",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recFW9kfqKfOjv7Z1",
+        "recwEHUotSGpfkZEJ"
+      ]
+    },
+    {
+      "observationId": "obs_resp_aa72081f51b04e3f",
+      "promptId": "p_mx_residences_capability_v1",
+      "presentEntityIds": [
+        "recd8o4k1JddhkRWW",
+        "recJhPaDVU3YUDQUt",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCKuXCmGvxHPfb3",
+        "rec3TUHT9Z4AnFp5P",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt",
+        "recCKuXCmGvxHPfb3",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg"
+      ]
+    },
+    {
+      "observationId": "obs_resp_f8f40097d03f4d6b",
+      "promptId": "p_mx_residences_hotel_project_v1",
+      "presentEntityIds": [
+        "recJhPaDVU3YUDQUt"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt"
+      ]
+    },
+    {
+      "observationId": "obs_resp_526ac58f7bbb4327",
+      "promptId": "p_mx_affiliation_flexibility_v1",
+      "presentEntityIds": [
+        "recob7tgHRryRSbeO",
+        "rec7hTXwMRC81EPqz",
+        "reccXxMHEh7NNRhIE",
+        "receQkxgjlezsc1xg",
+        "recd8o4k1JddhkRWW",
+        "recCvV0PuZOi8c3hC",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB",
+        "recdeh1NsP4gjrv80",
+        "recwXZ5gVZ8ZH8ekA"
+      ],
+      "recommendedEntityIds": [
+        "rec7hTXwMRC81EPqz",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recob7tgHRryRSbeO",
+        "reccXxMHEh7NNRhIE",
+        "recd8o4k1JddhkRWW",
+        "recEJCTDj1zrsjPM6"
+      ]
+    },
+    {
+      "observationId": "obs_resp_97ac412c8fee4fb0",
+      "promptId": "p_mx_individuality_preservation_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "rec7hTXwMRC81EPqz",
+        "reclkgOzvAcBheUSo",
+        "recwXZ5gVZ8ZH8ekA",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "rec7hTXwMRC81EPqz",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ]
+    },
+    {
+      "observationId": "obs_resp_fcde19147aad4924",
+      "promptId": "p_mx_existing_asset_reposition_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "rechVYWQ5ikRnr99B",
+        "rec8SrT3VjRkkYTxm",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "rechVYWQ5ikRnr99B",
+        "recrWCD1LMqu864oU",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_c436de5377a9434a",
+      "promptId": "p_mx_independent_affiliation_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "rec3TUHT9Z4AnFp5P",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recrWCD1LMqu864oU",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr"
+      ]
+    },
+    {
+      "observationId": "obs_resp_cf7e4c67e33741e2",
+      "promptId": "p_mx_collection_affiliation_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "reclkgOzvAcBheUSo",
+        "rec7hTXwMRC81EPqz",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr",
+        "reclkgOzvAcBheUSo",
+        "recCvV0PuZOi8c3hC"
+      ]
+    },
+    {
+      "observationId": "obs_resp_75d3719f337e413f",
+      "promptId": "p_mx_soft_brand_shortlist_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "reclkgOzvAcBheUSo"
+      ],
+      "recommendedEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_0db054e9a0ce4cf5",
+      "promptId": "p_mx_design_local_character_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recCKuXCmGvxHPfb3",
+        "recegXrqaPiSLGCIe",
+        "recDwzv86TWnz2gGB",
+        "recXCZCK05XXYX7Q8",
+        "reclt44apoi8co0e6",
+        "rec3TUHT9Z4AnFp5P",
+        "recwl5JOYxlChuCAr"
+      ],
+      "recommendedEntityIds": [
+        "rec02zPClpWUTCyXM",
+        "recwl5JOYxlChuCAr",
+        "recegXrqaPiSLGCIe"
+      ]
+    },
+    {
+      "observationId": "obs_resp_a6cbdba378ee4373",
+      "promptId": "p_mx_lifestyle_strategy_es_v1",
+      "presentEntityIds": [
+        "rec3TUHT9Z4AnFp5P",
+        "recCKuXCmGvxHPfb3",
+        "recXCZCK05XXYX7Q8",
+        "recegXrqaPiSLGCIe",
+        "recsggfbKlJbjeRP9",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB"
+      ],
+      "recommendedEntityIds": [
+        "recCKuXCmGvxHPfb3",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recXCZCK05XXYX7Q8",
+        "recegXrqaPiSLGCIe",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM"
+      ]
+    },
+    {
+      "observationId": "obs_resp_f7ae47fae52f4105",
+      "promptId": "p_mx_uu_positioning_strategy_es_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recWubG3rhiS1BaWi",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "receQkxgjlezsc1xg",
+        "reccXxMHEh7NNRhIE",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recwEHUotSGpfkZEJ",
+        "recFW9kfqKfOjv7Z1",
+        "rechVYWQ5ikRnr99B"
+      ],
+      "recommendedEntityIds": [
+        "receQkxgjlezsc1xg",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recegXrqaPiSLGCIe",
+        "recg8HjT5Bky7NXeV",
+        "recwEHUotSGpfkZEJ"
+      ]
+    },
+    {
+      "observationId": "obs_resp_01b6d36b9deb4a3a",
+      "promptId": "p_mx_uu_owner_shortlist_es_v1",
+      "presentEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recsggfbKlJbjeRP9",
+        "recegXrqaPiSLGCIe",
+        "recCKuXCmGvxHPfb3",
+        "recDwzv86TWnz2gGB",
+        "recFW9kfqKfOjv7Z1",
+        "recwEHUotSGpfkZEJ"
+      ],
+      "recommendedEntityIds": [
+        "recn59UtkyyoYwzSz",
+        "recg8HjT5Bky7NXeV",
+        "recIPuBC50fv13zRR",
+        "recEJCTDj1zrsjPM6",
+        "recWubG3rhiS1BaWi",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "recDwzv86TWnz2gGB"
+      ]
+    },
+    {
+      "observationId": "obs_resp_5425ef167cf24f17",
+      "promptId": "p_mx_residences_capability_es_v1",
+      "presentEntityIds": [
+        "rec3TUHT9Z4AnFp5P",
+        "recEJCTDj1zrsjPM6",
+        "recDM0LAD8jVRA2x3",
+        "recJhPaDVU3YUDQUt",
+        "recIPuBC50fv13zRR"
+      ],
+      "recommendedEntityIds": []
+    },
+    {
+      "observationId": "obs_resp_a7e833970bf744ce",
+      "promptId": "p_mx_residences_hotel_project_es_v1",
+      "presentEntityIds": [
+        "recCKuXCmGvxHPfb3",
+        "recJhPaDVU3YUDQUt",
+        "receQkxgjlezsc1xg"
+      ],
+      "recommendedEntityIds": [
+        "recJhPaDVU3YUDQUt"
+      ]
+    },
+    {
+      "observationId": "obs_resp_c4f4d44766304afe",
+      "promptId": "p_mx_affiliation_flexibility_es_v1",
+      "presentEntityIds": [
+        "recob7tgHRryRSbeO",
+        "reccXxMHEh7NNRhIE",
+        "rec3TUHT9Z4AnFp5P",
+        "receQkxgjlezsc1xg",
+        "recCvV0PuZOi8c3hC",
+        "rec7hTXwMRC81EPqz",
+        "recEJCTDj1zrsjPM6",
+        "recDwzv86TWnz2gGB",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg"
+      ]
+    },
+    {
+      "observationId": "obs_resp_673c6a40a3444f8b",
+      "promptId": "p_mx_individuality_preservation_es_v1",
+      "presentEntityIds": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "receQkxgjlezsc1xg",
+        "recDwzv86TWnz2gGB",
+        "recrWCD1LMqu864oU",
+        "rec7hTXwMRC81EPqz",
+        "recob7tgHRryRSbeO",
+        "rec3TUHT9Z4AnFp5P",
+        "reclkgOzvAcBheUSo",
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG"
+      ],
+      "recommendedEntityIds": [
+        "recwl5JOYxlChuCAr",
+        "recjjSnY2opb8P4DG",
+        "rec02zPClpWUTCyXM",
+        "recEJCTDj1zrsjPM6",
+        "receQkxgjlezsc1xg",
+        "reclkgOzvAcBheUSo"
+      ]
+    }
+  ],
+  "audit": {
+    "parseFailures": 0,
+    "storageFailures": 0,
+    "identityMissing": 1,
+    "resolverMalfunctions": 0,
+    "classifierMalfunctions": 0,
+    "citationCorruptions": 0,
+    "governanceViolations": [],
+    "AIRTABLE_WRITES": 0,
+    "ENTITLEMENT_WRITES": 0
+  },
+  "planFingerprintUnique": 84,
+  "peerFingerprint": "a693136bb3bd068d"
+}

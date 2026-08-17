@@ -1,0 +1,1356 @@
+{
+  "packageVersion": "25C-2E",
+  "v25C2EEnhancementPackageExists": true,
+  "generatedAt": "2026-07-09T17:55:43.585Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "imagesUntouched": true,
+  "sortOrderUntouched": true,
+  "companyValidatedUntouched": true,
+  "companyValidationDateUntouched": true,
+  "marriottValidationImplied": false,
+  "brand": {
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio",
+    "slug": "tribute-portfolio"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-loyalty-row-creation-writer.md",
+    "reports/brand-explorer-loyalty-row-creation-writer.json",
+    "reports/brand-explorer-loyalty-row-review-package.md",
+    "reports/brand-explorer-loyalty-row-review-package.json",
+    "reports/brand-explorer-loyalty-fact-approval-writer.md",
+    "reports/brand-explorer-loyalty-fact-approval-writer.json",
+    "reports/brand-explorer-required-section-population-contract.md",
+    "reports/brand-explorer-required-section-population-contract.json",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "live Tribute Partner Facts",
+    "live Tribute Source Library records",
+    "live Tribute Brand Explorer Presentation rows",
+    "live Curio/Kimpton/Radisson/Ascend loyalty rows"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-bonvoy-loyalty-detail-enhancement-package.js",
+    "scripts/brand-explorer-bonvoy-loyalty-detail-enhancement-package.mjs",
+    "docs/data-intelligence/brand-explorer-bonvoy-loyalty-detail-enhancement-package-v25C-2E.md",
+    "reports/brand-explorer-bonvoy-loyalty-detail-enhancement-package.md",
+    "reports/brand-explorer-bonvoy-loyalty-detail-enhancement-package.json",
+    "package.json"
+  ],
+  "governanceLabels": [
+    "AI-drafted from official-source metadata",
+    "Pending founder review",
+    "Not company-validated",
+    "Not Marriott-validated"
+  ],
+  "currentTributeLoyaltyWeaknessAssessment": "Tribute loyalty rows satisfy the required-section contract (earn, redeem, 6 elite tiers, 2 proof rows) but remain materially thinner than Curio/Radisson reference sections: single-sentence earn/redeem, elite tiers with no qualification or benefit detail, and proof rows that do not connect Bonvoy scale to owner affiliation decisions.",
+  "tributeLoyaltyAnalysis": {
+    "earnBulletCount": 1,
+    "redeemBulletCount": 1,
+    "eliteRowCount": 6,
+    "eliteAvgBodyLength": 50,
+    "eliteDetailScore": 1,
+    "proofRowCount": 2,
+    "proofAvgBodyLength": 164,
+    "uiDensityScore": 3
+  },
+  "referenceBrandLoyaltyBenchmark": [
+    {
+      "brand": "Curio Collection by Hilton",
+      "brandId": "receQkxgjlezsc1xg",
+      "analysis": {
+        "earnBulletCount": 4,
+        "redeemBulletCount": 4,
+        "eliteRowCount": 5,
+        "eliteAvgBodyLength": 236,
+        "eliteDetailScore": 5,
+        "proofRowCount": 6,
+        "proofAvgBodyLength": 87,
+        "uiDensityScore": 5
+      },
+      "earnSample": "Earn Hilton Honors Points on eligible stays; elite tiers add 80%–120% bonus Points (Gold through Diamond Reserve, per 2026 program rules).\nMember Rates and member promotions on direct Hilton bookings.",
+      "eliteSample": "Join for free — Earn Points on stays; Member Rates; Digital Key at participating hotels; flexible Points + Money payment"
+    },
+    {
+      "brand": "Kimpton Hotels",
+      "brandId": "recCKuXCmGvxHPfb3",
+      "analysis": {
+        "earnBulletCount": 4,
+        "redeemBulletCount": 3,
+        "eliteRowCount": 5,
+        "eliteAvgBodyLength": 228,
+        "eliteDetailScore": 5,
+        "proofRowCount": 6,
+        "proofAvgBodyLength": 95,
+        "uiDensityScore": 5
+      },
+      "earnSample": "Earn points on eligible stays; elite tiers add 20%–100% bonus points on top of base earn (per tier).\nMember Rates on direct bookings — lowest rates exclusive to members when booking direct.\nMember Pro",
+      "eliteSample": "Join for free — Earn points toward Reward Nights and more; no blackout dates on Reward Nights; Member Rates and Member P"
+    },
+    {
+      "brand": "Radisson Blu by Choice",
+      "brandId": "recWPEvxBQxVVzSq3",
+      "analysis": {
+        "earnBulletCount": 4,
+        "redeemBulletCount": 3,
+        "eliteRowCount": 5,
+        "eliteAvgBodyLength": 94,
+        "eliteDetailScore": 4,
+        "proofRowCount": 6,
+        "proofAvgBodyLength": 140,
+        "uiDensityScore": 5
+      },
+      "earnSample": "Base earn: up to 10 points per $1 on qualifying stays booked direct at 7,100+ properties.\nFast Gold: 5 nights or 10,000 Elite Qualifying Credits (EQCs); cardholders can unlock Gold via Choice Privileg",
+      "eliteSample": "Member — baseline rates, milestone rewards path, points never expire."
+    },
+    {
+      "brand": "Ascend Hotel Collection",
+      "brandId": "reclkgOzvAcBheUSo",
+      "analysis": {
+        "earnBulletCount": 4,
+        "redeemBulletCount": 3,
+        "eliteRowCount": 5,
+        "eliteAvgBodyLength": 94,
+        "eliteDetailScore": 4,
+        "proofRowCount": 6,
+        "proofAvgBodyLength": 140,
+        "uiDensityScore": 5
+      },
+      "earnSample": "Base earn: up to 10 points per $1 on qualifying stays booked direct at 7,100+ properties.\nFast Gold: 5 nights or 10,000 Elite Qualifying Credits (EQCs); cardholders can unlock Gold via Choice Privileg",
+      "eliteSample": "Member — baseline rates, milestone rewards path, points never expire."
+    }
+  ],
+  "gapTable": [
+    {
+      "metric": "Earn depth (bullet lines)",
+      "tribute": 1,
+      "referenceBenchmark": 4,
+      "gapNotes": "Tribute uses one narrative sentence; references use 3–4 mechanic bullets."
+    },
+    {
+      "metric": "Redeem depth (bullet lines)",
+      "tribute": 1,
+      "referenceBenchmark": 3.3,
+      "gapNotes": "Tribute redeem row is generic; references enumerate reward-night and flexibility mechanics."
+    },
+    {
+      "metric": "Elite tier detail score (1–5)",
+      "tribute": 1,
+      "referenceBenchmark": 4.5,
+      "gapNotes": "Tribute tiers are name-only placeholders; references include qualification thresholds and illustrative benefits."
+    },
+    {
+      "metric": "Owner-facing usefulness",
+      "tribute": 2,
+      "referenceBenchmark": 4,
+      "gapNotes": "Reference copy connects mechanics to owner distribution/underwriting context; Tribute copy is guest-generic."
+    },
+    {
+      "metric": "Source confidence",
+      "tribute": 3,
+      "referenceBenchmark": 4,
+      "gapNotes": "Tribute approved facts are thin headline extractions from one Bonvoy page; references use denser program-specific facts."
+    },
+    {
+      "metric": "UI density score (1–5)",
+      "tribute": 3,
+      "referenceBenchmark": 5,
+      "gapNotes": "Section passes contract minimum but reads sparse in side-by-side Explorer comparison."
+    },
+    {
+      "metric": "Readiness for row enhancement",
+      "tribute": "Conservative yes / Rich blocked",
+      "referenceBenchmark": "Reference-native",
+      "gapNotes": "Conservative patch can run now; rich tier detail needs pending fact approval first."
+    }
+  ],
+  "currentTributeLoyaltyRows": [
+    {
+      "slotKey": "loyalty.earn",
+      "title": "Earning & Member Rates",
+      "bodyPreview": "Marriott Bonvoy gives guests a familiar rewards path for earning points at participating hotels, with member-rate incentives that can support direct booking behavior.",
+      "recordId": "recUN78aEOqWk7Z7h"
+    },
+    {
+      "slotKey": "loyalty.redeem",
+      "title": "Redeeming Through Bonvoy",
+      "bodyPreview": "Bonvoy participation gives guests a redemption pathway through Marriott's loyalty ecosystem, adding a consumer-facing reason to consider the property within the broader Marriott ne",
+      "recordId": "recqp3btZojuNbMBL"
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Member",
+      "bodyPreview": "Entry tier in the Marriott Bonvoy member ladder.",
+      "recordId": "recpM1TUkOROWrBO3"
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Silver Elite",
+      "bodyPreview": "Elite tier in the Marriott Bonvoy member ladder.",
+      "recordId": "reclCM2KxwVpBhYh6"
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Gold Elite",
+      "bodyPreview": "Elite tier in the Marriott Bonvoy member ladder.",
+      "recordId": "recTpkAwUnxwGupiG"
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Platinum Elite",
+      "bodyPreview": "Elite tier in the Marriott Bonvoy member ladder.",
+      "recordId": "recWUtOkDt4QwsQms"
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Titanium Elite",
+      "bodyPreview": "Elite tier in the Marriott Bonvoy member ladder.",
+      "recordId": "recFmNuUVVLhFkRZL"
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "title": "Ambassador Elite",
+      "bodyPreview": "Highest named elite tier in the Marriott Bonvoy member ladder.",
+      "recordId": "recH24c2vC7dG1snf"
+    },
+    {
+      "slotKey": "loyalty.proof",
+      "title": "Global Program Scale",
+      "bodyPreview": "Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.",
+      "recordId": "rectCr7cWrrYEVcFf"
+    },
+    {
+      "slotKey": "loyalty.proof",
+      "title": "Member Rate Incentive",
+      "bodyPreview": "Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.",
+      "recordId": "rech6Z3zevnu1utSd"
+    }
+  ],
+  "earnEnhancementOptions": {
+    "conservative": {
+      "title": "Earning & Member Rates",
+      "body": "Earn and redeem points that take you everywhere you want to go.\nEnjoy exclusive discounted rates for Marriott Bonvoy Members.\nParticipation, earn rates, and channel rules follow published Bonvoy terms for each property.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+      "factsUsed": [
+        "be.loyalty.earnMechanics",
+        "be.loyalty.memberRatesBenefit"
+      ],
+      "sourceUrls": [
+        "https://www.marriott.com/loyalty.mi"
+      ],
+      "approvalStatus": "Approved facts only",
+      "riskLevel": "low",
+      "readyForEnhancementWriter": true,
+      "factApprovalRequiredFirst": false
+    },
+    "rich": {
+      "title": "Earning & Member Rates",
+      "body": "Members earn Marriott Bonvoy points on eligible hotel charges at participating properties when enrolled and booked per program rules.\nEarn and redeem points that take you everywhere you want to go.\nEnjoy exclusive discounted rates for Marriott Bonvoy Members.\nComplimentary in-room Wi-Fi may be available when booking through Marriott websites or the Marriott Bonvoy app, where offered.\nEarn toward free nights and discounted member rates within the Marriott Bonvoy program.\nDirect Marriott / Bonvoy booking paths are where member-rate and published Wi-Fi benefits are typically positioned—confirm systems and parity rules for the property.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+      "factsUsed": [
+        "be.loyalty.earnMechanics",
+        "be.loyalty.memberRatesBenefit",
+        "be.loyalty.earnEligibleSpend",
+        "be.loyalty.earnWifiDirectBooking",
+        "be.loyalty.earnFreeNightsHeadline"
+      ],
+      "sourceUrls": [
+        "https://www.marriott.com/loyalty.mi",
+        "https://www.marriott.com/loyalty/earn.mi"
+      ],
+      "approvalStatus": "Approved + Pending Review proposed facts",
+      "riskLevel": "medium",
+      "readyForEnhancementWriter": false,
+      "factApprovalRequiredFirst": true,
+      "pendingFactKeys": [
+        "be.loyalty.earnEligibleSpend",
+        "be.loyalty.earnWifiDirectBooking",
+        "be.loyalty.earnFreeNightsHeadline"
+      ]
+    }
+  },
+  "redeemEnhancementOptions": {
+    "conservative": {
+      "title": "Redeeming Through Bonvoy",
+      "body": "Earn and redeem points that take you everywhere you want to go.\nReward-night availability and point requirements vary by property, date, and brand participation.\nConfirm redemption mechanics for a specific Tribute asset against current Bonvoy materials.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+      "factsUsed": [
+        "be.loyalty.redeemMechanics"
+      ],
+      "sourceUrls": [
+        "https://www.marriott.com/loyalty.mi"
+      ],
+      "approvalStatus": "Approved facts only",
+      "riskLevel": "low",
+      "readyForEnhancementWriter": true,
+      "factApprovalRequiredFirst": false
+    },
+    "rich": {
+      "title": "Redeeming Through Bonvoy",
+      "body": "Redeem points toward reward nights at participating Marriott Bonvoy hotels, subject to award availability and published program rules.\nEarn and redeem points that take you everywhere you want to go.\nPoints may also be applied toward on-property experiences such as dining, golf, or spa during a stay where Marriott publishes that option.\nRedemption spans Marriott's participating hotel network—owners should confirm Tribute Portfolio participation and current award charts for a specific asset.\nOwners should treat redemption storytelling as consumer positioning—not a guarantee of award availability or economics for every Tribute deal.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+      "factsUsed": [
+        "be.loyalty.redeemMechanics",
+        "be.loyalty.redeemFreeNights",
+        "be.loyalty.redeemOnStayExperiences",
+        "be.loyalty.redeemParticipatingNetwork"
+      ],
+      "sourceUrls": [
+        "https://www.marriott.com/loyalty.mi",
+        "https://www.marriott.com/loyalty/redeem.mi"
+      ],
+      "approvalStatus": "Approved + Pending Review proposed facts",
+      "riskLevel": "medium",
+      "readyForEnhancementWriter": false,
+      "factApprovalRequiredFirst": true,
+      "pendingFactKeys": [
+        "be.loyalty.redeemFreeNights",
+        "be.loyalty.redeemOnStayExperiences",
+        "be.loyalty.redeemParticipatingNetwork"
+      ]
+    }
+  },
+  "eliteTierEnhancementOptions": {
+    "conservative": [
+      {
+        "title": "Member",
+        "body": "Entry tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 0,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Silver Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 1,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Gold Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 2,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Platinum Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 3,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Titanium Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 4,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Ambassador Elite",
+        "body": "Highest named elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 5,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      }
+    ],
+    "rich": [
+      {
+        "title": "Member",
+        "body": "Base tier — join at no cost; earn points on eligible stays; access member rates and published member benefits where participating.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 0,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteMemberSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteMemberSummary"
+        ]
+      },
+      {
+        "title": "Silver Elite",
+        "body": "Illustrative qualification: 10 Elite Night Credits per calendar year. Benefits may include bonus points on stays and late checkout where available—confirm published Bonvoy tables.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 1,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteSilverSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteSilverSummary"
+        ]
+      },
+      {
+        "title": "Gold Elite",
+        "body": "Illustrative qualification: 25 Elite Night Credits. Benefits may include enhanced bonus points, room upgrades, and welcome amenities where published and available.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 2,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteGoldSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteGoldSummary"
+        ]
+      },
+      {
+        "title": "Platinum Elite",
+        "body": "Illustrative qualification: 50 Elite Night Credits. Benefits may include stronger bonus points, lounge access, and enhanced room upgrades where offered by property and brand.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 3,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.elitePlatinumSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.elitePlatinumSummary"
+        ]
+      },
+      {
+        "title": "Titanium Elite",
+        "body": "Illustrative qualification: 75 Elite Night Credits. Benefits may include top-tier bonus points, annual choice benefits, and priority recognition where published.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 4,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteTitaniumSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteTitaniumSummary"
+        ]
+      },
+      {
+        "title": "Ambassador Elite",
+        "body": "Illustrative qualification: 100 Elite Night Credits plus published annual qualifying spend threshold. May include dedicated Ambassador support and highest published recognition—confirm current terms.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 5,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteAmbassadorSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteAmbassadorSummary"
+        ]
+      }
+    ]
+  },
+  "proofEnhancementOptions": {
+    "conservative": [
+      {
+        "title": "Global Program Scale",
+        "body": "Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 0,
+        "factsUsed": [
+          "be.loyalty.programScaleStatement"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved facts only",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false,
+        "scaleFactUsed": "Rewards You at 7,000+ Hotels Worldwide."
+      },
+      {
+        "title": "Member Rate Incentive",
+        "body": "Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 1,
+        "factsUsed": [
+          "be.loyalty.memberRatesBenefit"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved facts only",
+        "riskLevel": "low",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      }
+    ],
+    "rich": [
+      {
+        "title": "Global Program Scale",
+        "body": "Rewards You at 7,000+ Hotels Worldwide.\nUse current Marriott Bonvoy materials to confirm scale claims and Tribute Portfolio participation for owner conversations.\nDo not treat marketing-scale numbers as property-level performance guarantees.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 0,
+        "factsUsed": [
+          "be.loyalty.programScaleStatement"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved fact (low confidence) + founder review for external scale wording",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Member Rate & Direct Booking",
+        "body": "Enjoy exclusive discounted rates for Marriott Bonvoy Members.\nMember rates and Bonvoy recognition on direct Marriott channels can support owner conversations about distribution mix—execution still depends on property systems and rate strategy.\nFor affiliation decisions, pair Bonvoy consumer incentives with property CRS/PMS readiness and rate-parity discipline.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 1,
+        "factsUsed": [
+          "be.loyalty.memberRatesBenefit",
+          "be.loyalty.proofDirectBookingRelevance"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Mixed Approved + Pending Review",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.proofDirectBookingRelevance"
+        ]
+      }
+    ]
+  },
+  "existingApprovedFactsReused": [
+    {
+      "fieldKey": "be.loyalty.earnMechanics",
+      "factRecordId": "recmIY5Kteqv1BK5Q",
+      "humanReviewStatus": "Approved",
+      "extractedValuePreview": "Earn and redeem points that take you everywhere you want to go.",
+      "sourceRecordId": "recu6AFRZBBBNiCQn"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemMechanics",
+      "factRecordId": "recbA0yIo4Xh3yuMq",
+      "humanReviewStatus": "Approved",
+      "extractedValuePreview": "Earn and redeem points that take you everywhere you want to go.",
+      "sourceRecordId": "recu6AFRZBBBNiCQn"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteTierLadder",
+      "factRecordId": "recONga3XhpRyHpP0",
+      "humanReviewStatus": "Approved",
+      "extractedValuePreview": "Member Silver Elite Gold Elite Platinum Elite Titanium Elite Ambassador Elite",
+      "sourceRecordId": "recu6AFRZBBBNiCQn"
+    },
+    {
+      "fieldKey": "be.loyalty.memberRatesBenefit",
+      "factRecordId": "recnPbySxNiw0RKun",
+      "humanReviewStatus": "Approved",
+      "extractedValuePreview": "Enjoy exclusive discounted rates for Marriott Bonvoy Members.",
+      "sourceRecordId": "recu6AFRZBBBNiCQn"
+    },
+    {
+      "fieldKey": "be.loyalty.programScaleStatement",
+      "factRecordId": "recRtIx8ycmSQ1Z1E",
+      "humanReviewStatus": "Approved",
+      "extractedValuePreview": "Rewards You at 7,000+ Hotels Worldwide.",
+      "sourceRecordId": "recu6AFRZBBBNiCQn"
+    }
+  ],
+  "newSourcesNeeded": [],
+  "proposedSourceLibraryRecords": [
+    {
+      "proposedTitle": "Marriott Bonvoy — Member Benefits (elite tiers & published benefits)",
+      "proposedUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "sourceRole": "bonvoy_page",
+      "rationale": "Official tier qualification thresholds and illustrative elite benefits for loyalty.elite row enhancement.",
+      "writeInThisPackage": false
+    },
+    {
+      "proposedTitle": "Marriott Bonvoy — Earn & Use Points",
+      "proposedUrl": "https://www.marriott.com/loyalty/earn.mi",
+      "sourceRole": "bonvoy_page",
+      "rationale": "Official earn mechanics beyond generic headline for loyalty.earn bullets.",
+      "writeInThisPackage": false
+    },
+    {
+      "proposedTitle": "Marriott Bonvoy — Use Points / Redeem",
+      "proposedUrl": "https://www.marriott.com/loyalty/redeem.mi",
+      "sourceRole": "bonvoy_page",
+      "rationale": "Official redemption pathways for loyalty.redeem bullets.",
+      "writeInThisPackage": false
+    }
+  ],
+  "newFactsProposed": [
+    {
+      "fieldKey": "be.loyalty.earnEligibleSpend",
+      "targetSlots": [
+        "loyalty.earn"
+      ],
+      "proposedValue": "Members earn Marriott Bonvoy points on eligible hotel charges at participating properties when enrolled and booked per program rules.",
+      "sourceUrl": "https://www.marriott.com/loyalty/earn.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "Directly Stated",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.earnWifiDirectBooking",
+      "targetSlots": [
+        "loyalty.earn"
+      ],
+      "proposedValue": "Complimentary in-room Wi-Fi may be available when booking through Marriott websites or the Marriott Bonvoy app, where offered.",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "Directly Stated",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review",
+      "evidenceNote": "Supported by existing Bonvoy page evidence preview (Free in-Room Wi-Fi)."
+    },
+    {
+      "fieldKey": "be.loyalty.earnFreeNightsHeadline",
+      "targetSlots": [
+        "loyalty.earn",
+        "loyalty.redeem"
+      ],
+      "proposedValue": "Earn toward free nights and discounted member rates within the Marriott Bonvoy program.",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "Directly Stated",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemFreeNights",
+      "targetSlots": [
+        "loyalty.redeem"
+      ],
+      "proposedValue": "Redeem points toward reward nights at participating Marriott Bonvoy hotels, subject to award availability and published program rules.",
+      "sourceUrl": "https://www.marriott.com/loyalty/redeem.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "Directly Stated",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemOnStayExperiences",
+      "targetSlots": [
+        "loyalty.redeem"
+      ],
+      "proposedValue": "Points may also be applied toward on-property experiences such as dining, golf, or spa during a stay where Marriott publishes that option.",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "Directly Stated",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review",
+      "evidenceNote": "Pattern: Use points for dining, golf, spas, and more during a stay."
+    },
+    {
+      "fieldKey": "be.loyalty.redeemParticipatingNetwork",
+      "targetSlots": [
+        "loyalty.redeem"
+      ],
+      "proposedValue": "Redemption spans Marriott's participating hotel network—owners should confirm Tribute Portfolio participation and current award charts for a specific asset.",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "AI-Interpreted",
+      "confidenceLevel": "Low",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteMemberSummary",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Member",
+      "proposedValue": "Base tier — join at no cost; earn points on eligible stays; access member rates and published member benefits where participating.",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "AI-Interpreted",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteSilverSummary",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Silver Elite",
+      "proposedValue": "Illustrative qualification: 10 Elite Night Credits per calendar year. Benefits may include bonus points on stays and late checkout where available—confirm published Bonvoy tables.",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "AI-Interpreted",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteGoldSummary",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Gold Elite",
+      "proposedValue": "Illustrative qualification: 25 Elite Night Credits. Benefits may include enhanced bonus points, room upgrades, and welcome amenities where published and available.",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "AI-Interpreted",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.elitePlatinumSummary",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Platinum Elite",
+      "proposedValue": "Illustrative qualification: 50 Elite Night Credits. Benefits may include stronger bonus points, lounge access, and enhanced room upgrades where offered by property and brand.",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "AI-Interpreted",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteTitaniumSummary",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Titanium Elite",
+      "proposedValue": "Illustrative qualification: 75 Elite Night Credits. Benefits may include top-tier bonus points, annual choice benefits, and priority recognition where published.",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "AI-Interpreted",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteAmbassadorSummary",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Ambassador Elite",
+      "proposedValue": "Illustrative qualification: 100 Elite Night Credits plus published annual qualifying spend threshold. May include dedicated Ambassador support and highest published recognition—confirm current terms.",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "AI-Interpreted",
+      "confidenceLevel": "Medium",
+      "humanReviewStatus": "Pending Review"
+    },
+    {
+      "fieldKey": "be.loyalty.proofDirectBookingRelevance",
+      "targetSlots": [
+        "loyalty.proof"
+      ],
+      "proposedValue": "Member rates and Bonvoy recognition on direct Marriott channels can support owner conversations about distribution mix—execution still depends on property systems and rate strategy.",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "sourceRole": "bonvoy_page",
+      "extractionType": "AI-Interpreted",
+      "confidenceLevel": "Low",
+      "humanReviewStatus": "Pending Review"
+    }
+  ],
+  "conservativeCopyPackage": {
+    "loyalty.earn": {
+      "title": "Earning & Member Rates",
+      "body": "Earn and redeem points that take you everywhere you want to go.\nEnjoy exclusive discounted rates for Marriott Bonvoy Members.\nParticipation, earn rates, and channel rules follow published Bonvoy terms for each property.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+      "factsUsed": [
+        "be.loyalty.earnMechanics",
+        "be.loyalty.memberRatesBenefit"
+      ],
+      "sourceUrls": [
+        "https://www.marriott.com/loyalty.mi"
+      ],
+      "approvalStatus": "Approved facts only",
+      "riskLevel": "low",
+      "readyForEnhancementWriter": true,
+      "factApprovalRequiredFirst": false
+    },
+    "loyalty.redeem": {
+      "title": "Redeeming Through Bonvoy",
+      "body": "Earn and redeem points that take you everywhere you want to go.\nReward-night availability and point requirements vary by property, date, and brand participation.\nConfirm redemption mechanics for a specific Tribute asset against current Bonvoy materials.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+      "factsUsed": [
+        "be.loyalty.redeemMechanics"
+      ],
+      "sourceUrls": [
+        "https://www.marriott.com/loyalty.mi"
+      ],
+      "approvalStatus": "Approved facts only",
+      "riskLevel": "low",
+      "readyForEnhancementWriter": true,
+      "factApprovalRequiredFirst": false
+    },
+    "loyalty.elite": [
+      {
+        "title": "Member",
+        "body": "Entry tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 0,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Silver Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 1,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Gold Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 2,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Platinum Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 3,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Titanium Elite",
+        "body": "Elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 4,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Ambassador Elite",
+        "body": "Highest named elite tier in the Marriott Bonvoy member ladder. Marriott publishes additional tier benefits on official Bonvoy member materials—confirm thresholds and benefits for your market.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 5,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved ladder names only — limited tier detail",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      }
+    ],
+    "loyalty.proof": [
+      {
+        "title": "Global Program Scale",
+        "body": "Marriott describes Bonvoy as a rewards platform spanning 7,000+ hotels worldwide; use current Bonvoy materials to confirm applicable participation and terms for a specific asset.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 0,
+        "factsUsed": [
+          "be.loyalty.programScaleStatement"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved facts only",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false,
+        "scaleFactUsed": "Rewards You at 7,000+ Hotels Worldwide."
+      },
+      {
+        "title": "Member Rate Incentive",
+        "body": "Marriott Bonvoy member rates create a consumer-facing booking incentive that may support direct-channel consideration where the property participates.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 1,
+        "factsUsed": [
+          "be.loyalty.memberRatesBenefit"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved facts only",
+        "riskLevel": "low",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      }
+    ]
+  },
+  "richCopyPackage": {
+    "loyalty.earn": {
+      "title": "Earning & Member Rates",
+      "body": "Members earn Marriott Bonvoy points on eligible hotel charges at participating properties when enrolled and booked per program rules.\nEarn and redeem points that take you everywhere you want to go.\nEnjoy exclusive discounted rates for Marriott Bonvoy Members.\nComplimentary in-room Wi-Fi may be available when booking through Marriott websites or the Marriott Bonvoy app, where offered.\nEarn toward free nights and discounted member rates within the Marriott Bonvoy program.\nDirect Marriott / Bonvoy booking paths are where member-rate and published Wi-Fi benefits are typically positioned—confirm systems and parity rules for the property.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+      "factsUsed": [
+        "be.loyalty.earnMechanics",
+        "be.loyalty.memberRatesBenefit",
+        "be.loyalty.earnEligibleSpend",
+        "be.loyalty.earnWifiDirectBooking",
+        "be.loyalty.earnFreeNightsHeadline"
+      ],
+      "sourceUrls": [
+        "https://www.marriott.com/loyalty.mi",
+        "https://www.marriott.com/loyalty/earn.mi"
+      ],
+      "approvalStatus": "Approved + Pending Review proposed facts",
+      "riskLevel": "medium",
+      "readyForEnhancementWriter": false,
+      "factApprovalRequiredFirst": true,
+      "pendingFactKeys": [
+        "be.loyalty.earnEligibleSpend",
+        "be.loyalty.earnWifiDirectBooking",
+        "be.loyalty.earnFreeNightsHeadline"
+      ]
+    },
+    "loyalty.redeem": {
+      "title": "Redeeming Through Bonvoy",
+      "body": "Redeem points toward reward nights at participating Marriott Bonvoy hotels, subject to award availability and published program rules.\nEarn and redeem points that take you everywhere you want to go.\nPoints may also be applied toward on-property experiences such as dining, golf, or spa during a stay where Marriott publishes that option.\nRedemption spans Marriott's participating hotel network—owners should confirm Tribute Portfolio participation and current award charts for a specific asset.\nOwners should treat redemption storytelling as consumer positioning—not a guarantee of award availability or economics for every Tribute deal.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+      "factsUsed": [
+        "be.loyalty.redeemMechanics",
+        "be.loyalty.redeemFreeNights",
+        "be.loyalty.redeemOnStayExperiences",
+        "be.loyalty.redeemParticipatingNetwork"
+      ],
+      "sourceUrls": [
+        "https://www.marriott.com/loyalty.mi",
+        "https://www.marriott.com/loyalty/redeem.mi"
+      ],
+      "approvalStatus": "Approved + Pending Review proposed facts",
+      "riskLevel": "medium",
+      "readyForEnhancementWriter": false,
+      "factApprovalRequiredFirst": true,
+      "pendingFactKeys": [
+        "be.loyalty.redeemFreeNights",
+        "be.loyalty.redeemOnStayExperiences",
+        "be.loyalty.redeemParticipatingNetwork"
+      ]
+    },
+    "loyalty.elite": [
+      {
+        "title": "Member",
+        "body": "Base tier — join at no cost; earn points on eligible stays; access member rates and published member benefits where participating.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 0,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteMemberSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteMemberSummary"
+        ]
+      },
+      {
+        "title": "Silver Elite",
+        "body": "Illustrative qualification: 10 Elite Night Credits per calendar year. Benefits may include bonus points on stays and late checkout where available—confirm published Bonvoy tables.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 1,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteSilverSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteSilverSummary"
+        ]
+      },
+      {
+        "title": "Gold Elite",
+        "body": "Illustrative qualification: 25 Elite Night Credits. Benefits may include enhanced bonus points, room upgrades, and welcome amenities where published and available.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 2,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteGoldSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteGoldSummary"
+        ]
+      },
+      {
+        "title": "Platinum Elite",
+        "body": "Illustrative qualification: 50 Elite Night Credits. Benefits may include stronger bonus points, lounge access, and enhanced room upgrades where offered by property and brand.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 3,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.elitePlatinumSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.elitePlatinumSummary"
+        ]
+      },
+      {
+        "title": "Titanium Elite",
+        "body": "Illustrative qualification: 75 Elite Night Credits. Benefits may include top-tier bonus points, annual choice benefits, and priority recognition where published.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 4,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteTitaniumSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteTitaniumSummary"
+        ]
+      },
+      {
+        "title": "Ambassador Elite",
+        "body": "Illustrative qualification: 100 Elite Night Credits plus published annual qualifying spend threshold. May include dedicated Ambassador support and highest published recognition—confirm current terms.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 5,
+        "factsUsed": [
+          "be.loyalty.eliteTierLadder",
+          "be.loyalty.eliteAmbassadorSummary"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi",
+          "https://www.marriott.com/loyalty/member-benefits.mi"
+        ],
+        "approvalStatus": "Pending Review tier summary",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.eliteAmbassadorSummary"
+        ]
+      }
+    ],
+    "loyalty.proof": [
+      {
+        "title": "Global Program Scale",
+        "body": "Rewards You at 7,000+ Hotels Worldwide.\nUse current Marriott Bonvoy materials to confirm scale claims and Tribute Portfolio participation for owner conversations.\nDo not treat marketing-scale numbers as property-level performance guarantees.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 0,
+        "factsUsed": [
+          "be.loyalty.programScaleStatement"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Approved fact (low confidence) + founder review for external scale wording",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": true,
+        "factApprovalRequiredFirst": false
+      },
+      {
+        "title": "Member Rate & Direct Booking",
+        "body": "Enjoy exclusive discounted rates for Marriott Bonvoy Members.\nMember rates and Bonvoy recognition on direct Marriott channels can support owner conversations about distribution mix—execution still depends on property systems and rate strategy.\nFor affiliation decisions, pair Bonvoy consumer incentives with property CRS/PMS readiness and rate-parity discipline.\n\nIllustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+        "sort": 1,
+        "factsUsed": [
+          "be.loyalty.memberRatesBenefit",
+          "be.loyalty.proofDirectBookingRelevance"
+        ],
+        "sourceUrls": [
+          "https://www.marriott.com/loyalty.mi"
+        ],
+        "approvalStatus": "Mixed Approved + Pending Review",
+        "riskLevel": "medium",
+        "readyForEnhancementWriter": false,
+        "factApprovalRequiredFirst": true,
+        "pendingFactKeys": [
+          "be.loyalty.proofDirectBookingRelevance"
+        ]
+      }
+    ]
+  },
+  "copyReadyNow": {
+    "package": "conservative",
+    "rows": [
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Earning & Member Rates",
+        "readyForEnhancementWriter": true
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Redeeming Through Bonvoy",
+        "readyForEnhancementWriter": true
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Global Program Scale",
+        "readyForEnhancementWriter": true
+      },
+      {
+        "slotKey": "loyalty.elite",
+        "title": "Member Rate Incentive",
+        "readyForEnhancementWriter": true
+      }
+    ],
+    "slots": [
+      "loyalty.earn",
+      "loyalty.redeem",
+      "loyalty.proof (partial)"
+    ],
+    "note": "Conservative earn/redeem and proof scale row can be patched without new fact approval; elite tiers remain thin until rich facts are approved."
+  },
+  "copyRequiresFactApprovalFirst": {
+    "package": "rich",
+    "rows": [
+      {
+        "title": "Earning & Member Rates",
+        "pendingFactKeys": [
+          "be.loyalty.earnEligibleSpend",
+          "be.loyalty.earnWifiDirectBooking",
+          "be.loyalty.earnFreeNightsHeadline"
+        ],
+        "slotKey": "loyalty.earn"
+      },
+      {
+        "title": "Redeeming Through Bonvoy",
+        "pendingFactKeys": [
+          "be.loyalty.redeemFreeNights",
+          "be.loyalty.redeemOnStayExperiences",
+          "be.loyalty.redeemParticipatingNetwork"
+        ],
+        "slotKey": "loyalty.redeem"
+      },
+      {
+        "title": "Member",
+        "pendingFactKeys": [
+          "be.loyalty.eliteMemberSummary"
+        ],
+        "slotKey": "loyalty.elite"
+      },
+      {
+        "title": "Silver Elite",
+        "pendingFactKeys": [
+          "be.loyalty.eliteSilverSummary"
+        ],
+        "slotKey": "loyalty.elite"
+      },
+      {
+        "title": "Gold Elite",
+        "pendingFactKeys": [
+          "be.loyalty.eliteGoldSummary"
+        ],
+        "slotKey": "loyalty.elite"
+      },
+      {
+        "title": "Platinum Elite",
+        "pendingFactKeys": [
+          "be.loyalty.elitePlatinumSummary"
+        ],
+        "slotKey": "loyalty.elite"
+      },
+      {
+        "title": "Titanium Elite",
+        "pendingFactKeys": [
+          "be.loyalty.eliteTitaniumSummary"
+        ],
+        "slotKey": "loyalty.elite"
+      },
+      {
+        "title": "Ambassador Elite",
+        "pendingFactKeys": [
+          "be.loyalty.eliteAmbassadorSummary"
+        ],
+        "slotKey": "loyalty.elite"
+      },
+      {
+        "title": "Member Rate & Direct Booking",
+        "pendingFactKeys": [
+          "be.loyalty.proofDirectBookingRelevance"
+        ],
+        "slotKey": "loyalty.elite"
+      }
+    ],
+    "pendingFactCount": 13,
+    "note": "Approve proposed Bonvoy tier and mechanic facts before applying rich elite/redeem/proof-direct-booking copy."
+  },
+  "kpiRowsExcluded": true,
+  "excludedKpiSlots": [
+    "loyalty.kpi.hotels",
+    "loyalty.kpi.markets",
+    "loyalty.kpi.members",
+    "loyalty.kpi.mix"
+  ],
+  "internalFddFactsExcluded": [
+    {
+      "fieldKey": "be.meta.fddDocumentVintage",
+      "factRecordId": "rec6mXPxMqMQw2Um2",
+      "reason": "internal_or_fdd_excluded"
+    },
+    {
+      "fieldKey": "be.standards.qualityAssuranceTheme",
+      "factRecordId": "recYAnV9ScBGVw3CK",
+      "reason": "internal_or_fdd_excluded"
+    }
+  ],
+  "pendingFactsNotAutoApproved": [
+    "be.loyalty.earnEligibleSpend",
+    "be.loyalty.earnWifiDirectBooking",
+    "be.loyalty.earnFreeNightsHeadline",
+    "be.loyalty.redeemFreeNights",
+    "be.loyalty.redeemOnStayExperiences",
+    "be.loyalty.redeemParticipatingNetwork",
+    "be.loyalty.eliteMemberSummary",
+    "be.loyalty.eliteSilverSummary",
+    "be.loyalty.eliteGoldSummary",
+    "be.loyalty.elitePlatinumSummary",
+    "be.loyalty.eliteTitaniumSummary",
+    "be.loyalty.eliteAmbassadorSummary",
+    "be.loyalty.proofDirectBookingRelevance"
+  ],
+  "partnerFactsCreated": false,
+  "sourceLibraryRowsCreated": false,
+  "presentationRowsUpdated": false,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedAfter": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "exactNextWriter": "brand-explorer-bonvoy-loyalty-row-enhancement-writer",
+  "exactNextWriterVersion": "25C-2F",
+  "exactNextWriterCommand": "npm run brand-explorer-bonvoy-loyalty-row-enhancement-writer -- --brand tribute-portfolio --package conservative --dry-run",
+  "alternateNextStep": "npm run brand-explorer-loyalty-fact-approval-writer -- --brand tribute-portfolio --dry-run (after stewarding proposed pending facts)",
+  "bonvoyCaveatText": "Illustrative examples only — actual earn/redeem rules vary by market, brand, property, and booking channel.",
+  "doesNotDo": [
+    "Write or update Brand Explorer Presentation rows",
+    "Approve Partner Facts automatically",
+    "Create Source Library records by default",
+    "Create loyalty.kpi.* rows",
+    "Use FDD/internal-only facts",
+    "Write governance labels into UI body copy",
+    "Change images, Sort Order, or Company Validated",
+    "Imply Marriott validated anything"
+  ]
+}

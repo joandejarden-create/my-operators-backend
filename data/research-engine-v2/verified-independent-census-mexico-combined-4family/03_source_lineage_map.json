@@ -1,0 +1,65 @@
+{
+  "generatedAt": "2026-08-04T23:13:45.164Z",
+  "geography": "Mexico",
+  "families": [
+    {
+      "family": "IHG",
+      "wave": "wave1_ihg_mexico_all",
+      "record_count": 195,
+      "primary_source": "Official IHG Mexico directory / hoteldetail",
+      "wave_freeze_hash_sha256": "41302100efa86713ae27c0cefdf3e2071dc0a779c876b73f8d6d07f68e4b0403",
+      "source_artifacts": {
+        "full_records": "data/research-engine-v2/verified-independent-census-v1/08-expanded-benchmark-full-records.json",
+        "freeze": "data/research-engine-v2/verified-independent-census-v1/09-expanded-benchmark-freeze.json",
+        "summary": "data/research-engine-v2/verified-independent-census-v1/12-vic-run-summary.json"
+      },
+      "discovery_basis": "ihg_mexico_directory"
+    },
+    {
+      "family": "Hilton",
+      "wave": "wave1b_hilton_mexico",
+      "record_count": 102,
+      "primary_source": "Official Hilton Mexico brand location pages (+ structured GraphQL)",
+      "wave_freeze_hash_sha256": "8397b19357f29dfe19d2ebc7ec1c1ba936ff84b5aaa7a439fe02d2b9edb4683c",
+      "source_artifacts": {
+        "full_records": "data/research-engine-v2/verified-independent-census-wave1b-hilton/02-hilton-full-records.json",
+        "freeze": "data/research-engine-v2/verified-independent-census-wave1b-hilton/04-hilton-freeze.json",
+        "summary": "data/research-engine-v2/verified-independent-census-wave1b-hilton/00-wave1b-run-summary.json"
+      },
+      "discovery_basis": "live_hilton_locations_mexico_brand_pages"
+    },
+    {
+      "family": "Choice",
+      "wave": "wave1c_choice_mexico",
+      "record_count": 68,
+      "primary_source": "Official Choice Mexico regional JSON-LD + MX* sitemap union",
+      "wave_freeze_hash_sha256": "6f72bf60713dc3a103479d293d1f62ecef8a0b888f63be1bc9bb0d64e74d750f",
+      "source_artifacts": {
+        "full_records": "data/research-engine-v2/verified-independent-census-wave1c-choice/02-choice-full-records.json",
+        "freeze": "data/research-engine-v2/verified-independent-census-wave1c-choice/06-choice-freeze.json",
+        "summary": "data/research-engine-v2/verified-independent-census-wave1c-choice/00-wave1c-run-summary.json"
+      },
+      "discovery_basis": "live_choice_mexico_regional_jsonld"
+    },
+    {
+      "family": "Marriott",
+      "wave": "wave1d_marriott_mexico",
+      "record_count": 301,
+      "primary_source": "Official Marriott Mexico country hotel-sitemap (sitemap-heavy)",
+      "wave_freeze_hash_sha256": "b26c6fe5bf97b101c69d30402c27fbbec6c79e61cbff9d050d4eb9f3a1e925d3",
+      "source_artifacts": {
+        "full_records": "data/research-engine-v2/verified-independent-census-wave1d-marriott/02-marriott-full-records.json",
+        "freeze": "data/research-engine-v2/verified-independent-census-wave1d-marriott/08-marriott-freeze.json",
+        "summary": "data/research-engine-v2/verified-independent-census-wave1d-marriott/00-wave1d-run-summary.json"
+      },
+      "discovery_basis": "official_marriott_mexico_country_hotel_sitemap"
+    }
+  ],
+  "prior_3family_baseline": {
+    "status": "mexico_vic_baseline_locked_ready_for_marriott_wave1d",
+    "combined_freeze_hash_sha256": "cd7887e30418a9df1a91d275ec9c358ced113e6e8e9368b3ec8d0bcb1c8f574e",
+    "total": 365
+  },
+  "marriott_steward_overlay_path": "data/research-engine-v2/verified-independent-census-wave1d-marriott/steward-review",
+  "frozen_wave_artifacts_modified": false
+}

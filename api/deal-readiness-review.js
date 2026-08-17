@@ -6,7 +6,10 @@
  */
 
 import { fetchDealWithMergedLinkedRecords, REQUIRED_DEAL_SETUP_FIELDS, isFieldFilled } from "./my-deals.js";
-import { operatorCapabilityConditionalRequiredFields } from "./schemas/deal-setup-fields.js";
+import {
+  operatorCapabilityConditionalRequiredFields,
+  mixedUseIntakeConditionalRequiredFields,
+} from "./schemas/deal-setup-fields.js";
 import {
   DEALS_TABLE,
   DEAL_READINESS_SCORE_AIRTABLE_FIELD,
@@ -47,8 +50,10 @@ function requiredFieldNamesForReadiness(fields) {
     ? REQUIRED_DEAL_SETUP_FIELDS
     : REQUIRED_DEAL_SETUP_FIELDS.filter((f) => !LEASE_STRUCTURE_FIELD_SET.has(f));
   const ocs = operatorCapabilityConditionalRequiredFields(fields || {});
-  if (!ocs.length) return base;
-  return [...new Set([...base, ...ocs])];
+  const mixed = mixedUseIntakeConditionalRequiredFields(fields || {});
+  const extra = [...ocs, ...mixed];
+  if (!extra.length) return base;
+  return [...new Set([...base, ...extra])];
 }
 const READINESS_ALTERNATE_KEYS = {
   "Are you open to lesser-known or emerging brands with favorable terms?": [

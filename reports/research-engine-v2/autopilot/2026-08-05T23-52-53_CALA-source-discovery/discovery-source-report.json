@@ -1,0 +1,236 @@
+{
+  "families_used": [
+    "Hilton",
+    "Choice",
+    "Marriott",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [],
+  "adapter_errors": [],
+  "vic_evidence_rows": 666,
+  "hilton_discovery": {
+    "source": {
+      "type": "official_hilton_locations_directory",
+      "country_url_template": "https://www.hilton.com/en/locations/{country-slug}/",
+      "mexico_brand_url_template": "https://www.hilton.com/en/locations/mexico/{brand-slug}/",
+      "property_id_field": "ctyhocn"
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-hilton-cala-discovery-v1",
+      "source": {
+        "type": "official_hilton_locations_directory",
+        "country_url_template": "https://www.hilton.com/en/locations/{country-slug}/",
+        "mexico_brand_url_template": "https://www.hilton.com/en/locations/mexico/{brand-slug}/",
+        "property_id_field": "ctyhocn"
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "hotel_count": 102,
+          "ok": true,
+          "mode": "brand_locations"
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.hilton.com/en/locations/dominican-republic/",
+          "hotel_count": 10,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.hilton.com/en/locations/costa-rica/",
+          "hotel_count": 20,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.hilton.com/en/locations/colombia/",
+          "hotel_count": 20,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.hilton.com/en/locations/panama/",
+          "hotel_count": 6,
+          "ok": true,
+          "mode": "country_locations"
+        }
+      ],
+      "errors": [],
+      "loaded_at": "2026-08-05T23:52:59.100Z"
+    }
+  },
+  "choice_discovery": {
+    "source": {
+      "type": "official_choice_regional_directory",
+      "url_template": "https://www.choicehotels.com/en-uk/{country-slug}/regional-hotels",
+      "property_id_pattern": "[A-Z]{2}\\d{3}",
+      "note": "Regional URL for discovery only; Census Address Source URL must be property-level"
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-choice-cala-discovery-v1",
+      "source": {
+        "type": "official_choice_regional_directory",
+        "url_template": "https://www.choicehotels.com/en-uk/{country-slug}/regional-hotels",
+        "property_id_pattern": "[A-Z]{2}\\d{3}",
+        "note": "Regional URL for discovery only; Census Address Source URL must be property-level"
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "hotel_count": 50,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "url": "https://www.choicehotels.com/en-uk/dominican-republic/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "url": "https://www.choicehotels.com/en-uk/costa-rica/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "url": "https://www.choicehotels.com/en-uk/colombia/regional-hotels",
+          "hotel_count": 15,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "url": "https://www.choicehotels.com/en-uk/panama/regional-hotels",
+          "hotel_count": 7,
+          "ok": true
+        }
+      ],
+      "errors": [],
+      "loaded_at": "2026-08-05T23:53:07.690Z"
+    }
+  },
+  "marriott_discovery": {
+    "source": {
+      "type": "official_country_hotel_sitemap",
+      "origin": "https://www.marriott.com",
+      "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+      "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+      "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+      "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+      "hqv_required_for_discovery": false,
+      "deprecated_blocked_patterns": [
+        "/en/hotels/{country}.sitemap-hotels.xml",
+        "*.sitemap-hotels.xml"
+      ]
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "hqv_required_for_discovery": false,
+    "deprecated_sitemap_hotels_xml_blocked": true,
+    "meta": {
+      "version": "census-autopilot-marriott-discovery-adapter-v1",
+      "source": {
+        "type": "official_country_hotel_sitemap",
+        "origin": "https://www.marriott.com",
+        "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+        "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+        "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+        "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+        "hqv_required_for_discovery": false,
+        "deprecated_blocked_patterns": [
+          "/en/hotels/{country}.sitemap-hotels.xml",
+          "*.sitemap-hotels.xml"
+        ]
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "hotel_count": 301,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "hotel_count": 30,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+          "hotel_count": 17,
+          "ok": true
+        }
+      ],
+      "errors": [],
+      "hqv_required_for_discovery": false,
+      "loaded_at": "2026-08-05T23:53:10.335Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v1",
+    "loaded_at": "2026-08-05T23:52:58.391Z",
+    "hilton_count": 102,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 353
+}

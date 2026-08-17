@@ -1,0 +1,78 @@
+# Manual overnight Census enrichment (workflow_dispatch only — no schedule).
+# Prefer running locally / Railway when checkpoint durability on disk is required.
+# This workflow documents the founder-initiated command; long GitHub-hosted runs
+# may hit job timeouts — use a self-hosted runner or Railway for full 6h windows.
+name: Census Overnight Enrichment (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run | run | resume"
+        required: true
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - run
+          - resume
+      max_runtime_minutes:
+        description: "Max runtime minutes (default 360)"
+        required: false
+        default: "360"
+      max_external_cost_usd:
+        description: "Max overnight external cost USD (default 50)"
+        required: false
+        default: "50"
+      enable_production_writes:
+        description: "Set true only with production confirmation secrets/env"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  overnight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 390
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Run overnight enrichment
+        env:
+          OVERNIGHT_MAX_RUNTIME_MINUTES: ${{ inputs.max_runtime_minutes }}
+          OVERNIGHT_MAX_EXTERNAL_COST_USD: ${{ inputs.max_external_cost_usd }}
+          AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
+          AIRTABLE_BASE_ID_ALT: ${{ secrets.AIRTABLE_BASE_ID_ALT }}
+          MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+          MAPBOX_PERMANENT_GEOCODING: "1"
+          CENSUS_COORDINATE_COMPLETION_ENABLED: "1"
+          ENABLE_COORDINATE_WRITES: "1"
+          ENABLE_HBX_COORDINATE_WRITES: "0"
+          ENABLE_CURRENT_BRAND_WRITES: "1"
+          ENABLE_SECONDARY_HOTEL_DATA_SOURCES: "1"
+          ENABLE_SECONDARY_ROOMS_SOURCES: "1"
+          MAX_MAPBOX_PERMANENT_REQUESTS: "10000"
+          CENSUS_MASTER_MAPBOX_STRUCTURED_ADDRESS_PATHWAY: "1"
+          ALLOW_CENSUS_AUTOPILOT_APPLY: ${{ inputs.enable_production_writes && '1' || '0' }}
+          CONFIRM_WRITE_TO_PRODUCTION_CENSUS: ${{ inputs.enable_production_writes && '1' || '0' }}
+          CONFIRM_NO_BRAND_EXPLORER_WRITES: "1"
+          CONFIRM_NO_BRAND_SETUP_WRITES: "1"
+        run: |
+          if [ "${{ inputs.enable_production_writes }}" = "true" ]; then
+            npm run census:overnight-enrichment -- --mode ${{ inputs.mode }} --enable-production-writes --max-runtime-minutes ${{ inputs.max_runtime_minutes }} --max-external-cost-usd ${{ inputs.max_external_cost_usd }}
+          else
+            npm run census:overnight-enrichment -- --mode dry-run --max-runtime-minutes ${{ inputs.max_runtime_minutes }} --max-external-cost-usd ${{ inputs.max_external_cost_usd }}
+          fi
+      - name: Upload overnight reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: overnight-enrichment-reports
+          path: |
+            reports/research-engine-v2/overnight-enrichment/
+            data/research-engine-v2/overnight-census-enrichment/
+            data/research-engine-v2/master-census-enrichment/checkpoint.json

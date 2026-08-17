@@ -1,0 +1,86 @@
+{
+  "principle": "Lean canonical hotel master — WHAT hotel is this + durable core attributes only",
+  "groups": {
+    "IDENTITY": [
+      "Property Identity Key",
+      "Canonical Property Name",
+      "Property Name",
+      "Production Use Status",
+      "Identity Confidence"
+    ],
+    "LOCATION": [
+      "Address",
+      "City",
+      "State / Region",
+      "Country",
+      "Market",
+      "Submarket",
+      "Latitude",
+      "Longitude"
+    ],
+    "PROPERTY": [
+      "Rooms / Keys",
+      "Property Type",
+      "Hotel Class / Segment",
+      "Opening Date"
+    ],
+    "AFFILIATION": [
+      "Current Brand",
+      "Brand Family",
+      "Affiliation Status"
+    ],
+    "CONTACT": [
+      "Official Property URL",
+      "Phone"
+    ],
+    "PROVENANCE_MIN": [
+      "Source URL",
+      "Source Type",
+      "Source Confidence",
+      "Discovery Date",
+      "Rooms Confidence",
+      "Rooms Source Type",
+      "Address Confidence",
+      "Coordinate Confidence",
+      "Coordinate Source Type",
+      "Phone Confidence",
+      "Phone Source Type"
+    ],
+    "WORKFLOW_MIN": [
+      "Enrichment Status",
+      "Review Status",
+      "Human Review Required",
+      "Last Reviewed Date",
+      "Data Eligible",
+      "Family / Source Family"
+    ],
+    "LINKS": [
+      "Hotel Property Brand Affiliations",
+      "Hotel Property Source Evidence",
+      "Hotel Property Steward Review"
+    ],
+    "OPTIONAL_SUPPORTING_IF_STILL_NEEDED": [
+      "Brand Explorer Slug if mapped",
+      "Radar Display Status",
+      "Public Census Eligibility",
+      "Amenities - Structured Tags",
+      "VIC Freeze Hash"
+    ]
+  },
+  "explicitly_out_of_census": [
+    "Tripadvisor / GIATA / Google provider observation columns",
+    "Owner / operator / developer entity graphs",
+    "Opportunity flags",
+    "Long narrative descriptions / AI summaries",
+    "Historical snapshots / rankings / ratings",
+    "HBX detail columns (keep codes in external-ids)",
+    "Shell-insert batch metadata (archive then delete)",
+    "Duplicate Market / Submarket combo field",
+    "Continent / Sub-Continent if derivable"
+  ],
+  "target_field_count_estimate": {
+    "core_plus_min_provenance_workflow_links": 48,
+    "with_optional_supporting": 55,
+    "stretch_ceiling": 65
+  }
+}

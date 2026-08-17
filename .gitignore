@@ -7,6 +7,7 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 *.tmp
+data/research-engine-v2/tmp-benchmark-coverage-ephemeral/
 *.zip
 scripts/.cache-enrich-ti/
 
@@ -16,6 +17,19 @@ _archive/
 data/brand-workspace-kpi-history.json
 data/marketing-landing-events.jsonl
 data/google-place-verification-cache.json
+data/operator-fit/shortlist-store.json
+data/operator-fit/internal-pilot-events.jsonl
+data/operator-fit/advisor-scorecards.json
+data/operator-fit/backups/
+data/wave9-chrome-profile/
+data/choice-browser-profile/
+data/hotel-intelligence/
+data/ai-visibility/runtime/
+# Pilot measured baseline — required for Brand AI Visibility V1 reads (wave1 + provider baselines)
+!data/ai-visibility/runtime/wave1-showcase/
+!data/ai-visibility/runtime/wave1-showcase/**
+!data/ai-visibility/runtime/provider-baselines/
+!data/ai-visibility/runtime/provider-baselines/**
 
 # Licensed CoStar exports — internal GTM only (never commit)
 
@@ -30,3 +44,12 @@ data/google-place-verification-cache.json
 /lib/capital-provider-profile-presentation.js
 data/internal/gtm-costar-imports/*
 !data/internal/gtm-costar-imports/README.md
+data/internal/gtm-registry-enrichments/*
+!data/internal/gtm-registry-enrichments/README.md
+!data/internal/gtm-registry-enrichments/drafts/.gitkeep
+data/internal/acquisition-intelligence/previews/**
+!data/internal/acquisition-intelligence/README.md
+
+# Market Alerts scheduler runtime state (local/Railway volume — not source control)
+data/market-alerts-early-signals-schedule-state.json
+data/market-alerts-rss-schedule-state.json

@@ -1,0 +1,91 @@
+{
+  "version": "census-cvent-latam-harvest-v1",
+  "client_version": "census-cvent-venue-client-v4",
+  "harvester_version": "census-cvent-country-results-harvester-v2",
+  "matcher_version": "census-cvent-latam-matcher-v1",
+  "registry_version": "census-cvent-latam-country-registry-v1",
+  "generated_at": "2026-08-08T09:52:26.164Z",
+  "mode": "inventory_only",
+  "coverage_note": "Cvent is a meetings/event venue inventory — not a complete national hotel census.",
+  "hard_rules": [
+    "Never write Opening Date / Renovation Date (Built/Renovated → Notes only)",
+    "Never map meeting rooms → Rooms / Keys",
+    "Never write Cvent lat/lng to Latitude/Longitude",
+    "Inserts are Census Only + Human Review Required"
+  ],
+  "probe": {
+    "scanned": 3,
+    "viable_count": 3,
+    "total_venues_reported": 6627,
+    "viable": [
+      {
+        "country": "Costa Rica",
+        "slug": "Costa-Rica",
+        "totalCount": 376,
+        "status": 200
+      },
+      {
+        "country": "Brazil",
+        "slug": "Brazil",
+        "totalCount": 5313,
+        "status": 200
+      },
+      {
+        "country": "Argentina",
+        "slug": "Argentina",
+        "totalCount": 938,
+        "status": 200
+      }
+    ]
+  },
+  "inventory": {
+    "countries": 3,
+    "hotel_url_total": 6397,
+    "by_country": [
+      {
+        "country": "Costa Rica",
+        "slug": "Costa-Rica",
+        "totalCount": 376,
+        "hotel_url_count": 356,
+        "skipped_non_hotel_count": 385,
+        "pages_fetched": 16,
+        "from_cache": false
+      },
+      {
+        "country": "Brazil",
+        "slug": "Brazil",
+        "totalCount": 5313,
+        "hotel_url_count": 5165,
+        "skipped_non_hotel_count": 5345,
+        "pages_fetched": 213,
+        "from_cache": false
+      },
+      {
+        "country": "Argentina",
+        "slug": "Argentina",
+        "totalCount": 938,
+        "hotel_url_count": 876,
+        "skipped_non_hotel_count": 968,
+        "pages_fetched": 38,
+        "from_cache": false
+      }
+    ]
+  },
+  "parsed_count": 0,
+  "parse_ok_count": 0,
+  "update_proposal_count": 0,
+  "insert_proposal_count": 0,
+  "skipped_count": 0,
+  "update_proposals": [],
+  "insert_proposals": [],
+  "skipped": [],
+  "parsed_sample": [],
+  "apply": {
+    "attempted": false,
+    "reason": "dry_run_default",
+    "enableUpdates": false,
+    "enableInserts": false,
+    "env_ok": true,
+    "confirms_ok": false
+  }
+}

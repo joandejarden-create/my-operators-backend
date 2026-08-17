@@ -1,0 +1,1165 @@
+/*!
+ * Dealality Old Home — Problem Deal Desk (cinematic-v1)
+ * Scope: #about[data-oh-problem="deal-desk"] .dealality-problem-desk | .dealality-problem-desk
+ * States: opportunity | workstreams | artifacts | comparison | momentum | outcome
+ * Phase B motion: enabled when #about[data-deal-desk-motion="1"]; JS drives data-story-state only.
+ */
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk,
+.dealality-problem-desk {
+  --dpd-bg: #070b1a;
+  --dpd-surface: rgba(14, 22, 48, 0.94);
+  --dpd-surface-2: rgba(8, 14, 32, 0.98);
+  --dpd-border: rgba(155, 138, 251, 0.22);
+  --dpd-border-soft: rgba(255, 255, 255, 0.09);
+  --dpd-text: #ffffff;
+  --dpd-muted: rgba(183, 196, 255, 0.72);
+  --dpd-purple: #9b8afb;
+  --dpd-blue: #60a5fa;
+  --dpd-teal: #2dd4bf;
+  --dpd-gold: #d4a574;
+  --dpd-radius: 18px;
+  --dpd-shadow: 0 28px 56px rgba(0, 0, 0, 0.42);
+  --dpd-stage-h: 610px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  color: var(--dpd-text);
+  font-family: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk *,
+.dealality-problem-desk * { box-sizing: border-box; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sr-only,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone-label,
+.dealality-problem-desk .dpd-sr-only,
+.dealality-problem-desk .dpd-zone-label {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-desk,
+.dealality-problem-desk .dpd-desk {
+  position: relative;
+  padding: 1.35rem 1.25rem 1.3rem;
+  border-radius: 24px;
+  border: 1px solid var(--dpd-border);
+  background:
+    radial-gradient(ellipse 65% 50% at 12% 18%, rgba(91, 33, 182, 0.28), transparent 58%),
+    radial-gradient(ellipse 50% 42% at 90% 86%, rgba(45, 212, 191, 0.08), transparent 52%),
+    linear-gradient(165deg, var(--dpd-surface), var(--dpd-surface-2));
+  box-shadow: var(--dpd-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-flow-lines,
+.dealality-problem-desk .dpd-flow-lines {
+  position: absolute;
+  inset: 1.2rem 1.1rem;
+  width: auto; height: auto;
+  pointer-events: none; z-index: 0; opacity: 0.35;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-stage,
+.dealality-problem-desk .dpd-stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  height: var(--dpd-stage-h);
+  min-height: var(--dpd-stage-h);
+  gap: 0.85rem;
+  align-items: stretch;
+}
+
+/* —— Zone base —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone,
+.dealality-problem-desk .dpd-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 0.85rem 0.8rem;
+  border-radius: var(--dpd-radius);
+  border: 1px solid var(--dpd-border-soft);
+  background: linear-gradient(160deg, rgba(12, 18, 40, 0.9), rgba(8, 12, 28, 0.78));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  opacity: 0.18;
+  transform: scale(0.92);
+  transform-origin: center center;
+  pointer-events: none;
+  overflow: hidden;
+  transition: none;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone.is-prior,
+.dealality-problem-desk .dpd-zone.is-prior {
+  opacity: 0.42;
+  transform: scale(0.96);
+  filter: saturate(0.75);
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone.is-active,
+.dealality-problem-desk .dpd-zone.is-active {
+  opacity: 1;
+  transform: scale(1);
+  filter: none;
+  pointer-events: auto;
+  z-index: 3;
+  border-color: rgba(155, 138, 251, 0.38);
+  box-shadow:
+    0 0 0 1px rgba(155, 138, 251, 0.14),
+    0 22px 44px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone.is-ghost,
+.dealality-problem-desk .dpd-zone.is-ghost {
+  opacity: 0.1;
+  transform: scale(0.9);
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* State grid layouts (desktop cinematic) — always keep L→R silhouette;
+   active zone leads, futures stay visible (never collapse to empty stage). */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-stage,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-stage {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.92fr) minmax(0, 0.52fr) minmax(0, 0.46fr) minmax(0, 0.54fr);
+  grid-template-areas: "opp streams compare momentum outcome";
+  gap: 0.7rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-stage,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-stage {
+  grid-template-columns: minmax(0, 0.58fr) minmax(0, 1.85fr) minmax(0, 0.42fr) minmax(0, 0.36fr) minmax(0, 0.42fr);
+  grid-template-areas: "opp streams compare momentum outcome";
+  gap: 0.7rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-stage,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-stage {
+  grid-template-columns: minmax(0, 0.5fr) minmax(0, 1.95fr) minmax(0, 0.4fr) minmax(0, 0.34fr) minmax(0, 0.4fr);
+  grid-template-areas: "opp streams compare momentum outcome";
+  gap: 0.7rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-stage,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-stage {
+  grid-template-columns: minmax(0, 0.36fr) minmax(0, 0.55fr) minmax(0, 1.7fr) minmax(0, 0.4fr) minmax(0, 0.42fr);
+  grid-template-areas: "opp streams compare momentum outcome";
+  gap: 0.7rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-stage,
+.dealality-problem-desk[data-story-state="momentum"] .dpd-stage {
+  grid-template-columns: minmax(0, 0.32fr) minmax(0, 0.36fr) minmax(0, 0.48fr) minmax(0, 1.65fr) minmax(0, 0.48fr);
+  grid-template-areas: "opp streams compare momentum outcome";
+  gap: 0.7rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-stage,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-stage {
+  grid-template-columns: minmax(0, 0.28fr) minmax(0, 0.32fr) minmax(0, 0.36fr) minmax(0, 0.48fr) minmax(0, 1.7fr);
+  grid-template-areas: "opp streams compare momentum outcome";
+  gap: 0.7rem;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--opp,
+.dealality-problem-desk .dpd-zone--opp { grid-area: opp; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--streams,
+.dealality-problem-desk .dpd-zone--streams { grid-area: streams; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--compare,
+.dealality-problem-desk .dpd-zone--compare { grid-area: compare; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--momentum,
+.dealality-problem-desk .dpd-zone--momentum { grid-area: momentum; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--outcome,
+.dealality-problem-desk .dpd-zone--outcome { grid-area: outcome; }
+
+/* Active / prior / ghost by state — inactive zones stay readable silhouette */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--opp,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--opp { opacity: 1; transform: scale(1); pointer-events: auto; z-index: 3; filter: none; border-color: rgba(155, 138, 251, 0.42); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--streams,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--streams { opacity: 0.26; transform: scale(0.96); border-style: dashed; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--compare,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--momentum,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--compare,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--momentum { opacity: 0.17; transform: scale(0.94); border-style: dashed; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--outcome,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--outcome { opacity: 0.21; transform: scale(0.94); border-style: dashed; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--streams,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--streams,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--streams,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--streams { opacity: 1; transform: scale(1); pointer-events: auto; z-index: 3; filter: none; border-color: rgba(155, 138, 251, 0.4); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--opp,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--opp,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--opp,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--opp { opacity: 0.48; transform: scale(0.96); filter: saturate(0.8); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--compare,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--compare,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--compare,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--compare { opacity: 0.16; transform: scale(0.94); border-style: dashed; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--momentum,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--momentum,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--momentum,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--momentum { opacity: 0.15; transform: scale(0.94); border-style: dashed; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--outcome,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--outcome,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--outcome,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--outcome { opacity: 0.2; transform: scale(0.94); border-style: dashed; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--compare,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-zone--compare { opacity: 1; transform: scale(1); pointer-events: auto; z-index: 3; filter: none; border-color: rgba(155, 138, 251, 0.42); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--streams,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-zone--streams { opacity: 0.38; transform: scale(0.95); filter: saturate(0.7) blur(0.2px); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--opp,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-zone--opp { opacity: 0.28; transform: scale(0.94); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--momentum,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-zone--momentum { opacity: 0.16; transform: scale(0.94); border-style: dashed; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--outcome,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-zone--outcome { opacity: 0.2; transform: scale(0.94); border-style: dashed; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--momentum,
+.dealality-problem-desk[data-story-state="momentum"] .dpd-zone--momentum { opacity: 1; transform: scale(1); pointer-events: auto; z-index: 3; filter: none; border-color: rgba(155, 138, 251, 0.42); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--compare,
+.dealality-problem-desk[data-story-state="momentum"] .dpd-zone--compare { opacity: 0.34; transform: scale(0.95); filter: saturate(0.7); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--streams,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--opp,
+.dealality-problem-desk[data-story-state="momentum"] .dpd-zone--streams,
+.dealality-problem-desk[data-story-state="momentum"] .dpd-zone--opp { opacity: 0.18; transform: scale(0.93); border-style: dashed; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--outcome,
+.dealality-problem-desk[data-story-state="momentum"] .dpd-zone--outcome { opacity: 0.22; transform: scale(0.94); border-style: dashed; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--outcome,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-zone--outcome { opacity: 1; transform: scale(1); pointer-events: auto; z-index: 3; filter: none; border-color: rgba(155, 138, 251, 0.48); box-shadow: 0 0 0 1px rgba(155, 138, 251, 0.18), 0 28px 56px rgba(91, 33, 182, 0.22); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--momentum,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-zone--momentum { opacity: 0.28; transform: scale(0.95); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--compare,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--streams,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--opp,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-zone--compare,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-zone--streams,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-zone--opp { opacity: 0.16; transform: scale(0.92); border-style: dashed; }
+
+/* —— Opportunity —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--opp,
+.dealality-problem-desk .dpd-zone--opp {
+  background: linear-gradient(150deg, rgba(32, 40, 78, 0.96), rgba(10, 14, 32, 0.98));
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-ghost-paths,
+.dealality-problem-desk .dpd-ghost-paths {
+  position: absolute; right: -6%; top: 18%; bottom: 18%; width: 28%;
+  display: flex; flex-direction: column; justify-content: space-evenly;
+  pointer-events: none; opacity: 0; z-index: 0;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-ghost-paths,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-ghost-paths { opacity: 0.55; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-ghost-path,
+.dealality-problem-desk .dpd-ghost-path {
+  height: 2px; border-radius: 99px;
+  background: linear-gradient(90deg, rgba(155, 138, 251, 0.55), transparent);
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-hotel-card,
+.dealality-problem-desk .dpd-hotel-card { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 0.75rem; position: relative; z-index: 1; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-hotel-media,
+.dealality-problem-desk .dpd-hotel-media {
+  position: relative; height: 168px; border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(155, 138, 251, 0.3);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-hotel-media,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-hotel-media { height: 188px; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-hotel-img,
+.dealality-problem-desk .dpd-hotel-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-hotel-shade,
+.dealality-problem-desk .dpd-hotel-shade {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(7, 11, 26, 0.04) 18%, rgba(7, 11, 26, 0.78) 100%);
+  pointer-events: none;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-hotel-chip,
+.dealality-problem-desk .dpd-hotel-chip {
+  position: absolute; left: 12px; bottom: 12px;
+  padding: 0.28rem 0.6rem; border-radius: 999px;
+  background: rgba(12, 16, 36, 0.84); border: 1px solid rgba(196, 181, 253, 0.38);
+  color: #e9e2ff; font-size: 0.68rem; font-weight: 650;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-opp-title,
+.dealality-problem-desk .dpd-opp-title { margin: 0; color: #fff; font-size: 1.15rem; font-weight: 700; line-height: 1.2; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-opp-title,
+.dealality-problem-desk[data-story-state="opportunity"] .dpd-opp-title { font-size: 1.18rem; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-opp-meta,
+.dealality-problem-desk .dpd-opp-meta { margin: 0.28rem 0 0; color: var(--dpd-muted); font-size: 0.82rem; line-height: 1.35; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-fields,
+.dealality-problem-desk .dpd-fields { display: grid; gap: 0.42rem; flex: 1; position: relative; z-index: 1; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-field,
+.dealality-problem-desk .dpd-field {
+  display: flex; gap: 0.5rem; align-items: center;
+  padding: 0.55rem 0.65rem; border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(8, 14, 32, 0.58);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-field-dot,
+.dealality-problem-desk .dpd-field-dot {
+  width: 8px; height: 8px; border-radius: 99px; background: var(--dpd-purple);
+  box-shadow: 0 0 0 3px rgba(155, 138, 251, 0.18); flex: 0 0 auto;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-field span,
+.dealality-problem-desk .dpd-field span { color: rgba(255, 255, 255, 0.9); font-size: 0.86rem; font-weight: 550; }
+
+/* —— Workstreams —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lanes,
+.dealality-problem-desk .dpd-lanes {
+  display: grid; grid-template-columns: 1fr; gap: 0.55rem; flex: 1; min-height: 0;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-lanes,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-lanes,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-lanes,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-lanes {
+  grid-template-columns: 1fr 1fr; gap: 0.8rem;
+  align-content: stretch;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane,
+.dealality-problem-desk .dpd-lane {
+  display: flex; flex-direction: column; gap: 0.5rem; min-height: 0;
+  padding: 0.72rem 0.78rem 0.78rem; border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(10, 16, 36, 0.82);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane--brand,
+.dealality-problem-desk .dpd-lane--brand { box-shadow: inset 3px 0 0 var(--dpd-purple), 0 10px 22px rgba(0, 0, 0, 0.2); border-color: rgba(155, 138, 251, 0.34); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane--operator,
+.dealality-problem-desk .dpd-lane--operator { box-shadow: inset 3px 0 0 var(--dpd-blue), 0 10px 22px rgba(0, 0, 0, 0.2); border-color: rgba(96, 165, 250, 0.3); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane--advisor,
+.dealality-problem-desk .dpd-lane--advisor { box-shadow: inset 3px 0 0 var(--dpd-teal), 0 10px 22px rgba(0, 0, 0, 0.2); border-color: rgba(45, 212, 191, 0.3); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane--capital,
+.dealality-problem-desk .dpd-lane--capital { box-shadow: inset 3px 0 0 var(--dpd-gold), 0 10px 22px rgba(0, 0, 0, 0.2); border-color: rgba(212, 165, 116, 0.34); }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane-h,
+.dealality-problem-desk .dpd-lane-h { display: flex; align-items: center; gap: 0.45rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-avatar,
+.dealality-problem-desk .dpd-avatar {
+  width: 22px; height: 22px; border-radius: 99px; flex: 0 0 auto;
+  border: 1px solid rgba(155, 138, 251, 0.4);
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), transparent 40%), radial-gradient(circle at 50% 70%, rgba(155,138,251,.55), rgba(20,28,60,.95));
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane--operator .dpd-avatar,
+.dealality-problem-desk .dpd-lane--operator .dpd-avatar {
+  border-color: rgba(96,165,250,.45);
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.3), transparent 40%), radial-gradient(circle at 50% 70%, rgba(96,165,250,.55), rgba(20,28,60,.95));
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane--advisor .dpd-avatar,
+.dealality-problem-desk .dpd-lane--advisor .dpd-avatar {
+  border-color: rgba(45,212,191,.45);
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.3), transparent 40%), radial-gradient(circle at 50% 70%, rgba(45,212,191,.45), rgba(20,28,60,.95));
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane--capital .dpd-avatar,
+.dealality-problem-desk .dpd-lane--capital .dpd-avatar {
+  border-color: rgba(212,165,116,.5);
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.3), transparent 40%), radial-gradient(circle at 50% 70%, rgba(212,165,116,.5), rgba(20,28,60,.95));
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lane-name,
+.dealality-problem-desk .dpd-lane-name { margin: 0; color: rgba(255,255,255,.94); font-size: 0.92rem; font-weight: 650; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-lane-name,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-lane-name { font-size: 1.05rem; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-copy-hint,
+.dealality-problem-desk .dpd-copy-hint {
+  display: none; align-items: center; gap: 0.35rem;
+  padding: 0.28rem 0.45rem; border-radius: 8px;
+  border: 1px dashed rgba(155, 138, 251, 0.35);
+  background: rgba(155, 138, 251, 0.08);
+  color: rgba(196, 181, 253, 0.85); font-size: 0.68rem; font-weight: 600;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-copy-hint,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-copy-hint { display: inline-flex; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-arts,
+.dealality-problem-desk .dpd-arts {
+  position: relative; display: flex; gap: 0.58rem; align-items: stretch; flex: 1; min-height: 0;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc,
+.dealality-problem-desk .dpd-doc {
+  position: relative; flex: 1 1 0; min-width: 0;
+  display: flex; flex-direction: column; gap: 0.32rem;
+  padding: 0.52rem 0.52rem 0.46rem; border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(24, 32, 64, 0.95), rgba(10, 14, 32, 0.96));
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--depth,
+.dealality-problem-desk .dpd-doc--depth {
+  position: absolute; right: 6px; top: 8px; width: 42%; height: 72%;
+  flex: none; opacity: 0.35; transform: rotate(4deg) translate(4px, 2px);
+  pointer-events: none; z-index: 0;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--primary,
+.dealality-problem-desk .dpd-doc--primary { position: relative; z-index: 1; }
+
+/* Workstreams: readable but quieter than Artifacts (+~12% vs prior base) */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-doc--primary,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-doc--primary {
+  opacity: 0.72; transform: scale(1); min-height: 8.2rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-doc-body,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-doc-body { min-height: 4.6rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-prop-cover,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-wavebox,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-sticky,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-follow,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-prop-cover,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-wavebox,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-sticky,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-follow { height: 4.2rem; min-height: 4.2rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-doc--depth,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-doc--depth { opacity: 0.22; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-doc-cap,
+.dealality-problem-desk[data-story-state="workstreams"] .dpd-doc-cap { font-size: 0.78rem; }
+
+/* Artifacts: +~14% vs prior cinematic primary (9.5→10.85) */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-doc--primary,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-doc--primary {
+  opacity: 1; transform: scale(1); min-height: 10.85rem;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-doc-body,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-doc-body { min-height: 6.3rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-prop-cover,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-wavebox,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-sticky,
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-follow,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-prop-cover,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-wavebox,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-sticky,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-follow { height: 5.75rem; min-height: 5.75rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-doc--depth,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-doc--depth { opacity: 0.45; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc-body,
+.dealality-problem-desk .dpd-doc-body { position: relative; z-index: 1; flex: 1; min-height: 3.65rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc-cap,
+.dealality-problem-desk .dpd-doc-cap {
+  position: relative; z-index: 1; margin: 0;
+  color: rgba(255, 255, 255, 0.86); font-size: 0.78rem; font-weight: 650;
+  letter-spacing: 0.01em; white-space: nowrap; overflow: visible; text-overflow: clip;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-doc-cap,
+.dealality-problem-desk[data-story-state="artifacts"] .dpd-doc-cap { font-size: 0.88rem; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--email,
+.dealality-problem-desk .dpd-doc--email { border-color: rgba(96, 165, 250, 0.34); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--proposal,
+.dealality-problem-desk .dpd-doc--proposal { border-color: rgba(248, 113, 113, 0.34); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--deck,
+.dealality-problem-desk .dpd-doc--deck { border-color: rgba(196, 181, 253, 0.34); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--termsheet,
+.dealality-problem-desk .dpd-doc--termsheet { border-color: rgba(212, 165, 116, 0.38); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--call,
+.dealality-problem-desk .dpd-doc--call { border-color: rgba(125, 211, 252, 0.34); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--note,
+.dealality-problem-desk .dpd-doc--note { border-color: rgba(253, 224, 71, 0.3); background: linear-gradient(180deg, rgba(253,224,71,.12), rgba(10,14,32,.95)); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--sheet,
+.dealality-problem-desk .dpd-doc--sheet { border-color: rgba(74, 222, 128, 0.3); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-doc--follow,
+.dealality-problem-desk .dpd-doc--follow { border-style: dashed; border-color: rgba(255, 255, 255, 0.3); }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-head,
+.dealality-problem-desk .dpd-mail-head { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.25rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-dot,
+.dealality-problem-desk .dpd-mail-dot { width: 7px; height: 7px; border-radius: 99px; background: #c4b5fd; flex: 0 0 auto; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-from,
+.dealality-problem-desk .dpd-mail-from { color: rgba(255,255,255,.55); font-size: 0.68rem; font-weight: 600; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-subj,
+.dealality-problem-desk .dpd-mail-subj { margin: 0 0 0.35rem; color: rgba(255,255,255,.9); font-size: 0.8rem; font-weight: 650; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-lines,
+.dealality-problem-desk .dpd-mail-lines { display: flex; flex-direction: column; gap: 4px; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-lines i,
+.dealality-problem-desk .dpd-mail-lines i { display: block; height: 4px; border-radius: 2px; background: rgba(96,165,250,.28); font-style: normal; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-lines i:nth-child(1),
+.dealality-problem-desk .dpd-mail-lines i:nth-child(1) { width: 100%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-lines i:nth-child(2),
+.dealality-problem-desk .dpd-mail-lines i:nth-child(2) { width: 78%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-mail-lines i:nth-child(3),
+.dealality-problem-desk .dpd-mail-lines i:nth-child(3) { width: 58%; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-proposal,
+.dealality-problem-desk .dpd-proposal { position: relative; padding-top: 0.15rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-prop-badge,
+.dealality-problem-desk .dpd-prop-badge {
+  position: absolute; top: 0; right: 0; z-index: 2;
+  padding: 0 5px; border-radius: 3px; background: rgba(239,68,68,.85);
+  color: #fff; font-size: 0.62rem; font-weight: 800; line-height: 1.45;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-prop-cover,
+.dealality-problem-desk .dpd-prop-cover {
+  height: 3.85rem; border-radius: 6px; padding: 7px;
+  border: 1px solid rgba(248,113,113,.28);
+  background: linear-gradient(160deg, rgba(248,113,113,.12), rgba(8,14,32,.9));
+  display: flex; flex-direction: column; gap: 5px; justify-content: flex-end;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-prop-cover span,
+.dealality-problem-desk .dpd-prop-cover span { height: 5px; width: 70%; border-radius: 2px; background: rgba(255,255,255,.2); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-prop-cover b,
+.dealality-problem-desk .dpd-prop-cover b { display: block; height: 6px; width: 48%; border-radius: 2px; background: rgba(248,113,113,.45); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-prop-cover i,
+.dealality-problem-desk .dpd-prop-cover i { display: block; height: 4px; width: 85%; border-radius: 2px; background: rgba(255,255,255,.14); font-style: normal; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-proposal--teal .dpd-prop-cover,
+.dealality-problem-desk .dpd-proposal--teal .dpd-prop-cover {
+  border-color: rgba(45,212,191,.3);
+  background: linear-gradient(160deg, rgba(45,212,191,.14), rgba(8,14,32,.9));
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-proposal--teal .dpd-prop-cover b,
+.dealality-problem-desk .dpd-proposal--teal .dpd-prop-cover b { background: rgba(45,212,191,.5); }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-slides,
+.dealality-problem-desk .dpd-slides { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; height: 3rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-slides span,
+.dealality-problem-desk .dpd-slides span {
+  border-radius: 4px; border: 1px solid rgba(196,181,253,.28);
+  background: linear-gradient(135deg, rgba(91,33,182,.45), rgba(30,58,138,.35));
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-wavebox,
+.dealality-problem-desk .dpd-wavebox {
+  display: flex; align-items: flex-end; height: 3.85rem; padding: 0.35rem 0.25rem;
+  border-radius: 6px; border: 1px solid rgba(125,211,252,.25); background: rgba(14,30,55,.7);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-wavebox--teal,
+.dealality-problem-desk .dpd-wavebox--teal { border-color: rgba(45,212,191,.28); background: rgba(12,40,40,.55); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-wave,
+.dealality-problem-desk .dpd-wave { display: flex; align-items: flex-end; gap: 3px; width: 100%; height: 100%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-wave i,
+.dealality-problem-desk .dpd-wave i {
+  flex: 1; height: var(--h, 50%); border-radius: 1px 1px 0 0; font-style: normal;
+  background: linear-gradient(180deg, rgba(125,211,252,.85), rgba(96,165,250,.35));
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-wavebox--teal .dpd-wave i,
+.dealality-problem-desk .dpd-wavebox--teal .dpd-wave i {
+  background: linear-gradient(180deg, rgba(45,212,191,.85), rgba(45,212,191,.28));
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sticky,
+.dealality-problem-desk .dpd-sticky {
+  position: relative; height: 3.85rem; padding: 0.55rem 0.45rem 0.4rem;
+  border-radius: 4px; background: linear-gradient(180deg, #f6e7a1, #e8cf74);
+  box-shadow: 0 6px 14px rgba(0,0,0,.28); color: #3b2f10;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sticky-pin,
+.dealality-problem-desk .dpd-sticky-pin {
+  position: absolute; top: 4px; left: 50%; width: 7px; height: 7px; margin-left: -3.5px;
+  border-radius: 99px; background: rgba(120,80,20,.45);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sticky i,
+.dealality-problem-desk .dpd-sticky i {
+  display: block; height: 3px; margin-top: 5px; border-radius: 1px; background: rgba(80,55,10,.35); font-style: normal;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sticky i:nth-child(2),
+.dealality-problem-desk .dpd-sticky i:nth-child(2) { width: 88%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sticky i:nth-child(3),
+.dealality-problem-desk .dpd-sticky i:nth-child(3) { width: 70%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sticky i:nth-child(4),
+.dealality-problem-desk .dpd-sticky i:nth-child(4) { width: 55%; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-legal,
+.dealality-problem-desk .dpd-legal { display: flex; flex-direction: column; gap: 6px; padding-top: 0.25rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-legal-title,
+.dealality-problem-desk .dpd-legal-title { height: 7px; width: 62%; border-radius: 2px; background: rgba(212,165,116,.7); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-legal-clause,
+.dealality-problem-desk .dpd-legal-clause { height: 4px; width: 92%; border-radius: 1px; background: rgba(255,255,255,.16); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-legal-clause.short,
+.dealality-problem-desk .dpd-legal-clause.short { width: 68%; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sheet-grid,
+.dealality-problem-desk .dpd-sheet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sheet-grid span,
+.dealality-problem-desk .dpd-sheet-grid span {
+  height: 14px; border-radius: 2px; background: rgba(74,222,128,.2); border: 1px solid rgba(74,222,128,.25);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sheet-grid span.h,
+.dealality-problem-desk .dpd-sheet-grid span.h { background: rgba(74,222,128,.38); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sheet-grid span.warn,
+.dealality-problem-desk .dpd-sheet-grid span.warn { background: rgba(251,191,36,.28); border-color: rgba(251,191,36,.4); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-sheet-grid span.empty,
+.dealality-problem-desk .dpd-sheet-grid span.empty { background: transparent; border-style: dashed; border-color: rgba(255,255,255,.18); }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-follow,
+.dealality-problem-desk .dpd-follow {
+  display: flex; flex-direction: column; gap: 6px; align-items: flex-start; justify-content: center;
+  min-height: 3.85rem; padding: 0.3rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-follow-badge,
+.dealality-problem-desk .dpd-follow-badge {
+  width: 20px; height: 20px; border-radius: 99px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,.28); color: rgba(255,255,255,.75); font-size: 0.78rem; font-weight: 700;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-follow i,
+.dealality-problem-desk .dpd-follow i { display: block; height: 3px; border-radius: 1px; background: rgba(255,255,255,.18); font-style: normal; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-follow i:nth-child(2),
+.dealality-problem-desk .dpd-follow i:nth-child(2) { width: 80%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-follow i:nth-child(3),
+.dealality-problem-desk .dpd-follow i:nth-child(3) { width: 55%; }
+
+/* —— Comparison —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare,
+.dealality-problem-desk .dpd-compare { display: flex; flex-direction: column; gap: 0.55rem; flex: 1; justify-content: center; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare-row,
+.dealality-problem-desk .dpd-compare-row {
+  display: grid; grid-template-columns: minmax(7.5rem, 1.1fr) repeat(4, minmax(0, 1fr));
+  gap: 0.4rem; align-items: stretch;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare-row--head .dpd-th,
+.dealality-problem-desk .dpd-compare-row--head .dpd-th {
+  text-align: center; color: rgba(255,255,255,.55); font-size: 0.72rem; font-weight: 650; padding: 0.2rem;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rl,
+.dealality-problem-desk .dpd-rl {
+  display: flex; align-items: center; color: rgba(255,255,255,.88);
+  font-size: 0.84rem; font-weight: 650; padding: 0.35rem 0.2rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-rl,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-rl { font-size: 0.95rem; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st,
+.dealality-problem-desk .dpd-st {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.28rem;
+  min-height: 3.4rem; padding: 0.45rem 0.35rem; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.1); background: rgba(8,14,32,.55);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-st,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-st { min-height: 4.6rem; padding: 0.65rem 0.4rem; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st-ico,
+.dealality-problem-desk .dpd-st-ico { display: flex; width: 18px; height: 18px; color: currentColor; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st-ico svg,
+.dealality-problem-desk .dpd-st-ico svg { width: 100%; height: 100%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st-txt,
+.dealality-problem-desk .dpd-st-txt {
+  text-align: center; font-size: 0.62rem; font-weight: 650; line-height: 1.2; color: inherit;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-st-txt,
+.dealality-problem-desk[data-story-state="comparison"] .dpd-st-txt { font-size: 0.72rem; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st--ok,
+.dealality-problem-desk .dpd-st--ok { color: #86efac; border-color: rgba(74,222,128,.35); background: rgba(22,101,52,.22); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st--partial,
+.dealality-problem-desk .dpd-st--partial { color: #fde68a; border-color: rgba(251,191,36,.35); background: rgba(113,63,18,.22); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st--miss,
+.dealality-problem-desk .dpd-st--miss { color: #fca5a5; border-color: rgba(248,113,113,.35); background: rgba(127,29,29,.22); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st--unclear,
+.dealality-problem-desk .dpd-st--unclear { color: #c4b5fd; border-color: rgba(167,139,250,.35); background: rgba(76,29,149,.2); }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st--diff,
+.dealality-problem-desk .dpd-st--diff { color: #7dd3fc; border-color: rgba(56,189,248,.35); background: rgba(12,74,110,.25); }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare-note,
+.dealality-problem-desk .dpd-compare-note {
+  margin: 0.35rem 0 0; text-align: center; color: rgba(255,255,255,.62);
+  font-size: 0.84rem; font-weight: 550;
+}
+
+/* —— Momentum —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-tracks,
+.dealality-problem-desk .dpd-tracks { display: flex; flex-direction: column; gap: 0.7rem; flex: 1; justify-content: center; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track,
+.dealality-problem-desk .dpd-track {
+  padding: 0.75rem 0.85rem; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.09); background: rgba(8,14,32,.55);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track--hot,
+.dealality-problem-desk .dpd-track--hot {
+  border-color: rgba(155,138,251,.42);
+  background: linear-gradient(120deg, rgba(91,33,182,.28), rgba(8,14,32,.7));
+  box-shadow: 0 0 0 1px rgba(155,138,251,.1), 0 12px 24px rgba(91,33,182,.18);
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track-top,
+.dealality-problem-desk .dpd-track-top { display: flex; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.45rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track-name,
+.dealality-problem-desk .dpd-track-name { margin: 0; font-size: 0.92rem; font-weight: 650; color: #fff; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track-status,
+.dealality-problem-desk .dpd-track-status { margin: 0; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,.7); text-align: right; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-track-name,
+.dealality-problem-desk[data-story-state="momentum"] .dpd-track-name { font-size: 1.05rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-track-status,
+.dealality-problem-desk[data-story-state="momentum"] .dpd-track-status { font-size: 0.88rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track--hot .dpd-track-status,
+.dealality-problem-desk .dpd-track--hot .dpd-track-status { color: #ddd6fe; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail,
+.dealality-problem-desk .dpd-rail {
+  height: 8px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill,
+.dealality-problem-desk .dpd-rail-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, rgba(155,138,251,.85), rgba(96,165,250,.65));
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill--82,
+.dealality-problem-desk .dpd-rail-fill--82 { width: 82%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill--48,
+.dealality-problem-desk .dpd-rail-fill--48 { width: 48%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill--28,
+.dealality-problem-desk .dpd-rail-fill--28 { width: 28%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill--12,
+.dealality-problem-desk .dpd-rail-fill--12 { width: 12%; }
+
+/* —— Outcome —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--outcome,
+.dealality-problem-desk .dpd-zone--outcome {
+  justify-content: center; align-items: center; text-align: center;
+  background: linear-gradient(155deg, rgba(36, 28, 78, 0.96), rgba(8, 12, 28, 0.98));
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-ghost,
+.dealality-problem-desk .dpd-ghost {
+  position: absolute; inset: 12% 8% auto; opacity: 0.35; pointer-events: none;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-ghost,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-ghost { opacity: 0.55; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-ghost svg,
+.dealality-problem-desk .dpd-ghost svg { width: 100%; height: auto; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-inner,
+.dealality-problem-desk .dpd-outcome-inner {
+  position: relative; z-index: 1; max-width: 28rem; padding: 1.5rem 1rem;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-title,
+.dealality-problem-desk .dpd-outcome-title {
+  margin: 0 0 0.85rem; color: #fff; font-size: 1.55rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-outcome-title,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-outcome-title { font-size: clamp(2rem, 3.2vw, 2.75rem); margin-bottom: 1.1rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-body,
+.dealality-problem-desk .dpd-outcome-body {
+  margin: 0; color: rgba(183,196,255,.78); font-size: 0.95rem; line-height: 1.5;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-outcome-body,
+.dealality-problem-desk[data-story-state="outcome"] .dpd-outcome-body { font-size: 1.12rem; }
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-locks,
+.dealality-problem-desk .dpd-locks { display: flex; justify-content: center; gap: 0.7rem; margin-top: 1.4rem; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lock,
+.dealality-problem-desk .dpd-lock {
+  width: 18px; height: 22px; border-radius: 4px;
+  border: 1.5px solid rgba(155,138,251,.45); background: rgba(91,33,182,.2);
+  position: relative;
+}
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lock::before,
+.dealality-problem-desk .dpd-lock::before {
+  content: ""; position: absolute; left: 50%; top: -8px; width: 10px; height: 10px;
+  margin-left: -5px; border: 1.5px solid rgba(155,138,251,.5); border-bottom: 0; border-radius: 10px 10px 0 0;
+}
+
+/* —— Tablet (≈641–991 px) —— */
+@media (max-width: 991px) {
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk,
+  .dealality-problem-desk { --dpd-stage-h: 560px; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-stage,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-stage,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-stage,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-stage,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-stage,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="opportunity"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="comparison"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="momentum"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="outcome"] .dpd-stage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1.15fr) minmax(0, 1fr);
+    height: auto;
+    min-height: 520px;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-stage,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-stage {
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1.58fr);
+    grid-template-areas: "opp streams";
+    min-height: 640px;
+    gap: 0.85rem;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--compare,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--compare,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--compare,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--compare { display: none; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--momentum,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--outcome,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--momentum,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--outcome,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--momentum,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--outcome,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--momentum,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--outcome { display: none; }
+
+  /* Paired 2×2 lanes with equal breathing room (Capital Partner included) */
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-lanes,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-lanes,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-lanes,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-lanes {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.85rem;
+    align-items: stretch;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-lane,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-lane,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-lane,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-lane {
+    min-height: 0;
+    padding: 0.85rem 0.9rem 0.9rem;
+    gap: 0.55rem;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-lane--capital,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-lane--capital,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-lane--capital,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-lane--capital {
+    min-height: 0;
+    overflow: visible;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-lane-name,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-lane-name,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-lane-name,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-lane-name {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: visible;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-doc-cap,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-doc-cap,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-doc-cap,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-doc-cap {
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-arts,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-arts,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-arts,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-arts {
+    gap: 0.55rem;
+    min-height: 6.5rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="comparison"] .dpd-stage {
+    grid-template-columns: 1fr;
+    grid-template-areas: "streams" "compare";
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--opp,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--momentum,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--outcome,
+  .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--opp,
+  .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--momentum,
+  .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--outcome { display: none; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--streams,
+  .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--streams { opacity: 0.32; max-height: 220px; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="opportunity"] .dpd-stage {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-areas: "opp streams";
+    min-height: 520px;
+    gap: 0.7rem;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--streams,
+  .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--streams {
+    display: flex;
+    opacity: 0.28;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--compare,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--momentum,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--outcome,
+  .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--compare,
+  .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--momentum,
+  .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--outcome { display: none; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-stage,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="momentum"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="outcome"] .dpd-stage {
+    grid-template-columns: 1fr;
+    grid-template-areas: "momentum" "outcome";
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--opp,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--streams,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--compare,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--opp,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--streams,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--compare,
+  .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--opp,
+  .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--streams,
+  .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--compare,
+  .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--opp,
+  .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--streams,
+  .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--compare { display: none; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="momentum"] .dpd-stage { grid-template-areas: "momentum"; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-stage,
+  .dealality-problem-desk[data-story-state="outcome"] .dpd-stage { grid-template-areas: "outcome"; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--outcome,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--momentum,
+  .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--outcome,
+  .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--momentum { display: none; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st-txt,
+  .dealality-problem-desk .dpd-st-txt { font-size: 0.72rem; }
+}
+
+/* —— Mobile: one active scene —— */
+@media (max-width: 640px) {
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk,
+  .dealality-problem-desk { --dpd-stage-h: auto; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-desk,
+  .dealality-problem-desk .dpd-desk { padding: 0.9rem; overflow-x: hidden; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-flow-lines,
+  .dealality-problem-desk .dpd-flow-lines { display: none; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-stage,
+  .dealality-problem-desk .dpd-stage {
+    display: block; height: auto; min-height: 0;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone,
+  .dealality-problem-desk .dpd-zone {
+    display: none !important;
+    opacity: 1 !important; transform: none !important; filter: none !important;
+    pointer-events: auto; border-style: solid; min-height: 420px;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--opp,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--streams,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--streams,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--compare,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--momentum,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--outcome,
+  .dealality-problem-desk[data-story-state="opportunity"] .dpd-zone--opp,
+  .dealality-problem-desk[data-story-state="workstreams"] .dpd-zone--streams,
+  .dealality-problem-desk[data-story-state="artifacts"] .dpd-zone--streams,
+  .dealality-problem-desk[data-story-state="comparison"] .dpd-zone--compare,
+  .dealality-problem-desk[data-story-state="momentum"] .dpd-zone--momentum,
+  .dealality-problem-desk[data-story-state="outcome"] .dpd-zone--outcome { display: flex !important; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lanes,
+  .dealality-problem-desk .dpd-lanes { grid-template-columns: 1fr !important; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare-row,
+  .dealality-problem-desk .dpd-compare-row {
+    grid-template-columns: minmax(5.5rem, 0.95fr) repeat(4, minmax(0, 1fr)); gap: 0.25rem;
+  }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st,
+  .dealality-problem-desk .dpd-st { min-height: 3.2rem; padding: 0.35rem 0.2rem; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st-txt,
+  .dealality-problem-desk .dpd-st-txt { font-size: 0.62rem; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-hotel-media,
+  .dealality-problem-desk .dpd-hotel-media { height: 180px; }
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-title,
+  .dealality-problem-desk .dpd-outcome-title { font-size: 1.65rem; }
+}
+
+/* —— Phase B motion / replay / PVL (scoped) —— */
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-zone {
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease,
+    filter 0.55s ease,
+    border-color 0.4s ease,
+    box-shadow 0.55s ease,
+    background 0.45s ease;
+}
+
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-flow-lines {
+  transition: opacity 0.45s ease;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-path {
+  stroke-dasharray: 520;
+  stroke-dashoffset: 520;
+  transition: stroke-dashoffset 1.05s ease, opacity 0.45s ease;
+  opacity: 0.25;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk.is-reveal-paths .dpd-path,
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-path,
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-path {
+  stroke-dashoffset: 0;
+  opacity: 0.85;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-path--a { transition-delay: 0.05s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-path--b { transition-delay: 0.18s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-path--c { transition-delay: 0.3s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-path--d { transition-delay: 0.42s; }
+
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-field {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="opportunity"].is-reveal-fields .dpd-field {
+  opacity: 1;
+  transform: none;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="opportunity"].is-reveal-fields .dpd-field:nth-child(1) { transition-delay: 0.08s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="opportunity"].is-reveal-fields .dpd-field:nth-child(2) { transition-delay: 0.18s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="opportunity"].is-reveal-fields .dpd-field:nth-child(3) { transition-delay: 0.28s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="opportunity"].is-reveal-fields .dpd-field:nth-child(4) { transition-delay: 0.38s; }
+
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="opportunity"] .dpd-hotel-card {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="workstreams"] .dpd-lane,
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-lane {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk.is-reveal-lanes .dpd-lane {
+  opacity: 1;
+  transform: none;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk.is-reveal-lanes .dpd-lane--brand { transition-delay: 0.05s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk.is-reveal-lanes .dpd-lane--operator { transition-delay: 0.16s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk.is-reveal-lanes .dpd-lane--advisor { transition-delay: 0.27s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk.is-reveal-lanes .dpd-lane--capital { transition-delay: 0.38s; }
+
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-doc--primary {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-doc--primary {
+  opacity: 1;
+  transform: none;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-lane--brand .dpd-doc--primary:nth-of-type(1) { transition-delay: 0.05s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-lane--brand .dpd-doc--primary:nth-of-type(2) { transition-delay: 0.18s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-lane--operator .dpd-doc--primary:nth-of-type(1) { transition-delay: 0.28s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-lane--operator .dpd-doc--primary:nth-of-type(2) { transition-delay: 0.4s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-lane--advisor .dpd-doc--primary:nth-of-type(1) { transition-delay: 0.5s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-lane--advisor .dpd-doc--primary:nth-of-type(2) { transition-delay: 0.62s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-lane--capital .dpd-doc--primary:nth-of-type(1) { transition-delay: 0.72s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"].is-reveal-artifacts .dpd-lane--capital .dpd-doc--primary:nth-of-type(2) { transition-delay: 0.84s; }
+
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="comparison"] .dpd-compare-row:not(.dpd-compare-row--head) {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="comparison"].is-reveal-compare .dpd-compare-row:not(.dpd-compare-row--head) {
+  opacity: 1;
+  transform: none;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="comparison"].is-reveal-compare .dpd-compare-row:nth-child(2) { transition-delay: 0.08s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="comparison"].is-reveal-compare .dpd-compare-row:nth-child(3) { transition-delay: 0.2s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="comparison"].is-reveal-compare .dpd-compare-row:nth-child(4) { transition-delay: 0.32s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="comparison"].is-reveal-compare .dpd-compare-row:nth-child(5) { transition-delay: 0.44s; }
+
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="momentum"] .dpd-track {
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="momentum"].is-reveal-momentum .dpd-track {
+  opacity: 1;
+  transform: none;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="momentum"].is-reveal-momentum .dpd-track:nth-child(1) { transition-delay: 0.05s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="momentum"].is-reveal-momentum .dpd-track:nth-child(2) { transition-delay: 0.16s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="momentum"].is-reveal-momentum .dpd-track:nth-child(3) { transition-delay: 0.27s; }
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="momentum"].is-reveal-momentum .dpd-track:nth-child(4) { transition-delay: 0.38s; }
+
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="outcome"] .dpd-outcome-inner {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+#about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="outcome"].is-reveal-outcome .dpd-outcome-inner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#about[data-oh-problem="deal-desk"] .dpd-replay {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.15rem auto 0;
+  padding: 0.7rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid rgba(155, 138, 251, 0.45);
+  background: rgba(14, 22, 48, 0.92);
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+#about[data-oh-problem="deal-desk"] .dpd-replay[hidden] { display: none !important; }
+#about[data-oh-problem="deal-desk"] .dpd-replay:hover {
+  border-color: rgba(183, 162, 252, 0.75);
+  background: rgba(28, 34, 72, 0.96);
+}
+#about[data-oh-problem="deal-desk"] .dpd-replay:focus-visible {
+  outline: 2px solid #9b8afb;
+  outline-offset: 3px;
+}
+
+#about[data-oh-problem="deal-desk"] .oh-problem-chapter.is-active {
+  border-color: rgba(155, 138, 251, 0.55);
+  box-shadow: 0 0 0 1px rgba(155, 138, 251, 0.16);
+}
+
+/* Section-scoped PVL collapse while Deal Desk about is substantially in view */
+html[data-oh-pvl-about="1"] #oh-pvl {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-zone,
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-path,
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-field,
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-lane,
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-doc--primary,
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-compare-row,
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-track,
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk .dpd-outcome-inner {
+    transition: none !important;
+  }
+  #about[data-oh-problem="deal-desk"] .dpd-replay { display: none !important; }
+  html[data-oh-pvl-about="1"] #oh-pvl {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="artifacts"] .dpd-doc--primary,
+  #about[data-oh-problem="deal-desk"][data-deal-desk-motion="1"] .dealality-problem-desk[data-story-state="comparison"] .dpd-compare-row {
+    transition-duration: 0.28s;
+  }
+  #about[data-oh-problem="deal-desk"] .dpd-replay {
+    width: 100%;
+    max-width: 22rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+

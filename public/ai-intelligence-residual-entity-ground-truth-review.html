@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Residual Entity Ground-Truth Review</title>
+  <style>
+    :root {
+      --ink: #1a1f1c;
+      --muted: #5c6560;
+      --line: #d5ddd7;
+      --bg: #f3f6f3;
+      --card: #fff;
+      --warn: #8a4b12;
+      --warn-bg: #fff4e8;
+      --ok: #1f5c3a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Iowan Old Style", Georgia, serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #e8eee9 0%, var(--bg) 180px);
+      line-height: 1.45;
+    }
+    header {
+      padding: 1.5rem 1.25rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    h1 { margin: 0 0 0.35rem; font-size: 1.35rem; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); font-size: 0.95rem; max-width: 52rem; }
+    .banner {
+      margin: 1rem 1.25rem 0;
+      padding: 0.85rem 1rem;
+      background: var(--warn-bg);
+      border: 1px solid #e6c39a;
+      color: var(--warn);
+      border-radius: 6px;
+      font-size: 0.92rem;
+    }
+    main { padding: 1rem 1.25rem 3rem; max-width: 1100px; }
+    .case {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+    .case-head {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 0.25rem;
+    }
+    .case-head strong { font-size: 1.05rem; }
+    .meta { color: var(--muted); font-size: 0.88rem; font-family: ui-monospace, Consolas, monospace; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+    }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 0.75rem;
+      background: #fafcfb;
+    }
+    .panel h3 { margin: 0 0 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    pre.response {
+      margin: 0;
+      padding: 1rem;
+      max-height: 360px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+      background: #111814;
+      color: #e7f0ea;
+      border-top: 1px solid var(--line);
+    }
+    .flag { color: var(--warn); font-weight: 600; }
+    .ok { color: var(--ok); font-weight: 600; }
+    .actions {
+      padding: 0.75rem 1rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-top: 1px solid var(--line);
+    }
+    .chip {
+      border: 1px dashed var(--line);
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    #status { margin: 1rem 1.25rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Residual Entity Ground-Truth Review</h1>
+    <p class="sub">
+      12 DEVELOPMENT residual entity false negatives after Classifier Hardening 1.
+      Audit only — no auto label changes. Classifier/resolver unchanged. Holdout sealed.
+    </p>
+  </header>
+  <div class="banner">
+    <strong>ENTITY PRESENT</strong> means the specific canonical entity is actually in the response.
+    It does <em>not</em> mean a generic word overlaps the brand name.
+    Parent-company mention does <em>not</em> imply a specific child / managed entity.
+    Choose KEEP / CORRECT / INVALIDATE / DEFER in chat after review — do not expect this page to write labels.
+  </div>
+  <p id="status">Loading review queue…</p>
+  <main id="root"></main>
+  <script>
+    async function loadQueue() {
+      const status = document.getElementById("status");
+      const root = document.getElementById("root");
+      const paths = [
+        "/data/ai-visibility/validation/human-review/residual-entity-ground-truth/review-queue.json",
+        "../data/ai-visibility/validation/human-review/residual-entity-ground-truth/review-queue.json",
+      ];
+      let data = null;
+      for (const p of paths) {
+        try {
+          const res = await fetch(p, { cache: "no-store" });
+          if (res.ok) { data = await res.json(); break; }
+        } catch (_) {}
+      }
+      if (!data) {
+        status.textContent =
+          "Could not fetch review-queue.json via HTTP. Open the JSON under data/ai-visibility/validation/human-review/residual-entity-ground-truth/ or serve the repo locally.";
+        return;
+      }
+      status.textContent =
+        data.TOTAL_CASES +
+        " cases · Playa ambiguous " +
+        data.PLAYA_CASES.AMBIGUOUS_GENERIC +
+        " · IHG parent-only " +
+        data.IHG_CASES.PARENT_ONLY +
+        " · HUMAN_REVIEW_REQUIRED=" +
+        data.HUMAN_REVIEW_REQUIRED;
+      for (const c of data.cases || []) {
+        const el = document.createElement("article");
+        el.className = "case";
+        const playaNo = c.PLAYA_AUDIT && c.PLAYA_AUDIT.UNAMBIGUOUS_BRAND_REFERENCE === "NO";
+        const ihgNo = c.IHG_AUDIT && c.IHG_AUDIT.SPECIFIC_CANONICAL_REFERENCE === "NO";
+        el.innerHTML =
+          '<div class="case-head">' +
+          "<strong>" +
+          c.CASE_ID +
+          " · " +
+          c.CANONICAL_SUBJECT +
+          "</strong>" +
+          '<div class="meta">' +
+          [c.PROVIDER, c.LANGUAGE, c.GEOGRAPHY, c.PROMPT_FAMILY].join(" · ") +
+          "</div>" +
+          '<div class="' +
+          (playaNo || ihgNo ? "flag" : "ok") +
+          '">GROUND_TRUTH_REVIEW_REQUIRED · ' +
+          (c.CANDIDATE_NOMINATION && c.CANDIDATE_NOMINATION.verdict) +
+          "</div>" +
+          "<div><em>Why flagged:</em> " +
+          (c.WHY_FLAGGED || "") +
+          "</div>" +
+          "</div>" +
+          '<div class="grid">' +
+          '<div class="panel"><h3>Human label</h3><pre>' +
+          JSON.stringify(c.CURRENT_HUMAN, null, 2) +
+          "</pre></div>" +
+          '<div class="panel"><h3>Classifier</h3><pre>' +
+          JSON.stringify(c.CURRENT_CLASSIFIER, null, 2) +
+          "</pre></div>" +
+          '<div class="panel"><h3>Exact surface</h3><pre>' +
+          JSON.stringify(
+            {
+              EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT:
+                c.EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT,
+              SURFACE_EVIDENCE_WINDOWS: c.SURFACE_EVIDENCE_WINDOWS,
+              PLAYA_AUDIT: c.PLAYA_AUDIT,
+              IHG_AUDIT: c.IHG_AUDIT,
+            },
+            null,
+            2
+          ) +
+          "</pre></div>" +
+          '<div class="panel"><h3>Nomination</h3><pre>' +
+          JSON.stringify(c.CANDIDATE_NOMINATION, null, 2) +
+          "</pre></div>" +
+          "</div>" +
+          '<pre class="response"></pre>' +
+          '<div class="actions"></div>';
+        el.querySelector("pre.response").textContent = c.FULL_STORED_RESPONSE || "";
+        const actions = el.querySelector(".actions");
+        for (const a of c.HUMAN_ACTIONS || []) {
+          const chip = document.createElement("span");
+          chip.className = "chip";
+          chip.textContent = a;
+          actions.appendChild(chip);
+        }
+        root.appendChild(el);
+      }
+    }
+    loadQueue();
+  </script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+{
+  "version": "wave15-status-promotion-v1",
+  "waveVersion": "brand-explorer-wave15-factory-v1",
+  "stage": "status-promotion",
+  "generatedAt": "2026-08-04T23:31:53.224Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "dryRun": false,
+  "targetBrandStatus": "Active",
+  "allowedStatuses": [
+    "Active",
+    "Live"
+  ],
+  "statusFromExpected": "Under Review",
+  "flagCheck": {
+    "apply": true,
+    "ok": true,
+    "missing": [],
+    "required": [
+      "--approve-wave15-brand-status-promotion",
+      "--confirm-founder-signoff-for-eight",
+      "--confirm-target-brands-only",
+      "--confirm-status-to-active",
+      "--confirm-no-four-points-flex-writes",
+      "--confirm-no-protected-54-brand-changes",
+      "--confirm-no-company-validation-changes",
+      "--confirm-no-source-library-status-changes",
+      "--confirm-no-registry-approval-changes",
+      "--confirm-no-content-writes",
+      "--confirm-no-image-writes",
+      "--confirm-no-release-field-writes"
+    ]
+  },
+  "requiredApplyFlags": [
+    "--approve-wave15-brand-status-promotion",
+    "--confirm-founder-signoff-for-eight",
+    "--confirm-target-brands-only",
+    "--confirm-status-to-active",
+    "--confirm-no-four-points-flex-writes",
+    "--confirm-no-protected-54-brand-changes",
+    "--confirm-no-company-validation-changes",
+    "--confirm-no-source-library-status-changes",
+    "--confirm-no-registry-approval-changes",
+    "--confirm-no-content-writes",
+    "--confirm-no-image-writes",
+    "--confirm-no-release-field-writes"
+  ],
+  "preflight": {
+    "ok": true,
+    "issues": [],
+    "baseline54": {
+      "ok": true,
+      "skipped": true,
+      "reason": "skipBaselineNpm"
+    },
+    "founderApprovals": {
+      "ok": true,
+      "issues": []
+    },
+    "statusGateOk": true,
+    "flexHeldOk": true,
+    "protected54RecordIdCount": 54
+  },
+  "held": {
+    "slug": "four-points-flex-by-sheraton",
+    "recordId": "recgaMzDn2GKkpUsi",
+    "from": "Under Review",
+    "to": "(unchanged)",
+    "needsWrite": false,
+    "insideCohort": false,
+    "note": "Four Points Flex is not a Hilton brand and was never part of Wave 15 — held outside this cohort entirely."
+  },
+  "universeBefore": {
+    "totalCount": 54,
+    "expected": 54,
+    "wave15Present": [],
+    "flexPresent": false
+  },
+  "universeAfter": {
+    "totalCount": 62,
+    "expected": 62,
+    "wave15Present": [
+      "doubletree-by-hilton",
+      "hampton-by-hilton",
+      "hilton-garden-inn",
+      "hilton-hotels-and-resorts",
+      "home2-suites-by-hilton",
+      "homewood-suites-by-hilton",
+      "spark-by-hilton",
+      "tru-by-hilton"
+    ],
+    "flexPresent": false
+  },
+  "summary": {
+    "brandCount": 8,
+    "needsWrite": 8,
+    "promotedCount": 8,
+    "heldCount": 0,
+    "acceptanceUniverse62": true
+  },
+  "brands": [
+    {
+      "slug": "hilton-hotels-and-resorts",
+      "name": "Hilton Hotels & Resorts",
+      "recordId": "recWubG3rhiS1BaWi",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "homewood-suites-by-hilton",
+      "name": "Homewood Suites by Hilton",
+      "recordId": "recZjYI4nYflGHFNR",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "home2-suites-by-hilton",
+      "name": "Home2 Suites by Hilton",
+      "recordId": "reccZ4zV6wMav7a2i",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "tru-by-hilton",
+      "name": "Tru by Hilton",
+      "recordId": "recJLiMTv4W8VgO9L",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "doubletree-by-hilton",
+      "name": "DoubleTree by Hilton",
+      "recordId": "rechVYWQ5ikRnr99B",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "hampton-by-hilton",
+      "name": "Hampton by Hilton",
+      "recordId": "rectRvOWQPaL6FkzZ",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "hilton-garden-inn",
+      "name": "Hilton Garden Inn",
+      "recordId": "recrvdAjRlXxPvPPF",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    },
+    {
+      "slug": "spark-by-hilton",
+      "name": "Spark by Hilton",
+      "recordId": "recfv66er4Ch2vJDO",
+      "from": "Under Review",
+      "to": "Active",
+      "needsWrite": true,
+      "alreadyActiveOrLive": false,
+      "plannedFields": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      }
+    }
+  ],
+  "applyResults": [
+    {
+      "slug": "hilton-hotels-and-resorts",
+      "recordId": "recWubG3rhiS1BaWi",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recWubG3rhiS1BaWi",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "homewood-suites-by-hilton",
+      "recordId": "recZjYI4nYflGHFNR",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recZjYI4nYflGHFNR",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "home2-suites-by-hilton",
+      "recordId": "reccZ4zV6wMav7a2i",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "reccZ4zV6wMav7a2i",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "tru-by-hilton",
+      "recordId": "recJLiMTv4W8VgO9L",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recJLiMTv4W8VgO9L",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "doubletree-by-hilton",
+      "recordId": "rechVYWQ5ikRnr99B",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "rechVYWQ5ikRnr99B",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "hampton-by-hilton",
+      "recordId": "rectRvOWQPaL6FkzZ",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "rectRvOWQPaL6FkzZ",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "hilton-garden-inn",
+      "recordId": "recrvdAjRlXxPvPPF",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recrvdAjRlXxPvPPF",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    },
+    {
+      "slug": "spark-by-hilton",
+      "recordId": "recfv66er4Ch2vJDO",
+      "applied": true,
+      "writePerformed": true,
+      "table": "Brand Setup - Brand Basics",
+      "fieldMapping": {
+        "brandStatus": "Brand Status"
+      },
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Active"
+      },
+      "response": {
+        "id": "recfv66er4Ch2vJDO",
+        "fieldsPatched": [
+          "Brand Status"
+        ]
+      }
+    }
+  ],
+  "fieldMapping": {
+    "brandStatus": "Brand Status"
+  },
+  "guardrails": {
+    "targetBrandsOnly": true,
+    "allEightApprovedNoHeldSlugInCohort": true,
+    "flexHeldOutsideCohort": true,
+    "flexUntouched": true,
+    "singleFieldPayload": true,
+    "companyValidatedWrites": false,
+    "sourceLibraryWrites": false,
+    "registryWrites": false,
+    "contentWrites": false,
+    "imageWrites": false,
+    "releaseFieldWrites": false,
+    "protected54Untouched": true,
+    "protected54ReadOnlyValidation": true,
+    "houseOfOriginalsUntouched": true,
+    "morgansOriginalsUntouched": true,
+    "radissonCollectionUntouched": true,
+    "neverWriteFields": [
+      "Company Validated",
+      "Company Validation Date",
+      "Source Library status",
+      "Registry approval/status",
+      "Source Library Status",
+      "Registry Approval",
+      "Registry Status",
+      "Brand Status"
+    ],
+    "baselineConvention": "frozen_54_were_Active",
+    "writeThrottleMs": 280
+  },
+  "readyStatement": "wave15_status_promotion_applied_ready_for_public_release"
+}

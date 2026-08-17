@@ -11,9 +11,8 @@ import "../load-env.js";
 import Airtable from "airtable";
 import {
   MAP_ALERT,
-  sanitizeMarketAlertText,
+  patchMarketAlertTextFields,
 } from "../api/lib/market-alerts-rss-airtable.js";
-import { hasHtmlEntities } from "../lib/decode-html-entities.js";
 
 const TEXT_FIELDS = [MAP_ALERT.title, MAP_ALERT.summary, MAP_ALERT.sourceName];
 const BATCH = 10;
@@ -30,16 +29,7 @@ function parseArgs(argv) {
 }
 
 function buildPatch(fields) {
-  const patch = {};
-  for (const key of TEXT_FIELDS) {
-    const val = fields[key];
-    if (typeof val !== "string" || !val) continue;
-    if (!hasHtmlEntities(val)) continue;
-    const preserveWhitespace = key === MAP_ALERT.summary;
-    const cleaned = sanitizeMarketAlertText(val, { preserveWhitespace });
-    if (cleaned !== val) patch[key] = cleaned;
-  }
-  return patch;
+  return patchMarketAlertTextFields(fields);
 }
 
 async function main() {

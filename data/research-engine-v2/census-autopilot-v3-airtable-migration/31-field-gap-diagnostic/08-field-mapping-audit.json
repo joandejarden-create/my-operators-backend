@@ -1,0 +1,117 @@
+{
+  "run_id": "cav3_2026-08-08T15-04-05-566Z",
+  "mappings": [
+    {
+      "golden_census_field": "State / Region",
+      "airtable_field": "State / Region",
+      "type": "singleLineText",
+      "exists_on_live_schema": true,
+      "write_class": "AUTO_WRITE_SAFE",
+      "source_requirement": "official_or_dealality",
+      "current_write_support": true,
+      "in_autopilot_allowlist": true,
+      "in_insert_allowlist": true,
+      "forbidden": false
+    },
+    {
+      "golden_census_field": "Address",
+      "airtable_field": "Address",
+      "type": "singleLineText",
+      "exists_on_live_schema": true,
+      "write_class": "CORROBORATED_WRITE",
+      "source_requirement": "official_page_only_this_pilot",
+      "current_write_support": true,
+      "in_autopilot_allowlist": true,
+      "in_insert_allowlist": true,
+      "forbidden": false
+    },
+    {
+      "golden_census_field": "Submarket",
+      "airtable_field": "Submarket",
+      "type": "singleLineText",
+      "exists_on_live_schema": true,
+      "write_class": "AUTO_WRITE_SAFE",
+      "source_requirement": "dealality_geography",
+      "current_write_support": true,
+      "in_autopilot_allowlist": true,
+      "in_insert_allowlist": true,
+      "forbidden": false
+    },
+    {
+      "golden_census_field": "Latitude",
+      "airtable_field": "Latitude",
+      "type": "number",
+      "exists_on_live_schema": true,
+      "write_class": "BLOCKED_RIGHTS",
+      "source_requirement": "serpapi_blocked_unless_official",
+      "current_write_support": true,
+      "in_autopilot_allowlist": true,
+      "in_insert_allowlist": true,
+      "forbidden": false
+    },
+    {
+      "golden_census_field": "Longitude",
+      "airtable_field": "Longitude",
+      "type": "number",
+      "exists_on_live_schema": true,
+      "write_class": "BLOCKED_RIGHTS",
+      "source_requirement": "serpapi_blocked_unless_official",
+      "current_write_support": true,
+      "in_autopilot_allowlist": true,
+      "in_insert_allowlist": true,
+      "forbidden": false
+    },
+    {
+      "golden_census_field": "Phone",
+      "airtable_field": "Phone",
+      "type": "singleLineText",
+      "exists_on_live_schema": true,
+      "write_class": "BLOCKED_RIGHTS",
+      "source_requirement": "serpapi_blocked_unless_official",
+      "current_write_support": true,
+      "in_autopilot_allowlist": true,
+      "in_insert_allowlist": false,
+      "forbidden": false
+    }
+  ],
+  "schema": [
+    {
+      "name": "State / Region",
+      "type": "singleLineText",
+      "id": "fldDDvKREf3yCj0H3"
+    },
+    {
+      "name": "Address",
+      "type": "singleLineText",
+      "id": "fldj05XBG2l6WLCo5"
+    },
+    {
+      "name": "Submarket",
+      "type": "singleLineText",
+      "id": "fldPANZ60nzvxbGOQ"
+    },
+    {
+      "name": "Latitude",
+      "type": "number",
+      "id": "fldQDsszp4Oz0j89m"
+    },
+    {
+      "name": "Longitude",
+      "type": "number",
+      "id": "fldiCiuI8VnCObZi7"
+    },
+    {
+      "name": "Phone",
+      "type": "singleLineText",
+      "id": "fld7XMCOo0nsOwbhj"
+    }
+  ],
+  "insert_allowlist": {
+    "State / Region": true,
+    "Address": true,
+    "Submarket": true,
+    "Latitude": true,
+    "Longitude": true,
+    "Phone": false
+  }
+}

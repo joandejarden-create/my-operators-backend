@@ -1,0 +1,12 @@
+{
+  "lock_name": "CENSUS_V4_WORKER_LOCK",
+  "path": "61-census-v4-worker.lock.json",
+  "fields": ["worker_id", "acquired_at", "heartbeat_at", "expires_at", "host", "pid"],
+  "ttl_ms_default": 120000,
+  "stale_ms_default": 180000,
+  "rules": {
+    "only_one_healthy_writer": true,
+    "stale_lease_stealable": true,
+    "duplicate_supervisor": "waits_60s_does_not_write"
+  }
+}

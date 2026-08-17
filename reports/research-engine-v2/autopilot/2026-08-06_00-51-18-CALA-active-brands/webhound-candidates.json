@@ -1,0 +1,84 @@
+{
+  "version": "census-autopilot-webhound-learning-candidates-v1",
+  "capped_at": 25,
+  "run_webhound": false,
+  "write_from_webhound": false,
+  "candidates": [
+    {
+      "id": "hilton_narrative_description_unavailable",
+      "family": "Hilton",
+      "pattern": "hilton_directory_has_amenities_not_narrative_description",
+      "what_code_needs_to_learn": "Hilton locations directory has amenityIds, not narrative Hotel Description.",
+      "sample_urls": [
+        "https://www.hilton.com/en/hotels/pujoydt-doubletree-punta-cana-downtown/",
+        "https://www.hilton.com/en/hotels/cywcedt-doubletree-celaya/",
+        "https://www.hilton.com/en/hotels/cunmelx-mezzanine/",
+        "https://www.hilton.com/en/hotels/qrohwhw-homewood-suites-queretaro/",
+        "https://www.hilton.com/en/hotels/mexsahh-hilton-mexico-city-santa-fe/"
+      ],
+      "count": 130,
+      "never_write_from_webhound": true,
+      "source": "family_directory_adapter_unresolved"
+    },
+    {
+      "id": "choice_narrative_description_unavailable",
+      "family": "Choice",
+      "pattern": "choice_regional_cards_lack_hotel_narrative_description",
+      "what_code_needs_to_learn": "Choice regional cards lack hotel narrative — need property-page or alternate public description source.",
+      "sample_urls": [
+        "https://www.choicehotels.com/costa-rica/san-jose/sleep-inn-hotels/cr013",
+        "https://www.choicehotels.com/queretaro/queretaro/comfort-inn-hotels/mx086",
+        "https://www.choicehotels.com/colombia/bogota/radisson-hotels/cb008",
+        "https://www.choicehotels.com/mexico/playa-del-carmen/ascend-hotels/mx153",
+        "https://www.choicehotels.com/veracruz/veracruz/comfort-inn-hotels/mx073"
+      ],
+      "count": 61,
+      "never_write_from_webhound": true,
+      "source": "family_directory_adapter_unresolved"
+    },
+    {
+      "id": "marriott_property_page_403",
+      "family": "Marriott",
+      "pattern": "Marriott property URL blocked",
+      "what_code_needs_to_learn": "Prefer family directory adapters; Webhound only for repeated unresolved patterns.",
+      "sample_urls": [
+        "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+        "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+        "https://www.marriott.com/en-us/hotels/vsacy-courtyard-villahermosa-tabasco/overview"
+      ],
+      "count": 3,
+      "never_write_from_webhound": true,
+      "source": "family_directory_adapter_unresolved"
+    },
+    {
+      "id": "hilton_edge_403_page_reference_code",
+      "family": "Hilton",
+      "pattern": "hilton.com/en/hotels/{ctyhocn}-…/ → HTTP 403 title 'Hilton Page Reference Code'",
+      "what_code_needs_to_learn": "Prefer Hilton locations directory adapters for address/amenities/coords; Webhound only if directory miss repeats.",
+      "sample_urls": [],
+      "never_write_from_webhound": true
+    },
+    {
+      "id": "marriott_com_403",
+      "family": "Marriott",
+      "pattern": "marriott.com/.../overview/ → HTTP 403 short body",
+      "what_code_needs_to_learn": "Prefer Marriott HQV GraphQL for coordinates; descriptions need alternate public path.",
+      "never_write_from_webhound": true
+    },
+    {
+      "id": "choicehotels_com_403",
+      "family": "Choice",
+      "pattern": "choicehotels.com/{state}/{city}/{brand}/{code} → HTTP 403",
+      "what_code_needs_to_learn": "Prefer Choice regional JSON-LD/hotel cards for address/amenities/coords; narrative description not on regional cards.",
+      "never_write_from_webhound": true
+    },
+    {
+      "id": "ihg_empty_numberOfRooms",
+      "family": "IHG",
+      "pattern": "hoteldetail JSON \"numberOfRooms\" : \"\"",
+      "what_code_needs_to_learn": "Where IHG publishes authoritative room counts when schema field is empty (without JS false positives).",
+      "never_write_from_webhound": true
+    }
+  ],
+  "note": "Candidates only — do not run Webhound in this task; never write Airtable from Webhound. Emit only for repeated unresolved source patterns after directory/HQV adapters."
+}

@@ -78,7 +78,12 @@ export async function getMarketingLandingEventsExport(req, res) {
     const window = buildReportWindow(req.query?.days);
     const days = window.days;
     const filters = parseReportFilters(req.query);
-    const loaded = loadLandingEvents(loadOptionsForWindow(window));
+    const excludeInternal =
+      String(req.query?.excludeInternal || "").trim() === "1";
+    const loaded = loadLandingEvents({
+      ...loadOptionsForWindow(window),
+      excludeInternal,
+    });
     const { events } = applyLandingReportFilters(loaded, filters);
     const format = String(req.query?.format || "events").toLowerCase();
     const versionTag =

@@ -1,0 +1,717 @@
+{
+  "plan_version": "production-census-and-be-patch-plan-v1",
+  "operator_explorer_lane": "paused",
+  "founder_priority": {
+    "census_first": true,
+    "brand_explorer_controlled": true,
+    "operator_explorer": "paused_do_not_start"
+  },
+  "recommended_tables": [
+    {
+      "key": "census",
+      "name": "Hotel Property Census",
+      "role": "Primary hotel/property identity",
+      "write_allowed_stage": "census_production_after_founder_approval"
+    },
+    {
+      "key": "affiliations",
+      "name": "Hotel Property Brand Affiliations",
+      "role": "Current / historical / future / soft-brand / brand-unconfirmed / independent states",
+      "write_allowed_stage": "census_production_after_founder_approval"
+    },
+    {
+      "key": "evidence",
+      "name": "Hotel Property Source Evidence",
+      "role": "Source lineage, URL, type, discovery date, confidence, freeze hash",
+      "write_allowed_stage": "census_production_after_founder_approval"
+    },
+    {
+      "key": "steward",
+      "name": "Hotel Property Steward Review",
+      "role": "Holds, ambiguity, duplicate risk, brand-unconfirmed, manual decisions",
+      "write_allowed_stage": "census_production_after_founder_approval"
+    }
+  ],
+  "required_fields": {
+    "identity": [
+      "Property Name",
+      "Canonical Property Name",
+      "Property Identity Key",
+      "Family / Source Family",
+      "Country",
+      "State / Region",
+      "City",
+      "Address",
+      "Latitude",
+      "Longitude",
+      "Phone",
+      "Official Property URL",
+      "Source URL",
+      "Source Type",
+      "Source Confidence",
+      "Discovery Date",
+      "VIC Freeze Hash",
+      "Data Eligible",
+      "Identity Confidence",
+      "Production Use Status"
+    ],
+    "affiliation": [
+      "Current Brand",
+      "Brand Family",
+      "Brand Explorer Slug if mapped",
+      "Affiliation Status",
+      "Affiliation As-Of Date",
+      "Affiliation Start Date",
+      "Prior Brand",
+      "Future Opening Flag",
+      "Brand Confidence",
+      "Steward Review Status"
+    ]
+  },
+  "affiliation_statuses": [
+    "Branded",
+    "Soft-Branded / Collection",
+    "Brand-Unconfirmed",
+    "Independent",
+    "Formerly Branded",
+    "Future / Pipeline",
+    "Unknown"
+  ],
+  "production_use_status_default": "Census Only / Not Owner-Facing",
+  "existing_related_tables_platform": [
+    {
+      "name": "Hotel Census",
+      "id": "tblgj2qEwxjTcg6q0",
+      "role": "Legacy STR-backed reference — READ ONLY for VIC; never write from this lane"
+    },
+    {
+      "name": "Verified Independent Hotel Census",
+      "id": "tbljBvId1z4cEyE1J",
+      "role": "Existing verified master stub (18 fields) — incomplete vs Hotel Property Census model; do not overload as BE write target"
+    },
+    {
+      "name": "Independent Hotel Source Candidates",
+      "id": "tblKAUKiku7eMlV0d",
+      "role": "Staging candidates — keep separate from production Hotel Property Census"
+    },
+    {
+      "name": "Independent Hotel Source Evidence",
+      "id": "tbl4FrVompVBs9mTw",
+      "role": "Staging evidence — keep separate from Hotel Property Source Evidence"
+    }
+  ],
+  "schema_probe": {
+    "probed": true,
+    "prod_mvp": {
+      "base_id_masked": "appvtn…",
+      "tables": {
+        "Users": {
+          "id": "tbl6shiyz2wdUqE5F",
+          "field_count": 101
+        },
+        "User Management": {
+          "id": "tblQEpYKf2aYNKKjw",
+          "field_count": 35
+        },
+        "Location & Property": {
+          "id": "tblLw3HRrlYldDPcr",
+          "field_count": 52
+        },
+        "Market - Performance - Deal & Capital Structure": {
+          "id": "tblUoZai381vbop0L",
+          "field_count": 47
+        },
+        "Lease Structure": {
+          "id": "tblrsAYxgintNseDy",
+          "field_count": 16
+        },
+        "Deals": {
+          "id": "tblbvSxjiIhXzW6XW",
+          "field_count": 107
+        },
+        "Strategic Intent - Operational - Key Challenges": {
+          "id": "tblrHt9m8lfKrWbIC",
+          "field_count": 130
+        },
+        "Contact & Uploads": {
+          "id": "tbljY3jQyeSEv2UqE",
+          "field_count": 28
+        },
+        "Deal Brand Cache": {
+          "id": "tblkSGHwQV7eCB5Dy",
+          "field_count": 10
+        },
+        "Target List": {
+          "id": "tblc18g3IyF4p5wRs",
+          "field_count": 8
+        },
+        "Hotel Ownership": {
+          "id": "tbl7KyDvKlwfDumE6",
+          "field_count": 13
+        },
+        "Outreach Setup": {
+          "id": "tblpVQAVCY5i1L4jz",
+          "field_count": 24
+        },
+        "Company Profile": {
+          "id": "tblItyfH6MlOnMKZ9",
+          "field_count": 41
+        },
+        "Brand Setup - Brand Basics": {
+          "id": "tbl1x6S7I7JwTcRdV",
+          "field_count": 81
+        },
+        "Brand Setup - Sustainability & ESG": {
+          "id": "tblya14bMSJC9pTHD",
+          "field_count": 11
+        },
+        "Brand Setup - Brand Footprint": {
+          "id": "tbl108u1oTAwC5XTT",
+          "field_count": 138
+        },
+        "Brand Setup - Project Fit": {
+          "id": "tblmevxQmLlml7QIp",
+          "field_count": 57
+        },
+        "Brand Setup - Portfolio & Performance": {
+          "id": "tbl0cP5vclzNkQuyC",
+          "field_count": 31
+        },
+        "Brand Setup - Brand Standards": {
+          "id": "tbl4MdXjldw56Kkrw",
+          "field_count": 28
+        },
+        "Brand Setup - Deal Terms": {
+          "id": "tblxJ7lFfc6NyyMQd",
+          "field_count": 28
+        },
+        "Brand Setup - Fee Structure": {
+          "id": "tblIzHQUgqrziKg10",
+          "field_count": 66
+        },
+        "Brand Setup - Operational Support": {
+          "id": "tblkZyvi6ELUSKWwP",
+          "field_count": 57
+        },
+        "Brand Setup - Legal Terms": {
+          "id": "tbll6FDlvS2lJL6b4",
+          "field_count": 20
+        },
+        "Brand Setup - Loyalty & Commercial": {
+          "id": "tblbxW4AMMQyEZfPl",
+          "field_count": 19
+        },
+        "Brand Setup - Brand Explorer Presentation": {
+          "id": "tblZyZF4JsRkNeCbU",
+          "field_count": 28
+        },
+        "Deal Interactions": {
+          "id": "tblf0iLridTeS5xEA",
+          "field_count": 7
+        },
+        "Deal Status History": {
+          "id": "tblxZR25GE7exKQ93",
+          "field_count": 9
+        },
+        "Deal Actions": {
+          "id": "tblAc2w3jtzFvasAG",
+          "field_count": 10
+        },
+        "Brand Deal Preferences": {
+          "id": "tblvQakNRBoW33Wb4",
+          "field_count": 14
+        },
+        "User_Favorites": {
+          "id": "tblN06fOhg2kZKoeY",
+          "field_count": 10
+        },
+        "Companies": {
+          "id": "tblDg1SWTCbkJdufh",
+          "field_count": 15
+        },
+        "Contacts": {
+          "id": "tbl2Flfkd3H88jHVG",
+          "field_count": 18
+        },
+        "Workspaces": {
+          "id": "tblqR6tgpXeplhgZb",
+          "field_count": 11
+        },
+        "Users_Outreach": {
+          "id": "tblWQzyEEaie228kM",
+          "field_count": 27
+        },
+        "TemplatePacks": {
+          "id": "tblWZZvKLq3LdP9FH",
+          "field_count": 8
+        },
+        "Templates": {
+          "id": "tblhhvvoyAyEh3wIb",
+          "field_count": 26
+        },
+        "Sequences": {
+          "id": "tblk8UPw9rcuXwXrb",
+          "field_count": 10
+        },
+        "SequenceSteps": {
+          "id": "tbluoegMThuploaCu",
+          "field_count": 13
+        },
+        "OutreachPlans": {
+          "id": "tbl6ZtsJ5fjyFYCqi",
+          "field_count": 22
+        },
+        "Threads": {
+          "id": "tblSrpSCP80oUz3fH",
+          "field_count": 28
+        },
+        "PlanTargets": {
+          "id": "tblrGKgJXKOe029Zq",
+          "field_count": 33
+        },
+        "Messages": {
+          "id": "tblr9uWg6xbCGcLoK",
+          "field_count": 31
+        },
+        "Activities": {
+          "id": "tblZ1h8nmmEcewbpu",
+          "field_count": 17
+        },
+        "Approvals": {
+          "id": "tbl39ggfpo5Y9LkNK",
+          "field_count": 11
+        },
+        "Permissions": {
+          "id": "tbl6QQiUmBzzYnI5t",
+          "field_count": 10
+        },
+        "FollowupSuggestions": {
+          "id": "tblOIoEfvBe129ILK",
+          "field_count": 12
+        },
+        "AuditLog": {
+          "id": "tblDprgixQPUuCMlr",
+          "field_count": 9
+        },
+        "ResponsivenessInteractions": {
+          "id": "tblQDyekW6iMZ7yED",
+          "field_count": 13
+        },
+        "ResponsivenessScores": {
+          "id": "tblbjNLPaomITS14L",
+          "field_count": 17
+        },
+        "MarketAlerts": {
+          "id": "tbl3wIgVFfSnoYhfa",
+          "field_count": 12
+        },
+        "UserAlertStatus": {
+          "id": "tblkDFdCwPnIlg1lq",
+          "field_count": 9
+        },
+        "Brand Deal Requests": {
+          "id": "tblndahdDwxWMNfH9",
+          "field_count": 85
+        },
+        "Deal Activity Log": {
+          "id": "tblbjKOYNJXzfFkUY",
+          "field_count": 10
+        },
+        "Deal Room Documents": {
+          "id": "tblq0hmhY1HPYqBRY",
+          "field_count": 8
+        },
+        "Communication Log": {
+          "id": "tblPiRt02uLBr4Fa3",
+          "field_count": 10
+        },
+        "Franchise Applications": {
+          "id": "tblrVrFjppZwtBV4T",
+          "field_count": 3
+        },
+        "Operator Setup - Master": {
+          "id": "tbl4YPJ3XhnYLHLsD",
+          "field_count": 44
+        },
+        "Operator Setup - Profile & Positioning": {
+          "id": "tblNHCPoYI7Dz23wK",
+          "field_count": 68
+        },
+        "Operator Setup - Platform & Markets": {
+          "id": "tblJ9uTS6vzCZ5248",
+          "field_count": 131
+        },
+        "Operator Setup - Governance, Delivery & Diligence": {
+          "id": "tblygTlNhFqyhU1Wu",
+          "field_count": 81
+        },
+        "Operator Setup - Commercial Fit & Terms": {
+          "id": "tblkWAQHmTZRQGZES",
+          "field_count": 165
+        },
+        "Operator Setup - Leadership Platform": {
+          "id": "tblhsiVJkVU6H7GVT",
+          "field_count": 8
+        },
+        "Operator Setup - Case Studies": {
+          "id": "tblAh1X0KDK8SeYK0",
+          "field_count": 13
+        },
+        "Operator Setup - Explorer Materials": {
+          "id": "tbllzayIeyvlRzHdz",
+          "field_count": 22
+        },
+        "Operator Setup - Leadership Team Members": {
+          "id": "tbl8jX7BoOcwUIEOd",
+          "field_count": 15
+        },
+        "Operator Setup - Diligence QA": {
+          "id": "tbl5kF0qGg7X6FtCr",
+          "field_count": 5
+        },
+        "Operator Setup - Engagement & Reporting": {
+          "id": "tblBwfXeyeZ5mQd3T",
+          "field_count": 8
+        },
+        "Operator Setup - Operating Platform": {
+          "id": "tbl3ARHs2Gl187YDc",
+          "field_count": 9
+        },
+        "Operator Setup - Brand Relationships": {
+          "id": "tblWU8UDz2pVh3ss4",
+          "field_count": 8
+        },
+        "Operator Setup - Infrastructure Platform": {
+          "id": "tblWOPwYIIlnNBZ1w",
+          "field_count": 8
+        },
+        "FDD Documents": {
+          "id": "tblxy5ts9bXw2xQHV",
+          "field_count": 19
+        },
+        "FDD Sections": {
+          "id": "tblT4otPDWJsoWSNj",
+          "field_count": 15
+        },
+        "FDD Fee Rows": {
+          "id": "tbl3pRxRSa1dyRC3n",
+          "field_count": 71
+        },
+        "FDD Terms & Obligations": {
+          "id": "tblukcKXRmsBr1w6L",
+          "field_count": 48
+        },
+        "Brand Explorer Favorites": {
+          "id": "tbljrffIIQvdSLhK2",
+          "field_count": 4
+        },
+        "Operator Deal Requests": {
+          "id": "tbl0nNYd97yhGj7I9",
+          "field_count": 20
+        },
+        "Partner Intelligence - Source Library": {
+          "id": "tbl8iR7AtkUe0uctp",
+          "field_count": 34
+        },
+        "Partner Intelligence - Extracted Facts": {
+          "id": "tbl4j5MAQtPL45BmF",
+          "field_count": 29
+        },
+        "Partner Intelligence - Published Explorer Fields": {
+          "id": "tblGGYom9YM7d1OeS",
+          "field_count": 21
+        },
+        "Partner Intelligence - Helena Outreach Intake": {
+          "id": "tblKh5kF6Bqj5LWFO",
+          "field_count": 23
+        },
+        "Partner Intelligence - Brand Asset Registry": {
+          "id": "tblwNaf9DZt8Lth4t",
+          "field_count": 37
+        },
+        "Capital Setup - Financing Document Categories": {
+          "id": "tblegkjOKnLdxXZja",
+          "field_count": 8
+        },
+        "Capital Setup - Capital Providers": {
+          "id": "tblYUz9gwFYIa42Hm",
+          "field_count": 53
+        },
+        "Capital Setup - Capital Provider Criteria": {
+          "id": "tbl1VpbZEWMXORvAg",
+          "field_count": 29
+        },
+        "Capital Setup - Capital Provider Required Documents": {
+          "id": "tblzPB3He0InU6nyC",
+          "field_count": 12
+        },
+        "Capital Setup - Capital Provider Contacts": {
+          "id": "tblgxL9EdenHUBss0",
+          "field_count": 18
+        },
+        "Capital Setup - Deal Financing Needs": {
+          "id": "tblNECg57Oe0aRo0j",
+          "field_count": 21
+        },
+        "Capital Setup - Capital Provider Visibility Rules": {
+          "id": "tblKDyGXmSY4x9jwC",
+          "field_count": 11
+        },
+        "Capital Setup - Capital Provider Source References": {
+          "id": "tblpByGOVK3Bi3v3k",
+          "field_count": 10
+        },
+        "Capital Setup - Capital Provider Activity": {
+          "id": "tbl2xjSvk838JR2ml",
+          "field_count": 14
+        },
+        "Capital Setup - Deal Capital Provider List": {
+          "id": "tbl0dAhW9oYUpdjSY",
+          "field_count": 17
+        },
+        "Capital Setup - Representative Financings": {
+          "id": "tblPN6CCF1Lf4oqxT",
+          "field_count": 15
+        },
+        "Commercial Acceptances": {
+          "id": "tblznOWoTE0vF1dVG",
+          "field_count": 62
+        },
+        "Operator Intelligence - Claims": {
+          "id": "tblZE18CKPISe1Dcs",
+          "field_count": 21
+        },
+        "Operator Intelligence - Market Presence": {
+          "id": "tblrFqjMNGzxzbZnu",
+          "field_count": 15
+        },
+        "Operator Fit - Shortlist": {
+          "id": "tbl4D5DCK7oPFhi98",
+          "field_count": 27
+        }
+      },
+      "http_status": 200,
+      "table_count": 96
+    },
+    "platform": {
+      "base_id_masked": "appCCU…",
+      "tables": {
+        "Hotel Census": {
+          "id": "tblgj2qEwxjTcg6q0",
+          "field_count": 105
+        },
+        "Travel Infrastructure Data": {
+          "id": "tblux5Xs9o50MgpWF",
+          "field_count": 36
+        },
+        "Clause_Library": {
+          "id": "tbl4wXAIpWLhiRP6W",
+          "field_count": 32
+        },
+        "Clause_Variables": {
+          "id": "tbltDsYa9J266USdB",
+          "field_count": 12
+        },
+        "Financial_Term_Library": {
+          "id": "tblbtrGzFknUbzLKv",
+          "field_count": 28
+        },
+        "Opportunity Radar": {
+          "id": "tblSi2YzqpU0CD5HY",
+          "field_count": 85
+        },
+        "Brand Alias Mapping": {
+          "id": "tbltwiwQp74ZQtEoR",
+          "field_count": 6
+        },
+        "Independent Hotel Source Candidates": {
+          "id": "tblKAUKiku7eMlV0d",
+          "field_count": 24
+        },
+        "Independent Hotel Source Evidence": {
+          "id": "tbl4FrVompVBs9mTw",
+          "field_count": 10
+        },
+        "Verified Independent Hotel Census": {
+          "id": "tbljBvId1z4cEyE1J",
+          "field_count": 18
+        },
+        "Demand Anchors": {
+          "id": "tblJRhi2rmeunzJzQ",
+          "field_count": 31
+        },
+        "Markets": {
+          "id": "tbltwnnD2K2FMnfyE",
+          "field_count": 16
+        },
+        "Demand Categories": {
+          "id": "tblP7MvDQZAxZ78gw",
+          "field_count": 7
+        },
+        "Demand Centers": {
+          "id": "tbln1IO8hsKdrZJNv",
+          "field_count": 22
+        },
+        "Nearby Hotel Supply": {
+          "id": "tbl3aeuzhJaiPJ5o5",
+          "field_count": 14
+        },
+        "Market Demand Snapshots": {
+          "id": "tblqL56kilrzwMZOE",
+          "field_count": 21
+        },
+        "CALA Radar Build Plans": {
+          "id": "tbl4kThhOPVJ7BYQY",
+          "field_count": 20
+        },
+        "Scout Opportunity Signals": {
+          "id": "tblrHnLfZyBuoFfqZ",
+          "field_count": 24
+        },
+        "Hotel Property Census": {
+          "id": "tbl9aY5ijiuIzzWam",
+          "field_count": 33
+        },
+        "Hotel Property Brand Affiliations": {
+          "id": "tbll7n0xgmYywyrTd",
+          "field_count": 15
+        },
+        "Hotel Property Source Evidence": {
+          "id": "tblfhosu44nMbvSbS",
+          "field_count": 10
+        },
+        "Hotel Property Steward Review": {
+          "id": "tbluxLjGTuKGRO2iM",
+          "field_count": 15
+        }
+      },
+      "http_status": 200,
+      "table_count": 22
+    },
+    "proposed_table_existence": {
+      "Hotel Property Census": {
+        "exists": true,
+        "platform": {
+          "id": "tbl9aY5ijiuIzzWam",
+          "field_count": 33
+        },
+        "prod_mvp": null
+      },
+      "Hotel Property Brand Affiliations": {
+        "exists": true,
+        "platform": {
+          "id": "tbll7n0xgmYywyrTd",
+          "field_count": 15
+        },
+        "prod_mvp": null
+      },
+      "Hotel Property Source Evidence": {
+        "exists": true,
+        "platform": {
+          "id": "tblfhosu44nMbvSbS",
+          "field_count": 10
+        },
+        "prod_mvp": null
+      },
+      "Hotel Property Steward Review": {
+        "exists": true,
+        "platform": {
+          "id": "tbluxLjGTuKGRO2iM",
+          "field_count": 15
+        },
+        "prod_mvp": null
+      }
+    },
+    "schema_must_be_created_manually": false,
+    "recommended_base": "platform (AIRTABLE_BASE_ID_ALT) — isolate from MVP Brand Explorer rendering",
+    "all_four_proposed_absent": false,
+    "all_four_proposed_exist": true,
+    "tables_ready_on_platform": true
+  },
+  "existing_production_schema_gaps": [
+    {
+      "table": "Verified Independent Hotel Census",
+      "gap": "field_model_incomplete_vs_hotel_property_census",
+      "existing_field_count": 18,
+      "note": "Do not silently remap VIC freeze into this stub; prefer new Hotel Property Census tables"
+    },
+    {
+      "table": "Hotel Census",
+      "gap": "legacy_str_not_write_target",
+      "action": "Keep read-only; never receive VIC production writes"
+    }
+  ],
+  "tables_already_exist": true,
+  "schema_must_be_created_manually": false,
+  "write_rules": {
+    "allowed": "create/update records in dedicated Census tables only (after schema + founder approval)",
+    "forbidden_now": [
+      "Brand Setup - Brand Explorer Presentation",
+      "Brand Setup - Brand Basics",
+      "Brand Status / release fields",
+      "Company Validated",
+      "Brand Verified",
+      "Recent Momentum",
+      "Hotel Census (legacy STR)"
+    ],
+    "mark_records": "Production Use Status = Census Only / Not Owner-Facing"
+  },
+  "safe_fields_to_write": [
+    "Property Name",
+    "Canonical Property Name",
+    "Property Identity Key",
+    "Family / Source Family",
+    "Country",
+    "State / Region",
+    "City",
+    "Address",
+    "Official Property URL",
+    "Source URL",
+    "Source Type",
+    "Source Confidence",
+    "Discovery Date",
+    "VIC Freeze Hash",
+    "Data Eligible",
+    "Identity Confidence",
+    "Production Use Status",
+    "Current Brand",
+    "Brand Family",
+    "Brand Explorer Slug if mapped",
+    "Affiliation Status",
+    "Affiliation As-Of Date",
+    "Future Opening Flag",
+    "Brand Confidence",
+    "Steward Review Status",
+    "Latitude",
+    "Longitude",
+    "Phone"
+  ],
+  "unsafe_fields_held": [
+    "Rooms",
+    "Owner",
+    "Operator",
+    "Opening Date",
+    "Affiliation Start Date (unless source-supported — VIC policy: never fabricate)",
+    "Brand Explorer Presentation Title/Body/Slot Key",
+    "Brand Basics",
+    "Brand Status",
+    "release fields",
+    "Company Validated",
+    "Brand Verified",
+    "Recent Momentum",
+    "any public-rendered Brand Explorer field",
+    "coordinates when missing (never 0,0)"
+  ],
+  "no_fabricate": [
+    "rooms",
+    "owner",
+    "operator",
+    "opening date",
+    "affiliation start date",
+    "missing coordinates as 0,0"
+  ],
+  "brand_explorer_consumption": "Later: Brand Explorer consumes only approved Branded / Soft-Branded / Collection subset — not this lane",
+  "_acceptance_status": "production_census_dry_run_ready_for_founder_approval",
+  "acceptance_status": "production_census_dry_run_ready_for_founder_approval",
+  "generated_at": "2026-08-05T08:20:31.738Z"
+}

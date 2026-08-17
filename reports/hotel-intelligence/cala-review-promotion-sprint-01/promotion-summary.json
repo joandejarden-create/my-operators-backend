@@ -1,0 +1,834 @@
+{
+  "marker": "DEALALITY_CALA_REVIEW_PROMOTION_SPRINT_01_COMPLETE",
+  "safety": {
+    "ENABLE_HOTEL_INTELLIGENCE_AIRTABLE_WRITES": "0",
+    "ENABLE_HBX_CENSUS_WRITES": "0",
+    "production_writes": 0,
+    "census_writes": 0,
+    "automatic_merges": 0,
+    "automatic_imports": 0,
+    "schema_changes": 0,
+    "migrations": 0,
+    "secrets_exposed": 0
+  },
+  "review_queue_baseline": {
+    "REVIEW_BEFORE": 832,
+    "TRACK_B_REVIEW": 354,
+    "BRAZIL_REVIEW": 478,
+    "sprint01_ready": 257,
+    "merged_ready_before": 348
+  },
+  "review_wall": [
+    {
+      "REVIEW_REASON": "ADDRESS_MISSING",
+      "COUNT": 832,
+      "PCT_OF_REVIEW": 100,
+      "AVERAGE_CONFIDENCE": 0.862,
+      "AVERAGE_GAP_TO_READY": 0.038
+    },
+    {
+      "REVIEW_REASON": "COORDINATES_MISSING",
+      "COUNT": 832,
+      "PCT_OF_REVIEW": 100,
+      "AVERAGE_CONFIDENCE": 0.862,
+      "AVERAGE_GAP_TO_READY": 0.038
+    },
+    {
+      "REVIEW_REASON": "DUPLICATE_RISK",
+      "COUNT": 589,
+      "PCT_OF_REVIEW": 70.8,
+      "AVERAGE_CONFIDENCE": 0.861,
+      "AVERAGE_GAP_TO_READY": 0.039
+    },
+    {
+      "REVIEW_REASON": "CITY_CONFIDENCE",
+      "COUNT": 472,
+      "PCT_OF_REVIEW": 56.7,
+      "AVERAGE_CONFIDENCE": 0.863,
+      "AVERAGE_GAP_TO_READY": 0.037
+    },
+    {
+      "REVIEW_REASON": "IDENTITY_CONFIDENCE",
+      "COUNT": 139,
+      "PCT_OF_REVIEW": 16.7,
+      "AVERAGE_CONFIDENCE": 0.827,
+      "AVERAGE_GAP_TO_READY": 0.073
+    },
+    {
+      "REVIEW_REASON": "LOCALITY_AMBIGUITY",
+      "COUNT": 75,
+      "PCT_OF_REVIEW": 9,
+      "AVERAGE_CONFIDENCE": 0.849,
+      "AVERAGE_GAP_TO_READY": 0.051
+    },
+    {
+      "REVIEW_REASON": "NAME_AMBIGUITY",
+      "COUNT": 23,
+      "PCT_OF_REVIEW": 2.8,
+      "AVERAGE_CONFIDENCE": 0.799,
+      "AVERAGE_GAP_TO_READY": 0.103
+    }
+  ],
+  "confidence_bands_before": {
+    "0.88–0.899": 49,
+    "0.85–0.879": 607,
+    "0.80–0.849": 158,
+    "<0.80": 18
+  },
+  "territory_normalization": {
+    "city_infer_version": "discovery-factory-city-infer-v2",
+    "changes": [
+      "Expanded CITY_CANONICAL for Track B + Brazil secondary markets",
+      "CITY_IMPLIES_COUNTRY conflict guard (cross-island Cvent pollution)",
+      "ISLAND_PRIMARY_LOCALITY for bare territory labels",
+      "soft_duplicate_pressure only on near-dupe scores ≥0.55"
+    ],
+    "systematic_issues_found": [
+      "Unknown URL slug city_confidence 0.78 blocked Tier A (needed ≥0.85)",
+      "soft_duplicate_pressure fired on all NEW with 3 weak pool rows",
+      "Cvent cross-island city pollution (e.g. Willemstad on Bonaire, Castries on Martinique)"
+    ]
+  },
+  "track_b": {
+    "label": "TRACK_B",
+    "review_before": 354,
+    "promoted_ready": 177,
+    "still_review": 171,
+    "ambiguous": 0,
+    "rejected": 6,
+    "matched_existing": 0,
+    "avg_conf_before": 0.847,
+    "avg_conf_after": 0.918,
+    "giata_matches": 1,
+    "serpapi_calls": 0,
+    "by_country": {
+      "Turks and Caicos": {
+        "review_before": 57,
+        "promoted_ready": 40,
+        "still_review": 12,
+        "ambiguous": 0,
+        "rejected": 5,
+        "matched_existing": 0,
+        "average_confidence_before": 0.834,
+        "average_confidence_after": 0.925
+      },
+      "Bonaire": {
+        "review_before": 48,
+        "promoted_ready": 14,
+        "still_review": 34,
+        "ambiguous": 0,
+        "rejected": 0,
+        "matched_existing": 0,
+        "average_confidence_before": 0.86,
+        "average_confidence_after": 0.881
+      },
+      "Martinique": {
+        "review_before": 49,
+        "promoted_ready": 13,
+        "still_review": 36,
+        "ambiguous": 0,
+        "rejected": 0,
+        "matched_existing": 0,
+        "average_confidence_before": 0.846,
+        "average_confidence_after": 0.867
+      },
+      "U.S. Virgin Islands": {
+        "review_before": 50,
+        "promoted_ready": 48,
+        "still_review": 2,
+        "ambiguous": 0,
+        "rejected": 0,
+        "matched_existing": 0,
+        "average_confidence_before": 0.853,
+        "average_confidence_after": 0.958
+      },
+      "Anguilla": {
+        "review_before": 25,
+        "promoted_ready": 7,
+        "still_review": 18,
+        "ambiguous": 0,
+        "rejected": 0,
+        "matched_existing": 0,
+        "average_confidence_before": 0.84,
+        "average_confidence_after": 0.93
+      },
+      "Montserrat": {
+        "review_before": 50,
+        "promoted_ready": 2,
+        "still_review": 48,
+        "ambiguous": 0,
+        "rejected": 0,
+        "matched_existing": 0,
+        "average_confidence_before": 0.845,
+        "average_confidence_after": 0.899
+      },
+      "Guadeloupe": {
+        "review_before": 31,
+        "promoted_ready": 17,
+        "still_review": 13,
+        "ambiguous": 0,
+        "rejected": 1,
+        "matched_existing": 0,
+        "average_confidence_before": 0.846,
+        "average_confidence_after": 0.923
+      },
+      "Saint Lucia": {
+        "review_before": 44,
+        "promoted_ready": 36,
+        "still_review": 8,
+        "ambiguous": 0,
+        "rejected": 0,
+        "matched_existing": 0,
+        "average_confidence_before": 0.85,
+        "average_confidence_after": 0.951
+      }
+    },
+    "rejected_rows": [
+      {
+        "hotel_id": "dhl_06FYQGT180BRG5Q2ADQ7EQ7VP0",
+        "name": "Venetian On Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      },
+      {
+        "hotel_id": "dhl_06FYQGTDXM61V9HMBDT8FZA93D",
+        "name": "Coral Gardens On Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      },
+      {
+        "hotel_id": "dhl_06FYQGTPMGZXGPZJT81GWJQTPJ",
+        "name": "The Somerset On Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      },
+      {
+        "hotel_id": "dhl_06FYQGTT348HXDNQK7NPGB889J",
+        "name": "The Sands At Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      },
+      {
+        "hotel_id": "dhl_06FYQGV94CBVPHJF3Z9DWADYT6",
+        "name": "Bianca Sands On Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      },
+      {
+        "hotel_id": "dhl_06FYQHSGYMRHN24VXHPP430QMR",
+        "name": "Holiday Village Sainte Anne",
+        "country": "Guadeloupe",
+        "status": "REJECTED"
+      }
+    ],
+    "ambiguous_rows": []
+  },
+  "brazil": {
+    "label": "BRAZIL",
+    "review_before": 478,
+    "promoted_ready": 167,
+    "still_review": 311,
+    "ambiguous": 0,
+    "rejected": 0,
+    "matched_existing": 0,
+    "avg_conf_before": 0.873,
+    "avg_conf_after": 0.963,
+    "giata_matches": 0,
+    "serpapi_calls": 0,
+    "by_country": {
+      "Brazil": {
+        "review_before": 478,
+        "promoted_ready": 167,
+        "still_review": 311,
+        "ambiguous": 0,
+        "rejected": 0,
+        "matched_existing": 0,
+        "average_confidence_before": 0.873,
+        "average_confidence_after": 0.963
+      }
+    },
+    "rejected_rows": [],
+    "ambiguous_rows": []
+  },
+  "track_b_geo": {
+    "Turks and Caicos Islands": {
+      "live_hotels": 0,
+      "ready_staged": 40,
+      "projected_if_imported": 40,
+      "coverage_before": 0,
+      "coverage_after_if_promoted_imported": 70.2,
+      "estimated_universe": 57,
+      "review_before": 57,
+      "promoted_ready": 40,
+      "still_review": 12,
+      "ambiguous": 0,
+      "rejected": 5,
+      "matched_existing": 0,
+      "average_confidence_before": 0.834,
+      "average_confidence_after": 0.925
+    },
+    "Bonaire": {
+      "live_hotels": 0,
+      "ready_staged": 14,
+      "projected_if_imported": 14,
+      "coverage_before": 0,
+      "coverage_after_if_promoted_imported": 27.5,
+      "estimated_universe": 51,
+      "review_before": 48,
+      "promoted_ready": 14,
+      "still_review": 34,
+      "ambiguous": 0,
+      "rejected": 0,
+      "matched_existing": 0,
+      "average_confidence_before": 0.86,
+      "average_confidence_after": 0.881
+    },
+    "Martinique": {
+      "live_hotels": 0,
+      "ready_staged": 13,
+      "projected_if_imported": 13,
+      "coverage_before": 0,
+      "coverage_after_if_promoted_imported": 20.3,
+      "estimated_universe": 64,
+      "review_before": 49,
+      "promoted_ready": 13,
+      "still_review": 36,
+      "ambiguous": 0,
+      "rejected": 0,
+      "matched_existing": 0,
+      "average_confidence_before": 0.846,
+      "average_confidence_after": 0.867
+    },
+    "U.S. Virgin Islands": {
+      "live_hotels": 0,
+      "ready_staged": 46,
+      "projected_if_imported": 46,
+      "coverage_before": 0,
+      "coverage_after_if_promoted_imported": 90.2,
+      "estimated_universe": 51,
+      "review_before": 50,
+      "promoted_ready": 48,
+      "still_review": 2,
+      "ambiguous": 0,
+      "rejected": 0,
+      "matched_existing": 0,
+      "average_confidence_before": 0.853,
+      "average_confidence_after": 0.958
+    },
+    "Anguilla": {
+      "live_hotels": 0,
+      "ready_staged": 7,
+      "projected_if_imported": 7,
+      "coverage_before": 0,
+      "coverage_after_if_promoted_imported": 28,
+      "estimated_universe": 25,
+      "review_before": 25,
+      "promoted_ready": 7,
+      "still_review": 18,
+      "ambiguous": 0,
+      "rejected": 0,
+      "matched_existing": 0,
+      "average_confidence_before": 0.84,
+      "average_confidence_after": 0.93
+    },
+    "Montserrat": {
+      "live_hotels": 0,
+      "ready_staged": 2,
+      "projected_if_imported": 2,
+      "coverage_before": 0,
+      "coverage_after_if_promoted_imported": 4,
+      "estimated_universe": 50,
+      "review_before": 50,
+      "promoted_ready": 2,
+      "still_review": 48,
+      "ambiguous": 0,
+      "rejected": 0,
+      "matched_existing": 0,
+      "average_confidence_before": 0.845,
+      "average_confidence_after": 0.899
+    },
+    "Guadeloupe": {
+      "live_hotels": 0,
+      "ready_staged": 16,
+      "projected_if_imported": 16,
+      "coverage_before": 0,
+      "coverage_after_if_promoted_imported": 50,
+      "estimated_universe": 32,
+      "review_before": 31,
+      "promoted_ready": 17,
+      "still_review": 13,
+      "ambiguous": 0,
+      "rejected": 1,
+      "matched_existing": 0,
+      "average_confidence_before": 0.846,
+      "average_confidence_after": 0.923
+    },
+    "Saint Lucia": {
+      "live_hotels": 3,
+      "ready_staged": 36,
+      "projected_if_imported": 39,
+      "coverage_before": 6.3,
+      "coverage_after_if_promoted_imported": 81.3,
+      "estimated_universe": 48,
+      "review_before": 44,
+      "promoted_ready": 36,
+      "still_review": 8,
+      "ambiguous": 0,
+      "rejected": 0,
+      "matched_existing": 0,
+      "average_confidence_before": 0.85,
+      "average_confidence_after": 0.951
+    }
+  },
+  "geographic_coverage_impact": {
+    "ZERO_COVERAGE_COUNTRIES_LIVE": 22,
+    "ZERO_COVERAGE_COUNTRIES_AFTER_EXISTING_READY": 15,
+    "ZERO_COVERAGE_COUNTRIES_AFTER_REVIEW_PROMOTION": 15,
+    "COUNTRIES_MOVING_ABOVE_20_PERCENT": [
+      {
+        "country": "Martinique",
+        "before": 0,
+        "after": 20.3
+      },
+      {
+        "country": "Turks and Caicos Islands",
+        "before": 0,
+        "after": 41.2
+      },
+      {
+        "country": "Bonaire",
+        "before": 0,
+        "after": 21.5
+      },
+      {
+        "country": "U.S. Virgin Islands",
+        "before": 0,
+        "after": 47.9
+      },
+      {
+        "country": "Guadeloupe",
+        "before": 0,
+        "after": 33.3
+      },
+      {
+        "country": "Anguilla",
+        "before": 0,
+        "after": 28
+      },
+      {
+        "country": "Saint Lucia",
+        "before": 6.3,
+        "after": 47
+      }
+    ],
+    "COUNTRIES_MOVING_ABOVE_50_PERCENT": [],
+    "live_buckets": {
+      "zero": 22,
+      "below_20": 38,
+      "below_50": 47,
+      "below_80": 50,
+      "at_or_above_95": 2
+    },
+    "projected_buckets": {
+      "zero": 15,
+      "below_20": 31,
+      "below_50": 47,
+      "below_80": 50,
+      "at_or_above_95": 2
+    }
+  },
+  "promotion_metrics": {
+    "REVIEW_BEFORE": 832,
+    "PROMOTED_TO_READY": 344,
+    "STILL_REVIEW": 482,
+    "AMBIGUOUS": 0,
+    "REJECTED": 6,
+    "TRACK_B": {
+      "promoted": 177,
+      "still_review": 171,
+      "promotion_rate": 50
+    },
+    "BRAZIL": {
+      "promoted": 167,
+      "still_review": 311,
+      "promotion_rate": 34.9
+    },
+    "promotion_rate": 41.3
+  },
+  "provider_usage": {
+    "giata_drive_calls": 17,
+    "giata_matches": 1,
+    "serpapi_calls": 0,
+    "serpapi_useful": 0,
+    "promotions_existing_evidence_only": 343,
+    "promotions_requiring_giata": 1,
+    "promotions_requiring_serpapi": 0,
+    "serpapi_skipped": true,
+    "giata_skipped": false,
+    "READY_promotions_per_external_API_call": 0.059
+  },
+  "ready_queue": {
+    "READY_QUEUE_BEFORE": 348,
+    "NEW_PROMOTIONS": 344,
+    "NEW_PROMOTIONS_NET_AFTER_DEDUP": 341,
+    "DUPLICATES_WITHIN_READY_QUEUE": 3,
+    "READY_QUEUE_AFTER_DEDUPED": 689
+  },
+  "projected_census": {
+    "LIVE_CENSUS": 5956,
+    "READY_QUEUE_AFTER_DEDUPED": 689,
+    "PROJECTED_CENSUS_IF_READY_IMPORTED": 6645,
+    "REMAINING_TO_10K": 3355,
+    "REMAINING_TO_12_5K": 5855,
+    "REMAINING_TO_15K": 8355
+  },
+  "quality_audit": {
+    "promoted_track_b_sample": [
+      {
+        "hotel_id": "dhl_06FYQGSF3M3KKKV38YTSH8BCQ2",
+        "name": "Salterra A Luxury Collection Resort Spa Turks Caicos",
+        "city": "South Caicos",
+        "country": "Turks and Caicos",
+        "confidence": 0.99,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGSJ7CVG55FW2H69AVP7SG",
+        "name": "The Ritz Carlton Turks Caicos",
+        "city": "Providenciales",
+        "country": "Turks and Caicos",
+        "confidence": 0.99,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGSK8CH19XB34JEQT19DA8",
+        "name": "Wymara Resort And Villas",
+        "city": "Providenciales",
+        "country": "Turks and Caicos",
+        "confidence": 0.99,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGSM9CB9EVXXZECNQP0APR",
+        "name": "Beaches Turks And Caicos Resort",
+        "city": "Providenciales",
+        "country": "Turks and Caicos",
+        "confidence": 0.99,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGSP8C8GQPBT5ZCXSDA423",
+        "name": "Royal West Indies Resort",
+        "city": "Providenciales",
+        "country": "Turks and Caicos",
+        "confidence": 0.99,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGST3GMDNXYV8D1KP0CREZ",
+        "name": "Sibonne Beach Hotel",
+        "city": "Providenciales",
+        "country": "Turks and Caicos",
+        "confidence": 0.99,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGT280XQJW3TBEZHVQHEXW",
+        "name": "Northwest Point Resort",
+        "city": "Providenciales",
+        "country": "Turks and Caicos",
+        "confidence": 0.99,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGT3AW1J2FPANNNRX4JJA8",
+        "name": "Sailrock Resort",
+        "city": "South Caicos",
+        "country": "Turks and Caicos",
+        "confidence": 0.99,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.878
+      }
+    ],
+    "promoted_brazil_sample": [
+      {
+        "hotel_id": "dhl_06FYQENBW0555J9KB1GTRA4QSP",
+        "name": "Intercity Premium Gravatai",
+        "city": "São Paulo",
+        "country": "Brazil",
+        "confidence": 0.973,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.893
+      },
+      {
+        "hotel_id": "dhl_06FYQENEV46CRP62P6BDB59TM9",
+        "name": "Multiparque Hplus Long Stay",
+        "city": "Brasília",
+        "country": "Brazil",
+        "confidence": 0.973,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.893
+      },
+      {
+        "hotel_id": "dhl_06FYQENGHM1BJG5MGF34F1ZNKB",
+        "name": "Spot Hplus Long Stay",
+        "city": "Brasília",
+        "country": "Brazil",
+        "confidence": 0.973,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.893
+      },
+      {
+        "hotel_id": "dhl_06FYQENN9R9ZDJZ5MFANFMTSSZ",
+        "name": "Vitoria Residence Newport",
+        "city": "Campinas",
+        "country": "Brazil",
+        "confidence": 0.973,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.893
+      },
+      {
+        "hotel_id": "dhl_06FYQEP2J4T68DYB8FN1C8JZK6",
+        "name": "Golden Tulip Brasilia Alvorada",
+        "city": "Brasília",
+        "country": "Brazil",
+        "confidence": 0.973,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.893
+      },
+      {
+        "hotel_id": "dhl_06FYQEP6MREH6A4JW4TESPKNVP",
+        "name": "Promenade Rio Stay",
+        "city": "Rio de Janeiro",
+        "country": "Brazil",
+        "confidence": 0.973,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.893
+      },
+      {
+        "hotel_id": "dhl_06FYQEPFTG51FDVBT43AW6Q9XK",
+        "name": "Ez Aclimacao",
+        "city": "São Paulo",
+        "country": "Brazil",
+        "confidence": 0.973,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.893
+      },
+      {
+        "hotel_id": "dhl_06FYQES0DGF3BE1BBFHKJQD0ME",
+        "name": "Master Express Cidade Baixa",
+        "city": "Porto Alegre",
+        "country": "Brazil",
+        "confidence": 0.973,
+        "city_method": "cvent_url_venues_slug",
+        "path": "existing_evidence",
+        "confidence_before": 0.893
+      }
+    ],
+    "still_review_sample": [
+      {
+        "hotel_id": "dhl_06FYQGSG80DSK27RZPY41HEQ8Y",
+        "name": "Andaz Turks Caicos At Grace Bay",
+        "city": "Turks",
+        "country": "Turks and Caicos",
+        "confidence": 0.743,
+        "city_method": "cvent_url_name_conflict",
+        "path": "still_review",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGSN98DFQ3V4Y171YACHJF",
+        "name": "Osprey Beach Hotel",
+        "city": "Grand Turk",
+        "country": "Turks and Caicos",
+        "confidence": 0.958,
+        "city_method": "cvent_url_venues_slug",
+        "path": "still_review",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGT05843023Z54RRJAPRGE",
+        "name": "Blue Horizon Resort",
+        "city": "Middle Caicos",
+        "country": "Turks and Caicos",
+        "confidence": 0.958,
+        "city_method": "cvent_url_venues_slug",
+        "path": "still_review",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGW0HCATJZPJWVSXQXCC69",
+        "name": "Curacao Marriott Beach Resort",
+        "city": "Willemstad",
+        "country": "Bonaire",
+        "confidence": 0.878,
+        "city_method": "cvent_url_venues_slug_country_conflict",
+        "path": "still_review",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGWB8C9E5QV4QTE298TXVW",
+        "name": "Wave Hotel Cafe Curacao",
+        "city": "Willemstad",
+        "country": "Bonaire",
+        "confidence": 0.878,
+        "city_method": "cvent_url_venues_slug_country_conflict",
+        "path": "still_review",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGWGTW11KWC7DKZMVR50R9",
+        "name": "Papagayo Beach Hotel Curacao",
+        "city": "Willemstad",
+        "country": "Bonaire",
+        "confidence": 0.878,
+        "city_method": "cvent_url_venues_slug_country_conflict",
+        "path": "still_review",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGWS3W9WMJ2VJCVHKQGX6G",
+        "name": "Kontiki Beach Resort",
+        "city": "Willemstad",
+        "country": "Bonaire",
+        "confidence": 0.878,
+        "city_method": "cvent_url_venues_slug_country_conflict",
+        "path": "still_review",
+        "confidence_before": 0.878
+      },
+      {
+        "hotel_id": "dhl_06FYQGWZ34SV328HRFCSPBKNFX",
+        "name": "Morena Resort",
+        "city": "Curacao",
+        "country": "Bonaire",
+        "confidence": 0.958,
+        "city_method": "cvent_url_venues_slug",
+        "path": "still_review",
+        "confidence_before": 0.878
+      }
+    ],
+    "rejected_ambiguous_sample": [
+      {
+        "hotel_id": "dhl_06FYQGT180BRG5Q2ADQ7EQ7VP0",
+        "name": "Venetian On Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      },
+      {
+        "hotel_id": "dhl_06FYQGTDXM61V9HMBDT8FZA93D",
+        "name": "Coral Gardens On Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      },
+      {
+        "hotel_id": "dhl_06FYQGTPMGZXGPZJT81GWJQTPJ",
+        "name": "The Somerset On Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      },
+      {
+        "hotel_id": "dhl_06FYQGTT348HXDNQK7NPGB889J",
+        "name": "The Sands At Grace Bay",
+        "country": "Turks and Caicos",
+        "status": "REJECTED"
+      }
+    ],
+    "false_positive_concerns": [
+      "Island-primary locality maps bare territory labels to commercial hubs — verify Montserrat/Brades and Turks/Providenciales samples",
+      "GIATA name fuzzy match ≥0.72 — spot-check promoted GIATA path rows",
+      "Census identity re-check skipped when --skip-census; default run uses live census"
+    ]
+  },
+  "review_bottleneck_verdict": [
+    "FIXABLE_EVIDENCE_GAP",
+    "GEOGRAPHY_NORMALIZATION_PROBLEM",
+    "CONFIDENCE_MODEL_WORKING_AS_DESIGNED",
+    "NORMAL_EXPECTED_REVIEW"
+  ],
+  "recommended_operating_mode": "DISCOVER_AND_PROMOTE",
+  "sprint_02": {
+    "note": "Re-ranked after review promotion (zero + near-zero mix); NOT executed",
+    "TRACK_A": {
+      "country": "Brazil",
+      "candidate_target": 600,
+      "rationale": "Still largest absolute gap; promotion proved evidence-first converts REVIEW efficiently — pair discovery with same-sprint corroboration"
+    },
+    "TRACK_B": [
+      {
+        "country": "Saint Barthélemy",
+        "candidate_target": 50,
+        "live": 0,
+        "coverage": 0,
+        "gap": 108,
+        "reason": "ZERO coverage; tourism priority"
+      },
+      {
+        "country": "Paraguay",
+        "candidate_target": 80,
+        "live": 0,
+        "coverage": 0,
+        "gap": 102,
+        "reason": "ZERO coverage; South America depth"
+      },
+      {
+        "country": "Bahamas",
+        "candidate_target": 80,
+        "live": 9,
+        "coverage": 9.6,
+        "gap": 85,
+        "reason": "NEAR-ZERO geographic floor"
+      },
+      {
+        "country": "Belize",
+        "candidate_target": 80,
+        "live": 12,
+        "coverage": 9.2,
+        "gap": 118,
+        "reason": "NEAR-ZERO + candidate stock"
+      },
+      {
+        "country": "Dominica",
+        "candidate_target": 23,
+        "live": 2,
+        "coverage": 8.7,
+        "gap": 21,
+        "reason": "NEAR-ZERO small island"
+      },
+      {
+        "country": "Saint Martin",
+        "candidate_target": 40,
+        "live": 0,
+        "coverage": 0,
+        "gap": 100,
+        "reason": "ZERO coverage twin-island"
+      }
+    ],
+    "expected_raw_candidates": 953,
+    "expected_READY": 362,
+    "expected_REVIEW": 496,
+    "expected_geographic_improvement": "Zero-floor lift (St Barthélemy/Paraguay/Saint Martin) + near-zero Caribbean (Bahamas/Belize/Dominica); Brazil depth in DISCOVER_AND_PROMOTE mode"
+  },
+  "final_verdict": "READY_FOR_IMPORT_REVIEW"
+}

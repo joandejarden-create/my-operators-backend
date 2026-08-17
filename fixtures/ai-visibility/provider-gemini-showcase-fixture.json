@@ -1,0 +1,52 @@
+{
+  "fixtureVersion": "ai_visibility_provider_gemini_fixture_v1",
+  "provider": "gemini",
+  "model": "gemini-2.5-flash",
+  "raw": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "For an upper-upscale conversion in Mexico, owners often evaluate Autograph Collection, Curio Collection, Tribute Portfolio, and similar soft-brand options alongside full-service flags."
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "groundingMetadata": {
+          "webSearchQueries": ["upper upscale hotel soft brand Mexico conversion"],
+          "groundingChunks": [
+            {
+              "web": {
+                "uri": "https://example.com/mexico-soft-brands",
+                "title": "Soft Brand Options in Mexico"
+              }
+            },
+            {
+              "web": {
+                "uri": "https://hospitality.example.org/conversion-guide",
+                "title": "Hotel Conversion Guide"
+              }
+            }
+          ],
+          "groundingSupports": [
+            {
+              "segment": {
+                "startIndex": 0,
+                "endIndex": 42,
+                "text": "For an upper-upscale conversion in Mexico"
+              },
+              "groundingChunkIndices": [0]
+            }
+          ]
+        }
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 120,
+      "candidatesTokenCount": 85,
+      "totalTokenCount": 205
+    }
+  }
+}

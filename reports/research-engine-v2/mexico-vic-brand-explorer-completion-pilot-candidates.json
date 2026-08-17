@@ -1,0 +1,3530 @@
+{
+  "status": "mexico_vic_be_completion_pilot_candidates_ready",
+  "generated_at": "2026-08-04T23:18:45.292Z",
+  "baseline": {
+    "status": "mexico_vic_4family_baseline_locked_staging_ready",
+    "freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+    "total_records": 666,
+    "data_eligible": 580,
+    "path": "data/research-engine-v2/verified-independent-census-mexico-combined-4family/"
+  },
+  "constraints": {
+    "airtable_writes": false,
+    "webhound_used": false,
+    "brand_explorer_activation": false,
+    "production_overwrite": false,
+    "frozen_baseline_artifacts_modified": false,
+    "candidate_selection_only": true
+  },
+  "default_recommendation": "small_pilot",
+  "pool": {
+    "data_eligible_input": 580,
+    "scored_candidates": 285,
+    "rejected_from_pilot": 295,
+    "active_live_be54_brands_with_mexico_vic_candidates": 25
+  },
+  "exclusion_summary": {
+    "exclude_id_count": 22,
+    "brand_unconfirmed_or_steward_hold_count": 4,
+    "campus_or_high_sim_ambiguity_count": 18,
+    "cross_family_exact_or_probable_count": 0
+  },
+  "brand_pool_summary": [
+    {
+      "brand": "Holiday Inn Express",
+      "family": "IHG",
+      "be_slug": "holiday-inn-express",
+      "eligible_candidate_count": 62,
+      "avg_score": 148.9,
+      "in_small_priority": true,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "City Express by Marriott",
+      "family": "Marriott",
+      "be_slug": "city-express-by-marriott",
+      "eligible_candidate_count": 48,
+      "avg_score": 93.8,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Courtyard by Marriott",
+      "family": "Marriott",
+      "be_slug": "courtyard-by-marriott",
+      "eligible_candidate_count": 28,
+      "avg_score": 94.4,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Small Luxury Hotels of the World",
+      "family": "Hilton",
+      "be_slug": "small-luxury-hotels-of-the-world",
+      "eligible_candidate_count": 18,
+      "avg_score": 155.3,
+      "in_small_priority": false,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Design Hotels",
+      "family": "Marriott",
+      "be_slug": "design-hotels",
+      "eligible_candidate_count": 17,
+      "avg_score": 94.8,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Comfort Inn",
+      "family": "Choice",
+      "be_slug": "comfort-inn-suites",
+      "eligible_candidate_count": 16,
+      "avg_score": 131.7,
+      "in_small_priority": false,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Marriott Hotels",
+      "family": "Marriott",
+      "be_slug": "marriott-hotels",
+      "eligible_candidate_count": 11,
+      "avg_score": 94.2,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "voco",
+      "family": "IHG",
+      "be_slug": "voco-hotels",
+      "eligible_candidate_count": 8,
+      "avg_score": 150.2,
+      "in_small_priority": true,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Ascend Hotel Collection",
+      "family": "Choice",
+      "be_slug": "ascend",
+      "eligible_candidate_count": 8,
+      "avg_score": 130.7,
+      "in_small_priority": true,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Radisson",
+      "family": "Choice",
+      "be_slug": "radisson",
+      "eligible_candidate_count": 7,
+      "avg_score": 131.5,
+      "in_small_priority": false,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Westin",
+      "family": "Marriott",
+      "be_slug": "westin",
+      "eligible_candidate_count": 7,
+      "avg_score": 96,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "family": "Marriott",
+      "be_slug": "ac-hotels-by-marriott",
+      "eligible_candidate_count": 6,
+      "avg_score": 93.2,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Curio Collection by Hilton",
+      "family": "Hilton",
+      "be_slug": "curio-collection",
+      "eligible_candidate_count": 5,
+      "avg_score": 154.8,
+      "in_small_priority": true,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Tapestry by Hilton",
+      "family": "Hilton",
+      "be_slug": "tapestry-collection-by-hilton",
+      "eligible_candidate_count": 5,
+      "avg_score": 154.3,
+      "in_small_priority": false,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "avid hotels",
+      "family": "IHG",
+      "be_slug": "avid-hotels",
+      "eligible_candidate_count": 5,
+      "avg_score": 148.6,
+      "in_small_priority": false,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Hotel Indigo",
+      "family": "IHG",
+      "be_slug": "hotel-indigo",
+      "eligible_candidate_count": 5,
+      "avg_score": 149.6,
+      "in_small_priority": true,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Quality Inn",
+      "family": "Choice",
+      "be_slug": "quality-inn",
+      "eligible_candidate_count": 5,
+      "avg_score": 130.1,
+      "in_small_priority": false,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Sheraton",
+      "family": "Marriott",
+      "be_slug": "sheraton",
+      "eligible_candidate_count": 5,
+      "avg_score": 95.4,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Kimpton",
+      "family": "IHG",
+      "be_slug": "kimpton",
+      "eligible_candidate_count": 4,
+      "avg_score": 148.9,
+      "in_small_priority": false,
+      "in_medium_priority": true
+    },
+    {
+      "brand": "Aloft Hotels",
+      "family": "Marriott",
+      "be_slug": "aloft-hotels",
+      "eligible_candidate_count": 4,
+      "avg_score": 97.4,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Residence Inn by Marriott",
+      "family": "Marriott",
+      "be_slug": "residence-inn-by-marriott",
+      "eligible_candidate_count": 4,
+      "avg_score": 96.2,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Autograph Collection",
+      "family": "Marriott",
+      "be_slug": "autograph-collection",
+      "eligible_candidate_count": 3,
+      "avg_score": 95.7,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Motto by Hilton",
+      "family": "Hilton",
+      "be_slug": "motto-by-hilton",
+      "eligible_candidate_count": 2,
+      "avg_score": 157.5,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Canopy by Hilton",
+      "family": "Hilton",
+      "be_slug": "canopy-by-hilton",
+      "eligible_candidate_count": 1,
+      "avg_score": 157.5,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    },
+    {
+      "brand": "Moxy Hotels",
+      "family": "Marriott",
+      "be_slug": "moxy-hotels",
+      "eligible_candidate_count": 1,
+      "avg_score": 97.4,
+      "in_small_priority": false,
+      "in_medium_priority": false
+    }
+  ],
+  "tiers": {
+    "small_pilot": {
+      "target_properties": 10,
+      "target_brands": "3–5",
+      "recommended_default": true,
+      "property_count": 10,
+      "brand_count": 4,
+      "brands": [
+        "Hotel Indigo",
+        "Ascend Hotel Collection",
+        "Curio Collection by Hilton",
+        "Holiday Inn Express"
+      ],
+      "families": [
+        "IHG",
+        "Choice",
+        "Hilton"
+      ],
+      "properties": [
+        {
+          "independent_record_id": "ind_ihg_mx_gdlal",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Guadalajara Expo",
+          "city": "Guadalajara",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/guadalajara/gdlal/hoteldetail",
+          "property_ids": [
+            "GDLAL"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 1
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pcmaa",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Playa del Carmen",
+          "city": "Playa Del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/playa-del-carmen/pcmaa/hoteldetail",
+          "property_ids": [
+            "PCMAA"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 2
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_bjxgd",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Guanajuato",
+          "city": "Guanajuato",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/guanajuato/bjxgd/hoteldetail",
+          "property_ids": [
+            "BJXGD"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 3
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx228",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "Amberes 64, an Ascend Collection Hotel",
+          "city": "Mexico City",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/mexico/mexico-city/ascend-hotels/mx228",
+          "property_ids": [
+            "MX228"
+          ],
+          "property_id": "prop_bd5c829c3a257d1c",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 135.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 4
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx164",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "El Cid Castilla Beach Hotel",
+          "city": "Mazatlan",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/sinaloa/mazatlan/ascend-hotels/mx164",
+          "property_ids": [
+            "MX164"
+          ],
+          "property_id": "prop_7eb53fe1c0b8f259",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 5
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx169",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "El Cid La Ceiba Beach Hotel",
+          "city": "Cozumel",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/quintana-roo/cozumel/ascend-hotels/mx169",
+          "property_ids": [
+            "MX169"
+          ],
+          "property_id": "prop_293f217dd60962fc",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 6
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_cunaaqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "Amare Cancun Adults Only All-Inclusive Resort, Curio by Hilton",
+          "city": "Cancun",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/cunaaqq-amare-cancun-adults-only-all-inclusive-resort/",
+          "property_ids": [
+            "CUNAAQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 74,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 158.9,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 7
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_cuncuqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "The Fives Downtown Hotel & Residences, Curio Collection by Hilton",
+          "city": "Playa del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/cuncuqq-the-fives-downtown-hotel-and-residences/",
+          "property_ids": [
+            "CUNCUQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 157.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 8
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_mtymmqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "MS Milenium Monterrey, Curio Collection by Hilton",
+          "city": "SanPedro Garza Garcia",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/mtymmqq-ms-milenium-monterrey/",
+          "property_ids": [
+            "MTYMMQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 152.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 9
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mqerg",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express & Suites Queretaro",
+          "city": "Queretaro",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/queretaro/mqerg/hoteldetail",
+          "property_ids": [
+            "MQERG"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 155.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 10
+        }
+      ],
+      "rationale": "Safest Active/Live BE brands with Mexico VIC data-eligible identity, official URLs, no steward holds, prefer IHG/Hilton/Choice stronger material completeness"
+    },
+    "medium_pilot": {
+      "target_properties": 25,
+      "target_brands": "6–10",
+      "recommended_default": false,
+      "property_count": 25,
+      "brand_count": 7,
+      "brands": [
+        "Hotel Indigo",
+        "Ascend Hotel Collection",
+        "Curio Collection by Hilton",
+        "Holiday Inn Express",
+        "voco",
+        "Kimpton",
+        "avid hotels"
+      ],
+      "families": [
+        "IHG",
+        "Choice",
+        "Hilton"
+      ],
+      "properties": [
+        {
+          "independent_record_id": "ind_ihg_mx_gdlal",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Guadalajara Expo",
+          "city": "Guadalajara",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/guadalajara/gdlal/hoteldetail",
+          "property_ids": [
+            "GDLAL"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 1
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pcmaa",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Playa del Carmen",
+          "city": "Playa Del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/playa-del-carmen/pcmaa/hoteldetail",
+          "property_ids": [
+            "PCMAA"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 2
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_bjxgd",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Guanajuato",
+          "city": "Guanajuato",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/guanajuato/bjxgd/hoteldetail",
+          "property_ids": [
+            "BJXGD"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 3
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_lapgo",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo La Paz Puerta Cortes",
+          "city": "La Paz",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/la-paz/lapgo/hoteldetail",
+          "property_ids": [
+            "LAPGO"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 4
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx228",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "Amberes 64, an Ascend Collection Hotel",
+          "city": "Mexico City",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/mexico/mexico-city/ascend-hotels/mx228",
+          "property_ids": [
+            "MX228"
+          ],
+          "property_id": "prop_bd5c829c3a257d1c",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 135.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 5
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx164",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "El Cid Castilla Beach Hotel",
+          "city": "Mazatlan",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/sinaloa/mazatlan/ascend-hotels/mx164",
+          "property_ids": [
+            "MX164"
+          ],
+          "property_id": "prop_7eb53fe1c0b8f259",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 6
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx169",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "El Cid La Ceiba Beach Hotel",
+          "city": "Cozumel",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/quintana-roo/cozumel/ascend-hotels/mx169",
+          "property_ids": [
+            "MX169"
+          ],
+          "property_id": "prop_293f217dd60962fc",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 7
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx167",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "Hotel Marina El Cid Spa & Beach Resort (Riviera Maya)",
+          "city": "Puerto Morelos",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/quintana-roo/puerto-morelos/ascend-hotels/mx167",
+          "property_ids": [
+            "MX167"
+          ],
+          "property_id": "prop_76fc5e9e5349533d",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 8
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_cunaaqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "Amare Cancun Adults Only All-Inclusive Resort, Curio by Hilton",
+          "city": "Cancun",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/cunaaqq-amare-cancun-adults-only-all-inclusive-resort/",
+          "property_ids": [
+            "CUNAAQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 74,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 158.9,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 9
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_cuncuqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "The Fives Downtown Hotel & Residences, Curio Collection by Hilton",
+          "city": "Playa del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/cuncuqq-the-fives-downtown-hotel-and-residences/",
+          "property_ids": [
+            "CUNCUQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 157.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 10
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_mtymmqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "MS Milenium Monterrey, Curio Collection by Hilton",
+          "city": "SanPedro Garza Garcia",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/mtymmqq-ms-milenium-monterrey/",
+          "property_ids": [
+            "MTYMMQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 152.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 11
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_mexubqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "Umbral, Curio Collection by Hilton",
+          "city": "Ciudad de Mexico",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/mexubqq-umbral/",
+          "property_ids": [
+            "MEXUBQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 152.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 12
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mqerg",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express & Suites Queretaro",
+          "city": "Queretaro",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/queretaro/mqerg/hoteldetail",
+          "property_ids": [
+            "MQERG"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 155.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 13
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mtyzo",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express & Suites Monterrey Aeropuerto",
+          "city": "Monterrey",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/monterrey/mtyzo/hoteldetail",
+          "property_ids": [
+            "MTYZO"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 14
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pcmpd",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express & Suites Playa del Carmen",
+          "city": "Playa Del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/playa-del-carmen/pcmpd/hoteldetail",
+          "property_ids": [
+            "PCMPD"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 15
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_gdlop",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express Guadalajara Aeropuerto",
+          "city": "Guadalajara",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/guadalajara/gdlop/hoteldetail",
+          "property_ids": [
+            "GDLOP"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 16
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_cuncn",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Cancún Zona Hotelera",
+          "city": "Cancun",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
+          "property_ids": [
+            "CUNCN"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 59,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 153.7,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 17
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_gdlea",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Guadalajara Expo",
+          "city": "Guadalajara",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/guadalajara/gdlea/hoteldetail",
+          "property_ids": [
+            "GDLEA"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 18
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pbcpl",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Royalty Puebla Downtown",
+          "city": "Puebla",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/puebla/pbcpl/hoteldetail",
+          "property_ids": [
+            "PBCPL"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 19
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mexvc",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Ciudad de Mexico Reforma",
+          "city": "Ciudad De Mexico",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/ciudad-de-mexico/mexvc/hoteldetail",
+          "property_ids": [
+            "MEXVC"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 20
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mexpl",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Kimpton",
+          "brand_freeze": "Kimpton",
+          "brand_overlay_applied": false,
+          "be_slug": "kimpton",
+          "be_brand_name": "Kimpton Hotels",
+          "be_record_id": "recCKuXCmGvxHPfb3",
+          "be_status": "Active",
+          "name": "Kimpton Virgilio Polanco",
+          "city": "Virgilio Mexico City",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/virgilio-mexico-city/mexpl/hoteldetail",
+          "property_ids": [
+            "MEXPL"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 21
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mexkm",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Kimpton",
+          "brand_freeze": "Kimpton",
+          "brand_overlay_applied": false,
+          "be_slug": "kimpton",
+          "be_brand_name": "Kimpton Hotels",
+          "be_record_id": "recCKuXCmGvxHPfb3",
+          "be_status": "Active",
+          "name": "Kimpton El Castelar Polanco",
+          "city": "Ciudad De Mexico",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/ciudad-de-mexico/mexkm/hoteldetail",
+          "property_ids": [
+            "MEXKM"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 22
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_sjdtd",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Kimpton",
+          "brand_freeze": "Kimpton",
+          "brand_overlay_applied": false,
+          "be_slug": "kimpton",
+          "be_brand_name": "Kimpton Hotels",
+          "be_record_id": "recCKuXCmGvxHPfb3",
+          "be_status": "Active",
+          "name": "Kimpton Mas Olas Resort and Spa",
+          "city": "Mas Olas Resort Spa Todos Santos",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/mas-olas-resort-spa-todos-santos/sjdtd/hoteldetail",
+          "property_ids": [
+            "SJDTD"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 23
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pcmht",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Kimpton",
+          "brand_freeze": "Kimpton",
+          "brand_overlay_applied": false,
+          "be_slug": "kimpton",
+          "be_brand_name": "Kimpton Hotels",
+          "be_record_id": "recCKuXCmGvxHPfb3",
+          "be_status": "Active",
+          "name": "Kimpton Tres Rios - All Inclusive",
+          "city": "Tres Rios Riviera Maya",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/tres-rios-riviera-maya/pcmht/hoteldetail",
+          "property_ids": [
+            "PCMHT"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 24
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_qroav",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "avid hotels",
+          "brand_freeze": "avid hotels",
+          "brand_overlay_applied": false,
+          "be_slug": "avid-hotels",
+          "be_brand_name": "avid hotels",
+          "be_record_id": "recoEarnE8T6sDjZq",
+          "be_status": "Active",
+          "name": "Welcome to avid hotels in Queretaro, where the essentials are done right. Every time.",
+          "city": "Queretaro",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/avidhotels/hotels/us/en/queretaro/qroav/hoteldetail",
+          "property_ids": [
+            "QROAV"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 25
+        }
+      ],
+      "rationale": "Expand Active/Live BE Mexico coverage across more brands while keeping exclusions"
+    },
+    "larger_staging_pilot": {
+      "target_properties": 50,
+      "target_brands": "up to ~16",
+      "recommended_default": false,
+      "property_count": 50,
+      "brand_count": 11,
+      "brands": [
+        "Hotel Indigo",
+        "Ascend Hotel Collection",
+        "Curio Collection by Hilton",
+        "Holiday Inn Express",
+        "voco",
+        "Kimpton",
+        "avid hotels",
+        "Quality Inn",
+        "Tapestry by Hilton",
+        "Comfort Inn",
+        "Small Luxury Hotels of the World"
+      ],
+      "families": [
+        "IHG",
+        "Choice",
+        "Hilton"
+      ],
+      "properties": [
+        {
+          "independent_record_id": "ind_ihg_mx_gdlal",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Guadalajara Expo",
+          "city": "Guadalajara",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/guadalajara/gdlal/hoteldetail",
+          "property_ids": [
+            "GDLAL"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 1
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pcmaa",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Playa del Carmen",
+          "city": "Playa Del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/playa-del-carmen/pcmaa/hoteldetail",
+          "property_ids": [
+            "PCMAA"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 2
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_bjxgd",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Guanajuato",
+          "city": "Guanajuato",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/guanajuato/bjxgd/hoteldetail",
+          "property_ids": [
+            "BJXGD"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 3
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_lapgo",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo La Paz Puerta Cortes",
+          "city": "La Paz",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/la-paz/lapgo/hoteldetail",
+          "property_ids": [
+            "LAPGO"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 4
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_tijgc",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Hotel Indigo",
+          "brand_freeze": "Hotel Indigo",
+          "brand_overlay_applied": false,
+          "be_slug": "hotel-indigo",
+          "be_brand_name": "Hotel Indigo",
+          "be_record_id": "recegXrqaPiSLGCIe",
+          "be_status": "Active",
+          "name": "Hotel Indigo Tijuana Downtown",
+          "city": "Tijuana",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/hotelindigo/hotels/us/en/tijuana/tijgc/hoteldetail",
+          "property_ids": [
+            "TIJGC"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 5
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx228",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "Amberes 64, an Ascend Collection Hotel",
+          "city": "Mexico City",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/mexico/mexico-city/ascend-hotels/mx228",
+          "property_ids": [
+            "MX228"
+          ],
+          "property_id": "prop_bd5c829c3a257d1c",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 135.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 6
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx164",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "El Cid Castilla Beach Hotel",
+          "city": "Mazatlan",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/sinaloa/mazatlan/ascend-hotels/mx164",
+          "property_ids": [
+            "MX164"
+          ],
+          "property_id": "prop_7eb53fe1c0b8f259",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 7
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx169",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "El Cid La Ceiba Beach Hotel",
+          "city": "Cozumel",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/quintana-roo/cozumel/ascend-hotels/mx169",
+          "property_ids": [
+            "MX169"
+          ],
+          "property_id": "prop_293f217dd60962fc",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 8
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx167",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "Hotel Marina El Cid Spa & Beach Resort (Riviera Maya)",
+          "city": "Puerto Morelos",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/quintana-roo/puerto-morelos/ascend-hotels/mx167",
+          "property_ids": [
+            "MX167"
+          ],
+          "property_id": "prop_76fc5e9e5349533d",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 9
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx165",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Ascend Hotel Collection",
+          "brand_freeze": "Ascend Hotel Collection",
+          "brand_overlay_applied": false,
+          "be_slug": "ascend",
+          "be_brand_name": "Ascend Hotel Collection",
+          "be_record_id": "reclkgOzvAcBheUSo",
+          "be_status": "Active",
+          "name": "El Cid El Moro Beach Hotel",
+          "city": "Mazatlan",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/sinaloa/mazatlan/ascend-hotels/mx165",
+          "property_ids": [
+            "MX165"
+          ],
+          "property_id": "prop_be23ed58efdaa320",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 10
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_cunaaqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "Amare Cancun Adults Only All-Inclusive Resort, Curio by Hilton",
+          "city": "Cancun",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/cunaaqq-amare-cancun-adults-only-all-inclusive-resort/",
+          "property_ids": [
+            "CUNAAQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 74,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 158.9,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 11
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_cuncuqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "The Fives Downtown Hotel & Residences, Curio Collection by Hilton",
+          "city": "Playa del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/cuncuqq-the-fives-downtown-hotel-and-residences/",
+          "property_ids": [
+            "CUNCUQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 157.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 12
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_mtymmqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "MS Milenium Monterrey, Curio Collection by Hilton",
+          "city": "SanPedro Garza Garcia",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/mtymmqq-ms-milenium-monterrey/",
+          "property_ids": [
+            "MTYMMQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 152.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 13
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_mexubqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "Umbral, Curio Collection by Hilton",
+          "city": "Ciudad de Mexico",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/mexubqq-umbral/",
+          "property_ids": [
+            "MEXUBQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 152.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 14
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_midvmqq",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Curio Collection by Hilton",
+          "brand_freeze": "Curio Collection by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "curio-collection",
+          "be_brand_name": "Curio Collection by Hilton",
+          "be_record_id": "receQkxgjlezsc1xg",
+          "be_status": "Active",
+          "name": "Villa Mercedes Merida, Curio Collection by Hilton",
+          "city": "Merida",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/midvmqq-villa-mercedes-merida/",
+          "property_ids": [
+            "MIDVMQQ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/curio-collection/",
+          "score": 152.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 15
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mqerg",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express & Suites Queretaro",
+          "city": "Queretaro",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/queretaro/mqerg/hoteldetail",
+          "property_ids": [
+            "MQERG"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 155.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 16
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mtyzo",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express & Suites Monterrey Aeropuerto",
+          "city": "Monterrey",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/monterrey/mtyzo/hoteldetail",
+          "property_ids": [
+            "MTYZO"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 17
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pcmpd",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express & Suites Playa del Carmen",
+          "city": "Playa Del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/playa-del-carmen/pcmpd/hoteldetail",
+          "property_ids": [
+            "PCMPD"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 18
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_gdlop",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express Guadalajara Aeropuerto",
+          "city": "Guadalajara",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/guadalajara/gdlop/hoteldetail",
+          "property_ids": [
+            "GDLOP"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 19
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mexai",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Holiday Inn Express",
+          "brand_freeze": "Holiday Inn Express",
+          "brand_overlay_applied": false,
+          "be_slug": "holiday-inn-express",
+          "be_brand_name": "Holiday Inn Express",
+          "be_record_id": "recmGmiIqDtAsm01f",
+          "be_status": "Active",
+          "name": "Holiday Inn Express Mexico Aeropuerto",
+          "city": "Mexico City",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/mexico-city/mexai/hoteldetail",
+          "property_ids": [
+            "MEXAI"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 20
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_cuncn",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Cancún Zona Hotelera",
+          "city": "Cancun",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
+          "property_ids": [
+            "CUNCN"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 59,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 153.7,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 21
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_gdlea",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Guadalajara Expo",
+          "city": "Guadalajara",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/guadalajara/gdlea/hoteldetail",
+          "property_ids": [
+            "GDLEA"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 22
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pbcpl",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Royalty Puebla Downtown",
+          "city": "Puebla",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/puebla/pbcpl/hoteldetail",
+          "property_ids": [
+            "PBCPL"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 23
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mexvc",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Ciudad de Mexico Reforma",
+          "city": "Ciudad De Mexico",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/ciudad-de-mexico/mexvc/hoteldetail",
+          "property_ids": [
+            "MEXVC"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 24
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_cjsjz",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "voco",
+          "brand_freeze": "voco",
+          "brand_overlay_applied": false,
+          "be_slug": "voco-hotels",
+          "be_brand_name": "Voco Hotels",
+          "be_record_id": "recwONQTqGU1jHCsM",
+          "be_status": "Active",
+          "name": "voco Ciudad Juárez",
+          "city": "Ciudad Juarez",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/voco/hotels/us/en/ciudad-juarez/cjsjz/hoteldetail",
+          "property_ids": [
+            "CJSJZ"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 25
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mexpl",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Kimpton",
+          "brand_freeze": "Kimpton",
+          "brand_overlay_applied": false,
+          "be_slug": "kimpton",
+          "be_brand_name": "Kimpton Hotels",
+          "be_record_id": "recCKuXCmGvxHPfb3",
+          "be_status": "Active",
+          "name": "Kimpton Virgilio Polanco",
+          "city": "Virgilio Mexico City",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/virgilio-mexico-city/mexpl/hoteldetail",
+          "property_ids": [
+            "MEXPL"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 26
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_mexkm",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Kimpton",
+          "brand_freeze": "Kimpton",
+          "brand_overlay_applied": false,
+          "be_slug": "kimpton",
+          "be_brand_name": "Kimpton Hotels",
+          "be_record_id": "recCKuXCmGvxHPfb3",
+          "be_status": "Active",
+          "name": "Kimpton El Castelar Polanco",
+          "city": "Ciudad De Mexico",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/ciudad-de-mexico/mexkm/hoteldetail",
+          "property_ids": [
+            "MEXKM"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 27
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_sjdtd",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Kimpton",
+          "brand_freeze": "Kimpton",
+          "brand_overlay_applied": false,
+          "be_slug": "kimpton",
+          "be_brand_name": "Kimpton Hotels",
+          "be_record_id": "recCKuXCmGvxHPfb3",
+          "be_status": "Active",
+          "name": "Kimpton Mas Olas Resort and Spa",
+          "city": "Mas Olas Resort Spa Todos Santos",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/mas-olas-resort-spa-todos-santos/sjdtd/hoteldetail",
+          "property_ids": [
+            "SJDTD"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 28
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_pcmht",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "Kimpton",
+          "brand_freeze": "Kimpton",
+          "brand_overlay_applied": false,
+          "be_slug": "kimpton",
+          "be_brand_name": "Kimpton Hotels",
+          "be_record_id": "recCKuXCmGvxHPfb3",
+          "be_status": "Active",
+          "name": "Kimpton Tres Rios - All Inclusive",
+          "city": "Tres Rios Riviera Maya",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/tres-rios-riviera-maya/pcmht/hoteldetail",
+          "property_ids": [
+            "PCMHT"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 29
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_qroav",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "avid hotels",
+          "brand_freeze": "avid hotels",
+          "brand_overlay_applied": false,
+          "be_slug": "avid-hotels",
+          "be_brand_name": "avid hotels",
+          "be_record_id": "recoEarnE8T6sDjZq",
+          "be_status": "Active",
+          "name": "Welcome to avid hotels in Queretaro, where the essentials are done right. Every time.",
+          "city": "Queretaro",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/avidhotels/hotels/us/en/queretaro/qroav/hoteldetail",
+          "property_ids": [
+            "QROAV"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 152.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 30
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_zclav",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "avid hotels",
+          "brand_freeze": "avid hotels",
+          "brand_overlay_applied": false,
+          "be_slug": "avid-hotels",
+          "be_brand_name": "avid hotels",
+          "be_record_id": "recoEarnE8T6sDjZq",
+          "be_status": "Active",
+          "name": "Welcome to avid hotels in Fresnillo, where the essentials are done right. Every time.",
+          "city": "Fresnillo",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/avidhotels/hotels/us/en/fresnillo/zclav/hoteldetail",
+          "property_ids": [
+            "ZCLAV"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 31
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_tijav",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "avid hotels",
+          "brand_freeze": "avid hotels",
+          "brand_overlay_applied": false,
+          "be_slug": "avid-hotels",
+          "be_brand_name": "avid hotels",
+          "be_record_id": "recoEarnE8T6sDjZq",
+          "be_status": "Active",
+          "name": "Welcome to avid hotels in Tijuana, where the essentials are done right. Every time.",
+          "city": "Tijuana",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/avidhotels/hotels/us/en/tijuana/tijav/hoteldetail",
+          "property_ids": [
+            "TIJAV"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 32
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_gdlet",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "avid hotels",
+          "brand_freeze": "avid hotels",
+          "brand_overlay_applied": false,
+          "be_slug": "avid-hotels",
+          "be_brand_name": "avid hotels",
+          "be_record_id": "recoEarnE8T6sDjZq",
+          "be_status": "Active",
+          "name": "Welcome to avid hotels in Tlaquepaque, where the essentials are done right. Every time.",
+          "city": "Tlaquepaque",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/avidhotels/hotels/us/en/tlaquepaque/gdlet/hoteldetail",
+          "property_ids": [
+            "GDLET"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 33
+        },
+        {
+          "independent_record_id": "ind_ihg_mx_gdlav",
+          "family": "IHG",
+          "wave": "wave1_ihg_mexico_all",
+          "brand": "avid hotels",
+          "brand_freeze": "avid hotels",
+          "brand_overlay_applied": false,
+          "be_slug": "avid-hotels",
+          "be_brand_name": "avid hotels",
+          "be_record_id": "recoEarnE8T6sDjZq",
+          "be_status": "Active",
+          "name": "Welcome to avid hotels in Zapopan, where the essentials are done right. Every time.",
+          "city": "Zapopan",
+          "country": "Mexico",
+          "official_url": "https://www.ihg.com/avidhotels/hotels/us/en/zapopan/gdlav/hoteldetail",
+          "property_ids": [
+            "GDLAV"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 56,
+          "discovery_source": "https://www.ihg.com/mexico",
+          "score": 147.6,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 34
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx063",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Quality Inn",
+          "brand_freeze": "Quality Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "quality-inn",
+          "be_brand_name": "Quality Inn",
+          "be_record_id": "recd8o4k1JddhkRWW",
+          "be_status": "Active",
+          "name": "Quality Inn Aguascalientes",
+          "city": "Aguascalientes",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/aguascalientes/aguascalientes/quality-inn-hotels/mx063",
+          "property_ids": [
+            "MX063"
+          ],
+          "property_id": "prop_496d4d945035b5e7",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 35
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx054",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Quality Inn",
+          "brand_freeze": "Quality Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "quality-inn",
+          "be_brand_name": "Quality Inn",
+          "be_record_id": "recd8o4k1JddhkRWW",
+          "be_status": "Active",
+          "name": "Quality Inn Ciudad Obregon",
+          "city": "Obregon",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/sonora/obregon/quality-inn-hotels/mx054",
+          "property_ids": [
+            "MX054"
+          ],
+          "property_id": "prop_aceabebf0bb5653d",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 36
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx071",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Quality Inn",
+          "brand_freeze": "Quality Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "quality-inn",
+          "be_brand_name": "Quality Inn",
+          "be_record_id": "recd8o4k1JddhkRWW",
+          "be_status": "Active",
+          "name": "Quality Inn Mazatlan",
+          "city": "Mazatlan",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/sinaloa/mazatlan/quality-inn-hotels/mx071",
+          "property_ids": [
+            "MX071"
+          ],
+          "property_id": "prop_90916b8d572f300e",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 37
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx075",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Quality Inn",
+          "brand_freeze": "Quality Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "quality-inn",
+          "be_brand_name": "Quality Inn",
+          "be_record_id": "recd8o4k1JddhkRWW",
+          "be_status": "Active",
+          "name": "Quality Inn Monterrey La Fe",
+          "city": "Cd. Guadalupe, Nuevo Leon",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/nuevo-leon/cd-guadalupe-nuevo-leon/quality-inn-hotels/mx075",
+          "property_ids": [
+            "MX075"
+          ],
+          "property_id": "prop_63b5cb41b6feba5b",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 38
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx058",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Quality Inn",
+          "brand_freeze": "Quality Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "quality-inn",
+          "be_brand_name": "Quality Inn",
+          "be_record_id": "recd8o4k1JddhkRWW",
+          "be_status": "Active",
+          "name": "Quality Inn Piedras Negras",
+          "city": "Piedras Negras",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/coahuila/piedras-negras/quality-inn-hotels/mx058",
+          "property_ids": [
+            "MX058"
+          ],
+          "property_id": "prop_40537fcc5a919b6c",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 130.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 39
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_pbcmmup",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Tapestry by Hilton",
+          "brand_freeze": "Tapestry by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "tapestry-collection-by-hilton",
+          "be_brand_name": "Tapestry Collection by Hilton",
+          "be_record_id": "reccXxMHEh7NNRhIE",
+          "be_status": "Active",
+          "name": "MM Grand Hotel Puebla, Tapestry Collection by Hilton",
+          "city": "Puebla",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/pbcmmup-mm-grand-hotel-puebla/",
+          "property_ids": [
+            "PBCMMUP"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/tapestry-collection/",
+          "score": 157.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 40
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_czmpdup",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Tapestry by Hilton",
+          "brand_freeze": "Tapestry by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "tapestry-collection-by-hilton",
+          "be_brand_name": "Tapestry Collection by Hilton",
+          "be_record_id": "reccXxMHEh7NNRhIE",
+          "be_status": "Active",
+          "name": "The Yucatan Playa del Carmen, Tapestry Collection by Hilton",
+          "city": "Playa del Carmen",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/czmpdup-the-yucatan-playa-del-carmen/",
+          "property_ids": [
+            "CZMPDUP"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/tapestry-collection/",
+          "score": 157.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 41
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_bjxupup",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Tapestry by Hilton",
+          "brand_freeze": "Tapestry by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "tapestry-collection-by-hilton",
+          "be_brand_name": "Tapestry Collection by Hilton",
+          "be_record_id": "reccXxMHEh7NNRhIE",
+          "be_status": "Active",
+          "name": "Albor San Miguel de Allende, Tapestry Collection by Hilton",
+          "city": "San Miguel de Allende",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/bjxupup-albor-san-miguel-de-allende/",
+          "property_ids": [
+            "BJXUPUP"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/tapestry-collection/",
+          "score": 152.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 42
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_sjdtlup",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Tapestry by Hilton",
+          "brand_freeze": "Tapestry by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "tapestry-collection-by-hilton",
+          "be_brand_name": "Tapestry Collection by Hilton",
+          "be_record_id": "reccXxMHEh7NNRhIE",
+          "be_status": "Active",
+          "name": "Tropicana Los Cabos, Tapestry Collection by Hilton",
+          "city": "San Jose del Cabo",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/sjdtlup-tropicana-los-cabos/",
+          "property_ids": [
+            "SJDTLUP"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/tapestry-collection/",
+          "score": 152.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 43
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_lapitup",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Tapestry by Hilton",
+          "brand_freeze": "Tapestry by Hilton",
+          "brand_overlay_applied": false,
+          "be_slug": "tapestry-collection-by-hilton",
+          "be_brand_name": "Tapestry Collection by Hilton",
+          "be_record_id": "reccXxMHEh7NNRhIE",
+          "be_status": "Active",
+          "name": "Perla La Paz, Tapestry Collection by Hilton",
+          "city": "La Paz",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/lapitup-perla-la-paz/",
+          "property_ids": [
+            "LAPITUP"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 67,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/tapestry-collection/",
+          "score": 151.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 44
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx067",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Comfort Inn",
+          "brand_freeze": "Comfort Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "comfort-inn-suites",
+          "be_brand_name": "Comfort Inn & Suites",
+          "be_record_id": "recOzH5iAE1xEjyD0",
+          "be_status": "Active",
+          "name": "Comfort Inn Cancun Aeropuerto",
+          "city": "Cancun",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/quintana-roo/cancun/comfort-inn-hotels/mx067",
+          "property_ids": [
+            "MX067"
+          ],
+          "property_id": "prop_cdc9d9c65f3f4426",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 135.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 45
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx051",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Comfort Inn",
+          "brand_freeze": "Comfort Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "comfort-inn-suites",
+          "be_brand_name": "Comfort Inn & Suites",
+          "be_record_id": "recOzH5iAE1xEjyD0",
+          "be_status": "Active",
+          "name": "Comfort Inn Monterrey Valle",
+          "city": "Monterrey",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/nuevo-leon/monterrey/comfort-inn-hotels/mx051",
+          "property_ids": [
+            "MX051"
+          ],
+          "property_id": "prop_401f3d081aebc71a",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 135.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 46
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx224",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Comfort Inn",
+          "brand_freeze": "Comfort Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "comfort-inn-suites",
+          "be_brand_name": "Comfort Inn & Suites",
+          "be_record_id": "recOzH5iAE1xEjyD0",
+          "be_status": "Active",
+          "name": "Comfort Inn Puebla Centro Histórico",
+          "city": "Puebla",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/puebla/puebla/comfort-inn-hotels/mx224",
+          "property_ids": [
+            "MX224"
+          ],
+          "property_id": "prop_c6eb2e4f36f7a4b8",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 135.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 47
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx061",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Comfort Inn",
+          "brand_freeze": "Comfort Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "comfort-inn-suites",
+          "be_brand_name": "Comfort Inn & Suites",
+          "be_record_id": "recOzH5iAE1xEjyD0",
+          "be_status": "Active",
+          "name": "Comfort Inn Puerto Vallarta Golfside & Marina",
+          "city": "Puerto Vallarta",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/jalisco/puerto-vallarta/comfort-inn-hotels/mx061",
+          "property_ids": [
+            "MX061"
+          ],
+          "property_id": "prop_02590fd0382577e4",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 135.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 48
+        },
+        {
+          "independent_record_id": "ind_choice_mx_mx226",
+          "family": "Choice",
+          "wave": "wave1c_choice_mexico",
+          "brand": "Comfort Inn",
+          "brand_freeze": "Comfort Inn",
+          "brand_overlay_applied": false,
+          "be_slug": "comfort-inn-suites",
+          "be_brand_name": "Comfort Inn & Suites",
+          "be_record_id": "recOzH5iAE1xEjyD0",
+          "be_status": "Active",
+          "name": "Comfort Inn Queretaro Tecnologico",
+          "city": "Queretaro",
+          "country": "Mexico",
+          "official_url": "https://www.choicehotels.com/queretaro/queretaro/comfort-inn-hotels/mx226",
+          "property_ids": [
+            "MX226"
+          ],
+          "property_id": "prop_53418aae1a6e6399",
+          "core_pct": 100,
+          "material_pct": 63,
+          "discovery_source": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "score": 135.1,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 49
+        },
+        {
+          "independent_record_id": "ind_hilton_mx_cunbelx",
+          "family": "Hilton",
+          "wave": "wave1b_hilton_mexico",
+          "brand": "Small Luxury Hotels of the World",
+          "brand_freeze": "Small Luxury Hotels of the World",
+          "brand_overlay_applied": false,
+          "be_slug": "small-luxury-hotels-of-the-world",
+          "be_brand_name": "Small Luxury Hotels of the World",
+          "be_record_id": "recjjSnY2opb8P4DG",
+          "be_status": "Active",
+          "name": "Bespoke Tulum, an SLH Hotel",
+          "city": "Tulum",
+          "country": "Mexico",
+          "official_url": "https://www.hilton.com/en/hotels/cunbelx-bespoke-tulum/",
+          "property_ids": [
+            "CUNBELX"
+          ],
+          "property_id": null,
+          "core_pct": 100,
+          "material_pct": 70,
+          "discovery_source": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/",
+          "score": 157.5,
+          "baseline_freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+          "selection_notes": [
+            "data_eligible",
+            "active_live_be54",
+            "official_url",
+            "clear_brand",
+            "non_marriott_preferred_material"
+          ],
+          "pilot_tier_pick_order": 50
+        }
+      ],
+      "rationale": "Broader staging set including selected Marriott Active/Live brands for Mexico grounding — still identity-only for sitemap rows; no production overwrite"
+    }
+  },
+  "exclusions_applied": {
+    "brand_unconfirmed_or_steward_hold": [
+      "ind_marriott_mx_pbcde",
+      "ind_marriott_mx_gdlcc",
+      "ind_marriott_mx_slwak",
+      "ind_marriott_mx_mtyjd"
+    ],
+    "campus_or_high_sim_ambiguity": [
+      "ind_marriott_mx_sjdlc",
+      "ind_marriott_mx_sjdls",
+      "ind_marriott_mx_mtyjw",
+      "ind_marriott_mx_mtyac",
+      "ind_marriott_mx_sjdjw",
+      "ind_marriott_mx_sjdjc",
+      "ind_marriott_mx_cunhv",
+      "ind_marriott_mx_cunrc",
+      "ind_marriott_mx_cunrv",
+      "ind_marriott_mx_cunsr",
+      "ind_marriott_mx_cunpa",
+      "ind_marriott_mx_cunpc",
+      "ind_marriott_mx_sjdwv",
+      "ind_marriott_mx_sjdwb",
+      "ind_marriott_mx_cmejc",
+      "ind_marriott_mx_cmejo",
+      "ind_marriott_mx_slpji",
+      "ind_marriott_mx_slpxi"
+    ],
+    "cross_family_exact_or_probable": []
+  },
+  "rejected_sample": [
+    {
+      "independent_record_id": "ind_ihg_mx_ghprm",
+      "family": "IHG",
+      "brand": "JOIA Iberostar",
+      "name": "JOIA Paraíso by Iberostar",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_pueaa",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites Puebla",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_acago",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Chilpancingo",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_pmypm",
+      "family": "IHG",
+      "brand": "Iberostar",
+      "name": "Iberostar Selection​ Paraíso Maya Suites",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_bjxca",
+      "family": "IHG",
+      "brand": "Candlewood Suites",
+      "name": "Candlewood Suites Celaya",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_bjxpm",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn & Suites Leon Plaza Mayor",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_acali",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Acapulco La Isla",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_cuumx",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn & Suites Chihuahua Expo",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_huxhi",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Huatulco",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mtymi",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn & Suites Monterrey Apodaca Zona Airport",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_cuusb",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites Chihuahua",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_bjxcp",
+      "family": "IHG",
+      "brand": "Crowne Plaza",
+      "name": "Crowne Plaza Leon",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_hmoaa",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn & Suites Hermosillo Aeropuerto",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_slpsb",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites San Luis Potosi",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_vsavh",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites Villahermosa",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_bjxar",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites Irapuato",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_qroja",
+      "family": "IHG",
+      "brand": "Candlewood Suites",
+      "name": "Candlewood Suites Queretaro Juriquilla",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mtysp",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites Monterrey - San Pedro",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_czmha",
+      "family": "IHG",
+      "brand": "InterContinental",
+      "name": "InterContinental Presidente Cozumel Resort Spa",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_slwgp",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites Saltillo",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_upnmx",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Uruapan",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_pueln",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Puebla La Noria",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_tgzmx",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Tuxtla Gutierrez",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_cmemx",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Cd. del Carmen",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mtymt",
+      "family": "IHG",
+      "brand": "InterContinental",
+      "name": "InterContinental Presidente Monterrey",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_tlucp",
+      "family": "IHG",
+      "brand": "Crowne Plaza",
+      "name": "Crowne Plaza Toluca-Lancaster",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_tamal",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Tampico Altamira",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mqebc",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Queretaro Zona Krystal",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mexzd",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn & Suites Mexico Felipe Angeles Airport",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mexpd",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Mexico Dali Airport",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mexaa",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Mexico City-Plaza Universidad",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_dgomx",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Durango",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mexbu",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Mexico Zona Centro",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_gdlzp",
+      "family": "IHG",
+      "brand": "Candlewood Suites",
+      "name": "Candlewood Suites Guadalajara Galerias",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_bjxpi",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites Silao",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_gdlpi",
+      "family": "IHG",
+      "brand": "Staybridge Suites",
+      "name": "Staybridge Suites Guadalajara Novena",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_veroz",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Orizaba",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_vsadg",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Villahermosa Aeropuerto",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mqemx",
+      "family": "IHG",
+      "brand": "Holiday Inn",
+      "name": "Holiday Inn Queretaro-Centro Historico",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    },
+    {
+      "independent_record_id": "ind_ihg_mx_mztrs",
+      "family": "IHG",
+      "brand": "Holiday Inn Resort",
+      "name": "Holiday Inn Resort Mazatlan",
+      "reasons": [
+        "not_mapped_to_active_live_be54"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-06-02T07:42:44.701Z",
+  "checkpoint": "B",
+  "stage": 7,
+  "rows": [
+    {
+      "file": "api/operator-explorer.js",
+      "route_page_component": "/api/operator-explorer/operator",
+      "current_data_source": "MOCK_OPERATORS fallback when id is not rec* and OPERATOR_EXPLORER_ALLOW_MOCKS=true",
+      "expected_source_of_truth": "Operator Setup tables via /api/third-party-operator-detail",
+      "risk": "High",
+      "recommended_fix": "Disable mocks in prod and block non-rec IDs with explicit error.",
+      "safe_now_or_wait": "Safe now (config + guard)",
+      "evidence_current_source": "Current code",
+      "evidence_prior_report": "",
+      "conflict_prior_vs_current": "",
+      "confirmation_status": "Confirmed"
+    },
+    {
+      "file": "api/third-party-operator-intake.js",
+      "route_page_component": "/api/third-party-operator-intake",
+      "current_data_source": "Dual path: new-base writer (flag) + legacy Basics/split writes + optional shadow write",
+      "expected_source_of_truth": "Single new-base write path",
+      "risk": "High",
+      "recommended_fix": "Define one authoritative write mode for go-live and lock flags.",
+      "safe_now_or_wait": "Before go-live",
+      "evidence_current_source": "Current code",
+      "evidence_prior_report": "Prior audits assumed migration complete",
+      "conflict_prior_vs_current": "Migration appears partial in current code",
+      "confirmation_status": "Confirmed"
+    },
+    {
+      "file": "api/third-party-operator-detail.js",
+      "route_page_component": "/api/intake/third-party-operators/:recordId",
+      "current_data_source": "new-base read with legacy fallback path",
+      "expected_source_of_truth": "new-base only for Operator Setup records",
+      "risk": "Medium-High",
+      "recommended_fix": "Add read-path telemetry and explicit contract for record types; phase out legacy fallback.",
+      "safe_now_or_wait": "Before external demos",
+      "evidence_current_source": "Current code",
+      "evidence_prior_report": "",
+      "conflict_prior_vs_current": "",
+      "confirmation_status": "Confirmed"
+    }
+  ]
+}

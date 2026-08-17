@@ -1,0 +1,136 @@
+{
+  "report": "operator-setup-go-live-readiness-recap",
+  "generatedAt": "2026-06-02",
+  "commitsReviewed": [
+    "bf8865b7f4e00a780090e8cf3915982699056fc0",
+    "275136933beda9ed4de55ba44ce13d1eee762091",
+    "d5ff0d824acd417537c2f2bbb32b2ef0558faf9b"
+  ],
+  "readiness": {
+    "internalQA": "ready",
+    "externalDemo": "ready_with_p1_cleanup_recommended",
+    "productionGoLive": "not_fully_ready_pending_remaining_p0_p1_contract_closure"
+  },
+  "answers": {
+    "whatIsNowFixedAndSafe": [
+      "Owner-facing Explorer detail is rec-id/Airtable-backed and blocks non-rec mock fallback in go-live mode.",
+      "Canonical write mode is deterministic and fail-closed.",
+      "Batch 3A canonical mappings are fixed for companyLogo and 5 narrative fields plus brand_conversion_project_count input/save/readback.",
+      "Batch 3B added non-user-facing provenance diagnostics and contract tests."
+    ],
+    "whatIsNowDeterministic": [
+      "Canonical intake write path behavior under go-live env configuration.",
+      "Explorer non-rec block behavior.",
+      "Read-path visibility via meta.readPath (new_base vs legacy)."
+    ],
+    "whatCanNowBeTestedWithConfidence": [
+      "My Operator save/reload for Batch 3A fields.",
+      "Explorer detail/list behavior for live rec IDs including logo readback.",
+      "Canonical write fail-closed behavior.",
+      "Fallback-used diagnostics/provenance under gated diagnostic mode."
+    ],
+    "whatStillRemainsUnresolved": [
+      "Canonical-vs-fallback ambiguity outside the Batch 3A fixed field set still needs targeted closure.",
+      "Some wider field families require full staging provenance review for go-live certainty."
+    ],
+    "whatIsIntentionallyDeferred": [
+      "Select/multi-select normalization (Batch 4).",
+      "Scoring methodology/weights/threshold changes.",
+      "User-facing display behavior changes tied to fallback ordering.",
+      "Legacy alias/remap and explorerProfileJson mirror removal."
+    ],
+    "remainingP0Blockers": [
+      "Conditional: any unresolved canonical source contracts in go-live-critical owner-facing fields discovered by diagnostics soak."
+    ],
+    "remainingP1BeforeExternalDemos": [
+      "Important fields still lacking clear display/write parity outside 3A scope.",
+      "Alias-heavy downstream fields needing explicit canonical provenance confirmation."
+    ],
+    "whatShouldNotBeTouchedYet": [
+      "Scoring formulas/weights/thresholds/recommendations.",
+      "Airtable schema rename/delete work.",
+      "Option normalization rollout.",
+      "Legacy alias/mirror removals."
+    ],
+    "nextImplementationBatch": "Batch 3C diagnostics review plus targeted canonical contract closures only (no scoring/display/order changes).",
+    "operatorSetupReadyForInternalQA": true,
+    "operatorSetupReadyForExternalDemo": true,
+    "operatorSetupReadyForProductionGoLive": false
+  },
+  "sections": {
+    "A_readyNow": [
+      "Batch 1+2 source-of-truth hardening is in place and validated.",
+      "Batch 3A canonical mapping fixes are live and validated.",
+      "Batch 3B diagnostics/tests are in place and gated."
+    ],
+    "B_needsInternalQA": [
+      "Full regression of non-3A field families with diagnostics enabled.",
+      "Cross-page parity checks for save->prefill->detail->Explorer."
+    ],
+    "C_needsExternalDemoCleanup": [
+      "Close remaining high-importance field contract ambiguities.",
+      "Confirm no demo-critical section is alias/fallback-dependent without canonical backing."
+    ],
+    "D_needsLaterCleanup": [
+      "Legacy/duplicate cleanup candidates.",
+      "Batch 4 option normalization.",
+      "Non-critical docs/UI polish."
+    ],
+    "E_doNotTouchYet": [
+      "Scoring methodology and thresholds.",
+      "Schema changes/renames/deletes.",
+      "Fallback ordering changes affecting display.",
+      "Legacy alias/remap removal and explorerProfileJson removal."
+    ],
+    "F_remainingRisks": [
+      "Alias contracts remain active by design; diagnostics now expose but do not enforce canonical-only behavior.",
+      "Logo persistence depends on reachable asset URLs in real environments.",
+      "Without staging soak evidence, full go-live confidence is incomplete."
+    ],
+    "G_recommendedNextStep": [
+      "Run staging soak with diagnostics enabled for a controlled window.",
+      "Execute Batch 3C targeted fixes from observed fallback-used evidence.",
+      "Re-run readiness gate before go-live approval."
+    ]
+  },
+  "deploymentEnvVars": {
+    "staging": {
+      "NODE_ENV": "production",
+      "OPERATOR_SETUP_WRITE_MODE": "canonical",
+      "OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD": "0",
+      "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "0",
+      "OPERATOR_SETUP_USE_NEW_BASE_WRITER": "1",
+      "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE": "0",
+      "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN": "0",
+      "OPERATOR_SETUP_CONTRACT_DIAGNOSTICS": "1"
+    },
+    "production": {
+      "NODE_ENV": "production",
+      "OPERATOR_SETUP_WRITE_MODE": "canonical",
+      "OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD": "0",
+      "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "0",
+      "OPERATOR_SETUP_USE_NEW_BASE_WRITER": "1",
+      "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE": "0",
+      "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN": "0",
+      "OPERATOR_SETUP_CONTRACT_DIAGNOSTICS": "0"
+    }
+  },
+  "internalQAChecklist": [
+    "My Operator save (create/update) in canonical mode.",
+    "My Operator reload/prefill round-trip for critical fields.",
+    "Operator Explorer detail rec-id load and non-rec blocking.",
+    "Operator Explorer list/logo readback validation.",
+    "Operator Capability Snapshot regression check (logic unchanged).",
+    "Operator Alignment Snapshot regression check (user output unchanged).",
+    "Operator Alignment Score Breakdown value stability check.",
+    "Fallback diagnostics visibility check under gated mode.",
+    "Non-rec mock-blocking behavior check.",
+    "Canonical write behavior check (no shadow/fail-open)."
+  ],
+  "recommendations": {
+    "runStagingSoakWithDiagnosticsEnabled": true,
+    "runBatch3CDiagnosticsReview": true,
+    "runBatch4OptionNormalizationNow": false,
+    "runExternalDemoCleanupNow": true
+  }
+}

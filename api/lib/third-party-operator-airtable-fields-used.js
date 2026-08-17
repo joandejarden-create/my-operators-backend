@@ -766,9 +766,11 @@ const USED_BY_TABLE = {
     "Region",
     "Branded / Independent",
     "Situation",
+    "Challenge",
     "Services",
     "Outcome",
     "Owner Relevance",
+    "Data Status",
     "Image URL",
   ],
 

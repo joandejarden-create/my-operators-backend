@@ -1,0 +1,1205 @@
+{
+  "factoryVersion": "v34B",
+  "brandConfigVersion": "v34B",
+  "stage": "founder-review",
+  "generatedAt": "2026-07-14T08:49:41.703Z",
+  "brand": {
+    "slug": "woodspring-suites",
+    "recordId": "recsOd51NzRPYsMko",
+    "name": "WoodSpring Suites",
+    "parentCompany": "Choice Hotels International",
+    "consumerUrl": "https://www.woodspring.com/"
+  },
+  "activeProfileConfig": {
+    "slug": "woodspring-suites",
+    "recordId": "recsOd51NzRPYsMko",
+    "brandFamily": "choice-extended-stay",
+    "propertyExampleStrategy": "us_labeled_property_examples",
+    "galleryMinimum": 6
+  },
+  "mode": "dry-run",
+  "guardrails": {
+    "companyValidatedNeverAuto": true,
+    "imageApprovalNotCompanyValidation": true,
+    "noSummaryUrlWrites": true,
+    "registryOnlyNotVisibleReadiness": true,
+    "founderVisualReviewRequiredForApply": true,
+    "galleryMinimum": 6
+  },
+  "factoryRules": {
+    "factoryVersion": "v34B",
+    "pass": false,
+    "rules": {
+      "gallery": {
+        "ruleId": "gallery_minimum_six_visible",
+        "pass": false,
+        "minimum": 6,
+        "visibleInApi": 3,
+        "withImageUrl": 3,
+        "missingImageUrl": [],
+        "logoOrGenericSlots": [],
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_3"
+        ]
+      },
+      "propertyExamples": {
+        "ruleId": "property_example_real_hotel_images",
+        "pass": false,
+        "visibleOpeningCards": 3,
+        "defects": [
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recI3cbO8mOhEpo1W",
+            "issue": "non_hotel_photography"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recpNB0KoPq6y3Mhs",
+            "issue": "non_hotel_photography"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "rec4Eqp9lwXSP7UQE",
+            "issue": "non_hotel_photography"
+          }
+        ],
+        "blockers": [
+          "non_hotel_photography:recI3cbO8mOhEpo1W",
+          "non_hotel_photography:recpNB0KoPq6y3Mhs",
+          "non_hotel_photography:rec4Eqp9lwXSP7UQE"
+        ]
+      },
+      "scenarioImages": {
+        "ruleId": "scenario_no_image_placeholder",
+        "pass": true,
+        "visibleScenarioCards": 2,
+        "placeholderSlots": [],
+        "staleFallbackTitles": false,
+        "blockers": []
+      },
+      "registryTraceability": {
+        "ruleId": "registry_traceability",
+        "pass": false,
+        "visualSlotsChecked": 8,
+        "gaps": [
+          {
+            "slotKey": "overview.scenario.1",
+            "recordId": "rec9jf7DAXzgWTgx1",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recI3cbO8mOhEpo1W",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "recordId": "recMUrSv3EO6jgELM",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.1",
+            "recordId": "rechUn7nwlxjW1jyV",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "recpNB0KoPq6y3Mhs",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "recordId": "rec4Eqp9lwXSP7UQE",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "recordId": "recXfIGZUrwap6AIK",
+            "issue": "missing_registry_row"
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "recordId": "recJokIWQxU64gVsl",
+            "issue": "missing_registry_row"
+          }
+        ],
+        "blockers": [
+          "missing_registry_row:overview.scenario.1",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:overview.scenario.2",
+          "missing_registry_row:materials.gallery.1",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:footprint.openings",
+          "missing_registry_row:materials.gallery.2",
+          "missing_registry_row:materials.gallery.3"
+        ]
+      },
+      "uiFallback": {
+        "ruleId": "ui_fallback_preference",
+        "pass": false,
+        "risks": [
+          {
+            "surface": "overview.scenario.3",
+            "issue": "atelier_hardcoded_scenario_fallback_risk",
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          }
+        ],
+        "blockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ]
+      },
+      "copySafety": {
+        "ruleId": "copy_safety",
+        "pass": false,
+        "findings": [
+          {
+            "slotKey": "commercial.lever.data_analytics",
+            "recordId": "rec2nAmi1x1ti4qY2",
+            "patternId": "adr",
+            "excerpt": "Data, Analytics & Experimentation\nPortfolio benchmarks, test-and-learn, and guest insights to refine offers, room types,",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.sales_catering",
+            "recordId": "rec83RHgjktgwrE3R",
+            "patternId": "adr",
+            "excerpt": "Sales & Catering Brand Pull\nBrand credibility, central inquiry flow, and proposal tools for weddings, SMERF, and small c",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.leisure_destination",
+            "recordId": "recAonJUpmPwTt8MJ",
+            "patternId": "adr",
+            "excerpt": "Leisure & Destination Visibility\nInspiration content, packages, partnerships, and destination narratives for high-intent",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "overview.bestAt.2",
+            "recordId": "recEZp6p4J1UKNcAX",
+            "patternId": "net_contribution",
+            "excerpt": "Owners who model net contribution after fees, loyalty, and channel mix.\nOwners who model net contribution after fees, lo",
+            "severity": "high"
+          },
+          {
+            "slotKey": "valueOwners.watchouts",
+            "recordId": "recOShnRVobjnGQD9",
+            "patternId": "adr",
+            "excerpt": "\nMarkets that cannot support extended-stay ADR or required amenity stack.\nHeavy conversion PIP misaligned with building ",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.reputation_qa",
+            "recordId": "recPGRUnIS03eQuTg",
+            "patternId": "adr",
+            "excerpt": "Reputation, Reviews & QA Lift\nRecognizable flags improve post-click conversion; QA and service standards reduce variance",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.international",
+            "recordId": "recPc2aB0amEzubas",
+            "patternId": "adr",
+            "excerpt": "International & Feeder Markets\nInbound and cross-border feeders where global recognition reduces perceived risk—gateways",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.ecosystem",
+            "recordId": "recRqsBPKgtatTymN",
+            "patternId": "fdd",
+            "excerpt": "\n7,100+ hotels worldwide across 20+ brands; earn up to 10 points per $1 on eligible direct stays; reward nights from 8,0",
+            "severity": "high"
+          },
+          {
+            "slotKey": "loyalty.owner_lens",
+            "recordId": "recYOqmwRPW8itP3n",
+            "patternId": "net_contribution",
+            "excerpt": "\nModel loyalty as net contribution—member discounts, fulfillment, and owner diligence materials-reported room mix from C",
+            "severity": "high"
+          },
+          {
+            "slotKey": "commercial.lever.corporate_group",
+            "recordId": "recYVkX5rYtfVJguN",
+            "patternId": "adr",
+            "excerpt": "Corporate, SME & Group Pull\nContracted travelers, small meetings, and negotiated programs where the flag acts as a trust",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.revenue_management",
+            "recordId": "recZzZykJ9TUuuIdJ",
+            "patternId": "adr",
+            "excerpt": "Revenue Management & Pricing Discipline\nForecasting tools, competitive sets, restriction strategies, and brand-level pla",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "economics.kpi.fee_stack",
+            "recordId": "reca5TLdd1Mbt595b",
+            "patternId": "confirm_fees",
+            "excerpt": "Fee Stack Diligence\nOwners should map franchise, marketing, and technology fees during underwriting. Dealality summarize",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "loyalty.implications.pnl",
+            "recordId": "receQCs16PSr69L99",
+            "patternId": "adr",
+            "excerpt": "\nModel net after distribution, member discounts, and redemption—strongest when direct/member mix supports your brand tie",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.digital_marketing",
+            "recordId": "rechrNv61Vp6TRt1C",
+            "patternId": "adr",
+            "excerpt": "Digital Marketing & Performance Media\nPaid and owned media, search, social, and retargeting at portfolio scale, with cre",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "operations.operator_compat.fit",
+            "recordId": "recjBgda3wLQ5bABC",
+            "patternId": "net_contribution",
+            "excerpt": "\nStrong fit when operator has extended-stay depth, can meet prototype/PIP, and models net contribution after 6.0% royalt",
+            "severity": "high"
+          },
+          {
+            "slotKey": "overview.bestAt.1",
+            "recordId": "recn2dAqBL4QifP0J",
+            "patternId": "adr",
+            "excerpt": "Markets that support extended-stay ADR and required amenity stack.\nMarkets that support extended-stay ADR and required a",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.kpi.lens",
+            "recordId": "rectWqznHv9n75V5s",
+            "patternId": "net_contribution",
+            "excerpt": "Owner Underwriting Lens\nNet contribution after fees and channel costs",
+            "severity": "high"
+          },
+          {
+            "slotKey": "commercial.differentiator",
+            "recordId": "recwBJohd1tQoyZYn",
+            "patternId": "adr",
+            "excerpt": "Commercial edge on this brand\nMarkets that support extended-stay ADR and required amenity stack.",
+            "severity": "medium"
+          },
+          {
+            "slotKey": "commercial.lever.distribution",
+            "recordId": "reczN9RAx9D8bDswG",
+            "patternId": "adr",
+            "excerpt": "Distribution & Retail Reach\nBranded retail paths guests already use—CRS connectivity, brand.com and app, retail OTA rela",
+            "severity": "medium"
+          }
+        ],
+        "highCount": 5,
+        "blockers": [
+          "risky_copy:net_contribution:overview.bestAt.2",
+          "risky_copy:fdd:loyalty.ecosystem",
+          "risky_copy:net_contribution:loyalty.owner_lens",
+          "risky_copy:net_contribution:operations.operator_compat.fit",
+          "risky_copy:net_contribution:commercial.kpi.lens"
+        ]
+      },
+      "standardDetail": {
+        "ruleId": "standard_detail_governance",
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false,
+        "blockers": []
+      }
+    },
+    "imageGovernanceDefects": [],
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_3",
+      "non_hotel_photography:recI3cbO8mOhEpo1W",
+      "non_hotel_photography:recpNB0KoPq6y3Mhs",
+      "non_hotel_photography:rec4Eqp9lwXSP7UQE",
+      "missing_registry_row:overview.scenario.1",
+      "missing_registry_row:footprint.openings",
+      "missing_registry_row:overview.scenario.2",
+      "missing_registry_row:materials.gallery.1",
+      "missing_registry_row:materials.gallery.2",
+      "missing_registry_row:materials.gallery.3",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+      "risky_copy:net_contribution:overview.bestAt.2",
+      "risky_copy:fdd:loyalty.ecosystem",
+      "risky_copy:net_contribution:loyalty.owner_lens",
+      "risky_copy:net_contribution:operations.operator_compat.fit",
+      "risky_copy:net_contribution:commercial.kpi.lens"
+    ],
+    "galleryMinimum": 6,
+    "visibleGalleryCount": 3
+  },
+  "assetPack": {
+    "assetPackVersion": "v34B",
+    "brandSlug": "woodspring-suites",
+    "brandConfig": {
+      "slug": "woodspring-suites",
+      "recordId": "recsOd51NzRPYsMko",
+      "name": "WoodSpring Suites",
+      "brandFamily": "choice-extended-stay",
+      "geographicFallbackRule": "us_property_examples_when_cala_unavailable",
+      "propertyExampleStrategy": "us_labeled_property_examples",
+      "galleryMinimum": 6,
+      "propertyExampleMinimum": 3,
+      "scenarioMinimum": 3
+    },
+    "gallery": [
+      {
+        "slotKey": "materials.gallery.1",
+        "intendedSlot": "materials.gallery.1",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.1)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "flf21",
+        "propertyName": "",
+        "notes": "",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.2",
+        "intendedSlot": "materials.gallery.2",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.2)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "ncb10",
+        "propertyName": "",
+        "notes": "",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.3",
+        "intendedSlot": "materials.gallery.3",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.3)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "ready",
+        "assetRole": "gallery",
+        "propertyKey": "nc936",
+        "propertyName": "",
+        "notes": "",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.4",
+        "intendedSlot": "materials.gallery.4",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/flf21Exterior1_1.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.4)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "flf21",
+        "propertyName": "",
+        "notes": "",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.5",
+        "intendedSlot": "materials.gallery.5",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior2.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.5)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "ncb10",
+        "propertyName": "",
+        "notes": "",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "materials.gallery.6",
+        "intendedSlot": "materials.gallery.6",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior2_1.jpg",
+        "registryRowCandidate": "(new registry for materials.gallery.6)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "gallery",
+        "propertyKey": "flf21",
+        "propertyName": "",
+        "notes": "pool_property_fallback",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "propertyExamples": [
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — WoodSpring Suites Orlando",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg",
+        "registryRowCandidate": "(new registry for flf21)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "flf21",
+        "propertyName": "WoodSpring Suites Orlando",
+        "notes": "U.S. property example with hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — WoodSpring Suites Charlotte",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg",
+        "registryRowCandidate": "(new registry for ncb10)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "ncb10",
+        "propertyName": "WoodSpring Suites Charlotte",
+        "notes": "U.S. property example with hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — WoodSpring Suites Raleigh",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg",
+        "registryRowCandidate": "(new registry for nc936)",
+        "sourceConfidence": "high",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "property_example",
+        "propertyKey": "nc936",
+        "propertyName": "WoodSpring Suites Raleigh",
+        "notes": "U.S. property example with hotel/property image",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "scenarios": [
+      {
+        "slotKey": "overview.scenario.1",
+        "intendedSlot": "overview.scenario.1",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg",
+        "registryRowCandidate": "(new registry for overview.scenario.1)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "nc936",
+        "propertyName": "Extended-Stay Corridor Conversion",
+        "notes": "needs copy package",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "overview.scenario.2",
+        "intendedSlot": "overview.scenario.2",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg",
+        "registryRowCandidate": "(new registry for overview.scenario.2)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "ncb10",
+        "propertyName": "Weekly-Demand Growth Market",
+        "notes": "needs copy package",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      },
+      {
+        "slotKey": "overview.scenario.3",
+        "intendedSlot": "overview.scenario.3",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior2.jpg",
+        "registryRowCandidate": "(new registry for overview.scenario.3)",
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "hotel_property_photography",
+        "isHotelPhotography": true,
+        "approvalStatus": "pending_founder_review",
+        "renderReadiness": "needs_materialization",
+        "assetRole": "scenario",
+        "propertyKey": "ncb10",
+        "propertyName": "Extended-Portfolio Fee Discipline",
+        "notes": "needs copy package",
+        "passesPropertyExampleRule": true,
+        "passesGalleryRule": true
+      }
+    ],
+    "momentumSources": [
+      {
+        "slotKey": "footprint.momentum",
+        "intendedSlot": "momentum_source_1",
+        "sourcePageUrl": "https://www.woodspring.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "text_source",
+        "approvalStatus": "source_candidate",
+        "renderReadiness": "copy_only",
+        "assetRole": "momentum",
+        "notes": "Momentum narrative source — no image required"
+      },
+      {
+        "slotKey": "footprint.momentum",
+        "intendedSlot": "momentum_source_2",
+        "sourcePageUrl": "https://www.choicehotelsdevelopment.com/our-brands/extended-stay/woodspring-suites",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "imageTypeClassification": "text_source",
+        "approvalStatus": "source_candidate",
+        "renderReadiness": "copy_only",
+        "assetRole": "momentum",
+        "notes": "Momentum narrative source — no image required"
+      }
+    ],
+    "standardDetailSources": [
+      {
+        "slotKey": "standard_detail",
+        "intendedSlot": "standard_detail / where_available",
+        "sourcePageUrl": "https://www.woodspring.com/",
+        "imageUrl": "",
+        "sourceConfidence": "medium",
+        "approvalStatus": "pending_governance_review",
+        "renderReadiness": "governance_gate",
+        "assetRole": "standard_detail",
+        "notes": "Requires founder governance review before apply"
+      }
+    ],
+    "proofSupport": [
+      {
+        "slotKey": "overview.proof.1",
+        "intendedSlot": "overview.proof.1",
+        "sourcePageUrl": "https://www.woodspring.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "approvalStatus": "existing_row",
+        "renderReadiness": "existing",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.2",
+        "intendedSlot": "overview.proof.2",
+        "sourcePageUrl": "https://www.woodspring.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "approvalStatus": "existing_row",
+        "renderReadiness": "existing",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.3",
+        "intendedSlot": "overview.proof.3",
+        "sourcePageUrl": "https://www.woodspring.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "approvalStatus": "existing_row",
+        "renderReadiness": "existing",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.4",
+        "intendedSlot": "overview.proof.4",
+        "sourcePageUrl": "https://www.woodspring.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "approvalStatus": "existing_row",
+        "renderReadiness": "existing",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.5",
+        "intendedSlot": "overview.proof.5",
+        "sourcePageUrl": "https://www.woodspring.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "approvalStatus": "existing_row",
+        "renderReadiness": "existing",
+        "assetRole": "proof_card"
+      },
+      {
+        "slotKey": "overview.proof.6",
+        "intendedSlot": "overview.proof.6",
+        "sourcePageUrl": "https://www.woodspring.com/",
+        "imageUrl": "",
+        "registryRowCandidate": null,
+        "sourceConfidence": "medium",
+        "approvalStatus": "existing_row",
+        "renderReadiness": "existing",
+        "assetRole": "proof_card"
+      }
+    ],
+    "registryCandidateMapping": [
+      {
+        "slotKey": "materials.gallery.1",
+        "intendedSlot": "materials.gallery.1",
+        "registryRowCandidate": "(new registry for materials.gallery.1)",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.2",
+        "intendedSlot": "materials.gallery.2",
+        "registryRowCandidate": "(new registry for materials.gallery.2)",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.3",
+        "intendedSlot": "materials.gallery.3",
+        "registryRowCandidate": "(new registry for materials.gallery.3)",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.4",
+        "intendedSlot": "materials.gallery.4",
+        "registryRowCandidate": "(new registry for materials.gallery.4)",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/flf21Exterior1_1.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.5",
+        "intendedSlot": "materials.gallery.5",
+        "registryRowCandidate": "(new registry for materials.gallery.5)",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior2.jpg"
+      },
+      {
+        "slotKey": "materials.gallery.6",
+        "intendedSlot": "materials.gallery.6",
+        "registryRowCandidate": "(new registry for materials.gallery.6)",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior2_1.jpg"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — WoodSpring Suites Orlando",
+        "registryRowCandidate": "(new registry for flf21)",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — WoodSpring Suites Charlotte",
+        "registryRowCandidate": "(new registry for ncb10)",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+      },
+      {
+        "slotKey": "footprint.openings",
+        "intendedSlot": "footprint.openings — WoodSpring Suites Raleigh",
+        "registryRowCandidate": "(new registry for nc936)",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg"
+      },
+      {
+        "slotKey": "overview.scenario.1",
+        "intendedSlot": "overview.scenario.1",
+        "registryRowCandidate": "(new registry for overview.scenario.1)",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg"
+      },
+      {
+        "slotKey": "overview.scenario.2",
+        "intendedSlot": "overview.scenario.2",
+        "registryRowCandidate": "(new registry for overview.scenario.2)",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+      },
+      {
+        "slotKey": "overview.scenario.3",
+        "intendedSlot": "overview.scenario.3",
+        "registryRowCandidate": "(new registry for overview.scenario.3)",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "imageUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior2.jpg"
+      }
+    ],
+    "summary": {
+      "galleryReady": "6/6",
+      "propertyExamplesReady": "3/3",
+      "scenariosWithImage": "3/3",
+      "galleryPoolSize": 7,
+      "partialReadiness": false,
+      "readinessBand": "full",
+      "canProceedWithConfigOnly": false,
+      "canProceedWithConfigAndAssetPack": true,
+      "customCodeRequired": false
+    },
+    "enforcement": {
+      "galleryMinimum": 6,
+      "propertyExampleMinimum": 3,
+      "propertyExamplesPartialAllowed": true,
+      "noLogoLifestyleAsPropertyExamples": true,
+      "usFallbackLabeled": true
+    }
+  },
+  "draftPlan": {
+    "draftBuilderVersion": "v34B",
+    "brandSlug": "woodspring-suites",
+    "mode": "dry-run",
+    "presentationPatches": [
+      {
+        "recordId": "rechUn7nwlxjW1jyV",
+        "slotKey": "materials.gallery.1",
+        "fields": {
+          "Title": "Exterior / Prototype",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21"
+      },
+      {
+        "recordId": "recXfIGZUrwap6AIK",
+        "slotKey": "materials.gallery.2",
+        "fields": {
+          "Title": "Guest Room",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10"
+      },
+      {
+        "recordId": "recJokIWQxU64gVsl",
+        "slotKey": "materials.gallery.3",
+        "fields": {
+          "Title": "Kitchen-Equipped Suite",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936"
+      },
+      {
+        "recordId": "rec9S14MX9GUkNCIC",
+        "slotKey": "materials.gallery.4",
+        "fields": {
+          "Title": "Suite Work Area",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/flf21Exterior1_1.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21"
+      },
+      {
+        "recordId": "recNeGpXjsVlTrbaf",
+        "slotKey": "materials.gallery.5",
+        "fields": {
+          "Title": "In-Room Kitchen Detail",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior2.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10"
+      },
+      {
+        "recordId": "receoBDH1wHcAM3ZD",
+        "slotKey": "materials.gallery.6",
+        "fields": {
+          "Title": "Extended-Stay Room Detail",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior2_1.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_gallery_materialization",
+        "imageSourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21"
+      },
+      {
+        "recordId": "recI3cbO8mOhEpo1W",
+        "slotKey": "footprint.openings",
+        "fields": {
+          "Title": "WoodSpring Suites Orlando — U.S. Property Example",
+          "Body": "A WoodSpring property example that helps owners evaluate longer-stay demand, simple-suite positioning, and market fit within the Choice platform.",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_property_example",
+        "createIfMissing": false,
+        "catalogPropertyKey": "flf21",
+        "imageSourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21"
+      },
+      {
+        "recordId": "recpNB0KoPq6y3Mhs",
+        "slotKey": "footprint.openings",
+        "fields": {
+          "Title": "WoodSpring Suites Charlotte — U.S. Property Example",
+          "Body": "A U.S. WoodSpring example for owners comparing economy extended-stay positioning, operating simplicity, and local demand drivers.",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_property_example",
+        "createIfMissing": false,
+        "catalogPropertyKey": "ncb10",
+        "imageSourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10"
+      },
+      {
+        "recordId": "rec4Eqp9lwXSP7UQE",
+        "slotKey": "footprint.openings",
+        "fields": {
+          "Title": "WoodSpring Suites Raleigh — U.S. Property Example",
+          "Body": "A property-level reference point for owners assessing WoodSpring's kitchen-equipped suite model and competitive extended-stay supply.",
+          "Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg"
+            }
+          ],
+          "External Display Status": null
+        },
+        "reason": "active_profile_property_example",
+        "createIfMissing": false,
+        "catalogPropertyKey": "nc936",
+        "imageSourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936"
+      },
+      {
+        "recordId": "rec9jf7DAXzgWTgx1",
+        "slotKey": "overview.scenario.1",
+        "fields": {
+          "Title": "Extended-Stay Corridor Conversion",
+          "Body": "Extended-stay new build or conversion on employment, medical, or logistics corridors—weekly mix, in-room kitchen economics, and lean housekeeping versus nightly midscale flags.",
+          "External Display Status": null,
+          "Scenario Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg"
+            }
+          ]
+        },
+        "reason": "active_profile_scenario_build",
+        "riskyCopyRemoved": [],
+        "createIfMissing": false
+      },
+      {
+        "recordId": "recMUrSv3EO6jgELM",
+        "slotKey": "overview.scenario.2",
+        "fields": {
+          "Title": "Weekly-Demand Growth Market",
+          "Body": "Suburban or secondary markets with growing longer-stay guest segments—WoodSpring suits sponsors evaluating simple suite product, select-service extended-stay positioning, and Choice platform distribution.",
+          "External Display Status": null,
+          "Scenario Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg"
+            }
+          ]
+        },
+        "reason": "active_profile_scenario_build",
+        "riskyCopyRemoved": [],
+        "createIfMissing": false
+      },
+      {
+        "recordId": "recrnaRxigUSoDDTJ",
+        "slotKey": "overview.scenario.3",
+        "fields": {
+          "Title": "Extended-Portfolio Fee Discipline",
+          "Body": "Owners comparing extended-stay brands in a corridor—WoodSpring fits when weekly-stay demand, simple suite operations, and Choice distribution support a practical extended-stay operating model without upscale public-space intensity.",
+          "External Display Status": null,
+          "Scenario Image": [
+            {
+              "url": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior2.jpg"
+            }
+          ]
+        },
+        "reason": "active_profile_scenario_build",
+        "riskyCopyRemoved": [],
+        "createIfMissing": false
+      }
+    ],
+    "registryCreates": [
+      {
+        "assetName": "WoodSpring Suites — materials.gallery.1",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg",
+        "recommendedExplorerSlot": "materials.gallery.1",
+        "slotPurpose": "WoodSpring Suites gallery — Exterior / Prototype",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "WoodSpring Suites — materials.gallery.2",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg",
+        "recommendedExplorerSlot": "materials.gallery.2",
+        "slotPurpose": "WoodSpring Suites gallery — Guest Room",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "WoodSpring Suites — materials.gallery.3",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg",
+        "recommendedExplorerSlot": "materials.gallery.3",
+        "slotPurpose": "WoodSpring Suites gallery — Kitchen-Equipped Suite",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "WoodSpring Suites — materials.gallery.4",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/flf21Exterior1_1.jpg",
+        "recommendedExplorerSlot": "materials.gallery.4",
+        "slotPurpose": "WoodSpring Suites gallery — Suite Work Area",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "WoodSpring Suites — materials.gallery.5",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior2.jpg",
+        "recommendedExplorerSlot": "materials.gallery.5",
+        "slotPurpose": "WoodSpring Suites gallery — In-Room Kitchen Detail",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "WoodSpring Suites — materials.gallery.6",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior2_1.jpg",
+        "recommendedExplorerSlot": "materials.gallery.6",
+        "slotPurpose": "WoodSpring Suites gallery — Extended-Stay Room Detail",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "No",
+        "notes": "v34B generic factory draft — gallery"
+      },
+      {
+        "assetName": "WoodSpring Suites — footprint.openings — WoodSpring Suites Orlando",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/fl/flf21/images/1280/FLF21Exterior1_1.jpg",
+        "recommendedExplorerSlot": "footprint.openings",
+        "slotPurpose": "WoodSpring Suites Orlando U.S. property example",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "Yes",
+        "notes": "v34B generic factory draft — property_example"
+      },
+      {
+        "assetName": "WoodSpring Suites — footprint.openings — WoodSpring Suites Charlotte",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/nc/ncb10/images/1280/NCB10Exterior1.jpg",
+        "recommendedExplorerSlot": "footprint.openings",
+        "slotPurpose": "WoodSpring Suites Charlotte U.S. property example",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "Yes",
+        "notes": "v34B generic factory draft — property_example"
+      },
+      {
+        "assetName": "WoodSpring Suites — footprint.openings — WoodSpring Suites Raleigh",
+        "brandRecordId": "recsOd51NzRPYsMko",
+        "parentCompany": "Choice Hotels International",
+        "sourcePageUrl": "https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936",
+        "sourceUrl": "https://www.choicehotels.com/hoteldam/nc/nc936/images/480/NC936Exterior01_1.jpg",
+        "recommendedExplorerSlot": "footprint.openings",
+        "slotPurpose": "WoodSpring Suites Raleigh U.S. property example",
+        "explorerUsePermission": "Approved For Explorer",
+        "usageReviewStatus": "Usage Review Complete",
+        "validationStatus": "Valid for Slot",
+        "calaRelevant": "No",
+        "propertyConfirmed": "Yes",
+        "notes": "v34B generic factory draft — property_example"
+      }
+    ],
+    "registryPatches": [],
+    "visibilityPatches": [],
+    "copyPatches": [],
+    "riskyCopyRemoved": [],
+    "missingSourceEvidence": [],
+    "pendingGovernanceGates": [
+      "standard_detail_governance_review",
+      "founder_visual_review"
+    ],
+    "willApply": {
+      "presentationPatchCount": 12,
+      "registryCreateCount": 9,
+      "visibilityPatchCount": 0,
+      "sections": [
+        "materials.gallery",
+        "footprint.openings",
+        "overview.scenario"
+      ],
+      "slots": [
+        "materials.gallery.1",
+        "materials.gallery.2",
+        "materials.gallery.3",
+        "materials.gallery.4",
+        "materials.gallery.5",
+        "materials.gallery.6",
+        "footprint.openings",
+        "footprint.openings",
+        "footprint.openings",
+        "overview.scenario.1",
+        "overview.scenario.2",
+        "overview.scenario.3"
+      ]
+    },
+    "remainsHumanReviewed": [
+      "Company Validated field — never auto-written",
+      "Summary URL field — never auto-written",
+      "Standard Detail governance sign-off",
+      "Founder visual review approval"
+    ],
+    "summary": {
+      "patchCount": 12,
+      "registryCreates": 9,
+      "galleryPatches": 6,
+      "propertyPatches": 3,
+      "scenarioPatches": 3,
+      "readyForDryRunReview": true
+    }
+  },
+  "applyResult": null,
+  "legacyWriterChainReference": [
+    "brand-explorer-woodspring-six-image-gallery-completion-writer",
+    "brand-explorer-woodspring-real-property-examples-writer"
+  ],
+  "finalQa": {
+    "readiness": "almost_ready",
+    "numeric": 84,
+    "defectCount": 5
+  },
+  "visualDefects": null,
+  "completeBuild": {
+    "readyForActiveProfile": false,
+    "readinessBand": "almost_ready"
+  },
+  "suburbanReadiness": null,
+  "applyApproved": {
+    "allowed": false,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-approved -- --brand woodspring-suites --apply --approve-brand-explorer-active-profile --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_3",
+      "non_hotel_photography:recI3cbO8mOhEpo1W",
+      "non_hotel_photography:recpNB0KoPq6y3Mhs",
+      "non_hotel_photography:rec4Eqp9lwXSP7UQE",
+      "missing_registry_row:overview.scenario.1",
+      "missing_registry_row:footprint.openings",
+      "missing_registry_row:overview.scenario.2",
+      "missing_registry_row:materials.gallery.1",
+      "missing_registry_row:materials.gallery.2",
+      "missing_registry_row:materials.gallery.3",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+      "risky_copy:net_contribution:overview.bestAt.2",
+      "risky_copy:fdd:loyalty.ecosystem",
+      "risky_copy:net_contribution:loyalty.owner_lens",
+      "risky_copy:net_contribution:operations.operator_compat.fit",
+      "risky_copy:net_contribution:commercial.kpi.lens"
+    ]
+  },
+  "markdown": "# Brand Explorer Active Profile Founder Review v34B\n\n- Brand: **WoodSpring Suites** (`woodspring-suites`)\n- Generated: 2026-07-14T08:49:41.705Z\n- Factory pass: **no**\n\n## Visual readiness\n- Gallery (6 visible + imageUrl): **FAIL** (3/6)\n- Property examples: **FAIL**\n- Scenario cards (no IMAGE placeholder): **PASS**\n- Registry traceability: **FAIL**\n- UI fallback risk: **FAIL**\n- Copy safety: **FAIL**\n- Standard Detail governance: **PASS**\n\n## Property cards (asset pack)\n- **WoodSpring Suites Orlando**: image ✓ | needs_materialization\n- **WoodSpring Suites Charlotte**: image ✓ | needs_materialization\n- **WoodSpring Suites Raleigh**: image ✓ | needs_materialization\n\n## Gallery image pack\n- `materials.gallery.1`: source found | ready\n- `materials.gallery.2`: source found | ready\n- `materials.gallery.3`: source found | ready\n- `materials.gallery.4`: source found | needs_materialization\n- `materials.gallery.5`: source found | needs_materialization\n- `materials.gallery.6`: source found | needs_materialization\n\n## Scenario cards\n- `overview.scenario.1`: image ✓ | needs copy package\n- `overview.scenario.2`: image ✓ | needs copy package\n- `overview.scenario.3`: image ✓ | needs copy package\n\n## Proof cards\n- `overview.proof.1`: existing\n- `overview.proof.2`: existing\n- `overview.proof.3`: existing\n- `overview.proof.4`: existing\n- `overview.proof.5`: existing\n- `overview.proof.6`: existing\n\n## Pending governance gates\n- standard_detail_governance_review\n- founder_visual_review\n\n## What will be applied (dry-run draft)\n- Presentation patches: **12**\n- Registry creates: **9**\n- Sections: materials.gallery, footprint.openings, overview.scenario\n\n## Remains human-reviewed\n- Company Validated field — never auto-written\n- Summary URL field — never auto-written\n- Standard Detail governance sign-off\n- Founder visual review approval\n\n## Blockers\n- need_6_visible_gallery_imageUrl_got_3\n- non_hotel_photography:recI3cbO8mOhEpo1W\n- non_hotel_photography:recpNB0KoPq6y3Mhs\n- non_hotel_photography:rec4Eqp9lwXSP7UQE\n- missing_registry_row:overview.scenario.1\n- missing_registry_row:footprint.openings\n- missing_registry_row:overview.scenario.2\n- missing_registry_row:materials.gallery.1\n- missing_registry_row:materials.gallery.2\n- missing_registry_row:materials.gallery.3\n- atelier_hardcoded_scenario_fallback_risk:overview.scenario.3\n- risky_copy:net_contribution:overview.bestAt.2\n- risky_copy:fdd:loyalty.ecosystem\n- risky_copy:net_contribution:loyalty.owner_lens\n- risky_copy:net_contribution:operations.operator_compat.fit\n- risky_copy:net_contribution:commercial.kpi.lens\n\n## Exact apply command\n_Blocked until founder review passes and dry-runs are clean._",
+  "assetPackMarkdown": "# Active Profile Asset Pack v34B\n\n- Brand: **WoodSpring Suites** (`woodspring-suites`)\n- Readiness: **full**\n- Gallery: 6/6\n- Property examples: 3/3\n- Scenarios with image: 3/3\n\n## Gallery assets\n### materials.gallery.1\n- Source page: https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.1)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n\n### materials.gallery.2\n- Source page: https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.2)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n\n### materials.gallery.3\n- Source page: https://www.choicehotels.com/north-carolina/raleigh/woodspring-hotels/nc936\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.3)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: ready\n\n### materials.gallery.4\n- Source page: https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.4)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n\n### materials.gallery.5\n- Source page: https://www.choicehotels.com/north-carolina/charlotte/woodspring-hotels/ncb10\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.5)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n\n### materials.gallery.6\n- Source page: https://www.choicehotels.com/florida/orlando/woodspring-hotels/flf21\n- Image URL: present\n- Registry candidate: (new registry for materials.gallery.6)\n- Confidence: high\n- Classification: hotel_property_photography\n- Render readiness: needs_materialization\n",
+  "draftMarkdown": "# Active Profile Draft Build v34B\n\n- Brand: `woodspring-suites`\n- Mode: **dry-run**\n- Presentation patches: **12**\n- Registry creates: **9**\n\n- `materials.gallery.1` (rechUn7nwlxjW1jyV): active_profile_gallery_materialization\n- `materials.gallery.2` (recXfIGZUrwap6AIK): active_profile_gallery_materialization\n- `materials.gallery.3` (recJokIWQxU64gVsl): active_profile_gallery_materialization\n- `materials.gallery.4` (rec9S14MX9GUkNCIC): active_profile_gallery_materialization\n- `materials.gallery.5` (recNeGpXjsVlTrbaf): active_profile_gallery_materialization\n- `materials.gallery.6` (receoBDH1wHcAM3ZD): active_profile_gallery_materialization\n- `footprint.openings` (recI3cbO8mOhEpo1W): active_profile_property_example\n- `footprint.openings` (recpNB0KoPq6y3Mhs): active_profile_property_example\n- `footprint.openings` (rec4Eqp9lwXSP7UQE): active_profile_property_example\n- `overview.scenario.1` (rec9jf7DAXzgWTgx1): active_profile_scenario_build\n- `overview.scenario.2` (recMUrSv3EO6jgELM): active_profile_scenario_build\n- `overview.scenario.3` (recrnaRxigUSoDDTJ): active_profile_scenario_build"
+}

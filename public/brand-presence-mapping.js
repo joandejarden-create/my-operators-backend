@@ -299,7 +299,7 @@ function getTerritorySubjectBrand() {
     return String(currentFilters.brand || '').trim();
 }
 
-/** Hotel Service Model filter display order (matches census select options). */
+/** Service / Operating Model filter display order (matches census Hotel Service Model select options). */
 const HOTEL_SERVICE_MODEL_ORDER = [
     'Full-Service',
     'Select-Service',
@@ -2387,7 +2387,7 @@ function updateAllDropdowns(filteredData) {
     updateDropdownOptions('marketFilter', uniqueMarkets, 'All Markets');
     updateDropdownOptions('locationTypeFilter', uniqueLocationTypes, 'All Location Types');
     updateDropdownOptions('hotelTypeFilter', uniqueHotelTypes, 'All Property Types');
-    updateDropdownOptions('hotelServiceModelFilter', uniqueServiceModels, 'All Hotel Service Models');
+    updateDropdownOptions('hotelServiceModelFilter', uniqueServiceModels, 'All Service / Operating Models');
     updateDropdownOptions('operationTypeFilter', uniqueOperationTypes, 'All Operation Types');
     updateDropdownOptions('managementCompanyFilter', uniqueManagementCompanies, 'All Management Companies');
     updateDropdownOptions('submarketFilter', uniqueSubmarkets, 'All Submarkets');

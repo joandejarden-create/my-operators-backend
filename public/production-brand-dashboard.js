@@ -3159,7 +3159,14 @@ Please tell me which field contains the amenities data.`);
         const status = (deal?.status || deal?.dealStatus || deal?.fields?.Status || 'new').toLowerCase();
         const propertyName = deal?.propertyName || deal?.hotelName || deal?.name || deal?.fields?.Name || 'Untitled Deal';
         const brandMatch = deal?.preferredBrand || deal?.brandName || deal?.fields?.['Brand Affiliation'] || '';
-        const matchScore = deal?.matchScore || deal?.score || deal?.fields?.['Match Score'] || 0;
+        const matchScore =
+            deal?.matchScoreNew != null && deal?.matchScoreNew !== ""
+                ? Number(deal.matchScoreNew)
+                : deal?.matchScore != null && deal?.matchScore !== ""
+                    ? Number(deal.matchScore)
+                    : deal?.score != null
+                        ? Number(deal.score)
+                        : null;
         const ownerName = deal?.ownerName || deal?.contactName || deal?.fields?.['Contact Name'] || '';
         const ownerEmail = deal?.ownerEmail || deal?.contactEmail || deal?.fields?.['Contact Email'] || '';
 
@@ -3169,7 +3176,7 @@ Please tell me which field contains the amenities data.`);
             status,
             propertyName,
             brandMatch,
-            matchScore: typeof matchScore === 'number' ? matchScore : parseInt(matchScore, 10) || 0,
+            matchScore: typeof matchScore === 'number' && !Number.isNaN(matchScore) ? matchScore : null,
             ownerName,
             ownerEmail,
             airtableData: deal?.fields || deal?.airtableData || {},
@@ -3466,6 +3473,13 @@ Please tell me which field contains the amenities data.`);
     }
 
     async calculateRealMatchScore(dealFields, locationData, dealBrandNames = null, marketPerformanceData = {}, strategicIntentData = {}) {
+        // P3: client-side legacy Match Score calculator retired. Product score is Match Score New via /api/my-deals.
+        console.warn('[Production BDD] calculateRealMatchScore retired — use backend matchScoresNewByBrand / match-score-breakdown');
+        const brandExists = dealBrandNames ? await this.checkBrandExists(dealBrandNames) : false;
+        return { score: null, brandExists, retired: true };
+    }
+
+    async _retiredCalculateRealMatchScoreLegacy(dealFields, locationData, dealBrandNames = null, marketPerformanceData = {}, strategicIntentData = {}) {
         console.log('🎯 ===== MATCH SCORE CALCULATION =====');
         console.log('🎯 Deal:', dealFields['Property Name'] || 'Unknown');
         console.log('🎯 Scoring against brand:', dealBrandNames);

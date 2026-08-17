@@ -1,0 +1,71 @@
+import fs from "fs";
+
+const CSS =
+  "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6dc6cd556592892613ec4d_old-home-motion.prod.v20260801a.css";
+const JS =
+  "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6dc6cdb0fe6b6f28efa2bd_old-home-motion.prod.v20260801a.js";
+const SRI =
+  "sha384-UQpprVF9nuXyBXOJrFiqpL9Kxr+X9KrO+Ll23HtjbMDPO/zC196Gsu4XV7u1vJPf";
+
+// Rebuild head from last MCP get (testimonials + ecosystem) + motion CSS
+const headBase = `<style id="oh-tt">
+/* Equal compact quote tiles — lock to first-pair size; overflow clamps, cards do not grow */
+#testimonials-viewport{height:340px!important;min-height:340px!important;max-height:340px!important}
+#testimonials-viewport>div[data-slide]>div,#testimonials-viewport .oh-testimonial-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:22px!important;align-items:stretch!important;height:100%!important;max-width:none!important;margin:0!important}
+#testimonials-viewport>div[data-slide]>div>article:nth-child(n+2){display:flex!important}
+#testimonials-viewport article{position:relative!important;display:flex!important;flex-direction:column!important;align-items:center!important;box-sizing:border-box!important;height:320px!important;min-height:320px!important;max-height:320px!important;padding:26px 24px 20px!important;border-radius:18px!important;background:#0b1228!important;background-image:none!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:0 14px 36px rgba(0,0,0,.28)!important;text-align:center!important;overflow:hidden!important;gap:0!important}
+#testimonials-viewport article::before{content:""!important;display:block!important;position:absolute!important;left:10%!important;right:10%!important;top:0!important;height:1px!important;background:linear-gradient(90deg,transparent,rgba(183,162,252,.9),rgba(139,144,255,.85),transparent)!important;box-shadow:0 0 14px rgba(139,144,255,.45)!important;opacity:1!important}
+#testimonials-viewport article img{display:block!important;width:56px!important;height:56px!important;margin:0 auto 14px!important;border-radius:50%!important;object-fit:cover!important;flex-shrink:0!important}
+#testimonials-viewport blockquote{margin:0!important;padding:0!important;width:100%!important;flex:1 1 auto!important;min-height:0!important;max-height:9.3em!important;overflow:hidden!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:6!important;font-size:.92rem!important;line-height:1.55!important;font-style:italic!important;color:rgba(255,255,255,.86)!important;text-align:center!important;background:transparent!important;border:0!important;box-shadow:none!important;quotes:none!important}
+#testimonials-viewport blockquote::before,#testimonials-viewport blockquote::after{content:none!important}
+#testimonials-viewport article p{position:relative!important;display:block!important;width:100%!important;max-width:none!important;margin:16px auto 0!important;padding:16px 6px 0!important;border:0!important;font-size:.9rem!important;line-height:1.4!important;color:rgba(255,255,255,.72)!important;text-align:center!important;background:transparent!important;flex-shrink:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+#testimonials-viewport article p::before{content:""!important;position:absolute!important;left:6%!important;right:6%!important;top:0!important;height:1px!important;background-image:linear-gradient(90deg,transparent,rgba(255,255,255,.28) 50%,transparent)!important}
+#testimonials-viewport article p::after{content:""!important;position:absolute!important;left:50%!important;top:-1.5px!important;transform:translateX(-50%)!important;width:90px!important;height:4px!important;border-radius:70px!important;background-image:linear-gradient(90deg,transparent,#6C72FF 50%,transparent)!important;filter:blur(1.5px)!important}
+#testimonials-viewport article p strong{color:#fff!important;font-weight:650!important}
+@media(max-width:900px){#testimonials-viewport{height:auto!important;min-height:0!important;max-height:none!important}#testimonials-viewport>div[data-slide]>div{grid-template-columns:1fr!important;height:auto!important}#testimonials-viewport article{height:auto!important;min-height:280px!important;max-height:none!important}#testimonials-viewport blockquote{max-height:none!important;-webkit-line-clamp:unset!important;display:block!important}}
+</style>
+<!-- OH ecosystem connected stage CSS (Old Home only; scoped) -->
+<link rel="stylesheet" href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6cf78bd550ecff473686b0_dealality-old-home-ecosystem.v20260731r.css" />
+<!-- Old Home motion prod v20260801a — medium/rise/cue/early/edge -->
+<link rel="stylesheet" href="${CSS}" id="oh-motion-prod-css" />
+`;
+
+const footer = `<!-- Old Home footer scripts loaded by OldHomeBootGuard site header script -->
+<!-- Manual Process is the approved #about package (HtmlEmbed oh-manual-process-embed). -->
+<!-- Deal Desk Phase B cinematic script REMOVED 2026-07-31: superseded by Manual Process; do not restore. -->
+<!-- Old Home motion prod v20260801a -->
+<script src="${JS}" integrity="${SRI}" crossorigin="anonymous" defer id="oh-motion-prod-js"></script>
+`;
+
+fs.writeFileSync("tmp/oh-motion-head-freeform.html", headBase);
+fs.writeFileSync("tmp/oh-motion-footer-freeform.html", footer);
+fs.writeFileSync(
+  "tmp/oh-motion-set-freeform-args.json",
+  JSON.stringify(
+    {
+      actions: [
+        {
+          label: "set-head-motion",
+          set_page_freeform_code: {
+            page_id: "68108c2a063eeb5d1bd7ae90",
+            location: "head",
+            content: headBase,
+          },
+        },
+        {
+          label: "set-footer-motion",
+          set_page_freeform_code: {
+            page_id: "68108c2a063eeb5d1bd7ae90",
+            location: "footer",
+            content: footer,
+          },
+        },
+      ],
+      context:
+        "Applies locked Motion Lab production CSS and JS to Old Home page freeform custom code.",
+    },
+    null,
+    2
+  )
+);
+console.log("head", headBase.length, "footer", footer.length);

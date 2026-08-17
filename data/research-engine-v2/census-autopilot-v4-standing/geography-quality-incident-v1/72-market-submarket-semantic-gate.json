@@ -1,0 +1,21 @@
+{
+  "market_rules": [
+    "Market must exist in Dealality Market Registry (or city map canonical)",
+    "Market belongs to property Country",
+    "Market is not Country fallback unless single_market_country allowlist",
+    "Market coherent with City/State/coords when available"
+  ],
+  "submarket_rules": [
+    "Valid Market required before Submarket",
+    "status MATCHED|NOT_APPLICABLE|UNRESOLVED — blank unexplained forbidden",
+    "NOT_APPLICABLE: do not manufacture Submarket",
+    "MATCHED: Submarket belongs to Market corridor taxonomy"
+  ],
+  "country_neq_market": true,
+  "implemented_modules": [
+    "dealality-market-registry.js",
+    "resolveDealalityMarketStrict",
+    "assertMarketWriteGate",
+    "assertSubmarketWriteGate"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "version": "census-autopilot-source-yield-diagnostic-v1",
+  "generated_at": "2026-08-06T13:43:44.104Z",
+  "run_id": "2026-08-06_13-43-43-CALA-active-brands",
+  "mode": "controlled",
+  "airtable_writes": false,
+  "total_high_proposals": 177,
+  "queues": {
+    "core_identity_quality": {
+      "status": "executed",
+      "eligible_scanned": 907,
+      "high_proposals": 177,
+      "notes": [
+        "status=production_census_core_identity_quality_gate_partial_steward_remaining",
+        "autofix=177",
+        "unknown_city=104",
+        "descriptor_city=2",
+        "coord_blocked=326",
+        "steward=218"
+      ],
+      "extractor": "unknown"
+    }
+  },
+  "high_proposals_by_queue": {
+    "core_identity_quality": 177
+  },
+  "no_proposal_reason_counts": {},
+  "queues_executed": [
+    "core_identity_quality"
+  ],
+  "queues_exhausted": [],
+  "queues_soft_deferred": [],
+  "family_gaps": {
+    "note": "See production-census-autopilot-source-yield-diagnostic.md for full family gap table"
+  },
+  "blocked_source_families": [
+    "Hilton (hilton.com edge 403 — Page Reference Code)",
+    "Marriott (marriott.com 403)",
+    "Choice (choicehotels.com 403)"
+  ],
+  "fetchable_families": [
+    "IHG (ihg.com hoteldetail)"
+  ],
+  "highest_yield_next_improvement": {
+    "id": "continue_address_then_ihg_rooms",
+    "summary": "Continue address-only High writes, then IHG rooms where official counts appear.",
+    "expected_fields": [
+      "Address",
+      "Rooms / Keys"
+    ]
+  },
+  "apply_recommendation": {
+    "recommend_apply": true,
+    "reason": "high_proposals_meet_threshold",
+    "message": "High proposals ≥ 10 and safety checks pass — recommend approval-bundle-bound apply after founder review.",
+    "bundle_too_small": false,
+    "threshold": 10,
+    "high_proposals": 177
+  },
+  "why_yield_was_low": [
+    "Prior smoke used tiny description fetch budgets and burned attempts on Hilton 403s",
+    "IHG descriptions/amenities already populated for active brands",
+    "Hilton/Marriott/Choice corporate pages bot-blocked from Node fetch",
+    "Address High VIC claims were dropped when geocode was deferred (fixed: address-only path)",
+    "Rooms High exhausted for prior avid writes; many IHG pages have empty numberOfRooms"
+  ]
+}

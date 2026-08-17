@@ -10,15 +10,21 @@ import {
   NEW_BASE_MASTER_TABLE,
   NEW_BASE_PROFILE_TABLE,
   NEW_BASE_PLATFORM_TABLE,
+  NEW_BASE_COMMERCIAL_TABLE,
+  NEW_BASE_GOVERNANCE_TABLE,
   NEW_BASE_CASE_STUDIES_TABLE,
   NEW_BASE_DILIGENCE_TABLE,
   fetchAllRecordsRest,
   buildNewBaseListRow,
   logOperatorReadPath,
 } from "./lib/operator-setup-new-base-read.js";
+import { enrichOperatorListRowWithEligibility } from "../lib/company-workspace-access.js";
 
 const BRAND_BASICS_TABLE =
   process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
+
+const COMPANY_PROFILE_TABLE =
+  process.env.AIRTABLE_COMPANY_PROFILE_TABLE || "Company Profile";
 
 const AIRTABLE_READ_HINT =
   "Airtable returned 403: this token cannot list records on those tables. Operators use the same base as Brand Setup (your AIRTABLE_BASE_ID). For a Personal Access Token, enable **data.records:read** for that base.";
@@ -121,6 +127,26 @@ const OPERATOR_STATUS_FALLBACK = [
   "Under Review",
 ];
 
+function normalizeCompanyNameKey(name) {
+  return String(name || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+/** Company Profile rows indexed by normalized Company Name. */
+function buildCompanyProfileByNameMap(companyRecords) {
+  const map = new Map();
+  for (const rec of companyRecords || []) {
+    const f = rec.fields || {};
+    const nm = formatListValue(f["Company Name"] || f.companyName);
+    const key = normalizeCompanyNameKey(nm);
+    if (!key) continue;
+    if (!map.has(key)) map.set(key, f);
+  }
+  return map;
+}
+
 /** Status dropdown choices from Operator Setup — Master `submission_status`. */
 async function getMasterSubmissionStatusChoiceNames(baseId, apiKey) {
   if (!baseId || !apiKey) return OPERATOR_STATUS_FALLBACK;
@@ -151,19 +177,27 @@ export default async function listThirdPartyOperators(req, res) {
   try {
     const [
       brandBasicsRecords,
+      companyProfileRecords,
       masterRecords,
       profileRows,
       platformRows,
+      commercialRows,
+      governanceRows,
       newBaseCaseRows,
       newBaseDiligenceRows,
     ] = await Promise.all([
       fetchAllRecordsFromAirtable(BRAND_BASICS_TABLE).catch(() => []),
+      fetchAllRecordsFromAirtable(COMPANY_PROFILE_TABLE).catch(() => []),
       fetchAllRecordsRest(NEW_BASE_MASTER_TABLE).catch(() => []),
       fetchAllRecordsRest(NEW_BASE_PROFILE_TABLE).catch(() => []),
       fetchAllRecordsRest(NEW_BASE_PLATFORM_TABLE).catch(() => []),
+      fetchAllRecordsRest(NEW_BASE_COMMERCIAL_TABLE).catch(() => []),
+      fetchAllRecordsRest(NEW_BASE_GOVERNANCE_TABLE).catch(() => []),
       fetchAllRecordsRest(NEW_BASE_CASE_STUDIES_TABLE).catch(() => []),
       fetchAllRecordsRest(NEW_BASE_DILIGENCE_TABLE).catch(() => []),
     ]);
+
+    const companyProfileByName = buildCompanyProfileByNameMap(companyProfileRecords);
 
     const brandNameById = new Map();
     for (const brec of brandBasicsRecords) {
@@ -180,19 +214,26 @@ export default async function listThirdPartyOperators(req, res) {
 
     const profileByMaster = mapFirstLinkedByMaster(profileRows);
     const platformByMaster = mapFirstLinkedByMaster(platformRows);
+    const commercialByMaster = mapFirstLinkedByMaster(commercialRows);
+    const governanceByMaster = mapFirstLinkedByMaster(governanceRows);
     const newBaseCaseByMaster = groupChildrenByMaster(newBaseCaseRows);
     const newBaseDiligenceByMaster = groupChildrenByMaster(newBaseDiligenceRows);
 
-    const rows = (masterRecords || []).map((master) =>
-      buildNewBaseListRow({
+    const rows = (masterRecords || []).map((master) => {
+      const listRow = buildNewBaseListRow({
         master,
         profile: profileByMaster.get(master.id) || null,
         platform: platformByMaster.get(master.id) || null,
+        commercial: commercialByMaster.get(master.id) || null,
+        governance: governanceByMaster.get(master.id) || null,
         caseStudyRows: newBaseCaseByMaster.get(master.id) || [],
         diligenceRows: newBaseDiligenceByMaster.get(master.id) || [],
         brandNameById,
-      })
-    );
+      });
+      const companyKey = normalizeCompanyNameKey(listRow.companyName);
+      const companyFields = companyKey ? companyProfileByName.get(companyKey) || null : null;
+      return enrichOperatorListRowWithEligibility(listRow, companyFields);
+    });
 
     /** When `activeOnly=1` (or `true`), return only Master `submission_status` === Active — used by Operator Explorer. */
     const isActiveDealStatus = (dealStatus) =>
@@ -227,6 +268,7 @@ export default async function listThirdPartyOperators(req, res) {
       operators = operators.filter((o) => {
         if (!isActiveDealStatus(o.dealStatus)) return false;
         if (hideTestExplorer && explorerTestNameHint(o.companyName)) return false;
+        if (o.operatorExplorerEligible !== true) return false;
         return true;
       });
     }
@@ -236,13 +278,59 @@ export default async function listThirdPartyOperators(req, res) {
 
     const allDealStatuses = new Set(operatorStatuses);
     const serviceModelSet = new Set();
+    const serviceModelsSupportedSet = new Set();
+    const chainScalesSupportedSet = new Set();
+    const activeCountriesSet = new Set();
     for (const o of operators) {
       if (o.dealStatus && o.dealStatus !== "—") allDealStatuses.add(o.dealStatus);
       const sm = String(o.primaryServiceModel || "").trim();
       if (sm) serviceModelSet.add(sm);
+      String(o.serviceModelsSupported || "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .forEach((s) => serviceModelsSupportedSet.add(s));
+      String(o.chainScalesSupported || "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .forEach((s) => chainScalesSupportedSet.add(s));
+      String(o.activeCountries || "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .forEach((s) => activeCountriesSet.add(s));
     }
     const dealStatuses = Array.from(allDealStatuses).sort((a, b) => String(a).localeCompare(String(b)));
     const serviceModels = Array.from(serviceModelSet).sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: "base" })
+    );
+    const serviceModelsSupported = Array.from(serviceModelsSupportedSet).sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: "base" })
+    );
+    const chainScalesSupported = Array.from(chainScalesSupportedSet).sort((a, b) => {
+      const order = [
+        "Luxury",
+        "Upper Upscale",
+        "Upscale",
+        "Upper Midscale",
+        "Midscale",
+        "Economy",
+        "Independent",
+      ];
+      const rank = (s) => {
+        const n = String(s || "").trim().toLowerCase();
+        const idx = order.findIndex((o) => o.toLowerCase() === n);
+        if (idx >= 0) return idx;
+        if (n.includes("independent")) return order.length - 1;
+        return order.length;
+      };
+      const ra = rank(a);
+      const rb = rank(b);
+      if (ra !== rb) return ra - rb;
+      return String(a).localeCompare(String(b), undefined, { sensitivity: "base" });
+    });
+    const activeCountries = Array.from(activeCountriesSet).sort((a, b) =>
       a.localeCompare(b, undefined, { sensitivity: "base" })
     );
 
@@ -255,7 +343,7 @@ export default async function listThirdPartyOperators(req, res) {
       success: true,
       operators,
       totalCount: operators.length,
-      filterOptions: { dealStatuses, serviceModels },
+      filterOptions: { dealStatuses, serviceModels, serviceModelsSupported, chainScalesSupported, activeCountries },
     });
   } catch (err) {
     const status = err && typeof err.statusCode === "number" ? err.statusCode : undefined;

@@ -1,0 +1,1736 @@
+{
+  "phase": "AI_INTELLIGENCE_PRODUCTION_TAXONOMY_SIMPLIFICATION_STUDY_COMPLETE",
+  "status": "AI_INTELLIGENCE_PRODUCTION_TAXONOMY_SIMPLIFICATION_STUDY_REVIEW_REQUIRED",
+  "recommendation": "MORE_PRODUCT_TAXONOMY_REVIEW_REQUIRED",
+  "DEV_N": 290,
+  "candidateTaxonomies": [
+    {
+      "id": "A_6_STATE",
+      "name": "Six-state production taxonomy",
+      "states": [
+        "LEADING_RECOMMENDATION",
+        "RECOMMENDED_OR_CONSIDERED",
+        "DISCUSSED",
+        "COMPARATOR_OR_QUALIFIED",
+        "PASSING_OR_SOURCE",
+        "NOT_MENTIONED"
+      ],
+      "mapping": {
+        "first_recommendation": "LEADING_RECOMMENDATION",
+        "ranked_recommendation": "RECOMMENDED_OR_CONSIDERED",
+        "explicit_recommendation": "RECOMMENDED_OR_CONSIDERED",
+        "associated_option": "RECOMMENDED_OR_CONSIDERED",
+        "discussed": "DISCUSSED",
+        "comparator": "COMPARATOR_OR_QUALIFIED",
+        "negative_or_qualified": "COMPARATOR_OR_QUALIFIED",
+        "passing_mention": "PASSING_OR_SOURCE",
+        "source_only": "PASSING_OR_SOURCE",
+        "no_mention": "NOT_MENTIONED"
+      }
+    },
+    {
+      "id": "B_5_STATE",
+      "name": "Five-state production taxonomy",
+      "states": [
+        "LEADING",
+        "IN_CONSIDERATION",
+        "DISCUSSED",
+        "NON_POSITIVE_REFERENCE",
+        "NOT_PRESENT"
+      ],
+      "mapping": {
+        "first_recommendation": "LEADING",
+        "ranked_recommendation": "IN_CONSIDERATION",
+        "explicit_recommendation": "IN_CONSIDERATION",
+        "associated_option": "IN_CONSIDERATION",
+        "discussed": "DISCUSSED",
+        "comparator": "NON_POSITIVE_REFERENCE",
+        "negative_or_qualified": "NON_POSITIVE_REFERENCE",
+        "passing_mention": "NON_POSITIVE_REFERENCE",
+        "source_only": "NON_POSITIVE_REFERENCE",
+        "no_mention": "NOT_PRESENT"
+      }
+    },
+    {
+      "id": "C_4_STATE_DECISION_SIGNAL",
+      "name": "Four-state decision-signal taxonomy",
+      "states": [
+        "LEADING_RECOMMENDATION",
+        "IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+        "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+        "NOT_MENTIONED"
+      ],
+      "mapping": {
+        "first_recommendation": "LEADING_RECOMMENDATION",
+        "ranked_recommendation": "IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+        "explicit_recommendation": "IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+        "associated_option": "IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+        "discussed": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+        "comparator": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+        "negative_or_qualified": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+        "passing_mention": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+        "source_only": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+        "no_mention": "NOT_MENTIONED"
+      }
+    }
+  ],
+  "productAssessment": {
+    "A_6_STATE": {
+      "CLIENT_VALUE": "High — separates lead, recommended/considered band, discussion, non-positive, weak mention, absent.",
+      "INTERPRETABILITY": "Good — states are explainable; RECOMMENDED_OR_CONSIDERED blends endorsement with consideration (needs careful copy).",
+      "OVERCLAIM_RISK": "Medium — collapsing associated into recommended/considered can overstate preference if UI says “recommended”.",
+      "METRIC_COMPATIBILITY": "Partial — First Rec / Questions Won stay on LEADING; Recommendation Share conflicts unless associated excluded from share."
+    },
+    "B_5_STATE": {
+      "CLIENT_VALUE": "High — simpler; merges weak mentions into NON_POSITIVE_REFERENCE.",
+      "INTERPRETABILITY": "Strong — five labels are easy to teach.",
+      "OVERCLAIM_RISK": "Medium-high — IN_CONSIDERATION naming is safer than “recommended”, but still broad.",
+      "METRIC_COMPATIBILITY": "Partial — same share issue; DISCUSSED kept separate which helps Presence vs preference."
+    },
+    "C_4_STATE_DECISION_SIGNAL": {
+      "CLIENT_VALUE": "Very high for reliability — answers: lead / in set / mentioned without claim / absent.",
+      "INTERPRETABILITY": "Strong if copy avoids “AI recommends” for the mid set; name is explicit about claim level.",
+      "OVERCLAIM_RISK": "Lower than A/B if UI treats IN_RECOMMENDATION_OR_CONSIDERATION_SET as “appeared in options/consideration”, not “AI picked”.",
+      "METRIC_COMPATIBILITY": "Best for Presence + First Rec; Recommendation Share still needs internal gating for associated."
+    }
+  },
+  "benchmarks": {
+    "A_6_STATE": {
+      "v3.3": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.7103448275862069,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7206896551724138,
+          "PRECISION": 0.7206896551724138,
+          "RECALL": 0.7206896551724138,
+          "MACRO_P": 0.7114374742355537,
+          "MACRO_R": 0.6827396076397891,
+          "MACRO_F1": 0.6416751796640762,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": 0.7272727272727273,
+              "recall": 0.26666666666666666,
+              "f1": 0.3902439024390244,
+              "tp": 8,
+              "fp": 3,
+              "fn": 22
+            },
+            "RECOMMENDED_OR_CONSIDERED": {
+              "precision": 0.6630434782608695,
+              "recall": 0.6421052631578947,
+              "f1": 0.6524064171122995,
+              "tp": 61,
+              "fp": 31,
+              "fn": 34
+            },
+            "DISCUSSED": {
+              "precision": 0.7668711656441718,
+              "recall": 0.8620689655172413,
+              "f1": 0.8116883116883117,
+              "tp": 125,
+              "fp": 38,
+              "fn": 20
+            },
+            "COMPARATOR_OR_QUALIFIED": {
+              "precision": 1,
+              "recall": 0.6428571428571429,
+              "f1": 0.782608695652174,
+              "tp": 9,
+              "fp": 0,
+              "fn": 5
+            },
+            "PASSING_OR_SOURCE": {
+              "precision": 0.4,
+              "recall": 1,
+              "f1": 0.5714285714285715,
+              "tp": 6,
+              "fp": 9,
+              "fn": 0
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => DISCUSSED",
+              "count": 125
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => RECOMMENDED_OR_CONSIDERED",
+              "count": 61
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => DISCUSSED",
+              "count": 27
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => RECOMMENDED_OR_CONSIDERED",
+              "count": 16
+            },
+            {
+              "pair": "DISCUSSED => RECOMMENDED_OR_CONSIDERED",
+              "count": 15
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => COMPARATOR_OR_QUALIFIED",
+              "count": 9
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => LEADING_RECOMMENDATION",
+              "count": 8
+            },
+            {
+              "pair": "PASSING_OR_SOURCE => PASSING_OR_SOURCE",
+              "count": 6
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => DISCUSSED",
+              "count": 6
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => DISCUSSED",
+              "count": 5
+            },
+            {
+              "pair": "DISCUSSED => PASSING_OR_SOURCE",
+              "count": 5
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => PASSING_OR_SOURCE",
+              "count": 4
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => LEADING_RECOMMENDATION",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "v4": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.6689655172413793,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7,
+          "PRECISION": 0.7,
+          "RECALL": 0.7,
+          "MACRO_P": 0.7727485180118558,
+          "MACRO_R": 0.5892023161351655,
+          "MACRO_F1": 0.6389109839291515,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": 0.8235294117647058,
+              "recall": 0.4666666666666667,
+              "f1": 0.5957446808510638,
+              "tp": 14,
+              "fp": 3,
+              "fn": 16
+            },
+            "RECOMMENDED_OR_CONSIDERED": {
+              "precision": 0.686046511627907,
+              "recall": 0.6210526315789474,
+              "f1": 0.6519337016574586,
+              "tp": 59,
+              "fp": 27,
+              "fn": 36
+            },
+            "DISCUSSED": {
+              "precision": 0.6875,
+              "recall": 0.8344827586206897,
+              "f1": 0.7538940809968847,
+              "tp": 121,
+              "fp": 55,
+              "fn": 24
+            },
+            "COMPARATOR_OR_QUALIFIED": {
+              "precision": 1,
+              "recall": 0.35714285714285715,
+              "f1": 0.5263157894736842,
+              "tp": 5,
+              "fp": 0,
+              "fn": 9
+            },
+            "PASSING_OR_SOURCE": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666,
+              "tp": 4,
+              "fp": 2,
+              "fn": 2
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => DISCUSSED",
+              "count": 121
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => RECOMMENDED_OR_CONSIDERED",
+              "count": 59
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => DISCUSSED",
+              "count": 32
+            },
+            {
+              "pair": "DISCUSSED => RECOMMENDED_OR_CONSIDERED",
+              "count": 24
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => LEADING_RECOMMENDATION",
+              "count": 14
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => DISCUSSED",
+              "count": 13
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => DISCUSSED",
+              "count": 8
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => COMPARATOR_OR_QUALIFIED",
+              "count": 5
+            },
+            {
+              "pair": "PASSING_OR_SOURCE => PASSING_OR_SOURCE",
+              "count": 4
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => LEADING_RECOMMENDATION",
+              "count": 3
+            },
+            {
+              "pair": "PASSING_OR_SOURCE => DISCUSSED",
+              "count": 2
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => RECOMMENDED_OR_CONSIDERED",
+              "count": 2
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => RECOMMENDED_OR_CONSIDERED",
+              "count": 1
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => PASSING_OR_SOURCE",
+              "count": 1
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => PASSING_OR_SOURCE",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "v4.1": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.7275862068965517,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7482758620689656,
+          "PRECISION": 0.7482758620689656,
+          "RECALL": 0.7482758620689656,
+          "MACRO_P": 0.8224549968963377,
+          "MACRO_R": 0.6897087546452338,
+          "MACRO_F1": 0.7202810561843254,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": 1,
+              "recall": 0.43333333333333335,
+              "f1": 0.6046511627906976,
+              "tp": 13,
+              "fp": 0,
+              "fn": 17
+            },
+            "RECOMMENDED_OR_CONSIDERED": {
+              "precision": 0.7777777777777778,
+              "recall": 0.6631578947368421,
+              "f1": 0.7159090909090908,
+              "tp": 63,
+              "fp": 18,
+              "fn": 32
+            },
+            "DISCUSSED": {
+              "precision": 0.7094972067039106,
+              "recall": 0.8758620689655172,
+              "f1": 0.7839506172839505,
+              "tp": 127,
+              "fp": 52,
+              "fn": 18
+            },
+            "COMPARATOR_OR_QUALIFIED": {
+              "precision": 1,
+              "recall": 0.6428571428571429,
+              "f1": 0.782608695652174,
+              "tp": 9,
+              "fp": 0,
+              "fn": 5
+            },
+            "PASSING_OR_SOURCE": {
+              "precision": 0.625,
+              "recall": 0.8333333333333334,
+              "f1": 0.7142857142857143,
+              "tp": 5,
+              "fp": 3,
+              "fn": 1
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => DISCUSSED",
+              "count": 127
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => RECOMMENDED_OR_CONSIDERED",
+              "count": 63
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => DISCUSSED",
+              "count": 30
+            },
+            {
+              "pair": "DISCUSSED => RECOMMENDED_OR_CONSIDERED",
+              "count": 18
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => DISCUSSED",
+              "count": 16
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => LEADING_RECOMMENDATION",
+              "count": 13
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => COMPARATOR_OR_QUALIFIED",
+              "count": 9
+            },
+            {
+              "pair": "PASSING_OR_SOURCE => PASSING_OR_SOURCE",
+              "count": 5
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => DISCUSSED",
+              "count": 5
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => PASSING_OR_SOURCE",
+              "count": 2
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => PASSING_OR_SOURCE",
+              "count": 1
+            },
+            {
+              "pair": "PASSING_OR_SOURCE => DISCUSSED",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "hybrid": {
+        "subsetN": 255,
+        "excludedUnknownPreds": 35,
+        "internal10Accuracy": 0.7372549019607844,
+        "production": {
+          "N": 255,
+          "ACCURACY": 0.7568627450980392,
+          "PRECISION": 0.7568627450980392,
+          "RECALL": 0.7568627450980392,
+          "MACRO_P": 0.8672953648915188,
+          "MACRO_R": 0.6649505508892783,
+          "MACRO_F1": 0.7170785145741465,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": 1,
+              "recall": 0.3076923076923077,
+              "f1": 0.47058823529411764,
+              "tp": 8,
+              "fp": 0,
+              "fn": 18
+            },
+            "RECOMMENDED_OR_CONSIDERED": {
+              "precision": 0.78125,
+              "recall": 0.6578947368421053,
+              "f1": 0.7142857142857143,
+              "tp": 50,
+              "fp": 14,
+              "fn": 26
+            },
+            "DISCUSSED": {
+              "precision": 0.7218934911242604,
+              "recall": 0.9104477611940298,
+              "f1": 0.8052805280528054,
+              "tp": 122,
+              "fp": 47,
+              "fn": 12
+            },
+            "COMPARATOR_OR_QUALIFIED": {
+              "precision": 1,
+              "recall": 0.6153846153846154,
+              "f1": 0.761904761904762,
+              "tp": 8,
+              "fp": 0,
+              "fn": 5
+            },
+            "PASSING_OR_SOURCE": {
+              "precision": 0.8333333333333334,
+              "recall": 0.8333333333333334,
+              "f1": 0.8333333333333334,
+              "tp": 5,
+              "fp": 1,
+              "fn": 1
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => DISCUSSED",
+              "count": 122
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => RECOMMENDED_OR_CONSIDERED",
+              "count": 50
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => DISCUSSED",
+              "count": 26
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => DISCUSSED",
+              "count": 15
+            },
+            {
+              "pair": "DISCUSSED => RECOMMENDED_OR_CONSIDERED",
+              "count": 12
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => LEADING_RECOMMENDATION",
+              "count": 8
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => COMPARATOR_OR_QUALIFIED",
+              "count": 8
+            },
+            {
+              "pair": "PASSING_OR_SOURCE => PASSING_OR_SOURCE",
+              "count": 5
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => DISCUSSED",
+              "count": 5
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => RECOMMENDED_OR_CONSIDERED",
+              "count": 2
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => PASSING_OR_SOURCE",
+              "count": 1
+            },
+            {
+              "pair": "PASSING_OR_SOURCE => DISCUSSED",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "hierarchical": {
+        "subsetN": 50,
+        "excludedUnknownPreds": 240,
+        "internal10Accuracy": 0,
+        "production": {
+          "N": 50,
+          "ACCURACY": 0.16,
+          "PRECISION": 0.16,
+          "RECALL": 0.16,
+          "MACRO_P": 0.0784313725490196,
+          "MACRO_R": 0.1111111111111111,
+          "MACRO_F1": 0.30769230769230765,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": null,
+              "recall": 0,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 8
+            },
+            "RECOMMENDED_OR_CONSIDERED": {
+              "precision": 0.23529411764705882,
+              "recall": 0.4444444444444444,
+              "f1": 0.30769230769230765,
+              "tp": 8,
+              "fp": 26,
+              "fn": 10
+            },
+            "DISCUSSED": {
+              "precision": 0,
+              "recall": 0,
+              "f1": null,
+              "tp": 0,
+              "fp": 14,
+              "fn": 23
+            },
+            "COMPARATOR_OR_QUALIFIED": {
+              "precision": null,
+              "recall": 0,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1
+            },
+            "PASSING_OR_SOURCE": {
+              "precision": 0,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 2,
+              "fn": 0
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => RECOMMENDED_OR_CONSIDERED",
+              "count": 23
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => DISCUSSED",
+              "count": 9
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => RECOMMENDED_OR_CONSIDERED",
+              "count": 8
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => DISCUSSED",
+              "count": 4
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => RECOMMENDED_OR_CONSIDERED",
+              "count": 3
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => PASSING_OR_SOURCE",
+              "count": 1
+            },
+            {
+              "pair": "RECOMMENDED_OR_CONSIDERED => PASSING_OR_SOURCE",
+              "count": 1
+            },
+            {
+              "pair": "COMPARATOR_OR_QUALIFIED => DISCUSSED",
+              "count": 1
+            }
+          ]
+        }
+      }
+    },
+    "B_5_STATE": {
+      "v3.3": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.7103448275862069,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7206896551724138,
+          "PRECISION": 0.7206896551724138,
+          "RECALL": 0.7206896551724138,
+          "MACRO_P": 0.6955468427944421,
+          "MACRO_R": 0.6302102238354507,
+          "MACRO_F1": 0.6340392032644543,
+          "classMetrics": {
+            "LEADING": {
+              "precision": 0.7272727272727273,
+              "recall": 0.26666666666666666,
+              "f1": 0.3902439024390244,
+              "tp": 8,
+              "fp": 3,
+              "fn": 22
+            },
+            "IN_CONSIDERATION": {
+              "precision": 0.6630434782608695,
+              "recall": 0.6421052631578947,
+              "f1": 0.6524064171122995,
+              "tp": 61,
+              "fp": 31,
+              "fn": 34
+            },
+            "DISCUSSED": {
+              "precision": 0.7668711656441718,
+              "recall": 0.8620689655172413,
+              "f1": 0.8116883116883117,
+              "tp": 125,
+              "fp": 38,
+              "fn": 20
+            },
+            "NON_POSITIVE_REFERENCE": {
+              "precision": 0.625,
+              "recall": 0.75,
+              "f1": 0.6818181818181818,
+              "tp": 15,
+              "fp": 9,
+              "fn": 5
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => DISCUSSED",
+              "count": 125
+            },
+            {
+              "pair": "IN_CONSIDERATION => IN_CONSIDERATION",
+              "count": 61
+            },
+            {
+              "pair": "IN_CONSIDERATION => DISCUSSED",
+              "count": 27
+            },
+            {
+              "pair": "LEADING => IN_CONSIDERATION",
+              "count": 16
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => NON_POSITIVE_REFERENCE",
+              "count": 15
+            },
+            {
+              "pair": "DISCUSSED => IN_CONSIDERATION",
+              "count": 15
+            },
+            {
+              "pair": "LEADING => LEADING",
+              "count": 8
+            },
+            {
+              "pair": "LEADING => DISCUSSED",
+              "count": 6
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => DISCUSSED",
+              "count": 5
+            },
+            {
+              "pair": "DISCUSSED => NON_POSITIVE_REFERENCE",
+              "count": 5
+            },
+            {
+              "pair": "IN_CONSIDERATION => NON_POSITIVE_REFERENCE",
+              "count": 4
+            },
+            {
+              "pair": "IN_CONSIDERATION => LEADING",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "v4": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.6689655172413793,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7,
+          "PRECISION": 0.7,
+          "RECALL": 0.7,
+          "MACRO_P": 0.7538144353936078,
+          "MACRO_R": 0.593050514216576,
+          "MACRO_F1": 0.6455544061989323,
+          "classMetrics": {
+            "LEADING": {
+              "precision": 0.8235294117647058,
+              "recall": 0.4666666666666667,
+              "f1": 0.5957446808510638,
+              "tp": 14,
+              "fp": 3,
+              "fn": 16
+            },
+            "IN_CONSIDERATION": {
+              "precision": 0.686046511627907,
+              "recall": 0.6210526315789474,
+              "f1": 0.6519337016574586,
+              "tp": 59,
+              "fp": 27,
+              "fn": 36
+            },
+            "DISCUSSED": {
+              "precision": 0.6875,
+              "recall": 0.8344827586206897,
+              "f1": 0.7538940809968847,
+              "tp": 121,
+              "fp": 55,
+              "fn": 24
+            },
+            "NON_POSITIVE_REFERENCE": {
+              "precision": 0.8181818181818182,
+              "recall": 0.45,
+              "f1": 0.5806451612903226,
+              "tp": 9,
+              "fp": 2,
+              "fn": 11
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => DISCUSSED",
+              "count": 121
+            },
+            {
+              "pair": "IN_CONSIDERATION => IN_CONSIDERATION",
+              "count": 59
+            },
+            {
+              "pair": "IN_CONSIDERATION => DISCUSSED",
+              "count": 32
+            },
+            {
+              "pair": "DISCUSSED => IN_CONSIDERATION",
+              "count": 24
+            },
+            {
+              "pair": "LEADING => LEADING",
+              "count": 14
+            },
+            {
+              "pair": "LEADING => DISCUSSED",
+              "count": 13
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => DISCUSSED",
+              "count": 10
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => NON_POSITIVE_REFERENCE",
+              "count": 9
+            },
+            {
+              "pair": "IN_CONSIDERATION => LEADING",
+              "count": 3
+            },
+            {
+              "pair": "LEADING => IN_CONSIDERATION",
+              "count": 2
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => IN_CONSIDERATION",
+              "count": 1
+            },
+            {
+              "pair": "LEADING => NON_POSITIVE_REFERENCE",
+              "count": 1
+            },
+            {
+              "pair": "IN_CONSIDERATION => NON_POSITIVE_REFERENCE",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "v4.1": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.7275862068965517,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7482758620689656,
+          "PRECISION": 0.7482758620689656,
+          "RECALL": 0.7482758620689656,
+          "MACRO_P": 0.8277010990615985,
+          "MACRO_R": 0.6680883242589232,
+          "MACRO_F1": 0.7153169069351238,
+          "classMetrics": {
+            "LEADING": {
+              "precision": 1,
+              "recall": 0.43333333333333335,
+              "f1": 0.6046511627906976,
+              "tp": 13,
+              "fp": 0,
+              "fn": 17
+            },
+            "IN_CONSIDERATION": {
+              "precision": 0.7777777777777778,
+              "recall": 0.6631578947368421,
+              "f1": 0.7159090909090908,
+              "tp": 63,
+              "fp": 18,
+              "fn": 32
+            },
+            "DISCUSSED": {
+              "precision": 0.7094972067039106,
+              "recall": 0.8758620689655172,
+              "f1": 0.7839506172839505,
+              "tp": 127,
+              "fp": 52,
+              "fn": 18
+            },
+            "NON_POSITIVE_REFERENCE": {
+              "precision": 0.8235294117647058,
+              "recall": 0.7,
+              "f1": 0.7567567567567567,
+              "tp": 14,
+              "fp": 3,
+              "fn": 6
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => DISCUSSED",
+              "count": 127
+            },
+            {
+              "pair": "IN_CONSIDERATION => IN_CONSIDERATION",
+              "count": 63
+            },
+            {
+              "pair": "IN_CONSIDERATION => DISCUSSED",
+              "count": 30
+            },
+            {
+              "pair": "DISCUSSED => IN_CONSIDERATION",
+              "count": 18
+            },
+            {
+              "pair": "LEADING => DISCUSSED",
+              "count": 16
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => NON_POSITIVE_REFERENCE",
+              "count": 14
+            },
+            {
+              "pair": "LEADING => LEADING",
+              "count": 13
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => DISCUSSED",
+              "count": 6
+            },
+            {
+              "pair": "IN_CONSIDERATION => NON_POSITIVE_REFERENCE",
+              "count": 2
+            },
+            {
+              "pair": "LEADING => NON_POSITIVE_REFERENCE",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "hybrid": {
+        "subsetN": 255,
+        "excludedUnknownPreds": 35,
+        "internal10Accuracy": 0.7372549019607844,
+        "production": {
+          "N": 255,
+          "ACCURACY": 0.7568627450980392,
+          "PRECISION": 0.7568627450980392,
+          "RECALL": 0.7568627450980392,
+          "MACRO_P": 0.8579287299239222,
+          "MACRO_R": 0.640061333011058,
+          "MACRO_F1": 0.6945083163778563,
+          "classMetrics": {
+            "LEADING": {
+              "precision": 1,
+              "recall": 0.3076923076923077,
+              "f1": 0.47058823529411764,
+              "tp": 8,
+              "fp": 0,
+              "fn": 18
+            },
+            "IN_CONSIDERATION": {
+              "precision": 0.78125,
+              "recall": 0.6578947368421053,
+              "f1": 0.7142857142857143,
+              "tp": 50,
+              "fp": 14,
+              "fn": 26
+            },
+            "DISCUSSED": {
+              "precision": 0.7218934911242604,
+              "recall": 0.9104477611940298,
+              "f1": 0.8052805280528054,
+              "tp": 122,
+              "fp": 47,
+              "fn": 12
+            },
+            "NON_POSITIVE_REFERENCE": {
+              "precision": 0.9285714285714286,
+              "recall": 0.6842105263157895,
+              "f1": 0.7878787878787878,
+              "tp": 13,
+              "fp": 1,
+              "fn": 6
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => DISCUSSED",
+              "count": 122
+            },
+            {
+              "pair": "IN_CONSIDERATION => IN_CONSIDERATION",
+              "count": 50
+            },
+            {
+              "pair": "IN_CONSIDERATION => DISCUSSED",
+              "count": 26
+            },
+            {
+              "pair": "LEADING => DISCUSSED",
+              "count": 15
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => NON_POSITIVE_REFERENCE",
+              "count": 13
+            },
+            {
+              "pair": "DISCUSSED => IN_CONSIDERATION",
+              "count": 12
+            },
+            {
+              "pair": "LEADING => LEADING",
+              "count": 8
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => DISCUSSED",
+              "count": 6
+            },
+            {
+              "pair": "LEADING => IN_CONSIDERATION",
+              "count": 2
+            },
+            {
+              "pair": "LEADING => NON_POSITIVE_REFERENCE",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "hierarchical": {
+        "subsetN": 50,
+        "excludedUnknownPreds": 240,
+        "internal10Accuracy": 0,
+        "production": {
+          "N": 50,
+          "ACCURACY": 0.16,
+          "PRECISION": 0.16,
+          "RECALL": 0.16,
+          "MACRO_P": 0.0784313725490196,
+          "MACRO_R": 0.1111111111111111,
+          "MACRO_F1": 0.30769230769230765,
+          "classMetrics": {
+            "LEADING": {
+              "precision": null,
+              "recall": 0,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 8
+            },
+            "IN_CONSIDERATION": {
+              "precision": 0.23529411764705882,
+              "recall": 0.4444444444444444,
+              "f1": 0.30769230769230765,
+              "tp": 8,
+              "fp": 26,
+              "fn": 10
+            },
+            "DISCUSSED": {
+              "precision": 0,
+              "recall": 0,
+              "f1": null,
+              "tp": 0,
+              "fp": 14,
+              "fn": 23
+            },
+            "NON_POSITIVE_REFERENCE": {
+              "precision": 0,
+              "recall": 0,
+              "f1": null,
+              "tp": 0,
+              "fp": 2,
+              "fn": 1
+            },
+            "NOT_PRESENT": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "DISCUSSED => IN_CONSIDERATION",
+              "count": 23
+            },
+            {
+              "pair": "IN_CONSIDERATION => DISCUSSED",
+              "count": 9
+            },
+            {
+              "pair": "IN_CONSIDERATION => IN_CONSIDERATION",
+              "count": 8
+            },
+            {
+              "pair": "LEADING => DISCUSSED",
+              "count": 4
+            },
+            {
+              "pair": "LEADING => IN_CONSIDERATION",
+              "count": 3
+            },
+            {
+              "pair": "LEADING => NON_POSITIVE_REFERENCE",
+              "count": 1
+            },
+            {
+              "pair": "IN_CONSIDERATION => NON_POSITIVE_REFERENCE",
+              "count": 1
+            },
+            {
+              "pair": "NON_POSITIVE_REFERENCE => DISCUSSED",
+              "count": 1
+            }
+          ]
+        }
+      }
+    },
+    "C_4_STATE_DECISION_SIGNAL": {
+      "v3.3": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.7103448275862069,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7551724137931034,
+          "PRECISION": 0.7551724137931034,
+          "RECALL": 0.7551724137931034,
+          "MACRO_P": 0.7308184143222506,
+          "MACRO_R": 0.6059542796384901,
+          "MACRO_F1": 0.6316410156080171,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": 0.7272727272727273,
+              "recall": 0.26666666666666666,
+              "f1": 0.3902439024390244,
+              "tp": 8,
+              "fp": 3,
+              "fn": 22
+            },
+            "IN_RECOMMENDATION_OR_CONSIDERATION_SET": {
+              "precision": 0.6630434782608695,
+              "recall": 0.6421052631578947,
+              "f1": 0.6524064171122995,
+              "tp": 61,
+              "fp": 31,
+              "fn": 34
+            },
+            "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM": {
+              "precision": 0.8021390374331551,
+              "recall": 0.9090909090909091,
+              "f1": 0.8522727272727273,
+              "tp": 150,
+              "fp": 37,
+              "fn": 15
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 150
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 61
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 31
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 16
+            },
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 15
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => LEADING_RECOMMENDATION",
+              "count": 8
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 6
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => LEADING_RECOMMENDATION",
+              "count": 3
+            }
+          ]
+        }
+      },
+      "v4": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.6689655172413793,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7344827586206897,
+          "PRECISION": 0.7344827586206897,
+          "RECALL": 0.7344827586206897,
+          "MACRO_P": 0.7527463416656303,
+          "MACRO_R": 0.6454013822434875,
+          "MACRO_F1": 0.6810443093210226,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": 0.8235294117647058,
+              "recall": 0.4666666666666667,
+              "f1": 0.5957446808510638,
+              "tp": 14,
+              "fp": 3,
+              "fn": 16
+            },
+            "IN_RECOMMENDATION_OR_CONSIDERATION_SET": {
+              "precision": 0.686046511627907,
+              "recall": 0.6210526315789474,
+              "f1": 0.6519337016574586,
+              "tp": 59,
+              "fp": 27,
+              "fn": 36
+            },
+            "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM": {
+              "precision": 0.7486631016042781,
+              "recall": 0.8484848484848485,
+              "f1": 0.7954545454545454,
+              "tp": 140,
+              "fp": 47,
+              "fn": 25
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 140
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 59
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 33
+            },
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 25
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => LEADING_RECOMMENDATION",
+              "count": 14
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 14
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => LEADING_RECOMMENDATION",
+              "count": 3
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 2
+            }
+          ]
+        }
+      },
+      "v4.1": {
+        "subsetN": 290,
+        "excludedUnknownPreds": 0,
+        "internal10Accuracy": 0.7275862068965517,
+        "production": {
+          "N": 290,
+          "ACCURACY": 0.7689655172413793,
+          "PRECISION": 0.7689655172413793,
+          "RECALL": 0.7689655172413793,
+          "MACRO_P": 0.8425925925925926,
+          "MACRO_R": 0.6624667729930888,
+          "MACRO_F1": 0.7116548952775842,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": 1,
+              "recall": 0.43333333333333335,
+              "f1": 0.6046511627906976,
+              "tp": 13,
+              "fp": 0,
+              "fn": 17
+            },
+            "IN_RECOMMENDATION_OR_CONSIDERATION_SET": {
+              "precision": 0.7777777777777778,
+              "recall": 0.6631578947368421,
+              "f1": 0.7159090909090908,
+              "tp": 63,
+              "fp": 18,
+              "fn": 32
+            },
+            "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM": {
+              "precision": 0.75,
+              "recall": 0.8909090909090909,
+              "f1": 0.8144044321329641,
+              "tp": 147,
+              "fp": 49,
+              "fn": 18
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 147
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 63
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 32
+            },
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 18
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 17
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => LEADING_RECOMMENDATION",
+              "count": 13
+            }
+          ]
+        }
+      },
+      "hybrid": {
+        "subsetN": 255,
+        "excludedUnknownPreds": 35,
+        "internal10Accuracy": 0.7372549019607844,
+        "production": {
+          "N": 255,
+          "ACCURACY": 0.7803921568627451,
+          "PRECISION": 0.7803921568627451,
+          "RECALL": 0.7803921568627451,
+          "MACRO_P": 0.8505806010928962,
+          "MACRO_R": 0.6290518906617978,
+          "MACRO_F1": 0.674719887955182,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": 1,
+              "recall": 0.3076923076923077,
+              "f1": 0.47058823529411764,
+              "tp": 8,
+              "fp": 0,
+              "fn": 18
+            },
+            "IN_RECOMMENDATION_OR_CONSIDERATION_SET": {
+              "precision": 0.78125,
+              "recall": 0.6578947368421053,
+              "f1": 0.7142857142857143,
+              "tp": 50,
+              "fp": 14,
+              "fn": 26
+            },
+            "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM": {
+              "precision": 0.7704918032786885,
+              "recall": 0.9215686274509803,
+              "f1": 0.8392857142857142,
+              "tp": 141,
+              "fp": 42,
+              "fn": 12
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 141
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 50
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 26
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 16
+            },
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 12
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => LEADING_RECOMMENDATION",
+              "count": 8
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 2
+            }
+          ]
+        }
+      },
+      "hierarchical": {
+        "subsetN": 50,
+        "excludedUnknownPreds": 240,
+        "internal10Accuracy": 0,
+        "production": {
+          "N": 50,
+          "ACCURACY": 0.18,
+          "PRECISION": 0.18,
+          "RECALL": 0.18,
+          "MACRO_P": 0.1488970588235294,
+          "MACRO_R": 0.16203703703703703,
+          "MACRO_F1": 0.17884615384615382,
+          "classMetrics": {
+            "LEADING_RECOMMENDATION": {
+              "precision": null,
+              "recall": 0,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 8
+            },
+            "IN_RECOMMENDATION_OR_CONSIDERATION_SET": {
+              "precision": 0.23529411764705882,
+              "recall": 0.4444444444444444,
+              "f1": 0.30769230769230765,
+              "tp": 8,
+              "fp": 26,
+              "fn": 10
+            },
+            "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM": {
+              "precision": 0.0625,
+              "recall": 0.041666666666666664,
+              "f1": 0.05,
+              "tp": 1,
+              "fp": 15,
+              "fn": 23
+            },
+            "NOT_MENTIONED": {
+              "precision": null,
+              "recall": null,
+              "f1": null,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0
+            }
+          },
+          "confusion": [
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 23
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 10
+            },
+            {
+              "pair": "IN_RECOMMENDATION_OR_CONSIDERATION_SET => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 8
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 5
+            },
+            {
+              "pair": "LEADING_RECOMMENDATION => IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+              "count": 3
+            },
+            {
+              "pair": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM => MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "internalBaselineV41": {
+    "ACCURACY": 0.7275862068965517,
+    "MACRO_F1": 0.7312960753229033,
+    "ERRORS": 79
+  },
+  "q3Impact": {
+    "ORIGINAL_Q3_ERRORS": 70,
+    "SAMPLE_USED": 62,
+    "REMAINING_BY_CANDIDATE": {
+      "A_6_STATE": 62,
+      "B_5_STATE": 62,
+      "C_4_STATE_DECISION_SIGNAL": 58
+    }
+  },
+  "bandImpact": {
+    "FIRST_RANKED": {
+      "ORIGINAL": 26,
+      "REMAINING_BY_CANDIDATE": {
+        "A_6_STATE": 21,
+        "B_5_STATE": 21,
+        "C_4_STATE_DECISION_SIGNAL": 21
+      }
+    },
+    "ASSOCIATED_DISCUSSED": {
+      "ORIGINAL": 39,
+      "REMAINING_BY_CANDIDATE": {
+        "A_6_STATE": 39,
+        "B_5_STATE": 39,
+        "C_4_STATE_DECISION_SIGNAL": 39
+      }
+    },
+    "COMPARATOR": {
+      "ORIGINAL": 4,
+      "REMAINING_BY_CANDIDATE": {
+        "A_6_STATE": 4,
+        "B_5_STATE": 4,
+        "C_4_STATE_DECISION_SIGNAL": 0
+      }
+    }
+  },
+  "metricCompatibility": {
+    "AI_PRESENCE": "UNCHANGED — presence is entity detection, independent of recommendation taxonomy.",
+    "RECOMMENDATION_SHARE": {
+      "currentInternalPositiveRoles": [
+        "first_recommendation",
+        "ranked_recommendation",
+        "explicit_recommendation"
+      ],
+      "note": "associated_option is NOT currently share-positive.",
+      "byCandidate": {
+        "A_6_STATE": {
+          "statesCountingAsPositiveRec": [
+            "LEADING_RECOMMENDATION"
+          ],
+          "statesCountingAsConsiderationOnly": [
+            "RECOMMENDED_OR_CONSIDERED"
+          ],
+          "issue": "RECOMMENDED_OR_CONSIDERED mixes associated_option (currently NOT in Recommendation Share) with ranked/explicit (ARE in share). Must split or redefine share before adopt.",
+          "compatibleShareDefinition": "Share numerator = LEADING_RECOMMENDATION + RECOMMENDED_OR_CONSIDERED only when internal role ∈ {ranked, explicit}; associated stays presence-only unless product explicitly expands share."
+        },
+        "B_5_STATE": {
+          "statesCountingAsPositiveRec": [
+            "LEADING"
+          ],
+          "statesCountingAsConsiderationOnly": [
+            "IN_CONSIDERATION"
+          ],
+          "issue": "IN_CONSIDERATION includes associated_option + ranked + explicit — same share-expansion risk as A.",
+          "compatibleShareDefinition": "Keep share on internal first/ranked/explicit; production IN_CONSIDERATION is not automatically share-positive."
+        },
+        "C_4_STATE_DECISION_SIGNAL": {
+          "statesCountingAsPositiveRec": [
+            "LEADING_RECOMMENDATION"
+          ],
+          "statesCountingAsConsiderationOnly": [
+            "IN_RECOMMENDATION_OR_CONSIDERATION_SET"
+          ],
+          "issue": "IN_RECOMMENDATION_OR_CONSIDERATION_SET includes associated_option; Recommendation Share must remain gated by internal positive roles or an explicit product decision to include consideration-set membership.",
+          "compatibleShareDefinition": "Default: share uses internal POSITIVE_RECOMMENDATION_ROLES only; production set is a display rollup, not an automatic share expander."
+        }
+      }
+    },
+    "FIRST_RECOMMENDATION": "MUST remain separately evidence-backed on internal first_recommendation / LEADING_* only. Do not infer first from RECOMMENDED_OR_CONSIDERED.",
+    "QUESTIONS_WON": "MUST retain strict sole first-recommendation leader logic on internal first_recommendation (or production LEADING). No change from collapse of mid-band.",
+    "QUESTIONS_MISSING": "UNCHANGED — based on entity absence / non-response, not mid-band roles.",
+    "COMPETITIVE_POSITION": "UNCHANGED — ranks by AI Presence Rate."
+  },
+  "dualLayer": {
+    "INTERNAL_RESEARCH_TAXONOMY": {
+      "PRESERVED": true,
+      "roles": [
+        "first_recommendation",
+        "ranked_recommendation",
+        "explicit_recommendation",
+        "associated_option",
+        "comparator",
+        "discussed",
+        "passing_mention",
+        "negative_or_qualified",
+        "source_only",
+        "no_mention"
+      ],
+      "storage": "expectedRecommendationRole / predictedRecommendationRole (10-class)"
+    },
+    "PRODUCTION_TAXONOMY": {
+      "derivedField": "productionRecommendationRole",
+      "storage": "derived at read-time or persisted derived column; never overwrites internal",
+      "ui": "Client-facing dashboards use production role; admin/debug shows internal + evidence"
+    }
+  },
+  "recommendedProductionTaxonomy": {
+    "NAME": "Four-state decision-signal taxonomy",
+    "ID": "C_4_STATE_DECISION_SIGNAL",
+    "STATES": [
+      "LEADING_RECOMMENDATION",
+      "IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+      "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+      "NOT_MENTIONED"
+    ],
+    "MAPPING": {
+      "first_recommendation": "LEADING_RECOMMENDATION",
+      "ranked_recommendation": "IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+      "explicit_recommendation": "IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+      "associated_option": "IN_RECOMMENDATION_OR_CONSIDERATION_SET",
+      "discussed": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+      "comparator": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+      "negative_or_qualified": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+      "passing_mention": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+      "source_only": "MENTIONED_WITHOUT_RECOMMENDATION_CLAIM",
+      "no_mention": "NOT_MENTIONED"
+    },
+    "caveat": "Adopt only after Recommendation Share gating decision for associated_option; First Rec / Questions Won stay lead-only."
+  },
+  "internalTaxonomy": {
+    "PRESERVED": "YES"
+  },
+  "gates": {
+    "BEST_DEV_ACCURACY": 0.7689655172413793,
+    "BEST_DEV_PRECISION": 0.7689655172413793,
+    "BEST_DEV_RECALL": 0.7689655172413793,
+    "BEST_KEY": "v4.1 × C_4_STATE_DECISION_SIGNAL",
+    "MEETS_98_PERCENT": "NO"
+  },
+  "holdout": {
+    "HOLDOUT_ACCESSED": "NO",
+    "HOLDOUT_CASES_INSPECTED": 0,
+    "HOLDOUT_METRICS_RUN": "NO"
+  },
+  "hardGuards": {
+    "NEW_PROVIDER_CALLS": 0,
+    "NEW_SEMANTIC_ADJUDICATOR_CALLS": 0,
+    "HOLDOUT_ACCESS": 0,
+    "AUTO_GT_CHANGES": 0,
+    "AIRTABLE_WRITES": 0,
+    "DEPLOYS": 0,
+    "THRESHOLD_LOWERING": 0
+  },
+  "notes": [
+    "Hybrid/hierarchical exact remapped scores exclude cases without stored predictions (unknown adjudicator outcomes).",
+    "v3.3 / v4 / v4.1 scores are full DEV remaps via deterministic classifier replay (no provider calls).",
+    "Original human expectedRecommendationRole was not modified; derived labels written separately.",
+    "Hierarchical remapped metrics are NOT comparable (only 50 stored error-sample rows; heavily biased toward failures). Use v3.3/v4/v4.1 full-DEV numbers for decisions.",
+    "Dominant residual after any candidate that keeps associated≠discussed: associated↔discussed confusions (39 on v4.1). Collapsing those would raise accuracy but destroy consideration-vs-discussion insight."
+  ],
+  "benchmarksCaveat": {
+    "hierarchical": "ERROR_SAMPLE_ONLY_NOT_COMPARABLE",
+    "hybrid": "PARTIAL_255_OF_290_UNKNOWN_ADJUDICATOR_EXCLUDED",
+    "deterministicClassifiers": "FULL_DEV_290"
+  }
+}

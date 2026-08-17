@@ -1,0 +1,138 @@
+{
+  "artifact": "BRAND_AI_VISIBILITY_RUNTIME_RENDERING_DIAGNOSTIC_COMPLETE",
+  "completedAt": "2026-08-15T20:13:30.000Z",
+  "Runtime": {
+    "STALE_SERVER_PROCESS": "YES_BEFORE_RESTART",
+    "STALE_FRONTEND_BUILD": "NO",
+    "FRONTEND_BUILD_MODE": "dev_static_public_files",
+    "CURRENT_COMMIT": "3c88c0b",
+    "CURRENT_BRANCH": "app-shell-left-nav",
+    "WORKTREE_DIRTY": true,
+    "SERVER_START_BEFORE": "2026-08-15T18:54:18",
+    "SERVER_START_AFTER": "2026-08-15T20:11:30Z",
+    "WAVE2_MODULE_MTIMES": "2026-08-15 ~21:51–22:08 local (after prior server start)",
+    "NODE_ENV": "(unset/development)",
+    "ISSUES": [
+      "A. stale server process (primary)",
+      "D. old response schema still consumed by UI (missing Wave1/Wave2 fields until restart)",
+      "G. Discoverability UI fell back to Phase 3C.1 placeholder when publicDiscoverability absent",
+      "I. multiple issues (stale server + fallback binding + genuine zero citations)"
+    ]
+  },
+  "FrontendCapabilities": {
+    "Portfolio_AI_Presence": "YES",
+    "All_Providers_executive_panel": "YES",
+    "client_ready_insight_titles": "YES",
+    "Questions_Missing_watchlist": "YES",
+    "Provider_Presence_panel": "YES",
+    "Citation_Rate": "YES",
+    "Owned_Source_Citation_Rate": "YES",
+    "Public_Discoverability_baseline": "YES",
+    "Metric_Definitions": "YES",
+    "FRONTEND_CODE_PRESENT": "YES",
+    "NOTE": "Static HTML/JS under public/; no webpack bundle. Hard refresh recommended after server restart."
+  },
+  "ExecutiveData_AfterRestart_Marriott_CALA_OpenAI_EN": {
+    "PORTFOLIO_AI_PRESENCE": "91.7%",
+    "BRANDS_MONITORED": "5 of 5",
+    "STRONGEST_BRAND": "Autograph Collection",
+    "BEST_COMPETITIVE_POSITION": "#1 of 15",
+    "QUESTIONS_MISSING": "8.3% (1)",
+    "UI_BACKEND_MATCH": "YES_AFTER_RESTART_HARD_REFRESH"
+  },
+  "ExecutiveData_Before_UI_Observed": {
+    "PORTFOLIO_AI_PRESENCE": "—",
+    "BRANDS_MONITORED": "0 of 5",
+    "STRONGEST_BRAND": "—",
+    "QUESTIONS_MISSING": "100% (12)",
+    "NOTE": "Matches stale server missing Wave1/Wave2 portfolioSnapshot/allProvidersPanel/clientMetricDefinitions/publicDiscoverability fields"
+  },
+  "Contradictions": {
+    "YOUR_BRANDS_VS_PRIORITY_REVIEW": "EXPLAINED",
+    "ROOT_CAUSE": "Priority Review items were still produced from HDV review-item path (competitive_gap / questions_missing) on the stale server, while Portfolio Snapshot KPI fields and portfolio brand metric enrichment required newer executive-summary + portfolio read paths that the stale process had not loaded. Same geography/provider intent; different code paths / field completeness on pre-Wave2 process."
+  },
+  "AllProviders": {
+    "STATUS": "FIXED_AFTER_RESTART",
+    "ROOT_CAUSE": "Stale server omitted allProvidersPanel / crossProviderPresence Wave wiring. Post-restart: READY=true, providers openai/gemini/perplexity/claude monitored.",
+    "PROVIDERS_MONITORED": ["claude", "gemini", "openai", "perplexity"]
+  },
+  "Discoverability": {
+    "PERSISTED_STATE": "BOUNDED_LIVE LIVE_PUBLIC_BASELINE_VALIDATED (phase3c2_latest.json)",
+    "UI_STATE_BEFORE": "Priority Page URL Required / public crawl baseline not yet run (Phase 3C.1 placeholder fallback)",
+    "UI_STATE_AFTER": "BASELINE_MEASURED via publicDiscoverability",
+    "ROOT_CAUSE": "UI prefers publicDiscoverability; when absent (stale API) falls back to discoverabilityBusinessImpact placeholder which still says crawl baseline not run and Priority Page URL Required. Fixture/live results were on disk but stale API did not expose publicDiscoverability.",
+    "FIXTURE_RESULT_PERSISTED": true,
+    "LIVE_RESULT_PERSISTED": true,
+    "UI_READS_FIXTURE": false,
+    "UI_READS_LATEST_REPORT": true,
+    "URL_INVENTORY_FOUND": true,
+    "BRAND_WEBSITE_FOUND": true
+  },
+  "CitationIntelligence": {
+    "DATA_EXISTS": "YES_ZERO_RATE",
+    "RESPONSES_MONITORED": 12,
+    "RESPONSES_WITH_CITATIONS": 0,
+    "CITATION_RATE": "0%",
+    "OWNED_SOURCE_CITATION_RATE": "0%",
+    "THIRD_PARTY_CITATION_RATE": "0%",
+    "UI_RENDERING": "EMPTY_IS_CORRECT_FOR_ZERO_CITATIONS",
+    "ROOT_CAUSE": "Cohort has no retained citations in monitored responses — not a route/field mismatch after restart. Do not fabricate citations."
+  },
+  "MetricDefinitions": {
+    "DATA_EXISTS": true,
+    "COUNT": 12,
+    "UI_RENDERING_BEFORE": "empty — stale API omitted clientMetricDefinitions",
+    "UI_RENDERING_AFTER": "renders when API returns clientMetricDefinitions array",
+    "ROOT_CAUSE": "Frontend empty-state copy when defs array missing/empty; definitions are independent of Presence but were not returned by stale server module."
+  },
+  "MonitoringCoverage": {
+    "LINKED_BRANDS": 5,
+    "MONITORED_BRANDS": 5,
+    "UNMONITORED_BRANDS": 0,
+    "REASONS": "0 of 5 was incorrect under stale process; after restart all 5 Marriott showcase brands have CALA/OpenAI/EN observed runs."
+  },
+  "RuntimeActions": {
+    "SERVER_RESTART_REQUIRED": "YES",
+    "SERVER_RESTART_PERFORMED": "YES",
+    "FRONTEND_REBUILD_REQUIRED": "NO",
+    "CACHE_CLEAR_REQUIRED": "NO_SERVER_MODULE_CACHE_CLEARED_BY_RESTART",
+    "BROWSER_HARD_REFRESH_REQUIRED": "YES"
+  },
+  "PostFixVerification": {
+    "before": {
+      "Portfolio_AI_Presence": "—",
+      "Brands_Monitored": "0 of 5",
+      "All_Providers": "empty",
+      "Your_Brands": "validated monitoring unavailable",
+      "Discoverability": "Priority Page URL Required",
+      "Metric_Definitions": "absent",
+      "Priority_Review": "had HDV gap items"
+    },
+    "after_backend": {
+      "Portfolio_AI_Presence": "91.7%",
+      "Brands_Monitored": "5 of 5",
+      "All_Providers": "READY 4 providers",
+      "Your_Brands": "5 observed Presence rows",
+      "Discoverability": "BASELINE_MEASURED",
+      "Metric_Definitions": "12 defs",
+      "Citation": "0% genuine empty",
+      "Priority_Review": "observed 5 items"
+    }
+  },
+  "FinalDiagnosis_PriorityOrder": [
+    "1. STALE_SERVER_PROCESS — Node process started 18:54; Wave 2 modules written after 21:51; API served pre-Wave2 executive payload shape",
+    "2. UI FALLBACK BINDING — Discoverability fell back to Phase 3C.1 placeholder when publicDiscoverability missing; Metric Definitions empty when clientMetricDefinitions missing",
+    "3. GENUINE ZERO CITATIONS — Citation panel empty is correct for this OpenAI CALA EN cohort (0/12 responses with citations)",
+    "4. BROWSER_HARD_REFRESH — required so static JS/HTML and new API responses are not served from browser cache"
+  ],
+  "HardGuards": {
+    "PRESENCE_DEFINITION_CHANGES": 0,
+    "PRESENCE_RESCORE": 0,
+    "RECOMMENDED_RESEARCH": 0,
+    "NEW_PROVIDER_CALLS": 0,
+    "ARBITRARY_DATA": 0,
+    "DEPLOYS": 0
+  },
+  "status": "BRAND_AI_VISIBILITY_RUNTIME_FIXED",
+  "USER_ACTION_REQUIRED": "Hard-refresh the Brand AI Visibility page (Ctrl+Shift+R) while logged in"
+}

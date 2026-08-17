@@ -38,6 +38,20 @@
       backdrop-filter: blur(8px);
     }
     .toolbar label { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .toolbar .toolbar-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    .toolbar .toolbar-toggle input {
+      accent-color: var(--accent);
+    }
     .toolbar select, .toolbar button, .toolbar input[type="date"] {
       background: var(--surface); border: 1px solid var(--border); color: var(--text);
       border-radius: 10px; padding: 9px 14px; font-size: 13px;
@@ -79,20 +93,25 @@
       background: var(--surface-2); border-color: var(--border); color: var(--text);
     }
     .insights {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px; margin-bottom: 22px;
+      display: flex; flex-wrap: nowrap; gap: 10px; margin-bottom: 22px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
     .insight {
-      border-radius: 12px; padding: 14px 16px; border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 12px; border: 1px solid var(--border);
       background: var(--surface);
+      flex: 1 1 0; min-width: 140px;
     }
-    .insight h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
-    .insight p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .insight h3 { margin: 0 0 6px; font-size: 12px; font-weight: 600; line-height: 1.3; }
+    .insight p { margin: 0; font-size: 11px; color: var(--muted); line-height: 1.45; }
     .insight--good { border-color: rgba(62, 207, 142, 0.45); background: linear-gradient(180deg, rgba(62,207,142,0.08), var(--surface)); }
     .insight--good h3 { color: var(--good); }
     .insight--warn { border-color: rgba(245, 185, 66, 0.45); background: linear-gradient(180deg, rgba(245,185,66,0.08), var(--surface)); }
     .insight--warn h3 { color: var(--warn); }
     .insight--info h3 { color: #9eb4ff; }
+    @media (max-width: 900px) {
+      .insights { flex-wrap: wrap; }
+      .insight { flex: 1 1 calc(50% - 10px); min-width: 180px; }
+    }
     .kpi-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 10px; margin-bottom: 14px;
@@ -112,6 +131,9 @@
       display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px; margin-bottom: 12px;
     }
     @media (max-width: 960px) { .layout-main { grid-template-columns: 1fr; } }
+    .layout-stack {
+      display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;
+    }
     .layout-secondary {
       display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
     }
@@ -313,6 +335,27 @@
       margin-top: 0; font-size: 12px;
     }
     .line-chart__table th, .line-chart__table td { padding: 6px 4px; }
+    .date-matrix-wrap {
+      overflow-x: auto; margin-top: 10px; -webkit-overflow-scrolling: touch;
+    }
+    .date-matrix {
+      width: 100%; border-collapse: collapse; font-size: 11px;
+      min-width: max(100%, calc(72px + var(--date-cols, 7) * 44px));
+    }
+    .date-matrix th, .date-matrix td {
+      padding: 6px 4px; border-bottom: 1px solid var(--border);
+      text-align: center; white-space: nowrap; vertical-align: middle;
+    }
+    .date-matrix th:first-child,
+    .date-matrix td:first-child {
+      text-align: left; position: sticky; left: 0; background: var(--surface);
+      color: var(--muted); font-weight: 600; min-width: 72px; z-index: 1;
+    }
+    .date-matrix thead th {
+      color: var(--muted); font-weight: 600; font-size: 10px;
+    }
+    .date-matrix td { color: var(--text); font-variant-numeric: tabular-nums; }
+    .date-matrix td.date-matrix__duration { color: var(--accent-2); font-size: 10px; }
     .dash-side-stack { display: grid; gap: 10px; }
     .daily-chart { margin-bottom: 0; }
     .stacked-chart {
@@ -373,13 +416,25 @@
     .device-row__meta { display: flex; align-items: center; gap: 8px; }
     .device-row__swatch { width: 10px; height: 10px; border-radius: 2px; }
     .device-row__pct { color: var(--muted); font-size: 12px; min-width: 42px; text-align: right; }
+    .segment-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .segment-row:last-child { border-bottom: none; }
+    .segment-row__value { font-weight: 700; }
     .recs-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 10px;
+      display: flex; flex-wrap: nowrap; gap: 10px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
     .rec {
-      border-radius: 12px; padding: 12px 14px; border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 12px; border: 1px solid var(--border);
       background: var(--surface-2);
+      flex: 1 1 0; min-width: 160px;
     }
     .rec__meta {
       display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px;
@@ -395,13 +450,17 @@
     .rec--win { border-color: rgba(62, 207, 142, 0.45); background: linear-gradient(180deg, rgba(62,207,142,0.08), var(--surface-2)); }
     .rec--win .rec__pill--severity { color: var(--good); border-color: rgba(62,207,142,0.4); }
     .rec--watch .rec__pill--severity { color: #9eb4ff; }
-    .rec h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
-    .rec p { margin: 0 0 6px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .rec h3 { margin: 0 0 6px; font-size: 12px; font-weight: 600; line-height: 1.3; }
+    .rec p { margin: 0 0 6px; font-size: 11px; color: var(--muted); line-height: 1.45; }
     .rec__action {
-      margin: 0; font-size: 12px; color: var(--text); line-height: 1.45;
+      margin: 0; font-size: 11px; color: var(--text); line-height: 1.4;
       border-top: 1px solid var(--border); padding-top: 8px;
     }
-    .rec__evidence { font-size: 11px; color: var(--muted); }
+    .rec__evidence { font-size: 10px; color: var(--muted); }
+    @media (max-width: 900px) {
+      .recs-grid { flex-wrap: wrap; }
+      .rec { flex: 1 1 calc(50% - 10px); min-width: 200px; }
+    }
     .locale-compare-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
     }
@@ -472,6 +531,10 @@
         </select>
       </label>
       <button type="button" id="laRefresh">Refresh</button>
+      <label class="toolbar-toggle" title="Exclude your internal Barcelona traffic from charts and KPIs">
+        <input type="checkbox" id="laExcludeInternal" />
+        Exclude Internal Traffic (Barcelona)
+      </label>
       <button type="button" id="laExportEvents" class="secondary">Export Events CSV</button>
       <button type="button" id="laExportFunnel" class="secondary">Export Funnel CSV</button>
     </div>
@@ -527,16 +590,21 @@
       </section>
 
       <section class="kpi-grid" id="laCards"></section>
+      <section class="panel" style="margin-bottom:18px;">
+        <h2>Traffic Segments</h2>
+        <p class="panel-sub">Separate your own location from external audience signals.</p>
+        <div id="laTrafficSegments"></div>
+      </section>
 
-      <div class="layout-main">
+      <div class="layout-stack">
         <section class="panel">
           <h2>Audience Overview</h2>
-          <p class="panel-sub">Sessions and median time on page by day — chart left, daily table right.</p>
+          <p class="panel-sub">Sessions and median time by day across all tracked public pages.</p>
           <div id="laAudienceOverview"></div>
         </section>
         <section class="panel">
           <h2>Acquisition</h2>
-          <p class="panel-sub">How visitors arrived — direct, referral, campaign, or embed.</p>
+          <p class="panel-sub">Where visitors came from — embed, direct, referral, or campaign (UTM). Colors: hero yellow = Direct, lavender = Homepage Embed.</p>
           <div id="laAcquisition"></div>
         </section>
       </div>
@@ -580,7 +648,7 @@
       <div class="layout-dashboard-triple">
         <section class="panel">
           <h2>Popular Pages</h2>
-          <p class="panel-sub">Landing entry URLs and homepage embed views.</p>
+          <p class="panel-sub">All tracked public pages (home, insights, opportunity review, and site).</p>
           <div id="laPopularPages"></div>
         </section>
         <section class="panel">
@@ -728,6 +796,6 @@
   </div>
 
   <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614e"></script>
-  <script src="/js/landing-analytics-report.js?v=20260803d"></script>
+  <script src="/js/landing-analytics-report.js?v=20260806a-audience-all"></script>
 </body>
 </html>

@@ -21,17 +21,20 @@ import {
 } from "../lib/dealality/airtable-upload-attachment.js";
 import { INTAKE_DEALS_USER_LINK } from "./schemas/intake-deal-fields.js";
 import { getAllOutreachDealIds } from "./outreach-setup.js";
-import { computeMatchScoreForDealBrand, computeRecommendedBrand, computeTopAlternativeBrands, getBrandBasicsRecordId, resolvePreferredBrandToName } from "./match-score-server.js";
+import { computeMatchScoreForDealBrand, computeRecommendedBrand, computeTopAlternativeBrands, getBrandBasicsRecordId, resolvePreferredBrandToName, resolveBrandStatusEligibilityByName } from "./match-score-server.js";
 import { lookupMatchScoreNewByBrand } from "../lib/match-score-brand-lookup.js";
 import {
   buildScoresIndexFromCacheRow,
+  cacheHasCurrentScoreModel,
   cacheNeedsRefresh,
+  DEAL_BRAND_CACHE_SCORE_MODEL_VERSION,
   getBreakdownFromCacheIndex,
   getScoreFromCacheIndex,
   matchScoresMapFromCacheRow,
   preferredScoreFromCache,
   roundMatchScoreNew,
 } from "../lib/deal-brand-cache-snapshot.js";
+import { sanitizeBrandMatchBreakdownDetails } from "../lib/brand-match-obsolete-breakdown-keys.js";
 import {
   DEALS_TABLE,
   DEALS_STATUS_FIELD,
@@ -77,12 +80,18 @@ import {
   LS_FORM_TO_AIRTABLE,
   LS_AIRTABLE_TO_FORM,
   extractDealReadinessListFields,
+  extractCommercialReadinessListFields,
+  coerceMixedUseMpFieldForWrite,
+  coerceMixedUseMpFieldForRead,
+  coerceMixedUseSelectForWrite,
+  coerceMixedUseSelectForRead,
 } from "./schemas/deal-setup-fields.js";
 import { validateDealSetupPayload } from "./deal-setup-validate.js";
 import { fetchTargetsForDeal } from "./target-list.js";
 import { loadNewBaseOperatorBundle, buildPrefillObjectFromNewBaseRows, loadBrandNameByIdMap } from "./lib/operator-setup-new-base-read.js";
 import { filterDealsRecordsForUser } from "../lib/dealality/filter-my-deals.js";
 import { normalizeOperatorAlignmentDealInputs } from "../lib/operator-alignment-deal-normalize.js";
+import { normalizeDealSetupFields } from "../lib/deal-setup-form-value-normalize.js";
 import {
   scoreDealStructureFactor,
   scoreServiceOfferingsFactor,
@@ -277,9 +286,26 @@ async function fetchPreferredBrandsMap(baseId, apiKey, siRecordIds) {
   return preferredBrandsMapFromSiDataMapResolved(baseId, apiKey, siDataMap);
 }
 
+/**
+ * Prefer the best Deal Brand Cache row when duplicates exist for one deal.
+ * Higher scoreModelVersion wins; tie-break on newer Last Computed At.
+ */
+function shouldPreferDealBrandCacheRow(candidate, existing) {
+  if (!existing) return true;
+  const candV = Number(candidate.scoreModelVersion) || 0;
+  const existV = Number(existing.scoreModelVersion) || 0;
+  if (candV !== existV) return candV > existV;
+  const candAt = candidate.lastComputedAt ? Date.parse(candidate.lastComputedAt) : 0;
+  const existAt = existing.lastComputedAt ? Date.parse(existing.lastComputedAt) : 0;
+  if (candAt !== existAt) return candAt > existAt;
+  return false;
+}
+
 /** Fetch Deal Brand Cache table and return Map(dealId -> { preferredBrandsChosen, preferredScore, matchScoresNewByBrand, topAlternatives, cacheRecordId }). Returns empty Map if table missing or error. */
 async function fetchDealBrandCacheMap(baseId, apiKey) {
   const map = new Map();
+  /** @type {Map<string, string[]>} dealId -> all cache record ids (for duplicate cleanup) */
+  const duplicateIdsByDeal = new Map();
   const table = encodeURIComponent(DEAL_BRAND_CACHE_TABLE);
   let offset = null;
   try {
@@ -323,22 +349,40 @@ async function fetchDealBrandCacheMap(baseId, apiKey) {
           } catch (_) { /* ignore */ }
         }
         let breakdownNewDetailsByBrand = {};
+        let scoreModelVersion = null;
         const breakdownJson = fields[DEAL_BRAND_CACHE_BREAKDOWN_FIELD];
         if (breakdownJson && typeof breakdownJson === "string") {
           try {
             const parsed = JSON.parse(breakdownJson);
-            if (parsed && typeof parsed === "object") breakdownNewDetailsByBrand = parsed;
+            if (parsed && typeof parsed === "object") {
+              breakdownNewDetailsByBrand = parsed;
+              if (parsed._meta && Number(parsed._meta.scoreModelVersion)) {
+                scoreModelVersion = Number(parsed._meta.scoreModelVersion);
+              }
+            }
           } catch (_) { /* ignore */ }
         }
         const preferredBrandsChosen = typeof preferredBrands === "string" ? preferredBrands.trim() : "";
-        map.set(dealId, {
+        const lastComputedAt = fields[DEAL_BRAND_CACHE_LAST_COMPUTED_FIELD]
+          ? String(fields[DEAL_BRAND_CACHE_LAST_COMPUTED_FIELD])
+          : "";
+        const row = {
           cacheRecordId: rec.id,
           preferredBrandsChosen: preferredBrandsChosen || undefined,
           preferredScore: preferredScore != null && !Number.isNaN(preferredScore) ? preferredScore : undefined,
           matchScoresNewByBrand: Object.keys(matchScoresNewByBrand).length > 0 ? matchScoresNewByBrand : undefined,
           breakdownNewDetailsByBrand: Object.keys(breakdownNewDetailsByBrand).length > 0 ? breakdownNewDetailsByBrand : undefined,
           topAlternatives,
-        });
+          scoreModelVersion: scoreModelVersion || undefined,
+          lastComputedAt: lastComputedAt || undefined,
+        };
+        const priorIds = duplicateIdsByDeal.get(dealId) || [];
+        priorIds.push(rec.id);
+        duplicateIdsByDeal.set(dealId, priorIds);
+        const existing = map.get(dealId);
+        if (shouldPreferDealBrandCacheRow(row, existing)) {
+          map.set(dealId, row);
+        }
       }
       offset = data.offset || null;
     } while (offset);
@@ -346,6 +390,15 @@ async function fetchDealBrandCacheMap(baseId, apiKey) {
     if (e.message && (e.message.includes("NOT_FOUND") || e.message.includes("Could not find"))) return map;
     console.warn("Deal Brand Cache fetch failed (using live data):", e.message);
     return map;
+  }
+  for (const [dealId, ids] of duplicateIdsByDeal.entries()) {
+    if (ids.length < 2) continue;
+    const keepId = map.get(dealId)?.cacheRecordId;
+    const staleIds = ids.filter((id) => id !== keepId);
+    if (staleIds.length) {
+      map.get(dealId).duplicateCacheRecordIds = staleIds;
+      console.warn("[Deal Brand Cache] duplicate rows for deal", dealId, "keeping", keepId, "stale", staleIds.join(","));
+    }
   }
   return map;
 }
@@ -364,7 +417,48 @@ async function upsertDealBrandCache(baseId, apiKey, dealId, payload) {
     [DEAL_BRAND_CACHE_LAST_COMPUTED_FIELD]: new Date().toISOString(),
   };
   if (payload.breakdownNewDetailsByBrand && Object.keys(payload.breakdownNewDetailsByBrand).length > 0) {
-    fields[DEAL_BRAND_CACHE_BREAKDOWN_FIELD] = JSON.stringify(payload.breakdownNewDetailsByBrand);
+    const compactBrands = {};
+    for (const [brandKey, details] of Object.entries(payload.breakdownNewDetailsByBrand)) {
+      if (!details || typeof details !== "object") continue;
+      const copy = sanitizeBrandMatchBreakdownDetails({ ...details });
+      if (copy._meta && typeof copy._meta === "object") {
+        copy._meta = {
+          ...copy._meta,
+          scoreModelVersion: DEAL_BRAND_CACHE_SCORE_MODEL_VERSION,
+        };
+        delete copy._meta.guidance;
+        delete copy._meta.fitScore;
+        delete copy._meta.opportunityScore;
+        delete copy._meta.pillarBlend;
+      }
+      compactBrands[brandKey] = copy;
+    }
+    let breakdownPayload = {
+      _meta: { scoreModelVersion: DEAL_BRAND_CACHE_SCORE_MODEL_VERSION },
+      ...compactBrands,
+    };
+    let serialized = JSON.stringify(breakdownPayload);
+    // Airtable long text soft limit — drop per-brand notes if still oversized.
+    if (serialized.length > 90000) {
+      for (const brandKey of Object.keys(compactBrands)) {
+        const d = compactBrands[brandKey];
+        if (!d || typeof d !== "object") continue;
+        for (const fk of Object.keys(d)) {
+          if (fk === "_meta") continue;
+          if (d[fk] && typeof d[fk] === "object") {
+            delete d[fk].note;
+            delete d[fk].brandValue;
+            delete d[fk].dealValue;
+          }
+        }
+      }
+      breakdownPayload = {
+        _meta: { scoreModelVersion: DEAL_BRAND_CACHE_SCORE_MODEL_VERSION },
+        ...compactBrands,
+      };
+      serialized = JSON.stringify(breakdownPayload);
+    }
+    fields[DEAL_BRAND_CACHE_BREAKDOWN_FIELD] = serialized;
   }
   if (payload.preferredScore != null) fields[DEAL_BRAND_CACHE_PREFERRED_SCORE_FIELD] = payload.preferredScore;
   if (payload.bestMatchBrand != null) fields[DEAL_BRAND_CACHE_BEST_MATCH_BRAND_FIELD] = payload.bestMatchBrand;
@@ -377,6 +471,26 @@ async function upsertDealBrandCache(baseId, apiKey, dealId, payload) {
     });
     const data = await res.json();
     if (data.error) throw new Error(data.error.message || "Failed to update cache");
+    const staleIds = Array.isArray(cached.duplicateCacheRecordIds) ? cached.duplicateCacheRecordIds : [];
+    for (const staleId of staleIds) {
+      try {
+        await waitAirtableSerial();
+        const delRes = await fetch(`https://api.airtable.com/v0/${baseId}/${table}/${encodeURIComponent(staleId)}`, {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + apiKey },
+        });
+        if (!delRes.ok) {
+          const delBody = await delRes.json().catch(() => ({}));
+          console.warn(
+            "[Deal Brand Cache] failed to delete duplicate",
+            staleId,
+            delBody?.error?.message || delRes.status
+          );
+        }
+      } catch (e) {
+        console.warn("[Deal Brand Cache] failed to delete duplicate", staleId, e.message || e);
+      }
+    }
     return data;
   }
   const res = await fetch(`https://api.airtable.com/v0/${baseId}/${table}`, {
@@ -445,6 +559,7 @@ async function fetchInitialMatchedSupportState(baseId, apiKey, deals) {
       dealId,
       brandName: valueToStr(f["Brand Name"]) || "",
       status: valueToStr(f["Status"]) || "Considering",
+      // Stored Target List Match Score is audit-only; My Deals Shortlist/Target UI uses live Match Score New.
       matchScore: f["Match Score"] ?? null,
     });
   }
@@ -547,7 +662,8 @@ function strategicIntentToFormFields(siFields) {
       formName === "Top Concerns for this Project" ||
       formName === "Top 3 Deal Breakers" ||
       formName === "Must-haves From Brand or Operator" ||
-      formName === "Incentive Types Interested In"
+      formName === "Incentive Types Interested In" ||
+      formName === "Target Guest Segment"
     ) {
       const arr = Array.isArray(val)
         ? val.map((v) => (typeof v === "string" ? v : (v && v.name) || "").trim()).filter(Boolean)
@@ -557,7 +673,7 @@ function strategicIntentToFormFields(siFields) {
       merge[formName] = arr.length > 0 ? arr.join(", ") : "";
     } else {
       const s = val == null ? "" : typeof val === "string" ? val.trim() : String(val);
-      merge[formName] = s;
+      merge[formName] = coerceMixedUseSelectForRead(formName, s);
     }
   }
   return merge;
@@ -582,7 +698,8 @@ function formFieldsToStrategicIntentPayload(fields) {
       formName === "Top Concerns for this Project" ||
       formName === "Top 3 Deal Breakers" ||
       formName === "Must-haves From Brand or Operator" ||
-      formName === "Incentive Types Interested In"
+      formName === "Incentive Types Interested In" ||
+      formName === "Target Guest Segment"
     ) {
       const arr = Array.isArray(val)
         ? val.map((v) => (typeof v === "string" ? v : (v && v.name) || "").trim()).filter(Boolean)
@@ -595,7 +712,7 @@ function formFieldsToStrategicIntentPayload(fields) {
       if (!Number.isNaN(num)) payload[airtableKey] = Math.min(5, Math.max(1, num));
     } else {
       const s = val == null ? "" : typeof val === "string" ? val.trim() : String(val);
-      payload[airtableKey] = s;
+      payload[airtableKey] = coerceMixedUseSelectForWrite(formName, s);
     }
   }
   return payload;
@@ -763,7 +880,7 @@ function contactUploadsToFormFields(cuFields) {
     let val = cuFields[airtableKey];
     if (val === undefined) continue;
     const s = val == null ? "" : typeof val === "string" ? val.trim() : Array.isArray(val) ? (val.map((v) => (typeof v === "string" ? v : (v && v.name) || "").trim()).filter(Boolean).join(", ")) : String(val);
-    merge[formName] = s;
+    merge[formName] = coerceMixedUseSelectForRead(formName, s);
   }
   return merge;
 }
@@ -783,7 +900,7 @@ function formFieldsToContactUploadsPayload(fields) {
     }
     const airtableKey = CU_FORM_TO_AIRTABLE[formName] ?? formName;
     const s = val == null ? "" : typeof val === "string" ? val.trim() : String(val);
-    payload[airtableKey] = s;
+    payload[airtableKey] = coerceMixedUseSelectForWrite(formName, s);
   }
   return payload;
 }
@@ -1282,60 +1399,16 @@ export function isFieldFilled(val) {
   return false;
 }
 
-/** Round to one decimal and clamp 0–100 for display differentiation. */
+/** Round to one decimal and clamp 0–100 for display. */
 function toOneDecimal(score) {
   const n = Number(score);
   if (Number.isNaN(n)) return undefined;
   return Math.min(100, Math.max(0, Math.round(n * 10) / 10));
 }
 
-/**
- * Deterministic offset (-7 to +7) from brand name so same deal shows clearly different scores per brand.
- * Spread is wide enough that e.g. base 96 yields scores from ~89 to 100 across four brands.
- */
-function brandScoreOffset(brandName) {
-  if (!brandName || typeof brandName !== "string") return 0;
-  let h = 0;
-  const s = brandName.trim().toLowerCase();
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
-  return ((h % 141) - 70) / 10; // -7.0 to +7.0
-}
-
-/**
- * Calculate a simple match score (0-100) when no Match Score field exists in Airtable.
- * Uses the same kinds of signals as the Brand Development Dashboard (chain scale, project type,
- * deal type, preferred brands) but without brand-specific criteria. The full weighted breakdown
- * (MKT1, SEG1, etc.) is computed only in the Brand Development Dashboard.
- * Returns score with one decimal for differentiation.
- */
-function calculateMatchScoreFromDealData({ hotelChainScale, projectType, dealType, preferredBrandsChosen }, singleBrandName = null) {
-  let score = 70;
-  const scale = (hotelChainScale || "").toLowerCase();
-  if (scale) {
-    if (scale.includes("luxury") || scale.includes("upper upscale")) score += 12;
-    else if (scale.includes("upscale")) score += 8;
-    else if (scale.includes("midscale")) score += 4;
-  }
-  const proj = (projectType || "").toLowerCase();
-  if (proj) {
-    if (proj.includes("new build") || proj.includes("conversion") || proj.includes("reflag")) score += 6;
-    else score += 3;
-  }
-  const dtype = (dealType || "").toLowerCase();
-  if (dtype) {
-    if (dtype.includes("lease") || dtype.includes("brand-managed") || dtype.includes("franchise")) score += 4;
-  }
-  const hasPreferred = preferredBrandsChosen && String(preferredBrandsChosen).trim() !== "" && String(preferredBrandsChosen).trim() !== "—";
-  if (hasPreferred) score += 8;
-  const base = Math.min(100, Math.max(0, score));
-  const offset = singleBrandName ? brandScoreOffset(singleBrandName) : 0;
-  return toOneDecimal(base + offset);
-}
-
-/** Compute completion % from a flat field list (reference/fallback only; Data Comp. % in app is from form’s UI-required fields). */
 /** Normalize Airtable record to a consistent deal shape.
  * Project Location: from linked Location & Property record — City column + Country column in that table.
- * When mpDataMap, siDataMap, baseId, apiKey are provided and deal has preferred brands, uses 19-factor match score.
+ * When mpDataMap, siDataMap, baseId, apiKey are provided and deal has preferred brands, uses Match Score New (canonical Brand Match Score).
  * cuDataMap: Map(contactUploadsRecordId -> raw fields) so "Would You Like to Filter Out Brands Without Key Money?" is read from Contact & Uploads (deal setup).
  * dealBrandCacheMap: optional Map(dealId -> { preferredBrandsChosen, preferredScore, matchScoresNewByBrand }) from Deal Brand Cache table; when present and has data, skips per-brand score computation. */
 async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealIds = null, siPreferredBrandsMap = null, mpDataMap = null, siDataMap = null, baseId = null, apiKey = null, cuDataMap = null, dealBrandCacheMap = null) {
@@ -1435,28 +1508,8 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
     const siId = getLinkedStrategicIntentId(f);
     if (siId) preferredBrandsChosen = siPreferredBrandsMap.get(siId) || "";
   }
-  const matchScoreFieldNames = [
-    process.env.AIRTABLE_DEALS_MATCH_SCORE_FIELD,
-    "Match Score",
-    "Match_Score",
-    "Match score",
-    "match score",
-    "MatchScore",
-    "matchScore",
-  ].filter(Boolean);
-  let matchScoreRaw = undefined;
-  for (const name of matchScoreFieldNames) {
-    if (f[name] !== undefined && f[name] !== null && f[name] !== "") {
-      matchScoreRaw = f[name];
-      break;
-    }
-  }
-  let matchScore =
-    typeof matchScoreRaw === "number" && !Number.isNaN(matchScoreRaw)
-      ? toOneDecimal(matchScoreRaw)
-      : typeof matchScoreRaw === "string" && matchScoreRaw.trim() !== ""
-        ? toOneDecimal(parseFloat(matchScoreRaw))
-        : undefined;
+  // Deal-table Match Score is legacy/stale — never use it as product Brand Match Score.
+  // Canonical score comes from Match Score New (cache or live compute) only.
   const brandsListRaw = preferredBrandsChosen && String(preferredBrandsChosen).trim() !== "" && String(preferredBrandsChosen).trim() !== "—"
     ? String(preferredBrandsChosen).split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean)
     : [];
@@ -1468,7 +1521,11 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
   const hasCachedScores =
     Object.values(cachedScoresPeek).some((s) => s != null && s !== "") ||
     (cache != null && cache.preferredScore != null);
-  const useCache = cache && brandsList.length > 0 && hasCachedScores;
+  const useCache =
+    cache &&
+    brandsList.length > 0 &&
+    hasCachedScores &&
+    (cacheHasCurrentScoreModel(cache) || !(baseId && apiKey));
   if (useCache) {
     const cachedScores = matchScoresMapFromCacheRow(cache);
     const matchBreakdownNewDetailsByBrand = cache.breakdownNewDetailsByBrand || {};
@@ -1476,6 +1533,13 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
     const firstScore =
       lookupMatchScoreNewByBrand(cachedScores, firstBrand) ??
       (cache.preferredScore != null ? toOneDecimal(cache.preferredScore) : undefined);
+    const matchScoresByBrand = Object.fromEntries(
+      brandsList.map((b) => {
+        const key = String(b).trim();
+        const s = lookupMatchScoreNewByBrand(cachedScores, key);
+        return [key, s != null ? toOneDecimal(s) : undefined];
+      })
+    );
     return {
       id: rec.id,
       projectName: projectName || "—",
@@ -1493,13 +1557,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       strategicIntentForm,
       preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
       matchScore: firstScore,
-      matchScoresByBrand: Object.fromEntries(
-        brandsList.map((b) => {
-          const key = String(b).trim();
-          const s = lookupMatchScoreNewByBrand(cachedScores, key);
-          return [key, s != null ? toOneDecimal(s) : undefined];
-        })
-      ),
+      matchScoresByBrand,
       matchScoreNew: firstScore,
       matchScoresNewByBrand: cachedScores,
       matchBreakdownByBrand: {},
@@ -1523,16 +1581,14 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
     const matchKeyMoneyGateReasonByBrand = {};
     for (const brand of brandsList) {
       const key = String(brand).trim();
-      const { score, breakdown, breakdownDetails, keyMoneyGateReason, scoreNew, breakdownNew, breakdownNewDetails } = await computeMatchScoreForDealBrand(f, locationData, mpData, siData, brand, baseId, apiKey);
-      matchScoresByBrand[key] = score == null ? 0 : toOneDecimal(score);
-      matchScoresNewByBrand[key] = scoreNew != null && scoreNew !== "" ? toOneDecimal(scoreNew) : null;
-      if (breakdown && typeof breakdown === "object") matchBreakdownByBrand[key] = breakdown;
-      if (breakdownDetails && typeof breakdownDetails === "object") matchBreakdownDetailsByBrand[key] = breakdownDetails;
+      const { scoreNew, breakdownNewDetails, keyMoneyGateReason } = await computeMatchScoreForDealBrand(f, locationData, mpData, siData, brand, baseId, apiKey);
+      const canonical = scoreNew != null && scoreNew !== "" ? toOneDecimal(scoreNew) : null;
+      matchScoresByBrand[key] = canonical;
+      matchScoresNewByBrand[key] = canonical;
       if (breakdownNewDetails && typeof breakdownNewDetails === "object") matchBreakdownNewDetailsByBrand[key] = breakdownNewDetails;
       if (keyMoneyGateReason && typeof keyMoneyGateReason === "string") matchKeyMoneyGateReasonByBrand[key] = keyMoneyGateReason;
     }
     const firstKey = String(brandsList[0]).trim();
-    const firstBrandScore = matchScoresByBrand[firstKey];
     const firstBrandScoreNew = matchScoresNewByBrand[firstKey];
     return {
       id: rec.id,
@@ -1550,7 +1606,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       hasOutreachSetup,
       strategicIntentForm,
       preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
-      matchScore: firstBrandScore,
+      matchScore: firstBrandScoreNew,
       matchScoresByBrand,
       matchScoreNew: firstBrandScoreNew,
       matchScoresNewByBrand,
@@ -1560,77 +1616,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       matchKeyMoneyGateReasonByBrand,
     };
   }
-  if (matchScore === undefined) {
-    if (brandsList.length === 0) {
-      matchScore = calculateMatchScoreFromDealData({ hotelChainScale, projectType, dealType, preferredBrandsChosen: "" });
-    } else if (brandsList.length === 1) {
-      matchScore = calculateMatchScoreFromDealData(
-        { hotelChainScale, projectType, dealType, preferredBrandsChosen },
-        brandsList[0]
-      );
-    } else {
-      const matchScoresByBrand = {};
-      brandsList.forEach((brand) => {
-        const key = String(brand).trim();
-        matchScoresByBrand[key] = calculateMatchScoreFromDealData(
-          { hotelChainScale, projectType, dealType, preferredBrandsChosen },
-          brand
-        );
-      });
-      matchScore = matchScoresByBrand[String(brandsList[0]).trim()];
-      return {
-        id: rec.id,
-        projectName: projectName || "—",
-        hotelLocation: hotelLocation || "—",
-        hotelType: hotelType || "—",
-        hotelChainScale: hotelChainScale || "—",
-        propertyDescription: propertyDescription || "—",
-        dealBidType: dealBidType || "—",
-        projectType: projectType || "—",
-        targetOpeningDate: targetOpening || "—",
-        formStatus: formStatus || "—",
-        dealType: dealType || "—",
-        dealStatus: dealStatus || "—",
-        hasOutreachSetup,
-        strategicIntentForm,
-        preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
-        matchScore,
-        matchScoresByBrand,
-        matchScoreNew: undefined,
-        matchScoresNewByBrand: {},
-        matchBreakdownNewDetailsByBrand: {},
-      };
-    }
-  } else if (brandsList.length > 1) {
-    const matchScoresByBrand = {};
-    brandsList.forEach((brand) => {
-      const key = String(brand).trim();
-      const base = typeof matchScore === "number" ? matchScore : parseFloat(matchScore) || 70;
-      matchScoresByBrand[key] = toOneDecimal(base + brandScoreOffset(brand));
-    });
-    return {
-      id: rec.id,
-      projectName: projectName || "—",
-      hotelLocation: hotelLocation || "—",
-      hotelType: hotelType || "—",
-      hotelChainScale: hotelChainScale || "—",
-      propertyDescription: propertyDescription || "—",
-      dealBidType: dealBidType || "—",
-      projectType: projectType || "—",
-      targetOpeningDate: targetOpening || "—",
-      formStatus: formStatus || "—",
-      dealType: dealType || "—",
-        dealStatus: dealStatus || "—",
-        hasOutreachSetup,
-        strategicIntentForm,
-        preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
-        matchScore: matchScoresByBrand[String(brandsList[0]).trim()],
-      matchScoresByBrand,
-      matchScoreNew: undefined,
-      matchScoresNewByBrand: {},
-      matchBreakdownNewDetailsByBrand: {},
-    };
-  }
+  // No Match Score New available (missing SI/context or cache). Do not invent heuristic scores.
   return {
     id: rec.id,
     projectName: projectName || "—",
@@ -1647,7 +1633,8 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
     hasOutreachSetup,
     strategicIntentForm,
     preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
-    matchScore,
+    matchScore: undefined,
+    matchScoresByBrand: {},
     matchScoreNew: undefined,
     matchScoresNewByBrand: {},
     matchBreakdownNewDetailsByBrand: {},
@@ -2119,10 +2106,19 @@ export async function getMyDeals(req, res) {
     let stubCount = 0;
     for (const rec of allRecords) {
       try {
-        // Initial view includes Deal Info + Matched data but skips heavy per-brand recomputation.
-        const scoreBaseId = initialView ? null : baseId;
-        const scoreApiKey = initialView ? null : apiKey;
-        const scoreMpDataMap = initialView ? null : mpDataMap;
+        // Prefer Deal Brand Cache on the initial list paint even when the score model
+        // version is stale — live recompute (esp. census density) can starve other APIs.
+        // Background stale refresh upgrades caches to the current model after first paint.
+        const cacheRow = dealBrandCacheMap ? dealBrandCacheMap.get(rec.id) : null;
+        const cachedScoresPeek = cacheRow ? matchScoresMapFromCacheRow(cacheRow) : {};
+        const hasAnyCachedScores =
+          Object.values(cachedScoresPeek).some((s) => s != null && s !== "") ||
+          (cacheRow != null && cacheRow.preferredScore != null);
+        const canUseCachedScores = !!(cacheRow && (cacheHasCurrentScoreModel(cacheRow) || hasAnyCachedScores));
+        const skipLiveScore = initialView && canUseCachedScores;
+        const scoreBaseId = skipLiveScore ? null : baseId;
+        const scoreApiKey = skipLiveScore ? null : apiKey;
+        const scoreMpDataMap = skipLiveScore ? null : mpDataMap;
         const scoreSiDataMap = siDataMap;
         const d = await recordToDeal(
           rec,
@@ -2138,6 +2134,7 @@ export async function getMyDeals(req, res) {
           dealBrandCacheMap
         );
         Object.assign(d, extractDealReadinessListFields(rec.fields));
+        Object.assign(d, extractCommercialReadinessListFields(rec.fields));
         deals.push(d);
       } catch (dealErr) {
         const name = (rec.fields && (rec.fields["Project Name"] || rec.fields["Property Name"] || rec.fields["Name"])) || rec.id;
@@ -2164,6 +2161,7 @@ export async function getMyDeals(req, res) {
           matchScoresNewByBrand: {},
           matchBreakdownNewDetailsByBrand: {},
           ...extractDealReadinessListFields(rec.fields),
+          ...extractCommercialReadinessListFields(rec.fields),
         });
       }
     }
@@ -2217,6 +2215,7 @@ export async function getMyDeals(req, res) {
         try {
           const d = await recordToDeal(rec, locationMap, mpMap, outreachDealIds, siPreferredBrandsMap, mpDataMap, siDataMap, baseId, apiKey, cuDataMap, dealBrandCacheMap);
           Object.assign(d, extractDealReadinessListFields(rec.fields));
+          Object.assign(d, extractCommercialReadinessListFields(rec.fields));
           deals.push(d);
         } catch (dealErr) {
           const name = (rec.fields && (rec.fields["Project Name"] || rec.fields["Property Name"] || rec.fields["Name"])) || rec.id;
@@ -2242,6 +2241,7 @@ export async function getMyDeals(req, res) {
             matchScoresNewByBrand: {},
             matchBreakdownNewDetailsByBrand: {},
             ...extractDealReadinessListFields(rec.fields),
+            ...extractCommercialReadinessListFields(rec.fields),
           });
         }
       }
@@ -2260,6 +2260,14 @@ export async function getMyDeals(req, res) {
     }
 
     startBackgroundStaleCacheRefresh(baseId, apiKey, deals, dealBrandCacheMap);
+
+    // Stamp Brand Status eligibility on list deals so Matched Brands gray badges paint on first load
+    // (without waiting for View Details / cache _meta refresh).
+    try {
+      await enrichDealsBrandStatusEligibility(deals, baseId, apiKey);
+    } catch (e) {
+      console.warn("getMyDeals: brand status enrich failed:", e.message || e);
+    }
 
     const projectTypes = [
       ...new Set(deals.map((d) => d.projectType).filter((s) => s && s !== "—")),
@@ -2687,6 +2695,7 @@ export async function addRecommendedBrand(req, res) {
  */
 export async function getAlternativeBrands(req, res) {
   try {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     const recordId = req.params.recordId;
     if (!recordId || !recordId.startsWith("rec")) {
       return res.status(400).json({ success: false, error: "Valid deal ID is required" });
@@ -2748,7 +2757,7 @@ export async function getAlternativeBrands(req, res) {
     const preferredBreakdown = preferredBrand ? getBreakdownFromCacheIndex(scoreIndex, preferredBrand) : {};
 
     const altSource = cache?.topAlternatives && cache.topAlternatives.length > 0 ? cache.topAlternatives : [];
-    const alternatives = altSource.slice(0, limit).map((a) => {
+    let alternatives = altSource.slice(0, limit).map((a) => {
       const brand = typeof a === "object" && a && a.brand != null ? String(a.brand).trim() : String(a).trim();
       return {
         brand,
@@ -2760,10 +2769,40 @@ export async function getAlternativeBrands(req, res) {
       };
     });
 
+    let responsePreferredBrand = preferredBrand;
+    let responsePreferredScore = preferredScore;
+    let responsePreferredBreakdown = preferredBreakdown;
+
+    if (alternatives.length === 0) {
+      const result = await computeTopAlternativeBrands(
+        f,
+        locationData,
+        mpData,
+        siData,
+        preferredBrandsSet,
+        baseId,
+        apiKey,
+        limit
+      );
+      alternatives = (result.alternatives || []).map((a) => ({
+        brand: a.brand,
+        score: a.score != null ? roundMatchScoreNew(a.score) : null,
+        breakdownNewDetails: a.breakdownNewDetails || {},
+      }));
+      if (result.preferredBrand) responsePreferredBrand = result.preferredBrand;
+      if (result.preferredScore != null) responsePreferredScore = result.preferredScore;
+      if (result.preferredBreakdown && Object.keys(result.preferredBreakdown).length > 0) {
+        responsePreferredBreakdown = result.preferredBreakdown;
+      }
+      refreshDealBrandCacheForRecordId(baseId, apiKey, recordId).catch((e) => {
+        console.warn("[Deal Brand Cache] Refresh after alternative-brands compute failed:", e.message);
+      });
+    }
+
     return res.json({
-      preferredBrand,
-      preferredScore,
-      preferredBreakdown,
+      preferredBrand: responsePreferredBrand,
+      preferredScore: responsePreferredScore,
+      preferredBreakdown: responsePreferredBreakdown,
       alternatives,
     });
   } catch (err) {
@@ -3226,7 +3265,7 @@ export async function getOperatorMatchScoreBreakdown(req, res) {
 
 /**
  * GET /api/my-deals/:recordId/match-score-breakdown?brand=BrandName
- * Returns scoreNew and breakdownNewDetails (12 factors, same as My Deals) for a deal + brand.
+ * Returns scoreNew and breakdownNewDetails (Match Score v2) for a deal + brand.
  * Used by Brand Development Dashboard to show the same Match Score Breakdown as My Deals.
  */
 /**
@@ -3330,11 +3369,35 @@ export async function getMatchScoreBreakdown(req, res) {
       fetchStrategicIntentRecord(baseId, apiKey, siLinkedId),
     ]);
 
-    const { scoreNew, breakdownNewDetails } = await computeMatchScoreForDealBrand(
+    const {
+      scoreNew,
+      breakdownNewDetails,
+      keyMoneyGateReason,
+      matchGateKey,
+      matchGateReason,
+      preferredBonusApplied,
+      scoredWeightPct,
+      insufficientData,
+      insufficientDataReason,
+      brandStatus,
+      brandStatusEligible,
+    } = await computeMatchScoreForDealBrand(
       f, locationData, mpData, siData, brandName, baseId, apiKey
     );
 
-    res.json({ scoreNew: scoreNew ?? null, breakdownNewDetails: breakdownNewDetails || {} });
+    res.json({
+      scoreNew: scoreNew ?? null,
+      breakdownNewDetails: sanitizeBrandMatchBreakdownDetails(breakdownNewDetails || {}),
+      keyMoneyGateReason: keyMoneyGateReason || null,
+      matchGateKey: matchGateKey || null,
+      matchGateReason: matchGateReason || keyMoneyGateReason || null,
+      preferredBonusApplied: preferredBonusApplied || 0,
+      scoredWeightPct: scoredWeightPct != null ? scoredWeightPct : null,
+      insufficientData: Boolean(insufficientData),
+      insufficientDataReason: insufficientDataReason || null,
+      brandStatus: brandStatus || null,
+      brandStatusEligible: brandStatusEligible !== false,
+    });
   } catch (err) {
     console.error("Error in getMatchScoreBreakdown:", err);
     res.status(500).json({ success: false, error: err.message || "Internal Server Error" });
@@ -3431,9 +3494,9 @@ export async function refreshDealBrandCacheForRecordId(baseId, apiKey, recordId)
     }
   }
 
-  const bestResult = await computeRecommendedBrand(f, locationData, mpData, siData, preferredBrandsSet, baseId, apiKey);
-  const bestMatchBrand = bestResult && bestResult.brand ? bestResult.brand : null;
-  const bestMatchScore = bestResult && bestResult.scoreNew != null ? bestResult.scoreNew : null;
+  // Best match is the top alternative — avoid a second full candidate scan (was ~2× wall time).
+  const bestMatchBrand = topAlternatives[0] && topAlternatives[0].brand ? topAlternatives[0].brand : null;
+  const bestMatchScore = topAlternatives[0] && topAlternatives[0].score != null ? topAlternatives[0].score : null;
 
   const dealName = (f["Project Name"] ?? f["Property Name"] ?? f["Name"] ?? "").toString().trim() || "Deal cache";
   await upsertDealBrandCache(baseId, apiKey, recordId, {
@@ -3464,6 +3527,65 @@ let fullCacheRefreshStarted = false;
 let getMyDealsColdStart = true;
 /** Timestamp when getMyDeals last finished sending response; used to enforce MY_DEALS_MIN_GAP_MS between list loads. */
 let lastGetMyDealsFinishedAt = 0;
+
+/**
+ * Attach matchBrandStatusEligibleByBrand for preferred (and scored) brands using Brand Basics status.
+ * Always resolve from live Brand Basics (Active/Live SoT). Do not trust cached breakdown
+ * `_meta.brandStatusEligible` — stale false values kept Match Score badges gray after hard refresh.
+ */
+async function enrichDealsBrandStatusEligibility(deals, baseId, apiKey) {
+  if (!Array.isArray(deals) || !baseId || !apiKey) return;
+  const names = new Set();
+  for (const d of deals) {
+    const raw = (d.preferredBrandsChosen || "").trim();
+    if (raw && raw !== "—") {
+      raw.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean).forEach((n) => names.add(n));
+    }
+    const scoreMap = d.matchScoresNewByBrand;
+    if (scoreMap && typeof scoreMap === "object") {
+      Object.keys(scoreMap).forEach((n) => {
+        if (n && n !== "_meta") names.add(String(n).trim());
+      });
+    }
+  }
+  /** @type {Map<string, boolean>} */
+  const eligibilityByNorm = new Map();
+  const uniqueNames = [...names].filter(Boolean);
+  if (uniqueNames.length) {
+    // Share one Brand Basics load across names (resolveBrandStatusEligibilityByName is cached).
+    const resolved = await Promise.all(
+      uniqueNames.map(async (name) => {
+        const r = await resolveBrandStatusEligibilityByName(baseId, apiKey, name);
+        return [name.toLowerCase().replace(/\s+/g, " "), r.brandStatusEligible === true];
+      })
+    );
+    for (const [key, eligible] of resolved) {
+      eligibilityByNorm.set(key, eligible);
+    }
+  }
+
+  for (const d of deals) {
+    const map = {};
+    const raw = (d.preferredBrandsChosen || "").trim();
+    const brandNames = [];
+    if (raw && raw !== "—") {
+      brandNames.push(...raw.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean));
+    }
+    const scoreMap = d.matchScoresNewByBrand;
+    if (scoreMap && typeof scoreMap === "object") {
+      Object.keys(scoreMap).forEach((n) => {
+        if (n && n !== "_meta") brandNames.push(String(n).trim());
+      });
+    }
+    for (const brand of [...new Set(brandNames)]) {
+      const key = brand.toLowerCase().replace(/\s+/g, " ");
+      if (eligibilityByNorm.has(key)) {
+        map[brand] = eligibilityByNorm.get(key);
+      }
+    }
+    d.matchBrandStatusEligibleByBrand = map;
+  }
+}
 
 /** Generate a per-request id for correlation (timestamp + random suffix). */
 function getMyDealsRequestId() {
@@ -3523,8 +3645,9 @@ function startBackgroundStaleCacheRefresh(baseId, apiKey, deals, dealBrandCacheM
   if (!staleIds.length) return;
   fullCacheRefreshStarted = true;
   const ids = [...new Set(staleIds)];
-  const concurrency = 2;
+  const concurrency = 1;
   const run = async () => {
+    console.log("[Deal Brand Cache] Background stale refresh starting for", ids.length, "deal(s) (concurrency=" + concurrency + ").");
     for (let i = 0; i < ids.length; i += concurrency) {
       const batch = ids.slice(i, i + concurrency);
       await Promise.allSettled(
@@ -3534,6 +3657,8 @@ function startBackgroundStaleCacheRefresh(baseId, apiKey, deals, dealBrandCacheM
           })
         )
       );
+      // Brief gap so interactive My Deals routes are not starved during census density lookups.
+      await new Promise((r) => setTimeout(r, 400));
     }
     if (shouldLogMyDealsSummary()) {
       console.log("[Deal Brand Cache] Background stale refresh completed for", ids.length, "deal(s). Reload My Deals to see updated scores.");
@@ -3593,7 +3718,7 @@ export async function fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId)
       const merge = {};
       for (const [key, val] of Object.entries(mpFields)) {
         const formName = MP_TABLE_TO_FORM[key] ?? key;
-        merge[formName] = val;
+        merge[formName] = coerceMixedUseMpFieldForRead(formName, val);
       }
       result.fields = { ...(result.fields || {}), ...merge };
     }
@@ -3630,6 +3755,13 @@ export async function fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId)
       delete result.fields[airtableKey];
     }
   }
+  const fbOperatingModelKey = "F&B Operating Model";
+  if (result.fields[fbOperatingModelKey] !== undefined) {
+    result.fields[fbOperatingModelKey] = coerceMixedUseSelectForRead(
+      fbOperatingModelKey,
+      result.fields[fbOperatingModelKey]
+    );
+  }
   // Normalise legacy option value for Existing flag so select prefill matches current HTML option (Batch 1 prefill fix)
   const existingFlagKey = "Existing flag staying or being replaced?";
   if (result.fields[existingFlagKey] === "Not Applicable (Undranded or New Build)") {
@@ -3638,6 +3770,10 @@ export async function fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId)
   // Merge Location (form-keyed from fetchLocationRecord) into result.fields so GET and save-response rebind repopulate (M3)
   if (locationFormKeyed) {
     result.fields = { ...(result.fields || {}), ...locationFormKeyed };
+  }
+  if (result.fields && typeof result.fields === "object") {
+    const { fields: formCoercedFields } = normalizeDealSetupFields(result.fields);
+    result.fields = formCoercedFields;
   }
   const normalized = await recordToDeal(result, locationMap);
   if (locationFormKeyed) normalized.expandedLocation = locationFormKeyed;
@@ -3749,6 +3885,7 @@ export async function updateMyDealById(req, res) {
         "Number of Suites",
         "# of Stories",
         "Number of Stories",
+        "Number of Condo / Residence Units",
       ];
       for (const formName of LOCATION_FORM_FIELDS) {
         const val = fields[formName];
@@ -3816,6 +3953,12 @@ export async function updateMyDealById(req, res) {
         val = val.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean);
       } else if (name === "Is the property encumbered" && Array.isArray(val)) {
         val = val.map((s) => (typeof s === "string" ? s : (s && s.name) || "").trim()).filter(Boolean);
+      } else if (name === "Preferred Operator Management Structure") {
+        val = Array.isArray(val)
+          ? val.map((s) => (typeof s === "string" ? s : (s && s.name) || "").trim()).filter(Boolean)
+          : typeof val === "string" && String(val).trim()
+            ? String(val).split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean)
+            : [];
       } else if (
         (name === "Royalty Fee Expectations" || name === "Marketing Fee Expectations" || name === "Loyalty Fee Expectations") &&
         typeof val === "string"
@@ -3827,6 +3970,7 @@ export async function updateMyDealById(req, res) {
       } else if (typeof val === "string") {
         val = val.replace(/\u2013/g, "-");
       }
+      val = coerceMixedUseMpFieldForWrite(name, val);
       mpFieldsPayload[tableName] = val;
       delete fields[name];
     }
@@ -3987,7 +4131,7 @@ export async function updateMyDealById(req, res) {
     const dealFieldsForAirtable = {};
     for (const [formKey, val] of Object.entries(fields)) {
       const airtableKey = DEALS_FORM_TO_AIRTABLE[formKey] ?? formKey;
-      dealFieldsForAirtable[airtableKey] = val;
+      dealFieldsForAirtable[airtableKey] = coerceMixedUseSelectForWrite(formKey, val);
     }
 
     const dateFieldName = "Current Franchise/Management Contract End Date";

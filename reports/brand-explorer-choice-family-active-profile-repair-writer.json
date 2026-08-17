@@ -1,0 +1,351 @@
+{
+  "writerVersion": "29A",
+  "v29AWriterExists": true,
+  "generatedAt": "2026-07-10T07:45:04.663Z",
+  "mode": "dry-run",
+  "brandsRequested": [
+    "ascend",
+    "radisson-blu"
+  ],
+  "protectedBrandsUntouched": [
+    "tribute-portfolio",
+    "radisson",
+    "curio-collection",
+    "kimpton",
+    "radisson-individuals-by-choice",
+    "tapestry-collection-by-hilton",
+    "autograph-collection",
+    "design-hotels"
+  ],
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-complete-build-ascend.md",
+    "reports/brand-explorer-complete-build-ascend.json",
+    "reports/brand-explorer-complete-build-radisson-blu.md",
+    "reports/brand-explorer-complete-build-radisson-blu.json",
+    "reports/brand-explorer-final-qa-auditor.md",
+    "reports/brand-explorer-final-qa-auditor.json",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "reports/brand-explorer-radisson-active-profile-repair-writer.md",
+    "docs/brand-explorer-presentation-slots.md",
+    "lib/partner-intelligence/brand-explorer-parent-aware-carryover.js",
+    "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+    "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+    "live Ascend / Radisson Blu Brand Explorer Presentation rows",
+    "live Ascend / Radisson Blu Partner Facts",
+    "live Ascend / Radisson Blu Source Library records",
+    "Tribute + Radisson active-profile rows (quality reference only)"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-choice-family-active-profile-repair-writer.js",
+    "scripts/brand-explorer-choice-family-active-profile-repair-writer.mjs",
+    "docs/data-intelligence/brand-explorer-choice-family-active-profile-repair-writer-v29A.md",
+    "reports/brand-explorer-choice-family-active-profile-repair-writer.md",
+    "reports/brand-explorer-choice-family-active-profile-repair-writer.json",
+    "package.json"
+  ],
+  "brandReports": [
+    {
+      "brand": {
+        "slug": "ascend",
+        "name": "Ascend Hotel Collection",
+        "recordId": "reclkgOzvAcBheUSo",
+        "parentCompany": "Choice Hotels International"
+      },
+      "diagnosis": {
+        "finalQaScoreBefore": 99,
+        "finalQaReadinessBefore": "ready",
+        "contractScore": 100,
+        "contractReady": true,
+        "visualDefectsBefore": {
+          "total": 1,
+          "critical": 0,
+          "high": 0,
+          "medium": 1,
+          "low": 0,
+          "missingImage": 0,
+          "emptyBullet": 0,
+          "titleOnlyOrThin": 1,
+          "placeholderGeneric": 0,
+          "sortOrder": 0
+        },
+        "criticalDefectsBefore": 0,
+        "highDefectsBefore": 0,
+        "titleOnlyOrThinBefore": 1,
+        "missingValueOwnersScenarioSlots": [],
+        "pendingFactsBefore": 1,
+        "sourceCount": 3,
+        "approvedExplorerSources": 3,
+        "blockingCarryoverBefore": [],
+        "activeProfileBlockers": [
+          "thin_gallery_captions",
+          "pending_facts_governance"
+        ],
+        "nextRepairsRequired": [
+          "Create valueOwners.scenario.1–4 presentation rows with owner-facing bodies",
+          "Add materials.gallery.1–6 captions (keep existing images)",
+          "Rephrase carryover false positives and internal/source-capture UI language",
+          "Normalize writer-batch Sort Order on editorial/standards rows",
+          "Classify pending facts—no auto-approval in this visual/copy writer"
+        ]
+      },
+      "pendingFactsDiagnosis": [
+        {
+          "factId": "rec4BrtEotr82mlZq",
+          "fieldName": "be.footprint.geoIntro",
+          "value": "Americas regions by Choice Hotels.",
+          "sourceRecordId": "rec7rnzJZYzWh6cM6",
+          "classification": "needs_source_confirmation",
+          "rationale": "Geo intro extract is a thin regional fragment only—needs a fuller approved footprint narrative before Explorer surfacing.",
+          "shouldNotSurfaceExternally": true,
+          "approveReady": false,
+          "recommendedAction": "keep_internal"
+        }
+      ],
+      "valueCreationScenarioRepairPlan": {
+        "strategy": "create_missing_valueOwners_scenario_slots_from_aggregate_narrative",
+        "packages": [
+          {
+            "slotKey": "valueOwners.scenario.1",
+            "sort": 0,
+            "title": "Independent Boutique Reflag",
+            "body": "Independent boutiques that need Choice Privileges, CRS access, and corporate transient without full prototype homogenization—Ascend fits when local story, F&B identity, and design character are assets owners want to preserve."
+          },
+          {
+            "slotKey": "valueOwners.scenario.2",
+            "sort": 1,
+            "title": "Historic Design-Forward Conversion",
+            "body": "Historic or design-forward hotels where character is the asset—Ascend works when public spaces and guest rooms can meet collection standards while contractually protecting how much local identity survives brand review."
+          },
+          {
+            "slotKey": "valueOwners.scenario.3",
+            "sort": 2,
+            "title": "Markets With Member Channel Gap",
+            "body": "Corridors where independents under-index on loyalty and direct booking—Ascend competes when the asset can deliver a credible guest experience and owners need enterprise channels without surrendering uniqueness."
+          },
+          {
+            "slotKey": "valueOwners.scenario.4",
+            "sort": 3,
+            "title": "Third-Party Operator–Led",
+            "body": "Assets run by experienced operators who can balance collection QA with local execution—Ascend suits sponsors who need affiliation lift, financing credibility, and Choice Privileges scale while keeping the property's story intact."
+          }
+        ],
+        "rowsToCreate": []
+      },
+      "sourceEvidenceRepairPlan": {
+        "strategy": "use_existing_gallery_images_only",
+        "imagesAutoMaterialized": false,
+        "galleryRowsToUpdate": [],
+        "note": "Gallery rows already have approved images; writer adds captions only."
+      },
+      "copySafetyRepairs": [],
+      "sortOrderRepairs": [],
+      "rowsWouldUpdate": [],
+      "rowsWouldCreate": [],
+      "beforeAfterCopy": [],
+      "proposedCopySafetyIssues": [],
+      "applyBlockers": [],
+      "dryRunClean": false,
+      "canApply": false,
+      "hasWork": false,
+      "companyValidatedBefore": {
+        "companyValidated": null,
+        "companyValidationDate": null
+      },
+      "companyValidatedAfter": {
+        "companyValidated": null,
+        "companyValidationDate": null
+      },
+      "companyValidatedUntouched": true,
+      "choiceValidationImplied": false,
+      "airtableModified": false,
+      "applyResults": null,
+      "projectedFinalQa": {
+        "overallNumeric": 99,
+        "overallActiveProfileReadiness": "ready",
+        "sourceGovernanceScore": 97,
+        "visualCompletenessScore": 100,
+        "presentationQualityScore": 97,
+        "brandCarryoverRiskScore": 100,
+        "criticalDefectsAfter": 0,
+        "highDefectsAfter": 0,
+        "titleOnlyOrThinAfter": 1,
+        "pendingFactsAfter": 1
+      },
+      "expectedActiveProfileAfterApply": false,
+      "separateFactGovernanceApplyNeeded": true,
+      "exactDryRunCommand": "npm run brand-explorer-choice-family-active-profile-repair-writer -- --brands ascend --dry-run"
+    },
+    {
+      "brand": {
+        "slug": "radisson-blu",
+        "name": "Radisson Blu by Choice",
+        "recordId": "recWPEvxBQxVVzSq3",
+        "parentCompany": "Choice Hotels International"
+      },
+      "diagnosis": {
+        "finalQaScoreBefore": 98,
+        "finalQaReadinessBefore": "ready",
+        "contractScore": 100,
+        "contractReady": true,
+        "visualDefectsBefore": {
+          "total": 1,
+          "critical": 0,
+          "high": 0,
+          "medium": 1,
+          "low": 0,
+          "missingImage": 0,
+          "emptyBullet": 0,
+          "titleOnlyOrThin": 1,
+          "placeholderGeneric": 0,
+          "sortOrder": 0
+        },
+        "criticalDefectsBefore": 0,
+        "highDefectsBefore": 0,
+        "titleOnlyOrThinBefore": 1,
+        "missingValueOwnersScenarioSlots": [],
+        "pendingFactsBefore": 3,
+        "sourceCount": 4,
+        "approvedExplorerSources": 4,
+        "blockingCarryoverBefore": [],
+        "activeProfileBlockers": [
+          "thin_gallery_captions",
+          "pending_facts_governance"
+        ],
+        "nextRepairsRequired": [
+          "Create valueOwners.scenario.1–4 presentation rows with owner-facing bodies",
+          "Add materials.gallery.1–6 captions (keep existing images)",
+          "Rephrase carryover false positives and internal/source-capture UI language",
+          "Normalize writer-batch Sort Order on editorial/standards rows",
+          "Classify pending facts—no auto-approval in this visual/copy writer"
+        ]
+      },
+      "pendingFactsDiagnosis": [
+        {
+          "factId": "recEog0ehiJXRLYpo",
+          "fieldName": "be.loyalty.programName",
+          "value": "Choice Privileges",
+          "sourceRecordId": "recH1ZepKU6zJp7M2",
+          "classification": "approve-ready",
+          "rationale": "Program name matches approved Choice Privileges branding—approve-ready but gated outside this visual/copy writer.",
+          "shouldNotSurfaceExternally": false,
+          "approveReady": true,
+          "recommendedAction": "approve-ready"
+        },
+        {
+          "factId": "recPGX8dxsNBmfuUE",
+          "fieldName": "be.overview.whyValue",
+          "value": "Whether new build, adaptive reuse or conversion, Radisson Blu brings distinctive design to top urban and resort markets.",
+          "sourceRecordId": "reczafLghta09o2sB",
+          "classification": "needs_founder_review",
+          "rationale": "Why-value extract is partial or placeholder—requires rewritten owner bullets.",
+          "shouldNotSurfaceExternally": true,
+          "approveReady": false,
+          "recommendedAction": "needs_founder_review"
+        },
+        {
+          "factId": "recYI7VbRqpoQiXaT",
+          "fieldName": "be.footprint.americasHotels",
+          "value": "10 hotels (2,433 rooms) in operation in the Americas",
+          "sourceRecordId": "recWGLvwnDn0v5rmL",
+          "classification": "needs_source_confirmation",
+          "rationale": "Americas hotel count extract needs source confirmation and presentation-row alignment before approval.",
+          "shouldNotSurfaceExternally": true,
+          "approveReady": false,
+          "recommendedAction": "needs_source_confirmation"
+        }
+      ],
+      "valueCreationScenarioRepairPlan": {
+        "strategy": "create_missing_valueOwners_scenario_slots_from_aggregate_narrative",
+        "packages": [
+          {
+            "slotKey": "valueOwners.scenario.1",
+            "sort": 0,
+            "title": "Independent Reflag",
+            "body": "Independent or soft-branded upper-upscale hotels that need corporate access, recognizable loyalty, and brand.com strength—Radisson Blu fits when the asset can deliver design-forward full-service expectations within Nordic Nouveau cues."
+          },
+          {
+            "slotKey": "valueOwners.scenario.2",
+            "sort": 1,
+            "title": "Design-Forward Conversion",
+            "body": "Mature assets needing refresh capital and relevancy—repositioning under Radisson Blu pairs credible upper-upscale guest expectations with public spaces, casegoods, and F&B that can support the Blu design language."
+          },
+          {
+            "slotKey": "valueOwners.scenario.3",
+            "sort": 2,
+            "title": "CALA Gateway or Resort",
+            "body": "Gateway and resort corridors where guests compare flags directly—Radisson Blu competes on execution, location, and design differentiation. Best when the comp set is branded and loyalty participation influences booking."
+          },
+          {
+            "slotKey": "valueOwners.scenario.4",
+            "sort": 3,
+            "title": "Third-Party Operator–Led",
+            "body": "Assets run by experienced third-party operators with upper-upscale depth—Radisson Blu works when management can staff F&B, meetings, and front-of-house to Blu standards while the sponsor needs affiliation for financing, sales, and loyalty lift."
+          }
+        ],
+        "rowsToCreate": []
+      },
+      "sourceEvidenceRepairPlan": {
+        "strategy": "use_existing_gallery_images_only",
+        "imagesAutoMaterialized": false,
+        "galleryRowsToUpdate": [],
+        "note": "Gallery rows already have approved images; writer adds captions only."
+      },
+      "copySafetyRepairs": [],
+      "sortOrderRepairs": [],
+      "rowsWouldUpdate": [],
+      "rowsWouldCreate": [],
+      "beforeAfterCopy": [],
+      "proposedCopySafetyIssues": [],
+      "applyBlockers": [],
+      "dryRunClean": false,
+      "canApply": false,
+      "hasWork": false,
+      "companyValidatedBefore": {
+        "companyValidated": null,
+        "companyValidationDate": null
+      },
+      "companyValidatedAfter": {
+        "companyValidated": null,
+        "companyValidationDate": null
+      },
+      "companyValidatedUntouched": true,
+      "choiceValidationImplied": false,
+      "airtableModified": false,
+      "applyResults": null,
+      "projectedFinalQa": {
+        "overallNumeric": 98,
+        "overallActiveProfileReadiness": "ready",
+        "sourceGovernanceScore": 91,
+        "visualCompletenessScore": 100,
+        "presentationQualityScore": 97,
+        "brandCarryoverRiskScore": 100,
+        "criticalDefectsAfter": 0,
+        "highDefectsAfter": 0,
+        "titleOnlyOrThinAfter": 1,
+        "pendingFactsAfter": 3
+      },
+      "expectedActiveProfileAfterApply": false,
+      "separateFactGovernanceApplyNeeded": true,
+      "exactDryRunCommand": "npm run brand-explorer-choice-family-active-profile-repair-writer -- --brands radisson-blu --dry-run"
+    }
+  ],
+  "companyValidatedUntouched": true,
+  "summary": {
+    "brandsProcessed": 2,
+    "brandsSkipped": 0,
+    "rowsWouldCreate": 0,
+    "rowsWouldUpdate": 0,
+    "dryRunClean": false,
+    "airtableModified": false,
+    "companyValidatedUntouched": true,
+    "expectedActiveProfileReadyBrands": []
+  },
+  "halted": false,
+  "haltReason": "",
+  "exactDryRunCommand": "npm run brand-explorer-choice-family-active-profile-repair-writer -- --brands ascend,radisson-blu --dry-run",
+  "exactApplyCommand": null,
+  "perBrandApplyCommands": [],
+  "markdown": "# Brand Explorer Choice-Family Active Profile Repair Writer v29A\n\n- Generated: 2026-07-10T07:45:04.663Z\n- Brands: **ascend, radisson-blu**\n- v29A exists: **yes**\n- Mode: **dry-run**\n- Airtable modified: **no**\n- Company Validated untouched: **yes**\n- Dry-run clean: **no**\n\n## Ascend Hotel Collection (`reclkgOzvAcBheUSo`)\n\n- Final QA before: **99** (ready)\n- Visual defects before: **1** (critical 0, high 0, titleOnlyOrThin 1)\n- Pending facts: **1**\n- Expected Final QA after apply: **~99** (ready)\n- Expected active-profile ready: **no**\n- Rows to create: **0**; rows to update: **0**\n\n### Pending facts\n- `rec4BrtEotr82mlZq` **be.footprint.geoIntro** → needs_source_confirmation / keep_internal (Geo intro extract is a thin regional fragment only—needs a fuller approved footprint narrative before Explorer surfacing.)\n\n### Before / after copy\n\n## Radisson Blu by Choice (`recWPEvxBQxVVzSq3`)\n\n- Final QA before: **98** (ready)\n- Visual defects before: **1** (critical 0, high 0, titleOnlyOrThin 1)\n- Pending facts: **3**\n- Expected Final QA after apply: **~98** (ready)\n- Expected active-profile ready: **no**\n- Rows to create: **0**; rows to update: **0**\n\n### Pending facts\n- `recEog0ehiJXRLYpo` **be.loyalty.programName** → approve-ready / approve-ready (Program name matches approved Choice Privileges branding—approve-ready but gated outside this visual/copy writer.)\n- `recPGX8dxsNBmfuUE` **be.overview.whyValue** → needs_founder_review / needs_founder_review (Why-value extract is partial or placeholder—requires rewritten owner bullets.)\n- `recYI7VbRqpoQiXaT` **be.footprint.americasHotels** → needs_source_confirmation / needs_source_confirmation (Americas hotel count extract needs source confirmation and presentation-row alignment before approval.)\n\n### Before / after copy\n\n## Exact apply command\n```bash\n(dry-run not clean or no work proposed)\n```"
+}

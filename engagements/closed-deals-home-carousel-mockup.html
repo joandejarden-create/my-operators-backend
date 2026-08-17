@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup — Closed Deals Carousel + View More</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter+Tight:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080f25;
+      --bg-section: #0d1530;
+      --bg-deep: #050814;
+      --text: #e8ecf5;
+      --muted: rgba(232, 236, 245, 0.62);
+      --muted-soft: rgba(255, 255, 255, 0.48);
+      --accent: #6c72ff;
+      --accent-hover: #5a5fe6;
+      --accent-soft: #8b90ff;
+      --accent-pale: #b8bcff;
+      --card: #12182f;
+      --line-strong: rgba(255, 255, 255, 0.16);
+      --font: "Plus Jakarta Sans", "Inter Tight", system-ui, sans-serif;
+      --font-tight: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+      --radius: 16px;
+      --shadow: 0 22px 48px rgba(0, 0, 0, 0.38);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg-deep);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mock-banner {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: #12182e;
+      border-bottom: 1px solid rgba(201, 166, 107, 0.35);
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.78);
+    }
+    .mock-banner strong { color: #f0d7a4; font-weight: 700; }
+    .mock-banner .hint { color: rgba(255, 255, 255, 0.5); }
+    .mock-banner nav { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mock-banner a {
+      color: var(--accent-pale);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(108, 114, 255, 0.28);
+      background: rgba(108, 114, 255, 0.08);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .mock-banner a:hover,
+    .mock-banner a.is-active {
+      background: rgba(108, 114, 255, 0.22);
+      border-color: rgba(108, 114, 255, 0.5);
+      color: #fff;
+    }
+
+    .view { display: none; }
+    .view.is-active { display: block; }
+
+    .section {
+      position: relative;
+      overflow: hidden;
+      padding: 88px 1.5rem 80px;
+      background: var(--bg-section);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .section--home-context {
+      padding: 48px 1.5rem 0;
+      background: var(--bg);
+      border: 0;
+    }
+    .section--view-more {
+      min-height: calc(100vh - 52px);
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(108, 114, 255, 0.12) 0%, transparent 55%),
+        var(--bg);
+    }
+
+    .glow {
+      position: absolute;
+      left: 50%;
+      top: 18%;
+      width: min(92vw, 960px);
+      height: 300px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(108, 114, 255, 0.16) 0%, rgba(108, 114, 255, 0.05) 42%, transparent 72%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .context-strip {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 0 28px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(8, 15, 37, 0.92);
+      padding: 5px 14px 5px 5px;
+      box-shadow: 0 0 0 1px rgba(109, 92, 216, 0.1), 0 0 28px rgba(109, 92, 216, 0.18);
+      margin: 0 auto 28px;
+    }
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      height: 32px;
+      border-radius: 10px;
+      background: #343259;
+      font-family: var(--font-tight);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .eyebrow-right {
+      margin-left: 12px;
+      font-family: var(--font-tight);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .head {
+      text-align: center;
+      margin: 0 auto 40px;
+      max-width: 720px;
+    }
+    .head h1,
+    .head h2 {
+      margin: 0 0 14px;
+      font-family: var(--font);
+      font-size: clamp(1.65rem, 3.1vw, 2.45rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: #fff;
+    }
+    .head p {
+      margin: 0;
+      font-family: var(--font-tight);
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    /* —— Deal cards — quote-tile look + locked row alignment —— */
+    .deal-card {
+      position: relative;
+      display: grid;
+      grid-template-rows:
+        76px
+        26px
+        auto
+        42px
+        128px
+        30px;
+      justify-items: stretch;
+      align-items: start;
+      gap: 0;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      padding: 24px 18px 16px;
+      border-radius: 18px;
+      background: #0b1228;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+      text-align: center;
+      overflow: hidden;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      box-sizing: border-box;
+    }
+    .deal-card::before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(183, 162, 252, 0.9),
+        rgba(139, 144, 255, 0.85),
+        transparent
+      );
+      box-shadow: 0 0 14px rgba(139, 144, 255, 0.45);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .deal-card:hover {
+      border-color: rgba(139, 144, 255, 0.28);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(108, 114, 255, 0.08);
+    }
+
+    .deal-brand {
+      width: 100%;
+      height: 76px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .logo-well {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      max-width: 100%;
+      min-width: 0;
+      height: 44px;
+      padding: 4px 2px;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      box-sizing: border-box;
+    }
+    .logo-well img {
+      display: block;
+      max-width: 148px;
+      max-height: 38px;
+      width: auto;
+      height: 38px;
+      object-fit: contain;
+      /* Pre-baked white marks on transparent backgrounds */
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+    }
+    .logo-well--party {
+      height: 36px;
+      padding: 2px;
+    }
+    .logo-well--party img {
+      max-width: 128px;
+      max-height: 30px;
+      height: 30px;
+    }
+    .logo-caption {
+      margin-top: 6px;
+      width: 100%;
+      height: 1.15em;
+      font-family: var(--font-tight);
+      font-size: 0.74rem;
+      font-weight: 650;
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.15;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .logo-caption strong {
+      color: #fff;
+      font-weight: 650;
+    }
+
+    .deal-verb {
+      margin: 0;
+      width: 100%;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-tight);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(183, 196, 255, 0.55);
+    }
+
+    .hotel-photo {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(8, 15, 37, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+    }
+    .hotel-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hotel-photo img.is-broken,
+    .logo-well img.is-broken {
+      opacity: 0.35;
+      outline: 1px dashed rgba(248, 113, 113, 0.7);
+    }
+
+    .hotel-name {
+      margin: 0;
+      width: 100%;
+      height: 42px;
+      padding-top: 6px;
+      box-sizing: border-box;
+      font-family: var(--font-tight);
+      font-size: 0.84rem;
+      font-weight: 650;
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+    .hotel-name-line {
+      display: block;
+      width: 100%;
+      height: 1.2em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
+
+    .deal-party {
+      position: relative;
+      width: 100%;
+      height: 128px;
+      padding-top: 14px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .deal-party::before {
+      content: "";
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 0;
+      height: 1px;
+      background-image: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.28) 50%,
+        transparent
+      );
+    }
+    .deal-party::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -1.5px;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 4px;
+      border-radius: 70px;
+      background-image: linear-gradient(90deg, transparent, #6c72ff 50%, transparent);
+      filter: blur(1.5px);
+      pointer-events: none;
+    }
+    .deal-party .deal-verb {
+      height: 22px;
+      margin-bottom: 6px;
+    }
+
+    .deal-meta {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 6px;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 30px;
+      overflow: hidden;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      max-width: 48%;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: var(--font-tight);
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: rgba(232, 236, 245, 0.7);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* —— Home carousel —— */
+    .carousel-wrap {
+      position: relative;
+      margin: 0 auto 36px;
+      max-width: 1120px;
+    }
+    .carousel-viewport {
+      overflow: hidden;
+      margin: 0 44px;
+    }
+    .carousel-track {
+      display: flex;
+      align-items: stretch;
+      gap: 18px;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .carousel-track .deal-card {
+      flex: 0 0 calc(25% - 13.5px);
+      min-width: 0;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(108, 114, 255, 0.35);
+      background: rgba(18, 24, 47, 0.95);
+      color: #fff;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      z-index: 2;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .carousel-btn:hover { background: rgba(108, 114, 255, 0.22); }
+    .carousel-btn:disabled { opacity: 0.35; cursor: default; }
+    .carousel-btn--prev { left: 0; }
+    .carousel-btn--next { right: 0; }
+    .carousel-btn svg { width: 18px; height: 18px; }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 0 0 28px;
+    }
+    .carousel-dots button {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: 0;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.22);
+      cursor: pointer;
+    }
+    .carousel-dots button.is-active {
+      width: 22px;
+      background: var(--accent);
+    }
+
+    .cta-row { display: flex; justify-content: center; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      border: 0;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(108, 114, 255, 0.28);
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    /* —— View More toolbar —— */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 0 0 28px;
+    }
+    .toolbar-left { font-size: 0.9rem; color: var(--muted); }
+    .toolbar-left strong { color: #fff; font-weight: 700; }
+    .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn-reset {
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(108, 114, 255, 0.45);
+      background: transparent;
+      color: var(--accent-soft);
+      font-family: var(--font-tight);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-reset:hover {
+      background: rgba(108, 114, 255, 0.12);
+      color: #fff;
+    }
+    .select {
+      appearance: none;
+      min-height: 40px;
+      padding: 0 36px 0 14px;
+      border-radius: 10px;
+      border: 1px solid var(--line-strong);
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1.2 1.2L6 6l4.8-4.8' stroke='%238b90ff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+        right 12px center / 12px no-repeat,
+        rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font-family: var(--font-tight);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      min-width: 180px;
+    }
+    .select:focus {
+      outline: 2px solid rgba(108, 114, 255, 0.55);
+      outline-offset: 2px;
+    }
+    .select option { background: #12182f; color: #fff; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .grid .deal-card { min-height: 0; }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 48px 20px;
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius);
+      color: var(--muted);
+    }
+    .empty strong {
+      display: block;
+      color: #fff;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+
+    .notes {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 1.5rem 64px;
+      color: var(--muted-soft);
+      font-size: 0.84rem;
+      line-height: 1.55;
+    }
+    .notes h3 {
+      margin: 0 0 10px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .notes ul { margin: 0; padding-left: 1.15rem; }
+    .notes li { margin: 0 0 6px; }
+
+    @media (max-width: 1100px) {
+      .carousel-track .deal-card { flex: 0 0 calc(33.333% - 12px); }
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 820px) {
+      .carousel-track .deal-card { flex: 0 0 calc(50% - 9px); }
+      .carousel-viewport { margin: 0 40px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .carousel-track .deal-card { flex: 0 0 100%; }
+      .grid { grid-template-columns: 1fr; }
+      .toolbar { align-items: stretch; }
+      .toolbar-right { width: 100%; }
+      .select, .btn-reset { width: 100%; }
+      .eyebrow-right { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .carousel-track { transition: none; }
+      .deal-card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mock-banner">
+    <div>
+      <strong>Mockup only</strong> — Real brand / hotel / operator imagery from gallery QA + logo assets.
+      <span class="hint">Sample pairings · not live closed deals · open via file:// or local server</span>
+    </div>
+    <nav>
+      <a href="#home" data-view="home" class="is-active">Home carousel</a>
+      <a href="#view-more" data-view="view-more">View More page</a>
+    </nav>
+  </div>
+
+  <div id="view-home" class="view is-active">
+    <div class="section section--home-context">
+      <div class="context-strip">
+        Mid–home page section. Cards use hotel photos + brand/operator logos from <code>engagements/closed-deals-mockup-assets/</code> (self-contained; works with file:// or local server).
+      </div>
+    </div>
+
+    <section class="section" aria-labelledby="closed-deals-home-title">
+      <div class="glow" aria-hidden="true"></div>
+      <div class="inner">
+        <div class="head">
+          <div class="eyebrow" aria-hidden="true">
+            <span class="eyebrow-pill">Closed Deals</span>
+            <span class="eyebrow-right">Selected outcomes</span>
+          </div>
+          <h2 id="closed-deals-home-title">Closed Deals</h2>
+          <p>Recent hotel brand, operator, and capital outcomes closed through Dealality — shown with permission.</p>
+        </div>
+
+        <div class="carousel-wrap">
+          <button type="button" class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="Previous deals">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="carousel-viewport" id="carousel-viewport">
+            <div class="carousel-track" id="carousel-track" role="list"></div>
+          </div>
+          <button type="button" class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="Next deals">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div class="carousel-dots" id="carousel-dots" aria-hidden="true"></div>
+
+        <div class="cta-row">
+          <button type="button" class="btn-primary" data-view="view-more">View All</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="notes">
+      <h3>Imagery notes</h3>
+      <ul>
+        <li>Hotel photos = local Operator Gallery QA files (JW Marriott Cancún, Hyatt Ziva, NH Collection, Tribute Rumbao, Curio Scottsdale, etc.).</li>
+        <li>Brand + operator marks are white-on-transparent (pre-baked PNGs / SVGs) on the dark card — no white logo wells.</li>
+        <li>Live product would swap these for permissioned closed-deal assets / Airtable attachments.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="view-view-more" class="view">
+    <section class="section section--view-more" aria-labelledby="closed-deals-all-title">
+      <div class="inner">
+        <div class="head">
+          <div class="eyebrow" aria-hidden="true">
+            <span class="eyebrow-pill">Closed Deals</span>
+            <span class="eyebrow-right">Full archive</span>
+          </div>
+          <h1 id="closed-deals-all-title">Select Closed Deals</h1>
+          <p>Featured brand conversions, management placements, and capital outcomes closed via Dealality.</p>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-left">
+            Showing <strong id="result-count">0</strong> deals
+          </div>
+          <div class="toolbar-right">
+            <button type="button" class="btn-reset" id="filter-reset">Reset</button>
+            <select class="select" id="filter-type" aria-label="All transaction types">
+              <option value="all">All Transaction Types</option>
+              <option value="Brand Flag">Brand Flag</option>
+              <option value="Management">Management</option>
+              <option value="Capital">Capital</option>
+              <option value="Advisory">Advisory</option>
+            </select>
+            <select class="select" id="filter-market" aria-label="All markets">
+              <option value="all">All Markets</option>
+              <option value="Mexico">Mexico</option>
+              <option value="Caribbean">Caribbean</option>
+              <option value="United States">United States</option>
+              <option value="South America">South America</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid" id="deals-grid" role="list"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      var LOGO = "closed-deals-mockup-assets/logos/white/";
+      var HOTEL = "closed-deals-mockup-assets/hotels/";
+
+      /** Real imagery pairings for mockup — illustrative, not published closed deals */
+      var DEALS = [
+        {
+          id: "d1",
+          brandName: "JW Marriott",
+          brandLogo: LOGO + "brand-marriott.svg",
+          verb1: "FLAGGED",
+          hotelName: ["JW Marriott Cancún", "Resort & Spa"],
+          hotelImage: HOTEL + "jw-marriott-cancun.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Marriott International",
+          partyLogo: LOGO + "brand-marriott.svg",
+          type: "Management",
+          market: "Mexico",
+          chips: ["Luxury resort", "Cancún"]
+        },
+        {
+          id: "d2",
+          brandName: "Hyatt Ziva",
+          brandLogo: LOGO + "brand-hyatt.svg",
+          verb1: "FLAGGED",
+          hotelName: ["Hyatt Ziva", "Cancún"],
+          hotelImage: HOTEL + "hyatt-ziva-cancun.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Playa Hotels & Resorts",
+          partyLogo: LOGO + "operator-playa.svg",
+          type: "Brand Flag",
+          market: "Mexico",
+          chips: ["All-inclusive", "Family"]
+        },
+        {
+          id: "d3",
+          brandName: "NH Collection",
+          brandLogo: LOGO + "brand-nh.png",
+          verb1: "FLAGGED",
+          hotelName: ["NH Collection", "Mexico City Reforma"],
+          hotelImage: HOTEL + "nh-reforma.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Minor Hotels",
+          partyLogo: LOGO + "operator-minor.svg",
+          type: "Management",
+          market: "Mexico",
+          chips: ["Urban", "Reforma"]
+        },
+        {
+          id: "d4",
+          brandName: "Tribute Portfolio",
+          brandLogo: LOGO + "tribute-logo.svg",
+          verb1: "FLAGGED",
+          hotelName: ["Hotel Rumbao", "San Juan"],
+          hotelImage: HOTEL + "rumbao-san-juan.webp",
+          verb2: "OPERATED BY",
+          partyName: "Driftwood Hospitality",
+          partyLogo: LOGO + "operator-driftwood.png",
+          type: "Brand Flag",
+          market: "Caribbean",
+          chips: ["Soft brand", "Puerto Rico"]
+        },
+        {
+          id: "d5",
+          brandName: "St. Regis",
+          brandLogo: LOGO + "brand-st-regis.png",
+          verb1: "FLAGGED",
+          hotelName: ["St. Regis", "Mexico City"],
+          hotelImage: HOTEL + "st-regis-cdmx.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Marriott International",
+          partyLogo: LOGO + "brand-marriott.svg",
+          type: "Management",
+          market: "Mexico",
+          chips: ["Luxury", "CDMX"]
+        },
+        {
+          id: "d6",
+          brandName: "Curio Collection",
+          brandLogo: LOGO + "brand-hilton.svg",
+          verb1: "FLAGGED",
+          hotelName: ["The Scottsdale Resort & Spa", "Curio Collection"],
+          hotelImage: HOTEL + "curio-scottsdale.webp",
+          verb2: "OPERATED BY",
+          partyName: "Driftwood Hospitality",
+          partyLogo: LOGO + "operator-driftwood.png",
+          type: "Brand Flag",
+          market: "United States",
+          chips: ["Hilton", "Resort"]
+        },
+        {
+          id: "d7",
+          brandName: "Hyatt Zilara",
+          brandLogo: LOGO + "brand-hyatt.svg",
+          verb1: "FLAGGED",
+          hotelName: ["Hyatt Zilara", "Cancún"],
+          hotelImage: HOTEL + "hyatt-zilara-cancun.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Playa Hotels & Resorts",
+          partyLogo: LOGO + "operator-playa.svg",
+          type: "Brand Flag",
+          market: "Mexico",
+          chips: ["Adults-only", "AI"]
+        },
+        {
+          id: "d8",
+          brandName: "Krystal Grand",
+          brandLogo: LOGO + "operator-gsf.png",
+          verb1: "OPERATED",
+          hotelName: ["Krystal Grand Cancún", "All Inclusive"],
+          hotelImage: HOTEL + "krystal-grand-cancun.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Grupo Hotelero Santa Fe",
+          partyLogo: LOGO + "operator-gsf.png",
+          type: "Management",
+          market: "Mexico",
+          chips: ["All-inclusive"]
+        },
+        {
+          id: "d9",
+          brandName: "Garza Blanca",
+          brandLogo: LOGO + "garza-blanca-icon.png",
+          verb1: "OPERATED",
+          hotelName: ["Garza Blanca Resort & Spa", "Puerto Vallarta"],
+          hotelImage: HOTEL + "garza-blanca-pv.jpg",
+          verb2: "OPERATED BY",
+          partyName: "TAFER Hotels & Resorts",
+          partyLogo: LOGO + "operator-tafer.png",
+          type: "Management",
+          market: "Mexico",
+          chips: ["Luxury resort", "PV"]
+        },
+        {
+          id: "d10",
+          brandName: "DoubleTree",
+          brandLogo: LOGO + "brand-hilton.svg",
+          verb1: "FLAGGED",
+          hotelName: ["DoubleTree by Hilton", "Hilton Head Island"],
+          hotelImage: HOTEL + "doubletree-hhi.webp",
+          verb2: "OPERATED BY",
+          partyName: "Driftwood Hospitality",
+          partyLogo: LOGO + "operator-driftwood.png",
+          type: "Management",
+          market: "United States",
+          chips: ["Hilton", "Full service"]
+        },
+        {
+          id: "d11",
+          brandName: "Sheraton",
+          brandLogo: LOGO + "brand-sheraton.png",
+          verb1: "FLAGGED",
+          hotelName: ["Sheraton Mexico City", "María Isabel"],
+          hotelImage: HOTEL + "sheraton-maria-isabel.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Marriott International",
+          partyLogo: LOGO + "brand-marriott.svg",
+          type: "Management",
+          market: "Mexico",
+          chips: ["Urban landmark"]
+        },
+        {
+          id: "d12",
+          brandName: "InterContinental",
+          brandLogo: LOGO + "brand-ihg.png",
+          verb1: "FLAGGED",
+          hotelName: ["InterContinental", "Kansas City at the Plaza"],
+          hotelImage: HOTEL + "intercontinental-kc.webp",
+          verb2: "OPERATED BY",
+          partyName: "Driftwood Hospitality",
+          partyLogo: LOGO + "operator-driftwood.png",
+          type: "Advisory",
+          market: "United States",
+          chips: ["IHG", "Plaza"]
+        },
+        {
+          id: "d13",
+          brandName: "Hyatt Ziva",
+          brandLogo: LOGO + "brand-hyatt.svg",
+          verb1: "FLAGGED",
+          hotelName: ["Hyatt Ziva", "Los Cabos"],
+          hotelImage: HOTEL + "hyatt-ziva-cabos.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Playa Hotels & Resorts",
+          partyLogo: LOGO + "operator-playa.svg",
+          type: "Capital",
+          market: "Mexico",
+          chips: ["Los Cabos", "AI"]
+        },
+        {
+          id: "d14",
+          brandName: "NH Collection",
+          brandLogo: LOGO + "brand-nh.png",
+          verb1: "FLAGGED",
+          hotelName: ["NH Collection", "Mexico City Santa Fe"],
+          hotelImage: HOTEL + "nh-santa-fe.jpg",
+          verb2: "OPERATED BY",
+          partyName: "Minor Hotels",
+          partyLogo: LOGO + "operator-minor.svg",
+          type: "Management",
+          market: "Mexico",
+          chips: ["Santa Fe", "Business"]
+        },
+        {
+          id: "d15",
+          brandName: "Crown Paradise",
+          brandLogo: LOGO + "operator-arriva.png",
+          verb1: "OPERATED",
+          hotelName: ["Crown Paradise Club", "Cancún"],
+          hotelImage: HOTEL + "crown-paradise-cancun.webp",
+          verb2: "OPERATED BY",
+          partyName: "Arriva Hospitality Group",
+          partyLogo: LOGO + "operator-arriva.png",
+          type: "Management",
+          market: "Mexico",
+          chips: ["Family AI"]
+        },
+        {
+          id: "d16",
+          brandName: "Transamerica",
+          brandLogo: LOGO + "transamerica-icon.png",
+          verb1: "FLAGGED",
+          hotelName: ["Transamerica Executive", "Jardins"],
+          hotelImage: HOTEL + "transamerica-jardins.png",
+          verb2: "OPERATED BY",
+          partyName: "Atlantica Hotels",
+          partyLogo: LOGO + "operator-atlantica.png",
+          type: "Brand Flag",
+          market: "South America",
+          chips: ["São Paulo", "Select"]
+        }
+      ];
+
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function hotelNameHtml(name) {
+        var lines = Array.isArray(name) ? name : String(name).split(/\n/);
+        return lines
+          .map(function (line) { return '<span class="hotel-name-line">' + esc(line) + "</span>"; })
+          .join("");
+      }
+
+      function hotelNameAlt(name) {
+        return Array.isArray(name) ? name.join(" ") : String(name);
+      }
+
+      function cardHtml(deal) {
+        var alt = hotelNameAlt(deal.hotelName);
+        return (
+          '<article class="deal-card" role="listitem">' +
+            '<div class="deal-brand">' +
+              '<div class="logo-well">' +
+                '<img src="' + esc(deal.brandLogo) + '" alt="' + esc(deal.brandName) + ' logo" loading="eager" decoding="async" onerror="this.classList.add(\'is-broken\')" />' +
+              "</div>" +
+              '<div class="logo-caption"><strong>' + esc(deal.brandName) + "</strong></div>" +
+            "</div>" +
+            '<div class="deal-verb">' + esc(deal.verb1) + "</div>" +
+            '<div class="hotel-photo">' +
+              '<img src="' + esc(deal.hotelImage) + '" alt="' + esc(alt) + '" loading="eager" decoding="async" onerror="this.classList.add(\'is-broken\')" />' +
+            "</div>" +
+            '<p class="hotel-name">' + hotelNameHtml(deal.hotelName) + "</p>" +
+            '<div class="deal-party">' +
+              '<div class="deal-verb">' + esc(deal.verb2) + "</div>" +
+              '<div class="logo-well logo-well--party">' +
+                '<img src="' + esc(deal.partyLogo) + '" alt="' + esc(deal.partyName) + ' logo" loading="eager" decoding="async" onerror="this.classList.add(\'is-broken\')" />' +
+              "</div>" +
+              '<div class="logo-caption"><strong>' + esc(deal.partyName) + "</strong></div>" +
+            "</div>" +
+            '<div class="deal-meta">' +
+              deal.chips.map(function (c) { return '<span class="chip">' + esc(c) + "</span>"; }).join("") +
+            "</div>" +
+          "</article>"
+        );
+      }
+
+      var views = {
+        home: document.getElementById("view-home"),
+        "view-more": document.getElementById("view-view-more")
+      };
+      var navLinks = document.querySelectorAll("[data-view]");
+
+      function setView(name) {
+        Object.keys(views).forEach(function (key) {
+          views[key].classList.toggle("is-active", key === name);
+        });
+        navLinks.forEach(function (a) {
+          a.classList.toggle("is-active", a.getAttribute("data-view") === name);
+        });
+        window.scrollTo(0, 0);
+        if (name === "home") updateCarousel();
+      }
+
+      navLinks.forEach(function (el) {
+        el.addEventListener("click", function (e) {
+          e.preventDefault();
+          setView(el.getAttribute("data-view"));
+        });
+      });
+
+      var track = document.getElementById("carousel-track");
+      var btnPrev = document.getElementById("carousel-prev");
+      var btnNext = document.getElementById("carousel-next");
+      var dotsEl = document.getElementById("carousel-dots");
+      var page = 0;
+
+      track.innerHTML = DEALS.map(cardHtml).join("");
+
+      function perPage() {
+        var w = window.innerWidth;
+        if (w <= 560) return 1;
+        if (w <= 820) return 2;
+        if (w <= 1100) return 3;
+        return 4;
+      }
+
+      function maxPage() {
+        return Math.max(0, Math.ceil(DEALS.length / perPage()) - 1);
+      }
+
+      function renderDots() {
+        var pages = maxPage() + 1;
+        dotsEl.innerHTML = "";
+        for (var i = 0; i < pages; i++) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.setAttribute("aria-label", "Go to page " + (i + 1));
+          if (i === page) b.classList.add("is-active");
+          (function (idx) {
+            b.addEventListener("click", function () {
+              page = idx;
+              updateCarousel();
+            });
+          })(i);
+          dotsEl.appendChild(b);
+        }
+      }
+
+      function updateCarousel() {
+        page = Math.min(page, maxPage());
+        var cards = track.querySelectorAll(".deal-card");
+        if (!cards.length) return;
+        var gap = 18;
+        var cardW = cards[0].getBoundingClientRect().width;
+        var offset = page * perPage() * (cardW + gap);
+        track.style.transform = "translateX(-" + offset + "px)";
+        btnPrev.disabled = page <= 0;
+        btnNext.disabled = page >= maxPage();
+        renderDots();
+      }
+
+      btnPrev.addEventListener("click", function () {
+        if (page > 0) { page -= 1; updateCarousel(); }
+      });
+      btnNext.addEventListener("click", function () {
+        if (page < maxPage()) { page += 1; updateCarousel(); }
+      });
+      window.addEventListener("resize", updateCarousel);
+
+      var grid = document.getElementById("deals-grid");
+      var filterType = document.getElementById("filter-type");
+      var filterMarket = document.getElementById("filter-market");
+      var filterReset = document.getElementById("filter-reset");
+      var resultCount = document.getElementById("result-count");
+
+      function filtered() {
+        var t = filterType.value;
+        var m = filterMarket.value;
+        return DEALS.filter(function (d) {
+          return (t === "all" || d.type === t) && (m === "all" || d.market === m);
+        });
+      }
+
+      function renderGrid() {
+        var list = filtered();
+        resultCount.textContent = String(list.length);
+        if (!list.length) {
+          grid.innerHTML =
+            '<div class="empty"><strong>No deals match these filters</strong>Try Reset or pick another market / type.</div>';
+          return;
+        }
+        grid.innerHTML = list.map(cardHtml).join("");
+      }
+
+      filterType.addEventListener("change", renderGrid);
+      filterMarket.addEventListener("change", renderGrid);
+      filterReset.addEventListener("click", function () {
+        filterType.value = "all";
+        filterMarket.value = "all";
+        renderGrid();
+      });
+
+      renderGrid();
+      // Wait one frame so card widths settle with images
+      requestAnimationFrame(updateCarousel);
+      window.addEventListener("load", updateCarousel);
+    })();
+  </script>
+</body>
+</html>

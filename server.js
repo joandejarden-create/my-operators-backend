@@ -101,6 +101,7 @@ import getThirdPartyOperatorPrefillQa from "./api/third-party-operator-prefill-q
 import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js";
 import signup from "./api/signup.js";
 import signupConfig from "./api/signup-config.js";
+import signupTermsAcceptance from "./api/signup-terms-acceptance.js";
 import memberstackWebhook from "./api/memberstack-webhook.js";
 import { getPartners, createUser, updateUser } from "./api/partner-directory.js";
 import { getUserFavorites, createFavorite, deleteFavorite, updateFavorite } from "./api/partner-directory-favorites.js";
@@ -137,6 +138,19 @@ import { getMyDeals, postMyDealsInitialMatchedSupport, getDealById, updateMyDeal
 import { getDealReadinessMeta, postDealReadinessReview, postDealReadinessSave } from "./api/deal-readiness-review.js";
 import { postBrandAlignmentSnapshot } from "./api/brand-alignment-snapshot.js";
 import {
+  getCommercialReadinessSnapshot,
+  postCommercialReadinessGenerate,
+  postCommercialReadinessGenerateStandalone,
+  postCommercialReadinessSaveInputs,
+} from "./api/commercial-readiness-snapshot.js";
+import {
+  getConversionFinancingPackage,
+  getHotelCapitalOpportunity,
+  patchConversionFinancingSharing,
+  postConversionFinancingGenerate,
+  postConversionFinancingSaveInputs,
+} from "./api/conversion-financing-package.js";
+import {
   getOperatorCapabilitySnapshot,
   postOperatorCapabilitySnapshot,
 } from "./api/operator-capability-snapshot.js";
@@ -152,6 +166,24 @@ import {
   getOperatorAlignmentSnapshotProfile,
   getOperatorAlignmentSnapshotCompanies,
 } from "./api/operator-alignment-snapshot.js";
+import {
+  getOperatorFitV2Flag,
+  getOperatorFitV2Top5,
+} from "./api/operator-fit-v2.js";
+import {
+  getOperatorFitInternalPilotAccess,
+  getOperatorFitInternalPilotPayload,
+  postOperatorFitInternalPilotEvent,
+  getOperatorFitInternalPilotShortlist,
+  postOperatorFitInternalPilotShortlist,
+  postOperatorFitInternalPilotShortlistRemove,
+  postOperatorFitInternalPilotShortlistStatus,
+  postOperatorFitInternalPilotCompare,
+  postOperatorFitInternalPilotRankingDifference,
+  postOperatorFitInternalPilotRankingChangeValidations,
+  getOperatorFitInternalPilotAdvisorScorecards,
+  postOperatorFitInternalPilotAdvisorScorecard,
+} from "./api/operator-fit-internal-pilot.js";
 import { getOutreachSetup, updateOutreachSetup, getOutreachDefault, updateOutreachDefault, deleteOutreachSetup } from "./api/outreach-setup.js";
 import { getFranchiseApplication, updateFranchiseApplication } from "./api/franchise-application.js";
 import { list as outreachHubList, get as outreachHubGet, create as outreachHubCreate, update as outreachHubUpdate, remove as outreachHubRemove } from "./api/outreach-hub.js";
@@ -159,6 +191,7 @@ import { getOutreachDealActivityLog } from "./api/outreach-deal-activity-log.js"
 import { getDashboardHome } from "./api/dashboard-home.js";
 import { getMarketingDemoEmbeds } from "./api/marketing-demo-embeds.js";
 import marketingBetaNotify from "./api/marketing-beta-notify.js";
+import marketingOpportunityReview from "./api/marketing-opportunity-review.js";
 import marketingLandingEvents from "./api/marketing-landing-events.js";
 import marketingLandingConfig from "./api/marketing-landing-config.js";
 import {
@@ -206,6 +239,8 @@ import { getAuthMe } from "./api/auth-me.js";
 import { getMemberstackPublicConfig } from "./api/auth-memberstack-config.js";
 import { getOwnerPilotProvisioningRunbookHandler } from "./api/support-owner-pilot-provisioning-runbook.js";
 import { getScoringWeightModelHandler } from "./api/support-scoring-weight-model.js";
+import { getOperatorFitDataReadinessHandler } from "./api/support-operator-fit-data-readiness.js";
+import { getOperatorIntelligenceCalibrationHandler } from "./api/support-operator-intelligence-calibration.js";
 import {
   getOperatorMatchScoringConfigHandler,
   getOperatorMatchScoringConfigBrowserScript,
@@ -224,6 +259,68 @@ import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
 import { requireOperatorDealsAccess } from "./middleware/requireOperatorDealsAccess.js";
+import { requireBrandAiVisibilityAccess } from "./middleware/requireBrandAiVisibilityAccess.js";
+import { requireAiIntelligenceValidationAccess } from "./middleware/requireAiIntelligenceValidationAccess.js";
+import { assertBrandAiVisibilityRoutesRegistered } from "./lib/ai-visibility/route-registration-guard.js";
+import {
+  getBrandPortfolio as getAiVisibilityBrandPortfolio,
+  getBrandExecutiveSummary as getAiVisibilityBrandExecutiveSummary,
+  getBrandOverview as getAiVisibilityBrandOverview,
+  getBrandTrend as getAiVisibilityBrandTrend,
+  getBrandQuestions as getAiVisibilityBrandQuestions,
+  getBrandCompetitors as getAiVisibilityBrandCompetitors,
+  getBrandSources as getAiVisibilityBrandSources,
+  getBrandEvidence as getAiVisibilityBrandEvidence,
+} from "./api/ai-visibility-brand.js";
+import {
+  getAiIntelligenceValidationSummary,
+  getAiIntelligenceValidationGates,
+  getAiIntelligenceValidationClassification,
+  getAiIntelligenceValidationBatches,
+  getAiIntelligenceValidationIssues,
+  getAiIntelligenceValidationVariability,
+  getAiIntelligenceValidationOperations,
+  getAiIntelligenceValidationBatchDetail,
+} from "./api/ai-intelligence-validation.js";
+import {
+  getGoldenSetReviewQueue,
+  getGoldenSetReviewProgress,
+  getGoldenSetReviewCase,
+  postGoldenSetReviewCase,
+  postGoldenSetPromote,
+  getGoldenSetReviewPacket,
+  postGoldenSetReviewPacketsBatch,
+  getGoldenSetReviewLearning,
+  getGoldenSetReviewExport,
+  getGoldenSetReviewExportAll,
+  getGoldenSetReviewExportFiltered,
+  getGoldenSetReviewExportPackets,
+  getGoldenSetReviewAssistanceTemplate,
+  postGoldenSetReviewImportPreview,
+  postGoldenSetReviewImportApply,
+  postGoldenSetReviewAcceptAssisted,
+  postGoldenSetReviewDiffPreview,
+} from "./api/ai-intelligence-golden-set-review.js";
+import {
+  getTaxonomyReviewReady,
+  getTaxonomyReviewValidate,
+  getTaxonomyReviewQueue,
+  postTaxonomyReviewDecision,
+  postTaxonomyReviewAcceptAllProposals,
+  postTaxonomyReviewPreviewApply,
+  postTaxonomyReviewApply,
+} from "./api/ai-intelligence-recommendation-taxonomy-review.js";
+import {
+  getPresenceValidationReviewQueue,
+  postPresenceValidationReviewDecision,
+  getPresenceValidationReviewSummary,
+  getPresenceValidationReviewExport,
+  getPresenceValidationReviewExportPreview,
+  postPresenceValidationAssistedImport,
+  getPresenceValidationAssistedProposals,
+  getPresenceValidationBulkApprovalPreview,
+  postPresenceValidationBulkApproval,
+} from "./api/ai-intelligence-presence-validation-review.js";
 import { requireOwnerOdrCreateAccess } from "./middleware/requireOwnerOdrCreateAccess.js";
 import { requirePartnerIntelligenceAccess } from "./middleware/requirePartnerIntelligenceAccess.js";
 import {
@@ -252,6 +349,14 @@ import { mapBodyDealIdToRecordId } from "./middleware/mapBodyDealIdToRecordId.js
 import { mapParamDealIdToRecordId } from "./middleware/mapParamDealIdToRecordId.js";
 import { requireAdminAccess } from "./middleware/requireAdminAccess.js";
 import { requireInternalRunbookAdmin } from "./middleware/requireInternalRunbookAdmin.js";
+import {
+  postAcquisitionConnectionsPreview,
+  postAcquisitionConnectionsImport,
+  getAcquisitionImportBatches,
+  getAcquisitionSummary,
+  postAcquisitionClassify,
+  getAcquisitionRelationships,
+} from "./api/acquisition-intelligence.js";
 import { requireTargetListRecordAccess } from "./middleware/requireTargetListRecordAccess.js";
 import { requireOwnerBdrRecordAccess } from "./middleware/requireOwnerBdrRecordAccess.js";
 import {
@@ -383,6 +488,20 @@ const dealRoomDocsUpload = multer({
     } else {
       cb(new Error("File type not allowed. Allowed: " + ALLOWED_ATTACHMENT_EXTENSIONS.join(", ")), false);
     }
+  },
+});
+
+/** Acquisition Intelligence — LinkedIn Connections CSV (memory; admin-only routes). */
+const acquisitionConnectionsUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 15 * 1024 * 1024 }, // 15 MB
+  fileFilter: (_req, file, cb) => {
+    const name = String(file.originalname || "").toLowerCase();
+    const mime = String(file.mimetype || "").toLowerCase();
+    if (name.endsWith(".csv") || mime.includes("csv") || mime === "text/plain" || mime === "application/vnd.ms-excel") {
+      return cb(null, true);
+    }
+    cb(new Error("Only LinkedIn Connections CSV files are accepted."), false);
   },
 });
 
@@ -565,6 +684,11 @@ app.patch(
 );
 app.get("/api/company-profile/prefill", getCompanyProfilePrefill);
 
+// Golden Set assisted/human import payloads can exceed Express default 100kb (~330 cases).
+app.use(
+  "/api/ai-intelligence/golden-set-review/import",
+  express.json({ limit: "5mb" })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -601,6 +725,7 @@ app.patch("/api/intake/third-party-operators/:recordId/status", updateThirdParty
 app.get("/api/marketing/demo-embeds", getMarketingDemoEmbeds);
 app.get("/api/marketing/landing-config", marketingLandingConfig);
 app.post("/api/marketing/beta-notify", marketingBetaNotify);
+app.post("/api/marketing/opportunity-review", marketingOpportunityReview);
 app.post("/api/marketing/landing-events", marketingLandingEvents);
 app.get(
   "/api/marketing/landing-events/report",
@@ -626,6 +751,248 @@ const adminAuth = [memberstackAuth, requireDealalityUser, requireAdminAccess];
 const internalRunbookAuth = [memberstackAuth, requireDealalityUser, requireInternalRunbookAdmin];
 const ownerOdrAuth = [...myDealsAuth, requireOwnerOdrCreateAccess];
 const ownerOdrDealAuth = [...myDealsDealAuth, requireOwnerOdrCreateAccess];
+const brandAiVisibilityAuth = [
+  memberstackAuth,
+  requireDealalityUser,
+  requireBrandAiVisibilityAccess,
+];
+const aiIntelligenceValidationAuth = [
+  memberstackAuth,
+  requireDealalityUser,
+  requireAiIntelligenceValidationAccess,
+];
+
+app.get("/api/ai-visibility/brand/portfolio", ...brandAiVisibilityAuth, getAiVisibilityBrandPortfolio);
+app.get("/api/ai-visibility/brand/executive-summary", ...brandAiVisibilityAuth, getAiVisibilityBrandExecutiveSummary);
+app.get("/api/ai-visibility/brand/:brandId/overview", ...brandAiVisibilityAuth, getAiVisibilityBrandOverview);
+app.get("/api/ai-visibility/brand/:brandId/trend", ...brandAiVisibilityAuth, getAiVisibilityBrandTrend);
+app.get("/api/ai-visibility/brand/:brandId/questions", ...brandAiVisibilityAuth, getAiVisibilityBrandQuestions);
+app.get("/api/ai-visibility/brand/:brandId/competitors", ...brandAiVisibilityAuth, getAiVisibilityBrandCompetitors);
+app.get("/api/ai-visibility/brand/:brandId/sources", ...brandAiVisibilityAuth, getAiVisibilityBrandSources);
+app.get("/api/ai-visibility/brand/:brandId/evidence", ...brandAiVisibilityAuth, getAiVisibilityBrandEvidence);
+app.get(
+  "/api/ai-intelligence/validation/summary",
+  ...aiIntelligenceValidationAuth,
+  getAiIntelligenceValidationSummary
+);
+app.get(
+  "/api/ai-intelligence/validation/gates",
+  ...aiIntelligenceValidationAuth,
+  getAiIntelligenceValidationGates
+);
+app.get(
+  "/api/ai-intelligence/validation/classification",
+  ...aiIntelligenceValidationAuth,
+  getAiIntelligenceValidationClassification
+);
+app.get(
+  "/api/ai-intelligence/validation/batches",
+  ...aiIntelligenceValidationAuth,
+  getAiIntelligenceValidationBatches
+);
+app.get(
+  "/api/ai-intelligence/validation/issues",
+  ...aiIntelligenceValidationAuth,
+  getAiIntelligenceValidationIssues
+);
+app.get(
+  "/api/ai-intelligence/validation/variability",
+  ...aiIntelligenceValidationAuth,
+  getAiIntelligenceValidationVariability
+);
+app.get(
+  "/api/ai-intelligence/validation/operations",
+  ...aiIntelligenceValidationAuth,
+  getAiIntelligenceValidationOperations
+);
+app.get(
+  "/api/ai-intelligence/validation/batches/:batchId",
+  ...aiIntelligenceValidationAuth,
+  getAiIntelligenceValidationBatchDetail
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/queue",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewQueue
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/progress",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewProgress
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/learning",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewLearning
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/export",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewExport
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/export/all",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewExportAll
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/export/filtered",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewExportFiltered
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/export/packets",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewExportPackets
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/export/assistance-template",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewAssistanceTemplate
+);
+app.post(
+  "/api/ai-intelligence/golden-set-review/import/preview",
+  ...aiIntelligenceValidationAuth,
+  postGoldenSetReviewImportPreview
+);
+app.post(
+  "/api/ai-intelligence/golden-set-review/import/apply",
+  ...aiIntelligenceValidationAuth,
+  postGoldenSetReviewImportApply
+);
+app.post(
+  "/api/ai-intelligence/golden-set-review/import/accept-assisted",
+  ...aiIntelligenceValidationAuth,
+  postGoldenSetReviewAcceptAssisted
+);
+app.post(
+  "/api/ai-intelligence/golden-set-review/packets/batch",
+  ...aiIntelligenceValidationAuth,
+  postGoldenSetReviewPacketsBatch
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/cases/:caseId/packet",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewPacket
+);
+app.post(
+  "/api/ai-intelligence/golden-set-review/cases/:caseId/diff-preview",
+  ...aiIntelligenceValidationAuth,
+  postGoldenSetReviewDiffPreview
+);
+app.get(
+  "/api/ai-intelligence/golden-set-review/cases/:caseId",
+  ...aiIntelligenceValidationAuth,
+  getGoldenSetReviewCase
+);
+app.post(
+  "/api/ai-intelligence/golden-set-review/cases/:caseId",
+  ...aiIntelligenceValidationAuth,
+  postGoldenSetReviewCase
+);
+app.post(
+  "/api/ai-intelligence/golden-set-review/promote",
+  ...aiIntelligenceValidationAuth,
+  postGoldenSetPromote
+);
+app.get(
+  "/api/ai-intelligence/recommendation-taxonomy-review/ready",
+  ...aiIntelligenceValidationAuth,
+  getTaxonomyReviewReady
+);
+app.get(
+  "/api/ai-intelligence/recommendation-taxonomy-review/validate",
+  ...aiIntelligenceValidationAuth,
+  getTaxonomyReviewValidate
+);
+app.get(
+  "/api/ai-intelligence/recommendation-taxonomy-review/queue",
+  ...aiIntelligenceValidationAuth,
+  getTaxonomyReviewQueue
+);
+app.post(
+  "/api/ai-intelligence/recommendation-taxonomy-review/decision",
+  ...aiIntelligenceValidationAuth,
+  postTaxonomyReviewDecision
+);
+app.post(
+  "/api/ai-intelligence/recommendation-taxonomy-review/cases/:caseId/decision",
+  ...aiIntelligenceValidationAuth,
+  postTaxonomyReviewDecision
+);
+app.post(
+  "/api/ai-intelligence/recommendation-taxonomy-review/accept-all-proposals",
+  ...aiIntelligenceValidationAuth,
+  postTaxonomyReviewAcceptAllProposals
+);
+app.post(
+  "/api/ai-intelligence/recommendation-taxonomy-review/preview-apply",
+  ...aiIntelligenceValidationAuth,
+  postTaxonomyReviewPreviewApply
+);
+app.post(
+  "/api/ai-intelligence/recommendation-taxonomy-review/apply",
+  ...aiIntelligenceValidationAuth,
+  postTaxonomyReviewApply
+);
+app.get(
+  "/api/ai-intelligence/presence-validation-review/queue",
+  ...aiIntelligenceValidationAuth,
+  getPresenceValidationReviewQueue
+);
+app.get(
+  "/api/ai-intelligence/presence-validation-review/summary",
+  ...aiIntelligenceValidationAuth,
+  getPresenceValidationReviewSummary
+);
+app.get(
+  "/api/ai-intelligence/presence-validation-review/export/preview",
+  ...aiIntelligenceValidationAuth,
+  getPresenceValidationReviewExportPreview
+);
+app.get(
+  "/api/ai-intelligence/presence-validation-review/export",
+  ...aiIntelligenceValidationAuth,
+  getPresenceValidationReviewExport
+);
+app.get(
+  "/api/ai-intelligence/presence-validation-review/assisted",
+  ...aiIntelligenceValidationAuth,
+  getPresenceValidationAssistedProposals
+);
+app.post(
+  "/api/ai-intelligence/presence-validation-review/assisted/import",
+  ...aiIntelligenceValidationAuth,
+  postPresenceValidationAssistedImport
+);
+app.get(
+  "/api/ai-intelligence/presence-validation-review/bulk-approval/preview",
+  ...aiIntelligenceValidationAuth,
+  getPresenceValidationBulkApprovalPreview
+);
+app.post(
+  "/api/ai-intelligence/presence-validation-review/bulk-approval/apply",
+  ...aiIntelligenceValidationAuth,
+  postPresenceValidationBulkApproval
+);
+app.post(
+  "/api/ai-intelligence/presence-validation-review/decide",
+  ...aiIntelligenceValidationAuth,
+  postPresenceValidationReviewDecision
+);
+console.log("✅ Brand AI Visibility API routes registered:");
+console.log("   GET /api/ai-visibility/brand/portfolio");
+console.log("   GET /api/ai-visibility/brand/executive-summary");
+console.log("   GET /api/ai-visibility/brand/:brandId/{overview,trend,questions,competitors,sources,evidence}");
+console.log("   (hotel-decision-visibility public route retired — HDV consumed via executive/overview)");
+console.log("✅ AI Intelligence Validation Scorecard routes registered:");
+console.log("   GET /api/ai-intelligence/validation/{summary,gates,classification,batches,issues,variability,operations}");
+console.log("   GET /api/ai-intelligence/validation/batches/:batchId");
+console.log("   GET/POST /api/ai-intelligence/golden-set-review/*");
+console.log("   GET/POST /api/ai-intelligence/recommendation-taxonomy-review/*");
+console.log("   GET/POST /api/ai-intelligence/presence-validation-review/*");
+assertBrandAiVisibilityRoutesRegistered(app);
+
 app.get("/api/my-deals", ...myDealsAuth, getMyDeals);
 app.post("/api/my-deals", ...myDealsAuth, createDeal);
 app.post("/api/my-deals/initial-matched-support", ...myDealsAuth, postMyDealsInitialMatchedSupport);
@@ -650,6 +1017,70 @@ app.get("/api/ai/deal-readiness-review/meta", getDealReadinessMeta);
 app.post("/api/ai/deal-readiness-review", mapBodyDealIdToRecordId, ...myDealsDealAuth, postDealReadinessReview);
 app.post("/api/ai/deal-readiness-review/save", mapBodyDealIdToRecordId, ...myDealsDealAuth, postDealReadinessSave);
 app.post("/api/ai/brand-alignment-snapshot", mapBodyDealIdToRecordId, ...myDealsDealAuth, postBrandAlignmentSnapshot);
+app.get(
+  "/api/deals/:dealId/commercial-readiness-snapshot",
+  mapParamDealIdToRecordId,
+  ...myDealsDealAuth,
+  getCommercialReadinessSnapshot
+);
+app.post(
+  "/api/ai/commercial-readiness-snapshot/save-inputs",
+  mapBodyDealIdToRecordId,
+  ...myDealsDealAuth,
+  postCommercialReadinessSaveInputs
+);
+app.post(
+  "/api/ai/commercial-readiness-snapshot/generate",
+  mapBodyDealIdToRecordId,
+  ...myDealsDealAuth,
+  postCommercialReadinessGenerate
+);
+app.post("/api/ai/commercial-readiness-snapshot/generate-standalone", postCommercialReadinessGenerateStandalone);
+app.get(
+  "/api/deals/:dealId/conversion-financing-package",
+  (req, _res, next) => {
+    req.params.recordId = req.params.dealId;
+    next();
+  },
+  ...myDealsDealAuth,
+  getConversionFinancingPackage
+);
+app.post(
+  "/api/deals/:dealId/conversion-financing-package/save-inputs",
+  (req, _res, next) => {
+    req.params.recordId = req.params.dealId;
+    next();
+  },
+  ...myDealsDealAuth,
+  postConversionFinancingSaveInputs
+);
+app.post(
+  "/api/deals/:dealId/conversion-financing-package/generate",
+  (req, _res, next) => {
+    req.params.recordId = req.params.dealId;
+    next();
+  },
+  ...myDealsDealAuth,
+  postConversionFinancingGenerate
+);
+app.patch(
+  "/api/deals/:dealId/conversion-financing-package/sharing",
+  (req, _res, next) => {
+    req.params.recordId = req.params.dealId;
+    next();
+  },
+  ...myDealsDealAuth,
+  patchConversionFinancingSharing
+);
+app.get(
+  "/api/deals/:dealId/hotel-capital-opportunity",
+  (req, _res, next) => {
+    req.params.recordId = req.params.dealId;
+    next();
+  },
+  ...myDealsDealAuth,
+  getHotelCapitalOpportunity
+);
 app.get(
   "/api/deals/:dealId/operator-capability-snapshot",
   (req, _res, next) => {
@@ -692,6 +1123,17 @@ app.get(
   },
   ...myDealsDealAuth,
   getOperatorAlignmentSnapshotCompanies
+);
+// Operator Fit Engine v2 (feature-flagged; default off — does not replace legacy OAS)
+app.get("/api/operator-fit/v2/flag", ...myDealsAuth, getOperatorFitV2Flag);
+app.get(
+  "/api/operator-fit/v2/:dealId/top5",
+  (req, _res, next) => {
+    req.params.recordId = req.params.dealId;
+    next();
+  },
+  ...myDealsDealAuth,
+  getOperatorFitV2Top5
 );
 // Target List (brand shortlist) API — Batch 2A owner auth
 const mapTargetListDealParam = (req, _res, next) => {
@@ -810,11 +1252,49 @@ app.patch("/api/outreach-hub/:table/:recordId", outreachHubUpdate);
 app.delete("/api/outreach-hub/:table/:recordId", outreachHubRemove);
 app.get("/api/outreach/deal-activity-log", getOutreachDealActivityLog);
 
+function sendPublicNoStore(res, publicRelativePath) {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.sendFile(path.join(__dirname, "public", publicRelativePath));
+}
+
 // Serve the unified app hub and brand setup BEFORE static so paths are not treated as static files
+// Shell assets must not stick behind stale ETag/cache during local founder QA.
+// Read app.js from disk on every request (no sendFile handle reuse surprises).
+app.get("/app.js", (req, res) => {
+  const appJsPath = path.join(__dirname, "public", "app.js");
+  let body;
+  try {
+    body = fs.readFileSync(appJsPath, "utf8");
+  } catch (err) {
+    console.error("[shell] failed to read public/app.js", err?.message || err);
+    return res.status(500).type("text/plain").send("app.js unavailable");
+  }
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  if (process.env.NODE_ENV !== "production") {
+    res.setHeader("X-Dealality-App-Js-Bytes", String(Buffer.byteLength(body, "utf8")));
+    res.setHeader(
+      "X-Dealality-App-Js-Has-Canonical",
+      body.includes("canonicalWorkspaceOptions") ? "1" : "0"
+    );
+  }
+  res.type("application/javascript").send(body);
+});
+app.get("/app.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.sendFile(path.join(__dirname, "public", "app.html"));
+});
 app.get("/app", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, 'public', 'app.html'));
 });
 app.get("/app/", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, 'public', 'app.html'));
 });
 app.get("/app/home", (req, res) => {
@@ -979,6 +1459,71 @@ app.get("/operator-alignment-snapshot.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "operator-alignment-snapshot.html"));
 });
+app.get("/operator-fit-alignment", (req, res) => {
+  const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+  res.redirect(302, "/operator-fit-alignment.html" + q);
+});
+app.get("/operator-fit-alignment.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.sendFile(path.join(__dirname, "public", "operator-fit-alignment.html"));
+});
+app.get("/internal/operator-fit-data-readiness", (req, res) => {
+  const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+  res.redirect(302, "/internal/operator-fit-data-readiness.html" + q);
+});
+app.get("/internal/operator-fit-data-readiness.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow");
+  res.sendFile(path.join(__dirname, "public", "internal", "operator-fit-data-readiness.html"));
+});
+app.get("/internal/operator-fit-calibration", (req, res) => {
+  const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+  res.redirect(302, "/internal/operator-fit-calibration.html" + q);
+});
+app.get("/internal/operator-fit-calibration.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow");
+  res.sendFile(path.join(__dirname, "public", "internal", "operator-fit-calibration.html"));
+});
+app.get("/internal/operator-fit-pilot", (req, res) => {
+  const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+  res.redirect(302, "/internal/operator-fit-pilot.html" + q);
+});
+app.get("/internal/operator-fit-pilot.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow");
+  res.sendFile(path.join(__dirname, "public", "internal", "operator-fit-pilot.html"));
+});
+app.get("/internal/operator-intelligence", (req, res) => {
+  const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+  res.redirect(302, "/internal/operator-intelligence.html" + q);
+});
+app.get("/internal/operator-intelligence.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow");
+  res.sendFile(path.join(__dirname, "public", "internal", "operator-intelligence.html"));
+});
+app.get("/internal/acquisition-intelligence", (req, res) => {
+  const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+  res.redirect(302, "/internal/acquisition-intelligence.html" + q);
+});
+app.get("/internal/acquisition-intelligence.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow");
+  res.sendFile(path.join(__dirname, "public", "internal", "acquisition-intelligence.html"));
+});
+app.get("/commercial-readiness-snapshot", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/commercial-readiness-snapshot.html" + q);
+});
+app.get("/commercial-readiness-snapshot/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/commercial-readiness-snapshot.html" + q);
+});
+app.get("/commercial-readiness-snapshot.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "commercial-readiness-snapshot.html"));
+});
 app.get("/owner-diagnostic-sample", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/owner-diagnostic-sample.html" + q);
@@ -1035,6 +1580,26 @@ app.get("/operator-explorer-preview/", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/operator-explorer-share.html" + q);
 });
+app.get("/brand-explorer-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/brand-explorer-share.html" + q);
+});
+app.get("/brand-explorer-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/brand-explorer-share.html" + q);
+});
+app.get("/brand-explorer-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "brand-explorer-share.html"));
+});
+app.get("/brand-explorer-preview", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/brand-explorer-share.html" + q);
+});
+app.get("/brand-explorer-preview/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/brand-explorer-share.html" + q);
+});
 app.get("/getting-started", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, 'public', 'getting-started.html'));
@@ -1073,6 +1638,12 @@ app.get("/signup-temp", (req, res) => {
 app.get("/signup-temp.html", (req, res) => {
     res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
     res.sendFile(path.join(__dirname, 'public', 'signup-temp.html'));
+});
+app.get(["/terms", "/terms.html"], (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "terms.html"));
+});
+app.get(["/privacy", "/privacy.html"], (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "privacy.html"));
 });
 app.get("/verify", (req, res) => {
     res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
@@ -1118,7 +1689,13 @@ app.get("/deal-benchmarking", (req, res) => {
 });
 
 app.get("/market-alerts", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'market-alerts.html'));
+    sendPublicNoStore(res, "market-alerts.html");
+});
+app.get("/market-alerts.html", (req, res) => {
+    sendPublicNoStore(res, "market-alerts.html");
+});
+app.get("/market-alerts.js", (req, res) => {
+    sendPublicNoStore(res, "market-alerts.js");
 });
 app.get("/market-alerts-back", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'market-alerts-back.html'));
@@ -1201,6 +1778,58 @@ app.get("/deal-compare-select-winner.html", redirectDealCompareSelectWinner);
 // Serve the brand development dashboard
 app.get("/brand-development-dashboard", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'brand-development-dashboard.html'));
+});
+
+app.get("/ai-visibility", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "ai-visibility-brand.html"));
+});
+app.get("/ai-visibility/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "ai-visibility-brand.html"));
+});
+app.get("/ai-visibility-brand", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "ai-visibility-brand.html"));
+});
+app.get("/ai-visibility-brand.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "ai-visibility-brand.html"));
+});
+app.get("/ai-intelligence-validation", (req, res) => {
+  sendPublicNoStore(res, "ai-intelligence-validation.html");
+});
+app.get("/ai-intelligence-validation.html", (req, res) => {
+  sendPublicNoStore(res, "ai-intelligence-validation.html");
+});
+app.get("/js/ai-visibility/ai-intelligence-validation.js", (req, res) => {
+  sendPublicNoStore(res, path.join("js", "ai-visibility", "ai-intelligence-validation.js"));
+});
+app.get("/ai-intelligence-golden-set-review", (req, res) => {
+  sendPublicNoStore(res, "ai-intelligence-golden-set-review.html");
+});
+app.get("/ai-intelligence-golden-set-review.html", (req, res) => {
+  sendPublicNoStore(res, "ai-intelligence-golden-set-review.html");
+});
+app.get("/ai-intelligence-recommendation-taxonomy-review", (req, res) => {
+  sendPublicNoStore(res, "ai-intelligence-recommendation-taxonomy-review.html");
+});
+app.get("/ai-intelligence-recommendation-taxonomy-review.html", (req, res) => {
+  sendPublicNoStore(res, "ai-intelligence-recommendation-taxonomy-review.html");
+});
+app.get("/js/ai-visibility/ai-intelligence-recommendation-taxonomy-review.js", (req, res) => {
+  sendPublicNoStore(
+    res,
+    path.join("js", "ai-visibility", "ai-intelligence-recommendation-taxonomy-review.js")
+  );
+});
+app.get("/ai-intelligence-presence-validation-review", (req, res) => {
+  sendPublicNoStore(res, "ai-intelligence-presence-validation-review.html");
+});
+app.get("/ai-intelligence-presence-validation-review.html", (req, res) => {
+  sendPublicNoStore(res, "ai-intelligence-presence-validation-review.html");
+});
+app.get("/js/ai-visibility/ai-intelligence-presence-validation-review.js", (req, res) => {
+  sendPublicNoStore(
+    res,
+    path.join("js", "ai-visibility", "ai-intelligence-presence-validation-review.js")
+  );
 });
 
 // Serve the operator development dashboard (My Operator Deals)
@@ -1315,6 +1944,7 @@ app.post("/api/intake/deal", dealIntake);
 app.post("/api/intake/user", userIntake);
 app.post("/api/signup", signup);
 app.get("/api/signup/config", signupConfig);
+app.post("/api/signup-terms-acceptance", signupTermsAcceptance);
 app.post("/api/webhooks/memberstack", memberstackWebhook);
 
 // Market Alerts API endpoints – live beta (Airtable-backed)
@@ -1530,6 +2160,43 @@ app.patch("/api/user-management/:recordId", ...adminAuth, updateUserManagementUs
 app.delete("/api/user-management/:recordId", ...adminAuth, deleteUserManagementUser);
 app.post("/api/user-management/bulk-delete", ...adminAuth, bulkDeleteUsers);
 
+// Acquisition Intelligence (internal/admin only — LinkedIn Connections CSV Stage 1)
+app.post(
+  "/api/acquisition-intelligence/connections/preview",
+  ...adminAuth,
+  (req, res, next) => {
+    acquisitionConnectionsUpload.single("file")(req, res, (err) => {
+      if (err) {
+        if (err.code === "LIMIT_FILE_SIZE") {
+          return res.status(413).json({
+            ok: false,
+            success: false,
+            error: "file_too_large",
+            message: "CSV exceeds 15 MB limit.",
+          });
+        }
+        return res.status(400).json({
+          ok: false,
+          success: false,
+          error: "upload_error",
+          message: err.message || "Upload failed.",
+        });
+      }
+      return next();
+    });
+  },
+  postAcquisitionConnectionsPreview
+);
+app.post(
+  "/api/acquisition-intelligence/connections/import",
+  ...adminAuth,
+  postAcquisitionConnectionsImport
+);
+app.get("/api/acquisition-intelligence/import-batches", ...adminAuth, getAcquisitionImportBatches);
+app.get("/api/acquisition-intelligence/summary", ...adminAuth, getAcquisitionSummary);
+app.post("/api/acquisition-intelligence/classify", ...adminAuth, postAcquisitionClassify);
+app.get("/api/acquisition-intelligence/relationships", ...adminAuth, getAcquisitionRelationships);
+
 app.get(
   "/api/support/owner-pilot-provisioning-runbook",
   ...internalRunbookAuth,
@@ -1539,6 +2206,76 @@ app.get(
   "/api/support/scoring-weight-model",
   ...internalRunbookAuth,
   getScoringWeightModelHandler
+);
+app.get(
+  "/api/support/operator-fit-data-readiness",
+  ...internalRunbookAuth,
+  getOperatorFitDataReadinessHandler
+);
+app.get(
+  "/api/support/operator-intelligence-calibration",
+  ...internalRunbookAuth,
+  getOperatorIntelligenceCalibrationHandler
+);
+app.get(
+  "/api/support/operator-fit-internal-pilot/access",
+  ...internalRunbookAuth,
+  getOperatorFitInternalPilotAccess
+);
+app.get(
+  "/api/support/operator-fit-internal-pilot/payload",
+  ...internalRunbookAuth,
+  getOperatorFitInternalPilotPayload
+);
+app.post(
+  "/api/support/operator-fit-internal-pilot/events",
+  ...internalRunbookAuth,
+  postOperatorFitInternalPilotEvent
+);
+app.get(
+  "/api/support/operator-fit-internal-pilot/:dealId/shortlist",
+  ...internalRunbookAuth,
+  getOperatorFitInternalPilotShortlist
+);
+app.post(
+  "/api/support/operator-fit-internal-pilot/:dealId/shortlist",
+  ...internalRunbookAuth,
+  postOperatorFitInternalPilotShortlist
+);
+app.post(
+  "/api/support/operator-fit-internal-pilot/shortlist/:id/remove",
+  ...internalRunbookAuth,
+  postOperatorFitInternalPilotShortlistRemove
+);
+app.post(
+  "/api/support/operator-fit-internal-pilot/shortlist/:id/status",
+  ...internalRunbookAuth,
+  postOperatorFitInternalPilotShortlistStatus
+);
+app.post(
+  "/api/support/operator-fit-internal-pilot/compare",
+  ...internalRunbookAuth,
+  postOperatorFitInternalPilotCompare
+);
+app.post(
+  "/api/support/operator-fit-internal-pilot/ranking-difference",
+  ...internalRunbookAuth,
+  postOperatorFitInternalPilotRankingDifference
+);
+app.post(
+  "/api/support/operator-fit-internal-pilot/ranking-change-validations",
+  ...internalRunbookAuth,
+  postOperatorFitInternalPilotRankingChangeValidations
+);
+app.get(
+  "/api/support/operator-fit-internal-pilot/advisor-scorecards",
+  ...internalRunbookAuth,
+  getOperatorFitInternalPilotAdvisorScorecards
+);
+app.post(
+  "/api/support/operator-fit-internal-pilot/advisor-scorecards",
+  ...internalRunbookAuth,
+  postOperatorFitInternalPilotAdvisorScorecard
 );
 
 app.get("/api/operator-match/scoring-config", getOperatorMatchScoringConfigHandler);
@@ -1563,6 +2300,12 @@ app.get("/api/partner-directory/config", (req, res) => {
 });
 
 // Page routes (before express.static so paths without .html are matched)
+app.get("/opportunity-review", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "opportunity-review.html"));
+});
+app.get("/opportunity-review/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "opportunity-review.html"));
+});
 app.get("/largest-operators-by-brand", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'largest-operators-by-brand.html'));
 });
@@ -1588,8 +2331,10 @@ app.get("/dealality-scout/", (req, res) => {
 // AO client engagements (not part of Dealality app) — e.g. AH Hospitality Advisors mockups
 const AH_COMMERCIAL_HUB =
     "/engagements/ah-hospitality-advisors/commercial-performance-hub-mockup.html";
-app.get("/commercial-performance-hub-mockup.html", (req, res) => res.redirect(302, AH_COMMERCIAL_HUB));
-app.get("/commercial-performance-hub-mockup", (req, res) => res.redirect(302, AH_COMMERCIAL_HUB));
+const AH_COMMERCIAL_HUB_PUBLIC = "/commercial-performance-hub/";
+app.get("/commercial-performance-hub-mockup.html", (req, res) => res.redirect(302, AH_COMMERCIAL_HUB_PUBLIC));
+app.get("/commercial-performance-hub-mockup", (req, res) => res.redirect(302, AH_COMMERCIAL_HUB_PUBLIC));
+app.get("/commercial-performance-hub", (req, res) => res.redirect(302, AH_COMMERCIAL_HUB_PUBLIC));
 app.use("/engagements", express.static(path.join(__dirname, "engagements")));
 
 // Deal Capture landing and subpages (reviews, for-owners, etc.) at root
@@ -1794,6 +2539,24 @@ const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
+  if (process.env.NODE_ENV !== "production") {
+    let gitHead = "unavailable";
+    try {
+      const head = fs.readFileSync(path.join(__dirname, ".git", "HEAD"), "utf8").trim();
+      if (head.startsWith("ref:")) {
+        const refPath = path.join(__dirname, ".git", head.slice(4).trim());
+        if (fs.existsSync(refPath)) {
+          gitHead = fs.readFileSync(refPath, "utf8").trim().slice(0, 12);
+        }
+      } else {
+        gitHead = head.slice(0, 12);
+      }
+    } catch {
+      gitHead = "unavailable";
+    }
+    console.log("DEALALITY_REPO_ROOT:", __dirname);
+    console.log("DEALALITY_GIT_HEAD:", gitHead);
+  }
   // Optional quick check (only shows first chars, don't log secrets in prod)
   console.log("Airtable key present:", !!process.env.AIRTABLE_API_KEY);
   const smtpOk = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);

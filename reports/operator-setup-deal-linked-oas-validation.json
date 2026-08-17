@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-06-02T14:00:18.776Z",
+  "dealId": "recIeGRZP21udmTnt",
+  "requestedOperatorId": "recBVEgtm8cS96mu7",
+  "selectedOperatorId": "recQ6Cf8O2z0tiqBz",
+  "selectedReason": "fallback_first_linked_operator",
+  "linkedConfirmation": {
+    "requestedOperatorLinked": false,
+    "selectedOperatorLinked": true,
+    "companiesForConsiderationCount": 9,
+    "linkageMethod": "requested operator not found; selected first confirmed operator in companiesForConsideration"
+  },
+  "apisRoutesModulesTested": [
+    "lib/operator-alignment-company-utils.js::buildOperatorAlignmentCompaniesSnapshot",
+    "lib/operator-alignment-profile-utils.js::buildOperatorAlignmentProfileSnapshot",
+    "api/my-deals.js::fetchDealScoringContext",
+    "api/lib/operator-setup-new-base-read.js::loadNewBaseOperatorBundle",
+    "GET /api/operator-alignment-snapshot/:dealId/profile (HTTP auth-gated check)",
+    "GET /api/operator-alignment-snapshot/:dealId/companies (HTTP auth-gated check)",
+    "GET /api/my-deals/:dealId/operator-match-score-breakdown",
+    "GET /api/intake/third-party-operators/:recordId",
+    "GET /api/operator-explorer/operator"
+  ],
+  "oasValidation": {
+    "snapshotProfileModulePass": true,
+    "companiesSnapshotModulePass": true,
+    "snapshotProfileHttpStatus": 401,
+    "snapshotCompaniesHttpStatus": 401,
+    "snapshotProfileHttpAuthGated": true,
+    "snapshotCompaniesHttpAuthGated": true,
+    "snapshotPassOverall": true
+  },
+  "scoreValidation": {
+    "scoreResultRun1": 85.8,
+    "scoreResultRun2": 85.8,
+    "scoreStableModule": true,
+    "operatorScoreRun1": 85.8,
+    "operatorScoreRun2": 85.8,
+    "scoreStableHttp": true,
+    "scoreBreakdownHttpPass": true,
+    "scoreBreakdownPassOverall": true
+  },
+  "scoringCodeChangeCheck": {
+    "changed": false,
+    "method": "No code edits performed in this validation pass; no commit created."
+  },
+  "operatorContext": {
+    "detailHttpStatus": 200,
+    "readPath": "new_base_bundle",
+    "newBaseWhereApplicable": true,
+    "serviceModelsSupported": [
+      "Select-service",
+      "Boutique"
+    ],
+    "primaryServiceModel": "Mixed",
+    "serviceModelsSource": "canonical"
+  },
+  "diagnostics": {
+    "fallbackDiagnosticsAppeared": false,
+    "fallbackDiagnostics": [],
+    "unresolvedFieldsAppeared": false,
+    "unresolvedFields": []
+  },
+  "runtimeSafetyChecks": {
+    "mockDataAppeared": false,
+    "legacyFailOpenShadowObserved": false
+  },
+  "issueClassification": {
+    "productIssue": false,
+    "dataIssue": true,
+    "note": "Requested operator not linked to deal cohort; validation switched to confirmed linked operator."
+  },
+  "decisionRecommendation": "needs_targeted_cleanup"
+}

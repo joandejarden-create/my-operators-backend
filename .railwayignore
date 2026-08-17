@@ -1,0 +1,36 @@
+# Keep Railway uploads lean — local-only / generated bulk paths
+matcha/
+reports/
+uploads/
+data/
+# Seed only V4 runtime + independent freeze (NOT full candidate shards — too large for upload)
+!data/research-engine-v2/
+!data/research-engine-v2/census-autopilot-v4-full-universe/
+!data/research-engine-v2/census-autopilot-v4-full-universe/**
+!data/research-engine-v2/census-autopilot-v2-3-independent-universe/
+!data/research-engine-v2/census-autopilot-v2-3-independent-universe/**
+# Brand AI Visibility V1 pilot measured baseline (no raw monitoring corpora / experiments)
+!data/ai-visibility/runtime/wave1-showcase/
+!data/ai-visibility/runtime/wave1-showcase/**
+!data/ai-visibility/runtime/provider-baselines/
+!data/ai-visibility/runtime/provider-baselines/**
+!data/ai-visibility/truth-comparisons/
+!data/ai-visibility/truth-comparisons/**
+!data/ai-visibility/gaps/
+!data/ai-visibility/gaps/**
+!data/ai-visibility/associations/
+!data/ai-visibility/associations/**
+# Explicitly keep heavy trees out even if parent is un-ignored
+data/research-engine-v2/census-autopilot-v2-full-universe/
+data/research-engine-v2/census-autopilot-v4-standing/
+data/research-engine-v2/census-autopilot-v4-full-universe/**/*.log
+data/research-engine-v2/census-autopilot-v4-full-universe/**/*-run*.log
+node_modules/
+.env
+.env.local
+.cursor/
+_archive/
+*.log
+*.tmp
+*.zip
+.git/

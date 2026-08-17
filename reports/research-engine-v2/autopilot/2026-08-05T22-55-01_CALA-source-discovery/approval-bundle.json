@@ -1,0 +1,66 @@
+{
+  "version": "census-autopilot-source-discovery-v1",
+  "type": "hotel_property_census_insert_approval_bundle",
+  "status": "awaiting_founder_approval",
+  "stop_before_writes": true,
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "vic_writes": false,
+  "run_id": "2026-08-05T22-55-01_CALA-source-discovery",
+  "mode": "controlled",
+  "scope": "active-brand-setup",
+  "region": "CALA",
+  "strategy": "fastest-safe",
+  "queue": "source_discovery",
+  "production_target": {
+    "baseName": "Deal Capture Platform",
+    "tableName": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam",
+    "role": "production_property_table",
+    "allowedWriteTarget": true,
+    "envBaseResolver": "AIRTABLE_BASE_ID_ALT (Deal Capture Platform)"
+  },
+  "write_target_ok": true,
+  "write_target_check": {
+    "ok": true,
+    "status": "production_census_write_target_ok",
+    "code": null,
+    "errors": [],
+    "expected": {
+      "baseName": "Deal Capture Platform",
+      "tableName": "Hotel Property Census",
+      "tableId": "tbl9aY5ijiuIzzWam",
+      "role": "production_property_table"
+    },
+    "actual": {
+      "baseName": "Deal Capture Platform",
+      "baseId": null,
+      "tableName": "Hotel Property Census",
+      "tableId": "tbl9aY5ijiuIzzWam"
+    },
+    "base_resolution": null,
+    "blocked_classification": null
+  },
+  "records_proposed_for_insert": 0,
+  "proposed_inserts": [],
+  "proposed_writes": [],
+  "proposed_writes_by_queue": {
+    "source_discovery": []
+  },
+  "duplicate_risks": [],
+  "steward_review_cases": [],
+  "existing_exact_matches": 122,
+  "safety_status": {
+    "controlled_mode": true,
+    "production_writes": false,
+    "hotel_property_census_only": true,
+    "owner_operator_date_blocked": true,
+    "company_validated_blocked": true,
+    "brand_verified_blocked": true,
+    "recent_momentum_blocked": true,
+    "no_fuzzy_auto_insert": true,
+    "high_identity_required": true
+  },
+  "recommended_apply_command": "ALLOW_CENSUS_AUTOPILOT_APPLY=1 \\\n  CONFIRM_WRITE_TO_PRODUCTION_CENSUS=1 \\\n  CONFIRM_NO_BRAND_EXPLORER_WRITES=1 \\\n  CONFIRM_NO_OWNER_OPERATOR_WRITES=1 \\\n  npm run census:autopilot -- --region CALA --scope active-brand-setup --mode apply \\\n  --strategy fastest-safe --queue source_discovery --run-until-complete --batch-size 100 \\\n  --approval-bundle reports/research-engine-v2/autopilot/2026-08-05T22-55-01_CALA-source-discovery/approval-bundle.json \\\n  --confirm-safe-writes --confirm-write-to-production-census \\\n  --confirm-no-brand-explorer-writes --confirm-no-owner-operator \\\n  --confirm-no-date-writes --confirm-no-recent-momentum \\\n  --confirm-no-company-validation --confirm-webhound-not-production-source \\\n  --enable-production-writes"
+}

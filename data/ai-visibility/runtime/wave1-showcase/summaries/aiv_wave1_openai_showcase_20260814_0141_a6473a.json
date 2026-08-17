@@ -1,0 +1,219 @@
+{
+  "label": "WAVE-1 OPENAI SHOWCASE BASELINE — FIRST COMPARABLE PERIOD",
+  "batchId": "aiv_wave1_openai_showcase_20260814_0141_a6473a",
+  "wave1Id": "aiv_wave1_openai_showcase_20260814_0141_a6473a",
+  "baselineSeriesId": "aiv_wave1_openai_peer_v2_showcase_prompts_v1",
+  "status": "activation_gate_failed",
+  "stopReason": "activation_gate_fail",
+  "provider": {
+    "name": "openai",
+    "model": "gpt-5.6"
+  },
+  "peerSet": {
+    "peerSetId": "peers_uu_collection_lifestyle_owner_decision_v2",
+    "peerSetVersion": "2",
+    "count": 15,
+    "canonicalValid": true
+  },
+  "activationGate": {
+    "GLOBAL_EN_ACTIVATION_GATE": "FAIL",
+    "RESULT": "FAIL",
+    "REASONS": [
+      "execution_success_0_below_floor_10",
+      "execution_provider_errors_systemic_12"
+    ],
+    "NOTES": [
+      "Recommendation content desirability is not an activation criterion.",
+      "Citation absence in a response is not an automatic failure (Citation Rate PARTIAL)."
+    ],
+    "COUNTS": {
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 12,
+      "retries": 12,
+      "timeouts": 0,
+      "providerErrors": 12,
+      "authErrors": 0,
+      "parseFailures": 0,
+      "storageFailures": 0,
+      "identityMissing": 0,
+      "resolverMalfunctions": 0,
+      "classifierMalfunctions": 0,
+      "citationCorruptions": 0
+    },
+    "COST": {
+      "GLOBAL_EN_ACTUAL": 0,
+      "PROJECTION": {
+        "averagePerCall": 0,
+        "projected84": 0,
+        "likelyHardCapBreach": false,
+        "method": "first_slot_average_times_84",
+        "hardCapUsd": 125,
+        "plannedLogicalCalls": 84,
+        "maxAttempts": 168
+      },
+      "HARD_CAP": 125
+    },
+    "evaluatedAt": "2026-08-14T01:42:11.860Z"
+  },
+  "logical": {
+    "planned": 84,
+    "succeeded": 0,
+    "failedFinal": 12,
+    "notExecuted": 72,
+    "retried": 12,
+    "totalAttempts": 24,
+    "retrySuccess": 0,
+    "retryFailure": 12
+  },
+  "slots": {
+    "GLOBAL_EN": {
+      "key": "GLOBAL_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 12,
+      "retried": 12,
+      "attempts": 24,
+      "cost": 0,
+      "status": "failed",
+      "timeouts": 0,
+      "providerErrors": 12,
+      "authErrors": 0
+    },
+    "CALA_EN": {
+      "key": "CALA_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "CALA_ES": {
+      "key": "CALA_ES",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "EUROPE_EN": {
+      "key": "EUROPE_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "NORTH_AMERICA_EN": {
+      "key": "NORTH_AMERICA_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "MEXICO_EN": {
+      "key": "MEXICO_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "MEXICO_ES": {
+      "key": "MEXICO_ES",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    }
+  },
+  "cost": {
+    "actualUsd": 0,
+    "hardCapUsd": 125,
+    "capBreached": false,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "totalTokens": 0,
+    "providerAttempts": 24,
+    "averagePerSuccessfulLogicalCall": null,
+    "projectionFromGlobalEn": {
+      "averagePerCall": 0,
+      "projected84": 0,
+      "likelyHardCapBreach": false,
+      "method": "first_slot_average_times_84",
+      "hardCapUsd": 125,
+      "plannedLogicalCalls": 84,
+      "maxAttempts": 168
+    }
+  },
+  "metrics": {
+    "metricVersion": "ai_visibility_metrics_v1",
+    "byEntity": {},
+    "competitivePosition": null,
+    "citationRateReadiness": "PARTIAL",
+    "COMPARABLE_PRIOR_PERIOD": "NONE",
+    "TREND_AVAILABLE": false
+  },
+  "versions": {
+    "orchestrator": "ai_visibility_wave1_orchestrator_v1",
+    "resolver": "ai_visibility_entity_resolver_v2",
+    "classifier": "ai_visibility_recommendation_classifier_v3",
+    "citationAssoc": "ai_visibility_citation_assoc_v1",
+    "metric": "ai_visibility_metrics_v1",
+    "geography": "ai_visibility_geography_v1",
+    "promptLibrary": "showcase_prompts_v1",
+    "plan": "ai_visibility_wave1_showcase_plan_v1"
+  },
+  "AIRTABLE_EXECUTION_WRITES": 0,
+  "AI_VISIBILITY_OPPORTUNITY_WRITES": 0,
+  "ENTITLEMENT_WRITES": 0,
+  "COMPARABLE_PRIOR_PERIOD": "NONE",
+  "TREND_AVAILABLE": false,
+  "preflight": {
+    "LIVE_ENV_READY": true,
+    "OPENAI_KEY_PRESENT": "YES",
+    "MODEL": "gpt-5.6",
+    "STORE_ROOT": "C:\\Users\\joand\\AppData\\Local\\Temp\\wave1-showcase-fail-58qBX9\\wave1-showcase",
+    "HARD_COST_CAP": 125,
+    "PLANNED_LOGICAL_CALLS": 84,
+    "MAX_ATTEMPTS": 168,
+    "CHECKPOINT_ROOT": "C:\\Users\\joand\\AppData\\Local\\Temp\\wave1-showcase-fail-58qBX9\\wave1-showcase\\checkpoints",
+    "PHASE2E_ROOT": "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\runtime\\phase2e",
+    "LEGACY_ISOLATED": true,
+    "blockers": []
+  },
+  "completedAt": "2026-08-14T01:42:11.877Z",
+  "savedAt": "2026-08-14T01:42:11.877Z"
+}

@@ -1,0 +1,93 @@
+# Scenario Owner-Value Editorial Remediation
+
+- Packages version: scenario-owner-value-editorial-packages-v1
+- Remediation version: scenario-owner-value-editorial-remediation-v1
+- Mode: **APPLY**
+- Brands planned: 20
+- Planned patches: **60**
+- Missing identities: 0
+
+Title/Body only on `overview.scenario.1–3`. No image, Brand Status, CV, Source Library, Registry, or release writes.
+
+## Brands
+
+- **Ascend Hotel Collection** (`ascend`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_body_refresh · “Boutique Independent Conversion”
+  - `overview.scenario.2` → editorial_body_refresh · “Historic Urban Repositioning”
+  - `overview.scenario.3` → editorial_owner_value_body · “Local F&B Preserved”
+- **BW Premier Collection** (`bw-premier-collection`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.1, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_owner_value_body · “Design-Led Independent Conversion”
+  - `overview.scenario.2` → editorial_body_refresh · “Commercial Platform And Lobby Experience”
+  - `overview.scenario.3` → editorial_owner_value_body · “Destination Lifestyle Stay Experience”
+- **BW Signature Collection** (`bw-signature-collection`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_body_refresh · “Design-Led Independent Conversion”
+  - `overview.scenario.2` → editorial_owner_value_body · “Commercial Platform And Lobby Experience”
+  - `overview.scenario.3` → editorial_owner_value_body · “Destination Lifestyle Stay Experience”
+- **Comfort Inn & Suites** (`comfort-inn-suites`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_title_refresh+editorial_body_refresh · “Conversion-Ready Midscale Reflag”
+  - `overview.scenario.2` → editorial_title_refresh+editorial_owner_value_body · “Highway And Suburban Corridor Portfolio”
+  - `overview.scenario.3` → editorial_title_refresh+editorial_owner_value_body · “Midscale Suite Mix with Choice Scale”
+- **Country Inn & Suites by Choice** (`country-inn-suites`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2
+  - `overview.scenario.1` → editorial_title_refresh+editorial_body_refresh · “Midscale Conversion with Residential Feel”
+  - `overview.scenario.2` → editorial_title_refresh+editorial_owner_value_body · “Family And Leisure Corridor Stay”
+  - `overview.scenario.3` → editorial_title_refresh+editorial_body_refresh · “Choice Midscale Portfolio Standardization”
+- **Everhome Suites** (`everhome-suites`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2, sentence_case_title_overview.scenario.3, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_body_refresh · “Weekly-Stay Revenue Stability”
+  - `overview.scenario.2` → editorial_owner_value_body · “Efficient Purpose-Built Prototype”
+  - `overview.scenario.3` → editorial_title_refresh+editorial_owner_value_body · “Midscale Platform with Choice Scale”
+- **Hotel Indigo** (`hotel-indigo`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.1, weak_owner_value_cues_overview.scenario.2, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_owner_value_body · “Local Storytelling in Urban Gateways”
+  - `overview.scenario.2` → editorial_owner_value_body · “Independent Repositioning with Global Reach”
+  - `overview.scenario.3` → editorial_owner_value_body · “Mixed-Demand City Hotel”
+- **Kimpton Hotels** (`kimpton`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_body_refresh · “Urban Lifestyle Conversion”
+  - `overview.scenario.2` → editorial_body_refresh · “Gateway New-Build or Adaptive Reuse”
+  - `overview.scenario.3` → editorial_owner_value_body · “Portfolio Lifestyle Standardization”
+- **MGallery Collection** (`mgallery-collection`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.1, weak_owner_value_cues_overview.scenario.2, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_owner_value_body · “Distinctive Hotel with a Strong Story”
+  - `overview.scenario.2` → editorial_owner_value_body · “Repositioning an Established Independent”
+  - `overview.scenario.3` → editorial_owner_value_body · “CALA City or Destination Context”
+- **Preferred Hotels & Resorts** (`preferred-hotels-and-resorts`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.1, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_owner_value_body · “Design-Led Independent Conversion”
+  - `overview.scenario.2` → editorial_body_refresh · “Commercial Platform And Lobby Experience”
+  - `overview.scenario.3` → editorial_owner_value_body · “Destination Lifestyle Stay Experience”
+- **Quality Inn** (`quality-inn`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_body_refresh · “Conversion-Heavy Midscale Reflag”
+  - `overview.scenario.2` → editorial_body_refresh · “Value-Q Highway Portfolio”
+  - `overview.scenario.3` → editorial_owner_value_body · “Midscale Portfolio Standardization”
+- **Radisson by Choice** (`radisson`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_title_refresh+editorial_body_refresh · “Full-Service Urban Conversion”
+  - `overview.scenario.2` → editorial_title_refresh+editorial_body_refresh · “Gateway Meeting And Transient Hotel”
+  - `overview.scenario.3` → editorial_title_refresh+editorial_owner_value_body · “Choice Upscale Flagship Standardization”
+- **Radisson Blu by Choice** (`radisson-blu`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2
+  - `overview.scenario.1` → editorial_body_refresh · “Iconic Urban Flagship”
+  - `overview.scenario.2` → editorial_owner_value_body · “Resort And Leisure Destination”
+  - `overview.scenario.3` → editorial_body_refresh · “Adaptive Reuse And Conversion”
+- **Radisson Individuals by Choice** (`radisson-individuals-by-choice`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_body_refresh · “Distinctive Boutique Conversion”
+  - `overview.scenario.2` → editorial_owner_value_body · “CALA Soft-Collection Growth”
+  - `overview.scenario.3` → editorial_owner_value_body · “Uniqueness with Choice Scale”
+- **Radisson RED by Choice** (`radisson-red`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.1, weak_owner_value_cues_overview.scenario.2, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_owner_value_body · “Urban Lifestyle Conversion”
+  - `overview.scenario.2` → editorial_owner_value_body · “CALA Gateway Select-Service”
+  - `overview.scenario.3` → editorial_owner_value_body · “Flex F&B Without Full Kitchen”
+- **Small Luxury Hotels of the World** (`small-luxury-hotels-of-the-world`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_body_refresh · “Independent Luxury with a Defined Identity”
+  - `overview.scenario.2` → editorial_owner_value_body · “Distribution And Recognition for an Independent”
+  - `overview.scenario.3` → editorial_owner_value_body · “Destination-Led Luxury Stay”
+- **Suburban Studios** (`suburban-studios`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2
+  - `overview.scenario.1` → editorial_body_refresh · “Economy Extended-Stay Studio”
+  - `overview.scenario.2` → editorial_owner_value_body · “Weekly-Stay Employment Corridor”
+  - `overview.scenario.3` → editorial_body_refresh · “Kitchenette Conversion”
+- **Trademark Collection by Wyndham** (`trademark-collection-by-wyndham`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.1, sentence_case_title_overview.scenario.2, weak_owner_value_cues_overview.scenario.3
+  - `overview.scenario.1` → editorial_owner_value_body · “Independent Hotel Conversion”
+  - `overview.scenario.2` → editorial_title_refresh+editorial_body_refresh · “Boutique or Historic Property Repositioning”
+  - `overview.scenario.3` → editorial_owner_value_body · “Secondary-Market Independent Repositioning”
+- **Vignette Collection** (`vignette-collection`): 3 patch(es) · before failures: sentence_case_title_overview.scenario.2, weak_owner_value_cues_overview.scenario.2, sentence_case_title_overview.scenario.3
+  - `overview.scenario.1` → editorial_body_refresh · “Independent Luxury-Leaning Affiliation”
+  - `overview.scenario.2` → editorial_title_refresh+editorial_owner_value_body · “Distinctive Boutique Without a Restaurant-Forward Mandate”
+  - `overview.scenario.3` → editorial_title_refresh+editorial_body_refresh · “Heritage or Character Asset Seeking Minimal Standardization”
+- **WoodSpring Suites** (`woodspring-suites`): 3 patch(es) · before failures: weak_owner_value_cues_overview.scenario.2
+  - `overview.scenario.1` → editorial_body_refresh · “Extended-Stay Corridor Conversion”
+  - `overview.scenario.2` → editorial_owner_value_body · “Weekly-Demand Growth Market”
+  - `overview.scenario.3` → editorial_body_refresh · “Lean Extended-Stay Standardization”

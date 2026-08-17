@@ -1,7 +1,8 @@
 /**
- * Phase 2E — Match Wikidata dry-run candidates to staging OSM candidates (READ-ONLY).
+ * Phase 2E — Match Wikidata dry-run candidates to OSM candidates (READ-ONLY).
  *
- * Reads Wikidata local JSON + Independent Hotel Source Candidates from Airtable.
+ * Prefer --osm-input (local OSM dry-run JSON) for fresh pilot batches.
+ * Legacy: --source-batch-id loads Independent Hotel Source Candidates from Airtable.
  * No writes. Rejects --apply.
  */
 import "../load-env.js";
@@ -10,6 +11,7 @@ import { join, basename } from "path";
 import { SOURCE_TYPES } from "../lib/independent-census/fields.js";
 import {
   loadStagingCandidatesReadOnly,
+  loadOsmLocalAsStagingPool,
   matchWikidataToStaging,
 } from "../lib/independent-census/match-staging-candidates.js";
 import { writeCsv, writeJson } from "../lib/str-census-import/report-utils.mjs";
@@ -42,7 +44,8 @@ function parseArgs() {
   }
 
   let input = "";
-  let sourceBatchId = "osm-dominican-republic-hotel-focused-2026-05-20";
+  let osmInput = "";
+  let sourceBatchId = "";
   let country = "Dominican Republic";
 
   const argv = process.argv.slice(2);
@@ -50,6 +53,9 @@ function parseArgs() {
     const a = argv[i];
     if (a === "--input" && argv[i + 1]) input = argv[++i].replace(/^"|"$/g, "");
     else if (a.startsWith("--input=")) input = a.slice("--input=".length).replace(/^"|"$/g, "");
+    else if (a === "--osm-input" && argv[i + 1]) osmInput = argv[++i].replace(/^"|"$/g, "");
+    else if (a.startsWith("--osm-input="))
+      osmInput = a.slice("--osm-input=".length).replace(/^"|"$/g, "");
     else if (a === "--source-batch-id" && argv[i + 1])
       sourceBatchId = argv[++i].replace(/^"|"$/g, "");
     else if (a.startsWith("--source-batch-id="))
@@ -61,9 +67,15 @@ function parseArgs() {
   if (!input) {
     throw new Error("Missing --input (Wikidata dry-run JSON path)");
   }
+  if (!osmInput && !sourceBatchId) {
+    throw new Error(
+      "Provide --osm-input (local OSM dry-run JSON) or --source-batch-id (Airtable staging)"
+    );
+  }
 
   return {
     inputPath: join(process.cwd(), input),
+    osmInputPath: osmInput ? join(process.cwd(), osmInput) : "",
     sourceBatchId,
     country,
   };
@@ -82,26 +94,45 @@ function loadWikidataReport(inputPath) {
 }
 
 async function main() {
-  const { inputPath, sourceBatchId, country } = parseArgs();
-  const { data, candidates, batchId } = loadWikidataReport(inputPath);
+  const { inputPath, osmInputPath, sourceBatchId, country } = parseArgs();
+  const { candidates, batchId } = loadWikidataReport(inputPath);
 
   const jsonOut = join(REPORTS_DIR, `independent-census-wikidata-candidate-match-${batchId}.json`);
   const csvOut = join(REPORTS_DIR, `independent-census-wikidata-candidate-match-${batchId}.csv`);
 
-  console.log("=== Wikidata ↔ staging candidates match (Phase 2E, read-only) ===\n");
+  console.log("=== Wikidata ↔ OSM candidates match (Phase 2E, read-only) ===\n");
   console.log(`Wikidata input:  ${inputPath}`);
   console.log(`Wikidata batch:  ${batchId}`);
   console.log(`Wikidata rows:   ${candidates.length}`);
-  console.log(`Staging batch:   ${sourceBatchId} (${SOURCE_TYPES.OSM})\n`);
 
-  console.log("Loading Independent Hotel Source Candidates (read-only)…");
-  const staging = await loadStagingCandidatesReadOnly({
-    importBatchId: sourceBatchId,
-    sourceType: SOURCE_TYPES.OSM,
-    countryFilter: country,
-  });
+  let staging;
+  let stagingLabel;
+  if (osmInputPath) {
+    if (!existsSync(osmInputPath)) throw new Error(`OSM report not found: ${osmInputPath}`);
+    const osm = JSON.parse(readFileSync(osmInputPath, "utf8"));
+    if (!Array.isArray(osm.candidates)) {
+      throw new Error("Invalid OSM report: missing candidates array");
+    }
+    stagingLabel = osm.batchId || basename(osmInputPath);
+    console.log(`OSM local:       ${osmInputPath} (${SOURCE_TYPES.OSM})\n`);
+    console.log("Loading local OSM candidates (no Airtable)…");
+    staging = loadOsmLocalAsStagingPool(osm.candidates, {
+      importBatchId: stagingLabel,
+      countryFilter: country,
+    });
+  } else {
+    stagingLabel = sourceBatchId;
+    console.log(`Staging batch:   ${sourceBatchId} (${SOURCE_TYPES.OSM})\n`);
+    console.log("Loading Independent Hotel Source Candidates (read-only)…");
+    staging = await loadStagingCandidatesReadOnly({
+      importBatchId: sourceBatchId,
+      sourceType: SOURCE_TYPES.OSM,
+      countryFilter: country,
+    });
+  }
+
   console.log(
-    `  Loaded ${staging.totalLoaded} staging rows; pool: ${staging.matchingPoolSize}\n`
+    `  Loaded ${staging.totalLoaded} OSM rows; pool: ${staging.matchingPoolSize}\n`
   );
 
   console.log("Matching…");
@@ -109,10 +140,11 @@ async function main() {
 
   const report = {
     generatedAt: new Date().toISOString(),
-    phase: "2E-read-only-staging-match",
+    phase: "2E-read-only-osm-match",
     wikidataBatchId: batchId,
-    stagingBatchId: sourceBatchId,
+    stagingBatchId: stagingLabel,
     stagingSourceType: SOURCE_TYPES.OSM,
+    stagingLocalOnly: Boolean(staging.localOnly),
     countryFilter: country,
     wikidataCandidateCount: candidates.length,
     stagingRowsLoaded: staging.totalLoaded,
@@ -146,7 +178,7 @@ async function main() {
   console.log("\nReport files:");
   console.log(`  ${jsonOut}`);
   console.log(`  ${csvOut}`);
-  console.log("\n✓ Read-only complete. Staging records not modified.");
+  console.log("\n✓ Read-only complete. No Airtable writes.");
 }
 
 main().catch((err) => {

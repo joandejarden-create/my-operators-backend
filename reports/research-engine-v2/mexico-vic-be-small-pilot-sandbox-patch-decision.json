@@ -1,0 +1,107 @@
+{
+  "status": "mexico_vic_be_small_pilot_sandbox_not_proven_do_not_execute",
+  "generated_at": "2026-08-05T01:55:20.536Z",
+  "freeze62_confirmed": true,
+  "brands_reconfirmed": true,
+  "properties_reconfirmed": true,
+  "ops_kept": 16,
+  "ops_revised": 0,
+  "ops_held": 0,
+  "sandbox_safety_result": "sandbox_not_proven_do_not_execute",
+  "sandbox_execution_happened": false,
+  "sandbox_after_state_validation": {
+    "applied": false,
+    "note": "No sandbox apply — after-state is simulated preview only",
+    "recent_momentum_unchanged": true,
+    "owner_facing_clean": true,
+    "rulings_preserved": {
+      "el_cid_soft_brand_distribution_only": true,
+      "no_choice_ownership_claim": true,
+      "no_faranda_claim": true,
+      "no_direct_management_claim": true,
+      "no_recent_momentum_from_vic": true,
+      "amberes_property_proof_only": true,
+      "ms_milenium_city_san_pedro": true,
+      "source_url_unchanged_note": "Official source URLs remain internal-only in staging proposal; not rewritten in this rebase",
+      "freeze_hash_preserved": true
+    },
+    "source_lineage_freeze_hash": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3"
+  },
+  "production_safety_validation": {
+    "pass": true,
+    "status": "production_safety_ok_no_writes",
+    "production_base_masked": "appvtn…INP6",
+    "checks": [
+      {
+        "id": "airtable_base_id_present_as_production_path",
+        "pass": true,
+        "detail": "AIRTABLE_BASE_ID=appvtn…INP6 — treated as production unless separate sandbox base proven"
+      },
+      {
+        "id": "no_execute_against_production",
+        "pass": true,
+        "detail": "execute remains false unless sandbox proven and write adapter enabled"
+      },
+      {
+        "id": "production_brand_explorer_base_not_targeted_for_write",
+        "pass": true,
+        "detail": "sandbox not proven — no writes will execute (production protected)"
+      },
+      {
+        "id": "frozen_62_artifacts_not_modified",
+        "pass": true,
+        "detail": "script writes only research-engine-v2 / pilot data outputs"
+      },
+      {
+        "id": "frozen_vic_artifacts_not_modified",
+        "pass": true,
+        "detail": "VIC lock + freeze hash artifacts are read-only inputs"
+      }
+    ]
+  },
+  "production_patch_remains_blocked": true,
+  "production_active_universe_expected": 62,
+  "production_semantic_expected": "C/H/M 0/0/0 (from frozen 62 + protected checks)",
+  "recommended_next_step": "Provision a dedicated sandbox/test Airtable base, set AIRTABLE_BASE_ID_SANDBOX + BE_PILOT_SANDBOX_CONFIRMED=1 + AIRTABLE_ENV=sandbox, then re-run this command. Production patch remains blocked.",
+  "acceptance": {
+    "frozen_62_confirmed": true,
+    "four_slugs_reconfirmed": true,
+    "ten_properties_reconfirmed": true,
+    "sixteen_ops_rebased": true,
+    "each_op_classified": true,
+    "frozen_62_not_modified": true,
+    "frozen_vic_not_modified": true,
+    "sandbox_proven_or_blocked": true,
+    "no_production_airtable_writes": true,
+    "no_brand_status_changes": true,
+    "no_release_field_changes": true,
+    "no_cv_brand_verified_changes": true,
+    "no_recent_momentum_from_vic": true,
+    "owner_facing_preview_clean": true,
+    "production_active_universe_remains_62": true,
+    "production_semantic_remains_0_0_0": true
+  },
+  "production_active_universe_validated": 62,
+  "production_semantic_validated": "C/H/M 0/0/0",
+  "production_protected_checks": {
+    "skipped": false,
+    "active_universe_sot_ok": true,
+    "active_universe_count": 62,
+    "semantic_audit_ok": true,
+    "semantic_severity": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "quiet_pvql": {
+      "ok": true,
+      "skipped": true,
+      "reason": "No Airtable writes in this stage; citing frozen 62 quiet PVQL PASS 62/62. Set BE_PILOT_RUN_QUIET_PVQL=1 to force re-run."
+    },
+    "momentum_evidence_ok": true,
+    "mandatory_release_gates_ok": true,
+    "cited_at": "2026-08-05T01:59:04.305Z",
+    "note": "Re-validated after rebase (SoT + semantic fresh + momentum + mandatory gates). Quiet PVQL cited from frozen 62 (no writes)."
+  }
+}

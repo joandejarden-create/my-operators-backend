@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Operator Fit Data Readiness — Dealality Internal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/support-runbook.css">
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css">
+  <style>
+    .ofr-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0 24px; }
+    .ofr-card { background: var(--runbook-surface); border: 1px solid var(--runbook-border); padding: 14px 16px; border-radius: 0; }
+    .ofr-card .label { color: var(--runbook-muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    .ofr-card .value { color: var(--runbook-heading); font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .ofr-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .ofr-filters label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--runbook-muted); }
+    .ofr-filters select, .ofr-filters input {
+      background: var(--runbook-bg); color: var(--runbook-heading); border: 1px solid var(--runbook-border);
+      padding: 8px 10px; min-width: 160px; font: inherit;
+    }
+    .ofr-table-wrap { overflow-x: auto; border: 1px solid var(--runbook-border); }
+    table.ofr-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.ofr-table th, table.ofr-table td { padding: 10px 12px; border-bottom: 1px solid var(--runbook-border); text-align: left; vertical-align: top; }
+    table.ofr-table th { color: var(--runbook-muted); font-weight: 600; background: rgba(16,25,53,.8); position: sticky; top: 0; }
+    .ofr-status { font-weight: 600; }
+    .ofr-status.rr { color: #ff5a65; }
+    .ofr-status.cr { color: #fdb52a; }
+    .ofr-status.ready { color: #14ca74; }
+    .ofr-bar-row { display: grid; grid-template-columns: 220px 1fr 48px; gap: 10px; align-items: center; margin: 8px 0; }
+    .ofr-bar-track { height: 10px; background: #1a2444; border: 1px solid var(--runbook-border); }
+    .ofr-bar-fill { height: 100%; background: var(--runbook-accent); }
+    details.ofr-detail { margin-top: 6px; color: var(--runbook-muted); }
+    details.ofr-detail summary { cursor: pointer; color: var(--runbook-text); }
+    .ofr-empty, .ofr-error { padding: 24px; border: 1px solid var(--runbook-border); }
+    .ofr-muted { color: var(--runbook-muted); font-size: 12px; }
+    h1.ofr-title { color: var(--runbook-heading); margin: 0 0 8px; font-size: 24px; }
+  </style>
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+</head>
+<body class="support-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>This page is for Dealality internal/admin use only.</p>
+  </div>
+
+  <div class="support-page-shell" id="supportGateContent" hidden>
+    <div class="runbook-root" id="ofrRoot" aria-live="polite">
+      <h1 class="ofr-title">Operator Fit — Data Readiness</h1>
+      <p class="ofr-muted">Read-only. No edit controls. Regenerate via <code>npm run operator-fit-data-readiness</code>.</p>
+      <div id="ofrLoading" class="ofr-empty">Loading readiness payload…</div>
+      <div id="ofrError" class="ofr-error" hidden></div>
+      <div id="ofrBody" hidden>
+        <div class="ofr-summary" id="ofrSummary"></div>
+        <h2>Filters</h2>
+        <div class="ofr-filters" id="ofrFilters"></div>
+        <h2>Operators</h2>
+        <div class="ofr-table-wrap">
+          <table class="ofr-table" id="ofrTable">
+            <thead>
+              <tr>
+                <th>Operator</th>
+                <th>Status</th>
+                <th>Eligibility</th>
+                <th>Differentiation</th>
+                <th>Evidence</th>
+                <th>Brand rel.</th>
+                <th>Priority</th>
+                <th>Critical missing</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <h2>Field coverage (lowest first)</h2>
+        <div id="ofrFields"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script>
+  (function () {
+    if (window.SupportAdminGate) {
+      window.SupportAdminGate.showPageLoading('supportGateLoading', 'Verifying access…');
+    }
+
+    var API = '/api/support/operator-fit-data-readiness';
+    var state = { payload: null, filters: { status: '', priority: '', missing: '', q: '' } };
+
+    function showDenied(message) {
+      var loadingEl = document.getElementById('supportGateLoading');
+      var deniedEl = document.getElementById('supportGateDenied');
+      var contentEl = document.getElementById('supportGateContent');
+      if (window.SupportAdminGate) window.SupportAdminGate.hidePageLoading(loadingEl);
+      else if (loadingEl) loadingEl.hidden = true;
+      if (contentEl) contentEl.hidden = true;
+      if (deniedEl) {
+        deniedEl.hidden = false;
+        var msg = deniedEl.querySelector('[data-gate-message]');
+        if (msg && message) msg.textContent = message;
+      }
+    }
+
+    function statusClass(s) {
+      if (s === 'Ranking Ready') return 'ready';
+      if (s === 'Conditionally Rankable') return 'cr';
+      return 'rr';
+    }
+
+    function renderSummary(s) {
+      var el = document.getElementById('ofrSummary');
+      var a = s.averages || {};
+      var cards = [
+        ['Active operators', s.activeOperators],
+        ['Ranking Ready', s.rankingReady],
+        ['Conditionally Rankable', s.conditionallyRankable],
+        ['Research Required', s.researchRequired],
+        ['Avg eligibility', (a.eligibilityCoverage != null ? a.eligibilityCoverage : '—') + '%'],
+        ['Avg differentiation', (a.differentiationCoverage != null ? a.differentiationCoverage : '—') + '%'],
+        ['Avg evidence', (a.evidenceCoverage != null ? a.evidenceCoverage : '—') + '%']
+      ];
+      el.innerHTML = cards.map(function (c) {
+        return '<div class="ofr-card"><div class="label">' + c[0] + '</div><div class="value">' + c[1] + '</div></div>';
+      }).join('');
+    }
+
+    function filteredOps() {
+      var ops = (state.payload && state.payload.operators) || [];
+      var f = state.filters;
+      return ops.filter(function (o) {
+        if (f.status && o.readinessStatus !== f.status) return false;
+        if (f.priority && o.researchPriority !== f.priority) return false;
+        if (f.missing && !(o.missingCritical || []).includes(f.missing)) return false;
+        if (f.q && String(o.operatorName || '').toLowerCase().indexOf(f.q.toLowerCase()) === -1) return false;
+        return true;
+      });
+    }
+
+    function renderTable() {
+      var tbody = document.querySelector('#ofrTable tbody');
+      var rows = filteredOps();
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="8">No operators match filters.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(function (o) {
+        var miss = (o.missingCritical || []).join(', ') || '—';
+        return '<tr>' +
+          '<td><strong>' + (o.operatorName || '—') + '</strong>' +
+          '<details class="ofr-detail"><summary>Why this status</summary>' +
+          '<p>' + (o.reason || '—') + '</p>' +
+          '<p>Urban: ' + (o.urbanStatus || '—') + ' · Conversion: ' + (o.conversionStatus || '—') + '</p>' +
+          '<p>Evidence issues: ' + (o.evidenceIssueCount || 0) + ' · Taxonomy issues: ' + (o.taxonomyIssueCount || 0) + '</p>' +
+          '</details></td>' +
+          '<td class="ofr-status ' + statusClass(o.readinessStatus) + '">' + (o.readinessStatus || '—') + '</td>' +
+          '<td>' + (o.eligibilityCoverage != null ? o.eligibilityCoverage + '%' : '—') + '</td>' +
+          '<td>' + (o.differentiationCoverage != null ? o.differentiationCoverage + '%' : '—') + '</td>' +
+          '<td>' + (o.evidenceCoverage != null ? o.evidenceCoverage + '%' : '—') + '</td>' +
+          '<td>' + (o.brandRelationshipCoverage != null ? o.brandRelationshipCoverage + '%' : '—') + '</td>' +
+          '<td>' + (o.researchPriority || '—') + '</td>' +
+          '<td>' + miss + '</td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    function renderFields() {
+      var host = document.getElementById('ofrFields');
+      var fields = (state.payload && state.payload.fieldCompleteness) || [];
+      host.innerHTML = fields.map(function (f) {
+        var pct = f.completenessPct || 0;
+        return '<div class="ofr-bar-row">' +
+          '<div>' + (f.label || f.id || 'Field') + '<div class="ofr-muted">Missing ' + (f.missing || 0) + ' · ' + (f.priority || '') + '</div></div>' +
+          '<div class="ofr-bar-track"><div class="ofr-bar-fill" style="width:' + pct + '%"></div></div>' +
+          '<div>' + pct + '%</div></div>';
+      }).join('');
+    }
+
+    function bindFilters() {
+      var host = document.getElementById('ofrFilters');
+      var missingOpts = {};
+      ((state.payload && state.payload.operators) || []).forEach(function (o) {
+        (o.missingCritical || []).forEach(function (m) { missingOpts[m] = true; });
+      });
+      host.innerHTML =
+        '<label>Readiness<select id="fStatus"><option value="">All</option>' +
+        '<option>Ranking Ready</option><option>Conditionally Rankable</option><option>Research Required</option></select></label>' +
+        '<label>Priority<select id="fPriority"><option value="">All</option>' +
+        '<option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select></label>' +
+        '<label>Missing field<select id="fMissing"><option value="">All</option>' +
+        Object.keys(missingOpts).sort().map(function (m) { return '<option value="' + m + '">' + m + '</option>'; }).join('') +
+        '</select></label>' +
+        '<label>Name contains<input id="fQ" type="search" placeholder="Operator name"></label>';
+
+      function sync() {
+        state.filters.status = document.getElementById('fStatus').value;
+        state.filters.priority = document.getElementById('fPriority').value;
+        state.filters.missing = document.getElementById('fMissing').value;
+        state.filters.q = document.getElementById('fQ').value;
+        renderTable();
+      }
+      ['fStatus', 'fPriority', 'fMissing', 'fQ'].forEach(function (id) {
+        document.getElementById(id).addEventListener('change', sync);
+        document.getElementById(id).addEventListener('input', sync);
+      });
+    }
+
+    async function loadPayload() {
+      var loading = document.getElementById('ofrLoading');
+      var err = document.getElementById('ofrError');
+      var body = document.getElementById('ofrBody');
+      try {
+        var auth = window.DealalityMemberstackAuth;
+        var res = await auth.authFetch(API, { maxWaitMs: 20000 });
+        if (!res.ok) {
+          throw new Error('HTTP ' + res.status + (res.status === 404 ? ' — run npm run operator-fit-data-readiness' : ''));
+        }
+        var data = await res.json();
+        if (!data.ok && !data.success) throw new Error(data.error || 'Payload failed');
+        state.payload = data;
+        loading.hidden = true;
+        body.hidden = false;
+        renderSummary(data.summary || {});
+        bindFilters();
+        renderTable();
+        renderFields();
+        var gen = document.createElement('p');
+        gen.className = 'ofr-muted';
+        gen.textContent = 'Generated: ' + (data.generatedAt || '—') + ' · mode: read-only';
+        document.getElementById('ofrRoot').appendChild(gen);
+      } catch (e) {
+        loading.hidden = true;
+        err.hidden = false;
+        err.textContent = e && e.message ? e.message : 'Failed to load readiness data';
+      }
+    }
+
+    async function init() {
+      if (!window.SupportAdminGate) {
+        showDenied('Unable to load access gate. Refresh and try again.');
+        return;
+      }
+      var allowed = await window.SupportAdminGate.requireInternalRunbook({
+        contentId: 'supportGateContent'
+      });
+      if (!allowed) return;
+      var loadingEl = document.getElementById('supportGateLoading');
+      window.SupportAdminGate.setPageLoadingMessage(loadingEl, 'Loading readiness…');
+      await loadPayload();
+      window.SupportAdminGate.hidePageLoading(loadingEl);
+    }
+
+    init();
+  })();
+  </script>
+</body>
+</html>

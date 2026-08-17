@@ -1,0 +1,343 @@
+{
+  "marker": "DEALALITY_SERPAPI_PROVIDER_VALIDATION_COMPLETE",
+  "safety": {
+    "airtable_writes": 0,
+    "census_writes": 0,
+    "brand_explorer_writes": 0,
+    "automatic_merges": 0,
+    "migrations": 0,
+    "secrets_exposed": false,
+    "ENABLE_HOTEL_INTELLIGENCE_AIRTABLE_WRITES": "0"
+  },
+  "existing_status": {
+    "previously_connected": true,
+    "existing_implementation": "lib/research-engine-v2/providers/serpapi-google-hotels/*",
+    "existing_mcp": false,
+    "existing_credentials_configuration": "SERPAPI_KEY in .env / .env.example",
+    "previously_used_by_hotel_intelligence_mcp": false,
+    "cursor_mcp_serpapi": false,
+    "prior_census_usage": "census-autopilot SerpApi gap closure / cache / rights / benchmarks"
+  },
+  "capability_matrix": {
+    "hotel_name": "SUPPORTED",
+    "address": "SUPPORTED",
+    "city": "SUPPORTED_INDIRECTLY",
+    "country": "SUPPORTED_INDIRECTLY",
+    "latitude": "SUPPORTED",
+    "longitude": "SUPPORTED",
+    "phone": "SUPPORTED",
+    "website": "SUPPORTED_INDIRECTLY",
+    "google_place_id": "NOT_SUPPORTED",
+    "google_maps_data_id": "NOT_SUPPORTED",
+    "google_cid": "NOT_SUPPORTED",
+    "google_hotels_property_token": "SUPPORTED",
+    "hotel_class": "SUPPORTED",
+    "star_rating": "SUPPORTED_INDIRECTLY",
+    "review_score": "SUPPORTED",
+    "review_count": "SUPPORTED",
+    "amenities": "SUPPORTED",
+    "description": "SUPPORTED",
+    "photos": "SUPPORTED_INDIRECTLY",
+    "check_in_out": "SUPPORTED",
+    "brand": "NOT_SUPPORTED",
+    "parent_company": "NOT_SUPPORTED",
+    "total_property_room_count": "NOT_SUPPORTED",
+    "room_types": "SUPPORTED_INDIRECTLY",
+    "rates": "SUPPORTED",
+    "availability": "SUPPORTED_INDIRECTLY",
+    "nearby_places": "SUPPORTED_INDIRECTLY",
+    "SERPAPI_TOTAL_PROPERTY_ROOM_COUNT": "NOT_SUPPORTED",
+    "evidence": "Existing field-firewall SERPAPI_ROOMS_CAPABILITY=NOT_SUPPORTED; rooms[] are bookable types; essential_info bedrooms are VR not hotel keys",
+    "endpoint_roles": {
+      "google_hotels_search": "Best census value per request when q resolves to direct_property (name/address/gps/phone/token)",
+      "google_hotels_property_details": "Second call for phone/amenities/nearby when search list is thin",
+      "google_maps": "Documented place_id/data_cid/phone/website — NOT wired in existing Dealality client; not called in this validation"
+    }
+  },
+  "room_count_verdict": "SERPAPI_NOT_A_ROOM_COUNT_SOURCE",
+  "account": {
+    "plan_name": "Production Plan",
+    "searches_per_month": 15000,
+    "plan_searches_left_start": 13499,
+    "plan_searches_left_end": 13119,
+    "account_delta_searches": 380,
+    "rate_limit_per_hour": 3000,
+    "cached_search_behavior": "SerpApi docs: identical cached searches may not count; Account API delta is authoritative"
+  },
+  "credits": {
+    "ceiling": 500,
+    "charged_estimate": 390,
+    "account_delta": 380
+  },
+  "controlled": {
+    "hotels": 10,
+    "matched_exact_high": 3,
+    "no_match": 7,
+    "failed": 0,
+    "calls": 10,
+    "details_calls": 0,
+    "avg_latency_ms": 44,
+    "stop_reason": null
+  },
+  "frozen_400": {
+    "sample_size": 400,
+    "enrich_attempted": 400,
+    "enrich_matched_exact_or_high": 129,
+    "credit_limited": false,
+    "stop_reason": null
+  },
+  "field_recovery_attempted_subset": {
+    "address_line_1": {
+      "present_before": 101,
+      "missing_before": 299,
+      "candidate_found": 129,
+      "high_confidence": 83,
+      "conflict": 25,
+      "still_missing": 216
+    },
+    "latitude": {
+      "present_before": 49,
+      "missing_before": 351,
+      "candidate_found": 129,
+      "high_confidence": 106,
+      "conflict": 0,
+      "still_missing": 245
+    },
+    "longitude": {
+      "present_before": 49,
+      "missing_before": 351,
+      "candidate_found": 129,
+      "high_confidence": 106,
+      "conflict": 0,
+      "still_missing": 245
+    },
+    "room_count": {
+      "present_before": 25,
+      "missing_before": 375,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 375
+    },
+    "brand_name": {
+      "present_before": 296,
+      "missing_before": 104,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 104
+    },
+    "parent_company_name": {
+      "present_before": 305,
+      "missing_before": 95,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 95
+    },
+    "website": {
+      "present_before": 362,
+      "missing_before": 38,
+      "candidate_found": 126,
+      "high_confidence": 0,
+      "conflict": 36,
+      "still_missing": 33
+    },
+    "phone": {
+      "present_before": 105,
+      "missing_before": 295,
+      "candidate_found": 123,
+      "high_confidence": 4,
+      "conflict": 16,
+      "still_missing": 216
+    }
+  },
+  "field_recovery_table": [
+    {
+      "field": "address_line_1",
+      "missing_before": 299,
+      "candidate_found": 129,
+      "high_confidence": 83,
+      "conflict": 25,
+      "still_missing": 216,
+      "recovery_pct_of_missing": 27.8
+    },
+    {
+      "field": "latitude",
+      "missing_before": 351,
+      "candidate_found": 129,
+      "high_confidence": 106,
+      "conflict": 0,
+      "still_missing": 245,
+      "recovery_pct_of_missing": 30.2
+    },
+    {
+      "field": "longitude",
+      "missing_before": 351,
+      "candidate_found": 129,
+      "high_confidence": 106,
+      "conflict": 0,
+      "still_missing": 245,
+      "recovery_pct_of_missing": 30.2
+    },
+    {
+      "field": "room_count",
+      "missing_before": 375,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 375,
+      "recovery_pct_of_missing": 0
+    },
+    {
+      "field": "brand_name",
+      "missing_before": 104,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 104,
+      "recovery_pct_of_missing": 0
+    },
+    {
+      "field": "parent_company_name",
+      "missing_before": 95,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 95,
+      "recovery_pct_of_missing": 0
+    },
+    {
+      "field": "website",
+      "missing_before": 38,
+      "candidate_found": 126,
+      "high_confidence": 0,
+      "conflict": 36,
+      "still_missing": 33,
+      "recovery_pct_of_missing": 13.2
+    },
+    {
+      "field": "phone",
+      "missing_before": 295,
+      "candidate_found": 123,
+      "high_confidence": 4,
+      "conflict": 16,
+      "still_missing": 216,
+      "recovery_pct_of_missing": 26.8
+    }
+  ],
+  "coordinate_recovery": {
+    "sample_missing_coords_full400": 351,
+    "attempted_missing_coords": 351,
+    "coords_found": 106,
+    "coords_high_confidence": 106,
+    "coords_conflicts": 0,
+    "coords_still_missing": 245,
+    "distance_when_both_present": {
+      "<100m": 18,
+      "100-500m": 3,
+      "500m-2km": 2,
+      ">2km": 0
+    }
+  },
+  "room_count_recovery": {
+    "note": "SERPAPI_NOT_A_ROOM_COUNT_SOURCE",
+    "candidate_found": 0
+  },
+  "external_ids": {
+    "property_tokens": 129,
+    "place_ids": 0,
+    "data_ids": 0,
+    "cids": 0,
+    "identity_corroborated": 129
+  },
+  "cross_provider_linkage": {
+    "dealality_serpapi": 129,
+    "dealality_hotelbeds": 85,
+    "hotelbeds_serpapi": 39
+  },
+  "efficiency": {
+    "total_serpapi_calls": 404,
+    "details_calls": 4,
+    "successful_matched": 129,
+    "failed_calls": 14,
+    "average_latency_ms": 2439,
+    "estimated_calls_per_hotel": 1.01,
+    "account_delta_searches": 380,
+    "scale_estimate_calls": {
+      "1000": "~1000–1500 searches (1 search + optional details)",
+      "5956": "~6000–9000 searches",
+      "10000": "~10k–15k searches",
+      "50000": "exceeds current 15k/mo plan without cache reuse"
+    }
+  },
+  "best_provider_by_field": {
+    "hotel_identity": {
+      "best": "dealality_census",
+      "fallback": [
+        "serpapi",
+        "hotelbeds"
+      ]
+    },
+    "address": {
+      "best": "serpapi",
+      "fallback": [
+        "hotelbeds",
+        "dealality_census"
+      ],
+      "note": "observed when Exact/High match"
+    },
+    "coordinates": {
+      "best": "serpapi",
+      "fallback": [
+        "hotelbeds",
+        "dealality_census"
+      ]
+    },
+    "room_count": {
+      "best": "hotelbeds",
+      "fallback": [
+        "official_site",
+        "dealality_census"
+      ],
+      "note": "serpapi/stayingapi NOT_SUPPORTED"
+    },
+    "brand": {
+      "best": "dealality_census",
+      "fallback": [
+        "brand_directory"
+      ],
+      "note": "serpapi not a brand SoT"
+    },
+    "parent_company": {
+      "best": "dealality_census",
+      "fallback": [
+        "brand_directory"
+      ]
+    },
+    "phone": {
+      "best": "serpapi",
+      "fallback": [
+        "hotelbeds",
+        "dealality_census"
+      ]
+    },
+    "website": {
+      "best": "dealality_census",
+      "fallback": [
+        "serpapi",
+        "hotelbeds"
+      ]
+    },
+    "rates": {
+      "best": "hotelbeds",
+      "fallback": [
+        "serpapi",
+        "hotelapi_co_free"
+      ]
+    }
+  },
+  "recommendation": "USE_SERPAPI_AS_COMPLEMENTARY_PROVIDER",
+  "highest_value_next_step": "Use SerpApi Google Hotels as complementary GEO/ADDRESS/PHONE/identity-token provider for census gaps; keep Hotelbeds as rooms source when LIVE; do not use SerpApi for Rooms/Keys.",
+  "runtime_ms": 1084919
+}

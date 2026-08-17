@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-08-04T09:32:15.755Z",
+  "deal": "Deal A",
+  "baselineRanks": [
+    {
+      "operator": "Highgate",
+      "alignment": 40.6,
+      "confidence": "Strong"
+    },
+    {
+      "operator": "GHL Hoteles (GHL Holding)",
+      "alignment": 37.4,
+      "confidence": "Strong"
+    }
+  ],
+  "tests": [
+    {
+      "name": "unknown_becomes_verified_positive",
+      "method": "Conceptual + factor sensitivity",
+      "expected": "Modest alignment/confidence uplift; rank change only if near peer",
+      "observed": "Document for founder — no automatic weight retune",
+      "flag": null
+    },
+    {
+      "name": "positive_becomes_unsupported",
+      "expected": "Confidence drop; possible eligibility loss if Market Presence weakened",
+      "observed": "Market Presence eligibility is binary for geography — material impact expected",
+      "flag": "Watch disproportionate eligibility cliffs on presence type changes"
+    },
+    {
+      "name": "source_becomes_stale",
+      "expected": "Confidence / publication labels degrade; score may hold if factors unchanged",
+      "observed": "Confidence channel should move before raw alignment",
+      "flag": null
+    },
+    {
+      "name": "geography_relationship_changes",
+      "expected": "Eligibility change can remove from Ranking Ready entirely",
+      "observed": "Proportional for gate; high rank volatility if only 2 candidates",
+      "flag": "Thin universes amplify relative rank volatility"
+    },
+    {
+      "name": "brand_relationship_verified",
+      "expected": "Alignment uplift on brand factors; rarely flips eligibility alone",
+      "observed": "Limited today due to brand-approval depth gap",
+      "flag": "Under-responsive until brand-operator relationships enriched"
+    },
+    {
+      "name": "management_structure_known",
+      "expected": "Eligibility unlock when structures were missing",
+      "observed": "Material for Conditionally Rankable → Ranking Ready",
+      "flag": null
+    }
+  ],
+  "founderNotes": [
+    "Do not auto-tune weights from pilot optics.",
+    "Eligibility cliffs (Market Presence) are intentional — document, don’t soften for pilot."
+  ]
+}

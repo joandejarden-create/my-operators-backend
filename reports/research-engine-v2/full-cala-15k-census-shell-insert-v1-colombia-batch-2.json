@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "status": "production_census_full_cala_15k_shell_insert_v1_colombia_batch_2_apply_complete",
+  "secondary_statuses": [
+    "production_census_full_cala_15k_shell_insert_v1_colombia_batch_2_partial_source_remaining",
+    "production_census_full_cala_15k_shell_insert_v1_partial_duplicate_review_needed"
+  ],
+  "objective": "full-cala-15k-census-shell-insert-v1-colombia-batch-2",
+  "generated_at": "2026-08-09T19:02:20.953Z",
+  "dry_run": false,
+  "production_writes": true,
+  "production_table_id": "tbl9aY5ijiuIzzWam",
+  "production_table_name": "Hotel Property Census",
+  "census_before_count": 5522,
+  "insert_attempted": 293,
+  "inserts_applied": 293,
+  "insert_errors": [],
+  "census_after_estimate": 5815,
+  "census_delta": 293,
+  "revalidation_skips_count": 0,
+  "revalidation_skips": [],
+  "fingerprint": {
+    "count": 293,
+    "hbx_only": 236,
+    "cvent_plus_hbx": 57,
+    "cvent_only": 0,
+    "first_candidate_id": "hbx_810924",
+    "all_have_hbx": true,
+    "all_safe": true
+  },
+  "expected": {
+    "expected_insert_count": 293,
+    "hbx_only": 236,
+    "cvent_plus_hbx": 57,
+    "cvent_only": 0,
+    "first_candidate_id": "hbx_810924",
+    "approved_census_before": 5522,
+    "batch_label": "Colombia Batch 2"
+  },
+  "source_mix_attempted": {
+    "hbx_only": 236,
+    "cvent_plus_hbx": 57,
+    "cvent_only": 0
+  },
+  "hbx_hotel_codes_in_attempted": 293,
+  "candidate_brand_in_attempted": 53,
+  "current_brand_writes": 0,
+  "brand_family_writes": 0,
+  "forbidden_field_writes": 0,
+  "owner_facing_or_public_writes": 0,
+  "prohibited_table_writes": 0,
+  "created_ids_sample": [
+    "recFszVB38iGdrKCi",
+    "recGSd0CLtSxFVasq",
+    "rec6KNgjcOvLdbA9q",
+    "recfPi4Fbk9ZaMgFc",
+    "reckpQlrpj2SHZdrW",
+    "reczg87kTQsxNfz2Q",
+    "rec1i57jA3wmCGcWE",
+    "recuDWxEoc4tNRZmW",
+    "rec66zhrrxa81PGER",
+    "recMy2NxSJ9XV9wWs",
+    "recoJYcYx8kHFWCeP",
+    "recnJHDFOyKs6qTLU",
+    "recVFQHEkxMp4AwS8",
+    "recC0cFigZXzFp3PJ",
+    "recaTqsAO3ddh0N5Z",
+    "recq4O2FlVOqAPFIO",
+    "recQdURozTHraBKSn",
+    "recbpAiskecMwMwRd",
+    "recMPP1Q785TzjaP7",
+    "recdABFHQzaV7iU29"
+  ],
+  "allowlist_path": "reports/research-engine-v2/full-cala-15k-colombia-batch-2-allowlist.json",
+  "colombia_remaining": {
+    "approved_allowlist": 293,
+    "revalidated_for_insert": 293,
+    "inserted": 293,
+    "revalidation_skips": 0,
+    "hold_weak_identity_unchanged": 303,
+    "note": "Do not insert Colombia weak holds; next shell = Costa Rica Batch 2 preflight"
+  },
+  "next_batch_comparison": {
+    "costa_rica_batch_2_safe_insertable": 141,
+    "colombia_weak_holds": 303,
+    "mexico_weak_holds": 1276,
+    "mexico_insertable_remaining": 1
+  },
+  "NEXT_RECOMMENDED_ACTION": "PREFLIGHT_NEXT_COUNTRY_BATCH",
+  "next_recommended_detail": "Preflight Costa Rica Batch 2 next (≈141 SAFE). Do not enrich Mexico/Colombia weak holds yet."
+}

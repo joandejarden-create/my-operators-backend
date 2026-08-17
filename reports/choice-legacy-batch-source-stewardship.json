@@ -1,0 +1,515 @@
+{
+  "stewardshipVersion": "1.1",
+  "generatedAt": "2026-07-06T22:12:12.178Z",
+  "mode": "dry_run",
+  "airtableModified": false,
+  "extractionFieldNote": "stewardship-package.js buildSafeSourcePatch does not set Approved for Extraction?; this batch workflow adds it for eligible local PDFs and official readable Choice consumer/press captures.",
+  "summary": {
+    "totalBrands": 3,
+    "totalSourcesFound": 9,
+    "sourcesEligibleForApproval": 0,
+    "sourcesSkipped": 9,
+    "brandsWithEligibleSources": 0,
+    "blockers": [
+      "already_fully_approved"
+    ]
+  },
+  "batchApplyCommand": "npm run choice-legacy-batch-source-stewardship -- --apply --approve-choice-legacy-batch-stewardship",
+  "perBrandFallbackCommands": [
+    "npm run choice-legacy-batch-source-stewardship -- --apply --approve-choice-legacy-batch-stewardship --brand comfort-inn-suites",
+    "npm run choice-legacy-batch-source-stewardship -- --apply --approve-choice-legacy-batch-stewardship --brand everhome-suites",
+    "npm run choice-legacy-batch-source-stewardship -- --apply --approve-choice-legacy-batch-stewardship --brand quality-inn"
+  ],
+  "recommendedNextAfterApproval": [
+    {
+      "brand": "mini-batch-1",
+      "recordId": null,
+      "command": "npm run choice-legacy-batch-source-stewardship -- --apply --approve-choice-legacy-batch-stewardship",
+      "note": "Approve six official Choice consumer/press sources (Extraction Yes when readable). Do not extract facts until founder approves per brand."
+    }
+  ],
+  "eligibleSources": [],
+  "skippedSources": [
+    {
+      "brandKey": "comfort-inn-suites",
+      "brandName": "Comfort Inn & Suites",
+      "sourceId": "recRbi8CjS8BVt4Z3",
+      "sourceTitle": "Comfort Inn & Suites — Choice press kit / media center",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    },
+    {
+      "brandKey": "comfort-inn-suites",
+      "brandName": "Comfort Inn & Suites",
+      "sourceId": "recZFPfGRo5C9FF2Q",
+      "sourceTitle": "Comfort Inn & Suites — Choice development brochure (local)",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    },
+    {
+      "brandKey": "comfort-inn-suites",
+      "brandName": "Comfort Inn & Suites",
+      "sourceId": "recxm2Jxqvi2n2I8K",
+      "sourceTitle": "Comfort Inn & Suites — Choice consumer brand page",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    },
+    {
+      "brandKey": "everhome-suites",
+      "brandName": "Everhome Suites",
+      "sourceId": "rec28KQ9ubpynVfTq",
+      "sourceTitle": "Everhome Suites — Choice consumer brand page",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    },
+    {
+      "brandKey": "everhome-suites",
+      "brandName": "Everhome Suites",
+      "sourceId": "rechRqlbx7DF4YCCV",
+      "sourceTitle": "Everhome Suites — franchise development presentation (local)",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    },
+    {
+      "brandKey": "everhome-suites",
+      "brandName": "Everhome Suites",
+      "sourceId": "rechbWISi8BQwTqGb",
+      "sourceTitle": "Everhome Suites — Choice press kit / media center",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    },
+    {
+      "brandKey": "quality-inn",
+      "brandName": "Quality Inn",
+      "sourceId": "recfh3rpBaKo0U0H1",
+      "sourceTitle": "Quality Inn — Choice press kit / media center",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    },
+    {
+      "brandKey": "quality-inn",
+      "brandName": "Quality Inn",
+      "sourceId": "recmEnl9wcLfSA4Mk",
+      "sourceTitle": "Quality Inn — Choice development brochure (local)",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    },
+    {
+      "brandKey": "quality-inn",
+      "brandName": "Quality Inn",
+      "sourceId": "recpsFcGtpvib16s0",
+      "sourceTitle": "Quality Inn — Choice consumer brand page",
+      "recommendation": "no_op_already_approved",
+      "blockers": [
+        "already_fully_approved"
+      ]
+    }
+  ],
+  "brands": [
+    {
+      "key": "comfort-inn-suites",
+      "brandName": "Comfort Inn & Suites",
+      "recordId": "recOzH5iAE1xEjyD0",
+      "expectedPrimaryPdf": "Choice Hotels International/Comfort Inn/brochure--comfort-inn.pdf",
+      "consumerUrl": "https://www.choicehotels.com/comfort-hotels",
+      "pressKitUrl": "https://media.choicehotels.com/comfort-press-kit",
+      "developmentUrl": "https://www.choicehotelsdevelopment.com/our-brands/upper-midscale/comfort",
+      "developmentNote": "provenance_only_js_shell_risk",
+      "sourcesFound": 3,
+      "sourceRows": [
+        {
+          "id": "recRbi8CjS8BVt4Z3",
+          "sourceTitle": "Comfort Inn & Suites — Choice press kit / media center",
+          "brandId": "recOzH5iAE1xEjyD0",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "Medium",
+          "sourceType": "Press Release",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recRbi8CjS8BVt4Z3",
+          "localFilePath": "Choice Hotels International/press/Comfort Inn & Suites — Choice press kit _ media center.html",
+          "sourceUrl": "https://media.choicehotels.com/comfort-press-kit",
+          "approvedForExtraction": "Yes",
+          "role": "press_kit",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 4945,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        },
+        {
+          "id": "recZFPfGRo5C9FF2Q",
+          "sourceTitle": "Comfort Inn & Suites — Choice development brochure (local)",
+          "brandId": "recOzH5iAE1xEjyD0",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "High",
+          "sourceType": "Development Brochure",
+          "sourceOrigin": "Brand Provided",
+          "region": "CALA",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recZFPfGRo5C9FF2Q",
+          "localFilePath": "Choice Hotels International/Comfort Inn/brochure--comfort-inn.pdf",
+          "sourceUrl": null,
+          "approvedForExtraction": "Yes",
+          "role": "mini_batch_primary_pdf",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 1858,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        },
+        {
+          "id": "recxm2Jxqvi2n2I8K",
+          "sourceTitle": "Comfort Inn & Suites — Choice consumer brand page",
+          "brandId": "recOzH5iAE1xEjyD0",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "Medium",
+          "sourceType": "Brand Page",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recxm2Jxqvi2n2I8K",
+          "localFilePath": "Choice Hotels International/website/Comfort Inn & Suites — Choice consumer brand page.html",
+          "sourceUrl": "https://www.choicehotels.com/comfort-hotels",
+          "approvedForExtraction": "Yes",
+          "role": "consumer_page",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 7080,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        }
+      ],
+      "eligibleSourceIds": [],
+      "eligibleCount": 0,
+      "skippedCount": 3
+    },
+    {
+      "key": "everhome-suites",
+      "brandName": "Everhome Suites",
+      "recordId": "recqkkrsevi4r9ibj",
+      "expectedPrimaryPdf": "Choice Hotels International/Everhome Suites/Everhome Suites_Franchise Development Presentation.pdf",
+      "consumerUrl": "https://www.choicehotels.com/everhome-suites",
+      "pressKitUrl": "https://media.choicehotels.com/everhome-suites",
+      "developmentUrl": "https://www.choicehotelsdevelopment.com/our-brands/extended-stay/everhome-suites",
+      "developmentNote": "provenance_only_js_shell_risk",
+      "sourcesFound": 3,
+      "sourceRows": [
+        {
+          "id": "rec28KQ9ubpynVfTq",
+          "sourceTitle": "Everhome Suites — Choice consumer brand page",
+          "brandId": "recqkkrsevi4r9ibj",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "Medium",
+          "sourceType": "Brand Page",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "rec28KQ9ubpynVfTq",
+          "localFilePath": "Choice Hotels International/website/Everhome Suites — Choice consumer brand page.html",
+          "sourceUrl": "https://www.choicehotels.com/everhome-suites",
+          "approvedForExtraction": "Yes",
+          "role": "consumer_page",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 13527,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        },
+        {
+          "id": "rechRqlbx7DF4YCCV",
+          "sourceTitle": "Everhome Suites — franchise development presentation (local)",
+          "brandId": "recqkkrsevi4r9ibj",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "High",
+          "sourceType": "Development Brochure",
+          "sourceOrigin": "Brand Provided",
+          "region": "CALA",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "rechRqlbx7DF4YCCV",
+          "localFilePath": "Choice Hotels International/Everhome Suites/Everhome Suites_Franchise Development Presentation.pdf",
+          "sourceUrl": null,
+          "approvedForExtraction": "Yes",
+          "role": "mini_batch_primary_pdf",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 25577,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        },
+        {
+          "id": "rechbWISi8BQwTqGb",
+          "sourceTitle": "Everhome Suites — Choice press kit / media center",
+          "brandId": "recqkkrsevi4r9ibj",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "Medium",
+          "sourceType": "Press Release",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "rechbWISi8BQwTqGb",
+          "localFilePath": "Choice Hotels International/press/Everhome Suites — Choice press kit _ media center.html",
+          "sourceUrl": "https://media.choicehotels.com/everhome-suites",
+          "approvedForExtraction": "Yes",
+          "role": "press_kit",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 4546,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        }
+      ],
+      "eligibleSourceIds": [],
+      "eligibleCount": 0,
+      "skippedCount": 3
+    },
+    {
+      "key": "quality-inn",
+      "brandName": "Quality Inn",
+      "recordId": "recd8o4k1JddhkRWW",
+      "expectedPrimaryPdf": "Choice Hotels International/Quality Inn/brochure--quality-inn.pdf",
+      "consumerUrl": "https://www.choicehotels.com/quality-inn",
+      "pressKitUrl": "https://media.choicehotels.com/quality-press-kit",
+      "developmentUrl": "https://www.choicehotelsdevelopment.com/our-brands/midscale/quality-inn",
+      "developmentNote": "provenance_only_js_shell_risk",
+      "sourcesFound": 3,
+      "sourceRows": [
+        {
+          "id": "recfh3rpBaKo0U0H1",
+          "sourceTitle": "Quality Inn — Choice press kit / media center",
+          "brandId": "recd8o4k1JddhkRWW",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "Medium",
+          "sourceType": "Press Release",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recfh3rpBaKo0U0H1",
+          "localFilePath": "Choice Hotels International/press/Quality Inn — Choice press kit _ media center.html",
+          "sourceUrl": "https://media.choicehotels.com/quality-press-kit",
+          "approvedForExtraction": "Yes",
+          "role": "press_kit",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 3965,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        },
+        {
+          "id": "recmEnl9wcLfSA4Mk",
+          "sourceTitle": "Quality Inn — Choice development brochure (local)",
+          "brandId": "recd8o4k1JddhkRWW",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "High",
+          "sourceType": "Development Brochure",
+          "sourceOrigin": "Brand Provided",
+          "region": "CALA",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recmEnl9wcLfSA4Mk",
+          "localFilePath": "Choice Hotels International/Quality Inn/brochure--quality-inn.pdf",
+          "sourceUrl": null,
+          "approvedForExtraction": "Yes",
+          "role": "mini_batch_primary_pdf",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 1923,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        },
+        {
+          "id": "recpsFcGtpvib16s0",
+          "sourceTitle": "Quality Inn — Choice consumer brand page",
+          "brandId": "recd8o4k1JddhkRWW",
+          "operatorId": null,
+          "status": "Approved",
+          "approvedForExplorerUse": "Yes",
+          "sourceQuality": "Medium",
+          "sourceType": "Brand Page",
+          "sourceOrigin": "Public Web",
+          "region": "",
+          "verifiedSource": "No",
+          "lastReviewed": "",
+          "stale": false,
+          "sourceId": "recpsFcGtpvib16s0",
+          "localFilePath": "Choice Hotels International/website/Quality Inn — Choice consumer brand page.html",
+          "sourceUrl": "https://www.choicehotels.com/quality-inn",
+          "approvedForExtraction": "Yes",
+          "role": "consumer_page",
+          "recommendation": "no_op_already_approved",
+          "blockers": [
+            "already_fully_approved"
+          ],
+          "eligibleForBatchApproval": false,
+          "approveExtractionRecommended": false,
+          "localFileReadable": true,
+          "localFileTextLength": 8562,
+          "applyPlan": {
+            "wouldApply": false,
+            "previewPatch": null,
+            "appliedLabels": [],
+            "skipped": [
+              "no_changes_needed"
+            ],
+            "extractionNotes": []
+          }
+        }
+      ],
+      "eligibleSourceIds": [],
+      "eligibleCount": 0,
+      "skippedCount": 3
+    }
+  ],
+  "doesNotDo": [
+    "Rebuild Explorer content or overwrite Brand Setup fields",
+    "Approve or extract facts",
+    "Publish governance or set Company Validated",
+    "Approve development-page sources (JS-shell provenance only)",
+    "Approve RHG/global or uncertain third-party sources"
+  ],
+  "applyResult": null
+}

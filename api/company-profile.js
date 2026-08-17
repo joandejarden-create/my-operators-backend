@@ -15,6 +15,15 @@ import {
   companyRoleDisplayLabel,
   normalizeCompanyRoleToForm,
 } from "../lib/company-role-normalize.js";
+import {
+  airtableCompanyTypeToFormKey,
+  airtableFieldsToOwnerOperatorPrefill,
+  companyTypeDisplayLabel,
+  finalizeCompanyProfileFieldsForAirtableWrite,
+  mergeOwnerOperatorExtensionFields,
+  pickFirstCompanyTypeInput,
+  toAirtableCompanyType,
+} from "../lib/company-profile-owner-operator-fields.js";
 
 const COMPANY_PROFILE_TABLE_ID = "tblItyfH6MlOnMKZ9";
 const COMPANY_ADDRESS_AIRTABLE_FIELD = "Company Address";
@@ -27,16 +36,6 @@ function getBase() {
     process.env.AIRTABLE_BASE_ID
   );
 }
-
-// —— Form value → Airtable singleSelect choice (exact string required) ——
-const COMPANY_TYPE_FORM_TO_AIRTABLE = {
-  Brand: "Hotel Brands (Franchise)",
-  Operator: "Hotel Management Company",
-  Owner: "Hotel Owner",
-  Advisor: "Hospitality Consultants",
-  Lender: "Hospitality Consultants",
-  Other: "Other",
-};
 
 const NUMBER_OF_EMPLOYEES_FORM_TO_AIRTABLE = {
   Solo: "Solo / Independent",
@@ -83,12 +82,6 @@ const OPEN_TO_CONTACT_FORM_TO_AIRTABLE = {
   No: "No",
 };
 
-const COMPANY_TYPE_AIRTABLE_TO_FORM = Object.fromEntries(
-  Object.entries(COMPANY_TYPE_FORM_TO_AIRTABLE).map(([formVal, airtableVal]) => [
-    airtableVal,
-    formVal,
-  ])
-);
 const NUMBER_OF_EMPLOYEES_AIRTABLE_TO_FORM = Object.fromEntries(
   Object.entries(NUMBER_OF_EMPLOYEES_FORM_TO_AIRTABLE).map(([formVal, airtableVal]) => [
     airtableVal,
@@ -259,6 +252,18 @@ function buildEmptyPrefill() {
     companyLogoUrl: "",
     companyLogoFilename: "",
     brandsOperateSupportNames: [],
+    companyCapabilities: [],
+    companyTypeTags: [],
+    workspaceAccess: [],
+    operatingModel: "",
+    thirdPartyManagementAvailability: "",
+    coreProfileStatus: "",
+    ownerProfileStatus: "",
+    operatorProfileStatus: "",
+    developerProfileStatus: "",
+    potentialConflictFlags: [],
+    competitiveSensitivityNotes: "",
+    companyTypeDisplay: "",
   };
 }
 
@@ -267,8 +272,10 @@ function airtableFieldsToPrefill(fields) {
   const f = fields || {};
 
   prefill.companyName = toStr(f["Company Name"]);
-  prefill.companyType =
-    COMPANY_TYPE_AIRTABLE_TO_FORM[toStr(f["Company Type"])] || toStr(f["Company Type"]);
+  const companyTypeRaw = toStr(f["Company Type"]);
+  prefill.companyType = airtableCompanyTypeToFormKey(companyTypeRaw) || companyTypeRaw;
+  prefill.companyTypeDisplay = companyTypeDisplayLabel(prefill.companyType || companyTypeRaw);
+  Object.assign(prefill, airtableFieldsToOwnerOperatorPrefill(f));
   prefill.companyWebsite = stripLeadingWwwFromWebsiteUrl(toStr(f["Company Website"]));
   prefill.numberOfEmployees =
     NUMBER_OF_EMPLOYEES_AIRTABLE_TO_FORM[toStr(f["Number of Employees"])] ||
@@ -350,16 +357,29 @@ function extractUnknownFieldName(error) {
   return match ? match[1] : "";
 }
 
-async function createWithUnknownFieldFallback(base, fields) {
+function prepareCompanyProfileFieldsForAirtableWrite(fields) {
   const working = { ...(fields || {}) };
+  finalizeCompanyProfileFieldsForAirtableWrite(working, { loud: true });
+  if (process.env.NODE_ENV !== "production" && working["Company Type"]) {
+    console.log(
+      "[company-profile] Airtable write Company Type:",
+      working["Company Type"]
+    );
+  }
+  return working;
+}
+
+async function createWithUnknownFieldFallback(base, fields) {
+  const working = prepareCompanyProfileFieldsForAirtableWrite(fields);
   const removed = [];
   const maxRetries = Math.max(50, Object.keys(working).length + 10);
   let attempts = 0;
 
   while (attempts <= maxRetries) {
     try {
+      finalizeCompanyProfileFieldsForAirtableWrite(working, { loud: true });
       const record = await base(COMPANY_PROFILE_TABLE_ID).create(working, {
-        typecast: true,
+        typecast: false,
       });
       if (removed.length) {
         console.warn(
@@ -389,15 +409,16 @@ async function createWithUnknownFieldFallback(base, fields) {
 }
 
 async function updateWithUnknownFieldFallback(base, recordId, fields) {
-  const working = { ...(fields || {}) };
+  const working = prepareCompanyProfileFieldsForAirtableWrite(fields);
   const removed = [];
   const maxRetries = Math.max(50, Object.keys(working).length + 10);
   let attempts = 0;
 
   while (attempts <= maxRetries) {
     try {
+      finalizeCompanyProfileFieldsForAirtableWrite(working, { loud: true });
       const record = await base(COMPANY_PROFILE_TABLE_ID).update(recordId, working, {
-        typecast: true,
+        typecast: false,
       });
       if (removed.length) {
         console.warn(
@@ -481,12 +502,13 @@ export function formToAirtableFields(body) {
   if (body.yearFounded != null && body.yearFounded !== "")
     fields["Year Founded"] = String(body.yearFounded).trim();
 
-  // —— Single select with value mapping ——
-  if (body.companyType != null && body.companyType !== "") {
-    const mapped =
-      COMPANY_TYPE_FORM_TO_AIRTABLE[body.companyType] ?? body.companyType;
-    fields["Company Type"] = mapped;
-  }
+  // —— Single select with value mapping (may be overridden by capability derivation) ——
+  const companyTypeInput =
+    pickFirstCompanyTypeInput(body.derivedCompanyType) ||
+    pickFirstCompanyTypeInput(body.companyTypeKey) ||
+    pickFirstCompanyTypeInput(body.companyType);
+  const companyTypeAirtable = toAirtableCompanyType(companyTypeInput);
+  if (companyTypeAirtable) fields["Company Type"] = companyTypeAirtable;
   if (body.numberOfEmployees != null && body.numberOfEmployees !== "") {
     const mapped =
       NUMBER_OF_EMPLOYEES_FORM_TO_AIRTABLE[body.numberOfEmployees] ??
@@ -525,24 +547,31 @@ export function formToAirtableFields(body) {
     fields[col] = regionsList.includes(col);
   }
 
-  // —— Primary services: form sends primaryServices[]; Airtable has "Primary - X" checkboxes ——
+  // —— Primary / additional services: checkbox columns (legacy) + multi-select fields (current) ——
   const primaryList = Array.isArray(body.primaryServices)
     ? body.primaryServices
     : typeof body.primaryServices === "string"
       ? body.primaryServices.split(",").map((s) => s.trim()).filter(Boolean)
       : [];
-  for (const [formVal, suffix] of Object.entries(SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX)) {
-    fields[`Primary - ${suffix}`] = primaryList.includes(formVal);
-  }
-
-  // —— Additional services: form sends additionalServices[]; Airtable has "Addl - X" checkboxes ——
   const addlList = Array.isArray(body.additionalServices)
     ? body.additionalServices
     : typeof body.additionalServices === "string"
       ? body.additionalServices.split(",").map((s) => s.trim()).filter(Boolean)
       : [];
+
+  const primaryAirtableValues = [];
+  const addlAirtableValues = [];
   for (const [formVal, suffix] of Object.entries(SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX)) {
+    fields[`Primary - ${suffix}`] = primaryList.includes(formVal);
     fields[`Addl - ${suffix}`] = addlList.includes(formVal);
+    if (primaryList.includes(formVal)) primaryAirtableValues.push(suffix);
+    if (addlList.includes(formVal)) addlAirtableValues.push(suffix);
+  }
+  if (primaryAirtableValues.length > 0) {
+    fields["Primary Services"] = primaryAirtableValues;
+  }
+  if (addlAirtableValues.length > 0) {
+    fields["Additional Services"] = addlAirtableValues;
   }
 
   // —— Brands You Operate / Support: linked records (record IDs) ——
@@ -553,6 +582,23 @@ export function formToAirtableFields(body) {
       .filter((s) => s.startsWith("rec"));
     if (ids.length > 0) fields["Brands You Operate / Support"] = ids;
   }
+
+  const prefillCtx = {
+    prefill: {
+      thirdPartyManagementAvailability: toStr(body.existingThirdPartyManagementAvailability),
+      operatingModel: toStr(body.existingOperatingModel),
+      coreProfileStatus: toStr(body.existingCoreProfileStatus),
+      ownerProfileStatus: toStr(body.existingOwnerProfileStatus),
+      operatorProfileStatus: toStr(body.existingOperatorProfileStatus),
+      developerProfileStatus: toStr(body.existingDeveloperProfileStatus),
+    },
+  };
+  const { warnings } = mergeOwnerOperatorExtensionFields(body, fields, prefillCtx);
+  if (warnings.length && process.env.NODE_ENV !== "production") {
+    console.warn("Company profile: owner-operator field warnings:", warnings.join(", "));
+  }
+
+  finalizeCompanyProfileFieldsForAirtableWrite(fields, { loud: false });
 
   // Logo is set in createCompanyProfile from req.file (multipart upload)
   return fields;
@@ -615,6 +661,7 @@ export async function createCompanyProfile(req, res) {
     return res.status(201).json({
       id: record.id,
       message: "Company profile created",
+      warnings: [],
     });
   } catch (err) {
     console.error("Company profile create error:", err);
@@ -664,6 +711,7 @@ export async function updateCompanyProfile(req, res) {
     return res.json({
       id: record.id,
       message: "Company profile updated",
+      warnings: [],
     });
   } catch (err) {
     console.error("Company profile update error:", err);

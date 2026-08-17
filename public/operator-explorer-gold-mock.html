@@ -151,7 +151,7 @@
       flex-wrap: wrap;
       gap: 5px;
       justify-content: flex-end;
-      max-width: min(100%, 280px);
+      max-width: min(100%, 420px);
     }
     .oe-presentation-hero .oe-hero-chip {
       display: inline-flex;
@@ -167,6 +167,10 @@
       border-radius: 6px;
       line-height: 1.2;
       text-align: center;
+    }
+    .oe-presentation-hero .oe-hero-chip.oe-hero-chip--chain-scale {
+      border-width: 1px;
+      font-weight: 700;
     }
     @media (max-width: 900px) {
       .oe-presentation-hero .oe-hero__title-row { grid-template-columns: 1fr; }
@@ -1169,7 +1173,8 @@
     <main id="panels"></main>
   </div>
   <script src="js/operator-explorer-favorites.js?v=oe-he-cala-parity-20260529"></script>
-  <script src="js/operator-explorer-new-base-profile.js?v=oe-he-cala-parity-20260529"></script>
+  <script src="js/profile-governance-trust-chip.js?v=oe-governance-trust-chip-20260706"></script>
+  <script src="js/operator-explorer-new-base-profile.js?v=oe-chain-scale-chips-20260724"></script>
   <script src="js/operator-leadership-member-map.js?v=oe-he-cala-parity-20260529"></script>
   <script src="js/operator-leadership-profile-detail.js?v=oe-he-cala-parity-20260529"></script>
   <script src="js/operator-leadership-team-sections.js?v=oe-leadership-hint-guard-20260617"></script>
@@ -1181,7 +1186,7 @@
   <script src="js/operator-brand-relationships-sections.js?v=oe-card-title-case-20260617"></script>
   <script src="js/operator-best-fit-deal-profile-sections.js?v=oe-card-title-case-20260617"></script>
   <script src="js/operator-operating-platform-sections.js?v=oe-card-title-case-20260617"></script>
-  <script src="js/operator-explorer-gold-mock-data.js?v=oe-leadership-hint-guard-20260617"></script>
+  <script src="js/operator-explorer-gold-mock-data.js?v=oe-website-no-www-20260724"></script>
   <script src="js/operator-dna-case-studies-be.js?v=oe-case-studies-expand-20260617"></script>
   <script src="js/operator-dna-profile-mount.js?v=oe-he-cala-parity-20260529"></script>
   <script src="js/operator-dna-dealality-insights.js?v=oe-he-cala-parity-20260529"></script>
@@ -1239,7 +1244,7 @@
     function kpi(l,v){return `<div class="kpi"><div class="label">${l}</div><div class="value">${v}</div></div>`;}
     function kpiWebsite(l,url){
       const href=/^https?:\/\//i.test(url)?url:"https://"+url;
-      const display=url.replace(/^https?:\/\//i,"").replace(/\/+$/,"");
+      const display=url.replace(/^https?:\/\//i,"").replace(/^www\./i,"").replace(/\/+$/,"");
       return `<div class="kpi"><div class="label">${l}</div><div class="value"><a class="oe-quick-fact-website" href="${href}" target="_blank" rel="noopener noreferrer">${display}</a></div></div>`;
     }
     function decisionStrip(items){
@@ -1304,7 +1309,7 @@
     const tabsEl=document.getElementById("tabs");
     tabsEl.innerHTML=tabs.map((t,i)=>`<button type="button" class="section-nav-item ${i===0?"active":""}" data-tab="${t}"><div class="section-nav-icon">${TAB_ICONS[t]}</div><div class="section-nav-label">${TAB_LABEL_HTML[t]||t}</div></button>`).join("");
     const panels={
-      "Profile & Positioning": `<section class="section oe-operator-quick-facts-section"><h2 class="section-title">Operator Quick Facts</h2><div class="kpi-grid-7 oe-operator-quick-facts-kpis">${kpi("Year Founded","2008")}${kpiWebsite("Company Website","https://example.com")}${kpi("Team Members","210+")}${kpi("Avg. Hotel Size","186 rooms")}${kpi("Management Style","Third-party / Owner-aligned")}${kpi("Typical Agreement","Flexible by asset profile")}${kpi("Data Status","Operator profile draft")}</div></section>
+      "Profile & Positioning": `<section class="section oe-operator-quick-facts-section"><h2 class="section-title">Operator Quick Facts</h2><div class="kpi-grid-7 oe-operator-quick-facts-kpis">${kpi("Year Founded","2008")}${kpiWebsite("Company Website","https://example.com")}${kpi("Team Members","210+")}${kpi("Avg. Hotel Size","186 rooms")}${kpi("Management Style","Third-party / Owner-aligned")}${kpi("Typical Agreement","Flexible by asset profile")}${kpi("Data Confidence","Operator profile draft")}</div></section>
       <section class="section"><h2 class="section-title">Company Background</h2>${card("Positioning",GOLD_OPERATOR.positioning)}</section>
       <section class="section"><h2 class="section-title">Scale & Footprint Snapshot</h2><div class="quant-grid">${cluster("Portfolio Scale",["Hotels Managed: 35","Rooms Managed: 8,750","Core Markets: 12","Cities: 22"])}${cluster("Regional Split",["Latin America Hotels: 24","North America Hotels: 6","Southern Europe Hotels: 5","Regional Leadership Clusters: 3"])}${cluster("Country Spread",["Mexico: 8 hotels","Brazil: 7 hotels","Colombia: 5 hotels","US + Spain: 12 hotels"])}${cluster("Brand Positioning",["Brands Supported: 9","Brand Mix: 60% Branded / 40% Independent","Soft Brand Agility: Strong","Franchise Compatibility: High"])}</div></section>
       <section class="section"><h2 class="section-title">Key Differentiators</h2><div class="grid-2">${cluster("Execution Differentiators",["Institutional operating discipline","Decision-grade reporting architecture","Strong transition and repositioning depth","Market-grounded local execution model"])}${cluster("Commercial Differentiators",["Demand-led revenue governance","Channel mix discipline","Brand and independent operating confidence","Owner-priority alignment under governance"])}</div></section>

@@ -1,0 +1,56 @@
+{
+  "report": "operator-setup-field-deletion-readiness-matrix",
+  "generatedAt": "2026-06-02",
+  "deletionReadiness": "not_ready_for_hard_removal",
+  "summary": {
+    "safeToRemoveImmediately": [],
+    "safeToDeprecateNow": [
+      "overview_signal_1_value",
+      "overview_signal_2_value",
+      "overview_signal_3_value",
+      "brand_signal_audit",
+      "brand_signal_reflag",
+      "brand_signal_franchise_align",
+      "brand_signal_soft_retention",
+      "readyForInvestorPublication"
+    ],
+    "keepForCompatibility": [
+      "primaryServiceModel",
+      "company_name",
+      "Company Name",
+      "bf_selected_deal_structures"
+    ],
+    "doNotTouch": [
+      "canonical Operator Setup fields validated in batches 1/2/3A/3C",
+      "any scoring/snapshot methodology-linked fields",
+      "browser-only mirror diagnostics fields pending explicit validation",
+      "Batch 4 normalization-adjacent fields"
+    ]
+  },
+  "evidence": {
+    "sources": [
+      "reports/operator-setup-staging-diagnostics-soak-results.json",
+      "reports/operator-setup-batch-3c-candidate-review.json",
+      "reports/operator-setup-deal-linked-oas-validation.json",
+      "reports/operator-legacy-unused-fields.json"
+    ],
+    "notes": [
+      "Staging soak showed historical fallback usage and compatibility paths.",
+      "Batch 3C validated canonical serviceModelsSupported, while keeping primaryServiceModel fallback.",
+      "Deal-linked validation confirms canonical behavior but does not provide deletion safety proof.",
+      "Legacy-unused report flags candidates as Needs Review, not safe-to-delete."
+    ],
+    "legacyUnusedNeedsReviewCount": 100
+  },
+  "decision": {
+    "hardDeleteNow": false,
+    "recommendedNextAction": "deprecation_cycle_before_any_removal"
+  },
+  "requiredBeforeRemovalBatch": [
+    "data presence check for each candidate field",
+    "full read/write/export usage sweep",
+    "business owner sign-off per field",
+    "rollback plan per candidate",
+    "staging proof with candidate fields disabled and no regressions"
+  ]
+}

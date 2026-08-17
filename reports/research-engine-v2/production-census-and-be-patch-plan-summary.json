@@ -1,0 +1,121 @@
+{
+  "acceptance_status": "production_census_dry_run_ready_for_founder_approval",
+  "generated_at": "2026-08-05T08:20:31.738Z",
+  "summary": {
+    "recommended_airtable_census_tables": [
+      "Hotel Property Census",
+      "Hotel Property Brand Affiliations",
+      "Hotel Property Source Evidence",
+      "Hotel Property Steward Review"
+    ],
+    "required_fields": {
+      "identity": [
+        "Property Name",
+        "Canonical Property Name",
+        "Property Identity Key",
+        "Family / Source Family",
+        "Country",
+        "State / Region",
+        "City",
+        "Address",
+        "Latitude",
+        "Longitude",
+        "Phone",
+        "Official Property URL",
+        "Source URL",
+        "Source Type",
+        "Source Confidence",
+        "Discovery Date",
+        "VIC Freeze Hash",
+        "Data Eligible",
+        "Identity Confidence",
+        "Production Use Status"
+      ],
+      "affiliation": [
+        "Current Brand",
+        "Brand Family",
+        "Brand Explorer Slug if mapped",
+        "Affiliation Status",
+        "Affiliation As-Of Date",
+        "Affiliation Start Date",
+        "Prior Brand",
+        "Future Opening Flag",
+        "Brand Confidence",
+        "Steward Review Status"
+      ]
+    },
+    "existing_production_schema_gaps": [
+      {
+        "table": "Verified Independent Hotel Census",
+        "gap": "field_model_incomplete_vs_hotel_property_census",
+        "existing_field_count": 18,
+        "note": "Do not silently remap VIC freeze into this stub; prefer new Hotel Property Census tables"
+      },
+      {
+        "table": "Hotel Census",
+        "gap": "legacy_str_not_write_target",
+        "action": "Keep read-only; never receive VIC production writes"
+      }
+    ],
+    "tables_already_exist": true,
+    "schema_must_be_created_manually": false,
+    "dry_run_count_666": 666,
+    "records_to_create": 666,
+    "records_to_update": 0,
+    "held_records": 4,
+    "safe_fields_to_write": [
+      "Property Name",
+      "Canonical Property Name",
+      "Property Identity Key",
+      "Family / Source Family",
+      "Country",
+      "State / Region",
+      "City",
+      "Address",
+      "Official Property URL",
+      "Source URL",
+      "Source Type",
+      "Source Confidence",
+      "Discovery Date",
+      "VIC Freeze Hash",
+      "Data Eligible",
+      "Identity Confidence",
+      "Production Use Status",
+      "Current Brand",
+      "Brand Family",
+      "Brand Explorer Slug if mapped",
+      "Affiliation Status",
+      "Affiliation As-Of Date",
+      "Future Opening Flag",
+      "Brand Confidence",
+      "Steward Review Status",
+      "Latitude",
+      "Longitude",
+      "Phone"
+    ],
+    "unsafe_fields_held": [
+      "Rooms",
+      "Owner",
+      "Operator",
+      "Opening Date",
+      "Affiliation Start Date (unless source-supported — VIC policy: never fabricate)",
+      "Brand Explorer Presentation Title/Body/Slot Key",
+      "Brand Basics",
+      "Brand Status",
+      "release fields",
+      "Company Validated",
+      "Brand Verified",
+      "Recent Momentum",
+      "any public-rendered Brand Explorer field",
+      "coordinates when missing (never 0,0)"
+    ],
+    "brand_explorer_production_patch_recommendation": "Option A — vic.production.pilot.medium.* (non-rendering)",
+    "production_census_write_may_proceed": false,
+    "brand_explorer_production_patch_remains_blocked": true,
+    "acceptance_status": "production_census_dry_run_ready_for_founder_approval"
+  },
+  "production_writes_occurred": false,
+  "brand_explorer_production_modified": false,
+  "frozen_vic_modified": false,
+  "frozen_62_modified": false
+}

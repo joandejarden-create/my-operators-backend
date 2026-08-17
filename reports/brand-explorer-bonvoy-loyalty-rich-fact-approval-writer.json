@@ -1,0 +1,755 @@
+{
+  "writerVersion": "25C-2G",
+  "writerExists": true,
+  "v25C2GWriterExists": true,
+  "generatedAt": "2026-07-09T18:44:35.282Z",
+  "mode": "dry-run",
+  "brand": {
+    "name": "Tribute Portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "slug": "tribute-portfolio"
+  },
+  "pilot": "tribute-portfolio",
+  "marriottValidationImplied": false,
+  "sourcePackage": [
+    "reports/brand-explorer-bonvoy-loyalty-source-fact-stewardship-writer.json",
+    "reports/brand-explorer-bonvoy-loyalty-detail-enhancement-package.json"
+  ],
+  "stewardshipReportExists": true,
+  "enhancementReportExists": true,
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-bonvoy-loyalty-source-fact-stewardship-writer.md",
+    "reports/brand-explorer-bonvoy-loyalty-source-fact-stewardship-writer.json",
+    "reports/brand-explorer-bonvoy-loyalty-detail-enhancement-package.md",
+    "reports/brand-explorer-bonvoy-loyalty-detail-enhancement-package.json",
+    "reports/brand-explorer-loyalty-row-creation-writer.md",
+    "reports/brand-explorer-loyalty-row-creation-writer.json",
+    "reports/brand-explorer-required-section-population-contract.md",
+    "reports/brand-explorer-required-section-population-contract.json",
+    "docs/partner-extracted-facts-airtable-fields.md",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/lib/partner-intelligence-field-map.js",
+    "lib/partner-intelligence/airtable-facts.js",
+    "lib/partner-intelligence/airtable-source.js",
+    "live Tribute Source Library records",
+    "live Tribute Partner Facts",
+    "live Tribute Brand Explorer Presentation rows",
+    "live Curio/Kimpton/Radisson/Ascend loyalty rows"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-bonvoy-loyalty-rich-fact-approval-writer.js",
+    "scripts/brand-explorer-bonvoy-loyalty-rich-fact-approval-writer.mjs",
+    "docs/data-intelligence/brand-explorer-bonvoy-loyalty-rich-fact-approval-writer-v25C-2G.md",
+    "reports/brand-explorer-bonvoy-loyalty-rich-fact-approval-writer.md",
+    "reports/brand-explorer-bonvoy-loyalty-rich-fact-approval-writer.json",
+    "package.json"
+  ],
+  "eligibleRichFactKeys": [
+    "be.loyalty.earnEligibleSpend",
+    "be.loyalty.earnWifiDirectBooking",
+    "be.loyalty.earnFreeNightsHeadline",
+    "be.loyalty.redeemFreeNights",
+    "be.loyalty.redeemOnStayExperiences",
+    "be.loyalty.redeemParticipatingNetwork",
+    "be.loyalty.eliteMemberSummary",
+    "be.loyalty.eliteSilverSummary",
+    "be.loyalty.eliteGoldSummary",
+    "be.loyalty.elitePlatinumSummary",
+    "be.loyalty.eliteTitaniumSummary",
+    "be.loyalty.eliteAmbassadorSummary",
+    "be.loyalty.proofDirectBookingRelevance"
+  ],
+  "eligibleRichFactRecordIds": {
+    "be.loyalty.earnEligibleSpend": "recnCQFgqTCkY3AKZ",
+    "be.loyalty.earnWifiDirectBooking": "reclcSL6EkjUEbAwu",
+    "be.loyalty.earnFreeNightsHeadline": "recKfOnCl3OKVc4vE",
+    "be.loyalty.redeemFreeNights": "reckE45C1Q8oGBnnJ",
+    "be.loyalty.redeemOnStayExperiences": "recESDD7EjXGrNqr8",
+    "be.loyalty.redeemParticipatingNetwork": "recOXOyCTezxwZvxG",
+    "be.loyalty.eliteMemberSummary": "rec179eABX8aNhPVF",
+    "be.loyalty.eliteSilverSummary": "recnoxM5i3ksYSdeU",
+    "be.loyalty.eliteGoldSummary": "rec8uCIAsKeMTk2KW",
+    "be.loyalty.elitePlatinumSummary": "recK3Lx4ZfXClO86F",
+    "be.loyalty.eliteTitaniumSummary": "rec0s2WeA16nRHpAj",
+    "be.loyalty.eliteAmbassadorSummary": "recpgiySHIIwrVpkl",
+    "be.loyalty.proofDirectBookingRelevance": "recGQAd6uebkyGCSQ"
+  },
+  "sourceLibraryRecordsInspected": [
+    {
+      "recordId": "rec8eRACSCyGnHRXH",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "purpose": "Elite tier summaries",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)",
+      "approvedForExplorerUse": "Yes",
+      "approvedForExtraction": "Yes",
+      "stewardshipSufficient": true,
+      "stewardshipReason": "explorer_and_extraction_approved"
+    },
+    {
+      "recordId": "recc9NVMd7gvDKGBF",
+      "sourceUrl": "https://www.marriott.com/loyalty/earn.mi",
+      "purpose": "Earn mechanics",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Earn & Use Points",
+      "approvedForExplorerUse": "Yes",
+      "approvedForExtraction": "Yes",
+      "stewardshipSufficient": true,
+      "stewardshipReason": "explorer_and_extraction_approved"
+    },
+    {
+      "recordId": "recaAmqeCbXN3n89z",
+      "sourceUrl": "https://www.marriott.com/loyalty/redeem.mi",
+      "purpose": "Redeem mechanics",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Use Points / Redeem",
+      "approvedForExplorerUse": "Yes",
+      "approvedForExtraction": "Yes",
+      "stewardshipSufficient": true,
+      "stewardshipReason": "explorer_and_extraction_approved"
+    },
+    {
+      "recordId": "recu6AFRZBBBNiCQn",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "purpose": "Existing Bonvoy hub (reused by v25C-2F facts)",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)",
+      "approvedForExplorerUse": "Yes",
+      "approvedForExtraction": "Yes",
+      "stewardshipSufficient": true,
+      "stewardshipReason": "explorer_and_extraction_approved"
+    }
+  ],
+  "sourceStewardshipSufficient": true,
+  "sourcesRequiringStewardship": [],
+  "factsInspected": [
+    {
+      "fieldKey": "be.loyalty.earnEligibleSpend",
+      "factRecordId": "recnCQFgqTCkY3AKZ",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "recc9NVMd7gvDKGBF",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Earn & Use Points",
+      "sourceUrl": "https://www.marriott.com/loyalty/earn.mi",
+      "targetSlots": [
+        "loyalty.earn"
+      ],
+      "tierTitle": null,
+      "extractedValuePreview": "Members earn Marriott Bonvoy points on eligible hotel charges at participating properties when enrolled and booked per program rules.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty/earn.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.earnWifiDirectBooking",
+      "factRecordId": "reclcSL6EkjUEbAwu",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "targetSlots": [
+        "loyalty.earn"
+      ],
+      "tierTitle": null,
+      "extractedValuePreview": "Complimentary in-room Wi-Fi may be available when booking through Marriott websites or the Marriott Bonvoy app, where offered.",
+      "evidencePreview": "Supported by existing Bonvoy page evidence preview (Free in-Room Wi-Fi).",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.earnFreeNightsHeadline",
+      "factRecordId": "recKfOnCl3OKVc4vE",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "targetSlots": [
+        "loyalty.earn",
+        "loyalty.redeem"
+      ],
+      "tierTitle": null,
+      "extractedValuePreview": "Earn toward free nights and discounted member rates within the Marriott Bonvoy program.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.redeemFreeNights",
+      "factRecordId": "reckE45C1Q8oGBnnJ",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "recaAmqeCbXN3n89z",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Use Points / Redeem",
+      "sourceUrl": "https://www.marriott.com/loyalty/redeem.mi",
+      "targetSlots": [
+        "loyalty.redeem"
+      ],
+      "tierTitle": null,
+      "extractedValuePreview": "Redeem points toward reward nights at participating Marriott Bonvoy hotels, subject to award availability and published program rules.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty/redeem.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.redeemOnStayExperiences",
+      "factRecordId": "recESDD7EjXGrNqr8",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "targetSlots": [
+        "loyalty.redeem"
+      ],
+      "tierTitle": null,
+      "extractedValuePreview": "Points may also be applied toward on-property experiences such as dining, golf, or spa during a stay where Marriott publishes that option.",
+      "evidencePreview": "Pattern: Use points for dining, golf, spas, and more during a stay.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.redeemParticipatingNetwork",
+      "factRecordId": "recOXOyCTezxwZvxG",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "targetSlots": [
+        "loyalty.redeem"
+      ],
+      "tierTitle": null,
+      "extractedValuePreview": "Redemption spans Marriott's participating hotel network—owners should confirm Tribute Portfolio participation and current award charts for a specific asset.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Low",
+      "confidenceScore": 58,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.eliteMemberSummary",
+      "factRecordId": "rec179eABX8aNhPVF",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Member",
+      "extractedValuePreview": "Base tier — join at no cost; earn points on eligible stays; access member rates and published member benefits where participating.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty/member-benefits.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.eliteSilverSummary",
+      "factRecordId": "recnoxM5i3ksYSdeU",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Silver Elite",
+      "extractedValuePreview": "Illustrative qualification: 10 Elite Night Credits per calendar year. Benefits may include bonus points on stays and late checkout where available—confirm published Bonvoy tables.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty/member-benefits.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.eliteGoldSummary",
+      "factRecordId": "rec8uCIAsKeMTk2KW",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Gold Elite",
+      "extractedValuePreview": "Illustrative qualification: 25 Elite Night Credits. Benefits may include enhanced bonus points, room upgrades, and welcome amenities where published and available.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty/member-benefits.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.elitePlatinumSummary",
+      "factRecordId": "recK3Lx4ZfXClO86F",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Platinum Elite",
+      "extractedValuePreview": "Illustrative qualification: 50 Elite Night Credits. Benefits may include stronger bonus points, lounge access, and enhanced room upgrades where offered by property and brand.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty/member-benefits.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.eliteTitaniumSummary",
+      "factRecordId": "rec0s2WeA16nRHpAj",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Titanium Elite",
+      "extractedValuePreview": "Illustrative qualification: 75 Elite Night Credits. Benefits may include top-tier bonus points, annual choice benefits, and priority recognition where published.",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty/member-benefits.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.eliteAmbassadorSummary",
+      "factRecordId": "recpgiySHIIwrVpkl",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)",
+      "sourceUrl": "https://www.marriott.com/loyalty/member-benefits.mi",
+      "targetSlots": [
+        "loyalty.elite"
+      ],
+      "tierTitle": "Ambassador Elite",
+      "extractedValuePreview": "Illustrative qualification: 100 Elite Night Credits plus published annual qualifying spend threshold. May include dedicated Ambassador support and highest published recognition—co…",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty/member-benefits.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Medium",
+      "confidenceScore": 72,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    },
+    {
+      "fieldKey": "be.loyalty.proofDirectBookingRelevance",
+      "factRecordId": "recGQAd6uebkyGCSQ",
+      "brandRecordId": "recCvV0PuZOi8c3hC",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)",
+      "sourceUrl": "https://www.marriott.com/loyalty.mi",
+      "targetSlots": [
+        "loyalty.proof"
+      ],
+      "tierTitle": null,
+      "extractedValuePreview": "Member rates and Bonvoy recognition on direct Marriott channels can support owner conversations about distribution mix—execution still depends on property systems and rate strateg…",
+      "evidencePreview": "Paraphrased from official Marriott Bonvoy source (https://www.marriott.com/loyalty.mi) for v25C-2F rich Bonvoy loyalty enhancement.",
+      "currentHumanReviewStatus": "Approved",
+      "publicVisibility": "Public",
+      "extractionRunId": "tribute-bonvoy-rich-25C-2F-e1d4afa7",
+      "confidenceLevel": "Low",
+      "confidenceScore": 58,
+      "assessment": "hold",
+      "exclusionReasons": [
+        "already_approved_idempotent_skip"
+      ],
+      "sourceSafety": {
+        "sufficient": true,
+        "reason": "explorer_and_extraction_approved"
+      },
+      "proposedGovernanceChanges": null,
+      "wouldApprove": false
+    }
+  ],
+  "factsWouldApprove": [],
+  "factsWouldApproveRows": [],
+  "factsSafeToApproveWhenStewarded": [
+    "be.loyalty.earnEligibleSpend",
+    "be.loyalty.earnWifiDirectBooking",
+    "be.loyalty.earnFreeNightsHeadline",
+    "be.loyalty.redeemFreeNights",
+    "be.loyalty.redeemOnStayExperiences",
+    "be.loyalty.redeemParticipatingNetwork",
+    "be.loyalty.eliteMemberSummary",
+    "be.loyalty.eliteSilverSummary",
+    "be.loyalty.eliteGoldSummary",
+    "be.loyalty.elitePlatinumSummary",
+    "be.loyalty.eliteTitaniumSummary",
+    "be.loyalty.eliteAmbassadorSummary",
+    "be.loyalty.proofDirectBookingRelevance"
+  ],
+  "factsHeldForSourceStewardship": [],
+  "factsExcluded": [],
+  "missingEligibleFacts": [],
+  "sourceSafetyByFact": [
+    {
+      "fieldKey": "be.loyalty.earnEligibleSpend",
+      "factRecordId": "recnCQFgqTCkY3AKZ",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "recc9NVMd7gvDKGBF",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Earn & Use Points"
+    },
+    {
+      "fieldKey": "be.loyalty.earnWifiDirectBooking",
+      "factRecordId": "reclcSL6EkjUEbAwu",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)"
+    },
+    {
+      "fieldKey": "be.loyalty.earnFreeNightsHeadline",
+      "factRecordId": "recKfOnCl3OKVc4vE",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemFreeNights",
+      "factRecordId": "reckE45C1Q8oGBnnJ",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "recaAmqeCbXN3n89z",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Use Points / Redeem"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemOnStayExperiences",
+      "factRecordId": "recESDD7EjXGrNqr8",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemParticipatingNetwork",
+      "factRecordId": "recOXOyCTezxwZvxG",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteMemberSummary",
+      "factRecordId": "rec179eABX8aNhPVF",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteSilverSummary",
+      "factRecordId": "recnoxM5i3ksYSdeU",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteGoldSummary",
+      "factRecordId": "rec8uCIAsKeMTk2KW",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)"
+    },
+    {
+      "fieldKey": "be.loyalty.elitePlatinumSummary",
+      "factRecordId": "recK3Lx4ZfXClO86F",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteTitaniumSummary",
+      "factRecordId": "rec0s2WeA16nRHpAj",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteAmbassadorSummary",
+      "factRecordId": "recpgiySHIIwrVpkl",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "rec8eRACSCyGnHRXH",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy — Member Benefits (elite tiers & published benefits)"
+    },
+    {
+      "fieldKey": "be.loyalty.proofDirectBookingRelevance",
+      "factRecordId": "recGQAd6uebkyGCSQ",
+      "safe": true,
+      "reason": "explorer_and_extraction_approved",
+      "sourceRecordId": "recu6AFRZBBBNiCQn",
+      "sourceTitle": "Tribute Portfolio — Marriott Bonvoy loyalty page (guest promise / Bonvoy relationship)"
+    }
+  ],
+  "currentStatusByFact": [
+    {
+      "fieldKey": "be.loyalty.earnEligibleSpend",
+      "factRecordId": "recnCQFgqTCkY3AKZ",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.earnWifiDirectBooking",
+      "factRecordId": "reclcSL6EkjUEbAwu",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.earnFreeNightsHeadline",
+      "factRecordId": "recKfOnCl3OKVc4vE",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemFreeNights",
+      "factRecordId": "reckE45C1Q8oGBnnJ",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemOnStayExperiences",
+      "factRecordId": "recESDD7EjXGrNqr8",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.redeemParticipatingNetwork",
+      "factRecordId": "recOXOyCTezxwZvxG",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteMemberSummary",
+      "factRecordId": "rec179eABX8aNhPVF",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteSilverSummary",
+      "factRecordId": "recnoxM5i3ksYSdeU",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteGoldSummary",
+      "factRecordId": "rec8uCIAsKeMTk2KW",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.elitePlatinumSummary",
+      "factRecordId": "recK3Lx4ZfXClO86F",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteTitaniumSummary",
+      "factRecordId": "rec0s2WeA16nRHpAj",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.eliteAmbassadorSummary",
+      "factRecordId": "recpgiySHIIwrVpkl",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    },
+    {
+      "fieldKey": "be.loyalty.proofDirectBookingRelevance",
+      "factRecordId": "recGQAd6uebkyGCSQ",
+      "humanReviewStatus": "Approved",
+      "publicVisibility": "Public"
+    }
+  ],
+  "proposedGovernanceChangesByFact": [],
+  "unsupportedKpiFactsIncluded": false,
+  "internalFddFactsIncluded": false,
+  "referenceBrandFactsLeakedIntoPlan": false,
+  "referenceBrandFactsLeaked": [],
+  "nonAllowlistedPendingRichFacts": [],
+  "presentationRowsUntouched": true,
+  "imagesUntouched": true,
+  "sortOrderUntouched": true,
+  "brandBasicsUntouched": true,
+  "existingApprovedFactsUntouched": true,
+  "companyValidatedUntouched": true,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedAfter": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "airtableModified": false,
+  "applyGates": {
+    "apply": false,
+    "approveBatch": false,
+    "founderReviewed": false,
+    "sourcesExplorerSafeConfirmed": false,
+    "ready": false,
+    "canApply": false
+  },
+  "applyBlockers": [],
+  "applyResults": null,
+  "exactApplyCommand": "npm run brand-explorer-bonvoy-loyalty-rich-fact-approval-writer -- --brand tribute-portfolio --apply --approve-brand-explorer-v25C-2G-rich-bonvoy-facts --founder-reviewed-rich-bonvoy-facts --confirm-bonvoy-sources-explorer-safe",
+  "nextBatch": "brand-explorer-bonvoy-loyalty-row-enhancement-writer",
+  "nextBatchVersion": "25C-2H",
+  "exactNextBatchCommand": "npm run brand-explorer-bonvoy-loyalty-row-enhancement-writer -- --brand tribute-portfolio --package rich --dry-run",
+  "nextBatchRecommendation": "After all 13 rich facts are Approved and sources are stewarded, run v25C-2H brand-explorer-bonvoy-loyalty-row-enhancement-writer --package rich to upgrade loyalty presentation row bodies.",
+  "idempotentAfterApply": true,
+  "doesNotDo": [
+    "Create or update Brand Explorer Presentation rows",
+    "Create new Partner Facts or Source Library records",
+    "Modify existing five approved v25C-2B Bonvoy facts",
+    "Change images, Sort Order, or Brand Basics content fields",
+    "Set Company Validated or Company Validation Date",
+    "Approve standards/FDD/internal-only facts or loyalty KPI counts",
+    "Approve facts outside the thirteen v25C-2F pending rich facts",
+    "Imply Marriott validated anything"
+  ]
+}

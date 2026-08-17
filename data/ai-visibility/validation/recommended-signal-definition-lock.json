@@ -1,0 +1,52 @@
+{
+  "version": "ai_signal_recommended_definition_lock_v1",
+  "question": "Does the response affirmatively place this specific canonical entity into the decision set for the user's stated hotel decision?",
+  "presenceRequired": true,
+  "countsAsRecommended": {
+    "explicitRecommendation": true,
+    "shortlist": true,
+    "optionToConsider": true,
+    "relevantChoiceList": true,
+    "rankedRecommendationList": true,
+    "recommendationTableOrList": true,
+    "qualifiedAffirmative": true
+  },
+  "doesNotCount": {
+    "descriptiveMention": true,
+    "marketContextOnly": true,
+    "comparatorOnly": true,
+    "parentSiblingContextOnly": true,
+    "historicalOrExampleOnly": true,
+    "negativeExclusion": true,
+    "sourceCitationOnly": true,
+    "passingMentionUnrelated": true
+  },
+  "notes": [
+    "RECOMMENDED is about inclusion in the actionable consideration/decision set — not limited to the verb 'recommend'.",
+    "PROMPT_INTENT + RESPONSE_STRUCTURE + ENTITY_ROLE must be considered together.",
+    "FIRST_RECOMMENDATION remains a separate blocked signal.",
+    "NEGATIVE_OR_QUALIFIED remains a separate future signal; qualified affirmative can still be Recommended TRUE.",
+    "associated_option must be split: AFFIRMATIVE_CONSIDERATION_OPTION vs CONTEXTUAL_ASSOCIATED_ENTITY."
+  ],
+  "multiEntityHandling": {
+    "implementNow": false,
+    "rule": "Every named entity in a coordinated recommendation/consideration list independently receives RECOMMENDED=TRUE when the recommendation scope applies to the whole list (comma lists, bullets, tables, slash lists, parenthetical lists, coordinated conjunctions). Do not require repeated verbs."
+  },
+  "tableListInheritance": {
+    "implementNow": false,
+    "rule": "Recommendation framing at section/column/heading level (Recommended Brands, brands to consider, shortlist, best options, etc.) may inherit to each row/item even without a per-row verb."
+  },
+  "futureRecommendationShare": {
+    "enabled": false,
+    "formula": "comparable governed responses where AI_SIGNAL_RECOMMENDED=TRUE / comparable governed responses",
+    "blockedUntil": "Recommended certification"
+  },
+  "lockedAt": "2026-08-15T18:18:02.069Z",
+  "STATUS": "RECOMMENDED_SIGNAL_DEFINITION_LOCK_PASS",
+  "LOCK_READY": true,
+  "associatedOptionSplitRule": {
+    "AFFIRMATIVE_CONSIDERATION_OPTION": "Brand-decision prompt and/or affirmative consideration/shortlist/option language (or list structure) placing entity in actionable set → RECOMMENDED TRUE",
+    "CONTEXTUAL_ASSOCIATED_ENTITY": "Descriptive, parent/sibling, comparator, market-context, or non-decision association without affirmative decision-set placement → RECOMMENDED FALSE",
+    "doNotMapEntireClassToTrue": true
+  }
+}

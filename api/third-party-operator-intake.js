@@ -591,6 +591,14 @@ export default async function submitThirdPartyOperator(req, res) {
                     },
                     "error"
                 );
+                if (newWriteError?.statusCode === 400) {
+                    return res.status(400).json({
+                        error: "Validation failed",
+                        writeMode,
+                        message: newWriteError?.message || "Invalid operator setup payload",
+                        details: newWriteError?.errors || newWriteError?.details || undefined,
+                    });
+                }
                 if (!failOpenNewBase) {
                     return res.status(500).json({
                         error: "New-base writer failed",

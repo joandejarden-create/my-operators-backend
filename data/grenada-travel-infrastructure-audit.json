@@ -1,0 +1,109 @@
+{
+  "auditedAt": "2026-06-25T10:44:51.822Z",
+  "country": "Grenada",
+  "market": "Grenada Countrywide",
+  "keywords": [
+    "grenada",
+    "st george",
+    "grand anse",
+    "maurice bishop",
+    "gnd",
+    "cruise",
+    "carenage",
+    "spice",
+    "carriacou"
+  ],
+  "summary": {
+    "countryTravelInfrastructureTotal": 3,
+    "marketMatchedRecords": 3,
+    "existingExpectedNodes": 3,
+    "likelyMissingNodes": 2,
+    "duplicateCandidates": 0,
+    "weakSubmarketRecords": 3,
+    "governanceBackfillCandidates": 0,
+    "additionalFixtureRecommended": true,
+    "mexicoTravelInfrastructureTotal": 3
+  },
+  "existingMatchingRecords": [
+    {
+      "name": "Lauriston Airport",
+      "pointType": "Airport",
+      "city": "Carriacou Island",
+      "submarket": "",
+      "latitude": 12.4761,
+      "longitude": -61.472801,
+      "sourceReference": "https://en.wikipedia.org/wiki/Lauriston_Airport",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "St. George's Maurice Bishop Airport",
+      "pointType": "Airport",
+      "city": "St. George's",
+      "submarket": "",
+      "latitude": 12.0042,
+      "longitude": -61.7862,
+      "sourceReference": "https://en.wikipedia.org/wiki/Point_Salines_International_Airport",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "St. George's Cruise Port",
+      "pointType": "Cruise Port",
+      "city": "St. George's",
+      "submarket": "",
+      "latitude": 12.0526,
+      "longitude": -61.7416,
+      "sourceReference": "https://www.openstreetmap.org/?mlat=12.0526&mlon=-61.7416&zoom=13",
+      "dataConfidence": "High"
+    }
+  ],
+  "expectedNodeCoverage": [
+    {
+      "label": "Maurice Bishop International Airport / GND",
+      "name": "St. George's Maurice Bishop Airport",
+      "city": "St. George's",
+      "submarket": "",
+      "pointType": "Airport"
+    },
+    {
+      "label": "St. George's cruise terminal",
+      "name": "St. George's Cruise Port",
+      "city": "St. George's",
+      "submarket": "",
+      "pointType": "Cruise Port"
+    },
+    {
+      "label": "Carriacou ferry gateway",
+      "name": "Lauriston Airport",
+      "city": "Carriacou Island",
+      "submarket": "",
+      "pointType": "Airport"
+    }
+  ],
+  "likelyMissingRecords": [
+    "Grand Anse Beach corridor",
+    "Carenage waterfront"
+  ],
+  "duplicateCandidates": [],
+  "weakSubmarketRecords": [
+    {
+      "name": "Lauriston Airport",
+      "city": "Carriacou Island",
+      "submarket": ""
+    },
+    {
+      "name": "St. George's Maurice Bishop Airport",
+      "city": "St. George's",
+      "submarket": ""
+    },
+    {
+      "name": "St. George's Cruise Port",
+      "city": "St. George's",
+      "submarket": ""
+    }
+  ],
+  "governanceBackfillCandidates": [],
+  "notes": [
+    "Demand anchors should not duplicate TI airports/ferries unless explicitly DA-relevant.",
+    "Do not import TI from this audit unless gaps are confirmed and fixture is prepared."
+  ]
+}

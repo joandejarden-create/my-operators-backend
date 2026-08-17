@@ -1,0 +1,599 @@
+{
+  "marker": "DEALALITY_CALA_CENSUS_EXPANSION_SPRINT_01_COMPLETE",
+  "generated_at": "2026-08-10T13:05:47.254Z",
+  "factory_version": "discovery-factory-v1",
+  "safety": {
+    "Production_writes": 0,
+    "Census_writes": 0,
+    "Automatic_merges": 0,
+    "Schema_changes": 0,
+    "Brand_Explorer_writes": 0,
+    "Secrets_exposed": false,
+    "flags": {
+      "ENABLE_HOTEL_INTELLIGENCE_AIRTABLE_WRITES": "0",
+      "ENABLE_HBX_CENSUS_WRITES": "0"
+    }
+  },
+  "baseline": {
+    "marker": "SPRINT_01_BASELINE_LOCKED",
+    "live_census": 5956,
+    "coverage_pct": 36.8,
+    "countries_represented": 0,
+    "buckets": {
+      "zero": 18,
+      "lt20": 38,
+      "lt50": 47,
+      "lt80": 50,
+      "ge95": 2,
+      "zero_countries": [
+        "Saint Barthélemy",
+        "Paraguay",
+        "Saint Martin",
+        "Sint Maarten",
+        "Martinique",
+        "Bolivia",
+        "Turks and Caicos Islands",
+        "Bonaire",
+        "U.S. Virgin Islands",
+        "Montserrat",
+        "Venezuela",
+        "Guadeloupe",
+        "Anguilla",
+        "Saint Vincent and the Grenadines",
+        "Haiti",
+        "Guyana",
+        "Suriname",
+        "French Guiana"
+      ]
+    },
+    "distance_to_15k": 9044,
+    "prior_ready_staged": 91,
+    "prior_review_staged": 156,
+    "inventory": {
+      "brazil_holds": 4842,
+      "brazil_all": 5165,
+      "prior_ready_staged": 91,
+      "prior_review_staged": 156,
+      "track_b_stock": {
+        "Turks and Caicos Islands": {
+          "holds": 57,
+          "all": 57
+        },
+        "Bonaire": {
+          "holds": 51,
+          "all": 51
+        },
+        "Martinique": {
+          "holds": 31,
+          "all": 64
+        },
+        "U.S. Virgin Islands": {
+          "holds": 50,
+          "all": 51
+        },
+        "Anguilla": {
+          "holds": 25,
+          "all": 25
+        },
+        "Montserrat": {
+          "holds": 47,
+          "all": 50
+        },
+        "Guadeloupe": {
+          "holds": 32,
+          "all": 32
+        },
+        "Saint Lucia": {
+          "holds": 44,
+          "all": 48
+        }
+      }
+    },
+    "estimated_universe": 16168
+  },
+  "selection": {
+    "marker": "SPRINT_01_COUNTRY_SELECTION",
+    "track_a_candidate_target": 750,
+    "track_b_candidate_target": 360,
+    "total_planned_candidates": 1110,
+    "expected_net_new_range": "Conservative ~15–40% READY of processed new-status candidates (factory prior ~36% Tier A of Brazil×250); Track B lower absolute volume",
+    "rows": [
+      {
+        "track": "A",
+        "country": "Brazil",
+        "current_hotels": 494,
+        "estimated_universe": 5336,
+        "coverage": 9.3,
+        "candidate_stock": 4842,
+        "sprint_target": 750,
+        "reason": "Largest gap (~4.8k); validated factory; depth/scale track"
+      },
+      {
+        "track": "B",
+        "country": "Turks and Caicos Islands",
+        "current_hotels": 0,
+        "estimated_universe": 57,
+        "coverage": 0,
+        "candidate_stock": 57,
+        "sprint_target": 57,
+        "reason": "ZERO coverage + GIATA Drive overlap + candidate stock"
+      },
+      {
+        "track": "B",
+        "country": "Bonaire",
+        "current_hotels": 0,
+        "estimated_universe": 51,
+        "coverage": 0,
+        "candidate_stock": 51,
+        "sprint_target": 51,
+        "reason": "ZERO coverage + candidate stock + GIATA Drive seed"
+      },
+      {
+        "track": "B",
+        "country": "Martinique",
+        "current_hotels": 0,
+        "estimated_universe": 64,
+        "coverage": 0,
+        "candidate_stock": 64,
+        "sprint_target": 50,
+        "reason": "ZERO coverage with Cvent stock"
+      },
+      {
+        "track": "B",
+        "country": "U.S. Virgin Islands",
+        "current_hotels": 0,
+        "estimated_universe": 51,
+        "coverage": 0,
+        "candidate_stock": 51,
+        "sprint_target": 50,
+        "reason": "ZERO coverage with holds stock"
+      },
+      {
+        "track": "B",
+        "country": "Anguilla",
+        "current_hotels": 0,
+        "estimated_universe": 25,
+        "coverage": 0,
+        "candidate_stock": 25,
+        "sprint_target": 25,
+        "reason": "ZERO coverage; small strategic floor lift"
+      },
+      {
+        "track": "B",
+        "country": "Montserrat",
+        "current_hotels": 0,
+        "estimated_universe": 50,
+        "coverage": 0,
+        "candidate_stock": 50,
+        "sprint_target": 50,
+        "reason": "ZERO coverage with holds"
+      },
+      {
+        "track": "B",
+        "country": "Guadeloupe",
+        "current_hotels": 0,
+        "estimated_universe": 32,
+        "coverage": 0,
+        "candidate_stock": 32,
+        "sprint_target": 32,
+        "reason": "ZERO coverage with stock"
+      },
+      {
+        "track": "B",
+        "country": "Saint Lucia",
+        "current_hotels": 3,
+        "estimated_universe": 48,
+        "coverage": 6.3,
+        "candidate_stock": 48,
+        "sprint_target": 45,
+        "reason": "NEAR-ZERO (6.3%); raise geographic floor"
+      }
+    ]
+  },
+  "track_a": {
+    "country": "Brazil",
+    "offset": 250,
+    "limit": 750,
+    "metrics": {
+      "hotels_before": 5956,
+      "hotels_after_production": 5956,
+      "candidates_processed": 750,
+      "ready_for_import": 257,
+      "review_required": 478,
+      "rejected": 7,
+      "matched_existing": 8,
+      "duplicates_prevented": 8,
+      "duplicate_rate_pct": 1.1,
+      "avg_identity_confidence": 0.903,
+      "avg_processing_ms": 750,
+      "tier_a_pct": 34.3,
+      "tier_b_pct": 63.7,
+      "tier_c_pct": 2,
+      "review_burden_pct": 63.7
+    },
+    "quality_sample": [
+      {
+        "class": "READY_FOR_IMPORT",
+        "name": "hotel panamby",
+        "city": "Guarulhos",
+        "country": "Brazil",
+        "city_method": "cvent_url_venues_slug",
+        "identity_confidence": 0.968,
+        "match_status": "new",
+        "hotel_id": "dhl_06FYQEMXFG8VM2MZ6HJHM2CSWX",
+        "ok_name": true,
+        "ok_country": true,
+        "ok_city": true,
+        "has_dhl": true
+      },
+      {
+        "class": "READY_FOR_IMPORT",
+        "name": "ideal praia hotel",
+        "city": "Fortaleza",
+        "country": "Brazil",
+        "city_method": "cvent_url_venues_slug",
+        "identity_confidence": 0.968,
+        "match_status": "new",
+        "hotel_id": "dhl_06FYQEMYJGCVY2G9W9K2ADAP5P",
+        "ok_name": true,
+        "ok_country": true,
+        "ok_city": true,
+        "has_dhl": true
+      },
+      {
+        "class": "REVIEW_REQUIRED",
+        "name": "wyndham gramado termas resort spa",
+        "city": "Gramado",
+        "country": "Brazil",
+        "city_method": "cvent_url_venues_slug",
+        "identity_confidence": 0.878,
+        "match_status": "new",
+        "hotel_id": "dhl_06FYQEMT0CCYNDRGYSFVQMP6YQ",
+        "ok_name": true,
+        "ok_country": true,
+        "ok_city": true,
+        "has_dhl": true
+      },
+      {
+        "class": "REVIEW_REQUIRED",
+        "name": "solar das lajes",
+        "city": "Ouro Preto",
+        "country": "Brazil",
+        "city_method": "cvent_url_venues_slug",
+        "identity_confidence": 0.803,
+        "match_status": "new",
+        "hotel_id": "dhl_06FYQEMTZ4RRMN7ARQT5MCEEVP",
+        "ok_name": true,
+        "ok_country": true,
+        "ok_city": true,
+        "has_dhl": true
+      },
+      {
+        "class": "MATCHED_EXISTING",
+        "name": "hotel residence",
+        "city": "Jau",
+        "country": "Brazil",
+        "city_method": "cvent_url_venues_slug",
+        "identity_confidence": 0.75,
+        "match_status": "probable",
+        "hotel_id": "dhl_06FYQF3QV4N655R48DE2S4BW18",
+        "ok_name": true,
+        "ok_country": true,
+        "ok_city": true,
+        "has_dhl": true
+      },
+      {
+        "class": "MATCHED_EXISTING",
+        "name": "euro hotel",
+        "city": "Curitiba",
+        "country": "Brazil",
+        "city_method": "cvent_url_venues_slug",
+        "identity_confidence": 1,
+        "match_status": "probable",
+        "hotel_id": "dhl_06FYQF8BF83SFBJQ3YR7F2E1P1",
+        "ok_name": true,
+        "ok_country": true,
+        "ok_city": true,
+        "has_dhl": true
+      },
+      {
+        "class": "REJECTED",
+        "name": "eco cataratas resort by san juan",
+        "city": "Foz do Iguacu",
+        "country": "Brazil",
+        "city_method": "cvent_url_name_conflict",
+        "identity_confidence": 0.663,
+        "match_status": "new",
+        "hotel_id": "dhl_06FYQEY3K0TANQ4NAERHAQ3VDJ",
+        "ok_name": true,
+        "ok_country": true,
+        "ok_city": true,
+        "has_dhl": true
+      },
+      {
+        "class": "REJECTED",
+        "name": "mercure belem",
+        "city": "Belém",
+        "country": "Brazil",
+        "city_method": "cvent_url_and_name_agree",
+        "identity_confidence": 0.65,
+        "match_status": "ambiguous",
+        "hotel_id": null,
+        "ok_name": true,
+        "ok_country": true,
+        "ok_city": true,
+        "has_dhl": false
+      }
+    ]
+  },
+  "track_b": [
+    {
+      "country": "Turks and Caicos Islands",
+      "current_census": 0,
+      "estimated_universe": 57,
+      "starting_coverage": 0,
+      "raw_candidates": 57,
+      "existing": 0,
+      "new_high_confidence": 0,
+      "review": 57,
+      "duplicate": 0,
+      "rejected": 0,
+      "projected_net_new": 0,
+      "projected_census": 0,
+      "projected_coverage": 0,
+      "coverage_status_before": "CRITICAL",
+      "coverage_status_after": "CRITICAL"
+    },
+    {
+      "country": "Bonaire",
+      "current_census": 0,
+      "estimated_universe": 51,
+      "starting_coverage": 0,
+      "raw_candidates": 51,
+      "existing": 3,
+      "new_high_confidence": 0,
+      "review": 48,
+      "duplicate": 3,
+      "rejected": 0,
+      "projected_net_new": 0,
+      "projected_census": 0,
+      "projected_coverage": 0,
+      "coverage_status_before": "CRITICAL",
+      "coverage_status_after": "CRITICAL"
+    },
+    {
+      "country": "Martinique",
+      "current_census": 0,
+      "estimated_universe": 64,
+      "starting_coverage": 0,
+      "raw_candidates": 50,
+      "existing": 1,
+      "new_high_confidence": 0,
+      "review": 49,
+      "duplicate": 1,
+      "rejected": 0,
+      "projected_net_new": 0,
+      "projected_census": 0,
+      "projected_coverage": 0,
+      "coverage_status_before": "CRITICAL",
+      "coverage_status_after": "CRITICAL"
+    },
+    {
+      "country": "U.S. Virgin Islands",
+      "current_census": 0,
+      "estimated_universe": 51,
+      "starting_coverage": 0,
+      "raw_candidates": 50,
+      "existing": 0,
+      "new_high_confidence": 0,
+      "review": 50,
+      "duplicate": 0,
+      "rejected": 0,
+      "projected_net_new": 0,
+      "projected_census": 0,
+      "projected_coverage": 0,
+      "coverage_status_before": "CRITICAL",
+      "coverage_status_after": "CRITICAL"
+    },
+    {
+      "country": "Anguilla",
+      "current_census": 0,
+      "estimated_universe": 25,
+      "starting_coverage": 0,
+      "raw_candidates": 25,
+      "existing": 0,
+      "new_high_confidence": 0,
+      "review": 25,
+      "duplicate": 0,
+      "rejected": 0,
+      "projected_net_new": 0,
+      "projected_census": 0,
+      "projected_coverage": 0,
+      "coverage_status_before": "CRITICAL",
+      "coverage_status_after": "CRITICAL"
+    },
+    {
+      "country": "Montserrat",
+      "current_census": 0,
+      "estimated_universe": 50,
+      "starting_coverage": 0,
+      "raw_candidates": 50,
+      "existing": 0,
+      "new_high_confidence": 0,
+      "review": 50,
+      "duplicate": 0,
+      "rejected": 0,
+      "projected_net_new": 0,
+      "projected_census": 0,
+      "projected_coverage": 0,
+      "coverage_status_before": "CRITICAL",
+      "coverage_status_after": "CRITICAL"
+    },
+    {
+      "country": "Guadeloupe",
+      "current_census": 0,
+      "estimated_universe": 32,
+      "starting_coverage": 0,
+      "raw_candidates": 32,
+      "existing": 1,
+      "new_high_confidence": 0,
+      "review": 31,
+      "duplicate": 1,
+      "rejected": 0,
+      "projected_net_new": 0,
+      "projected_census": 0,
+      "projected_coverage": 0,
+      "coverage_status_before": "CRITICAL",
+      "coverage_status_after": "CRITICAL"
+    },
+    {
+      "country": "Saint Lucia",
+      "current_census": 0,
+      "estimated_universe": 48,
+      "starting_coverage": 0,
+      "raw_candidates": 45,
+      "existing": 1,
+      "new_high_confidence": 0,
+      "review": 44,
+      "duplicate": 1,
+      "rejected": 0,
+      "projected_net_new": 0,
+      "projected_census": 0,
+      "projected_coverage": 0,
+      "coverage_status_before": "CRITICAL",
+      "coverage_status_after": "CRITICAL"
+    }
+  ],
+  "identity": {
+    "existing": 14,
+    "new_high_confidence": 257,
+    "review": 832,
+    "ambiguous": 2,
+    "duplicates": 14,
+    "rejected": 7
+  },
+  "efficiency": {
+    "raw_candidates_processed": 1110,
+    "net_new_ready_candidates": 257,
+    "net_new_yield_pct": 23.2,
+    "duplicates_prevented": 14,
+    "review_rate_pct": 75,
+    "giata_drive": {
+      "index_calls": 3,
+      "detail_calls": 5,
+      "corroborated": 5,
+      "skipped": false
+    },
+    "serpapi_calls": 0,
+    "hbx_calls": 0,
+    "other_external_calls": 0,
+    "net_new_ready_per_external_api_call": 32.13,
+    "note": "Sprint primarily reused existing Cvent/hold inventory — SerpApi/HBX not required"
+  },
+  "geographic": {
+    "ZERO_COVERAGE_COUNTRIES_BEFORE": 18,
+    "ZERO_COVERAGE_COUNTRIES_AFTER_IF_READY_IMPORTED": 18,
+    "lt20_before": 38,
+    "lt20_projected_after": 34,
+    "lt50_before": 47,
+    "lt50_projected_after": 43,
+    "COUNTRIES_MOVED_ABOVE_20_PERCENT": [],
+    "COUNTRIES_MOVED_ABOVE_50_PERCENT": [],
+    "brazil_coverage_before": 9.3,
+    "brazil_coverage_projected": 14.1,
+    "note": "Track B produced REVIEW only (0 READY) — zero-country count unchanged by READY import projection. 360 Track B hotels staged for review."
+  },
+  "progress_15k": {
+    "LIVE": 5956,
+    "READY_STAGED_THIS_SPRINT": 257,
+    "PRIOR_READY_CUMULATIVE": 91,
+    "MERGED_READY_QUEUE": 348,
+    "PROJECTED_AFTER_IMPORT_THIS_SPRINT_ONLY": 6213,
+    "PROJECTED_AFTER_IMPORT_MERGED_READY": 6304,
+    "Remaining_to_10K": 3787,
+    "Remaining_to_12_5K": 6287,
+    "Remaining_to_15K": 8787
+  },
+  "factory_projection": {
+    "assumptions": {
+      "batch_size": 750,
+      "observed_ready_yield_pct": 23.2,
+      "remaining_brazil_hold_stock": 3842,
+      "note": "Projection uses Sprint 01 ready yield; review queue excluded from 'validated' path"
+    },
+    "similar_batches_to_10k": 22,
+    "similar_batches_to_12_5k": 37,
+    "similar_batches_to_15k": 51
+  },
+  "sprint_02_recommendation": {
+    "TRACK_A": {
+      "Country": "Brazil",
+      "Target": 1000,
+      "Reason": "Still largest gap; remaining holds≈3842; continue offset 1000"
+    },
+    "TRACK_B": {
+      "Countries": [
+        "Bahamas",
+        "Dominica",
+        "Saint Barthélemy",
+        "Paraguay",
+        "Belize"
+      ],
+      "Targets": [
+        80,
+        23,
+        50,
+        80,
+        100
+      ],
+      "Reason": "Continue zero/near-zero floor; Belize/Bahamas add depth among under-covered"
+    },
+    "Expected_candidates": 1333,
+    "Expected_net_new": 309,
+    "Expected_geographic_improvement": "Further reduce zero-coverage Caribbean/South America pockets; Brazil depth toward 10k"
+  },
+  "verdict": "REVIEW_AMBIGUOUS_BATCH_FIRST",
+  "provider_usage": {
+    "GIATA_Drive_calls": 8,
+    "SerpApi_calls": 0,
+    "HBX_calls": 0,
+    "Other_calls": 0,
+    "giata_detail": {
+      "index_calls": 3,
+      "detail_calls": 5,
+      "corroborated": 5,
+      "skipped": false
+    }
+  },
+  "coverage_dashboard_refresh": {
+    "live": {
+      "current_census": 5956,
+      "estimated_cala_universe": 16168,
+      "overall_coverage_pct": 36.8,
+      "hotels_missing": 10212,
+      "countries_total": 52,
+      "countries_excellent": 2,
+      "countries_good": 0,
+      "countries_fair": 3,
+      "countries_poor": 5,
+      "countries_critical": 38,
+      "countries_unknown": 4,
+      "countries_complete": 2,
+      "review_queue": 988,
+      "discovery_queue": 10212,
+      "ready_for_import_queue": 348
+    },
+    "projected_if_sprint_ready_imported": {
+      "current_census": 6213,
+      "overall_coverage_pct": 38.4,
+      "hotels_missing": 9955,
+      "ready_for_import_queue": 348,
+      "review_queue": 988
+    }
+  },
+  "exceptions": [
+    "Track B: 360/360 new candidates landed REVIEW_REQUIRED (Tier B ~0.83–0.88 confidence) — city slug inference present but below Tier A 0.90 bar; no READY geographic floor lift yet",
+    "Sprint script briefly wrote a bad projected dashboard; live dashboard regenerated via official npm script",
+    "SerpApi not used (existing Cvent stock sufficient for identity staging)"
+  ]
+}

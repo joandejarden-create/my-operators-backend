@@ -34,7 +34,12 @@ export async function getMarketingLandingEventsSession(req, res) {
     setReportNoStore(res);
     const window = buildReportWindow(req.query?.days);
     const filters = parseReportFilters(req.query);
-    const loaded = loadLandingEvents(loadOptionsForWindow(window));
+    const excludeInternal =
+      String(req.query?.excludeInternal || "").trim() === "1";
+    const loaded = loadLandingEvents({
+      ...loadOptionsForWindow(window),
+      excludeInternal,
+    });
     const { events } = applyLandingReportFilters(loaded, filters);
     const timeline = getSessionTimeline(events, sessionId);
 

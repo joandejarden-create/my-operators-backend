@@ -1,0 +1,976 @@
+{
+  "run_type": "webhound_source_discovery_learning",
+  "generated_at": "2026-08-05T23:38:31.551Z",
+  "production_writes": false,
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "old_census_used": false,
+  "webhound_session": {
+    "id": "485549eb-4541-44fd-86dd-5c7919b839b0",
+    "url": "https://webhound.ai/session/485549eb-4541-44fd-86dd-5c7919b839b0",
+    "budget_usd": 5,
+    "cost_usd": 5,
+    "completion_reason": "budget_complete",
+    "sources": 37,
+    "claims": 34
+  },
+  "code_probe_path": "reports/research-engine-v2/webhound-cala-source-discovery-code-probe.json",
+  "parent_company_results": [
+    {
+      "parent_company": "Marriott",
+      "country": "Mexico",
+      "brands_sampled": [
+        "W Hotels",
+        "EDITION"
+      ],
+      "official_discovery_sources": [
+        "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+        "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview"
+      ],
+      "property_id_patterns": [
+        "/hotels/([A-Za-z0-9]{5})-",
+        "MARSHA5"
+      ],
+      "fields_available": {
+        "property_name": "listing+overview",
+        "brand": "listing_heading",
+        "city": "overview_address",
+        "country": "sitemap_url+overview",
+        "address": "overview_html",
+        "coordinates": "hqv_only_not_html",
+        "description": "overview_html",
+        "amenities": "overview_html",
+        "rooms_keys": "room_types_not_keys"
+      },
+      "fetch_status": "ok_sitemap_html",
+      "blocked_reasons": [
+        "overview_coords_absent_from_html",
+        "hqv_akamai_signature_required_for_coords"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire marriott-brand-directory-extract / marriott-mexico-discovery into Autopilot source_discovery for all CALA country slugs",
+        "Do not block discovery on HQV; geocode or HQV is enrichment-only"
+      ],
+      "code_probe_hotel_count": 301,
+      "webhound_notes": "Webhound confirmed country sitemap pattern; undercounted Mexico vs code probe"
+    },
+    {
+      "parent_company": "Marriott",
+      "country": "Dominican Republic",
+      "brands_sampled": [
+        "JW Marriott",
+        "Luxury Collection"
+      ],
+      "official_discovery_sources": [
+        "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+        "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview"
+      ],
+      "property_id_patterns": [
+        "/hotels/([A-Za-z0-9]{5})-",
+        "MARSHA5"
+      ],
+      "fields_available": {
+        "property_name": "listing+overview",
+        "brand": "listing_heading",
+        "city": "overview_address",
+        "country": "sitemap_url+overview",
+        "address": "overview_html",
+        "coordinates": "hqv_only_not_html",
+        "description": "overview_html",
+        "amenities": "overview_html",
+        "rooms_keys": "room_types_not_keys"
+      },
+      "fetch_status": "ok_sitemap_html",
+      "blocked_reasons": [
+        "overview_coords_absent_from_html",
+        "hqv_akamai_signature_required_for_coords"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire marriott-brand-directory-extract / marriott-mexico-discovery into Autopilot source_discovery for all CALA country slugs",
+        "Do not block discovery on HQV; geocode or HQV is enrichment-only"
+      ],
+      "code_probe_hotel_count": 25,
+      "webhound_notes": "Webhound confirmed country sitemap pattern; undercounted Mexico vs code probe"
+    },
+    {
+      "parent_company": "Marriott",
+      "country": "Costa Rica",
+      "brands_sampled": [
+        "JW Marriott",
+        "Luxury Collection"
+      ],
+      "official_discovery_sources": [
+        "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+        "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview"
+      ],
+      "property_id_patterns": [
+        "/hotels/([A-Za-z0-9]{5})-",
+        "MARSHA5"
+      ],
+      "fields_available": {
+        "property_name": "listing+overview",
+        "brand": "listing_heading",
+        "city": "overview_address",
+        "country": "sitemap_url+overview",
+        "address": "overview_html",
+        "coordinates": "hqv_only_not_html",
+        "description": "overview_html",
+        "amenities": "overview_html",
+        "rooms_keys": "room_types_not_keys"
+      },
+      "fetch_status": "ok_sitemap_html",
+      "blocked_reasons": [
+        "overview_coords_absent_from_html",
+        "hqv_akamai_signature_required_for_coords"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire marriott-brand-directory-extract / marriott-mexico-discovery into Autopilot source_discovery for all CALA country slugs",
+        "Do not block discovery on HQV; geocode or HQV is enrichment-only"
+      ],
+      "code_probe_hotel_count": 25,
+      "webhound_notes": "Webhound confirmed country sitemap pattern; undercounted Mexico vs code probe"
+    },
+    {
+      "parent_company": "Marriott",
+      "country": "Colombia",
+      "brands_sampled": [
+        "JW Marriott",
+        "Luxury Collection"
+      ],
+      "official_discovery_sources": [
+        "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+        "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview"
+      ],
+      "property_id_patterns": [
+        "/hotels/([A-Za-z0-9]{5})-",
+        "MARSHA5"
+      ],
+      "fields_available": {
+        "property_name": "listing+overview",
+        "brand": "listing_heading",
+        "city": "overview_address",
+        "country": "sitemap_url+overview",
+        "address": "overview_html",
+        "coordinates": "hqv_only_not_html",
+        "description": "overview_html",
+        "amenities": "overview_html",
+        "rooms_keys": "room_types_not_keys"
+      },
+      "fetch_status": "ok_sitemap_html",
+      "blocked_reasons": [
+        "overview_coords_absent_from_html",
+        "hqv_akamai_signature_required_for_coords"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire marriott-brand-directory-extract / marriott-mexico-discovery into Autopilot source_discovery for all CALA country slugs",
+        "Do not block discovery on HQV; geocode or HQV is enrichment-only"
+      ],
+      "code_probe_hotel_count": 30,
+      "webhound_notes": "Webhound confirmed country sitemap pattern; undercounted Mexico vs code probe"
+    },
+    {
+      "parent_company": "Marriott",
+      "country": "Panama",
+      "brands_sampled": [
+        "JW Marriott",
+        "Luxury Collection"
+      ],
+      "official_discovery_sources": [
+        "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+        "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview"
+      ],
+      "property_id_patterns": [
+        "/hotels/([A-Za-z0-9]{5})-",
+        "MARSHA5"
+      ],
+      "fields_available": {
+        "property_name": "listing+overview",
+        "brand": "listing_heading",
+        "city": "overview_address",
+        "country": "sitemap_url+overview",
+        "address": "overview_html",
+        "coordinates": "hqv_only_not_html",
+        "description": "overview_html",
+        "amenities": "overview_html",
+        "rooms_keys": "room_types_not_keys"
+      },
+      "fetch_status": "ok_sitemap_html",
+      "blocked_reasons": [
+        "overview_coords_absent_from_html",
+        "hqv_akamai_signature_required_for_coords"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire marriott-brand-directory-extract / marriott-mexico-discovery into Autopilot source_discovery for all CALA country slugs",
+        "Do not block discovery on HQV; geocode or HQV is enrichment-only"
+      ],
+      "code_probe_hotel_count": 17,
+      "webhound_notes": "Webhound confirmed country sitemap pattern; undercounted Mexico vs code probe"
+    },
+    {
+      "parent_company": "IHG",
+      "country": "Mexico",
+      "brands_sampled": [
+        "InterContinental",
+        "Holiday Inn"
+      ],
+      "official_discovery_sources": [
+        "https://www.ihg.com/destinations/us/en/mexico-hotels",
+        "https://www.ihg.com/bin/sitemapindex.xml",
+        "per-brand /bin/sitemap.{brand}.{lang}.hoteldetail.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.ihg.com/{brand}/hotels/{lang}/{city}/{CODE}/hoteldetail"
+      ],
+      "property_id_patterns": [
+        "/([A-Za-z0-9]{4,6})/hoteldetail",
+        "Holidex/hotel code"
+      ],
+      "fields_available": {
+        "property_name": "destination+hoteldetail",
+        "brand": "url_path",
+        "city": "destination_card",
+        "country": "destination_page",
+        "address": "destination_card",
+        "coordinates": "absent_html_geocode",
+        "description": "hoteldetail",
+        "amenities": "destination_badges+hoteldetail",
+        "rooms_keys": "room_names_not_keys"
+      },
+      "fetch_status": "ok_destination_and_sitemap",
+      "blocked_reasons": [
+        "coords_absent_from_html"
+      ],
+      "recommended_adapter": "adapter_ready_extractor_exists_not_wired",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire lib/ihg-brand-directory-extract.js + reports/ihg-cala-directory-extract.json into Autopilot source_discovery",
+        "Filter destination/sitemap rows by CALA country"
+      ]
+    },
+    {
+      "parent_company": "IHG",
+      "country": "Dominican Republic",
+      "brands_sampled": [
+        "InterContinental",
+        "Holiday Inn"
+      ],
+      "official_discovery_sources": [
+        "https://www.ihg.com/destinations/us/en/dominican-republic-hotels",
+        "https://www.ihg.com/bin/sitemapindex.xml",
+        "per-brand /bin/sitemap.{brand}.{lang}.hoteldetail.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.ihg.com/{brand}/hotels/{lang}/{city}/{CODE}/hoteldetail"
+      ],
+      "property_id_patterns": [
+        "/([A-Za-z0-9]{4,6})/hoteldetail",
+        "Holidex/hotel code"
+      ],
+      "fields_available": {
+        "property_name": "destination+hoteldetail",
+        "brand": "url_path",
+        "city": "destination_card",
+        "country": "destination_page",
+        "address": "destination_card",
+        "coordinates": "absent_html_geocode",
+        "description": "hoteldetail",
+        "amenities": "destination_badges+hoteldetail",
+        "rooms_keys": "room_names_not_keys"
+      },
+      "fetch_status": "ok_destination_and_sitemap",
+      "blocked_reasons": [
+        "coords_absent_from_html"
+      ],
+      "recommended_adapter": "adapter_ready_extractor_exists_not_wired",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire lib/ihg-brand-directory-extract.js + reports/ihg-cala-directory-extract.json into Autopilot source_discovery",
+        "Filter destination/sitemap rows by CALA country"
+      ]
+    },
+    {
+      "parent_company": "IHG",
+      "country": "Costa Rica",
+      "brands_sampled": [
+        "InterContinental",
+        "Holiday Inn"
+      ],
+      "official_discovery_sources": [
+        "https://www.ihg.com/destinations/us/en/costa-rica-hotels",
+        "https://www.ihg.com/bin/sitemapindex.xml",
+        "per-brand /bin/sitemap.{brand}.{lang}.hoteldetail.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.ihg.com/{brand}/hotels/{lang}/{city}/{CODE}/hoteldetail"
+      ],
+      "property_id_patterns": [
+        "/([A-Za-z0-9]{4,6})/hoteldetail",
+        "Holidex/hotel code"
+      ],
+      "fields_available": {
+        "property_name": "destination+hoteldetail",
+        "brand": "url_path",
+        "city": "destination_card",
+        "country": "destination_page",
+        "address": "destination_card",
+        "coordinates": "absent_html_geocode",
+        "description": "hoteldetail",
+        "amenities": "destination_badges+hoteldetail",
+        "rooms_keys": "room_names_not_keys"
+      },
+      "fetch_status": "ok_destination_and_sitemap",
+      "blocked_reasons": [
+        "coords_absent_from_html"
+      ],
+      "recommended_adapter": "adapter_ready_extractor_exists_not_wired",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire lib/ihg-brand-directory-extract.js + reports/ihg-cala-directory-extract.json into Autopilot source_discovery",
+        "Filter destination/sitemap rows by CALA country"
+      ]
+    },
+    {
+      "parent_company": "IHG",
+      "country": "Colombia",
+      "brands_sampled": [
+        "InterContinental",
+        "Holiday Inn"
+      ],
+      "official_discovery_sources": [
+        "https://www.ihg.com/destinations/us/en/colombia-hotels",
+        "https://www.ihg.com/bin/sitemapindex.xml",
+        "per-brand /bin/sitemap.{brand}.{lang}.hoteldetail.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.ihg.com/{brand}/hotels/{lang}/{city}/{CODE}/hoteldetail"
+      ],
+      "property_id_patterns": [
+        "/([A-Za-z0-9]{4,6})/hoteldetail",
+        "Holidex/hotel code"
+      ],
+      "fields_available": {
+        "property_name": "destination+hoteldetail",
+        "brand": "url_path",
+        "city": "destination_card",
+        "country": "destination_page",
+        "address": "destination_card",
+        "coordinates": "absent_html_geocode",
+        "description": "hoteldetail",
+        "amenities": "destination_badges+hoteldetail",
+        "rooms_keys": "room_names_not_keys"
+      },
+      "fetch_status": "ok_destination_and_sitemap",
+      "blocked_reasons": [
+        "coords_absent_from_html"
+      ],
+      "recommended_adapter": "adapter_ready_extractor_exists_not_wired",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire lib/ihg-brand-directory-extract.js + reports/ihg-cala-directory-extract.json into Autopilot source_discovery",
+        "Filter destination/sitemap rows by CALA country"
+      ]
+    },
+    {
+      "parent_company": "IHG",
+      "country": "Panama",
+      "brands_sampled": [
+        "InterContinental",
+        "Holiday Inn"
+      ],
+      "official_discovery_sources": [
+        "https://www.ihg.com/destinations/us/en/panama-hotels",
+        "https://www.ihg.com/bin/sitemapindex.xml",
+        "per-brand /bin/sitemap.{brand}.{lang}.hoteldetail.xml"
+      ],
+      "property_url_patterns": [
+        "https://www.ihg.com/{brand}/hotels/{lang}/{city}/{CODE}/hoteldetail"
+      ],
+      "property_id_patterns": [
+        "/([A-Za-z0-9]{4,6})/hoteldetail",
+        "Holidex/hotel code"
+      ],
+      "fields_available": {
+        "property_name": "destination+hoteldetail",
+        "brand": "url_path",
+        "city": "destination_card",
+        "country": "destination_page",
+        "address": "destination_card",
+        "coordinates": "absent_html_geocode",
+        "description": "hoteldetail",
+        "amenities": "destination_badges+hoteldetail",
+        "rooms_keys": "room_names_not_keys"
+      },
+      "fetch_status": "ok_destination_and_sitemap",
+      "blocked_reasons": [
+        "coords_absent_from_html"
+      ],
+      "recommended_adapter": "adapter_ready_extractor_exists_not_wired",
+      "confidence": "high",
+      "code_tasks": [
+        "Wire lib/ihg-brand-directory-extract.js + reports/ihg-cala-directory-extract.json into Autopilot source_discovery",
+        "Filter destination/sitemap rows by CALA country"
+      ]
+    },
+    {
+      "parent_company": "Hilton",
+      "country": "Mexico",
+      "brands_sampled": [
+        "Hilton",
+        "Hampton"
+      ],
+      "official_discovery_sources": [
+        "https://www.hilton.com/en/locations/mexico/",
+        "https://www.hilton.com/sitemap.xml → property/location XML chain"
+      ],
+      "property_url_patterns": [
+        "https://www.hilton.com/en/hotels/{CTYHOCN7}-{slug}/",
+        "locations/{country}/{brand}/"
+      ],
+      "property_id_patterns": [
+        "ctyhocn",
+        "/hotels/([A-Za-z0-9]{7})-"
+      ],
+      "fields_available": {
+        "property_name": "locations_page",
+        "brand": "brand_slug_or_code_suffix",
+        "city": "card_or_address",
+        "country": "locations_url",
+        "address": "card_maps_link",
+        "coordinates": "maps_link_or_geocode",
+        "description": "property_page",
+        "amenities": "card_badges+property",
+        "rooms_keys": "optional_property"
+      },
+      "fetch_status": "ok_wired_in_autopilot",
+      "blocked_reasons": [],
+      "recommended_adapter": "adapter_ready",
+      "confidence": "high",
+      "code_tasks": [
+        "Keep Mexico Hilton locations adapter; reuse for other CALA country slugs"
+      ]
+    },
+    {
+      "parent_company": "Hilton",
+      "country": "Dominican Republic",
+      "brands_sampled": [
+        "Hampton",
+        "Embassy Suites"
+      ],
+      "official_discovery_sources": [
+        "https://www.hilton.com/en/locations/dominican-republic/",
+        "https://www.hilton.com/sitemap.xml → property/location XML chain"
+      ],
+      "property_url_patterns": [
+        "https://www.hilton.com/en/hotels/{CTYHOCN7}-{slug}/",
+        "locations/{country}/{brand}/"
+      ],
+      "property_id_patterns": [
+        "ctyhocn",
+        "/hotels/([A-Za-z0-9]{7})-"
+      ],
+      "fields_available": {
+        "property_name": "locations_page",
+        "brand": "brand_slug_or_code_suffix",
+        "city": "card_or_address",
+        "country": "locations_url",
+        "address": "card_maps_link",
+        "coordinates": "maps_link_or_geocode",
+        "description": "property_page",
+        "amenities": "card_badges+property",
+        "rooms_keys": "optional_property"
+      },
+      "fetch_status": "ok_locations_page_not_wired",
+      "blocked_reasons": [
+        "autopilot_hardcoded_mexico_only"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Generalize ensureHiltonMexicoDirectoryCache → country-parameterized locations/{slug}/",
+        "Reuse hilton-brand-directory-extract extractHotelsFromPageData"
+      ]
+    },
+    {
+      "parent_company": "Hilton",
+      "country": "Costa Rica",
+      "brands_sampled": [
+        "Hampton",
+        "Embassy Suites"
+      ],
+      "official_discovery_sources": [
+        "https://www.hilton.com/en/locations/costa-rica/",
+        "https://www.hilton.com/sitemap.xml → property/location XML chain"
+      ],
+      "property_url_patterns": [
+        "https://www.hilton.com/en/hotels/{CTYHOCN7}-{slug}/",
+        "locations/{country}/{brand}/"
+      ],
+      "property_id_patterns": [
+        "ctyhocn",
+        "/hotels/([A-Za-z0-9]{7})-"
+      ],
+      "fields_available": {
+        "property_name": "locations_page",
+        "brand": "brand_slug_or_code_suffix",
+        "city": "card_or_address",
+        "country": "locations_url",
+        "address": "card_maps_link",
+        "coordinates": "maps_link_or_geocode",
+        "description": "property_page",
+        "amenities": "card_badges+property",
+        "rooms_keys": "optional_property"
+      },
+      "fetch_status": "ok_locations_page_not_wired",
+      "blocked_reasons": [
+        "autopilot_hardcoded_mexico_only"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Generalize ensureHiltonMexicoDirectoryCache → country-parameterized locations/{slug}/",
+        "Reuse hilton-brand-directory-extract extractHotelsFromPageData"
+      ]
+    },
+    {
+      "parent_company": "Hilton",
+      "country": "Colombia",
+      "brands_sampled": [
+        "Hampton",
+        "Embassy Suites"
+      ],
+      "official_discovery_sources": [
+        "https://www.hilton.com/en/locations/colombia/",
+        "https://www.hilton.com/sitemap.xml → property/location XML chain"
+      ],
+      "property_url_patterns": [
+        "https://www.hilton.com/en/hotels/{CTYHOCN7}-{slug}/",
+        "locations/{country}/{brand}/"
+      ],
+      "property_id_patterns": [
+        "ctyhocn",
+        "/hotels/([A-Za-z0-9]{7})-"
+      ],
+      "fields_available": {
+        "property_name": "locations_page",
+        "brand": "brand_slug_or_code_suffix",
+        "city": "card_or_address",
+        "country": "locations_url",
+        "address": "card_maps_link",
+        "coordinates": "maps_link_or_geocode",
+        "description": "property_page",
+        "amenities": "card_badges+property",
+        "rooms_keys": "optional_property"
+      },
+      "fetch_status": "ok_locations_page_not_wired",
+      "blocked_reasons": [
+        "autopilot_hardcoded_mexico_only"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Generalize ensureHiltonMexicoDirectoryCache → country-parameterized locations/{slug}/",
+        "Reuse hilton-brand-directory-extract extractHotelsFromPageData"
+      ]
+    },
+    {
+      "parent_company": "Hilton",
+      "country": "Panama",
+      "brands_sampled": [
+        "Hampton",
+        "Embassy Suites"
+      ],
+      "official_discovery_sources": [
+        "https://www.hilton.com/en/locations/panama/",
+        "https://www.hilton.com/sitemap.xml → property/location XML chain"
+      ],
+      "property_url_patterns": [
+        "https://www.hilton.com/en/hotels/{CTYHOCN7}-{slug}/",
+        "locations/{country}/{brand}/"
+      ],
+      "property_id_patterns": [
+        "ctyhocn",
+        "/hotels/([A-Za-z0-9]{7})-"
+      ],
+      "fields_available": {
+        "property_name": "locations_page",
+        "brand": "brand_slug_or_code_suffix",
+        "city": "card_or_address",
+        "country": "locations_url",
+        "address": "card_maps_link",
+        "coordinates": "maps_link_or_geocode",
+        "description": "property_page",
+        "amenities": "card_badges+property",
+        "rooms_keys": "optional_property"
+      },
+      "fetch_status": "ok_locations_page_not_wired",
+      "blocked_reasons": [
+        "autopilot_hardcoded_mexico_only"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_tasks": [
+        "Generalize ensureHiltonMexicoDirectoryCache → country-parameterized locations/{slug}/",
+        "Reuse hilton-brand-directory-extract extractHotelsFromPageData"
+      ]
+    },
+    {
+      "parent_company": "Choice",
+      "country": "Mexico",
+      "brands_sampled": [
+        "Radisson",
+        "Sleep Inn / Ascend"
+      ],
+      "official_discovery_sources": [
+        "https://www.choicehotels.com/en-uk/mexico/regional-hotels",
+        "https://www.choicehotels.com/sitemapindex.xml → propertysitemap.xml.gz"
+      ],
+      "property_url_patterns": [
+        "/{country}/{city}/{brand}/{hotelCode}",
+        "en-uk regional-hotels JSON-LD"
+      ],
+      "property_id_patterns": [
+        "[A-Z]{2}\\d{3}",
+        "MX/DO/CR/CB/PN prefixes"
+      ],
+      "fields_available": {
+        "property_name": "regional_jsonld",
+        "brand": "jsonld_or_card",
+        "city": "regional",
+        "country": "regional_url",
+        "address": "property_page",
+        "coordinates": "static_maps_url_on_property",
+        "description": "property_page",
+        "amenities": "property_page",
+        "rooms_keys": "rare"
+      },
+      "fetch_status": "ok_wired_in_autopilot",
+      "blocked_reasons": [],
+      "recommended_adapter": "adapter_ready",
+      "confidence": "high",
+      "code_probe": {
+        "ld_hotel_markers": 50,
+        "sample_ids": [
+          "MX068",
+          "MX067",
+          "MX061",
+          "MX185",
+          "MX063",
+          "MX184",
+          "MX228",
+          "MX106"
+        ]
+      },
+      "code_tasks": [
+        "Keep Choice Mexico regional; buildChoiceRegionalPageForCountry already supports CALA"
+      ]
+    },
+    {
+      "parent_company": "Choice",
+      "country": "Dominican Republic",
+      "brands_sampled": [
+        "Radisson",
+        "Sleep Inn / Ascend"
+      ],
+      "official_discovery_sources": [
+        "https://www.choicehotels.com/en-uk/dominican-republic/regional-hotels",
+        "https://www.choicehotels.com/sitemapindex.xml → propertysitemap.xml.gz"
+      ],
+      "property_url_patterns": [
+        "/{country}/{city}/{brand}/{hotelCode}",
+        "en-uk regional-hotels JSON-LD"
+      ],
+      "property_id_patterns": [
+        "[A-Z]{2}\\d{3}",
+        "MX/DO/CR/CB/PN prefixes"
+      ],
+      "fields_available": {
+        "property_name": "regional_jsonld",
+        "brand": "jsonld_or_card",
+        "city": "regional",
+        "country": "regional_url",
+        "address": "property_page",
+        "coordinates": "static_maps_url_on_property",
+        "description": "property_page",
+        "amenities": "property_page",
+        "rooms_keys": "rare"
+      },
+      "fetch_status": "ok_regional_not_wired",
+      "blocked_reasons": [
+        "autopilot_hardcoded_mexico_only"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_probe": {
+        "ld_hotel_markers": 3,
+        "sample_ids": [
+          "DO012",
+          "DO013",
+          "DO003"
+        ]
+      },
+      "code_tasks": [
+        "Wire buildChoiceCalaRegionalPages / choice-regional-directory-extract into Autopilot for non-Mexico CALA"
+      ]
+    },
+    {
+      "parent_company": "Choice",
+      "country": "Costa Rica",
+      "brands_sampled": [
+        "Radisson",
+        "Sleep Inn / Ascend"
+      ],
+      "official_discovery_sources": [
+        "https://www.choicehotels.com/en-uk/costa-rica/regional-hotels",
+        "https://www.choicehotels.com/sitemapindex.xml → propertysitemap.xml.gz"
+      ],
+      "property_url_patterns": [
+        "/{country}/{city}/{brand}/{hotelCode}",
+        "en-uk regional-hotels JSON-LD"
+      ],
+      "property_id_patterns": [
+        "[A-Z]{2}\\d{3}",
+        "MX/DO/CR/CB/PN prefixes"
+      ],
+      "fields_available": {
+        "property_name": "regional_jsonld",
+        "brand": "jsonld_or_card",
+        "city": "regional",
+        "country": "regional_url",
+        "address": "property_page",
+        "coordinates": "static_maps_url_on_property",
+        "description": "property_page",
+        "amenities": "property_page",
+        "rooms_keys": "rare"
+      },
+      "fetch_status": "ok_regional_not_wired",
+      "blocked_reasons": [
+        "autopilot_hardcoded_mexico_only"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_probe": {
+        "ld_hotel_markers": 3,
+        "sample_ids": [
+          "CR025",
+          "CR013",
+          "CR022"
+        ]
+      },
+      "code_tasks": [
+        "Wire buildChoiceCalaRegionalPages / choice-regional-directory-extract into Autopilot for non-Mexico CALA"
+      ]
+    },
+    {
+      "parent_company": "Choice",
+      "country": "Colombia",
+      "brands_sampled": [
+        "Radisson",
+        "Sleep Inn / Ascend"
+      ],
+      "official_discovery_sources": [
+        "https://www.choicehotels.com/en-uk/colombia/regional-hotels",
+        "https://www.choicehotels.com/sitemapindex.xml → propertysitemap.xml.gz"
+      ],
+      "property_url_patterns": [
+        "/{country}/{city}/{brand}/{hotelCode}",
+        "en-uk regional-hotels JSON-LD"
+      ],
+      "property_id_patterns": [
+        "[A-Z]{2}\\d{3}",
+        "MX/DO/CR/CB/PN prefixes"
+      ],
+      "fields_available": {
+        "property_name": "regional_jsonld",
+        "brand": "jsonld_or_card",
+        "city": "regional",
+        "country": "regional_url",
+        "address": "property_page",
+        "coordinates": "static_maps_url_on_property",
+        "description": "property_page",
+        "amenities": "property_page",
+        "rooms_keys": "rare"
+      },
+      "fetch_status": "ok_regional_not_wired",
+      "blocked_reasons": [
+        "autopilot_hardcoded_mexico_only"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_probe": {
+        "ld_hotel_markers": 15,
+        "sample_ids": []
+      },
+      "code_tasks": [
+        "Wire buildChoiceCalaRegionalPages / choice-regional-directory-extract into Autopilot for non-Mexico CALA"
+      ]
+    },
+    {
+      "parent_company": "Choice",
+      "country": "Panama",
+      "brands_sampled": [
+        "Radisson",
+        "Sleep Inn / Ascend"
+      ],
+      "official_discovery_sources": [
+        "https://www.choicehotels.com/en-uk/panama/regional-hotels",
+        "https://www.choicehotels.com/sitemapindex.xml → propertysitemap.xml.gz"
+      ],
+      "property_url_patterns": [
+        "/{country}/{city}/{brand}/{hotelCode}",
+        "en-uk regional-hotels JSON-LD"
+      ],
+      "property_id_patterns": [
+        "[A-Z]{2}\\d{3}",
+        "MX/DO/CR/CB/PN prefixes"
+      ],
+      "fields_available": {
+        "property_name": "regional_jsonld",
+        "brand": "jsonld_or_card",
+        "city": "regional",
+        "country": "regional_url",
+        "address": "property_page",
+        "coordinates": "static_maps_url_on_property",
+        "description": "property_page",
+        "amenities": "property_page",
+        "rooms_keys": "rare"
+      },
+      "fetch_status": "ok_regional_not_wired",
+      "blocked_reasons": [
+        "autopilot_hardcoded_mexico_only"
+      ],
+      "recommended_adapter": "needs_adapter",
+      "confidence": "high",
+      "code_probe": {
+        "ld_hotel_markers": 7,
+        "sample_ids": []
+      },
+      "code_tasks": [
+        "Wire buildChoiceCalaRegionalPages / choice-regional-directory-extract into Autopilot for non-Mexico CALA"
+      ]
+    }
+  ],
+  "comparison_vs_current_code": {
+    "patterns_code_already_handles": [
+      "Hilton Mexico locations/{brand}/ + ctyhocn (Autopilot wired)",
+      "Choice Mexico regional JSON-LD + MXnnn (Autopilot wired)",
+      "Marriott country sitemap → MARSHA5 via marriott-brand-directory-extract (exists, NOT wired to Autopilot)",
+      "Marriott HQV coordinate path (enrichment, not listing discovery)",
+      "IHG destination + hoteldetail extractors (exists, NOT wired to Autopilot)",
+      "Choice buildChoiceRegionalPageForCountry multi-country URL builder (exists, Autopilot Mexico-only)",
+      "VIC claim index as evidence/dedupe only",
+      "Deep page signal extractor for enrichment"
+    ],
+    "patterns_webhound_found_code_lacks_in_autopilot": [
+      "Autopilot source_discovery does not call Marriott country sitemap for any CALA country",
+      "Autopilot source_discovery does not call IHG destination/hoteldetail directory",
+      "Hilton locations/{country}/ confirmed for DR/CR/CO/PA but Autopilot Mexico-only",
+      "Choice regional pages confirmed for DR/CR/CO/PA but Autopilot Mexico-only",
+      "Deprecated Marriott /en/hotels/{country}.sitemap-hotels.xml is 404 — do not implement"
+    ],
+    "patterns_that_should_not_be_used": [
+      "OTA / Wikipedia / news as discovery SoT",
+      "Old Census / legacy Hotel Census write target",
+      "Webhound as production Census population",
+      "Marriott deprecated sitemap-hotels.xml",
+      "HQV as required gate for Marriott listing discovery",
+      "Fabricating coords/rooms/owner/operator/dates",
+      "VIC as production write source"
+    ],
+    "high_confidence_adapter_opportunities": [
+      {
+        "id": "marriott_cala_country_sitemap",
+        "effort": "low",
+        "note": "Extractor exists; wire into Autopilot + CALA_DISCOVERY_ADAPTER_COVERAGE"
+      },
+      {
+        "id": "hilton_choice_non_mexico_country_param",
+        "effort": "low",
+        "note": "Same extractors; parameterize country slug"
+      },
+      {
+        "id": "ihg_destination_directory_wire",
+        "effort": "low-medium",
+        "note": "Extractor + ihg-cala-directory-extract.json exist"
+      }
+    ],
+    "risky_blocked_patterns": [
+      "Marriott HQV GraphQL without signature harvest / residential edge",
+      "Marriott/Hilton/Choice property overview 403/Akamai on some Node IPs",
+      "Hilton large property page timeouts",
+      "Choice Colombia CB prefix vs ISO CO — use CHOICE_CENSUS_COUNTRY_PROPERTY_PREFIX"
+    ],
+    "quickest_source_adapter_to_build_next": "marriott_cala_country_sitemap_into_autopilot_source_discovery"
+  },
+  "webhound_vs_dealality_recommendation": {
+    "webhound_next_adapter": "IHG",
+    "webhound_rationale": "Bulk XML sitemaps + low Akamai friction for enrichment",
+    "dealality_next_adapter": "Marriott",
+    "dealality_rationale": "Founder priority #1; listing extractor already proven (code probe MX 301 / DR 25 / CR 25 / CO 30 / PA 17); Autopilot gap is wiring not research; HQV is enrichment not discovery",
+    "letter": "B"
+  },
+  "recommended_next_code_changes": [
+    "Wire marriott country sitemap discovery into census-autopilot-source-discovery for CALA countries via countrySitemapUrl + existing parse path",
+    "Update CALA_DISCOVERY_ADAPTER_COVERAGE.Mexico.Marriott.ready=true and add DR/CR/CO/PA Marriott coverage",
+    "Generalize Hilton/Choice Autopilot Mexico hardcodes to country-parameterized adapters",
+    "Wire IHG destination directory into Autopilot after Marriott listing",
+    "Add fixtures + tests for non-Mexico Hilton/Choice/Marriott listing parse samples",
+    "Register deprecated Marriott sitemap-hotels.xml as blocked-source rule"
+  ],
+  "do_not_learn_noise": [
+    "Webhound approximate hotel counts (Mexico Marriott undercounted vs code probe 301)",
+    "OTA ranking/price widgets on directory cards",
+    "TripAdvisor ratings / starting rates as identity fields",
+    "Sustainability badges / pet policy as Census discovery requirements",
+    "Design Hotels volume anecdotes without MARSHA validation",
+    "Any owner/operator/developer/opening-date inference",
+    "Company Validated / Brand Verified suggestions"
+  ],
+  "webhound_candidates_for_later": [
+    {
+      "id": "marriott_hqv_signature_harvest_hardening",
+      "reason": "Only if address-first geocode insufficient and HQV still blocked",
+      "sample_size": "5-10",
+      "not_for": "bulk discovery"
+    },
+    {
+      "id": "hilton_property_page_timeout_edge",
+      "reason": "One large property timeout observed; optional enrichment hardening",
+      "sample_size": "5-10"
+    }
+  ],
+  "final_recommendation": {
+    "letter": "B",
+    "label": "Build Marriott discovery adapter next",
+    "alternatives_noted": {
+      "C_webhound_preferred": "Build IHG discovery adapter next — defer until after Marriott Autopilot wiring",
+      "D_also_high_value": "Build non-Mexico Hilton/Choice country adapters — nearly parallel low effort"
+    }
+  },
+  "final_status": "webhound_cala_source_discovery_learning_complete_ready_for_adapter_build"
+}

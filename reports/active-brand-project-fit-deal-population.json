@@ -1,0 +1,35 @@
+{
+  "appliedAt": "2026-07-10",
+  "scope": "all Brand Setup - Brand Basics rows (Active + Draft)",
+  "brandsProcessed": 257,
+  "projectFitUpdated": 256,
+  "projectFitCreated": 1,
+  "errors": 0,
+  "script": "scripts/populate-active-brand-project-fit-deal.mjs",
+  "profileSource": "lib/brand-explorer/active-brand-project-fit-deal-profiles.js",
+  "flags": {
+    "defaultScope": "all brands",
+    "activeOnlyFlag": "--active-only"
+  },
+  "fieldsUpdated": {
+    "brandBasics": ["Brand Development Stage", "Branded Residences Status"],
+    "projectFit": [
+      "Acceptable Project Type",
+      "Acceptable Agreements Type",
+      "Co-Branding Allowed",
+      "Mixed-Use Development Allowed",
+      "Soft/Collection Brand",
+      "Branded Residences Allowed"
+    ]
+  },
+  "profileRules": [
+    "Luxury: managed agreements, branded residences yes",
+    "Choice brands: detailed CHI profiles where available, else franchise defaults",
+    "Collection/endorsed: conversion-friendly types, soft/collection yes",
+    "Lifestyle: managed + flexible + combined, co-branding yes",
+    "Extended stay / serviced apartments: no mixed-use, franchise agreements",
+    "All-inclusive: managed resort profile",
+    "Economy/midscale franchise parents: franchise agreements, limited mixed-use",
+    "Co-living: mixed-use yes, flexible management structures"
+  ]
+}
