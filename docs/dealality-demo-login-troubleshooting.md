@@ -22,6 +22,16 @@ Manual link if needed:
 node scripts/link-airtable-user-memberstack.mjs --email dealalitydemo@dealality.com --memberstack-id mem_cmq0460yc28rv0slkartj6fif
 ```
 
+## Brand demo (`dealalitydemobrand@dealality.com`)
+
+Users row **`rec0w3LKN2PI8PtPw`** must have:
+
+- **Email:** `dealalitydemobrand@dealality.com`
+- **User Type:** `Hotel Brand` (live Users select option; Platform Role is not on this base)
+- **Company Profile:** Dealality Brand Demo `reciQEtqmxz6ZroVc` (Company Type `Hotel Brands (Franchise)`, Workspace Access `Brand`)
+- **Unique Webflow ID** and **Slug:** Live Memberstack id (`mem_…`, never `mem_sb_…`)
+- Memberstack Live plan: Hotel Brands. Production nav: Hotel Brands Sidebar → Market Intelligence → **Brand AI Visibility** → `/brand/ai-visibility` (embeds staging `/ai-visibility-brand.html?embed=1`).
+
 ## Console: `No Member has logged in` (login:128)
 
 This comes from **Webflow custom code**, not Railway. It means **`$memberstackDom.getCurrentMember()` returned no `data`** when your script ran.
@@ -88,7 +98,11 @@ if (window.__dealalitySuppressBrandToast || (data.accountAccess && data.accountA
 
 Webflow should **not** show “No brands assigned” when `dealality.isOwner === true` (included in `/api/me` as of role payload). Owners use **My Deals**, not brand allow-lists.
 
+Also skip when `dealality.isBrand === true` or `dealality.canAccessBrandWorkspace === true`. Brand entitlements live on Company Profile **Brands You Operate / Support**, which does **not** populate `permissions.allowedBrandNames` (Users → Brand Basics). An empty allow-list is normal for Hotel Brand demo accounts.
+
 Also skip for **pending approval** signups (`accountAccess.pendingApproval === true`) — they are not brand users yet.
+
+If the console shows `/api/me` **200** then `Request failed: … jquery.toast … toLowerCase`, that is the “No brands assigned” toast crashing — not an auth failure. Staging must serve current `dealality-webflow-account-notice.js` (preserves `$.toast.options` and sets `__dealalitySuppressBrandToast` for brand/owner/platform pages).
 
 ### `window.__dealalityUserContext.dealality` is `undefined`
 

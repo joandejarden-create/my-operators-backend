@@ -1,0 +1,712 @@
+{
+  "version": "ai_visibility_observed_demand_refinement_v1",
+  "dateObserved": "2026-08-17",
+  "AI_PROVIDER_CALLS": 0,
+  "CENSUS_READS": 0,
+  "AIRTABLE_WRITES": 0,
+  "BROAD_KEYWORD_DISCOVERY": 0,
+  "BROAD_SERP_CRAWL": 0,
+  "estimate": {
+    "SAMPLE_COST_USD": 0.192,
+    "VOLUME_TASKS": 2,
+    "SERP_TASKS": 6,
+    "VOLUME_COST_USD": 0.18,
+    "SERP_COST_USD": 0.012,
+    "PREFERRED_INCREMENTAL_CAP_USD": 0.75,
+    "PHASE_CAP_USD": 2,
+    "PHASE_SPENT_USD": 0.282,
+    "DATAFORSEO_BUDGET_APPROVAL_REQUIRED": false,
+    "budget": {
+      "allowed": true,
+      "code": null,
+      "projectedSampleUsd": 0.192,
+      "phaseSpentUsd": 0.282,
+      "projectedPhaseUsd": 0.474,
+      "sampleCap": 1,
+      "phaseCap": 2,
+      "remainingPhaseUsd": 1.526,
+      "ACCOUNT_FUNDING_IS_NOT_PROJECT_BUDGET": true,
+      "preferredCap": 0.75,
+      "preferredOver": false
+    },
+    "AI_PROVIDER_CALLS": 0,
+    "ACCOUNT_FUNDING_IS_NOT_PROJECT_BUDGET": true
+  },
+  "actual_cost_usd": 0.192,
+  "PREVIOUS_PHASE_SPEND": 0.282,
+  "INCREMENTAL_COST": 0.192,
+  "TOTAL_PHASE_SPEND": 0.474,
+  "BUDGET_REMAINING_UNDER_CAP": 1.526,
+  "ACCOUNT_FUNDING_IS_NOT_PROJECT_BUDGET": true,
+  "volume_status": {
+    "us_en": {
+      "ok": true,
+      "http_status": 200,
+      "status_code": 20000,
+      "message": "Ok.",
+      "cost": 0.09,
+      "rows": 10
+    },
+    "mx_es": {
+      "ok": true,
+      "http_status": 200,
+      "status_code": 20000,
+      "message": "Ok.",
+      "cost": 0.09,
+      "rows": 7
+    }
+  },
+  "serp_status": {
+    "hotel affiliation agreement": {
+      "ok": true,
+      "http_status": 200,
+      "status_code": 20000,
+      "message": "Ok.",
+      "cost": 0.002,
+      "paa": 4,
+      "related": 0,
+      "geography": "United States",
+      "language": "en"
+    },
+    "independent hotel franchise": {
+      "ok": true,
+      "http_status": 200,
+      "status_code": 20000,
+      "message": "Ok.",
+      "cost": 0.002,
+      "paa": 4,
+      "related": 0,
+      "geography": "United States",
+      "language": "en"
+    },
+    "convert independent hotel to franchise": {
+      "ok": true,
+      "http_status": 200,
+      "status_code": 20000,
+      "message": "Ok.",
+      "cost": 0.002,
+      "paa": 4,
+      "related": 0,
+      "geography": "United States",
+      "language": "en"
+    },
+    "hotel franchise owner control": {
+      "ok": true,
+      "http_status": 200,
+      "status_code": 20000,
+      "message": "Ok.",
+      "cost": 0.002,
+      "paa": 0,
+      "related": 0,
+      "geography": "United States",
+      "language": "en"
+    },
+    "hotel franchise distribution benefits": {
+      "ok": true,
+      "http_status": 200,
+      "status_code": 20000,
+      "message": "Ok.",
+      "cost": 0.002,
+      "paa": 4,
+      "related": 0,
+      "geography": "United States",
+      "language": "en"
+    },
+    "hotel brand selection": {
+      "ok": true,
+      "http_status": 200,
+      "status_code": 20000,
+      "message": "Ok.",
+      "cost": 0.002,
+      "paa": 0,
+      "related": 0,
+      "geography": "United States",
+      "language": "en"
+    }
+  },
+  "serp_run": [
+    "hotel affiliation agreement",
+    "independent hotel franchise",
+    "convert independent hotel to franchise",
+    "hotel franchise owner control",
+    "hotel franchise distribution benefits",
+    "hotel brand selection"
+  ],
+  "queries_tested": 17,
+  "valid_rows": 1,
+  "new_distinct_themes": [
+    "hotel affiliation agreement",
+    "convert independent hotel to franchise",
+    "hotel branded residences"
+  ],
+  "duplicates_removed": 1,
+  "consumer_noise_removed": 4,
+  "distinct_themes": [
+    "soft brand hotel",
+    "hotel franchise vs management agreement",
+    "hotel reflagging",
+    "franquicia hotelera",
+    "contrato de gestion hotelera",
+    "hotel affiliation agreement",
+    "convert independent hotel to franchise",
+    "hotel branded residences"
+  ],
+  "geo_language_cohorts": [
+    "United States|en",
+    "Mexico|en",
+    "Mexico|es"
+  ],
+  "coverage": {
+    "ownerIntentFamilies": [
+      "BRANDED_RESIDENCES",
+      "BRAND_SELECTION",
+      "FRANCHISE_VS_HMA",
+      "REFLAGGING_CONVERSION",
+      "SOFT_BRAND_HARD_BRAND"
+    ],
+    "overlapWithScenario": [
+      "soft brand hotel",
+      "hotel franchise vs management agreement",
+      "hotel reflagging",
+      "franquicia hotelera",
+      "contrato de gestion hotelera",
+      "hotel affiliation agreement",
+      "convert independent hotel to franchise",
+      "hotel branded residences"
+    ],
+    "observedOnly": [],
+    "scenarioOnly": [
+      "scenario_independent_uu_conversion_v1",
+      "scenario_newbuild_uu_brand_selection_v1",
+      "scenario_owner_flexibility_control_v1",
+      "scenario_owner_economics_v1",
+      "scenario_distribution_loyalty_v1",
+      "scenario_chainscale_positioning_fit_v1",
+      "scenario_market_entry_geographic_relevance_v1",
+      "scenario_lifestyle_individuality_positioning_v1"
+    ]
+  },
+  "gate": {
+    "MIN_10_DISTINCT_THEMES": "FAIL",
+    "MIN_3_INTENT_FAMILIES": "PASS",
+    "MIN_2_GEO_LANGUAGE_COHORTS": "PASS",
+    "NO_DUPLICATE_INFLATION": "PASS"
+  },
+  "gatePass": false,
+  "classifications": [
+    {
+      "query": "hotel affiliation agreement",
+      "canonicalTheme": "hotel affiliation agreement",
+      "classification": "PAA_SUPPORTED",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "independent hotel franchise",
+      "canonicalTheme": "independent hotel franchise",
+      "classification": "PAA_SUPPORTED",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "convert independent hotel to franchise",
+      "canonicalTheme": "convert independent hotel to franchise",
+      "classification": "PAA_SUPPORTED",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "hotel franchise owner control",
+      "canonicalTheme": "hotel franchise owner control",
+      "classification": "NO_SIGNAL",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "hotel franchise distribution benefits",
+      "canonicalTheme": "hotel franchise distribution benefits",
+      "classification": "PAA_SUPPORTED",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "hotel brand selection",
+      "canonicalTheme": "hotel brand selection",
+      "classification": "NO_SIGNAL",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "choosing a hotel management company",
+      "canonicalTheme": "choosing a hotel management company",
+      "classification": "NO_SIGNAL",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "hotel branded residences",
+      "canonicalTheme": "hotel branded residences",
+      "classification": "LICENSED_VOLUME",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": 10
+    },
+    {
+      "query": "hotel franchise royalties",
+      "canonicalTheme": "hotel franchise royalties",
+      "classification": "NO_SIGNAL",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "hotel management agreement fees",
+      "canonicalTheme": "hotel management agreement fees",
+      "classification": "NO_SIGNAL",
+      "geography": "United States",
+      "language": "en",
+      "search_volume": null
+    },
+    {
+      "query": "afiliacion de marca hotelera",
+      "canonicalTheme": "afiliacion de marca hotelera",
+      "classification": "NO_SIGNAL",
+      "geography": "Mexico",
+      "language": "es",
+      "search_volume": null
+    },
+    {
+      "query": "marca hotelera para hotel independiente",
+      "canonicalTheme": "marca hotelera para hotel independiente",
+      "classification": "NO_SIGNAL",
+      "geography": "Mexico",
+      "language": "es",
+      "search_volume": null
+    },
+    {
+      "query": "conversion de hotel a franquicia",
+      "canonicalTheme": "conversion de hotel a franquicia",
+      "classification": "NO_SIGNAL",
+      "geography": "Mexico",
+      "language": "es",
+      "search_volume": null
+    },
+    {
+      "query": "coste franquicia hotelera",
+      "canonicalTheme": "hotel franchise fees",
+      "classification": "DUPLICATE_THEME",
+      "geography": "Mexico",
+      "language": "es",
+      "search_volume": null
+    },
+    {
+      "query": "seleccion de operador hotelero",
+      "canonicalTheme": "choosing a hotel management company",
+      "classification": "NO_SIGNAL",
+      "geography": "Mexico",
+      "language": "es",
+      "search_volume": null
+    },
+    {
+      "query": "empresa gestora hotelera",
+      "canonicalTheme": "choosing a hotel management company",
+      "classification": "NO_SIGNAL",
+      "geography": "Mexico",
+      "language": "es",
+      "search_volume": null
+    },
+    {
+      "query": "residencias de marca hotelera",
+      "canonicalTheme": "hotel branded residences",
+      "classification": "NO_SIGNAL",
+      "geography": "Mexico",
+      "language": "es",
+      "search_volume": null
+    }
+  ],
+  "tests": [
+    {
+      "SEED_QUERY": "hotel affiliation agreement",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "YES",
+      "OBSERVED_QUERY_OR_THEME": "hotel affiliation agreement",
+      "SIGNAL_TYPE": "PAA_SUPPORTED",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "PAA_SUPPORTED",
+      "USABLE_AS_OBSERVED": "YES",
+      "WHY": "paa_questions_present"
+    },
+    {
+      "SEED_QUERY": "independent hotel franchise",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "YES",
+      "OBSERVED_QUERY_OR_THEME": "independent hotel franchise",
+      "SIGNAL_TYPE": "PAA_SUPPORTED",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "PAA_SUPPORTED",
+      "USABLE_AS_OBSERVED": "YES",
+      "WHY": "paa_questions_present"
+    },
+    {
+      "SEED_QUERY": "convert independent hotel to franchise",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "YES",
+      "OBSERVED_QUERY_OR_THEME": "convert independent hotel to franchise",
+      "SIGNAL_TYPE": "PAA_SUPPORTED",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "PAA_SUPPORTED",
+      "USABLE_AS_OBSERVED": "YES",
+      "WHY": "paa_questions_present"
+    },
+    {
+      "SEED_QUERY": "hotel franchise owner control",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "hotel franchise owner control",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "hotel franchise distribution benefits",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "YES",
+      "OBSERVED_QUERY_OR_THEME": "hotel franchise distribution benefits",
+      "SIGNAL_TYPE": "PAA_SUPPORTED",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "PAA_SUPPORTED",
+      "USABLE_AS_OBSERVED": "YES",
+      "WHY": "paa_questions_present"
+    },
+    {
+      "SEED_QUERY": "hotel brand selection",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "hotel brand selection",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "choosing a hotel management company",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "choosing a hotel management company",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "hotel branded residences",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "YES",
+      "OBSERVED_QUERY_OR_THEME": "hotel branded residences",
+      "SIGNAL_TYPE": "LICENSED_VOLUME",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "LICENSED_VOLUME",
+      "USABLE_AS_OBSERVED": "YES",
+      "WHY": "licensed_search_volume_gt_0"
+    },
+    {
+      "SEED_QUERY": "hotel franchise royalties",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "hotel franchise royalties",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "hotel management agreement fees",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "hotel management agreement fees",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "United States",
+      "LANGUAGE": "en",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "afiliacion de marca hotelera",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "afiliacion de marca hotelera",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "Mexico",
+      "LANGUAGE": "es",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "marca hotelera para hotel independiente",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "marca hotelera para hotel independiente",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "Mexico",
+      "LANGUAGE": "es",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "conversion de hotel a franquicia",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "conversion de hotel a franquicia",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "Mexico",
+      "LANGUAGE": "es",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "coste franquicia hotelera",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "hotel franchise fees",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "Mexico",
+      "LANGUAGE": "es",
+      "CLASSIFICATION": "DUPLICATE_THEME",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "seleccion de operador hotelero",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "choosing a hotel management company",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "Mexico",
+      "LANGUAGE": "es",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "empresa gestora hotelera",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "choosing a hotel management company",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "Mexico",
+      "LANGUAGE": "es",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    },
+    {
+      "SEED_QUERY": "residencias de marca hotelera",
+      "SOURCE": "DataForSEO Google Ads Search Volume + targeted SERP",
+      "RESULT_PRESENT": "NO",
+      "OBSERVED_QUERY_OR_THEME": "hotel branded residences",
+      "SIGNAL_TYPE": "NO_SIGNAL",
+      "GEOGRAPHY": "Mexico",
+      "LANGUAGE": "es",
+      "CLASSIFICATION": "NO_SIGNAL",
+      "USABLE_AS_OBSERVED": "NO",
+      "WHY": "no_licensed_volume_or_serp_question_signal"
+    }
+  ],
+  "signals_added": [
+    {
+      "demandSignalId": "ds_hotel_affiliation_agreement_united_states_en",
+      "sourceType": "PAA",
+      "sourceName": "DataForSEO",
+      "queryText": "hotel affiliation agreement",
+      "normalizedTheme": "hotel affiliation agreement",
+      "ownerIntentFamily": "BRAND_SELECTION",
+      "geography": "United States",
+      "language": "en",
+      "dateObserved": "2026-08-17",
+      "metricType": "paa_count",
+      "metricValue": 4,
+      "relativeRank": null,
+      "sourceEvidenceStrength": "SUPPORTED",
+      "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+      "licenseNotes": "Google Ads Keyword Planner-compatible volume via DataForSEO. Volume is location+language specific. Not owner-identity. Not CALA unless location is a CALA country.",
+      "demandTier": "UNKNOWN",
+      "demandTierBasis": "UNKNOWN",
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "paaQuestions": [
+        "What is the purpose of an affiliation agreement?",
+        "What is the 80/20 rule in hotels?",
+        "What hotels have affiliate programs?",
+        "What is the 5'10 rule in hotels?"
+      ],
+      "relatedSearches": [],
+      "search_volume": null,
+      "evidenceClass": "PAA_SUPPORTED"
+    },
+    {
+      "demandSignalId": "ds_independent_hotel_franchise_united_states_en",
+      "sourceType": "PAA",
+      "sourceName": "DataForSEO",
+      "queryText": "independent hotel franchise",
+      "normalizedTheme": "independent hotel franchise",
+      "ownerIntentFamily": "BRAND_SELECTION",
+      "geography": "United States",
+      "language": "en",
+      "dateObserved": "2026-08-17",
+      "metricType": "paa_count",
+      "metricValue": 4,
+      "relativeRank": null,
+      "sourceEvidenceStrength": "SUPPORTED",
+      "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+      "licenseNotes": "Google Ads Keyword Planner-compatible volume via DataForSEO. Volume is location+language specific. Not owner-identity. Not CALA unless location is a CALA country.",
+      "demandTier": "UNKNOWN",
+      "demandTierBasis": "UNKNOWN",
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "paaQuestions": [
+        "Which hotel franchise is the most profitable?",
+        "What is the 80/20 rule in hotels?",
+        "What franchise can I open with $10,000?",
+        "What is the cheapest hotel franchise to buy?"
+      ],
+      "relatedSearches": [],
+      "search_volume": null,
+      "evidenceClass": "PAA_SUPPORTED"
+    },
+    {
+      "demandSignalId": "ds_convert_independent_hotel_to_franchise_united_states_en",
+      "sourceType": "PAA",
+      "sourceName": "DataForSEO",
+      "queryText": "convert independent hotel to franchise",
+      "normalizedTheme": "convert independent hotel to franchise",
+      "ownerIntentFamily": "REFLAGGING_CONVERSION",
+      "geography": "United States",
+      "language": "en",
+      "dateObserved": "2026-08-17",
+      "metricType": "paa_count",
+      "metricValue": 4,
+      "relativeRank": null,
+      "sourceEvidenceStrength": "SUPPORTED",
+      "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+      "licenseNotes": "Google Ads Keyword Planner-compatible volume via DataForSEO. Volume is location+language specific. Not owner-identity. Not CALA unless location is a CALA country.",
+      "demandTier": "UNKNOWN",
+      "demandTierBasis": "UNKNOWN",
+      "scenarioId": "scenario_conversion_suitability_v1",
+      "paaQuestions": [
+        "Which hotel franchise is the most profitable?",
+        "What is the 5'10 rule in hotels?",
+        "How much does it cost to franchise a hotel?",
+        "What is the cheapest hotel franchise to buy?"
+      ],
+      "relatedSearches": [],
+      "search_volume": null,
+      "evidenceClass": "PAA_SUPPORTED"
+    },
+    {
+      "demandSignalId": "ds_hotel_franchise_distribution_benefits_united_states_en",
+      "sourceType": "PAA",
+      "sourceName": "DataForSEO",
+      "queryText": "hotel franchise distribution benefits",
+      "normalizedTheme": "hotel franchise distribution benefits",
+      "ownerIntentFamily": "DISTRIBUTION_LOYALTY",
+      "geography": "United States",
+      "language": "en",
+      "dateObserved": "2026-08-17",
+      "metricType": "paa_count",
+      "metricValue": 4,
+      "relativeRank": null,
+      "sourceEvidenceStrength": "SUPPORTED",
+      "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+      "licenseNotes": "Google Ads Keyword Planner-compatible volume via DataForSEO. Volume is location+language specific. Not owner-identity. Not CALA unless location is a CALA country.",
+      "demandTier": "UNKNOWN",
+      "demandTierBasis": "UNKNOWN",
+      "scenarioId": "scenario_distribution_loyalty_v1",
+      "paaQuestions": [
+        "What is the 80/20 rule in hotels?",
+        "Which hotel franchise is the most profitable?",
+        "What is the 5'10 rule in hotels?",
+        "How much does a hotel franchise owner make?"
+      ],
+      "relatedSearches": [],
+      "search_volume": null,
+      "evidenceClass": "PAA_SUPPORTED"
+    },
+    {
+      "demandSignalId": "ds_hotel_branded_residences_united_states_en",
+      "sourceType": "LICENSED_SEO_DATASET",
+      "sourceName": "DataForSEO",
+      "queryText": "hotel branded residences",
+      "normalizedTheme": "hotel branded residences",
+      "ownerIntentFamily": "BRANDED_RESIDENCES",
+      "geography": "United States",
+      "language": "en",
+      "dateObserved": "2026-08-17",
+      "metricType": "monthly_avg_search_volume",
+      "metricValue": 10,
+      "relativeRank": 1,
+      "sourceEvidenceStrength": "STRONG_OBSERVED",
+      "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+      "licenseNotes": "Google Ads Keyword Planner-compatible volume via DataForSEO. Volume is location+language specific. Not owner-identity. Not CALA unless location is a CALA country.",
+      "demandTier": "UNKNOWN",
+      "demandTierBasis": "COHORT_TOO_SMALL",
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "paaQuestions": [],
+      "relatedSearches": [],
+      "search_volume": 10,
+      "evidenceClass": "LICENSED_VOLUME"
+    }
+  ],
+  "OBSERVED_ATTACHED_TO_LIVE_PROMPTS": 0,
+  "overlay_classifications": 0,
+  "stoppedForBudget": false,
+  "paa_quality_filter": {
+    "applied": true,
+    "dropped": [
+      {
+        "demandSignalId": "ds_hotel_franchise_fees_united_states_en",
+        "theme": "hotel franchise fees",
+        "why": "generic_franchise_entrepreneur_paa"
+      },
+      {
+        "demandSignalId": "ds_hotel_franchise_fees_mexico_en",
+        "theme": "hotel franchise fees",
+        "why": "generic_franchise_entrepreneur_paa"
+      },
+      {
+        "demandSignalId": "ds_independent_hotel_franchise_united_states_en",
+        "theme": "independent hotel franchise",
+        "why": "generic_franchise_entrepreneur_paa"
+      },
+      {
+        "demandSignalId": "ds_hotel_franchise_distribution_benefits_united_states_en",
+        "theme": "hotel franchise distribution benefits",
+        "why": "generic_franchise_entrepreneur_paa"
+      }
+    ],
+    "note": "Recycled generic hotel-franchise PAA does not count as a distinct owner-decision theme."
+  },
+  "FINAL": "OBSERVED_DEMAND_REFINEMENT_PARTIAL"
+}

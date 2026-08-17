@@ -1639,6 +1639,7 @@
             "<tr>" +
             "<td>" +
             AiVisibilityUi.escapeHtml(r.QUESTION || "—") +
+            promptOriginBadgeHtml(r) +
             "</td>" +
             "<td>" +
             AiVisibilityUi.escapeHtml(r.PROMPT_FAMILY || "—") +
@@ -3781,6 +3782,76 @@
       notable.hidden = true;
       notable.innerHTML = "";
     }
+    var mix = $("aivExecPromptMix");
+    if (mix) {
+      mix.hidden = true;
+      mix.innerHTML = "";
+    }
+  }
+
+  function renderExecutivePromptMix(summary) {
+    var el = $("aivExecPromptMix");
+    if (!el) return;
+    var observed = summary && Number(summary.observed);
+    var derived = summary && Number(summary.derived);
+    var scenario = summary && Number(summary.scenario);
+    var show =
+      summary &&
+      summary.showPromptMix === true &&
+      (observed || 0) >= 10;
+    if (!show) {
+      el.hidden = true;
+      el.innerHTML = "";
+      return;
+    }
+    el.hidden = false;
+    el.innerHTML =
+      '<span class="aiv-prompt-mix-label">Prompt mix</span>' +
+      "Observed demand: " +
+      AiVisibilityUi.escapeHtml(String(observed)) +
+      " · Derived: " +
+      AiVisibilityUi.escapeHtml(String(derived)) +
+      " · Scenario: " +
+      AiVisibilityUi.escapeHtml(String(scenario || 0));
+  }
+
+  function promptOriginBadgeHtml(row) {
+    if (!row || row.showOriginBadge === false) return "";
+    var origin = row.promptOrigin || row.PROMPT_ORIGIN;
+    if (origin === "LEGACY_UNCLASSIFIED" || !origin) return "";
+    var badge = row.originBadge || null;
+    if (!badge) {
+      if (origin === "OBSERVED") badge = "Observed";
+      else if (origin === "DERIVED") badge = "Derived";
+      else if (origin === "SCENARIO") badge = "Scenario";
+    }
+    if (!badge) return "";
+    var cls = "aiv-origin-badge";
+    if (origin === "OBSERVED") cls += " aiv-origin-badge--observed";
+    var title = row.originDetail || "";
+    if (origin === "SCENARIO" && !title) title = "Expert scenario";
+    var html =
+      '<span class="' +
+      cls +
+      '"' +
+      (title
+        ? ' title="' + AiVisibilityUi.escapeHtml(title) + '"'
+        : "") +
+      ">" +
+      AiVisibilityUi.escapeHtml(badge) +
+      "</span>";
+    if (origin === "OBSERVED" && row.originDetail) {
+      html +=
+        '<span class="aiv-origin-meta">' +
+        AiVisibilityUi.escapeHtml(row.originDetail) +
+        "</span>";
+    } else if (origin === "DERIVED" && row.originDetail) {
+      html +=
+        '<span class="aiv-origin-meta">' +
+        AiVisibilityUi.escapeHtml(row.originDetail) +
+        "</span>";
+    }
+    return html;
   }
 
   function renderExecutive(data) {
@@ -3867,6 +3938,8 @@
         );
       })
       .join("");
+
+    renderExecutivePromptMix(data.promptOriginSummary || null);
 
     var geos = data.geographySummary || [];
     var regionalBody = $("aivExecRegional");
@@ -4803,6 +4876,7 @@
         return (
           "<tr><td>" +
           AiVisibilityUi.escapeHtml(q.question || q.promptId) +
+          promptOriginBadgeHtml(q) +
           "</td><td class=\"aiv-metric-cell\">" +
           AiVisibilityUi.statusBadge(presenceLabel) +
           '</td><td class="aiv-metric-cell">' +

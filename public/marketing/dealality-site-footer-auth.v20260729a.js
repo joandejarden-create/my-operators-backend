@@ -219,10 +219,17 @@
       const d = data?.dealality;
       const access = data?.accountAccess;
       const isOwnerOrAdmin = !!(d && (d.isOwner || d.isAdmin));
+      const isBrandUser = !!(d && (d.isBrand || d.canAccessBrandWorkspace));
       const isPendingApproval = !!(access && access.pendingApproval);
       const allowedBrands = data?.permissions?.allowedBrandNames || [];
 
-      if (!isOwnerOrAdmin && !isPendingApproval && !window.__dealalitySuppressBrandToast && !allowedBrands.length) {
+      if (
+        !isOwnerOrAdmin &&
+        !isBrandUser &&
+        !isPendingApproval &&
+        !window.__dealalitySuppressBrandToast &&
+        !allowedBrands.length
+      ) {
         $.toast({ heading: 'Information', text: 'No brands assigned', icon: 'info', position: 'top-right', hideAfter: 8000 });
       }
 
