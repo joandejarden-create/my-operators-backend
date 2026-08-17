@@ -1,0 +1,545 @@
+{
+  "label": "WAVE-1 OPENAI SHOWCASE BASELINE — FIRST COMPARABLE PERIOD",
+  "batchId": "aiv_wave1_openai_showcase_20260814_0142_0e1638",
+  "wave1Id": "aiv_wave1_openai_showcase_20260814_0142_0e1638",
+  "baselineSeriesId": "aiv_wave1_openai_peer_v2_showcase_prompts_v1",
+  "status": "partial_cost_cap",
+  "stopReason": "hard_cost_cap",
+  "provider": {
+    "name": "openai",
+    "model": "gpt-5.6"
+  },
+  "peerSet": {
+    "peerSetId": "peers_uu_collection_lifestyle_owner_decision_v2",
+    "peerSetVersion": "2",
+    "count": 15,
+    "canonicalValid": true
+  },
+  "activationGate": {
+    "GLOBAL_EN_ACTIVATION_GATE": "FAIL",
+    "RESULT": "FAIL",
+    "REASONS": [
+      "execution_incomplete_slot",
+      "execution_success_1_below_floor_10",
+      "projected_cost_25206.72_exceeds_hard_cap_125",
+      "slot_cost_already_exceeds_hard_cap_300.08"
+    ],
+    "NOTES": [
+      "Recommendation content desirability is not an activation criterion.",
+      "Citation absence in a response is not an automatic failure (Citation Rate PARTIAL)."
+    ],
+    "COUNTS": {
+      "planned": 12,
+      "succeeded": 1,
+      "failed": 0,
+      "retries": 0,
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0,
+      "parseFailures": 0,
+      "storageFailures": 0,
+      "identityMissing": 0,
+      "resolverMalfunctions": 0,
+      "classifierMalfunctions": 0,
+      "citationCorruptions": 0
+    },
+    "COST": {
+      "GLOBAL_EN_ACTUAL": 300.08,
+      "PROJECTION": {
+        "averagePerCall": 300.08,
+        "projected84": 25206.72,
+        "likelyHardCapBreach": true,
+        "method": "first_slot_average_times_84",
+        "hardCapUsd": 125,
+        "plannedLogicalCalls": 84,
+        "maxAttempts": 168
+      },
+      "HARD_CAP": 125
+    },
+    "evaluatedAt": "2026-08-14T01:42:31.500Z"
+  },
+  "logical": {
+    "planned": 84,
+    "succeeded": 1,
+    "failedFinal": 0,
+    "notExecuted": 83,
+    "retried": 0,
+    "totalAttempts": 1,
+    "retrySuccess": 0,
+    "retryFailure": 0
+  },
+  "slots": {
+    "GLOBAL_EN": {
+      "key": "GLOBAL_EN",
+      "planned": 12,
+      "succeeded": 1,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 1,
+      "cost": 300.08,
+      "status": "stopped_cost_cap",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "CALA_EN": {
+      "key": "CALA_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "CALA_ES": {
+      "key": "CALA_ES",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "EUROPE_EN": {
+      "key": "EUROPE_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "NORTH_AMERICA_EN": {
+      "key": "NORTH_AMERICA_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "MEXICO_EN": {
+      "key": "MEXICO_EN",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    },
+    "MEXICO_ES": {
+      "key": "MEXICO_ES",
+      "planned": 12,
+      "succeeded": 0,
+      "failed": 0,
+      "retried": 0,
+      "attempts": 0,
+      "cost": 0,
+      "status": "pending",
+      "timeouts": 0,
+      "providerErrors": 0,
+      "authErrors": 0
+    }
+  },
+  "cost": {
+    "actualUsd": 300.08,
+    "hardCapUsd": 125,
+    "capBreached": true,
+    "inputTokens": 20000000,
+    "outputTokens": 5000000,
+    "totalTokens": 25000000,
+    "providerAttempts": 1,
+    "averagePerSuccessfulLogicalCall": 300.08,
+    "projectionFromGlobalEn": {
+      "averagePerCall": 300.08,
+      "projected84": 25206.72,
+      "likelyHardCapBreach": true,
+      "method": "first_slot_average_times_84",
+      "hardCapUsd": 125,
+      "plannedLogicalCalls": 84,
+      "maxAttempts": 168
+    }
+  },
+  "metrics": {
+    "metricVersion": "ai_visibility_metrics_v1",
+    "byEntity": {
+      "Autograph Collection": {
+        "id": "recEJCTDj1zrsjPM6",
+        "presence": 1,
+        "recommendationShare": 0.3333333333333333,
+        "recommendationRate": 1,
+        "top3RecommendationRate": 1,
+        "firstRecommendationRate": 1,
+        "questionsWon": 1,
+        "questionsMissing": 0,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Tribute Portfolio": {
+        "id": "recCvV0PuZOi8c3hC",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Design Hotels": {
+        "id": "rec02zPClpWUTCyXM",
+        "presence": 1,
+        "recommendationShare": 0.3333333333333333,
+        "recommendationRate": 1,
+        "top3RecommendationRate": 1,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 0,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Westin": {
+        "id": "recIPuBC50fv13zRR",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "AC Hotels by Marriott": {
+        "id": "rec9aZp7GHtzUEg0c",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Curio Collection by Hilton": {
+        "id": "receQkxgjlezsc1xg",
+        "presence": 1,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 0,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Tapestry Collection by Hilton": {
+        "id": "reccXxMHEh7NNRhIE",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Canopy by Hilton": {
+        "id": "recsggfbKlJbjeRP9",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Tempo by Hilton": {
+        "id": "recqiHq3GHKMj8Meo",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Ascend Hotel Collection": {
+        "id": "reclkgOzvAcBheUSo",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Radisson Individuals by Choice": {
+        "id": "recRyvM8OmLlDj9G7",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Radisson Blu by Choice": {
+        "id": "recWPEvxBQxVVzSq3",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Hotel Indigo": {
+        "id": "recegXrqaPiSLGCIe",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "Kimpton Hotels": {
+        "id": "recCKuXCmGvxHPfb3",
+        "presence": 1,
+        "recommendationShare": 0.3333333333333333,
+        "recommendationRate": 1,
+        "top3RecommendationRate": 1,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 0,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      },
+      "MGallery Collection": {
+        "id": "recrWCD1LMqu864oU",
+        "presence": 0,
+        "recommendationShare": 0,
+        "recommendationRate": 0,
+        "top3RecommendationRate": 0,
+        "firstRecommendationRate": 0,
+        "questionsWon": 0,
+        "questionsMissing": 1,
+        "citationRate": 0,
+        "citationReadiness": "PARTIAL"
+      }
+    },
+    "competitivePosition": {
+      "metricVersion": "ai_visibility_metrics_v1",
+      "metric": "competitive_position",
+      "rankingMetric": "ai_presence_rate",
+      "peers": [
+        {
+          "entityId": "rec02zPClpWUTCyXM",
+          "presenceRate": 1,
+          "numerator": 1,
+          "denominator": 1,
+          "rank": 1,
+          "tied": true,
+          "name": "Design Hotels"
+        },
+        {
+          "entityId": "recCKuXCmGvxHPfb3",
+          "presenceRate": 1,
+          "numerator": 1,
+          "denominator": 1,
+          "rank": 1,
+          "tied": true,
+          "name": "Kimpton Hotels"
+        },
+        {
+          "entityId": "recEJCTDj1zrsjPM6",
+          "presenceRate": 1,
+          "numerator": 1,
+          "denominator": 1,
+          "rank": 1,
+          "tied": true,
+          "name": "Autograph Collection"
+        },
+        {
+          "entityId": "receQkxgjlezsc1xg",
+          "presenceRate": 1,
+          "numerator": 1,
+          "denominator": 1,
+          "rank": 1,
+          "tied": true,
+          "name": "Curio Collection by Hilton"
+        },
+        {
+          "entityId": "rec9aZp7GHtzUEg0c",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "AC Hotels by Marriott"
+        },
+        {
+          "entityId": "recCvV0PuZOi8c3hC",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Tribute Portfolio"
+        },
+        {
+          "entityId": "reccXxMHEh7NNRhIE",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Tapestry Collection by Hilton"
+        },
+        {
+          "entityId": "recegXrqaPiSLGCIe",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Hotel Indigo"
+        },
+        {
+          "entityId": "recIPuBC50fv13zRR",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Westin"
+        },
+        {
+          "entityId": "reclkgOzvAcBheUSo",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Ascend Hotel Collection"
+        },
+        {
+          "entityId": "recqiHq3GHKMj8Meo",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Tempo by Hilton"
+        },
+        {
+          "entityId": "recrWCD1LMqu864oU",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "MGallery Collection"
+        },
+        {
+          "entityId": "recRyvM8OmLlDj9G7",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Radisson Individuals by Choice"
+        },
+        {
+          "entityId": "recsggfbKlJbjeRP9",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Canopy by Hilton"
+        },
+        {
+          "entityId": "recWPEvxBQxVVzSq3",
+          "presenceRate": 0,
+          "numerator": 0,
+          "denominator": 1,
+          "rank": 5,
+          "tied": true,
+          "name": "Radisson Blu by Choice"
+        }
+      ],
+      "PEER_DENOMINATOR_COUNT": 15,
+      "PORTFOLIO_ONLY_EXCLUDED_FROM_PEER_RANK": true
+    },
+    "citationRateReadiness": "PARTIAL",
+    "COMPARABLE_PRIOR_PERIOD": "NONE",
+    "TREND_AVAILABLE": false
+  },
+  "versions": {
+    "orchestrator": "ai_visibility_wave1_orchestrator_v1",
+    "resolver": "ai_visibility_entity_resolver_v2",
+    "classifier": "ai_visibility_recommendation_classifier_v3",
+    "citationAssoc": "ai_visibility_citation_assoc_v1",
+    "metric": "ai_visibility_metrics_v1",
+    "geography": "ai_visibility_geography_v1",
+    "promptLibrary": "showcase_prompts_v1",
+    "plan": "ai_visibility_wave1_showcase_plan_v1"
+  },
+  "AIRTABLE_EXECUTION_WRITES": 0,
+  "AI_VISIBILITY_OPPORTUNITY_WRITES": 0,
+  "ENTITLEMENT_WRITES": 0,
+  "COMPARABLE_PRIOR_PERIOD": "NONE",
+  "TREND_AVAILABLE": false,
+  "preflight": {
+    "LIVE_ENV_READY": true,
+    "OPENAI_KEY_PRESENT": "YES",
+    "MODEL": "gpt-5.6",
+    "STORE_ROOT": "C:\\Users\\joand\\AppData\\Local\\Temp\\wave1-showcase-cap-YwVuKK\\wave1-showcase",
+    "HARD_COST_CAP": 125,
+    "PLANNED_LOGICAL_CALLS": 84,
+    "MAX_ATTEMPTS": 168,
+    "CHECKPOINT_ROOT": "C:\\Users\\joand\\AppData\\Local\\Temp\\wave1-showcase-cap-YwVuKK\\wave1-showcase\\checkpoints",
+    "PHASE2E_ROOT": "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\runtime\\phase2e",
+    "LEGACY_ISOLATED": true,
+    "blockers": []
+  },
+  "completedAt": "2026-08-14T01:42:31.832Z",
+  "savedAt": "2026-08-14T01:42:31.832Z"
+}
