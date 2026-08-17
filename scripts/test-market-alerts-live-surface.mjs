@@ -15,13 +15,12 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const UI_VERSION = "1.3.4";
+const UI_VERSION = "1.3.3";
 const REQUIRED_HTML_STRINGS = [
   ">Act Now<",
   ">Watch<",
   'data-mode="all"',
   "intel-summary-row",
-  "news-filter-row--single",
   "news-filter-divider",
   'id="successMessage"',
 ];

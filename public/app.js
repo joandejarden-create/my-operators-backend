@@ -1410,6 +1410,11 @@
                         if (expectedRecordId !== childRecordId) {
                             mustReloadFrame = true;
                         }
+                        var expectedAssetV = expectedUrlObj.searchParams.get('v') || '';
+                        var childAssetV = childQs.get('v') || '';
+                        if (expectedAssetV !== childAssetV) {
+                            mustReloadFrame = true;
+                        }
                     }
                 } catch (_crossOrigin) {
                     /* Assume in sync if we cannot read the child (should not happen for same-origin embeds). */

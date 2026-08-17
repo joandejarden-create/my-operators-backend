@@ -6,6 +6,10 @@ import {
   buildReportWindow,
   loadOptionsForWindow,
 } from "../lib/marketing-landing-events-window.js";
+import {
+  applyLandingReportFilters,
+  parseReportFilters,
+} from "../lib/marketing-landing-events-version.js";
 
 function setReportNoStore(res) {
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -28,6 +32,8 @@ function eventsToCsv(events) {
     "visitorId",
     "embed",
     "device",
+    "landingVersion",
+    "language",
     "section",
     "location",
     "label",
@@ -39,14 +45,11 @@ function eventsToCsv(events) {
     "utmSource",
     "utmMedium",
     "utmCampaign",
+    "path",
   ];
   const lines = [headers.join(",")];
   for (const e of events) {
-    lines.push(
-      headers
-        .map((h) => csvEscape(e[h]))
-        .join(",")
-    );
+    lines.push(headers.map((h) => csvEscape(e[h])).join(","));
   }
   return lines.join("\n");
 }
@@ -56,16 +59,14 @@ function funnelToCsv(aggregate) {
   const steps = aggregate.funnel?.steps || [];
   for (const step of steps) {
     lines.push(
-      [step.key, step.label, step.count, step.rate]
-        .map(csvEscape)
-        .join(",")
+      [step.key, step.label, step.count, step.rate].map(csvEscape).join(",")
     );
   }
   return lines.join("\n");
 }
 
 /**
- * GET /api/marketing/landing-events/export?days=7&format=events|funnel
+ * GET /api/marketing/landing-events/export?days=7&format=events|funnel&version=&cutover=&era=
  */
 export async function getMarketingLandingEventsExport(req, res) {
   try {
@@ -76,23 +77,27 @@ export async function getMarketingLandingEventsExport(req, res) {
     setReportNoStore(res);
     const window = buildReportWindow(req.query?.days);
     const days = window.days;
+    const filters = parseReportFilters(req.query);
     const excludeInternal =
       String(req.query?.excludeInternal || "").trim() === "1";
-    const events = loadLandingEvents({
+    const loaded = loadLandingEvents({
       ...loadOptionsForWindow(window),
       excludeInternal,
     });
+    const { events } = applyLandingReportFilters(loaded, filters);
     const format = String(req.query?.format || "events").toLowerCase();
+    const versionTag =
+      filters.version && filters.version !== "all" ? `-${filters.version}` : "";
 
     let body;
     let filename;
     if (format === "funnel") {
       const aggregate = aggregateLandingEvents(events);
       body = funnelToCsv(aggregate);
-      filename = `landing-funnel-${days}d.csv`;
+      filename = `landing-funnel-${days}d${versionTag}.csv`;
     } else {
       body = eventsToCsv(events);
-      filename = `landing-events-${days}d.csv`;
+      filename = `landing-events-${days}d${versionTag}.csv`;
     }
 
     res.setHeader("Content-Type", "text/csv; charset=utf-8");

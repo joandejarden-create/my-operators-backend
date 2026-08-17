@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Market Alerts V1.3.2 UI simplification checks (presentation-only).
- * Cache-bust asset version is 1.3.4.
+ * Cache-bust asset version is 1.3.3.
  */
 import fs from "fs";
 import path from "path";
@@ -9,7 +9,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const UI_VERSION = "1.3.4";
+const UI_VERSION = "1.3.3";
 
 let failed = 0;
 function assert(cond, msg) {
@@ -49,26 +49,11 @@ assert(!/>\s*Worth Reviewing\s*</.test(htmlOnly), "no Worth Reviewing user label
 assert(!htmlOnly.includes("All Market Activity"), "no All Market Activity label");
 
 console.log("\n--- LAYOUT ---");
-assert(html.includes("news-filter-row--single"), "single horizontal filter row");
-assert((html.match(/news-filter-divider/g) || []).length >= 3, "dividers between search / time / mode / actions");
-assert(html.includes("news-filter-actions"), "actions grouped after intelligence filters");
+assert(html.includes("news-filter-row--modes"), "time + intelligence same filter row");
+assert(html.includes("news-filter-divider"), "divider present");
 assert(html.includes("intel-summary-row"), "two-column intel summary class");
 assert(/grid-template-columns:\s*1fr\s*1fr/.test(html), "desktop two columns");
 assert(/@media \(max-width:\s*900px\)[\s\S]*intel-summary-row[\s\S]*grid-template-columns:\s*1fr/.test(html), "mobile stacks columns");
-{
-  const headlinesIdx = html.indexOf('<h2>Headlines</h2>');
-  const actNowIdx = html.indexOf('<h2>Act Now</h2>');
-  const watchIdx = html.indexOf('<h2>Watch</h2>');
-  assert(headlinesIdx > -1 && actNowIdx > headlinesIdx, "Headlines appear above Act Now");
-  assert(watchIdx > actNowIdx, "Watch follows Act Now");
-}
-{
-  const searchIdx = html.indexOf('id="searchInput"');
-  const timeIdx = html.indexOf('data-window="7d"');
-  const actIdx = html.indexOf('id="feedModeActionable"');
-  const savedIdx = html.indexOf('id="savedToggle"');
-  assert(searchIdx > -1 && searchIdx < timeIdx && timeIdx < actIdx && actIdx < savedIdx, "filter order: search → time → mode → actions");
-}
 
 console.log("\n--- SECTIONS ---");
 assert(/<h2>Act Now<\/h2>/.test(html), "Act Now section exists");

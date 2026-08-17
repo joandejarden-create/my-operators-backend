@@ -3,6 +3,10 @@ import {
   buildReportWindow,
   loadOptionsForWindow,
 } from "../lib/marketing-landing-events-window.js";
+import {
+  applyLandingReportFilters,
+  parseReportFilters,
+} from "../lib/marketing-landing-events-version.js";
 
 function setReportNoStore(res) {
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -10,7 +14,7 @@ function setReportNoStore(res) {
 }
 
 /**
- * GET /api/marketing/landing-events/session?sessionId=…&days=7
+ * GET /api/marketing/landing-events/session?sessionId=…&days=7&version=&cutover=&era=
  */
 export async function getMarketingLandingEventsSession(req, res) {
   try {
@@ -29,12 +33,14 @@ export async function getMarketingLandingEventsSession(req, res) {
 
     setReportNoStore(res);
     const window = buildReportWindow(req.query?.days);
+    const filters = parseReportFilters(req.query);
     const excludeInternal =
       String(req.query?.excludeInternal || "").trim() === "1";
-    const events = loadLandingEvents({
+    const loaded = loadLandingEvents({
       ...loadOptionsForWindow(window),
       excludeInternal,
     });
+    const { events } = applyLandingReportFilters(loaded, filters);
     const timeline = getSessionTimeline(events, sessionId);
 
     if (!timeline.length) {
@@ -50,6 +56,7 @@ export async function getMarketingLandingEventsSession(req, res) {
       sessionId,
       eventCount: timeline.length,
       timeline,
+      filters,
     });
   } catch (err) {
     console.error("Error in marketing-landing-events-session:", err);
