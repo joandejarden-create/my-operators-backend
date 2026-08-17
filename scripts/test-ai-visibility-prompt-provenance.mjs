@@ -396,11 +396,11 @@ test("Airtable proposal includes origin fields; live apply not implied", () => {
 
 test("observed seed partial — signals stored, live overlay empty", () => {
   assert.equal(seed.seedStatus, "OBSERVED_DEMAND_SEED_PARTIAL");
-  assert.equal((seed.includedThemes || []).length, 6);
+  assert.equal((seed.includedThemes || []).length, 9);
   assert.equal(seed.promptMixEligible, false);
   assert.equal(seed.activationStatus, "NOT_ATTACHED_TO_LIVE_PROMPTS");
   assert.ok((seed.candidateThemes || []).length >= 10);
-  assert.equal((signals.signals || []).length, 10);
+  assert.equal((signals.signals || []).length, 13);
   assert.equal((overlay.classifications || []).length, 0);
   assert.equal(audit.OBSERVED, 0);
   assert.equal(overlay.observedDemandSeedStatus, "OBSERVED_DEMAND_SEED_PARTIAL");
@@ -411,8 +411,8 @@ test("existing product sources stay unused; DataForSEO sample is file-store only
   assert.ok(dfs);
   assert.equal(dfs.USABLE, "FILE_STORE_ONLY");
   assert.equal(dfs.LIVE_MONITORING, "NO");
-  assert.equal(dfs.SIGNALS_FOUND, 10);
-  assert.equal(dfs.DISTINCT_THEMES, 6);
+  assert.equal(dfs.SIGNALS_FOUND, 13);
+  assert.equal(dfs.DISTINCT_THEMES, 9);
   const others = EXISTING_OBSERVED_SIGNAL_SOURCES.filter((s) => s !== dfs);
   assert.ok(others.every((s) => s.USABLE === "NO"));
   assert.equal(DEMAND_TIER_METHOD.exactVolumeInvented, false);

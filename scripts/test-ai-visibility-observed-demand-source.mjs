@@ -153,7 +153,7 @@ test("seed is partial after budget-capped sample", () => {
   assert.equal(seed.blockerCode, null);
   assert.equal(seed.activationStatus, "NOT_ATTACHED_TO_LIVE_PROMPTS");
   assert.equal(seed.promptMixEligible, false);
-  assert.equal((seed.includedThemes || []).length, 6);
+  assert.equal((seed.includedThemes || []).length, 9);
   assert.ok((seed.includedThemes || []).length < OBSERVED_PROMPT_MIX_MIN_THEMES);
 });
 
@@ -169,6 +169,20 @@ test("sample report records budget-capped success", () => {
   const statuses = Object.values(raw.volume_status || {});
   assert.ok(statuses.every((s) => s.http_status === 200));
   assert.ok(!statuses.some((s) => s.http_status === 402));
+});
+
+test("refinement report stays under phase cap and does not attach overlay", () => {
+  const p = path.join(root, "reports", "ai-visibility", "observed-demand-refinement-2026-08-17.json");
+  const raw = JSON.parse(fs.readFileSync(p, "utf8"));
+  assert.equal(raw.AI_PROVIDER_CALLS, 0);
+  assert.equal(raw.AIRTABLE_WRITES, 0);
+  assert.equal(raw.BROAD_KEYWORD_DISCOVERY, 0);
+  assert.equal(raw.actual_cost_usd, 0.192);
+  assert.equal(raw.TOTAL_PHASE_SPEND, 0.474);
+  assert.ok(raw.TOTAL_PHASE_SPEND <= MAX_TOTAL_DATAFORSEO_SPEND_THIS_PHASE_USD);
+  assert.equal(raw.gate.MIN_10_DISTINCT_THEMES, "FAIL");
+  assert.equal(raw.FINAL, "OBSERVED_DEMAND_REFINEMENT_PARTIAL");
+  assert.equal(raw.overlay_classifications, 0);
 });
 
 test("refinement seeds skip validated themes and stay under preferred cap", () => {

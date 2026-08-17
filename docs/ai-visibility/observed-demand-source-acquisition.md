@@ -1,7 +1,7 @@
 # Observed demand — source acquisition
 
-> **Status:** `OBSERVED_DEMAND_SEED_PARTIAL` · Budget-capped DataForSEO sample complete 2026-08-17  
-> **AI provider calls:** 0 · **Census:** none · **Airtable writes:** 0 · **Prompt Mix:** hidden (6 distinct themes < 10)  
+> **Status:** `OBSERVED_DEMAND_SEED_PARTIAL` · Sample + targeted refinement complete 2026-08-17  
+> **AI provider calls:** 0 · **Census:** none · **Airtable writes:** 0 · **Prompt Mix:** hidden (9 distinct themes < 10)  
 > **Live overlay:** empty — signals are file-store only
 
 ## Budget guard (binding)
@@ -11,11 +11,17 @@ Account funding is not a project budget. A founder top-up does not authorize ext
 | Cap | Value |
 |-----|-------|
 | `MAX_SOURCE_SAMPLE_COST_USD` | **1.00** |
-| `MAX_TOTAL_DATAFORSEO_SPEND_THIS_PHASE_USD` | **2.00** |
+| `MAX_REFINEMENT_INCREMENTAL_USD` | **0.75** preferred |
+| `MAX_TOTAL_DATAFORSEO_SPEND_THIS_PHASE_USD` | **2.00** hard |
 
-This sample: **$0.282** actual. Phase spent **$0.282**. Remaining phase budget **$1.718 unused on purpose**. Projected spend above $2.00 must stop with `DATAFORSEO_BUDGET_APPROVAL_REQUIRED`.
+| Spend | USD |
+|-------|-----|
+| First sample | 0.282 |
+| Refinement (this pass) | 0.192 |
+| **Phase total** | **0.474** |
+| Remaining under cap | **1.526 unused** |
 
-Do not run broad keyword expansion, hundreds of SERPs, country-wide discovery, or additional paid calls unless explicitly approved.
+Projected spend above $2.00 must stop with `DATAFORSEO_BUDGET_APPROVAL_REQUIRED`. Do not run a third paid pass automatically.
 
 ## Finding
 
@@ -23,29 +29,30 @@ Dealality already has a DataForSEO account (used for census discovery). After th
 
 | Result | Count |
 |--------|-------|
-| Queries tested | 36 |
-| Usable signal rows | 10 |
-| Distinct themes | 6 |
+| Queries tested (first sample) | 36 |
+| Usable signal rows (current file store) | 13 |
+| Distinct themes after PAA quality filter | 9 |
 | AI provider calls | 0 |
 
-Signals are stored in `fixtures/ai-visibility/demand-signals-v1.json`. They are **not** attached to live monitored prompts. Client Prompt Mix stays hidden until ≥10 validated observed themes exist in the monitored library.
+Activation gate **failed** at 9/10 distinct themes. Two refinement PAA rows were removed as generic franchise-entrepreneur SERP reuse (`independent hotel franchise`, `hotel franchise distribution benefits`). `coste franquicia hotelera` collapsed as a duplicate of `hotel franchise fees`.
 
 Do not treat public hospitality articles as search volume. They only show that owner-decision **topics exist**.
 
-## Sample themes (do not invent more)
+## Sample + refinement themes
 
 | Theme | Evidence | Notes |
 |-------|----------|--------|
 | hotel franchise fees | US EN vol **90** HIGH; MX EN vol **10** MEDIUM; PAA | Licensed volume |
 | soft brand hotel | US EN vol **50** MEDIUM; MX EN vol **10** HIGH; PAA | Licensed volume |
-| franquicia hotelera | MX ES vol **20** HIGH | Licensed volume; no PAA in this sample |
+| franquicia hotelera | MX ES vol **20** HIGH | Licensed volume |
 | contrato de gestion hotelera | MX ES vol **10** MEDIUM | Licensed volume |
-| hotel franchise vs management agreement | volume **null**; US/MX EN **PAA SUPPORTED** | Not volume; still usable as PAA |
-| hotel reflagging | volume **null**; US/MX EN **PAA SUPPORTED** | Some PAA questions are generic/off-intent — treat carefully |
+| hotel franchise vs management agreement | volume **null**; US/MX EN **PAA SUPPORTED** | Not volume |
+| hotel reflagging | volume **null**; US/MX EN **PAA SUPPORTED** | Some PAA questions are generic/off-intent |
+| hotel affiliation agreement | US EN **PAA SUPPORTED** | Mixed PAA; one affiliation-agreement question |
+| convert independent hotel to franchise | US EN **PAA SUPPORTED** | Mixed PAA; includes franchise-cost question |
+| hotel branded residences | US EN vol **10**; tier UNKNOWN (cohort too small) | Licensed volume |
 
 Tiers are **relative within one country+language volume set**, not comparable across US vs Mexico. Geography is **country** (US/Mexico), **not CALA**. Volume is **not** “owner searches.”
-
-Failed seed concepts remain `NEEDS_EVIDENCE`. Do not spend remaining phase budget to chase them without approval.
 
 ## Recommended architecture (smallest practical stack)
 
@@ -98,6 +105,7 @@ HIGH observed demand + HIGH commercial importance → higher repeat sampling pri
 
 ## Next
 
-1. Do **not** spend remaining **$1.718** or the account balance without a new explicit budget.  
-2. If more themes are approved and ≥10 validate → `OBSERVED_DEMAND_ACTIVATION` (still no monitoring until approved).  
-3. Then `REPEATED_TESTING_AND_STABILITY`.
+1. Do **not** spend remaining **$1.526** or the account balance without a new explicit budget.  
+2. Do **not** run a third paid refinement pass automatically.  
+3. If more themes are approved and ≥10 validate → `OBSERVED_DEMAND_ACTIVATION` (still no monitoring until approved).  
+4. Then `REPEATED_TESTING_AND_STABILITY`.

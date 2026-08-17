@@ -133,17 +133,18 @@
     "hotel brand selection"
   ],
   "queries_tested": 17,
-  "valid_rows": 1,
+  "valid_rows": 13,
   "new_distinct_themes": [
     "hotel affiliation agreement",
     "convert independent hotel to franchise",
     "hotel branded residences"
   ],
   "duplicates_removed": 1,
-  "consumer_noise_removed": 4,
+  "consumer_noise_removed": 2,
   "distinct_themes": [
     "soft brand hotel",
     "hotel franchise vs management agreement",
+    "hotel franchise fees",
     "hotel reflagging",
     "franquicia hotelera",
     "contrato de gestion hotelera",
@@ -160,6 +161,7 @@
     "ownerIntentFamilies": [
       "BRANDED_RESIDENCES",
       "BRAND_SELECTION",
+      "FEES_ECONOMICS",
       "FRANCHISE_VS_HMA",
       "REFLAGGING_CONVERSION",
       "SOFT_BRAND_HARD_BRAND"
@@ -167,6 +169,7 @@
     "overlapWithScenario": [
       "soft brand hotel",
       "hotel franchise vs management agreement",
+      "hotel franchise fees",
       "hotel reflagging",
       "franquicia hotelera",
       "contrato de gestion hotelera",
@@ -179,7 +182,6 @@
       "scenario_independent_uu_conversion_v1",
       "scenario_newbuild_uu_brand_selection_v1",
       "scenario_owner_flexibility_control_v1",
-      "scenario_owner_economics_v1",
       "scenario_distribution_loyalty_v1",
       "scenario_chainscale_positioning_fit_v1",
       "scenario_market_entry_geographic_relevance_v1",
@@ -685,16 +687,6 @@
   "paa_quality_filter": {
     "applied": true,
     "dropped": [
-      {
-        "demandSignalId": "ds_hotel_franchise_fees_united_states_en",
-        "theme": "hotel franchise fees",
-        "why": "generic_franchise_entrepreneur_paa"
-      },
-      {
-        "demandSignalId": "ds_hotel_franchise_fees_mexico_en",
-        "theme": "hotel franchise fees",
-        "why": "generic_franchise_entrepreneur_paa"
-      },
       {
         "demandSignalId": "ds_independent_hotel_franchise_united_states_en",
         "theme": "independent hotel franchise",

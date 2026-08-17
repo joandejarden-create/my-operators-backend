@@ -1,6 +1,6 @@
 # Prompt origin and observed demand provenance
 
-> **Status:** Contract + adapters live. Observed seed **partial** (6 distinct file-store themes; not attached to live prompts). Prompt Mix hidden until ≥10.  
+> **Status:** Contract + adapters live. Observed seed **partial** (9 distinct file-store themes; not attached to live prompts). Prompt Mix hidden until ≥10.  
 > **Measurement:** Unchanged (Presence / QM / All Providers / citations / P0C / Truth).  
 > **Scheduler:** OFF · **Provider calls:** 0 · **Census:** none · **Recommendation research:** none
 
@@ -63,7 +63,7 @@ Airtable may later store governed origin metadata (proposal only; not applied). 
 
 ## Next
 
-Budget-capped DataForSEO sample stored 10 signal rows / 6 distinct themes. Live overlay classifications remain empty. Do not spend remaining phase budget without approval. Next, only if asked: `OBSERVED_DEMAND_ACTIVATION` (≥10 validated themes + explicit attach), then `REPEATED_TESTING_AND_STABILITY`. See [observed-demand-source-acquisition.md](./observed-demand-source-acquisition.md).
+Budget-capped DataForSEO sample + one targeted refinement stored 13 signal rows / 9 distinct themes after PAA quality filter. Live overlay classifications remain empty. Activation gate failed (9 < 10). Do not spend remaining phase budget without approval. Next, only if asked: another approved source pass, or `OBSERVED_DEMAND_ACTIVATION` after ≥10 themes. See [observed-demand-source-acquisition.md](./observed-demand-source-acquisition.md).
 
 ## Tests
 

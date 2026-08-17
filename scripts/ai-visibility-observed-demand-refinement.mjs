@@ -568,6 +568,7 @@ async function main() {
       queryText: spec.keyword,
       normalizedTheme: canon,
       paaQuestions: paa.map((p) => p.question),
+      search_volume: null,
     });
     let finalClass = classCode;
     if (!relevance.usable) finalClass = "CONSUMER_NOISE";
