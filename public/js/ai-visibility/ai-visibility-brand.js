@@ -94,11 +94,11 @@
       filterFp: state.loadFilterFp,
       signal: controller ? controller.signal : null,
       isCurrent: function () {
-        return (
-          generation === state.requestGeneration &&
-          filterSnapshotFp(currentFilterSnapshot()) ===
-            filterSnapshotFp(filterSnap)
-        );
+        // Generation only. The same load mutates language / demo portfolio key
+        // after the first executive-summary response (filter contract reconcile).
+        // Comparing live currentFilterSnapshot() here treats that as stale, skips
+        // renderExecutive(), and never calls setLoading(false).
+        return generation === state.requestGeneration;
       },
     };
   }
