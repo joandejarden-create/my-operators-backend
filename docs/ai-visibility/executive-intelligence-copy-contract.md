@@ -1,6 +1,6 @@
 # Executive Intelligence Copy Contract
 
-Binding contract for `Brand AI Intelligence` Executive Summary finding copy.
+Binding contract for `Brand AI Intelligence` Executive Summary and Detailed View finding copy.
 
 ## Scope
 
@@ -17,18 +17,27 @@ Applies to finding types:
 
 ## Structure
 
-- **Headline**: factual statement of what is happening.
-- **Body**: usually two concise sentences:
-  - sentence 1 = what is happening
-  - sentence 2 = why it matters commercially
-- **Evidence**: strongest 2–3 facts from one coherent evidence construct.
+Each finding card uses four layers:
 
-Card layout constraints (UI only):
+- **Category label** — finding type title (small caps).
+- **Headline** — factual statement of what is happening (finding).
+- **Body** — commercial interpretation (normally two concise sentences):
+  - sentence 1 = measured result in plain language
+  - sentence 2 = why it matters to a hotel brand executive
+- **Evidence** — strongest 2–3 facts from one coherent evidence construct (substantiation).
 
-- body clamped to 5 lines
-- evidence clamped to 2 lines
+**Permanent rule:** Executive findings must communicate both measured result and commercial meaning. Numeric evidence alone is insufficient.
 
-Line clamps are visual guards and must not trigger filler copy.
+A finding fails editorial validation if **Body** merely repeats **Headline**.
+
+## Card layout constraints (UI only)
+
+- Headline: max 2–3 visual lines
+- Body: normally 3–5 visual lines; max 5 lines (clamp is a ceiling, not a target length)
+- Evidence: max 2 visual lines
+- Do not use minimum-height padding to force empty space or shorten copy artificially
+
+Detailed View may use a slightly richer body (one additional supporting sentence or context line) while preserving the same semantic contract.
 
 ## Semantic Rules
 
@@ -94,3 +103,16 @@ If Association and Narrative overlap on the same theme:
 - prefer Narrative only when it adds incremental validated value (provider breadth, response recurrence, scenario breadth, source linkage, or competitor context).
 - otherwise use Association.
 
+## Copy validation checks
+
+Governance must enforce:
+
+- `BODY_PRESENT`
+- `BODY_NOT_HEADLINE_RESTATEMENT`
+- `BODY_ADDS_COMMERCIAL_INTERPRETATION`
+- `EVIDENCE_PRESENT`
+- `EVIDENCE_CONSTRUCT_COHERENT`
+- `NO_SEMANTIC_OVERSTATEMENT` / `RECURRENCE_LANGUAGE_SAFE`
+- `DENOMINATOR_SAFE`
+- `NO_CITATION_MISUSE`
+- `NO_CAUSAL_LANGUAGE` (source construct)

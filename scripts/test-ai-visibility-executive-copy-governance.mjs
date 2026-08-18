@@ -156,6 +156,42 @@ test("I. provider percentages rendered from payload fields", () => {
   assert.ok(/OpenAI 91.7% vs Perplexity 58.3%/i.test(out.governedEvidence));
 });
 
+test("J. body adds commercial interpretation and does not restate headline", () => {
+  const out = applyExecutiveCopyGovernance([
+    {
+      findingType: "LARGEST_COMPETITIVE_GAP",
+      brandName: "AC Hotels",
+      scenarioName: "Independent Conversion",
+      peerBrandNames: ["Autograph", "Tribute Portfolio", "Tapestry"],
+      leadPeerName: "Autograph",
+      providerCount: 4,
+      observationCount: 10,
+      headline: "Gap",
+      title: "Largest Competitive Gap",
+    },
+  ]).findings[0];
+  assert.equal(out.copyValidation.BODY_PRESENT, true);
+  assert.equal(out.copyValidation.BODY_NOT_HEADLINE_RESTATEMENT, true);
+  assert.equal(out.copyValidation.BODY_ADDS_COMMERCIAL_INTERPRETATION, true);
+  assert.ok(/\bshortlist\b/i.test(out.governedBody));
+});
+
+test("K. association body uses positioning clarity language", () => {
+  const out = applyExecutiveCopyGovernance([
+    {
+      findingType: "STRONGEST_VALIDATED_ASSOCIATION",
+      brandName: "Design Hotels",
+      associationAttributeId: "DISTRIBUTION_LOYALTY",
+      providerCount: 3,
+      observationCount: 48,
+      headline: "Association",
+      title: "Observed AI Association",
+    },
+  ]).findings[0];
+  assert.ok(/\bmonitoring\b/i.test(out.governedBody));
+  assert.equal(out.copyValidation.BODY_ADDS_COMMERCIAL_INTERPRETATION, true);
+});
+
 const pass = results.filter((r) => r.ok).length;
 const fail = results.length - pass;
 console.log(`\nExecutive copy governance tests: ${pass} passed, ${fail} failed\n`);

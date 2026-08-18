@@ -663,19 +663,32 @@
         ) {
           title = "Provider Comparison";
         }
-        var headline = box.finding || box.takeaway || "";
+        var isDetailRow = opts.rowId === "aivDetailInsights";
+        var headline = box.headline || box.title || "";
+        var body = isDetailRow
+          ? box.detailBody || box.finding || box.takeaway || ""
+          : box.finding || box.takeaway || "";
         var observationSupport = box.observationSupport || "";
         var evidence = box.evidence || observationSupport || "";
         return (
-          '<article class="aiv-insight-tile" data-insight-kind="' +
+          '<article class="aiv-insight-tile' +
+          (isDetailRow ? " aiv-insight-tile--detail" : "") +
+          '" data-insight-kind="' +
           AiVisibilityUi.escapeHtml(kind) +
           '" tabindex="0" role="button">' +
           "<h3>" +
           AiVisibilityUi.escapeHtml(title) +
           "</h3>" +
-          '<p class="aiv-insight-finding">' +
-          AiVisibilityUi.escapeHtml(headline) +
-          "</p>" +
+          (headline
+            ? '<p class="aiv-insight-headline">' +
+              AiVisibilityUi.escapeHtml(headline) +
+              "</p>"
+            : "") +
+          (body
+            ? '<p class="aiv-insight-body">' +
+              AiVisibilityUi.escapeHtml(body) +
+              "</p>"
+            : "") +
           (evidence
             ? '<p class="aiv-insight-evidence"><span class="aiv-insight-evidence-label">Evidence:</span> ' +
               AiVisibilityUi.escapeHtml(evidence) +
