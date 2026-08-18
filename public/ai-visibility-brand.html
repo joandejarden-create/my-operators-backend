@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brand AI Visibility — Dealality</title>
+  <title>Hotel Brand AI Intelligence — Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
   <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
@@ -16,17 +16,15 @@
     <header class="dashboard-header aiv-dashboard-header">
       <div class="dashboard-header-left">
         <div class="dashboard-title-container">
-          <h1>Brand AI Visibility</h1>
+          <h1>Hotel Brand AI Intelligence</h1>
         </div>
-        <p>See how your brands appear when hotel owners ask AI platforms about development, conversion, and positioning. Track Presence and competitive position by geography and provider, review questions where the brand was not observed, and inspect peer context and associated sources from governed monitoring runs.</p>
+        <p class="aiv-header-subtitle">How your brands appear when hotel owners ask AI about development, conversion, and positioning — tracked by geography and provider with governed evidence.</p>
       </div>
-      <div class="aiv-disclaimer-box" role="note" data-testid="aiv-methodology-footnote">
-        <div class="aiv-disclaimer-box__title">Disclaimer</div>
-        <ul class="aiv-disclaimer-box__list">
-          <li class="aiv-disclaimer-box__item">AI model outputs are probabilistic and may vary between monitoring runs.</li>
-          <li class="aiv-disclaimer-box__item">Dealality validates calculation accuracy, evidence traceability, and monitoring consistency.</li>
-          <li class="aiv-disclaimer-box__item">Interpret AI answers as observed model behavior—not guaranteed fact or advice. Results are calculated from monitored runs using consistent rules.</li>
-        </ul>
+      <div class="aiv-methodology-helper" role="note" data-testid="aiv-methodology-footnote">
+        <details class="aiv-methodology-details">
+          <summary class="aiv-methodology-summary">Methodology &amp; interpretation</summary>
+          <p>Metrics reflect observed AI responses across selected providers and prompt set. Repeated observations indicate recurrence, not statistical confidence. Citation and source relationships show association, not causation. AI model outputs are probabilistic and may vary between monitoring runs.</p>
+        </details>
       </div>
     </header>
 
@@ -145,7 +143,7 @@
         <p class="aiv-prompt-mix help-text" id="aivExecPromptMix" hidden></p>
       </section>
 
-      <section class="aiv-theme-group" aria-labelledby="aivThemeMarkets">
+      <section class="aiv-theme-group aiv-theme-group--secondary" aria-labelledby="aivThemeMarkets">
         <h2 id="aivThemeMarkets" class="aiv-theme-title">Markets &amp; Movement</h2>
         <p class="aiv-theme-help help-text">Which regions are monitored, which brand leads there, and how AI Presence changed between the latest two comparable monitoring runs.</p>
         <div class="aiv-markets-grid">
@@ -404,6 +402,29 @@
         <h2 id="aivDetailThemeAssociations" class="aiv-theme-title">AI Associations</h2>
         <p class="aiv-theme-help help-text">Validated AI association patterns from monitored owner-decision responses.</p>
         <div class="aiv-theme-card aiv-theme-card--flush" id="aivDetailAssociations"></div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeNarrative" id="aivDetailNarrativeSection" hidden>
+        <h2 id="aivDetailThemeNarrative" class="aiv-theme-title">Narrative Intelligence</h2>
+        <p class="aiv-theme-help help-text">Recurring commercial narratives AI associates with this brand across owner-decision scenarios. Sources cited alongside each narrative are shown where available.</p>
+        <div class="aiv-theme-card aiv-theme-card--flush">
+          <div class="deals-table-container aiv-portfolio-table-wrap">
+            <table class="deals-table aiv-portfolio-table aiv-narrative-table" id="aivNarrativeTable">
+              <thead>
+                <tr>
+                  <th class="no-sort">Narrative</th>
+                  <th class="no-sort">Relationship</th>
+                  <th class="no-sort">Recurrence</th>
+                  <th class="no-sort">Providers</th>
+                  <th class="no-sort">Scenario</th>
+                  <th class="no-sort">Disposition</th>
+                </tr>
+              </thead>
+              <tbody id="aivNarrativeBody"></tbody>
+            </table>
+          </div>
+          <div id="aivNarrativeEmpty" class="aiv-empty aiv-empty--compact" hidden>No qualified narrative patterns in the selected cohort.</div>
+        </div>
       </section>
 
       <section class="aiv-theme-group" aria-labelledby="aivDetailThemeAiVs" id="aivDetailAiVsSection" hidden>

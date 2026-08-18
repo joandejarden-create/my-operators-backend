@@ -137,8 +137,20 @@ body.aiv-page {
 
 .aiv-prompt-mix-label {
   font-weight: 600;
-  color: var(--neutral--300);
   margin-right: 8px;
+  color: var(--neutral--300);
+}
+
+.aiv-prompt-mix-compact {
+  display: inline;
+  margin-right: 8px;
+}
+
+.aiv-prompt-mix-help {
+  display: block;
+  margin-top: 4px;
+  font-weight: 400;
+  color: var(--neutral--500);
 }
 
 .aiv-origin-badge {
@@ -161,10 +173,10 @@ body.aiv-page {
   color: var(--neutral--200);
 }
 
-.aiv-origin-meta {
+.aiv-insight-stability {
   display: block;
-  margin-top: 2px;
-  font-size: 11px;
+  margin-top: 4px;
+  font-size: 12px;
   color: var(--neutral--500);
 }
 
@@ -4282,4 +4294,54 @@ div.aiv-source-row,
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* Secondary theme group — reduced prominence */
+.aiv-theme-group--secondary {
+  border-color: var(--neutral--700, #3a3a3c);
+  background: transparent;
+}
+.aiv-theme-group--secondary > .aiv-theme-title {
+  font-size: 15px;
+  color: var(--neutral--300, #a1a1aa);
+}
+
+/* Calm disposition badge */
+.aiv-disposition--calm {
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+/* Methodology helper (replaces disclaimer box) */
+.aiv-methodology-helper {
+  font-size: 12px;
+  color: var(--neutral--500, #71717a);
+}
+.aiv-methodology-details summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--neutral--400, #a1a1aa);
+}
+.aiv-methodology-details p {
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+/* Header subtitle */
+.aiv-header-subtitle {
+  font-size: 13px;
+  color: var(--neutral--400, #a1a1aa);
+  margin: 4px 0 0;
+  max-width: 60ch;
+}
+
+/* Narrative table */
+.aiv-narrative-table td {
+  font-size: 12.5px;
+  vertical-align: middle;
+}
+
+/* Provider selector emphasis for All Providers */
+#aivProvider option[value="all"] {
+  font-weight: 600;
 }

@@ -699,6 +699,11 @@
               AiVisibilityUi.escapeHtml(evidence) +
               "</p>"
             : "") +
+          (box.observationSupport
+            ? '<p class="aiv-insight-stability">' +
+              AiVisibilityUi.escapeHtml(box.observationSupport) +
+              "</p>"
+            : "") +
           (disposition
             ? '<span class="aiv-insight-disposition">' +
               AiVisibilityUi.escapeHtml(disposition) +
@@ -3792,27 +3797,28 @@
   function renderExecutivePromptMix(summary) {
     var el = $("aivExecPromptMix");
     if (!el) return;
-    var observed = summary && Number(summary.observed);
-    var derived = summary && Number(summary.derived);
-    var scenario = summary && Number(summary.scenario);
-    var show =
-      summary &&
-      summary.showPromptMix === true &&
-      (observed || 0) >= 10;
+    var show = summary && summary.showPromptMix === true;
     if (!show) {
       el.hidden = true;
       el.innerHTML = "";
       return;
     }
+    var label = (summary && summary.promptCoverageLabel) || "Prompt Intelligence";
+    var compact = (summary && summary.promptCoverageCompact) || "Observed demand · Expert scenarios";
+    var help =
+      (summary && summary.EXECUTIVE_STORY) ||
+      "We use both observed demand and expert scenario intelligence. Observed demand reflects externally measured query themes. Scenario intelligence tests commercially important owner and developer decisions that may not appear as literal high-volume searches.";
     el.hidden = false;
     el.innerHTML =
-      '<span class="aiv-prompt-mix-label">Prompt mix</span>' +
-      "Observed demand: " +
-      AiVisibilityUi.escapeHtml(String(observed)) +
-      " · Derived: " +
-      AiVisibilityUi.escapeHtml(String(derived)) +
-      " · Scenario: " +
-      AiVisibilityUi.escapeHtml(String(scenario || 0));
+      '<span class="aiv-prompt-mix-label">' +
+      AiVisibilityUi.escapeHtml(label) +
+      "</span>" +
+      '<span class="aiv-prompt-mix-compact">' +
+      AiVisibilityUi.escapeHtml(compact) +
+      "</span>" +
+      '<span class="aiv-prompt-mix-help">' +
+      AiVisibilityUi.escapeHtml(help) +
+      "</span>";
   }
 
   function promptOriginBadgeHtml(row) {
@@ -3830,7 +3836,11 @@
     if (origin === "OBSERVED") cls += " aiv-origin-badge--observed";
     var title = row.originDetail || "";
     if (origin === "SCENARIO" && !title) title = "Expert scenario";
-    var html =
+    if (origin === "DERIVED" && !title) title = "Derived from observed demand";
+    if (origin === "OBSERVED" && !title) {
+      title = "Demand tier is relative to comparable observed queries within the source country and language cohort.";
+    }
+    return (
       '<span class="' +
       cls +
       '"' +
@@ -3839,19 +3849,8 @@
         : "") +
       ">" +
       AiVisibilityUi.escapeHtml(badge) +
-      "</span>";
-    if (origin === "OBSERVED" && row.originDetail) {
-      html +=
-        '<span class="aiv-origin-meta">' +
-        AiVisibilityUi.escapeHtml(row.originDetail) +
-        "</span>";
-    } else if (origin === "DERIVED" && row.originDetail) {
-      html +=
-        '<span class="aiv-origin-meta">' +
-        AiVisibilityUi.escapeHtml(row.originDetail) +
-        "</span>";
-    }
-    return html;
+      "</span>"
+    );
   }
 
   function renderExecutive(data) {
@@ -4873,11 +4872,30 @@
     tbody.innerHTML = rows
       .map(function (q) {
         var presenceLabel = q.presenceLabel || q.brandStatus || "Missing";
+        var stabilityTitle =
+          q.observationSummary && q.observationSummary.presenceLabel
+            ? [
+                q.observationSummary.presenceLabel,
+                q.observationSummary.recurrence || "",
+                q.observationSummary.firstObserved
+                  ? "First " + String(q.observationSummary.firstObserved).slice(0, 10)
+                  : "",
+                q.observationSummary.lastObserved
+                  ? "Last " + String(q.observationSummary.lastObserved).slice(0, 10)
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" · ")
+            : "";
         return (
           "<tr><td>" +
           AiVisibilityUi.escapeHtml(q.question || q.promptId) +
           promptOriginBadgeHtml(q) +
-          "</td><td class=\"aiv-metric-cell\">" +
+          "</td><td class=\"aiv-metric-cell\"" +
+          (stabilityTitle
+            ? ' title="' + AiVisibilityUi.escapeHtml(stabilityTitle) + '"'
+            : "") +
+          ">" +
           AiVisibilityUi.statusBadge(presenceLabel) +
           '</td><td class="aiv-metric-cell">' +
           AiVisibilityUi.escapeHtml(q.provider || "—") +
@@ -5980,6 +5998,44 @@
     }
   }
 
+  function renderDetailNarrativeSection(data) {
+    var section = $("aivDetailNarrativeSection");
+    var body = $("aivNarrativeBody");
+    var empty = $("aivNarrativeEmpty");
+    if (!section || !body) return;
+
+    var summary = (data && data.narrativeSummary) || {};
+    var narratives = summary.productionNarratives || [];
+    if (!narratives.length) {
+      section.hidden = true;
+      body.innerHTML = "";
+      if (empty) empty.hidden = true;
+      return;
+    }
+
+    section.hidden = false;
+    if (empty) empty.hidden = true;
+
+    body.innerHTML = narratives.map(function (n) {
+      var family = String(n.narrativeFamily || "").replace(/_/g, " ").toLowerCase();
+      family = family.charAt(0).toUpperCase() + family.slice(1);
+      var disp = formatExecutiveDispositionLabel(n.disposition);
+      var dispClass = (n.disposition || "").indexOf("NO_ACTION") >= 0 || (n.disposition || "").indexOf("MONITOR") >= 0
+        ? "aiv-disposition--calm"
+        : "";
+      return (
+        "<tr>" +
+        "<td>" + AiVisibilityUi.escapeHtml(n.headline || family) + "</td>" +
+        "<td>" + AiVisibilityUi.escapeHtml(family) + "</td>" +
+        "<td>" + AiVisibilityUi.escapeHtml(n.evidence || "—") + "</td>" +
+        "<td>" + AiVisibilityUi.escapeHtml(String(n.providerCount || "—")) + "</td>" +
+        "<td>" + AiVisibilityUi.escapeHtml(String(n.observationCount || "—")) + " obs</td>" +
+        '<td><span class="aiv-insight-disposition ' + dispClass + '">' + AiVisibilityUi.escapeHtml(disp || "—") + "</span></td>" +
+        "</tr>"
+      );
+    }).join("");
+  }
+
   async function loadDetailExecutiveInsights(overview) {
     var section = $("aivDetailInsightSection");
     var row = $("aivDetailInsights");
@@ -6112,6 +6168,7 @@
     renderIntentCoverage($("aivDetailIntentCoverage"), dp.ownerIntentCoverage);
     renderDecisionPatternExtras(dp.ownerIntentCoverage, dp.topDecisionTerritory);
     renderDetailIntelligence(overview);
+    renderDetailNarrativeSection(state.executive || {});
     if (
       !overview.detailIntelligence ||
       !overview.detailIntelligence.recommendedReviews ||

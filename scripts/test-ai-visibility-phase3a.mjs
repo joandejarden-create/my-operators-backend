@@ -536,7 +536,7 @@ async function run() {
       assert.ok(fs.existsSync(path.join(rootRepo, f)), `missing ${f}`);
     }
     const html = fs.readFileSync(path.join(rootRepo, "public/ai-visibility-brand.html"), "utf8");
-    assert.match(html, /Brand AI Visibility/);
+    assert.match(html, /Brand AI|Hotel Brand AI/);
     assert.match(html, /Presence Over Time/);
     assert.match(html, /Owner Questions/);
     assert.match(html, /Opportunity Engine/);
@@ -544,8 +544,8 @@ async function run() {
     assert.ok(!/id="aivTabHdv"/.test(html));
     assert.doesNotMatch(html, /Summit Hotels/);
     assert.doesNotMatch(html, /Strong fit/);
-    // Product title must be stakeholder-prefixed (not bare "AI Visibility" as H1)
-    assert.match(html, /<h1>Brand AI Visibility<\/h1>/);
+    // Product title must be stakeholder-prefixed
+    assert.match(html, /<h1>Hotel Brand AI Intelligence<\/h1>/);
     assert.match(html, /dashboard-container/);
     assert.match(html, /filters-section/);
     assert.match(html, /filter-select/);
