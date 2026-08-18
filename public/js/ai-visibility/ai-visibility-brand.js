@@ -680,11 +680,6 @@
           '<p class="aiv-insight-finding">' +
           AiVisibilityUi.escapeHtml(headline) +
           "</p>" +
-          (disposition
-            ? '<span class="aiv-insight-disposition">' +
-              AiVisibilityUi.escapeHtml(disposition) +
-              "</span>"
-            : "") +
           (evidence
             ? '<p class="aiv-insight-evidence"><span class="aiv-insight-evidence-label">Evidence:</span> ' +
               AiVisibilityUi.escapeHtml(evidence) +
