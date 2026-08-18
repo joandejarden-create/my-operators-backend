@@ -667,18 +667,9 @@
         }
         var headline = box.finding || box.takeaway || "";
         var evidence = box.evidence || "";
-        var review = box.whatToWatch || "";
         var disposition = formatExecutiveDispositionLabel(
           p0e.actionDisposition || box.actionDisposition
         );
-        var contextNote = "";
-        if (
-          kind === "PROVIDER_DISAGREEMENT" &&
-          providerFilter &&
-          providerFilter !== "all"
-        ) {
-          contextNote = "Cross-provider context";
-        }
         return (
           '<article class="aiv-insight-tile" data-insight-kind="' +
           AiVisibilityUi.escapeHtml(kind) +
@@ -686,32 +677,17 @@
           "<h3>" +
           AiVisibilityUi.escapeHtml(title) +
           "</h3>" +
-          (contextNote
-            ? '<p class="aiv-insight-context">' +
-              AiVisibilityUi.escapeHtml(contextNote) +
-              "</p>"
-            : "") +
           '<p class="aiv-insight-finding">' +
           AiVisibilityUi.escapeHtml(headline) +
           "</p>" +
-          (evidence
-            ? '<p class="aiv-insight-evidence"><span class="aiv-insight-evidence-label">Evidence:</span> ' +
-              AiVisibilityUi.escapeHtml(evidence) +
-              "</p>"
-            : "") +
-          (box.observationSupport
-            ? '<p class="aiv-insight-stability">' +
-              AiVisibilityUi.escapeHtml(box.observationSupport) +
-              "</p>"
-            : "") +
           (disposition
             ? '<span class="aiv-insight-disposition">' +
               AiVisibilityUi.escapeHtml(disposition) +
               "</span>"
             : "") +
-          (review
-            ? '<p class="aiv-insight-watch"><span class="aiv-insight-watch-label">Recommended review:</span> ' +
-              AiVisibilityUi.escapeHtml(review) +
+          (evidence
+            ? '<p class="aiv-insight-evidence"><span class="aiv-insight-evidence-label">Evidence:</span> ' +
+              AiVisibilityUi.escapeHtml(evidence) +
               "</p>"
             : "") +
           "</article>"

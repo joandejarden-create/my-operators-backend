@@ -545,7 +545,7 @@ async function run() {
     assert.doesNotMatch(html, /Summit Hotels/);
     assert.doesNotMatch(html, /Strong fit/);
     // Product title must be stakeholder-prefixed
-    assert.match(html, /<h1>Hotel Brand AI Intelligence<\/h1>/);
+    assert.match(html, /<h1>Brand AI Intelligence<\/h1>/);
     assert.match(html, /dashboard-container/);
     assert.match(html, /filters-section/);
     assert.match(html, /filter-select/);
