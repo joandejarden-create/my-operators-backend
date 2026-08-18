@@ -632,24 +632,6 @@
     return map[key] || "";
   }
 
-  function redraftExecutiveText(text, options) {
-    options = options || {};
-    var minChars = Number(options.minChars || 0);
-    var maxChars = Number(options.maxChars || 9999);
-    var fallbackTail = String(options.fallbackTail || "").trim();
-    var t = String(text || "")
-      .replace(/\s+/g, " ")
-      .trim();
-    if (!t) return "";
-    if (t.length < minChars && fallbackTail) {
-      t = (t + " " + fallbackTail).replace(/\s+/g, " ").trim();
-    }
-    if (t.length > maxChars) {
-      t = t.slice(0, Math.max(0, maxChars - 1)).trimEnd() + "…";
-    }
-    return t;
-  }
-
   /**
    * Executive Summary tiles — structured finding hierarchy (title → headline → evidence → disposition → review).
    */
@@ -681,18 +663,9 @@
         ) {
           title = "Provider Comparison";
         }
-        var headline = redraftExecutiveText(box.finding || box.takeaway || "", {
-          minChars: 170,
-          maxChars: 260,
-          fallbackTail:
-            "This signal is observed in monitored owner-decision responses for the selected cohort.",
-        });
-        var evidence = redraftExecutiveText(box.evidence || "", {
-          minChars: 70,
-          maxChars: 120,
-          fallbackTail:
-            "Based on governed monitored responses in this selected cohort.",
-        });
+        var headline = box.finding || box.takeaway || "";
+        var observationSupport = box.observationSupport || "";
+        var evidence = box.evidence || observationSupport || "";
         return (
           '<article class="aiv-insight-tile" data-insight-kind="' +
           AiVisibilityUi.escapeHtml(kind) +
@@ -706,6 +679,11 @@
           (evidence
             ? '<p class="aiv-insight-evidence"><span class="aiv-insight-evidence-label">Evidence:</span> ' +
               AiVisibilityUi.escapeHtml(evidence) +
+              "</p>"
+            : "") +
+          (observationSupport
+            ? '<p class="aiv-insight-stability" hidden>' +
+              AiVisibilityUi.escapeHtml(observationSupport) +
               "</p>"
             : "") +
           "</article>"

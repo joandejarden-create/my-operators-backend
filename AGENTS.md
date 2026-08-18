@@ -129,6 +129,7 @@ For meaningful product, platform, data, or AI-output work, read the relevant doc
 - Brand Explorer gallery mono-packs / repeat exteriors — `materials.gallery.1–6` must prefer **CALA properties when inventory exists**, mix Exterior / Guest Room / Public Space / F&B when available, and use multiple properties (not one hotel × 6). Fall back to International Reference only when no CALA photos exist. Gate: `lib/partner-intelligence/brand-explorer-gallery-selection.js`.
 - Brand Explorer Value Creation Scenarios as blanks, one-liners, or one long blob — must be **four** `valueOwners.scenario.1–4` short paragraphs (Ascend gold bar). Run `npm run brand-explorer-value-creation-scenarios-audit` before shipping.
 - Brand Explorer trust footnote missing on some profiles — do **not** rely on External Display Status / Presentation rows; every profile must render AI-Assisted Profile · Last Reviewed · Source Basis · Region via `applyBrandExplorerAiAssistedFootnote` (`ai_assisted_profile_footnote_visible` gate).
+- Stage B stability / Narrative & Source Intelligence reads — use **only** `reports/ai-visibility/repeated-testing-stage-b-report-final-wave.json` (wave `aiv_stability_stage_b_20260817_f0a829`); never aggregate recurrence from `22c195` or `repeated-testing-stage-b-report.json`.
 - After a factory cohort graduates to Active/Live, add durable `EXTRA_ACTIVE_IDENTITY_ANCHORS` (Wave 13 Accor / Wave 14 Marriott / Wave 15 Hilton pattern). Missing anchors → PVQL `brand_not_found` / protected baseline flake.
 - Wave 15 Hilton CDN images: do **not** proxy `hilton.com/im/` through wsrv (404); append Hilton `impolicy` sizing in `toAirtableFetchableImageUrl`.
 - Wave 15 momentum evidence: register CALA posture in `CALA_AVAILABLE_BY_SLUG` or CALA-labeled cards fail as missing International Reference.
@@ -143,6 +144,12 @@ See **`docs/dealality-pr-validation-matrix.md`** — run the scripts for your ch
 ```bash
 npm run dealality:pr-check-suggest
 ```
+
+## Executive copy governance
+
+- For Brand AI Executive Summary findings, follow `docs/ai-visibility/executive-intelligence-copy-contract.md`.
+- Preserve semantic distinction: brand `appears/is represented` vs source `cited/citation`.
+- Evidence lines must use one coherent construct only (Association vs Narrative vs Truth vs Provider Comparison), with no blended denominators.
 
 ## Parallel / overnight work
 
