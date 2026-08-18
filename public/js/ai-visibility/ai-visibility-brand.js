@@ -633,7 +633,7 @@
   }
 
   /**
-   * Executive Summary tiles — structured finding hierarchy (title → headline → evidence → disposition → review).
+   * Executive tiles — category label + executive finding + evidence.
    */
   function renderExecutiveInsightTiles(insightPayload, opts) {
     opts = opts || {};
@@ -664,10 +664,9 @@
           title = "Provider Comparison";
         }
         var isDetailRow = opts.rowId === "aivDetailInsights";
-        var headline = box.headline || box.title || "";
         var body = isDetailRow
-          ? box.detailBody || box.finding || box.takeaway || ""
-          : box.finding || box.takeaway || "";
+          ? box.detailBody || box.executiveFindingText || box.finding || box.takeaway || ""
+          : box.executiveFindingText || box.finding || box.takeaway || "";
         var observationSupport = box.observationSupport || "";
         var evidence = box.evidence || observationSupport || "";
         return (
@@ -679,11 +678,6 @@
           "<h3>" +
           AiVisibilityUi.escapeHtml(title) +
           "</h3>" +
-          (headline
-            ? '<p class="aiv-insight-headline">' +
-              AiVisibilityUi.escapeHtml(headline) +
-              "</p>"
-            : "") +
           (body
             ? '<p class="aiv-insight-body">' +
               AiVisibilityUi.escapeHtml(body) +

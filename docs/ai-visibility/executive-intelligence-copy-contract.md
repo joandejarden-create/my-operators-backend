@@ -17,27 +17,25 @@ Applies to finding types:
 
 ## Structure
 
-Each finding card uses four layers:
+Each finding card uses this structure:
 
 - **Category label** — finding type title (small caps).
-- **Headline** — factual statement of what is happening (finding).
-- **Body** — commercial interpretation (normally two concise sentences):
-  - sentence 1 = measured result in plain language
-  - sentence 2 = why it matters to a hotel brand executive
+- **Executive finding** — self-contained white copy (normally 2–3 concise sentences) that includes:
+  - what happened
+  - key metric(s)
+  - commercial implication
 - **Evidence** — strongest 2–3 facts from one coherent evidence construct (substantiation).
 
 **Permanent rule:** Executive findings must communicate both measured result and commercial meaning. Numeric evidence alone is insufficient.
-
-A finding fails editorial validation if **Body** merely repeats **Headline**.
+A finding fails editorial validation if white copy merely repeats a category label or generic headline.
 
 ## Card layout constraints (UI only)
 
-- Headline: max 2–3 visual lines
-- Body: normally 3–5 visual lines; max 5 lines (clamp is a ceiling, not a target length)
+- Executive finding: normally 4–5 visual lines; max 5 lines (clamp is a ceiling, not a target length)
 - Evidence: max 2 visual lines
 - Do not use minimum-height padding to force empty space or shorten copy artificially
 
-Detailed View may use a slightly richer body (one additional supporting sentence or context line) while preserving the same semantic contract.
+Detailed View may include one additional supporting context line while preserving the same semantic contract and avoiding duplicate category-title white headers.
 
 ## Semantic Rules
 
@@ -108,8 +106,14 @@ If Association and Narrative overlap on the same theme:
 Governance must enforce:
 
 - `BODY_PRESENT`
-- `BODY_NOT_HEADLINE_RESTATEMENT`
-- `BODY_ADDS_COMMERCIAL_INTERPRETATION`
+- `CATEGORY_NOT_REPEATED_IN_WHITE_COPY`
+- `NO_DUPLICATE_WHITE_HEADER`
+- `EXECUTIVE_FINDING_SELF_CONTAINED`
+- `EXECUTIVE_FINDING_INCLUDES_KEY_METRIC`
+- `EXECUTIVE_FINDING_INCLUDES_COMMERCIAL_MEANING`
+- `WHITE_COPY_4_TO_5_LINE_TARGET`
+- `EVIDENCE_SECONDARY_NOT_PRIMARY`
+- `NO_HEADLINE_BODY_DUPLICATION`
 - `EVIDENCE_PRESENT`
 - `EVIDENCE_CONSTRUCT_COHERENT`
 - `NO_SEMANTIC_OVERSTATEMENT` / `RECURRENCE_LANGUAGE_SAFE`

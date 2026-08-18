@@ -60,7 +60,7 @@ test("C. N=2 does not claim consistently recurring", () => {
   assert.ok(!/\bconsisten|recurring\b/i.test(out.governedEvidence));
 });
 
-test("D. truth gap N=1 body says one observed response", () => {
+test("D. truth gap N=1 body says one observed AI response", () => {
   const out = applyExecutiveCopyGovernance([
     {
       findingType: "POTENTIAL_AI_PERCEPTION_GAP",
@@ -71,7 +71,7 @@ test("D. truth gap N=1 body says one observed response", () => {
       title: "Potential AI Perception Gap",
     },
   ]).findings[0];
-  assert.ok(/\bOne observed response\b/i.test(out.governedBody));
+  assert.ok(/\bOne observed AI response\b/i.test(out.governedBody));
 });
 
 test("E. Association 48 + Narrative 34 are not blended", () => {
@@ -173,6 +173,12 @@ test("J. body adds commercial interpretation and does not restate headline", () 
   assert.equal(out.copyValidation.BODY_PRESENT, true);
   assert.equal(out.copyValidation.BODY_NOT_HEADLINE_RESTATEMENT, true);
   assert.equal(out.copyValidation.BODY_ADDS_COMMERCIAL_INTERPRETATION, true);
+  assert.equal(out.copyValidation.CATEGORY_NOT_REPEATED_IN_WHITE_COPY, true);
+  assert.equal(out.copyValidation.NO_DUPLICATE_WHITE_HEADER, true);
+  assert.equal(out.copyValidation.EXECUTIVE_FINDING_SELF_CONTAINED, true);
+  assert.equal(out.copyValidation.EXECUTIVE_FINDING_INCLUDES_KEY_METRIC, true);
+  assert.equal(out.copyValidation.WHITE_COPY_4_TO_5_LINE_TARGET, true);
+  assert.equal(out.copyValidation.EVIDENCE_SECONDARY_NOT_PRIMARY, true);
   assert.ok(/\bshortlist\b/i.test(out.governedBody));
 });
 
@@ -190,6 +196,9 @@ test("K. association body uses positioning clarity language", () => {
   ]).findings[0];
   assert.ok(/\bmonitoring\b/i.test(out.governedBody));
   assert.equal(out.copyValidation.BODY_ADDS_COMMERCIAL_INTERPRETATION, true);
+  assert.equal(out.copyValidation.EXECUTIVE_FINDING_INCLUDES_KEY_METRIC, true);
+  assert.ok(/\b48\b/i.test(out.governedBody));
+  assert.ok(/\b3\b/i.test(out.governedBody));
 });
 
 const pass = results.filter((r) => r.ok).length;

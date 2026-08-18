@@ -106,8 +106,8 @@
         '/my-brands': { file: '/all-brands-dashboard.html', title: 'My Brands' },
         '/my-operators': { file: '/my-third-party-operators-new.html', title: 'My Operators' },
         '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'My Brand Deals', roles: ['brand', 'admin'] },
-        '/ai-visibility': { file: '/ai-visibility-brand.html', title: 'Brand AI Visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
-        '/ai-visibility-brand': { file: '/ai-visibility-brand.html', title: 'Brand AI Visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+        '/ai-visibility': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+        '/ai-visibility-brand': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/third-party-operator-setup-sandbox': { file: '/third-party-operator-setup-sandbox.html', title: 'Operator Setup (Sandbox)' },
@@ -195,7 +195,7 @@
                         { label: 'The Radar', route: '/opportunity-radar', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Market Alerts', route: '/market-alerts', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Brand AI Visibility', route: '/ai-visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' }
+                        { label: 'Brand AI Intelligence', route: '/ai-visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' }
                     ]
                 },
                 {
