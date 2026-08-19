@@ -50,6 +50,7 @@ import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } fr
 import { getTravelInfrastructure, getRadarMapTravelInfrastructurePoints, postTravelInfrastructureImportPreview, postTravelInfrastructureImportCommit } from "./api/travel-infrastructure.js";
 import { getDemandAnchors, getRadarMapDemandAnchorsPoints, postDemandAnchorsImportPreview, postDemandAnchorsImportCommit } from "./api/demand-anchors.js";
 import { getRadarBuildoutCountries, getRadarBuildoutCountry } from "./api/radar-buildout.js";
+import { getAiDemandPositioningProperties, getAiDemandPositioningReport, getAiDemandPositioningCostEstimate, getAiDemandPositioningEvidence } from "./api/ai-demand-positioning.js";
 import {
   getGrowthSignalsSummary,
   getGrowthSignalTypes,
@@ -239,6 +240,7 @@ import { getAuthMe } from "./api/auth-me.js";
 import { getMemberstackPublicConfig } from "./api/auth-memberstack-config.js";
 import { getOwnerPilotProvisioningRunbookHandler } from "./api/support-owner-pilot-provisioning-runbook.js";
 import { getScoringWeightModelHandler } from "./api/support-scoring-weight-model.js";
+import { getAiVisibilityBenchmarkAdminHandler } from "./api/support-ai-visibility-benchmark-admin.js";
 import { getOperatorFitDataReadinessHandler } from "./api/support-operator-fit-data-readiness.js";
 import { getOperatorIntelligenceCalibrationHandler } from "./api/support-operator-intelligence-calibration.js";
 import {
@@ -260,6 +262,7 @@ import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
 import { requireOperatorDealsAccess } from "./middleware/requireOperatorDealsAccess.js";
 import { requireBrandAiVisibilityAccess } from "./middleware/requireBrandAiVisibilityAccess.js";
+import { requireOperatorAiVisibilityAccess } from "./middleware/requireOperatorAiVisibilityAccess.js";
 import { requireAiIntelligenceValidationAccess } from "./middleware/requireAiIntelligenceValidationAccess.js";
 import { assertBrandAiVisibilityRoutesRegistered } from "./lib/ai-visibility/route-registration-guard.js";
 import {
@@ -271,7 +274,10 @@ import {
   getBrandCompetitors as getAiVisibilityBrandCompetitors,
   getBrandSources as getAiVisibilityBrandSources,
   getBrandEvidence as getAiVisibilityBrandEvidence,
+  getAiVisibilityBrandBenchmark,
+  getAiVisibilityBrandBenchmarkDiagnostics,
 } from "./api/ai-visibility-brand.js";
+import { getOperatorAiFoundation, getOperatorAiCustomerUniverse, getOperatorAiCustomerPayload } from "./api/ai-visibility-operator.js";
 import {
   getAiIntelligenceValidationSummary,
   getAiIntelligenceValidationGates,
@@ -757,6 +763,11 @@ const brandAiVisibilityAuth = [
   requireDealalityUser,
   requireBrandAiVisibilityAccess,
 ];
+const operatorAiVisibilityAuth = [
+  memberstackAuth,
+  requireDealalityUser,
+  requireOperatorAiVisibilityAccess,
+];
 const aiIntelligenceValidationAuth = [
   memberstackAuth,
   requireDealalityUser,
@@ -770,7 +781,21 @@ app.get("/api/ai-visibility/brand/:brandId/trend", ...brandAiVisibilityAuth, get
 app.get("/api/ai-visibility/brand/:brandId/questions", ...brandAiVisibilityAuth, getAiVisibilityBrandQuestions);
 app.get("/api/ai-visibility/brand/:brandId/competitors", ...brandAiVisibilityAuth, getAiVisibilityBrandCompetitors);
 app.get("/api/ai-visibility/brand/:brandId/sources", ...brandAiVisibilityAuth, getAiVisibilityBrandSources);
+app.get("/api/ai-visibility/brand/:brandId/benchmark/diagnostics", ...internalRunbookAuth, getAiVisibilityBrandBenchmarkDiagnostics);
+app.get("/api/ai-visibility/brand/:brandId/benchmark", ...brandAiVisibilityAuth, getAiVisibilityBrandBenchmark);
 app.get("/api/ai-visibility/brand/:brandId/evidence", ...brandAiVisibilityAuth, getAiVisibilityBrandEvidence);
+app.get("/api/ai-visibility/operator/foundation", ...operatorAiVisibilityAuth, getOperatorAiFoundation);
+app.get("/api/ai-visibility/operator/universe", ...operatorAiVisibilityAuth, getOperatorAiCustomerUniverse);
+app.get(
+  "/api/ai-visibility/operator/:operatorId/customer",
+  ...operatorAiVisibilityAuth,
+  getOperatorAiCustomerPayload
+);
+app.get("/api/ai-demand-positioning/properties", getAiDemandPositioningProperties);
+app.get("/api/ai-demand-positioning/property/:propertyId/report", getAiDemandPositioningReport);
+app.get("/api/ai-demand-positioning/property/:propertyId/evidence", getAiDemandPositioningEvidence);
+app.get("/api/ai-demand-positioning/property/:propertyId/cost-estimate", getAiDemandPositioningCostEstimate);
+
 app.get(
   "/api/ai-intelligence/validation/summary",
   ...aiIntelligenceValidationAuth,
@@ -986,6 +1011,8 @@ console.log("   GET /api/ai-visibility/brand/portfolio");
 console.log("   GET /api/ai-visibility/brand/executive-summary");
 console.log("   GET /api/ai-visibility/brand/:brandId/{overview,trend,questions,competitors,sources,evidence}");
 console.log("   (hotel-decision-visibility public route retired — HDV consumed via executive/overview)");
+console.log("✅ Operator AI Intelligence API routes registered:");
+console.log("   GET /api/ai-visibility/operator/foundation");
 console.log("✅ AI Intelligence Validation Scorecard routes registered:");
 console.log("   GET /api/ai-intelligence/validation/{summary,gates,classification,batches,issues,variability,operations}");
 console.log("   GET /api/ai-intelligence/validation/batches/:batchId");
@@ -1793,6 +1820,12 @@ app.get("/ai-visibility-brand", (req, res) => {
 app.get("/ai-visibility-brand.html", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "ai-visibility-brand.html"));
 });
+app.get("/operator/ai-intelligence", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "operator-ai-intelligence.html"));
+});
+app.get("/operator/ai-intelligence/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "operator-ai-intelligence.html"));
+});
 app.get("/ai-intelligence-validation", (req, res) => {
   sendPublicNoStore(res, "ai-intelligence-validation.html");
 });
@@ -2207,6 +2240,11 @@ app.get(
   "/api/support/scoring-weight-model",
   ...internalRunbookAuth,
   getScoringWeightModelHandler
+);
+app.get(
+  "/api/support/ai-visibility-benchmark-admin",
+  ...internalRunbookAuth,
+  getAiVisibilityBenchmarkAdminHandler
 );
 app.get(
   "/api/support/operator-fit-data-readiness",
