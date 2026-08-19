@@ -1,20 +1,20 @@
 {
   "seedVersion": "ai_visibility_observed_demand_seed_v1",
-  "seedStatus": "OBSERVED_DEMAND_SEED_PARTIAL",
+  "seedStatus": "OBSERVED_DEMAND_SEED_V1_VALIDATED",
   "includedThemes": [
-    "soft brand hotel",
-    "hotel franchise vs management agreement",
     "hotel franchise fees",
-    "hotel reflagging",
+    "soft brand hotel",
     "franquicia hotelera",
     "contrato de gestion hotelera",
+    "hotel franchise vs management agreement",
+    "hotel reflagging",
     "hotel affiliation agreement",
     "convert independent hotel to franchise",
     "hotel branded residences"
   ],
-  "activationStatus": "NOT_ATTACHED_TO_LIVE_PROMPTS",
-  "promptMixEligible": false,
-  "promptMixReason": "9 distinct observed themes is below OBSERVED_PROMPT_MIX_MIN_THEMES (10). Client Prompt Mix stays hidden.",
+  "activationStatus": "PROVENANCE_ATTACHED_MONITORING_ELIGIBLE_OFF",
+  "promptMixEligible": true,
+  "promptMixReason": "V1 validation gate passed (8-theme founder standard). Prompt Intelligence is methodology context, not a performance KPI. Observed prompts are not in the current monitored 122.",
   "blockedReason": null,
   "blockerCode": null,
   "candidateThemes": [
@@ -151,5 +151,12 @@
       "evidenceState": "LICENSED_VOLUME",
       "included": true
     }
+  ],
+  "demandMethodology": "Demand tier is relative to comparable observed queries within the source country and language cohort. Licensed Google Ads search volume via DataForSEO. PAA-only themes stay UNKNOWN. United States English and Mexico Spanish are not one absolute scale. Source geography is independent of Brand AI monitoring geography and is not CALA unless the evidence country is a CALA country.",
+  "netNewObservedPrompts": 9,
+  "netNewDerivedPrompts": 2,
+  "derivedPromptIds": [
+    "p_obs_hotel_franchise_fees_derived_en_v1",
+    "p_obs_franquicia_hotelera_derived_es_v1"
   ]
 }

@@ -1,12 +1,528 @@
 {
   "overlayVersion": "ai_visibility_prompt_provenance_v1",
-  "observedDemandSeedStatus": "OBSERVED_DEMAND_SEED_PARTIAL",
+  "observedDemandSeedStatus": "OBSERVED_DEMAND_SEED_V1_VALIDATED",
   "notes": [
-    "No live overlay classifications. File-store demand signals exist; they are not attached to monitored prompts.",
-    "Do not infer OBSERVED from prompt wording.",
-    "Scenario-mapped prompts resolve to SCENARIO via the Owner Decision Scenario registry.",
-    "Unmapped prompts remain LEGACY_UNCLASSIFIED and continue to monitor.",
-    "Observed / derived overlay rows require OBSERVED_DEMAND_ACTIVATION (still needs ≥10 validated themes plus explicit approval)."
+    "V1 activation overlay. Classifications are for new observed/derived prompt IDs only.",
+    "Existing 122 monitored prompts keep SCENARIO or LEGACY_UNCLASSIFIED origin.",
+    "Do not infer OBSERVED from prompt wording."
   ],
-  "classifications": []
+  "equivalences": [
+    {
+      "theme": "soft brand hotel",
+      "existingPromptFamily": "showcase_collection_soft_affiliation",
+      "action": "KEEP_SCENARIO_ORIGIN",
+      "note": "Existing collection/soft-brand scenario prompts remain SCENARIO. New OBSERVED row uses the literal query."
+    },
+    {
+      "theme": "hotel branded residences",
+      "existingPromptFamily": "branded_residences",
+      "action": "KEEP_SCENARIO_ORIGIN",
+      "note": "Existing branded-residences scenario prompts remain SCENARIO."
+    },
+    {
+      "theme": "hotel reflagging",
+      "existingPromptFamily": "upper_upscale_conversion_brand_selection",
+      "action": "KEEP_SCENARIO_ORIGIN",
+      "note": "Conversion scenario prompts remain SCENARIO; observed row is the literal reflagging query."
+    },
+    {
+      "theme": "convert independent hotel to franchise",
+      "existingPromptFamily": "upper_upscale_conversion_brand_selection",
+      "action": "KEEP_SCENARIO_ORIGIN",
+      "note": "Near the conversion scenario family; origin stays distinct."
+    },
+    {
+      "theme": "hotel affiliation agreement",
+      "existingPromptFamily": "showcase_collection_soft_affiliation",
+      "action": "KEEP_SCENARIO_ORIGIN",
+      "note": "Affiliation scenario prompts remain SCENARIO."
+    },
+    {
+      "theme": "contrato de gestion hotelera",
+      "existingPromptFamily": "hma_vs_franchise operators",
+      "action": "KEEP_SCENARIO_ORIGIN",
+      "note": "English HMA operator prompts remain SCENARIO. Spanish observed literal is net-new wording."
+    }
+  ],
+  "classifications": [
+    {
+      "promptId": "p_obs_hotel_franchise_fees_en_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "LICENSED_SEO_DATASET",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_hotel_franchise_fees_united_states_en",
+      "observedQuery": "hotel franchise fees",
+      "observedTheme": "hotel franchise fees",
+      "demandTier": "HIGH",
+      "demandSignalType": "SEARCH_VOLUME",
+      "demandGeography": "United States/en; Mexico/en",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": "Demand tier is relative to comparable observed queries within the source country and language cohort. Licensed Google Ads search volume via DataForSEO. PAA-only themes stay UNKNOWN. United States English and Mexico Spanish are not one absolute scale. Source geography is independent of Brand AI monitoring geography and is not CALA unless the evidence country is a CALA country.",
+      "demandSignalIds": [
+        "ds_hotel_franchise_fees_united_states_en",
+        "ds_hotel_franchise_fees_mexico_en"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_hotel_franchise_fees_united_states_en",
+          "sourceType": "LICENSED_SEO_DATASET",
+          "sourceName": "DataForSEO",
+          "queryText": "hotel franchise fees",
+          "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+          "sourceConfidence": "STRONG_OBSERVED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "United States",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "monthly_avg_search_volume",
+          "metricValue": 90,
+          "demandTier": "HIGH",
+          "demandTierBasis": "LICENSED_SEARCH_VOLUME"
+        },
+        {
+          "demandSignalId": "ds_hotel_franchise_fees_mexico_en",
+          "sourceType": "LICENSED_SEO_DATASET",
+          "sourceName": "DataForSEO",
+          "queryText": "hotel franchise fees",
+          "evidenceReference": "dataforseo:google_ads_search_volume:Mexico:en",
+          "sourceConfidence": "STRONG_OBSERVED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "Mexico",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "monthly_avg_search_volume",
+          "metricValue": 10,
+          "demandTier": "MEDIUM",
+          "demandTierBasis": "LICENSED_SEARCH_VOLUME"
+        }
+      ],
+      "scenarioId": "scenario_owner_economics_v1",
+      "ownerIntentFamily": "FEES_ECONOMICS",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "HIGH",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_soft_brand_hotel_en_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "LICENSED_SEO_DATASET",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_soft_brand_hotel_united_states_en",
+      "observedQuery": "soft brand hotel",
+      "observedTheme": "soft brand hotel",
+      "demandTier": "MEDIUM",
+      "demandSignalType": "SEARCH_VOLUME",
+      "demandGeography": "United States/en; Mexico/en",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": "Demand tier is relative to comparable observed queries within the source country and language cohort. Licensed Google Ads search volume via DataForSEO. PAA-only themes stay UNKNOWN. United States English and Mexico Spanish are not one absolute scale. Source geography is independent of Brand AI monitoring geography and is not CALA unless the evidence country is a CALA country.",
+      "demandSignalIds": [
+        "ds_soft_brand_hotel_united_states_en",
+        "ds_soft_brand_hotel_mexico_en"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_soft_brand_hotel_united_states_en",
+          "sourceType": "LICENSED_SEO_DATASET",
+          "sourceName": "DataForSEO",
+          "queryText": "soft brand hotel",
+          "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+          "sourceConfidence": "STRONG_OBSERVED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "United States",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "monthly_avg_search_volume",
+          "metricValue": 50,
+          "demandTier": "MEDIUM",
+          "demandTierBasis": "LICENSED_SEARCH_VOLUME"
+        },
+        {
+          "demandSignalId": "ds_soft_brand_hotel_mexico_en",
+          "sourceType": "LICENSED_SEO_DATASET",
+          "sourceName": "DataForSEO",
+          "queryText": "soft brand hotel",
+          "evidenceReference": "dataforseo:google_ads_search_volume:Mexico:en",
+          "sourceConfidence": "STRONG_OBSERVED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "Mexico",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "monthly_avg_search_volume",
+          "metricValue": 10,
+          "demandTier": "HIGH",
+          "demandTierBasis": "LICENSED_SEARCH_VOLUME"
+        }
+      ],
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "ownerIntentFamily": "SOFT_BRAND_HARD_BRAND",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "CRITICAL",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_franquicia_hotelera_es_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "LICENSED_SEO_DATASET",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_franquicia_hotelera_mexico_es",
+      "observedQuery": "franquicia hotelera",
+      "observedTheme": "franquicia hotelera",
+      "demandTier": "HIGH",
+      "demandSignalType": "SEARCH_VOLUME",
+      "demandGeography": "Mexico/es",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": "Demand tier is relative to comparable observed queries within the source country and language cohort. Licensed Google Ads search volume via DataForSEO. PAA-only themes stay UNKNOWN. United States English and Mexico Spanish are not one absolute scale. Source geography is independent of Brand AI monitoring geography and is not CALA unless the evidence country is a CALA country.",
+      "demandSignalIds": [
+        "ds_franquicia_hotelera_mexico_es"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_franquicia_hotelera_mexico_es",
+          "sourceType": "LICENSED_SEO_DATASET",
+          "sourceName": "DataForSEO",
+          "queryText": "franquicia hotelera",
+          "evidenceReference": "dataforseo:google_ads_search_volume:Mexico:es",
+          "sourceConfidence": "STRONG_OBSERVED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "Mexico",
+          "language": "es",
+          "dateObserved": "2026-08-17",
+          "metricType": "monthly_avg_search_volume",
+          "metricValue": 20,
+          "demandTier": "HIGH",
+          "demandTierBasis": "LICENSED_SEARCH_VOLUME"
+        }
+      ],
+      "scenarioId": "scenario_hma_vs_franchise_v1",
+      "ownerIntentFamily": "FRANCHISE_VS_HMA",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "HIGH",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_contrato_de_gestion_hotelera_es_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "LICENSED_SEO_DATASET",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_contrato_de_gestion_hotelera_mexico_es",
+      "observedQuery": "contrato de gestion hotelera",
+      "observedTheme": "contrato de gestion hotelera",
+      "demandTier": "MEDIUM",
+      "demandSignalType": "SEARCH_VOLUME",
+      "demandGeography": "Mexico/es",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": "Demand tier is relative to comparable observed queries within the source country and language cohort. Licensed Google Ads search volume via DataForSEO. PAA-only themes stay UNKNOWN. United States English and Mexico Spanish are not one absolute scale. Source geography is independent of Brand AI monitoring geography and is not CALA unless the evidence country is a CALA country.",
+      "demandSignalIds": [
+        "ds_contrato_de_gestion_hotelera_mexico_es"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_contrato_de_gestion_hotelera_mexico_es",
+          "sourceType": "LICENSED_SEO_DATASET",
+          "sourceName": "DataForSEO",
+          "queryText": "contrato de gestion hotelera",
+          "evidenceReference": "dataforseo:google_ads_search_volume:Mexico:es",
+          "sourceConfidence": "STRONG_OBSERVED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "Mexico",
+          "language": "es",
+          "dateObserved": "2026-08-17",
+          "metricType": "monthly_avg_search_volume",
+          "metricValue": 10,
+          "demandTier": "MEDIUM",
+          "demandTierBasis": "LICENSED_SEARCH_VOLUME"
+        }
+      ],
+      "scenarioId": "scenario_hma_vs_franchise_v1",
+      "ownerIntentFamily": "FRANCHISE_VS_HMA",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "STANDARD",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "PAA",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_hotel_franchise_vs_management_agreement_united_states_en",
+      "observedQuery": "hotel franchise vs management agreement",
+      "observedTheme": "hotel franchise vs management agreement",
+      "demandTier": "UNKNOWN",
+      "demandSignalType": "PAA",
+      "demandGeography": "United States/en; Mexico/en",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": null,
+      "demandSignalIds": [
+        "ds_hotel_franchise_vs_management_agreement_united_states_en",
+        "ds_hotel_franchise_vs_management_agreement_mexico_en"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_hotel_franchise_vs_management_agreement_united_states_en",
+          "sourceType": "PAA",
+          "sourceName": "DataForSEO",
+          "queryText": "hotel franchise vs management agreement",
+          "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+          "sourceConfidence": "SUPPORTED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "United States",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "paa_count",
+          "metricValue": 4,
+          "demandTier": "UNKNOWN",
+          "demandTierBasis": "UNKNOWN"
+        },
+        {
+          "demandSignalId": "ds_hotel_franchise_vs_management_agreement_mexico_en",
+          "sourceType": "PAA",
+          "sourceName": "DataForSEO",
+          "queryText": "hotel franchise vs management agreement",
+          "evidenceReference": "dataforseo:google_ads_search_volume:Mexico:en",
+          "sourceConfidence": "SUPPORTED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "Mexico",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "paa_count",
+          "metricValue": 4,
+          "demandTier": "UNKNOWN",
+          "demandTierBasis": "UNKNOWN"
+        }
+      ],
+      "scenarioId": "scenario_hma_vs_franchise_v1",
+      "ownerIntentFamily": "FRANCHISE_VS_HMA",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "HIGH",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_hotel_reflagging_en_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "PAA",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_hotel_reflagging_united_states_en",
+      "observedQuery": "hotel reflagging",
+      "observedTheme": "hotel reflagging",
+      "demandTier": "UNKNOWN",
+      "demandSignalType": "PAA",
+      "demandGeography": "United States/en; Mexico/en",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": null,
+      "demandSignalIds": [
+        "ds_hotel_reflagging_united_states_en",
+        "ds_hotel_reflagging_mexico_en"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_hotel_reflagging_united_states_en",
+          "sourceType": "PAA",
+          "sourceName": "DataForSEO",
+          "queryText": "hotel reflagging",
+          "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+          "sourceConfidence": "SUPPORTED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "United States",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "paa_count",
+          "metricValue": 4,
+          "demandTier": "UNKNOWN",
+          "demandTierBasis": "UNKNOWN"
+        },
+        {
+          "demandSignalId": "ds_hotel_reflagging_mexico_en",
+          "sourceType": "PAA",
+          "sourceName": "DataForSEO",
+          "queryText": "hotel reflagging",
+          "evidenceReference": "dataforseo:google_ads_search_volume:Mexico:en",
+          "sourceConfidence": "SUPPORTED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "Mexico",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "paa_count",
+          "metricValue": 4,
+          "demandTier": "UNKNOWN",
+          "demandTierBasis": "UNKNOWN"
+        }
+      ],
+      "scenarioId": "scenario_conversion_suitability_v1",
+      "ownerIntentFamily": "REFLAGGING_CONVERSION",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "STANDARD",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_hotel_affiliation_agreement_en_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "PAA",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_hotel_affiliation_agreement_united_states_en",
+      "observedQuery": "hotel affiliation agreement",
+      "observedTheme": "hotel affiliation agreement",
+      "demandTier": "UNKNOWN",
+      "demandSignalType": "PAA",
+      "demandGeography": "United States/en",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": null,
+      "demandSignalIds": [
+        "ds_hotel_affiliation_agreement_united_states_en"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_hotel_affiliation_agreement_united_states_en",
+          "sourceType": "PAA",
+          "sourceName": "DataForSEO",
+          "queryText": "hotel affiliation agreement",
+          "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+          "sourceConfidence": "SUPPORTED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "United States",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "paa_count",
+          "metricValue": 4,
+          "demandTier": "UNKNOWN",
+          "demandTierBasis": "UNKNOWN"
+        }
+      ],
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "ownerIntentFamily": "BRAND_SELECTION",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "STANDARD",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_convert_independent_hotel_to_franchise_en_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "PAA",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_convert_independent_hotel_to_franchise_united_states_en",
+      "observedQuery": "convert independent hotel to franchise",
+      "observedTheme": "convert independent hotel to franchise",
+      "demandTier": "UNKNOWN",
+      "demandSignalType": "PAA",
+      "demandGeography": "United States/en",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": null,
+      "demandSignalIds": [
+        "ds_convert_independent_hotel_to_franchise_united_states_en"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_convert_independent_hotel_to_franchise_united_states_en",
+          "sourceType": "PAA",
+          "sourceName": "DataForSEO",
+          "queryText": "convert independent hotel to franchise",
+          "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+          "sourceConfidence": "SUPPORTED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "United States",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "paa_count",
+          "metricValue": 4,
+          "demandTier": "UNKNOWN",
+          "demandTierBasis": "UNKNOWN"
+        }
+      ],
+      "scenarioId": "scenario_conversion_suitability_v1",
+      "ownerIntentFamily": "REFLAGGING_CONVERSION",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "STANDARD",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_hotel_branded_residences_en_v1",
+      "promptOrigin": "OBSERVED",
+      "originSourceType": "LICENSED_SEO_DATASET",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_hotel_branded_residences_united_states_en",
+      "observedQuery": "hotel branded residences",
+      "observedTheme": "hotel branded residences",
+      "demandTier": "UNKNOWN",
+      "demandSignalType": "SEARCH_VOLUME",
+      "demandGeography": "United States/en",
+      "dateObserved": "2026-08-17",
+      "demandMethodology": null,
+      "demandSignalIds": [
+        "ds_hotel_branded_residences_united_states_en"
+      ],
+      "demandEvidence": [
+        {
+          "demandSignalId": "ds_hotel_branded_residences_united_states_en",
+          "sourceType": "LICENSED_SEO_DATASET",
+          "sourceName": "DataForSEO",
+          "queryText": "hotel branded residences",
+          "evidenceReference": "dataforseo:google_ads_search_volume:United States:en",
+          "sourceConfidence": "STRONG_OBSERVED",
+          "originSourceNamespace": "PROMPT_ORIGIN_SOURCE",
+          "geography": "United States",
+          "language": "en",
+          "dateObserved": "2026-08-17",
+          "metricType": "monthly_avg_search_volume",
+          "metricValue": 10,
+          "demandTier": "UNKNOWN",
+          "demandTierBasis": "COHORT_TOO_SMALL"
+        }
+      ],
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "ownerIntentFamily": "BRANDED_RESIDENCES",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "OBSERVED_DEMAND",
+      "samplingPriority": "CRITICAL",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_hotel_franchise_fees_derived_en_v1",
+      "promptOrigin": "DERIVED",
+      "originSourceType": "LICENSED_SEO_DATASET",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_hotel_franchise_fees_united_states_en",
+      "observedQuery": "hotel franchise fees",
+      "observedTheme": "hotel franchise fees",
+      "demandTier": "UNKNOWN",
+      "demandGeography": "United States",
+      "dateObserved": "2026-08-17",
+      "derivedFromObservedPromptId": "p_obs_hotel_franchise_fees_en_v1",
+      "derivedFromDemandSignalId": "ds_hotel_franchise_fees_united_states_en",
+      "scenarioId": "scenario_owner_economics_v1",
+      "ownerIntentFamily": "FEES_ECONOMICS",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "DERIVED_FROM_OBSERVED",
+      "samplingPriority": "HIGH",
+      "provenanceNotes": "Literal observed query is too terse for a commercially useful owner-affiliation test.",
+      "lastProvenanceReviewAt": "2026-08-17"
+    },
+    {
+      "promptId": "p_obs_franquicia_hotelera_derived_es_v1",
+      "promptOrigin": "DERIVED",
+      "originSourceType": "LICENSED_SEO_DATASET",
+      "originSourceName": "DataForSEO",
+      "originSourceReference": "ds_franquicia_hotelera_mexico_es",
+      "observedQuery": "franquicia hotelera",
+      "observedTheme": "franquicia hotelera",
+      "demandTier": "UNKNOWN",
+      "demandGeography": "Mexico",
+      "dateObserved": "2026-08-17",
+      "derivedFromObservedPromptId": "p_obs_franquicia_hotelera_es_v1",
+      "derivedFromDemandSignalId": "ds_franquicia_hotelera_mexico_es",
+      "scenarioId": "scenario_hma_vs_franchise_v1",
+      "ownerIntentFamily": "FRANCHISE_VS_HMA",
+      "provenanceStatus": "VALIDATED",
+      "createdByMethod": "DERIVED_FROM_OBSERVED",
+      "samplingPriority": "HIGH",
+      "provenanceNotes": "Literal Spanish observed query is too terse; derived keeps owner franchise-vs-management meaning without translating an English query.",
+      "lastProvenanceReviewAt": "2026-08-17"
+    }
+  ]
 }

@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brand AI Intelligence — Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
-  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=owner-intent-chg-vs-prior-v1-20260819b">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script src="/js/dealality-memberstack-auth.js" defer></script>
-  <script src="/js/ai-visibility/ai-visibility-shared.js" defer></script>
-  <script src="/js/ai-visibility/ai-visibility-brand.js" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-shared.js?v=coverage-unification-v2-20260818" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-brand.js?v=owner-intent-chg-vs-prior-v1-20260819b" defer></script>
 </head>
 <body class="aiv-page embed-mode">
   <div class="dashboard-container aiv-dashboard">
@@ -220,7 +220,7 @@
                   <th data-sort="aiPresence"><span class="aiv-th-label"><span class="aiv-th-text">AI<br>Presence</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About AI Presence"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>AI Presence</strong><br>What it is: How often this brand appeared in AI answers to the monitored owner questions.<br><br>How to read: Higher % means the brand showed up in more monitored answers. 0% means it was monitored but not observed. “—” or Not Monitored means there is no comparable data yet — not a zero score.<br><br>Why it matters: Presence is the core Brand AI Visibility signal. It shows whether owners asking AI about development and positioning are seeing your brand at all.</div></span></span></th>
                   <th data-sort="aiPresenceChange"><span class="aiv-th-label"><span class="aiv-th-text">Δ vs<br>prior run</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Δ vs prior run"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Δ vs prior run</strong><br>What it is: Change in AI Presence versus the previous comparable monitoring run.<br><br>How to read: Shown in percentage points (pp). Positive means Presence improved; negative means it declined. If periods are not comparable, you will see Not Comparable or Insufficient History instead of a number.<br><br>Why it matters: It tells you whether visibility is moving — not just where you stand today.</div></span></span></th>
                   <th data-sort="competitivePosition"><span class="aiv-th-label"><span class="aiv-th-text">Competitive<br>Position</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Competitive Position"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Competitive Position</strong><br>What it is: This brand’s rank by AI Presence among the fixed peer set in the selected geography.<br><br>How to read: #1 means the highest Presence among peers. A higher number means more peers outrank this brand. Rank is based only on Observed Presence — not recommendations or a composite score.<br><br>Why it matters: It shows whether you are leading, keeping pace, or trailing peers on the questions owners ask AI.</div></span></span></th>
-                  <th data-sort="questionsMissing"><span class="aiv-th-label"><span class="aiv-th-text">Questions<br>Missing</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Questions Missing"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Questions Missing</strong><br>What it is: Monitored questions where this brand did not appear in the AI answer.<br><br>How to read: Shown as % (count). Higher % or count means more owner questions went unanswered for your brand. Use Detailed View → Questions Missing Watchlist to see the exact questions.<br><br>Why it matters: Missing questions are concrete gaps — places where owners asked AI and your brand was absent.</div></span></span></th>
+                  <th data-sort="questionsMissing"><span class="aiv-th-label"><span class="aiv-th-text">Questions<br>Missing</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Questions Missing"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Questions Missing</strong><br>What it is: Monitored owner-decision scenarios where this brand did not appear in the AI answer.<br><br>How to read: Shown as % (count). Higher % or count means more owner decisions went unanswered for your brand. Use Detailed View → Questions Missing Watchlist to review Owner Intent and Decision Context for each gap.<br><br>Why it matters: Missing observations are concrete gaps — places where owners asked AI and your brand was absent.</div></span></span></th>
                   <th data-sort="topDecisionTerritory" class="aiv-col-secondary"><span class="aiv-th-label"><span class="aiv-th-text">Top Decision<br>Territory</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Top Decision Territory"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Top Decision Territory</strong><br>What it is: The owner-intent question type (prompt family) where this brand appeared most often.<br><br>How to read: The label is the strongest prompt family by Presence for this brand. It is not a weighted score or priority ranking across families.<br><br>Why it matters: It shows which owner decision themes already surface your brand — a useful contrast to families where you are missing.</div></span></span></th>
                 </tr>
               </thead>
@@ -330,7 +330,7 @@
 
       <section class="aiv-theme-group" aria-labelledby="aivDetailThemeCoverage" id="aivDetailCoverageSection">
         <h2 id="aivDetailThemeCoverage" class="aiv-theme-title">Coverage Diagnostics</h2>
-        <p class="aiv-theme-help help-text">How this brand performs across providers and across owner-intent question families.</p>
+        <p class="aiv-theme-help help-text">How this brand performs across providers and monitored owner-decision scenarios.</p>
         <div class="aiv-kpi-row aiv-theme-kpis aiv-coverage-summary" id="aivCoverageSummary" aria-label="Coverage diagnostics summary"></div>
         <div class="aiv-coverage-grid">
           <div class="aiv-theme-card aiv-theme-card--flush aiv-coverage-col" id="aivProviderPresencePanel">
@@ -341,10 +341,10 @@
             <div id="aivProviderPresenceBody"></div>
             <p class="aiv-theme-block-help help-text aiv-coverage-col__note" id="aivProviderPresenceNote"></p>
           </div>
-          <div class="aiv-theme-card aiv-theme-card--flush aiv-coverage-col" id="aivDetailIntentSection">
+          <div class="aiv-theme-card aiv-theme-card--flush aiv-coverage-col aiv-coverage-col--intent" id="aivDetailIntentSection">
             <div class="aiv-coverage-col__head">
-              <h3 class="aiv-theme-label">Owner-Intent Coverage</h3>
-              <p class="aiv-theme-block-help help-text">Presence by owner-decision question family (prompt family).</p>
+              <h3 class="aiv-theme-label">AI Presence by Owner Intent</h3>
+              <p class="aiv-theme-block-help help-text">Presence, gaps and competitive position across monitored owner decisions.</p>
             </div>
             <div id="aivDetailIntentCoverage"></div>
           </div>
@@ -353,8 +353,8 @@
       </section>
 
       <section class="aiv-theme-group" aria-labelledby="aivDetailThemeWatchlist" id="aivDetailWatchlistSection">
-        <h2 id="aivDetailThemeWatchlist" class="aiv-theme-title">Questions Missing Watchlist</h2>
-        <p class="aiv-theme-help help-text">Monitored questions where this brand was not observed. Use peer-gap mode where competitors appear and this brand does not.</p>
+        <h2 id="aivDetailThemeWatchlist" class="aiv-theme-title">Questions Missing Watchlist <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Questions Missing"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Questions Missing</strong><br>A question is considered missing when your brand is absent across every comparable monitored provider for that owner-decision observation. Missing does not mean zero demand or that another brand won.</div></span></h2>
+        <p class="aiv-theme-help help-text">Owner-decision scenarios where this brand was not observed. Each row shows governed Owner Intent and Decision Context — not exact production prompt wording.</p>
         <div class="aiv-theme-card aiv-theme-card--flush">
           <div class="aiv-detail-questions-head">
             <h3 class="aiv-theme-label">Watchlist</h3>
@@ -365,7 +365,7 @@
           </div>
           <div class="aiv-watchlist-filters filters-section aiv-filters-section aiv-filters-section--inline" id="aivWatchlistFilters" aria-label="Watchlist filters">
             <div class="filter-group">
-              <label class="filter-label" for="aivWlFamily">Prompt family</label>
+              <label class="filter-label" for="aivWlFamily">Owner Intent</label>
               <select class="filter-select" id="aivWlFamily"><option value="">All</option></select>
             </div>
           </div>
@@ -373,13 +373,13 @@
             <table class="deals-table aiv-portfolio-table aiv-questions-table" id="aivWatchlistTable">
               <thead>
                 <tr>
-                  <th class="no-sort">Question</th>
-                  <th class="no-sort">Prompt Family</th>
-                  <th class="no-sort">Provider</th>
-                  <th class="no-sort">Region</th>
+                  <th class="no-sort">Owner Intent <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Owner Intent"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Owner Intent</strong><br>Owner Intent represents the hotel owner or developer decision Dealality is testing, such as brand affiliation, conversion, flexibility or market entry. Dealality may use multiple governed question formulations to measure the same decision.</div></span></th>
+                  <th class="no-sort">Decision Context <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Decision Context"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Decision Context</strong><br>Decision Context describes the business situation behind the measurement. It helps explain what the AI was being asked to evaluate without exposing Dealality's exact production prompt.</div></span></th>
+                  <th class="no-sort">Geography</th>
                   <th class="no-sort">Language</th>
-                  <th class="no-sort">Status</th>
-                  <th class="no-sort">Peers Present</th>
+                  <th class="no-sort">Missing</th>
+                  <th class="no-sort">Core Peers Present</th>
+                  <th class="no-sort">Priority</th>
                   <th class="no-sort">Evidence</th>
                 </tr>
               </thead>
@@ -430,15 +430,16 @@
       </section>
 
       <section class="aiv-theme-group" aria-labelledby="aivDetailThemeAiVs" id="aivDetailAiVsSection" hidden>
-        <h2 id="aivDetailThemeAiVs" class="aiv-theme-title">AI vs Dealality Context</h2>
-        <p class="aiv-theme-help help-text">Observed AI answer pattern next to Brand Basics facts when available.</p>
+        <h2 id="aivDetailThemeAiVs" class="aiv-theme-title">AI vs Dealality Context <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="How Dealality Measures AI"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>How Dealality Measures AI</strong><br>Dealality tests representative hotel owner and developer decision scenarios across monitored AI providers, markets and languages. Exact production prompts and testing sequences are proprietary.</div></span></h2>
+        <p class="aiv-theme-help help-text">What owner decision AI responded to, how your brand was represented, and governed Brand Basics context when available.</p>
         <div class="aiv-theme-card aiv-theme-card--flush">
           <div class="deals-table-container aiv-portfolio-table-wrap">
             <table class="deals-table aiv-portfolio-table aiv-hdv-context-table" id="aivDetailContextTable">
               <thead>
                 <tr>
-                  <th class="no-sort">Question</th>
-                  <th class="no-sort">AI Pattern</th>
+                  <th class="no-sort">Owner Intent <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Owner Intent"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Owner Intent</strong><br>Owner Intent represents the hotel owner or developer decision Dealality is testing, such as brand affiliation, conversion, flexibility or market entry. Dealality may use multiple governed question formulations to measure the same decision.</div></span></th>
+                  <th class="no-sort">Decision Context <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Decision Context"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Decision Context</strong><br>Decision Context describes the business situation behind the measurement. It helps explain what the AI was being asked to evaluate without exposing Dealality's exact production prompt.</div></span></th>
+                  <th class="no-sort">AI Representation</th>
                   <th class="no-sort">Dealality Context</th>
                   <th class="no-sort">Status</th>
                 </tr>

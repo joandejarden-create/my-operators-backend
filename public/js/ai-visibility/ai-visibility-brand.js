@@ -38,10 +38,15 @@
     portfolioInfoBound: false,
     brandNamesById: {},
     peerRows: [],
+    competitorsMeta: null,
+    competitorsMetaByProvider: null,
     peerSortKey: null,
     peerSortDir: "asc",
     demoBrandPortfolioKey: null,
     _execLanguageReconciled: false,
+    _execCacheFp: null,
+    _detailCacheFp: null,
+    _detailSecondaryCache: null,
     requestGeneration: 0,
     loadAbort: null,
     loadFilterFp: null,
@@ -71,6 +76,106 @@
       s.intent,
       s.portfolioKey,
     ].join("|");
+  }
+
+  function execTabCacheFp() {
+    return [
+      state.geography || "",
+      state.provider || "",
+      state.language || "",
+      state.demoBrandPortfolioKey || "",
+    ].join("|");
+  }
+
+  function detailTabCacheFp() {
+    return [
+      state.geography || "",
+      state.provider || "",
+      state.language || "",
+      state.brandId || "",
+      state.intent || "",
+      state.demoBrandPortfolioKey || "",
+      watchlistState.mode || "missing",
+    ].join("|");
+  }
+
+  function invalidateTabCaches() {
+    state._execCacheFp = null;
+    state._detailCacheFp = null;
+    state._detailSecondaryCache = null;
+    state.competitorsMeta = null;
+    state.competitorsMetaByProvider = null;
+  }
+
+  function mergeCompetitorsRenderData(data) {
+    var payload = data && typeof data === "object" ? Object.assign({}, data) : {};
+    var providerKey = String(state.provider || "openai").toLowerCase();
+    if (
+      (Array.isArray(payload.ownerIntentBenchmarks) &&
+        payload.ownerIntentBenchmarks.length > 0) ||
+      payload.OWNER_INTENT_VISIBLE === true ||
+      payload.SCENARIO_BENCHMARK_UI === "LIVE_CERTIFIED_VALUES_ONLY"
+    ) {
+      if (!state.competitorsMetaByProvider) state.competitorsMetaByProvider = {};
+      state.competitorsMetaByProvider[providerKey] = {
+        ownerIntentBenchmarks: payload.ownerIntentBenchmarks || [],
+        ALL_PROVIDERS_DERIVED: payload.ALL_PROVIDERS_DERIVED === true,
+        SCENARIO_BENCHMARK_UI: payload.SCENARIO_BENCHMARK_UI || null,
+        CUSTOMER_INDEX_RENDERING: payload.CUSTOMER_INDEX_RENDERING || null,
+        OWNER_INTENT_VISIBLE: payload.OWNER_INTENT_VISIBLE === true,
+        peerPresentSubjectMissing: payload.peerPresentSubjectMissing || null,
+      };
+      state.competitorsMeta = state.competitorsMetaByProvider[providerKey];
+    } else if (
+      state.competitorsMetaByProvider &&
+      state.competitorsMetaByProvider[providerKey]
+    ) {
+      payload = Object.assign({}, state.competitorsMetaByProvider[providerKey], payload);
+      state.competitorsMeta = state.competitorsMetaByProvider[providerKey];
+    }
+    return payload;
+  }
+
+  function tryRenderFromTabCache() {
+    if (state.tab === "executive") {
+      if (
+        state.executive &&
+        state._execCacheFp &&
+        state._execCacheFp === execTabCacheFp()
+      ) {
+        setActiveTab("executive");
+        renderExecutive(state.executive);
+        setError(null);
+        setBanner(null);
+        return true;
+      }
+      return false;
+    }
+    if (
+      state.overview &&
+      state._detailCacheFp &&
+      state._detailCacheFp === detailTabCacheFp() &&
+      state._detailSecondaryCache
+    ) {
+      setActiveTab("detail");
+      if (state.portfolio) {
+        fillBrandSelect(state.portfolio.brands);
+      }
+      syncFilterControlsFromState();
+      paintDetailOverview(state.overview, state.brandId);
+      var sec = state._detailSecondaryCache;
+      renderDetailTrendChart(sec.trend || { ok: false, points: [] });
+      renderCompetitors(
+        sec.competitors || { ok: false, peers: [], competitors: [] }
+      );
+      renderSources(sec.sources || { ok: false, sources: [] });
+      if (sec.watchlist) {
+        applyWatchlistPayload(sec.watchlist);
+      }
+      setError(null);
+      return true;
+    }
+    return false;
   }
 
   function beginLoadGeneration() {
@@ -550,6 +655,21 @@
         { id: "claude", label: "Claude" },
       ];
     }
+    if (
+      list.length &&
+      !list.some(function (p) {
+        return (p.id || p) === "all";
+      })
+    ) {
+      list.unshift({
+        id: "all",
+        label: "All Providers",
+        mode: "DERIVED",
+        monitored: list.some(function (p) {
+          return (p.id || p) !== "all" && p.monitored !== false;
+        }),
+      });
+    }
     var want = state.provider || "openai";
     var ids = list.map(function (p) {
       return p.id || p;
@@ -594,6 +714,7 @@
   var EXEC_INSIGHT_TILE_PRIORITY = [
     "MEANINGFUL_PRESENCE_CHANGE",
     "STRONGEST_PRESENCE_AREA",
+    "LARGEST_COMPETITIVE_STRENGTH",
     "WEAKEST_PRESENCE_AREA",
     "LARGEST_COMPETITIVE_GAP",
     "QUESTIONS_MISSING_PATTERN",
@@ -663,15 +784,16 @@
         ) {
           title = "Provider Comparison";
         }
+        title = String(title || "")
+          .replace(/\s*[—-]\s*Review\s*$/i, "")
+          .trim();
+        var body =
+          box.executiveFindingText || box.finding || box.takeaway || "";
         var isDetailRow = opts.rowId === "aivDetailInsights";
-        var body = isDetailRow
-          ? box.detailBody || box.executiveFindingText || box.finding || box.takeaway || ""
-          : box.executiveFindingText || box.finding || box.takeaway || "";
-        var observationSupport = box.observationSupport || "";
-        var evidence = box.evidence || observationSupport || "";
+        var evidence = box.evidence || "";
         return (
           '<article class="aiv-insight-tile' +
-          (isDetailRow ? " aiv-insight-tile--detail" : "") +
+          (isDetailRow ? " aiv-insight-tile--detail" : " aiv-insight-tile--exec") +
           '" data-insight-kind="' +
           AiVisibilityUi.escapeHtml(kind) +
           '" tabindex="0" role="button">' +
@@ -686,11 +808,6 @@
           (evidence
             ? '<p class="aiv-insight-evidence"><span class="aiv-insight-evidence-label">Evidence:</span> ' +
               AiVisibilityUi.escapeHtml(evidence) +
-              "</p>"
-            : "") +
-          (observationSupport
-            ? '<p class="aiv-insight-stability" hidden>' +
-              AiVisibilityUi.escapeHtml(observationSupport) +
               "</p>"
             : "") +
           "</article>"
@@ -1422,20 +1539,20 @@
       intentBlock.availability === "not_monitored" ||
       !rows.length;
     if (!futureOrEmpty) {
-      if (topTerritory && topTerritory.intentTerritory) {
+      if (topTerritory && (topTerritory.intentLabel || topTerritory.intentTerritory)) {
         cards.push({
-          label: "Strongest Family",
+          label: "Strongest Owner Intent",
           value:
-            topTerritory.intentTerritory +
+            (topTerritory.intentLabel || topTerritory.intentTerritory) +
             (topTerritory.display ? " · " + topTerritory.display : ""),
         });
       }
       var weakest = pickWeakestIntentTerritory(rows);
-      if (weakest && weakest.intentTerritory) {
+      if (weakest && (weakest.intentLabel || weakest.intentTerritory)) {
         cards.push({
-          label: "Weakest Family",
+          label: "Weakest Owner Intent",
           value:
-            weakest.intentTerritory +
+            (weakest.intentLabel || weakest.intentTerritory) +
             (weakest.display ? " · " + weakest.display : ""),
         });
       }
@@ -1443,7 +1560,7 @@
       if (breadth) {
         cards.push({
           label: "Coverage Breadth",
-          value: breadth.display + " families",
+          value: breadth.display + " owner intents",
         });
       }
     }
@@ -1541,6 +1658,110 @@
     el.innerHTML = rows;
   }
 
+  var PROMPT_DISCLOSURE_INFO = {
+    OWNER_INTENT: {
+      title: "Owner Intent",
+      body:
+        "Owner Intent represents the hotel owner or developer decision Dealality is testing, such as brand affiliation, conversion, flexibility or market entry. Dealality may use multiple governed question formulations to measure the same decision.",
+    },
+    DECISION_CONTEXT: {
+      title: "Decision Context",
+      body:
+        "Decision Context describes the business situation behind the measurement. It helps explain what the AI was being asked to evaluate without exposing Dealality's exact production prompt.",
+    },
+    HOW_DEALALITY_MEASURES_AI: {
+      title: "How Dealality Measures AI",
+      body:
+        "Dealality tests representative hotel owner and developer decision scenarios across monitored AI providers, markets and languages. Results are measured using governed scenarios and repeat observations. Exact production prompts and testing sequences are proprietary.",
+    },
+    QUESTIONS_MISSING: {
+      title: "Questions Missing",
+      body:
+        "A question is considered missing when your brand is absent across every comparable monitored provider for that owner-decision observation. Missing does not mean zero demand or that another brand 'won.'",
+    },
+    BENCHMARK_STILL_DEVELOPING: {
+      title: "Benchmark still developing",
+      body:
+        "Dealality shows a numeric benchmark as soon as this brand, Owner Intent and selected provider scope pass the required measurement-quality checks. Until then, the underlying Presence observations may still be shown without an uncertified score.",
+    },
+    YOUR_PRESENCE: {
+      title: "Your Presence",
+      body:
+        "Your Presence shows how often your brand appeared across comparable monitored AI observations for this Owner Intent in the selected provider and geography view.",
+    },
+    MONITORED: {
+      title: "Monitored",
+      body:
+        "Comparable observations measured for this Owner Intent in the selected provider and geography view. Shown as observations with presence / total comparable observations.",
+    },
+    MISSING: {
+      title: "Missing",
+      body:
+        "Counts comparable monitored observations where your brand did not appear for this Owner Intent. Missing does not mean zero demand or that another brand won.",
+    },
+    PEER_PRESENT_GAPS: {
+      title: "Peer-Present Gaps",
+      body:
+        "Counts monitored owner-decision observations where your brand was absent while one or more relevant peers were present. This highlights competitive visibility gaps; it does not mean another brand \"won\" the decision.",
+    },
+    AI_PRESENCE_INDEX: {
+      title: "AI Presence Index",
+      body:
+        "Measures how often your brand appears in this owner-decision context relative to directly comparable brands in the selected provider scope. 100 represents competitive parity.",
+    },
+    CORE_PEERS: {
+      title: "Core Peers",
+      body:
+        "Brands considered direct commercial alternatives for this specific owner decision. Dealality uses governed commercial characteristics to determine the relevant comparison group.",
+    },
+    OBSERVED_COMPETITORS: {
+      title: "Observed Competitors",
+      body:
+        "Brands that actually appear as alternatives or peers across relevant Dealality AI observations. They may differ from a traditional competitive set.",
+    },
+    CHG_VS_PRIOR_RUN: {
+      title: "Δ vs prior run",
+      body:
+        "Shows the change in this Owner Intent's certified AI Presence Index versus the most recent comparable prior measurement run. Change is shown in index points. If no comparable prior run exists, you will see Insufficient History. It is not a long-term trend.",
+    },
+  };
+
+  function disclosureInfoIconHtml(key, labelOverride) {
+    var info = PROMPT_DISCLOSURE_INFO[key];
+    if (!info) return "";
+    var label = labelOverride || info.title;
+    return (
+      '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About ' +
+      AiVisibilityUi.escapeHtml(label) +
+      '"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span>' +
+      '<div class="tooltip-content" hidden><strong>' +
+      AiVisibilityUi.escapeHtml(info.title) +
+      "</strong><br>" +
+      AiVisibilityUi.escapeHtml(info.body) +
+      "</div></span>"
+    );
+  }
+
+  function watchlistOwnerIntent(r) {
+    return r.ownerIntent || r.intentLabel || r.PROMPT_FAMILY || "—";
+  }
+
+  function watchlistMissingLabel(r) {
+    var missing = r.missingProviderCount;
+    var comparable = r.comparableProviderCount;
+    if (missing == null && Array.isArray(r.PROVIDERS_MISSING)) {
+      missing = r.PROVIDERS_MISSING.length;
+    }
+    if (comparable == null && Array.isArray(r.PROVIDERS_MONITORED)) {
+      comparable = r.PROVIDERS_MONITORED.length;
+    }
+    if (missing != null && comparable != null && comparable > 0) {
+      return missing + " of " + comparable + " providers";
+    }
+    if (missing != null) return String(missing) + " providers";
+    return r.SUBJECT_PRESENCE || "Missing";
+  }
+
   var watchlistState = {
     mode: "missing",
     rows: [],
@@ -1575,8 +1796,32 @@
           .join("");
       if (cur) sel.value = cur;
     }
-    // Provider / Region / Language follow page filters — only Prompt family stays local.
-    fill("aivWlFamily", "PROMPT_FAMILY");
+    // Provider / Region / Language follow page filters — only Owner Intent stays local.
+    (function fillOwnerIntent(selId) {
+      var sel = $(selId);
+      if (!sel) return;
+      var cur = sel.value;
+      var vals = {};
+      (rows || []).forEach(function (r) {
+        var v = watchlistOwnerIntent(r);
+        if (v && v !== "—") vals[String(v)] = true;
+      });
+      sel.innerHTML =
+        '<option value="">All</option>' +
+        Object.keys(vals)
+          .sort()
+          .map(function (v) {
+            return (
+              '<option value="' +
+              AiVisibilityUi.escapeHtml(v) +
+              '">' +
+              AiVisibilityUi.escapeHtml(v) +
+              "</option>"
+            );
+          })
+          .join("");
+      if (cur) sel.value = cur;
+    })("aivWlFamily");
   }
 
   function renderWatchlistTable() {
@@ -1587,7 +1832,7 @@
     var family = ($("aivWlFamily") && $("aivWlFamily").value) || "";
     // Provider / Geography / Language come from page filters via the questions API (qs).
     var filtered = (watchlistState.rows || []).filter(function (r) {
-      if (family && String(r.PROMPT_FAMILY || "") !== family) return false;
+      if (family && String(watchlistOwnerIntent(r)) !== family) return false;
       return true;
     });
     var pageSize = watchlistState.pageSize || 25;
@@ -1617,31 +1862,49 @@
             })
             .filter(Boolean)
             .join(", ");
+          var corePeers = (r.corePeersPresent || []).join(" · ");
+          var priority = r.priority || "";
           var ev = r.EVIDENCE || r.evidenceId || "";
-          var status = r.SUBJECT_PRESENCE || "Not Observed";
+          var ownerIntent = watchlistOwnerIntent(r);
+          var decisionContext = r.decisionContext || "—";
+          var geography = r.geography || r.geographyDisplay || r.REGION || "—";
+          var language = r.languageDisplay || r.LANGUAGE || "—";
           return (
             "<tr>" +
-            "<td>" +
-            AiVisibilityUi.escapeHtml(r.QUESTION || "—") +
+            "<td><span class=\"aiv-wl-intent\">" +
+            AiVisibilityUi.escapeHtml(ownerIntent) +
+            "</span>" +
             promptOriginBadgeHtml(r) +
             "</td>" +
+            "<td><span class=\"aiv-wl-decision-context\">" +
+            AiVisibilityUi.escapeHtml(decisionContext) +
+            "</span></td>" +
             "<td>" +
-            AiVisibilityUi.escapeHtml(r.PROMPT_FAMILY || "—") +
+            AiVisibilityUi.escapeHtml(geography) +
             "</td>" +
             "<td>" +
-            AiVisibilityUi.escapeHtml(r.PROVIDER || "—") +
+            AiVisibilityUi.escapeHtml(language) +
             "</td>" +
             "<td>" +
-            AiVisibilityUi.escapeHtml(r.REGION || "—") +
+            AiVisibilityUi.escapeHtml(watchlistMissingLabel(r)) +
             "</td>" +
             "<td>" +
-            AiVisibilityUi.escapeHtml(r.LANGUAGE || "—") +
+            (corePeers
+              ? '<span class="aiv-wl-core-peers">' + AiVisibilityUi.escapeHtml(corePeers) + "</span>"
+              : AiVisibilityUi.escapeHtml(peers || "—")) +
+            (r.observedCompetitor
+              ? '<div class="aiv-wl-observed">Observed competitor: ' +
+                AiVisibilityUi.escapeHtml(r.observedCompetitor) +
+                "</div>"
+              : "") +
+            (r.competitiveContext
+              ? '<div class="aiv-wl-context">' + AiVisibilityUi.escapeHtml(r.competitiveContext) + "</div>"
+              : "") +
             "</td>" +
             "<td>" +
-            AiVisibilityUi.escapeHtml(status) +
-            "</td>" +
-            "<td>" +
-            AiVisibilityUi.escapeHtml(peers || "—") +
+            (priority
+              ? '<span class="aiv-priority-tag">' + AiVisibilityUi.escapeHtml(priority) + "</span>"
+              : "—") +
             "</td>" +
             "<td>" +
             (ev
@@ -1724,8 +1987,8 @@
     }
   }
 
-  async function loadWatchlist(mode) {
-    if (!state.brandId) return;
+  async function loadWatchlist(mode, fetchOpts) {
+    if (!state.brandId) return null;
     watchlistState.mode = mode || watchlistState.mode || "missing";
     var brandBase =
       "/api/ai-visibility/brand/" + encodeURIComponent(state.brandId);
@@ -1742,15 +2005,18 @@
             limit: "100",
             offset: "0",
             watchlistMode: modeParam,
-          })
+          }),
+        fetchOpts || {}
       );
       applyWatchlistPayload(data);
+      return data;
     } catch (err) {
       var body = $("aivWatchlistBody");
       if (body) {
         body.innerHTML =
           '<tr><td colspan="8"><div class="aiv-empty">Unable to load Questions Missing watchlist.</div></td></tr>';
       }
+      return null;
     }
   }
 
@@ -1933,31 +2199,51 @@
       "</div></div>";
   }
 
+  function intentRowLabel(r) {
+    return r.intentLabel || r.intentTerritory || "—";
+  }
+
+  function intentRowPresenceValue(r) {
+    if (typeof r.subjectPresence === "number") return r.subjectPresence;
+    if (typeof r.value === "number") return r.value;
+    return null;
+  }
+
   function pickWeakestIntentTerritory(rows) {
     var list = (rows || []).filter(function (r) {
-      return r && r.intentTerritory && typeof r.value === "number" && Number.isFinite(r.value);
+      if (!r) return false;
+      var val = intentRowPresenceValue(r);
+      return (r.intentLabel || r.intentTerritory) && typeof val === "number" && Number.isFinite(val);
     });
     if (!list.length) return null;
     list = list.slice().sort(function (a, b) {
-      if (a.value !== b.value) return a.value - b.value;
-      return String(a.intentTerritory).localeCompare(String(b.intentTerritory));
+      var av = intentRowPresenceValue(a);
+      var bv = intentRowPresenceValue(b);
+      if (av !== bv) return av - bv;
+      return String(intentRowLabel(a)).localeCompare(String(intentRowLabel(b)));
     });
     var weakest = list[0];
+    var val = intentRowPresenceValue(weakest);
     return {
-      intentTerritory: weakest.intentTerritory,
-      display: weakest.display || (Math.round(weakest.value * 100) + "%"),
-      value: weakest.value,
+      intentTerritory: intentRowLabel(weakest),
+      intentLabel: intentRowLabel(weakest),
+      display:
+        weakest.subjectPresenceDisplay ||
+        weakest.display ||
+        (val != null ? Math.round(val * 100) + "%" : "—"),
+      value: val,
     };
   }
 
   function summarizeIntentCoverageBreadth(rows) {
     var list = (rows || []).filter(function (r) {
-      return r && r.intentTerritory;
+      return r && (r.intentLabel || r.intentTerritory);
     });
     if (!list.length) return null;
     var monitored = list.length;
     var present = list.filter(function (r) {
-      return typeof r.value === "number" && Number.isFinite(r.value) && r.value > 0;
+      var val = intentRowPresenceValue(r);
+      return typeof val === "number" && Number.isFinite(val) && val > 0;
     }).length;
     return {
       present: present,
@@ -1965,10 +2251,10 @@
       display: present + " of " + monitored,
       meta:
         present === 0
-          ? "No presence in monitored Intent Territories yet."
+          ? "No presence in monitored Owner Intents yet."
           : present === monitored
-            ? "Present in every monitored Intent Territory."
-            : "Present in " + present + " of " + monitored + " monitored Intent Territories.",
+            ? "Present in every monitored Owner Intent."
+            : "Present in " + present + " of " + monitored + " monitored Owner Intents.",
     };
   }
 
@@ -1976,6 +2262,190 @@
     // Summary strip is rendered with providers in renderCoverageDiagnosticsSummary.
     void intentBlock;
     void topTerritory;
+  }
+
+  function formatOwnerIntentCustomerDate(iso) {
+    if (!iso) return null;
+    var s = String(iso);
+    var d = s.length >= 10 ? s.slice(0, 10) : s;
+    var parts = d.split("-");
+    if (parts.length !== 3) return s;
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var month = months[Number(parts[1]) - 1];
+    var day = String(Number(parts[2]));
+    if (!month) return s;
+    return month + " " + day + ", " + parts[0];
+  }
+
+  function formatPresencePct(rate) {
+    if (typeof rate !== "number" || !Number.isFinite(rate)) return null;
+    return Math.round(rate * 100) + "%";
+  }
+
+  function renderChgVsPriorCell(row) {
+    var display = row.chgVsPriorDisplay;
+    if (display) {
+      return AiVisibilityUi.formatDeltaCell({
+        availability: "observed",
+        display: display,
+      });
+    }
+    return AiVisibilityUi.formatDeltaCell({
+      availability: "insufficient_history",
+      display: "Insufficient History",
+    });
+  }
+
+  function renderHistoricalComparison(row) {
+    var status = row.comparisonStatus || (row.chgVsPrior && row.chgVsPrior.comparisonStatus);
+    var priorDate = row.priorPeriodDate || (row.chgVsPrior && row.chgVsPrior.priorPeriodDate);
+    var currentDate = row.currentPeriodDate || (row.chgVsPrior && row.chgVsPrior.currentPeriodDate);
+    var presenceHistory =
+      row.presenceHistoryAvailable === true ||
+      (row.chgVsPrior && row.chgVsPrior.presenceHistoryAvailable === true);
+    var indexHistory =
+      typeof row.indexChangePoints === "number" ||
+      (row.chgVsPrior && typeof row.chgVsPrior.indexChangePoints === "number");
+    if (!priorDate && status === "NO_PRIOR_PERIOD") {
+      return (
+        '<div class="aiv-intent-detail-block aiv-historical-comparison">' +
+        '<div class="aiv-intent-detail-block__label">Historical Comparison</div>' +
+        '<p class="aiv-historical-comparison__empty">No comparable prior run yet.</p>' +
+        "</div>"
+      );
+    }
+    if (!priorDate && !presenceHistory && !indexHistory) return "";
+    var currentRun = formatOwnerIntentCustomerDate(currentDate);
+    var priorRun = formatOwnerIntentCustomerDate(priorDate);
+    var curPres = formatPresencePct(row.currentPresence != null ? row.currentPresence : row.subjectPresence);
+    var priPres = formatPresencePct(row.priorPresence);
+    var presChange = row.presenceChangePoints;
+    var presenceLine = "";
+    if (presenceHistory && curPres && priPres) {
+      var presPts =
+        typeof presChange === "number"
+          ? presChange === 0
+            ? "No change"
+            : (presChange > 0 ? "+" : "") + String(presChange) + " pts"
+          : "";
+      presenceLine =
+        '<div class="aiv-historical-comparison__line">Presence: ' +
+        AiVisibilityUi.escapeHtml(curPres) +
+        " vs " +
+        AiVisibilityUi.escapeHtml(priPres) +
+        " prior" +
+        (presPts ? " " + AiVisibilityUi.escapeHtml(presPts) : "") +
+        "</div>";
+    }
+    var indexLine = "";
+    if (indexHistory && row.currentIndex != null && row.priorIndex != null) {
+      var idxPts = row.chgVsPriorDisplay || "";
+      indexLine =
+        '<div class="aiv-historical-comparison__line">AI Presence Index: ' +
+        AiVisibilityUi.escapeHtml(String(row.currentIndex)) +
+        " vs " +
+        AiVisibilityUi.escapeHtml(String(row.priorIndex)) +
+        " prior" +
+        (idxPts ? " " + AiVisibilityUi.escapeHtml(idxPts) : "") +
+        "</div>";
+    }
+    var shortNote =
+      row.shortInterval || (row.chgVsPrior && row.chgVsPrior.shortInterval)
+        ? '<p class="aiv-historical-comparison__note">These measurements are from separate comparable runs and should be interpreted as period-over-period movement, not a long-term trend.</p>'
+        : "";
+    return (
+      '<div class="aiv-intent-detail-block aiv-historical-comparison">' +
+      '<div class="aiv-intent-detail-block__label">Historical Comparison</div>' +
+      (currentRun
+        ? '<div class="aiv-historical-comparison__line">Current run: ' +
+          AiVisibilityUi.escapeHtml(currentRun) +
+          "</div>"
+        : "") +
+      (priorRun
+        ? '<div class="aiv-historical-comparison__line">Prior run: ' +
+          AiVisibilityUi.escapeHtml(priorRun) +
+          "</div>"
+        : "") +
+      presenceLine +
+      indexLine +
+      shortNote +
+      "</div>"
+    );
+  }
+
+  function renderOwnerIntentPeerChips(row) {
+    var core = (row.selectedCorePeers || []).slice(0, 3);
+    var observed = (row.selectedObservedCompetitors || []).slice(0, 3);
+    if (!core.length && !observed.length) return "";
+    var coreChips = core
+      .map(function (name) {
+        return (
+          '<span class="aiv-peer-chip aiv-peer-chip--core">' +
+          AiVisibilityUi.escapeHtml(name) +
+          "</span>"
+        );
+      })
+      .join("");
+    var observedChips = observed
+      .map(function (name) {
+        return (
+          '<span class="aiv-peer-chip aiv-peer-chip--observed">' +
+          AiVisibilityUi.escapeHtml(name) +
+          "</span>"
+        );
+      })
+      .join("");
+    return (
+      '<div class="aiv-owner-intent-context aiv-owner-intent-context--expanded">' +
+      (coreChips
+        ? '<div class="aiv-intent-detail-block"><div class="aiv-intent-detail-block__label">Core Peers' +
+          disclosureInfoIconHtml("CORE_PEERS") +
+          '</div><div class="aiv-owner-intent-context__line">' +
+          coreChips +
+          "</div></div>"
+        : "") +
+      (observedChips
+        ? '<div class="aiv-intent-detail-block"><div class="aiv-intent-detail-block__label">Observed Competitors' +
+          disclosureInfoIconHtml("OBSERVED_COMPETITORS") +
+          '</div><div class="aiv-owner-intent-context__line">' +
+          observedChips +
+          "</div></div>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function bindUnifiedIntentExpansion(root) {
+    if (!root) return;
+    var buttons = root.querySelectorAll(".aiv-intent-expand");
+    // ONE_ROW_AT_A_TIME — opening one Owner Intent closes the previous.
+    function collapseAll() {
+      buttons.forEach(function (other) {
+        other.setAttribute("aria-expanded", "false");
+        var otherLabel = other.getAttribute("data-intent-label") || "Owner Intent";
+        other.setAttribute("aria-label", "Show details for " + otherLabel);
+        var otherRow = other.closest("tr");
+        if (otherRow) otherRow.classList.remove("is-expanded");
+        var otherId = other.getAttribute("aria-controls");
+        var otherDetail = otherId ? root.querySelector("#" + otherId) : null;
+        if (otherDetail) otherDetail.hidden = true;
+      });
+    }
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var opening = btn.getAttribute("aria-expanded") !== "true";
+        collapseAll();
+        if (!opening) return;
+        btn.setAttribute("aria-expanded", "true");
+        var label = btn.getAttribute("data-intent-label") || "Owner Intent";
+        btn.setAttribute("aria-label", "Hide details for " + label);
+        var row = btn.closest("tr");
+        if (row) row.classList.add("is-expanded");
+        var detailId = btn.getAttribute("aria-controls");
+        var detail = detailId ? root.querySelector("#" + detailId) : null;
+        if (detail) detail.hidden = false;
+      });
+    });
   }
 
   function renderIntentCoverage(el, intentBlock) {
@@ -1993,9 +2463,179 @@
     }
     if (!(intentBlock.rows || []).length) {
       el.innerHTML =
-        '<div class="aiv-empty aiv-empty--compact">No prompt-family coverage for this geography yet.</div>';
+        '<div class="aiv-empty aiv-empty--compact">No Owner Intent coverage for this geography yet.</div>';
       return;
     }
+
+    var isUnified = intentBlock.unified === true;
+    if (!isUnified) {
+      var hasUnifiedShape = intentBlock.rows.some(function (r) {
+        return r && r.intentLabel && r.scenarioId;
+      });
+      isUnified = hasUnifiedShape;
+    }
+
+    if (!isUnified) {
+      el.innerHTML =
+        '<div class="aiv-empty aiv-empty--compact">' +
+        AiVisibilityUi.escapeHtml(
+          "Owner Intent coverage is loading with the latest diagnostics format. Refresh this page or restart the server if this message persists."
+        ) +
+        "</div>";
+      if (typeof console !== "undefined" && console.warn) {
+        console.warn(
+          "[aiv-brand] legacy owner-intent coverage blocked — expected unified payload",
+          intentBlock
+        );
+      }
+      return;
+    }
+
+    el.innerHTML =
+      '<div class="deals-table-container aiv-portfolio-table-wrap aiv-coverage-table-wrap aiv-unified-intent-table-wrap">' +
+      '<table class="deals-table aiv-portfolio-table aiv-coverage-table aiv-intent-coverage-table aiv-unified-intent-table">' +
+      "<thead><tr>" +
+      '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">Owner<br>Intent</span>' +
+      disclosureInfoIconHtml("OWNER_INTENT") +
+      "</span></th>" +
+      '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">Your<br>Presence</span>' +
+      disclosureInfoIconHtml("YOUR_PRESENCE") +
+      "</span></th>" +
+      '<th class="no-sort aiv-chg-th"><span class="aiv-th-label"><span class="aiv-th-text">Δ vs<br>prior run</span>' +
+      disclosureInfoIconHtml("CHG_VS_PRIOR_RUN") +
+      "</span></th>" +
+      '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">Monitored</span>' +
+      disclosureInfoIconHtml("MONITORED") +
+      "</span></th>" +
+      '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">Missing</span>' +
+      disclosureInfoIconHtml("MISSING") +
+      "</span></th>" +
+      '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">Peer-Present<br>Gaps</span>' +
+      disclosureInfoIconHtml("PEER_PRESENT_GAPS") +
+      "</span></th>" +
+      '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">AI Presence<br>Index</span>' +
+      disclosureInfoIconHtml("AI_PRESENCE_INDEX") +
+      "</span></th>" +
+      '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">Position</span></span></th>' +
+      "</tr></thead><tbody>" +
+      intentBlock.rows
+        .map(function (r, idx) {
+          var presenceMain = r.subjectPresenceDisplay || "—";
+          var pct =
+            typeof r.subjectPresence === "number" && Number.isFinite(r.subjectPresence)
+              ? Math.max(0, Math.min(100, Math.round(r.subjectPresence * 100)))
+              : null;
+          var presenceVisual =
+            pct != null
+              ? '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' +
+                pct +
+                '%"></span></span><span class="aiv-presence-cell__value">' +
+                AiVisibilityUi.escapeHtml(presenceMain) +
+                "</span></span>"
+              : AiVisibilityUi.escapeHtml(presenceMain);
+          var monitoredPresent =
+            r.withPresenceCount != null
+              ? r.withPresenceCount
+              : r.presentN != null
+                ? r.presentN
+                : null;
+          var monitoredTotal =
+            r.comparableObservationCount != null
+              ? r.comparableObservationCount
+              : r.monitoredN != null
+                ? r.monitoredN
+                : null;
+          var monitoredCell =
+            monitoredPresent != null && monitoredTotal != null
+              ? String(monitoredPresent) + "/" + String(monitoredTotal)
+              : "—";
+          var missing =
+            r.missingCount != null
+              ? String(r.missingCount)
+              : "Not enough comparable evidence";
+          var peerGaps =
+            r.peerPresentGapCount != null
+              ? String(r.peerPresentGapCount)
+              : "Not enough comparable evidence";
+          var certified = typeof r.indexValue === "number";
+          var indexCell = certified
+            ? '<span class="aiv-intent-index">' +
+              AiVisibilityUi.escapeHtml(String(r.indexValue)) +
+              "</span>"
+            : '<span class="aiv-owner-intent-developing">' +
+              AiVisibilityUi.escapeHtml(r.benchmarkStatus || "Benchmark still developing") +
+              "</span>";
+          var positionCell = r.position ? AiVisibilityUi.escapeHtml(r.position) : "";
+          var chgCell = renderChgVsPriorCell(r);
+          var historicalBlock = renderHistoricalComparison(r);
+          var peerContext = renderOwnerIntentPeerChips(r);
+          var decisionContextBlock = r.decisionContext
+            ? '<div class="aiv-intent-detail-block"><div class="aiv-intent-detail-block__label">Decision Context</div><p class="aiv-intent-decision-context aiv-intent-decision-context--expanded">' +
+              AiVisibilityUi.escapeHtml(r.decisionContext) +
+              "</p></div>"
+            : "";
+          var hasDetail = !!(decisionContextBlock || peerContext || historicalBlock);
+          var detailId = "aiv-intent-detail-" + idx;
+          var intentLabel = r.intentLabel || "—";
+          var expandControl = hasDetail
+            ? '<button type="button" class="aiv-intent-expand" aria-expanded="false" aria-controls="' +
+              detailId +
+              '" data-intent-label="' +
+              AiVisibilityUi.escapeHtml(intentLabel) +
+              '" aria-label="Show details for ' +
+              AiVisibilityUi.escapeHtml(intentLabel) +
+              '"><span class="aiv-intent-chevron" aria-hidden="true"></span><span class="project-name-text">' +
+              AiVisibilityUi.escapeHtml(intentLabel) +
+              "</span></button>"
+            : '<span class="project-name-text">' +
+              AiVisibilityUi.escapeHtml(intentLabel) +
+              "</span>";
+          var detailRow = hasDetail
+            ? '<tr class="aiv-unified-intent-detail" id="' +
+              detailId +
+              '" hidden><td colspan="8"><div class="aiv-intent-detail-panel">' +
+              decisionContextBlock +
+              (peerContext || "") +
+              (historicalBlock || "") +
+              "</div></td></tr>"
+            : "";
+          return (
+            '<tr class="aiv-intent-row aiv-unified-intent-row">' +
+            "<td>" +
+            expandControl +
+            "</td>" +
+            '<td class="aiv-metric-cell aiv-presence-metric-cell">' +
+            presenceVisual +
+            "</td>" +
+            '<td class="aiv-metric-cell aiv-delta-cell aiv-chg-metric-cell">' +
+            chgCell +
+            "</td>" +
+            '<td class="aiv-metric-cell aiv-monitored-cell">' +
+            AiVisibilityUi.escapeHtml(monitoredCell) +
+            "</td>" +
+            '<td class="aiv-metric-cell">' +
+            AiVisibilityUi.escapeHtml(missing) +
+            "</td>" +
+            '<td class="aiv-metric-cell">' +
+            AiVisibilityUi.escapeHtml(peerGaps) +
+            "</td>" +
+            '<td class="aiv-metric-cell">' +
+            indexCell +
+            "</td>" +
+            '<td class="aiv-delta-cell">' +
+            positionCell +
+            "</td>" +
+            "</tr>" +
+            detailRow
+          );
+        })
+        .join("") +
+      "</tbody></table></div>";
+
+    bindUnifiedIntentExpansion(el);
+  }
+
+  function renderLegacyIntentCoverage(el, intentBlock) {
     var weakest = pickWeakestIntentTerritory(intentBlock.rows);
     var strongestLabel =
       intentBlock.rows
@@ -2051,7 +2691,7 @@
               ? r.peerPresentSubjectMissingN
               : r.PEER_PRESENT_SUBJECT_MISSING_N != null
                 ? r.PEER_PRESENT_SUBJECT_MISSING_N
-                : "—";
+                : "0";
           var isStrong =
             strongestLabel &&
             r.intentTerritory === strongestLabel.intentTerritory;
@@ -2113,11 +2753,16 @@
     if (section) section.hidden = false;
     ctxBody.innerHTML = ctxRows
       .map(function (r) {
+        var ownerIntent = r.ownerIntent || r.intentLabel || "Owner Decision Scenario";
+        var decisionContext = r.decisionContext || "—";
+        var aiRep = r.aiRepresentation || r.aiPattern || "—";
         return (
           "<tr><td>" +
-          AiVisibilityUi.escapeHtml(r.question || "—") +
+          AiVisibilityUi.escapeHtml(ownerIntent) +
+          "</td><td class=\"aiv-wl-decision-context\">" +
+          AiVisibilityUi.escapeHtml(decisionContext) +
           "</td><td>" +
-          AiVisibilityUi.escapeHtml(r.aiPattern || "—") +
+          AiVisibilityUi.escapeHtml(aiRep) +
           "</td><td>" +
           AiVisibilityUi.escapeHtml(
             r.dealalityContext || "Dealality context not yet available"
@@ -2703,8 +3348,8 @@
           .filter(Boolean)
           .slice(0, 2)
           .join(", ");
-        var family = String(row.PROMPT_FAMILY || "").trim();
-        var q = String(row.QUESTION || row.promptId || "").trim();
+        var family = String(row.PROMPT_FAMILY || row.ownerIntent || row.intentLabel || "").trim();
+        var q = String(row.decisionContext || row.ownerIntent || row.promptId || "").trim();
         if (q.length > 64) q = q.slice(0, 61) + "…";
         var exampleLine = "";
         if (peerNames && family) {
@@ -4866,9 +5511,18 @@
                 .filter(Boolean)
                 .join(" · ")
             : "";
+        var ownerIntent =
+          q.ownerIntent || q.intentLabel || q.intentTerritory || "Owner Decision Scenario";
+        var decisionContext = q.decisionContext || "";
         return (
-          "<tr><td>" +
-          AiVisibilityUi.escapeHtml(q.question || q.promptId) +
+          "<tr><td><span class=\"aiv-wl-intent\">" +
+          AiVisibilityUi.escapeHtml(ownerIntent) +
+          "</span>" +
+          (decisionContext
+            ? '<div class="aiv-wl-decision-context">' +
+              AiVisibilityUi.escapeHtml(decisionContext) +
+              "</div>"
+            : "") +
           promptOriginBadgeHtml(q) +
           "</td><td class=\"aiv-metric-cell\"" +
           (stabilityTitle
@@ -4929,12 +5583,12 @@
     questionsMissing: {
       title: "Questions Missing",
       body:
-        "What it is: Monitored questions where this brand did not appear in the AI answer.\n\nHow to read: Shown as % (count). Higher % or count means more owner questions went unanswered for your brand. Use Detailed View → Questions Missing Watchlist to see the exact questions.\n\nWhy it matters: Missing questions are concrete gaps — places where owners asked AI and your brand was absent.",
+        "What it is: Owner-decision observations where this brand did not appear in the AI answer.\n\nHow to read: Shown as % (count). Higher % or count means more monitored owner-decision scenarios went unanswered for your brand. Use Detailed View → Questions Missing Watchlist to see Owner Intent and Decision Context.\n\nWhy it matters: Missing observations are concrete gaps — places where owners asked AI and your brand was absent.",
     },
     topDecisionTerritory: {
       title: "Top Decision Territory",
       body:
-        "What it is: The owner-intent question type (prompt family) where this brand appeared most often.\n\nHow to read: The label is the strongest prompt family by Presence for this brand. It is not a weighted score or priority ranking across families.\n\nWhy it matters: It shows which owner decision themes already surface your brand — a useful contrast to families where you are missing.",
+        "What it is: The owner-intent question type (prompt family) where this brand appeared most often.\n\nHow to read: Shown only when the brand had Observed Presence (>0%) in at least one prompt family. If the brand was absent from every monitored question, this shows — (not a inferred territory). It is not a weighted score or priority ranking across families.\n\nWhy it matters: It shows which owner decision themes already surface your brand — a useful contrast to families where you are missing.",
     },
     citationFrequency: {
       title: "Citation Frequency",
@@ -5048,7 +5702,159 @@
     });
   }
 
+  function formatPresenceIndexCopy(indexValue, relativeGapPct) {
+    if (typeof indexValue !== "number") return "—";
+    var gap = Math.round(Math.abs(relativeGapPct || 0));
+    if (indexValue > 100) return String(indexValue) + " · " + gap + "% above benchmark";
+    if (indexValue < 100) return String(indexValue) + " · " + gap + "% below benchmark";
+    return String(indexValue) + " · at parity";
+  }
+
+  function formatOwnerIntentPresence(value) {
+    if (typeof value !== "number" || !Number.isFinite(value)) return "";
+    return formatPeerRate(value);
+  }
+
+  function formatOwnerIntentIndex(row) {
+    if (typeof row.indexValue === "number") {
+      return String(row.indexValue);
+    }
+    return "Benchmark still developing";
+  }
+
+  function formatOwnerIntentPosition(row) {
+    if (typeof row.indexValue !== "number" || typeof row.relativeGapPct !== "number") {
+      return "";
+    }
+    var gap = Math.round(Math.abs(row.relativeGapPct || 0));
+    if (row.indexValue > 100) return gap + "% above benchmark";
+    if (row.indexValue < 100) return gap + "% below benchmark";
+    return "At competitive parity";
+  }
+
+  function renderOwnerIntentSummaryTable(rows) {
+    var body = rows
+      .map(function (row) {
+        var certified = typeof row.indexValue === "number";
+        var rowClass = certified ? " aiv-owner-intent-summary-row--certified" : "";
+        var indexCell = formatOwnerIntentIndex(row);
+        var positionCell = formatOwnerIntentPosition(row);
+        return (
+          "<tr class=\"aiv-owner-intent-summary-row" +
+          rowClass +
+          '">' +
+          "<td>" +
+          AiVisibilityUi.escapeHtml(row.intentLabel || "Owner intent") +
+          "</td>" +
+          '<td class="aiv-metric-cell">' +
+          AiVisibilityUi.escapeHtml(formatOwnerIntentPresence(row.subjectPresence)) +
+          "</td>" +
+          '<td class="aiv-metric-cell">' +
+          (certified
+            ? AiVisibilityUi.escapeHtml(indexCell)
+            : '<span class="aiv-owner-intent-developing">' +
+              AiVisibilityUi.escapeHtml(indexCell) +
+              disclosureInfoIconHtml("BENCHMARK_STILL_DEVELOPING", "Benchmark still developing") +
+              "</span>") +
+          "</td>" +
+          '<td class="aiv-delta-cell">' +
+          (positionCell ? AiVisibilityUi.escapeHtml(positionCell) : "") +
+          "</td>" +
+          "</tr>"
+        );
+      })
+      .join("");
+    return (
+      '<div class="deals-table-container aiv-portfolio-table-wrap aiv-owner-intent-summary-wrap">' +
+      '<table class="deals-table aiv-portfolio-table aiv-owner-intent-summary-table">' +
+      "<thead><tr>" +
+      '<th class="no-sort">Owner intent</th>' +
+      '<th class="no-sort">Your Presence</th>' +
+      '<th class="no-sort">AI Presence Index</th>' +
+      '<th class="no-sort">Position</th>' +
+      "</tr></thead>" +
+      "<tbody>" +
+      body +
+      "</tbody></table></div>"
+    );
+  }
+
+  function renderOwnerIntentPeerContext(row) {
+    if (!row) return "";
+    var coreChips = (row.selectedCorePeers || [])
+      .map(function (name) {
+        return (
+          '<span class="aiv-peer-chip">' + AiVisibilityUi.escapeHtml(name) + "</span>"
+        );
+      })
+      .join("");
+    var observedChips = (row.selectedObservedCompetitors || [])
+      .map(function (name) {
+        return (
+          '<span class="aiv-peer-chip aiv-peer-chip--observed">' +
+          AiVisibilityUi.escapeHtml(name) +
+          "</span>"
+        );
+      })
+      .join("");
+    var coreInfo =
+      "Brands considered direct commercial alternatives for this specific owner decision. Dealality uses governed commercial characteristics to determine the relevant comparison group.";
+    var observedInfo =
+      "Brands that actually appear as alternatives or peers across relevant Dealality AI observations. They may differ from a traditional competitive set.";
+    if (!coreChips && !observedChips) return "";
+    return (
+      '<div class="aiv-owner-intent-context">' +
+      (coreChips
+        ? '<div class="aiv-owner-intent-context__line"><span class="aiv-owner-intent-label">Core peers</span>' +
+          coreChips +
+          '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Core Peers"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span>' +
+          '<div class="tooltip-content" hidden><strong>Core Peers</strong><br>' +
+          AiVisibilityUi.escapeHtml(coreInfo) +
+          "</div></span></div>"
+        : "") +
+      (observedChips
+        ? '<div class="aiv-owner-intent-context__line"><span class="aiv-owner-intent-label aiv-owner-intent-label--observed">Observed competitors</span>' +
+          observedChips +
+          '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Observed Competitors"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span>' +
+          '<div class="tooltip-content" hidden><strong>Observed Competitors</strong><br>' +
+          AiVisibilityUi.escapeHtml(observedInfo) +
+          "</div></span></div>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function renderOwnerIntentBenchmarks(data, peerTableHtml) {
+    var rows = data.ownerIntentBenchmarks || [];
+    if (!rows.length) return peerTableHtml || "";
+    var indexInfo =
+      "Measures how often your brand appears in a specific owner-decision context relative to directly comparable brands measured in the selected AI provider scope. 100 represents competitive parity.";
+    var primaryRow =
+      rows.filter(function (row) {
+        return typeof row.indexValue === "number";
+      })[0] || rows[0];
+    var html =
+      '<div class="aiv-owner-intent-block">' +
+      '<div class="aiv-owner-intent-head">' +
+      "<h3 class=\"aiv-theme-label\">AI Presence by Owner Intent</h3>" +
+      '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About AI Presence Index"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span>' +
+      '<div class="tooltip-content" hidden><strong>AI Presence Index</strong><br>' +
+      AiVisibilityUi.escapeHtml(indexInfo) +
+      "</div></span></div>" +
+      '<div class="aiv-owner-intent-columns">' +
+      '<div class="aiv-owner-intent-col aiv-owner-intent-col--summary">' +
+      renderOwnerIntentSummaryTable(rows) +
+      renderOwnerIntentPeerContext(primaryRow) +
+      "</div>" +
+      '<div class="aiv-owner-intent-col aiv-owner-intent-col--peers">' +
+      (peerTableHtml || "") +
+      "</div>" +
+      "</div></div>";
+    return html;
+  }
+
   function renderCompetitors(data) {
+    data = mergeCompetitorsRenderData(data || {});
     var el = $("aivCompetitors");
     var gapNote = $("aivDetailPeerGapNote");
     if (!el) return;
@@ -5154,7 +5960,7 @@
       );
     }
 
-    el.innerHTML =
+    var peerTableHtml =
       '<div class="deals-table-container aiv-portfolio-table-wrap aiv-peers-table-wrap">' +
       '<table class="deals-table aiv-portfolio-table aiv-peers-table">' +
       "<thead><tr>" +
@@ -5165,7 +5971,10 @@
       "</tr></thead>" +
       "<tbody>" +
       displayRows.map(peerTableRow).join("") +
-      "</tbody></table></div>" +
+      "</tbody></table></div>";
+
+    el.innerHTML =
+      peerTableHtml +
       (subjectOutsideTop && subject && subject.competitivePosition != null
         ? '<p class="aiv-theme-block-help help-text aiv-peers-outside-note">Showing top ' +
           PEER_LEADERBOARD_TOP +
@@ -5725,10 +6534,17 @@
         body.innerHTML =
           '<div class="aiv-evidence">' +
           '<section class="aiv-evidence-question">' +
-          '<div class="aiv-evidence-label">Question</div>' +
+          '<div class="aiv-evidence-label">Owner Intent</div>' +
           '<p class="aiv-evidence-question-text">' +
-          AiVisibilityUi.escapeHtml(ev.promptText || ev.promptId || "—") +
-          "</p></section>" +
+          AiVisibilityUi.escapeHtml(ev.ownerIntent || ev.measurementContextLabel || "—") +
+          "</p>" +
+          (ev.decisionContext
+            ? '<div class="aiv-evidence-label aiv-evidence-label--sub">Decision Context</div>' +
+              '<p class="aiv-evidence-decision-context">' +
+              AiVisibilityUi.escapeHtml(ev.decisionContext) +
+              "</p>"
+            : "") +
+          "</section>" +
           '<section class="aiv-evidence-meta" aria-label="Evidence details">' +
           '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Status</div>' +
           '<div class="aiv-evidence-value">' +
@@ -5852,33 +6668,37 @@
         ALL_LANGUAGES_OPTION: false,
       }
     );
-    // First load often omits language; contract then picks EN/ES. Re-fetch once so
-    // the initial paint matches the resolved brand/user language without Run Report.
+    // First load often omits language; contract then picks EN/ES. Re-fetch only when
+    // the resolved UI language differs from what the server already returned.
     if (
       !requestedLanguage &&
       state.language &&
       !state._execLanguageReconciled
     ) {
       state._execLanguageReconciled = true;
-      if (!token.isCurrent()) return null;
-      data = await apiGet(
-        "/api/ai-visibility/brand/executive-summary" + qs(),
-        fetchOpts
-      );
-      if (!shouldApplyLoadResult(token, data)) return null;
-      state.executive = data;
-      applyAvailableProviders(data);
-      applyLanguageFilterContract(
-        data.languageFilterContract || {
-          availableLanguages: data.availableLanguages || [],
-          visible: (data.availableLanguages || []).length > 1,
-          defaultSelection:
-            (data.availableLanguages || []).indexOf("en") >= 0
-              ? "en"
-              : (data.availableLanguages || [])[0] || null,
-          ALL_LANGUAGES_OPTION: false,
-        }
-      );
+      var serverLang = String(data.language || "").toLowerCase();
+      var uiLang = String(state.language || "").toLowerCase();
+      if (serverLang !== uiLang) {
+        if (!token.isCurrent()) return null;
+        data = await apiGet(
+          "/api/ai-visibility/brand/executive-summary" + qs(),
+          fetchOpts
+        );
+        if (!shouldApplyLoadResult(token, data)) return null;
+        state.executive = data;
+        applyAvailableProviders(data);
+        applyLanguageFilterContract(
+          data.languageFilterContract || {
+            availableLanguages: data.availableLanguages || [],
+            visible: (data.availableLanguages || []).length > 1,
+            defaultSelection:
+              (data.availableLanguages || []).indexOf("en") >= 0
+                ? "en"
+                : (data.availableLanguages || [])[0] || null,
+            ALL_LANGUAGES_OPTION: false,
+          }
+        );
+      }
     }
     if (!token.isCurrent()) return null;
     applyDemoPortfolioKeyFromPayload(data);
@@ -5893,7 +6713,137 @@
     persistFilterPrefs();
     syncFilterControlsFromState();
     renderExecutive(data);
+    state._execCacheFp = execTabCacheFp();
     return data;
+  }
+
+  async function paintDetailOverview(overview, brandId) {
+    state.overview = overview;
+    applyMonitoringFreshness(
+      overview.monitoringFreshness ||
+        (state.executive && state.executive.monitoringFreshness) ||
+        null
+    );
+    applyLanguageFilterContract(
+      overview.languageFilterContract || {
+        availableLanguages: overview.availableLanguages || [],
+        options: (overview.availableLanguages || []).map(function (code) {
+          return {
+            value: code,
+            label: code === "es" ? "Spanish" : code === "en" ? "English" : code,
+          };
+        }),
+        visible: (overview.availableLanguages || []).length > 1,
+        defaultSelection:
+          (overview.availableLanguages || []).indexOf("en") >= 0
+            ? "en"
+            : (overview.availableLanguages || [])[0] || null,
+        ALL_LANGUAGES_OPTION: false,
+      }
+    );
+    renderKpis(overview);
+    await loadDetailExecutiveInsights(overview);
+    var dp = overview.decisionPatterns || {};
+    renderIntentCoverage($("aivDetailIntentCoverage"), dp.ownerIntentCoverage);
+    renderDecisionPatternExtras(dp.ownerIntentCoverage, dp.topDecisionTerritory);
+    renderDetailIntelligence(overview);
+    renderDetailNarrativeSection(state.executive || {});
+    if (
+      !overview.detailIntelligence ||
+      !overview.detailIntelligence.recommendedReviews ||
+      !overview.detailIntelligence.recommendedReviews.length
+    ) {
+      renderReviewItems($("aivDetailReviewItems"), overview.reviewItems);
+    }
+    renderProviderPresencePanel(overview.providerPresencePanel);
+    renderCoverageDiagnosticsSummary(
+      overview.providerPresencePanel,
+      dp.ownerIntentCoverage,
+      dp.topDecisionTerritory
+    );
+    renderDiscoverabilityPlaceholder(
+      $("aivDetailDiscoverability"),
+      overview.publicDiscoverability ||
+        overview.discoverabilityBusinessImpact ||
+        overview.openAiDiscoverability,
+      "detail"
+    );
+    var langSection = $("aivDetailLanguageSection");
+    var lc =
+      overview.languageComparison ||
+      (state.execLanguageComparison &&
+      (!state.execLanguageComparison.brandId ||
+        state.execLanguageComparison.brandId === brandId)
+        ? state.execLanguageComparison
+        : null);
+    if (langSection) {
+      if (hasDualLanguageComparison(lc)) {
+        langSection.hidden = false;
+        renderLanguageComparison(lc, "aivDetailLanguage");
+      } else {
+        langSection.hidden = true;
+        var langEl = $("aivDetailLanguage");
+        if (langEl) langEl.innerHTML = "";
+      }
+    }
+    if (
+      overview.availabilityMessage ||
+      (overview.kpis &&
+        overview.kpis.aiPresence &&
+        overview.kpis.aiPresence.availability === "not_monitored")
+    ) {
+      setBanner(
+        overview.availabilityMessage ||
+          "No monitoring data is available for this brand in " +
+            state.geography +
+            " yet."
+      );
+    } else {
+      setBanner(null);
+    }
+  }
+
+  function settledPanelValue(settled, index, token, fallbackMsg) {
+    var settledItem = settled[index];
+    if (settledItem.status === "fulfilled") {
+      if (!shouldApplyLoadResult(token, settledItem.value)) {
+        return {
+          ok: false,
+          message: "Stale response discarded",
+          points: [],
+          peers: [],
+          competitors: [],
+          sources: [],
+        };
+      }
+      return settledItem.value;
+    }
+    if (
+      settledItem.reason &&
+      (settledItem.reason.aborted || settledItem.reason.kind === "aborted")
+    ) {
+      return {
+        ok: false,
+        message: "Request cancelled",
+        points: [],
+        peers: [],
+        competitors: [],
+        sources: [],
+      };
+    }
+    console.error(
+      "[ai-visibility-brand] secondary panel failed",
+      fallbackMsg,
+      settledItem.reason
+    );
+    return {
+      ok: false,
+      message: (settledItem.reason && settledItem.reason.message) || fallbackMsg,
+      points: [],
+      peers: [],
+      competitors: [],
+      sources: [],
+    };
   }
 
   function renderDetailIntelligence(overview) {
@@ -5948,8 +6898,9 @@
     var truth = intel.truthComparisons || {};
     var truthRows = (truth.executiveEligible || []).map(function (t) {
       return {
-        question: t.dimension ? String(t.dimension).replace(/_/g, " ") : "Brand fact",
-        aiPattern: t.headline || t.aiClaim || "—",
+        ownerIntent: t.dimension ? String(t.dimension).replace(/_/g, " ") : "Brand fact",
+        decisionContext: t.headline || "Governed brand fact comparison",
+        aiRepresentation: t.headline || t.aiClaim || "—",
         dealalityContext: t.dealalityFact || "Governed Brand Basics fact",
         reviewStatus: "Potential AI Perception Gap",
       };
@@ -6110,95 +7061,20 @@
     var brandId = state.brandId;
     var brandBase =
       "/api/ai-visibility/brand/" + encodeURIComponent(brandId);
+    var navMode =
+      (state._detailNav && state._detailNav.watchlistMode) ||
+      watchlistState.mode ||
+      "missing";
     var overviewP = apiGet(brandBase + "/overview" + qs(), fetchOpts);
     var trendP = apiGet(brandBase + "/trend" + qs(), fetchOpts);
     var competitorsP = apiGet(brandBase + "/competitors" + qs(), fetchOpts);
     var sourcesP = apiGet(brandBase + "/sources" + qs(), fetchOpts);
+    var watchlistP = loadWatchlist(navMode, fetchOpts);
 
     var overview = await overviewP;
     if (!shouldApplyLoadResult(token, overview)) return null;
-    state.overview = overview;
-    applyMonitoringFreshness(
-      overview.monitoringFreshness ||
-        (state.executive && state.executive.monitoringFreshness) ||
-        null
-    );
-    applyLanguageFilterContract(
-      overview.languageFilterContract || {
-        availableLanguages: overview.availableLanguages || [],
-        options: (overview.availableLanguages || []).map(function (code) {
-          return {
-            value: code,
-            label: code === "es" ? "Spanish" : code === "en" ? "English" : code,
-          };
-        }),
-        visible: (overview.availableLanguages || []).length > 1,
-        defaultSelection:
-          (overview.availableLanguages || []).indexOf("en") >= 0
-            ? "en"
-            : (overview.availableLanguages || [])[0] || null,
-        ALL_LANGUAGES_OPTION: false,
-      }
-    );
-    renderKpis(overview);
-    await loadDetailExecutiveInsights(overview);
+    await paintDetailOverview(overview, brandId);
     if (!token.isCurrent()) return null;
-    var dp = overview.decisionPatterns || {};
-    renderIntentCoverage($("aivDetailIntentCoverage"), dp.ownerIntentCoverage);
-    renderDecisionPatternExtras(dp.ownerIntentCoverage, dp.topDecisionTerritory);
-    renderDetailIntelligence(overview);
-    renderDetailNarrativeSection(state.executive || {});
-    if (
-      !overview.detailIntelligence ||
-      !overview.detailIntelligence.recommendedReviews ||
-      !overview.detailIntelligence.recommendedReviews.length
-    ) {
-      renderReviewItems($("aivDetailReviewItems"), overview.reviewItems);
-    }
-    renderProviderPresencePanel(overview.providerPresencePanel);
-    renderCoverageDiagnosticsSummary(
-      overview.providerPresencePanel,
-      dp.ownerIntentCoverage,
-      dp.topDecisionTerritory
-    );
-    renderDiscoverabilityPlaceholder(
-      $("aivDetailDiscoverability"),
-      overview.publicDiscoverability ||
-        overview.discoverabilityBusinessImpact ||
-        overview.openAiDiscoverability,
-      "detail"
-    );
-    var langSection = $("aivDetailLanguageSection");
-    var lc =
-      overview.languageComparison ||
-      (state.execLanguageComparison &&
-      (!state.execLanguageComparison.brandId ||
-        state.execLanguageComparison.brandId === brandId)
-        ? state.execLanguageComparison
-        : null);
-    if (langSection) {
-      if (hasDualLanguageComparison(lc)) {
-        langSection.hidden = false;
-        renderLanguageComparison(lc, "aivDetailLanguage");
-      } else {
-        langSection.hidden = true;
-        var langEl = $("aivDetailLanguage");
-        if (langEl) langEl.innerHTML = "";
-      }
-    }
-    if (
-      overview.availabilityMessage ||
-      (overview.kpis &&
-        overview.kpis.aiPresence &&
-        overview.kpis.aiPresence.availability === "not_monitored")
-    ) {
-      setBanner(
-        overview.availabilityMessage ||
-          "No monitoring data is available for this brand in " + state.geography + " yet."
-      );
-    } else {
-      setBanner(null);
-    }
 
     var competitorsEl = $("aivCompetitors");
     var sourcesEl = $("aivSources");
@@ -6206,65 +7082,42 @@
     if (sourcesEl) sourcesEl.innerHTML = emptyBlock("Loading sources…");
     setLoading(false);
 
-    var navMode =
-      (state._detailNav && state._detailNav.watchlistMode) ||
-      watchlistState.mode ||
-      "missing";
-    await loadWatchlist(navMode);
+    var settled = await Promise.allSettled([
+      trendP,
+      competitorsP,
+      sourcesP,
+      watchlistP,
+    ]);
     if (!token.isCurrent()) return null;
-
-    var settled = await Promise.allSettled([trendP, competitorsP, sourcesP]);
-    if (!token.isCurrent()) return null;
-    function settledValue(i, fallbackMsg) {
-      var settledItem = settled[i];
-      if (settledItem.status === "fulfilled") {
-        if (!shouldApplyLoadResult(token, settledItem.value)) {
-          return {
-            ok: false,
-            message: "Stale response discarded",
-            points: [],
-            peers: [],
-            competitors: [],
-            sources: [],
-          };
-        }
-        return settledItem.value;
-      }
-      if (
-        settledItem.reason &&
-        (settledItem.reason.aborted || settledItem.reason.kind === "aborted")
-      ) {
-        return {
-          ok: false,
-          message: "Request cancelled",
-          points: [],
-          peers: [],
-          competitors: [],
-          sources: [],
-        };
-      }
-      console.error(
-        "[ai-visibility-brand] secondary panel failed",
-        fallbackMsg,
-        settledItem.reason
-      );
-      return {
-        ok: false,
-        message: (settledItem.reason && settledItem.reason.message) || fallbackMsg,
-        points: [],
-        peers: [],
-        competitors: [],
-        sources: [],
-      };
-    }
-    renderDetailTrendChart(settledValue(0, "Could not load trend"));
-    renderCompetitors(settledValue(1, "Could not load competitors"));
-    renderSources(settledValue(2, "Could not load sources"));
+    var trendData = settledPanelValue(settled, 0, token, "Could not load trend");
+    var competitorsData = settledPanelValue(
+      settled,
+      1,
+      token,
+      "Could not load competitors"
+    );
+    var sourcesData = settledPanelValue(settled, 2, token, "Could not load sources");
+    var watchlistData =
+      settled[3].status === "fulfilled" ? settled[3].value : null;
+    renderDetailTrendChart(trendData);
+    renderCompetitors(competitorsData);
+    renderSources(sourcesData);
+    state._detailCacheFp = detailTabCacheFp();
+    state._detailSecondaryCache = {
+      trend: trendData,
+      competitors: competitorsData,
+      sources: sourcesData,
+      watchlist: watchlistData,
+    };
     return overview;
   }
 
   async function loadAll() {
     ensureDemoBrandPortfolioClientContext();
+    if (tryRenderFromTabCache()) {
+      setLoading(false);
+      return;
+    }
     setError(null);
     setLoading(true);
     var loadToken = beginLoadGeneration();
@@ -6336,6 +7189,7 @@
         state.intent = $("aivIntent").value || "";
       }
       state._execLanguageReconciled = false;
+      invalidateTabCaches();
       persistFilterPrefs();
       loadAll();
     });
@@ -6346,6 +7200,7 @@
       state.intent = "";
       state.questionFilter = "all";
       state._execLanguageReconciled = false;
+      invalidateTabCaches();
       $("aivGeography").value = "CALA";
       if ($("aivProvider")) $("aivProvider").value = "openai";
       if ($("aivLanguage")) $("aivLanguage").value = "";
