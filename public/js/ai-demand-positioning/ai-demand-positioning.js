@@ -13,6 +13,24 @@
   function toProperCase(s) { return (s || "").replace(/\b\w/g, function(c) { return c.toUpperCase(); }); }
   function info(tooltip) { return '<span class="adp-info-icon" data-tooltip="' + esc(tooltip) + '">i</span>'; }
 
+  /** Consistent ADP percent display: ##.#% */
+  function fmtPct(value) {
+    if (typeof value === "string") {
+      var trimmed = value.trim();
+      if (trimmed.endsWith("%")) {
+        var parsed = parseFloat(trimmed.slice(0, -1));
+        if (Number.isFinite(parsed)) value = parsed;
+      }
+    }
+    var n = Number(value);
+    if (!Number.isFinite(n)) return "0.0%";
+    return (Math.round(n * 10) / 10).toFixed(1) + "%";
+  }
+
+  function fmtPctFromRatio(ratio) {
+    return fmtPct(Number(ratio) * 100);
+  }
+
   async function authFetch(url) {
     var auth = window.DealalityMemberstackAuth;
     if (auth && typeof auth.authFetch === "function") {
@@ -42,6 +60,15 @@
   }
 
   // --- Load ---
+  function getQueryPropertyId() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      return params.get("property") || params.get("propertyId") || "";
+    } catch (e) {
+      return "";
+    }
+  }
+
   async function loadProperties() {
     try {
       var res = await authFetch(API_BASE + "/properties");
@@ -55,6 +82,10 @@
         opt.textContent = p.name + " — " + p.city + ", " + p.state;
         sel.appendChild(opt);
       });
+      var requested = getQueryPropertyId();
+      if (requested && sel.querySelector('option[value="' + requested + '"]')) {
+        sel.value = requested;
+      }
       sel.addEventListener("change", loadReport);
       if (data.properties.length) loadReport();
     } catch (e) { console.error("[ADP] loadProperties error", e); }
@@ -105,29 +136,53 @@
     var tiles = [];
 
     // Tile 1 — AI Demand Capture
-    tiles.push(execTile("AI Demand Capture",
-      "Your property appears in " + d.demandCapture.capturedScenarios + " of " + d.demandCapture.totalScenarios + " relevant AI demand scenarios across " + d.period.providerCount + " providers. Overall capture rate: " + d.demandCapture.overallRate + "%.",
-      "Evidence: " + d.demandCapture.capturedScenarios + "/" + d.demandCapture.totalScenarios + " scenarios captured across " + d.period.providerCount + " providers."));
+    tiles.push(execTile(
+      "AI Demand Capture",
+      "Your property appears in " +
+        d.demandCapture.capturedScenarios +
+        " of " +
+        d.demandCapture.totalScenarios +
+        " demand scenarios (" +
+        fmtPct(d.demandCapture.overallRate) +
+        ") across " +
+        d.period.providerCount +
+        " providers. That is your AI consideration share this period. The gap is demand currently going to more visible competitors.",
+      "Evidence: " + d.demandCapture.capturedScenarios + "/" + d.demandCapture.totalScenarios + " scenarios captured across " + d.period.providerCount + " providers."
+    ));
 
     // Tile 2 — Largest Displacement
     if (d.lostDemand.displacement.length) {
       var top = d.lostDemand.displacement[0];
-      tiles.push(execTile("Largest Competitive Displacement",
-        top.name + " appears in " + top.displacementCount + " scenarios where your property is absent. This is your primary competitive threat in AI-driven demand.",
-        "Evidence: " + top.name + " displaces in " + top.displacementCount + " of " + d.demandCapture.totalScenarios + " monitored scenarios."));
+      tiles.push(execTile(
+        "Largest Competitive Displacement",
+        top.name +
+          " displaces you in " +
+          top.displacementCount +
+          " scenarios where your property is absent. That is the largest single-competitor leakage pattern. Protecting those moments limits share loss to this rival.",
+        "Evidence: " + top.name + " displaces in " + top.displacementCount + " of " + d.demandCapture.totalScenarios + " monitored scenarios."
+      ));
     }
 
     // Tile 3 — Demand Opportunities
     if (d.whiteSpace.highOpportunities > 0) {
-      tiles.push(execTile("Demand White Space",
-        d.whiteSpace.highOpportunities + " high-opportunity demand scenarios identified where no competitor dominates and your property attributes align. These represent your strongest growth targets.",
-        "Evidence: " + d.whiteSpace.highOpportunities + " HIGH opportunity scenarios out of " + d.whiteSpace.opportunities.length + " total white-space scenarios."));
+      tiles.push(execTile(
+        "Demand White Space",
+        d.whiteSpace.highOpportunities +
+          " scenarios show high white-space with no dominant competitor. Your attributes already match this intent. Prioritizing content and sources here is a practical capture lift.",
+        "Evidence: " + d.whiteSpace.highOpportunities + " HIGH opportunity scenarios out of " + d.whiteSpace.opportunities.length + " total white-space scenarios."
+      ));
     }
 
     // Tile 4 — Reality Gap
-    tiles.push(execTile("Reality Gap",
-      "AI misses or underrepresents " + d.realityGap.gapCount + " of your " + d.realityGap.totalAttributes + " tracked property attributes. Closing this gap would increase demand capture across all providers.",
-      "Evidence: " + d.realityGap.gapCount + "/" + d.realityGap.totalAttributes + " attributes unrecognized or underrepresented."));
+    tiles.push(execTile(
+      "Reality Gap",
+      "AI underrecognizes " +
+        d.realityGap.gapCount +
+        " of " +
+        d.realityGap.totalAttributes +
+        " tracked attributes. Missing facts push recommendations toward better-described rivals. Closing these gaps strengthens selection in high-value checks.",
+      "Evidence: " + d.realityGap.gapCount + "/" + d.realityGap.totalAttributes + " attributes unrecognized or underrepresented."
+    ));
 
     el.setAttribute("data-count", String(tiles.length));
     el.innerHTML = tiles.join("");
@@ -150,11 +205,11 @@
     Object.entries(dc.byIntent).forEach(function(e) { if (e[1].rate > bestRate) { bestRate = e[1].rate; bestIntent = e[0]; } });
 
     el.innerHTML =
-      kpiCard("AI Demand Capture", dc.display, "Share of monitored demand scenarios where at least one AI provider mentioned your property.") +
+      kpiCard("AI Demand Capture", fmtPct(dc.display), "Share of monitored demand scenarios where at least one AI provider mentioned your property.") +
       kpiCard("Scenarios Monitored", dc.totalScenarios + " × " + d.period.providerCount + " providers", "How many demand scenarios were tested across how many AI providers this period.") +
       kpiCard("Strongest Segment", bestIntent ? bestIntent.replace(/_/g, " ").replace(/\b\w/g, function(c){return c.toUpperCase();}) : "—", "The traveler intent category with the highest capture rate for your property.") +
-      kpiCard("Top AI Competitor", cs.observed && cs.observed.length ? cs.observed[0].name : "—", "The hotel that appears most frequently across all AI demand scenarios — your strongest competitor in AI.") +
-      kpiCard("Questions Missing", (100 - dc.overallRate).toFixed(1) + "% (" + dc.missedScenarios + ")", "Monitored demand scenarios where your property was not mentioned in the AI answer.");
+      kpiCard("Top AI Competitor", cs.observed && cs.observed.length ? cs.observed[0].name : "—", "The hotel that appears most frequently across all AI demand scenarios. This is your strongest competitor in AI.") +
+      kpiCard("Questions Missing", fmtPct(100 - dc.overallRate) + " (" + dc.missedScenarios + ")", "Monitored demand scenarios where your property was not mentioned in the AI answer.");
   }
 
   function kpiCard(label, value, helpText) {
@@ -169,7 +224,7 @@
   var SORT_ARROWS = '<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span>';
 
   function thCol(label, tooltip) {
-    return '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">' + label + '</span>' + SORT_ARROWS + (tooltip ? '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="Info"><svg width="12" height="12" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden>' + tooltip + '</div></span>' : '') + '</span></th>';
+    return '<th class="no-sort"><span class="aiv-th-label"><span class="aiv-th-text">' + label + '</span>' + SORT_ARROWS + (tooltip ? '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="Info"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden>' + tooltip + '</div></span>' : '') + '</span></th>';
   }
 
   var adpTrendChart = null;
@@ -205,8 +260,8 @@
     if (summaryEl) {
       summaryEl.hidden = false;
       summaryEl.innerHTML =
-        '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Current</div><div class="aiv-detail-trend-stat__value">' + (current != null ? current + "%" : "\u2014") + '</div></div>' +
-        '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Prior</div><div class="aiv-detail-trend-stat__value">' + (prior != null ? prior + "%" : "\u2014") + '</div></div>' +
+        '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Current</div><div class="aiv-detail-trend-stat__value">' + (current != null ? fmtPct(current) : "\u2014") + '</div></div>' +
+        '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Prior</div><div class="aiv-detail-trend-stat__value">' + (prior != null ? fmtPct(prior) : "\u2014") + '</div></div>' +
         '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Change</div><div class="aiv-detail-trend-stat__value">' + (change == null ? "\u2014" : (change > 0 ? "+" : "") + change + " pp") + '</div></div>' +
         '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">' + trends.length + '</div></div>';
     }
@@ -214,7 +269,7 @@
     if (!canvas || typeof window.Chart !== "function") {
       if (chartWrap) chartWrap.hidden = true;
       emptyEl.hidden = false;
-      emptyEl.innerHTML = '<p class="aiv-empty__message">Chart library unavailable \u2014 refresh the page.</p>';
+      emptyEl.innerHTML = '<p class="aiv-empty__message">Chart library unavailable. Refresh the page.</p>';
       return;
     }
 
@@ -268,7 +323,7 @@
               label: function(ctx) {
                 var y = ctx.parsed && ctx.parsed.y;
                 if (y == null || !isFinite(y)) return " Demand Capture: \u2014";
-                return " Demand Capture: " + y + "%";
+                return " Demand Capture: " + fmtPct(y);
               }
             }
           }
@@ -286,7 +341,7 @@
               color: "#7e89ac",
               font: { size: 11 },
               padding: 6,
-              callback: function(value) { return value + "%"; }
+              callback: function(value) { return fmtPct(value); }
             }
           }
         }
@@ -308,9 +363,9 @@
     html += '<thead><tr>';
     html += thCol('Provider', '');
     html += thCol('Status', '');
-    html += thCol('AI<br>Presence', 'Share of monitored scenarios where this provider mentioned your property.');
-    html += thCol('Monitored', 'Total scenarios successfully queried on this provider.');
-    html += thCol('Missing', 'Scenarios where this provider did not mention your property.');
+    html += thCol('AI<br>Presence', 'Share of this provider\u2019s responses where it mentioned your property. This provider only, not combined across models.');
+    html += thCol('Monitored', 'Scenarios where this provider mentioned your property, out of total scenarios queried on this provider (mentioned / queried).');
+    html += thCol('Missing', 'Scenarios where this provider alone did not mention your property.');
     html += thCol('Citation', 'Share of this provider\u2019s responses that included source citations.');
     html += thCol('Owned', 'Share of citations pointing to your governed owned domains. Requires owned domain configuration.');
     html += '</tr></thead><tbody>';
@@ -319,12 +374,12 @@
       var name = p.provider.charAt(0).toUpperCase() + p.provider.slice(1);
       var pct = p.presence;
       var missing = p.total - p.mentioned;
-      var presenceVisual = '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' + Math.round(pct) + '%"></span></span><span class="aiv-presence-cell__value">' + pct + '%</span></span>';
+      var presenceVisual = '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' + Math.round(pct) + '%"></span></span><span class="aiv-presence-cell__value">' + fmtPct(pct) + '</span></span>';
 
       // Citation rate for this provider
       var citRate = '0.0%';
-      if (ev.providerCitations && ev.providerCitations[p.provider]) {
-        citRate = ev.providerCitations[p.provider].toFixed(1) + '%';
+      if (ev.providerCitations && ev.providerCitations[p.provider] != null) {
+        citRate = fmtPct(ev.providerCitations[p.provider]);
       }
 
       html += '<tr>';
@@ -348,12 +403,12 @@
 
     var html = '<table class="deals-table aiv-portfolio-table aiv-coverage-table aiv-intent-coverage-table aiv-unified-intent-table">';
     html += '<thead><tr>';
-    html += thCol('Intent<br>Category', 'The traveler demand category being measured \u2014 e.g. business, leisure, couples, meetings.');
-    html += thCol('Your<br>Presence', 'Share of monitored scenarios in this intent where at least one AI provider mentioned your property.');
+    html += thCol('Intent<br>Category', 'The traveler demand category being measured, such as business, leisure, couples, or meetings.');
+    html += thCol('Your<br>Presence', 'Share of demand scenarios in this intent where \u22651 AI provider mentioned your property (union across providers).');
     html += thCol('\u0394 vs<br>Prior Run', 'Change in presence vs the previous monitoring period. Requires at least two comparable periods.');
-    html += thCol('Monitored', 'How many scenario \u00d7 provider observations were monitored for this intent category.');
-    html += thCol('Missing', 'Scenarios in this intent where your property was not mentioned by any provider.');
-    html += thCol('Peer-Present<br>Gaps', 'Scenarios where at least one competitor appears but your property does not \u2014 the competitive displacement signal.');
+    html += thCol('Monitored', 'Demand scenarios tested in this intent (captured / total). Counts scenarios, not provider responses.');
+    html += thCol('Missing', 'Scenarios in this intent where no provider mentioned your property.');
+    html += thCol('Peer-Present<br>Gaps', 'Scenarios where at least one competitor appears but your property does not. This is the competitive displacement signal.');
     html += thCol('AI Presence<br>Index', 'Indexed position vs benchmark. 100 = at parity. Requires benchmark development.');
     html += thCol('Missing<br>Evidence', 'View AI response excerpts for scenarios where your property was not mentioned in this intent category.');
     html += '</tr></thead><tbody>';
@@ -379,7 +434,7 @@
       var peerGaps = peerGapsByIntent[intent] || 0;
 
       // Presence bar visual
-      var presenceVisual = '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' + Math.round(pct) + '%"></span></span><span class="aiv-presence-cell__value">' + pct + '%</span></span>';
+      var presenceVisual = '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' + Math.round(pct) + '%"></span></span><span class="aiv-presence-cell__value">' + fmtPct(pct) + '</span></span>';
 
       html += '<tr class="aiv-intent-row aiv-unified-intent-row">';
       html += '<td><span class="project-name-text">' + esc(label) + '</span></td>';
@@ -490,17 +545,17 @@
     var recognized = rg.recognized ? rg.recognized.length : 0;
     var gaps = rg.gaps ? rg.gaps.length : 0;
     var total = rg.totalAttributes || (recognized + gaps);
-    var gapPct = total > 0 ? Math.round((gaps / total) * 100) : 0;
-    var recognitionPct = total > 0 ? Math.round((recognized / total) * 100) : 0;
+    var gapPct = total > 0 ? (gaps / total) * 100 : 0;
+    var recognitionPct = total > 0 ? (recognized / total) * 100 : 0;
     var avgRecognition = rg.recognized && rg.recognized.length
-      ? Math.round(rg.recognized.reduce(function(sum, r) { return sum + r.recognitionRate; }, 0) / rg.recognized.length)
+      ? rg.recognized.reduce(function(sum, r) { return sum + r.recognitionRate; }, 0) / rg.recognized.length
       : 0;
 
     el.innerHTML =
       '<div class="aiv-kpi-row aiv-citation-kpis">' +
-      '<article class="aiv-kpi"><h3>Reality Gap</h3><div class="aiv-value">' + gapPct + '%</div><div class="aiv-meta">AI misses ' + gaps + ' of ' + total + ' tracked attributes</div></article>' +
-      '<article class="aiv-kpi"><h3>Recognition Rate</h3><div class="aiv-value">' + recognitionPct + '%</div><div class="aiv-meta">' + recognized + ' of ' + total + ' attributes recognized</div></article>' +
-      '<article class="aiv-kpi"><h3>Avg Strength</h3><div class="aiv-value">' + avgRecognition + '%</div><div class="aiv-meta">Average recognition rate across recognized attributes</div></article>' +
+      '<article class="aiv-kpi"><h3>Reality Gap</h3><div class="aiv-value">' + fmtPct(gapPct) + '</div><div class="aiv-meta">AI misses ' + gaps + ' of ' + total + ' tracked attributes</div></article>' +
+      '<article class="aiv-kpi"><h3>Recognition Rate</h3><div class="aiv-value">' + fmtPct(recognitionPct) + '</div><div class="aiv-meta">' + recognized + ' of ' + total + ' attributes recognized</div></article>' +
+      '<article class="aiv-kpi"><h3>Avg Strength</h3><div class="aiv-value">' + fmtPct(avgRecognition) + '</div><div class="aiv-meta">Average recognition rate across recognized attributes</div></article>' +
       '<article class="aiv-kpi"><h3>Tracked Attributes</h3><div class="aiv-value">' + total + '</div><div class="aiv-meta">Total property attributes being monitored</div></article>' +
       '</div>';
   }
@@ -513,7 +568,7 @@
     if (rg.recognized && rg.recognized.length) {
       strengthsEl.innerHTML = '<ul class="aiv-signal-list">' +
         rg.recognized.map(function (r) {
-          return '<li class="aiv-signal-item aiv-signal-item--strength"><span class="aiv-signal-icon">✓</span><span class="aiv-signal-text">' + esc(toProperCase(r.label)) + '</span><span class="aiv-signal-badge">' + r.recognitionRate + '%</span></li>';
+          return '<li class="aiv-signal-item aiv-signal-item--strength"><span class="aiv-signal-icon">✓</span><span class="aiv-signal-text">' + esc(toProperCase(r.label)) + '</span><span class="aiv-signal-badge">' + fmtPct(r.recognitionRate) + '</span></li>';
         }).join("") + '</ul>';
     } else {
       strengthsEl.innerHTML = '<p class="aiv-empty-message">No attributes well-recognized yet.</p>';
@@ -570,7 +625,7 @@
     var html = "";
     displayList.forEach(function (c) {
       var actualRank = ranked.indexOf(c) + 1;
-      var presence = totalScenarios > 0 ? ((c.scenarioCount / totalScenarios) * 100).toFixed(1) + "%" : "—";
+      var presence = totalScenarios > 0 ? fmtPctFromRatio(c.scenarioCount / totalScenarios) : "—";
       var dispEntry = displacement.find(function(d) { return d.name === c.name; });
       var dispCount = dispEntry ? dispEntry.displacementCount : 0;
       var territory;
@@ -594,7 +649,7 @@
         '<td>' + presence + '</td>' +
         '<td class="aiv-metric-cell aiv-delta-cell aiv-chg-metric-cell"><span class="aiv-avail-insufficient_history aiv-delta-none">—</span></td>' +
         '<td>' + (c.isSubject ? '<span style="color:var(--aiv-text-secondary)">—</span>' : (dispCount > 0 ? '<button type="button" class="aiv-btn-text aiv-link" data-adp-displacement="' + esc(c.name) + '">' + dispCount + ' Scenarios</button>' : '<span style="color:var(--aiv-text-secondary)">—</span>')) + '</td>' +
-        '<td>' + (c.isSubject ? '—' : ((c.scenarioCount / totalScenarios) * 100).toFixed(1) + '% (' + c.scenarioCount + ')') + '</td>' +
+        '<td>' + (c.isSubject ? '—' : (fmtPctFromRatio(c.scenarioCount / totalScenarios) + ' (' + c.scenarioCount + ')')) + '</td>' +
         '<td>' + esc(territory) + '</td>' +
         '</tr>';
     });
@@ -762,16 +817,16 @@
       var secondSource = ev.topSources && ev.topSources.length > 1 ? ev.topSources[1] : null;
 
       var html = '<div class="aiv-citation-exec-top aiv-citation-exec-top--2x2">';
-      html += '<article class="aiv-kpi"><h3>Citation Coverage</h3><div class="aiv-value">' + esc(ev.totalWithSources + ' of ' + ev.totalObservations) + '</div><div class="aiv-meta">' + esc(ev.citationRate + '% of monitored responses included at least one citation.') + '</div></article>';
+      html += '<article class="aiv-kpi"><h3>Citation Coverage</h3><div class="aiv-value">' + esc(ev.totalWithSources + ' of ' + ev.totalObservations) + '</div><div class="aiv-meta">' + esc(fmtPct(ev.citationRate) + ' of monitored responses included at least one citation.') + '</div></article>';
       html += '<article class="aiv-kpi"><h3>Avg Sources per Citation</h3><div class="aiv-value">' + esc(String(ev.avgSourcesPerCitation)) + '</div><div class="aiv-meta">Average number of sources cited per grounded response.</div></article>';
-      html += '<article class="aiv-kpi"><h3>Top Source</h3><div class="aiv-value aiv-value--domain">' + esc(topSource ? topSource.domain : '—') + '</div><div class="aiv-meta">' + (topSource ? esc(topSource.count + ' of ' + ev.totalWithSources + ' · ' + topSource.frequency + '%') : 'No sources observed.') + '</div></article>';
-      html += '<article class="aiv-kpi"><h3>Second Source</h3><div class="aiv-value aiv-value--domain">' + esc(secondSource ? secondSource.domain : '—') + '</div><div class="aiv-meta">' + (secondSource ? esc(secondSource.count + ' of ' + ev.totalWithSources + ' · ' + secondSource.frequency + '%') : 'No second source observed.') + '</div></article>';
+      html += '<article class="aiv-kpi"><h3>Top Source</h3><div class="aiv-value aiv-value--domain">' + esc(topSource ? topSource.domain : '—') + '</div><div class="aiv-meta">' + (topSource ? esc(topSource.count + ' of ' + ev.totalWithSources + ' · ' + fmtPct(topSource.frequency)) : 'No sources observed.') + '</div></article>';
+      html += '<article class="aiv-kpi"><h3>Second Source</h3><div class="aiv-value aiv-value--domain">' + esc(secondSource ? secondSource.domain : '—') + '</div><div class="aiv-meta">' + (secondSource ? esc(secondSource.count + ' of ' + ev.totalWithSources + ' · ' + fmtPct(secondSource.frequency)) : 'No second source observed.') + '</div></article>';
       html += '</div>';
 
       // Source Mix — 4 cards: Owned, External, With Citations, No Citations
       var noCit = ev.totalObservations - ev.totalWithSources;
-      var citPct = ev.totalObservations > 0 ? ((ev.totalWithSources / ev.totalObservations) * 100).toFixed(1) + '%' : '0.0%';
-      var noCitPct = ev.totalObservations > 0 ? ((noCit / ev.totalObservations) * 100).toFixed(1) + '%' : '0.0%';
+      var citPct = ev.totalObservations > 0 ? fmtPctFromRatio(ev.totalWithSources / ev.totalObservations) : '0.0%';
+      var noCitPct = ev.totalObservations > 0 ? fmtPctFromRatio(noCit / ev.totalObservations) : '0.0%';
       var extPct = ev.totalWithSources > 0 ? '100.0%' : '0.0%';
       html += '<div class="aiv-source-mix aiv-source-mix--compact">';
       html += '<div class="aiv-source-mix__head"><div class="aiv-source-mix__label">Source Mix</div></div>';
@@ -799,8 +854,8 @@
         html += '<tr>';
         html += '<td><span class="aiv-sources-freq-domain"><a class="aiv-source-link project-name-text" href="https://' + esc(s.domain) + '" target="_blank" rel="noopener noreferrer">' + esc(s.domain) + '</a></span></td>';
         html += '<td class="aiv-metric-cell">' + s.count + ' of ' + ev.totalWithSources + '</td>';
-        var freqDisplay = Number(s.frequency).toFixed(1);
-        html += '<td class="aiv-metric-cell"><span class="aiv-sources-freq-bar"><span class="aiv-sources-freq-track" aria-hidden="true"><span class="aiv-sources-freq-fill" style="width:' + barWidth + '%"></span></span><span class="aiv-sources-freq-pct">' + freqDisplay + '%</span></span></td>';
+        var freqDisplay = fmtPct(s.frequency);
+        html += '<td class="aiv-metric-cell"><span class="aiv-sources-freq-bar"><span class="aiv-sources-freq-track" aria-hidden="true"><span class="aiv-sources-freq-fill" style="width:' + barWidth + '%"></span></span><span class="aiv-sources-freq-pct">' + freqDisplay + '</span></span></td>';
         html += '</tr>';
       });
       html += '</tbody></table></div>';
@@ -844,14 +899,14 @@
     if (!el) return;
     var html = '<div class="adp-card"><div class="adp-card-header"><h3>AI Demand Capture Index' + info("Percentage of tested demand scenarios where at least one AI provider mentions your property.") + '</h3></div>';
     html += '<div class="adp-hero-kpi">';
-    html += '<div><div class="adp-hero-value">' + esc(dc.display) + '</div><div class="adp-hero-label">Demand Capture Rate</div></div>';
+    html += '<div><div class="adp-hero-value">' + esc(fmtPct(dc.display)) + '</div><div class="adp-hero-label">Demand Capture Rate</div></div>';
     html += '<div class="adp-hero-context"><strong>' + dc.capturedScenarios + '</strong> of <strong>' + dc.totalScenarios + '</strong> relevant scenarios include your property.<br><strong>' + dc.missedScenarios + '</strong> scenarios where you do not appear.</div>';
     html += '</div>';
     html += '<div class="adp-intent-grid">';
     Object.entries(dc.byIntent).forEach(function (e) {
       var status = kpiStatus(e[1].rate);
       html += '<div class="adp-intent-card"><div class="adp-intent-label">' + esc(e[0].replace(/_/g, " ")) + '</div>';
-      html += '<div class="adp-intent-value ' + status + '">' + e[1].rate + '%</div>';
+      html += '<div class="adp-intent-value ' + status + '">' + fmtPct(e[1].rate) + '</div>';
       html += '<div class="adp-intent-detail">' + e[1].captured + ' of ' + e[1].total + '</div></div>';
     });
     html += '</div></div>';
@@ -861,7 +916,7 @@
   function renderLostDemand(ld) {
     var el = document.getElementById("adpLostSection");
     if (!el) return;
-    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Lost Demand — Competitive Displacement' + info("Scenarios where your property is absent. Shows who appears instead and likely reasons.") + '</h3></div>';
+    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Lost Demand: Competitive Displacement' + info("Scenarios where your property is absent. Shows who appears instead and likely reasons.") + '</h3></div>';
     html += '<div class="adp-hero-kpi" style="margin-bottom:1.25rem">';
     html += '<div><div class="adp-hero-value">' + ld.totalLost + '</div><div class="adp-hero-label">Scenarios Lost</div></div>';
     html += '<div class="adp-hero-context"><strong>' + ld.highRelevanceLost + '</strong> are high-relevance scenarios.</div>';
@@ -890,12 +945,12 @@
     html += '<div class="adp-comp-stats">';
     html += '<div class="adp-comp-stat"><div class="adp-comp-stat-value">' + cs.declaredCount + '</div><div class="adp-comp-stat-label">Declared</div></div>';
     html += '<div class="adp-comp-stat"><div class="adp-comp-stat-value">' + cs.observedCount + '</div><div class="adp-comp-stat-label">AI Observed</div></div>';
-    html += '<div class="adp-comp-stat"><div class="adp-comp-stat-value">' + cs.overlapRate + '%</div><div class="adp-comp-stat-label">Overlap</div></div>';
+    html += '<div class="adp-comp-stat"><div class="adp-comp-stat-value">' + fmtPct(cs.overlapRate) + '</div><div class="adp-comp-stat-label">Overlap</div></div>';
     html += '</div>';
     if (cs.surprises && cs.surprises.length) {
       html += '<h4 style="font-size:0.8rem;font-weight:700;color:var(--aiv-text-secondary);text-transform:uppercase;margin:1rem 0 0.5rem">Not in your declared set:</h4>';
       cs.surprises.forEach(function (s) {
-        html += '<div class="adp-surprise"><span class="adp-surprise-tag">New</span><span>' + esc(s.name) + ' — ' + s.scenarioCount + ' scenarios</span></div>';
+        html += '<div class="adp-surprise"><span class="adp-surprise-tag">New</span><span>' + esc(s.name) + ', ' + s.scenarioCount + ' scenarios</span></div>';
       });
     }
     html += '</div>';
@@ -926,17 +981,17 @@
     if (!el) return;
     var html = '<div class="adp-card"><div class="adp-card-header"><h3>AI Reality Gap' + info("Compares actual property attributes vs what AI recognizes.") + '</h3></div>';
     html += '<div class="adp-hero-kpi" style="margin-bottom:1.25rem">';
-    html += '<div><div class="adp-hero-value">' + esc(rg.display) + '</div><div class="adp-hero-label">Reality Gap</div></div>';
+    html += '<div><div class="adp-hero-value">' + esc(fmtPct(rg.display)) + '</div><div class="adp-hero-label">Reality Gap</div></div>';
     html += '<div class="adp-hero-context">AI misses <strong>' + rg.gapCount + '</strong> of <strong>' + rg.totalAttributes + '</strong> tracked attributes.</div>';
     html += '</div>';
     html += '<div class="adp-gap-grid">';
     html += '<div class="adp-gap-col col-recognized"><h4>AI Recognizes</h4>';
     (rg.recognized || []).forEach(function (r) {
-      html += '<div class="adp-gap-item"><span class="adp-gap-icon icon-ok">✓</span><span>' + esc(r.label) + '</span><span class="adp-gap-pct">' + r.recognitionRate + '%</span></div>';
+      html += '<div class="adp-gap-item"><span class="adp-gap-icon icon-ok">✓</span><span>' + esc(r.label) + '</span><span class="adp-gap-pct">' + fmtPct(r.recognitionRate) + '</span></div>';
     });
     html += '</div><div class="adp-gap-col col-missed"><h4>AI Misses</h4>';
     (rg.gaps || []).forEach(function (g) {
-      html += '<div class="adp-gap-item"><span class="adp-gap-icon icon-miss">✗</span><span>' + esc(g.label) + '</span><span class="adp-gap-pct">' + g.recognitionRate + '%</span></div>';
+      html += '<div class="adp-gap-item"><span class="adp-gap-icon icon-miss">✗</span><span>' + esc(g.label) + '</span><span class="adp-gap-pct">' + fmtPct(g.recognitionRate) + '</span></div>';
     });
     html += '</div></div></div>';
     el.innerHTML = html;
@@ -958,8 +1013,90 @@
     el.innerHTML = html;
   }
 
+  // --- Column info tooltips (Brand AI parity) ---
+  var columnInfoBound = false;
+
+  function closeColumnInfo() {
+    var container = document.getElementById("aivTooltipContainer");
+    if (container) container.innerHTML = "";
+  }
+
+  function openColumnInfo(tooltipContent) {
+    var container = document.getElementById("aivTooltipContainer");
+    if (!container || !tooltipContent) return;
+    container.innerHTML = "";
+    var cloned = tooltipContent.cloneNode(true);
+    cloned.classList.add("aiv-tooltip-panel");
+    cloned.style.display = "block";
+    cloned.style.visibility = "visible";
+    cloned.style.opacity = "1";
+    cloned.style.width = "";
+    cloned.style.maxWidth = "";
+    cloned.removeAttribute("hidden");
+    var closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "tooltip-close-btn";
+    closeBtn.setAttribute("aria-label", "Close");
+    closeBtn.innerHTML = "\u00d7";
+    closeBtn.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      closeColumnInfo();
+    });
+    cloned.appendChild(closeBtn);
+    container.appendChild(cloned);
+  }
+
+  function bindColumnInfo() {
+    if (columnInfoBound) return;
+    var container = document.getElementById("aivTooltipContainer");
+    if (!container) return;
+    columnInfoBound = true;
+
+    function openFromEvent(e) {
+      var icon = e.target.closest && e.target.closest(".aiv-page .aiv-col-info .info-icon");
+      if (!icon) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var tip = icon.closest(".info-tooltip");
+      var content = tip && tip.querySelector(".tooltip-content");
+      openColumnInfo(content);
+    }
+
+    document.addEventListener("click", function (e) {
+      if (e.target.closest && e.target.closest(".aiv-page .aiv-col-info .info-icon")) {
+        openFromEvent(e);
+        return;
+      }
+      if (
+        e.target.closest &&
+        !e.target.closest(".aiv-col-info") &&
+        !e.target.closest("#aivTooltipContainer .tooltip-content")
+      ) {
+        closeColumnInfo();
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeColumnInfo();
+        return;
+      }
+      if (
+        (e.key === "Enter" || e.key === " ") &&
+        e.target.closest &&
+        e.target.closest(".aiv-page .aiv-col-info .info-icon")
+      ) {
+        openFromEvent(e);
+      }
+    });
+    container.addEventListener("click", function (e) {
+      if (e.target === container) closeColumnInfo();
+    });
+  }
+
   // --- Init ---
   document.addEventListener("DOMContentLoaded", function () {
+    bindColumnInfo();
     initTabs();
     loadProperties();
     var btn = document.getElementById("adpLoadReport");

@@ -306,17 +306,12 @@
   margin: 0 auto;
 }
 /* Hide sort arrows in ADP tables (visual only, no sort functionality yet) */
+#adpCompTable .sort-indicator,
 #adpProviderTableContainer .sort-indicator,
 #adpIntentTableContainer .sort-indicator {
   display: none;
 }
-/* Proper case for column headers (override shared uppercase) */
-#adpCompTable th .aiv-th-text,
-#adpProviderTableContainer th .aiv-th-text,
-#adpIntentTableContainer th .aiv-th-text {
-  text-transform: none;
-}
-/* Center th label content after hiding arrows */
+/* Center th label content */
 #adpCompTable th:not(:first-child) .aiv-th-label,
 #adpProviderTableContainer th:not(:first-child) .aiv-th-label,
 #adpIntentTableContainer th:not(:first-child) .aiv-th-label {
@@ -365,14 +360,11 @@
 .aiv-source-link { color: var(--primary--dealality, #818cf8); text-decoration: none; font-weight: 600; }
 .aiv-source-link:hover { text-decoration: underline; }
 
-/* Insight tiles (mirrors Brand AI .aiv-insight-tile) */
+/* Insight tiles — match Brand AI / KPI card surface (not lighter theme-group tint) */
 .aiv-insight-tile {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 1.25rem;
-  flex: 1;
-  min-width: 220px;
+  background: var(--secondary--color-1, rgba(11, 23, 56, 0.55));
+  border: 0.6px solid var(--neutral--600);
+  box-shadow: 0 8px 24px var(--general--shadow-01);
 }
 .aiv-insight-tile--positive { border-left: 3px solid #34d399; }
 .aiv-insight-tile--neutral { border-left: 3px solid #60a5fa; }
@@ -394,16 +386,22 @@
 #adpExecInsights.aiv-exec-insight-tiles .aiv-insight-tile .aiv-insight-body,
 #adpExecInsights.aiv-exec-insight-tiles .aiv-insight-tile .aiv-insight-finding {
   flex: 1 1 auto;
-  min-height: calc(1.35em * 5);
+  min-height: 0;
   max-height: calc(1.35em * 5);
   font-size: 13px;
   line-height: 1.35;
   font-weight: 500;
   color: var(--neutral--100, #f2f2f5);
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 #adpExecInsights.aiv-exec-insight-tiles .aiv-insight-tile .aiv-insight-evidence {
+  display: -webkit-box;
   -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   max-height: calc(1.35em * 2);
 }
 

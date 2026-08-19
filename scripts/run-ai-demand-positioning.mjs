@@ -114,6 +114,25 @@ async function main() {
     const { savePeriod } = await import("../lib/ai-demand-positioning/data-model.js");
     const path = savePeriod(parsed);
     console.log(`\nSaved to: ${path}`);
+
+    if (payload.ok) {
+      const {
+        buildPublishedSnapshotBundle,
+        savePublishedSnapshotBundle,
+      } = await import("../lib/ai-demand-positioning/published-snapshot.js");
+      const publishedBundle = buildPublishedSnapshotBundle({ period: parsed, profile });
+      if (publishedBundle.ok) {
+        const saved = savePublishedSnapshotBundle(publishedBundle, { seed: false });
+        console.log(`Published snapshot: ${saved.manifestFile}`);
+        if (process.env.ADP_AIRTABLE_PUBLISH_APPLY === "true") {
+          const { upsertPublishedReportToAirtable } = await import("../lib/ai-demand-positioning/airtable-published-report.js");
+          const airtableResult = await upsertPublishedReportToAirtable(publishedBundle, {
+            payloadStoreRef: `published/${propertyId}/${publishedBundle.manifest.reportFile}`,
+          });
+          console.log(`Airtable Live row: ${airtableResult.recordId}`);
+        }
+      }
+    }
   } else {
     console.log(`\n[DRY RUN] No API calls made. Period saved for structure validation.`);
     console.log(`Saved to: data/ai-demand-positioning/runtime/${period.periodId}.json`);
