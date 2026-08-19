@@ -106,8 +106,10 @@
         '/my-brands': { file: '/all-brands-dashboard.html', title: 'My Brands' },
         '/my-operators': { file: '/my-third-party-operators-new.html', title: 'My Operators' },
         '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'My Brand Deals', roles: ['brand', 'admin'] },
-        '/ai-visibility': { file: '/ai-visibility-brand.html', title: 'Brand AI Visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
-        '/ai-visibility-brand': { file: '/ai-visibility-brand.html', title: 'Brand AI Visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+        '/ai-visibility': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+        '/ai-visibility-brand': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+        '/operator/ai-intelligence': { file: '/operator-ai-intelligence.html', title: 'Operator AI Intelligence', roles: ['operator', 'admin'], stakeholderProduct: 'operator_ai_intelligence' },
+        '/owner/ai-demand': { file: '/owner-ai-demand.html', title: 'AI Demand Positioning', roles: ['owner', 'admin'] },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/third-party-operator-setup-sandbox': { file: '/third-party-operator-setup-sandbox.html', title: 'Operator Setup (Sandbox)' },
@@ -138,6 +140,12 @@
         '/support/scoring-weight-model': {
             file: '/app/support/scoring-weight-model.html',
             title: 'Scoring Weight Model',
+            roles: ['admin'],
+            internalRunbookOnly: true
+        },
+        '/support/ai-visibility-benchmark-admin': {
+            file: '/app/support/ai-visibility-benchmark-admin.html',
+            title: 'Brand AI Visibility Reference',
             roles: ['admin'],
             internalRunbookOnly: true
         },
@@ -195,7 +203,9 @@
                         { label: 'The Radar', route: '/opportunity-radar', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Market Alerts', route: '/market-alerts', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Brand AI Visibility', route: '/ai-visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' }
+                        { label: 'Brand AI Intelligence', route: '/ai-visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+                        { label: 'Operator AI Intelligence', route: '/operator/ai-intelligence', roles: ['operator', 'admin'], stakeholderProduct: 'operator_ai_intelligence' },
+                        { label: 'AI Demand Positioning', route: '/owner/ai-demand', roles: ['owner', 'admin'] }
                     ]
                 },
                 {
@@ -283,6 +293,7 @@
                     children: [
                         { label: 'Owner Pilot Runbook', route: '/support/owner-pilot-provisioning', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Scoring Weight Model', route: '/support/scoring-weight-model', roles: ['admin'], internalRunbookOnly: true },
+                        { label: 'Brand AI Visibility Reference', route: '/support/ai-visibility-benchmark-admin', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Route Map', route: '/route-map', roles: ['admin'], devOnly: true },
                         {
                             label: 'Validation Scorecard',
@@ -383,7 +394,8 @@
         '/owner-diagnostic-sample.html': '/owner-diagnostic-sample',
         '/app/support/index.html': '/support',
         '/app/support/owner-pilot-provisioning.html': '/support/owner-pilot-provisioning',
-        '/app/support/scoring-weight-model.html': '/support/scoring-weight-model'
+        '/app/support/scoring-weight-model.html': '/support/scoring-weight-model',
+        '/app/support/ai-visibility-benchmark-admin.html': '/support/ai-visibility-benchmark-admin'
     };
 
     /**
@@ -854,6 +866,7 @@
         var normalized = normalizeRoute(route);
         if (normalized === '/support/owner-pilot-provisioning') return '/support';
         if (normalized === '/support/scoring-weight-model') return '/support';
+        if (normalized === '/support/ai-visibility-benchmark-admin') return '/support';
         return getLandingRouteForNavRole(resolveCurrentNavRole());
     }
 

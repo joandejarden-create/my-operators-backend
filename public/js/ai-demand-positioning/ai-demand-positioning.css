@@ -1,0 +1,464 @@
+/* AI Demand Positioning — extends ai-visibility-shared.css */
+
+/* Property Snapshot — mirrors Brand AI #aivExecPosition (5 equal cards) */
+#adpKpiRow.aiv-kpi-row {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+#adpKpiRow .aiv-kpi {
+  padding: 10px 12px;
+  min-width: 0;
+}
+#adpKpiRow .aiv-kpi h3 {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+#adpKpiRow .aiv-kpi .aiv-value {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+}
+#adpKpiRow .aiv-kpi .aiv-meta {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 10px;
+  line-height: 1.35;
+  min-height: calc(1.35em * 2);
+}
+
+/* Info icon tooltip */
+.adp-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  cursor: help;
+  margin-left: 6px;
+  position: relative;
+  vertical-align: middle;
+}
+.adp-info-icon:hover { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); }
+.adp-info-icon[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.4;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+
+/* Section cards — match Brand AI insight tiles */
+.adp-card {
+  background: var(--aiv-card-bg, rgba(255,255,255,0.03));
+  border: 1px solid var(--aiv-card-border, rgba(255,255,255,0.08));
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.adp-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.adp-card-header h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--aiv-text-secondary, #94a3b8);
+  margin: 0;
+}
+
+/* Hero KPI inside a section */
+.adp-hero-kpi {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  margin-bottom: 1.25rem;
+}
+.adp-hero-value {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: var(--aiv-text-primary, #f8fafc);
+  line-height: 1;
+}
+.adp-hero-label {
+  font-size: 0.8rem;
+  color: var(--aiv-text-secondary, #94a3b8);
+  margin-top: 4px;
+}
+.adp-hero-context {
+  font-size: 0.85rem;
+  color: var(--aiv-text-secondary, #94a3b8);
+  line-height: 1.5;
+}
+.adp-hero-context strong { color: var(--aiv-text-primary, #f8fafc); font-weight: 600; }
+
+/* Intent grid */
+.adp-intent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.adp-intent-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 0.85rem;
+  text-align: center;
+}
+.adp-intent-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--aiv-text-secondary, #94a3b8); }
+.adp-intent-value { font-size: 1.5rem; font-weight: 700; color: var(--aiv-text-primary, #f8fafc); margin: 0.25rem 0; }
+.adp-intent-detail { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+.adp-intent-value.good { color: #34d399; }
+.adp-intent-value.warning { color: #fbbf24; }
+.adp-intent-value.critical { color: #f87171; }
+
+/* Displacement list */
+.adp-displacement-list { list-style: none; padding: 0; margin: 0; }
+.adp-displacement-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.adp-displacement-item:last-child { border-bottom: none; }
+.adp-displacement-name { font-weight: 600; font-size: 0.9rem; color: var(--aiv-text-primary, #f8fafc); }
+.adp-displacement-badge {
+  background: rgba(248,113,113,0.15);
+  color: #fca5a5;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+/* Reasons panel */
+.adp-reasons {
+  padding: 1rem 1.25rem;
+  background: rgba(251,191,36,0.06);
+  border: 1px solid rgba(251,191,36,0.15);
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+.adp-reasons h4 { font-size: 0.8rem; font-weight: 700; color: #fbbf24; margin: 0 0 0.5rem; }
+.adp-reasons ul { margin: 0; padding: 0 0 0 1.2rem; font-size: 0.82rem; color: #fde68a; line-height: 1.6; }
+
+/* Comp set stats */
+.adp-comp-stats {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 1.25rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.adp-comp-stat { text-align: center; }
+.adp-comp-stat-value { font-size: 1.75rem; font-weight: 800; color: var(--aiv-text-primary, #f8fafc); }
+.adp-comp-stat-label { font-size: 0.7rem; color: var(--aiv-text-secondary, #94a3b8); text-transform: uppercase; letter-spacing: 0.3px; }
+
+/* Surprise badges */
+.adp-surprise {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  background: rgba(251,191,36,0.06);
+  border: 1px solid rgba(251,191,36,0.12);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--aiv-text-primary, #f8fafc);
+}
+.adp-surprise-tag {
+  background: #f59e0b;
+  color: #000;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+/* Opportunity cards */
+.adp-opp-card {
+  padding: 1rem 1.25rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid #059669;
+}
+.adp-opp-card.opp-medium { border-left-color: #d97706; }
+.adp-opp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.adp-opp-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+.adp-opp-badge.badge-high { background: rgba(52,211,153,0.15); color: #6ee7b7; }
+.adp-opp-badge.badge-medium { background: rgba(251,191,36,0.15); color: #fde68a; }
+.adp-opp-intent { font-size: 0.75rem; color: var(--aiv-text-secondary, #94a3b8); text-transform: capitalize; }
+.adp-opp-rationale { font-size: 0.85rem; color: var(--aiv-text-primary, #e2e8f0); margin: 0.4rem 0 0; line-height: 1.5; }
+
+/* Reality gap grid */
+.adp-gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.adp-gap-col h4 { font-size: 0.8rem; font-weight: 700; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; }
+.adp-gap-col.col-recognized h4 { color: #34d399; }
+.adp-gap-col.col-missed h4 { color: #f87171; }
+.adp-gap-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0; font-size: 0.85rem; color: var(--aiv-text-primary, #e2e8f0); }
+.adp-gap-icon { font-size: 0.9rem; flex-shrink: 0; }
+.adp-gap-icon.icon-ok { color: #34d399; }
+.adp-gap-icon.icon-miss { color: #f87171; }
+.adp-gap-pct { font-size: 0.72rem; color: var(--aiv-text-secondary, #94a3b8); margin-left: auto; }
+
+/* Action cards */
+.adp-action-card {
+  padding: 1rem 1.25rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid #6366f1;
+}
+.adp-action-card.priority-high { border-left-color: #f87171; }
+.adp-action-card.priority-medium { border-left-color: #fbbf24; }
+.adp-action-title { font-weight: 700; font-size: 0.92rem; color: var(--aiv-text-primary, #f8fafc); margin-bottom: 0.3rem; }
+.adp-action-desc { font-size: 0.82rem; color: var(--aiv-text-secondary, #94a3b8); line-height: 1.5; margin-bottom: 0.4rem; }
+.adp-action-impact { font-size: 0.78rem; color: #34d399; font-weight: 600; }
+
+/* Brief items */
+.adp-brief-list { list-style: none; padding: 0; margin: 0; }
+.adp-brief-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.88rem;
+  color: var(--aiv-text-primary, #e2e8f0);
+  line-height: 1.5;
+}
+.adp-brief-item:last-child { border-bottom: none; }
+.adp-brief-icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
+.adp-brief-icon.icon-risk { color: #f87171; }
+.adp-brief-icon.icon-opportunity { color: #34d399; }
+.adp-brief-icon.icon-insight { color: #60a5fa; }
+.adp-brief-icon.icon-gap { color: #fbbf24; }
+.adp-brief-icon.icon-headline { color: #a78bfa; }
+
+/* Empty state */
+.adp-empty { text-align: center; padding: 3rem 2rem; color: var(--aiv-text-secondary, #64748b); }
+
+/* Ensure "Benchmark still developing" matches "Insufficient History" styling */
+#adpIntentTableContainer .aiv-avail-insufficient_history {
+  font-size: 12px;
+  line-height: 1.3;
+  display: inline-block;
+  max-width: 7.5rem;
+}
+
+/* Table cell alignment — center data columns, left-align first column */
+#adpCompTable th:not(:first-child),
+#adpCompTable td:not(:first-child),
+#adpProviderTableContainer th:not(:first-child),
+#adpProviderTableContainer td:not(:first-child),
+#adpIntentTableContainer th:not(:first-child),
+#adpIntentTableContainer td:not(:first-child) {
+  text-align: center;
+}
+#adpIntentTableContainer td:not(:first-child) button,
+#adpCompTable td:not(:first-child) button,
+#adpProviderTableContainer td:not(:first-child) button {
+  margin: 0 auto;
+}
+/* Hide sort arrows in ADP tables (visual only, no sort functionality yet) */
+#adpProviderTableContainer .sort-indicator,
+#adpIntentTableContainer .sort-indicator {
+  display: none;
+}
+/* Proper case for column headers (override shared uppercase) */
+#adpCompTable th .aiv-th-text,
+#adpProviderTableContainer th .aiv-th-text,
+#adpIntentTableContainer th .aiv-th-text {
+  text-transform: none;
+}
+/* Center th label content after hiding arrows */
+#adpCompTable th:not(:first-child) .aiv-th-label,
+#adpProviderTableContainer th:not(:first-child) .aiv-th-label,
+#adpIntentTableContainer th:not(:first-child) .aiv-th-label {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+}
+#adpCompTable th:not(:first-child),
+#adpProviderTableContainer th:not(:first-child),
+#adpIntentTableContainer th:not(:first-child) {
+  text-align: center;
+}
+#adpCompTable th:not(:first-child) .aiv-th-text,
+#adpProviderTableContainer th:not(:first-child) .aiv-th-text,
+#adpIntentTableContainer th:not(:first-child) .aiv-th-text {
+  text-align: center;
+}
+/* Center presence bar cells under their headers */
+#adpProviderTableContainer td.aiv-presence-metric-cell .aiv-presence-cell,
+#adpCompTable td .aiv-presence-cell {
+  justify-content: center;
+}
+
+/* Evidence, Sources & Discovery — uses shared aiv-citation-exec-top / aiv-kpi classes */
+/* Comp set pills */
+.adp-pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+.adp-pill--core { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); }
+.adp-pill--extended { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.25); }
+.adp-pill--you { background: rgba(255, 255, 255, 0.12); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.3); }
+.adp-row--subject { background: rgba(99, 102, 241, 0.08) !important; }
+
+/* Trend summary — 4 stat boxes */
+#adpTrendSummary.aiv-detail-trend-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* AI Reality Gaps — 3-column grid */
+.aiv-signals-grid--three { grid-template-columns: 1fr 1fr 1fr; }
+
+/* Priority Actions use shared .aiv-hdv-review-grid / .aiv-hdv-review-card classes */
+
+/* Evidence status badge */
+.aiv-status-badge--missing { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+
+.adp-source-bar-wrap { display: flex; align-items: center; gap: 0.5rem; }
+.adp-source-bar { height: 6px; background: var(--primary--dealality, #6366f1); border-radius: 3px; min-width: 2px; }
+.adp-source-pct { font-size: 0.75rem; color: var(--neutral--300, #cbd5e1); font-weight: 600; white-space: nowrap; }
+.aiv-source-link { color: var(--primary--dealality, #818cf8); text-decoration: none; font-weight: 600; }
+.aiv-source-link:hover { text-decoration: underline; }
+
+/* Insight tiles (mirrors Brand AI .aiv-insight-tile) */
+.aiv-insight-tile {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 1.25rem;
+  flex: 1;
+  min-width: 220px;
+}
+.aiv-insight-tile--positive { border-left: 3px solid #34d399; }
+.aiv-insight-tile--neutral { border-left: 3px solid #60a5fa; }
+.aiv-insight-tile--negative { border-left: 3px solid #f87171; }
+/* Executive tiles — mirror Brand AI #aivExecInsights sizing & layout */
+#adpExecInsights.aiv-exec-insight-tiles {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  align-items: stretch;
+}
+#adpExecInsights.aiv-exec-insight-tiles[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#adpExecInsights.aiv-exec-insight-tiles[data-count="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+#adpExecInsights.aiv-exec-insight-tiles[data-count="5"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+#adpExecInsights.aiv-exec-insight-tiles .aiv-insight-tile {
+  height: 178px;
+  min-height: 178px;
+}
+#adpExecInsights.aiv-exec-insight-tiles .aiv-insight-tile .aiv-insight-body,
+#adpExecInsights.aiv-exec-insight-tiles .aiv-insight-tile .aiv-insight-finding {
+  flex: 1 1 auto;
+  min-height: calc(1.35em * 5);
+  max-height: calc(1.35em * 5);
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--neutral--100, #f2f2f5);
+  overflow: hidden;
+}
+#adpExecInsights.aiv-exec-insight-tiles .aiv-insight-tile .aiv-insight-evidence {
+  -webkit-line-clamp: 2;
+  max-height: calc(1.35em * 2);
+}
+
+.aiv-exec-insight-tiles { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* Signal list items (strengths/gaps) */
+.aiv-signal-list { list-style: none; padding: 0; margin: 0; }
+.aiv-signal-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.85rem;
+  color: var(--aiv-text-primary, #e2e8f0);
+}
+.aiv-signal-item:last-child { border-bottom: none; }
+.aiv-signal-icon { flex-shrink: 0; font-size: 0.9rem; }
+.aiv-signal-item--strength .aiv-signal-icon { color: #34d399; }
+.aiv-signal-item--gap .aiv-signal-icon { color: #f87171; }
+.aiv-signal-text { flex: 1; }
+.aiv-signal-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.06);
+  color: var(--aiv-text-secondary, #94a3b8);
+}
+.aiv-signal-badge--high { background: rgba(248,113,113,0.15); color: #fca5a5; }
+.aiv-signal-badge--medium { background: rgba(251,191,36,0.15); color: #fde68a; }
+.aiv-signal-badge--low { background: rgba(52,211,153,0.15); color: #6ee7b7; }
+
+/* Presence pills */
+.aiv-presence-pill {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+.aiv-presence-pill--good { background: rgba(52,211,153,0.15); color: #6ee7b7; }
+.aiv-presence-pill--warning { background: rgba(251,191,36,0.15); color: #fde68a; }
+.aiv-presence-pill--critical { background: rgba(248,113,113,0.15); color: #fca5a5; }
+
+/* Row highlight */
+.aiv-row--highlight { background: rgba(251,191,36,0.04); }
+
+/* Empty message */
+.aiv-empty-message { font-size: 0.85rem; color: var(--aiv-text-secondary, #64748b); padding: 1rem 0; }
+
+@media (max-width: 768px) {
+  .adp-gap-grid { grid-template-columns: 1fr; }
+  .adp-comp-stats { flex-direction: column; gap: 1rem; }
+  .adp-hero-kpi { flex-direction: column; text-align: center; }
+  .aiv-exec-insight-tiles { flex-direction: column; }
+}
