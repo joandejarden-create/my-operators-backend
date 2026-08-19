@@ -1628,6 +1628,26 @@ app.get("/brand-explorer-preview/", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/brand-explorer-share.html" + q);
 });
+app.get("/owner-ai-demand-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/owner-ai-demand-share.html" + q);
+});
+app.get("/owner-ai-demand-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/owner-ai-demand-share.html" + q);
+});
+app.get("/owner-ai-demand-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "owner-ai-demand-share.html"));
+});
+app.get("/ai-demand-positioning-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/owner-ai-demand-share.html" + q);
+});
+app.get("/ai-demand-positioning-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/owner-ai-demand-share.html" + q);
+});
 app.get("/getting-started", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, 'public', 'getting-started.html'));
