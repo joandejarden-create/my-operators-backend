@@ -1,8 +1,8 @@
 # Observed demand — source acquisition
 
-> **Status:** `OBSERVED_DEMAND_SEED_PARTIAL` · Sample + targeted refinement complete 2026-08-17  
-> **AI provider calls:** 0 · **Census:** none · **Airtable writes:** 0 · **Prompt Mix:** hidden (9 distinct themes < 10)  
-> **Live overlay:** empty — signals are file-store only
+> **Status:** Source acquisition **CLOSED for V1**. Seed `OBSERVED_DEMAND_SEED_V1_VALIDATED`.  
+> **AI provider calls:** 0 · **Census:** none · **Airtable writes:** 0 · **DataForSEO new calls:** 0  
+> **Live monitored overlay on the 122:** unchanged (SCENARIO / LEGACY)
 
 ## Budget guard (binding)
 
@@ -34,7 +34,7 @@ Dealality already has a DataForSEO account (used for census discovery). After th
 | Distinct themes after PAA quality filter | 9 |
 | AI provider calls | 0 |
 
-Activation gate **failed** at 9/10 distinct themes. Two refinement PAA rows were removed as generic franchise-entrepreneur SERP reuse (`independent hotel franchise`, `hotel franchise distribution benefits`). `coste franquicia hotelera` collapsed as a duplicate of `hotel franchise fees`.
+Acquisition-era 10-theme guard **failed** at 9/10 distinct themes. Two refinement PAA rows were removed as generic franchise-entrepreneur SERP reuse (`independent hotel franchise`, `hotel franchise distribution benefits`). `coste franquicia hotelera` collapsed as a duplicate of `hotel franchise fees`. Founder later replaced that development guard with `MIN_DISTINCT_VALIDATED_THEMES = 8`; the 9-theme seed **passed** V1 activation. Do not acquire more DataForSEO data merely to reach 10.
 
 Do not treat public hospitality articles as search volume. They only show that owner-decision **topics exist**.
 
@@ -93,7 +93,7 @@ Landing analytics are page/session events. No Explorer / deal-workflow / AI-assi
 ## Storage (not applied to live prompts)
 
 **Airtable (later):** prompt origin, theme, demand tier, review status, date, short source name.  
-**File store now:** normalized signals in `fixtures/ai-visibility/demand-signals-v1.json`; raw sample report in `reports/ai-visibility/observed-demand-source-sample-2026-08-17.json`; phase ledger in `reports/ai-visibility/observed-demand-dataforseo-phase-spend.json`. No Airtable dumps. Overlay `fixtures/ai-visibility/prompt-provenance-v1.json` classifications remain empty.
+**File store now:** normalized signals in `fixtures/ai-visibility/demand-signals-v1.json`; observed/derived prompt rows in `fixtures/ai-visibility/observed-demand-prompts-v1.json`; overlay classifications for those new IDs only. No Airtable dumps. The 122 monitored prompt IDs were not rewritten.
 
 ## Refresh
 
@@ -105,7 +105,5 @@ HIGH observed demand + HIGH commercial importance → higher repeat sampling pri
 
 ## Next
 
-1. Do **not** spend remaining **$1.526** or the account balance without a new explicit budget.  
-2. Do **not** run a third paid refinement pass automatically.  
-3. If more themes are approved and ≥10 validate → `OBSERVED_DEMAND_ACTIVATION` (still no monitoring until approved).  
-4. Then `REPEATED_TESTING_AND_STABILITY`.
+1. Source acquisition is closed for V1. Do **not** spend remaining **$1.526** without a new explicit budget.  
+2. Next phase: `REPEATED_TESTING_AND_STABILITY` (still no provider execution until approved).

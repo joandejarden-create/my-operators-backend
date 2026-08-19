@@ -13,6 +13,7 @@ import {
 import {
   HDV_DEFINITIONS,
   HOTEL_DECISION_VISIBILITY_VERSION,
+  topIntentForBrand,
 } from "../lib/ai-visibility/hotel-decision-visibility.js";
 import {
   HDV_REVIEW_RULES_VERSION,
@@ -127,6 +128,27 @@ test("Top Decision Territory tie-break is alphabetical after equal coverage", ()
     return a.intent.localeCompare(b.intent);
   });
   assert.equal(rows[0].intent, "Alpha");
+});
+
+test("Top Decision Territory requires Presence > 0 — zero presence yields null", () => {
+  const brandId = "recRyvM8OmLlDj9G7";
+  const observations = [
+    {
+      success: true,
+      promptId: "p1",
+      intentTerritory: "Branded Residences",
+      presentEntityIds: [],
+    },
+    {
+      success: true,
+      promptId: "p2",
+      intentTerritory: "Conversion",
+      presentEntityIds: [],
+    },
+  ];
+  assert.equal(topIntentForBrand(observations, brandId), null);
+  observations[0].presentEntityIds = [brandId];
+  assert.equal(topIntentForBrand(observations, brandId), "Branded Residences");
 });
 
 test("review rules require evidenceId and reuse 15pp gap", () => {

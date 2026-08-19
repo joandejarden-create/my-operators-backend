@@ -120,7 +120,7 @@ await test("IHG_PORTFOLIO_RESOLVES_GOVERNED_BRANDS", () => {
 await test("CHOICE_PORTFOLIO_RESOLVES_GOVERNED_BRANDS", () => {
   const r = resolveDemoBrandPortfolio("choice");
   assert.equal(r.ok, true);
-  assert.equal(r.brandIds.length, 4);
+  assert.equal(r.brandIds.length, 5);
 });
 
 await test("EXECUTIVE_SUMMARY_USES_ACTIVE_PORTFOLIO", () => {

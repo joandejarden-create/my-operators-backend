@@ -5,7 +5,7 @@
  */
 import fs from "fs";
 import path from "path";
-import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer";
 import { createBrandAiVisibilityReadStore } from "../lib/ai-visibility/storage/index.js";
 import {
   getBrandOverviewPayload,
@@ -255,7 +255,26 @@ async function installFixtureAuth(page, fixtures) {
   }, fixtures);
 }
 
+async function hideTransientUi(page) {
+  await page.evaluate(() => {
+    const loading = document.getElementById("aivLoading");
+    if (loading) {
+      loading.classList.remove("show");
+      loading.hidden = true;
+      loading.style.display = "none";
+      loading.setAttribute("aria-busy", "false");
+    }
+    document.querySelectorAll(".aiv-loading-toast, .bdd-toast.show").forEach((el) => {
+      el.classList.remove("show");
+      el.hidden = true;
+      el.style.display = "none";
+    });
+  });
+}
+
 async function printTall(page, outPath) {
+  await hideTransientUi(page);
+  await sleep(250);
   const height = await page.evaluate(() =>
     Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, 1800)
   );
@@ -361,16 +380,33 @@ async function main() {
       document.getElementById("aivApply")?.click();
     });
 
-    await page.waitForFunction(() => {
-      const pos = document.getElementById("aivExecPosition");
-      const text = (pos && pos.innerText) || "";
-      return text.length > 25 && !/please log in/i.test(document.body.innerText);
-    }, { timeout: 45000 });
-
-    await page.evaluate(() => {
-      const loading = document.getElementById("aivLoading");
-      if (loading) loading.hidden = true;
-    });
+    try {
+      await page.waitForFunction(() => {
+        const pos = document.getElementById("aivExecPosition");
+        const text = (pos && pos.innerText) || "";
+        const insights = document.getElementById("aivExecInsights");
+        const table = document.querySelector("#aivPortfolioTable tbody");
+        window.__AIV_CAPTURE_DIAG = {
+          posLen: text.length,
+          posPreview: text.slice(0, 120),
+          insightsLen: ((insights && insights.innerText) || "").length,
+          rows: table ? table.querySelectorAll("tr").length : 0,
+          h1: (document.querySelector("h1") && document.querySelector("h1").innerText) || "",
+          login: /please log in/i.test(document.body.innerText),
+          error: ((document.getElementById("aivError") && document.getElementById("aivError").innerText) || "").slice(0, 200),
+        };
+        return text.length > 25 && !/please log in/i.test(document.body.innerText);
+      }, { timeout: 45000 });
+    } catch (err) {
+      const diag = await page.evaluate(() => window.__AIV_CAPTURE_DIAG || {
+        bodyPreview: document.body.innerText.slice(0, 800),
+      });
+      console.error("[capture] executive wait failed", diag);
+      throw err;
+    }
+    await sleep(800);
+    const execDiag = await page.evaluate(() => window.__AIV_CAPTURE_DIAG);
+    console.log("[capture] executive ready", execDiag);
 
     console.log("[capture] print executive…");
     await printTall(page, pdfExec);
@@ -390,16 +426,30 @@ async function main() {
     await installFixtureAuth(page, fixtures);
     await page.evaluate(() => document.getElementById("aivApply")?.click());
 
-    await page.waitForFunction(() => {
-      const kpi = document.getElementById("aivKpiRow");
-      const detail = document.getElementById("aivDetailView");
-      return detail && !detail.hidden && ((kpi && kpi.innerText) || "").length > 20;
-    }, { timeout: 45000 });
-    await sleep(1200);
-    await page.evaluate(() => {
-      const loading = document.getElementById("aivLoading");
-      if (loading) loading.hidden = true;
-    });
+    try {
+      await page.waitForFunction(() => {
+        const kpi = document.getElementById("aivKpiRow");
+        const detail = document.getElementById("aivDetailView");
+        const kpiText = (kpi && kpi.innerText) || "";
+        window.__AIV_CAPTURE_DETAIL_DIAG = {
+          hidden: !!(detail && detail.hidden),
+          kpiLen: kpiText.length,
+          kpiPreview: kpiText.slice(0, 120),
+          intentLen: ((document.getElementById("aivDetailIntentCoverage") && document.getElementById("aivDetailIntentCoverage").innerText) || "").length,
+          watchRows: document.querySelectorAll("#aivWatchlistBody tr").length,
+        };
+        return detail && !detail.hidden && kpiText.length > 20;
+      }, { timeout: 45000 });
+    } catch (err) {
+      const diag = await page.evaluate(() => window.__AIV_CAPTURE_DETAIL_DIAG || {
+        bodyPreview: document.body.innerText.slice(0, 800),
+      });
+      console.error("[capture] detail wait failed", diag);
+      throw err;
+    }
+    await sleep(1500);
+    const detailDiag = await page.evaluate(() => window.__AIV_CAPTURE_DETAIL_DIAG);
+    console.log("[capture] detail ready", detailDiag);
 
     console.log("[capture] print detail…");
     await printTall(page, pdfDetail);
@@ -423,6 +473,22 @@ async function main() {
       fs.copyFileSync(pdfExec, stable);
     }
 
+    const desktopDir = "C:\\Users\\joand\\OneDrive\\Desktop\\Police Report";
+    let desktopLatest = null;
+    let desktopStamped = null;
+    try {
+      fs.mkdirSync(desktopDir, { recursive: true });
+      desktopLatest = path.join(desktopDir, "brand-ai-visibility-app-ui-latest.pdf");
+      desktopStamped = path.join(
+        desktopDir,
+        `brand-ai-visibility-app-ui-latest-${stamp.slice(0, 10)}.pdf`
+      );
+      fs.copyFileSync(merged ? pdfCombined : pdfExec, desktopLatest);
+      fs.copyFileSync(merged ? pdfCombined : pdfExec, desktopStamped);
+    } catch (e) {
+      console.warn("[capture] desktop copy failed", e.message);
+    }
+
     console.log(
       JSON.stringify(
         {
@@ -433,6 +499,8 @@ async function main() {
           detailPdf: pdfDetail,
           combinedPdf: pdfCombined,
           stableLatest: stable,
+          desktopLatest,
+          desktopStamped,
           bytes: fs.statSync(pdfCombined).size,
         },
         null,

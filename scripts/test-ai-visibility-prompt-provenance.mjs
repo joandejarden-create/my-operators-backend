@@ -38,7 +38,16 @@ import {
   loadPromptProvenanceOverlay,
   enrichRowWithPromptOrigin,
 } from "../lib/ai-visibility/prompt-provenance.js";
-import { getPromptCoreFieldSpecs } from "../lib/ai-visibility/airtable-schema-proposal.js";
+import {
+  getPromptCoreFieldSpecs,
+  AI_VISIBILITY_PROMPT_OPERATIONAL_PROVENANCE_FIELD_NAMES,
+} from "../lib/ai-visibility/airtable-schema-proposal.js";
+import {
+  DEDUP_REPORT,
+  V1_VALIDATED_THEMES,
+  DERIVED_PROMPT_SPECS,
+  evaluateV1ActivationGate,
+} from "../lib/ai-visibility/observed-demand-activation.js";
 import { KNOWN_AI_VISIBILITY_PROVIDER_IDS } from "../lib/ai-visibility/provider-dimension.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -288,18 +297,23 @@ test("legacy prompts remain compatible — IDs unchanged after attach", () => {
   assert.ok(allPrompts.every((p) => PROMPT_ORIGINS.includes(p.promptOrigin)));
 });
 
-test("UI hides empty provenance mix", () => {
-  assert.equal(shouldShowExecutivePromptMix({ observed: 0, derived: 0, scenario: 24 }), false);
-  assert.equal(shouldShowExecutivePromptMix({ observed: 1, derived: 0, scenario: 24 }), false);
-  assert.equal(shouldShowExecutivePromptMix({ observed: 10, derived: 0, scenario: 24 }), true);
+test("UI Prompt Intelligence uses V1 seed gate", () => {
+  const blockedSeed = { seedStatus: "OBSERVED_DEMAND_SEED_PARTIAL", includedThemes: [] };
+  assert.equal(shouldShowExecutivePromptMix({ observed: 0 }, { seed: blockedSeed }), false);
+  assert.equal(shouldShowExecutivePromptMix({ observed: 7 }, { seed: blockedSeed }), false);
+  assert.equal(shouldShowExecutivePromptMix({ observed: 8 }, { seed: blockedSeed }), true);
+  assert.equal(shouldShowExecutivePromptMix({ observed: 0 }), true);
   const html = fs.readFileSync(BRAND_HTML, "utf8");
   assert.ok(html.includes('id="aivExecPromptMix"'));
-  assert.ok(html.includes("hidden"));
   const js = fs.readFileSync(BRAND_JS, "utf8");
   assert.ok(js.includes("renderExecutivePromptMix"));
   assert.ok(js.includes("promptOriginBadgeHtml"));
-  assert.ok(js.includes('summary.showPromptMix === true'));
+  assert.ok(js.includes("summary.showPromptMix === true"));
+  assert.ok(js.includes("Prompt Intelligence"));
   assert.ok(!js.includes("0 observed prompts"));
+  assert.ok(!js.includes("(observed || 0) >= 10"));
+  assert.ok(!js.includes("9 real searches"));
+  assert.ok(!js.includes("real owner searches"));
 });
 
 test("detail origin badges present in client", () => {
@@ -309,6 +323,8 @@ test("detail origin badges present in client", () => {
   assert.ok(js.includes("Derived"));
   assert.ok(js.includes("Scenario"));
   assert.ok(js.includes("LEGACY_UNCLASSIFIED"));
+  assert.ok(js.includes("title="));
+  assert.ok(!js.includes("aiv-origin-meta"));
 });
 
 test("scenario-mapped library prompts resolve to SCENARIO not OBSERVED", () => {
@@ -387,23 +403,60 @@ test("P0C demand hook does not recalculate gaps", () => {
 });
 
 test("Airtable proposal includes origin fields; live apply not implied", () => {
-  const names = getPromptCoreFieldSpecs().map((f) => f.name);
+  const specs = getPromptCoreFieldSpecs();
+  const names = specs.map((f) => f.name);
   assert.ok(names.includes("Prompt Origin"));
   assert.ok(names.includes("Demand Tier"));
   assert.ok(!names.includes("Search Volume"));
   assert.ok(!names.includes("Monthly Search Volume"));
+  const provenance = specs.filter((f) => f.provenanceRole);
+  assert.ok(provenance.length >= 8);
+  assert.ok(provenance.every((f) => f.schemaApply === false));
+  assert.deepEqual(
+    [...AI_VISIBILITY_PROMPT_OPERATIONAL_PROVENANCE_FIELD_NAMES],
+    [
+      "Prompt Origin",
+      "Origin Source Type",
+      "Observed Theme",
+      "Demand Tier",
+      "Demand Geography",
+      "Date Observed",
+      "Derived From Observed Prompt ID",
+      "Provenance Status",
+    ]
+  );
 });
 
-test("observed seed partial — signals stored, live overlay empty", () => {
-  assert.equal(seed.seedStatus, "OBSERVED_DEMAND_SEED_PARTIAL");
+test("observed seed V1 validated — overlay on new IDs only, monitored 122 unchanged", () => {
+  assert.equal(seed.seedStatus, "OBSERVED_DEMAND_SEED_V1_VALIDATED");
   assert.equal((seed.includedThemes || []).length, 9);
-  assert.equal(seed.promptMixEligible, false);
-  assert.equal(seed.activationStatus, "NOT_ATTACHED_TO_LIVE_PROMPTS");
-  assert.ok((seed.candidateThemes || []).length >= 10);
+  assert.equal(seed.promptMixEligible, true);
+  assert.equal(seed.activationStatus, "PROVENANCE_ATTACHED_MONITORING_ELIGIBLE_OFF");
   assert.equal((signals.signals || []).length, 13);
-  assert.equal((overlay.classifications || []).length, 0);
+  assert.equal((overlay.classifications || []).length, 11);
+  const overlayIds = new Set((overlay.classifications || []).map((c) => c.promptId));
+  assert.ok(allPrompts.every((p) => !overlayIds.has(p.promptId)));
   assert.equal(audit.OBSERVED, 0);
-  assert.equal(overlay.observedDemandSeedStatus, "OBSERVED_DEMAND_SEED_PARTIAL");
+  assert.equal(audit.DERIVED, 0);
+  assert.equal(audit.TOTAL_ACTIVE_PROMPTS, 122);
+  assert.equal(overlay.observedDemandSeedStatus, "OBSERVED_DEMAND_SEED_V1_VALIDATED");
+  const observedRows = (overlay.classifications || []).filter((c) => c.promptOrigin === "OBSERVED");
+  const derivedRows = (overlay.classifications || []).filter((c) => c.promptOrigin === "DERIVED");
+  assert.equal(observedRows.length, 9);
+  assert.equal(derivedRows.length, 2);
+  assert.equal(V1_VALIDATED_THEMES.length, 9);
+  assert.equal(DERIVED_PROMPT_SPECS.length, 2);
+  assert.equal(DEDUP_REPORT.EXACT_DUPLICATES.length, 0);
+  assert.equal(DEDUP_REPORT.NET_NEW_OBSERVED_PROMPTS, 9);
+  assert.equal(DEDUP_REPORT.NET_NEW_DERIVED_PROMPTS, 2);
+  const gate = evaluateV1ActivationGate({
+    distinctThemes: 9,
+    ownerIntentFamilies: 6,
+    geoLanguageCohorts: 3,
+    provenanceQuality: "PASS",
+    noDuplicateInflation: "PASS",
+  });
+  assert.equal(gate.pass, true);
 });
 
 test("existing product sources stay unused; DataForSEO sample is file-store only", () => {
@@ -419,7 +472,7 @@ test("existing product sources stay unused; DataForSEO sample is file-store only
   assert.equal(DEMAND_TIER_METHOD.numericConfidence, false);
 });
 
-test("cost model — incremental prompts 0, no execution", () => {
+test("cost model — current monitored increment 0; proposed 9+2 not executed", () => {
   assert.equal(cost.TOTAL_INCREMENT, 0);
   assert.equal(cost.PROVIDER_CALLS, 0);
   assert.equal(cost.MONITORING_RUNS, 0);
@@ -428,14 +481,24 @@ test("cost model — incremental prompts 0, no execution", () => {
     cost.CALLS_PER_FULL_RUN,
     audit.TOTAL_ACTIVE_PROMPTS * KNOWN_AI_VISIBILITY_PROVIDER_IDS.length
   );
+  const proposed = estimateProvenanceMonitoringCost({
+    existingPrompts: 122,
+    proposedObserved: 9,
+    proposedDerived: 2,
+  });
+  assert.equal(proposed.TOTAL_INCREMENT, 11);
+  assert.equal(proposed.CALLS_PER_FULL_RUN, 133 * 4);
+  assert.equal(proposed.PROVIDER_CALLS, 0);
 });
 
-test("library prompt origin summary hides mix while observed=0", () => {
+test("library prompt origin summary shows methodology mix after V1, monitored observed stays 0", () => {
   const summary = buildLibraryPromptOriginSummary({ key: "CALA", commercialRegion: "CALA" });
   assert.equal(summary.observed, 0);
   assert.equal(summary.derived, 0);
-  assert.equal(summary.showPromptMix, false);
+  assert.equal(summary.showPromptMix, true);
   assert.ok(summary.scenario > 0);
+  assert.match(summary.EXECUTIVE_STORY, /both observed demand/);
+  assert.doesNotMatch(summary.EXECUTIVE_STORY, /real owner searches/);
 });
 
 test("client origin enrich on question row", () => {

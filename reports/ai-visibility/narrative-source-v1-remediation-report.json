@@ -1,0 +1,964 @@
+{
+  "HOTEL_BRAND_AI_INTELLIGENCE_NARRATIVE_SOURCE_V1_REMEDIATION_COMPLETE": true,
+  "generatedAt": "2026-08-17T23:53:57.329Z",
+  "STATUS": "HOTEL_BRAND_AI_INTELLIGENCE_NARRATIVE_SOURCE_V1_PASS",
+  "READINESS": "NARRATIVE_SOURCE_V1_READY_TO_SHIP",
+  "NEXT_PHASE": "FINAL_UI_REFINEMENT_AND_PRECLIENT_RELEASE",
+  "AuthoritativeInput": {
+    "STABILITY_REPORT": "reports/ai-visibility/repeated-testing-stage-b-report-final-wave.json",
+    "AUTHORITATIVE_WAVE": "aiv_stability_stage_b_20260817_f0a829",
+    "ARCHIVED_WAVE_USED": "NO"
+  },
+  "RemediationSet": {
+    "TOTAL": 80,
+    "DEV": 58,
+    "HOLDOUT": 22,
+    "HOLDOUT_SEALED_BEFORE_RULE_TUNING": "YES",
+    "HOLDOUT_REUSED_FOR_ITERATIVE_TUNING": "NO",
+    "labelCounts": {
+      "POSITIVE_STRONG_IMPLICIT": 16,
+      "AMBIGUOUS_MEANING": 14,
+      "POSITIVE_EXPLICIT": 31,
+      "NEGATIVE_GENERIC": 5,
+      "AMBIGUOUS_INSUFFICIENT_CONTEXT": 8,
+      "NEGATIVE_PROMPT_ECHO": 6
+    },
+    "sealedSetPath": "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\narrative\\remediation-set-v1.json"
+  },
+  "FamilyResults": [
+    {
+      "FAMILY": "CONVERSION_SUITABILITY",
+      "DEV_CASES": 17,
+      "HOLDOUT_CASES": 6,
+      "DEV_METRICS": {
+        "TRUE_POSITIVES": 7,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1
+      },
+      "HOLDOUT_PRECISION": 1,
+      "HOLDOUT_RECALL": 1,
+      "HOLDOUT_F1": 1,
+      "HOLDOUT_TRUE_POSITIVES": 4,
+      "HOLDOUT_FALSE_POSITIVES": 0,
+      "HOLDOUT_FALSE_NEGATIVES": 0,
+      "BRAND_ATTRIBUTION_ERRORS": 0,
+      "EXECUTIVE_FALSE_POSITIVES": 0,
+      "COLLISION_RISK": "LOW",
+      "PRODUCTION_STATE": "PRODUCTION_ELIGIBLE"
+    },
+    {
+      "FAMILY": "DESIGN_LOCAL_CHARACTER",
+      "DEV_CASES": 9,
+      "HOLDOUT_CASES": 3,
+      "DEV_METRICS": {
+        "TRUE_POSITIVES": 4,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1
+      },
+      "HOLDOUT_PRECISION": 1,
+      "HOLDOUT_RECALL": 1,
+      "HOLDOUT_F1": 1,
+      "HOLDOUT_TRUE_POSITIVES": 2,
+      "HOLDOUT_FALSE_POSITIVES": 0,
+      "HOLDOUT_FALSE_NEGATIVES": 0,
+      "BRAND_ATTRIBUTION_ERRORS": 0,
+      "EXECUTIVE_FALSE_POSITIVES": 0,
+      "COLLISION_RISK": "MEDIUM",
+      "PRODUCTION_STATE": "DETAIL_ONLY"
+    },
+    {
+      "FAMILY": "OWNER_FLEXIBILITY_CONTROL",
+      "DEV_CASES": 4,
+      "HOLDOUT_CASES": 2,
+      "DEV_METRICS": {
+        "TRUE_POSITIVES": 2,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1
+      },
+      "HOLDOUT_PRECISION": 1,
+      "HOLDOUT_RECALL": 1,
+      "HOLDOUT_F1": 1,
+      "HOLDOUT_TRUE_POSITIVES": 1,
+      "HOLDOUT_FALSE_POSITIVES": 0,
+      "HOLDOUT_FALSE_NEGATIVES": 0,
+      "BRAND_ATTRIBUTION_ERRORS": 0,
+      "EXECUTIVE_FALSE_POSITIVES": 0,
+      "COLLISION_RISK": "MEDIUM",
+      "PRODUCTION_STATE": "DETAIL_ONLY"
+    },
+    {
+      "FAMILY": "SOFT_BRAND_INDIVIDUALITY",
+      "DEV_CASES": 4,
+      "HOLDOUT_CASES": 2,
+      "DEV_METRICS": {
+        "TRUE_POSITIVES": 4,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1
+      },
+      "HOLDOUT_PRECISION": 1,
+      "HOLDOUT_RECALL": 1,
+      "HOLDOUT_F1": 1,
+      "HOLDOUT_TRUE_POSITIVES": 2,
+      "HOLDOUT_FALSE_POSITIVES": 0,
+      "HOLDOUT_FALSE_NEGATIVES": 0,
+      "BRAND_ATTRIBUTION_ERRORS": 0,
+      "EXECUTIVE_FALSE_POSITIVES": 0,
+      "COLLISION_RISK": "MEDIUM",
+      "PRODUCTION_STATE": "DETAIL_ONLY"
+    },
+    {
+      "FAMILY": "DISTRIBUTION_LOYALTY",
+      "DEV_CASES": 24,
+      "HOLDOUT_CASES": 9,
+      "DEV_METRICS": {
+        "TRUE_POSITIVES": 17,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1
+      },
+      "HOLDOUT_PRECISION": 1,
+      "HOLDOUT_RECALL": 1,
+      "HOLDOUT_F1": 1,
+      "HOLDOUT_TRUE_POSITIVES": 4,
+      "HOLDOUT_FALSE_POSITIVES": 0,
+      "HOLDOUT_FALSE_NEGATIVES": 0,
+      "BRAND_ATTRIBUTION_ERRORS": 0,
+      "EXECUTIVE_FALSE_POSITIVES": 0,
+      "COLLISION_RISK": "LOW",
+      "PRODUCTION_STATE": "PRODUCTION_ELIGIBLE"
+    }
+  ],
+  "ProductionTaxonomy": {
+    "PRODUCTION_ELIGIBLE": [
+      "CONVERSION_SUITABILITY",
+      "DISTRIBUTION_LOYALTY"
+    ],
+    "DETAIL_ONLY": [
+      "DESIGN_LOCAL_CHARACTER",
+      "OWNER_FLEXIBILITY_CONTROL",
+      "SOFT_BRAND_INDIVIDUALITY"
+    ],
+    "RESEARCH_ONLY": [],
+    "BLOCKED": [
+      "FEES_ECONOMICS",
+      "CHAIN_SCALE_POSITIONING",
+      "DEVELOPMENT_SUPPORT",
+      "OTHER"
+    ]
+  },
+  "FamilyCollision": {
+    "SOFT_BRAND_VS_FLEXIBILITY": {
+      "DISTINCT": "YES",
+      "COMMON_FALSE_POSITIVE_PATTERN": "minimal overlap on positive oracle cases",
+      "RULE_REQUIRED": "maintain separate semantic gates",
+      "overlapCount": 0
+    },
+    "SOFT_BRAND_VS_DESIGN": {
+      "DISTINCT": "YES",
+      "COMMON_FALSE_POSITIVE_PATTERN": "minimal overlap on positive oracle cases",
+      "RULE_REQUIRED": "maintain separate semantic gates",
+      "overlapCount": 0
+    },
+    "DESIGN_VS_POSITIONING": {
+      "DISTINCT": "YES",
+      "COMMON_FALSE_POSITIVE_PATTERN": "minimal overlap on positive oracle cases",
+      "RULE_REQUIRED": "maintain separate semantic gates",
+      "overlapCount": 0
+    },
+    "FLEXIBILITY_VS_POSITIONING": {
+      "DISTINCT": "YES",
+      "COMMON_FALSE_POSITIVE_PATTERN": "minimal overlap on positive oracle cases",
+      "RULE_REQUIRED": "maintain separate semantic gates",
+      "overlapCount": 0
+    }
+  },
+  "SourceLinkValidation": {
+    "TOTAL_CASES": 75,
+    "HOLDOUT_CASES": 21,
+    "PRECISION": 1,
+    "FALSE_POSITIVES": 0,
+    "PRODUCTION_RELATIONSHIPS": [
+      "DIRECTLY_CITED_WITH_NARRATIVE",
+      "RECURRING_CITED_ALONGSIDE_NARRATIVE"
+    ],
+    "DETAIL_ONLY_RELATIONSHIPS": [
+      "CITED_IN_SAME_RESPONSE",
+      "FREQUENTLY_CO_OCCURRING",
+      "ASSOCIATED_NOT_CAUSAL"
+    ]
+  },
+  "DistributionNonRedundancy": {
+    "AUTOGRAPH": {
+      "brandName": "Autograph Collection",
+      "ASSOCIATION_OUTPUT": {
+        "attribute": "DISTRIBUTION",
+        "observationCount": 18,
+        "providers": [
+          "openai",
+          "claude"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      "NARRATIVE_OUTPUT": {
+        "family": "DISTRIBUTION_LOYALTY",
+        "observationCount": 88,
+        "comparableResponses": 53,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_branded_residences_capability_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_newbuild_uu_brand_selection_v1"
+        ],
+        "recurrenceLabel": "Appeared across 53 comparable responses and 4 providers"
+      },
+      "ADDITIONAL_INFORMATION_FROM_NARRATIVE": [
+        "Recurrence across comparable responses",
+        "Multi-provider coverage",
+        "Scenario / prompt coverage beyond single association hit",
+        "Source linkage at response grain"
+      ],
+      "INCREMENTAL_VALUE": "YES"
+    },
+    "DESIGN": {
+      "brandName": "Design Hotels",
+      "ASSOCIATION_OUTPUT": {
+        "attribute": "DISTRIBUTION",
+        "observationCount": 48,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      "NARRATIVE_OUTPUT": {
+        "family": "DISTRIBUTION_LOYALTY",
+        "observationCount": 98,
+        "comparableResponses": 34,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "recurrenceLabel": "Appeared across 34 comparable responses and 3 providers"
+      },
+      "ADDITIONAL_INFORMATION_FROM_NARRATIVE": [
+        "Recurrence across comparable responses",
+        "Multi-provider coverage",
+        "Scenario / prompt coverage beyond single association hit",
+        "Source linkage at response grain"
+      ],
+      "INCREMENTAL_VALUE": "YES"
+    },
+    "NARRATIVE_INCREMENTAL_VALUE_OVER_ASSOCIATIONS": "PASS"
+  },
+  "CompetitorAttribution": {
+    "COMPETITOR_ATTRIBUTION_PRECISION": 1,
+    "COMPETITOR_ATTRIBUTION_ERRORS": 0,
+    "cases": 0
+  },
+  "QualifiedNarratives": {
+    "Autograph Collection": [
+      {
+        "BRAND": "Autograph Collection",
+        "NARRATIVE": "Distribution / loyalty strength",
+        "FAMILY": "DISTRIBUTION_LOYALTY",
+        "RESPONSES": 42,
+        "COMPARABLE_RESPONSES": 42,
+        "PROVIDERS": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_branded_residences_capability_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_independent_uu_conversion_v1"
+        ],
+        "RECURRENCE": "Appeared in 61 observation(s) across 42 comparable response(s)",
+        "STABILITY_CONTEXT": "SHORT_TERM",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Autograph Collection",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 41,
+        "COMPARABLE_RESPONSES": 41,
+        "PROVIDERS": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_branded_residences_capability_v1"
+        ],
+        "RECURRENCE": "Appeared in 51 observation(s) across 41 comparable response(s)",
+        "STABILITY_CONTEXT": "SHORT_TERM",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Autograph Collection",
+        "NARRATIVE": "Distribution / loyalty strength",
+        "FAMILY": "DISTRIBUTION_LOYALTY",
+        "RESPONSES": 17,
+        "COMPARABLE_RESPONSES": 17,
+        "PROVIDERS": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_newbuild_uu_brand_selection_v1"
+        ],
+        "RECURRENCE": "Appeared in 25 observation(s) across 17 comparable response(s)",
+        "STABILITY_CONTEXT": "SHORT_TERM",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Autograph Collection",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 19,
+        "COMPARABLE_RESPONSES": 19,
+        "PROVIDERS": [
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_conversion_suitability_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "RECURRENCE": "Appeared in 25 observation(s) across 19 comparable response(s)",
+        "STABILITY_CONTEXT": "SHORT_TERM",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Autograph Collection",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 4,
+        "COMPARABLE_RESPONSES": 4,
+        "PROVIDERS": [
+          "gemini"
+        ],
+        "SCENARIOS": [
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "RECURRENCE": "Appeared in 4 observation(s) across 4 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "RELEVANT",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Autograph Collection",
+        "NARRATIVE": "Distribution / loyalty strength",
+        "FAMILY": "DISTRIBUTION_LOYALTY",
+        "RESPONSES": 1,
+        "COMPARABLE_RESPONSES": 1,
+        "PROVIDERS": [
+          "gemini"
+        ],
+        "SCENARIOS": [
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "RECURRENCE": "Appeared in 2 observation(s) across 1 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "CONTEXTUAL",
+        "DISPOSITION": "NO_ACTION_EXPECTED_POSITIONING"
+      }
+    ],
+    "AC Hotels by Marriott": [
+      {
+        "BRAND": "AC Hotels by Marriott",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 2,
+        "COMPARABLE_RESPONSES": 2,
+        "PROVIDERS": [
+          "openai",
+          "perplexity"
+        ],
+        "SCENARIOS": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "RECURRENCE": "Appeared in 2 observation(s) across 2 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "RELEVANT",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      }
+    ],
+    "Westin": [
+      {
+        "BRAND": "Westin",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 5,
+        "COMPARABLE_RESPONSES": 5,
+        "PROVIDERS": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1"
+        ],
+        "RECURRENCE": "Appeared in 9 observation(s) across 5 comparable response(s)",
+        "STABILITY_CONTEXT": "SHORT_TERM",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Westin",
+        "NARRATIVE": "Distribution / loyalty strength",
+        "FAMILY": "DISTRIBUTION_LOYALTY",
+        "RESPONSES": 4,
+        "COMPARABLE_RESPONSES": 4,
+        "PROVIDERS": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_branded_residences_capability_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "RECURRENCE": "Appeared in 8 observation(s) across 4 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Westin",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 2,
+        "COMPARABLE_RESPONSES": 2,
+        "PROVIDERS": [
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_conversion_suitability_v1",
+          "scenario_independent_uu_conversion_v1"
+        ],
+        "RECURRENCE": "Appeared in 2 observation(s) across 2 comparable response(s)",
+        "STABILITY_CONTEXT": "SHORT_TERM",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "CONTEXTUAL",
+        "DISPOSITION": "NO_ACTION_EXPECTED_POSITIONING"
+      },
+      {
+        "BRAND": "Westin",
+        "NARRATIVE": "Distribution / loyalty strength",
+        "FAMILY": "DISTRIBUTION_LOYALTY",
+        "RESPONSES": 1,
+        "COMPARABLE_RESPONSES": 1,
+        "PROVIDERS": [
+          "gemini"
+        ],
+        "SCENARIOS": [
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "RECURRENCE": "Appeared in 1 observation(s) across 1 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "CONTEXTUAL",
+        "DISPOSITION": "MONITOR_ONLY"
+      }
+    ],
+    "Design Hotels": [
+      {
+        "BRAND": "Design Hotels",
+        "NARRATIVE": "Distribution / loyalty strength",
+        "FAMILY": "DISTRIBUTION_LOYALTY",
+        "RESPONSES": 32,
+        "COMPARABLE_RESPONSES": 32,
+        "PROVIDERS": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "RECURRENCE": "Appeared in 85 observation(s) across 32 comparable response(s)",
+        "STABILITY_CONTEXT": "SHORT_TERM",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Design Hotels",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 13,
+        "COMPARABLE_RESPONSES": 13,
+        "PROVIDERS": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "RECURRENCE": "Appeared in 22 observation(s) across 13 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Design Hotels",
+        "NARRATIVE": "Distribution / loyalty strength",
+        "FAMILY": "DISTRIBUTION_LOYALTY",
+        "RESPONSES": 8,
+        "COMPARABLE_RESPONSES": 8,
+        "PROVIDERS": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "SCENARIOS": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "RECURRENCE": "Appeared in 13 observation(s) across 8 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "MATERIAL",
+        "DISPOSITION": "REVIEW_REQUIRED"
+      },
+      {
+        "BRAND": "Design Hotels",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 1,
+        "COMPARABLE_RESPONSES": 1,
+        "PROVIDERS": [
+          "openai"
+        ],
+        "SCENARIOS": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "RECURRENCE": "Appeared in 1 observation(s) across 1 comparable response(s)",
+        "STABILITY_CONTEXT": "SHORT_TERM",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "CONTEXTUAL",
+        "DISPOSITION": "MONITOR_ONLY"
+      },
+      {
+        "BRAND": "Design Hotels",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 1,
+        "COMPARABLE_RESPONSES": 1,
+        "PROVIDERS": [
+          "gemini"
+        ],
+        "SCENARIOS": [
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "RECURRENCE": "Appeared in 1 observation(s) across 1 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "CONTEXTUAL",
+        "DISPOSITION": "MONITOR_ONLY"
+      },
+      {
+        "BRAND": "Design Hotels",
+        "NARRATIVE": "Conversion suitability",
+        "FAMILY": "CONVERSION_SUITABILITY",
+        "RESPONSES": 1,
+        "COMPARABLE_RESPONSES": 1,
+        "PROVIDERS": [
+          "gemini"
+        ],
+        "SCENARIOS": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "RECURRENCE": "Appeared in 1 observation(s) across 1 comparable response(s)",
+        "STABILITY_CONTEXT": "SAME_RUN_REPETITION",
+        "SOURCE_CONTEXT": "See SourceRelationships",
+        "MATERIALITY": "CONTEXTUAL",
+        "DISPOSITION": "MONITOR_ONLY"
+      }
+    ]
+  },
+  "CompetitorComparison": [
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "rec02zPClpWUTCyXM",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 7,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 5,
+      "COMPARISON": "COMPETITOR_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "rec02zPClpWUTCyXM",
+      "NARRATIVE": "BRAND_POSITIONING",
+      "COMPARABLE_RESPONSES": 5,
+      "SUBJECT_COVERAGE": 1,
+      "COMPETITOR_COVERAGE": 4,
+      "COMPARISON": "COMPETITOR_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 4,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 2,
+      "COMPARISON": "BOTH_PRESENT",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 4,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 2,
+      "COMPARISON": "BOTH_PRESENT",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "CONVERSION_SUITABILITY",
+      "COMPARABLE_RESPONSES": 4,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 2,
+      "COMPARISON": "BOTH_PRESENT",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 4,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 2,
+      "COMPARISON": "BOTH_PRESENT",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "rec02zPClpWUTCyXM",
+      "NARRATIVE": "CONVERSION_SUITABILITY",
+      "COMPARABLE_RESPONSES": 4,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 2,
+      "COMPARISON": "BOTH_PRESENT",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "CONVERSION_SUITABILITY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 1,
+      "COMPETITOR_COVERAGE": 2,
+      "COMPARISON": "COMPETITOR_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "BRAND_POSITIONING",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 1,
+      "COMPETITOR_COVERAGE": 2,
+      "COMPARISON": "COMPETITOR_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "CONVERSION_SUITABILITY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "CONVERSION_SUITABILITY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "CONVERSION_SUITABILITY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "recCvV0PuZOi8c3hC",
+      "NARRATIVE": "DISTRIBUTION_LOYALTY",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 2,
+      "COMPETITOR_COVERAGE": 1,
+      "COMPARISON": "SUBJECT_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    },
+    {
+      "SUBJECT": "Autograph Collection",
+      "COMPETITOR": "rec02zPClpWUTCyXM",
+      "NARRATIVE": "DESIGN_LOCAL_CHARACTER",
+      "COMPARABLE_RESPONSES": 3,
+      "SUBJECT_COVERAGE": 0,
+      "COMPETITOR_COVERAGE": 3,
+      "COMPARISON": "COMPETITOR_STRONGER",
+      "EXECUTIVE_SAFE": "NO"
+    }
+  ],
+  "ExecutiveCandidates": [
+    {
+      "TYPE": "NARRATIVE_PATTERN",
+      "HEADLINE": "Design Hotels: recurring distribution / loyalty strength",
+      "EVIDENCE": "3 provider(s) · 32 comparable response(s) · SHORT_TERM",
+      "INTERPRETATION": "Appeared in 85 observation(s) across 32 comparable response(s)",
+      "SUGGESTED_REVIEW": "Review whether owned development materials clearly communicate distribution / loyalty strength in owner-decision contexts.",
+      "DISPOSITION": "REVIEW_REQUIRED",
+      "INCREMENTAL_INTELLIGENCE": "YES",
+      "EXECUTIVE_SAFE": "YES"
+    },
+    {
+      "TYPE": "NARRATIVE_PATTERN",
+      "HEADLINE": "Autograph Collection: recurring distribution / loyalty strength",
+      "EVIDENCE": "4 provider(s) · 42 comparable response(s) · SHORT_TERM",
+      "INTERPRETATION": "Appeared in 61 observation(s) across 42 comparable response(s)",
+      "SUGGESTED_REVIEW": "Review whether owned development materials clearly communicate distribution / loyalty strength in owner-decision contexts.",
+      "DISPOSITION": "REVIEW_REQUIRED",
+      "INCREMENTAL_INTELLIGENCE": "YES",
+      "EXECUTIVE_SAFE": "YES"
+    },
+    {
+      "TYPE": "NARRATIVE_PATTERN",
+      "HEADLINE": "Autograph Collection: recurring conversion suitability",
+      "EVIDENCE": "4 provider(s) · 41 comparable response(s) · SHORT_TERM",
+      "INTERPRETATION": "Appeared in 51 observation(s) across 41 comparable response(s)",
+      "SUGGESTED_REVIEW": "Review whether owned development materials clearly communicate conversion suitability in owner-decision contexts.",
+      "DISPOSITION": "REVIEW_REQUIRED",
+      "INCREMENTAL_INTELLIGENCE": "YES",
+      "EXECUTIVE_SAFE": "YES"
+    },
+    {
+      "TYPE": "NARRATIVE_PATTERN",
+      "HEADLINE": "Autograph Collection: recurring distribution / loyalty strength",
+      "EVIDENCE": "4 provider(s) · 17 comparable response(s) · SHORT_TERM",
+      "INTERPRETATION": "Appeared in 25 observation(s) across 17 comparable response(s)",
+      "SUGGESTED_REVIEW": "Review whether owned development materials clearly communicate distribution / loyalty strength in owner-decision contexts.",
+      "DISPOSITION": "REVIEW_REQUIRED",
+      "INCREMENTAL_INTELLIGENCE": "YES",
+      "EXECUTIVE_SAFE": "YES"
+    },
+    {
+      "TYPE": "NARRATIVE_PATTERN",
+      "HEADLINE": "Autograph Collection: recurring conversion suitability",
+      "EVIDENCE": "3 provider(s) · 19 comparable response(s) · SHORT_TERM",
+      "INTERPRETATION": "Appeared in 25 observation(s) across 19 comparable response(s)",
+      "SUGGESTED_REVIEW": "Review whether owned development materials clearly communicate conversion suitability in owner-decision contexts.",
+      "DISPOSITION": "REVIEW_REQUIRED",
+      "INCREMENTAL_INTELLIGENCE": "YES",
+      "EXECUTIVE_SAFE": "YES"
+    }
+  ],
+  "ComparisonRule": {
+    "MIN_COMPARABLE_RESPONSES": 3,
+    "MIN_COVERAGE_DELTA": 2,
+    "note": "SUBJECT_STRONGER / COMPETITOR_STRONGER require >=3 comparable responses and material coverage difference; 1 vs 0 is INSUFFICIENT."
+  },
+  "APIShipProposal": {
+    "CHANGED_ENDPOINTS": [
+      "GET executive-summary → optional narrativePattern / sourcePattern slots (gated by productionState + incrementalIntelligence)",
+      "GET overview → narrativeSummary: { families[], recurrence, providers[], stabilityContext }",
+      "GET sources → narrativeLinks[]: { domain, relationship, narrativeFamily, responses }",
+      "GET evidence/:id → narrativeSpans[] when productionState >= DETAIL_ONLY"
+    ],
+    "NEW_ENDPOINTS": [],
+    "BACKWARD_COMPATIBLE": "YES",
+    "DEPLOY": 0
+  },
+  "Regression": {
+    "PRESENCE_DIFF": 0,
+    "QM_DIFF": 0,
+    "ALL_PROVIDERS_DIFF": 0,
+    "CITATION_DIFF": 0,
+    "P0C_RAW_GAP_DIFF": 0,
+    "TRUTH_DIFF": 0,
+    "COMMERCIAL_INTERPRETATION_DIFF": 0,
+    "OBSERVED_DEMAND_PROVENANCE_DIFF": 0,
+    "STABILITY_AGGREGATION_DIFF": 0,
+    "DISTRIBUTION_ASSOCIATION_DIFF": 0
+  },
+  "guards": {
+    "PROVIDER_CALLS": 0,
+    "AI_SPEND": 0,
+    "DATAFORSEO_CALLS": 0,
+    "CENSUS_READS": 0,
+    "AIRTABLE_WRITES": 0,
+    "DEPLOY": 0,
+    "SCHEDULER_ENABLE": 0,
+    "ARCHIVED_STAGE_B_WAVE_USED": 0
+  },
+  "METHODOLOGY_COPY": "Narrative Intelligence identifies recurring positioning themes in AI responses across hotel-owner decision prompts. Source Intelligence shows which owned and external sources are cited alongside those themes. Recurrence and citation indicate observed association, not causation."
+}

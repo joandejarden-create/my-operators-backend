@@ -13,12 +13,16 @@ import {
   diffBrandPeerSetVersions,
   PEER_SET_ID_V1,
   PEER_SET_ID_V2,
+  PEER_SET_ID_V4,
 } from "../lib/ai-visibility/peer-sets.js";
 import {
   loadShowcaseCompaniesConfig,
   getShowcaseCompany,
   assertShowcasePortfolioParentPurity,
+  listShowcaseMonitoringBrandIds,
+  SHOWCASE_MONITORING_BRAND_COUNT,
 } from "../lib/ai-visibility/brand-ai-showcase-companies.js";
+import { entityInMonitoredUniverse } from "../lib/ai-visibility/brand-read-service.js";
 import {
   loadDecisionEligibilityConfig,
   getBrandDecisionEligibility,
@@ -88,10 +92,16 @@ test("Hilton portfolio — Hilton brands only", () => {
   assert.equal(assertShowcasePortfolioParentPurity("hilton", liveById).ok, true);
 });
 
-test("Choice portfolio — Choice brands only (includes RED)", () => {
+test("Choice portfolio — Choice brands only (includes RED + Radisson)", () => {
   const c = getShowcaseCompany("choice");
-  assert.equal(c.brandIds.length, 4);
+  assert.equal(c.brandIds.length, 5);
   assert.ok(c.brandIds.includes("recmKqo7M7mLZgRqQ"));
+  assert.ok(c.brandIds.includes("recywbx1YQSTCPqW1"));
+  liveById.recywbx1YQSTCPqW1 = {
+    id: "recywbx1YQSTCPqW1",
+    name: "Radisson by Choice",
+    parentCompany: "Choice Hotels",
+  };
   assert.equal(assertShowcasePortfolioParentPurity("choice", liveById).ok, true);
 });
 
@@ -121,6 +131,37 @@ test("peer v2 — 15 canonical Active/Live IDs; no duplicates; v1 preserved", ()
     )
   );
   assert.equal(batch.peerSetId, PEER_SET_ID_V1);
+});
+
+test("showcase monitoring universe — 19 portfolio brands including Voco / RED / Radisson", () => {
+  const cfg = loadShowcaseCompaniesConfig();
+  assert.equal(cfg.monitoringPeerSetId, PEER_SET_ID_V4);
+  assert.equal(SHOWCASE_MONITORING_BRAND_COUNT, 19);
+  const monitoringIds = listShowcaseMonitoringBrandIds(cfg);
+  assert.equal(monitoringIds.length, 19);
+  assert.equal(new Set(monitoringIds).size, 19);
+  for (const id of [
+    "recwONQTqGU1jHCsM",
+    "recvvmiyReHhiKdoK",
+    "recDwzv86TWnz2gGB",
+    "recmKqo7M7mLZgRqQ",
+    "recywbx1YQSTCPqW1",
+  ]) {
+    assert.ok(monitoringIds.includes(id), id);
+  }
+  const peerCfg = loadPeerSetConfig();
+  const v4 = resolvePeerSetMembership({ peerSetId: PEER_SET_ID_V4 }, peerCfg);
+  assert.equal(v4.entityIds.length, 19);
+  assert.ok(!v4.entityIds.includes("recrWCD1LMqu864oU")); // MGallery not in showcase monitoring
+  const fakeSummary = { batchId: "test_batch", cohort: { promptCount: 12 } };
+  assert.equal(
+    entityInMonitoredUniverse(fakeSummary, "recwONQTqGU1jHCsM", [], monitoringIds),
+    true
+  );
+  assert.equal(
+    entityInMonitoredUniverse(fakeSummary, "recHIGHGATE", [], monitoringIds),
+    false
+  );
 });
 
 test("decision eligibility deterministic; UNKNOWN preserved; no LLM", () => {

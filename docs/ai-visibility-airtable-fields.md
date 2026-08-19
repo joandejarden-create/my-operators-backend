@@ -57,30 +57,22 @@ Global uses `Geography Scope = Global` only (never an average of regions).
 
 ### Proposed provenance fields (not applied)
 
-File-store overlay is the live provenance source (`fixtures/ai-visibility/prompt-provenance-v1.json`). Do **not** run `ensure:ai-visibility-schema` for these until a separate apply task. Large demand evidence stays out of Airtable.
+V1 activation **did not write** Airtable schema or prompt rows (`FIELDS_ADDED = 0`, `ROWS_CHANGED = 0`). File-store overlay is the live provenance source (`fixtures/ai-visibility/prompt-provenance-v1.json`). `ensure:ai-visibility-schema` skips these (`schemaApply: false`). Large/raw demand evidence stays out of Airtable.
+
+**Operational (proposed, not applied)** — short SSOT for origin, parent linkage, and compact provenance. Scenario linkage remains Prompt Family + `fixtures/ai-visibility/scenario-registry-v1.json` (no new Scenario ID field this phase).
 
 | Field | Type | Notes |
 |-------|------|--------|
 | Prompt Origin | singleSelect | OBSERVED, DERIVED, SCENARIO, LEGACY_UNCLASSIFIED |
 | Origin Source Type | singleSelect | Observed source class — not AI citation source |
-| Origin Source Name | singleLineText | |
-| Origin Source Reference | singleLineText | Short ref only |
-| Observed Query | singleLineText | |
-| Observed Theme | singleLineText | |
+| Observed Theme | singleLineText | Normalized observed theme |
 | Demand Tier | singleSelect | HIGH, MEDIUM, LOW, UNKNOWN — no invented volume |
-| Demand Signal Type | singleLineText | |
-| Demand Geography | singleLineText | |
+| Demand Geography | singleLineText | Source country/language; not Brand AI filter geography |
 | Date Observed | date | |
-| Demand Evidence Count | number | |
-| Demand Methodology | multilineText | Required before HIGH/MEDIUM/LOW |
-| Derived From Observed Prompt ID | singleLineText | |
-| Derived From Demand Signal ID | singleLineText | |
-| Owner Intent Subtheme | singleLineText | Intent Territory remains the family |
+| Derived From Observed Prompt ID | singleLineText | Observed parent for DERIVED |
 | Provenance Status | singleSelect | VALIDATED, CANDIDATE, NEEDS_EVIDENCE, LEGACY |
-| Provenance Notes | multilineText | |
-| Created By Method | singleSelect | |
-| Last Provenance Review At | dateTime | |
-| Sampling Priority | singleSelect | Future repeated-testing hook; scheduler off |
+
+**Deferred (file store only)** — do not add blindly: Origin Source Name, Origin Source Reference, Observed Query, Demand Signal Type, Demand Evidence Count, Demand Methodology, Derived From Demand Signal ID, Owner Intent Subtheme, Provenance Notes, Created By Method, Last Provenance Review At, Sampling Priority.
 
 See [ai-visibility/prompt-provenance-observed-demand.md](./ai-visibility/prompt-provenance-observed-demand.md).
 

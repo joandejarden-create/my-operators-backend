@@ -84,6 +84,12 @@ async function ensureFieldsOnTable(entry, table, fieldSpecs, ctx, linkIds = {}) 
       console.error("CONFLICT", table.name, spec.name, classification.reason);
       continue;
     }
+    if (spec.schemaApply === false) {
+      entry.fieldsSkipped.push(`${spec.name} (schemaApply=false)`);
+      console.log("SKIP", table.name, spec.name, "schemaApply=false");
+      continue;
+    }
+
     if (classification.action === "skip") {
       entry.fieldsSkipped.push(spec.name);
       console.log("SKIP", table.name, spec.name);

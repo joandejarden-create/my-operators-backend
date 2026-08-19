@@ -4,7 +4,7 @@
  *
  * Product naming (locked):
  * - Brand-Side → Brand AI Intelligence
- * - Operator-Side → Operator AI Visibility (future — not shown as Brand product)
+ * - Operator-Side → Operator AI Intelligence
  * - Owner-Side → AI Recommendation Intelligence (future — not shown as Brand product)
  * - Admin / All Workspaces → governed access per existing admin conventions
  */
@@ -17,12 +17,10 @@
       label: "Brand AI Intelligence",
       allowedNavRoles: ["brand", "admin"],
     },
-    // Future — reserved so callers do not invent Brand product on other sides.
-    operator_ai_visibility: {
-      route: null,
-      label: "Operator AI Visibility",
+    operator_ai_intelligence: {
+      route: "/operator/ai-intelligence",
+      label: "Operator AI Intelligence",
       allowedNavRoles: ["operator", "admin"],
-      future: true,
     },
     ai_recommendation_intelligence: {
       route: null,

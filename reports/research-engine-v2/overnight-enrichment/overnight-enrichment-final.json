@@ -2,18 +2,29 @@
   "ok": true,
   "OVERNIGHT_ENRICHMENT_STATUS": "overnight_enrichment_complete",
   "version": "overnight-census-enrichment-v1",
-  "RUN_ID": "overnight_dfd54698",
-  "RUN_DURATION_MINUTES": 62,
-  "STOP_REASON": "all_structured_lanes_plateaued",
+  "RUN_ID": "overnight_942a56b6",
+  "RUN_DURATION_MINUTES": 68,
+  "MODE_A_TIME_MINUTES": 37.1,
+  "MODE_B_TIME_MINUTES": 29.7,
+  "ADAPTIVE_ENRICHMENT_STATUS": "adaptive_modes_exhausted",
+  "STOP_REASON": "all_available_research_modes_exhausted",
   "CENSUS_COUNT": 15575,
   "CURRENT_BRAND_BEFORE": 14,
   "CURRENT_BRAND_AFTER": 14,
-  "CURRENT_BRAND_WRITES": 12,
+  "CURRENT_BRAND_WRITES": 0,
+  "VALIDATED_INDEPENDENT_COUNT": 0,
+  "BRAND_UNRESOLVED_COUNT": 13436,
+  "BRAND_MAPPING_GAPS_BEFORE": null,
+  "BRAND_MAPPING_GAPS_AFTER": 2052,
+  "BRAND_MAPPING_REPAIRS": 276,
   "BRAND_FAMILY_AFTER": 14,
   "FAMILY_SOURCE_FAMILY_AFTER": 16,
   "ROOMS_BEFORE": 17,
   "ROOMS_AFTER": 17,
   "ROOMS_WRITES": 0,
+  "ROOM_CANDIDATES_CORROBORATED": 0,
+  "ROOMS_HIGH_FROM_FIRST_PARTY": 0,
+  "ROOMS_HIGH_FROM_TWO_SOURCE_CORROBORATION": 0,
   "STATE_REGION_BEFORE": 89,
   "STATE_REGION_AFTER": 89,
   "STATE_REGION_PATCHES": 0,
@@ -23,12 +34,38 @@
   "ADDRESS_BEFORE": 85,
   "ADDRESS_AFTER": 85,
   "ADDRESS_PATCHES": 0,
-  "POSTAL_CODE_BEFORE": 38,
-  "POSTAL_CODE_AFTER": 38,
+  "POSTAL_CODE_BEFORE": 39,
+  "POSTAL_CODE_AFTER": 39,
   "POSTAL_CODE_PATCHES": 0,
   "LATITUDE_LONGITUDE_BEFORE": 67,
   "LATITUDE_LONGITUDE_AFTER": 67,
   "COORDINATES_WRITTEN": 0,
+  "NEWLY_ELIGIBLE_COORDINATES": 3430,
+  "LIVE_OFFICIAL_DOMAINS_DISCOVERED": 0,
+  "LIVE_OFFICIAL_DOMAINS_CRAWLED": 4,
+  "NEW_SOURCE_REGISTRY_ENTRIES": 3,
+  "TOP_20_SOURCE_YIELDS": [
+    {
+      "company": "Hilton",
+      "current_brand_writes": 0,
+      "attempted": 0,
+      "yield_pct": 0
+    },
+    {
+      "company": "Marriott",
+      "current_brand_writes": 0,
+      "attempted": 0,
+      "yield_pct": 0
+    },
+    {
+      "company": "Choice",
+      "current_brand_writes": 0,
+      "attempted": 0,
+      "yield_pct": 0
+    }
+  ],
+  "RESIDUAL_PROPERTIES_RESEARCHED": 72,
+  "RESIDUAL_PROPERTIES_WITH_2_PLUS_FIELDS_FILLED": 2,
   "WEBSITE_BEFORE": 75,
   "WEBSITE_AFTER": 75,
   "WEBSITE_PATCHES": 0,
@@ -36,17 +73,17 @@
   "PHONE_AFTER": 90,
   "PHONE_PATCHES": 0,
   "TOTAL_PROPERTIES_RESEARCHED": 0,
-  "TOTAL_PROPERTIES_PATCHED": 12,
-  "TOTAL_FIELDS_WRITTEN": 34,
+  "TOTAL_PROPERTIES_PATCHED": 281,
+  "TOTAL_FIELDS_WRITTEN": 572,
   "TOP_10_HIGHEST_YIELD_SOURCES": [
     {
-      "company": "Marriott",
-      "current_brand_writes": 3,
-      "attempted": 9,
-      "yield_pct": 0.7
+      "company": "Hilton",
+      "current_brand_writes": 0,
+      "attempted": 0,
+      "yield_pct": 0
     },
     {
-      "company": "Hilton",
+      "company": "Marriott",
       "current_brand_writes": 0,
       "attempted": 0,
       "yield_pct": 0
@@ -60,54 +97,28 @@
   ],
   "TOP_10_LOWEST_YIELD_OR_BLOCKED_SOURCES": [
     {
-      "source": "brand_focus",
-      "status": "PLATEAUED"
-    },
-    {
-      "source": "brand_rooms",
-      "status": "PLATEAUED"
-    },
-    {
-      "source": "rooms_focus",
-      "status": "PLATEAUED"
-    },
-    {
-      "source": "fundamentals",
-      "status": "PLATEAUED"
-    },
-    {
-      "source": "opportunistic_coords",
+      "source": "phase_1_structured",
       "status": "PLATEAUED"
     }
   ],
-  "SOURCES_EXHAUSTED": [],
+  "SOURCES_EXHAUSTED": [
+    "phase_1b_apify_first_party",
+    "phase_2_live_directories",
+    "phase_3_rooms_corroboration",
+    "phase_4_pdf_factsheet",
+    "phase_6_newly_eligible_coords",
+    "phase_5_residual"
+  ],
   "SOURCES_PLATEAUED": [
-    "brand_focus",
-    "brand_rooms",
-    "rooms_focus",
-    "fundamentals",
-    "opportunistic_coords"
+    "phase_1_structured"
   ],
   "SOURCES_BLOCKED": [],
   "SOURCES_USAGE_REVIEW": [],
   "TOTAL_EXTERNAL_REQUESTS": 0,
-  "TOTAL_ESTIMATED_COST": 0,
+  "TOTAL_ESTIMATED_COST": 0.834,
   "MAPBOX_CUMULATIVE_REQUESTS": 0,
   "MAPBOX_CUMULATIVE_ESTIMATED_COST": 0,
-  "UNRESOLVED_BY_FIELD": {
-    "current_brand": 13443,
-    "brand_family": 13418,
-    "family_source_family": 13025,
-    "state_region": 1664,
-    "city": 290,
-    "address": 2277,
-    "postal_code": 9629,
-    "latitude": 5158,
-    "longitude": 5158,
-    "rooms": 12928,
-    "website": 3902,
-    "phone": 1500
-  },
+  "UNRESOLVED_BY_FIELD": {},
   "CONFLICTS_BY_FIELD": {
     "brand": 0,
     "rooms": 0
@@ -119,11 +130,11 @@
   "DESTRUCTIVE_OVERWRITES": 0,
   "WRONG_TABLE_WRITES": 0,
   "ERRORS": 0,
-  "CYCLES_COMPLETED": 12,
+  "CYCLES_COMPLETED": 20,
   "FOUNDER_DECISION_REQUIRED": "NO",
   "FOUNDER_DECISION": null,
   "NEXT_BEST_AUTONOMOUS_ACTION": "Resume overnight or master: npm run census:overnight-enrichment -- --mode resume --enable-production-writes",
   "CHECKPOINT_PATH": "C:\\Dev\\deal-capture-proxy\\data\\research-engine-v2\\overnight-census-enrichment\\state.json",
   "STATUS_PATH": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\overnight-enrichment\\current-status.json",
-  "generated_at": "2026-08-17T00:07:51.306Z"
+  "generated_at": "2026-08-17T22:43:46.236Z"
 }

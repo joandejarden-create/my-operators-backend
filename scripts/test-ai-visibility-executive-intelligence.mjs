@@ -90,7 +90,80 @@ async function main() {
     const largest = types.filter((t) => t === FINDING_TYPES.LARGEST_COMPETITIVE_GAP).length;
     const review = types.filter((t) => t === FINDING_TYPES.HIGHEST_PRIORITY_REVIEW).length;
     assert.ok(largest >= 1);
+    assert.equal(largest, 1, "exactly one competitive gap theme");
     assert.equal(review, 0, "review merged into largest gap tile");
+  });
+
+  await test("executive summary does not repeat competitive gap theme", async () => {
+    const store = createBrandAiVisibilityReadStore({});
+    const brandNamesById = peerSetBrandNamesById(PEER_SET_ID_V2);
+    const result = await buildExecutiveFindings({
+      store,
+      brandIds: MARRIOTT,
+      brandNamesById,
+      geographyKey: "CALA",
+      language: "en",
+      scope: "portfolio",
+      preloadedGaps: [
+        mockGap({
+          gapId: "gap_ac_conversion",
+          subjectBrandId: AC,
+          scenarioId: "scenario_newbuild_uu_brand_selection_v1",
+        }),
+        mockGap({
+          gapId: "gap_design_affiliation",
+          subjectBrandId: AUTOGRAPH,
+          scenarioId: "scenario_soft_brand_collection_affiliation_v1",
+          observationCount: 8,
+        }),
+      ],
+      preloadedEvidence: [],
+    });
+    const types = result.findings.map((f) => f.findingType);
+    const titles = result.findings.map((f) => String(f.title || "").toLowerCase());
+    assert.equal(
+      types.filter((t) => t === FINDING_TYPES.LARGEST_COMPETITIVE_GAP).length,
+      1
+    );
+    assert.equal(new Set(types).size, types.length, "unique finding types");
+    assert.equal(new Set(titles).size, titles.length, "unique category titles");
+    assert.equal(result.themeDiversity?.UNIQUE_FINDING_TYPES, true);
+    assert.equal(result.themeDiversity?.UNIQUE_CATEGORY_TITLES, true);
+    assert.equal(result.themeDiversity?.GAP_TILE_COUNT, 1);
+  });
+
+  await test("competitive strength fills a distinct executive theme", async () => {
+    const store = createBrandAiVisibilityReadStore({});
+    const brandNamesById = peerSetBrandNamesById(PEER_SET_ID_V2);
+    const result = await buildExecutiveFindings({
+      store,
+      brandIds: MARRIOTT,
+      brandNamesById,
+      geographyKey: "CALA",
+      language: "en",
+      scope: "portfolio",
+      preloadedGaps: [mockGap()],
+      preloadedEvidence: [],
+      topByPresence: {
+        brandId: AUTOGRAPH,
+        brandName: "Autograph Collection",
+        presence: 0.42,
+        display: "42.0%",
+        geography: "CALA",
+      },
+    });
+    const strength = result.findings.find(
+      (f) => f.findingType === FINDING_TYPES.LARGEST_COMPETITIVE_STRENGTH
+    );
+    const gap = result.findings.find(
+      (f) => f.findingType === FINDING_TYPES.LARGEST_COMPETITIVE_GAP
+    );
+    assert.ok(strength, "strength tile present when presence leader differs from gap subject");
+    assert.ok(gap);
+    assert.notEqual(strength.brandId, gap.brandId);
+    assert.equal(strength.title, "Largest Competitive Strength");
+    assert.ok(/\b42\.0%/.test(strength.governedBody || ""));
+    assert.ok(!/\bcited\b/i.test(strength.governedBody || ""));
   });
 
   await test("HIGH_PRIORITY gap produces executive finding", async () => {

@@ -156,10 +156,16 @@ async function main() {
   await test("LANGUAGE_FILTER_CHANGES_QUESTION_ROWS", async () => {
     const qEn = await getBrandQuestionsPayload({ ...common, language: "en", filter: "all" });
     const qEs = await getBrandQuestionsPayload({ ...common, language: "es", filter: "all" });
-    const firstEn = (qEn.questions || []).filter((r) => r.brandStatus === "First Recommended").length;
-    const firstEs = (qEs.questions || []).filter((r) => r.brandStatus === "First Recommended").length;
-    assert.equal(firstEn, 8);
-    assert.equal(firstEs, 6);
+    const presentEn = (qEn.questions || []).filter((r) => r.brandStatus === "Present").length;
+    const presentEs = (qEs.questions || []).filter((r) => r.brandStatus === "Present").length;
+    assert.ok(presentEn > 0);
+    assert.ok(presentEs > 0);
+    assert.notEqual(presentEn, presentEs);
+    for (const row of qEn.questions || []) {
+      assert.equal(row.question, undefined);
+      assert.equal(row.promptText, undefined);
+      assert.ok(row.ownerIntent || row.intentLabel);
+    }
     const shared = [...new Set((qEn.questions || []).map((q) => q.evidenceId))].filter((id) =>
       (qEs.questions || []).some((q) => q.evidenceId === id)
     );
@@ -174,10 +180,10 @@ async function main() {
     assert.ok(rowsEn.length > 0, "expected EN AI vs Dealality rows");
     assert.ok(rowsEs.length > 0, "expected ES AI vs Dealality rows");
     for (const r of rowsEn) {
-      assert.ok(
-        !/[¿¡]/.test(String(r.question || "")),
-        `English filter must not surface Spanish prompt text: ${r.question}`
-      );
+      assert.equal(r.question, undefined);
+      assert.equal(r.promptText, undefined);
+      assert.ok(r.ownerIntent);
+      assert.ok(r.decisionContext);
     }
     const shared = [...new Set(rowsEn.map((r) => r.evidenceId).filter(Boolean))].filter((id) =>
       rowsEs.some((r) => r.evidenceId === id)

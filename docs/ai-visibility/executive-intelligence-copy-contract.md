@@ -7,6 +7,7 @@ Binding contract for `Brand AI Intelligence` Executive Summary and Detailed View
 Applies to finding types:
 
 - `LARGEST_COMPETITIVE_GAP`
+- `LARGEST_COMPETITIVE_STRENGTH`
 - `POTENTIAL_AI_PERCEPTION_GAP`
 - `STRONGEST_VALIDATED_ASSOCIATION`
 - `PROVIDER_DISAGREEMENT`
@@ -100,6 +101,8 @@ If Association and Narrative overlap on the same theme:
 
 - prefer Narrative only when it adds incremental validated value (provider breadth, response recurrence, scenario breadth, source linkage, or competitor context).
 - otherwise use Association.
+
+**Executive Summary theme diversity (binding):** the selected 3–5 tiles must not repeat a finding type or category title. Cap `LARGEST_COMPETITIVE_GAP` at one tile. Fill remaining slots from other types (competitive strength, perception, association, provider comparison, narrative, source, movement) when evidence exists.
 
 ## Copy validation checks
 

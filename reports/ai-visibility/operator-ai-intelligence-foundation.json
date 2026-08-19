@@ -1,0 +1,572 @@
+{
+  "snapshot": {
+    "product": {
+      "title": "Operator AI Intelligence",
+      "subtitle": "Understand how AI represents hotel management companies when owners evaluate who should operate a hotel.",
+      "primaryDecisionQuestion": "Who should operate the hotel?",
+      "route": "/operator/ai-intelligence",
+      "apiNamespace": "/api/ai-visibility/operator",
+      "userType": "operator",
+      "marketIntelligenceNav": "Operator AI Intelligence",
+      "ownerVisibleByDefault": false,
+      "brandVisible": false,
+      "schedulerEnable": 0,
+      "ownerAiBuild": 0,
+      "brandUiWork": 0,
+      "recommendationMetrics": 0,
+      "censusReads": 0,
+      "dataforseoCalls": 0,
+      "storageNamespace": "data/ai-visibility/runtime/operator/",
+      "longitudinalReady": "PARTIAL"
+    },
+    "universe": [
+      {
+        "founderName": "Marriott International",
+        "canonicalName": "Marriott International (Managed)",
+        "canonicalId": "recGmiPhRt6hiayd9",
+        "monitoredScope": "GLOBAL",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "PARTIAL",
+        "operatorLens": "BRAND_MANAGED_OPERATING_CAPABILITY"
+      },
+      {
+        "founderName": "IHG",
+        "canonicalName": "IHG Hotels & Resorts (Managed)",
+        "canonicalId": "rec7IXYQYpKMYsrDl",
+        "monitoredScope": "GLOBAL",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "PARTIAL",
+        "operatorLens": "BRAND_MANAGED_OPERATING_CAPABILITY"
+      },
+      {
+        "founderName": "Hilton",
+        "canonicalName": "Hilton (Managed)",
+        "canonicalId": "rec3Uwxe6ovpiokuN",
+        "monitoredScope": "GLOBAL",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "PARTIAL",
+        "operatorLens": "BRAND_MANAGED_OPERATING_CAPABILITY"
+      },
+      {
+        "founderName": "Aimbridge LATAM",
+        "canonicalName": "Aimbridge Hospitality (LATAM)",
+        "canonicalId": "recGWxIJqnYHkJZFD",
+        "monitoredScope": "LATAM",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "PARTIAL",
+        "operatorLens": "THIRD_PARTY_MANAGER"
+      },
+      {
+        "founderName": "Hotel Equities CALA",
+        "canonicalName": "Hotel Equities (CALA)",
+        "canonicalId": "recWPKu5laVZxsvpn",
+        "monitoredScope": "CALA",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "HIGH",
+        "operatorLens": "THIRD_PARTY_MANAGER"
+      },
+      {
+        "founderName": "Arbor Lodging",
+        "canonicalName": "Arbor Lodging (CALA)",
+        "canonicalId": "recF5Z87OAqFgndoq",
+        "monitoredScope": "CALA",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "HIGH",
+        "operatorLens": "THIRD_PARTY_MANAGER"
+      },
+      {
+        "founderName": "GHL",
+        "canonicalName": "GHL Hoteles (GHL Holding)",
+        "canonicalId": "reciI2tYQBfMoMK9G",
+        "monitoredScope": "CALA",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "PARTIAL",
+        "operatorLens": "LATAM_HOTEL_PLATFORM"
+      },
+      {
+        "founderName": "Brittain Resorts",
+        "canonicalName": "Brittain Resorts & Hotels (BRH)",
+        "canonicalId": "receHCdI6CEsJqdG4",
+        "monitoredScope": "US_SOUTHEAST",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "LOW",
+        "operatorLens": "THIRD_PARTY_MANAGER"
+      },
+      {
+        "founderName": "Remington CALA",
+        "canonicalName": "Remington Hospitality (CALA)",
+        "canonicalId": "rec6UB6RpMKSs2tAo",
+        "monitoredScope": "CALA",
+        "identityStatus": "HIGH",
+        "measurementEligible": "YES",
+        "truthCoverage": "PARTIAL",
+        "operatorLens": "THIRD_PARTY_MANAGER"
+      }
+    ],
+    "primaryOperatorCount": 9,
+    "ambiguityList": [
+      {
+        "surface": "Marriott",
+        "risk": "Brand company vs managed-operator vs Autograph/Tribute brand family",
+        "rule": "Require operating-context or longer alias (Marriott International, Managed by Marriott, MxM)"
+      },
+      {
+        "surface": "Hilton",
+        "risk": "Parent company vs hotel brand vs operator",
+        "rule": "Require operating-context or Hilton (Managed) / Hilton Management Services"
+      },
+      {
+        "surface": "IHG",
+        "risk": "Brand company vs operator",
+        "rule": "Require operating-context or IHG Hotels & Resorts"
+      },
+      {
+        "surface": "Aimbridge",
+        "risk": "Global Aimbridge Hospitality vs LATAM monitored scope",
+        "rule": "Resolve to canonical Aimbridge Hospitality (LATAM); keep MONITORED_SCOPE=LATAM"
+      },
+      {
+        "surface": "Hotel Equities / HE",
+        "risk": "Bare HE is blocked; CALA vs enterprise",
+        "rule": "Hotel Equities (+ optional CALA). Never alias HE"
+      },
+      {
+        "surface": "Arbor",
+        "risk": "Ordinary-language tree/canopy collision",
+        "rule": "Arbor Lodging only"
+      },
+      {
+        "surface": "GHL",
+        "risk": "GHL vs GHL Hoteles vs GHL Holding",
+        "rule": "Longest match to GHL Hoteles (GHL Holding)"
+      },
+      {
+        "surface": "Brittain / BRH",
+        "risk": "Brittain Resorts vs Brittain Resorts & Hotels",
+        "rule": "Resolve to Brittain Resorts & Hotels (BRH); BRH needs operating context"
+      },
+      {
+        "surface": "Remington",
+        "risk": "Remington Hospitality vs unrelated Remington brands (firearms, appliances, etc.)",
+        "rule": "Require Remington Hospitality or longer alias; bare Remington is not aliased"
+      },
+      {
+        "surface": "Remington Hospitality",
+        "risk": "Enterprise U.S. scale vs CALA monitored scope",
+        "rule": "Resolve to Remington Hospitality (CALA); keep MONITORED_SCOPE=CALA"
+      }
+    ],
+    "reuse": {
+      "REUSE_AS_IS": [
+        "provider adapters (OpenAI/Gemini/Perplexity/Claude)",
+        "response storage abstraction + gitignored runtime root",
+        "citation extraction (provider-supplied only)",
+        "source domain parse / owned vs external mix contract",
+        "prompt provenance fields (origin SCENARIO)",
+        "stability N1/N2/N>=3 language (no numeric confidence)",
+        "measurement-period / idempotency / cost ledger patterns",
+        "current-vs-prior + common-cohort comparison design",
+        "All Providers derived aggregation contract",
+        "HISTORIC_PROVIDER_COST rate card",
+        "Memberstack + workspace gates",
+        "gitleaks CI secret scan",
+        "normalizeMatchKey (operator span finder is operator-specific; Brand findEntitySpans is not used)"
+      ],
+      "REUSE_WITH_ADAPTER": [
+        "Presence classifier → OPERATOR_SIGNAL_PRESENCE (operator-only index + operating-context)",
+        "Questions Missing denominator (operator absent across comparable providers)",
+        "competitive gap → owner-decision gap + operator eligibility",
+        "entity resolver aliases (separate overlay; do not mutate Brand overlay)",
+        "longitudinal grain later as OPERATOR_LONGITUDINAL_COHORT_V1",
+        "authorization already has OPERATOR subject type"
+      ],
+      "OPERATOR_SPECIFIC": [
+        "9-operator universe + CANONICAL + MONITORED_SCOPE",
+        "operator decision scenario registry",
+        "operator prompt library",
+        "operator commercial eligibility",
+        "operator truth dimensions",
+        "operator association research taxonomy",
+        "operator page / API namespace / entitlements"
+      ],
+      "DO_NOT_REUSE": [
+        "Brand recommendation-signal metrics (blocked for Operator V1)",
+        "Brand peer set v2/v3",
+        "Brand Executive finding selection (frozen except genuine defects)",
+        "Brand UI / Executive cards",
+        "Hotel Property Census",
+        "DataForSEO observed demand",
+        "Owner / Hotel & Market AI",
+        "per-operator × provider execution matrix"
+      ]
+    },
+    "scenarios": [
+      {
+        "scenarioId": "op_scenario_full_service_uu_operator_selection_v1",
+        "name": "Full-service upper-upscale operator selection",
+        "ownerDecision": "Who should operate an upper-upscale full-service hotel?",
+        "regionalScope": "GLOBAL_WITH_CALA_VARIANT",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_luxury_operator_selection_v1",
+        "name": "Luxury hotel operator selection",
+        "ownerDecision": "Who is commonly considered to operate a luxury hotel?",
+        "regionalScope": "GLOBAL_WITH_CALA_VARIANT",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_lifestyle_boutique_operator_selection_v1",
+        "name": "Lifestyle / boutique operator selection",
+        "ownerDecision": "Which operators are considered for independent lifestyle or boutique hotels?",
+        "regionalScope": "GLOBAL_WITH_CALA_VARIANT",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_owner_control_flexibility_v1",
+        "name": "Owner control / flexibility",
+        "ownerDecision": "Which hotel management companies are suitable for owners wanting greater strategic or operational control?",
+        "regionalScope": "GLOBAL",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_third_party_management_v1",
+        "name": "Third-party management",
+        "ownerDecision": "Which third-party hotel operators are commonly considered by owners?",
+        "regionalScope": "GLOBAL_WITH_CALA_VARIANT",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_brand_agnostic_operation_v1",
+        "name": "Brand-agnostic operation",
+        "ownerDecision": "Which operators can manage hotels across multiple brand systems?",
+        "regionalScope": "GLOBAL",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_independent_hotel_operation_v1",
+        "name": "Independent hotel operation",
+        "ownerDecision": "Which management companies are considered for independent hotels?",
+        "regionalScope": "GLOBAL_WITH_CALA_VARIANT",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_conversion_repositioning_v1",
+        "name": "Conversion / repositioning",
+        "ownerDecision": "Which operators are considered when repositioning or converting an existing hotel?",
+        "regionalScope": "GLOBAL",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_commercial_revenue_capability_v1",
+        "name": "Commercial performance / revenue capability",
+        "ownerDecision": "Which operators are associated with strong commercial, revenue-management and distribution capability?",
+        "regionalScope": "GLOBAL",
+        "commercialRelevance": "MEDIUM",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_resort_operation_v1",
+        "name": "Resort operation",
+        "ownerDecision": "Which management companies are commonly considered for resort hotels?",
+        "regionalScope": "CALA_LATAM_EMPHASIS",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_cala_latam_regional_capability_v1",
+        "name": "CALA / LATAM regional capability",
+        "ownerDecision": "Which operators are commonly considered for hotels in CALA / Latin America?",
+        "regionalScope": "CALA_LATAM",
+        "commercialRelevance": "HIGH",
+        "core": true
+      },
+      {
+        "scenarioId": "op_scenario_institutional_platform_alignment_v1",
+        "name": "Owner alignment / institutional platform",
+        "ownerDecision": "Which operators are commonly considered by institutional hotel owners seeking scalable management platforms?",
+        "regionalScope": "GLOBAL",
+        "commercialRelevance": "HIGH",
+        "core": true
+      }
+    ],
+    "prompts": {
+      "total": 30,
+      "scenario": 30,
+      "observed": 0,
+      "derived": 0,
+      "core": 12,
+      "extended": 18,
+      "scenariosCovered": 12,
+      "registrySize": 12,
+      "dataforseoCalls": 0
+    },
+    "presence": {
+      "signal": "OPERATOR_SIGNAL_PRESENCE",
+      "version": "operator_presence_holdout_constructed_v1",
+      "classifier": "operator_signal_presence_v1",
+      "corpus": "CONSTRUCTED_NOT_LIVE",
+      "holdoutSealed": true,
+      "holdoutFingerprint": "e26100bc1bdfae41c31ed8970b50ce1abdf40672bc03fda5f745dcf69684c85d",
+      "devCases": 13,
+      "holdoutCases": 11,
+      "dev": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "tn": 7,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      "holdout": {
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "tn": 4,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "falsePositives": [],
+        "falseNegatives": []
+      },
+      "status": "PARTIAL",
+      "note": "Constructed holdout only. Live provider responses required before PRODUCTION_ELIGIBLE.",
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0
+    },
+    "cost": {
+      "version": "operator_ai_foundation_cost_v1",
+      "executionGrain": "PROMPT_PROVIDER",
+      "costScalesByOperator": false,
+      "marginalCostAddOperator": 0,
+      "perOperatorProviderExecution": 0,
+      "promptStats": {
+        "total": 30,
+        "scenario": 30,
+        "observed": 0,
+        "derived": 0,
+        "core": 12,
+        "extended": 18,
+        "scenariosCovered": 12,
+        "registrySize": 12,
+        "dataforseoCalls": 0
+      },
+      "corePrompts": 12,
+      "extendedPrompts": 18,
+      "coreProviderMatrix": [
+        "openai",
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "extendedProviderMatrix": [
+        "openai",
+        "perplexity"
+      ],
+      "openaiCalls": 30,
+      "geminiCalls": 12,
+      "perplexityCalls": 30,
+      "claudeCalls": 12,
+      "totalCalls": 84,
+      "projectedHistoricCost": 23.1357,
+      "projectedConservativeCost": 51.6412,
+      "hardCapUsd": 60,
+      "costGate": "PASS",
+      "actualCost": 0,
+      "providerCalls": 0,
+      "dataforseoCalls": 0,
+      "waveStatus": "NOT_RUN",
+      "note": "Foundation costs the wave but does not execute it. Next phase: OPERATOR_PRESENCE_VALIDATION."
+    },
+    "questionsMissing": {
+      "status": "NOT_READY",
+      "denominator": "prompt with >=1 comparable provider observation"
+    },
+    "allProviders": {
+      "status": "NOT_READY",
+      "missingProviderZero": "NO"
+    },
+    "competitiveGap": {
+      "rawGapTypes": [
+        "PEER_PRESENT_OPERATOR_MISSING",
+        "PERSISTENT_SCENARIO_GAP"
+      ],
+      "eligibilityLayer": "operator_decision_eligibility_v1",
+      "commercialInterpretation": "TRUE_COMPETITIVE_GAP / EXPECTED_POSITIONING_DIFFERENCE / OUT_OF_SCOPE",
+      "status": "DIAGNOSTIC_ONLY",
+      "clientPromoted": 0
+    },
+    "truth": {
+      "version": "operator_truth_layer_v1",
+      "governedSource": "Operator Setup Master + Operator Explorer factory/baseline registries",
+      "productionDimensions": [
+        "OPERATOR_IDENTITY",
+        "OPERATOR_LENS",
+        "MONITORED_SCOPE",
+        "CANONICAL_NAME",
+        "CANONICAL_ID",
+        "FIRST_PARTY_DOMAIN",
+        "OPERATOR_MODEL",
+        "MANAGED_BRAND_AFFILIATED",
+        "THIRD_PARTY_MANAGEMENT",
+        "GEOGRAPHIC_OPERATING_SCOPE",
+        "BRAND_AGNOSTIC_CAPABILITY"
+      ],
+      "detailOnlyDimensions": [
+        "PARENT_PLATFORM",
+        "FULL_SERVICE_CAPABILITY",
+        "LUXURY_CAPABILITY",
+        "LIFESTYLE_BOUTIQUE_CAPABILITY",
+        "RESORT_CAPABILITY",
+        "INDEPENDENT_HOTEL_CAPABILITY",
+        "CONVERSION_REPOSITIONING_CAPABILITY"
+      ],
+      "notUsable": [
+        "WEBSITE_MARKETING_COPY",
+        "VAGUE_GLOBAL_OPERATOR_LABEL",
+        "CENSUS_FOOTPRINT_COUNTS",
+        "AI_INFERRED_CAPABILITY",
+        "CHAIN_SCALE_HOTEL_SEGMENT"
+      ],
+      "censusReads": 0
+    },
+    "associations": {
+      "version": "operator_association_taxonomy_v1",
+      "taxonomy": [
+        "COMMERCIAL_REVENUE_CAPABILITY",
+        "OWNER_ALIGNMENT",
+        "OPERATIONAL_SCALE",
+        "LOCAL_MARKET_EXPERTISE",
+        "BRAND_AGNOSTIC_FLEXIBILITY",
+        "LUXURY_CAPABILITY",
+        "RESORT_CAPABILITY",
+        "INDEPENDENT_HOTEL_CAPABILITY",
+        "TECHNOLOGY_SYSTEMS",
+        "LABOR_OPERATIONS",
+        "FB_OPERATIONS",
+        "TURNAROUND_REPOSITIONING",
+        "DEVELOPMENT_SUPPORT"
+      ],
+      "productionEligible": [],
+      "detailOnly": [],
+      "researchOnly": [
+        "COMMERCIAL_REVENUE_CAPABILITY",
+        "OWNER_ALIGNMENT",
+        "OPERATIONAL_SCALE",
+        "LOCAL_MARKET_EXPERTISE",
+        "BRAND_AGNOSTIC_FLEXIBILITY",
+        "LUXURY_CAPABILITY",
+        "RESORT_CAPABILITY",
+        "INDEPENDENT_HOTEL_CAPABILITY",
+        "TECHNOLOGY_SYSTEMS",
+        "LABOR_OPERATIONS",
+        "FB_OPERATIONS",
+        "TURNAROUND_REPOSITIONING",
+        "DEVELOPMENT_SUPPORT"
+      ],
+      "blocked": []
+    },
+    "sources": {
+      "citationContractReused": true,
+      "ownedDomainMap": [
+        {
+          "canonicalId": "recGmiPhRt6hiayd9",
+          "domain": "marriott.com",
+          "parentDomain": null
+        },
+        {
+          "canonicalId": "rec7IXYQYpKMYsrDl",
+          "domain": "ihg.com",
+          "parentDomain": null
+        },
+        {
+          "canonicalId": "rec3Uwxe6ovpiokuN",
+          "domain": "hilton.com",
+          "parentDomain": null
+        },
+        {
+          "canonicalId": "recGWxIJqnYHkJZFD",
+          "domain": "aimbridgelatam.com",
+          "parentDomain": "aimbridgehospitality.com"
+        },
+        {
+          "canonicalId": "recWPKu5laVZxsvpn",
+          "domain": "hotelequities.com",
+          "parentDomain": null
+        },
+        {
+          "canonicalId": "recF5Z87OAqFgndoq",
+          "domain": "arborlodging.com",
+          "parentDomain": null
+        },
+        {
+          "canonicalId": "reciI2tYQBfMoMK9G",
+          "domain": "ghlhoteles.com",
+          "parentDomain": null
+        },
+        {
+          "canonicalId": "receHCdI6CEsJqdG4",
+          "domain": "brittainresorts.com",
+          "parentDomain": null
+        },
+        {
+          "canonicalId": "rec6UB6RpMKSs2tAo",
+          "domain": "remingtonhospitality.com",
+          "parentDomain": null
+        }
+      ],
+      "sourceCausalityRule": "PASS"
+    },
+    "stability": {
+      "contractReused": true
+    },
+    "longitudinal": {
+      "brandComponentsReused": [
+        "measurement period",
+        "prompt × provider grain",
+        "common cohort",
+        "idempotency",
+        "cost ledger",
+        "quality gate"
+      ],
+      "operatorLongitudinalReady": "PARTIAL",
+      "scheduler": "OFF"
+    },
+    "guards": {
+      "CENSUS_READS": 0,
+      "DATAFORSEO_CALLS": 0,
+      "RECOMMENDATION_METRICS": 0,
+      "OWNER_AI_BUILD": 0,
+      "BRAND_UI_WORK": 0,
+      "RAW_RESPONSES_IN_AIRTABLE": 0,
+      "PER_OPERATOR_PROVIDER_EXECUTION": 0
+    }
+  },
+  "tests": {
+    "total": 29,
+    "pass": 29,
+    "fail": 0
+  }
+}

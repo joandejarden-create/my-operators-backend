@@ -88,7 +88,8 @@ Up to five evidence-backed takeaways assembled from validated measurement layers
 
 | Tile type | How to read |
 |-----------|-------------|
-| **Largest Competitive Gap** | Owner Decision Scenario where your brand is absent while eligible peers appear — only when scenario is **commercially eligible** |
+| **Largest Competitive Gap** | Owner Decision Scenario where your brand is absent while eligible peers appear — only when scenario is **commercially eligible**. One gap theme per Executive Summary. |
+| **Largest Competitive Strength** | Entitled brand with the highest AI Presence in the selected geography — distinct from the gap theme |
 | **Potential AI Perception Gap** | Observed AI claim conflicts with governed Brand Basics on the **same semantic dimension** (e.g., Brand Architecture) — not “AI is wrong” |
 | **Observed AI Association** | Validated attribute co-occurring in monitored responses (production-gated; e.g., DISTRIBUTION) |
 | **Provider Disagreement** | Material difference between providers on Presence — only when comparability rules pass |
