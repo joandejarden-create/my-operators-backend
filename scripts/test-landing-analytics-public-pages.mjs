@@ -1,6 +1,9 @@
 /**
  * Dealality public analytics — surface helpers smoke test.
  */
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import assert from "node:assert/strict";
 import {
   eventSurface,
@@ -44,5 +47,22 @@ assert.equal(popular[0].label, "/who-its-for");
 assert.equal(popular[0].pageviews, 2);
 assert.ok(popular.some((r) => r.label === "Homepage Embed (dealality.com)"));
 assert.ok(popular.some((r) => r.label === "/insights"));
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+const analyticsSrc = fs.readFileSync(
+  path.join(here, "../public/js/dealality-public-analytics.js"),
+  "utf8"
+);
+assert.match(
+  analyticsSrc,
+  /hotel-owner\|brand\|member\|asset-manager\|user-management\|my-brands-v2\|ai-visibility/
+);
+const noticeSrc = fs.readFileSync(
+  path.join(here, "../public/js/dealality-webflow-account-notice.js"),
+  "utf8"
+);
+assert.match(noticeSrc, /platform-skip/);
+assert.match(noticeSrc, /d\.isBrand \|\| d\.canAccessBrandWorkspace/);
+assert.match(noticeSrc, /wrappedToast\.options = original\.options/);
 
 console.log("ok: public analytics surface + popular pages");

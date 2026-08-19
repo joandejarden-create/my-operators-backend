@@ -71,6 +71,9 @@ Sidecar mapping via **variantGroups.promptFamilies** (least invasive). Optional 
 
 Unmapped prompts: `scenarioStatus = UNMAPPED` — execution continues unchanged.
 
+Origin (`OBSERVED` / `DERIVED` / `SCENARIO`) is a separate dimension. See [prompt-provenance-observed-demand.md](./prompt-provenance-observed-demand.md). Scenario mapping does not imply observed search demand.
+
+
 ## Variant rules
 
 Within a variant group, prompts must share comparable dimensions (`intentTerritory`, `entityScope`, `developmentType`, `chainScale` when set). Geography, language, and `Version` may differ. Non-neutral wording fails validation (`prompt-validation.js` bias patterns).

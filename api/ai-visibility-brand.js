@@ -24,6 +24,8 @@ import {
   resolveProviderId,
 } from "../lib/ai-visibility/provider-dimension.js";
 import { toClientAccessError } from "../lib/ai-visibility/access-reason-codes.js";
+import { getBrandBenchmarkPayload } from "../lib/ai-visibility/competitive-moat/brand-benchmark-read-service.js";
+import { CUSTOMER_PAYLOAD_ALLOWLIST } from "../lib/ai-visibility/competitive-moat/customer-payload.js";
 
 /**
  * Hotel Decision Visibility public route retired in Phase 3A.4.
@@ -414,6 +416,76 @@ export async function getBrandEvidence(req, res) {
       success: false,
       error: "server_error",
       message: "Failed to load evidence.",
+    });
+  }
+}
+
+export async function getAiVisibilityBrandBenchmark(req, res) {
+  try {
+    const brandId = String(req.params.brandId || "").trim();
+    const ent = await withEntitlements(req);
+    const entitled = ent.entitlementGraph?.entitledBrandIds || [];
+    if (!entitled.includes(brandId)) {
+      return deny(res, { reasonCode: "SUBJECT_NOT_ENTITLED", allowed: false });
+    }
+
+    const result = getBrandBenchmarkPayload({ brandId, internalAdmin: false });
+    if (!result.ok) {
+      return res.status(result.error === "subject_not_in_pilot" ? 404 : 400).json({
+        ok: false,
+        success: false,
+        error: result.error,
+        message: result.error === "subject_not_in_pilot"
+          ? "Benchmark pilot data not available for this brand."
+          : "Failed to load benchmark.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      ok: true,
+      ...result,
+      CUSTOMER_ALLOWLIST: [...CUSTOMER_PAYLOAD_ALLOWLIST],
+      AIRTABLE_WRITES: 0,
+      LIVE_PROVIDER_CALLS: 0,
+      PROVIDER_CALLS: 0,
+    });
+  } catch (err) {
+    console.error("[ai-visibility-brand] benchmark:", err.message);
+    return res.status(500).json({
+      ok: false,
+      success: false,
+      error: "server_error",
+      message: "Failed to load benchmark.",
+    });
+  }
+}
+
+export async function getAiVisibilityBrandBenchmarkDiagnostics(req, res) {
+  try {
+    const brandId = String(req.params.brandId || "").trim();
+    const result = getBrandBenchmarkPayload({ brandId, internalAdmin: true });
+    if (!result.ok) {
+      return res.status(404).json({
+        ok: false,
+        success: false,
+        error: result.error,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      ok: true,
+      accessClass: "INTERNAL_ADMIN",
+      ...result,
+      PROVIDER_CALLS: 0,
+    });
+  } catch (err) {
+    console.error("[ai-visibility-brand] benchmark-diagnostics:", err.message);
+    return res.status(500).json({
+      ok: false,
+      success: false,
+      error: "server_error",
+      message: "Failed to load benchmark diagnostics.",
     });
   }
 }

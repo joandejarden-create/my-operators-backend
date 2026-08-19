@@ -10,7 +10,7 @@
   "use strict";
 
   if (global.__dealalityPublicAnalytics) return;
-  global.__dealalityPublicAnalytics = 20260803;
+  global.__dealalityPublicAnalytics = 20260817;
 
   var SESSION_KEY = "dl_landing_sid_v1";
   var VISITOR_KEY = "dl_landing_vid_v1";
@@ -62,6 +62,10 @@
 
   function isAppPath(rest) {
     if (rest === "/404" || rest === "/search") return false;
+    // /brand/ and /hotel-owner/ are member shells (not /brand-explorer, /brand-education).
+    if (/^\/(hotel-owner|brand|member|asset-manager|user-management|my-brands-v2|ai-visibility)(\/|$)/i.test(rest)) {
+      return true;
+    }
     return (
       /^\/(my-|brand-|operator-|deal-|company-|user-|profile|dashboard|add-|edit-|franchise|fee-|clause-|financial-|loi-|market-|partner-overview|partner-directory|outreach|valuation|third-party|new-deal|admin|api|static|assets|js\/|css\/|fonts\/|landing-analytics|health|deal-capture|the-radar|brand-education|password-set)/i.test(
         rest

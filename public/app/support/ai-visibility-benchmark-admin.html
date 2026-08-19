@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Brand AI Visibility Reference — Dealality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/support-runbook.css">
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css">
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+</head>
+<body class="support-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>This reference is for Dealality internal/admin use only.</p>
+  </div>
+
+  <div class="support-page-shell" id="supportGateContent" hidden>
+    <div id="runbookRoot" class="runbook-root" aria-live="polite"></div>
+  </div>
+
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script>
+  (function () {
+    if (window.SupportAdminGate) {
+      window.SupportAdminGate.showPageLoading('supportGateLoading', 'Verifying access…');
+    }
+  })();
+  </script>
+  <script src="/js/owner-pilot-runbook.js"></script>
+  <script>
+  (function () {
+    var RUNBOOK_API = '/api/support/ai-visibility-benchmark-admin';
+
+    function showDenied(message) {
+      var loadingEl = document.getElementById('supportGateLoading');
+      var deniedEl = document.getElementById('supportGateDenied');
+      var contentEl = document.getElementById('supportGateContent');
+      if (window.SupportAdminGate) {
+        window.SupportAdminGate.hidePageLoading(loadingEl);
+      } else if (loadingEl) {
+        loadingEl.hidden = true;
+      }
+      if (contentEl) contentEl.hidden = true;
+      if (deniedEl) {
+        deniedEl.hidden = false;
+        var msg = deniedEl.querySelector('[data-gate-message]');
+        if (msg && message) msg.textContent = message;
+      }
+    }
+
+    async function init() {
+      if (!window.SupportAdminGate || !window.OwnerPilotRunbook) {
+        showDenied('Unable to load content. Refresh and try again.');
+        return;
+      }
+
+      var allowed = await window.SupportAdminGate.requireInternalRunbook({
+        contentId: 'supportGateContent',
+      });
+
+      if (!allowed) return;
+
+      var loadingEl = document.getElementById('supportGateLoading');
+      var contentEl = document.getElementById('supportGateContent');
+      window.SupportAdminGate.setPageLoadingMessage(loadingEl, 'Loading Brand AI visibility reference…');
+
+      var result = await window.OwnerPilotRunbook.loadAndRender({
+        rootId: 'runbookRoot',
+        apiUrl: RUNBOOK_API,
+      });
+
+      window.SupportAdminGate.hidePageLoading(loadingEl);
+
+      if (!result.ok) {
+        var message = result.status === 403
+          ? 'Admin access required to view this page.'
+          : result.status === 401
+            ? 'Authentication required. Sign in and try again.'
+            : result.status === 404
+              ? 'Content API not found. Restart the Dealality server (npm start) and try again.'
+              : 'Unable to load content. Try again or contact support.';
+        showDenied(message);
+        return;
+      }
+
+      if (contentEl) contentEl.hidden = false;
+    }
+
+    init();
+  })();
+  </script>
+  <script src="/embed-chrome.js" defer></script>
+</body>
+</html>

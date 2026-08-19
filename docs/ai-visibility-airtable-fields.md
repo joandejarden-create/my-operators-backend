@@ -55,6 +55,35 @@ Global uses `Geography Scope = Global` only (never an average of regions).
 | Linked Brands | multipleRecordLinks → Brand Setup - Brand Basics | Optional |
 | Linked Operators | multipleRecordLinks → Operator Setup - Master | Optional |
 
+### Proposed provenance fields (not applied)
+
+File-store overlay is the live provenance source (`fixtures/ai-visibility/prompt-provenance-v1.json`). Do **not** run `ensure:ai-visibility-schema` for these until a separate apply task. Large demand evidence stays out of Airtable.
+
+| Field | Type | Notes |
+|-------|------|--------|
+| Prompt Origin | singleSelect | OBSERVED, DERIVED, SCENARIO, LEGACY_UNCLASSIFIED |
+| Origin Source Type | singleSelect | Observed source class — not AI citation source |
+| Origin Source Name | singleLineText | |
+| Origin Source Reference | singleLineText | Short ref only |
+| Observed Query | singleLineText | |
+| Observed Theme | singleLineText | |
+| Demand Tier | singleSelect | HIGH, MEDIUM, LOW, UNKNOWN — no invented volume |
+| Demand Signal Type | singleLineText | |
+| Demand Geography | singleLineText | |
+| Date Observed | date | |
+| Demand Evidence Count | number | |
+| Demand Methodology | multilineText | Required before HIGH/MEDIUM/LOW |
+| Derived From Observed Prompt ID | singleLineText | |
+| Derived From Demand Signal ID | singleLineText | |
+| Owner Intent Subtheme | singleLineText | Intent Territory remains the family |
+| Provenance Status | singleSelect | VALIDATED, CANDIDATE, NEEDS_EVIDENCE, LEGACY |
+| Provenance Notes | multilineText | |
+| Created By Method | singleSelect | |
+| Last Provenance Review At | dateTime | |
+| Sampling Priority | singleSelect | Future repeated-testing hook; scheduler off |
+
+See [ai-visibility/prompt-provenance-observed-demand.md](./ai-visibility/prompt-provenance-observed-demand.md).
+
 ## Table: `AI Visibility - Opportunities` (`tblGAoMaPqHwlYtyM`)
 
 | Field | Type | Options / notes |

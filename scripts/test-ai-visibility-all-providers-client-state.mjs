@@ -263,6 +263,13 @@ async function main() {
     assert.ok(src.includes("AbortController"));
     assert.ok(src.includes("staleResponsesDiscarded"));
     assert.ok(src.includes("loadToken.isCurrent"));
+    var isCurrentFn = src.match(/isCurrent:\s*function\s*\(\)\s*\{[\s\S]*?\n      \},/);
+    assert.ok(isCurrentFn, "isCurrent helper present");
+    assert.equal(
+      isCurrentFn[0].includes("filterSnapshotFp"),
+      false,
+      "isCurrent must not treat in-load language reconcile as stale"
+    );
   });
 
   await test("stale generation discard simulation", () => {

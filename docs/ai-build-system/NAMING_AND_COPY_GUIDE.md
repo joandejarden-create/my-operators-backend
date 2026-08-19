@@ -33,6 +33,15 @@ Product language standards for UI, snapshots, explorers, and AI-assisted content
 - Always distinguish **AI Recommendation Pattern** from **Dealality Analysis** (and keep **Owner Process** as a third layer)
 - Prefer evidence descriptors (Repeated across engines/runs, Emerging pattern, Single-engine observation) over client-facing numeric confidence
 - Do not invent a composite GEO score or a single portfolio “AI Visibility Score”
+- Semantic distinction is binding in executive copy:
+  - brand **appears / is mentioned / is represented**
+  - source **cited / citation**
+  - never use `cited` to describe brand presence
+- Keep constructs distinct in copy:
+  - `observation` ≠ `comparable response` ≠ `association span`
+  - `association` ≠ `narrative`
+  - `recurrence` ≠ `confidence`
+  - `citation association` ≠ `causation`
 
 ## Use Carefully
 

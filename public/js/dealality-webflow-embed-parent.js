@@ -16,7 +16,7 @@
   function embedPageNeedsMsToken(pathname) {
     if (!pathname) return false;
     if (/\/app\/home\.html$/i.test(pathname)) return true;
-    return /\/(my-deals|new-deal-setup|deal-summary|brand-development-dashboard|deal-room-owner|deal-room-brand|outreach-plan-wizard|brand-explorer)(\.html)?$/i.test(
+    return /\/(my-deals|new-deal-setup|deal-summary|brand-development-dashboard|deal-room-owner|deal-room-brand|outreach-plan-wizard|brand-explorer|ai-visibility-brand)(\.html)?$/i.test(
       pathname
     );
   }

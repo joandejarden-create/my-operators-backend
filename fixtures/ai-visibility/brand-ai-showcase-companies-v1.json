@@ -1,18 +1,22 @@
 {
   "id": "brand_ai_showcase_companies_v1",
-  "version": "1.1",
+  "version": "1.2",
   "configVersion": "brand_ai_showcase_companies_v1",
-  "VERSION_BEFORE": "1",
-  "VERSION_AFTER": "1.1",
+  "VERSION_BEFORE": "1.1",
+  "VERSION_AFTER": "1.2",
   "notes": [
     "Showcase-only company → deep Brand portfolio mapping.",
     "NOT an authorization bypass. Phase 2F still resolves entitlements from Company Profile / demo constellation.",
     "Company Portfolio ≠ Competitive Cohort (peers_uu_collection_lifestyle_owner_decision_v2).",
-    "Radisson RED is Choice portfolio only; not in shared peer v2.",
+    "Live Brand AI comparative reads remain on frozen peer v2. Longitudinal multi-parent wave uses peer v3 (v2 + Radisson).",
+    "Monitoring universe v4 = all 19 showcase portfolio brands (Marriott 5, Hilton 4, Choice 5, IHG 5).",
+    "Radisson RED is Choice portfolio only; not in shared peer v2. Included in monitoring v4.",
     "Phase 3A.9.1: IHG showcase portfolio added. Peer v2 unchanged (Hotel Indigo + Kimpton remain IHG competitive representation).",
-    "Voco / Even / Vignette are IHG portfolio-only — not added to peer v2."
+    "Voco / Even / Vignette are IHG portfolio brands — monitored via v4; competitive rank remains peer v2 where applicable.",
+    "Phase longitudinal 2026-08-18: Radisson (recywbx1YQSTCPqW1) added to Choice showcase dropdown. Distinct from Blu / RED / Individuals."
   ],
   "sharedPeerSetId": "peers_uu_collection_lifestyle_owner_decision_v2",
+  "monitoringPeerSetId": "peers_showcase_portfolio_monitoring_v4",
   "companies": [
     {
       "companyKey": "marriott",
@@ -94,7 +98,8 @@
         "reclkgOzvAcBheUSo",
         "recRyvM8OmLlDj9G7",
         "recWPEvxBQxVVzSq3",
-        "recmKqo7M7mLZgRqQ"
+        "recmKqo7M7mLZgRqQ",
+        "recywbx1YQSTCPqW1"
       ],
       "brands": [
         {
@@ -115,7 +120,16 @@
         {
           "brandId": "recmKqo7M7mLZgRqQ",
           "brandName": "Radisson RED by Choice",
-          "showcaseRole": "lifestyle_portfolio_only"
+          "showcaseRole": "lifestyle_portfolio_only",
+          "monitoringUniverseMember": true
+        },
+        {
+          "brandId": "recywbx1YQSTCPqW1",
+          "brandName": "Radisson",
+          "canonicalBrandBasicsName": "Radisson by Choice",
+          "showcaseRole": "uu_core_flag_distinct_from_blu_red_individuals",
+          "peerSetMemberV3": true,
+          "monitoringUniverseMember": true
         }
       ]
     },
@@ -160,6 +174,7 @@
           "brandName": "Voco Hotels",
           "showcaseRole": "conversion_upscale_portfolio_only",
           "peerSetMember": false,
+          "monitoringUniverseMember": true,
           "intents": [
             "Conversion"
           ]
@@ -169,6 +184,7 @@
           "brandName": "Even Hotels",
           "showcaseRole": "lifestyle_upscale_portfolio_only",
           "peerSetMember": false,
+          "monitoringUniverseMember": true,
           "intents": [
             "Conversion",
             "Lifestyle Positioning"
@@ -179,6 +195,7 @@
           "brandName": "Vignette Collection",
           "showcaseRole": "luxury_collection_portfolio_only",
           "peerSetMember": false,
+          "monitoringUniverseMember": true,
           "intents": [
             "Conversion",
             "Collection / Soft Brand",

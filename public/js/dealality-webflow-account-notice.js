@@ -135,27 +135,37 @@
     }
   }
 
-  function shouldSuppressBrandToast() {
+  function shouldSuppressBrandToast(data) {
     if (global.__dealalitySuppressBrandToast) return true;
-    var data = global.__dealalityUserContext;
-    if (!data || data.success !== true) return false;
-    var access = data.accountAccess;
-    if (access && access.pendingApproval) return true;
-    var d = data.dealality;
-    if (d && (d.isOwner || d.isAdmin)) return true;
+    if (isPlatformDashboardPage()) return true;
+    var ctx = data || global.__dealalityUserContext;
+    if (!ctx || ctx.success !== true) return false;
+    var access = ctx.accountAccess;
+    if (access && (access.pendingApproval || access.suppressBrandAssignmentToast)) return true;
+    var d = ctx.dealality;
+    if (!d) return false;
+    if (d.isOwner || d.isAdmin) return true;
+    if (d.isBrand || d.canAccessBrandWorkspace) return true;
     return false;
   }
 
   function patchBrandAssignmentToast() {
     if (TOAST_PATCHED || !global.$ || typeof global.$.toast !== "function") return false;
     var original = global.$.toast;
-    global.$.toast = function (options) {
+    function wrappedToast(options) {
       var text = options && options.text ? String(options.text) : "";
       if (/no brands assigned/i.test(text) && shouldSuppressBrandToast()) {
         return;
       }
       return original.apply(this, arguments);
-    };
+    }
+    // Replacing $.toast drops plugin defaults (showHideTransition, etc.).
+    // jquery.toast then calls undefined.toLowerCase() in animate().
+    Object.keys(original).forEach(function (key) {
+      wrappedToast[key] = original[key];
+    });
+    if (original.options) wrappedToast.options = original.options;
+    global.$.toast = wrappedToast;
     TOAST_PATCHED = true;
     return true;
   }
@@ -372,7 +382,13 @@
   }
 
   function applyPlatformPageEarlySkin() {
-    if (!isPlatformDashboardPage() || !global.document) return;
+    if (!isPlatformDashboardPage()) return;
+    // Site footer loads this file before pinned public analytics. Mark skip so
+    // /brand/* and other member shells do not POST marketing landing-events.
+    if (!global.__dealalityPublicAnalytics) {
+      global.__dealalityPublicAnalytics = "platform-skip";
+    }
+    if (!global.document) return;
     var doc = global.document;
     doc.documentElement.classList.add("dl-platform-shell");
     injectPlatformScrollbarStyles(doc);
@@ -743,6 +759,11 @@
 
   function applyFromMe(data) {
     if (!data || data.success !== true) return;
+
+    if (shouldSuppressBrandToast(data)) {
+      global.__dealalitySuppressBrandToast = true;
+    }
+
     var access = data.accountAccess;
     if (!access) return;
 
@@ -752,7 +773,9 @@
       return;
     }
 
-    global.__dealalitySuppressBrandToast = false;
+    if (!shouldSuppressBrandToast(data)) {
+      global.__dealalitySuppressBrandToast = false;
+    }
     removeBanner();
   }
 

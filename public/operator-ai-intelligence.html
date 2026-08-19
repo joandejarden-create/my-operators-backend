@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operator AI Intelligence — Dealality</title>
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=operator-customer-ui-v2-20260819a">
+  <script src="/js/dealality-memberstack-auth.js" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-shared.js?v=operator-customer-ui-v2-20260819a" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-operator.js?v=operator-customer-ui-v2-20260819a" defer></script>
+</head>
+<body class="aiv-page embed-mode">
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="aiv-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="16" x2="12" y2="12"/>
+      <line x1="12" y1="8" x2="12.01" y2="8"/>
+    </symbol>
+  </svg>
+  <div class="dashboard-container aiv-dashboard">
+    <header class="dashboard-header aiv-dashboard-header">
+      <div class="dashboard-header-left">
+        <div class="dashboard-title-container">
+          <h1>Operator AI Intelligence</h1>
+        </div>
+        <p class="aiv-header-subtitle">
+          How your management company appears when hotel owners ask AI who should operate a hotel — tracked by owner-decision context and provider with governed evidence.
+        </p>
+      </div>
+      <div class="aiv-disclaimer-box" role="note">
+        <div class="aiv-disclaimer-box__title">Disclaimer</div>
+        <ul class="aiv-disclaimer-box__list">
+          <li class="aiv-disclaimer-box__item">AI model outputs are probabilistic and may vary between monitoring runs.</li>
+          <li class="aiv-disclaimer-box__item">Dealality validates calculation accuracy, evidence traceability, and monitoring consistency.</li>
+          <li class="aiv-disclaimer-box__item">Interpret AI answers as observed model behavior — not guaranteed fact, recommendation, or win/loss outcome.</li>
+        </ul>
+      </div>
+    </header>
+
+    <nav class="bdd-section-nav aiv-section-nav" aria-label="Operator AI Intelligence views" role="tablist">
+      <button type="button" class="section-nav-item active" role="tab" aria-selected="true" data-tab="executive" id="aivOpTabExecutive">
+        <div class="section-nav-icon" title="Executive Summary">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <span class="section-nav-label">Executive<br>Summary</span>
+      </button>
+      <button type="button" class="section-nav-item" role="tab" aria-selected="false" data-tab="detail" id="aivOpTabDetail">
+        <div class="section-nav-icon" title="Detailed View">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <span class="section-nav-label">Detailed<br>View</span>
+      </button>
+    </nav>
+
+    <section class="filters-section aiv-filters-section" aria-label="Filters">
+      <div class="filter-group">
+        <label class="filter-label" for="aivOpOperator">Operator</label>
+        <select class="filter-select" id="aivOpOperator"></select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="aivOpProvider">Provider</label>
+        <select class="filter-select" id="aivOpProvider" title="All Providers is a derived cross-provider view only. Missing provider data is excluded, not zero.">
+          <option value="all" selected>All Providers</option>
+          <option value="openai">OpenAI</option>
+          <option value="gemini">Gemini</option>
+          <option value="perplexity">Perplexity</option>
+          <option value="claude">Claude</option>
+        </select>
+      </div>
+      <div class="filter-group aiv-filter-actions">
+        <button type="button" class="btn-clear" id="aivOpReset">Reset</button>
+        <button type="button" class="aiv-btn-apply" id="aivOpApply">Run Report</button>
+      </div>
+    </section>
+
+    <div id="aivOpStateLoading" data-state="loading">
+      <div class="bdd-toast aiv-loading-toast" role="status" aria-live="polite" aria-busy="true">
+        <p>Loading Operator AI Intelligence…</p>
+      </div>
+    </div>
+    <div id="aivOpStateEmpty" data-state="empty" hidden>
+      <p class="aiv-empty">No Operator AI Intelligence data is available yet.</p>
+    </div>
+    <div id="aivOpStateError" data-state="error" hidden>
+      <p class="aiv-error" id="aivOpErrorMessage">Operator AI Intelligence could not load.</p>
+      <button type="button" class="aiv-btn-apply" id="aivOpRetry">Retry</button>
+    </div>
+
+    <div id="aivOpStateSuccess" data-state="success" hidden>
+      <header class="aiv-op-header" id="aivOpHeader" aria-label="Operator context"></header>
+
+      <!-- EXECUTIVE SUMMARY TAB -->
+      <div id="aivOpExecutivePanel" data-panel="executive">
+        <div class="aiv-kpi-row aiv-theme-kpis" id="aivOpKpiRow" aria-label="Operator summary KPIs"></div>
+
+        <section class="aiv-insights-section" id="aivOpExecutiveFindings" aria-label="Executive findings"></section>
+
+        <section class="aiv-op-provider-summary" id="aivOpProviderSummary" aria-label="Provider comparison"></section>
+
+        <section class="aiv-op-competitive-summary" id="aivOpCompetitiveSummary" aria-label="Competitive position summary"></section>
+      </div>
+
+      <!-- DETAILED VIEW TAB -->
+      <div id="aivOpDetailPanel" data-panel="detail" hidden>
+        <div class="aiv-kpi-row aiv-theme-kpis aiv-detail-kpi-row" id="aivOpDetailKpiRow" aria-label="Detailed view KPIs"></div>
+
+        <section class="aiv-owner-intent-block" aria-label="Owner intent coverage">
+          <div class="aiv-owner-intent-head">
+            <h2>Owner Intent Coverage</h2>
+          </div>
+          <div class="table-container">
+            <table class="deals-table aiv-unified-intent-table aiv-op-intent-table" id="aivOpIntentTable">
+              <thead>
+                <tr>
+                  <th scope="col"><span class="aiv-th-label">Owner Intent</span></th>
+                  <th scope="col"><span class="aiv-th-label">Your Presence</span></th>
+                  <th scope="col"><span class="aiv-th-label">Missing</span></th>
+                  <th scope="col"><span class="aiv-th-label">Peer-Present Gaps</span></th>
+                  <th scope="col"><span class="aiv-th-label">Competitive Gap</span></th>
+                  <th scope="col"><span class="aiv-th-label">Provider Disagreement</span></th>
+                  <th scope="col" class="aiv-col-expand" aria-label="Expand row"></th>
+                </tr>
+              </thead>
+              <tbody id="aivOpIntentBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="aiv-op-disagreement-section" id="aivOpDisagreementPanel" aria-label="Provider disagreement">
+          <h2>Provider Disagreement</h2>
+          <div id="aivOpDisagreementBody"></div>
+        </section>
+
+        <section class="aiv-watchlist-section" aria-label="Questions Missing watchlist">
+          <h2>Questions Missing — Opportunities</h2>
+          <div id="aivOpWatchlistBody"></div>
+        </section>
+
+        <section class="aiv-op-competitive-context" id="aivOpCompetitiveContext" aria-label="Competitive context">
+          <h2>Who Owners See Instead</h2>
+          <div id="aivOpCompetitiveContextBody"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

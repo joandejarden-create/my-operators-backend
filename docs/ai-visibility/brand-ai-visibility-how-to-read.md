@@ -118,6 +118,8 @@ Typical tiles include:
 | **Best Competitive Position** | Your brand with the best peer rank in this geography |
 | **Questions Missing** | Questions where **none** of your brands appeared in the answer |
 
+**Prompt mix** stays hidden until at least 10 validated observed themes exist in the monitored library. The current library is scenario-led while observed-demand sources are being validated. Absence of the mix is not a performance problem.
+
 ### Markets & Movement
 
 | Block | How to read |
@@ -201,6 +203,9 @@ Watchlist modes:
 | **Peers Appearing Where We Are Not** | Cases where peers appear and your brand does not |
 
 Table columns typically include: Question · Prompt Family · Provider · Region · Language · Status · Peers Present · Evidence.
+
+A compact **Observed** / **Derived** / **Scenario** badge may appear next to the question when origin is classified. Unclassified legacy prompts show no badge. This is not a citation source (citations are what the AI named in the answer).
+
 
 Use **Prompt family** to focus on one intent territory. Open **Evidence** to read the actual monitored answer.
 

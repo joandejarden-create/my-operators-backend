@@ -3,7 +3,7 @@
  * Keep role checks here — do not scatter product-specific role lists in multiple nav builders.
  *
  * Product naming (locked):
- * - Brand-Side → Brand AI Visibility
+ * - Brand-Side → Brand AI Intelligence
  * - Operator-Side → Operator AI Visibility (future — not shown as Brand product)
  * - Owner-Side → AI Recommendation Intelligence (future — not shown as Brand product)
  * - Admin / All Workspaces → governed access per existing admin conventions
@@ -14,7 +14,7 @@
   var PRODUCT_NAV = {
     brand_ai_visibility: {
       route: "/ai-visibility",
-      label: "Brand AI Visibility",
+      label: "Brand AI Intelligence",
       allowedNavRoles: ["brand", "admin"],
     },
     // Future — reserved so callers do not invent Brand product on other sides.
