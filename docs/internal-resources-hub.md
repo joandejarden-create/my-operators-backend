@@ -16,13 +16,14 @@
 
 ### Platform routes (admin only)
 
-**Left nav:** **Settings** → section divider → **Admin Resources** (Owner Pilot Runbook, Scoring Weight Model, Route Map, Scout Market Map, Deal Readiness Report; admin only)  
+**Left nav:** **Settings** → section divider → **Admin Resources** (Owner Pilot Runbook, Scoring Weight Model, Brand AI Visibility Reference, Route Map, Scout Market Map, Deal Readiness Report; admin only)  
 **Left nav:** **Support** — Help Center only
 
 | Route | Content | API |
 |-------|---------|-----|
 | `/support` | Help hub | — |
 | `/support/scoring-weight-model` | Operator + brand match weights (task 2.02) | `GET /api/support/scoring-weight-model` |
+| `/support/ai-visibility-benchmark-admin` | Brand AI prompt themes + benchmark cohort peers | `GET /api/support/ai-visibility-benchmark-admin` |
 | `/support/owner-pilot-provisioning` | Owner pilot provisioning runbook | `GET /api/support/owner-pilot-provisioning-runbook` |
 
 **GTM pilot copy** (warm intro, reply playbook, etc.) lives in **Google Drive Word files** and repo `docs/gtm-resources/` — not on the platform.

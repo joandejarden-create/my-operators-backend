@@ -1,0 +1,206 @@
+{
+  "BRAND_AI_MULTI_PARENT_LONGITUDINAL_COST_AUDIT_COMPLETE": true,
+  "SOURCE_OF_TRUTH": {
+    "showcaseConfig": "fixtures/ai-visibility/brand-ai-showcase-companies-v1.json",
+    "portfolioSwitcher": "lib/dealality/demo-brand-portfolio-context.js",
+    "uiKeys": [
+      "marriott",
+      "hilton",
+      "choice",
+      "ihg"
+    ],
+    "note": "Parent Company filter = demo portfolio switcher (one parent active at a time). Brand filter = brands within active portfolio."
+  },
+  "CURRENT_BRAND_FILTER_UNIVERSE": {
+    "PARENT_COMPANIES": 4,
+    "parents": [
+      {
+        "PARENT": "Marriott International",
+        "companyKey": "marriott",
+        "BRANDS": [
+          "Autograph Collection",
+          "Tribute Portfolio",
+          "Design Hotels",
+          "Westin",
+          "AC Hotels by Marriott"
+        ],
+        "BRAND_COUNT": 5
+      },
+      {
+        "PARENT": "Hilton",
+        "companyKey": "hilton",
+        "BRANDS": [
+          "Curio Collection by Hilton",
+          "Tapestry Collection by Hilton",
+          "Canopy by Hilton",
+          "Tempo by Hilton"
+        ],
+        "BRAND_COUNT": 4
+      },
+      {
+        "PARENT": "Choice Hotels",
+        "companyKey": "choice",
+        "BRANDS": [
+          "Ascend Hotel Collection",
+          "Radisson Individuals by Choice",
+          "Radisson Blu by Choice",
+          "Radisson RED by Choice"
+        ],
+        "BRAND_COUNT": 4
+      },
+      {
+        "PARENT": "IHG",
+        "companyKey": "ihg",
+        "BRANDS": [
+          "Hotel Indigo",
+          "Kimpton Hotels",
+          "Voco Hotels",
+          "Even Hotels",
+          "Vignette Collection"
+        ],
+        "BRAND_COUNT": 5
+      }
+    ],
+    "TOTAL_SELECTED_BRANDS": 18,
+    "PEER_SET_V2_BRANDS_IN_COHORT": 15,
+    "SHOWCASE_BRANDS_NOT_IN_PEER_SET_V2": [
+      "recmKqo7M7mLZgRqQ",
+      "recwONQTqGU1jHCsM",
+      "recvvmiyReHhiKdoK",
+      "recDwzv86TWnz2gGB"
+    ]
+  },
+  "MONITORING_GRAIN": {
+    "GRAIN": "PORTFOLIO_PROMPT_PROVIDER",
+    "EXECUTION_MODEL": "MIXED_READ_PARTITION",
+    "EXPLANATION": "Provider calls are prompt × provider (peer-set v2 competitive cohort). One response extracts mentions for multiple brands. Parent portfolio switch and Brand dropdown filter the read/attribution path — wave1 showcase config sets DUPLICATE_PROVIDER_RUN_REQUIRED:false per parent. Longitudinal period manifests may partition by parent for trend accounting without re-execution.",
+    "DUPLICATE_PROVIDER_RUN_REQUIRED": false,
+    "NOT_BRAND_PROMPT_PROVIDER": "Calls do not multiply by brand count. 18 selected brands ≠ 18× calls."
+  },
+  "MARRIOTT_RECONCILIATION": {
+    "MARRIOTT_SELECTED_BRANDS": 5,
+    "MONTHLY_PROMPTS": 27,
+    "MONTHLY_CALLS": 86,
+    "CALL_FORMULA": "16 CRITICAL × 4 providers (64) + 11 HIGH × 2 providers (22) = 86",
+    "CORRECTION": "Prior summary cited 100 calls — that was the full 35-prompt cohort (102 calls incl. STANDARD). Monthly CRITICAL+HIGH only = 86 calls.",
+    "FULL_COHORT_CALLS": 102,
+    "FULL_COHORT_FORMULA": "86 monthly + 8 STANDARD × 2 providers = 16 quarterly-only",
+    "HISTORIC_COST_USD": 24.8305,
+    "PROVIDER_BREAKDOWN": {
+      "openai": 27,
+      "gemini": 16,
+      "perplexity": 27,
+      "claude": 16
+    }
+  },
+  "LONGITUDINAL_POLICY": {
+    "cohortId": "BRAND_LONGITUDINAL_COHORT_V1",
+    "CRITICAL_PROMPTS": 16,
+    "HIGH_PROMPTS": 11,
+    "STANDARD_PROMPTS": 8,
+    "APPLICABILITY": "All 27 monthly prompts are portfolio-generic owner-decision scenarios / observed demand — same prompt set for every parent. Eligibility gates metric interpretation per brand×intent, not provider call suppression in cohort execution."
+  },
+  "FOUR_PARENT_COST_MODELS": {
+    "SHARED_EXECUTION": {
+      "description": "Authoritative per current monitoring engine — one measurement period serves peer-set cohort",
+      "FOUR_PARENT_TOTAL_MONTHLY_CALLS": 86,
+      "FOUR_PARENT_MONTHLY_HISTORIC_USD": 24.8305,
+      "FOUR_PARENT_MONTHLY_CONSERVATIVE_USD": 51.305,
+      "FOUR_PARENT_ANNUAL_HISTORIC_USD": 312.78,
+      "perParentAllocation": "NOT additive — shared infrastructure"
+    },
+    "ISOLATED_REEXECUTION_PER_PARENT": {
+      "description": "Counterfactual only — if each parent required separate provider re-runs (NOT current architecture)",
+      "FOUR_PARENT_TOTAL_MONTHLY_CALLS": 344,
+      "FOUR_PARENT_MONTHLY_HISTORIC_USD": 99.322,
+      "FOUR_PARENT_MONTHLY_CONSERVATIVE_USD": 205.22,
+      "note": "Would violate DUPLICATE_PROVIDER_RUN_REQUIRED:false and waste spend"
+    }
+  },
+  "PROVIDER_CALLS_FOUR_PARENT_SHARED": {
+    "OPENAI": 27,
+    "GEMINI": 16,
+    "PERPLEXITY": 27,
+    "CLAUDE": 16,
+    "TOTAL_MONTHLY": 86,
+    "TOTAL_STANDARD_QUARTER": 16
+  },
+  "PROVIDER_COST_RATES": {
+    "openai": {
+      "historicUsdPerCall": 0.457262,
+      "conservativeUsdPerCall": 1.33,
+      "sampleSize": 84,
+      "source": "wave1_showcase_actual_usd_38.41_over_84"
+    },
+    "gemini": {
+      "historicUsdPerCall": 0.078095,
+      "conservativeUsdPerCall": 0.131786,
+      "sampleSize": 84,
+      "source": "provider_baseline_gemini_actual_usd_6.56_over_84"
+    },
+    "perplexity": {
+      "historicUsdPerCall": 0.005595,
+      "conservativeUsdPerCall": 0.02,
+      "sampleSize": 84,
+      "source": "provider_baseline_perplexity_actual_usd_0.47_over_84"
+    },
+    "claude": {
+      "historicUsdPerCall": 0.692738,
+      "conservativeUsdPerCall": 0.796649,
+      "sampleSize": 84,
+      "source": "provider_baseline_claude_actual_usd_58.19_over_84"
+    }
+  },
+  "HISTORIC_COST": {
+    "FOUR_PARENT_MONTHLY_TOTAL": 24.8305,
+    "FOUR_PARENT_ANNUAL_TOTAL": 312.78,
+    "NORMALIZED_MONTHLY_WITH_STANDARD": 26.0648,
+    "STANDARD_QUARTERLY_INCREMENT": 3.7029
+  },
+  "CONSERVATIVE_COST": {
+    "FOUR_PARENT_MONTHLY": 51.305,
+    "FOUR_PARENT_ANNUAL": 658.86
+  },
+  "INITIAL_MULTI_PARENT_WAVE": {
+    "CALLS": 86,
+    "HISTORIC_EXPECTED_COST": 24.8305,
+    "CONSERVATIVE_COST": 51.305,
+    "STATUS": "NOT_RUN"
+  },
+  "SCALABILITY": {
+    "CURRENT_SELECTED_BRANDS": 18,
+    "ADD_5_BRANDS_EXISTING_PARENT": {
+      "incrementalCalls": 0,
+      "incrementalHistoricUsd": 0,
+      "note": "Unless new brands join peer-set v2 AND prompts are re-run (not current design)"
+    },
+    "ADD_1_PARENT_5_BRANDS": {
+      "incrementalCalls_sharedModel": 0,
+      "incrementalCalls_isolatedReexecutionModel": 86,
+      "incrementalHistoricUsd_sharedModel": 0,
+      "incrementalHistoricUsd_isolatedModel": 24.8305
+    }
+  },
+  "OPTIMIZATION": {
+    "SHARED_PROMPT_OPTIMIZATION_OPPORTUNITY": "YES_ALREADY_CAPTURED",
+    "POTENTIAL_CALL_REDUCTION": 0,
+    "TRADEOFF": "Current architecture already extracts multi-brand evidence per prompt. Splitting by brand would increase calls without improving comparability."
+  },
+  "DATASET": {
+    "CLASS": "DEMO_VALIDATION",
+    "note": "Four-parent filter universe on staging remains demo/showcase — not client production history"
+  },
+  "RECOMMENDATION": {
+    "RECOMMENDED_MONTHLY_MONITORING_SCOPE": "Single shared peer-set measurement period — BRAND_LONGITUDINAL_COHORT_V1 monthly tiers (27 prompts, 86 calls) covering all 18 selected brands across 4 parents",
+    "RECOMMENDED_ESTIMATED_MONTHLY_BUDGET_HISTORIC": 24.8305,
+    "RECOMMENDED_ESTIMATED_MONTHLY_BUDGET_CONSERVATIVE": 51.305,
+    "RECOMMENDED_ANNUAL_BUDGET_HISTORIC": 312.78,
+    "RECOMMENDED_ANNUAL_BUDGET_CONSERVATIVE": 658.86
+  },
+  "EXECUTION": {
+    "STATUS": "NOT_RUN",
+    "PROVIDER_CALLS": 0,
+    "SPEND": 0
+  },
+  "FINAL": "BRAND_AI_MULTI_PARENT_LONGITUDINAL_COST_AUDIT_PASS"
+}

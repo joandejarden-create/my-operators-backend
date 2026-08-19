@@ -1,0 +1,173 @@
+{
+  "BRAND_AI_LONGITUDINAL_BENCHMARK_RECERTIFICATION_READINESS_COMPLETE": true,
+  "recertificationVersion": "scenario_benchmark_longitudinal_recertification_v1",
+  "providerCalls": 0,
+  "spend": 0,
+  "uiChanges": 0,
+  "periodArchitecture": {
+    "version": "period_scoped_grain_v1",
+    "MEASUREMENT_PERIOD_PRESENT": true,
+    "PERIOD_PART_OF_COMPARISON_SCOPE": true,
+    "PERIOD_ROLE": "SEPARATE_DIMENSION",
+    "WITHIN_PERIOD_GRAIN_INCLUDES_PERIOD": false,
+    "LONGITUDINAL_GRAIN_INCLUDES_PERIOD": true,
+    "CURRENT_GRAIN_KEY": "scenario_soft_brand_collection_affiliation_v1|p_test|p_test|openai|en|CALA|1",
+    "COMPARISON_GRAIN_KEY_EXAMPLE": {
+      "periodA": "period_a|s|p|p|openai|en|CALA|1",
+      "periodB": "period_b|s|p|p|openai|en|CALA|1",
+      "distinct": true
+    },
+    "CROSS_PERIOD_DEDUP_RISK": "NO",
+    "CROSS_PERIOD_DEDUPLICATION": "PROHIBITED",
+    "POOLED_ALL_PERIODS_INDEX": "PROHIBITED",
+    "HISTORICAL_IDS_CHANGED": false,
+    "RECOMMENDED_PERIOD_SCOPING": "Scope benchmark calculation to one measurementPeriodId per index. Use buildComparisonGrainKey for ledger uniqueness across periods. Never merge response sets from different periods into one grainsByScenario index.",
+    "dimensions": {
+      "PROMPT": {
+        "field": "promptId",
+        "inWithinPeriodGrain": true,
+        "inLongitudinalGrain": true
+      },
+      "PROVIDER": {
+        "field": "provider",
+        "inWithinPeriodGrain": true,
+        "inLongitudinalGrain": true
+      },
+      "GEO": {
+        "field": "geography",
+        "inWithinPeriodGrain": true,
+        "inLongitudinalGrain": true
+      },
+      "LANGUAGE": {
+        "field": "language",
+        "inWithinPeriodGrain": true,
+        "inLongitudinalGrain": true
+      },
+      "SCENARIO": {
+        "field": "scenarioId",
+        "inWithinPeriodGrain": true,
+        "inLongitudinalGrain": true
+      },
+      "PROMPT_VERSION": {
+        "field": "promptVersion",
+        "inWithinPeriodGrain": true,
+        "inLongitudinalGrain": true
+      },
+      "MODEL_BOUNDARY": {
+        "field": "model",
+        "inWithinPeriodGrain": false,
+        "inLongitudinalGrain": true
+      },
+      "CLASSIFIER_VERSION": {
+        "field": "classifierVersion",
+        "inWithinPeriodGrain": false,
+        "inLongitudinalGrain": false
+      },
+      "MEASUREMENT_PERIOD": {
+        "field": "measurementPeriodId",
+        "inWithinPeriodGrain": false,
+        "inLongitudinalGrain": true,
+        "role": "SEPARATE_DIMENSION"
+      },
+      "OBSERVATION_TIMESTAMP": {
+        "field": "timestamp",
+        "inWithinPeriodGrain": false,
+        "inLongitudinalGrain": true,
+        "role": "DERIVABLE_ONLY"
+      },
+      "WAVE_ID": {
+        "field": "waveId",
+        "inWithinPeriodGrain": false,
+        "inLongitudinalGrain": false,
+        "role": "SEPARATE_DIMENSION"
+      }
+    }
+  },
+  "MEASUREMENT_PERIOD_PRESENT": true,
+  "PERIOD_PART_OF_COMPARISON_SCOPE": true,
+  "CROSS_PERIOD_DEDUP_RISK": "NO",
+  "FIX_REQUIRED": "NO",
+  "CURRENT_GRAIN_KEY": "scenario_soft_brand_collection_affiliation_v1|p_test|p_test|openai|en|CALA|1",
+  "PERIOD_SAFE": true,
+  "RECOMMENDED_PERIOD_SCOPING": "Scope benchmark calculation to one measurementPeriodId per index. Use buildComparisonGrainKey for ledger uniqueness across periods. Never merge response sets from different periods into one grainsByScenario index.",
+  "HISTORICAL_IDS_CHANGED": false,
+  "frozenBaseline": {
+    "AUTOGRAPH_103_DIFF": 0,
+    "TAPESTRY_103_DIFF": 0,
+    "ASCEND_67_DIFF": 0,
+    "frozen": {
+      "AUTOGRAPH_SOFT_BRAND": {
+        "expected": 103,
+        "actual": 103,
+        "DIFF": 0
+      },
+      "TAPESTRY_SOFT_BRAND": {
+        "expected": 103,
+        "actual": 103,
+        "DIFF": 0
+      },
+      "ASCEND_SOFT_COLLECTION": {
+        "expected": 67,
+        "actual": 67,
+        "DIFF": 0
+      }
+    },
+    "ok": true,
+    "note": "Baseline period indices must not be recomputed from pooled future data."
+  },
+  "availablePeriods": [
+    {
+      "measurementPeriodId": "aiv_brand_longitudinal_period_20260818_6579d2",
+      "source": "brand_longitudinal",
+      "kind": "LONGITUDINAL_PERIOD",
+      "qualityState": "VALID",
+      "completedAt": "2026-08-18T11:55:57.103Z"
+    },
+    {
+      "measurementPeriodId": "DEMO_VALIDATION",
+      "source": "baseline_corpus",
+      "kind": "FROZEN_CERTIFIED_BASELINE"
+    }
+  ],
+  "periodSliceCounts": {
+    "DEMO_VALIDATION": 241,
+    "aiv_brand_longitudinal_period_20260818_6579d2": 86
+  },
+  "CROSS_PERIOD_DEDUPLICATION": "PROHIBITED",
+  "POOLED_ALL_PERIODS_INDEX": "PROHIBITED",
+  "AUTOMATIC_CUSTOMER_PROMOTION": false,
+  "LIVE_CERTIFIED_VALUES_ONLY": "UNCHANGED",
+  "lifestyle": {
+    "STATUS": "SCENARIO_REDESIGN_REQUIRED"
+  },
+  "distribution": {
+    "STATUS": "PROMPT_DESIGN_REQUIRED"
+  },
+  "brandedResidences": {
+    "STATUS": "REDESIGN_REQUIRED"
+  },
+  "marketEntry": {
+    "STATUS": "MEASUREMENT_NOT_READY"
+  },
+  "target6Prepared": {
+    "CURIO_SOFT_BRAND": "READY_FOR_NEXT_PERIOD_EVALUATION",
+    "TRIBUTE_SOFT_BRAND": "READY_FOR_NEXT_PERIOD_EVALUATION",
+    "VIGNETTE_SOFT_BRAND": "READY_FOR_NEXT_PERIOD_EVALUATION"
+  },
+  "target8Prepared": {
+    "ASCEND_OWNER_FLEX": "READY_FOR_NEXT_PERIOD_EVALUATION",
+    "VIGNETTE_OWNER_FLEX": "READY_FOR_NEXT_PERIOD_EVALUATION",
+    "RADISSON_INDIVIDUALS_OWNER_FLEX": "READY_FOR_NEXT_PERIOD_EVALUATION"
+  },
+  "postWaveRecertification": {
+    "COMMAND_OR_MODULE": "scenario-benchmark-longitudinal-recertification:run",
+    "MODULE": "lib/ai-visibility/competitive-moat/scenario-benchmark-longitudinal-recertification.js",
+    "CREATED": true,
+    "PROVIDER_CALLS_REQUIRED": false,
+    "AUTOMATIC_CUSTOMER_PROMOTION": false,
+    "canRunRecertification": false,
+    "minimumPeriodsRequired": 2
+  },
+  "OPERATOR_DIFF": 0,
+  "PRIMARY_MONITORED_OPERATORS": 9
+}

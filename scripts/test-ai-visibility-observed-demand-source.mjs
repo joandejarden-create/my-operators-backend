@@ -134,27 +134,27 @@ test("source evaluation has no composite score field", () => {
   }
 });
 
-test("prompt mix requires 10 observed themes", () => {
-  assert.equal(OBSERVED_PROMPT_MIX_MIN_THEMES, 10);
-  assert.equal(shouldShowExecutivePromptMix({ observed: 9 }), false);
-  assert.equal(shouldShowExecutivePromptMix({ observed: 10 }), true);
+test("prompt mix uses V1 8-theme founder standard", () => {
+  assert.equal(OBSERVED_PROMPT_MIX_MIN_THEMES, 8);
+  const blocked = { seedStatus: "OBSERVED_DEMAND_SEED_PARTIAL", includedThemes: [] };
+  assert.equal(shouldShowExecutivePromptMix({ observed: 7 }, { seed: blocked }), false);
+  assert.equal(shouldShowExecutivePromptMix({ observed: 8 }, { seed: blocked }), true);
 });
 
-test("current copy is scenario-led not observed-active", () => {
-  assert.match(CLIENT_PROMPT_ORIGIN_COPY.lenses, /scenario-led/);
-  assert.doesNotMatch(CLIENT_PROMPT_ORIGIN_COPY.lenses, /We use both observed demand/);
-  assert.match(CLIENT_PROMPT_ORIGIN_COPY.lensesAfterActivation, /both observed demand/);
+test("current copy is observed-and-scenario complementary", () => {
+  assert.match(CLIENT_PROMPT_ORIGIN_COPY.lenses, /both observed demand/);
+  assert.match(CLIENT_PROMPT_ORIGIN_COPY.lenses, /externally measured query themes/);
+  assert.doesNotMatch(CLIENT_PROMPT_ORIGIN_COPY.lenses, /real owner searches/);
   assert.doesNotMatch(CLIENT_PROMPT_ORIGIN_COPY.methodology, /real owner searches/);
 });
 
-test("seed is partial after budget-capped sample", () => {
+test("seed is V1 validated after activation", () => {
   const seed = loadObservedDemandSeed();
-  assert.equal(seed.seedStatus, "OBSERVED_DEMAND_SEED_PARTIAL");
+  assert.equal(seed.seedStatus, "OBSERVED_DEMAND_SEED_V1_VALIDATED");
   assert.equal(seed.blockerCode, null);
-  assert.equal(seed.activationStatus, "NOT_ATTACHED_TO_LIVE_PROMPTS");
-  assert.equal(seed.promptMixEligible, false);
+  assert.equal(seed.activationStatus, "PROVENANCE_ATTACHED_MONITORING_ELIGIBLE_OFF");
+  assert.equal(seed.promptMixEligible, true);
   assert.equal((seed.includedThemes || []).length, 9);
-  assert.ok((seed.includedThemes || []).length < OBSERVED_PROMPT_MIX_MIN_THEMES);
 });
 
 test("sample report records budget-capped success", () => {
@@ -221,12 +221,14 @@ test("refinement seeds skip validated themes and stay under preferred cap", () =
   assert.equal(feesKept.usable, true);
 });
 
-test("client JS mix gate uses 10 observed", () => {
+test("client JS mix uses showPromptMix without a 10-count hero", () => {
   const js = fs.readFileSync(
     path.join(root, "public", "js", "ai-visibility", "ai-visibility-brand.js"),
     "utf8"
   );
-  assert.ok(js.includes("(observed || 0) >= 10"));
+  assert.ok(js.includes("summary.showPromptMix === true"));
+  assert.ok(!js.includes("(observed || 0) >= 10"));
+  assert.ok(js.includes("Prompt Intelligence"));
 });
 
 console.log(`\nObserved demand source tests: ${passed} passed, ${failed} failed\n`);

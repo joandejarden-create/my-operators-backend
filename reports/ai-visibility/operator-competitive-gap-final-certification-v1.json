@@ -1,0 +1,379 @@
+{
+  "token": "OPERATOR_AI_COMMERCIAL_TRUTH_COMPETITIVE_GAP_FINAL_CERTIFICATION_COMPLETE",
+  "truth": {
+    "productionRequiredFields": [
+      "OPERATOR_MODEL",
+      "MANAGED_BRAND_AFFILIATED",
+      "THIRD_PARTY_MANAGEMENT",
+      "GEOGRAPHIC_OPERATING_SCOPE",
+      "BRAND_AGNOSTIC_CAPABILITY"
+    ],
+    "detailOnlyFields": [
+      "FULL_SERVICE_CAPABILITY",
+      "LUXURY_CAPABILITY",
+      "LIFESTYLE_BOUTIQUE_CAPABILITY",
+      "RESORT_CAPABILITY",
+      "INDEPENDENT_HOTEL_CAPABILITY",
+      "CONVERSION_REPOSITIONING_CAPABILITY"
+    ],
+    "unresolvedCount": 18
+  },
+  "operatorModels": [
+    {
+      "operator": "Marriott International — Managed",
+      "canonicalId": "recGmiPhRt6hiayd9",
+      "model": "BRAND_MANAGED_PLATFORM",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "VALIDATED"
+    },
+    {
+      "operator": "IHG Hotels & Resorts — Managed",
+      "canonicalId": "rec7IXYQYpKMYsrDl",
+      "model": "BRAND_MANAGED_PLATFORM",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "VALIDATED"
+    },
+    {
+      "operator": "Hilton — Managed",
+      "canonicalId": "rec3Uwxe6ovpiokuN",
+      "model": "BRAND_MANAGED_PLATFORM",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "VALIDATED"
+    },
+    {
+      "operator": "Aimbridge Hospitality LATAM",
+      "canonicalId": "recGWxIJqnYHkJZFD",
+      "model": "THIRD_PARTY_MANAGER",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "VALIDATED"
+    },
+    {
+      "operator": "Hotel Equities CALA",
+      "canonicalId": "recWPKu5laVZxsvpn",
+      "model": "THIRD_PARTY_MANAGER",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "VALIDATED"
+    },
+    {
+      "operator": "Arbor Lodging CALA",
+      "canonicalId": "recF5Z87OAqFgndoq",
+      "model": "THIRD_PARTY_MANAGER",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "INSUFFICIENT_OPERATOR_SPECIFIC_EVIDENCE"
+    },
+    {
+      "operator": "GHL Hoteles / GHL Holding CALA",
+      "canonicalId": "reciI2tYQBfMoMK9G",
+      "model": "REGIONAL_PLATFORM_MIXED",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "VALIDATED"
+    },
+    {
+      "operator": "Brittain Resorts & Hotels — US Southeast",
+      "canonicalId": "receHCdI6CEsJqdG4",
+      "model": "THIRD_PARTY_MANAGER",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "VALIDATED"
+    },
+    {
+      "operator": "Remington Hospitality (CALA)",
+      "canonicalId": "rec6UB6RpMKSs2tAo",
+      "model": "THIRD_PARTY_MANAGER",
+      "validationState": "PRODUCTION_VALIDATED",
+      "competitiveEvidenceState": "VALIDATED"
+    }
+  ],
+  "scenarioEligibility": {
+    "totalOperatorScenarioPairs": 108,
+    "eligible": 64,
+    "conditionallyEligible": 31,
+    "outOfScope": 12,
+    "insufficientTruth": 1,
+    "unknown": 0
+  },
+  "comparability": {
+    "before": {
+      "CORE": 96,
+      "SECONDARY": 108,
+      "CONDITIONAL": 396,
+      "NON_COMPARABLE": 264
+    },
+    "after": {
+      "CORE": 38,
+      "SECONDARY": 166,
+      "CONDITIONAL": 396,
+      "NON_COMPARABLE": 264
+    }
+  },
+  "gapReclassification": {
+    "before": {
+      "CANDIDATE": 153,
+      "TRUE_GAP": 10,
+      "EXPECTED_POSITIONING": 37,
+      "OUT_OF_SCOPE": 22,
+      "INSUFFICIENT_CONTEXT": 8,
+      "REQUIRES_REVIEW": 106
+    },
+    "after": {
+      "TRUE_COMPETITIVE_GAP": 8,
+      "EXPECTED_POSITIONING_DIFFERENCE": 10,
+      "SCENARIO_OUT_OF_SCOPE": 22,
+      "INSUFFICIENT_CONTEXT": 59,
+      "REQUIRES_REVIEW": 122,
+      "NOT_A_GAP": 34,
+      "CANDIDATE": 221
+    }
+  },
+  "validation": {
+    "devCases": 11,
+    "holdoutCases": 104,
+    "corpusHoldoutCases": 95,
+    "constructedHoldoutCases": 9,
+    "coverage": {
+      "operators": 9,
+      "scenarios": 12,
+      "providerScopes": [
+        null,
+        "claude",
+        "openai",
+        "gemini",
+        "perplexity",
+        "ALL_PROVIDERS"
+      ],
+      "relations": [
+        "SECONDARY_CONTEXT",
+        "CORE_COMPARABLE",
+        "NON_COMPARABLE",
+        "CONDITIONAL"
+      ],
+      "hasArbor": true,
+      "hasRemington": true,
+      "hasBrandManaged": true,
+      "hasTpm": true,
+      "hasCore": true,
+      "hasSecondary": true,
+      "hasConditional": true,
+      "hasNonComparable": true
+    },
+    "precision": 1,
+    "recall": 1,
+    "f1": 1,
+    "criticalIdentityErrors": 0,
+    "brandAsOperatorErrors": 0,
+    "regionalScopeErrors": 0,
+    "secondaryAsCoreErrors": 0,
+    "conditionalAsCoreErrors": 0,
+    "nonComparableAsCoreErrors": 0
+  },
+  "arbor": {
+    "currentStatus": "INSUFFICIENT_OPERATOR_SPECIFIC_EVIDENCE",
+    "recommendedStatus": "INSUFFICIENT_OPERATOR_SPECIFIC_EVIDENCE",
+    "classification": "few_live_positive_mentions",
+    "livePositiveMentions": 0,
+    "holdoutLiveCases": 39,
+    "positiveGoldCases": 0,
+    "negativeGoldCases": 39,
+    "precision": 1,
+    "recall": 1,
+    "rootCause": "Holdout is true-negative only: 39 ABSENT gold cases and 0 PRESENT gold cases. Precision and recall are 100% because every case is a correct negative. There is no live positive operator-specific mention evidence to certify Arbor Presence or Arbor-specific competitive claims.",
+    "notAliasAmbiguity": true,
+    "notSilentlyCleared": true,
+    "executiveCompetitiveClaims": false,
+    "clientCompetitiveClaims": "BLOCKED"
+  },
+  "scenarioTiers": [
+    {
+      "scenarioId": "op_scenario_full_service_uu_operator_selection_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "customerEligible": "YES"
+    },
+    {
+      "scenarioId": "op_scenario_luxury_operator_selection_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CONDITIONAL",
+      "customerEligible": "NO"
+    },
+    {
+      "scenarioId": "op_scenario_lifestyle_boutique_operator_selection_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CONDITIONAL",
+      "customerEligible": "NO"
+    },
+    {
+      "scenarioId": "op_scenario_owner_control_flexibility_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "customerEligible": "YES"
+    },
+    {
+      "scenarioId": "op_scenario_third_party_management_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "customerEligible": "YES"
+    },
+    {
+      "scenarioId": "op_scenario_brand_agnostic_operation_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "customerEligible": "YES"
+    },
+    {
+      "scenarioId": "op_scenario_independent_hotel_operation_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "customerEligible": "YES"
+    },
+    {
+      "scenarioId": "op_scenario_conversion_repositioning_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CONDITIONAL",
+      "customerEligible": "NO"
+    },
+    {
+      "scenarioId": "op_scenario_commercial_revenue_capability_v1",
+      "questionsMissingTier": "DETAIL_ONLY",
+      "competitiveGapTier": "DETAIL_ONLY",
+      "customerEligible": "NO"
+    },
+    {
+      "scenarioId": "op_scenario_resort_operation_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CONDITIONAL",
+      "customerEligible": "NO"
+    },
+    {
+      "scenarioId": "op_scenario_cala_latam_regional_capability_v1",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "customerEligible": "YES"
+    },
+    {
+      "scenarioId": "op_scenario_institutional_platform_alignment_v1",
+      "questionsMissingTier": "DETAIL_ONLY",
+      "competitiveGapTier": "DETAIL_ONLY",
+      "customerEligible": "NO"
+    }
+  ],
+  "clientPromotion": {
+    "productionCertified": "PARTIAL",
+    "clientPromotedCount": 8,
+    "customerSafeRows": [
+      {
+        "subjectOperator": "Aimbridge Hospitality (LATAM)",
+        "ownerIntent": "Upper-upscale full-service operator selection",
+        "providerScope": "claude",
+        "relevantCoreOperatorsPresent": [
+          "Hotel Equities (CALA)"
+        ],
+        "gapInterpretation": "TRUE_COMPETITIVE_GAP",
+        "scenarioId": "op_scenario_full_service_uu_operator_selection_v1",
+        "subjectPresence": "ABSENT",
+        "evidenceCount": 1
+      },
+      {
+        "subjectOperator": "Hotel Equities (CALA)",
+        "ownerIntent": "Upper-upscale full-service operator selection",
+        "providerScope": "gemini",
+        "relevantCoreOperatorsPresent": [
+          "Aimbridge Hospitality (LATAM)"
+        ],
+        "gapInterpretation": "TRUE_COMPETITIVE_GAP",
+        "scenarioId": "op_scenario_full_service_uu_operator_selection_v1",
+        "subjectPresence": "ABSENT",
+        "evidenceCount": 1
+      },
+      {
+        "subjectOperator": "Hotel Equities (CALA)",
+        "ownerIntent": "Owner-control operator selection",
+        "providerScope": "openai",
+        "relevantCoreOperatorsPresent": [
+          "Aimbridge Hospitality (LATAM)"
+        ],
+        "gapInterpretation": "TRUE_COMPETITIVE_GAP",
+        "scenarioId": "op_scenario_owner_control_flexibility_v1",
+        "subjectPresence": "ABSENT",
+        "evidenceCount": 2
+      },
+      {
+        "subjectOperator": "Hotel Equities (CALA)",
+        "ownerIntent": "Brand-agnostic operator selection",
+        "providerScope": "openai",
+        "relevantCoreOperatorsPresent": [
+          "Aimbridge Hospitality (LATAM)"
+        ],
+        "gapInterpretation": "TRUE_COMPETITIVE_GAP",
+        "scenarioId": "op_scenario_brand_agnostic_operation_v1",
+        "subjectPresence": "ABSENT",
+        "evidenceCount": 2
+      },
+      {
+        "subjectOperator": "Hotel Equities (CALA)",
+        "ownerIntent": "Independent-hotel operator selection",
+        "providerScope": "claude",
+        "relevantCoreOperatorsPresent": [
+          "Aimbridge Hospitality (LATAM)",
+          "Remington Hospitality (CALA)"
+        ],
+        "gapInterpretation": "TRUE_COMPETITIVE_GAP",
+        "scenarioId": "op_scenario_independent_hotel_operation_v1",
+        "subjectPresence": "ABSENT",
+        "evidenceCount": 1
+      },
+      {
+        "subjectOperator": "Remington Hospitality (CALA)",
+        "ownerIntent": "Owner-control operator selection",
+        "providerScope": "openai",
+        "relevantCoreOperatorsPresent": [
+          "Aimbridge Hospitality (LATAM)"
+        ],
+        "gapInterpretation": "TRUE_COMPETITIVE_GAP",
+        "scenarioId": "op_scenario_owner_control_flexibility_v1",
+        "subjectPresence": "ABSENT",
+        "evidenceCount": 2
+      },
+      {
+        "subjectOperator": "Remington Hospitality (CALA)",
+        "ownerIntent": "Brand-agnostic operator selection",
+        "providerScope": "openai",
+        "relevantCoreOperatorsPresent": [
+          "Aimbridge Hospitality (LATAM)"
+        ],
+        "gapInterpretation": "TRUE_COMPETITIVE_GAP",
+        "scenarioId": "op_scenario_brand_agnostic_operation_v1",
+        "subjectPresence": "ABSENT",
+        "evidenceCount": 2
+      },
+      {
+        "subjectOperator": "Remington Hospitality (CALA)",
+        "ownerIntent": "CALA / Latin America operator selection",
+        "providerScope": "perplexity",
+        "relevantCoreOperatorsPresent": [
+          "Hotel Equities (CALA)",
+          "Aimbridge Hospitality (LATAM)"
+        ],
+        "gapInterpretation": "TRUE_COMPETITIVE_GAP",
+        "scenarioId": "op_scenario_cala_latam_regional_capability_v1",
+        "subjectPresence": "ABSENT",
+        "evidenceCount": 3
+      }
+    ],
+    "truthSufficientForPromotedRows": "YES"
+  },
+  "questionsMissing": {
+    "status": "READY",
+    "regression": 0,
+    "totalMissingRows": 36,
+    "applicableMissingRows": 33
+  },
+  "next": "OPERATOR_COMPETITIVE_GAP_PARTIALLY_CERTIFIED",
+  "final": "OPERATOR_AI_COMMERCIAL_TRUTH_COMPETITIVE_GAP_FINAL_CERTIFICATION_PARTIAL",
+  "security": {
+    "rawPromptLeaks": 0,
+    "comparabilityMatrixCustomerLeaks": 0
+  },
+  "execution": {
+    "providerCalls": 0,
+    "spend": "$0"
+  }
+}

@@ -1,39 +1,56 @@
 {
-  "run_id": "overnight_dfd54698",
+  "run_id": "overnight_942a56b6",
   "version": "overnight-census-enrichment-v1",
-  "started_at": "2026-08-16T23:05:46.541Z",
-  "end_at": "2026-08-17T05:05:46.541Z",
+  "started_at": "2026-08-17T21:35:38.350Z",
+  "end_at": "2026-08-18T02:35:38.350Z",
   "mode": "run",
   "production_writes": true,
   "config": {
-    "max_runtime_minutes": 360,
+    "max_runtime_minutes": 300,
     "max_external_cost_usd": 50,
     "plateau_zero_cycles": 2,
-    "cycle_pause_ms": 8000,
+    "cycle_pause_ms": 4000,
     "cutoff_guard_minutes": 12,
     "max_cycles": 200
   },
   "next_profile_index": 0,
-  "consecutive_zero_by_profile": {
-    "brand_focus": 2,
-    "brand_rooms": 0,
-    "rooms_focus": 2,
-    "fundamentals": 0,
-    "opportunistic_coords": 2
+  "next_phase_index": 7,
+  "phase_status": {
+    "phase_0_deterministic": "READY",
+    "phase_1_structured": "PLATEAUED",
+    "phase_1b_apify_first_party": "EXHAUSTED",
+    "phase_2_live_directories": "EXHAUSTED",
+    "phase_3_rooms_corroboration": "EXHAUSTED",
+    "phase_4_pdf_factsheet": "EXHAUSTED",
+    "phase_5_residual": "EXHAUSTED",
+    "phase_6_newly_eligible_coords": "EXHAUSTED",
+    "phase_7_measure": "ACTIVE"
+  },
+  "consecutive_zero_by_profile": {},
+  "consecutive_zero_by_phase": {
+    "phase_0_deterministic": 0,
+    "phase_1_structured": 2,
+    "phase_1b_apify_first_party": 2,
+    "phase_2_live_directories": 2,
+    "phase_3_rooms_corroboration": 2,
+    "phase_4_pdf_factsheet": 2,
+    "phase_5_residual": 2,
+    "phase_6_newly_eligible_coords": 2,
+    "phase_7_measure": 2
   },
   "lane_status": {
-    "brand_rooms": "RETRY_LATER",
-    "brand_focus": "PLATEAUED",
-    "rooms_focus": "PLATEAUED",
-    "fundamentals": "RETRY_LATER",
-    "opportunistic_coords": "PLATEAUED"
+    "brand_rooms": "READY",
+    "brand_focus": "READY",
+    "rooms_focus": "READY",
+    "fundamentals": "READY",
+    "opportunistic_coords": "READY"
   },
   "aggregates": {
-    "cycles_completed": 12,
+    "cycles_completed": 20,
     "properties_researched": 0,
-    "properties_patched": 12,
-    "fields_written": 34,
-    "current_brand_writes": 12,
+    "properties_patched": 281,
+    "fields_written": 572,
+    "current_brand_writes": 0,
     "rooms_writes": 0,
     "state_patches": 0,
     "city_patches": 0,
@@ -43,11 +60,11 @@
     "website_patches": 0,
     "phone_patches": 0,
     "brand_conflicts": 0,
-    "brand_mapping_gaps": 306,
-    "rooms_candidates_held": 4084,
+    "brand_mapping_gaps": 2052,
+    "rooms_candidates_held": 2042,
     "rooms_conflicts": 0,
     "external_requests": 0,
-    "estimated_cost_usd": 0,
+    "estimated_cost_usd": 0.834,
     "mapbox_requests": 0,
     "mapbox_estimated_cost": 0,
     "errors": 0,
@@ -57,41 +74,107 @@
     "BENCHMARK_ROOM_WRITES": 0,
     "DESTRUCTIVE_OVERWRITES": 0,
     "WRONG_TABLE_WRITES": 0,
-    "sources_exhausted": [],
+    "sources_exhausted": [
+      "phase_1b_apify_first_party",
+      "phase_2_live_directories",
+      "phase_3_rooms_corroboration",
+      "phase_4_pdf_factsheet",
+      "phase_6_newly_eligible_coords",
+      "phase_5_residual"
+    ],
     "sources_plateaued": [
-      "brand_focus",
-      "brand_rooms",
-      "rooms_focus",
-      "fundamentals",
-      "opportunistic_coords"
+      "phase_1_structured"
     ],
     "sources_blocked": [],
     "sources_usage_review": [],
     "yield_by_cycle": [
       {
-        "profile": "brand_focus",
-        "useful_writes": 12,
-        "brand_writes": 11,
+        "profile": "phase_0_deterministic",
+        "mode": "A",
+        "useful_writes": 1,
+        "brand_writes": 0,
         "rooms_writes": 0,
         "coord_writes": 0,
-        "fields_written": 31,
-        "properties_patched": 11,
+        "fields_written": 191,
+        "properties_patched": 94,
         "zero_yield": false,
-        "at": "2026-08-16T23:08:32.555Z"
+        "at": "2026-08-17T21:36:16.903Z"
       },
       {
-        "profile": "brand_focus",
-        "useful_writes": 2,
-        "brand_writes": 1,
+        "profile": "phase_1_structured",
+        "mode": "A",
+        "useful_writes": 0,
+        "brand_writes": 0,
         "rooms_writes": 0,
         "coord_writes": 0,
-        "fields_written": 3,
-        "properties_patched": 1,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-17T21:49:17.588Z"
+      },
+      {
+        "profile": "phase_1b_apify_first_party",
+        "mode": "B",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-17T21:51:04.951Z"
+      },
+      {
+        "profile": "phase_2_live_directories",
+        "mode": "B",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-17T21:54:07.951Z"
+      },
+      {
+        "profile": "phase_3_rooms_corroboration",
+        "mode": "B",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-17T21:54:58.202Z"
+      },
+      {
+        "profile": "phase_4_pdf_factsheet",
+        "mode": "B",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-17T21:55:39.142Z"
+      },
+      {
+        "profile": "phase_5_residual",
+        "mode": "B",
+        "useful_writes": 1,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 17,
+        "properties_patched": 5,
         "zero_yield": false,
-        "at": "2026-08-16T23:11:03.505Z"
+        "at": "2026-08-17T21:56:36.872Z"
       },
       {
-        "profile": "brand_focus",
+        "profile": "phase_6_newly_eligible_coords",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -99,10 +182,11 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-16T23:13:45.691Z"
+        "at": "2026-08-17T22:00:54.014Z"
       },
       {
-        "profile": "brand_focus",
+        "profile": "phase_7_measure",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -110,10 +194,23 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-16T23:16:49.692Z"
+        "at": "2026-08-17T22:01:31.522Z"
       },
       {
-        "profile": "brand_rooms",
+        "profile": "phase_0_deterministic",
+        "mode": "A",
+        "useful_writes": 1,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 182,
+        "properties_patched": 91,
+        "zero_yield": false,
+        "at": "2026-08-17T22:02:16.497Z"
+      },
+      {
+        "profile": "phase_1_structured",
+        "mode": "A",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -121,10 +218,11 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-16T23:26:15.549Z"
+        "at": "2026-08-17T22:24:31.964Z"
       },
       {
-        "profile": "brand_rooms",
+        "profile": "phase_1b_apify_first_party",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -132,10 +230,11 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-16T23:35:27.510Z"
+        "at": "2026-08-17T22:27:18.406Z"
       },
       {
-        "profile": "rooms_focus",
+        "profile": "phase_2_live_directories",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -143,10 +242,11 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-16T23:39:34.677Z"
+        "at": "2026-08-17T22:33:52.392Z"
       },
       {
-        "profile": "fundamentals",
+        "profile": "phase_3_rooms_corroboration",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -154,10 +254,11 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-16T23:47:38.197Z"
+        "at": "2026-08-17T22:34:41.938Z"
       },
       {
-        "profile": "opportunistic_coords",
+        "profile": "phase_4_pdf_factsheet",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -165,10 +266,11 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-16T23:51:27.626Z"
+        "at": "2026-08-17T22:35:34.699Z"
       },
       {
-        "profile": "rooms_focus",
+        "profile": "phase_5_residual",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -176,10 +278,11 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-16T23:55:40.700Z"
+        "at": "2026-08-17T22:36:38.847Z"
       },
       {
-        "profile": "fundamentals",
+        "profile": "phase_6_newly_eligible_coords",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -187,10 +290,11 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-17T00:03:49.608Z"
+        "at": "2026-08-17T22:41:23.327Z"
       },
       {
-        "profile": "opportunistic_coords",
+        "profile": "phase_7_measure",
+        "mode": "B",
         "useful_writes": 0,
         "brand_writes": 0,
         "rooms_writes": 0,
@@ -198,18 +302,42 @@
         "fields_written": 0,
         "properties_patched": 0,
         "zero_yield": true,
-        "at": "2026-08-17T00:07:51.292Z"
+        "at": "2026-08-17T22:41:58.142Z"
+      },
+      {
+        "profile": "phase_0_deterministic",
+        "mode": "A",
+        "useful_writes": 1,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 182,
+        "properties_patched": 91,
+        "zero_yield": false,
+        "at": "2026-08-17T22:42:41.866Z"
+      },
+      {
+        "profile": "phase_5_residual",
+        "mode": "B",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-17T22:43:46.166Z"
       }
     ],
     "top_yield_sources": [
       {
-        "company": "Marriott",
-        "current_brand_writes": 3,
-        "attempted": 9,
-        "yield_pct": 0.7
+        "company": "Hilton",
+        "current_brand_writes": 0,
+        "attempted": 0,
+        "yield_pct": 0
       },
       {
-        "company": "Hilton",
+        "company": "Marriott",
         "current_brand_writes": 0,
         "attempted": 0,
         "yield_pct": 0
@@ -221,23 +349,37 @@
         "yield_pct": 0
       }
     ],
-    "low_yield_or_blocked": []
+    "low_yield_or_blocked": [],
+    "mode_a_ms": 2227185,
+    "mode_b_ms": 1783988,
+    "brand_mapping_repairs": 276,
+    "live_domains_discovered": 0,
+    "live_domains_crawled": 4,
+    "new_source_registry_entries": 3,
+    "residual_researched": 72,
+    "residual_multi_field": 2,
+    "rooms_corroborated": 0,
+    "rooms_high_first_party": 0,
+    "rooms_high_two_source": 0,
+    "newly_eligible_coordinates": 3430,
+    "validated_independent": 0,
+    "brand_unresolved": 13436
   },
   "dashboard_before": {
     "n": 15575,
     "current_brand": {
-      "populated": 2120,
-      "missing": 13455,
+      "populated": 2139,
+      "missing": 13436,
       "completeness_pct": 14
     },
     "brand_family": {
-      "populated": 2146,
-      "missing": 13429,
+      "populated": 2162,
+      "missing": 13413,
       "completeness_pct": 14
     },
     "family_source_family": {
-      "populated": 2539,
-      "missing": 13036,
+      "populated": 2555,
+      "missing": 13020,
       "completeness_pct": 16
     },
     "continent": {
@@ -256,28 +398,28 @@
       "completeness_pct": 89
     },
     "city": {
-      "populated": 15285,
-      "missing": 290,
+      "populated": 15286,
+      "missing": 289,
       "completeness_pct": 98
     },
     "address": {
-      "populated": 13273,
-      "missing": 2302,
+      "populated": 13300,
+      "missing": 2275,
       "completeness_pct": 85
     },
     "postal_code": {
-      "populated": 5934,
-      "missing": 9641,
-      "completeness_pct": 38
+      "populated": 6031,
+      "missing": 9544,
+      "completeness_pct": 39
     },
     "latitude": {
-      "populated": 10417,
-      "missing": 5158,
+      "populated": 10419,
+      "missing": 5156,
       "completeness_pct": 67
     },
     "longitude": {
-      "populated": 10417,
-      "missing": 5158,
+      "populated": 10419,
+      "missing": 5156,
       "completeness_pct": 67
     },
     "rooms": {
@@ -291,19 +433,20 @@
       "completeness_pct": 75
     },
     "phone": {
-      "populated": 14009,
-      "missing": 1566,
+      "populated": 14076,
+      "missing": 1499,
       "completeness_pct": 90
     }
   },
   "last_cycle_report": {
-    "profile": "opportunistic_coords",
-    "status": "master_enrichment_wave_complete",
+    "profile": "phase_5_residual",
+    "mode": "B",
+    "status": "phase_5_residual",
     "brand_writes": 0,
     "rooms_writes": 0
   },
-  "stop_reason": "all_structured_lanes_plateaued",
-  "current_lane": "Opportunistic Coordinates",
-  "current_source": "opportunistic_coords",
-  "finished_at": "2026-08-17T00:07:51.306Z"
+  "stop_reason": "all_available_research_modes_exhausted",
+  "current_lane": "Residual property research",
+  "current_source": "phase_5_residual",
+  "finished_at": "2026-08-17T22:43:46.236Z"
 }

@@ -69,7 +69,7 @@ const IHG_IDS = {
 };
 
 test("IHG portfolio — IHG brands only; canonical parent IHG; no duplicate IDs", () => {
-  assert.equal(showcase.version, "1.1");
+  assert.equal(showcase.version, "1.2");
   assert.deepEqual(listShowcaseCompanyKeys(showcase).sort(), [
     "choice",
     "hilton",

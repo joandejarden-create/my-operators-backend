@@ -11,7 +11,7 @@ Census: 15575
 | Brand Family | 14% |
 | Rooms | 17% |
 | Latitude | 67% |
-| Postal Code | 38% |
+| Postal Code | 39% |
 
 Founder decision: NO
 HBX rooms/coords writes: 0

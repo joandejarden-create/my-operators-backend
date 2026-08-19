@@ -1,0 +1,200 @@
+{
+  "token": "OPERATOR_AI_CERTIFICATION_EXPANSION_AUDIT_V1_COMPLETE",
+  "date": "2026-08-19",
+  "providerCalls": 0,
+  "spend": "$0",
+  "pairsAudited": 108,
+  "classification": {
+    "CERTIFIED_NOW": 11,
+    "CERTIFIABLE_WITH_EXISTING_TRUTH": 0,
+    "CERTIFIABLE_WITH_OFFLINE_TRUTH_ENRICHMENT": 27,
+    "NEEDS_NEXT_NORMAL_MONITORING_WAVE": 30,
+    "NEEDS_TARGETED_PROVIDER_VALIDATION": 0,
+    "NEEDS_SCENARIO_REDESIGN": 0,
+    "INSUFFICIENT_OPERATOR_EVIDENCE": 12,
+    "NOT_APPROPRIATE_FOR_COMPETITIVE_GAP": 28
+  },
+  "blockers": {
+    "TRUTH_DEPTH": 27,
+    "COMMERCIAL_COMPARABILITY": 4,
+    "SAMPLE_EVIDENCE": 22,
+    "POSITIVE_OPERATOR_EVIDENCE": 12,
+    "SCENARIO_SEMANTICS": 16,
+    "REGIONAL_SCOPE": 12,
+    "MODEL_MISMATCH": 0,
+    "PROVIDER_COVERAGE": 0,
+    "LONGITUDINAL_REPEATABILITY": 0,
+    "OTHER": 4
+  },
+  "requiresReview": {
+    "total": 122,
+    "canResolveWithTruth": 81,
+    "canResolveWithExistingRules": 0,
+    "needsScenarioRedesign": 0,
+    "needsMoreAiObservations": 0,
+    "shouldRemainReview": 41
+  },
+  "insufficientContext": {
+    "total": 59,
+    "truthFixable": 0,
+    "scenarioFixable": 0,
+    "dataFixable": 0,
+    "structurallyUncertifiable": 59,
+    "note": "All 59 are Arbor insufficient-operator-specific-evidence — structural until positive mentions observed."
+  },
+  "offlineTruthExpansionRoi": [
+    {
+      "field": "LUXURY_CAPABILITY_DEPTH",
+      "operatorScenarioPairsUnlocked": 8,
+      "gapsPotentiallyUnlocked": "4-6 (luxury × TPM operators with evidence)",
+      "effort": "LOW",
+      "priority": "P1",
+      "note": "Resolve from Operator Master/Setup structured luxury fields. 7 of 9 operators missing this."
+    },
+    {
+      "field": "RESORT_CAPABILITY",
+      "operatorScenarioPairsUnlocked": 8,
+      "gapsPotentiallyUnlocked": "2-4",
+      "effort": "LOW",
+      "priority": "P1",
+      "note": "Hotel Equities missing RESORT_CAPABILITY. Others resolvable from Operator Setup/Explorer data."
+    },
+    {
+      "field": "CONVERSION_REPOSITIONING_CAPABILITY",
+      "operatorScenarioPairsUnlocked": 7,
+      "gapsPotentiallyUnlocked": "2-4",
+      "effort": "MEDIUM",
+      "priority": "P1",
+      "note": "5 operators missing. Requires structured track-record evidence, not marketing copy."
+    },
+    {
+      "field": "INDEPENDENT_HOTEL_CAPABILITY",
+      "operatorScenarioPairsUnlocked": 5,
+      "gapsPotentiallyUnlocked": "2-3",
+      "effort": "LOW",
+      "priority": "P1",
+      "note": "Would make brand-managed pairs CORE-eligible for independent-hotel scenario."
+    },
+    {
+      "field": "LIFESTYLE_BOUTIQUE_CAPABILITY",
+      "operatorScenarioPairsUnlocked": 8,
+      "gapsPotentiallyUnlocked": "3-5",
+      "effort": "MEDIUM",
+      "priority": "P2",
+      "note": "Requires validated track record, not self-reported capability."
+    }
+  ],
+  "scenarioExpansion": {
+    "luxury": {
+      "currentTier": "CONDITIONAL",
+      "blockers": "LUXURY_CAPABILITY_DEPTH missing for 7/9 operators; 1 INSUFFICIENT_TRUTH (Brittain)",
+      "canResolveOffline": true,
+      "estimatedNewGaps": "4-6 after truth enrichment",
+      "note": "Largest unlock by pair count. Requires structured luxury management evidence per operator."
+    },
+    "lifestyleBoutique": {
+      "currentTier": "CONDITIONAL",
+      "blockers": "All 9 operators eligible but brand-managed vs TPM pairs are CONDITIONAL not CORE",
+      "canResolveOffline": true,
+      "estimatedNewGaps": "3-5",
+      "note": "Requires independent-hotel/lifestyle structured track record."
+    },
+    "resort": {
+      "currentTier": "CONDITIONAL",
+      "blockers": "Hotel Equities RESORT_CAPABILITY missing; brand-managed pairs conditional",
+      "canResolveOffline": true,
+      "estimatedNewGaps": "2-4",
+      "note": "Brittain has resort evidence (Myrtle Beach). Others resolvable."
+    },
+    "conversionRepositioning": {
+      "currentTier": "CONDITIONAL",
+      "blockers": "CONVERSION_REPOSITIONING_CAPABILITY missing for 5 operators; Brittain OUT_OF_SCOPE",
+      "canResolveOffline": "PARTIAL",
+      "estimatedNewGaps": "2-3",
+      "note": "Harder to validate. Requires documented conversion projects, not marketing claims."
+    },
+    "commercialRevenue": {
+      "currentTier": "DETAIL_ONLY",
+      "recommendedPath": "REMAIN_DETAIL_ONLY",
+      "promptRedesignNeeded": false,
+      "note": "Mentions do not equal stronger capability. Presence is useful as context. No Competitive Gap."
+    },
+    "institutionalPlatform": {
+      "currentTier": "DETAIL_ONLY",
+      "recommendation": "KEEP",
+      "note": "28.6% operator naming rate. Generic platform responses dominate. Not operator-discriminating. Keep DETAIL_ONLY."
+    }
+  },
+  "arbor": {
+    "currentStatus": "INSUFFICIENT_OPERATOR_SPECIFIC_EVIDENCE",
+    "livePositiveMentions": 0,
+    "positiveGoldCases": 0,
+    "specialWaveJustified": false,
+    "nextNormalWaveSufficient": true,
+    "minPositiveEvidenceRecommended": 3,
+    "note": "Normal second wave with improved prompts likely generates 1-3 positive mentions. No special Arbor wave unless high business urgency."
+  },
+  "operatorIndex": {
+    "currentStatus": "BLOCKED",
+    "minCommercialComparabilityReady": "6+ CORE-eligible operators per scenario (currently 3-5 for TPM scenarios)",
+    "minScenarioCoverage": "4+ CORE scenarios with certified benchmarks",
+    "minLongitudinalPeriods": 2,
+    "providerScopeRequirements": "All 4 providers must have comparable observations",
+    "currentlyClose": "PARTIAL",
+    "note": "Presence index possible for TPM scenarios after one more monitoring wave. Full index needs luxury/resort truth."
+  },
+  "associations": {
+    "status": "RESEARCH_ONLY",
+    "nearProduction": 0,
+    "needsValidation": 5,
+    "notSuitable": 8,
+    "note": "All 13 families remain RESEARCH_ONLY. OWNER_ALIGNMENT, BRAND_AGNOSTIC_FLEXIBILITY, LOCAL_MARKET_EXPERTISE closest to validation but require structured evidence + holdout. Capability claims (LUXURY, RESORT, TECHNOLOGY) not suitable from AI mentions alone."
+  },
+  "narrativeSources": {
+    "status": "DEFERRED",
+    "readinessBlocker": "Low citation rate in current corpus; operator prompts do not reliably elicit citations. Requires either citation-specific prompt design or new source-extraction prompts. Cannot build from current corpus alone.",
+    "newPromptsRequired": true,
+    "canBuildFromCurrentCorpus": false
+  },
+  "expansionPlan": {
+    "P0": {
+      "action": "Offline truth enrichment: LUXURY_CAPABILITY_DEPTH + RESORT_CAPABILITY + INDEPENDENT_HOTEL_CAPABILITY from Operator Master/Setup structured fields",
+      "estimatedAdditionalCertifiedRelationships": "12-18 new CORE pairs",
+      "estimatedAdditionalClientVisibleGaps": "4-8",
+      "providerCallsRequired": 0,
+      "estimatedCost": "$0",
+      "engineeringEffort": "LOW"
+    },
+    "P1": {
+      "action": "Run normal second Operator monitoring wave (same prompts, fresh observations) + enrich CONVERSION_REPOSITIONING_CAPABILITY",
+      "estimatedAdditionalCertifiedRelationships": "8-12",
+      "estimatedAdditionalClientVisibleGaps": "3-6 (recurrence confirms existing + Arbor potential)",
+      "providerCallsRequired": "~80-100",
+      "estimatedCost": "$8-12",
+      "engineeringEffort": "MEDIUM"
+    },
+    "P2": {
+      "action": "Promote luxury/lifestyle/resort scenarios from CONDITIONAL to CORE after truth enrichment + second wave recurrence",
+      "estimatedAdditionalCertifiedRelationships": "15-25",
+      "estimatedAdditionalClientVisibleGaps": "6-12",
+      "providerCallsRequired": "~80-100 (same wave)",
+      "estimatedCost": "$8-12",
+      "engineeringEffort": "MEDIUM"
+    }
+  },
+  "visibilityLadder": {
+    "VISIBLE_NOW": "8 client-promoted gaps across 6 customer-eligible scenarios (Full-Service UU, Owner-Control, Brand-Agnostic, Independent Hotel, Third-Party Management, CALA/LATAM)",
+    "VISIBLE_AFTER_OFFLINE_TRUTH_EXPANSION": "4-8 additional gaps (luxury, resort, independent-hotel CORE promotion). Total ~12-16 gaps.",
+    "VISIBLE_AFTER_NEXT_NORMAL_WAVE": "3-6 additional gaps (recurrence, Arbor potential, All Providers certification). Total ~15-22 gaps.",
+    "VISIBLE_AFTER_SCENARIO_REDESIGN": "Commercial/Revenue redesign could add Presence-only value; Institutional stays DETAIL_ONLY.",
+    "NOT_WORTH_CERTIFYING": "Institutional Platform as competitive gap. Commercial/Revenue as competitive gap. Arbor competitive claims without evidence."
+  },
+  "normalWaveValue": "HIGH",
+  "normalWaveRecommendedTiming": "After P0 offline truth enrichment (1-2 weeks). This maximizes certification yield from the same $8-12 spend.",
+  "regression": {
+    "brandDiff": 0,
+    "operatorPresenceDiff": 0,
+    "operatorUiDiff": 0,
+    "primaryMonitoredOperators": 9
+  }
+}

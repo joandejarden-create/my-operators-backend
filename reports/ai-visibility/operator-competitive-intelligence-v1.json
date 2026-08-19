@@ -1,0 +1,252 @@
+{
+  "token": "OPERATOR_AI_COMPETITIVE_INTELLIGENCE_BUILD_V1_COMPLETE",
+  "questionsMissing": {
+    "version": "operator_questions_missing_v1",
+    "status": "READY",
+    "totalOperatorScenarioRows": 108,
+    "comparableRows": 108,
+    "totalMissingRows": 36,
+    "allProvidersReady": "YES",
+    "providerDisagreementReady": "YES",
+    "missingProviderEqualsZero": false,
+    "derivationContract": {
+      "version": "operator_all_providers_derived_v1",
+      "providerSpecificPrimary": true,
+      "derived": true,
+      "isAProvider": false,
+      "openAiProxy": false,
+      "weighting": "NONE",
+      "aggregation": "For each prompt, comparable providers = providers with a successful observation. All Providers presence = OR across those comparable providers. Failed, missing, or unavailable providers are excluded from the denominator and are never filled with zero.",
+      "disagreement": "PROVIDER_DISAGREEMENT when, for the same prompt, at least one comparable provider shows Presence and at least one comparable provider does not. Not a quality or confidence score.",
+      "customerSemantics": "Cross-provider observation of whether the operator appears for the owner-decision scenario. Not a fifth AI provider."
+    },
+    "allProvidersScope": "ALL_PROVIDERS"
+  },
+  "operatorScenarios": [
+    {
+      "scenarioId": "op_scenario_full_service_uu_operator_selection_v1",
+      "customerOwnerIntent": "Upper-upscale full-service operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "notes": "Operator-discriminating. Brand-managed trio may be CORE among themselves; brand-managed vs third-party is SECONDARY_CONTEXT, not an automatic gap."
+    },
+    {
+      "scenarioId": "op_scenario_luxury_operator_selection_v1",
+      "customerOwnerIntent": "Luxury hotel operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CONDITIONAL",
+      "notes": "High naming, but several third-party operators are only CONDITIONALLY_ELIGIBLE for luxury. Do not auto-label CORE gaps."
+    },
+    {
+      "scenarioId": "op_scenario_lifestyle_boutique_operator_selection_v1",
+      "customerOwnerIntent": "Lifestyle or boutique operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CONDITIONAL",
+      "notes": "Useful for Questions Missing. Brand-managed independent-hotel eligibility is conditional."
+    },
+    {
+      "scenarioId": "op_scenario_owner_control_flexibility_v1",
+      "customerOwnerIntent": "Owner-control operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "notes": "Brand-managed operators are out of scope. Third-party managers may be CORE comparable."
+    },
+    {
+      "scenarioId": "op_scenario_third_party_management_v1",
+      "customerOwnerIntent": "Third-party management selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "notes": "Primary competitive-gap scenario for third-party managers. Brand-managed absence is expected positioning, not a gap."
+    },
+    {
+      "scenarioId": "op_scenario_brand_agnostic_operation_v1",
+      "customerOwnerIntent": "Brand-agnostic operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "notes": "Brand-managed operators are out of scope. Multi-brand third-party managers may be CORE comparable."
+    },
+    {
+      "scenarioId": "op_scenario_independent_hotel_operation_v1",
+      "customerOwnerIntent": "Independent-hotel operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "notes": "Third-party / independent-capable managers. Brand-managed pairs stay conditional."
+    },
+    {
+      "scenarioId": "op_scenario_conversion_repositioning_v1",
+      "customerOwnerIntent": "Conversion or repositioning operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CONDITIONAL",
+      "notes": "Useful for Questions Missing. Several operators are only conditionally eligible."
+    },
+    {
+      "scenarioId": "op_scenario_commercial_revenue_capability_v1",
+      "customerOwnerIntent": "Commercial and revenue-capability operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "DETAIL_ONLY",
+      "competitiveGapTier": "DETAIL_ONLY",
+      "notes": "Presence absence is observable, but a competitive gap would imply capability superiority we do not certify from Presence."
+    },
+    {
+      "scenarioId": "op_scenario_resort_operation_v1",
+      "customerOwnerIntent": "Resort operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CONDITIONAL",
+      "notes": "High naming. Hotel Equities / Arbor resort eligibility is conditional."
+    },
+    {
+      "scenarioId": "op_scenario_cala_latam_regional_capability_v1",
+      "customerOwnerIntent": "CALA / Latin America operator selection",
+      "utility": "HIGH",
+      "questionsMissingTier": "CORE",
+      "competitiveGapTier": "CORE",
+      "notes": "CALA/LATAM third-party and GHL may be CORE where both eligible. Brittain is out of scope. Brand-managed is conditional."
+    },
+    {
+      "scenarioId": "op_scenario_institutional_platform_alignment_v1",
+      "customerOwnerIntent": "Institutional-platform operator selection",
+      "utility": "MEDIUM",
+      "questionsMissingTier": "DETAIL_ONLY",
+      "competitiveGapTier": "DETAIL_ONLY",
+      "notes": "Monitored-operator naming ~28.6%. Scenario often elicits generic institutional/platform answers. Low presence is not competitive weakness."
+    }
+  ],
+  "competitiveComparability": {
+    "model": "OPERATOR_LENS × MONITORED_SCOPE × SCENARIO_ELIGIBILITY",
+    "version": "operator_commercial_comparability_v1",
+    "truthSufficient": "PARTIAL",
+    "CORE_COMPARABLE_RELATIONSHIPS": {
+      "count": 96,
+      "examples": [
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_full_service_uu_operator_selection_v1)",
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_luxury_operator_selection_v1)",
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_conversion_repositioning_v1)",
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_commercial_revenue_capability_v1)"
+      ]
+    },
+    "SECONDARY_CONTEXT_RELATIONSHIPS": {
+      "count": 108,
+      "examples": [
+        "Marriott International (Managed) ↔ Aimbridge Hospitality (LATAM) (op_scenario_full_service_uu_operator_selection_v1)",
+        "Marriott International (Managed) ↔ Aimbridge Hospitality (LATAM) (op_scenario_conversion_repositioning_v1)",
+        "Marriott International (Managed) ↔ Aimbridge Hospitality (LATAM) (op_scenario_commercial_revenue_capability_v1)",
+        "Marriott International (Managed) ↔ Aimbridge Hospitality (LATAM) (op_scenario_resort_operation_v1)"
+      ]
+    },
+    "CONDITIONAL_RELATIONSHIPS": {
+      "count": 396,
+      "examples": [
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_lifestyle_boutique_operator_selection_v1)",
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_independent_hotel_operation_v1)",
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_cala_latam_regional_capability_v1)",
+        "Marriott International (Managed) ↔ Hilton (Managed) (op_scenario_lifestyle_boutique_operator_selection_v1)"
+      ]
+    },
+    "NON_COMPARABLE_RELATIONSHIPS": {
+      "count": 264,
+      "examples": [
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_owner_control_flexibility_v1)",
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_third_party_management_v1)",
+        "Marriott International (Managed) ↔ IHG Hotels & Resorts (Managed) (op_scenario_brand_agnostic_operation_v1)",
+        "Marriott International (Managed) ↔ Hilton (Managed) (op_scenario_owner_control_flexibility_v1)"
+      ]
+    }
+  },
+  "competitiveGap": {
+    "version": "operator_competitive_gap_v1",
+    "candidateGaps": 153,
+    "trueCompetitiveGaps": 10,
+    "expectedPositioningDifferences": 37,
+    "outOfScope": 22,
+    "insufficientContext": 8,
+    "requiresReview": 106,
+    "clientPromoted": 0,
+    "emergingCompetitor": false,
+    "productionGates": {
+      "presenceClassifierFrozen": true,
+      "competitiveGapPrecisionMin": 0.95,
+      "competitiveGapRecallMin": null,
+      "criticalIdentityErrorsMax": 0,
+      "brandAsOperatorErrorsMax": 0,
+      "providerScopeLeakageMax": 0,
+      "regionalScopeErrorsMax": 0,
+      "rawPromptLeaksMax": 0,
+      "truthSufficientRequired": "YES",
+      "arborExecutiveClaimsAllowed": false,
+      "clientPromotedUntilGatesPass": 0
+    }
+  },
+  "validation": {
+    "devCases": 11,
+    "holdoutCases": 9,
+    "precision": 1,
+    "recall": 1,
+    "f1": 1,
+    "criticalIdentityErrors": 0,
+    "brandAsOperatorErrors": 0,
+    "regionalScopeErrors": 0
+  },
+  "arbor": {
+    "currentStatus": "INSUFFICIENT_OPERATOR_SPECIFIC_EVIDENCE",
+    "recommendedStatus": "INSUFFICIENT_OPERATOR_SPECIFIC_EVIDENCE",
+    "classification": "few_live_positive_mentions",
+    "livePositiveMentions": 0,
+    "holdoutLiveCases": 39,
+    "positiveGoldCases": 0,
+    "negativeGoldCases": 39,
+    "precision": 1,
+    "recall": 1,
+    "rootCause": "Holdout is true-negative only: 39 ABSENT gold cases and 0 PRESENT gold cases. Precision and recall are 100% because every case is a correct negative. There is no live positive operator-specific mention evidence to certify Arbor Presence or Arbor-specific competitive claims.",
+    "notAliasAmbiguity": true,
+    "notSilentlyCleared": true,
+    "executiveCompetitiveClaims": false
+  },
+  "institutionalScenario": {
+    "currentUtility": "MEDIUM",
+    "recommendedTier": "DETAIL_ONLY",
+    "rationale": "The scenario is a real owner decision, but the live corpus mostly returns generic institutional/platform answers rather than operator-discriminating names. Do not treat low Presence as a competitive weakness. Keep evidence. Do not delete. Do not keep as CORE for competitive gap."
+  },
+  "associations": {
+    "status": "RESEARCH_ONLY",
+    "productionPromoted": 0,
+    "families": 13
+  },
+  "narrativeSources": {
+    "status": "DEFERRED"
+  },
+  "recommendationSignals": {
+    "status": "BLOCKED"
+  },
+  "newProviderCalls": {
+    "needed": "NO",
+    "reason": "The certified 83-response corpus is sufficient to build Questions Missing, All Providers, disagreement, comparability, diagnostic gaps, and gold labels. Arbor remains limited by zero live positive mentions; that is a status limitation, not a reason to execute a new wave in this task.",
+    "calls": 0,
+    "estimatedCost": "$0"
+  },
+  "regression": {
+    "brandDiff": 0,
+    "operatorPresenceDiff": 0,
+    "primaryMonitoredOperators": 9,
+    "remingtonBareBlocked": true,
+    "operatorUiDiff": 0,
+    "censusReads": 0
+  },
+  "execution": {
+    "providerCalls": 0,
+    "spend": "$0",
+    "waveId": "aiv_operator_presence_validation_20260818_1342_20ee11",
+    "corpusLoaded": true,
+    "extractionCount": 83
+  },
+  "next": "OPERATOR_COMPETITIVE_INTELLIGENCE_NEEDS_TARGETED_VALIDATION",
+  "final": "OPERATOR_AI_COMPETITIVE_INTELLIGENCE_BUILD_V1_PARTIAL"
+}

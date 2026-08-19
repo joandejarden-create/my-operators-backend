@@ -60,7 +60,7 @@ test("C. N=2 does not claim consistently recurring", () => {
   assert.ok(!/\bconsisten|recurring\b/i.test(out.governedEvidence));
 });
 
-test("D. truth gap N=1 body says one observed AI response", () => {
+test("D. truth gap N=1 body says one AI response", () => {
   const out = applyExecutiveCopyGovernance([
     {
       findingType: "POTENTIAL_AI_PERCEPTION_GAP",
@@ -71,7 +71,7 @@ test("D. truth gap N=1 body says one observed AI response", () => {
       title: "Potential AI Perception Gap",
     },
   ]).findings[0];
-  assert.ok(/\bOne observed AI response\b/i.test(out.governedBody));
+  assert.ok(/\bOne AI response\b/i.test(out.governedBody));
 });
 
 test("E. Association 48 + Narrative 34 are not blended", () => {
@@ -94,7 +94,7 @@ test("E. Association 48 + Narrative 34 are not blended", () => {
       headline: "Narrative",
     },
   ]).findings;
-  assert.ok(/48 qualifying association observations/i.test(out[0].governedEvidence));
+  assert.ok(/Repeated across 3 providers · 48 qualifying association observations/i.test(out[0].governedEvidence));
   assert.ok(!/34 comparable responses/i.test(out[0].governedEvidence));
   assert.ok(/34 comparable responses/i.test(out[1].governedEvidence));
 });
@@ -128,16 +128,19 @@ test("G. source can say cited but not influenced", () => {
   assert.ok(!/\binfluenc|drives|causes\b/i.test(out.governedEvidence));
 });
 
-test("H. no denominator available no fabricated fraction", () => {
+test("H. gap evidence uses repeated across providers pattern", () => {
   const out = applyExecutiveCopyGovernance([
     {
       findingType: "LARGEST_COMPETITIVE_GAP",
       providerCount: 4,
       observationCount: 10,
+      persistence: "STRONGLY_REPEATED",
       headline: "Gap",
       title: "Largest Competitive Gap",
     },
   ]).findings[0];
+  assert.match(out.governedEvidence, /Repeated across 4 providers · 10 observations/i);
+  assert.ok(!/Strongly Repeated/i.test(out.governedEvidence));
   assert.ok(!/\d+\s*of\s*\d+/.test(out.governedEvidence));
 });
 
@@ -179,7 +182,8 @@ test("J. body adds commercial interpretation and does not restate headline", () 
   assert.equal(out.copyValidation.EXECUTIVE_FINDING_INCLUDES_KEY_METRIC, true);
   assert.equal(out.copyValidation.WHITE_COPY_4_TO_5_LINE_TARGET, true);
   assert.equal(out.copyValidation.EVIDENCE_SECONDARY_NOT_PRIMARY, true);
-  assert.ok(/\bshortlist\b/i.test(out.governedBody));
+  assert.equal(out.copyValidation.EXECUTIVE_FINDING_FITS_FIVE_LINES, true);
+  assert.ok(/\bshortlists\b/i.test(out.governedBody));
 });
 
 test("K. association body uses positioning clarity language", () => {
@@ -199,6 +203,82 @@ test("K. association body uses positioning clarity language", () => {
   assert.equal(out.copyValidation.EXECUTIVE_FINDING_INCLUDES_KEY_METRIC, true);
   assert.ok(/\b48\b/i.test(out.governedBody));
   assert.ok(/\b3\b/i.test(out.governedBody));
+});
+
+test("L2. competitive strength uses presence copy not citation", () => {
+  const out = applyExecutiveCopyGovernance([
+    {
+      findingType: "LARGEST_COMPETITIVE_STRENGTH",
+      brandName: "Autograph Collection",
+      presenceDisplay: "42.0%",
+      geographyKey: "CALA",
+      title: "Largest Competitive Strength",
+    },
+  ]).findings[0];
+  assert.equal(out.evidenceConstruct, EVIDENCE_CONSTRUCTS.PRESENCE);
+  assert.ok(/\b42\.0%/.test(out.governedBody));
+  assert.ok(/\bleads this portfolio\b/i.test(out.governedBody));
+  assert.ok(!/\bcited\b/i.test(out.governedBody));
+  assert.equal(out.copyValidation.EXECUTIVE_FINDING_FITS_FIVE_LINES, true);
+});
+
+test("L. period change uses full executive finding copy", () => {
+  const out = applyExecutiveCopyGovernance([
+    {
+      findingType: "MATERIAL_MOVEMENT",
+      brandName: "Autograph Collection",
+      presenceDeltaPp: 8.3,
+      presenceDirection: "declining",
+      geographyKey: "CALA",
+      headline: "Autograph Collection AI Presence declining by 8.3 pp in CALA.",
+      title: "Period Change",
+    },
+  ]).findings[0];
+  assert.ok(/\b8\.3\b/.test(out.governedExecutiveFindingText));
+  assert.ok(/\bcomparable CALA periods\b/i.test(out.governedExecutiveFindingText));
+  assert.equal(out.copyValidation.EXECUTIVE_FINDING_SELF_CONTAINED, true);
+  assert.equal(out.copyValidation.EXECUTIVE_FINDING_FITS_FIVE_LINES, true);
+});
+
+test("M. portfolio executive findings fit five lines without truncation budget", () => {
+  const samples = applyExecutiveCopyGovernance([
+    {
+      findingType: "LARGEST_COMPETITIVE_GAP",
+      brandName: "AC Hotels by Marriott",
+      scenarioName: "Independent Conversion",
+      peerBrandNames: ["Autograph Collection", "Tribute Portfolio", "Tapestry"],
+      providerCount: 4,
+      observationCount: 10,
+      title: "Largest Competitive Gap",
+    },
+    {
+      findingType: "PROVIDER_DISAGREEMENT",
+      providerStrongLabel: "OpenAI",
+      providerWeakLabel: "Perplexity",
+      providerStrongPct: "91.7%",
+      providerWeakPct: "58.3%",
+      geographyKey: "CALA",
+      title: "Provider Comparison",
+    },
+    {
+      findingType: "STRONGEST_VALIDATED_ASSOCIATION",
+      brandName: "Design Hotels",
+      associationAttributeId: "DISTRIBUTION_LOYALTY",
+      providerCount: 3,
+      observationCount: 48,
+      title: "Observed AI Association",
+    },
+    {
+      findingType: "LARGEST_COMPETITIVE_STRENGTH",
+      brandName: "Autograph Collection",
+      presenceDisplay: "42.0%",
+      geographyKey: "CALA",
+      title: "Largest Competitive Strength",
+    },
+  ]).findings;
+  for (const f of samples) {
+    assert.equal(f.copyValidation.EXECUTIVE_FINDING_FITS_FIVE_LINES, true, f.governedExecutiveFindingText);
+  }
 });
 
 const pass = results.filter((r) => r.ok).length;

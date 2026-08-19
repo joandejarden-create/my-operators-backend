@@ -1,0 +1,1601 @@
+{
+  "HOTEL_BRAND_AI_INTELLIGENCE_LONGITUDINAL_FOUNDATION_COMPLETE": true,
+  "baseline": {
+    "version": "brand_longitudinal_baseline_audit_v1",
+    "REAL_MEASUREMENT_DATES": [
+      "2026-08-14"
+    ],
+    "PRIMARY_BASELINE_DATE": "2026-08-14",
+    "PROMPTS": {
+      "TOTAL_ACTIVE": 134,
+      "MONITORING_ELIGIBLE": 122,
+      "OBSERVED_ACTIVE": 9,
+      "DERIVED_ACTIVE": 2,
+      "SCENARIO_ACTIVE": 123,
+      "LEGACY_ACTIVE": 0,
+      "PROPOSED_LIBRARY_TOTAL": 134
+    },
+    "PROMPTS_WITH_BASELINE": 84,
+    "PROVIDER_COVERAGE": [
+      "claude",
+      "gemini",
+      "perplexity",
+      "openai"
+    ],
+    "BRAND_COVERAGE": [
+      "recEJCTDj1zrsjPM6",
+      "recCvV0PuZOi8c3hC",
+      "rec02zPClpWUTCyXM",
+      "recIPuBC50fv13zRR",
+      "rec9aZp7GHtzUEg0c"
+    ],
+    "GEO_LANGUAGE_COVERAGE": {
+      "geographies": [],
+      "languages": []
+    },
+    "REAL_DISTINCT_PERIODS": 1,
+    "CLIENT_STATE": "BASELINE_ONLY",
+    "SYNTHETIC_POINTS": 0,
+    "BASELINE_FREEZE_ID": "FOUR_PROVIDER_BASELINE_V1_COMPLETE",
+    "STORE_MODE": "federated_measured_baseline",
+    "STORE_ROOTS": [
+      "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\runtime\\wave1-showcase",
+      "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\runtime\\provider-baselines\\gemini",
+      "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\runtime\\provider-baselines\\perplexity",
+      "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\runtime\\provider-baselines\\claude"
+    ],
+    "DATASET_CLASS": "DEMO_VALIDATION",
+    "ENVIRONMENT": "railway_staging_brand_ai_service"
+  },
+  "cost": {
+    "version": "brand_longitudinal_cost_model_v1",
+    "cohortPrompts": 27,
+    "callsPerCycle": 86,
+    "coreProviderCalls": 64,
+    "extendedProviderCalls": 22,
+    "providerCosts": {
+      "openai": {
+        "historicUsdPerCall": 0.457262,
+        "conservativeUsdPerCall": 1.33,
+        "sampleSize": 84,
+        "source": "wave1_showcase_actual_usd_38.41_over_84"
+      },
+      "gemini": {
+        "historicUsdPerCall": 0.078095,
+        "conservativeUsdPerCall": 0.131786,
+        "sampleSize": 84,
+        "source": "provider_baseline_gemini_actual_usd_6.56_over_84"
+      },
+      "perplexity": {
+        "historicUsdPerCall": 0.005595,
+        "conservativeUsdPerCall": 0.02,
+        "sampleSize": 84,
+        "source": "provider_baseline_perplexity_actual_usd_0.47_over_84"
+      },
+      "claude": {
+        "historicUsdPerCall": 0.692738,
+        "conservativeUsdPerCall": 0.796649,
+        "sampleSize": 84,
+        "source": "provider_baseline_claude_actual_usd_58.19_over_84"
+      }
+    },
+    "historicExpectedCostUsd": 24.8305,
+    "conservativeExpectedCostUsd": 51.305,
+    "monthlyExpectedUsd": 24.8305,
+    "quarterlyExpectedUsd": 74.49,
+    "annualizedExpectedUsd": 297.97,
+    "withinMonthlyTarget": true,
+    "withinMonthlyStop": true,
+    "costGatePass": true,
+    "maxInitialSpendUsd": 75,
+    "note": "Monthly cohort within $75 target"
+  },
+  "cohort": {
+    "cohortId": "BRAND_LONGITUDINAL_COHORT_V1",
+    "cohortVersion": "1.0.0",
+    "promptCount": 35,
+    "callCount": 102,
+    "rows": [
+      {
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_design_local_character_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_design_local_character_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_design_local_character_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_design_local_character_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_positioning_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_positioning_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_positioning_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_positioning_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_hotel_project_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_hotel_project_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_hotel_project_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_hotel_project_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_individuality_preservation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_individuality_preservation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_individuality_preservation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_individuality_preservation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_owner_economics_brand_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_owner_economics_brand_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_owner_economics_brand_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_owner_economics_brand_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_franchise_fees_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_franchise_fees_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_soft_brand_hotel_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_soft_brand_hotel_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_branded_residences_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_branded_residences_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_reflagging_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_reflagging_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_affiliation_agreement_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_affiliation_agreement_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_convert_independent_hotel_to_franchise_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_convert_independent_hotel_to_franchise_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_es_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_es_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_es_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_es_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_es_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_es_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_es_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_es_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_lifestyle_strategy_v1",
+        "tier": "STANDARD",
+        "provider": "openai",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_lifestyle_strategy_v1",
+        "tier": "STANDARD",
+        "provider": "perplexity",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_design_local_character_v1",
+        "tier": "STANDARD",
+        "provider": "openai",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_design_local_character_v1",
+        "tier": "STANDARD",
+        "provider": "perplexity",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_residences_capability_v1",
+        "tier": "STANDARD",
+        "provider": "openai",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_residences_capability_v1",
+        "tier": "STANDARD",
+        "provider": "perplexity",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_affiliation_flexibility_v1",
+        "tier": "STANDARD",
+        "provider": "openai",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_affiliation_flexibility_v1",
+        "tier": "STANDARD",
+        "provider": "perplexity",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_es_v1",
+        "tier": "STANDARD",
+        "provider": "openai",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_es_v1",
+        "tier": "STANDARD",
+        "provider": "perplexity",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_es_v1",
+        "tier": "STANDARD",
+        "provider": "openai",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_es_v1",
+        "tier": "STANDARD",
+        "provider": "perplexity",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_es_v1",
+        "tier": "STANDARD",
+        "provider": "openai",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_es_v1",
+        "tier": "STANDARD",
+        "provider": "perplexity",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_uu_owner_shortlist_v1",
+        "tier": "STANDARD",
+        "provider": "openai",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_global_uu_owner_shortlist_v1",
+        "tier": "STANDARD",
+        "provider": "perplexity",
+        "cadence": "quarterly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      }
+    ],
+    "byTier": {
+      "CRITICAL": [
+        "p_cala_existing_asset_reposition_v1",
+        "p_cala_independent_affiliation_v1",
+        "p_cala_collection_affiliation_v1",
+        "p_cala_soft_brand_shortlist_v1",
+        "p_cala_lifestyle_strategy_v1",
+        "p_cala_design_local_character_v1",
+        "p_cala_uu_positioning_strategy_v1",
+        "p_cala_uu_owner_shortlist_v1",
+        "p_cala_residences_capability_v1",
+        "p_cala_residences_hotel_project_v1",
+        "p_cala_affiliation_flexibility_v1",
+        "p_cala_individuality_preservation_v1",
+        "p_global_owner_economics_brand_v1",
+        "p_global_independent_affiliation_v1",
+        "p_global_collection_affiliation_v1",
+        "p_global_soft_brand_shortlist_v1"
+      ],
+      "HIGH": [
+        "p_obs_hotel_franchise_fees_en_v1",
+        "p_obs_soft_brand_hotel_en_v1",
+        "p_obs_hotel_branded_residences_en_v1",
+        "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+        "p_obs_hotel_reflagging_en_v1",
+        "p_obs_hotel_affiliation_agreement_en_v1",
+        "p_obs_convert_independent_hotel_to_franchise_en_v1",
+        "p_cala_independent_affiliation_es_v1",
+        "p_cala_collection_affiliation_es_v1",
+        "p_cala_soft_brand_shortlist_es_v1",
+        "p_cala_affiliation_flexibility_es_v1"
+      ],
+      "STANDARD": [
+        "p_global_lifestyle_strategy_v1",
+        "p_global_design_local_character_v1",
+        "p_global_residences_capability_v1",
+        "p_global_affiliation_flexibility_v1",
+        "p_cala_lifestyle_strategy_es_v1",
+        "p_cala_uu_owner_shortlist_es_v1",
+        "p_cala_residences_capability_es_v1",
+        "p_global_uu_owner_shortlist_v1"
+      ],
+      "EXPLORATORY": []
+    },
+    "observedIncluded": [
+      "p_obs_hotel_franchise_fees_en_v1",
+      "p_obs_soft_brand_hotel_en_v1",
+      "p_obs_hotel_branded_residences_en_v1",
+      "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+      "p_obs_hotel_reflagging_en_v1",
+      "p_obs_hotel_affiliation_agreement_en_v1",
+      "p_obs_convert_independent_hotel_to_franchise_en_v1"
+    ],
+    "derivedIncluded": [],
+    "periodicObserved": [
+      "p_obs_franquicia_hotelera_es_v1",
+      "p_obs_contrato_de_gestion_hotelera_es_v1"
+    ],
+    "researchOnly": [
+      "p_obs_hotel_franchise_fees_derived_en_v1",
+      "p_obs_franquicia_hotelera_derived_es_v1"
+    ]
+  },
+  "monthlyCohort": {
+    "cohortId": "BRAND_LONGITUDINAL_COHORT_V1",
+    "cohortVersion": "1.0.0",
+    "promptCount": 27,
+    "callCount": 86,
+    "rows": [
+      {
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_design_local_character_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_design_local_character_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_design_local_character_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_design_local_character_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_positioning_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_positioning_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_positioning_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_positioning_strategy_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_capability_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_hotel_project_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_hotel_project_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_hotel_project_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_residences_hotel_project_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_individuality_preservation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_individuality_preservation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_individuality_preservation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_individuality_preservation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_owner_economics_brand_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_owner_economics_brand_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_owner_economics_brand_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_owner_economics_brand_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_independent_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_collection_affiliation_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "gemini",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_global_soft_brand_shortlist_v1",
+        "tier": "CRITICAL",
+        "provider": "claude",
+        "cadence": "monthly",
+        "providersPolicy": "CORE_4_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_franchise_fees_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_franchise_fees_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_soft_brand_hotel_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_soft_brand_hotel_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_branded_residences_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_branded_residences_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_reflagging_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_reflagging_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_affiliation_agreement_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_hotel_affiliation_agreement_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_convert_independent_hotel_to_franchise_en_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_obs_convert_independent_hotel_to_franchise_en_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_es_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_independent_affiliation_es_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_es_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_collection_affiliation_es_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_es_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_soft_brand_shortlist_es_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_es_v1",
+        "tier": "HIGH",
+        "provider": "openai",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      },
+      {
+        "promptId": "p_cala_affiliation_flexibility_es_v1",
+        "tier": "HIGH",
+        "provider": "perplexity",
+        "cadence": "monthly",
+        "providersPolicy": "SELECTIVE_2_PROVIDER"
+      }
+    ],
+    "byTier": {
+      "CRITICAL": [
+        "p_cala_existing_asset_reposition_v1",
+        "p_cala_independent_affiliation_v1",
+        "p_cala_collection_affiliation_v1",
+        "p_cala_soft_brand_shortlist_v1",
+        "p_cala_lifestyle_strategy_v1",
+        "p_cala_design_local_character_v1",
+        "p_cala_uu_positioning_strategy_v1",
+        "p_cala_uu_owner_shortlist_v1",
+        "p_cala_residences_capability_v1",
+        "p_cala_residences_hotel_project_v1",
+        "p_cala_affiliation_flexibility_v1",
+        "p_cala_individuality_preservation_v1",
+        "p_global_owner_economics_brand_v1",
+        "p_global_independent_affiliation_v1",
+        "p_global_collection_affiliation_v1",
+        "p_global_soft_brand_shortlist_v1"
+      ],
+      "HIGH": [
+        "p_obs_hotel_franchise_fees_en_v1",
+        "p_obs_soft_brand_hotel_en_v1",
+        "p_obs_hotel_branded_residences_en_v1",
+        "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+        "p_obs_hotel_reflagging_en_v1",
+        "p_obs_hotel_affiliation_agreement_en_v1",
+        "p_obs_convert_independent_hotel_to_franchise_en_v1",
+        "p_cala_independent_affiliation_es_v1",
+        "p_cala_collection_affiliation_es_v1",
+        "p_cala_soft_brand_shortlist_es_v1",
+        "p_cala_affiliation_flexibility_es_v1"
+      ],
+      "STANDARD": [
+        "p_global_lifestyle_strategy_v1",
+        "p_global_design_local_character_v1",
+        "p_global_residences_capability_v1",
+        "p_global_affiliation_flexibility_v1",
+        "p_cala_lifestyle_strategy_es_v1",
+        "p_cala_uu_owner_shortlist_es_v1",
+        "p_cala_residences_capability_es_v1",
+        "p_global_uu_owner_shortlist_v1"
+      ],
+      "EXPLORATORY": []
+    },
+    "observedIncluded": [
+      "p_obs_hotel_franchise_fees_en_v1",
+      "p_obs_soft_brand_hotel_en_v1",
+      "p_obs_hotel_branded_residences_en_v1",
+      "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+      "p_obs_hotel_reflagging_en_v1",
+      "p_obs_hotel_affiliation_agreement_en_v1",
+      "p_obs_convert_independent_hotel_to_franchise_en_v1"
+    ],
+    "derivedIncluded": [],
+    "periodicObserved": [
+      "p_obs_franquicia_hotelera_es_v1",
+      "p_obs_contrato_de_gestion_hotelera_es_v1"
+    ],
+    "researchOnly": [
+      "p_obs_hotel_franchise_fees_derived_en_v1",
+      "p_obs_franquicia_hotelera_derived_es_v1"
+    ],
+    "cadence": "monthly"
+  },
+  "trendUi": {
+    "executiveMarketMovement": {
+      "dataSource": "getBrandExecutiveSummaryPayload → marketMovement",
+      "apiRoute": "/api/ai-visibility/brand/executive-summary",
+      "chartElement": "#aivMarketTrendChart"
+    },
+    "detailPresenceOverTime": {
+      "dataSource": "getBrandTrendPayload → points",
+      "apiRoute": "/api/ai-visibility/brand/:brandId/trend",
+      "chartElement": "#aivDetailTrendChart",
+      "minPointsForChart": 2,
+      "renderStateOnePoint": "ONE_VALID_POINT — insufficient history message"
+    },
+    "PLACEHOLDER_OR_SYNTHETIC": "NO",
+    "FAKE_INTERMEDIATE_POINTS": "NONE",
+    "CHANGES_REQUIRED_NOW": "None — UI already suppresses trend line below 2 points; longitudinal foundation prepares period storage only."
+  },
+  "gates": {
+    "cohortDefined": true,
+    "costGatePass": true,
+    "storageReady": true,
+    "idempotencyReady": true,
+    "comparabilityReady": true,
+    "noSyntheticHistory": true,
+    "schedulerEnabled": false
+  },
+  "readiness": "BRAND_LONGITUDINAL_FOUNDATION_READY",
+  "initialWave": {
+    "STATUS": "APPROVAL_REQUIRED",
+    "PROMPTS": 27,
+    "PROVIDER_CALLS": 86,
+    "PROJECTED_COST": 24.8305,
+    "ACTUAL_COST": null,
+    "MEASUREMENT_PERIOD_ID": null,
+    "note": "BRAND_LONGITUDINAL_INITIAL_WAVE_APPROVAL_REQUIRED — no live execution in foundation phase"
+  },
+  "clientTrendCopy": {
+    "state": "BASELINE_ONLY",
+    "headline": "Baseline measurement",
+    "mayShowTrendLine": false,
+    "mayLabelAsTrend": false,
+    "twoPointsIsNotTrend": false
+  },
+  "operatorReuse": [
+    "grain.js — PROMPT × OPERATOR × PROVIDER × GEO × LANGUAGE × DATE",
+    "comparability.js + common-cohort.js — period intersection denominators",
+    "measurement-period.js + idempotency.js — period manifests + duplicate lock",
+    "cost-model.js — provider-rate cost gates",
+    "current-vs-prior.js — movement semantics without improved/worsened",
+    "trend-display-rules.js — client copy thresholds"
+  ]
+}

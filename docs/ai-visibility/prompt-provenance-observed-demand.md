@@ -1,8 +1,8 @@
 # Prompt origin and observed demand provenance
 
-> **Status:** Contract + adapters live. Observed seed **partial** (9 distinct file-store themes; not attached to live prompts). Prompt Mix hidden until ≥10.  
-> **Measurement:** Unchanged (Presence / QM / All Providers / citations / P0C / Truth).  
-> **Scheduler:** OFF · **Provider calls:** 0 · **Census:** none · **Recommendation research:** none
+> **Status:** V1 seed **validated and attached** (`OBSERVED_DEMAND_SEED_V1_VALIDATED`). 9 observed + 2 derived prompts registered. Monitoring eligible **off**.  
+> **Measurement:** Unchanged (Presence / QM / All Providers / citations / P0C / Truth) on the current 122 monitored prompts.  
+> **Scheduler:** OFF · **Provider calls:** 0 · **Census:** none · **Recommendation research:** none · **DataForSEO new calls:** 0
 
 ## Why this exists
 
@@ -23,50 +23,46 @@ Observed demand and Scenario intelligence are complementary. Neither replaces th
 Prompt → Origin → Owner Intent → Scenario → Geography → Provider runs → Observations
 ```
 
-A prompt may be `promptOrigin = OBSERVED` **and** still have a `scenarioId`.
+A prompt may be `promptOrigin = OBSERVED` **and** still have a `scenarioId`. Existing SCENARIO prompt IDs were not rewritten.
 
 ## Copy (client-safe)
 
-**Current (scenario-led library):** Our prompt architecture distinguishes observed demand from expert scenario intelligence. The current monitored library is scenario-led while observed demand sources are being validated.
+**Current:** We use both observed demand and expert scenario intelligence. Observed demand reflects externally measured query themes. Scenario intelligence tests commercially important owner and developer decisions that may not appear as literal high-volume searches.
 
-**After observed activation (≥10 validated observed themes):** We use both observed demand and expert scenario intelligence.
+Also allowed: “Observed demand and scenario intelligence are complementary.”
 
-Allowed now: “Observed-demand prompts are grounded in external query or demand signals.” / “Scenario prompts are expert-designed owner/developer decision situations.”
-
-Forbidden until observed is live in the monitored library: “We monitor what hotel owners are actually searching.” / “These are real owner searches.” File-store volume is licensed search demand, not “owner searches.”
+Forbidden: “We monitor what hotel owners are actually searching.” / “These are real owner searches.” / “owner search volume.” Licensed volume is query demand, not verified owner identity.
 
 ## Demand tier
 
 Qualitative only: `HIGH` · `MEDIUM` · `LOW` · `UNKNOWN`.
 
-`HIGH` / `MEDIUM` / `LOW` require a recorded methodology plus supporting evidence. Otherwise `UNKNOWN`. That is acceptable.
-
-Source confidence is descriptive (`DIRECT_MEASURED`, `STRONG_OBSERVED`, `SUPPORTED`, `WEAK`, `UNKNOWN`) — never a numeric probability.
-
-Prompt origin source ≠ AI response citation source.
+Relative within one source country and language cohort. Do not compare US English HIGH to Mexico Spanish HIGH as absolute volume. Source geography is independent of Brand AI monitoring geography and is not labeled CALA unless the evidence country is a CALA country.
 
 ## File store
 
 | File | Role |
 |------|------|
-| `fixtures/ai-visibility/prompt-provenance-v1.json` | Optional overlay by `promptId` |
+| `fixtures/ai-visibility/prompt-provenance-v1.json` | Overlay by new observed/derived `promptId` |
+| `fixtures/ai-visibility/observed-demand-prompts-v1.json` | 9 OBSERVED + 2 DERIVED rows (`monitoringEligible=false`) |
 | `fixtures/ai-visibility/demand-signals-v1.json` | Normalized evidence objects (not raw dumps) |
-| `fixtures/ai-visibility/observed-demand-seed-v1.json` | Seed status + candidate themes |
+| `fixtures/ai-visibility/observed-demand-seed-v1.json` | V1 seed status |
 | `fixtures/ai-visibility/scenario-registry-v1.json` | Unchanged scenario sidecar |
 
-Airtable may later store governed origin metadata (proposal only; not applied). Large PAA captures, query datasets, and API payloads stay out of Airtable.
+Airtable origin fields are **proposed, not applied** (`schemaApply: false`). Operational set is eight short fields only. Large PAA captures stay out of Airtable.
 
 ## UI
 
-- Executive **Prompt mix** stays hidden until at least 10 validated observed themes exist. Do not show `0 observed` as a performance problem.
-- Detail / watchlist origin badges: Observed, Derived, Scenario. Legacy prompts show no badge.
+- Executive **Prompt Intelligence** is methodology context (Observed demand · Expert scenarios). Not a performance KPI. Do not hero counts.
+- Detail / watchlist origin badges: Observed, Derived, Scenario. Evidence details on hover. Legacy prompts show no badge.
 
 ## Next
 
-Budget-capped DataForSEO sample + one targeted refinement stored 13 signal rows / 9 distinct themes after PAA quality filter. Live overlay classifications remain empty. Activation gate failed (9 < 10). Do not spend remaining phase budget without approval. Next, only if asked: another approved source pass, or `OBSERVED_DEMAND_ACTIVATION` after ≥10 themes. See [observed-demand-source-acquisition.md](./observed-demand-source-acquisition.md).
+`REPEATED_TESTING_AND_STABILITY` — still no monitoring until explicitly approved. Source acquisition is closed for V1.
 
 ## Tests
 
 ```bash
 npm run test:ai-visibility-prompt-provenance
+npm run test:ai-visibility-observed-demand-source
 ```

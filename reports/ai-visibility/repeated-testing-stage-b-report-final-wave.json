@@ -1,0 +1,4124 @@
+{
+  "STAGE": "B",
+  "mode": "REAGGREGATE_FINAL_WAVE",
+  "status": "PASS",
+  "waveId": "aiv_stability_stage_b_20260817_f0a829",
+  "excludedWaveIds": [
+    "aiv_stability_stage_b_20260817_22c195"
+  ],
+  "storeRoot": "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\runtime\\stability-stage-b",
+  "stageBEvidenceCount": 31,
+  "preflight": {
+    "FULL_COHORT_LOOKUP": "PASS",
+    "PROMPTS_RESOLVED": "16 / 16",
+    "INVALID_PROMPT_IDS": []
+  },
+  "execution": {
+    "OPENAI_CALLS": 16,
+    "GEMINI_CALLS": 3,
+    "PERPLEXITY_CALLS": 9,
+    "CLAUDE_CALLS": 3,
+    "TOTAL_CALLS": 31,
+    "ATTEMPTED": 31,
+    "FAILED": 0,
+    "stoppedReason": null,
+    "CONTROLLED_VARIANT_CALLS": 0
+  },
+  "cost": {
+    "PROJECTED_TOTAL_COST": 9.679046,
+    "OPENAI_ACTUAL_OR_ESTIMATED": 7.316192,
+    "GEMINI_ACTUAL_OR_ESTIMATED": 0.234285,
+    "PERPLEXITY_ACTUAL_OR_ESTIMATED": 0.04986,
+    "CLAUDE_ACTUAL_OR_ESTIMATED": 2.078214,
+    "TOTAL_ACTUAL_OR_ESTIMATED": 9.678551,
+    "HARD_CAP": 30,
+    "costBasis": [
+      {
+        "provider": "openai",
+        "basis": [
+          "ESTIMATED_HISTORIC_PER_CALL"
+        ],
+        "estimated": true
+      },
+      {
+        "provider": "gemini",
+        "basis": [
+          "ESTIMATED_HISTORIC_PER_CALL"
+        ],
+        "estimated": true
+      },
+      {
+        "provider": "perplexity",
+        "basis": [
+          "PROVIDER_RETURNED"
+        ],
+        "estimated": false
+      },
+      {
+        "provider": "claude",
+        "basis": [
+          "ESTIMATED_HISTORIC_PER_CALL"
+        ],
+        "estimated": true
+      }
+    ]
+  },
+  "grains": [
+    {
+      "PROMPT_ID": "p_cala_independent_affiliation_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "group.accor.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "newsroom.hyatt.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "newsroom.hyatt.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "stories.hilton.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "choicehotelsdevelopment.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "choicehotelsdevelopment.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "corporate.wyndhamhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "corporate.wyndhamhotels.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "development.ihg.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "development.ihg.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "development.wyndhamhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "development.wyndhamhotels.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "example.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "example.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_independent_affiliation_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "group.accor.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "newsroom.hyatt.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "choicehotelsdevelopment.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "corporate.wyndhamhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "development.ihg.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "development.wyndhamhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "example.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_independent_affiliation_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "gemini",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "vertexaisearch.cloud.google.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "vertexaisearch.cloud.google.com cited 2 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_independent_affiliation_v1",
+        "brandId": null,
+        "provider": "gemini",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "vertexaisearch.cloud.google.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_independent_affiliation_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "choicehotelsdevelopment.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "choicehotelsdevelopment.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "development.wyndhamhotels.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "development.wyndhamhotels.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "groups360.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "groups360.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelmanagement.net",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelmanagement.net cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelnewsnow.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelnewsnow.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hoteltechreport.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hoteltechreport.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hvs.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hvs.com cited 2 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_independent_affiliation_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "choicehotelsdevelopment.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "development.wyndhamhotels.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "groups360.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelmanagement.net",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelnewsnow.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hoteltechreport.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hvs.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_independent_affiliation_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "claude",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hospitalitynet.org",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hospitalitynet.org cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelmanagement.net",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelmanagement.net cited 2 of 2 responses"
+        },
+        {
+          "domain": "ihgplc.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "ihgplc.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "travelandtourworld.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "travelandtourworld.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "ciobulletin.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "ciobulletin.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "en.wikipedia.org",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "en.wikipedia.org cited 1 of 2 responses"
+        },
+        {
+          "domain": "hospitalityinvestor.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hospitalityinvestor.com cited 1 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_independent_affiliation_v1",
+        "brandId": null,
+        "provider": "claude",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hospitalitynet.org",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelmanagement.net",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "ihgplc.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "travelandtourworld.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "ciobulletin.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "en.wikipedia.org",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hospitalityinvestor.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_collection_affiliation_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "development.ihg.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "development.ihg.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "development.wyndhamhotels.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "development.wyndhamhotels.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "group.accor.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "hotel-development.marriott.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "hotel-development.marriott.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "join.preferredhotels.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "join.preferredhotels.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "stories.hilton.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "choicehotelsdevelopment.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "choicehotelsdevelopment.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "designhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "designhotels.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_collection_affiliation_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "development.ihg.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "development.wyndhamhotels.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "group.accor.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "hotel-development.marriott.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "join.preferredhotels.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "choicehotelsdevelopment.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "designhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_collection_affiliation_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "gemini",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "vertexaisearch.cloud.google.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "vertexaisearch.cloud.google.com cited 1 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_collection_affiliation_v1",
+        "brandId": null,
+        "provider": "gemini",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "vertexaisearch.cloud.google.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_collection_affiliation_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "en.travel2latam.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "en.travel2latam.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelequities.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelequities.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelresortdesign-south.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelresortdesign-south.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "ihgplc.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "ihgplc.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "luxurylatinamerica.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "luxurylatinamerica.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "resortflock.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "resortflock.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "sahic.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "sahic.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "stories.hilton.com cited 2 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_collection_affiliation_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "en.travel2latam.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelequities.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelresortdesign-south.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "ihgplc.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "luxurylatinamerica.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "resortflock.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "sahic.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_collection_affiliation_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "claude",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelmanagement.net",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelmanagement.net cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelsmag.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelsmag.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "lodgingmagazine.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "lodgingmagazine.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "luxuryhotelsranked.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "luxuryhotelsranked.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "stories.hilton.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "travelweekly.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "travelweekly.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "whiteskyhospitality.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "whiteskyhospitality.com cited 2 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_collection_affiliation_v1",
+        "brandId": null,
+        "provider": "claude",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelmanagement.net",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelsmag.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "lodgingmagazine.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "luxuryhotelsranked.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "travelweekly.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "whiteskyhospitality.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_soft_brand_shortlist_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "development.ihg.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "development.ihg.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "development.wyndhamhotels.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "development.wyndhamhotels.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "hotel-development.marriott.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "hotel-development.marriott.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "example.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "example.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "group.accor.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "hyatt.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "hyatt.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "newsroom.hyatt.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "newsroom.hyatt.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "slh.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "slh.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "development.ihg.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "development.wyndhamhotels.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "hotel-development.marriott.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "example.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "group.accor.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "hyatt.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "newsroom.hyatt.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "slh.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_soft_brand_shortlist_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "gemini",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "vertexaisearch.cloud.google.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "vertexaisearch.cloud.google.com cited 1 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "brandId": null,
+        "provider": "gemini",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "vertexaisearch.cloud.google.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_soft_brand_shortlist_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "en.travel2latam.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "en.travel2latam.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hospitality-on.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hospitality-on.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "stories.hilton.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "choicehotelsdevelopment.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "choicehotelsdevelopment.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "development.ihg.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "development.ihg.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "hospitalitynet.org",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hospitalitynet.org cited 1 of 2 responses"
+        },
+        {
+          "domain": "hotelequities.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hotelequities.com cited 1 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "en.travel2latam.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hospitality-on.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "choicehotelsdevelopment.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "development.ihg.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hospitalitynet.org",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hotelequities.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_soft_brand_shortlist_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "claude",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "forbes.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "forbes.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "finance.yahoo.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "finance.yahoo.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "hospitalityinvestor.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hospitalityinvestor.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "hospitalitynet.org",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hospitalitynet.org cited 1 of 2 responses"
+        },
+        {
+          "domain": "hotelmanagement.mydigitalpublication.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hotelmanagement.mydigitalpublication.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "hotelmanagement.net",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hotelmanagement.net cited 1 of 2 responses"
+        },
+        {
+          "domain": "hotelsmag.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hotelsmag.com cited 1 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_soft_brand_shortlist_v1",
+        "brandId": null,
+        "provider": "claude",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "forbes.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "finance.yahoo.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hospitalityinvestor.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hospitalitynet.org",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hotelmanagement.mydigitalpublication.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hotelmanagement.net",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hotelsmag.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_design_local_character_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "hotel-development.marriott.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "hotel-development.marriott.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "newsroom.hyatt.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "newsroom.hyatt.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "stories.hilton.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "corporate.wyndhamhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "corporate.wyndhamhotels.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "example.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "example.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "group.accor.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "ihgplc.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "ihgplc.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "marriott.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "marriott.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_design_local_character_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "hotel-development.marriott.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "newsroom.hyatt.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "corporate.wyndhamhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "example.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "group.accor.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "ihgplc.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "marriott.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_design_local_character_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "ainvest.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "ainvest.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "businesswire.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "businesswire.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "caribnewsroom.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "caribnewsroom.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hospitalitynet.org",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hospitalitynet.org cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelequities.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelequities.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelexplorer.net",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelexplorer.net cited 2 of 2 responses"
+        },
+        {
+          "domain": "idbinvest.org",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "idbinvest.org cited 2 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_design_local_character_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "ainvest.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "businesswire.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "caribnewsroom.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hospitalitynet.org",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelequities.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelexplorer.net",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "idbinvest.org",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_uu_owner_shortlist_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "hotel-development.marriott.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "hotel-development.marriott.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "newsroom.hyatt.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "newsroom.hyatt.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "barcelo.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "barcelo.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "costar.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "costar.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "development.wyndhamhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "development.wyndhamhotels.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "example.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "example.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "group.accor.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "ihgplc.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "ihgplc.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "hotel-development.marriott.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "newsroom.hyatt.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "barcelo.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "costar.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "development.wyndhamhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "example.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "group.accor.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "ihgplc.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_uu_owner_shortlist_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "cheapcaribbean.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "cheapcaribbean.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "cntraveler.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "cntraveler.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "cvent.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "cvent.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "globaltravelerusa.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "globaltravelerusa.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelmanagement.net",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelmanagement.net cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelresortdesign-south.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelresortdesign-south.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hvs.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hvs.com cited 2 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_uu_owner_shortlist_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "cheapcaribbean.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "cntraveler.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "cvent.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "globaltravelerusa.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelmanagement.net",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelresortdesign-south.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hvs.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_residences_capability_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "aman.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "aman.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "group.accor.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "mandarinoriental.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "mandarinoriental.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "newsroom.hyatt.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "newsroom.hyatt.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "oneandonlyresorts.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "oneandonlyresorts.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "rosewoodhotels.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "rosewoodhotels.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "stories.hilton.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "anantara.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "anantara.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_residences_capability_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "aman.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "group.accor.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "mandarinoriental.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "newsroom.hyatt.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "oneandonlyresorts.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "rosewoodhotels.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "anantara.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_residences_capability_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "7thheavenproperties.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "7thheavenproperties.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "brandedliving.co",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "brandedliving.co cited 2 of 2 responses"
+        },
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "gagms.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "gagms.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "marriottresidences.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "marriottresidences.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "pdf.euro.savills.co.uk",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "pdf.euro.savills.co.uk cited 2 of 2 responses"
+        },
+        {
+          "domain": "pdf.savills.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "pdf.savills.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "ribashotelsgroup.ua",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "ribashotelsgroup.ua cited 2 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_residences_capability_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "7thheavenproperties.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "brandedliving.co",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "gagms.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "marriottresidences.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "pdf.euro.savills.co.uk",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "pdf.savills.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "ribashotelsgroup.ua",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_affiliation_flexibility_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "development.ihg.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "development.ihg.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "development.wyndhamhotels.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "development.wyndhamhotels.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "group.accor.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "hotel-development.marriott.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "hotel-development.marriott.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "hyatt.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "hyatt.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "join.preferredhotels.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "join.preferredhotels.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "stories.hilton.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "choicehotelsdevelopment.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "choicehotelsdevelopment.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "development.ihg.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "development.wyndhamhotels.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "group.accor.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "hotel-development.marriott.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "hyatt.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "join.preferredhotels.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "choicehotelsdevelopment.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_affiliation_flexibility_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "caribbeannewsdigital.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "caribbeannewsdigital.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "choicehotelsdevelopment.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "choicehotelsdevelopment.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotevia.info",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotevia.info cited 2 of 2 responses"
+        },
+        {
+          "domain": "investor.wyndhamhotels.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "investor.wyndhamhotels.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "prnewswire.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "prnewswire.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "stories.hilton.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "cbre.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "cbre.com cited 1 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_affiliation_flexibility_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "caribbeannewsdigital.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "choicehotelsdevelopment.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotevia.info",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "investor.wyndhamhotels.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "prnewswire.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "cbre.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_lifestyle_strategy_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "hotel-development.marriott.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "hotel-development.marriott.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "ihgplc.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "ihgplc.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "stories.hilton.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "designhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "designhotels.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "ennismore.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "ennismore.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "example.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "example.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "group.accor.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "join.preferredhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "join.preferredhotels.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "hotel-development.marriott.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "ihgplc.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "designhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "ennismore.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "example.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "group.accor.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "join.preferredhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_lifestyle_strategy_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelequities.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelequities.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "ihgplc.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "ihgplc.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "stories.hilton.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "cheapcaribbean.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "cheapcaribbean.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "cntraveler.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "cntraveler.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "finance.yahoo.com",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "finance.yahoo.com cited 1 of 2 responses"
+        },
+        {
+          "domain": "hospitalitynet.org",
+          "citedIn": 1,
+          "ofObservations": 2,
+          "label": "hospitalitynet.org cited 1 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_lifestyle_strategy_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelequities.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "ihgplc.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "cheapcaribbean.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "cntraveler.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "finance.yahoo.com",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          },
+          {
+            "domain": "hospitalitynet.org",
+            "citedIn": 1,
+            "ofObservations": 2,
+            "label": "cited in 1 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_existing_asset_reposition_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 3,
+      "PRESENCE_COUNT": 3,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "RECURRENT",
+      "STABILITY_STATE": "CONSISTENTLY_PRESENT",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "development.ihg.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "development.ihg.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "group.accor.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "group.accor.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "hotel-development.marriott.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "hotel-development.marriott.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "newsroom.hyatt.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "newsroom.hyatt.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "stories.hilton.com",
+          "citedIn": 2,
+          "ofObservations": 3,
+          "label": "stories.hilton.com cited 2 of 3 responses"
+        },
+        {
+          "domain": "corporate.wyndhamhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "corporate.wyndhamhotels.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "development.wyndhamhotels.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "development.wyndhamhotels.com cited 1 of 3 responses"
+        },
+        {
+          "domain": "example.com",
+          "citedIn": 1,
+          "ofObservations": 3,
+          "label": "example.com cited 1 of 3 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 3,
+        "exactRepeatCount": 3,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 3 of 3 observed runs",
+        "recurrenceState": "RECURRENT",
+        "stabilityState": "CONSISTENTLY_PRESENT",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "development.ihg.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "group.accor.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "hotel-development.marriott.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "newsroom.hyatt.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "stories.hilton.com",
+            "citedIn": 2,
+            "ofObservations": 3,
+            "label": "cited in 2 of 3 responses"
+          },
+          {
+            "domain": "corporate.wyndhamhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "development.wyndhamhotels.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          },
+          {
+            "domain": "example.com",
+            "citedIn": 1,
+            "ofObservations": 3,
+            "label": "cited in 1 of 3 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_cala_existing_asset_reposition_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "perplexity",
+      "OBSERVATIONS": 2,
+      "PRESENCE_COUNT": 2,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "EARLY_REPEATED_EVIDENCE",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SHORT_TERM",
+      "FIRST_OBSERVED": "2026-08-14T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "choicehotelsdevelopment.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "choicehotelsdevelopment.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "costar.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "costar.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "development.wyndhamhotels.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "development.wyndhamhotels.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "groups360.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "groups360.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hospitalitynet.org",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hospitalitynet.org cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelnewsnow.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelnewsnow.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hotelsmag.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hotelsmag.com cited 2 of 2 responses"
+        },
+        {
+          "domain": "hoteltechreport.com",
+          "citedIn": 2,
+          "ofObservations": 2,
+          "label": "hoteltechreport.com cited 2 of 2 responses"
+        }
+      ],
+      "NOTES": "historical_exact_repeats=5",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_cala_existing_asset_reposition_v1",
+        "brandId": null,
+        "provider": "perplexity",
+        "language": "en",
+        "geographyKey": "CALA",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 2,
+        "exactRepeatCount": 2,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-14T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-14",
+          "2026-08-17"
+        ],
+        "timeWindow": "SHORT_TERM",
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 2 of 2 observed runs",
+        "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "choicehotelsdevelopment.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "costar.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "development.wyndhamhotels.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "groups360.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hospitalitynet.org",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelnewsnow.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hotelsmag.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          },
+          {
+            "domain": "hoteltechreport.com",
+            "citedIn": 2,
+            "ofObservations": 2,
+            "label": "cited in 2 of 2 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_global_owner_economics_brand_v1",
+      "ORIGIN": "SCENARIO",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 1,
+      "PRESENCE_COUNT": 1,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "ONE_OFF",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SAME_RUN_REPETITION",
+      "FIRST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "cbre.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cbre.com cited 1 of 1 responses"
+        },
+        {
+          "domain": "hospitalitynet.org",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "hospitalitynet.org cited 1 of 1 responses"
+        },
+        {
+          "domain": "publications.hvs.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "publications.hvs.com cited 1 of 1 responses"
+        }
+      ],
+      "NOTES": "no_historical_observations",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_global_owner_economics_brand_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "Global",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 1,
+        "exactRepeatCount": 1,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-17T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-17"
+        ],
+        "timeWindow": "SAME_RUN_REPETITION",
+        "presenceCount": 1,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 1 of 1 observed runs",
+        "recurrenceState": "ONE_OFF",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "cbre.com",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          },
+          {
+            "domain": "hospitalitynet.org",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          },
+          {
+            "domain": "publications.hvs.com",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_obs_hotel_franchise_fees_en_v1",
+      "ORIGIN": "OBSERVED",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 1,
+      "PRESENCE_COUNT": 1,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "ONE_OFF",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SAME_RUN_REPETITION",
+      "FIRST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "ftc.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "ftc.gov cited 1 of 1 responses"
+        },
+        {
+          "domain": "sec.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "sec.gov cited 1 of 1 responses"
+        }
+      ],
+      "NOTES": "no_historical_observations",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_obs_hotel_franchise_fees_en_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "United States",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 1,
+        "exactRepeatCount": 1,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-17T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-17"
+        ],
+        "timeWindow": "SAME_RUN_REPETITION",
+        "presenceCount": 1,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 1 of 1 observed runs",
+        "recurrenceState": "ONE_OFF",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "ftc.gov",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          },
+          {
+            "domain": "sec.gov",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_obs_soft_brand_hotel_en_v1",
+      "ORIGIN": "OBSERVED",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 1,
+      "PRESENCE_COUNT": 1,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "ONE_OFF",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SAME_RUN_REPETITION",
+      "FIRST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "costar-na-prod.acquia.dshrp.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "costar-na-prod.acquia.dshrp.com cited 1 of 1 responses"
+        }
+      ],
+      "NOTES": "no_historical_observations",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_obs_soft_brand_hotel_en_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "United States",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 1,
+        "exactRepeatCount": 1,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-17T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-17"
+        ],
+        "timeWindow": "SAME_RUN_REPETITION",
+        "presenceCount": 1,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 1 of 1 observed runs",
+        "recurrenceState": "ONE_OFF",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "costar-na-prod.acquia.dshrp.com",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_obs_franquicia_hotelera_es_v1",
+      "ORIGIN": "OBSERVED",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 1,
+      "PRESENCE_COUNT": 0,
+      "ABSENCE_COUNT": 1,
+      "RECURRENCE_STATE": "ONE_OFF",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SAME_RUN_REPETITION",
+      "FIRST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [],
+      "NOTES": "no_historical_observations",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_obs_franquicia_hotelera_es_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "es",
+        "geographyKey": "Mexico",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 1,
+        "exactRepeatCount": 1,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-17T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-17"
+        ],
+        "timeWindow": "SAME_RUN_REPETITION",
+        "presenceCount": 0,
+        "absenceCount": 1,
+        "presenceFraction": 0,
+        "presenceLabel": "Present in 0 of 1 observed runs",
+        "recurrenceState": "ONE_OFF",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_obs_hotel_branded_residences_en_v1",
+      "ORIGIN": "OBSERVED",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 1,
+      "PRESENCE_COUNT": 1,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "ONE_OFF",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SAME_RUN_REPETITION",
+      "FIRST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "afslaw.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "afslaw.com cited 1 of 1 responses"
+        },
+        {
+          "domain": "mansionglobal.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "mansionglobal.com cited 1 of 1 responses"
+        },
+        {
+          "domain": "savills.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "savills.com cited 1 of 1 responses"
+        }
+      ],
+      "NOTES": "no_historical_observations",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_obs_hotel_branded_residences_en_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "United States",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 1,
+        "exactRepeatCount": 1,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-17T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-17"
+        ],
+        "timeWindow": "SAME_RUN_REPETITION",
+        "presenceCount": 1,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 1 of 1 observed runs",
+        "recurrenceState": "ONE_OFF",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "afslaw.com",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          },
+          {
+            "domain": "mansionglobal.com",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          },
+          {
+            "domain": "savills.com",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+      "ORIGIN": "OBSERVED",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 1,
+      "PRESENCE_COUNT": 1,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "ONE_OFF",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SAME_RUN_REPETITION",
+      "FIRST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "fieldfisher.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "fieldfisher.com cited 1 of 1 responses"
+        },
+        {
+          "domain": "ftc.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "ftc.gov cited 1 of 1 responses"
+        }
+      ],
+      "NOTES": "no_historical_observations",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "United States",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 1,
+        "exactRepeatCount": 1,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-17T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-17"
+        ],
+        "timeWindow": "SAME_RUN_REPETITION",
+        "presenceCount": 1,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 1 of 1 observed runs",
+        "recurrenceState": "ONE_OFF",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "fieldfisher.com",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          },
+          {
+            "domain": "ftc.gov",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    },
+    {
+      "PROMPT_ID": "p_obs_hotel_franchise_fees_derived_en_v1",
+      "ORIGIN": "DERIVED",
+      "PROVIDER": "openai",
+      "OBSERVATIONS": 1,
+      "PRESENCE_COUNT": 1,
+      "ABSENCE_COUNT": 0,
+      "RECURRENCE_STATE": "ONE_OFF",
+      "STABILITY_STATE": "INSUFFICIENT_OBSERVATIONS",
+      "TIME_WINDOW": "SAME_RUN_REPETITION",
+      "FIRST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "LAST_OBSERVED": "2026-08-17T00:00:00.000Z",
+      "SOURCE_RECURRENCE": [
+        {
+          "domain": "ftc.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "ftc.gov cited 1 of 1 responses"
+        },
+        {
+          "domain": "search.ftc.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "search.ftc.gov cited 1 of 1 responses"
+        }
+      ],
+      "NOTES": "no_historical_observations",
+      "series": {
+        "version": "ai_visibility_stability_aggregation_v1",
+        "grain": null,
+        "promptId": "p_obs_hotel_franchise_fees_derived_en_v1",
+        "brandId": null,
+        "provider": "openai",
+        "language": "en",
+        "geographyKey": "United States",
+        "repeatType": "EXACT_REPEAT",
+        "observationCount": 1,
+        "exactRepeatCount": 1,
+        "variantCount": 0,
+        "firstObservedAt": "2026-08-17T00:00:00.000Z",
+        "lastObservedAt": "2026-08-17T00:00:00.000Z",
+        "runDates": [
+          "2026-08-17"
+        ],
+        "timeWindow": "SAME_RUN_REPETITION",
+        "presenceCount": 1,
+        "absenceCount": 0,
+        "presenceFraction": 1,
+        "presenceLabel": "Present in 1 of 1 observed runs",
+        "recurrenceState": "ONE_OFF",
+        "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+        "sourceRecurrenceSummary": [
+          {
+            "domain": "ftc.gov",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          },
+          {
+            "domain": "search.ftc.gov",
+            "citedIn": 1,
+            "ofObservations": 1,
+            "label": "cited in 1 of 1 responses"
+          }
+        ],
+        "NUMERIC_CONFIDENCE": false,
+        "TREND_SEPARATE": true
+      }
+    }
+  ],
+  "crossProvider": [
+    {
+      "CRITICAL_PROMPT": "p_cala_independent_affiliation_v1",
+      "OPENAI": {
+        "presence": "PRESENT",
+        "observations": 3,
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "recurrence": "RECURRENT",
+        "citations": [
+          "group.accor.com cited 2 of 3 responses",
+          "newsroom.hyatt.com cited 2 of 3 responses",
+          "stories.hilton.com cited 2 of 3 responses"
+        ]
+      },
+      "GEMINI": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "vertexaisearch.cloud.google.com cited 2 of 2 responses"
+        ]
+      },
+      "PERPLEXITY": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "choicehotelsdevelopment.com cited 2 of 2 responses",
+          "costar.com cited 2 of 2 responses",
+          "development.wyndhamhotels.com cited 2 of 2 responses"
+        ]
+      },
+      "CLAUDE": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "costar.com cited 2 of 2 responses",
+          "hospitalitynet.org cited 2 of 2 responses",
+          "hotelmanagement.net cited 2 of 2 responses"
+        ]
+      },
+      "ALIGNMENT": "ALIGNED_PRESENT"
+    },
+    {
+      "CRITICAL_PROMPT": "p_cala_collection_affiliation_v1",
+      "OPENAI": {
+        "presence": "PRESENT",
+        "observations": 3,
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "recurrence": "RECURRENT",
+        "citations": [
+          "development.ihg.com cited 2 of 3 responses",
+          "development.wyndhamhotels.com cited 2 of 3 responses",
+          "group.accor.com cited 2 of 3 responses"
+        ]
+      },
+      "GEMINI": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "vertexaisearch.cloud.google.com cited 1 of 2 responses"
+        ]
+      },
+      "PERPLEXITY": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "en.travel2latam.com cited 2 of 2 responses",
+          "hotelequities.com cited 2 of 2 responses",
+          "hotelresortdesign-south.com cited 2 of 2 responses"
+        ]
+      },
+      "CLAUDE": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "costar.com cited 2 of 2 responses",
+          "hotelmanagement.net cited 2 of 2 responses",
+          "hotelsmag.com cited 2 of 2 responses"
+        ]
+      },
+      "ALIGNMENT": "ALIGNED_PRESENT"
+    },
+    {
+      "CRITICAL_PROMPT": "p_cala_soft_brand_shortlist_v1",
+      "OPENAI": {
+        "presence": "PRESENT",
+        "observations": 3,
+        "presenceCount": 3,
+        "absenceCount": 0,
+        "recurrence": "RECURRENT",
+        "citations": [
+          "development.ihg.com cited 2 of 3 responses",
+          "development.wyndhamhotels.com cited 2 of 3 responses",
+          "hotel-development.marriott.com cited 2 of 3 responses"
+        ]
+      },
+      "GEMINI": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "vertexaisearch.cloud.google.com cited 1 of 2 responses"
+        ]
+      },
+      "PERPLEXITY": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "costar.com cited 2 of 2 responses",
+          "en.travel2latam.com cited 2 of 2 responses",
+          "hospitality-on.com cited 2 of 2 responses"
+        ]
+      },
+      "CLAUDE": {
+        "presence": "PRESENT",
+        "observations": 2,
+        "presenceCount": 2,
+        "absenceCount": 0,
+        "recurrence": "EARLY_REPEATED_EVIDENCE",
+        "citations": [
+          "costar.com cited 2 of 2 responses",
+          "forbes.com cited 2 of 2 responses",
+          "finance.yahoo.com cited 1 of 2 responses"
+        ]
+      },
+      "ALIGNMENT": "ALIGNED_PRESENT"
+    }
+  ],
+  "observedResults": [
+    {
+      "promptId": "p_obs_hotel_franchise_fees_en_v1",
+      "promptText": "hotel franchise fees",
+      "providersTested": [
+        "openai"
+      ],
+      "presence": [
+        {
+          "provider": "openai",
+          "presenceCount": 1,
+          "absenceCount": 0,
+          "observations": 1
+        }
+      ],
+      "brandMentions": [
+        {
+          "domain": "ftc.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cited in 1 of 1 responses"
+        },
+        {
+          "domain": "sec.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cited in 1 of 1 responses"
+        }
+      ],
+      "citationBehavior": [
+        {
+          "domain": "ftc.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "ftc.gov cited 1 of 1 responses"
+        },
+        {
+          "domain": "sec.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "sec.gov cited 1 of 1 responses"
+        }
+      ],
+      "recurrence": [
+        "ONE_OFF"
+      ]
+    },
+    {
+      "promptId": "p_obs_soft_brand_hotel_en_v1",
+      "promptText": "soft brand hotel",
+      "providersTested": [
+        "openai"
+      ],
+      "presence": [
+        {
+          "provider": "openai",
+          "presenceCount": 1,
+          "absenceCount": 0,
+          "observations": 1
+        }
+      ],
+      "brandMentions": [
+        {
+          "domain": "costar-na-prod.acquia.dshrp.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cited in 1 of 1 responses"
+        }
+      ],
+      "citationBehavior": [
+        {
+          "domain": "costar-na-prod.acquia.dshrp.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "costar-na-prod.acquia.dshrp.com cited 1 of 1 responses"
+        }
+      ],
+      "recurrence": [
+        "ONE_OFF"
+      ]
+    },
+    {
+      "promptId": "p_obs_franquicia_hotelera_es_v1",
+      "promptText": "franquicia hotelera",
+      "providersTested": [
+        "openai"
+      ],
+      "presence": [
+        {
+          "provider": "openai",
+          "presenceCount": 0,
+          "absenceCount": 1,
+          "observations": 1
+        }
+      ],
+      "brandMentions": [],
+      "citationBehavior": [],
+      "recurrence": [
+        "ONE_OFF"
+      ]
+    },
+    {
+      "promptId": "p_obs_hotel_branded_residences_en_v1",
+      "promptText": "hotel branded residences",
+      "providersTested": [
+        "openai"
+      ],
+      "presence": [
+        {
+          "provider": "openai",
+          "presenceCount": 1,
+          "absenceCount": 0,
+          "observations": 1
+        }
+      ],
+      "brandMentions": [
+        {
+          "domain": "afslaw.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cited in 1 of 1 responses"
+        },
+        {
+          "domain": "mansionglobal.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cited in 1 of 1 responses"
+        },
+        {
+          "domain": "savills.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cited in 1 of 1 responses"
+        }
+      ],
+      "citationBehavior": [
+        {
+          "domain": "afslaw.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "afslaw.com cited 1 of 1 responses"
+        },
+        {
+          "domain": "mansionglobal.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "mansionglobal.com cited 1 of 1 responses"
+        },
+        {
+          "domain": "savills.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "savills.com cited 1 of 1 responses"
+        }
+      ],
+      "recurrence": [
+        "ONE_OFF"
+      ]
+    },
+    {
+      "promptId": "p_obs_hotel_franchise_vs_management_agreement_en_v1",
+      "promptText": "hotel franchise vs management agreement",
+      "providersTested": [
+        "openai"
+      ],
+      "presence": [
+        {
+          "provider": "openai",
+          "presenceCount": 1,
+          "absenceCount": 0,
+          "observations": 1
+        }
+      ],
+      "brandMentions": [
+        {
+          "domain": "fieldfisher.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cited in 1 of 1 responses"
+        },
+        {
+          "domain": "ftc.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "cited in 1 of 1 responses"
+        }
+      ],
+      "citationBehavior": [
+        {
+          "domain": "fieldfisher.com",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "fieldfisher.com cited 1 of 1 responses"
+        },
+        {
+          "domain": "ftc.gov",
+          "citedIn": 1,
+          "ofObservations": 1,
+          "label": "ftc.gov cited 1 of 1 responses"
+        }
+      ],
+      "recurrence": [
+        "ONE_OFF"
+      ]
+    }
+  ],
+  "observedVsDerived": {
+    "OBSERVED_PARENT_RESULT": {
+      "presence": "PRESENT",
+      "observations": 1,
+      "presenceCount": 1,
+      "absenceCount": 0,
+      "recurrence": "ONE_OFF",
+      "citations": [
+        "ftc.gov cited 1 of 1 responses",
+        "sec.gov cited 1 of 1 responses"
+      ]
+    },
+    "DERIVED_RESULT": {
+      "presence": "PRESENT",
+      "observations": 1,
+      "presenceCount": 1,
+      "absenceCount": 0,
+      "recurrence": "ONE_OFF",
+      "citations": [
+        "ftc.gov cited 1 of 1 responses",
+        "search.ftc.gov cited 1 of 1 responses"
+      ]
+    },
+    "MATERIAL_DIFFERENCE": "NO",
+    "NOTES": "Same-provider presence polarity matched in this sample. Not a superiority claim."
+  },
+  "executiveEvidence": {
+    "FINDINGS_WITH_REPEATED_SUPPORT": [],
+    "FINDINGS_WITH_MIXED_SUPPORT": [],
+    "FINDINGS_STILL_EARLY": [
+      {
+        "findingType": "POTENTIAL_AI_PERCEPTION_GAP",
+        "title": "Potential AI Perception Gap",
+        "support": "EARLY_SIGNAL",
+        "language": "Early signal — 1 observation"
+      }
+    ],
+    "note": "Support labels only. Finding ranking and core logic unchanged."
+  },
+  "errors": [],
+  "regression": {
+    "PRESENCE_DIFF": 0,
+    "QM_DIFF": 0,
+    "ALL_PROVIDERS_DIFF": 0,
+    "CITATION_DIFF": 0,
+    "P0C_RAW_GAP_DIFF": 0,
+    "TRUTH_DIFF": 0,
+    "COMMERCIAL_INTERPRETATION_DIFF": 0,
+    "EXECUTIVE_FINDING_LOGIC_DIFF": 0,
+    "OBSERVED_DEMAND_PROVENANCE_DIFF": 0,
+    "note": "Re-aggregation only. Certified classifier modules were not modified."
+  },
+  "guards": {
+    "TOTAL_PROVIDER_CALLS": 31,
+    "MAX_AI_PROVIDER_SPEND": 30,
+    "FULL_133_PROMPT_RUN": 0,
+    "DATAFORSEO_CALLS": 0,
+    "CENSUS_READS": 0,
+    "RECOMMENDATION_RESEARCH": 0,
+    "RECOMMENDATION_METRICS": 0,
+    "OPPORTUNITY_SCORE": 0,
+    "NUMERIC_CONFIDENCE": 0,
+    "NARRATIVE_INTELLIGENCE_BUILD": 0,
+    "NEW_DASHBOARD": 0,
+    "NEW_TAB": 0,
+    "SCHEDULER_ENABLE": 0,
+    "DEPLOY": 0,
+    "monitoringEligibleUnchanged": true
+  },
+  "readiness": {
+    "duplicateWaveExcluded": true,
+    "note": "Stability grains use historical baseline + single approved Stage B wave only."
+  }
+}

@@ -13,6 +13,17 @@ function readBearerToken(req) {
 }
 
 export async function memberstackAuth(req, res, next) {
+  // Local dev bypass: skip JWT verification when DEV_AUTH_BYPASS_EMAIL is set.
+  // Never deploy this env var to production.
+  const devBypassEmail = process.env.DEV_AUTH_BYPASS_EMAIL;
+  if (devBypassEmail && process.env.NODE_ENV !== "production") {
+    req.memberstack = { id: "dev_bypass", email: devBypassEmail };
+    req.memberstackMemberId = "dev_bypass";
+    req.memberstackEmail = devBypassEmail;
+    req.memberstackVerifiedVia = "dev_bypass";
+    return next();
+  }
+
   const token = readBearerToken(req);
   if (!token) {
     return res.status(401).json({

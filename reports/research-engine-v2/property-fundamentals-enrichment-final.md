@@ -10,11 +10,11 @@ Postal field: `already_exists` (singleLineText)
 | City % | 98 | 98 |
 | State % appl. | 92 | 92 |
 | Address % | 85 | 85 |
-| Postal Code populated | 5946 | 5946 |
-| Postal Code % | 38 | 38 |
+| Postal Code populated | 6033 | 6033 |
+| Postal Code % | 39 | 39 |
 | Website % | 75 | 75 |
 | Phone % | 90 | 90 |
 
-Researched: 40 · Field writes: 0
+Researched: 20 · Field writes: 0
 Postal patches: 0 (from address: 0)
 HBX rooms[] writes: 0 · Destructive overwrites: 0

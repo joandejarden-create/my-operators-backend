@@ -11,6 +11,15 @@
 
   function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
   function toProperCase(s) { return (s || "").replace(/\b\w/g, function(c) { return c.toUpperCase(); }); }
+
+  /** Info tooltip copy: question the metric answers + why it matters. */
+  function adpTipHtml(title, question, why) {
+    return "<strong>" + title + "</strong><br><br><strong>Question:</strong> " + question +
+      "<br><br><strong>Why track it:</strong> " + why;
+  }
+  function adpTipPlain(question, why) {
+    return "Question: " + question + " Why track it: " + why;
+  }
   function info(tooltip) { return '<span class="adp-info-icon" data-tooltip="' + esc(tooltip) + '">i</span>'; }
 
   /** Consistent ADP percent display: ##.#% */
@@ -205,11 +214,11 @@
     Object.entries(dc.byIntent).forEach(function(e) { if (e[1].rate > bestRate) { bestRate = e[1].rate; bestIntent = e[0]; } });
 
     el.innerHTML =
-      kpiCard("AI Demand Capture", fmtPct(dc.display), "Share of monitored demand scenarios where at least one AI provider mentioned your property.") +
-      kpiCard("Scenarios Monitored", dc.totalScenarios + " × " + d.period.providerCount + " providers", "How many demand scenarios were tested across how many AI providers this period.") +
-      kpiCard("Strongest Segment", bestIntent ? bestIntent.replace(/_/g, " ").replace(/\b\w/g, function(c){return c.toUpperCase();}) : "—", "The traveler intent category with the highest capture rate for your property.") +
-      kpiCard("Top AI Competitor", cs.observed && cs.observed.length ? cs.observed[0].name : "—", "The hotel that appears most frequently across all AI demand scenarios. This is your strongest competitor in AI.") +
-      kpiCard("Questions Missing", fmtPct(100 - dc.overallRate) + " (" + dc.missedScenarios + ")", "Monitored demand scenarios where your property was not mentioned in the AI answer.");
+      kpiCard("AI Demand Capture", fmtPct(dc.display), "Question: When travelers ask AI for hotels in monitored scenarios, how often does your property appear? Why track it: This is your headline demand win rate.") +
+      kpiCard("Scenarios Monitored", dc.totalScenarios + " × " + d.period.providerCount + " providers", "Question: How much demand did we test this period? Why track it: Larger, consistent monitoring gives more reliable capture and gap signals.") +
+      kpiCard("Strongest Segment", bestIntent ? bestIntent.replace(/_/g, " ").replace(/\b\w/g, function(c){return c.toUpperCase();}) : "—", "Question: Which traveler intent does AI recommend you for most often? Why track it: Shows where you already win demand and where to defend share.") +
+      kpiCard("Top AI Competitor", cs.observed && cs.observed.length ? cs.observed[0].name : "—", "Question: Which hotel appears most often across AI demand answers? Why track it: This is the rival most likely to capture demand you miss.") +
+      kpiCard("Questions Missing", fmtPct(100 - dc.overallRate) + " (" + dc.missedScenarios + ")", "Question: In how many demand scenarios did AI fail to mention your property? Why track it: Each missing scenario is a traveler need you did not win.");
   }
 
   function kpiCard(label, value, helpText) {
@@ -361,13 +370,13 @@
     var totalScenarios = d.demandCapture.totalScenarios;
     var html = '<table class="deals-table aiv-portfolio-table aiv-coverage-table">';
     html += '<thead><tr>';
-    html += thCol('Provider', '');
-    html += thCol('Status', '');
-    html += thCol('AI<br>Presence', 'Share of this provider\u2019s responses where it mentioned your property. This provider only, not combined across models.');
-    html += thCol('Monitored', 'Scenarios where this provider mentioned your property, out of total scenarios queried on this provider (mentioned / queried).');
-    html += thCol('Missing', 'Scenarios where this provider alone did not mention your property.');
-    html += thCol('Citation', 'Share of this provider\u2019s responses that included source citations.');
-    html += thCol('Owned', 'Share of citations pointing to your governed owned domains. Requires owned domain configuration.');
+    html += thCol('Provider', adpTipHtml('Provider', 'Which AI model was queried on its own for each demand scenario?', 'Models do not behave the same. You need provider-level visibility to fix gaps on each one.'));
+    html += thCol('Status', adpTipHtml('Status', 'Was this provider included in the current monitoring period?', 'Confirms the row reflects live monitored responses, not an estimate or partial run.'));
+    html += thCol('AI<br>Presence', adpTipHtml('AI Presence', 'When this provider alone answers a monitored demand question, how often does it mention your property?', 'Each model learns from different sources. A gap here means travelers using that tool may never see you.'));
+    html += thCol('Monitored', adpTipHtml('Monitored', 'In how many demand scenarios did this provider mention your property, out of all scenarios asked on this provider?', 'Shows raw capture count for this model, separate from the combined rate across providers.'));
+    html += thCol('Missing', adpTipHtml('Missing', 'In how many scenarios did this provider fail to mention your property?', 'These are provider-specific gaps you can target with content or authority work for that model.'));
+    html += thCol('Citation', adpTipHtml('Citation', 'When this provider answers, how often does it include source links in the response?', 'Citation-backed answers show which websites AI is reading. Without citations, it is harder to trace and improve what the model uses.'));
+    html += thCol('Owned', adpTipHtml('Owned', 'Of this provider\u2019s citations, what share point to your owned websites?', 'Owned sources give you direct control over how AI describes your property. Requires configured owned domains.'));
     html += '</tr></thead><tbody>';
 
     ev.providers.forEach(function(p) {
@@ -403,14 +412,14 @@
 
     var html = '<table class="deals-table aiv-portfolio-table aiv-coverage-table aiv-intent-coverage-table aiv-unified-intent-table">';
     html += '<thead><tr>';
-    html += thCol('Intent<br>Category', 'The traveler demand category being measured, such as business, leisure, couples, or meetings.');
-    html += thCol('Your<br>Presence', 'Share of demand scenarios in this intent where \u22651 AI provider mentioned your property (union across providers).');
-    html += thCol('\u0394 vs<br>Prior Run', 'Change in presence vs the previous monitoring period. Requires at least two comparable periods.');
-    html += thCol('Monitored', 'Demand scenarios tested in this intent (captured / total). Counts scenarios, not provider responses.');
-    html += thCol('Missing', 'Scenarios in this intent where no provider mentioned your property.');
-    html += thCol('Peer-Present<br>Gaps', 'Scenarios where at least one competitor appears but your property does not. This is the competitive displacement signal.');
-    html += thCol('AI Presence<br>Index', 'Indexed position vs benchmark. 100 = at parity. Requires benchmark development.');
-    html += thCol('Missing<br>Evidence', 'View AI response excerpts for scenarios where your property was not mentioned in this intent category.');
+    html += thCol('Intent<br>Category', adpTipHtml('Intent Category', 'Which type of traveler demand is being measured (business, leisure, couples, meetings, and so on)?', 'Capture varies by trip purpose. You need to know where AI recommends you and where demand leaks by intent.'));
+    html += thCol('Your<br>Presence', adpTipHtml('Your Presence', 'For this intent, in what share of demand scenarios did at least one AI provider mention your property?', 'This is your headline capture rate for that traveler need. Gaps here mean lost consideration for that trip type.'));
+    html += thCol('\u0394 vs<br>Prior Run', adpTipHtml('\u0394 vs Prior Run', 'Is your presence in this intent improving or declining compared with the last monitoring run?', 'A single period does not show direction. Tracking change tells you whether recent content or positioning work is working.'));
+    html += thCol('Monitored', adpTipHtml('Monitored', 'How many demand scenarios in this intent were tested, and how many captured your property?', 'Confirms sample size and shows captured versus total for this intent category.'));
+    html += thCol('Missing', adpTipHtml('Missing', 'In this intent, how many scenarios had no AI mention of your property?', 'These are concrete lost-demand moments for that traveler type.'));
+    html += thCol('Peer-Present<br>Gaps', adpTipHtml('Peer-Present Gaps', 'In this intent, how often do competitors appear in scenarios where you do not?', 'This is competitive displacement: rivals are winning the recommendation when you are absent.'));
+    html += thCol('AI Presence<br>Index', adpTipHtml('AI Presence Index', 'How does your presence in this intent compare with your declared comp set?', 'Only shown when at least three declared comps appear often enough in this intent (30%+ average). Capped at 200. If comps rarely appear, the benchmark is too thin to compare fairly.'));
+    html += thCol('Missing<br>Evidence', adpTipHtml('Missing Evidence', 'What did AI actually say in scenarios where you were missing from this intent?', 'Lets you read real responses and diagnose why competitors were chosen instead.'));
     html += '</tr></thead><tbody>';
 
     var entries = Object.entries(dc.byIntent);
@@ -845,9 +854,9 @@
     if (srcEl && ev.topSources && ev.topSources.length) {
       var html = '<div class="deals-table-container aiv-recurring-sources-wrap">';
       html += '<table class="deals-table aiv-recurring-sources-table" aria-label="Recurring source citation frequency"><thead><tr>';
-      html += '<th><span class="aiv-th-label"><span class="aiv-th-text">Source</span></span></th>';
-      html += '<th><span class="aiv-th-label"><span class="aiv-th-text">Responses<br>Citing</span></span></th>';
-      html += '<th><span class="aiv-th-label"><span class="aiv-th-text">Frequency</span></span></th>';
+      html += '<th><span class="aiv-th-label"><span class="aiv-th-text">Source</span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Source"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden>' + adpTipHtml('Source', 'Which website domain did AI cite when answering demand questions?', 'These domains shape how AI describes hotels in your market. Tracking them shows where to publish or improve content.') + '</div></span></span></th>';
+      html += '<th><span class="aiv-th-label"><span class="aiv-th-text">Responses<br>Citing</span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Responses Citing"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden>' + adpTipHtml('Responses Citing', 'In how many provider responses did AI cite this domain?', 'Higher counts mean this website appears often in grounded answers. It is a practical target for content or partnership work.') + '</div></span></span></th>';
+      html += '<th><span class="aiv-th-label"><span class="aiv-th-text">Frequency</span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Frequency"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden>' + adpTipHtml('Frequency', 'What share of all cited responses included this domain?', 'Shows relative weight among sources AI used this period. This is observed citation share, not a quality or authority score.') + '</div></span></span></th>';
       html += '</tr></thead><tbody>';
       ev.topSources.forEach(function(s) {
         var barWidth = Math.min(s.frequency, 100);
@@ -882,7 +891,7 @@
   function renderBrief(brief, property) {
     var el = document.getElementById("adpBriefSection");
     if (!el || !brief) return;
-    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Monthly Owner Brief' + info("Summary of your property's AI demand position this monitoring period.") + '</h3></div>';
+    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Monthly Owner Brief' + info(adpTipPlain('What is the executive summary of this period\u2019s AI demand position?', 'Owners need a quick read of wins, risks, and opportunities before drilling into tables.')) + '</h3></div>';
     html += '<p style="font-size:0.85rem;color:var(--aiv-text-secondary);margin-bottom:1rem">' + esc(property.name) + ' &middot; ' + esc(property.affiliation) + ' &middot; ' + esc(property.city + ", " + property.state) + '</p>';
     html += '<ul class="adp-brief-list">';
     brief.items.forEach(function (item) {
@@ -897,7 +906,7 @@
   function renderDemandCapture(dc) {
     var el = document.getElementById("adpDemandSection");
     if (!el) return;
-    var html = '<div class="adp-card"><div class="adp-card-header"><h3>AI Demand Capture Index' + info("Percentage of tested demand scenarios where at least one AI provider mentions your property.") + '</h3></div>';
+    var html = '<div class="adp-card"><div class="adp-card-header"><h3>AI Demand Capture Index' + info(adpTipPlain('When travelers ask AI for hotel recommendations in monitored demand scenarios, how often does your property appear?', 'This is the headline demand win rate. Low capture means AI is sending travelers elsewhere.')) + '</h3></div>';
     html += '<div class="adp-hero-kpi">';
     html += '<div><div class="adp-hero-value">' + esc(fmtPct(dc.display)) + '</div><div class="adp-hero-label">Demand Capture Rate</div></div>';
     html += '<div class="adp-hero-context"><strong>' + dc.capturedScenarios + '</strong> of <strong>' + dc.totalScenarios + '</strong> relevant scenarios include your property.<br><strong>' + dc.missedScenarios + '</strong> scenarios where you do not appear.</div>';
@@ -916,7 +925,7 @@
   function renderLostDemand(ld) {
     var el = document.getElementById("adpLostSection");
     if (!el) return;
-    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Lost Demand: Competitive Displacement' + info("Scenarios where your property is absent. Shows who appears instead and likely reasons.") + '</h3></div>';
+    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Lost Demand: Competitive Displacement' + info(adpTipPlain('In which demand scenarios is your property absent, and which hotels appear instead?', 'These are direct leakage points where AI active demand went to competitors.')) + '</h3></div>';
     html += '<div class="adp-hero-kpi" style="margin-bottom:1.25rem">';
     html += '<div><div class="adp-hero-value">' + ld.totalLost + '</div><div class="adp-hero-label">Scenarios Lost</div></div>';
     html += '<div class="adp-hero-context"><strong>' + ld.highRelevanceLost + '</strong> are high-relevance scenarios.</div>';
@@ -941,7 +950,7 @@
   function renderCompSet(cs) {
     var el = document.getElementById("adpCompSection");
     if (!el) return;
-    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Observed AI Competitive Set' + info("Hotels that AI mentions alongside or instead of your property.") + '</h3></div>';
+    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Observed AI Competitive Set' + info(adpTipPlain('Which hotels does AI name alongside or instead of your property?', 'Shows who AI treats as your real competitive set, including rivals outside your declared comp list.')) + '</h3></div>';
     html += '<div class="adp-comp-stats">';
     html += '<div class="adp-comp-stat"><div class="adp-comp-stat-value">' + cs.declaredCount + '</div><div class="adp-comp-stat-label">Declared</div></div>';
     html += '<div class="adp-comp-stat"><div class="adp-comp-stat-value">' + cs.observedCount + '</div><div class="adp-comp-stat-label">AI Observed</div></div>';
@@ -960,7 +969,7 @@
   function renderWhiteSpace(ws) {
     var el = document.getElementById("adpWhiteSpaceSection");
     if (!el) return;
-    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Demand White Space' + info("Demand scenarios with weak competitor ownership where your property attributes align.") + '</h3></div>';
+    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Demand White Space' + info(adpTipPlain('Which demand scenarios have weak competitor ownership where your attributes fit?', 'These are opportunities to establish authority before a rival dominates the category.')) + '</h3></div>';
     if (!ws.opportunities || !ws.opportunities.length) {
       html += '<p class="aiv-empty-message">No white space opportunities this period.</p>';
     } else {
@@ -979,7 +988,7 @@
   function renderRealityGap(rg) {
     var el = document.getElementById("adpRealitySection");
     if (!el) return;
-    var html = '<div class="adp-card"><div class="adp-card-header"><h3>AI Reality Gap' + info("Compares actual property attributes vs what AI recognizes.") + '</h3></div>';
+    var html = '<div class="adp-card"><div class="adp-card-header"><h3>AI Reality Gap' + info(adpTipPlain('Does AI accurately recognize your property\u2019s key attributes?', 'If AI misses facts like location, amenities, or positioning, it will favor hotels that are better described.')) + '</h3></div>';
     html += '<div class="adp-hero-kpi" style="margin-bottom:1.25rem">';
     html += '<div><div class="adp-hero-value">' + esc(fmtPct(rg.display)) + '</div><div class="adp-hero-label">Reality Gap</div></div>';
     html += '<div class="adp-hero-context">AI misses <strong>' + rg.gapCount + '</strong> of <strong>' + rg.totalAttributes + '</strong> tracked attributes.</div>';
@@ -1001,7 +1010,7 @@
     var el = document.getElementById("adpActionsSection");
     if (!el) return;
     if (!actions || !actions.length) { el.innerHTML = ''; return; }
-    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Recommended Actions' + info("Data-driven actions to improve AI demand position.") + '</h3></div>';
+    var html = '<div class="adp-card"><div class="adp-card-header"><h3>Recommended Actions' + info(adpTipPlain('What should owners do next to improve AI demand capture?', 'Turns observed gaps into prioritized steps tied to evidence from this monitoring period.')) + '</h3></div>';
     actions.forEach(function (a) {
       html += '<div class="adp-action-card priority-' + (a.priority || '').toLowerCase() + '">';
       html += '<div class="adp-action-title">' + esc(a.title) + '</div>';

@@ -1,0 +1,940 @@
+{
+  "PROVIDER_CALLS": 0,
+  "DATAFORSEO_CALLS": 0,
+  "STAGE_B": "NOT_RUN",
+  "PROMPT_PROVIDER_PAIRS": 336,
+  "PAIRS_WITH_1_OBSERVATION": 252,
+  "PAIRS_WITH_2_OBSERVATIONS": 72,
+  "PAIRS_WITH_3_PLUS_OBSERVATIONS": 12,
+  "STRICT_GRAIN_KEYS": 336,
+  "GRAINS_WITH_1": 252,
+  "GRAINS_WITH_2": 72,
+  "GRAINS_WITH_3_PLUS": 12,
+  "DATE_SPAN": {
+    "first": "2026-08-14",
+    "last": "2026-08-14"
+  },
+  "evidenceRows": 437,
+  "crossProviderExamples": [
+    {
+      "promptId": "p_global_residences_capability_v1",
+      "geographyKey": "unspecified",
+      "language": "en",
+      "crossProviderAlignment": "HIGH_VARIABILITY",
+      "providerCoverage": 4,
+      "providersCompared": [
+        "openai",
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "note": "Provider-specific series remain authoritative. This is context, not a pooled confidence score."
+    },
+    {
+      "promptId": "p_global_uu_owner_shortlist_v1",
+      "geographyKey": "unspecified",
+      "language": "en",
+      "crossProviderAlignment": "HIGH_VARIABILITY",
+      "providerCoverage": 4,
+      "providersCompared": [
+        "openai",
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "note": "Provider-specific series remain authoritative. This is context, not a pooled confidence score."
+    },
+    {
+      "promptId": "p_global_design_local_character_v1",
+      "geographyKey": "unspecified",
+      "language": "en",
+      "crossProviderAlignment": "HIGH_VARIABILITY",
+      "providerCoverage": 4,
+      "providersCompared": [
+        "openai",
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "note": "Provider-specific series remain authoritative. This is context, not a pooled confidence score."
+    },
+    {
+      "promptId": "p_cala_residences_hotel_project_es_v1",
+      "geographyKey": "unspecified",
+      "language": "es",
+      "crossProviderAlignment": "HIGH_VARIABILITY",
+      "providerCoverage": 3,
+      "providersCompared": [
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "note": "Provider-specific series remain authoritative. This is context, not a pooled confidence score."
+    }
+  ],
+  "validationCost": {
+    "promptCount": 16,
+    "observed": 5,
+    "scenario": 10,
+    "derived": 1,
+    "exactRepetitions": 31,
+    "variantRepetitions": 0,
+    "totalValidationCalls": 31,
+    "callsByProvider": {
+      "openai": 16,
+      "gemini": 3,
+      "perplexity": 9,
+      "claude": 3
+    },
+    "expectedHistoricCost": 9.679,
+    "conservativeCost": 24.2453,
+    "targetCapUsd": 50,
+    "hardCapUsd": 75,
+    "withinTarget": true,
+    "STOP": false,
+    "STAGE_B": "APPROVAL_REQUIRED",
+    "FULL_133_PROMPT_RUN": 0
+  },
+  "grainSeriesSample": [
+    {
+      "grain": "p_mx_individuality_preservation_v1|openai|en|CALA",
+      "promptId": "p_mx_individuality_preservation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 11,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_collection_affiliation_es_v1|openai|es|CALA",
+      "promptId": "p_mx_collection_affiliation_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 9,
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_europe_residences_hotel_project_v1|openai|en|Europe",
+      "promptId": "p_europe_residences_hotel_project_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "Europe",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 9,
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_europe_lifestyle_strategy_v1|openai|en|Europe",
+      "promptId": "p_europe_lifestyle_strategy_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "Europe",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 10,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_na_independent_affiliation_v1|openai|en|North America",
+      "promptId": "p_na_independent_affiliation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "North America",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 9,
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_global_lifestyle_strategy_v1|openai|en|unspecified",
+      "promptId": "p_global_lifestyle_strategy_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "unspecified",
+      "observationCount": 4,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 4,
+      "citationResultCount": 4,
+      "brandMentions": 15,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "RECURRENT",
+      "stabilityState": "CONSISTENTLY_PRESENT",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_soft_brand_shortlist_es_v1|openai|es|CALA",
+      "promptId": "p_mx_soft_brand_shortlist_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 9,
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_na_affiliation_flexibility_v1|openai|en|North America",
+      "promptId": "p_na_affiliation_flexibility_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "North America",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 11,
+      "scenarioId": "scenario_owner_flexibility_control_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_residences_capability_v1|openai|en|CALA",
+      "promptId": "p_mx_residences_capability_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 10,
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_existing_asset_reposition_es_v1|openai|es|CALA",
+      "promptId": "p_cala_existing_asset_reposition_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 13,
+      "scenarioId": "scenario_conversion_suitability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_individuality_preservation_es_v1|openai|es|CALA",
+      "promptId": "p_mx_individuality_preservation_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 13,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_collection_affiliation_es_v1|openai|es|CALA",
+      "promptId": "p_cala_collection_affiliation_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 10,
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_independent_affiliation_es_v1|openai|es|CALA",
+      "promptId": "p_cala_independent_affiliation_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 16,
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_europe_soft_brand_shortlist_v1|openai|en|Europe",
+      "promptId": "p_europe_soft_brand_shortlist_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "Europe",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 12,
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_uu_owner_shortlist_v1|openai|en|CALA",
+      "promptId": "p_mx_uu_owner_shortlist_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 14,
+      "scenarioId": "scenario_newbuild_uu_brand_selection_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_soft_brand_shortlist_v1|openai|en|CALA",
+      "promptId": "p_cala_soft_brand_shortlist_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 14,
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_global_affiliation_flexibility_v1|openai|en|unspecified",
+      "promptId": "p_global_affiliation_flexibility_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "unspecified",
+      "observationCount": 3,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 3,
+      "citationResultCount": 3,
+      "brandMentions": 12,
+      "scenarioId": "scenario_owner_flexibility_control_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "RECURRENT",
+      "stabilityState": "CONSISTENTLY_PRESENT",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_independent_affiliation_es_v1|openai|es|CALA",
+      "promptId": "p_mx_independent_affiliation_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 9,
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_europe_residences_capability_v1|openai|en|Europe",
+      "promptId": "p_europe_residences_capability_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "Europe",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 5,
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_affiliation_flexibility_v1|openai|en|CALA",
+      "promptId": "p_cala_affiliation_flexibility_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 14,
+      "scenarioId": "scenario_owner_flexibility_control_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_europe_independent_affiliation_v1|openai|en|Europe",
+      "promptId": "p_europe_independent_affiliation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "Europe",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 12,
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_individuality_preservation_v1|openai|en|CALA",
+      "promptId": "p_cala_individuality_preservation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 14,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_uu_owner_shortlist_es_v1|openai|es|CALA",
+      "promptId": "p_cala_uu_owner_shortlist_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 14,
+      "scenarioId": "scenario_newbuild_uu_brand_selection_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_residences_hotel_project_es_v1|openai|es|CALA",
+      "promptId": "p_cala_residences_hotel_project_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 8,
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_affiliation_flexibility_v1|openai|en|CALA",
+      "promptId": "p_mx_affiliation_flexibility_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 12,
+      "scenarioId": "scenario_owner_flexibility_control_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_na_residences_hotel_project_v1|openai|en|North America",
+      "promptId": "p_na_residences_hotel_project_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "North America",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 5,
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_europe_design_local_character_v1|openai|en|Europe",
+      "promptId": "p_europe_design_local_character_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "Europe",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 12,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_europe_uu_owner_shortlist_v1|openai|en|Europe",
+      "promptId": "p_europe_uu_owner_shortlist_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "Europe",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 14,
+      "scenarioId": "scenario_newbuild_uu_brand_selection_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_global_existing_asset_reposition_v1|openai|en|unspecified",
+      "promptId": "p_global_existing_asset_reposition_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "unspecified",
+      "observationCount": 4,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 4,
+      "citationResultCount": 4,
+      "brandMentions": 14,
+      "scenarioId": "scenario_conversion_suitability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "RECURRENT",
+      "stabilityState": "CONSISTENTLY_PRESENT",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_residences_capability_es_v1|openai|es|CALA",
+      "promptId": "p_cala_residences_capability_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 6,
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_existing_asset_reposition_v1|openai|en|CALA",
+      "promptId": "p_mx_existing_asset_reposition_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 12,
+      "scenarioId": "scenario_conversion_suitability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_design_local_character_v1|openai|en|CALA",
+      "promptId": "p_mx_design_local_character_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 11,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_independent_affiliation_v1|openai|en|CALA",
+      "promptId": "p_mx_independent_affiliation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 8,
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_mx_design_local_character_es_v1|openai|es|CALA",
+      "promptId": "p_mx_design_local_character_es_v1",
+      "provider": "openai",
+      "language": "es",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 11,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_global_residences_capability_v1|openai|en|unspecified",
+      "promptId": "p_global_residences_capability_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "unspecified",
+      "observationCount": 4,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 4,
+      "citationResultCount": 4,
+      "brandMentions": 13,
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "RECURRENT",
+      "stabilityState": "CONSISTENTLY_PRESENT",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_global_collection_affiliation_v1|openai|en|unspecified",
+      "promptId": "p_global_collection_affiliation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "unspecified",
+      "observationCount": 3,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 3,
+      "citationResultCount": 3,
+      "brandMentions": 14,
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "RECURRENT",
+      "stabilityState": "CONSISTENTLY_PRESENT",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_cala_independent_affiliation_v1|openai|en|CALA",
+      "promptId": "p_cala_independent_affiliation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "CALA",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 11,
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "CRITICAL",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_europe_individuality_preservation_v1|openai|en|Europe",
+      "promptId": "p_europe_individuality_preservation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "Europe",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 11,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_na_design_local_character_v1|openai|en|North America",
+      "promptId": "p_na_design_local_character_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "North America",
+      "observationCount": 2,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 2,
+      "citationResultCount": 2,
+      "brandMentions": 14,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "EARLY_REPEATED_EVIDENCE",
+      "stabilityState": "INSUFFICIENT_OBSERVATIONS",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "grain": "p_global_individuality_preservation_v1|openai|en|unspecified",
+      "promptId": "p_global_individuality_preservation_v1",
+      "provider": "openai",
+      "language": "en",
+      "geographyKey": "unspecified",
+      "observationCount": 3,
+      "distinctRunDates": [
+        "2026-08-14"
+      ],
+      "presenceCount": 3,
+      "citationResultCount": 3,
+      "brandMentions": 10,
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptOrigin": "SCENARIO",
+      "commercialPriority": "HIGH",
+      "recurrenceState": "RECURRENT",
+      "stabilityState": "CONSISTENTLY_PRESENT",
+      "firstObservedAt": "2026-08-14T00:00:00.000Z",
+      "lastObservedAt": "2026-08-14T00:00:00.000Z"
+    }
+  ]
+}
