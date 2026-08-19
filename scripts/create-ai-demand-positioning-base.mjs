@@ -62,7 +62,10 @@ async function resolveWorkspaceId() {
   if (process.env.ADP_AIRTABLE_WORKSPACE_ID) {
     return process.env.ADP_AIRTABLE_WORKSPACE_ID;
   }
-  const seedBaseId = process.env.AIRTABLE_BASE_ID || "appvtnDurnMSjINP6";
+  const seedBaseId = process.env.AIRTABLE_BASE_ID;
+  if (!seedBaseId) {
+    throw new Error("Set AIRTABLE_BASE_ID or ADP_AIRTABLE_WORKSPACE_ID to resolve workspace.");
+  }
   const { res, json } = await metaFetch(`/bases/${seedBaseId}`);
   if (!res.ok) {
     throw new Error(`Could not resolve workspaceId from base ${seedBaseId}: ${JSON.stringify(json)}`);
