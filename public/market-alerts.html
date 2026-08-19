@@ -532,7 +532,7 @@
             }
         }
 
-        /* ---- Layout: intelligence summary then main feed ---- */
+        /* ---- Layout: headlines first, then Act Now / Watch ---- */
         .news-layout {
             display: flex;
             flex-direction: column;
@@ -1297,6 +1297,13 @@
 
         <div id="newsContent" style="display: none;">
             <div class="news-layout">
+                <div class="news-main">
+                    <section class="news-hero-section">
+                        <h2>Headlines</h2>
+                        <div id="heroGrid" class="news-headlines-grid"></div>
+                        <div id="heroGridEmpty" class="news-headlines-empty" style="display: none;" aria-live="polite">No headlines in this category. Try a different category or widen your time window.</div>
+                    </section>
+                </div>
                 <div class="intel-summary-row">
                     <div id="actionableNowRail" class="rail-worth-section">
                         <h2>Act Now</h2>
@@ -1306,13 +1313,6 @@
                         <h2>Watch</h2>
                         <ul id="worthReviewingList" class="news-feed-list"></ul>
                     </div>
-                </div>
-                <div class="news-main">
-                    <section class="news-hero-section">
-                        <h2>Headlines</h2>
-                        <div id="heroGrid" class="news-headlines-grid"></div>
-                        <div id="heroGridEmpty" class="news-headlines-empty" style="display: none;" aria-live="polite">No headlines in this category. Try a different category or widen your time window.</div>
-                    </section>
                 </div>
             </div>
         </div>
