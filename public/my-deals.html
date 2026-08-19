@@ -5884,10 +5884,10 @@
                     if (franchiseLoadingState) franchiseLoadingState.style.display = 'none';
                     if (targetListLoadingState) targetListLoadingState.style.display = 'none';
                     var activeTab = document.querySelector('.my-deals-section-nav .section-nav-item.active');
-                    if (activeTab && activeTab.getAttribute('data-tab') === 'matched') renderMatchedBrandsTable();
-                    if (activeTab && activeTab.getAttribute('data-tab') === 'contacted') applyContactedFilters();
+                    if (activeTab && activeTab.getAttribute('data-tab') === 'matched' && nonCriticalDataLoaded) renderMatchedBrandsTable();
+                    if (activeTab && activeTab.getAttribute('data-tab') === 'contacted' && nonCriticalDataLoaded) applyContactedFilters();
                     if (activeTab && activeTab.getAttribute('data-tab') === 'franchise-application') applyFranchiseFilters();
-                    if (activeTab && activeTab.getAttribute('data-tab') === 'target-list') {
+                    if (activeTab && activeTab.getAttribute('data-tab') === 'target-list' && nonCriticalDataLoaded) {
                         populateTargetListDealSelect();
                         if (targetListSelectPrompt) targetListSelectPrompt.style.display = 'block';
                         if (typeof applyShortlistFilters === 'function') applyShortlistFilters();
