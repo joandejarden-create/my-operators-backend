@@ -1,0 +1,87 @@
+{
+  "version": "position_gold_set_v1",
+  "description": "Governed DEV + HOLDOUT cases for ADP rank extraction validation.",
+  "propertyProfile": {
+    "name": "Waterstone Resort & Marina",
+    "propertyId": "adp_waterstone_boca_raton"
+  },
+  "dev": [
+    {
+      "id": "dev_numbered_01",
+      "response": "1. The Boca Raton\n2. Waterstone Resort & Marina\n3. Renaissance Boca Raton",
+      "expected": { "mentioned": true, "position": 2, "rankEligible": true, "rankSource": "numbered_list" }
+    },
+    {
+      "id": "dev_numbered_02",
+      "response": "Top picks:\n1. Renaissance Boca Raton\n2. Marriott Boca Raton\n3. Wyndham Boca Raton",
+      "expected": { "mentioned": false, "position": null, "rankEligible": false }
+    },
+    {
+      "id": "dev_bullet_01",
+      "response": "- The Boca Raton\n- Waterstone Resort & Marina\n- Hilton Boca Raton Suites",
+      "expected": { "mentioned": true, "position": 2, "rankEligible": true, "rankSource": "bulleted_list" }
+    },
+    {
+      "id": "dev_prose_01",
+      "response": "Waterstone Resort & Marina is often mentioned online, but my top recommendations are The Boca Raton and Renaissance Boca Raton.",
+      "expected": { "mentioned": true, "position": null, "rankEligible": false }
+    },
+    {
+      "id": "dev_explicit_first_01",
+      "response": "My top choice for waterfront meetings: Waterstone Resort & Marina. Alternatives include The Boca Raton.",
+      "expected": { "mentioned": true, "position": 1, "rankEligible": true, "rankSource": "explicit_first" }
+    },
+    {
+      "id": "dev_table_01",
+      "response": "| Rank | Hotel |\n| 1 | The Boca Raton |\n| 2 | Waterstone Resort & Marina |",
+      "expected": { "mentioned": true, "position": 2, "rankEligible": true, "rankSource": "table" }
+    },
+    {
+      "id": "dev_citation_only_01",
+      "response": "See tripadvisor.com/hotels-boca for reviews mentioning Waterstone Resort & Marina in comments only.",
+      "expected": { "mentioned": true, "position": null, "rankEligible": false }
+    },
+    {
+      "id": "dev_unordered_list_01",
+      "response": "Consider The Boca Raton, Renaissance Boca Raton, and Waterstone Resort & Marina.",
+      "expected": { "mentioned": true, "position": null, "rankEligible": false }
+    },
+    {
+      "id": "dev_competitor_only_01",
+      "response": "Best hotels: 1. The Boca Raton 2. Renaissance Boca Raton 3. Marriott Boca Raton",
+      "expected": { "mentioned": false, "position": null, "rankEligible": false }
+    },
+    {
+      "id": "dev_numbered_paren_01",
+      "response": "1) Waterstone Resort & Marina\n2) The Boca Raton",
+      "expected": { "mentioned": true, "position": 1, "rankEligible": true, "rankSource": "numbered_list" }
+    }
+  ],
+  "holdout": [
+    {
+      "id": "hold_numbered_01",
+      "response": "### Recommendations\n\n1. **Renaissance Boca Raton**\n2. **Waterstone Resort & Marina**\n3. **Wyndham Boca Raton**",
+      "expected": { "mentioned": true, "position": 2, "rankEligible": true, "rankSource": "numbered_list" }
+    },
+    {
+      "id": "hold_prose_first_mention_01",
+      "response": "Waterstone Resort & Marina appears in many lists. However, ranked choices: 1. The Boca Raton 2. Marriott Boca Raton.",
+      "expected": { "mentioned": true, "position": null, "rankEligible": false }
+    },
+    {
+      "id": "hold_bullet_01",
+      "response": "* Hilton Boca Raton Suites\n* Waterstone Resort & Marina",
+      "expected": { "mentioned": true, "position": 2, "rankEligible": true, "rankSource": "bulleted_list" }
+    },
+    {
+      "id": "hold_absent_01",
+      "response": "Best upscale hotel in Boca Raton: The Boca Raton.",
+      "expected": { "mentioned": false, "position": null, "rankEligible": false }
+    },
+    {
+      "id": "hold_explicit_first_02",
+      "response": "First choice for marina access: Waterstone Resort & Marina.",
+      "expected": { "mentioned": true, "position": 1, "rankEligible": true, "rankSource": "explicit_first" }
+    }
+  ]
+}

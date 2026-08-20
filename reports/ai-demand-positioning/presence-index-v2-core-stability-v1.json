@@ -1,0 +1,947 @@
+{
+  "title": "ADP_AI_PRESENCE_INDEX_V2_AND_CORE_BENCHMARK_STABILITY_COMPLETE",
+  "presenceIndexV2Contract": {
+    "CUSTOMER_QUESTION": "How often does this hotel appear in comparable AI responses for this demand territory, relative to the average appearance rate of governed CORE comparable hotels in the same territory and provider scope?",
+    "FORMULA": "PRESENCE_INDEX_V2 = SUBJECT_PRESENCE_RATE / CORE_BENCHMARK_PRESENCE_RATE × 100; CORE_BENCHMARK = arithmetic mean of all territory CORE peer rates (zeros included); no cap",
+    "CORE_ONLY": "YES",
+    "ZERO_PRESENCE_CORE_PEERS_INCLUDED": "YES",
+    "SECONDARY_IN_DENOMINATOR": 0,
+    "SCORE_CAP": "NONE",
+    "MIN_CORE_PEERS_RECOMMENDED": 4,
+    "ALL_PROVIDERS_METHOD": "A_EQUAL_MEAN_OF_PROVIDER_RATES_THEN_INDEX",
+    "GRAIN": "property × demand territory × provider × period; All Providers derived",
+    "NOT": [
+      "fair-share consideration",
+      "market share",
+      "booking demand",
+      "recommendation share"
+    ]
+  },
+  "coreBenchmarkRemediation": [
+    {
+      "TERRITORY": "Business Travel",
+      "OLD_CORE_COUNT": 7,
+      "NEW_CORE_COUNT": 6,
+      "REMOVED": [],
+      "DOWNGRADED": [
+        "seagate_hotel_delray"
+      ],
+      "ADDED": [],
+      "STABILITY_STATUS": "FROZEN",
+      "rationale": "Seagate is Delray boutique; Boca business-trip substitutability is weak vs in-city upper-upscale hotels."
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "OLD_CORE_COUNT": 7,
+      "NEW_CORE_COUNT": 6,
+      "REMOVED": [],
+      "DOWNGRADED": [
+        "colony_hotel_delray"
+      ],
+      "ADDED": [],
+      "STABILITY_STATUS": "FROZEN",
+      "rationale": "Colony is a historic inn, not a resort; keep for Couples, not Resort Leisure CORE."
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "OLD_CORE_COUNT": 7,
+      "NEW_CORE_COUNT": 7,
+      "REMOVED": [],
+      "DOWNGRADED": [],
+      "ADDED": [],
+      "STABILITY_STATUS": "FROZEN",
+      "rationale": "Colony retained for boutique romantic stays."
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "OLD_CORE_COUNT": 6,
+      "NEW_CORE_COUNT": 6,
+      "REMOVED": [],
+      "DOWNGRADED": [],
+      "ADDED": [],
+      "STABILITY_STATUS": "FROZEN",
+      "rationale": "No change. Suites + beach/resort CORE retained."
+    },
+    {
+      "TERRITORY": "Meetings & Groups",
+      "OLD_CORE_COUNT": 4,
+      "NEW_CORE_COUNT": 4,
+      "REMOVED": [],
+      "DOWNGRADED": [],
+      "ADDED": [],
+      "STABILITY_STATUS": "FROZEN",
+      "rationale": "Beach Club stays CONDITIONAL (not the meetings venue). Do not pad with Delray spas."
+    },
+    {
+      "TERRITORY": "Wellness",
+      "OLD_CORE_COUNT": 4,
+      "NEW_CORE_COUNT": 4,
+      "REMOVED": [],
+      "DOWNGRADED": [],
+      "ADDED": [],
+      "STABILITY_STATUS": "FROZEN",
+      "rationale": "Spa-capable Palm Beach County set only. Eau stays CONDITIONAL (luxury / Manalapan)."
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "OLD_CORE_COUNT": 3,
+      "NEW_CORE_COUNT": 3,
+      "REMOVED": [],
+      "DOWNGRADED": [],
+      "ADDED": [],
+      "STABILITY_STATUS": "THIN_FROZEN",
+      "rationale": "Do not force a fourth peer. Pelican Grand / Harbor Beach are Fort Lauderdale, not Boca adventure substitutes."
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "OLD_CORE_COUNT": 4,
+      "NEW_CORE_COUNT": 4,
+      "REMOVED": [],
+      "DOWNGRADED": [],
+      "ADDED": [],
+      "STABILITY_STATUS": "FROZEN",
+      "rationale": "Event-capable Boca + nearby spa/beach resorts only."
+    }
+  ],
+  "coreRelationshipAudit": [
+    {
+      "intent": "business",
+      "CANDIDATE": "Renaissance Boca Raton Hotel",
+      "entityId": "renaissance_boca_raton",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "HIGH",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "In-city upper-upscale meetings hotel."
+    },
+    {
+      "intent": "business",
+      "CANDIDATE": "Boca Raton Marriott at Boca Center",
+      "entityId": "marriott_boca_raton",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "HIGH",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "In-city upper-upscale meetings hotel."
+    },
+    {
+      "intent": "business",
+      "CANDIDATE": "Wyndham Boca Raton",
+      "entityId": "wyndham_boca_raton",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "In-city upscale business hotel; weaker positioning than subject but substitutable."
+    },
+    {
+      "intent": "business",
+      "CANDIDATE": "Hilton Boca Raton Suites",
+      "entityId": "hilton_boca_raton_suites",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "MEDIUM",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "In-city all-suites; business/extended-stay substitute."
+    },
+    {
+      "intent": "business",
+      "CANDIDATE": "The Boca Raton",
+      "entityId": "the_boca_raton",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "MEDIUM",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Primary Boca alternative; luxury/scale mismatch but same destination meetings set."
+    },
+    {
+      "intent": "business",
+      "CANDIDATE": "Embassy Suites by Hilton Boca Raton",
+      "entityId": "embassy_suites_boca",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "MEDIUM",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "In-city all-suites; identity MEDIUM but canonical Boca property."
+    },
+    {
+      "intent": "business",
+      "CANDIDATE": "The Seagate Hotel & Spa",
+      "entityId": "seagate_hotel_delray",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "MEDIUM",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "MEDIUM",
+      "TERRITORY_RELEVANCE": "LOW",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "DOWNGRADE",
+      "RATIONALE": "Delray boutique; not a practical Boca business-trip substitute."
+    },
+    {
+      "intent": "leisure",
+      "CANDIDATE": "The Boca Raton",
+      "entityId": "the_boca_raton",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Destination resort in same city."
+    },
+    {
+      "intent": "leisure",
+      "CANDIDATE": "Boca Beach Club",
+      "entityId": "boca_beach_club",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "HIGH",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Oceanfront Boca leisure substitute; subject is Intracoastal not beach."
+    },
+    {
+      "intent": "leisure",
+      "CANDIDATE": "The Seagate Hotel & Spa",
+      "entityId": "seagate_hotel_delray",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "HIGH",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Nearby upper-upscale boutique leisure."
+    },
+    {
+      "intent": "leisure",
+      "CANDIDATE": "Opal Grand Oceanfront Resort",
+      "entityId": "opal_grand_delray",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "HIGH",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Nearby oceanfront resort."
+    },
+    {
+      "intent": "leisure",
+      "CANDIDATE": "Delray Sands Resort",
+      "entityId": "delray_sands_resort",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Nearby beach resort."
+    },
+    {
+      "intent": "leisure",
+      "CANDIDATE": "The Ray Hotel",
+      "entityId": "the_ray_hotel",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "HIGH",
+      "PROPERTY_TYPE_RELEVANCE": "MEDIUM",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Nearby boutique leisure hotel."
+    },
+    {
+      "intent": "leisure",
+      "CANDIDATE": "The Colony Hotel Delray Beach",
+      "entityId": "colony_hotel_delray",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "LOW",
+      "TERRITORY_RELEVANCE": "MEDIUM",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "DOWNGRADE",
+      "RATIONALE": "Historic inn, not resort positioning for Resort Leisure CORE."
+    },
+    {
+      "intent": "couples",
+      "CANDIDATE": "The Colony Hotel Delray Beach",
+      "entityId": "colony_hotel_delray",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "HIGH",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Boutique inn is relevant for romantic stays."
+    },
+    {
+      "intent": "family",
+      "CANDIDATE": "Hilton Boca Raton Suites",
+      "entityId": "hilton_boca_raton_suites",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "HIGH",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "KEEP",
+      "RATIONALE": "Suites fit family trips."
+    },
+    {
+      "intent": "group_meeting",
+      "CANDIDATE": "Boca Beach Club",
+      "entityId": "boca_beach_club",
+      "DECLARED_OR_OBSERVED": "DECLARED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "HIGH",
+      "POSITIONING_RELEVANCE": "LOW",
+      "PROPERTY_TYPE_RELEVANCE": "LOW",
+      "TERRITORY_RELEVANCE": "LOW",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "DOWNGRADE",
+      "RATIONALE": "Already CONDITIONAL — beach club is not the meetings plant."
+    },
+    {
+      "intent": "adventure",
+      "CANDIDATE": "Pelican Grand Beach Resort",
+      "entityId": "pelican_grand",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "LOW",
+      "POSITIONING_RELEVANCE": "MEDIUM",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "MEDIUM",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "REMOVE",
+      "RATIONALE": "Fort Lauderdale; do not pad Adventure to 4."
+    },
+    {
+      "intent": "wellness",
+      "CANDIDATE": "Eau Palm Beach Resort & Spa",
+      "entityId": "eau_palm_beach",
+      "DECLARED_OR_OBSERVED": "OBSERVED",
+      "IDENTITY_VALID": true,
+      "GEOGRAPHIC_SUBSTITUTABILITY": "MEDIUM",
+      "POSITIONING_RELEVANCE": "LOW",
+      "PROPERTY_TYPE_RELEVANCE": "HIGH",
+      "TERRITORY_RELEVANCE": "MEDIUM",
+      "RECURRENCE": "NOT_USED_FOR_CORE_DECISION",
+      "CORE_DECISION": "DOWNGRADE",
+      "RATIONALE": "Luxury Manalapan; CONDITIONAL not CORE."
+    }
+  ],
+  "coreIntegrity": {
+    "business": {
+      "DUPLICATE_CORE_ENTITIES": 0,
+      "GENERIC_CORE_ENTITIES": 0,
+      "BRAND_ONLY_CORE_ENTITIES": 0,
+      "allCanonical": true
+    },
+    "leisure": {
+      "DUPLICATE_CORE_ENTITIES": 0,
+      "GENERIC_CORE_ENTITIES": 0,
+      "BRAND_ONLY_CORE_ENTITIES": 0,
+      "allCanonical": true
+    },
+    "couples": {
+      "DUPLICATE_CORE_ENTITIES": 0,
+      "GENERIC_CORE_ENTITIES": 0,
+      "BRAND_ONLY_CORE_ENTITIES": 0,
+      "allCanonical": true
+    },
+    "family": {
+      "DUPLICATE_CORE_ENTITIES": 0,
+      "GENERIC_CORE_ENTITIES": 0,
+      "BRAND_ONLY_CORE_ENTITIES": 0,
+      "allCanonical": true
+    },
+    "group_meeting": {
+      "DUPLICATE_CORE_ENTITIES": 0,
+      "GENERIC_CORE_ENTITIES": 0,
+      "BRAND_ONLY_CORE_ENTITIES": 0,
+      "allCanonical": true
+    },
+    "wellness": {
+      "DUPLICATE_CORE_ENTITIES": 0,
+      "GENERIC_CORE_ENTITIES": 0,
+      "BRAND_ONLY_CORE_ENTITIES": 0,
+      "allCanonical": true
+    },
+    "adventure": {
+      "DUPLICATE_CORE_ENTITIES": 0,
+      "GENERIC_CORE_ENTITIES": 0,
+      "BRAND_ONLY_CORE_ENTITIES": 0,
+      "allCanonical": true
+    },
+    "celebration": {
+      "DUPLICATE_CORE_ENTITIES": 0,
+      "GENERIC_CORE_ENTITIES": 0,
+      "BRAND_ONLY_CORE_ENTITIES": 0,
+      "allCanonical": true
+    }
+  },
+  "waterstonePresenceIndexV2": [
+    {
+      "TERRITORY": "Business Travel",
+      "SUBJECT_PRESENCE": 60.2,
+      "CORE_BENCHMARK_PRESENCE": 26.6,
+      "CURRENT_LIVE_INDEX": 169,
+      "PRESENCE_INDEX_V2": 227,
+      "DIFFERENCE": 58,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "DIRECTION_MATCH": true,
+      "ZERO_PRESENCE_CORE_PEERS": [],
+      "OLD_ZERO_EXCLUSION_BIAS": "LOW",
+      "extreme": {
+        "extreme": true,
+        "flags": [
+          ">200"
+        ],
+        "class": "VALID_EXTREME",
+        "subjectRate": 0.6022727272727273,
+        "benchmarkRate": 0.2657828282828283,
+        "comparableN": 47
+      }
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "SUBJECT_PRESENCE": 50.8,
+      "CORE_BENCHMARK_PRESENCE": 15.9,
+      "CURRENT_LIVE_INDEX": 167,
+      "PRESENCE_INDEX_V2": 320,
+      "DIFFERENCE": 153,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "DIRECTION_MATCH": true,
+      "ZERO_PRESENCE_CORE_PEERS": [
+        "boca_beach_club"
+      ],
+      "OLD_ZERO_EXCLUSION_BIAS": "MEDIUM",
+      "extreme": {
+        "extreme": true,
+        "flags": [
+          ">300"
+        ],
+        "class": "VALID_EXTREME",
+        "subjectRate": 0.5083333333333333,
+        "benchmarkRate": 0.15902777777777777,
+        "comparableN": 46
+      }
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "SUBJECT_PRESENCE": 62.3,
+      "CORE_BENCHMARK_PRESENCE": 14.8,
+      "CURRENT_LIVE_INDEX": 114,
+      "PRESENCE_INDEX_V2": 421,
+      "DIFFERENCE": 307,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "DIRECTION_MATCH": true,
+      "ZERO_PRESENCE_CORE_PEERS": [
+        "boca_beach_club",
+        "opal_grand_delray",
+        "the_ray_hotel"
+      ],
+      "OLD_ZERO_EXCLUSION_BIAS": "MEDIUM",
+      "extreme": {
+        "extreme": true,
+        "flags": [
+          ">300"
+        ],
+        "class": "VALID_EXTREME",
+        "subjectRate": 0.623015873015873,
+        "benchmarkRate": 0.14795918367346936,
+        "comparableN": 34
+      }
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "SUBJECT_PRESENCE": 35,
+      "CORE_BENCHMARK_PRESENCE": 18.3,
+      "CURRENT_LIVE_INDEX": 115,
+      "PRESENCE_INDEX_V2": 191,
+      "DIFFERENCE": 76,
+      "STATUS": "PRODUCTION_VALIDATED",
+      "DIRECTION_MATCH": true,
+      "ZERO_PRESENCE_CORE_PEERS": [
+        "boca_beach_club"
+      ],
+      "OLD_ZERO_EXCLUSION_BIAS": "MEDIUM",
+      "extreme": {
+        "extreme": false,
+        "flags": [],
+        "class": "IN_RANGE"
+      }
+    },
+    {
+      "TERRITORY": "Meetings & Groups",
+      "SUBJECT_PRESENCE": 51.3,
+      "CORE_BENCHMARK_PRESENCE": 32.9,
+      "CURRENT_LIVE_INDEX": 138,
+      "PRESENCE_INDEX_V2": 156,
+      "DIFFERENCE": 18,
+      "STATUS": "PRODUCTION_VALIDATED",
+      "DIRECTION_MATCH": true,
+      "ZERO_PRESENCE_CORE_PEERS": [],
+      "OLD_ZERO_EXCLUSION_BIAS": "LOW",
+      "extreme": {
+        "extreme": false,
+        "flags": [],
+        "class": "IN_RANGE"
+      }
+    },
+    {
+      "TERRITORY": "Wellness",
+      "SUBJECT_PRESENCE": null,
+      "CORE_BENCHMARK_PRESENCE": null,
+      "CURRENT_LIVE_INDEX": null,
+      "PRESENCE_INDEX_V2": null,
+      "DIFFERENCE": null,
+      "STATUS": "BENCHMARK_DEVELOPING",
+      "DIRECTION_MATCH": null,
+      "ZERO_PRESENCE_CORE_PEERS": [],
+      "OLD_ZERO_EXCLUSION_BIAS": "HIGH"
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "SUBJECT_PRESENCE": 65,
+      "CORE_BENCHMARK_PRESENCE": 26.7,
+      "CURRENT_LIVE_INDEX": 160,
+      "PRESENCE_INDEX_V2": 244,
+      "DIFFERENCE": 84,
+      "STATUS": "BENCHMARK_DEVELOPING",
+      "DIRECTION_MATCH": true,
+      "ZERO_PRESENCE_CORE_PEERS": [],
+      "OLD_ZERO_EXCLUSION_BIAS": "MEDIUM",
+      "extreme": {
+        "extreme": true,
+        "flags": [
+          ">200"
+        ],
+        "class": "VALID_EXTREME",
+        "subjectRate": 0.65,
+        "benchmarkRate": 0.2666666666666667,
+        "comparableN": 20
+      }
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "SUBJECT_PRESENCE": 57.1,
+      "CORE_BENCHMARK_PRESENCE": 16.7,
+      "CURRENT_LIVE_INDEX": 180,
+      "PRESENCE_INDEX_V2": 343,
+      "DIFFERENCE": 163,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "DIRECTION_MATCH": true,
+      "ZERO_PRESENCE_CORE_PEERS": [
+        "boca_beach_club",
+        "seagate_hotel_delray",
+        "opal_grand_delray"
+      ],
+      "OLD_ZERO_EXCLUSION_BIAS": "HIGH",
+      "extreme": {
+        "extreme": true,
+        "flags": [
+          ">300"
+        ],
+        "class": "VALID_EXTREME",
+        "subjectRate": 0.5714285714285715,
+        "benchmarkRate": 0.16666666666666666,
+        "comparableN": 21
+      }
+    }
+  ],
+  "providerScope": {
+    "ALL_PROVIDERS": {
+      "Business Travel": 227,
+      "Resort Leisure": 320,
+      "Couples / Romantic Stay": 421,
+      "Family Travel": 191,
+      "Meetings & Groups": 156,
+      "Wellness": null,
+      "Adventure & Experiences": 244,
+      "Celebrations & Events": 343
+    },
+    "OPENAI": {
+      "Business Travel": 150,
+      "Resort Leisure": 300,
+      "Couples / Romantic Stay": 292,
+      "Family Travel": 300,
+      "Meetings & Groups": 156,
+      "Wellness": null,
+      "Adventure & Experiences": 300,
+      "Celebrations & Events": 320
+    },
+    "GEMINI": {
+      "Business Travel": 353,
+      "Resort Leisure": 300,
+      "Couples / Romantic Stay": 438,
+      "Family Travel": 200,
+      "Meetings & Groups": 240,
+      "Wellness": null,
+      "Adventure & Experiences": 240,
+      "Celebrations & Events": null
+    },
+    "PERPLEXITY": {
+      "Business Travel": 189,
+      "Resort Leisure": 467,
+      "Couples / Romantic Stay": 438,
+      "Family Travel": 150,
+      "Meetings & Groups": 111,
+      "Wellness": null,
+      "Adventure & Experiences": 180,
+      "Celebrations & Events": 300
+    },
+    "CLAUDE": {
+      "Business Travel": 221,
+      "Resort Leisure": 225,
+      "Couples / Romantic Stay": 600,
+      "Family Travel": 120,
+      "Meetings & Groups": 133,
+      "Wellness": null,
+      "Adventure & Experiences": 300,
+      "Celebrations & Events": 400
+    }
+  },
+  "thinBenchmarks": {
+    "WELLNESS": {
+      "live": null,
+      "v2": null,
+      "coreCount": 4,
+      "status": "BENCHMARK_DEVELOPING",
+      "note": "Live index blocked on <3 participating declared comps. V2 uses 4 spa-capable CORE peers including zeros."
+    },
+    "ADVENTURE": {
+      "live": 160,
+      "v2": 244,
+      "coreCount": 3,
+      "status": "BENCHMARK_DEVELOPING",
+      "note": "CORE remains 3. Do not pad. Production minimum is 4."
+    }
+  },
+  "legacyBias": {
+    "ZERO_EXCLUSION_BIAS": {
+      "Business Travel": "LOW",
+      "Resort Leisure": "MEDIUM",
+      "Couples / Romantic Stay": "MEDIUM",
+      "Family Travel": "MEDIUM",
+      "Meetings & Groups": "LOW",
+      "Wellness": "HIGH",
+      "Adventure & Experiences": "MEDIUM",
+      "Celebrations & Events": "HIGH"
+    },
+    "DECLARED_COMP_ONLY_BIAS": "HIGH — live index never includes observed CORE such as Seagate / Opal / Delray Sands",
+    "CAP_AT_200_DISTORTION": "NONE_ON_CURRENT_PERIOD"
+  },
+  "longitudinal": {
+    "TOTAL_PERIODS": 11,
+    "COMPARABLE_PERIODS": 4,
+    "BENCHMARK_VERSION": {
+      "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+      "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+      "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+      "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+    },
+    "REPEATABILITY": "RESEARCH_REPEATABLE_MATCHING_PROVIDER_SCOPE",
+    "HIGH_VOLATILITY_TERRITORIES": [
+      "Business Travel",
+      "Resort Leisure",
+      "Couples / Romantic Stay",
+      "Wellness",
+      "Adventure & Experiences",
+      "Celebrations & Events"
+    ],
+    "byTerritory": {
+      "business": {
+        "PERIOD_COUNT": 4,
+        "CURRENT": 227,
+        "PRIOR": 190,
+        "min": 150,
+        "max": 237,
+        "mean": 201,
+        "median": 209,
+        "range": 87,
+        "VOLATILITY": "HIGH VOLATILITY",
+        "DIRECTION_STABILITY": true
+      },
+      "leisure": {
+        "PERIOD_COUNT": 4,
+        "CURRENT": 320,
+        "PRIOR": 313,
+        "min": 287,
+        "max": 360,
+        "mean": 320,
+        "median": 317,
+        "range": 73,
+        "VOLATILITY": "HIGH VOLATILITY",
+        "DIRECTION_STABILITY": true
+      },
+      "couples": {
+        "PERIOD_COUNT": 4,
+        "CURRENT": 421,
+        "PRIOR": 415,
+        "min": 368,
+        "max": 452,
+        "mean": 414,
+        "median": 418,
+        "range": 84,
+        "VOLATILITY": "HIGH VOLATILITY",
+        "DIRECTION_STABILITY": true
+      },
+      "family": {
+        "PERIOD_COUNT": 4,
+        "CURRENT": 191,
+        "PRIOR": 189,
+        "min": 171,
+        "max": 210,
+        "mean": 190,
+        "median": 190,
+        "range": 39,
+        "VOLATILITY": "MEDIUM VOLATILITY",
+        "DIRECTION_STABILITY": true
+      },
+      "group_meeting": {
+        "PERIOD_COUNT": 4,
+        "CURRENT": 156,
+        "PRIOR": 176,
+        "min": 137,
+        "max": 176,
+        "mean": 158,
+        "median": 159,
+        "range": 39,
+        "VOLATILITY": "MEDIUM VOLATILITY",
+        "DIRECTION_STABILITY": true
+      },
+      "wellness": {
+        "PERIOD_COUNT": 4,
+        "CURRENT": null,
+        "PRIOR": null,
+        "min": null,
+        "max": null,
+        "mean": null,
+        "median": null,
+        "range": null,
+        "VOLATILITY": "HIGH VOLATILITY",
+        "DIRECTION_STABILITY": null
+      },
+      "adventure": {
+        "PERIOD_COUNT": 4,
+        "CURRENT": 244,
+        "PRIOR": 254,
+        "min": 214,
+        "max": 270,
+        "mean": 246,
+        "median": 249,
+        "range": 56,
+        "VOLATILITY": "HIGH VOLATILITY",
+        "DIRECTION_STABILITY": true
+      },
+      "celebration": {
+        "PERIOD_COUNT": 4,
+        "CURRENT": 343,
+        "PRIOR": 282,
+        "min": 282,
+        "max": 379,
+        "mean": 331,
+        "median": 332,
+        "range": 97,
+        "VOLATILITY": "HIGH VOLATILITY",
+        "DIRECTION_STABILITY": true
+      }
+    }
+  },
+  "certification": {
+    "PRODUCTION_VALIDATED": [
+      "Family Travel",
+      "Meetings & Groups"
+    ],
+    "CONDITIONAL": [
+      "Business Travel",
+      "Resort Leisure",
+      "Couples / Romantic Stay",
+      "Celebrations & Events"
+    ],
+    "RESEARCH_ONLY": [],
+    "BENCHMARK_DEVELOPING": [
+      "Wellness",
+      "Adventure & Experiences"
+    ],
+    "BLOCKED": [],
+    "OVERALL_STATUS": "PARTIAL",
+    "customerLiveIndexUnchanged": true
+  },
+  "presenceIndexV2VsAci": {
+    "SEMANTIC_OVERLAP": "MEDIUM",
+    "MATHEMATICAL_OVERLAP": "HIGH",
+    "REDUNDANCY_RISK": "HIGH",
+    "CUSTOMER_CONFUSION_RISK": "HIGH",
+    "DIRECTION_MATCH": "7/7",
+    "RANK_ORDER_SIMILARITY": "3/7",
+    "pearsonR": 0.92,
+    "presenceAnswers": "How often does this hotel appear in comparable AI responses for this demand territory, relative to the average appearance rate of governed CORE comparable hotels in the same territory and provider scope?",
+    "aciAnswers": "Actual fractional consideration share vs equal fair share among subject + CORE."
+  },
+  "futureIndexRecommendation": {
+    "choice": "KEEP_PRESENCE_INDEX_AS_DETAIL",
+    "RATIONALE": "High mathematical overlap after sharing CORE would make dual customer indexes confusing; keep Presence as detail if ACI is the future hero."
+  },
+  "aciProgress": {
+    "rows": [
+      {
+        "TERRITORY": "Business Travel",
+        "territory": "Business Travel",
+        "intent": "business",
+        "OLD_CORE_COUNT": 7,
+        "NEW_CORE_COUNT": 6,
+        "OLD_ACI": 233,
+        "NEW_ACI": 209,
+        "SENSITIVITY_BEFORE": "HIGH",
+        "SENSITIVITY_AFTER": "HIGH",
+        "ACI_STATUS": "RESEARCH_ONLY"
+      },
+      {
+        "TERRITORY": "Resort Leisure",
+        "territory": "Resort Leisure",
+        "intent": "leisure",
+        "OLD_CORE_COUNT": 7,
+        "NEW_CORE_COUNT": 6,
+        "OLD_ACI": 257,
+        "NEW_ACI": 225,
+        "SENSITIVITY_BEFORE": "HIGH",
+        "SENSITIVITY_AFTER": "HIGH",
+        "ACI_STATUS": "RESEARCH_ONLY"
+      },
+      {
+        "TERRITORY": "Couples / Romantic Stay",
+        "territory": "Couples / Romantic Stay",
+        "intent": "couples",
+        "OLD_CORE_COUNT": 7,
+        "NEW_CORE_COUNT": 7,
+        "OLD_ACI": 264,
+        "NEW_ACI": 264,
+        "SENSITIVITY_BEFORE": "HIGH",
+        "SENSITIVITY_AFTER": "MEDIUM",
+        "ACI_STATUS": "CONDITIONALLY_ELIGIBLE"
+      },
+      {
+        "TERRITORY": "Family Travel",
+        "territory": "Family Travel",
+        "intent": "family",
+        "OLD_CORE_COUNT": 6,
+        "NEW_CORE_COUNT": 6,
+        "OLD_ACI": 117,
+        "NEW_ACI": 117,
+        "SENSITIVITY_BEFORE": "MEDIUM",
+        "SENSITIVITY_AFTER": "MEDIUM",
+        "ACI_STATUS": "CONDITIONALLY_ELIGIBLE"
+      },
+      {
+        "TERRITORY": "Meetings & Groups",
+        "territory": "Meetings & Groups",
+        "intent": "group_meeting",
+        "OLD_CORE_COUNT": 4,
+        "NEW_CORE_COUNT": 4,
+        "OLD_ACI": 125,
+        "NEW_ACI": 125,
+        "SENSITIVITY_BEFORE": "HIGH",
+        "SENSITIVITY_AFTER": "HIGH",
+        "ACI_STATUS": "RESEARCH_ONLY"
+      },
+      {
+        "TERRITORY": "Wellness",
+        "territory": "Wellness",
+        "intent": "wellness",
+        "OLD_CORE_COUNT": 4,
+        "NEW_CORE_COUNT": 4,
+        "OLD_ACI": 63,
+        "NEW_ACI": 63,
+        "SENSITIVITY_BEFORE": "MEDIUM",
+        "SENSITIVITY_AFTER": "MEDIUM",
+        "ACI_STATUS": "CONDITIONALLY_ELIGIBLE"
+      },
+      {
+        "TERRITORY": "Adventure & Experiences",
+        "territory": "Adventure & Experiences",
+        "intent": "adventure",
+        "OLD_CORE_COUNT": 3,
+        "NEW_CORE_COUNT": 3,
+        "OLD_ACI": 182,
+        "NEW_ACI": 182,
+        "SENSITIVITY_BEFORE": "HIGH",
+        "SENSITIVITY_AFTER": "HIGH",
+        "ACI_STATUS": "RESEARCH_ONLY"
+      },
+      {
+        "TERRITORY": "Celebrations & Events",
+        "territory": "Celebrations & Events",
+        "intent": "celebration",
+        "OLD_CORE_COUNT": 4,
+        "NEW_CORE_COUNT": 4,
+        "OLD_ACI": 237,
+        "NEW_ACI": 237,
+        "SENSITIVITY_BEFORE": "HIGH",
+        "SENSITIVITY_AFTER": "HIGH",
+        "ACI_STATUS": "RESEARCH_ONLY"
+      }
+    ],
+    "OVERALL_ACI_STATUS": "RESEARCH_READY",
+    "customerAciStatus": "BLOCKED"
+  },
+  "regression": {
+    "ADP_UI_DIFF": 0,
+    "LIVE_PRESENCE_INDEX_DIFF": 0,
+    "LEGACY_ADP_DIFF": 0,
+    "PHASE1_METRIC_DIFF": 0,
+    "BRAND_AI_DIFF": 0,
+    "OPERATOR_AI_DIFF": 0
+  },
+  "execution": {
+    "PROVIDER_CALLS": 0,
+    "SPEND": "$0"
+  },
+  "next": "ADP_PRESENCE_INDEX_LONGITUDINAL_VALIDATION_REQUIRED",
+  "final": "ADP_AI_PRESENCE_INDEX_V2_AND_CORE_BENCHMARK_STABILITY_PARTIAL",
+  "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+  "propertyId": "adp_waterstone_boca_raton",
+  "pairedLiveCount": 7
+}

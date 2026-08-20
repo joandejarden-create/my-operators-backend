@@ -1,0 +1,1723 @@
+{
+  "title": "ADP_AI_CONSIDERATION_INDEX_AND_PRESENCE_INDEX_AUDIT_V2_COMPLETE",
+  "existingAiPresenceIndex": {
+    "SOURCE_FILE": "lib/ai-demand-positioning/customer/owner-payload.js",
+    "FUNCTION": "computeIntentPresenceIndex",
+    "CURRENT_FORMULA": "index = min(round((subjectScenarioPresenceRate / participatingDeclaredCompAveragePresenceRate) × 100), 200) when participatingDeclaredComps >= 3 AND avgCompRate >= 30; else null",
+    "CURRENT_INPUT_FIELDS": [
+      "propertyProfile.declaredCompSet",
+      "observations.competitorsMentioned",
+      "observations.scenarioId",
+      "demandCapture.byIntent[intent].rate",
+      "scenarios.intent / scenarioId"
+    ],
+    "CURRENT_COMPARISON_SET_SOURCE": "declaredCompSet only",
+    "CURRENT_GRAIN": "SCENARIO_GRAIN (any-provider OR)",
+    "CURRENT_PROVIDER_SCOPE_HANDLING": "unscoped — mixes whatever providers exist in the parsed observation set",
+    "CURRENT_ALL_PROVIDERS_LOGIC": "not independently derived; leftover observations after parsed filter",
+    "CURRENT_THIN_BENCHMARK_SUPPRESSION": "null when participating declared comps < 3 or avg presence < 30%; cap at 200",
+    "CURRENT_CUSTOMER_MEANING": "How does this hotel's scenario-level AI appearance frequency compare with the average scenario-level appearance frequency of declared competitors that appeared at least once in this demand territory?",
+    "INTENTS_AUDITED": 8,
+    "PRODUCTION_VALIDATED": [],
+    "PARTIAL": [
+      "Business Travel",
+      "Resort Leisure",
+      "Couples / Romantic Stay",
+      "Family Travel",
+      "Meetings & Groups",
+      "Adventure & Experiences",
+      "Celebrations & Events"
+    ],
+    "BLOCKED": [
+      "Wellness"
+    ],
+    "meaning": {
+      "customerQuestion": "How does this hotel's scenario-level AI appearance frequency compare with the average scenario-level appearance frequency of declared competitors that appeared at least once in this demand territory?",
+      "interpretation100": "Subject scenario presence rate equals the average presence rate of participating declared competitors (zeros excluded). This is relative frequency vs a peer average — not fair share of a consideration set.",
+      "interpretation120": "Subject scenario presence rate is 20% higher than that participating declared-comp average (before the 200 cap).",
+      "interpretation80": "Subject scenario presence rate is 20% below that participating declared-comp average.",
+      "mathematicallyValidForStatedQuestion": true,
+      "parityAsFairShareValid": false,
+      "caveats": [
+        "Declared comp set only — observed alternatives never enter the denominator",
+        "Declared comps with 0% presence are dropped from the average (raises peer average, lowers index)",
+        "Index is capped at 200",
+        "No provider-scoped indexes; All Providers is not a derived certified scope",
+        "Thin sets (<3 participating comps or avg < 30%) are suppressed to null"
+      ]
+    },
+    "byIntent": {
+      "business": {
+        "index": 169,
+        "myRate": 91.7,
+        "avgCompRate": 54.2,
+        "intent": "business",
+        "territoryLabel": "Business Travel",
+        "subjectPresenceRate": 91.7,
+        "currentPeerAvgPresenceRate": 54.2,
+        "currentAiPresenceIndex": 169,
+        "currentPeerSet": [
+          "the boca raton (waldorf astoria)",
+          "boca beach club",
+          "renaissance boca raton",
+          "wyndham boca raton",
+          "marriott boca raton",
+          "hilton boca raton suites"
+        ],
+        "currentPeerCount": 6,
+        "declaredPeerRates": [
+          {
+            "declaredName": "the boca raton (waldorf astoria)",
+            "scenarioCount": 11,
+            "presenceRate": 91.66666666666666
+          },
+          {
+            "declaredName": "boca beach club",
+            "scenarioCount": 5,
+            "presenceRate": 41.66666666666667
+          },
+          {
+            "declaredName": "renaissance boca raton",
+            "scenarioCount": 6,
+            "presenceRate": 50
+          },
+          {
+            "declaredName": "wyndham boca raton",
+            "scenarioCount": 7,
+            "presenceRate": 58.333333333333336
+          },
+          {
+            "declaredName": "marriott boca raton",
+            "scenarioCount": 5,
+            "presenceRate": 41.66666666666667
+          },
+          {
+            "declaredName": "hilton boca raton suites",
+            "scenarioCount": 5,
+            "presenceRate": 41.66666666666667
+          }
+        ],
+        "currentDenominator": "mean scenario-level presence rate of declared comps with rate > 0",
+        "currentProviderScope": "ALL_OBSERVATIONS_UNSCOPED",
+        "currentAllProvidersLogic": "Scenario presence uses OR across whatever providers exist in the observation set; no independent provider indexes; missing provider is not zero-filled",
+        "currentGrain": "SCENARIO_GRAIN (property × scenario; any-provider mention)",
+        "suppressionState": "SHOWN",
+        "providersPresent": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "providerCountObserved": 4
+      },
+      "leisure": {
+        "index": 167,
+        "myRate": 75,
+        "avgCompRate": 45,
+        "intent": "leisure",
+        "territoryLabel": "Resort Leisure",
+        "subjectPresenceRate": 75,
+        "currentPeerAvgPresenceRate": 45,
+        "currentAiPresenceIndex": 167,
+        "currentPeerSet": [
+          "the boca raton (waldorf astoria)",
+          "boca beach club",
+          "renaissance boca raton",
+          "wyndham boca raton",
+          "marriott boca raton"
+        ],
+        "currentPeerCount": 5,
+        "declaredPeerRates": [
+          {
+            "declaredName": "the boca raton (waldorf astoria)",
+            "scenarioCount": 9,
+            "presenceRate": 75
+          },
+          {
+            "declaredName": "boca beach club",
+            "scenarioCount": 7,
+            "presenceRate": 58.333333333333336
+          },
+          {
+            "declaredName": "renaissance boca raton",
+            "scenarioCount": 3,
+            "presenceRate": 25
+          },
+          {
+            "declaredName": "wyndham boca raton",
+            "scenarioCount": 2,
+            "presenceRate": 16.666666666666664
+          },
+          {
+            "declaredName": "marriott boca raton",
+            "scenarioCount": 6,
+            "presenceRate": 50
+          },
+          {
+            "declaredName": "hilton boca raton suites",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          }
+        ],
+        "currentDenominator": "mean scenario-level presence rate of declared comps with rate > 0",
+        "currentProviderScope": "ALL_OBSERVATIONS_UNSCOPED",
+        "currentAllProvidersLogic": "Scenario presence uses OR across whatever providers exist in the observation set; no independent provider indexes; missing provider is not zero-filled",
+        "currentGrain": "SCENARIO_GRAIN (property × scenario; any-provider mention)",
+        "suppressionState": "SHOWN",
+        "providersPresent": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "providerCountObserved": 4
+      },
+      "couples": {
+        "index": 114,
+        "myRate": 66.7,
+        "avgCompRate": 58.3,
+        "intent": "couples",
+        "territoryLabel": "Couples / Romantic Stay",
+        "subjectPresenceRate": 66.7,
+        "currentPeerAvgPresenceRate": 58.3,
+        "currentAiPresenceIndex": 114,
+        "currentPeerSet": [
+          "the boca raton (waldorf astoria)",
+          "boca beach club",
+          "marriott boca raton",
+          "hilton boca raton suites"
+        ],
+        "currentPeerCount": 4,
+        "declaredPeerRates": [
+          {
+            "declaredName": "the boca raton (waldorf astoria)",
+            "scenarioCount": 7,
+            "presenceRate": 77.77777777777779
+          },
+          {
+            "declaredName": "boca beach club",
+            "scenarioCount": 8,
+            "presenceRate": 88.88888888888889
+          },
+          {
+            "declaredName": "renaissance boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "wyndham boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "marriott boca raton",
+            "scenarioCount": 5,
+            "presenceRate": 55.55555555555556
+          },
+          {
+            "declaredName": "hilton boca raton suites",
+            "scenarioCount": 1,
+            "presenceRate": 11.11111111111111
+          }
+        ],
+        "currentDenominator": "mean scenario-level presence rate of declared comps with rate > 0",
+        "currentProviderScope": "ALL_OBSERVATIONS_UNSCOPED",
+        "currentAllProvidersLogic": "Scenario presence uses OR across whatever providers exist in the observation set; no independent provider indexes; missing provider is not zero-filled",
+        "currentGrain": "SCENARIO_GRAIN (property × scenario; any-provider mention)",
+        "suppressionState": "SHOWN",
+        "providersPresent": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "providerCountObserved": 4
+      },
+      "group_meeting": {
+        "index": 138,
+        "myRate": 69.2,
+        "avgCompRate": 50,
+        "intent": "group_meeting",
+        "territoryLabel": "Meetings & Groups",
+        "subjectPresenceRate": 69.2,
+        "currentPeerAvgPresenceRate": 50,
+        "currentAiPresenceIndex": 138,
+        "currentPeerSet": [
+          "the boca raton (waldorf astoria)",
+          "boca beach club",
+          "renaissance boca raton",
+          "wyndham boca raton",
+          "marriott boca raton",
+          "hilton boca raton suites"
+        ],
+        "currentPeerCount": 6,
+        "declaredPeerRates": [
+          {
+            "declaredName": "the boca raton (waldorf astoria)",
+            "scenarioCount": 13,
+            "presenceRate": 100
+          },
+          {
+            "declaredName": "boca beach club",
+            "scenarioCount": 6,
+            "presenceRate": 46.15384615384615
+          },
+          {
+            "declaredName": "renaissance boca raton",
+            "scenarioCount": 7,
+            "presenceRate": 53.84615384615385
+          },
+          {
+            "declaredName": "wyndham boca raton",
+            "scenarioCount": 5,
+            "presenceRate": 38.46153846153847
+          },
+          {
+            "declaredName": "marriott boca raton",
+            "scenarioCount": 5,
+            "presenceRate": 38.46153846153847
+          },
+          {
+            "declaredName": "hilton boca raton suites",
+            "scenarioCount": 3,
+            "presenceRate": 23.076923076923077
+          }
+        ],
+        "currentDenominator": "mean scenario-level presence rate of declared comps with rate > 0",
+        "currentProviderScope": "ALL_OBSERVATIONS_UNSCOPED",
+        "currentAllProvidersLogic": "Scenario presence uses OR across whatever providers exist in the observation set; no independent provider indexes; missing provider is not zero-filled",
+        "currentGrain": "SCENARIO_GRAIN (property × scenario; any-provider mention)",
+        "suppressionState": "SHOWN",
+        "providersPresent": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "providerCountObserved": 4
+      },
+      "family": {
+        "index": 115,
+        "myRate": 60,
+        "avgCompRate": 52,
+        "intent": "family",
+        "territoryLabel": "Family Travel",
+        "subjectPresenceRate": 60,
+        "currentPeerAvgPresenceRate": 52,
+        "currentAiPresenceIndex": 115,
+        "currentPeerSet": [
+          "the boca raton (waldorf astoria)",
+          "boca beach club",
+          "wyndham boca raton",
+          "marriott boca raton",
+          "hilton boca raton suites"
+        ],
+        "currentPeerCount": 5,
+        "declaredPeerRates": [
+          {
+            "declaredName": "the boca raton (waldorf astoria)",
+            "scenarioCount": 5,
+            "presenceRate": 100
+          },
+          {
+            "declaredName": "boca beach club",
+            "scenarioCount": 3,
+            "presenceRate": 60
+          },
+          {
+            "declaredName": "renaissance boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "wyndham boca raton",
+            "scenarioCount": 1,
+            "presenceRate": 20
+          },
+          {
+            "declaredName": "marriott boca raton",
+            "scenarioCount": 3,
+            "presenceRate": 60
+          },
+          {
+            "declaredName": "hilton boca raton suites",
+            "scenarioCount": 1,
+            "presenceRate": 20
+          }
+        ],
+        "currentDenominator": "mean scenario-level presence rate of declared comps with rate > 0",
+        "currentProviderScope": "ALL_OBSERVATIONS_UNSCOPED",
+        "currentAllProvidersLogic": "Scenario presence uses OR across whatever providers exist in the observation set; no independent provider indexes; missing provider is not zero-filled",
+        "currentGrain": "SCENARIO_GRAIN (property × scenario; any-provider mention)",
+        "suppressionState": "SHOWN",
+        "providersPresent": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "providerCountObserved": 4
+      },
+      "celebration": {
+        "index": 180,
+        "myRate": 85.7,
+        "avgCompRate": 47.6,
+        "intent": "celebration",
+        "territoryLabel": "Celebrations & Events",
+        "subjectPresenceRate": 85.7,
+        "currentPeerAvgPresenceRate": 47.6,
+        "currentAiPresenceIndex": 180,
+        "currentPeerSet": [
+          "the boca raton (waldorf astoria)",
+          "boca beach club",
+          "marriott boca raton"
+        ],
+        "currentPeerCount": 3,
+        "declaredPeerRates": [
+          {
+            "declaredName": "the boca raton (waldorf astoria)",
+            "scenarioCount": 5,
+            "presenceRate": 71.42857142857143
+          },
+          {
+            "declaredName": "boca beach club",
+            "scenarioCount": 4,
+            "presenceRate": 57.14285714285714
+          },
+          {
+            "declaredName": "renaissance boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "wyndham boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "marriott boca raton",
+            "scenarioCount": 1,
+            "presenceRate": 14.285714285714285
+          },
+          {
+            "declaredName": "hilton boca raton suites",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          }
+        ],
+        "currentDenominator": "mean scenario-level presence rate of declared comps with rate > 0",
+        "currentProviderScope": "ALL_OBSERVATIONS_UNSCOPED",
+        "currentAllProvidersLogic": "Scenario presence uses OR across whatever providers exist in the observation set; no independent provider indexes; missing provider is not zero-filled",
+        "currentGrain": "SCENARIO_GRAIN (property × scenario; any-provider mention)",
+        "suppressionState": "SHOWN",
+        "providersPresent": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "providerCountObserved": 4
+      },
+      "wellness": {
+        "index": null,
+        "myRate": 50,
+        "avgCompRate": 0,
+        "intent": "wellness",
+        "territoryLabel": "Wellness",
+        "subjectPresenceRate": 50,
+        "currentPeerAvgPresenceRate": 0,
+        "currentAiPresenceIndex": null,
+        "currentPeerSet": [
+          "the boca raton (waldorf astoria)",
+          "boca beach club"
+        ],
+        "currentPeerCount": 2,
+        "declaredPeerRates": [
+          {
+            "declaredName": "the boca raton (waldorf astoria)",
+            "scenarioCount": 1,
+            "presenceRate": 50
+          },
+          {
+            "declaredName": "boca beach club",
+            "scenarioCount": 2,
+            "presenceRate": 100
+          },
+          {
+            "declaredName": "renaissance boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "wyndham boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "marriott boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "hilton boca raton suites",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          }
+        ],
+        "currentDenominator": "mean scenario-level presence rate of declared comps with rate > 0",
+        "currentProviderScope": "ALL_OBSERVATIONS_UNSCOPED",
+        "currentAllProvidersLogic": "Scenario presence uses OR across whatever providers exist in the observation set; no independent provider indexes; missing provider is not zero-filled",
+        "currentGrain": "SCENARIO_GRAIN (property × scenario; any-provider mention)",
+        "suppressionState": "SUPPRESSED_THIN_PEER_SET",
+        "providersPresent": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "providerCountObserved": 4
+      },
+      "adventure": {
+        "index": 160,
+        "myRate": 80,
+        "avgCompRate": 50,
+        "intent": "adventure",
+        "territoryLabel": "Adventure & Experiences",
+        "subjectPresenceRate": 80,
+        "currentPeerAvgPresenceRate": 50,
+        "currentAiPresenceIndex": 160,
+        "currentPeerSet": [
+          "the boca raton (waldorf astoria)",
+          "boca beach club",
+          "marriott boca raton",
+          "hilton boca raton suites"
+        ],
+        "currentPeerCount": 4,
+        "declaredPeerRates": [
+          {
+            "declaredName": "the boca raton (waldorf astoria)",
+            "scenarioCount": 4,
+            "presenceRate": 80
+          },
+          {
+            "declaredName": "boca beach club",
+            "scenarioCount": 3,
+            "presenceRate": 60
+          },
+          {
+            "declaredName": "renaissance boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "wyndham boca raton",
+            "scenarioCount": 0,
+            "presenceRate": 0
+          },
+          {
+            "declaredName": "marriott boca raton",
+            "scenarioCount": 2,
+            "presenceRate": 40
+          },
+          {
+            "declaredName": "hilton boca raton suites",
+            "scenarioCount": 1,
+            "presenceRate": 20
+          }
+        ],
+        "currentDenominator": "mean scenario-level presence rate of declared comps with rate > 0",
+        "currentProviderScope": "ALL_OBSERVATIONS_UNSCOPED",
+        "currentAllProvidersLogic": "Scenario presence uses OR across whatever providers exist in the observation set; no independent provider indexes; missing provider is not zero-filled",
+        "currentGrain": "SCENARIO_GRAIN (property × scenario; any-provider mention)",
+        "suppressionState": "SHOWN",
+        "providersPresent": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "providerCountObserved": 4
+      }
+    }
+  },
+  "entityGovernance": {
+    "RAW_ENTITIES": 198,
+    "CANONICAL_HOTELS": 35,
+    "DUPLICATES_MERGED": 19,
+    "ARTIFACTS_REMOVED": 85,
+    "AMBIGUOUS": 2,
+    "UNRESOLVED": 44,
+    "byClass": {
+      "CANONICAL_HOTEL": 53,
+      "DUPLICATE_ALIAS": 1,
+      "BRAND_NOT_PROPERTY": 13,
+      "VENUE_ONLY": 33,
+      "AMBIGUOUS": 2,
+      "UNRESOLVED": 44,
+      "GENERIC_PHRASE": 51,
+      "LOCATION": 1
+    },
+    "version": "adp_sf_entity_resolution_v2"
+  },
+  "territoryBenchmarkSets": {
+    "business": {
+      "TERRITORY": "Business Travel",
+      "CORE_COUNT": 7,
+      "SECONDARY_COUNT": 11,
+      "CONDITIONAL_COUNT": 5,
+      "CERTIFIABLE_UNIVERSE": "YES",
+      "CORE_COMPETITORS": [
+        "The Boca Raton",
+        "Renaissance Boca Raton Hotel",
+        "Wyndham Boca Raton",
+        "Boca Raton Marriott at Boca Center",
+        "Hilton Boca Raton Suites",
+        "The Seagate Hotel & Spa",
+        "Embassy Suites by Hilton Boca Raton"
+      ],
+      "SECONDARY_ALTERNATIVES": [
+        "The Colony Hotel Delray Beach",
+        "Opal Grand Oceanfront Resort",
+        "Jupiter Beach Resort & Spa",
+        "Margaritaville Hollywood Beach Resort",
+        "The Ray Hotel",
+        "Hilton Deerfield Beach Resort",
+        "Lago Mar Beach Resort & Club",
+        "Wyndham Deerfield Beach Resort",
+        "Riverside Hotel Fort Lauderdale",
+        "Hilton Fort Lauderdale Beach Resort",
+        "Sailfish Marina Resort"
+      ],
+      "DECLARED_CORE": 5,
+      "DECLARED_SECONDARY": 0,
+      "DECLARED_NON_COMPARABLE": 0,
+      "OBSERVED_CORE": 2,
+      "OBSERVED_SECONDARY": 11,
+      "minCoreResearch": {
+        "at3": true,
+        "at4": true,
+        "at5": true,
+        "productionEnough": true
+      }
+    },
+    "leisure": {
+      "TERRITORY": "Resort Leisure",
+      "CORE_COUNT": 7,
+      "SECONDARY_COUNT": 15,
+      "CONDITIONAL_COUNT": 6,
+      "CERTIFIABLE_UNIVERSE": "YES",
+      "CORE_COMPETITORS": [
+        "The Boca Raton",
+        "The Colony Hotel Delray Beach",
+        "The Seagate Hotel & Spa",
+        "Opal Grand Oceanfront Resort",
+        "Delray Sands Resort",
+        "The Ray Hotel",
+        "Boca Beach Club"
+      ],
+      "SECONDARY_ALTERNATIVES": [
+        "Renaissance Boca Raton Hotel",
+        "Wyndham Boca Raton",
+        "Boca Raton Marriott at Boca Center",
+        "Jupiter Beach Resort & Spa",
+        "The Diplomat Beach Resort Hollywood",
+        "Pelican Grand Beach Resort",
+        "Margaritaville Hollywood Beach Resort",
+        "Fort Lauderdale Marriott Harbor Beach Resort & Spa",
+        "Embassy Suites by Hilton Boca Raton",
+        "Hilton Deerfield Beach Resort",
+        "Lago Mar Beach Resort & Club",
+        "Wyndham Deerfield Beach Resort",
+        "Riverside Hotel Fort Lauderdale",
+        "Hilton Fort Lauderdale Beach Resort",
+        "Sailfish Marina Resort"
+      ],
+      "DECLARED_CORE": 1,
+      "DECLARED_SECONDARY": 3,
+      "DECLARED_NON_COMPARABLE": 1,
+      "OBSERVED_CORE": 6,
+      "OBSERVED_SECONDARY": 12,
+      "minCoreResearch": {
+        "at3": true,
+        "at4": true,
+        "at5": true,
+        "productionEnough": true
+      }
+    },
+    "couples": {
+      "TERRITORY": "Couples / Romantic Stay",
+      "CORE_COUNT": 7,
+      "SECONDARY_COUNT": 11,
+      "CONDITIONAL_COUNT": 5,
+      "CERTIFIABLE_UNIVERSE": "YES",
+      "CORE_COMPETITORS": [
+        "The Boca Raton",
+        "The Colony Hotel Delray Beach",
+        "The Seagate Hotel & Spa",
+        "Opal Grand Oceanfront Resort",
+        "Delray Sands Resort",
+        "The Ray Hotel",
+        "Boca Beach Club"
+      ],
+      "SECONDARY_ALTERNATIVES": [
+        "Jupiter Beach Resort & Spa",
+        "The Diplomat Beach Resort Hollywood",
+        "Pelican Grand Beach Resort",
+        "Margaritaville Hollywood Beach Resort",
+        "Fort Lauderdale Marriott Harbor Beach Resort & Spa",
+        "Hilton Deerfield Beach Resort",
+        "Lago Mar Beach Resort & Club",
+        "Wyndham Deerfield Beach Resort",
+        "Riverside Hotel Fort Lauderdale",
+        "Hilton Fort Lauderdale Beach Resort",
+        "Sailfish Marina Resort"
+      ],
+      "DECLARED_CORE": 1,
+      "DECLARED_SECONDARY": 0,
+      "DECLARED_NON_COMPARABLE": 4,
+      "OBSERVED_CORE": 6,
+      "OBSERVED_SECONDARY": 11,
+      "minCoreResearch": {
+        "at3": true,
+        "at4": true,
+        "at5": true,
+        "productionEnough": true
+      }
+    },
+    "family": {
+      "TERRITORY": "Family Travel",
+      "CORE_COUNT": 6,
+      "SECONDARY_COUNT": 15,
+      "CONDITIONAL_COUNT": 5,
+      "CERTIFIABLE_UNIVERSE": "YES",
+      "CORE_COMPETITORS": [
+        "The Boca Raton",
+        "Hilton Boca Raton Suites",
+        "Opal Grand Oceanfront Resort",
+        "Delray Sands Resort",
+        "Embassy Suites by Hilton Boca Raton",
+        "Boca Beach Club"
+      ],
+      "SECONDARY_ALTERNATIVES": [
+        "Renaissance Boca Raton Hotel",
+        "Wyndham Boca Raton",
+        "Boca Raton Marriott at Boca Center",
+        "The Seagate Hotel & Spa",
+        "Jupiter Beach Resort & Spa",
+        "The Diplomat Beach Resort Hollywood",
+        "Pelican Grand Beach Resort",
+        "Margaritaville Hollywood Beach Resort",
+        "Fort Lauderdale Marriott Harbor Beach Resort & Spa",
+        "Hilton Deerfield Beach Resort",
+        "Lago Mar Beach Resort & Club",
+        "Wyndham Deerfield Beach Resort",
+        "Riverside Hotel Fort Lauderdale",
+        "Hilton Fort Lauderdale Beach Resort",
+        "Sailfish Marina Resort"
+      ],
+      "DECLARED_CORE": 2,
+      "DECLARED_SECONDARY": 3,
+      "DECLARED_NON_COMPARABLE": 0,
+      "OBSERVED_CORE": 4,
+      "OBSERVED_SECONDARY": 12,
+      "minCoreResearch": {
+        "at3": true,
+        "at4": true,
+        "at5": true,
+        "productionEnough": true
+      }
+    },
+    "group_meeting": {
+      "TERRITORY": "Meetings & Groups",
+      "CORE_COUNT": 4,
+      "SECONDARY_COUNT": 11,
+      "CONDITIONAL_COUNT": 8,
+      "CERTIFIABLE_UNIVERSE": "YES",
+      "CORE_COMPETITORS": [
+        "The Boca Raton",
+        "Renaissance Boca Raton Hotel",
+        "Wyndham Boca Raton",
+        "Boca Raton Marriott at Boca Center"
+      ],
+      "SECONDARY_ALTERNATIVES": [
+        "Hilton Boca Raton Suites",
+        "The Seagate Hotel & Spa",
+        "Jupiter Beach Resort & Spa",
+        "Margaritaville Hollywood Beach Resort",
+        "Embassy Suites by Hilton Boca Raton",
+        "Hilton Deerfield Beach Resort",
+        "Lago Mar Beach Resort & Club",
+        "Wyndham Deerfield Beach Resort",
+        "Riverside Hotel Fort Lauderdale",
+        "Hilton Fort Lauderdale Beach Resort",
+        "Sailfish Marina Resort"
+      ],
+      "DECLARED_CORE": 4,
+      "DECLARED_SECONDARY": 1,
+      "DECLARED_NON_COMPARABLE": 0,
+      "OBSERVED_CORE": 0,
+      "OBSERVED_SECONDARY": 10,
+      "minCoreResearch": {
+        "at3": true,
+        "at4": true,
+        "at5": false,
+        "productionEnough": true
+      }
+    },
+    "wellness": {
+      "TERRITORY": "Wellness",
+      "CORE_COUNT": 4,
+      "SECONDARY_COUNT": 10,
+      "CONDITIONAL_COUNT": 7,
+      "CERTIFIABLE_UNIVERSE": "YES",
+      "CORE_COMPETITORS": [
+        "The Boca Raton",
+        "The Seagate Hotel & Spa",
+        "Opal Grand Oceanfront Resort",
+        "Boca Beach Club"
+      ],
+      "SECONDARY_ALTERNATIVES": [
+        "Delray Sands Resort",
+        "Jupiter Beach Resort & Spa",
+        "The Diplomat Beach Resort Hollywood",
+        "Margaritaville Hollywood Beach Resort",
+        "Hilton Deerfield Beach Resort",
+        "Lago Mar Beach Resort & Club",
+        "Wyndham Deerfield Beach Resort",
+        "Riverside Hotel Fort Lauderdale",
+        "Hilton Fort Lauderdale Beach Resort",
+        "Sailfish Marina Resort"
+      ],
+      "DECLARED_CORE": 1,
+      "DECLARED_SECONDARY": 0,
+      "DECLARED_NON_COMPARABLE": 4,
+      "OBSERVED_CORE": 3,
+      "OBSERVED_SECONDARY": 10,
+      "minCoreResearch": {
+        "at3": true,
+        "at4": true,
+        "at5": false,
+        "productionEnough": true
+      }
+    },
+    "adventure": {
+      "TERRITORY": "Adventure & Experiences",
+      "CORE_COUNT": 3,
+      "SECONDARY_COUNT": 12,
+      "CONDITIONAL_COUNT": 5,
+      "CERTIFIABLE_UNIVERSE": "YES",
+      "CORE_COMPETITORS": [
+        "The Boca Raton",
+        "Delray Sands Resort",
+        "Boca Beach Club"
+      ],
+      "SECONDARY_ALTERNATIVES": [
+        "Opal Grand Oceanfront Resort",
+        "Jupiter Beach Resort & Spa",
+        "The Diplomat Beach Resort Hollywood",
+        "Pelican Grand Beach Resort",
+        "Margaritaville Hollywood Beach Resort",
+        "Fort Lauderdale Marriott Harbor Beach Resort & Spa",
+        "Hilton Deerfield Beach Resort",
+        "Lago Mar Beach Resort & Club",
+        "Wyndham Deerfield Beach Resort",
+        "Riverside Hotel Fort Lauderdale",
+        "Hilton Fort Lauderdale Beach Resort",
+        "Sailfish Marina Resort"
+      ],
+      "DECLARED_CORE": 1,
+      "DECLARED_SECONDARY": 0,
+      "DECLARED_NON_COMPARABLE": 4,
+      "OBSERVED_CORE": 2,
+      "OBSERVED_SECONDARY": 12,
+      "minCoreResearch": {
+        "at3": true,
+        "at4": false,
+        "at5": false,
+        "productionEnough": false
+      }
+    },
+    "celebration": {
+      "TERRITORY": "Celebrations & Events",
+      "CORE_COUNT": 4,
+      "SECONDARY_COUNT": 13,
+      "CONDITIONAL_COUNT": 7,
+      "CERTIFIABLE_UNIVERSE": "YES",
+      "CORE_COMPETITORS": [
+        "The Boca Raton",
+        "The Seagate Hotel & Spa",
+        "Opal Grand Oceanfront Resort",
+        "Boca Beach Club"
+      ],
+      "SECONDARY_ALTERNATIVES": [
+        "Renaissance Boca Raton Hotel",
+        "Boca Raton Marriott at Boca Center",
+        "The Colony Hotel Delray Beach",
+        "Delray Sands Resort",
+        "Jupiter Beach Resort & Spa",
+        "The Diplomat Beach Resort Hollywood",
+        "Margaritaville Hollywood Beach Resort",
+        "Hilton Deerfield Beach Resort",
+        "Lago Mar Beach Resort & Club",
+        "Wyndham Deerfield Beach Resort",
+        "Riverside Hotel Fort Lauderdale",
+        "Hilton Fort Lauderdale Beach Resort",
+        "Sailfish Marina Resort"
+      ],
+      "DECLARED_CORE": 1,
+      "DECLARED_SECONDARY": 2,
+      "DECLARED_NON_COMPARABLE": 2,
+      "OBSERVED_CORE": 3,
+      "OBSERVED_SECONDARY": 11,
+      "minCoreResearch": {
+        "at3": true,
+        "at4": true,
+        "at5": false,
+        "productionEnough": true
+      }
+    }
+  },
+  "actualConsiderationShare": {
+    "recommendedMethod": "METHOD_B_FRACTIONAL_SHARE_AMONG_SUBJECT_PLUS_CORE_HOTELS_APPEARING",
+    "multiHotelResponseMethod": "1 / count of (subject if present + CORE hotels present in that observation)",
+    "noCoreHotelsPresentMethod": "EXCLUDE_FROM_SHARE_DENOMINATOR",
+    "subjectAbsentCorePresent": "ACTUAL_SHARE = 0",
+    "rankWeighted": false,
+    "expectedMethod": "MODEL_C_TERRITORY_STABLE_EQUAL_FAIR_SHARE",
+    "expectedFormula": "1 / (1 + CORE_COUNT)",
+    "coreOnly": true,
+    "secondaryInDenominator": 0,
+    "modelA": "Equal fair share among subject + CORE (same as Model C when CORE is territory-stable)",
+    "modelB": "Scenario-specific CORE would re-slice peers per scenario — rejected for V1 (unstable)",
+    "modelD": "Weighted eligibility — rejected for V1 (opaque)",
+    "parityInterpretationValid": "PARTIAL",
+    "parityNote": "100 = actual fractional share equals 1/(1+CORE). Valid only when CORE is genuinely substitutable and the observation is a competitive consideration event."
+  },
+  "expectedConsiderationShare": {
+    "RECOMMENDED_METHOD": "MODEL_C_TERRITORY_STABLE_EQUAL_FAIR_SHARE",
+    "CORE_ONLY": "YES",
+    "SECONDARY_IN_DENOMINATOR": 0
+  },
+  "waterstoneTerritoryResearch": [
+    {
+      "territory": "Business Travel",
+      "intent": "business",
+      "presenceIndex": 169,
+      "subjectPresenceRate": 91.7,
+      "peerAvgPresenceRate": 54.2,
+      "peerSet": [
+        "the boca raton (waldorf astoria)",
+        "boca beach club",
+        "renaissance boca raton",
+        "wyndham boca raton",
+        "marriott boca raton",
+        "hilton boca raton suites"
+      ],
+      "peerCount": 6,
+      "suppressionState": "SHOWN",
+      "coreCount": 7,
+      "secondaryCount": 11,
+      "conditionalCount": 5,
+      "certifiableUniverse": true,
+      "actualShare": 29.1,
+      "expectedShare": 12.5,
+      "researchAci": 233,
+      "directionMatch": true,
+      "presenceDirection": "ABOVE",
+      "aciDirection": "ABOVE",
+      "absoluteDifference": 64,
+      "sensitivity": "HIGH",
+      "sensitivityDetail": {
+        "baseAci": 233,
+        "plusOneCoreAci": 262,
+        "minusOneCoreAci": 205,
+        "range": 57,
+        "sensitivity": "HIGH",
+        "coreToSecondaryWouldMatchMinusOne": true
+      },
+      "presenceStatus": "PRESENCE_INDEX_PARTIAL",
+      "aciStatus": "RESEARCH_ONLY",
+      "aciBlockers": [
+        "high_denominator_sensitivity"
+      ],
+      "presenceBlockers": [
+        "NO_TERRITORY_SPECIFIC_CORE_UNIVERSE",
+        "NO_ENTITY_QUALITY_FILTER_ON_DECLARED_MATCHING",
+        "NO_PROVIDER_SCOPED_INDEX"
+      ],
+      "extreme": false,
+      "includedObservations": 44,
+      "declaredCore": 5,
+      "declaredSecondary": 0,
+      "declaredNonComparable": 0,
+      "observedCore": 2,
+      "observedSecondary": 11
+    },
+    {
+      "territory": "Resort Leisure",
+      "intent": "leisure",
+      "presenceIndex": 167,
+      "subjectPresenceRate": 75,
+      "peerAvgPresenceRate": 45,
+      "peerSet": [
+        "the boca raton (waldorf astoria)",
+        "boca beach club",
+        "renaissance boca raton",
+        "wyndham boca raton",
+        "marriott boca raton"
+      ],
+      "peerCount": 5,
+      "suppressionState": "SHOWN",
+      "coreCount": 7,
+      "secondaryCount": 15,
+      "conditionalCount": 6,
+      "certifiableUniverse": true,
+      "actualShare": 32.1,
+      "expectedShare": 12.5,
+      "researchAci": 257,
+      "directionMatch": true,
+      "presenceDirection": "ABOVE",
+      "aciDirection": "ABOVE",
+      "absoluteDifference": 90,
+      "sensitivity": "HIGH",
+      "sensitivityDetail": {
+        "baseAci": 257,
+        "plusOneCoreAci": 289,
+        "minusOneCoreAci": 225,
+        "range": 64,
+        "sensitivity": "HIGH",
+        "coreToSecondaryWouldMatchMinusOne": true
+      },
+      "presenceStatus": "PRESENCE_INDEX_PARTIAL",
+      "aciStatus": "RESEARCH_ONLY",
+      "aciBlockers": [
+        "high_denominator_sensitivity"
+      ],
+      "presenceBlockers": [
+        "DECLARED_COMP_ONLY_BIAS",
+        "ZERO_RATE_PEERS_EXCLUDED",
+        "NO_TERRITORY_SPECIFIC_CORE_UNIVERSE",
+        "NO_ENTITY_QUALITY_FILTER_ON_DECLARED_MATCHING",
+        "NO_PROVIDER_SCOPED_INDEX"
+      ],
+      "extreme": false,
+      "includedObservations": 35,
+      "declaredCore": 1,
+      "declaredSecondary": 3,
+      "declaredNonComparable": 1,
+      "observedCore": 6,
+      "observedSecondary": 12
+    },
+    {
+      "territory": "Couples / Romantic Stay",
+      "intent": "couples",
+      "presenceIndex": 114,
+      "subjectPresenceRate": 66.7,
+      "peerAvgPresenceRate": 58.3,
+      "peerSet": [
+        "the boca raton (waldorf astoria)",
+        "boca beach club",
+        "marriott boca raton",
+        "hilton boca raton suites"
+      ],
+      "peerCount": 4,
+      "suppressionState": "SHOWN",
+      "coreCount": 7,
+      "secondaryCount": 11,
+      "conditionalCount": 5,
+      "certifiableUniverse": true,
+      "actualShare": 33,
+      "expectedShare": 12.5,
+      "researchAci": 264,
+      "directionMatch": true,
+      "presenceDirection": "ABOVE",
+      "aciDirection": "ABOVE",
+      "absoluteDifference": 150,
+      "sensitivity": "HIGH",
+      "sensitivityDetail": {
+        "baseAci": 264,
+        "plusOneCoreAci": 297,
+        "minusOneCoreAci": 231,
+        "range": 66,
+        "sensitivity": "HIGH",
+        "coreToSecondaryWouldMatchMinusOne": true
+      },
+      "presenceStatus": "PRESENCE_INDEX_PARTIAL",
+      "aciStatus": "RESEARCH_ONLY",
+      "aciBlockers": [
+        "high_denominator_sensitivity"
+      ],
+      "presenceBlockers": [
+        "DECLARED_COMP_ONLY_BIAS",
+        "ZERO_RATE_PEERS_EXCLUDED",
+        "NO_TERRITORY_SPECIFIC_CORE_UNIVERSE",
+        "NO_ENTITY_QUALITY_FILTER_ON_DECLARED_MATCHING",
+        "NO_PROVIDER_SCOPED_INDEX"
+      ],
+      "extreme": false,
+      "includedObservations": 29,
+      "declaredCore": 1,
+      "declaredSecondary": 0,
+      "declaredNonComparable": 4,
+      "observedCore": 6,
+      "observedSecondary": 11
+    },
+    {
+      "territory": "Family Travel",
+      "intent": "family",
+      "presenceIndex": 115,
+      "subjectPresenceRate": 60,
+      "peerAvgPresenceRate": 52,
+      "peerSet": [
+        "the boca raton (waldorf astoria)",
+        "boca beach club",
+        "wyndham boca raton",
+        "marriott boca raton",
+        "hilton boca raton suites"
+      ],
+      "peerCount": 5,
+      "suppressionState": "SHOWN",
+      "coreCount": 6,
+      "secondaryCount": 15,
+      "conditionalCount": 5,
+      "certifiableUniverse": true,
+      "actualShare": 16.7,
+      "expectedShare": 14.3,
+      "researchAci": 117,
+      "directionMatch": true,
+      "presenceDirection": "ABOVE",
+      "aciDirection": "ABOVE",
+      "absoluteDifference": 2,
+      "sensitivity": "MEDIUM",
+      "sensitivityDetail": {
+        "baseAci": 117,
+        "plusOneCoreAci": 133,
+        "minusOneCoreAci": 100,
+        "range": 33,
+        "sensitivity": "MEDIUM",
+        "coreToSecondaryWouldMatchMinusOne": true
+      },
+      "presenceStatus": "PRESENCE_INDEX_PARTIAL",
+      "aciStatus": "CONDITIONALLY_ELIGIBLE",
+      "aciBlockers": [
+        "thin_included_observations"
+      ],
+      "presenceBlockers": [
+        "DECLARED_COMP_ONLY_BIAS",
+        "ZERO_RATE_PEERS_EXCLUDED",
+        "NO_TERRITORY_SPECIFIC_CORE_UNIVERSE",
+        "NO_ENTITY_QUALITY_FILTER_ON_DECLARED_MATCHING",
+        "NO_PROVIDER_SCOPED_INDEX"
+      ],
+      "extreme": false,
+      "includedObservations": 16,
+      "declaredCore": 2,
+      "declaredSecondary": 3,
+      "declaredNonComparable": 0,
+      "observedCore": 4,
+      "observedSecondary": 12
+    },
+    {
+      "territory": "Meetings & Groups",
+      "intent": "group_meeting",
+      "presenceIndex": 138,
+      "subjectPresenceRate": 69.2,
+      "peerAvgPresenceRate": 50,
+      "peerSet": [
+        "the boca raton (waldorf astoria)",
+        "boca beach club",
+        "renaissance boca raton",
+        "wyndham boca raton",
+        "marriott boca raton",
+        "hilton boca raton suites"
+      ],
+      "peerCount": 6,
+      "suppressionState": "SHOWN",
+      "coreCount": 4,
+      "secondaryCount": 11,
+      "conditionalCount": 8,
+      "certifiableUniverse": true,
+      "actualShare": 25,
+      "expectedShare": 20,
+      "researchAci": 125,
+      "directionMatch": true,
+      "presenceDirection": "ABOVE",
+      "aciDirection": "ABOVE",
+      "absoluteDifference": 13,
+      "sensitivity": "HIGH",
+      "sensitivityDetail": {
+        "baseAci": 125,
+        "plusOneCoreAci": 150,
+        "minusOneCoreAci": 103,
+        "range": 47,
+        "sensitivity": "HIGH",
+        "coreToSecondaryWouldMatchMinusOne": true
+      },
+      "presenceStatus": "PRESENCE_INDEX_PARTIAL",
+      "aciStatus": "RESEARCH_ONLY",
+      "aciBlockers": [
+        "high_denominator_sensitivity"
+      ],
+      "presenceBlockers": [
+        "NO_TERRITORY_SPECIFIC_CORE_UNIVERSE",
+        "NO_ENTITY_QUALITY_FILTER_ON_DECLARED_MATCHING",
+        "NO_PROVIDER_SCOPED_INDEX"
+      ],
+      "extreme": false,
+      "includedObservations": 39,
+      "declaredCore": 4,
+      "declaredSecondary": 1,
+      "declaredNonComparable": 0,
+      "observedCore": 0,
+      "observedSecondary": 10
+    },
+    {
+      "territory": "Wellness",
+      "intent": "wellness",
+      "presenceIndex": null,
+      "subjectPresenceRate": 50,
+      "peerAvgPresenceRate": 0,
+      "peerSet": [
+        "the boca raton (waldorf astoria)",
+        "boca beach club"
+      ],
+      "peerCount": 2,
+      "suppressionState": "SUPPRESSED_THIN_PEER_SET",
+      "coreCount": 4,
+      "secondaryCount": 10,
+      "conditionalCount": 7,
+      "certifiableUniverse": true,
+      "actualShare": 12.5,
+      "expectedShare": 20,
+      "researchAci": 63,
+      "directionMatch": null,
+      "presenceDirection": null,
+      "aciDirection": "BELOW",
+      "absoluteDifference": null,
+      "sensitivity": "MEDIUM",
+      "sensitivityDetail": {
+        "baseAci": 63,
+        "plusOneCoreAci": 75,
+        "minusOneCoreAci": 50,
+        "range": 25,
+        "sensitivity": "MEDIUM",
+        "coreToSecondaryWouldMatchMinusOne": true
+      },
+      "presenceStatus": "PRESENCE_INDEX_BLOCKED",
+      "aciStatus": "CONDITIONALLY_ELIGIBLE",
+      "aciBlockers": [
+        "thin_included_observations"
+      ],
+      "presenceBlockers": [
+        "SUPPRESSED_THIN_PEER_SET",
+        "THIN_PEER_SETS",
+        "DECLARED_COMP_ONLY_BIAS",
+        "ZERO_RATE_PEERS_EXCLUDED",
+        "NO_TERRITORY_SPECIFIC_CORE_UNIVERSE",
+        "NO_ENTITY_QUALITY_FILTER_ON_DECLARED_MATCHING",
+        "NO_PROVIDER_SCOPED_INDEX"
+      ],
+      "extreme": false,
+      "includedObservations": 4,
+      "declaredCore": 1,
+      "declaredSecondary": 0,
+      "declaredNonComparable": 4,
+      "observedCore": 3,
+      "observedSecondary": 10
+    },
+    {
+      "territory": "Adventure & Experiences",
+      "intent": "adventure",
+      "presenceIndex": 160,
+      "subjectPresenceRate": 80,
+      "peerAvgPresenceRate": 50,
+      "peerSet": [
+        "the boca raton (waldorf astoria)",
+        "boca beach club",
+        "marriott boca raton",
+        "hilton boca raton suites"
+      ],
+      "peerCount": 4,
+      "suppressionState": "SHOWN",
+      "coreCount": 3,
+      "secondaryCount": 12,
+      "conditionalCount": 5,
+      "certifiableUniverse": true,
+      "actualShare": 45.6,
+      "expectedShare": 25,
+      "researchAci": 182,
+      "directionMatch": true,
+      "presenceDirection": "ABOVE",
+      "aciDirection": "ABOVE",
+      "absoluteDifference": 22,
+      "sensitivity": "HIGH",
+      "sensitivityDetail": {
+        "baseAci": 182,
+        "plusOneCoreAci": 228,
+        "minusOneCoreAci": 137,
+        "range": 91,
+        "sensitivity": "HIGH",
+        "coreToSecondaryWouldMatchMinusOne": true
+      },
+      "presenceStatus": "PRESENCE_INDEX_PARTIAL",
+      "aciStatus": "RESEARCH_ONLY",
+      "aciBlockers": [
+        "core_lt_4_robustness",
+        "high_denominator_sensitivity",
+        "thin_included_observations"
+      ],
+      "presenceBlockers": [
+        "DECLARED_COMP_ONLY_BIAS",
+        "ZERO_RATE_PEERS_EXCLUDED",
+        "NO_TERRITORY_SPECIFIC_CORE_UNIVERSE",
+        "NO_ENTITY_QUALITY_FILTER_ON_DECLARED_MATCHING",
+        "NO_PROVIDER_SCOPED_INDEX"
+      ],
+      "extreme": false,
+      "includedObservations": 15,
+      "declaredCore": 1,
+      "declaredSecondary": 0,
+      "declaredNonComparable": 4,
+      "observedCore": 2,
+      "observedSecondary": 12
+    },
+    {
+      "territory": "Celebrations & Events",
+      "intent": "celebration",
+      "presenceIndex": 180,
+      "subjectPresenceRate": 85.7,
+      "peerAvgPresenceRate": 47.6,
+      "peerSet": [
+        "the boca raton (waldorf astoria)",
+        "boca beach club",
+        "marriott boca raton"
+      ],
+      "peerCount": 3,
+      "suppressionState": "SHOWN",
+      "coreCount": 4,
+      "secondaryCount": 13,
+      "conditionalCount": 7,
+      "certifiableUniverse": true,
+      "actualShare": 47.4,
+      "expectedShare": 20,
+      "researchAci": 237,
+      "directionMatch": true,
+      "presenceDirection": "ABOVE",
+      "aciDirection": "ABOVE",
+      "absoluteDifference": 57,
+      "sensitivity": "HIGH",
+      "sensitivityDetail": {
+        "baseAci": 237,
+        "plusOneCoreAci": 284,
+        "minusOneCoreAci": 189,
+        "range": 95,
+        "sensitivity": "HIGH",
+        "coreToSecondaryWouldMatchMinusOne": true
+      },
+      "presenceStatus": "PRESENCE_INDEX_PARTIAL",
+      "aciStatus": "RESEARCH_ONLY",
+      "aciBlockers": [
+        "high_denominator_sensitivity",
+        "thin_included_observations"
+      ],
+      "presenceBlockers": [
+        "DECLARED_COMP_ONLY_BIAS",
+        "ZERO_RATE_PEERS_EXCLUDED",
+        "NO_TERRITORY_SPECIFIC_CORE_UNIVERSE",
+        "NO_ENTITY_QUALITY_FILTER_ON_DECLARED_MATCHING",
+        "NO_PROVIDER_SCOPED_INDEX"
+      ],
+      "extreme": false,
+      "includedObservations": 19,
+      "declaredCore": 1,
+      "declaredSecondary": 2,
+      "declaredNonComparable": 2,
+      "observedCore": 3,
+      "observedSecondary": 11
+    }
+  ],
+  "presenceIndexVsAci": {
+    "SEMANTIC_OVERLAP": "MEDIUM",
+    "MATHEMATICAL_OVERLAP": "MEDIUM",
+    "REDUNDANCY_RISK": "MEDIUM",
+    "CUSTOMER_CONFUSION_RISK": "HIGH",
+    "DIVERGENT_TERRITORIES": [
+      "Business Travel",
+      "Resort Leisure",
+      "Couples / Romantic Stay",
+      "Celebrations & Events"
+    ],
+    "pearsonR": 0.41,
+    "directionMatchCount": "7/7",
+    "RANK_ORDER_DIFFERENCE": 7,
+    "presenceAnswers": "Relative scenario-level appearance frequency vs average of participating declared competitors in this territory.",
+    "aciAnswers": "Actual fractional consideration share among subject + CORE hotels vs equal fair share 1/(1+CORE)."
+  },
+  "futureRoleRecommendation": {
+    "LEGACY_PRESENCE_INDEX_FUTURE": "KEEP_PRESENCE_INDEX_AS_DETAIL",
+    "RATIONALE": "The two indexes answer different questions. Presence Index is a declared-comp frequency ratio and is not a fair-share measure. ACI is the candidate hero once CORE universes are certified. Showing both as peer hero metrics would confuse owners. Keep the live Presence Index in the current territory table until ACI is certified; then keep it only as a supporting/detail column or retire after recertification — do not ship both as co-equal indexes.",
+    "CUSTOMER_QUESTION_ANSWERED_BY_PRESENCE_INDEX": "How does this hotel's scenario-level AI appearance frequency compare with the average scenario-level appearance frequency of declared competitors that appeared at least once in this demand territory?",
+    "CUSTOMER_QUESTION_ANSWERED_BY_ACI": "Is this hotel receiving more or less than an equal fair share of AI consideration among genuinely comparable CORE properties in this demand territory?",
+    "DISTINCT_DECISION_VALUE": true,
+    "DUPLICATION_RISK": "MEDIUM"
+  },
+  "propertyAci": {
+    "RECOMMENDED_PROPERTY_AGGREGATION": "E_NO_OVERALL_PROPERTY_ACI_YET",
+    "RESEARCH_VALUE": "BLOCKED",
+    "CUSTOMER_STATUS": "BLOCKED",
+    "reason": "Territory CORE sets and certification statuses are heterogeneous; averaging would hide blocked territories."
+  },
+  "providerScope": {
+    "ALL_PROVIDERS": {
+      "territoryAcis": {
+        "Business Travel": 233,
+        "Resort Leisure": 257,
+        "Couples / Romantic Stay": 264,
+        "Family Travel": 117,
+        "Meetings & Groups": 125,
+        "Wellness": 63,
+        "Adventure & Experiences": 182,
+        "Celebrations & Events": 237
+      },
+      "computedCount": 8
+    },
+    "OPENAI": {
+      "territoryAcis": {
+        "Business Travel": 166,
+        "Resort Leisure": 247,
+        "Couples / Romantic Stay": 192,
+        "Family Travel": 175,
+        "Meetings & Groups": 110,
+        "Wellness": 0,
+        "Adventure & Experiences": 200,
+        "Celebrations & Events": 200
+      },
+      "computedCount": 8
+    },
+    "GEMINI": {
+      "territoryAcis": {
+        "Business Travel": 318,
+        "Resort Leisure": 267,
+        "Couples / Romantic Stay": 289,
+        "Family Travel": 128,
+        "Meetings & Groups": 167,
+        "Wellness": 0,
+        "Adventure & Experiences": 183,
+        "Celebrations & Events": 313
+      },
+      "computedCount": 8
+    },
+    "PERPLEXITY": {
+      "territoryAcis": {
+        "Business Travel": 248,
+        "Resort Leisure": 356,
+        "Couples / Romantic Stay": 250,
+        "Family Travel": 88,
+        "Meetings & Groups": 104,
+        "Wellness": 0,
+        "Adventure & Experiences": 150,
+        "Celebrations & Events": 200
+      },
+      "computedCount": 8
+    },
+    "CLAUDE": {
+      "territoryAcis": {
+        "Business Travel": 200,
+        "Resort Leisure": 150,
+        "Couples / Romantic Stay": 343,
+        "Family Travel": 58,
+        "Meetings & Groups": 129,
+        "Wellness": 250,
+        "Adventure & Experiences": 200,
+        "Celebrations & Events": 250
+      },
+      "computedCount": 8
+    }
+  },
+  "stability": {
+    "TOTAL_PERIODS": 11,
+    "PRESENCE_INDEX_COMPARABLE_PERIODS": 4,
+    "ACI_COMPARABLE_PERIODS": 4,
+    "INCOMPARABLE_PERIODS": [
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819094555_3e9e55",
+        "reason": "unparsed_or_empty"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819094700_c5a40b",
+        "reason": "parsed_provider_set_mismatch"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110501_5bf4a0",
+        "reason": "unparsed_or_empty"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110616_3f9ca5",
+        "reason": "unparsed_or_empty"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110643_16d0c7",
+        "reason": "parsed_provider_set_mismatch"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819113317_726131",
+        "reason": "parsed_provider_set_mismatch"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819122848_742e26",
+        "reason": "parsed_provider_set_mismatch"
+      }
+    ],
+    "BENCHMARK_SET_STABILITY": "versioned; do not silently rewrite historical denominators",
+    "INDEX_REPEATABILITY": "RESEARCH_REPEATABLE_ON_MATCHING_PROVIDER_SCOPE",
+    "byIntent": {
+      "business": {
+        "territory": "Business Travel",
+        "current": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "presence": 169,
+          "aci": 233
+        },
+        "prior": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "presence": 150,
+          "aci": 196
+        },
+        "meanAci": 196,
+        "medianAci": 208,
+        "rangeAci": 97,
+        "meanPresence": 167,
+        "medianPresence": 165,
+        "rangePresence": 39,
+        "stabilityClass": "HIGH VOLATILITY"
+      },
+      "leisure": {
+        "territory": "Resort Leisure",
+        "current": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "presence": 167,
+          "aci": 257
+        },
+        "prior": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "presence": 167,
+          "aci": 245
+        },
+        "meanAci": 244,
+        "medianAci": 251,
+        "rangeAci": 47,
+        "meanPresence": 162,
+        "medianPresence": 167,
+        "rangePresence": 32,
+        "stabilityClass": "HIGH VOLATILITY"
+      },
+      "couples": {
+        "territory": "Couples / Romantic Stay",
+        "current": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "presence": 114,
+          "aci": 264
+        },
+        "prior": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "presence": 184,
+          "aci": 283
+        },
+        "meanAci": 273,
+        "medianAci": 274,
+        "rangeAci": 53,
+        "meanPresence": 157,
+        "medianPresence": 166,
+        "rangePresence": 70,
+        "stabilityClass": "HIGH VOLATILITY"
+      },
+      "family": {
+        "territory": "Family Travel",
+        "current": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "presence": 115,
+          "aci": 117
+        },
+        "prior": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "presence": 115,
+          "aci": 124
+        },
+        "meanAci": 118,
+        "medianAci": 121,
+        "rangeAci": 36,
+        "meanPresence": 97,
+        "medianPresence": 111,
+        "rangePresence": 65,
+        "stabilityClass": "HIGH VOLATILITY"
+      },
+      "group_meeting": {
+        "territory": "Meetings & Groups",
+        "current": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "presence": 138,
+          "aci": 125
+        },
+        "prior": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "presence": 162,
+          "aci": 141
+        },
+        "meanAci": 129,
+        "medianAci": 128,
+        "rangeAci": 24,
+        "meanPresence": 158,
+        "medianPresence": 162,
+        "rangePresence": 33,
+        "stabilityClass": "MEDIUM VOLATILITY"
+      },
+      "wellness": {
+        "territory": "Wellness",
+        "current": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "presence": null,
+          "aci": 63
+        },
+        "prior": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "presence": null,
+          "aci": 125
+        },
+        "meanAci": 63,
+        "medianAci": 63,
+        "rangeAci": 125,
+        "meanPresence": 100,
+        "medianPresence": 100,
+        "rangePresence": 0,
+        "stabilityClass": "HIGH VOLATILITY"
+      },
+      "adventure": {
+        "territory": "Adventure & Experiences",
+        "current": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "presence": 160,
+          "aci": 182
+        },
+        "prior": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "presence": 90,
+          "aci": 181
+        },
+        "meanAci": 181,
+        "medianAci": 182,
+        "rangeAci": 38,
+        "meanPresence": 128,
+        "medianPresence": 133,
+        "rangePresence": 70,
+        "stabilityClass": "HIGH VOLATILITY"
+      },
+      "celebration": {
+        "territory": "Celebrations & Events",
+        "current": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "presence": 180,
+          "aci": 237
+        },
+        "prior": {
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "presence": 136,
+          "aci": 180
+        },
+        "meanAci": 215,
+        "medianAci": 221,
+        "rangeAci": 57,
+        "meanPresence": 168,
+        "medianPresence": 180,
+        "rangePresence": 51,
+        "stabilityClass": "HIGH VOLATILITY"
+      }
+    }
+  },
+  "certification": {
+    "ACI_PRODUCTION_VALIDATED_TERRITORIES": [],
+    "ACI_CONDITIONAL_TERRITORIES": [
+      "Family Travel",
+      "Wellness"
+    ],
+    "ACI_RESEARCH_ONLY_TERRITORIES": [
+      "Business Travel",
+      "Resort Leisure",
+      "Couples / Romantic Stay",
+      "Meetings & Groups",
+      "Adventure & Experiences",
+      "Celebrations & Events"
+    ],
+    "ACI_BLOCKED_TERRITORIES": [],
+    "OVERALL_ACI_STATUS": "RESEARCH_READY",
+    "OVERALL_PRESENCE_INDEX_STATUS": "PARTIAL",
+    "customerAciStatus": "BLOCKED"
+  },
+  "futureIndexReadiness": {
+    "PROPERTY_REPRESENTATION_INDEX": {
+      "CUSTOMER_VALUE": "MEDIUM",
+      "DATA_READINESS": "Reality Gap module exists",
+      "METHODOLOGY_READINESS": "Attribute recognition is governed but not an index",
+      "NEXT_PREREQUISITE": "Keep as coverage %; do not invent a second index",
+      "RECOMMEND_BUILD": "NO"
+    },
+    "COMPETITIVE_POSITION_INDEX": {
+      "CUSTOMER_VALUE": "HIGH",
+      "DATA_READINESS": "Rank-eligible N is thin by territory",
+      "METHODOLOGY_READINESS": "Head-to-head still RESEARCH_ONLY",
+      "NEXT_PREREQUISITE": "Head-to-head gold-set certification",
+      "RECOMMEND_BUILD": "LATER"
+    },
+    "OPPORTUNITY_INDEX": {
+      "CUSTOMER_VALUE": "LOW",
+      "DATA_READINESS": "White Space descriptive only",
+      "METHODOLOGY_READINESS": "Composite scores blocked",
+      "NEXT_PREREQUISITE": "Keep AI Opportunity Scenarios descriptive",
+      "RECOMMEND_BUILD": "NO"
+    },
+    "SOURCE_EVIDENCE_INDEX": {
+      "CUSTOMER_VALUE": "LOW",
+      "DATA_READINESS": "Citation share exists",
+      "METHODOLOGY_READINESS": "Influence claims prohibited",
+      "NEXT_PREREQUISITE": "Keep Source Citation Share descriptive",
+      "RECOMMEND_BUILD": "NO"
+    }
+  },
+  "uiRecommendationResearchOnly": {
+    "HERO_METRIC_FUTURE": "AI Consideration Index — only after territory ACI certification; until then keep current Phase 1 rates",
+    "SUPPORTING_METRICS": [
+      "AI Consideration Rate",
+      "AI Scenario Presence",
+      "Competitor-Present Scenarios",
+      "#1 Appearance Rate"
+    ],
+    "TERRITORY_TABLE_COLUMNS_FUTURE": "Option A after ACI certification: Territory ACI. Until then keep Presence Index as the current column (no dual-index table).",
+    "SHOW_PRESENCE_INDEX_AND_ACI_TOGETHER": "NO"
+  },
+  "security": {
+    "ACI_CUSTOMER_LEAKS": 0,
+    "BENCHMARK_ENGINE_CUSTOMER_LEAKS": 0,
+    "customerPayloadContainsAci": false
+  },
+  "regression": {
+    "ADP_UI_DIFF": 0,
+    "LEGACY_ADP_DIFF": 0,
+    "LEGACY_PRESENCE_INDEX_DIFF": 0,
+    "BRAND_AI_DIFF": 0,
+    "OPERATOR_AI_DIFF": 0
+  },
+  "execution": {
+    "PROVIDER_CALLS": 0,
+    "SPEND": "$0"
+  },
+  "versions": {
+    "aciResearchVersion": "adp_aci_research_engine_v2",
+    "benchmarkSetVersion": "adp_aci_benchmark_set_v2",
+    "entityResolutionVersion": "adp_sf_entity_resolution_v2",
+    "eligibilityVersion": "adp_scenario_eligibility_v1",
+    "minCoreCompetitors": 3
+  },
+  "next": "ADP_PRESENCE_INDEX_REMEDIATION_REQUIRED",
+  "final": "ADP_AI_CONSIDERATION_INDEX_AND_PRESENCE_INDEX_AUDIT_V2_PARTIAL",
+  "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+  "propertyId": "adp_waterstone_boca_raton"
+}

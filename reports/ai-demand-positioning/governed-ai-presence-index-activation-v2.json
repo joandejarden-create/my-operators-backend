@@ -1,0 +1,258 @@
+{
+  "title": "ADP_GOVERNED_AI_PRESENCE_INDEX_ACTIVATION_V2_COMPLETE",
+  "scenarioWave": {
+    "SCENARIOS": 78,
+    "NEW_SCENARIOS": 13,
+    "CALLS_PLANNED": 312,
+    "TOTAL_CALLS": 312,
+    "SUCCESSFUL": 309,
+    "FAILED": 3,
+    "PROVIDER_SUCCESS_BY_PROVIDER": {
+      "openai": {
+        "total": 78,
+        "success": 78,
+        "failed": 0
+      },
+      "gemini": {
+        "total": 78,
+        "success": 75,
+        "failed": 3
+      },
+      "perplexity": {
+        "total": 78,
+        "success": 78,
+        "failed": 0
+      },
+      "claude": {
+        "total": 78,
+        "success": 78,
+        "failed": 0
+      }
+    },
+    "COST": 10.139999999999944,
+    "NEW_PERIOD": "adp_period_adp_waterstone_boca_raton_20260820053047_9cb18e"
+  },
+  "territoryBenchmarkCertification": [
+    {
+      "TERRITORY": "Business Travel",
+      "SCENARIO_COUNT": 12,
+      "CORE_COUNT": 6,
+      "YOUR_AI_PRESENCE": 50,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "COMPUTED_CORE_BENCHMARK": 13.5,
+      "COMPUTED_AI_PRESENCE_INDEX": 369,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "blockers": [
+        "provider_concentration"
+      ]
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "SCENARIO_COUNT": 12,
+      "CORE_COUNT": 6,
+      "YOUR_AI_PRESENCE": 52.1,
+      "CORE_BENCHMARK": 9.4,
+      "AI_PRESENCE_INDEX": 556,
+      "COMPUTED_CORE_BENCHMARK": 9.4,
+      "COMPUTED_AI_PRESENCE_INDEX": 556,
+      "STATUS": "PRODUCTION_VALIDATED",
+      "blockers": []
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "SCENARIO_COUNT": 9,
+      "CORE_COUNT": 7,
+      "YOUR_AI_PRESENCE": 66.7,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "COMPUTED_CORE_BENCHMARK": 8.7,
+      "COMPUTED_AI_PRESENCE_INDEX": 764,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "blockers": [
+        "scenario_loo"
+      ]
+    },
+    {
+      "TERRITORY": "Meetings & Groups",
+      "SCENARIO_COUNT": 13,
+      "CORE_COUNT": 4,
+      "YOUR_AI_PRESENCE": 51.2,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "COMPUTED_CORE_BENCHMARK": 14.6,
+      "COMPUTED_AI_PRESENCE_INDEX": 352,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "blockers": [
+        "provider_concentration"
+      ]
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "SCENARIO_COUNT": 9,
+      "CORE_COUNT": 6,
+      "YOUR_AI_PRESENCE": 33.3,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "COMPUTED_CORE_BENCHMARK": 6.9,
+      "COMPUTED_AI_PRESENCE_INDEX": 480,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "blockers": [
+        "scenario_loo"
+      ]
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "SCENARIO_COUNT": 8,
+      "CORE_COUNT": 4,
+      "YOUR_AI_PRESENCE": 65.6,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "COMPUTED_CORE_BENCHMARK": 9.4,
+      "COMPUTED_AI_PRESENCE_INDEX": 700,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "blockers": [
+        "scenario_loo"
+      ]
+    },
+    {
+      "TERRITORY": "Wellness",
+      "SCENARIO_COUNT": 8,
+      "CORE_COUNT": 4,
+      "YOUR_AI_PRESENCE": 15.6,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "COMPUTED_CORE_BENCHMARK": 8.8,
+      "COMPUTED_AI_PRESENCE_INDEX": 177,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "blockers": [
+        "provider_concentration"
+      ]
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "SCENARIO_COUNT": 7,
+      "CORE_COUNT": 3,
+      "YOUR_AI_PRESENCE": 60.7,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "COMPUTED_CORE_BENCHMARK": 14.3,
+      "COMPUTED_AI_PRESENCE_INDEX": 425,
+      "STATUS": "BENCHMARK_DEVELOPING",
+      "blockers": [
+        "core_lt_4",
+        "scenario_loo"
+      ]
+    }
+  ],
+  "customerTable": {
+    "COLUMNS": [
+      "DEMAND_TERRITORY",
+      "YOUR_AI_PRESENCE",
+      "CORE_BENCHMARK",
+      "AI_PRESENCE_INDEX",
+      "CHG_VS_PRIOR",
+      "MONITORED",
+      "MISSING",
+      "PEER_PRESENT_GAPS",
+      "MISSING_EVIDENCE"
+    ],
+    "NUMERIC_INDEX_WITHOUT_SUBJECT_RATE": 0,
+    "NUMERIC_INDEX_WITHOUT_CORE_BENCHMARK": 0,
+    "DIFFERENCE_COLUMN": "HIDDEN"
+  },
+  "customerNumericIndex": {
+    "PRODUCTION_VALIDATED_TERRITORIES": [
+      "Resort Leisure"
+    ],
+    "BENCHMARK_DEVELOPING_TERRITORIES": [
+      "Business Travel",
+      "Couples / Romantic Stay",
+      "Meetings & Groups",
+      "Family Travel",
+      "Celebrations & Events",
+      "Wellness",
+      "Adventure & Experiences"
+    ]
+  },
+  "indexContract": {
+    "FORMULA": "AI_PRESENCE_INDEX = SUBJECT_AI_PRESENCE_RATE / CORE_BENCHMARK_AI_PRESENCE_RATE × 100",
+    "100_MEANING": "Hotel appears at the same rate as the average CORE comparable hotel.",
+    "120_MEANING": "Hotel appears 20% more often than the CORE benchmark.",
+    "80_MEANING": "Hotel appears 20% less often than the CORE benchmark.",
+    "SCORE_CAP": "NONE"
+  },
+  "infoIcons": {
+    "AI_PRESENCE_INDEX_INFO_ICON": "PASS",
+    "CORE_BENCHMARK_INFO_ICON": "PASS",
+    "YOUR_AI_PRESENCE_INFO_ICON": "PASS",
+    "EXAMPLE_INCLUDED": "YES",
+    "EXAMPLE": "60% / 50% = 120"
+  },
+  "legacyIndex": {
+    "LEGACY_FORMULA_STILL_INTERNAL": "YES",
+    "LEGACY_INDEX_CUSTOMER_RENDER": 0,
+    "GOVERNED_INDEX_CUSTOMER_RENDER": 1,
+    "MIXED_METHODOLOGY_ROWS": 0
+  },
+  "aci": {
+    "CUSTOMER_STATUS": "BLOCKED",
+    "CUSTOMER_LEAKS": 0
+  },
+  "reportPreservation": {
+    "LEGACY_VISIBLE_SECTION_DIFF": 0,
+    "NON_INDEX_METRIC_DIFF": 0,
+    "WATERSTONE_REPORT": "PASS",
+    "CAMBRIDGE_REPORT": "PASS"
+  },
+  "responsiveQA": {
+    "1366": "PASS",
+    "1440": "PASS",
+    "1920": "PASS"
+  },
+  "security": {
+    "RAW_PROMPT_CUSTOMER_LEAKS": 0,
+    "BENCHMARK_ENGINE_CUSTOMER_LEAKS": 0
+  },
+  "regression": {
+    "BRAND_AI_DIFF": 0,
+    "OPERATOR_AI_DIFF": 0
+  },
+  "next": "ADP_BENCHMARK_CERTIFICATION_REMEDIATION_REQUIRED",
+  "final": "ADP_GOVERNED_AI_PRESENCE_INDEX_ACTIVATION_V2_PARTIAL",
+  "periodId": "adp_period_adp_waterstone_boca_raton_20260820053047_9cb18e",
+  "demandCapture": 75.6,
+  "executiveMetrics": {
+    "version": "adp_optional_executive_metrics_v2",
+    "considerationRate": {
+      "rate": 49.5,
+      "presentObservations": 153,
+      "comparableObservations": 309
+    },
+    "scenarioPresence": {
+      "rate": 75.6,
+      "capturedScenarios": 59,
+      "eligibleScenarios": 78
+    },
+    "rankMetrics": {
+      "rankEligibleN": 53,
+      "numberOneAppearanceRate": 17,
+      "topThreeAppearanceRate": 71.7,
+      "numberOneCount": 9,
+      "topThreeCount": 38
+    },
+    "competitorPresentScenarios": {
+      "scenarioCount": 53,
+      "observationCount": 151
+    },
+    "currentVsPrior": {
+      "currentPeriodId": "adp_period_adp_waterstone_boca_raton_20260820053047_9cb18e",
+      "priorComparablePeriodId": "adp_period_adp_waterstone_boca_raton_20260820051538_045e71",
+      "deltas": {
+        "considerationRate": 0.3,
+        "scenarioPresence": 0,
+        "numberOneAppearanceRate": -2.3
+      }
+    }
+  }
+}

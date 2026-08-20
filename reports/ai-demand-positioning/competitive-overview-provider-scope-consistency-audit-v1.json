@@ -1,0 +1,508 @@
+{
+  "title": "ADP_COMPETITIVE_OVERVIEW_PROVIDER_SCOPE_CONSISTENCY_AUDIT_V1_COMPLETE",
+  "currentContract": {
+    "AI_PRESENCE_SOURCE": "buildTerritoryCompetitiveRanking / buildOverallCompetitiveRanking → countEntityAppearances → appearances / comparableN",
+    "SOURCE_FUNCTION": "lib/ai-demand-positioning/customer/competitive-ranking-core-transparency-v1.js::buildObservedRankedList (+ overall-view-v1 for Overall)",
+    "SOURCE_DATASET": "period.observations filtered by filterComparableObservations; territory scopes by scenario.intent",
+    "OBSERVATION_GRAIN": "property × scenario × provider × period (pooled into one denominator per table scope)",
+    "PROVIDER_AGGREGATION_FORMULA": "POOLED_RESPONSE_DENOMINATOR: AI_Presence = hotel_appearances_in_scope / comparable_observations_in_scope. Not equal-mean of provider rates.",
+    "MISSING_PROVIDER_RULE": "If a provider has zero observations in the shared scope, it is absent from the denominator for every hotel equally. Hotels not named in a present provider's responses count as 0 appearances for those observations — not as provider-missing.",
+    "ROW_ELIGIBILITY_RULE": "Subject: obs.mentioned. Competitors: canonical entity match in competitorsMentioned. Zero-presence CORE appended with 0% when never observed.",
+    "RANKING_FORMULA": "Sort by appearances desc, then name asc. Ranking uses the same appearance counts as the AI Presence column.",
+    "OVERALL_FORMULA": "Full-property comparable observations pooled once (does NOT average territory rates). OVERALL_AVERAGES_TERRITORY_RATES = NO",
+    "SUBJECT_VS_COMPETITOR_TREATMENT": "Identical pooled contract — no special provider path for YOU / CORE / OBSERVED",
+    "SILENT_ROW_LEVEL_PROVIDER_FALLBACKS": 0,
+    "NOTE_VS_PRESENCE_INDEX": "Governed AI Presence Index All Providers uses A_EQUAL_MEAN_OF_PROVIDER_RATES_THEN_INDEX. Competitive Overview deliberately uses pooled observation rate. Within one Competitive Overview table, all hotels share the pooled contract."
+  },
+  "customerComparability": {
+    "CUSTOMER_CAN_COMPARE_ROWS_DIRECTLY": "YES_SAME_GOVERNED_SCOPE",
+    "ANSWER": "YES — SAME GOVERNED SCOPE. Within one property × territory (or Overall) table, every hotel AI Presence % uses the same period, scenario universe, comparable-observation filter, and pooled provider aggregation."
+  },
+  "nowNowBusinessTravel": {
+    "deepRows": [
+      {
+        "HOTEL": "NOW NOW NOHO",
+        "DISPLAYED_AI_PRESENCE": 30.8,
+        "OPENAI": 69.2,
+        "GEMINI": 23.1,
+        "PERPLEXITY": 15.4,
+        "CLAUDE": 15.4,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 30.8,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "Crosby Street Hotel",
+        "DISPLAYED_AI_PRESENCE": 30.8,
+        "OPENAI": 0,
+        "GEMINI": 61.5,
+        "PERPLEXITY": 30.8,
+        "CLAUDE": 30.8,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 30.8,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "The Bowery Hotel",
+        "DISPLAYED_AI_PRESENCE": 26.9,
+        "OPENAI": 23.1,
+        "GEMINI": 38.5,
+        "PERPLEXITY": 15.4,
+        "CLAUDE": 30.8,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 26.9,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "The Beekman, A Thompson Hotel",
+        "DISPLAYED_AI_PRESENCE": 23.1,
+        "OPENAI": 15.4,
+        "GEMINI": 38.5,
+        "PERPLEXITY": 23.1,
+        "CLAUDE": 15.4,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 23.1,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "Four Seasons Hotel New York Downtown",
+        "DISPLAYED_AI_PRESENCE": 11.5,
+        "OPENAI": 15.4,
+        "GEMINI": 23.1,
+        "PERPLEXITY": 7.7,
+        "CLAUDE": 0,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 11.5,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "Walker Hotel Greenwich Village",
+        "DISPLAYED_AI_PRESENCE": 11.5,
+        "OPENAI": 15.4,
+        "GEMINI": 30.8,
+        "PERPLEXITY": 0,
+        "CLAUDE": 0,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 11.5,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "Soho Grand Hotel",
+        "DISPLAYED_AI_PRESENCE": 19.2,
+        "OPENAI": 38.5,
+        "GEMINI": 30.8,
+        "PERPLEXITY": 0,
+        "CLAUDE": 7.7,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 19.2,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "The Greenwich Hotel",
+        "DISPLAYED_AI_PRESENCE": 17.3,
+        "OPENAI": 23.1,
+        "GEMINI": 38.5,
+        "PERPLEXITY": 7.7,
+        "CLAUDE": 0,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 17.3,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "The Marlton Hotel",
+        "DISPLAYED_AI_PRESENCE": 11.5,
+        "OPENAI": 23.1,
+        "GEMINI": 7.7,
+        "PERPLEXITY": 7.7,
+        "CLAUDE": 7.7,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 11.5,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "PUBLIC Hotel",
+        "DISPLAYED_AI_PRESENCE": 9.6,
+        "OPENAI": 15.4,
+        "GEMINI": 15.4,
+        "PERPLEXITY": 7.7,
+        "CLAUDE": 0,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 9.6,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      },
+      {
+        "HOTEL": "The Wall Street Hotel",
+        "DISPLAYED_AI_PRESENCE": 7.7,
+        "OPENAI": 7.7,
+        "GEMINI": 7.7,
+        "PERPLEXITY": 7.7,
+        "CLAUDE": 7.7,
+        "OPENAI_STATUS": "VALID",
+        "GEMINI_STATUS": "VALID",
+        "PERPLEXITY_STATUS": "VALID",
+        "CLAUDE_STATUS": "VALID",
+        "INCLUDED_PROVIDER_COUNT": 4,
+        "RECOMPUTED_ALL_PROVIDERS": 7.7,
+        "DIFF_PP": 0,
+        "STATUS": "PASS"
+      }
+    ],
+    "providersPresent": [
+      "claude",
+      "gemini",
+      "openai",
+      "perplexity"
+    ],
+    "comparableN": 52,
+    "equalMeanContrast": {
+      "method": "A_EQUAL_MEAN_OF_PROVIDER_RATES_THEN_INDEX",
+      "note": "Competitive Overview uses POOLED rates; Presence Index All Providers uses equal-mean of provider rates — these can differ.",
+      "subjectPooledPct": 30.8,
+      "subjectEqualMeanPct": 30.8
+    },
+    "STATUS": "PASS"
+  },
+  "coreReconciliation": {
+    "CORE_ROWS_TESTED": 320,
+    "CORE_DISPLAY_RATE_NOT_EQUAL_TO_BENCHMARK_INPUT_RATE": 0,
+    "CORE_DISPLAY_VS_UNIQUE_PEER_RATE_MISMATCH": 0,
+    "ALIAS_INFLATION_ROWS": 0,
+    "BENCHMARK_INPUT_DEFINITION_MATCHING_DISPLAY": "Ranking-style pooled count (increments once per matching alias string in competitorsMentioned).",
+    "BENCHMARK_INPUT_DEFINITION_PRESENCE_INDEX": "Unique-per-observation peerAppearsInObservation (.some) — can be lower when one response lists multiple aliases for the same hotel.",
+    "CLASSIFICATION": "ALIGNED"
+  },
+  "scopeSafety": {
+    "MIXED_PERIOD_ROWS": 0,
+    "MIXED_TERRITORY_SCOPE_ROWS": 0,
+    "MIXED_PROVIDER_AGGREGATION_ROWS": 0,
+    "MIXED_SCENARIO_SCOPE_ROWS": 0,
+    "SILENT_ROW_LEVEL_PROVIDER_FALLBACKS": 0
+  },
+  "ranking": {
+    "RANKING_USES_DISPLAYED_METRIC_CONTRACT": "YES",
+    "RANK_MISMATCH_ROWS": 0
+  },
+  "multiProperty": [
+    {
+      "PROPERTY": "Waterstone Resort & Marina",
+      "propertyId": "adp_waterstone_boca_raton",
+      "SCOPES_AUDITED": 9,
+      "ROWS_AUDITED": 105,
+      "MIXED_PROVIDER_SCOPE_ROWS": 0,
+      "SILENT_FALLBACK_ROWS": 0,
+      "SCOPE_STATUSES": [
+        {
+          "scope": "overall",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "business",
+          "rows": 12,
+          "identical": 12,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "leisure",
+          "rows": 13,
+          "identical": 13,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "couples",
+          "rows": 13,
+          "identical": 13,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "family",
+          "rows": 13,
+          "identical": 13,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "group_meeting",
+          "rows": 12,
+          "identical": 12,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "wellness",
+          "rows": 12,
+          "identical": 12,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "adventure",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "celebration",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        }
+      ],
+      "STATUS": "PASS"
+    },
+    {
+      "PROPERTY": "Renaissance New York Times Square Hotel",
+      "propertyId": "adp_renaissance_times_square",
+      "SCOPES_AUDITED": 8,
+      "ROWS_AUDITED": 87,
+      "MIXED_PROVIDER_SCOPE_ROWS": 0,
+      "SILENT_FALLBACK_ROWS": 0,
+      "SCOPE_STATUSES": [
+        {
+          "scope": "overall",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "business",
+          "rows": 11,
+          "identical": 11,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "leisure",
+          "rows": 13,
+          "identical": 13,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "couples",
+          "rows": 11,
+          "identical": 11,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "family",
+          "rows": 11,
+          "identical": 11,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "group_meeting",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "wellness",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "celebration",
+          "rows": 11,
+          "identical": 11,
+          "different": 0,
+          "status": "PASS"
+        }
+      ],
+      "STATUS": "PASS"
+    },
+    {
+      "PROPERTY": "Cambridge Beaches Resort & Spa",
+      "propertyId": "adp_cambridge_beaches_bermuda",
+      "SCOPES_AUDITED": 9,
+      "ROWS_AUDITED": 76,
+      "MIXED_PROVIDER_SCOPE_ROWS": 0,
+      "SILENT_FALLBACK_ROWS": 0,
+      "SCOPE_STATUSES": [
+        {
+          "scope": "overall",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "business",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "leisure",
+          "rows": 11,
+          "identical": 11,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "couples",
+          "rows": 9,
+          "identical": 9,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "family",
+          "rows": 3,
+          "identical": 3,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "group_meeting",
+          "rows": 8,
+          "identical": 8,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "wellness",
+          "rows": 9,
+          "identical": 9,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "adventure",
+          "rows": 7,
+          "identical": 7,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "celebration",
+          "rows": 9,
+          "identical": 9,
+          "different": 0,
+          "status": "PASS"
+        }
+      ],
+      "STATUS": "PASS"
+    },
+    {
+      "PROPERTY": "NOW NOW NOHO",
+      "propertyId": "adp_now_now_noho",
+      "SCOPES_AUDITED": 5,
+      "ROWS_AUDITED": 52,
+      "MIXED_PROVIDER_SCOPE_ROWS": 0,
+      "SILENT_FALLBACK_ROWS": 0,
+      "SCOPE_STATUSES": [
+        {
+          "scope": "overall",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "business",
+          "rows": 11,
+          "identical": 11,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "leisure",
+          "rows": 11,
+          "identical": 11,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "couples",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        },
+        {
+          "scope": "celebration",
+          "rows": 10,
+          "identical": 10,
+          "different": 0,
+          "status": "PASS"
+        }
+      ],
+      "STATUS": "PASS"
+    }
+  ],
+  "totals": {
+    "ROWS_AUDITED": 320,
+    "RECOMPUTE_MISMATCH": 0
+  },
+  "execution": {
+    "PROVIDER_CALLS": 0,
+    "SPEND": 0
+  },
+  "recommendedNextStep": "ADP_COMPETITIVE_OVERVIEW_PROVIDER_SCOPE_CERTIFIED",
+  "final": "ADP_COMPETITIVE_OVERVIEW_PROVIDER_SCOPE_CONSISTENCY_AUDIT_V1_PASS"
+}

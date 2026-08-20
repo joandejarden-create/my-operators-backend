@@ -1,0 +1,677 @@
+{
+  "title": "ADP_PROVIDER_CONCENTRATION_ROOT_CAUSE_V1_COMPLETE",
+  "version": "adp_provider_concentration_root_cause_v1",
+  "primaryQuestion": {
+    "ANSWER": "MIXED — structural 8pp subject-only gate sensitivity (A fails below 10pp) AND genuine subject provider instability on other territories",
+    "structuralGateSensitivityCount": 2,
+    "genuineInstabilityCount": 4,
+    "affectedTerritoryCount": 6
+  },
+  "currentRule": {
+    "FORMULA": "For each included provider p: recompute All Providers subject rate as equal mean of remaining provider subject rates; deltaPp = |looSubjectRate - baseSubjectRate| × 100. PROVIDER_CONCENTRATION_RISK = true if any deltaPp >= MATERIAL_PROVIDER_LOO_PP. certifyGovernedTerritory also flags provider_concentration if max(dropProviderSubjectPp) >= PROVIDER_LOO_PP_MAX.",
+    "THRESHOLD": "MATERIAL_PROVIDER_LOO_PP=8pp (PROVIDER_CONCENTRATION_RISK); PROVIDER_LOO_PP_MAX=10pp (certification blocker)",
+    "METRIC_BEING_TESTED": "All Providers aggregated SUBJECT presence rate only (CORE benchmark provider LOO not tested)",
+    "PROVIDER_GRAIN": "property × territory × provider × period (equal mean of included provider rates)",
+    "ALL_PROVIDERS_DERIVATION": "A_EQUAL_MEAN_OF_INCLUDED_PROVIDER_RATES — subject rate and CORE benchmark each averaged across providers with sufficient observations",
+    "WHY_THRESHOLD_WAS_CHOSEN": "Conservative heuristic aligned with scenario LOO materiality (8pp subject) to flag aggregates materially controlled by one provider mix",
+    "THRESHOLD_ORIGIN": "HEURISTIC"
+  },
+  "affectedTerritoryDiagnostics": [
+    {
+      "PROPERTY": "Renaissance New York Times Square Hotel",
+      "TERRITORY": "Business Travel",
+      "SUBJECT_PROVIDER_RANGE_PP": 38.4,
+      "CORE_PROVIDER_RANGE_PP": 5.7,
+      "SUBJECT_PROVIDER_LOO_RANGE_PP": 8.2,
+      "CORE_PROVIDER_LOO_RANGE_PP": 1,
+      "MOST_INFLUENTIAL_PROVIDER": "openai",
+      "ROOT_CAUSE": "SUBJECT_PROVIDER_UNSTABLE",
+      "PRIMARY_CAUSE": "SUBJECT_PROVIDER_DISAGREEMENT",
+      "currentBlockers": [
+        "provider_concentration"
+      ],
+      "providerDecomposition": [
+        {
+          "PROPERTY": "Renaissance New York Times Square Hotel",
+          "TERRITORY": "Business Travel",
+          "PROVIDER": "openai",
+          "YOUR_AI_PRESENCE": 61.5,
+          "CORE_BENCHMARK": 19.2,
+          "AI_PRESENCE_INDEX_INTERNAL": 320,
+          "SUBJECT_OBSERVATION_N": 13,
+          "CORE_OBSERVATION_N": 13,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "Renaissance New York Times Square Hotel",
+          "TERRITORY": "Business Travel",
+          "PROVIDER": "gemini",
+          "YOUR_AI_PRESENCE": 25,
+          "CORE_BENCHMARK": 14.6,
+          "AI_PRESENCE_INDEX_INTERNAL": 171,
+          "SUBJECT_OBSERVATION_N": 12,
+          "CORE_OBSERVATION_N": 12,
+          "FAILED_MISSING_OBSERVATION_N": 1,
+          "included": true
+        },
+        {
+          "PROPERTY": "Renaissance New York Times Square Hotel",
+          "TERRITORY": "Business Travel",
+          "PROVIDER": "perplexity",
+          "YOUR_AI_PRESENCE": 38.5,
+          "CORE_BENCHMARK": 13.5,
+          "AI_PRESENCE_INDEX_INTERNAL": 286,
+          "SUBJECT_OBSERVATION_N": 13,
+          "CORE_OBSERVATION_N": 13,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "Renaissance New York Times Square Hotel",
+          "TERRITORY": "Business Travel",
+          "PROVIDER": "claude",
+          "YOUR_AI_PRESENCE": 23.1,
+          "CORE_BENCHMARK": 17.3,
+          "AI_PRESENCE_INDEX_INTERNAL": 133,
+          "SUBJECT_OBSERVATION_N": 13,
+          "CORE_OBSERVATION_N": 13,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        }
+      ],
+      "leaveOneOut": {
+        "BASE_SUBJECT_RATE": 37,
+        "BASE_CORE_RATE": 16.1,
+        "BASE_INDEX": 229,
+        "dropProviderSubjectPp": {
+          "openai": 8.2,
+          "gemini": 4,
+          "perplexity": 0.5,
+          "claude": 4.6
+        },
+        "dropProviderCorePp": {
+          "openai": 1,
+          "gemini": 0.5,
+          "perplexity": 0.9,
+          "claude": 0.4
+        }
+      }
+    },
+    {
+      "PROPERTY": "Cambridge Beaches Resort & Spa",
+      "TERRITORY": "Resort Leisure",
+      "SUBJECT_PROVIDER_RANGE_PP": 50,
+      "CORE_PROVIDER_RANGE_PP": 6.6,
+      "SUBJECT_PROVIDER_LOO_RANGE_PP": 9.7,
+      "CORE_PROVIDER_LOO_RANGE_PP": 1.4,
+      "MOST_INFLUENTIAL_PROVIDER": "openai",
+      "ROOT_CAUSE": "SUBJECT_PROVIDER_UNSTABLE",
+      "PRIMARY_CAUSE": "SUBJECT_PROVIDER_DISAGREEMENT",
+      "currentBlockers": [
+        "provider_concentration"
+      ],
+      "providerDecomposition": [
+        {
+          "PROPERTY": "Cambridge Beaches Resort & Spa",
+          "TERRITORY": "Resort Leisure",
+          "PROVIDER": "openai",
+          "YOUR_AI_PRESENCE": 50,
+          "CORE_BENCHMARK": 33.3,
+          "AI_PRESENCE_INDEX_INTERNAL": 150,
+          "SUBJECT_OBSERVATION_N": 12,
+          "CORE_OBSERVATION_N": 12,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "Cambridge Beaches Resort & Spa",
+          "TERRITORY": "Resort Leisure",
+          "PROVIDER": "gemini",
+          "YOUR_AI_PRESENCE": 100,
+          "CORE_BENCHMARK": 32,
+          "AI_PRESENCE_INDEX_INTERNAL": 313,
+          "SUBJECT_OBSERVATION_N": 10,
+          "CORE_OBSERVATION_N": 10,
+          "FAILED_MISSING_OBSERVATION_N": 2,
+          "included": true
+        },
+        {
+          "PROPERTY": "Cambridge Beaches Resort & Spa",
+          "TERRITORY": "Resort Leisure",
+          "PROVIDER": "perplexity",
+          "YOUR_AI_PRESENCE": 75,
+          "CORE_BENCHMARK": 26.7,
+          "AI_PRESENCE_INDEX_INTERNAL": 281,
+          "SUBJECT_OBSERVATION_N": 12,
+          "CORE_OBSERVATION_N": 12,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "Cambridge Beaches Resort & Spa",
+          "TERRITORY": "Resort Leisure",
+          "PROVIDER": "claude",
+          "YOUR_AI_PRESENCE": 91.7,
+          "CORE_BENCHMARK": 31.7,
+          "AI_PRESENCE_INDEX_INTERNAL": 289,
+          "SUBJECT_OBSERVATION_N": 12,
+          "CORE_OBSERVATION_N": 12,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        }
+      ],
+      "leaveOneOut": {
+        "BASE_SUBJECT_RATE": 79.2,
+        "BASE_CORE_RATE": 30.9,
+        "BASE_INDEX": 256,
+        "dropProviderSubjectPp": {
+          "openai": 9.7,
+          "gemini": 6.9,
+          "perplexity": 1.4,
+          "claude": 4.2
+        },
+        "dropProviderCorePp": {
+          "openai": 0.8,
+          "gemini": 0.4,
+          "perplexity": 1.4,
+          "claude": 0.3
+        }
+      }
+    },
+    {
+      "PROPERTY": "Cambridge Beaches Resort & Spa",
+      "TERRITORY": "Couples / Romantic Stay",
+      "SUBJECT_PROVIDER_RANGE_PP": 54.5,
+      "CORE_PROVIDER_RANGE_PP": 6.6,
+      "SUBJECT_PROVIDER_LOO_RANGE_PP": 12.9,
+      "CORE_PROVIDER_LOO_RANGE_PP": 1.3,
+      "MOST_INFLUENTIAL_PROVIDER": "openai",
+      "ROOT_CAUSE": "SUBJECT_PROVIDER_UNSTABLE",
+      "PRIMARY_CAUSE": "SUBJECT_PROVIDER_DISAGREEMENT",
+      "currentBlockers": [
+        "provider_concentration"
+      ],
+      "providerDecomposition": [
+        {
+          "PROPERTY": "Cambridge Beaches Resort & Spa",
+          "TERRITORY": "Couples / Romantic Stay",
+          "PROVIDER": "openai",
+          "YOUR_AI_PRESENCE": 45.5,
+          "CORE_BENCHMARK": 40.9,
+          "AI_PRESENCE_INDEX_INTERNAL": 111,
+          "SUBJECT_OBSERVATION_N": 11,
+          "CORE_OBSERVATION_N": 11,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "Cambridge Beaches Resort & Spa",
+          "TERRITORY": "Couples / Romantic Stay",
+          "PROVIDER": "gemini",
+          "YOUR_AI_PRESENCE": 100,
+          "CORE_BENCHMARK": 47.5,
+          "AI_PRESENCE_INDEX_INTERNAL": 211,
+          "SUBJECT_OBSERVATION_N": 10,
+          "CORE_OBSERVATION_N": 10,
+          "FAILED_MISSING_OBSERVATION_N": 1,
+          "included": true
+        },
+        {
+          "PROPERTY": "Cambridge Beaches Resort & Spa",
+          "TERRITORY": "Couples / Romantic Stay",
+          "PROVIDER": "perplexity",
+          "YOUR_AI_PRESENCE": 90.9,
+          "CORE_BENCHMARK": 43.2,
+          "AI_PRESENCE_INDEX_INTERNAL": 211,
+          "SUBJECT_OBSERVATION_N": 11,
+          "CORE_OBSERVATION_N": 11,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "Cambridge Beaches Resort & Spa",
+          "TERRITORY": "Couples / Romantic Stay",
+          "PROVIDER": "claude",
+          "YOUR_AI_PRESENCE": 100,
+          "CORE_BENCHMARK": 43.2,
+          "AI_PRESENCE_INDEX_INTERNAL": 232,
+          "SUBJECT_OBSERVATION_N": 11,
+          "CORE_OBSERVATION_N": 11,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        }
+      ],
+      "leaveOneOut": {
+        "BASE_SUBJECT_RATE": 84.1,
+        "BASE_CORE_RATE": 43.7,
+        "BASE_INDEX": 192,
+        "dropProviderSubjectPp": {
+          "openai": 12.9,
+          "gemini": 5.3,
+          "perplexity": 2.3,
+          "claude": 5.3
+        },
+        "dropProviderCorePp": {
+          "openai": 0.9,
+          "gemini": 1.3,
+          "perplexity": 0.2,
+          "claude": 0.2
+        }
+      }
+    },
+    {
+      "PROPERTY": "NOW NOW NOHO",
+      "TERRITORY": "Business Travel",
+      "SUBJECT_PROVIDER_RANGE_PP": 53.8,
+      "CORE_PROVIDER_RANGE_PP": 17.3,
+      "SUBJECT_PROVIDER_LOO_RANGE_PP": 12.8,
+      "CORE_PROVIDER_LOO_RANGE_PP": 3.4,
+      "MOST_INFLUENTIAL_PROVIDER": "openai",
+      "ROOT_CAUSE": "SUBJECT_PROVIDER_UNSTABLE",
+      "PRIMARY_CAUSE": "BOTH",
+      "currentBlockers": [
+        "provider_concentration"
+      ],
+      "providerDecomposition": [
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Business Travel",
+          "PROVIDER": "openai",
+          "YOUR_AI_PRESENCE": 69.2,
+          "CORE_BENCHMARK": 13.5,
+          "AI_PRESENCE_INDEX_INTERNAL": 514,
+          "SUBJECT_OBSERVATION_N": 13,
+          "CORE_OBSERVATION_N": 13,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Business Travel",
+          "PROVIDER": "gemini",
+          "YOUR_AI_PRESENCE": 23.1,
+          "CORE_BENCHMARK": 23.1,
+          "AI_PRESENCE_INDEX_INTERNAL": 100,
+          "SUBJECT_OBSERVATION_N": 13,
+          "CORE_OBSERVATION_N": 13,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Business Travel",
+          "PROVIDER": "perplexity",
+          "YOUR_AI_PRESENCE": 15.4,
+          "CORE_BENCHMARK": 9.6,
+          "AI_PRESENCE_INDEX_INTERNAL": 160,
+          "SUBJECT_OBSERVATION_N": 13,
+          "CORE_OBSERVATION_N": 13,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Business Travel",
+          "PROVIDER": "claude",
+          "YOUR_AI_PRESENCE": 15.4,
+          "CORE_BENCHMARK": 5.8,
+          "AI_PRESENCE_INDEX_INTERNAL": 267,
+          "SUBJECT_OBSERVATION_N": 13,
+          "CORE_OBSERVATION_N": 13,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        }
+      ],
+      "leaveOneOut": {
+        "BASE_SUBJECT_RATE": 30.8,
+        "BASE_CORE_RATE": 13,
+        "BASE_INDEX": 237,
+        "dropProviderSubjectPp": {
+          "openai": 12.8,
+          "gemini": 2.6,
+          "perplexity": 5.1,
+          "claude": 5.1
+        },
+        "dropProviderCorePp": {
+          "openai": 0.2,
+          "gemini": 3.4,
+          "perplexity": 1.1,
+          "claude": 2.4
+        }
+      }
+    },
+    {
+      "PROPERTY": "NOW NOW NOHO",
+      "TERRITORY": "Resort Leisure",
+      "SUBJECT_PROVIDER_RANGE_PP": 72.4,
+      "CORE_PROVIDER_RANGE_PP": 20,
+      "SUBJECT_PROVIDER_LOO_RANGE_PP": 13.3,
+      "CORE_PROVIDER_LOO_RANGE_PP": 4.1,
+      "MOST_INFLUENTIAL_PROVIDER": "openai",
+      "ROOT_CAUSE": "SUBJECT_PROVIDER_UNSTABLE",
+      "PRIMARY_CAUSE": "BOTH",
+      "currentBlockers": [
+        "provider_concentration"
+      ],
+      "providerDecomposition": [
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Resort Leisure",
+          "PROVIDER": "openai",
+          "YOUR_AI_PRESENCE": 86.7,
+          "CORE_BENCHMARK": 20,
+          "AI_PRESENCE_INDEX_INTERNAL": 433,
+          "SUBJECT_OBSERVATION_N": 15,
+          "CORE_OBSERVATION_N": 15,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Resort Leisure",
+          "PROVIDER": "gemini",
+          "YOUR_AI_PRESENCE": 14.3,
+          "CORE_BENCHMARK": 40,
+          "AI_PRESENCE_INDEX_INTERNAL": 36,
+          "SUBJECT_OBSERVATION_N": 14,
+          "CORE_OBSERVATION_N": 14,
+          "FAILED_MISSING_OBSERVATION_N": 1,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Resort Leisure",
+          "PROVIDER": "perplexity",
+          "YOUR_AI_PRESENCE": 46.7,
+          "CORE_BENCHMARK": 24,
+          "AI_PRESENCE_INDEX_INTERNAL": 194,
+          "SUBJECT_OBSERVATION_N": 15,
+          "CORE_OBSERVATION_N": 15,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Resort Leisure",
+          "PROVIDER": "claude",
+          "YOUR_AI_PRESENCE": 40,
+          "CORE_BENCHMARK": 26.7,
+          "AI_PRESENCE_INDEX_INTERNAL": 150,
+          "SUBJECT_OBSERVATION_N": 15,
+          "CORE_OBSERVATION_N": 15,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        }
+      ],
+      "leaveOneOut": {
+        "BASE_SUBJECT_RATE": 46.9,
+        "BASE_CORE_RATE": 27.7,
+        "BASE_INDEX": 170,
+        "dropProviderSubjectPp": {
+          "openai": 13.3,
+          "gemini": 10.9,
+          "perplexity": 0.1,
+          "claude": 2.3
+        },
+        "dropProviderCorePp": {
+          "openai": 2.6,
+          "gemini": 4.1,
+          "perplexity": 1.2,
+          "claude": 0.3
+        }
+      }
+    },
+    {
+      "PROPERTY": "NOW NOW NOHO",
+      "TERRITORY": "Couples / Romantic Stay",
+      "SUBJECT_PROVIDER_RANGE_PP": 77.8,
+      "CORE_PROVIDER_RANGE_PP": 32.4,
+      "SUBJECT_PROVIDER_LOO_RANGE_PP": 17.3,
+      "CORE_PROVIDER_LOO_RANGE_PP": 6.6,
+      "MOST_INFLUENTIAL_PROVIDER": "openai",
+      "ROOT_CAUSE": "SINGLE_PROVIDER_DEPENDENT",
+      "PRIMARY_CAUSE": "BOTH",
+      "currentBlockers": [
+        "provider_concentration"
+      ],
+      "providerDecomposition": [
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Couples / Romantic Stay",
+          "PROVIDER": "openai",
+          "YOUR_AI_PRESENCE": 88.9,
+          "CORE_BENCHMARK": 22.2,
+          "AI_PRESENCE_INDEX_INTERNAL": 400,
+          "SUBJECT_OBSERVATION_N": 9,
+          "CORE_OBSERVATION_N": 9,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Couples / Romantic Stay",
+          "PROVIDER": "gemini",
+          "YOUR_AI_PRESENCE": 14.3,
+          "CORE_BENCHMARK": 45.7,
+          "AI_PRESENCE_INDEX_INTERNAL": 31,
+          "SUBJECT_OBSERVATION_N": 7,
+          "CORE_OBSERVATION_N": 7,
+          "FAILED_MISSING_OBSERVATION_N": 2,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Couples / Romantic Stay",
+          "PROVIDER": "perplexity",
+          "YOUR_AI_PRESENCE": 33.3,
+          "CORE_BENCHMARK": 13.3,
+          "AI_PRESENCE_INDEX_INTERNAL": 250,
+          "SUBJECT_OBSERVATION_N": 9,
+          "CORE_OBSERVATION_N": 9,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        },
+        {
+          "PROPERTY": "NOW NOW NOHO",
+          "TERRITORY": "Couples / Romantic Stay",
+          "PROVIDER": "claude",
+          "YOUR_AI_PRESENCE": 11.1,
+          "CORE_BENCHMARK": 22.2,
+          "AI_PRESENCE_INDEX_INTERNAL": 50,
+          "SUBJECT_OBSERVATION_N": 9,
+          "CORE_OBSERVATION_N": 9,
+          "FAILED_MISSING_OBSERVATION_N": 0,
+          "included": true
+        }
+      ],
+      "leaveOneOut": {
+        "BASE_SUBJECT_RATE": 36.9,
+        "BASE_CORE_RATE": 25.9,
+        "BASE_INDEX": 143,
+        "dropProviderSubjectPp": {
+          "openai": 17.3,
+          "gemini": 7.5,
+          "perplexity": 1.2,
+          "claude": 8.6
+        },
+        "dropProviderCorePp": {
+          "openai": 1.2,
+          "gemini": 6.6,
+          "perplexity": 4.2,
+          "claude": 1.2
+        }
+      }
+    }
+  ],
+  "candidateModels": [
+    {
+      "MODEL": "MODEL_P_A",
+      "PASSING_TERRITORIES": 8,
+      "FALSE_FAILURE_RISK": "HIGH — flags normal cross-provider variation at 8pp subject LOO",
+      "FALSE_STABILITY_RISK": "LOW for certified rows at recommended thresholds",
+      "OWNER_INTERPRETABILITY": "LOW — conflates disagreement with instability",
+      "CONSISTENCY_WITH_MODEL_D_SCENARIO_GOVERNANCE": "LOW",
+      "certifiedInvalidated": 0
+    },
+    {
+      "MODEL": "MODEL_P_B",
+      "PASSING_TERRITORIES": 10,
+      "FALSE_FAILURE_RISK": "MEDIUM",
+      "FALSE_STABILITY_RISK": "LOW for certified rows at recommended thresholds",
+      "OWNER_INTERPRETABILITY": "MEDIUM",
+      "CONSISTENCY_WITH_MODEL_D_SCENARIO_GOVERNANCE": "PARTIAL — subject only at 10pp",
+      "certifiedInvalidated": 0
+    },
+    {
+      "MODEL": "MODEL_P_C",
+      "PASSING_TERRITORIES": 16,
+      "FALSE_FAILURE_RISK": "MEDIUM",
+      "FALSE_STABILITY_RISK": "LOW for certified rows at recommended thresholds",
+      "OWNER_INTERPRETABILITY": "MEDIUM",
+      "CONSISTENCY_WITH_MODEL_D_SCENARIO_GOVERNANCE": "LOW",
+      "certifiedInvalidated": 0
+    },
+    {
+      "MODEL": "MODEL_P_D",
+      "PASSING_TERRITORIES": 10,
+      "FALSE_FAILURE_RISK": "LOW — aligns with MODEL_D dual-rate principle at 10/5pp",
+      "FALSE_STABILITY_RISK": "LOW for certified rows at recommended thresholds",
+      "OWNER_INTERPRETABILITY": "HIGH — tests aggregate robustness not provider agreement",
+      "CONSISTENCY_WITH_MODEL_D_SCENARIO_GOVERNANCE": "HIGH — dual underlying-rate LOO",
+      "certifiedInvalidated": 0
+    },
+    {
+      "MODEL": "MODEL_P_E",
+      "PASSING_TERRITORIES": 10,
+      "FALSE_FAILURE_RISK": "LOW — aligns with MODEL_D dual-rate principle at 10/5pp",
+      "FALSE_STABILITY_RISK": "LOW for certified rows at recommended thresholds",
+      "OWNER_INTERPRETABILITY": "HIGH — tests aggregate robustness not provider agreement",
+      "CONSISTENCY_WITH_MODEL_D_SCENARIO_GOVERNANCE": "HIGH — dual underlying-rate LOO",
+      "certifiedInvalidated": 0
+    }
+  ],
+  "recommendedGovernance": {
+    "CURRENT_RULE_KEEP": "NO",
+    "RECOMMENDED_RULE": "MODEL_P_D — dual underlying-rate provider LOO (subject ≤10pp AND CORE ≤5pp per provider removal); ratio/index LOO not used for certification",
+    "RECOMMENDED_SUBJECT_THRESHOLD": "10pp (align with MODEL_D scenario subject LOO)",
+    "RECOMMENDED_CORE_THRESHOLD": "5pp (align with MODEL_D scenario CORE LOO)",
+    "THRESHOLD_STATUS": "EMPIRICAL",
+    "thresholdDistribution": {
+      "subjectProviderLooMax": {
+        "median": 7.6,
+        "P75": 11.1,
+        "P90": 12.9,
+        "max": 17.3,
+        "n": 20
+      },
+      "coreProviderLooMax": {
+        "median": 2.3,
+        "P75": 3.3,
+        "P90": 4.1,
+        "max": 11.1,
+        "n": 20
+      }
+    },
+    "governanceConsistency": "Provider certification should follow MODEL_D principle: test underlying subject rate AND CORE benchmark stability, not index/ratio stability or provider agreement"
+  },
+  "candidateNewlyCertifiableRows": [
+    {
+      "PROPERTY": "Renaissance New York Times Square Hotel",
+      "TERRITORY": "Business Travel",
+      "CURRENT_STATUS": "CONDITIONALLY_ELIGIBLE",
+      "CANDIDATE_STATUS": "PRODUCTION_VALIDATED",
+      "WHY": "MODEL_P_D dual-rate provider LOO passes; current 8pp subject-only rule is structural gate sensitivity"
+    },
+    {
+      "PROPERTY": "Cambridge Beaches Resort & Spa",
+      "TERRITORY": "Resort Leisure",
+      "CURRENT_STATUS": "CONDITIONALLY_ELIGIBLE",
+      "CANDIDATE_STATUS": "PRODUCTION_VALIDATED",
+      "WHY": "MODEL_P_D dual-rate provider LOO passes; current 8pp subject-only rule is structural gate sensitivity"
+    }
+  ],
+  "candidatePromotionDeferred": true,
+  "existingCertifiedProtection": {
+    "CURRENT_CERTIFIED_ROWS_TESTED": 4,
+    "CURRENT_CERTIFIED_ROWS_INVALIDATED": 0,
+    "rows": [
+      {
+        "PROPERTY": "Renaissance New York Times Square Hotel",
+        "TERRITORY": "Resort Leisure",
+        "CURRENT_STATUS": "PRODUCTION_VALIDATED",
+        "MODEL_P_D_STATUS": "PRODUCTION_VALIDATED",
+        "INVALIDATED": false
+      },
+      {
+        "PROPERTY": "Renaissance New York Times Square Hotel",
+        "TERRITORY": "Couples / Romantic Stay",
+        "CURRENT_STATUS": "PRODUCTION_VALIDATED",
+        "MODEL_P_D_STATUS": "PRODUCTION_VALIDATED",
+        "INVALIDATED": false
+      },
+      {
+        "PROPERTY": "Renaissance New York Times Square Hotel",
+        "TERRITORY": "Meetings & Groups",
+        "CURRENT_STATUS": "PRODUCTION_VALIDATED",
+        "MODEL_P_D_STATUS": "PRODUCTION_VALIDATED",
+        "INVALIDATED": false
+      },
+      {
+        "PROPERTY": "Cambridge Beaches Resort & Spa",
+        "TERRITORY": "Celebrations & Events",
+        "CURRENT_STATUS": "PRODUCTION_VALIDATED",
+        "MODEL_P_D_STATUS": "PRODUCTION_VALIDATED",
+        "INVALIDATED": false
+      }
+    ]
+  },
+  "trendSafetyAudit": {
+    "INVALID_COMPARISONS_DETECTED": 3,
+    "INVALID_COMPARISONS_BLOCKED": 3,
+    "INVALID_COMPARISONS_RENDERED": 0,
+    "NOTE": "Primary audit = targeted CORE_TRUTH period vs latest full-property period per property; customer UI uses full period only",
+    "details": [
+      {
+        "propertyId": "adp_renaissance_times_square",
+        "targetedPeriodId": "adp_period_adp_renaissance_times_square_20260820075422_1845c6",
+        "fullPeriodId": "adp_period_adp_renaissance_times_square_20260819144128_a7cbcc",
+        "reason": "scenario_count_mismatch",
+        "blocked": true,
+        "rendered": false
+      },
+      {
+        "propertyId": "adp_cambridge_beaches_bermuda",
+        "targetedPeriodId": "adp_period_adp_cambridge_beaches_bermuda_20260820075422_bed78d",
+        "fullPeriodId": "adp_period_adp_cambridge_beaches_bermuda_20260819144130_743505",
+        "reason": "scenario_count_mismatch",
+        "blocked": true,
+        "rendered": false
+      },
+      {
+        "propertyId": "adp_now_now_noho",
+        "targetedPeriodId": "adp_period_adp_now_now_noho_20260820075422_f37fc6",
+        "fullPeriodId": "adp_period_adp_now_now_noho_20260819211510_a2c3fa",
+        "reason": "scenario_count_mismatch",
+        "blocked": true,
+        "rendered": false
+      }
+    ]
+  },
+  "execution": {
+    "PROVIDER_CALLS": 0,
+    "SPEND": 0
+  },
+  "waterstone": {
+    "PROVIDER_CALLS": 0,
+    "INDEX_DIFF": 0,
+    "CERTIFIED_TERRITORIES": 4
+  },
+  "regression": {
+    "ADP_VISIBLE_SECTION_DIFF": 0,
+    "BRAND_AI_DIFF": 0,
+    "OPERATOR_AI_DIFF": 0
+  },
+  "next": "ADP_PROVIDER_CONCENTRATION_GOVERNANCE_READY",
+  "final": "ADP_PROVIDER_CONCENTRATION_ROOT_CAUSE_V1_PARTIAL"
+}

@@ -1,18 +1,209 @@
 /* AI Demand Positioning — extends ai-visibility-shared.css */
 
+/* Layer hierarchy — Executive Summary / Detailed Intelligence / Evidence */
+.adp-layer {
+  margin: 0 0 8px;
+}
+.adp-layer-label {
+  margin: 18px 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #6b7280);
+}
+
+/*
+ * ADP section boxes — one chrome for every outer section.
+ * Full equal border + shared fill (overrides secondary/transparent/left-border variants).
+ */
+#adpStateSuccess .aiv-theme-group,
+#adpStateSuccess .aiv-theme-group.aiv-theme-group--secondary,
+#adpStateSuccess .aiv-theme-group.aiv-portfolio-section,
+#adpStateSuccess .aiv-theme-group.aiv-evidence-discovery,
+.adp-layer .aiv-theme-group,
+.adp-layer .aiv-theme-group.aiv-theme-group--secondary {
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.6px solid var(--neutral--600, #37446b);
+  border-radius: 12px;
+  border-left-color: var(--neutral--600, #37446b);
+  border-left-style: solid;
+  border-left-width: 0.6px;
+}
+.adp-layer--executive .adp-section-snapshot,
+.adp-layer--executive .adp-section-executive-read,
+.adp-layer--executive .adp-section-metrics,
+.adp-layer--executive .adp-section-territory {
+  position: relative;
+}
+
+/* Executive Read — two-column V2 layout, high-contrast copy */
+.adp-executive-read {
+  padding: 12px 14px 14px;
+  background: var(--secondary--color-1, rgba(11, 23, 56, 0.55));
+  border: 0.6px solid var(--neutral--600, #37446b);
+  border-radius: 10px;
+}
+.adp-executive-read__grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 32%) 1fr;
+  gap: 14px 18px;
+  align-items: stretch;
+}
+.adp-executive-read__summaries {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  align-self: stretch;
+  min-height: 100%;
+  height: auto;
+}
+.adp-er-summary-box {
+  display: flex;
+  flex-direction: column;
+  background: rgba(11, 23, 56, 0.45);
+  border: 0.6px solid var(--neutral--600, #37446b);
+  border-radius: 8px;
+  padding: 10px 12px;
+  min-width: 0;
+  flex: 1 1 12rem;
+  min-height: 12rem;
+}
+.adp-er-summary-box__label {
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+  line-height: 1.25;
+  flex-shrink: 0;
+}
+.adp-er-summary-box__headline {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--neutral--100, #f8fafc);
+  flex-shrink: 0;
+}
+.adp-er-summary-box__body {
+  margin: 0;
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--neutral--100, #f8fafc);
+  opacity: 1;
+  flex: 0 0 auto;
+}
+.adp-executive-read__main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: rgba(11, 23, 56, 0.35);
+  border: 0.6px solid rgba(55, 68, 107, 0.65);
+  border-radius: 8px;
+  padding: 12px 14px 14px;
+}
+.adp-executive-read__main-title {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--neutral--400, #aeb8d4);
+  line-height: 1.3;
+}
+.adp-executive-read__narrative {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--neutral--100, #f8fafc);
+  max-width: none;
+  text-align: left;
+  white-space: pre-line;
+}
+.adp-executive-read__empty {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--neutral--300, #cbd5e1);
+}
+
+.aiv-detail-trend-stat__delta {
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--neutral--500, #7e89ac);
+}
+
+@media (max-width: 1440px) {
+  .adp-executive-read__grid {
+    grid-template-columns: minmax(200px, 34%) 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .adp-executive-read__grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .adp-executive-read__summaries {
+    order: 1;
+    height: auto;
+  }
+  .adp-executive-read__main {
+    order: 4;
+    height: auto;
+  }
+}
+
+@media (max-width: 1366px) {
+  .adp-executive-read {
+    padding: 10px 12px 12px;
+  }
+  .adp-er-summary-box__headline {
+    font-size: 13px;
+  }
+  .adp-er-summary-box__body {
+    font-size: 11px;
+  }
+}
+
 /* Property Snapshot — mirrors Brand AI #aivExecPosition (5 equal cards) */
 #adpKpiRow.aiv-kpi-row {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
 }
 #adpKpiRow .aiv-kpi {
+  display: flex;
+  flex-direction: column;
   padding: 10px 12px;
   min-width: 0;
+  height: 100%;
+  min-height: 128px;
 }
 #adpKpiRow .aiv-kpi h3 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
   font-size: 10px;
   letter-spacing: 0.04em;
   flex-shrink: 0;
+}
+#adpKpiRow .aiv-kpi .aiv-kpi-label {
+  flex: 1;
+  min-width: 0;
+}
+#adpKpiRow .aiv-kpi h3 .aiv-col-info,
+#adpExecutiveMetricsRow .aiv-kpi h3 .aiv-col-info {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-left: 2px;
 }
 #adpKpiRow .aiv-kpi .aiv-value {
   margin-top: 8px;
@@ -28,6 +219,105 @@
   font-size: 10px;
   line-height: 1.35;
   min-height: calc(1.35em * 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Optional executive metrics — five equal cards in one row */
+#adpExecutiveMetricsRow.aiv-kpi-row {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+#adpExecutiveMetricsRow .aiv-kpi {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  min-width: 0;
+  height: 100%;
+  min-height: 128px;
+}
+#adpExecutiveMetricsRow .aiv-kpi h3 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+#adpExecutiveMetricsRow .aiv-kpi .aiv-kpi-label {
+  flex: 1;
+  min-width: 0;
+}
+#adpExecutiveMetricsRow .aiv-kpi .aiv-value {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+}
+#adpExecutiveMetricsRow .aiv-kpi .aiv-meta {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 10px;
+  line-height: 1.35;
+  min-height: calc(1.35em * 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Wider detail popups for optional executive metric info icons only */
+.aiv-intent-index-cell {
+  font-weight: 700;
+}
+.aiv-intent-rate-cell {
+  font-weight: 400;
+}
+#adpExecutiveMetricsRow .aiv-kpi .aiv-value.aiv-value--metric-state {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+#adpKpiRow .aiv-kpi .aiv-value.aiv-value--metric-state {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.aiv-intent-rate-value {
+  display: block;
+  font-weight: 700;
+  color: var(--neutral--100, #ffffff);
+  font-variant-numeric: tabular-nums;
+}
+.aiv-cell-submeta {
+  margin-top: 2px;
+  font-size: 10px;
+  line-height: 1.3;
+  color: var(--aiv-text-secondary, #94a3b8);
+  white-space: normal;
+}
+.aiv-unified-intent-table-wrap {
+  overflow-x: auto;
+}
+.adp-benchmark-tooltip {
+  width: 440px;
+  max-width: min(440px, calc(100vw - 48px));
+  line-height: 1.5;
+}
+@media (max-width: 1439px) {
+  .aiv-unified-intent-table .aiv-intent-col-secondary {
+    display: none;
+  }
+}
+
+.aiv-tooltip-container .tooltip-content.adp-executive-metric-tooltip {
+  width: 440px;
+  max-width: min(440px, calc(100vw - 48px));
+  line-height: 1.5;
 }
 
 /* Info icon tooltip */
@@ -283,12 +573,26 @@
 /* Empty state */
 .adp-empty { text-align: center; padding: 3rem 2rem; color: var(--aiv-text-secondary, #64748b); }
 
-/* Ensure "Benchmark still developing" matches "Insufficient History" styling */
-#adpIntentTableContainer .aiv-avail-insufficient_history {
+/* Two-line availability states — unbold, proper case, match delta column rhythm */
+.aiv-table-availability-label {
+  font-weight: 400;
   font-size: 12px;
   line-height: 1.3;
   display: inline-block;
   max-width: 7.5rem;
+}
+.aiv-table-availability-label__line {
+  display: block;
+}
+.aiv-intent-index-cell .aiv-table-availability-label,
+.aiv-intent-rate-cell .aiv-table-availability-label {
+  font-weight: 400;
+}
+#adpIntentTableContainer .aiv-table-availability-label,
+#adpCompTable .aiv-table-availability-label,
+#adpProviderTableContainer .aiv-table-availability-label {
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 /* Table cell alignment — center data columns, left-align first column */
@@ -336,12 +640,67 @@
 }
 
 /* Evidence, Sources & Discovery — uses shared aiv-citation-exec-top / aiv-kpi classes */
+#adpExecCitations .aiv-kpi .aiv-meta {
+  margin-top: auto;
+  min-height: calc(1.35em * 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
 /* Comp set pills */
 .adp-pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
 .adp-pill--core { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); }
 .adp-pill--extended { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.25); }
-.adp-pill--you { background: rgba(255, 255, 255, 0.12); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.3); }
+.adp-pill--muted { background: rgba(148, 163, 184, 0.08); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2); font-weight: 600; }
+
+.adp-comp-territory-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 10px;
+  flex-wrap: wrap;
+}
+.adp-comp-territory-label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+}
+.adp-comp-territory-select {
+  min-width: 200px;
+  max-width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 0.6px solid var(--neutral--600, #37446b);
+  background: var(--secondary--color-1, rgba(11, 23, 56, 0.55));
+  color: var(--neutral--300, #d9e1fa);
+  font-size: 13px;
+}
+.aiv-cell-submeta--link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--neutral--500, #7e89ac);
+  font-size: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.aiv-cell-submeta--link:hover {
+  color: var(--neutral--300, #d9e1fa);
+}
+.adp-row--core-appended td:first-child {
+  color: var(--neutral--400, #aeb8d4);
+}
+#adpCompTableBody tr.adp-row--core {
+  background: rgba(99, 102, 241, 0.04);
+}
 .adp-row--subject { background: rgba(99, 102, 241, 0.08) !important; }
+
+/* Overall keeps Top Demand Territory column visible (per-hotel strongest territory). */
+#adpCompTable.adp-comp-table--overall th[data-sort="territory"] .aiv-th-text {
+  white-space: normal;
+}
 
 /* Trend summary — 4 stat boxes */
 #adpTrendSummary.aiv-detail-trend-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
