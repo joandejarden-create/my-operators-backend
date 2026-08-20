@@ -49,11 +49,17 @@ export async function getAiDemandPositioningReport(req, res) {
 export async function getAiDemandPositioningEvidence(req, res) {
   try {
     const { propertyId } = req.params;
-    const { intent, type, competitor } = req.query;
+    const { intent, type, competitor, competitorId, scope } = req.query;
     const profile = loadPropertyProfile(propertyId);
     if (!profile) return res.status(404).json({ ok: false, error: "property_not_found" });
 
-    const result = await getPublishedEvidenceResponse(propertyId, { intent, type, competitor });
+    const result = await getPublishedEvidenceResponse(propertyId, {
+      intent,
+      type,
+      competitor,
+      competitorId,
+      scope,
+    });
     if (!result.ok) {
       return res.status(404).json(result);
     }

@@ -1,0 +1,4559 @@
+{
+  "title": "ADP_INDEX_VOLATILITY_ROOT_CAUSE_AND_ARCHITECTURE_DECISION_COMPLETE",
+  "periods": {
+    "COMPARABLE_PERIODS": [
+      "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+      "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+      "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+      "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16"
+    ],
+    "PERIODS_USED": [
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+        "providerSet": [
+          "claude",
+          "gemini",
+          "openai",
+          "perplexity"
+        ],
+        "scenarioCount": 65,
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+        "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+        "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+        "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+        "providerSet": [
+          "claude",
+          "gemini",
+          "openai",
+          "perplexity"
+        ],
+        "scenarioCount": 65,
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+        "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+        "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+        "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+        "providerSet": [
+          "claude",
+          "gemini",
+          "openai",
+          "perplexity"
+        ],
+        "scenarioCount": 65,
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+        "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+        "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+        "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "providerSet": [
+          "claude",
+          "gemini",
+          "openai",
+          "perplexity"
+        ],
+        "scenarioCount": 65,
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+        "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+        "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+        "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+      }
+    ],
+    "PERIODS_EXCLUDED": [
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819094555_3e9e55",
+        "reason": "unparsed_or_empty"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819094700_c5a40b",
+        "reason": "parsed_provider_set_mismatch"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110501_5bf4a0",
+        "reason": "unparsed_or_empty"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110616_3f9ca5",
+        "reason": "unparsed_or_empty"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110643_16d0c7",
+        "reason": "parsed_provider_set_mismatch"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819113317_726131",
+        "reason": "parsed_provider_set_mismatch"
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819122848_742e26",
+        "reason": "parsed_provider_set_mismatch"
+      }
+    ]
+  },
+  "volatilityRootCause": [
+    {
+      "TERRITORY": "Business Travel",
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "HIGH",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH"
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "SCENARIO_SENSITIVITY": "MEDIUM",
+      "PROVIDER_SENSITIVITY": "HIGH",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BENCHMARK_MOVEMENT"
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "HIGH",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH"
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BENCHMARK_MOVEMENT"
+    },
+    {
+      "TERRITORY": "Meetings & Groups",
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_VOLATILITY": "HIGH",
+      "SCENARIO_SENSITIVITY": "LOW",
+      "PROVIDER_SENSITIVITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH"
+    },
+    {
+      "TERRITORY": "Wellness",
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_VOLATILITY": "HIGH",
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "THIN_SAMPLE_NOISE"
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH"
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "HIGH",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH"
+    }
+  ],
+  "extremePresenceIndexValues": [
+    {
+      "TERRITORY": "Business Travel",
+      "INDEX": 227,
+      "SUBJECT_RATE": 60.2,
+      "BENCHMARK_RATE": 26.6,
+      "ZERO_CORE_PEERS": 0,
+      "CLASSIFICATION": "VALID_STRONG_SIGNAL",
+      "WHY_SCORE_IS_HIGH": "Subject 60.2% vs CORE mean 26.6% with 0 zero CORE peers and 12 scenarios."
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "INDEX": 320,
+      "SUBJECT_RATE": 50.8,
+      "BENCHMARK_RATE": 15.9,
+      "ZERO_CORE_PEERS": 1,
+      "CLASSIFICATION": "VALID_STRONG_SIGNAL",
+      "WHY_SCORE_IS_HIGH": "Subject 50.8% vs CORE mean 15.9% with 1 zero CORE peers and 12 scenarios."
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "INDEX": 421,
+      "SUBJECT_RATE": 62.3,
+      "BENCHMARK_RATE": 14.8,
+      "ZERO_CORE_PEERS": 3,
+      "CLASSIFICATION": "VALID_BUT_DIFFICULT_TO_INTERPRET",
+      "WHY_SCORE_IS_HIGH": "Subject 62.3% vs CORE mean 14.8% with 3 zero CORE peers and 9 scenarios."
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "INDEX": 244,
+      "SUBJECT_RATE": 65,
+      "BENCHMARK_RATE": 26.7,
+      "ZERO_CORE_PEERS": 0,
+      "CLASSIFICATION": "THIN_SAMPLE_ARTIFACT",
+      "WHY_SCORE_IS_HIGH": "Subject 65% vs CORE mean 26.7% with 0 zero CORE peers and 5 scenarios."
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "INDEX": 343,
+      "SUBJECT_RATE": 57.1,
+      "BENCHMARK_RATE": 16.7,
+      "ZERO_CORE_PEERS": 3,
+      "CLASSIFICATION": "VALID_BUT_DIFFICULT_TO_INTERPRET",
+      "WHY_SCORE_IS_HIGH": "Subject 57.1% vs CORE mean 16.7% with 3 zero CORE peers and 7 scenarios."
+    }
+  ],
+  "scenarioDensity": [
+    {
+      "TERRITORY": "Business Travel",
+      "SCENARIO_COUNT": 12,
+      "ADEQUATE": "YES"
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "SCENARIO_COUNT": 12,
+      "ADEQUATE": "YES"
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "SCENARIO_COUNT": 9,
+      "ADEQUATE": "YES"
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "SCENARIO_COUNT": 5,
+      "ADEQUATE": "NO"
+    },
+    {
+      "TERRITORY": "Meetings & Groups",
+      "SCENARIO_COUNT": 13,
+      "ADEQUATE": "YES"
+    },
+    {
+      "TERRITORY": "Wellness",
+      "SCENARIO_COUNT": 2,
+      "ADEQUATE": "NO"
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "SCENARIO_COUNT": 5,
+      "ADEQUATE": "NO"
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "SCENARIO_COUNT": 7,
+      "ADEQUATE": "NO"
+    }
+  ],
+  "corePeerStability": [
+    {
+      "TERRITORY": "Business Travel",
+      "CORE_COUNT": 6,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [],
+      "DENOMINATOR_STABILITY": "MEDIUM",
+      "CHRONIC_ZERO_CORE_COUNT": 0,
+      "chronicZeroSensitivity": null,
+      "peers": [
+        {
+          "PEER": "Renaissance Boca Raton Hotel",
+          "entityId": "renaissance_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            25,
+            36,
+            29.5,
+            29.9
+          ],
+          "MEAN": 30.1,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 11,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Wyndham Boca Raton",
+          "entityId": "wyndham_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            14.6,
+            12.5,
+            16.7,
+            16.7
+          ],
+          "MEAN": 15.1,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.2,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Boca Raton Marriott at Boca Center",
+          "entityId": "marriott_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            4.2,
+            18.8,
+            18.9,
+            12.5
+          ],
+          "MEAN": 13.6,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 14.7,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Hilton Boca Raton Suites",
+          "entityId": "hilton_boca_raton_suites",
+          "PERIOD_PRESENCE_RATES": [
+            8.3,
+            21,
+            18.9,
+            19.1
+          ],
+          "MEAN": 16.8,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 12.7,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            39.6,
+            72.5,
+            76.9,
+            79
+          ],
+          "MEAN": 67,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 39.4,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Embassy Suites by Hilton Boca Raton",
+          "entityId": "embassy_suites_boca",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            2.3,
+            2.3,
+            2.3
+          ],
+          "MEAN": 1.7,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 2.3,
+          "flag": "STABLE_CORE"
+        }
+      ]
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "CORE_COUNT": 6,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton",
+        "Boca Beach Club"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [
+        "Boca Beach Club"
+      ],
+      "DENOMINATOR_STABILITY": "LOW",
+      "CHRONIC_ZERO_CORE_COUNT": 1,
+      "chronicZeroSensitivity": {
+        "withChronicZeros": 320,
+        "withoutChronicZeros": 266,
+        "delta": 54
+      },
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            35.4,
+            70.3,
+            70.8,
+            67.5
+          ],
+          "MEAN": 61,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 35.4,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "The Seagate Hotel & Spa",
+          "entityId": "seagate_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            2.1,
+            11,
+            14.6,
+            9.2
+          ],
+          "MEAN": 9.2,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 12.5,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            6.6,
+            6.3,
+            7.1
+          ],
+          "MEAN": 5,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 7.1,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Delray Sands Resort",
+          "entityId": "delray_sands_resort",
+          "PERIOD_PRESENCE_RATES": [
+            4.2,
+            2.3,
+            4.2,
+            9.2
+          ],
+          "MEAN": 5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 6.9,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Ray Hotel",
+          "entityId": "the_ray_hotel",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            4.5,
+            4.2,
+            2.5
+          ],
+          "MEAN": 2.8,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.5,
+          "flag": "STABLE_CORE"
+        }
+      ]
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "CORE_COUNT": 7,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton",
+        "Boca Beach Club",
+        "The Ray Hotel"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [
+        "Boca Beach Club",
+        "The Ray Hotel"
+      ],
+      "DENOMINATOR_STABILITY": "LOW",
+      "CHRONIC_ZERO_CORE_COUNT": 2,
+      "chronicZeroSensitivity": {
+        "withChronicZeros": 421,
+        "withoutChronicZeros": 301,
+        "delta": 120
+      },
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            36.1,
+            79.8,
+            79.2,
+            76.2
+          ],
+          "MEAN": 67.8,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 43.7,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "The Seagate Hotel & Spa",
+          "entityId": "seagate_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            2.8,
+            0,
+            2.8,
+            2.8
+          ],
+          "MEAN": 2.1,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 2.8,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            6.3,
+            4.2,
+            0
+          ],
+          "MEAN": 2.6,
+          "ZERO_RATE_PERIODS": 2,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 6.3,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Delray Sands Resort",
+          "entityId": "delray_sands_resort",
+          "PERIOD_PRESENCE_RATES": [
+            8.3,
+            19,
+            12.5,
+            15.5
+          ],
+          "MEAN": 13.8,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 10.7,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Ray Hotel",
+          "entityId": "the_ray_hotel",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            4.2,
+            0
+          ],
+          "MEAN": 1.1,
+          "ZERO_RATE_PERIODS": 3,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.2,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "The Colony Hotel Delray Beach",
+          "entityId": "colony_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            5.6,
+            5.6,
+            9.7,
+            9.1
+          ],
+          "MEAN": 7.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.1,
+          "flag": "STABLE_CORE"
+        }
+      ]
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "CORE_COUNT": 6,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton",
+        "Opal Grand Oceanfront Resort",
+        "Embassy Suites by Hilton Boca Raton",
+        "Boca Beach Club"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [
+        "Embassy Suites by Hilton Boca Raton",
+        "Boca Beach Club"
+      ],
+      "DENOMINATOR_STABILITY": "LOW",
+      "CHRONIC_ZERO_CORE_COUNT": 2,
+      "chronicZeroSensitivity": {
+        "withChronicZeros": 191,
+        "withoutChronicZeros": 133,
+        "delta": 58
+      },
+      "peers": [
+        {
+          "PEER": "Hilton Boca Raton Suites",
+          "entityId": "hilton_boca_raton_suites",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            5,
+            5,
+            5
+          ],
+          "MEAN": 3.8,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 5,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            30,
+            65,
+            75,
+            80
+          ],
+          "MEAN": 62.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 50,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            20,
+            10,
+            10
+          ],
+          "MEAN": 10,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 20,
+          "flag": "VOLATILE_CORE"
+        },
+        {
+          "PEER": "Delray Sands Resort",
+          "entityId": "delray_sands_resort",
+          "PERIOD_PRESENCE_RATES": [
+            5,
+            10,
+            5,
+            10
+          ],
+          "MEAN": 7.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 5,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Embassy Suites by Hilton Boca Raton",
+          "entityId": "embassy_suites_boca",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            5
+          ],
+          "MEAN": 1.3,
+          "ZERO_RATE_PERIODS": 3,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 5,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        }
+      ]
+    },
+    {
+      "TERRITORY": "Meetings & Groups",
+      "CORE_COUNT": 4,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [],
+      "DENOMINATOR_STABILITY": "MEDIUM",
+      "CHRONIC_ZERO_CORE_COUNT": 0,
+      "chronicZeroSensitivity": null,
+      "peers": [
+        {
+          "PEER": "Renaissance Boca Raton Hotel",
+          "entityId": "renaissance_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            19.2,
+            30.6,
+            24.2,
+            23.9
+          ],
+          "MEAN": 24.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 11.4,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Wyndham Boca Raton",
+          "entityId": "wyndham_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            7.7,
+            7.7,
+            10.2,
+            14.3
+          ],
+          "MEAN": 10,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 6.6,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Boca Raton Marriott at Boca Center",
+          "entityId": "marriott_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            9.6,
+            9.6,
+            11.5
+          ],
+          "MEAN": 7.7,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 11.5,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            40.4,
+            79.9,
+            75.8,
+            81.8
+          ],
+          "MEAN": 69.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 41.4,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        }
+      ]
+    },
+    {
+      "TERRITORY": "Wellness",
+      "CORE_COUNT": 4,
+      "VOLATILE_CORE_PEERS": [],
+      "CHRONIC_ZERO_CORE_PEERS": [],
+      "DENOMINATOR_STABILITY": "HIGH",
+      "CHRONIC_ZERO_CORE_COUNT": 0,
+      "chronicZeroSensitivity": null,
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "MEAN": null,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": null,
+          "flag": "INSUFFICIENT_OBSERVATIONS"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "MEAN": null,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": null,
+          "flag": "INSUFFICIENT_OBSERVATIONS"
+        },
+        {
+          "PEER": "The Seagate Hotel & Spa",
+          "entityId": "seagate_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "MEAN": null,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": null,
+          "flag": "INSUFFICIENT_OBSERVATIONS"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "MEAN": null,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": null,
+          "flag": "INSUFFICIENT_OBSERVATIONS"
+        }
+      ]
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "CORE_COUNT": 3,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [],
+      "DENOMINATOR_STABILITY": "MEDIUM",
+      "CHRONIC_ZERO_CORE_COUNT": 0,
+      "chronicZeroSensitivity": null,
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            30,
+            60,
+            60,
+            70
+          ],
+          "MEAN": 55,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 40,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            6.7,
+            0,
+            5
+          ],
+          "MEAN": 2.9,
+          "ZERO_RATE_PERIODS": 2,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 6.7,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Delray Sands Resort",
+          "entityId": "delray_sands_resort",
+          "PERIOD_PRESENCE_RATES": [
+            5,
+            0,
+            5,
+            5
+          ],
+          "MEAN": 3.8,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 5,
+          "flag": "STABLE_CORE"
+        }
+      ]
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "CORE_COUNT": 4,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton",
+        "Boca Beach Club",
+        "The Seagate Hotel & Spa",
+        "Opal Grand Oceanfront Resort"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [
+        "Boca Beach Club",
+        "The Seagate Hotel & Spa",
+        "Opal Grand Oceanfront Resort"
+      ],
+      "DENOMINATOR_STABILITY": "LOW",
+      "CHRONIC_ZERO_CORE_COUNT": 3,
+      "chronicZeroSensitivity": null,
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            35.7,
+            66.7,
+            70.2,
+            66.7
+          ],
+          "MEAN": 59.8,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 34.5,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "The Seagate Hotel & Spa",
+          "entityId": "seagate_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            4.2,
+            0
+          ],
+          "MEAN": 1.1,
+          "ZERO_RATE_PERIODS": 3,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.2,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        }
+      ]
+    }
+  ],
+  "presenceIndexV2": {
+    "STABILITY": "LOW — 6/8 territories high volatility; ratio amplifies small CORE-mean moves",
+    "INTERPRETABILITY": "LOW when >200; 421 is not an owner-familiar number",
+    "CUSTOMER_VALUE": "MEDIUM as a question, LOW as an uncapped ratio",
+    "PRODUCTION_PATH": "Do not ship V2 ratio as a customer hero. Keep research-only."
+  },
+  "aci": {
+    "STABILITY": "MEDIUM-LOW — expected share is frozen (variance 0 by design); actual share still moves with mix of hotels in each answer",
+    "INTERPRETABILITY": "MEDIUM — 100=fair share is commercially familiar, but 209–264 still needs translation",
+    "CUSTOMER_VALUE": "HIGH as a future hero if CORE and scenario density hold; not ready now",
+    "PRODUCTION_PATH": "Remain BLOCKED. Expected share is stable; do not spend provider money to recompute expected share.",
+    "EXPECTED_SHARE_PERIOD_VARIANCE": 0
+  },
+  "questionScores": {
+    "presenceIndex": {
+      "OWNER_VALUE": 4,
+      "EXPLAINABILITY": 2,
+      "METHODOLOGY_STRENGTH": 3,
+      "STABILITY": 2
+    },
+    "presenceRates": {
+      "OWNER_VALUE": 5,
+      "EXPLAINABILITY": 5,
+      "METHODOLOGY_STRENGTH": 4,
+      "STABILITY": 3
+    },
+    "aci": {
+      "OWNER_VALUE": 5,
+      "EXPLAINABILITY": 3,
+      "METHODOLOGY_STRENGTH": 3,
+      "STABILITY": 2
+    }
+  },
+  "indexStrategy": {
+    "choice": "NO_INDEX_YET_RATES_AND_BENCHMARKS",
+    "RATIONALE": "Presence V2 and ACI now share CORE and move together (prior r≈0.92). Shipping both is confusing. Shipping either 100-based ratio now fails interpretability: Couples 421 and Leisure 320 are mathematically valid ratios of a low CORE mean, not owner-usable scores. Show subject presence % next to CORE benchmark % (and later ACI only after scenario density is fixed). Do not keep an index because the engineering exists."
+  },
+  "recommendedExecutiveRepresentation": {
+    "choice": "SUBJECT_RATE_PLUS_BENCHMARK",
+    "RATIONALE": "62% AI Presence vs 15% CORE benchmark is readable without claiming a proprietary 421 index or +321%. Percentage-point advantage is also honest but hides that the benchmark is a mean of several hotels. Multiple-of-benchmark (4.21×) is the same ratio problem. ACI 264 is the better future index conceptually, not the better current display.",
+    "optionsCompared": [
+      "INDEX_100_BASED",
+      "SUBJECT_RATE_PLUS_BENCHMARK",
+      "PERCENT_ABOVE_BELOW_BENCHMARK",
+      "MULTIPLE_OF_BENCHMARK",
+      "ACI"
+    ]
+  },
+  "territoryRemediation": [
+    {
+      "TERRITORY": "Business Travel",
+      "PRIMARY_BLOCKER": "NEEDS_MORE_PERIODS",
+      "MORE_PERIODS_VALUE": "MEDIUM",
+      "MORE_SCENARIOS_VALUE": "LOW",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": "NO",
+      "plus1Period": "MEDIUM",
+      "plus3Periods": "MEDIUM",
+      "plus3Scenarios": "LOW",
+      "plus5Scenarios": "LOW",
+      "plus1CorePeer": "LOW — do not pad"
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "PRIMARY_BLOCKER": "NEEDS_MORE_PERIODS",
+      "MORE_PERIODS_VALUE": "MEDIUM",
+      "MORE_SCENARIOS_VALUE": "LOW",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": "YES",
+      "plus1Period": "MEDIUM",
+      "plus3Periods": "MEDIUM",
+      "plus3Scenarios": "LOW",
+      "plus5Scenarios": "LOW",
+      "plus1CorePeer": "LOW — do not pad"
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "PRIMARY_BLOCKER": "NEEDS_MORE_PERIODS",
+      "MORE_PERIODS_VALUE": "MEDIUM",
+      "MORE_SCENARIOS_VALUE": "LOW",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": "YES",
+      "plus1Period": "MEDIUM",
+      "plus3Periods": "MEDIUM",
+      "plus3Scenarios": "LOW",
+      "plus5Scenarios": "LOW",
+      "plus1CorePeer": "LOW — do not pad"
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "PRIMARY_BLOCKER": "NEEDS_MORE_SCENARIOS",
+      "MORE_PERIODS_VALUE": "LOW",
+      "MORE_SCENARIOS_VALUE": "HIGH",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": "YES",
+      "plus1Period": "LOW",
+      "plus3Periods": "LOW",
+      "plus3Scenarios": "HIGH",
+      "plus5Scenarios": "HIGH",
+      "plus1CorePeer": "LOW — do not pad"
+    },
+    {
+      "TERRITORY": "Wellness",
+      "PRIMARY_BLOCKER": "NEEDS_MORE_SCENARIOS",
+      "MORE_PERIODS_VALUE": "LOW",
+      "MORE_SCENARIOS_VALUE": "HIGH",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": "NO",
+      "plus1Period": "LOW",
+      "plus3Periods": "LOW",
+      "plus3Scenarios": "HIGH",
+      "plus5Scenarios": "HIGH",
+      "plus1CorePeer": "LOW — do not pad"
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "PRIMARY_BLOCKER": "NEEDS_MORE_SCENARIOS",
+      "MORE_PERIODS_VALUE": "LOW",
+      "MORE_SCENARIOS_VALUE": "HIGH",
+      "MORE_PEERS_VALUE": "MEDIUM",
+      "METHODOLOGY_CHANGE_REQUIRED": "NO",
+      "plus1Period": "LOW",
+      "plus3Periods": "LOW",
+      "plus3Scenarios": "HIGH",
+      "plus5Scenarios": "HIGH",
+      "plus1CorePeer": "MEDIUM — only if a real CORE exists"
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "PRIMARY_BLOCKER": "LEGITIMATE_REAL_WORLD_VOLATILITY",
+      "MORE_PERIODS_VALUE": "LOW",
+      "MORE_SCENARIOS_VALUE": "HIGH",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": "YES",
+      "plus1Period": "MEDIUM",
+      "plus3Periods": "MEDIUM",
+      "plus3Scenarios": "HIGH",
+      "plus5Scenarios": "HIGH",
+      "plus1CorePeer": "LOW — do not pad"
+    }
+  ],
+  "wellness": {
+    "RECOMMENDATION": "EXPAND_SCENARIOS",
+    "KEEP_TERRITORY": true,
+    "note": "4 CORE peers are fine. 2 scenarios cannot support a provider-scoped index. Do not merge; add wellness traveler questions before any index."
+  },
+  "adventure": {
+    "RECOMMENDATION": "KEEP_THIN_NON_INDEXABLE",
+    "note": "No legitimate fourth Boca-substitutable CORE without inventing Fort Lauderdale peers. Keep territory; do not force an index."
+  },
+  "longitudinalCertification": {
+    "MIN_PERIODS_RECOMMENDED": 4,
+    "OTHER_REQUIRED_GATES": [
+      "scenario count >= 8 per indexed territory (Wellness currently 2)",
+      "CORE >= 4 except Adventure which stays non-indexable",
+      "All Providers derived from >=3 provider scopes",
+      "subject presence range across comparable periods <= 15 pp for PRODUCTION_VALIDATED",
+      "Presence ratio index is not a customer certification target"
+    ],
+    "observed": "4 comparable periods already exist; more history will not fix 2-scenario Wellness or Couples denominator zeros."
+  },
+  "nextMeasurementWave": {
+    "RUN_NEW_WAVE_NOW": "NO",
+    "EXPECTED_VALUE": "LOW",
+    "NEXT_PERIOD_VALUE": "LOW",
+    "reason": "Blocker is scenario density (Wellness/Family/Adventure/Celebrations) and ratio-index interpretability, not missing history. A new 4-provider period would repeat the same thin questions."
+  },
+  "highIndexHard": true,
+  "regression": {
+    "ADP_UI_DIFF": 0,
+    "LIVE_PRESENCE_INDEX_DIFF": 0,
+    "LEGACY_ADP_DIFF": 0,
+    "PHASE1_METRIC_DIFF": 0,
+    "BRAND_AI_DIFF": 0,
+    "OPERATOR_AI_DIFF": 0
+  },
+  "execution": {
+    "PROVIDER_CALLS": 0,
+    "SPEND": "$0"
+  },
+  "next": "ADP_INDEX_METHODOLOGY_REDESIGN_REQUIRED",
+  "final": "ADP_INDEX_VOLATILITY_ROOT_CAUSE_AND_ARCHITECTURE_DECISION_PARTIAL",
+  "propertyId": "adp_waterstone_boca_raton",
+  "currentPeriodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+  "detail": [
+    {
+      "TERRITORY": "Business Travel",
+      "intent": "business",
+      "periods": [
+        {
+          "intent": "business",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+          "executionDate": "2026-08-19T13:30:40.124Z",
+          "SUBJECT_PRESENCE_RATE": 22.9,
+          "subjectRate": 0.22916666666666669,
+          "CORE_BENCHMARK_RATE": 15.3,
+          "benchmarkRate": 0.1527777777777778,
+          "PRESENCE_INDEX_V2": 150,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "renaissance_boca_raton",
+              "name": "Renaissance Boca Raton Hotel",
+              "ratePct": 25,
+              "rate": 0.25
+            },
+            {
+              "entityId": "wyndham_boca_raton",
+              "name": "Wyndham Boca Raton",
+              "ratePct": 14.6,
+              "rate": 0.14583333333333331
+            },
+            {
+              "entityId": "marriott_boca_raton",
+              "name": "Boca Raton Marriott at Boca Center",
+              "ratePct": 4.2,
+              "rate": 0.041666666666666664
+            },
+            {
+              "entityId": "hilton_boca_raton_suites",
+              "name": "Hilton Boca Raton Suites",
+              "ratePct": 8.3,
+              "rate": 0.08333333333333333
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 39.6,
+              "rate": 0.39583333333333337
+            },
+            {
+              "entityId": "embassy_suites_boca",
+              "name": "Embassy Suites by Hilton Boca Raton",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "embassy_suites_boca"
+          ],
+          "COMPARABLE_OBSERVATION_N": 48,
+          "SCENARIO_COUNT": 12,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 17,
+          "actualShare": 0.17045454545454544,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 119
+        },
+        {
+          "intent": "business",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+          "executionDate": "2026-08-19T14:20:20.396Z",
+          "SUBJECT_PRESENCE_RATE": 64.4,
+          "subjectRate": 0.6439393939393939,
+          "CORE_BENCHMARK_RATE": 27.2,
+          "benchmarkRate": 0.27178030303030304,
+          "PRESENCE_INDEX_V2": 237,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "renaissance_boca_raton",
+              "name": "Renaissance Boca Raton Hotel",
+              "ratePct": 36,
+              "rate": 0.35984848484848486
+            },
+            {
+              "entityId": "wyndham_boca_raton",
+              "name": "Wyndham Boca Raton",
+              "ratePct": 12.5,
+              "rate": 0.125
+            },
+            {
+              "entityId": "marriott_boca_raton",
+              "name": "Boca Raton Marriott at Boca Center",
+              "ratePct": 18.8,
+              "rate": 0.1875
+            },
+            {
+              "entityId": "hilton_boca_raton_suites",
+              "name": "Hilton Boca Raton Suites",
+              "ratePct": 21,
+              "rate": 0.2102272727272727
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 72.5,
+              "rate": 0.7253787878787878
+            },
+            {
+              "entityId": "embassy_suites_boca",
+              "name": "Embassy Suites by Hilton Boca Raton",
+              "ratePct": 2.3,
+              "rate": 0.022727272727272728
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 47,
+          "SCENARIO_COUNT": 12,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 28.1,
+          "actualShare": 0.28106060606060607,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 197
+        },
+        {
+          "intent": "business",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "executionDate": "2026-08-19T14:39:45.057Z",
+          "SUBJECT_PRESENCE_RATE": 51.7,
+          "subjectRate": 0.5170454545454546,
+          "CORE_BENCHMARK_RATE": 27.2,
+          "benchmarkRate": 0.2720959595959596,
+          "PRESENCE_INDEX_V2": 190,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "renaissance_boca_raton",
+              "name": "Renaissance Boca Raton Hotel",
+              "ratePct": 29.5,
+              "rate": 0.29545454545454547
+            },
+            {
+              "entityId": "wyndham_boca_raton",
+              "name": "Wyndham Boca Raton",
+              "ratePct": 16.7,
+              "rate": 0.16666666666666666
+            },
+            {
+              "entityId": "marriott_boca_raton",
+              "name": "Boca Raton Marriott at Boca Center",
+              "ratePct": 18.9,
+              "rate": 0.1893939393939394
+            },
+            {
+              "entityId": "hilton_boca_raton_suites",
+              "name": "Hilton Boca Raton Suites",
+              "ratePct": 18.9,
+              "rate": 0.1893939393939394
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 76.9,
+              "rate": 0.7689393939393939
+            },
+            {
+              "entityId": "embassy_suites_boca",
+              "name": "Embassy Suites by Hilton Boca Raton",
+              "ratePct": 2.3,
+              "rate": 0.022727272727272728
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 47,
+          "SCENARIO_COUNT": 12,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 24.9,
+          "actualShare": 0.24886363636363634,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 174
+        },
+        {
+          "intent": "business",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "executionDate": "2026-08-19T14:41:28.468Z",
+          "SUBJECT_PRESENCE_RATE": 60.2,
+          "subjectRate": 0.6022727272727273,
+          "CORE_BENCHMARK_RATE": 26.6,
+          "benchmarkRate": 0.2657828282828283,
+          "PRESENCE_INDEX_V2": 227,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "renaissance_boca_raton",
+              "name": "Renaissance Boca Raton Hotel",
+              "ratePct": 29.9,
+              "rate": 0.29924242424242425
+            },
+            {
+              "entityId": "wyndham_boca_raton",
+              "name": "Wyndham Boca Raton",
+              "ratePct": 16.7,
+              "rate": 0.16666666666666666
+            },
+            {
+              "entityId": "marriott_boca_raton",
+              "name": "Boca Raton Marriott at Boca Center",
+              "ratePct": 12.5,
+              "rate": 0.125
+            },
+            {
+              "entityId": "hilton_boca_raton_suites",
+              "name": "Hilton Boca Raton Suites",
+              "ratePct": 19.1,
+              "rate": 0.19128787878787878
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 79,
+              "rate": 0.7897727272727273
+            },
+            {
+              "entityId": "embassy_suites_boca",
+              "name": "Embassy Suites by Hilton Boca Raton",
+              "ratePct": 2.3,
+              "rate": 0.022727272727272728
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 47,
+          "SCENARIO_COUNT": 12,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 29.8,
+          "actualShare": 0.29810606060606065,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 209
+        }
+      ],
+      "SUBJECT_MEAN": 49.8,
+      "SUBJECT_MIN": 22.9,
+      "SUBJECT_MAX": 64.4,
+      "SUBJECT_RANGE": 41.50000000000001,
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_MEAN": 24.1,
+      "BENCHMARK_MIN": 15.3,
+      "BENCHMARK_MAX": 27.2,
+      "BENCHMARK_RANGE": 11.899999999999999,
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH",
+      "attribution": {
+        "driver": "BOTH",
+        "rangeS": 41.47727272727272,
+        "rangeB": 11.931818181818183,
+        "rangeI": 87,
+        "rangeHoldB": 172.38438832404069,
+        "rangeHoldS": 142.9704128396387
+      },
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "HIGH",
+      "scenarioLoo": {
+        "maxPresenceIndexMove": 33,
+        "maxAciMove": 32,
+        "SCENARIO_THINNESS_HIGH": true
+      },
+      "providerLoo": {
+        "baseIndex": 227,
+        "dropProviderDelta": {
+          "openai": 27,
+          "gemini": 41,
+          "perplexity": 12,
+          "claude": 1
+        },
+        "PROVIDER_CONCENTRATION_RISK": true
+      },
+      "peers": [
+        {
+          "PEER": "Renaissance Boca Raton Hotel",
+          "entityId": "renaissance_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            25,
+            36,
+            29.5,
+            29.9
+          ],
+          "MEAN": 30.1,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 11,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Wyndham Boca Raton",
+          "entityId": "wyndham_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            14.6,
+            12.5,
+            16.7,
+            16.7
+          ],
+          "MEAN": 15.1,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.2,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Boca Raton Marriott at Boca Center",
+          "entityId": "marriott_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            4.2,
+            18.8,
+            18.9,
+            12.5
+          ],
+          "MEAN": 13.6,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 14.7,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Hilton Boca Raton Suites",
+          "entityId": "hilton_boca_raton_suites",
+          "PERIOD_PRESENCE_RATES": [
+            8.3,
+            21,
+            18.9,
+            19.1
+          ],
+          "MEAN": 16.8,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 12.7,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            39.6,
+            72.5,
+            76.9,
+            79
+          ],
+          "MEAN": 67,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 39.4,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Embassy Suites by Hilton Boca Raton",
+          "entityId": "embassy_suites_boca",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            2.3,
+            2.3,
+            2.3
+          ],
+          "MEAN": 1.7,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 2.3,
+          "flag": "STABLE_CORE"
+        }
+      ],
+      "CORE_COUNT": 6,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [],
+      "CHRONIC_ZERO_CORE_COUNT": 0,
+      "DENOMINATOR_STABILITY": "MEDIUM",
+      "chronicZeroSensitivity": null,
+      "SCENARIO_COUNT": 12,
+      "OBSERVATIONS_PER_PROVIDER": 12,
+      "TOTAL_COMPARABLE_OBSERVATIONS": 47,
+      "SCENARIO_DENSITY_ADEQUATE": "YES",
+      "EXPECTED_SHARE_PERIOD_VARIANCE": 0,
+      "aciRange": 90,
+      "aciDriver": "SCENARIO_MIX",
+      "current": {
+        "intent": "business",
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "executionDate": "2026-08-19T14:41:28.468Z",
+        "SUBJECT_PRESENCE_RATE": 60.2,
+        "subjectRate": 0.6022727272727273,
+        "CORE_BENCHMARK_RATE": 26.6,
+        "benchmarkRate": 0.2657828282828283,
+        "PRESENCE_INDEX_V2": 227,
+        "CORE_PEER_COUNT": 6,
+        "CORE_PEER_RATES": [
+          {
+            "entityId": "renaissance_boca_raton",
+            "name": "Renaissance Boca Raton Hotel",
+            "ratePct": 29.9,
+            "rate": 0.29924242424242425
+          },
+          {
+            "entityId": "wyndham_boca_raton",
+            "name": "Wyndham Boca Raton",
+            "ratePct": 16.7,
+            "rate": 0.16666666666666666
+          },
+          {
+            "entityId": "marriott_boca_raton",
+            "name": "Boca Raton Marriott at Boca Center",
+            "ratePct": 12.5,
+            "rate": 0.125
+          },
+          {
+            "entityId": "hilton_boca_raton_suites",
+            "name": "Hilton Boca Raton Suites",
+            "ratePct": 19.1,
+            "rate": 0.19128787878787878
+          },
+          {
+            "entityId": "the_boca_raton",
+            "name": "The Boca Raton",
+            "ratePct": 79,
+            "rate": 0.7897727272727273
+          },
+          {
+            "entityId": "embassy_suites_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "ratePct": 2.3,
+            "rate": 0.022727272727272728
+          }
+        ],
+        "ZERO_PRESENCE_CORE_PEERS": [],
+        "COMPARABLE_OBSERVATION_N": 47,
+        "SCENARIO_COUNT": 12,
+        "PROVIDER_COUNT": 4,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "ACTUAL_CONSIDERATION_SHARE": 29.8,
+        "actualShare": 0.29810606060606065,
+        "EXPECTED_SHARE": 14.3,
+        "expectedShare": 0.14285714285714285,
+        "ACI": 209
+      },
+      "PRIMARY_BLOCKER": "NEEDS_MORE_PERIODS",
+      "MORE_PERIODS_VALUE": "MEDIUM",
+      "MORE_SCENARIOS_VALUE": "LOW",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": false
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "intent": "leisure",
+      "periods": [
+        {
+          "intent": "leisure",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+          "executionDate": "2026-08-19T13:30:40.124Z",
+          "SUBJECT_PRESENCE_RATE": 25,
+          "subjectRate": 0.25,
+          "CORE_BENCHMARK_RATE": 6.9,
+          "benchmarkRate": 0.06944444444444443,
+          "PRESENCE_INDEX_V2": 360,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 35.4,
+              "rate": 0.35416666666666663
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 2.1,
+              "rate": 0.020833333333333332
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 4.2,
+              "rate": 0.041666666666666664
+            },
+            {
+              "entityId": "the_ray_hotel",
+              "name": "The Ray Hotel",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club",
+            "opal_grand_delray",
+            "the_ray_hotel"
+          ],
+          "COMPARABLE_OBSERVATION_N": 48,
+          "SCENARIO_COUNT": 12,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 32.5,
+          "actualShare": 0.3245614035087719,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 227
+        },
+        {
+          "intent": "leisure",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+          "executionDate": "2026-08-19T14:20:20.396Z",
+          "SUBJECT_PRESENCE_RATE": 45.3,
+          "subjectRate": 0.4526515151515152,
+          "CORE_BENCHMARK_RATE": 15.8,
+          "benchmarkRate": 0.15782828282828282,
+          "PRESENCE_INDEX_V2": 287,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 70.3,
+              "rate": 0.7026515151515151
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 11,
+              "rate": 0.10984848484848483
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 6.6,
+              "rate": 0.06628787878787878
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 2.3,
+              "rate": 0.022727272727272728
+            },
+            {
+              "entityId": "the_ray_hotel",
+              "name": "The Ray Hotel",
+              "ratePct": 4.5,
+              "rate": 0.045454545454545456
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 47,
+          "SCENARIO_COUNT": 12,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 27.4,
+          "actualShare": 0.27380952380952384,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 192
+        },
+        {
+          "intent": "leisure",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "executionDate": "2026-08-19T14:39:45.057Z",
+          "SUBJECT_PRESENCE_RATE": 52.1,
+          "subjectRate": 0.5208333333333334,
+          "CORE_BENCHMARK_RATE": 16.7,
+          "benchmarkRate": 0.16666666666666663,
+          "PRESENCE_INDEX_V2": 313,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 70.8,
+              "rate": 0.7083333333333333
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 14.6,
+              "rate": 0.14583333333333331
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 6.3,
+              "rate": 0.0625
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 4.2,
+              "rate": 0.041666666666666664
+            },
+            {
+              "entityId": "the_ray_hotel",
+              "name": "The Ray Hotel",
+              "ratePct": 4.2,
+              "rate": 0.041666666666666664
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 48,
+          "SCENARIO_COUNT": 12,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 31.4,
+          "actualShare": 0.3144736842105263,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 220
+        },
+        {
+          "intent": "leisure",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "executionDate": "2026-08-19T14:41:28.468Z",
+          "SUBJECT_PRESENCE_RATE": 50.8,
+          "subjectRate": 0.5083333333333333,
+          "CORE_BENCHMARK_RATE": 15.9,
+          "benchmarkRate": 0.15902777777777777,
+          "PRESENCE_INDEX_V2": 320,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 67.5,
+              "rate": 0.6749999999999999
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 9.2,
+              "rate": 0.09166666666666666
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 7.1,
+              "rate": 0.07083333333333333
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 9.2,
+              "rate": 0.09166666666666667
+            },
+            {
+              "entityId": "the_ray_hotel",
+              "name": "The Ray Hotel",
+              "ratePct": 2.5,
+              "rate": 0.025
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 46,
+          "SCENARIO_COUNT": 12,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 32.1,
+          "actualShare": 0.32142857142857145,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 225
+        }
+      ],
+      "SUBJECT_MEAN": 43.3,
+      "SUBJECT_MIN": 25,
+      "SUBJECT_MAX": 52.1,
+      "SUBJECT_RANGE": 27.1,
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_MEAN": 13.8,
+      "BENCHMARK_MIN": 6.9,
+      "BENCHMARK_MAX": 16.7,
+      "BENCHMARK_RANGE": 9.799999999999999,
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BENCHMARK_MOVEMENT",
+      "attribution": {
+        "driver": "BENCHMARK_MOVEMENT",
+        "rangeS": 27.083333333333336,
+        "rangeB": 9.722222222222221,
+        "rangeI": 73,
+        "rangeHoldB": 195.91277543098533,
+        "rangeHoldS": 363.68181818181824
+      },
+      "SCENARIO_SENSITIVITY": "MEDIUM",
+      "PROVIDER_SENSITIVITY": "HIGH",
+      "scenarioLoo": {
+        "maxPresenceIndexMove": 22,
+        "maxAciMove": 18,
+        "SCENARIO_THINNESS_HIGH": false
+      },
+      "providerLoo": {
+        "baseIndex": 320,
+        "dropProviderDelta": {
+          "openai": 7,
+          "gemini": 11,
+          "perplexity": 36,
+          "claude": 20
+        },
+        "PROVIDER_CONCENTRATION_RISK": true
+      },
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            35.4,
+            70.3,
+            70.8,
+            67.5
+          ],
+          "MEAN": 61,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 35.4,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "The Seagate Hotel & Spa",
+          "entityId": "seagate_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            2.1,
+            11,
+            14.6,
+            9.2
+          ],
+          "MEAN": 9.2,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 12.5,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            6.6,
+            6.3,
+            7.1
+          ],
+          "MEAN": 5,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 7.1,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Delray Sands Resort",
+          "entityId": "delray_sands_resort",
+          "PERIOD_PRESENCE_RATES": [
+            4.2,
+            2.3,
+            4.2,
+            9.2
+          ],
+          "MEAN": 5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 6.9,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Ray Hotel",
+          "entityId": "the_ray_hotel",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            4.5,
+            4.2,
+            2.5
+          ],
+          "MEAN": 2.8,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.5,
+          "flag": "STABLE_CORE"
+        }
+      ],
+      "CORE_COUNT": 6,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton",
+        "Boca Beach Club"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [
+        "Boca Beach Club"
+      ],
+      "CHRONIC_ZERO_CORE_COUNT": 1,
+      "DENOMINATOR_STABILITY": "LOW",
+      "chronicZeroSensitivity": {
+        "withChronicZeros": 320,
+        "withoutChronicZeros": 266,
+        "delta": 54
+      },
+      "SCENARIO_COUNT": 12,
+      "OBSERVATIONS_PER_PROVIDER": 12,
+      "TOTAL_COMPARABLE_OBSERVATIONS": 46,
+      "SCENARIO_DENSITY_ADEQUATE": "YES",
+      "EXPECTED_SHARE_PERIOD_VARIANCE": 0,
+      "aciRange": 35,
+      "aciDriver": "PROVIDER_MIX",
+      "current": {
+        "intent": "leisure",
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "executionDate": "2026-08-19T14:41:28.468Z",
+        "SUBJECT_PRESENCE_RATE": 50.8,
+        "subjectRate": 0.5083333333333333,
+        "CORE_BENCHMARK_RATE": 15.9,
+        "benchmarkRate": 0.15902777777777777,
+        "PRESENCE_INDEX_V2": 320,
+        "CORE_PEER_COUNT": 6,
+        "CORE_PEER_RATES": [
+          {
+            "entityId": "the_boca_raton",
+            "name": "The Boca Raton",
+            "ratePct": 67.5,
+            "rate": 0.6749999999999999
+          },
+          {
+            "entityId": "boca_beach_club",
+            "name": "Boca Beach Club",
+            "ratePct": 0,
+            "rate": 0
+          },
+          {
+            "entityId": "seagate_hotel_delray",
+            "name": "The Seagate Hotel & Spa",
+            "ratePct": 9.2,
+            "rate": 0.09166666666666666
+          },
+          {
+            "entityId": "opal_grand_delray",
+            "name": "Opal Grand Oceanfront Resort",
+            "ratePct": 7.1,
+            "rate": 0.07083333333333333
+          },
+          {
+            "entityId": "delray_sands_resort",
+            "name": "Delray Sands Resort",
+            "ratePct": 9.2,
+            "rate": 0.09166666666666667
+          },
+          {
+            "entityId": "the_ray_hotel",
+            "name": "The Ray Hotel",
+            "ratePct": 2.5,
+            "rate": 0.025
+          }
+        ],
+        "ZERO_PRESENCE_CORE_PEERS": [
+          "boca_beach_club"
+        ],
+        "COMPARABLE_OBSERVATION_N": 46,
+        "SCENARIO_COUNT": 12,
+        "PROVIDER_COUNT": 4,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "ACTUAL_CONSIDERATION_SHARE": 32.1,
+        "actualShare": 0.32142857142857145,
+        "EXPECTED_SHARE": 14.3,
+        "expectedShare": 0.14285714285714285,
+        "ACI": 225
+      },
+      "PRIMARY_BLOCKER": "NEEDS_MORE_PERIODS",
+      "MORE_PERIODS_VALUE": "MEDIUM",
+      "MORE_SCENARIOS_VALUE": "LOW",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": true
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "intent": "couples",
+      "periods": [
+        {
+          "intent": "couples",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+          "executionDate": "2026-08-19T13:30:40.124Z",
+          "SUBJECT_PRESENCE_RATE": 27.8,
+          "subjectRate": 0.2777777777777778,
+          "CORE_BENCHMARK_RATE": 7.5,
+          "benchmarkRate": 0.07539682539682539,
+          "PRESENCE_INDEX_V2": 368,
+          "CORE_PEER_COUNT": 7,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 36.1,
+              "rate": 0.3611111111111111
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 2.8,
+              "rate": 0.027777777777777776
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 8.3,
+              "rate": 0.08333333333333333
+            },
+            {
+              "entityId": "the_ray_hotel",
+              "name": "The Ray Hotel",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "colony_hotel_delray",
+              "name": "The Colony Hotel Delray Beach",
+              "ratePct": 5.6,
+              "rate": 0.05555555555555555
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club",
+            "opal_grand_delray",
+            "the_ray_hotel"
+          ],
+          "COMPARABLE_OBSERVATION_N": 36,
+          "SCENARIO_COUNT": 9,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 30.7,
+          "actualShare": 0.30729166666666663,
+          "EXPECTED_SHARE": 12.5,
+          "expectedShare": 0.125,
+          "ACI": 246
+        },
+        {
+          "intent": "couples",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+          "executionDate": "2026-08-19T14:20:20.396Z",
+          "SUBJECT_PRESENCE_RATE": 71.4,
+          "subjectRate": 0.7142857142857142,
+          "CORE_BENCHMARK_RATE": 15.8,
+          "benchmarkRate": 0.15816326530612243,
+          "PRESENCE_INDEX_V2": 452,
+          "CORE_PEER_COUNT": 7,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 79.8,
+              "rate": 0.7976190476190476
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 6.3,
+              "rate": 0.06349206349206349
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 19,
+              "rate": 0.19047619047619047
+            },
+            {
+              "entityId": "the_ray_hotel",
+              "name": "The Ray Hotel",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "colony_hotel_delray",
+              "name": "The Colony Hotel Delray Beach",
+              "ratePct": 5.6,
+              "rate": 0.05555555555555555
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club",
+            "seagate_hotel_delray",
+            "the_ray_hotel"
+          ],
+          "COMPARABLE_OBSERVATION_N": 34,
+          "SCENARIO_COUNT": 9,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 37.4,
+          "actualShare": 0.37356321839080464,
+          "EXPECTED_SHARE": 12.5,
+          "expectedShare": 0.125,
+          "ACI": 299
+        },
+        {
+          "intent": "couples",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "executionDate": "2026-08-19T14:39:45.057Z",
+          "SUBJECT_PRESENCE_RATE": 66.7,
+          "subjectRate": 0.6666666666666666,
+          "CORE_BENCHMARK_RATE": 16.1,
+          "benchmarkRate": 0.16071428571428573,
+          "PRESENCE_INDEX_V2": 415,
+          "CORE_PEER_COUNT": 7,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 79.2,
+              "rate": 0.7916666666666666
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 2.8,
+              "rate": 0.027777777777777776
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 4.2,
+              "rate": 0.041666666666666664
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 12.5,
+              "rate": 0.125
+            },
+            {
+              "entityId": "the_ray_hotel",
+              "name": "The Ray Hotel",
+              "ratePct": 4.2,
+              "rate": 0.041666666666666664
+            },
+            {
+              "entityId": "colony_hotel_delray",
+              "name": "The Colony Hotel Delray Beach",
+              "ratePct": 9.7,
+              "rate": 0.09722222222222222
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 33,
+          "SCENARIO_COUNT": 9,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 35.3,
+          "actualShare": 0.35344827586206895,
+          "EXPECTED_SHARE": 12.5,
+          "expectedShare": 0.125,
+          "ACI": 283
+        },
+        {
+          "intent": "couples",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "executionDate": "2026-08-19T14:41:28.468Z",
+          "SUBJECT_PRESENCE_RATE": 62.3,
+          "subjectRate": 0.623015873015873,
+          "CORE_BENCHMARK_RATE": 14.8,
+          "benchmarkRate": 0.14795918367346936,
+          "PRESENCE_INDEX_V2": 421,
+          "CORE_PEER_COUNT": 7,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 76.2,
+              "rate": 0.7619047619047619
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 2.8,
+              "rate": 0.027777777777777776
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 15.5,
+              "rate": 0.15476190476190477
+            },
+            {
+              "entityId": "the_ray_hotel",
+              "name": "The Ray Hotel",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "colony_hotel_delray",
+              "name": "The Colony Hotel Delray Beach",
+              "ratePct": 9.1,
+              "rate": 0.09126984126984126
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club",
+            "opal_grand_delray",
+            "the_ray_hotel"
+          ],
+          "COMPARABLE_OBSERVATION_N": 34,
+          "SCENARIO_COUNT": 9,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 33,
+          "actualShare": 0.33045977011494254,
+          "EXPECTED_SHARE": 12.5,
+          "expectedShare": 0.125,
+          "ACI": 264
+        }
+      ],
+      "SUBJECT_MEAN": 57.1,
+      "SUBJECT_MIN": 27.8,
+      "SUBJECT_MAX": 71.4,
+      "SUBJECT_RANGE": 43.60000000000001,
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_MEAN": 13.6,
+      "BENCHMARK_MIN": 7.5,
+      "BENCHMARK_MAX": 16.1,
+      "BENCHMARK_RANGE": 8.600000000000001,
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH",
+      "attribution": {
+        "driver": "BOTH",
+        "rangeS": 43.65079365079364,
+        "rangeB": 8.531746031746033,
+        "rangeI": 84,
+        "rangeHoldB": 322.0073183481442,
+        "rangeHoldS": 401.6406757634828
+      },
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "HIGH",
+      "scenarioLoo": {
+        "maxPresenceIndexMove": 41,
+        "maxAciMove": 31,
+        "SCENARIO_THINNESS_HIGH": true
+      },
+      "providerLoo": {
+        "baseIndex": 421,
+        "dropProviderDelta": {
+          "openai": 61,
+          "gemini": 6,
+          "perplexity": 4,
+          "claude": 41
+        },
+        "PROVIDER_CONCENTRATION_RISK": true
+      },
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            36.1,
+            79.8,
+            79.2,
+            76.2
+          ],
+          "MEAN": 67.8,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 43.7,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "The Seagate Hotel & Spa",
+          "entityId": "seagate_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            2.8,
+            0,
+            2.8,
+            2.8
+          ],
+          "MEAN": 2.1,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 2.8,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            6.3,
+            4.2,
+            0
+          ],
+          "MEAN": 2.6,
+          "ZERO_RATE_PERIODS": 2,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 6.3,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Delray Sands Resort",
+          "entityId": "delray_sands_resort",
+          "PERIOD_PRESENCE_RATES": [
+            8.3,
+            19,
+            12.5,
+            15.5
+          ],
+          "MEAN": 13.8,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 10.7,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Ray Hotel",
+          "entityId": "the_ray_hotel",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            4.2,
+            0
+          ],
+          "MEAN": 1.1,
+          "ZERO_RATE_PERIODS": 3,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.2,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "The Colony Hotel Delray Beach",
+          "entityId": "colony_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            5.6,
+            5.6,
+            9.7,
+            9.1
+          ],
+          "MEAN": 7.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.1,
+          "flag": "STABLE_CORE"
+        }
+      ],
+      "CORE_COUNT": 7,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton",
+        "Boca Beach Club",
+        "The Ray Hotel"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [
+        "Boca Beach Club",
+        "The Ray Hotel"
+      ],
+      "CHRONIC_ZERO_CORE_COUNT": 2,
+      "DENOMINATOR_STABILITY": "LOW",
+      "chronicZeroSensitivity": {
+        "withChronicZeros": 421,
+        "withoutChronicZeros": 301,
+        "delta": 120
+      },
+      "SCENARIO_COUNT": 9,
+      "OBSERVATIONS_PER_PROVIDER": 9,
+      "TOTAL_COMPARABLE_OBSERVATIONS": 34,
+      "SCENARIO_DENSITY_ADEQUATE": "YES",
+      "EXPECTED_SHARE_PERIOD_VARIANCE": 0,
+      "aciRange": 53,
+      "aciDriver": "SCENARIO_MIX",
+      "current": {
+        "intent": "couples",
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "executionDate": "2026-08-19T14:41:28.468Z",
+        "SUBJECT_PRESENCE_RATE": 62.3,
+        "subjectRate": 0.623015873015873,
+        "CORE_BENCHMARK_RATE": 14.8,
+        "benchmarkRate": 0.14795918367346936,
+        "PRESENCE_INDEX_V2": 421,
+        "CORE_PEER_COUNT": 7,
+        "CORE_PEER_RATES": [
+          {
+            "entityId": "the_boca_raton",
+            "name": "The Boca Raton",
+            "ratePct": 76.2,
+            "rate": 0.7619047619047619
+          },
+          {
+            "entityId": "boca_beach_club",
+            "name": "Boca Beach Club",
+            "ratePct": 0,
+            "rate": 0
+          },
+          {
+            "entityId": "seagate_hotel_delray",
+            "name": "The Seagate Hotel & Spa",
+            "ratePct": 2.8,
+            "rate": 0.027777777777777776
+          },
+          {
+            "entityId": "opal_grand_delray",
+            "name": "Opal Grand Oceanfront Resort",
+            "ratePct": 0,
+            "rate": 0
+          },
+          {
+            "entityId": "delray_sands_resort",
+            "name": "Delray Sands Resort",
+            "ratePct": 15.5,
+            "rate": 0.15476190476190477
+          },
+          {
+            "entityId": "the_ray_hotel",
+            "name": "The Ray Hotel",
+            "ratePct": 0,
+            "rate": 0
+          },
+          {
+            "entityId": "colony_hotel_delray",
+            "name": "The Colony Hotel Delray Beach",
+            "ratePct": 9.1,
+            "rate": 0.09126984126984126
+          }
+        ],
+        "ZERO_PRESENCE_CORE_PEERS": [
+          "boca_beach_club",
+          "opal_grand_delray",
+          "the_ray_hotel"
+        ],
+        "COMPARABLE_OBSERVATION_N": 34,
+        "SCENARIO_COUNT": 9,
+        "PROVIDER_COUNT": 4,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "ACTUAL_CONSIDERATION_SHARE": 33,
+        "actualShare": 0.33045977011494254,
+        "EXPECTED_SHARE": 12.5,
+        "expectedShare": 0.125,
+        "ACI": 264
+      },
+      "PRIMARY_BLOCKER": "NEEDS_MORE_PERIODS",
+      "MORE_PERIODS_VALUE": "MEDIUM",
+      "MORE_SCENARIOS_VALUE": "LOW",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": true
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "intent": "family",
+      "periods": [
+        {
+          "intent": "family",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+          "executionDate": "2026-08-19T13:30:40.124Z",
+          "SUBJECT_PRESENCE_RATE": 10,
+          "subjectRate": 0.1,
+          "CORE_BENCHMARK_RATE": 5.8,
+          "benchmarkRate": 0.05833333333333333,
+          "PRESENCE_INDEX_V2": 171,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "hilton_boca_raton_suites",
+              "name": "Hilton Boca Raton Suites",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 30,
+              "rate": 0.3
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 5,
+              "rate": 0.05
+            },
+            {
+              "entityId": "embassy_suites_boca",
+              "name": "Embassy Suites by Hilton Boca Raton",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "hilton_boca_raton_suites",
+            "opal_grand_delray",
+            "embassy_suites_boca",
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 20,
+          "SCENARIO_COUNT": 5,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 13.9,
+          "actualShare": 0.13888888888888887,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 97
+        },
+        {
+          "intent": "family",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+          "executionDate": "2026-08-19T14:20:20.396Z",
+          "SUBJECT_PRESENCE_RATE": 35,
+          "subjectRate": 0.35,
+          "CORE_BENCHMARK_RATE": 16.7,
+          "benchmarkRate": 0.1666666666666667,
+          "PRESENCE_INDEX_V2": 210,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "hilton_boca_raton_suites",
+              "name": "Hilton Boca Raton Suites",
+              "ratePct": 5,
+              "rate": 0.05
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 65,
+              "rate": 0.65
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 20,
+              "rate": 0.2
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 10,
+              "rate": 0.1
+            },
+            {
+              "entityId": "embassy_suites_boca",
+              "name": "Embassy Suites by Hilton Boca Raton",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "embassy_suites_boca",
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 20,
+          "SCENARIO_COUNT": 5,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 19,
+          "actualShare": 0.19047619047619047,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 133
+        },
+        {
+          "intent": "family",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "executionDate": "2026-08-19T14:39:45.057Z",
+          "SUBJECT_PRESENCE_RATE": 30,
+          "subjectRate": 0.3,
+          "CORE_BENCHMARK_RATE": 15.8,
+          "benchmarkRate": 0.15833333333333335,
+          "PRESENCE_INDEX_V2": 189,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "hilton_boca_raton_suites",
+              "name": "Hilton Boca Raton Suites",
+              "ratePct": 5,
+              "rate": 0.05
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 75,
+              "rate": 0.7500000000000001
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 10,
+              "rate": 0.1
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 5,
+              "rate": 0.05
+            },
+            {
+              "entityId": "embassy_suites_boca",
+              "name": "Embassy Suites by Hilton Boca Raton",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "embassy_suites_boca",
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 20,
+          "SCENARIO_COUNT": 5,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 17.8,
+          "actualShare": 0.17777777777777776,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 124
+        },
+        {
+          "intent": "family",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "executionDate": "2026-08-19T14:41:28.468Z",
+          "SUBJECT_PRESENCE_RATE": 35,
+          "subjectRate": 0.35,
+          "CORE_BENCHMARK_RATE": 18.3,
+          "benchmarkRate": 0.18333333333333335,
+          "PRESENCE_INDEX_V2": 191,
+          "CORE_PEER_COUNT": 6,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "hilton_boca_raton_suites",
+              "name": "Hilton Boca Raton Suites",
+              "ratePct": 5,
+              "rate": 0.05
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 80,
+              "rate": 0.8
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 10,
+              "rate": 0.1
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 10,
+              "rate": 0.1
+            },
+            {
+              "entityId": "embassy_suites_boca",
+              "name": "Embassy Suites by Hilton Boca Raton",
+              "ratePct": 5,
+              "rate": 0.05
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 20,
+          "SCENARIO_COUNT": 5,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 16.7,
+          "actualShare": 0.16666666666666666,
+          "EXPECTED_SHARE": 14.3,
+          "expectedShare": 0.14285714285714285,
+          "ACI": 117
+        }
+      ],
+      "SUBJECT_MEAN": 27.5,
+      "SUBJECT_MIN": 10,
+      "SUBJECT_MAX": 35,
+      "SUBJECT_RANGE": 25,
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_MEAN": 14.2,
+      "BENCHMARK_MIN": 5.8,
+      "BENCHMARK_MAX": 18.3,
+      "BENCHMARK_RANGE": 12.5,
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BENCHMARK_MOVEMENT",
+      "attribution": {
+        "driver": "BENCHMARK_MOVEMENT",
+        "rangeS": 25,
+        "rangeB": 12.500000000000004,
+        "rangeI": 39,
+        "rangeHoldB": 176.47058823529403,
+        "rangeHoldS": 321.42857142857156
+      },
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "MEDIUM",
+      "scenarioLoo": {
+        "maxPresenceIndexMove": 0,
+        "maxAciMove": 49,
+        "SCENARIO_THINNESS_HIGH": true
+      },
+      "providerLoo": {
+        "baseIndex": 191,
+        "dropProviderDelta": {
+          "openai": 24,
+          "gemini": 6,
+          "perplexity": 9,
+          "claude": 21
+        },
+        "PROVIDER_CONCENTRATION_RISK": false
+      },
+      "peers": [
+        {
+          "PEER": "Hilton Boca Raton Suites",
+          "entityId": "hilton_boca_raton_suites",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            5,
+            5,
+            5
+          ],
+          "MEAN": 3.8,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 5,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            30,
+            65,
+            75,
+            80
+          ],
+          "MEAN": 62.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 50,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            20,
+            10,
+            10
+          ],
+          "MEAN": 10,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 20,
+          "flag": "VOLATILE_CORE"
+        },
+        {
+          "PEER": "Delray Sands Resort",
+          "entityId": "delray_sands_resort",
+          "PERIOD_PRESENCE_RATES": [
+            5,
+            10,
+            5,
+            10
+          ],
+          "MEAN": 7.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 5,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Embassy Suites by Hilton Boca Raton",
+          "entityId": "embassy_suites_boca",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            5
+          ],
+          "MEAN": 1.3,
+          "ZERO_RATE_PERIODS": 3,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 5,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        }
+      ],
+      "CORE_COUNT": 6,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton",
+        "Opal Grand Oceanfront Resort",
+        "Embassy Suites by Hilton Boca Raton",
+        "Boca Beach Club"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [
+        "Embassy Suites by Hilton Boca Raton",
+        "Boca Beach Club"
+      ],
+      "CHRONIC_ZERO_CORE_COUNT": 2,
+      "DENOMINATOR_STABILITY": "LOW",
+      "chronicZeroSensitivity": {
+        "withChronicZeros": 191,
+        "withoutChronicZeros": 133,
+        "delta": 58
+      },
+      "SCENARIO_COUNT": 5,
+      "OBSERVATIONS_PER_PROVIDER": 5,
+      "TOTAL_COMPARABLE_OBSERVATIONS": 20,
+      "SCENARIO_DENSITY_ADEQUATE": "NO",
+      "EXPECTED_SHARE_PERIOD_VARIANCE": 0,
+      "aciRange": 36,
+      "aciDriver": "SCENARIO_MIX",
+      "current": {
+        "intent": "family",
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "executionDate": "2026-08-19T14:41:28.468Z",
+        "SUBJECT_PRESENCE_RATE": 35,
+        "subjectRate": 0.35,
+        "CORE_BENCHMARK_RATE": 18.3,
+        "benchmarkRate": 0.18333333333333335,
+        "PRESENCE_INDEX_V2": 191,
+        "CORE_PEER_COUNT": 6,
+        "CORE_PEER_RATES": [
+          {
+            "entityId": "hilton_boca_raton_suites",
+            "name": "Hilton Boca Raton Suites",
+            "ratePct": 5,
+            "rate": 0.05
+          },
+          {
+            "entityId": "the_boca_raton",
+            "name": "The Boca Raton",
+            "ratePct": 80,
+            "rate": 0.8
+          },
+          {
+            "entityId": "opal_grand_delray",
+            "name": "Opal Grand Oceanfront Resort",
+            "ratePct": 10,
+            "rate": 0.1
+          },
+          {
+            "entityId": "delray_sands_resort",
+            "name": "Delray Sands Resort",
+            "ratePct": 10,
+            "rate": 0.1
+          },
+          {
+            "entityId": "embassy_suites_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "ratePct": 5,
+            "rate": 0.05
+          },
+          {
+            "entityId": "boca_beach_club",
+            "name": "Boca Beach Club",
+            "ratePct": 0,
+            "rate": 0
+          }
+        ],
+        "ZERO_PRESENCE_CORE_PEERS": [
+          "boca_beach_club"
+        ],
+        "COMPARABLE_OBSERVATION_N": 20,
+        "SCENARIO_COUNT": 5,
+        "PROVIDER_COUNT": 4,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "ACTUAL_CONSIDERATION_SHARE": 16.7,
+        "actualShare": 0.16666666666666666,
+        "EXPECTED_SHARE": 14.3,
+        "expectedShare": 0.14285714285714285,
+        "ACI": 117
+      },
+      "PRIMARY_BLOCKER": "NEEDS_MORE_SCENARIOS",
+      "MORE_PERIODS_VALUE": "LOW",
+      "MORE_SCENARIOS_VALUE": "HIGH",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": true
+    },
+    {
+      "TERRITORY": "Meetings & Groups",
+      "intent": "group_meeting",
+      "periods": [
+        {
+          "intent": "group_meeting",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+          "executionDate": "2026-08-19T13:30:40.124Z",
+          "SUBJECT_PRESENCE_RATE": 23.1,
+          "subjectRate": 0.23076923076923078,
+          "CORE_BENCHMARK_RATE": 16.8,
+          "benchmarkRate": 0.16826923076923078,
+          "PRESENCE_INDEX_V2": 137,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "renaissance_boca_raton",
+              "name": "Renaissance Boca Raton Hotel",
+              "ratePct": 19.2,
+              "rate": 0.19230769230769232
+            },
+            {
+              "entityId": "wyndham_boca_raton",
+              "name": "Wyndham Boca Raton",
+              "ratePct": 7.7,
+              "rate": 0.07692307692307693
+            },
+            {
+              "entityId": "marriott_boca_raton",
+              "name": "Boca Raton Marriott at Boca Center",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 40.4,
+              "rate": 0.40384615384615385
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "marriott_boca_raton"
+          ],
+          "COMPARABLE_OBSERVATION_N": 52,
+          "SCENARIO_COUNT": 13,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 23.4,
+          "actualShare": 0.23412698412698413,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 117
+        },
+        {
+          "intent": "group_meeting",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+          "executionDate": "2026-08-19T14:20:20.396Z",
+          "SUBJECT_PRESENCE_RATE": 51.3,
+          "subjectRate": 0.5128205128205128,
+          "CORE_BENCHMARK_RATE": 31.9,
+          "benchmarkRate": 0.3194444444444444,
+          "PRESENCE_INDEX_V2": 161,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "renaissance_boca_raton",
+              "name": "Renaissance Boca Raton Hotel",
+              "ratePct": 30.6,
+              "rate": 0.3055555555555556
+            },
+            {
+              "entityId": "wyndham_boca_raton",
+              "name": "Wyndham Boca Raton",
+              "ratePct": 7.7,
+              "rate": 0.07692307692307693
+            },
+            {
+              "entityId": "marriott_boca_raton",
+              "name": "Boca Raton Marriott at Boca Center",
+              "ratePct": 9.6,
+              "rate": 0.09615384615384616
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 79.9,
+              "rate": 0.7991452991452991
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 48,
+          "SCENARIO_COUNT": 13,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 26.3,
+          "actualShare": 0.26282051282051283,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 131
+        },
+        {
+          "intent": "group_meeting",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "executionDate": "2026-08-19T14:39:45.057Z",
+          "SUBJECT_PRESENCE_RATE": 52.7,
+          "subjectRate": 0.5269230769230769,
+          "CORE_BENCHMARK_RATE": 30,
+          "benchmarkRate": 0.29951923076923076,
+          "PRESENCE_INDEX_V2": 176,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "renaissance_boca_raton",
+              "name": "Renaissance Boca Raton Hotel",
+              "ratePct": 24.2,
+              "rate": 0.24230769230769234
+            },
+            {
+              "entityId": "wyndham_boca_raton",
+              "name": "Wyndham Boca Raton",
+              "ratePct": 10.2,
+              "rate": 0.10192307692307692
+            },
+            {
+              "entityId": "marriott_boca_raton",
+              "name": "Boca Raton Marriott at Boca Center",
+              "ratePct": 9.6,
+              "rate": 0.09615384615384616
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 75.8,
+              "rate": 0.7576923076923077
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 49,
+          "SCENARIO_COUNT": 13,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 28.3,
+          "actualShare": 0.28289473684210525,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 141
+        },
+        {
+          "intent": "group_meeting",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "executionDate": "2026-08-19T14:41:28.468Z",
+          "SUBJECT_PRESENCE_RATE": 51.3,
+          "subjectRate": 0.5128205128205128,
+          "CORE_BENCHMARK_RATE": 32.9,
+          "benchmarkRate": 0.32905982905982906,
+          "PRESENCE_INDEX_V2": 156,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "renaissance_boca_raton",
+              "name": "Renaissance Boca Raton Hotel",
+              "ratePct": 23.9,
+              "rate": 0.23931623931623933
+            },
+            {
+              "entityId": "wyndham_boca_raton",
+              "name": "Wyndham Boca Raton",
+              "ratePct": 14.3,
+              "rate": 0.14316239316239315
+            },
+            {
+              "entityId": "marriott_boca_raton",
+              "name": "Boca Raton Marriott at Boca Center",
+              "ratePct": 11.5,
+              "rate": 0.11538461538461539
+            },
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 81.8,
+              "rate": 0.8183760683760684
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 48,
+          "SCENARIO_COUNT": 13,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 25,
+          "actualShare": 0.25,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 125
+        }
+      ],
+      "SUBJECT_MEAN": 44.6,
+      "SUBJECT_MIN": 23.1,
+      "SUBJECT_MAX": 52.7,
+      "SUBJECT_RANGE": 29.6,
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_MEAN": 27.9,
+      "BENCHMARK_MIN": 16.8,
+      "BENCHMARK_MAX": 32.9,
+      "BENCHMARK_RANGE": 16.099999999999998,
+      "BENCHMARK_VOLATILITY": "HIGH",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH",
+      "attribution": {
+        "driver": "BOTH",
+        "rangeS": 29.615384615384617,
+        "rangeB": 16.079059829059826,
+        "rangeI": 39,
+        "rangeHoldB": 106.12049576494236,
+        "rangeHoldS": 129.46536796536793
+      },
+      "SCENARIO_SENSITIVITY": "LOW",
+      "PROVIDER_SENSITIVITY": "MEDIUM",
+      "scenarioLoo": {
+        "maxPresenceIndexMove": 12,
+        "maxAciMove": 10,
+        "SCENARIO_THINNESS_HIGH": false
+      },
+      "providerLoo": {
+        "baseIndex": 156,
+        "dropProviderDelta": {
+          "openai": 0,
+          "gemini": 23,
+          "perplexity": 16,
+          "claude": 8
+        },
+        "PROVIDER_CONCENTRATION_RISK": false
+      },
+      "peers": [
+        {
+          "PEER": "Renaissance Boca Raton Hotel",
+          "entityId": "renaissance_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            19.2,
+            30.6,
+            24.2,
+            23.9
+          ],
+          "MEAN": 24.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 11.4,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Wyndham Boca Raton",
+          "entityId": "wyndham_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            7.7,
+            7.7,
+            10.2,
+            14.3
+          ],
+          "MEAN": 10,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 6.6,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Boca Raton Marriott at Boca Center",
+          "entityId": "marriott_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            9.6,
+            9.6,
+            11.5
+          ],
+          "MEAN": 7.7,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 11.5,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            40.4,
+            79.9,
+            75.8,
+            81.8
+          ],
+          "MEAN": 69.5,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 41.4,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        }
+      ],
+      "CORE_COUNT": 4,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [],
+      "CHRONIC_ZERO_CORE_COUNT": 0,
+      "DENOMINATOR_STABILITY": "MEDIUM",
+      "chronicZeroSensitivity": null,
+      "SCENARIO_COUNT": 13,
+      "OBSERVATIONS_PER_PROVIDER": 13,
+      "TOTAL_COMPARABLE_OBSERVATIONS": 48,
+      "SCENARIO_DENSITY_ADEQUATE": "YES",
+      "EXPECTED_SHARE_PERIOD_VARIANCE": 0,
+      "aciRange": 24,
+      "aciDriver": "ACTUAL_SHARE",
+      "current": {
+        "intent": "group_meeting",
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "executionDate": "2026-08-19T14:41:28.468Z",
+        "SUBJECT_PRESENCE_RATE": 51.3,
+        "subjectRate": 0.5128205128205128,
+        "CORE_BENCHMARK_RATE": 32.9,
+        "benchmarkRate": 0.32905982905982906,
+        "PRESENCE_INDEX_V2": 156,
+        "CORE_PEER_COUNT": 4,
+        "CORE_PEER_RATES": [
+          {
+            "entityId": "renaissance_boca_raton",
+            "name": "Renaissance Boca Raton Hotel",
+            "ratePct": 23.9,
+            "rate": 0.23931623931623933
+          },
+          {
+            "entityId": "wyndham_boca_raton",
+            "name": "Wyndham Boca Raton",
+            "ratePct": 14.3,
+            "rate": 0.14316239316239315
+          },
+          {
+            "entityId": "marriott_boca_raton",
+            "name": "Boca Raton Marriott at Boca Center",
+            "ratePct": 11.5,
+            "rate": 0.11538461538461539
+          },
+          {
+            "entityId": "the_boca_raton",
+            "name": "The Boca Raton",
+            "ratePct": 81.8,
+            "rate": 0.8183760683760684
+          }
+        ],
+        "ZERO_PRESENCE_CORE_PEERS": [],
+        "COMPARABLE_OBSERVATION_N": 48,
+        "SCENARIO_COUNT": 13,
+        "PROVIDER_COUNT": 4,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "ACTUAL_CONSIDERATION_SHARE": 25,
+        "actualShare": 0.25,
+        "EXPECTED_SHARE": 20,
+        "expectedShare": 0.2,
+        "ACI": 125
+      },
+      "PRIMARY_BLOCKER": "LEGITIMATE_REAL_WORLD_VOLATILITY",
+      "MORE_PERIODS_VALUE": "MEDIUM",
+      "MORE_SCENARIOS_VALUE": "LOW",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": false
+    },
+    {
+      "TERRITORY": "Wellness",
+      "intent": "wellness",
+      "periods": [
+        {
+          "intent": "wellness",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+          "executionDate": "2026-08-19T13:30:40.124Z",
+          "SUBJECT_PRESENCE_RATE": null,
+          "subjectRate": null,
+          "CORE_BENCHMARK_RATE": null,
+          "benchmarkRate": null,
+          "PRESENCE_INDEX_V2": null,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 0,
+          "SCENARIO_COUNT": 2,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [],
+          "ACTUAL_CONSIDERATION_SHARE": 0,
+          "actualShare": 0,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 0
+        },
+        {
+          "intent": "wellness",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+          "executionDate": "2026-08-19T14:20:20.396Z",
+          "SUBJECT_PRESENCE_RATE": null,
+          "subjectRate": null,
+          "CORE_BENCHMARK_RATE": null,
+          "benchmarkRate": null,
+          "PRESENCE_INDEX_V2": null,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 0,
+          "SCENARIO_COUNT": 2,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [],
+          "ACTUAL_CONSIDERATION_SHARE": 12.5,
+          "actualShare": 0.125,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 63
+        },
+        {
+          "intent": "wellness",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "executionDate": "2026-08-19T14:39:45.057Z",
+          "SUBJECT_PRESENCE_RATE": null,
+          "subjectRate": null,
+          "CORE_BENCHMARK_RATE": null,
+          "benchmarkRate": null,
+          "PRESENCE_INDEX_V2": null,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 0,
+          "SCENARIO_COUNT": 2,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [],
+          "ACTUAL_CONSIDERATION_SHARE": 25,
+          "actualShare": 0.25,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 125
+        },
+        {
+          "intent": "wellness",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "executionDate": "2026-08-19T14:41:28.468Z",
+          "SUBJECT_PRESENCE_RATE": null,
+          "subjectRate": null,
+          "CORE_BENCHMARK_RATE": null,
+          "benchmarkRate": null,
+          "PRESENCE_INDEX_V2": null,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 0,
+          "SCENARIO_COUNT": 2,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [],
+          "ACTUAL_CONSIDERATION_SHARE": 12.5,
+          "actualShare": 0.125,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 63
+        }
+      ],
+      "SUBJECT_MEAN": 0,
+      "SUBJECT_MIN": null,
+      "SUBJECT_MAX": null,
+      "SUBJECT_RANGE": null,
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_MEAN": 0,
+      "BENCHMARK_MIN": null,
+      "BENCHMARK_MAX": null,
+      "BENCHMARK_RANGE": null,
+      "BENCHMARK_VOLATILITY": "HIGH",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "THIN_SAMPLE_NOISE",
+      "attribution": {
+        "driver": "THIN_SAMPLE_NOISE",
+        "rangeS": null,
+        "rangeB": null,
+        "rangeI": null
+      },
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "MEDIUM",
+      "scenarioLoo": {
+        "maxPresenceIndexMove": 0,
+        "maxAciMove": 0,
+        "SCENARIO_THINNESS_HIGH": true
+      },
+      "providerLoo": {
+        "baseIndex": null,
+        "dropProviderDelta": {
+          "openai": null,
+          "gemini": null,
+          "perplexity": null,
+          "claude": null
+        },
+        "PROVIDER_CONCENTRATION_RISK": false
+      },
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "MEAN": null,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": null,
+          "flag": "INSUFFICIENT_OBSERVATIONS"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "MEAN": null,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": null,
+          "flag": "INSUFFICIENT_OBSERVATIONS"
+        },
+        {
+          "PEER": "The Seagate Hotel & Spa",
+          "entityId": "seagate_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "MEAN": null,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": null,
+          "flag": "INSUFFICIENT_OBSERVATIONS"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "MEAN": null,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": null,
+          "flag": "INSUFFICIENT_OBSERVATIONS"
+        }
+      ],
+      "CORE_COUNT": 4,
+      "VOLATILE_CORE_PEERS": [],
+      "CHRONIC_ZERO_CORE_PEERS": [],
+      "CHRONIC_ZERO_CORE_COUNT": 0,
+      "DENOMINATOR_STABILITY": "HIGH",
+      "chronicZeroSensitivity": null,
+      "SCENARIO_COUNT": 2,
+      "OBSERVATIONS_PER_PROVIDER": 2,
+      "TOTAL_COMPARABLE_OBSERVATIONS": 0,
+      "SCENARIO_DENSITY_ADEQUATE": "NO",
+      "EXPECTED_SHARE_PERIOD_VARIANCE": 0,
+      "aciRange": 125,
+      "aciDriver": "SCENARIO_MIX",
+      "current": {
+        "intent": "wellness",
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "executionDate": "2026-08-19T14:41:28.468Z",
+        "SUBJECT_PRESENCE_RATE": null,
+        "subjectRate": null,
+        "CORE_BENCHMARK_RATE": null,
+        "benchmarkRate": null,
+        "PRESENCE_INDEX_V2": null,
+        "CORE_PEER_COUNT": 4,
+        "CORE_PEER_RATES": [],
+        "ZERO_PRESENCE_CORE_PEERS": [],
+        "COMPARABLE_OBSERVATION_N": 0,
+        "SCENARIO_COUNT": 2,
+        "PROVIDER_COUNT": 4,
+        "includedProviders": [],
+        "ACTUAL_CONSIDERATION_SHARE": 12.5,
+        "actualShare": 0.125,
+        "EXPECTED_SHARE": 20,
+        "expectedShare": 0.2,
+        "ACI": 63
+      },
+      "PRIMARY_BLOCKER": "NEEDS_MORE_SCENARIOS",
+      "MORE_PERIODS_VALUE": "LOW",
+      "MORE_SCENARIOS_VALUE": "HIGH",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": false
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "intent": "adventure",
+      "periods": [
+        {
+          "intent": "adventure",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+          "executionDate": "2026-08-19T13:30:40.124Z",
+          "SUBJECT_PRESENCE_RATE": 25,
+          "subjectRate": 0.25,
+          "CORE_BENCHMARK_RATE": 11.7,
+          "benchmarkRate": 0.11666666666666668,
+          "PRESENCE_INDEX_V2": 214,
+          "CORE_PEER_COUNT": 3,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 30,
+              "rate": 0.30000000000000004
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 5,
+              "rate": 0.05
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 20,
+          "SCENARIO_COUNT": 5,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 40.5,
+          "actualShare": 0.4047619047619047,
+          "EXPECTED_SHARE": 25,
+          "expectedShare": 0.25,
+          "ACI": 162
+        },
+        {
+          "intent": "adventure",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+          "executionDate": "2026-08-19T14:20:20.396Z",
+          "SUBJECT_PRESENCE_RATE": 60,
+          "subjectRate": 0.6,
+          "CORE_BENCHMARK_RATE": 22.2,
+          "benchmarkRate": 0.2222222222222222,
+          "PRESENCE_INDEX_V2": 270,
+          "CORE_PEER_COUNT": 3,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 60,
+              "rate": 0.6
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 6.7,
+              "rate": 0.06666666666666667
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "delray_sands_resort"
+          ],
+          "COMPARABLE_OBSERVATION_N": 15,
+          "SCENARIO_COUNT": 5,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 50,
+          "actualShare": 0.5,
+          "EXPECTED_SHARE": 25,
+          "expectedShare": 0.25,
+          "ACI": 200
+        },
+        {
+          "intent": "adventure",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "executionDate": "2026-08-19T14:39:45.057Z",
+          "SUBJECT_PRESENCE_RATE": 55,
+          "subjectRate": 0.55,
+          "CORE_BENCHMARK_RATE": 21.7,
+          "benchmarkRate": 0.21666666666666667,
+          "PRESENCE_INDEX_V2": 254,
+          "CORE_PEER_COUNT": 3,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 60,
+              "rate": 0.6
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 5,
+              "rate": 0.05
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club"
+          ],
+          "COMPARABLE_OBSERVATION_N": 20,
+          "SCENARIO_COUNT": 5,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 45.2,
+          "actualShare": 0.45238095238095244,
+          "EXPECTED_SHARE": 25,
+          "expectedShare": 0.25,
+          "ACI": 181
+        },
+        {
+          "intent": "adventure",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "executionDate": "2026-08-19T14:41:28.468Z",
+          "SUBJECT_PRESENCE_RATE": 65,
+          "subjectRate": 0.65,
+          "CORE_BENCHMARK_RATE": 26.7,
+          "benchmarkRate": 0.2666666666666667,
+          "PRESENCE_INDEX_V2": 244,
+          "CORE_PEER_COUNT": 3,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 70,
+              "rate": 0.7000000000000001
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 5,
+              "rate": 0.05
+            },
+            {
+              "entityId": "delray_sands_resort",
+              "name": "Delray Sands Resort",
+              "ratePct": 5,
+              "rate": 0.05
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [],
+          "COMPARABLE_OBSERVATION_N": 20,
+          "SCENARIO_COUNT": 5,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 45.6,
+          "actualShare": 0.4555555555555556,
+          "EXPECTED_SHARE": 25,
+          "expectedShare": 0.25,
+          "ACI": 182
+        }
+      ],
+      "SUBJECT_MEAN": 51.3,
+      "SUBJECT_MIN": 25,
+      "SUBJECT_MAX": 65,
+      "SUBJECT_RANGE": 40,
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_MEAN": 20.6,
+      "BENCHMARK_MIN": 11.7,
+      "BENCHMARK_MAX": 26.7,
+      "BENCHMARK_RANGE": 15,
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH",
+      "attribution": {
+        "driver": "BOTH",
+        "rangeS": 40,
+        "rangeB": 15.000000000000004,
+        "rangeI": 56,
+        "rangeHoldB": 194.59459459459458,
+        "rangeHoldS": 247.09821428571422
+      },
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "MEDIUM",
+      "scenarioLoo": {
+        "maxPresenceIndexMove": 0,
+        "maxAciMove": 29,
+        "SCENARIO_THINNESS_HIGH": true
+      },
+      "providerLoo": {
+        "baseIndex": 244,
+        "dropProviderDelta": {
+          "openai": 13,
+          "gemini": 1,
+          "perplexity": 29,
+          "claude": 13
+        },
+        "PROVIDER_CONCENTRATION_RISK": false
+      },
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            30,
+            60,
+            60,
+            70
+          ],
+          "MEAN": 55,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 40,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            6.7,
+            0,
+            5
+          ],
+          "MEAN": 2.9,
+          "ZERO_RATE_PERIODS": 2,
+          "VOLATILITY": "MEDIUM",
+          "INFLUENCE_ON_BENCHMARK": 6.7,
+          "flag": "STABLE_CORE"
+        },
+        {
+          "PEER": "Delray Sands Resort",
+          "entityId": "delray_sands_resort",
+          "PERIOD_PRESENCE_RATES": [
+            5,
+            0,
+            5,
+            5
+          ],
+          "MEAN": 3.8,
+          "ZERO_RATE_PERIODS": 1,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 5,
+          "flag": "STABLE_CORE"
+        }
+      ],
+      "CORE_COUNT": 3,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [],
+      "CHRONIC_ZERO_CORE_COUNT": 0,
+      "DENOMINATOR_STABILITY": "MEDIUM",
+      "chronicZeroSensitivity": null,
+      "SCENARIO_COUNT": 5,
+      "OBSERVATIONS_PER_PROVIDER": 5,
+      "TOTAL_COMPARABLE_OBSERVATIONS": 20,
+      "SCENARIO_DENSITY_ADEQUATE": "NO",
+      "EXPECTED_SHARE_PERIOD_VARIANCE": 0,
+      "aciRange": 38,
+      "aciDriver": "SCENARIO_MIX",
+      "current": {
+        "intent": "adventure",
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "executionDate": "2026-08-19T14:41:28.468Z",
+        "SUBJECT_PRESENCE_RATE": 65,
+        "subjectRate": 0.65,
+        "CORE_BENCHMARK_RATE": 26.7,
+        "benchmarkRate": 0.2666666666666667,
+        "PRESENCE_INDEX_V2": 244,
+        "CORE_PEER_COUNT": 3,
+        "CORE_PEER_RATES": [
+          {
+            "entityId": "the_boca_raton",
+            "name": "The Boca Raton",
+            "ratePct": 70,
+            "rate": 0.7000000000000001
+          },
+          {
+            "entityId": "boca_beach_club",
+            "name": "Boca Beach Club",
+            "ratePct": 5,
+            "rate": 0.05
+          },
+          {
+            "entityId": "delray_sands_resort",
+            "name": "Delray Sands Resort",
+            "ratePct": 5,
+            "rate": 0.05
+          }
+        ],
+        "ZERO_PRESENCE_CORE_PEERS": [],
+        "COMPARABLE_OBSERVATION_N": 20,
+        "SCENARIO_COUNT": 5,
+        "PROVIDER_COUNT": 4,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "ACTUAL_CONSIDERATION_SHARE": 45.6,
+        "actualShare": 0.4555555555555556,
+        "EXPECTED_SHARE": 25,
+        "expectedShare": 0.25,
+        "ACI": 182
+      },
+      "PRIMARY_BLOCKER": "NEEDS_MORE_SCENARIOS",
+      "MORE_PERIODS_VALUE": "LOW",
+      "MORE_SCENARIOS_VALUE": "HIGH",
+      "MORE_PEERS_VALUE": "MEDIUM",
+      "METHODOLOGY_CHANGE_REQUIRED": false
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "intent": "celebration",
+      "periods": [
+        {
+          "intent": "celebration",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+          "executionDate": "2026-08-19T13:30:40.124Z",
+          "SUBJECT_PRESENCE_RATE": 28.6,
+          "subjectRate": 0.2857142857142857,
+          "CORE_BENCHMARK_RATE": 8.9,
+          "benchmarkRate": 0.08928571428571429,
+          "PRESENCE_INDEX_V2": 320,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 35.7,
+              "rate": 0.35714285714285715
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club",
+            "seagate_hotel_delray",
+            "opal_grand_delray"
+          ],
+          "COMPARABLE_OBSERVATION_N": 28,
+          "SCENARIO_COUNT": 7,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 40.9,
+          "actualShare": 0.4090909090909091,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 205
+        },
+        {
+          "intent": "celebration",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+          "executionDate": "2026-08-19T14:20:20.396Z",
+          "SUBJECT_PRESENCE_RATE": 63.1,
+          "subjectRate": 0.6309523809523809,
+          "CORE_BENCHMARK_RATE": 16.7,
+          "benchmarkRate": 0.16666666666666666,
+          "PRESENCE_INDEX_V2": 379,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 66.7,
+              "rate": 0.6666666666666666
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club",
+            "seagate_hotel_delray",
+            "opal_grand_delray"
+          ],
+          "COMPARABLE_OBSERVATION_N": 27,
+          "SCENARIO_COUNT": 7,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 47.4,
+          "actualShare": 0.47368421052631576,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 237
+        },
+        {
+          "intent": "celebration",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+          "executionDate": "2026-08-19T14:39:45.057Z",
+          "SUBJECT_PRESENCE_RATE": 52.4,
+          "subjectRate": 0.5238095238095238,
+          "CORE_BENCHMARK_RATE": 18.6,
+          "benchmarkRate": 0.18601190476190477,
+          "PRESENCE_INDEX_V2": 282,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 70.2,
+              "rate": 0.7023809523809524
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 4.2,
+              "rate": 0.041666666666666664
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club",
+            "seagate_hotel_delray"
+          ],
+          "COMPARABLE_OBSERVATION_N": 27,
+          "SCENARIO_COUNT": 7,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 36,
+          "actualShare": 0.35964912280701755,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 180
+        },
+        {
+          "intent": "celebration",
+          "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+          "executionDate": "2026-08-19T14:41:28.468Z",
+          "SUBJECT_PRESENCE_RATE": 57.1,
+          "subjectRate": 0.5714285714285715,
+          "CORE_BENCHMARK_RATE": 16.7,
+          "benchmarkRate": 0.16666666666666666,
+          "PRESENCE_INDEX_V2": 343,
+          "CORE_PEER_COUNT": 4,
+          "CORE_PEER_RATES": [
+            {
+              "entityId": "the_boca_raton",
+              "name": "The Boca Raton",
+              "ratePct": 66.7,
+              "rate": 0.6666666666666666
+            },
+            {
+              "entityId": "boca_beach_club",
+              "name": "Boca Beach Club",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "seagate_hotel_delray",
+              "name": "The Seagate Hotel & Spa",
+              "ratePct": 0,
+              "rate": 0
+            },
+            {
+              "entityId": "opal_grand_delray",
+              "name": "Opal Grand Oceanfront Resort",
+              "ratePct": 0,
+              "rate": 0
+            }
+          ],
+          "ZERO_PRESENCE_CORE_PEERS": [
+            "boca_beach_club",
+            "seagate_hotel_delray",
+            "opal_grand_delray"
+          ],
+          "COMPARABLE_OBSERVATION_N": 21,
+          "SCENARIO_COUNT": 7,
+          "PROVIDER_COUNT": 4,
+          "includedProviders": [
+            "openai",
+            "perplexity",
+            "claude"
+          ],
+          "ACTUAL_CONSIDERATION_SHARE": 47.4,
+          "actualShare": 0.47368421052631576,
+          "EXPECTED_SHARE": 20,
+          "expectedShare": 0.2,
+          "ACI": 237
+        }
+      ],
+      "SUBJECT_MEAN": 50.3,
+      "SUBJECT_MIN": 28.6,
+      "SUBJECT_MAX": 63.1,
+      "SUBJECT_RANGE": 34.5,
+      "SUBJECT_VOLATILITY": "HIGH",
+      "BENCHMARK_MEAN": 15.2,
+      "BENCHMARK_MIN": 8.9,
+      "BENCHMARK_MAX": 18.6,
+      "BENCHMARK_RANGE": 9.700000000000001,
+      "BENCHMARK_VOLATILITY": "MEDIUM",
+      "PRIMARY_INDEX_MOVEMENT_DRIVER": "BOTH",
+      "attribution": {
+        "driver": "BOTH",
+        "rangeS": 34.523809523809526,
+        "rangeB": 9.67261904761905,
+        "rangeI": 97,
+        "rangeHoldB": 226.8948655256724,
+        "rangeHoldS": 292.9333333333333
+      },
+      "SCENARIO_SENSITIVITY": "HIGH",
+      "PROVIDER_SENSITIVITY": "HIGH",
+      "scenarioLoo": {
+        "maxPresenceIndexMove": 57,
+        "maxAciMove": 30,
+        "SCENARIO_THINNESS_HIGH": true
+      },
+      "providerLoo": {
+        "baseIndex": 343,
+        "dropProviderDelta": {
+          "openai": 13,
+          "gemini": 0,
+          "perplexity": 17,
+          "claude": 32
+        },
+        "PROVIDER_CONCENTRATION_RISK": true
+      },
+      "peers": [
+        {
+          "PEER": "The Boca Raton",
+          "entityId": "the_boca_raton",
+          "PERIOD_PRESENCE_RATES": [
+            35.7,
+            66.7,
+            70.2,
+            66.7
+          ],
+          "MEAN": 59.8,
+          "ZERO_RATE_PERIODS": 0,
+          "VOLATILITY": "HIGH",
+          "INFLUENCE_ON_BENCHMARK": 34.5,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Boca Beach Club",
+          "entityId": "boca_beach_club",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "The Seagate Hotel & Spa",
+          "entityId": "seagate_hotel_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "MEAN": 0,
+          "ZERO_RATE_PERIODS": 4,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 0,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        },
+        {
+          "PEER": "Opal Grand Oceanfront Resort",
+          "entityId": "opal_grand_delray",
+          "PERIOD_PRESENCE_RATES": [
+            0,
+            0,
+            4.2,
+            0
+          ],
+          "MEAN": 1.1,
+          "ZERO_RATE_PERIODS": 3,
+          "VOLATILITY": "LOW",
+          "INFLUENCE_ON_BENCHMARK": 4.2,
+          "flag": "DOMINANT_DENOMINATOR_EFFECT"
+        }
+      ],
+      "CORE_COUNT": 4,
+      "VOLATILE_CORE_PEERS": [
+        "The Boca Raton",
+        "Boca Beach Club",
+        "The Seagate Hotel & Spa",
+        "Opal Grand Oceanfront Resort"
+      ],
+      "CHRONIC_ZERO_CORE_PEERS": [
+        "Boca Beach Club",
+        "The Seagate Hotel & Spa",
+        "Opal Grand Oceanfront Resort"
+      ],
+      "CHRONIC_ZERO_CORE_COUNT": 3,
+      "DENOMINATOR_STABILITY": "LOW",
+      "chronicZeroSensitivity": null,
+      "SCENARIO_COUNT": 7,
+      "OBSERVATIONS_PER_PROVIDER": 7,
+      "TOTAL_COMPARABLE_OBSERVATIONS": 21,
+      "SCENARIO_DENSITY_ADEQUATE": "NO",
+      "EXPECTED_SHARE_PERIOD_VARIANCE": 0,
+      "aciRange": 57,
+      "aciDriver": "SCENARIO_MIX",
+      "current": {
+        "intent": "celebration",
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "executionDate": "2026-08-19T14:41:28.468Z",
+        "SUBJECT_PRESENCE_RATE": 57.1,
+        "subjectRate": 0.5714285714285715,
+        "CORE_BENCHMARK_RATE": 16.7,
+        "benchmarkRate": 0.16666666666666666,
+        "PRESENCE_INDEX_V2": 343,
+        "CORE_PEER_COUNT": 4,
+        "CORE_PEER_RATES": [
+          {
+            "entityId": "the_boca_raton",
+            "name": "The Boca Raton",
+            "ratePct": 66.7,
+            "rate": 0.6666666666666666
+          },
+          {
+            "entityId": "boca_beach_club",
+            "name": "Boca Beach Club",
+            "ratePct": 0,
+            "rate": 0
+          },
+          {
+            "entityId": "seagate_hotel_delray",
+            "name": "The Seagate Hotel & Spa",
+            "ratePct": 0,
+            "rate": 0
+          },
+          {
+            "entityId": "opal_grand_delray",
+            "name": "Opal Grand Oceanfront Resort",
+            "ratePct": 0,
+            "rate": 0
+          }
+        ],
+        "ZERO_PRESENCE_CORE_PEERS": [
+          "boca_beach_club",
+          "seagate_hotel_delray",
+          "opal_grand_delray"
+        ],
+        "COMPARABLE_OBSERVATION_N": 21,
+        "SCENARIO_COUNT": 7,
+        "PROVIDER_COUNT": 4,
+        "includedProviders": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "ACTUAL_CONSIDERATION_SHARE": 47.4,
+        "actualShare": 0.47368421052631576,
+        "EXPECTED_SHARE": 20,
+        "expectedShare": 0.2,
+        "ACI": 237
+      },
+      "PRIMARY_BLOCKER": "LEGITIMATE_REAL_WORLD_VOLATILITY",
+      "MORE_PERIODS_VALUE": "LOW",
+      "MORE_SCENARIOS_VALUE": "HIGH",
+      "MORE_PEERS_VALUE": "LOW",
+      "METHODOLOGY_CHANGE_REQUIRED": true
+    }
+  ]
+}

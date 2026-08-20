@@ -1,0 +1,142 @@
+{
+  "version": "adp_legacy_section_inventory_v1",
+  "capturedAt": "2026-08-20",
+  "allExistingSectionsCaptured": true,
+  "renderOrder": [
+    {
+      "sectionName": "Executive Summary",
+      "domId": "adpExecInsights",
+      "renderFunction": "renderExecInsights",
+      "payloadDependencies": ["demandCapture", "lostDemand", "whiteSpace", "realityGap", "period"],
+      "visibleMetrics": ["AI Demand Capture tile", "Displacement tile", "White Space tile", "Reality Gap tile"],
+      "snapshotDependencies": ["demandCapture", "lostDemand", "whiteSpace", "realityGap", "period"]
+    },
+    {
+      "sectionName": "Property Snapshot",
+      "domId": "adpKpiRow",
+      "renderFunction": "renderExecKpis",
+      "payloadDependencies": ["demandCapture", "competitiveSet", "period"],
+      "visibleMetrics": ["AI Demand Capture", "Scenarios Monitored", "Strongest Segment", "Top AI Competitor", "Questions Missing"],
+      "snapshotDependencies": ["demandCapture", "competitiveSet", "period"]
+    },
+    {
+      "sectionName": "Trends",
+      "domId": "adpTrendSection",
+      "renderFunction": "renderTrends",
+      "payloadDependencies": ["trends", "demandCapture"],
+      "visibleMetrics": ["Demand Capture trend line", "Current/Prior/Change stats"],
+      "snapshotDependencies": ["trends (optional)", "demandCapture"]
+    },
+    {
+      "sectionName": "Provider Presence",
+      "domId": "adpProviderTableContainer",
+      "renderFunction": "renderProviderPresenceTable",
+      "payloadDependencies": ["evidence", "demandCapture", "period"],
+      "visibleMetrics": ["Provider AI Presence", "Monitored", "Missing", "Citation", "Owned"],
+      "snapshotDependencies": ["evidence", "demandCapture", "period"]
+    },
+    {
+      "sectionName": "AI Presence by Intent Category",
+      "domId": "adpIntentTableContainer",
+      "renderFunction": "renderExecIntentTable",
+      "payloadDependencies": ["demandCapture", "lostDemand", "intentPresenceIndex"],
+      "visibleMetrics": ["Your Presence", "Peer-Present Gaps", "AI Presence Index", "Missing Evidence"],
+      "snapshotDependencies": ["demandCapture", "lostDemand", "intentPresenceIndex"]
+    },
+    {
+      "sectionName": "AI Reality Gaps",
+      "domId": "adpRealityKpis",
+      "renderFunction": "renderRealityKpis",
+      "payloadDependencies": ["realityGap"],
+      "visibleMetrics": ["Reality Gap", "Recognition Rate", "Avg Strength", "Tracked Attributes"],
+      "snapshotDependencies": ["realityGap"]
+    },
+    {
+      "sectionName": "AI Recognizes / AI Misses",
+      "domId": "adpExecStrengths",
+      "renderFunction": "renderExecStrengthsGaps",
+      "payloadDependencies": ["realityGap"],
+      "visibleMetrics": ["Recognized attributes", "Gap attributes"],
+      "snapshotDependencies": ["realityGap"]
+    },
+    {
+      "sectionName": "AI Competitive Set",
+      "domId": "adpCompTable",
+      "renderFunction": "renderExecCompTable",
+      "payloadDependencies": ["competitiveSet", "demandCapture", "lostDemand"],
+      "visibleMetrics": ["Rank", "AI Presence", "Displacement vs You", "Scenarios Shared"],
+      "snapshotDependencies": ["competitiveSet", "demandCapture", "lostDemand"]
+    },
+    {
+      "sectionName": "Competitive Context & Priority Actions",
+      "domId": "adpExecDisplacement",
+      "renderFunction": "renderExecDisplacement",
+      "payloadDependencies": ["lostDemand", "actions"],
+      "visibleMetrics": ["Displacement list", "Priority action cards"],
+      "snapshotDependencies": ["lostDemand", "actions"]
+    },
+    {
+      "sectionName": "Evidence, Sources & Discovery",
+      "domId": "adpExecCitations",
+      "renderFunction": "renderExecEvidence",
+      "payloadDependencies": ["evidence"],
+      "visibleMetrics": ["Citation Coverage", "Top Source", "Source Landscape table"],
+      "snapshotDependencies": ["evidence"]
+    },
+    {
+      "sectionName": "Detailed View — Owner Brief",
+      "domId": "adpBriefSection",
+      "renderFunction": "renderBrief",
+      "payloadDependencies": ["brief", "property"],
+      "visibleMetrics": ["Monthly Owner Brief items"],
+      "snapshotDependencies": ["brief", "property"]
+    },
+    {
+      "sectionName": "Detailed View — Demand Capture",
+      "domId": "adpDemandSection",
+      "renderFunction": "renderDemandCapture",
+      "payloadDependencies": ["demandCapture"],
+      "visibleMetrics": ["Demand Capture Rate", "Intent grid"],
+      "snapshotDependencies": ["demandCapture"]
+    },
+    {
+      "sectionName": "Detailed View — Lost Demand",
+      "domId": "adpLostSection",
+      "renderFunction": "renderLostDemand",
+      "payloadDependencies": ["lostDemand"],
+      "visibleMetrics": ["Scenarios Lost", "Displacement list"],
+      "snapshotDependencies": ["lostDemand"]
+    },
+    {
+      "sectionName": "Detailed View — Competitive Set",
+      "domId": "adpCompSection",
+      "renderFunction": "renderCompSet",
+      "payloadDependencies": ["competitiveSet"],
+      "visibleMetrics": ["Declared", "Observed", "Overlap"],
+      "snapshotDependencies": ["competitiveSet"]
+    },
+    {
+      "sectionName": "Detailed View — White Space",
+      "domId": "adpWhiteSpaceSection",
+      "renderFunction": "renderWhiteSpace",
+      "payloadDependencies": ["whiteSpace"],
+      "visibleMetrics": ["Opportunity cards"],
+      "snapshotDependencies": ["whiteSpace"]
+    },
+    {
+      "sectionName": "Detailed View — Reality Gap",
+      "domId": "adpRealitySection",
+      "renderFunction": "renderRealityGap",
+      "payloadDependencies": ["realityGap"],
+      "visibleMetrics": ["Reality Gap hero", "Recognizes/Misses grid"],
+      "snapshotDependencies": ["realityGap"]
+    }
+  ],
+  "optionalAdditiveSection": {
+    "sectionName": "AI Demand Positioning Metrics",
+    "domId": "adpExecutiveMetricsSection",
+    "renderFunction": "renderExecutiveMetricEnhancements",
+    "payloadDependencies": ["executiveMetrics (optional only)"],
+    "required": false
+  }
+}

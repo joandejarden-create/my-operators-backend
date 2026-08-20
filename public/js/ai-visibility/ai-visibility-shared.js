@@ -6,6 +6,39 @@
     return "aiv-avail-" + String(availability || "unavailable");
   }
 
+  var TWO_LINE_AVAILABILITY_LABELS = {
+    insufficient_history: ["Insufficient", "History"],
+    not_comparable: ["Not", "Comparable"],
+    partial_monitoring: ["Partial", "Monitoring"],
+    provider_error: ["Provider", "Error"],
+  };
+
+  function splitProperCaseLabel(label) {
+    var text = String(label || "").trim();
+    if (!text || text === "—") return null;
+    var parts = text.split(/\s+/);
+    if (parts.length < 2) return null;
+    return [parts[0], parts.slice(1).join(" ")];
+  }
+
+  function formatTwoLineAvailabilityCell(availability, line1, line2, extraClass) {
+    var avail = availability || "unavailable";
+    var cls =
+      availabilityClass(avail) +
+      " aiv-delta-none aiv-table-availability-label" +
+      (extraClass ? " " + extraClass : "");
+    var second = line2 ? '<span class="aiv-table-availability-label__line">' + escapeHtml(String(line2)) + "</span>" : "";
+    return (
+      '<span class="' +
+      cls +
+      '"><span class="aiv-table-availability-label__line">' +
+      escapeHtml(String(line1)) +
+      "</span>" +
+      second +
+      "</span>"
+    );
+  }
+
   function formatMetricCell(metric) {
     if (!metric) return '<span class="aiv-avail-unavailable">Unavailable</span>';
     var display = metric.display != null ? metric.display : "—";
@@ -57,10 +90,23 @@
               : avail === "partial_monitoring"
                 ? "Partial Monitoring"
                 : "—");
+      if (label === "—") {
+        return (
+          '<span class="' +
+          availabilityClass(avail) +
+          ' aiv-delta-none">' +
+          escapeHtml(String(label)) +
+          "</span>"
+        );
+      }
+      var lines = TWO_LINE_AVAILABILITY_LABELS[avail] || splitProperCaseLabel(label);
+      if (lines) {
+        return formatTwoLineAvailabilityCell(avail, lines[0], lines[1] || "");
+      }
       return (
         '<span class="' +
         availabilityClass(avail) +
-        ' aiv-delta-none">' +
+        ' aiv-delta-none aiv-table-availability-label">' +
         escapeHtml(String(label)) +
         "</span>"
       );
@@ -189,6 +235,7 @@
 
   global.AiVisibilityUi = {
     availabilityClass: availabilityClass,
+    formatTwoLineAvailabilityCell: formatTwoLineAvailabilityCell,
     formatMetricCell: formatMetricCell,
     formatDeltaCell: formatDeltaCell,
     statusBadge: statusBadge,

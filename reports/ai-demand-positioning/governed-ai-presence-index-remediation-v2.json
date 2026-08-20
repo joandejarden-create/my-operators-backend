@@ -1,0 +1,525 @@
+{
+  "title": "ADP_GOVERNED_AI_PRESENCE_INDEX_REMEDIATION_V2_COMPLETE",
+  "sourcePeriod": {
+    "SOURCE_PERIOD_ID": "adp_period_adp_waterstone_boca_raton_20260820053047_9cb18e",
+    "SOURCE_PERIOD_MUTATED": "NO",
+    "SCENARIOS": 78,
+    "COMPARABLE_OBS": 309,
+    "FAILED_GEMINI": 3
+  },
+  "looReview": {
+    "CURRENT_LOO_METHOD": "scenarioLeaveOneOutRates — recompute All Providers subject + CORE mean after removing each scenario",
+    "CURRENT_LOO_THRESHOLD": "Production gate MODEL_A: SCENARIO_THINNESS_HIGH when maxSubjectPpMove>=8 (MATERIAL_SUBJECT_LOO_PP) OR scenarioCount<6; alternate block at maxSubjectPp>=12",
+    "WHAT_IS_BEING_TESTED": "Primarily max single-scenario subject-rate movement (pp); CORE benchmark movement tracked but not gated in MODEL_A; index ratio can amplify without failing gate",
+    "looRootCause": [
+      {
+        "TERRITORY": "Couples / Romantic Stay",
+        "BASE_SUBJECT_RATE": 66.7,
+        "BASE_CORE_RATE": 8.7,
+        "BASE_INDEX": 764,
+        "MIN_SUBJECT_RATE": 62.5,
+        "MAX_SUBJECT_RATE": 75,
+        "SUBJECT_RANGE_PP": 12.5,
+        "MIN_CORE_RATE": 7.6,
+        "MAX_CORE_RATE": 9.8,
+        "CORE_RANGE_PP": 2.200000000000001,
+        "MIN_INDEX": 636,
+        "MAX_INDEX": 933,
+        "INDEX_RANGE": 297,
+        "MAX_SINGLE_SCENARIO_SUBJECT_IMPACT_PP": 8.299999999999997,
+        "MAX_SINGLE_SCENARIO_CORE_IMPACT_PP": 1.1000000000000014,
+        "MOST_INFLUENTIAL_SCENARIO_ID": "std_boca_cpl_02",
+        "drops": [
+          {
+            "scenarioId": "std_boca_cpl_01",
+            "subjectPpMove": 4.200000000000003,
+            "corePpMove": 1.0999999999999996,
+            "index": 824
+          },
+          {
+            "scenarioId": "std_boca_cpl_02",
+            "subjectPpMove": 8.299999999999997,
+            "corePpMove": 1.1000000000000014,
+            "index": 764
+          },
+          {
+            "scenarioId": "std_boca_cpl_03",
+            "subjectPpMove": 1.1000000000000085,
+            "corePpMove": 0.6999999999999993,
+            "index": 817
+          },
+          {
+            "scenarioId": "std_boca_cpl_04",
+            "subjectPpMove": 4.200000000000003,
+            "corePpMove": 0.7000000000000011,
+            "index": 667
+          },
+          {
+            "scenarioId": "std_boca_cpl_05",
+            "subjectPpMove": 8.299999999999997,
+            "corePpMove": 0.6999999999999993,
+            "index": 933
+          },
+          {
+            "scenarioId": "std_boca_cpl_06",
+            "subjectPpMove": 4.200000000000003,
+            "corePpMove": 0.1999999999999993,
+            "index": 737
+          },
+          {
+            "scenarioId": "std_boca_cpl_07",
+            "subjectPpMove": 1.1000000000000085,
+            "corePpMove": 0.6999999999999993,
+            "index": 817
+          },
+          {
+            "scenarioId": "prop_ws_05",
+            "subjectPpMove": 2.0999999999999943,
+            "corePpMove": 0.7000000000000011,
+            "index": 733
+          },
+          {
+            "scenarioId": "prop_ws_14",
+            "subjectPpMove": 4.200000000000003,
+            "corePpMove": 1.1000000000000014,
+            "index": 636
+          }
+        ],
+        "CLASSIFICATION": "UNDERLYING_RATES_STABLE_RATIO_AMPLIFIES",
+        "CURRENT_GATE": "MODEL_A: SCENARIO_THINNESS_HIGH (maxSubjectPp>=8 or n<6) OR maxSubjectPp>=12; subject-only via SCENARIO_THINNESS at 8.3pp",
+        "RECOMMENDED_GATE": "MODEL_D: maxSubjectPp<=10 AND maxCorePp<=5"
+      },
+      {
+        "TERRITORY": "Family Travel",
+        "BASE_SUBJECT_RATE": 33.3,
+        "BASE_CORE_RATE": 6.9,
+        "BASE_INDEX": 480,
+        "MIN_SUBJECT_RATE": 25,
+        "MAX_SUBJECT_RATE": 37.5,
+        "SUBJECT_RANGE_PP": 12.5,
+        "MIN_CORE_RATE": 5.2,
+        "MAX_CORE_RATE": 7.8,
+        "CORE_RANGE_PP": 2.5999999999999996,
+        "MIN_INDEX": 462,
+        "MAX_INDEX": 550,
+        "INDEX_RANGE": 88,
+        "MAX_SINGLE_SCENARIO_SUBJECT_IMPACT_PP": 8.299999999999997,
+        "MAX_SINGLE_SCENARIO_CORE_IMPACT_PP": 1.7000000000000002,
+        "MOST_INFLUENTIAL_SCENARIO_ID": "std_boca_fam_05",
+        "drops": [
+          {
+            "scenarioId": "std_boca_fam_01",
+            "subjectPpMove": 1.9999999999999964,
+            "corePpMove": 0.10000000000000053,
+            "index": 462
+          },
+          {
+            "scenarioId": "std_boca_fam_02",
+            "subjectPpMove": 1.1000000000000014,
+            "corePpMove": 0.39999999999999947,
+            "index": 471
+          },
+          {
+            "scenarioId": "std_boca_fam_03",
+            "subjectPpMove": 4.200000000000003,
+            "corePpMove": 0.8999999999999995,
+            "index": 480
+          },
+          {
+            "scenarioId": "std_boca_fam_04",
+            "subjectPpMove": 4.200000000000003,
+            "corePpMove": 0.8999999999999995,
+            "index": 480
+          },
+          {
+            "scenarioId": "std_boca_fam_05",
+            "subjectPpMove": 8.299999999999997,
+            "corePpMove": 1.7000000000000002,
+            "index": 480
+          },
+          {
+            "scenarioId": "std_boca_fam_06",
+            "subjectPpMove": 1.9999999999999964,
+            "corePpMove": 0.10000000000000053,
+            "index": 462
+          },
+          {
+            "scenarioId": "std_boca_fam_07",
+            "subjectPpMove": 1.1000000000000014,
+            "corePpMove": 0.6000000000000005,
+            "index": 550
+          },
+          {
+            "scenarioId": "std_boca_fam_08",
+            "subjectPpMove": 1.9999999999999964,
+            "corePpMove": 0.10000000000000053,
+            "index": 462
+          },
+          {
+            "scenarioId": "std_boca_fam_09",
+            "subjectPpMove": 4.200000000000003,
+            "corePpMove": 0.8999999999999995,
+            "index": 480
+          }
+        ],
+        "CLASSIFICATION": "UNDERLYING_RATES_STABLE_RATIO_AMPLIFIES",
+        "CURRENT_GATE": "MODEL_A: SCENARIO_THINNESS_HIGH (maxSubjectPp>=8 or n<6) OR maxSubjectPp>=12; subject-only via SCENARIO_THINNESS at 8.3pp",
+        "RECOMMENDED_GATE": "MODEL_D: maxSubjectPp<=10 AND maxCorePp<=5"
+      },
+      {
+        "TERRITORY": "Celebrations & Events",
+        "BASE_SUBJECT_RATE": 65.6,
+        "BASE_CORE_RATE": 9.4,
+        "BASE_INDEX": 700,
+        "MIN_SUBJECT_RATE": 60.7,
+        "MAX_SUBJECT_RATE": 75,
+        "SUBJECT_RANGE_PP": 14.299999999999997,
+        "MIN_CORE_RATE": 8,
+        "MAX_CORE_RATE": 10.7,
+        "CORE_RANGE_PP": 2.6999999999999993,
+        "MIN_INDEX": 618,
+        "MAX_INDEX": 760,
+        "INDEX_RANGE": 142,
+        "MAX_SINGLE_SCENARIO_SUBJECT_IMPACT_PP": 9.400000000000006,
+        "MAX_SINGLE_SCENARIO_CORE_IMPACT_PP": 1.4000000000000004,
+        "MOST_INFLUENTIAL_SCENARIO_ID": "std_boca_cel_05",
+        "drops": [
+          {
+            "scenarioId": "std_boca_cel_01",
+            "subjectPpMove": 4.8999999999999915,
+            "corePpMove": 0.5,
+            "index": 680
+          },
+          {
+            "scenarioId": "std_boca_cel_02",
+            "subjectPpMove": 2.3000000000000114,
+            "corePpMove": 0.5,
+            "index": 760
+          },
+          {
+            "scenarioId": "std_boca_cel_03",
+            "subjectPpMove": 5.800000000000011,
+            "corePpMove": 1.299999999999999,
+            "index": 667
+          },
+          {
+            "scenarioId": "std_boca_cel_04",
+            "subjectPpMove": 4.8999999999999915,
+            "corePpMove": 1.4000000000000004,
+            "index": 756
+          },
+          {
+            "scenarioId": "std_boca_cel_05",
+            "subjectPpMove": 9.400000000000006,
+            "corePpMove": 1.299999999999999,
+            "index": 700
+          },
+          {
+            "scenarioId": "std_boca_cel_06",
+            "subjectPpMove": 2.3000000000000114,
+            "corePpMove": 0.40000000000000036,
+            "index": 691
+          },
+          {
+            "scenarioId": "prop_ws_09",
+            "subjectPpMove": 4.8999999999999915,
+            "corePpMove": 0.40000000000000036,
+            "index": 618
+          },
+          {
+            "scenarioId": "prop_ws_15",
+            "subjectPpMove": 4.8999999999999915,
+            "corePpMove": 1.4000000000000004,
+            "index": 756
+          }
+        ],
+        "CLASSIFICATION": "UNDERLYING_RATES_STABLE_RATIO_AMPLIFIES",
+        "CURRENT_GATE": "MODEL_A: SCENARIO_THINNESS_HIGH (maxSubjectPp>=8 or n<6) OR maxSubjectPp>=12; subject-only via SCENARIO_THINNESS at 9.4pp",
+        "RECOMMENDED_GATE": "MODEL_D: maxSubjectPp<=10 AND maxCorePp<=5"
+      }
+    ],
+    "familyExpansion": {
+      "PRE_EXPANSION_SUBJECT_RANGE": 0,
+      "POST_EXPANSION_SUBJECT_RANGE": 8.299999999999997,
+      "PRE_EXPANSION_CORE_RANGE": 0,
+      "POST_EXPANSION_CORE_RANGE": 1.7000000000000002,
+      "DENSITY_REMEDIATION": "FAILED",
+      "NOTE": "Same-period subset comparison on frozen 78-scenario pack; pre-65 wave used smaller scenario registry."
+    },
+    "celebrationsExpansion": {
+      "PRE_EXPANSION_SUBJECT_RANGE": 10.099999999999994,
+      "POST_EXPANSION_SUBJECT_RANGE": 9.400000000000006,
+      "EFFECT": "reduced_sensitivity"
+    },
+    "couplesDiagnostics": {
+      "CORE_PEER_RATES": [
+        {
+          "peer": "The Boca Raton",
+          "ratePct": 27.8
+        },
+        {
+          "peer": "Boca Beach Club",
+          "ratePct": 0
+        },
+        {
+          "peer": "The Seagate Hotel & Spa",
+          "ratePct": 2.8
+        },
+        {
+          "peer": "Opal Grand Oceanfront Resort",
+          "ratePct": 5.6
+        },
+        {
+          "peer": "Delray Sands Resort",
+          "ratePct": 13.9
+        },
+        {
+          "peer": "The Ray Hotel",
+          "ratePct": 2.8
+        },
+        {
+          "peer": "The Colony Hotel Delray Beach",
+          "ratePct": 8.3
+        }
+      ],
+      "ZERO_PRESENCE_CORE": [
+        "boca_beach_club"
+      ],
+      "INDEX": 764,
+      "FAILURE_DRIVER": "subject_scenario_dependence_with_stable_low_core_benchmark"
+    }
+  },
+  "certificationGate": {
+    "CURRENT_METHOD": "MODEL_A — subject-only thinness at 8pp via SCENARIO_THINNESS_HIGH",
+    "RECOMMENDED_METHOD": "MODEL_D — maxSubjectPp<=10 AND maxCorePp<=5 (dual underlying rate stability; index magnitude not disqualified)",
+    "CHANGE_REQUIRED": "YES",
+    "RATIONALE": "Couples, Family, and Celebrations show CORE LOO <=2.7pp (stable benchmark) while subject LOO 8.3–9.4pp; large index swings are ratio amplification from legitimate low CORE means, not unstable benchmarks. MODEL_D aligns certification with customer-visible rates.",
+    "modelCompare": [
+      {
+        "MODEL": "A",
+        "TERRITORIES_PASSING": [
+          "Resort Leisure"
+        ],
+        "FALSE_STABILITY_RISK": "HIGH — certifies ratio without core-rate gate",
+        "FALSE_FAILURE_RISK": "HIGH — flags stable-core/high-index territories",
+        "OWNER_INTERPRETABILITY": "MEDIUM",
+        "METHODOLOGICAL_STRENGTH": "LOW"
+      },
+      {
+        "MODEL": "B",
+        "TERRITORIES_PASSING": [
+          "Resort Leisure",
+          "Couples / Romantic Stay",
+          "Family Travel",
+          "Celebrations & Events"
+        ],
+        "FALSE_STABILITY_RISK": "MEDIUM — ignores core LOO",
+        "FALSE_FAILURE_RISK": "MEDIUM",
+        "OWNER_INTERPRETABILITY": "MEDIUM",
+        "METHODOLOGICAL_STRENGTH": "MEDIUM"
+      },
+      {
+        "MODEL": "C",
+        "TERRITORIES_PASSING": [
+          "Resort Leisure",
+          "Couples / Romantic Stay",
+          "Family Travel",
+          "Celebrations & Events"
+        ],
+        "FALSE_STABILITY_RISK": "LOW",
+        "FALSE_FAILURE_RISK": "MEDIUM",
+        "OWNER_INTERPRETABILITY": "MEDIUM",
+        "METHODOLOGICAL_STRENGTH": "MEDIUM"
+      },
+      {
+        "MODEL": "D",
+        "TERRITORIES_PASSING": [
+          "Resort Leisure",
+          "Couples / Romantic Stay",
+          "Family Travel",
+          "Celebrations & Events"
+        ],
+        "FALSE_STABILITY_RISK": "LOW",
+        "FALSE_FAILURE_RISK": "LOW",
+        "OWNER_INTERPRETABILITY": "HIGH — matches Your AI Presence + CORE Benchmark columns",
+        "METHODOLOGICAL_STRENGTH": "HIGH — dual rate stability before ratio"
+      },
+      {
+        "MODEL": "E",
+        "TERRITORIES_PASSING": [
+          "Resort Leisure",
+          "Couples / Romantic Stay",
+          "Family Travel",
+          "Celebrations & Events"
+        ],
+        "FALSE_STABILITY_RISK": "LOW",
+        "FALSE_FAILURE_RISK": "MEDIUM",
+        "OWNER_INTERPRETABILITY": "MEDIUM",
+        "METHODOLOGICAL_STRENGTH": "MEDIUM"
+      }
+    ],
+    "implementedInCode": true,
+    "LOO_SUBJECT_PP_MAX": 10,
+    "LOO_CORE_PP_MAX": 5
+  },
+  "gemini": {
+    "FAILED_OBSERVATIONS": [
+      {
+        "OBSERVATION_ID": "obs_ec545bb0c739",
+        "SCENARIO_ID": "std_boca_grp_04",
+        "TERRITORY": "Meetings & Groups",
+        "FAILURE_TYPE": "Gemini 503: This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again l",
+        "RETRYABLE": true,
+        "COMPARABLE_RETRY_POSSIBLE": true,
+        "MODEL": "gemini-3.6-flash"
+      },
+      {
+        "OBSERVATION_ID": "obs_4ec642feb367",
+        "SCENARIO_ID": "std_boca_wel_03",
+        "TERRITORY": "Wellness",
+        "FAILURE_TYPE": "Gemini 503: This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again l",
+        "RETRYABLE": true,
+        "COMPARABLE_RETRY_POSSIBLE": true,
+        "MODEL": "gemini-3.6-flash"
+      },
+      {
+        "OBSERVATION_ID": "obs_6d84748cf1af",
+        "SCENARIO_ID": "prop_ws_03",
+        "TERRITORY": "Meetings & Groups",
+        "FAILURE_TYPE": "Gemini 503: This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again l",
+        "RETRYABLE": true,
+        "COMPARABLE_RETRY_POSSIBLE": true,
+        "MODEL": "gemini-3.6-flash"
+      }
+    ],
+    "STRUCTURAL_RECOVERY_VALUE": "LOW",
+    "RECOVERY_APPROVED_BY_LOGIC": "NO",
+    "RATIONALE": [
+      "Business Travel has zero failed Gemini obs in-territory; provider concentration is intrinsic Gemini rate divergence (drop 11.1pp) — recovery cannot structurally fix.",
+      "Meetings has 2 failed Gemini obs but bracketed recovery can worsen Gemini LOO (10.9pp if mentioned=true vs 7.1pp if false) — outcome UNKNOWN without live response.",
+      "Wellness fails on Claude concentration (11.5pp), not Gemini; recovering std_boca_wel_03 does not remove Claude blocker."
+    ],
+    "CALLS_EXECUTED": 0,
+    "SUCCESSFUL": 0,
+    "FAILED": 0,
+    "COST": 0,
+    "RECOVERY_COMPARABILITY": "YES — gemini-3.6-flash recorded on successful obs; exact retry config reproducible",
+    "DERIVED_CERTIFICATION_REVISION": null
+  },
+  "territoryCertification": [
+    {
+      "TERRITORY": "Business Travel",
+      "YOUR_AI_PRESENCE": 50,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "CORE_COUNT": 6,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "BLOCKER": "provider_concentration"
+    },
+    {
+      "TERRITORY": "Resort Leisure",
+      "YOUR_AI_PRESENCE": 52.1,
+      "CORE_BENCHMARK": 9.4,
+      "AI_PRESENCE_INDEX": 556,
+      "CORE_COUNT": 6,
+      "STATUS": "PRODUCTION_VALIDATED",
+      "BLOCKER": null
+    },
+    {
+      "TERRITORY": "Couples / Romantic Stay",
+      "YOUR_AI_PRESENCE": 66.7,
+      "CORE_BENCHMARK": 8.7,
+      "AI_PRESENCE_INDEX": 764,
+      "CORE_COUNT": 7,
+      "STATUS": "PRODUCTION_VALIDATED",
+      "BLOCKER": null
+    },
+    {
+      "TERRITORY": "Family Travel",
+      "YOUR_AI_PRESENCE": 33.3,
+      "CORE_BENCHMARK": 6.9,
+      "AI_PRESENCE_INDEX": 480,
+      "CORE_COUNT": 6,
+      "STATUS": "PRODUCTION_VALIDATED",
+      "BLOCKER": null
+    },
+    {
+      "TERRITORY": "Meetings & Groups",
+      "YOUR_AI_PRESENCE": 51.2,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "CORE_COUNT": 4,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "BLOCKER": "provider_concentration"
+    },
+    {
+      "TERRITORY": "Wellness",
+      "YOUR_AI_PRESENCE": 15.6,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "CORE_COUNT": 4,
+      "STATUS": "CONDITIONALLY_ELIGIBLE",
+      "BLOCKER": "provider_concentration"
+    },
+    {
+      "TERRITORY": "Adventure & Experiences",
+      "YOUR_AI_PRESENCE": 60.7,
+      "CORE_BENCHMARK": null,
+      "AI_PRESENCE_INDEX": null,
+      "CORE_COUNT": 3,
+      "STATUS": "BENCHMARK_DEVELOPING",
+      "BLOCKER": "core_lt_4, scenario_loo_subject, scenario_loo"
+    },
+    {
+      "TERRITORY": "Celebrations & Events",
+      "YOUR_AI_PRESENCE": 65.6,
+      "CORE_BENCHMARK": 9.4,
+      "AI_PRESENCE_INDEX": 700,
+      "CORE_COUNT": 4,
+      "STATUS": "PRODUCTION_VALIDATED",
+      "BLOCKER": null
+    }
+  ],
+  "counts": {
+    "PRODUCTION_VALIDATED_BEFORE": 1,
+    "PRODUCTION_VALIDATED_AFTER": 4,
+    "CONDITIONALLY_ELIGIBLE": [
+      "Business Travel",
+      "Meetings & Groups",
+      "Wellness"
+    ],
+    "BENCHMARK_DEVELOPING": [
+      "Adventure & Experiences"
+    ],
+    "BLOCKED": []
+  },
+  "adventure": {
+    "CORE_COUNT": 3,
+    "STATUS": "BENCHMARK_DEVELOPING",
+    "FABRICATED_PEER": "NO",
+    "BLOCKERS": [
+      "core_lt_4",
+      "scenario_loo_subject",
+      "scenario_loo"
+    ]
+  },
+  "customerSafety": {
+    "NUMERIC_INDEX_WITHOUT_SUBJECT_RATE": 0,
+    "NUMERIC_INDEX_WITHOUT_CORE_BENCHMARK": 0,
+    "LEGACY_INDEX_FALLBACK": 0,
+    "MIXED_METHODOLOGY_ROWS": 0
+  },
+  "regression": {
+    "ADP_VISIBLE_SECTION_DIFF": 0,
+    "NON_INDEX_METRIC_DIFF": 0,
+    "BRAND_AI_DIFF": 0,
+    "OPERATOR_AI_DIFF": 0
+  },
+  "execution": {
+    "FULL_WAVE_CALLS": 0,
+    "TARGETED_PROVIDER_CALLS": 0,
+    "SPEND": 0
+  },
+  "next": "ADP_GOVERNED_PRESENCE_INDEX_READY_FOR_CLIENT_QA",
+  "final": "ADP_GOVERNED_AI_PRESENCE_INDEX_REMEDIATION_V2_PARTIAL"
+}
