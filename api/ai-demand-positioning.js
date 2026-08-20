@@ -31,7 +31,15 @@ export async function getAiDemandPositioningReport(req, res) {
       return res.status(status).json(result);
     }
 
-    return res.json(result.payload);
+    const payload = {
+      ...result.payload,
+      propertyId: propertyId,
+      property: {
+        ...(result.payload.property || {}),
+        propertyId,
+      },
+    };
+    return res.json(payload);
   } catch (err) {
     console.error("[AI Demand Positioning] report error:", err);
     return res.status(500).json({ ok: false, error: "internal_error", message: err.message });

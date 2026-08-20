@@ -78,6 +78,19 @@
     }
   }
 
+  /** Active property for evidence API calls — never fall back to another hotel. */
+  function getActivePropertyId() {
+    if (currentPayload) {
+      if (currentPayload.property && currentPayload.property.propertyId) {
+        return currentPayload.property.propertyId;
+      }
+      if (currentPayload.propertyId) return currentPayload.propertyId;
+    }
+    var sel = document.getElementById("adpProperty");
+    if (sel && sel.value) return sel.value;
+    return getQueryPropertyId();
+  }
+
   async function loadProperties() {
     try {
       var res = await authFetch(API_BASE + "/properties");
@@ -487,7 +500,11 @@
     body.innerHTML = '<div class="aiv-empty">Loading evidence\u2026</div>';
     if (typeof drawer.showModal === "function" && !drawer.open) drawer.showModal();
 
-    var pid = currentPayload && currentPayload.property && currentPayload.property.propertyId || "adp_waterstone_boca_raton";
+    var pid = getActivePropertyId();
+    if (!pid) {
+      body.innerHTML = '<div class="aiv-empty">Select a property to view evidence.</div>';
+      return;
+    }
     fetch("/api/ai-demand-positioning/property/" + encodeURIComponent(pid) + "/evidence?intent=" + encodeURIComponent(intent) + "&type=missing")
       .then(function(r) { return r.json(); })
       .then(function(data) {
@@ -679,7 +696,11 @@
     body.innerHTML = '<div class="aiv-empty">Loading displacement evidence\u2026</div>';
     if (typeof drawer.showModal === "function" && !drawer.open) drawer.showModal();
 
-    var pid = currentPayload && currentPayload.property && currentPayload.property.propertyId || "adp_waterstone_boca_raton";
+    var pid = getActivePropertyId();
+    if (!pid) {
+      body.innerHTML = '<div class="aiv-empty">Select a property to view evidence.</div>';
+      return;
+    }
     fetch("/api/ai-demand-positioning/property/" + encodeURIComponent(pid) + "/evidence?type=displacement&competitor=" + encodeURIComponent(competitorName))
       .then(function(r) { return r.json(); })
       .then(function(data) {
