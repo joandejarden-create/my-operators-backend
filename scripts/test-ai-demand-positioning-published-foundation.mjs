@@ -15,6 +15,7 @@ import {
 import { getPublishedOwnerReport, getPublishedEvidenceResponse } from "../lib/ai-demand-positioning/published-read-service.js";
 import { queryEvidenceIndex, buildEvidenceIndex } from "../lib/ai-demand-positioning/customer/evidence-index.js";
 import { buildScenarioUniverse } from "../lib/ai-demand-positioning/prompt-universe/scenario-registry.js";
+import { buildOwnerPayload } from "../lib/ai-demand-positioning/customer/owner-payload.js";
 import { validatePublishedReportUpsert } from "../lib/ai-demand-positioning/airtable-published-report.js";
 
 const PROPERTY_ID = "adp_waterstone_boca_raton";
@@ -46,6 +47,9 @@ async function main() {
   assert.equal(evidenceIndex.ok, true);
 
   const scenarios = buildScenarioUniverse(profile);
+  const ownerPayload = buildOwnerPayload(period, scenarios, profile);
+  assert.equal(ownerPayload.property?.propertyId, PROPERTY_ID, "owner payload includes propertyId");
+
   const builtIndex = buildEvidenceIndex(period, scenarios);
   const missing = queryEvidenceIndex(builtIndex, { intent: "leisure", type: "missing" });
   assert.ok(Array.isArray(missing.evidence));
@@ -59,6 +63,19 @@ async function main() {
     type: "missing",
   });
   assert.equal(evidenceResult.ok, true);
+  assert.equal(evidenceResult.propertyId, PROPERTY_ID);
+
+  const nohoEvidence = await getPublishedEvidenceResponse("adp_now_now_noho", {
+    intent: "business",
+    type: "missing",
+  });
+  if (nohoEvidence.ok && nohoEvidence.evidence?.length) {
+    const sample = nohoEvidence.evidence[0];
+    assert.ok(
+      !String(sample.scenarioLabel || sample.scenarioId || "").includes("boca"),
+      "NOW NOW NOHO evidence must not use Boca scenario ids"
+    );
+  }
 
   console.log("test:ai-demand-positioning-published-foundation — PASS");
 }
