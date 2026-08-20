@@ -116,8 +116,8 @@ const GOVERNED_OWNED_REGISTRY = Object.freeze({
 });
 
 const INTENDED_SECTION_ORDER = [
-  "property-snapshot",
   "executive-summary",
+  "property-snapshot",
   "ai-demand-positioning-metrics",
   "ai-presence-by-demand-territory",
   "trends",
@@ -1015,7 +1015,7 @@ async function main() {
       severity: "P1_CLIENT_QA_BLOCKER",
       module: "Section Order",
       finding: `Actual section order differs from intended: ${JSON.stringify(sectionOrder.diffs)}`,
-      rootCause: "owner-ai-demand.html currently places Executive Summary before Property Snapshot",
+      rootCause: "owner-ai-demand.html section order does not match INTENDED_SECTION_ORDER (Executive Summary must precede Property Snapshot)",
       baselineBlocker: true,
     });
   }

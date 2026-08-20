@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Demand Positioning | Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
-  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=adp-v50-20260820-baseline001">
-  <link rel="stylesheet" href="/js/ai-demand-positioning/ai-demand-positioning.css?v=adp-v50-20260820-baseline001">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=adp-v51-20260820-exec-order">
+  <link rel="stylesheet" href="/js/ai-demand-positioning/ai-demand-positioning.css?v=adp-v51-20260820-exec-order">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script>window.authFetch = function(url, opts) { return fetch(url, opts); };</script>
-  <script src="/js/ai-demand-positioning/ai-demand-positioning.js?v=adp-v50-20260820-baseline001" defer></script>
+  <script src="/js/ai-demand-positioning/ai-demand-positioning.js?v=adp-v51-20260820-exec-order" defer></script>
 </head>
 <body class="aiv-page embed-mode">
   <div class="dashboard-container aiv-dashboard">
@@ -78,12 +78,6 @@
         <div class="adp-layer adp-layer--executive" data-adp-layer="executive-summary">
           <p class="adp-layer-label" hidden>Executive Summary</p>
 
-          <section class="aiv-theme-group adp-section-snapshot" aria-labelledby="adpThemePosition" data-adp-section="property-snapshot">
-            <h2 id="adpThemePosition" class="aiv-theme-title">Property Snapshot</h2>
-            <p class="aiv-theme-help help-text">Key results for this hotel from the current monitoring period. These are observed facts, not a single overall score.</p>
-            <div class="aiv-kpi-row aiv-theme-kpis" id="adpKpiRow" aria-label="Headline KPIs"></div>
-          </section>
-
           <section class="aiv-theme-group adp-section-executive-read" aria-labelledby="adpThemeExecutiveRead" data-adp-section="executive-summary" id="adpExecutiveReadSection">
             <h2 id="adpThemeExecutiveRead" class="aiv-theme-title">Executive Summary</h2>
             <p class="aiv-theme-help help-text">A plain language summary of where the hotel is strongest, where it is weakest, and what changed since the last monitoring period we can fairly compare against.</p>
@@ -97,6 +91,12 @@
               </div>
               <p class="adp-executive-read__empty aiv-empty aiv-empty--compact" id="adpExecutiveReadEmpty" hidden>Executive summary is not available for this period.</p>
             </div>
+          </section>
+
+          <section class="aiv-theme-group adp-section-snapshot" aria-labelledby="adpThemePosition" data-adp-section="property-snapshot">
+            <h2 id="adpThemePosition" class="aiv-theme-title">Property Snapshot</h2>
+            <p class="aiv-theme-help help-text">Key results for this hotel from the current monitoring period. These are observed facts, not a single overall score.</p>
+            <div class="aiv-kpi-row aiv-theme-kpis" id="adpKpiRow" aria-label="Headline KPIs"></div>
           </section>
 
           <section class="aiv-theme-group adp-section-metrics" id="adpExecutiveMetricsSection" aria-labelledby="adpThemeExecutiveMetrics" data-adp-section="ai-demand-positioning-metrics">
