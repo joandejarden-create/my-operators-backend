@@ -988,10 +988,42 @@
     if (adpTrendChart) { try { adpTrendChart.destroy(); } catch (_) {} adpTrendChart = null; }
 
     var trends = d.trends;
-    if (!trends || trends.length < 2) {
+    if (!trends || !trends.length) {
       emptyEl.hidden = false;
-      emptyEl.innerHTML = '<p class="aiv-empty__message">Additional comparable monitoring periods are required for trend analysis.</p>';
+      emptyEl.innerHTML = '<p class="aiv-empty__message">No official baseline monitoring period is available yet.</p>';
       if (summaryEl) summaryEl.hidden = true;
+      if (chartWrap) chartWrap.hidden = true;
+      return;
+    }
+
+    // One official comparable period: show baseline observation, no delta / no fabricated change.
+    if (trends.length === 1) {
+      var baseline = trends[0];
+      var baselineDate = (baseline.date || "").slice(0, 10) || "Baseline";
+      var consideration = baseline.considerationRate;
+      if (consideration == null && d.executiveMetrics && d.executiveMetrics.considerationRate) {
+        consideration = d.executiveMetrics.considerationRate.rate;
+      }
+      var scenarioPresence = baseline.scenarioPresenceRate;
+      if (scenarioPresence == null && d.executiveMetrics && d.executiveMetrics.scenarioPresence) {
+        scenarioPresence = d.executiveMetrics.scenarioPresence.rate;
+      }
+      var realityCoverage = baseline.propertyRealityCoverage;
+      emptyEl.hidden = false;
+      emptyEl.innerHTML =
+        '<p class="aiv-empty__message"><strong>Baseline — ' + esc(baselineDate) + '</strong></p>' +
+        '<p class="aiv-empty__message">AI Consideration Rate: ' + (consideration != null ? fmtPct(consideration) : "\u2014") + '</p>' +
+        '<p class="aiv-empty__message">Scenario Presence: ' + (scenarioPresence != null ? fmtPct(scenarioPresence) : "\u2014") + '</p>' +
+        (realityCoverage != null ? '<p class="aiv-empty__message">Reality Coverage: ' + fmtPct(realityCoverage) + '</p>' : '') +
+        '<p class="aiv-empty__message" style="margin-top:0.75rem;"><strong>Change</strong><br>Not available until the next comparable monitoring period.</p>';
+      if (summaryEl) {
+        summaryEl.hidden = false;
+        summaryEl.innerHTML =
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Baseline</div><div class="aiv-detail-trend-stat__value">' + esc(baselineDate) + '</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (consideration != null ? fmtPct(consideration) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (scenarioPresence != null ? fmtPct(scenarioPresence) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">1</div></div>';
+      }
       if (chartWrap) chartWrap.hidden = true;
       return;
     }
@@ -1281,7 +1313,7 @@
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (!data.ok || !data.evidence || !data.evidence.length) {
-          body.innerHTML = '<div class="aiv-empty">No missing evidence available for this intent.</div>';
+          body.innerHTML = '<div class="aiv-empty">Evidence unavailable for this observation. No valid provider evidence was captured for this demand intent (or none matched the selected filter).</div>';
           return;
         }
         var intentLabel = formatIntentTerritoryLabel(intent);
@@ -1434,22 +1466,22 @@
     }, 2400);
   }
 
-  function renderCompBenchmarkCount(countWrap, countEl, territoryRanking, isOverall) {
-    if (!countWrap || !countEl) return;
+  function renderCompBenchmarkCount(metaEl, territoryRanking, isOverall) {
+    if (!metaEl) return;
     if (isOverall) {
-      countWrap.hidden = true;
-      countEl.textContent = "";
-      countEl.innerHTML = "";
+      metaEl.hidden = true;
+      metaEl.textContent = "";
+      metaEl.innerHTML = "";
       return;
     }
     var rec = territoryRanking.reconciliation || {};
     var coreCount = Number(rec.CORE_COUNT || territoryRanking.coreCount);
     if (Number.isFinite(coreCount) && coreCount > 0) {
-      countWrap.hidden = false;
-      countEl.innerHTML =
-        '<button type="button" class="aiv-cell-submeta aiv-cell-submeta--link" data-adp-comp-core-highlight="1">' +
+      metaEl.hidden = false;
+      metaEl.innerHTML =
+        '<button type="button" class="aiv-cell-submeta aiv-cell-submeta--link adp-comp-core-meta-btn" data-adp-comp-core-highlight="1">' +
         "Based on " + coreCount + " CORE comparable hotels</button>";
-      var btn = countEl.querySelector("[data-adp-comp-core-highlight]");
+      var btn = metaEl.querySelector("[data-adp-comp-core-highlight]");
       if (btn) {
         btn.addEventListener("click", function() {
           highlightCompCoreRows();
@@ -1457,9 +1489,9 @@
       }
       return;
     }
-    countWrap.hidden = true;
-    countEl.textContent = "";
-    countEl.innerHTML = "";
+    metaEl.hidden = true;
+    metaEl.textContent = "";
+    metaEl.innerHTML = "";
   }
 
   function renderCompTerritorySelector(d) {
@@ -1482,7 +1514,7 @@
     }).join("");
     wrap.hidden = false;
     wrap.innerHTML =
-      '<label class="adp-comp-territory-label" for="adpCompTerritorySelect">Demand territory</label>' +
+      '<label class="adp-comp-territory-label" for="adpCompTerritorySelect">Demand Territory</label>' +
       '<select id="adpCompTerritorySelect" class="adp-comp-territory-select" aria-label="Select demand territory for competitive ranking">' +
       options + '</select>';
     var sel = document.getElementById("adpCompTerritorySelect");
@@ -1511,8 +1543,7 @@
 
   function renderExecCompTable(d) {
     var el = document.getElementById("adpCompTableBody");
-    var countWrap = document.getElementById("adpCompCount");
-    var countEl = document.querySelector("#adpCompCount .results-count");
+    var coreMetaEl = document.getElementById("adpCompCoreMeta");
     var tableEl = document.getElementById("adpCompTable");
     if (!el) return;
 
@@ -1533,13 +1564,13 @@
     }
 
     if (!territoryRanking || !territoryRanking.displayRows || !territoryRanking.displayRows.length) {
-      renderCompBenchmarkCount(countWrap, countEl, territoryRanking, isOverall);
+      renderCompBenchmarkCount(coreMetaEl, territoryRanking, isOverall);
       el.innerHTML = '<tr><td colspan="7"><p class="aiv-empty-message">No competitive ranking data for the selected view.</p></td></tr>';
       return;
     }
 
     var rows = territoryRanking.displayRows;
-    renderCompBenchmarkCount(countWrap, countEl, territoryRanking, isOverall);
+    renderCompBenchmarkCount(coreMetaEl, territoryRanking, isOverall);
 
     var subjectName =
       (d.property && d.property.name) ||
@@ -1975,6 +2006,7 @@
       html += '<div class="adp-action-title">' + esc(a.title) + '</div>';
       html += '<div class="adp-action-desc">' + esc(a.description) + '</div>';
       if (a.expectedImpact) html += '<div class="adp-action-impact">Expected: ' + esc(a.expectedImpact) + '</div>';
+      else if (a.impactNote) html += '<div class="adp-action-impact">' + esc(a.impactNote) + '</div>';
       html += '</div>';
     });
     html += '</div>';

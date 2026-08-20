@@ -654,6 +654,8 @@
   gap: 10px;
   margin: 8px 0 10px;
   flex-wrap: wrap;
+  /* Stable filter chrome height across territory selections */
+  min-height: 40px;
 }
 .adp-comp-territory-label {
   font-size: 11px;
@@ -670,6 +672,60 @@
   background: var(--secondary--color-1, rgba(11, 23, 56, 0.55));
   color: var(--neutral--300, #d9e1fa);
   font-size: 13px;
+}
+
+/* Competitive Overview title row — CORE meta lives here (not under Demand Territory filter) */
+.adp-comp-overview-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  min-height: 1.5rem;
+}
+.adp-comp-overview-title {
+  margin: 0;
+}
+.adp-comp-core-meta {
+  font-size: 12px;
+  color: var(--neutral--500, #7e89ac);
+  white-space: nowrap;
+  flex: 0 1 auto;
+}
+.adp-comp-core-meta-btn {
+  font-size: 12px;
+}
+@media (max-width: 720px) {
+  .adp-comp-overview-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .adp-comp-core-meta {
+    white-space: normal;
+  }
+}
+
+/* Fixed column geometry across Demand Territory filter states */
+#adpCompTable.adp-comp-table-fixed {
+  table-layout: fixed;
+  width: 100%;
+}
+#adpCompTable.adp-comp-table-fixed .adp-comp-col--rank { width: 7%; }
+#adpCompTable.adp-comp-table-fixed .adp-comp-col--hotel { width: 28%; }
+#adpCompTable.adp-comp-table-fixed .adp-comp-col--presence { width: 12%; }
+#adpCompTable.adp-comp-table-fixed .adp-comp-col--chg { width: 12%; }
+#adpCompTable.adp-comp-table-fixed .adp-comp-col--displacement { width: 14%; }
+#adpCompTable.adp-comp-table-fixed .adp-comp-col--shared { width: 12%; }
+#adpCompTable.adp-comp-table-fixed .adp-comp-col--territory { width: 15%; }
+#adpCompTable.adp-comp-table-fixed th,
+#adpCompTable.adp-comp-table-fixed td {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+#adpCompTable.adp-comp-table-fixed td:nth-child(2) {
+  overflow-wrap: break-word;
 }
 .aiv-cell-submeta--link {
   background: none;
