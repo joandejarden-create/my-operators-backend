@@ -168,11 +168,22 @@
             <h2 id="adpThemeCompSet" class="aiv-theme-title">AI Competitive Set</h2>
             <p class="aiv-theme-help help-text">The hotels AI mentions most often, plus all comparable hotels used in the selected territory analysis.</p>
             <div id="adpCompTerritoryWrap" class="adp-comp-territory-wrap" hidden></div>
-            <div id="adpCompCount" class="results-row aiv-portfolio-results"><div class="results-count"></div></div>
             <div class="aiv-theme-card aiv-theme-card--flush">
-              <h3 class="aiv-theme-label">Competitive Overview</h3>
+              <div class="adp-comp-overview-title-row">
+                <h3 class="aiv-theme-label adp-comp-overview-title">Competitive Overview</h3>
+                <div id="adpCompCoreMeta" class="adp-comp-core-meta" hidden></div>
+              </div>
               <div class="deals-table-container aiv-portfolio-table-wrap">
-                <table class="deals-table aiv-portfolio-table" id="adpCompTable">
+                <table class="deals-table aiv-portfolio-table adp-comp-table-fixed" id="adpCompTable">
+                  <colgroup>
+                    <col class="adp-comp-col adp-comp-col--rank" />
+                    <col class="adp-comp-col adp-comp-col--hotel" />
+                    <col class="adp-comp-col adp-comp-col--presence" />
+                    <col class="adp-comp-col adp-comp-col--chg" />
+                    <col class="adp-comp-col adp-comp-col--displacement" />
+                    <col class="adp-comp-col adp-comp-col--shared" />
+                    <col class="adp-comp-col adp-comp-col--territory" />
+                  </colgroup>
                   <thead>
                     <tr>
                       <th data-sort="rank"><span class="aiv-th-label"><span class="aiv-th-text">Rank</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Rank"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Rank</strong><br><br><strong>Question:</strong> Where does this hotel rank by AI presence across all monitored demand scenarios?<br><br><strong>Why track it:</strong> Shows who leads AI recommendations in your market and where you sit in the competitive order.</div></span></span></th>
