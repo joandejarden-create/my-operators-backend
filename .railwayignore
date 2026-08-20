@@ -1,8 +1,21 @@
+﻿
 # Keep Railway uploads lean — local-only / generated bulk paths
 matcha/
 reports/
 uploads/
 engagements/
+rail-explore/
+shorecast-github-repo/
+backups/
+deploy-census-v4-worker/
+deploy-census-v4-worker-v2/
+deploy-census-v4-worker-v3/
+deploy-census-v4-worker-v3b/
+deploy-census-v4-worker-v3c/
+deploy-census-v4-worker-v3d/
+security/
+.agents/
+tmp-*/
 data/
 # ADP official periods + published snapshots (customer SoT when filesystem-backed)
 !data/ai-demand-positioning/
@@ -14,12 +27,6 @@ data/ai-demand-positioning/runtime/
 !data/ai-demand-positioning/runtime/adp_period_adp_cambridge_beaches_bermuda_20260820141258_547a7b.json
 !data/ai-demand-positioning/runtime/adp_period_adp_now_now_noho_20260820141258_2fe3a3.json
 !data/ai-demand-positioning/runtime/adp_period_adp_hotel_phillips_kansas_city_20260820194028_21bf47.json
-# Seed only V4 runtime + independent freeze (NOT full candidate shards — too large for upload)
-!data/research-engine-v2/
-!data/research-engine-v2/census-autopilot-v4-full-universe/
-!data/research-engine-v2/census-autopilot-v4-full-universe/**
-!data/research-engine-v2/census-autopilot-v2-3-independent-universe/
-!data/research-engine-v2/census-autopilot-v2-3-independent-universe/**
 # Brand AI Visibility V1 pilot measured baseline (no raw monitoring corpora / experiments)
 !data/ai-visibility/runtime/wave1-showcase/
 !data/ai-visibility/runtime/wave1-showcase/**
@@ -31,11 +38,6 @@ data/ai-demand-positioning/runtime/
 !data/ai-visibility/gaps/**
 !data/ai-visibility/associations/
 !data/ai-visibility/associations/**
-# Explicitly keep heavy trees out even if parent is un-ignored
-data/research-engine-v2/census-autopilot-v2-full-universe/
-data/research-engine-v2/census-autopilot-v4-standing/
-data/research-engine-v2/census-autopilot-v4-full-universe/**/*.log
-data/research-engine-v2/census-autopilot-v4-full-universe/**/*-run*.log
 node_modules/
 .env
 .env.local
