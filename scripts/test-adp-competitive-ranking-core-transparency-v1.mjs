@@ -90,7 +90,7 @@ async function main() {
   const wsLeisure = buildTerritoryCompetitiveRanking(wsPeriod.observations, wsScenarios, "leisure", wsProfile);
   assert.ok(wsLeisure.coreCount >= 4);
   assert.equal(wsLeisure.reconciliation.COUNT_MATCH, true);
-  console.log("Waterstone Resort Leisure:", {
+  console.log("Waterstone Leisure Travel:", {
     CORE_COUNT: wsLeisure.reconciliation.CORE_COUNT,
     VISIBLE_ROWS: wsLeisure.displayRows.length,
     CORE_IN_TOP_10: wsLeisure.reconciliation.CORE_IN_TOP_10,

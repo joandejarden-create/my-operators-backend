@@ -5,7 +5,7 @@
  *   MODEL_P_D implementation gate:
  *   - subject provider LOO <= 10pp AND CORE provider LOO <= 5pp
  *   - 8pp flag no longer customer blocker
- *   - Renaissance Business + Cambridge Resort Leisure now PRODUCTION_VALIDATED
+ *   - Renaissance Business + Cambridge Leisure Travel now PRODUCTION_VALIDATED
  *   - Cambridge Couples + NOW NOW remain blocked
  *   - Existing certified rows not invalidated
  *   - Waterstone unchanged
@@ -64,9 +64,9 @@ async function main() {
   assert.equal(renBiz.status, "PRODUCTION_VALIDATED", "Renaissance Business Travel certified under MODEL_P_D");
   assert.ok(!renBiz.blockers.includes("provider_concentration"), "no provider_concentration blocker");
 
-  // --- PART D: Cambridge Resort Leisure → PRODUCTION_VALIDATED ---
+  // --- PART D: Cambridge Leisure Travel → PRODUCTION_VALIDATED ---
   const camRL = certifyTerritory(CAMBRIDGE_ID, TRAVELER_INTENTS.LEISURE);
-  assert.equal(camRL.status, "PRODUCTION_VALIDATED", "Cambridge Resort Leisure certified under MODEL_P_D");
+  assert.equal(camRL.status, "PRODUCTION_VALIDATED", "Cambridge Leisure Travel certified under MODEL_P_D");
 
   const camRLLoo = getProviderLoo(CAMBRIDGE_ID, TRAVELER_INTENTS.LEISURE);
   assert.ok(camRLLoo.maxSubjectProviderLooPp <= 10, "Cambridge RL subject LOO <= 10pp");
@@ -83,14 +83,14 @@ async function main() {
   assert.ok(nnBiz.blockers.includes("provider_concentration"), "NOW NOW Business blocked");
 
   const nnRL = certifyTerritory(NOW_NOW_ID, TRAVELER_INTENTS.LEISURE);
-  assert.ok(nnRL.blockers.includes("provider_concentration"), "NOW NOW Resort Leisure blocked");
+  assert.ok(nnRL.blockers.includes("provider_concentration"), "NOW NOW Leisure Travel blocked");
 
   const nnCouples = certifyTerritory(NOW_NOW_ID, TRAVELER_INTENTS.COUPLES);
   assert.ok(nnCouples.blockers.includes("provider_concentration"), "NOW NOW Couples blocked");
 
   // --- PART F: Existing certified rows protection ---
   const renRL = certifyTerritory(RENAISSANCE_ID, TRAVELER_INTENTS.LEISURE);
-  assert.equal(renRL.status, "PRODUCTION_VALIDATED", "Renaissance Resort Leisure still certified");
+  assert.equal(renRL.status, "PRODUCTION_VALIDATED", "Renaissance Leisure Travel still certified");
 
   const renCouples = certifyTerritory(RENAISSANCE_ID, TRAVELER_INTENTS.COUPLES);
   assert.equal(renCouples.status, "PRODUCTION_VALIDATED", "Renaissance Couples still certified");
@@ -136,7 +136,7 @@ async function main() {
   console.log(`  CORE_THRESHOLD_PP: ${PROVIDER_MODEL_PD_CORE_PP_MAX}`);
   console.log("  EIGHT_PP_FLAG_CUSTOMER_BLOCKER: NO");
   console.log("  RENAISSANCE_BUSINESS: PROMOTED");
-  console.log("  CAMBRIDGE_RESORT_LEISURE: PROMOTED");
+  console.log("  CAMBRIDGE_LEISURE_TRAVEL: PROMOTED");
   console.log("  CAMBRIDGE_COUPLES: BLOCKED");
   console.log("  NOW_NOW_NEW_NUMERIC_ROWS: 0");
   console.log("  WATERSTONE_INDEX_DIFF: 0");

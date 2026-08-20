@@ -63,7 +63,7 @@ async function main() {
       return d.currentBlockers.includes("provider_concentration");
     }
   );
-  // Under MODEL_P_D: Cambridge Couples + 3 NOW NOW remain blocked; Renaissance Business + Cambridge Resort Leisure pass
+  // Under MODEL_P_D: Cambridge Couples + 3 NOW NOW remain blocked; Renaissance Business + Cambridge Leisure Travel pass
   assert.ok(MODEL_PD_STILL_BLOCKED.length >= 4, `at least 4 genuinely unstable territories remain blocked`);
 
   for (const { propertyId, intent } of PROVIDER_CONCENTRATION_AFFECTED) {

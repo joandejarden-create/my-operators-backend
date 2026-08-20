@@ -108,7 +108,7 @@ async function main() {
   assert.ok(renaissanceReady.length >= 5, "Renaissance should have multiple CORE_TRUTH_READY territories");
 
   const cambridge = runPropertyCoreGovernance("adp_cambridge_beaches_bermuda");
-  const cambridgeLeisure = cambridge.coreGovernance.find((r) => r.TERRITORY.includes("Resort Leisure"));
+  const cambridgeLeisure = cambridge.coreGovernance.find((r) => r.TERRITORY.includes("Leisure Travel"));
   assert.ok(cambridgeLeisure.CORE_COUNT >= 4);
   assert.ok(!cambridgeLeisure.CORE_HOTELS.some((h) => /boca|florida/i.test(h)));
 

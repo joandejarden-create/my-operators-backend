@@ -123,8 +123,21 @@
 
   function formatDemandTerritory(intent, payload) {
     var idx = payload && payload.intentPresenceIndex && payload.intentPresenceIndex[intent];
-    if (idx && idx.territory) return idx.territory;
+    if (idx && idx.territory) return normalizeLeisureTerritoryLabel(idx.territory);
+    if (intent === "leisure") return "Leisure Travel";
     return intent.replace(/_/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+  }
+
+  function normalizeLeisureTerritoryLabel(label) {
+    if (!label) return label;
+    if (String(label) === "Resort Leisure") return "Leisure Travel";
+    return String(label);
+  }
+
+  function formatIntentTerritoryLabel(intent, fallbackTerritory) {
+    if (fallbackTerritory) return normalizeLeisureTerritoryLabel(fallbackTerritory);
+    if (intent === "leisure") return "Leisure Travel";
+    return String(intent || "").replace(/_/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); });
   }
 
   function propertyRealityCoverageSnapshot(rg) {
@@ -1170,7 +1183,7 @@
 
     var html = '<table class="deals-table aiv-portfolio-table aiv-coverage-table aiv-intent-coverage-table aiv-unified-intent-table">';
     html += '<thead><tr>';
-    html += thCol('Demand<br>Territory', adpTipHtml('Demand Territory', 'Which type of traveler demand is being measured (business, leisure, couples, meetings, and so on)?', 'Capture varies by trip purpose. You need to know where AI recommends you and where demand leaks by intent.'));
+    html += thCol('Demand<br>Territory', adpTipHtml('Demand Territory', 'Which type of traveler demand is being measured (business, leisure travel, couples, meetings, and so on)? Leisure Travel covers vacations, weekend trips, city breaks, resort stays, sightseeing and entertainment-led travel.', 'Capture varies by trip purpose. You need to know where AI recommends you and where demand leaks by intent.'));
     html += thCol('Your AI<br>Presence', adpYourAiPresenceTip());
     html += thCol('CORE<br>Benchmark', adpCoreBenchmarkTip());
     html += thCol('AI Presence<br>Index', adpGovernedIndexTip());
@@ -1195,7 +1208,7 @@
 
     entries.forEach(function (e) {
       var intent = e[0], data = e[1];
-      var label = intent.replace(/_/g, " ").replace(/\b\w/g, function(c){return c.toUpperCase();});
+      var label = formatIntentTerritoryLabel(intent);
       var pct = data.rate;
       var monitored = data.captured + "/" + data.total;
       var missing = data.total - data.captured;
@@ -1208,7 +1221,7 @@
         : developingCell();
 
       html += '<tr class="aiv-intent-row aiv-unified-intent-row">';
-      html += '<td><span class="project-name-text">' + esc((idxData && idxData.territory) || label) + '</span></td>';
+      html += '<td><span class="project-name-text">' + esc(normalizeLeisureTerritoryLabel((idxData && idxData.territory) || label)) + '</span></td>';
       html += '<td class="aiv-metric-cell aiv-presence-metric-cell aiv-intent-rate-cell">' + presenceVisual + '</td>';
       if (idxData && idxData.index != null && (idxData.subjectRatePct == null || idxData.coreBenchmarkRatePct == null)) {
         html += '<td class="aiv-metric-cell aiv-intent-rate-cell">' + developingCell() + '</td>';
@@ -1271,7 +1284,7 @@
           body.innerHTML = '<div class="aiv-empty">No missing evidence available for this intent.</div>';
           return;
         }
-        var intentLabel = intent.replace(/_/g, " ").replace(/\b\w/g, function(c){return c.toUpperCase();});
+        var intentLabel = formatIntentTerritoryLabel(intent);
         var html = '';
         data.evidence.forEach(function(ev) {
           var providerLine = formatProviderDisplayName(ev.provider || "unknown");
@@ -1464,7 +1477,7 @@
     }
     var order = (block && block.selectorOrder) || Object.keys(ranking);
     var options = order.filter(function(key) { return ranking[key]; }).map(function(key) {
-      var label = ranking[key].territory || (key === "overall" ? "Overall" : key.replace(/_/g, " "));
+      var label = normalizeLeisureTerritoryLabel(ranking[key].territory) || (key === "overall" ? "Overall" : formatIntentTerritoryLabel(key));
       return '<option value="' + esc(key) + '"' + (key === selectedCompTerritory ? ' selected' : '') + '>' + esc(label) + '</option>';
     }).join("");
     wrap.hidden = false;
@@ -1543,8 +1556,8 @@
           : 0;
       var competitorId = (row.displacement && row.displacement.competitorId) || row.entityId || "";
       var territory = isOverall
-        ? (row.topDemandTerritory || "—")
-        : (territoryRanking.territory || "—");
+        ? normalizeLeisureTerritoryLabel(row.topDemandTerritory || "—")
+        : normalizeLeisureTerritoryLabel(territoryRanking.territory || "—");
       var rowClass = row.isSubject ? ' class="adp-row--subject"' : (row.isCore ? ' class="adp-row--core"' : "");
       if (row.isAppendedCore || row.isAppendedSubject) rowClass = ' class="adp-row--core-appended"';
 
@@ -1632,13 +1645,13 @@
           var providerLine = formatProviderDisplayName(ev.provider || "unknown");
           var citations = ev.sourcesCited || ev.providerCitations || [];
           var competitors = ev.competitorsMentioned || [];
-          var territoryLine = ev.territory || ev.intent || "";
+          var territoryLine = normalizeLeisureTerritoryLabel(ev.territory) || formatIntentTerritoryLabel(ev.intent || "");
 
           html += '<div class="aiv-evidence">' +
             (territoryLine
               ? '<section class="aiv-evidence-meta" aria-label="Demand territory" style="margin-bottom:0.5rem;">' +
                 '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Demand Territory</div>' +
-                '<div class="aiv-evidence-value">' + esc(String(territoryLine).replace(/_/g, " ")) + '</div></div></section>'
+                '<div class="aiv-evidence-value">' + esc(territoryLine) + '</div></div></section>'
               : "") +
             '<section class="aiv-evidence-question">' +
             '<div class="aiv-evidence-label">Demand Scenario</div>' +
@@ -1754,7 +1767,7 @@
     ws.opportunities.slice(0, 6).forEach(function (o) {
       var cls = o.opportunityScore === "HIGH" ? "" : " opp-medium";
       html += '<div class="adp-opp-card' + cls + '">';
-      html += '<div class="adp-opp-header"><span class="adp-opp-intent">' + esc(o.intent.replace(/_/g, " ")) + '</span>';
+      html += '<div class="adp-opp-header"><span class="adp-opp-intent">' + esc(formatIntentTerritoryLabel(o.intent)) + '</span>';
       html += '<span class="adp-opp-badge badge-' + o.opportunityScore.toLowerCase() + '">' + esc(o.opportunityScore) + '</span></div>';
       html += '<p class="adp-opp-rationale">' + esc(o.rationale) + '</p>';
       html += '</div>';
@@ -1922,7 +1935,7 @@
       html += '<p style="font-size:0.85rem;color:var(--aiv-text-secondary);margin-bottom:1rem"><strong>' + ws.totalOpportunities + '</strong> opportunities. <strong>' + ws.highOpportunities + '</strong> HIGH.</p>';
       ws.opportunities.forEach(function (o) {
         var cls = o.opportunityScore === "HIGH" ? "" : " opp-medium";
-        html += '<div class="adp-opp-card' + cls + '"><div class="adp-opp-header"><span class="adp-opp-intent">' + esc(o.intent.replace(/_/g, " ")) + '</span>';
+        html += '<div class="adp-opp-card' + cls + '"><div class="adp-opp-header"><span class="adp-opp-intent">' + esc(formatIntentTerritoryLabel(o.intent)) + '</span>';
         html += '<span class="adp-opp-badge badge-' + o.opportunityScore.toLowerCase() + '">' + esc(o.opportunityScore) + '</span></div>';
         html += '<p class="adp-opp-rationale">' + esc(o.rationale) + '</p></div>';
       });
