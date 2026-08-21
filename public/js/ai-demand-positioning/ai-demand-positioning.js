@@ -1181,8 +1181,8 @@
     html += thCol('Provider', adpTipHtml('Provider', 'Which AI model was queried on its own for each demand scenario?', 'Models do not behave the same. You need provider-level visibility to fix gaps on each one.'));
     html += thCol('Status', adpTipHtml('Status', 'Was this provider included in the current monitoring period?', 'Confirms the row reflects live monitored responses, not an estimate or partial run.'));
     html += thCol('AI<br>Presence', adpTipHtml('AI Presence', 'When this provider alone answers a monitored demand question, how often does it mention your property?', 'Each model learns from different sources. A gap here means travelers using that tool may never see you.'));
-    html += thCol('Monitored', adpTipHtml('Monitored', 'In how many demand scenarios did this provider mention your property, out of all scenarios asked on this provider?', 'Shows raw capture count for this model, separate from the combined rate across providers.'));
-    html += thCol('Missing', adpTipHtml('Missing', 'In how many scenarios did this provider fail to mention your property?', 'These are provider-specific gaps you can target with content or authority work for that model.'));
+    html += thCol('Monitored', adpTipHtml('Monitored', 'How many comparable provider answers mentioned your property, out of successfully captured answers for this model? Failed or missing provider calls are excluded from the denominator.', 'Denominator = comparable observations included in the metric — not theoretical scheduled scenarios.'));
+    html += thCol('Missing', adpTipHtml('Missing', 'Among comparable answers from this provider, how many did not mention your property?', 'Excludes failed/missing provider calls that were never included in the presence rate.'));
     html += thCol('Citation', adpTipHtml('Citation', 'When this provider answers, how often does it include source links in the response?', 'Citation-backed answers show which websites AI is reading. Without citations, it is harder to trace and improve what the model uses.'));
     html += thCol('Owned', adpTipHtml('Owned', 'Of this provider\u2019s citations, what share point to your owned websites?', 'Owned sources give you direct control over how AI describes your property. Requires configured owned domains.'));
     html += '</tr></thead><tbody>';
@@ -1190,7 +1190,9 @@
     ev.providers.forEach(function(p) {
       var name = formatProviderDisplayName(p.provider);
       var pct = p.presence;
-      var missing = p.total - p.mentioned;
+      var denom = p.comparable != null ? p.comparable : p.total;
+      var scheduled = p.scheduled != null ? p.scheduled : (p.scenariosScheduled != null ? p.scenariosScheduled : denom);
+      var missing = Math.max(0, denom - p.mentioned);
       var presenceVisual = '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' + Math.round(pct) + '%"></span></span><span class="aiv-presence-cell__value">' + fmtPct(pct) + '</span></span>';
 
       // Citation rate for this provider
@@ -1199,11 +1201,16 @@
         citRate = fmtPct(ev.providerCitations[p.provider]);
       }
 
+      var monitoredLabel = p.mentioned + ' / ' + denom;
+      if (scheduled != null && scheduled !== denom) {
+        monitoredLabel += ' <span class="aiv-cell-submeta" title="Scenarios scheduled on this provider vs comparable answers included in the metric">(' + denom + ' of ' + scheduled + ' captured)</span>';
+      }
+
       html += '<tr>';
       html += '<td>' + esc(name) + '</td>';
       html += '<td>Monitored</td>';
       html += '<td class="aiv-metric-cell aiv-presence-metric-cell">' + presenceVisual + '</td>';
-      html += '<td class="aiv-metric-cell">' + p.mentioned + ' / ' + p.total + '</td>';
+      html += '<td class="aiv-metric-cell">' + monitoredLabel + '</td>';
       html += '<td class="aiv-metric-cell">' + missing + '</td>';
       html += '<td class="aiv-metric-cell">' + citRate + '</td>';
       html += '<td class="aiv-metric-cell">—</td>';
