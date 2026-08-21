@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-08-20T23:59:53.889Z",
+  "publishedAt": "2026-08-21T00:29:30.958Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_cambridge_beaches_bermuda",
   "periodId": "adp_period_adp_cambridge_beaches_bermuda_20260820141258_547a7b",
@@ -339,19 +339,9 @@
           "entityId": "reefs_resort"
         },
         {
-          "name": "its spa and wellness program is presented as a complete wellness resort",
-          "displacementCount": 1,
-          "entityId": null
-        },
-        {
           "name": "Rosewood Bermuda",
           "displacementCount": 1,
           "entityId": "rosewood_bermuda"
-        },
-        {
-          "name": "One of the island's largest resort",
-          "displacementCount": 1,
-          "entityId": null
         }
       ],
       "topReasons": [
@@ -364,11 +354,8 @@
         {
           "intent": "wellness",
           "competitorsPresent": [
-            "its spa and wellness program is presented as a complete wellness resort",
-            "The St. Regis Bermuda Resort",
-            "The Reefs Resort & Club",
-            "One of the island's largest resort",
-            "The Reefs Resort"
+            "Rosewood Bermuda",
+            "The Reefs Resort & Club"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -377,8 +364,8 @@
     },
     "competitiveSet": {
       "declaredCount": 6,
-      "observedCount": 353,
-      "overlapRate": 183.3,
+      "observedCount": 151,
+      "overlapRate": 116.7,
       "surprises": [
         {
           "name": "Elbow Beach Bermuda Resort",
@@ -481,7 +468,7 @@
           "isCore": false
         },
         {
-          "name": "While the resort",
+          "name": "Most resort",
           "mentions": 3,
           "scenarioCount": 3,
           "entityId": null,
@@ -489,6 +476,7 @@
         }
       ],
       "declaredButNotObserved": [
+        "The Loren at Pink Beach",
         "Fairmont Southampton"
       ]
     },
@@ -694,7 +682,7 @@
           "text": "AI Reality Gap: 61.1%. AI misses or misrepresents 11 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-08-20T23:59:53.190Z"
+      "generatedAt": "2026-08-21T00:29:30.269Z"
     },
     "actions": [
       {
@@ -715,10 +703,13 @@
       }
     ],
     "evidence": {
-      "citationRate": 25,
+      "citationRate": 25.8,
       "avgSourcesPerCitation": 18.6,
       "totalWithSources": 60,
-      "totalObservations": 240,
+      "totalObservations": 233,
+      "scheduledObservations": 240,
+      "comparableObservations": 233,
+      "providerDenominatorGrain": "comparable_observations",
       "topSources": [
         {
           "domain": "tripadvisor.com",
@@ -773,27 +764,51 @@
       ],
       "providers": [
         {
+          "provider": "gemini",
+          "scheduled": 60,
+          "scenariosScheduled": 60,
+          "comparable": 53,
+          "captured": 53,
+          "total": 53,
+          "mentioned": 44,
+          "excludedFromMetric": 7,
+          "denominatorGrain": "comparable_observations",
+          "presence": 83
+        },
+        {
           "provider": "claude",
+          "scheduled": 60,
+          "scenariosScheduled": 60,
+          "comparable": 60,
+          "captured": 60,
           "total": 60,
           "mentioned": 47,
+          "excludedFromMetric": 0,
+          "denominatorGrain": "comparable_observations",
           "presence": 78.3
         },
         {
-          "provider": "gemini",
-          "total": 60,
-          "mentioned": 44,
-          "presence": 73.3
-        },
-        {
           "provider": "perplexity",
+          "scheduled": 60,
+          "scenariosScheduled": 60,
+          "comparable": 60,
+          "captured": 60,
           "total": 60,
           "mentioned": 43,
+          "excludedFromMetric": 0,
+          "denominatorGrain": "comparable_observations",
           "presence": 71.7
         },
         {
           "provider": "openai",
+          "scheduled": 60,
+          "scenariosScheduled": 60,
+          "comparable": 60,
+          "captured": 60,
           "total": 60,
           "mentioned": 31,
+          "excludedFromMetric": 0,
+          "denominatorGrain": "comparable_observations",
           "presence": 51.7
         }
       ],
@@ -805,34 +820,34 @@
       },
       "discovery": [
         {
-          "intent": "business",
-          "citationRate": 25,
-          "total": 24
+          "intent": "group_meeting",
+          "citationRate": 26.9,
+          "total": 26
         },
         {
           "intent": "leisure",
-          "citationRate": 25,
-          "total": 48
-        },
-        {
-          "intent": "couples",
-          "citationRate": 25,
-          "total": 44
-        },
-        {
-          "intent": "group_meeting",
-          "citationRate": 25,
-          "total": 28
-        },
-        {
-          "intent": "celebration",
-          "citationRate": 25,
-          "total": 40
+          "citationRate": 26.1,
+          "total": 46
         },
         {
           "intent": "wellness",
+          "citationRate": 25.9,
+          "total": 27
+        },
+        {
+          "intent": "couples",
+          "citationRate": 25.6,
+          "total": 43
+        },
+        {
+          "intent": "celebration",
+          "citationRate": 25.6,
+          "total": 39
+        },
+        {
+          "intent": "business",
           "citationRate": 25,
-          "total": 28
+          "total": 24
         },
         {
           "intent": "adventure",

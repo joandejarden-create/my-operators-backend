@@ -10,11 +10,22 @@ import { estimateCost } from "../lib/ai-demand-positioning/execution/multi-provi
 import {
   getPublishedOwnerReport,
   getPublishedEvidenceResponse,
+  getAdpPublishedReadSourceStatus,
 } from "../lib/ai-demand-positioning/published-read-service.js";
 
 export function getAiDemandPositioningProperties(req, res) {
   const properties = listPropertyProfiles();
   res.json({ ok: true, properties });
+}
+
+/** Internal health: which ADP published read source is active (filesystem vs airtable). */
+export function getAiDemandPositioningReadHealth(req, res) {
+  const status = getAdpPublishedReadSourceStatus();
+  return res.json({
+    ok: true,
+    product: "ai_demand_positioning",
+    ...status,
+  });
 }
 
 export async function getAiDemandPositioningReport(req, res) {
@@ -37,6 +48,10 @@ export async function getAiDemandPositioningReport(req, res) {
       property: {
         ...(result.payload.property || {}),
         propertyId,
+      },
+      _adpReadSource: result.readSource || {
+        requested: result.source === "airtable" ? "airtable" : "filesystem",
+        active: result.source === "airtable" ? "airtable" : "filesystem",
       },
     };
     return res.json(payload);

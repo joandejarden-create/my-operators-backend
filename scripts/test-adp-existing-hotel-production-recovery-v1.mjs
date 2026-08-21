@@ -19,6 +19,7 @@ import {
 } from "../lib/ai-demand-positioning/period-eligibility-v1.js";
 import { OFFICIAL_BASELINE_PERIOD_MARKER } from "../lib/ai-demand-positioning/contracts/adp-measurement-contract-v1.js";
 import { loadPublishedReport } from "../lib/ai-demand-positioning/published-snapshot.js";
+import { enrichPayloadOptionalMetrics } from "../lib/ai-demand-positioning/published-read-service.js";
 
 const UI = join(process.cwd(), "public/js/ai-demand-positioning/ai-demand-positioning.js");
 const PORTFOLIO = [
@@ -60,6 +61,39 @@ function main() {
   assert.equal(resolveCustomerFacingEntity("Many suites", waterstone).rejected, true);
   assert.equal(resolveCustomerFacingEntity("Located in Tucker's Point, this resort", waterstone).rejected, true);
 
+  // Cambridge case: prose fragments must not become customer-facing competitors.
+  const cambridge = loadPropertyProfile("adp_cambridge_beaches_bermuda");
+  const cambridgeFrags = [
+    "its spa and wellness program is presented as a complete wellness resort",
+    "One of the island's largest resort",
+    "While the resort",
+  ];
+  for (const frag of cambridgeFrags) {
+    const r = resolveCustomerFacingEntity(frag, cambridge);
+    assert.equal(r.rejected, true, "Cambridge prose fragment rejected: " + frag);
+    assert.equal(r.ok, false, "Cambridge prose fragment not ok: " + frag);
+  }
+  const cambridgeComps = computeCompetitiveSet(
+    [
+      {
+        scenarioId: "s1",
+        parsed: true,
+        competitorsMentioned: [
+          "The Reefs Resort & Club",
+          ...cambridgeFrags,
+          "Rosewood Bermuda",
+        ],
+      },
+    ],
+    cambridge
+  );
+  const cambridgeNames = cambridgeComps.observed.map((o) => o.name);
+  assert.ok(cambridgeNames.includes("The Reefs Resort & Club"));
+  assert.ok(cambridgeNames.includes("Rosewood Bermuda"));
+  for (const frag of cambridgeFrags) {
+    assert.equal(cambridgeNames.includes(frag), false, "prose suppressed from observed: " + frag);
+  }
+
   const comps = computeCompetitiveSet(
     [
       {
@@ -100,6 +134,40 @@ function main() {
       "no causal uplift language in action description"
     );
   }
+
+  // Provider denominator = comparable observations, not theoretical scheduled N.
+  assert.equal(payload.evidence?.providerDenominatorGrain, "comparable_observations");
+  for (const p of payload.evidence?.providers || []) {
+    assert.ok(p.comparable != null, "provider.comparable present");
+    assert.equal(p.total, p.comparable, "total === comparable denominator");
+    assert.ok(p.scheduled >= p.comparable, "scheduled >= comparable");
+    if (p.comparable > 0) {
+      const expected = Math.round((p.mentioned / p.comparable) * 1000) / 10;
+      assert.ok(Math.abs(p.presence - expected) < 0.15, "presence uses comparable denom for " + p.provider);
+    }
+  }
+  assert.ok(ui.includes("comparable answers included") || ui.includes("comparable observations"), "UI clarifies comparable denominator");
+
+  // Trend enrich must not wipe baked consideration/scenario when PRC was missing.
+  const wipedStyle = {
+    ...payload,
+    trends: [
+      {
+        periodId: payload.period.periodId,
+        date: payload.period.executionDate,
+        considerationRate: 48.9,
+        scenarioPresenceRate: 70.5,
+        propertyRealityCoverage: null,
+      },
+    ],
+  };
+  const enrichedTrends = enrichPayloadOptionalMetrics("adp_waterstone_boca_raton", wipedStyle);
+  assert.equal(enrichedTrends.trends?.[0]?.considerationRate, 48.9, "consideration preserved");
+  assert.equal(enrichedTrends.trends?.[0]?.scenarioPresenceRate, 70.5, "scenario presence preserved");
+  assert.ok(
+    enrichedTrends.trends?.[0]?.propertyRealityCoverage != null,
+    "PRC derived without wiping other rates"
+  );
 
   // Baseline inventory: exactly one active official baseline marker per portfolio property.
   for (const propertyId of PORTFOLIO) {

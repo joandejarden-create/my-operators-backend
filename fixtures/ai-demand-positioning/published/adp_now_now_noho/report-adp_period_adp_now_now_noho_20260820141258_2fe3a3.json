@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-08-20T23:59:55.005Z",
+  "publishedAt": "2026-08-21T00:29:32.237Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_now_now_noho",
   "periodId": "adp_period_adp_now_now_noho_20260820141258_2fe3a3",
@@ -409,10 +409,7 @@
           "intent": "business",
           "competitorsPresent": [
             "The Bowery Hotel",
-            "2. Best for Core Financial District on a Budget: Gild Hall, A Thompson Hotel",
-            "#1 Recommendation: The Beekman, A Thompson Hotel",
-            "The Beekman, A Thompson Hotel",
-            "only hotel directly connected to Grand Central Terminal"
+            "The Beekman, A Thompson Hotel"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "MEDIUM"
@@ -420,10 +417,7 @@
         {
           "intent": "business",
           "competitorsPresent": [
-            "those who like to maintain their fitness routine while traveling, the hotel",
-            "walk directly to Wall Street offices, and prefer a straightforward business hotel",
-            "best overall Hyatt property is The Beekman, A Thompson Hotel",
-            "s a quieter, no-nonsense corporate hotel",
+            "The Beekman, A Thompson Hotel",
             "The Bowery Hotel"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
@@ -432,11 +426,11 @@
         {
           "intent": "business",
           "competitorsPresent": [
-            "Four Seasons Hotel",
+            "Four Seasons Hotel New York Downtown",
             "The Greenwich Hotel",
-            "offers a sophisticated, editorial atmosphere that feels distinct from standard corporate hotel",
             "Co-owned by Robert De Niro, this hotel",
-            "Four Seasons Hotel New York Downtown"
+            "The Beekman, A Thompson Hotel",
+            "1 Hotel Brooklyn Bridge"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -448,7 +442,7 @@
             "Washington Square Hotel",
             "The Mercer Hotel",
             "Crosby Street Hotel",
-            "West 8th Street, The Marlton feels like a hidden Parisian boutique hotel"
+            "For traditional hotel luxury & space:"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -457,10 +451,10 @@
           "intent": "group_meeting",
           "competitorsPresent": [
             "The Standard, High Line",
-            "This all-suite hotel in Battery Park City offers spacious accommodations and",
-            "Located in the Meatpacking District, this hotel",
             "The Beekman, A Thompson Hotel",
-            "1 Hotel Brooklyn Bridge"
+            "1 Hotel Brooklyn Bridge",
+            "PUBLIC Hotel",
+            "The Penthouse Suites (Lofts):"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -470,9 +464,9 @@
           "competitorsPresent": [
             "Hotel Indigo Lower East Side",
             "Washington Square Hotel",
-            "This all-suite hotel",
             "The Frederick Hotel",
-            "This boutique hotel"
+            "Residence Inn World Trade Center",
+            "Walker Hotel Greenwich Village"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -493,7 +487,7 @@
     },
     "competitiveSet": {
       "declaredCount": 6,
-      "observedCount": 383,
+      "observedCount": 187,
       "overlapRate": 116.7,
       "surprises": [
         {
@@ -697,7 +691,7 @@
           "text": "AI Reality Gap: 71.4%. AI misses or misrepresents 5 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-08-20T23:59:54.378Z"
+      "generatedAt": "2026-08-21T00:29:31.588Z"
     },
     "actions": [
       {
@@ -718,10 +712,13 @@
       }
     ],
     "evidence": {
-      "citationRate": 25,
+      "citationRate": 25.9,
       "avgSourcesPerCitation": 18.7,
       "totalWithSources": 63,
-      "totalObservations": 252,
+      "totalObservations": 243,
+      "scheduledObservations": 252,
+      "comparableObservations": 243,
+      "providerDenominatorGrain": "comparable_observations",
       "topSources": [
         {
           "domain": "tripadvisor.com",
@@ -777,26 +774,50 @@
       "providers": [
         {
           "provider": "openai",
+          "scheduled": 63,
+          "scenariosScheduled": 63,
+          "comparable": 63,
+          "captured": 63,
           "total": 63,
           "mentioned": 52,
+          "excludedFromMetric": 0,
+          "denominatorGrain": "comparable_observations",
           "presence": 82.5
         },
         {
           "provider": "perplexity",
+          "scheduled": 63,
+          "scenariosScheduled": 63,
+          "comparable": 63,
+          "captured": 63,
           "total": 63,
           "mentioned": 17,
+          "excludedFromMetric": 0,
+          "denominatorGrain": "comparable_observations",
           "presence": 27
         },
         {
           "provider": "gemini",
-          "total": 63,
+          "scheduled": 63,
+          "scenariosScheduled": 63,
+          "comparable": 54,
+          "captured": 54,
+          "total": 54,
           "mentioned": 13,
-          "presence": 20.6
+          "excludedFromMetric": 9,
+          "denominatorGrain": "comparable_observations",
+          "presence": 24.1
         },
         {
           "provider": "claude",
+          "scheduled": 63,
+          "scenariosScheduled": 63,
+          "comparable": 63,
+          "captured": 63,
           "total": 63,
           "mentioned": 8,
+          "excludedFromMetric": 0,
+          "denominatorGrain": "comparable_observations",
           "presence": 12.7
         }
       ],
@@ -808,14 +829,24 @@
       },
       "discovery": [
         {
+          "intent": "group_meeting",
+          "citationRate": 27.3,
+          "total": 33
+        },
+        {
+          "intent": "celebration",
+          "citationRate": 27.3,
+          "total": 22
+        },
+        {
           "intent": "business",
-          "citationRate": 25,
-          "total": 52
+          "citationRate": 26.5,
+          "total": 49
         },
         {
           "intent": "leisure",
-          "citationRate": 25,
-          "total": 60
+          "citationRate": 25.4,
+          "total": 59
         },
         {
           "intent": "couples",
@@ -823,19 +854,9 @@
           "total": 36
         },
         {
-          "intent": "group_meeting",
-          "citationRate": 25,
-          "total": 36
-        },
-        {
           "intent": "family",
           "citationRate": 25,
           "total": 20
-        },
-        {
-          "intent": "celebration",
-          "citationRate": 25,
-          "total": 24
         },
         {
           "intent": "wellness",

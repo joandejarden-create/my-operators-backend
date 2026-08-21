@@ -50,7 +50,8 @@ import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } fr
 import { getTravelInfrastructure, getRadarMapTravelInfrastructurePoints, postTravelInfrastructureImportPreview, postTravelInfrastructureImportCommit } from "./api/travel-infrastructure.js";
 import { getDemandAnchors, getRadarMapDemandAnchorsPoints, postDemandAnchorsImportPreview, postDemandAnchorsImportCommit } from "./api/demand-anchors.js";
 import { getRadarBuildoutCountries, getRadarBuildoutCountry } from "./api/radar-buildout.js";
-import { getAiDemandPositioningProperties, getAiDemandPositioningReport, getAiDemandPositioningCostEstimate, getAiDemandPositioningEvidence } from "./api/ai-demand-positioning.js";
+import { getAiDemandPositioningProperties, getAiDemandPositioningReport, getAiDemandPositioningCostEstimate, getAiDemandPositioningEvidence, getAiDemandPositioningReadHealth } from "./api/ai-demand-positioning.js";
+import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
 import {
   getGrowthSignalsSummary,
   getGrowthSignalTypes,
@@ -792,6 +793,7 @@ app.get(
   getOperatorAiCustomerPayload
 );
 app.get("/api/ai-demand-positioning/properties", getAiDemandPositioningProperties);
+app.get("/api/ai-demand-positioning/read-health", getAiDemandPositioningReadHealth);
 app.get("/api/ai-demand-positioning/property/:propertyId/report", getAiDemandPositioningReport);
 app.get("/api/ai-demand-positioning/property/:propertyId/evidence", getAiDemandPositioningEvidence);
 app.get("/api/ai-demand-positioning/property/:propertyId/cost-estimate", getAiDemandPositioningCostEstimate);
@@ -2598,6 +2600,11 @@ const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
+  try {
+    logAdpPublishedReadSourceAtStartup();
+  } catch (err) {
+    console.error("[ADP read] startup source log failed:", err.message);
+  }
   if (process.env.NODE_ENV !== "production") {
     let gitHead = "unavailable";
     try {
