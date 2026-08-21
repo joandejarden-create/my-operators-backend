@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-08-21T00:42:25.407Z",
+  "publishedAt": "2026-08-21T00:55:35.747Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_hotel_phillips_kansas_city",
   "periodId": "adp_period_adp_hotel_phillips_kansas_city_20260820194028_21bf47",
@@ -830,7 +830,7 @@
           "text": "AI Reality Gap: 62.5%. AI misses or misrepresents 5 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-08-21T00:42:24.639Z"
+      "generatedAt": "2026-08-21T00:55:34.953Z"
     },
     "actions": [
       {
@@ -913,51 +913,71 @@
       "providers": [
         {
           "provider": "gemini",
-          "scheduled": 63,
           "scenariosScheduled": 63,
+          "scheduled": 63,
+          "observationsCaptured": 55,
           "comparable": 55,
           "captured": 55,
-          "total": 55,
           "mentioned": 27,
           "excludedFromMetric": 8,
+          "incompleteCoverage": true,
+          "coverageNote": "55 of 63 observations captured",
           "denominatorGrain": "comparable_observations",
-          "presence": 49.1
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 55,
+          "presence": 49.1,
+          "presenceUnavailable": false
         },
         {
           "provider": "perplexity",
-          "scheduled": 63,
           "scenariosScheduled": 63,
+          "scheduled": 63,
+          "observationsCaptured": 63,
           "comparable": 63,
           "captured": 63,
-          "total": 63,
           "mentioned": 30,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 47.6
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 63,
+          "presence": 47.6,
+          "presenceUnavailable": false
         },
         {
           "provider": "claude",
-          "scheduled": 63,
           "scenariosScheduled": 63,
+          "scheduled": 63,
+          "observationsCaptured": 63,
           "comparable": 63,
           "captured": 63,
-          "total": 63,
           "mentioned": 25,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 39.7
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 63,
+          "presence": 39.7,
+          "presenceUnavailable": false
         },
         {
           "provider": "openai",
-          "scheduled": 63,
           "scenariosScheduled": 63,
+          "scheduled": 63,
+          "observationsCaptured": 63,
           "comparable": 63,
           "captured": 63,
-          "total": 63,
           "mentioned": 3,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 4.8
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 63,
+          "presence": 4.8,
+          "presenceUnavailable": false
         }
       ],
       "providerCitations": {

@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-08-21T00:42:18.064Z",
+  "publishedAt": "2026-08-21T00:55:31.140Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_waterstone_boca_raton",
   "periodId": "adp_period_adp_waterstone_boca_raton_20260820131042_a69590",
@@ -1028,7 +1028,7 @@
           "text": "AI Reality Gap: 52.9%. AI misses or misrepresents 9 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-08-21T00:42:15.346Z"
+      "generatedAt": "2026-08-21T00:55:29.296Z"
     },
     "actions": [
       {
@@ -1119,51 +1119,71 @@
       "providers": [
         {
           "provider": "gemini",
-          "scheduled": 78,
           "scenariosScheduled": 78,
+          "scheduled": 78,
+          "observationsCaptured": 73,
           "comparable": 73,
           "captured": 73,
-          "total": 73,
           "mentioned": 51,
           "excludedFromMetric": 5,
+          "incompleteCoverage": true,
+          "coverageNote": "73 of 78 observations captured",
           "denominatorGrain": "comparable_observations",
-          "presence": 69.9
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 73,
+          "presence": 69.9,
+          "presenceUnavailable": false
         },
         {
           "provider": "claude",
-          "scheduled": 78,
           "scenariosScheduled": 78,
+          "scheduled": 78,
+          "observationsCaptured": 78,
           "comparable": 78,
           "captured": 78,
-          "total": 78,
           "mentioned": 35,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 44.9
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 78,
+          "presence": 44.9,
+          "presenceUnavailable": false
         },
         {
           "provider": "openai",
-          "scheduled": 78,
           "scenariosScheduled": 78,
+          "scheduled": 78,
+          "observationsCaptured": 78,
           "comparable": 78,
           "captured": 78,
-          "total": 78,
           "mentioned": 34,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 43.6
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 78,
+          "presence": 43.6,
+          "presenceUnavailable": false
         },
         {
           "provider": "perplexity",
-          "scheduled": 78,
           "scenariosScheduled": 78,
+          "scheduled": 78,
+          "observationsCaptured": 78,
           "comparable": 78,
           "captured": 78,
-          "total": 78,
           "mentioned": 30,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 38.5
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 78,
+          "presence": 38.5,
+          "presenceUnavailable": false
         }
       ],
       "providerCitations": {
