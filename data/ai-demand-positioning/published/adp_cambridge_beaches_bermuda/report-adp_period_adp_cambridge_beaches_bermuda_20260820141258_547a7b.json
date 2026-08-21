@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-08-21T00:42:22.160Z",
+  "publishedAt": "2026-08-21T00:55:33.683Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_cambridge_beaches_bermuda",
   "periodId": "adp_period_adp_cambridge_beaches_bermuda_20260820141258_547a7b",
@@ -682,7 +682,7 @@
           "text": "AI Reality Gap: 61.1%. AI misses or misrepresents 11 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-08-21T00:42:21.200Z"
+      "generatedAt": "2026-08-21T00:55:33.256Z"
     },
     "actions": [
       {
@@ -765,51 +765,71 @@
       "providers": [
         {
           "provider": "gemini",
-          "scheduled": 60,
           "scenariosScheduled": 60,
+          "scheduled": 60,
+          "observationsCaptured": 53,
           "comparable": 53,
           "captured": 53,
-          "total": 53,
           "mentioned": 44,
           "excludedFromMetric": 7,
+          "incompleteCoverage": true,
+          "coverageNote": "53 of 60 observations captured",
           "denominatorGrain": "comparable_observations",
-          "presence": 83
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 53,
+          "presence": 83,
+          "presenceUnavailable": false
         },
         {
           "provider": "claude",
-          "scheduled": 60,
           "scenariosScheduled": 60,
+          "scheduled": 60,
+          "observationsCaptured": 60,
           "comparable": 60,
           "captured": 60,
-          "total": 60,
           "mentioned": 47,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 78.3
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 60,
+          "presence": 78.3,
+          "presenceUnavailable": false
         },
         {
           "provider": "perplexity",
-          "scheduled": 60,
           "scenariosScheduled": 60,
+          "scheduled": 60,
+          "observationsCaptured": 60,
           "comparable": 60,
           "captured": 60,
-          "total": 60,
           "mentioned": 43,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 71.7
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 60,
+          "presence": 71.7,
+          "presenceUnavailable": false
         },
         {
           "provider": "openai",
-          "scheduled": 60,
           "scenariosScheduled": 60,
+          "scheduled": 60,
+          "observationsCaptured": 60,
           "comparable": 60,
           "captured": 60,
-          "total": 60,
           "mentioned": 31,
           "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
-          "presence": 51.7
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 60,
+          "presence": 51.7,
+          "presenceUnavailable": false
         }
       ],
       "providerCitations": {

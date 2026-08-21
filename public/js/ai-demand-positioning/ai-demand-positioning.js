@@ -1177,31 +1177,41 @@
     ev.providers.forEach(function(p) {
       var name = formatProviderDisplayName(p.provider);
       var pct = p.presence;
+      var unavailable = p.presenceUnavailable === true || pct == null;
       var denom = p.comparable != null ? p.comparable : p.total;
       var scheduled = p.scheduled != null ? p.scheduled : (p.scenariosScheduled != null ? p.scenariosScheduled : denom);
-      var missing = Math.max(0, denom - p.mentioned);
-      var presenceVisual = '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' + Math.round(pct) + '%"></span></span><span class="aiv-presence-cell__value">' + fmtPct(pct) + '</span></span>';
+      var missing = unavailable ? "\u2014" : Math.max(0, denom - (p.mentioned || 0));
+      var presenceVisual;
+      if (unavailable) {
+        presenceVisual = '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__value">\u2014</span></span>';
+      } else {
+        presenceVisual = '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' + Math.round(pct) + '%"></span></span><span class="aiv-presence-cell__value">' + fmtPct(pct) + '</span></span>';
+      }
 
       // Citation rate for this provider
-      var citRate = '0.0%';
+      var citRate = "\u2014";
       if (ev.providerCitations && ev.providerCitations[p.provider] != null) {
         citRate = fmtPct(ev.providerCitations[p.provider]);
       }
 
-      var monitoredLabel = p.mentioned + ' / ' + denom;
-      if (scheduled != null && scheduled !== denom) {
-        monitoredLabel += ' <span class="aiv-cell-submeta" title="Scenarios scheduled on this provider vs comparable answers included in the metric">(' + denom + ' of ' + scheduled + ' captured)</span>';
+      var monitoredLabel = unavailable ? "\u2014" : (p.mentioned + " / " + denom);
+      var coverageNote = p.coverageNote || null;
+      if (!coverageNote && scheduled != null && denom != null && scheduled !== denom) {
+        coverageNote = denom + " of " + scheduled + " observations captured";
+      }
+      if (coverageNote) {
+        monitoredLabel += ' <span class="aiv-cell-submeta" title="Scenarios scheduled on this provider vs comparable answers included in the metric">(' + esc(coverageNote) + ")</span>";
       }
 
-      html += '<tr>';
-      html += '<td>' + esc(name) + '</td>';
-      html += '<td>Monitored</td>';
-      html += '<td class="aiv-metric-cell aiv-presence-metric-cell">' + presenceVisual + '</td>';
-      html += '<td class="aiv-metric-cell">' + monitoredLabel + '</td>';
-      html += '<td class="aiv-metric-cell">' + missing + '</td>';
-      html += '<td class="aiv-metric-cell">' + citRate + '</td>';
-      html += '<td class="aiv-metric-cell">—</td>';
-      html += '</tr>';
+      html += "<tr>";
+      html += "<td>" + esc(name) + "</td>";
+      html += "<td>" + (unavailable ? "Unavailable" : "Monitored") + "</td>";
+      html += '<td class="aiv-metric-cell aiv-presence-metric-cell">' + presenceVisual + "</td>";
+      html += '<td class="aiv-metric-cell">' + monitoredLabel + "</td>";
+      html += '<td class="aiv-metric-cell">' + missing + "</td>";
+      html += '<td class="aiv-metric-cell">' + citRate + "</td>";
+      html += '<td class="aiv-metric-cell">\u2014</td>';
+      html += "</tr>";
     });
 
     html += '</tbody></table>';
