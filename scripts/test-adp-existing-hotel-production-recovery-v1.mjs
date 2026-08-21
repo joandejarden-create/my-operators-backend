@@ -94,6 +94,15 @@ function main() {
     assert.equal(cambridgeNames.includes(frag), false, "prose suppressed from observed: " + frag);
   }
 
+  // Subject hotel must not appear as a customer competitor (Phillips soft-brand expansion).
+  const phillips = loadPropertyProfile("adp_hotel_phillips_kansas_city");
+  const self = resolveCustomerFacingEntity(
+    "Hotel Phillips Kansas City, Curio Collection by Hilton",
+    phillips
+  );
+  assert.equal(self.rejected, true, "Phillips soft-brand self rejected");
+  assert.equal(self.reason, "subject_property");
+
   const comps = computeCompetitiveSet(
     [
       {
