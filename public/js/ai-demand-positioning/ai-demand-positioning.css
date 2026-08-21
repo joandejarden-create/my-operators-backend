@@ -753,8 +753,13 @@
   white-space: normal;
 }
 
-/* Trend summary — 4 stat boxes */
-#adpTrendSummary.aiv-detail-trend-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* Single-period trend: secondary note under chart (does not replace chart) */
+.adp-trend-awaiting-note {
+  margin-top: 10px;
+  text-align: center;
+  color: var(--neutral--500, #7e89ac);
+  font-size: 12px;
+}
 
 /* AI Reality Gaps — 3-column grid */
 .aiv-signals-grid--three { grid-template-columns: 1fr 1fr 1fr; }

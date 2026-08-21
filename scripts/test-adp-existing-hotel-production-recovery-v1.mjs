@@ -31,10 +31,11 @@ const PORTFOLIO = [
 function main() {
   const ui = readFileSync(UI, "utf8");
 
-  // Trend: one-period baseline must be shown; no delta invented.
-  assert.ok(ui.includes("trends.length === 1"), "one-period trend branch");
-  assert.ok(ui.includes("Awaiting next comparable period") || ui.includes("Not available until the next comparable"), "awaiting next period copy");
-  assert.ok(!ui.includes("trends.length < 2"), "old hide-on-lt-2 gate removed");
+  // Trend: one-period baseline still uses the chart; no fabricated delta / no chart removal.
+  assert.ok(ui.includes("singlePeriod"), "one-period trend branch");
+  assert.ok(ui.includes("Awaiting next comparable period") || ui.includes("Awaiting next comparable monitoring period"), "awaiting next period copy");
+  assert.ok(ui.includes("showLine"), "single-point chart preserves series without fake lines");
+  assert.ok(!ui.includes("chartWrap.hidden = true;\n      return;"), "one-period path must not hide the chart and return");
 
   // Evidence empty state must be explicit.
   assert.ok(ui.includes("Evidence unavailable for this observation"), "explicit evidence empty state");

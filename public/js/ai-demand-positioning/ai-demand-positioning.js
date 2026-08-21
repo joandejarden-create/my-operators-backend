@@ -983,41 +983,22 @@
       return;
     }
 
-    // One official comparable period: show baseline observation, no delta / no fabricated change.
-    if (trends.length === 1) {
+    var singlePeriod = trends.length === 1;
+
+    // Fill missing single-period metric fields from live executive metrics when needed.
+    if (singlePeriod) {
       var baseline = trends[0];
-      var baselineDate = (baseline.date || "").slice(0, 10) || "Baseline";
-      var consideration = baseline.considerationRate;
-      if (consideration == null && d.executiveMetrics && d.executiveMetrics.considerationRate) {
-        consideration = d.executiveMetrics.considerationRate.rate;
+      if (baseline.considerationRate == null && d.executiveMetrics && d.executiveMetrics.considerationRate) {
+        baseline.considerationRate = d.executiveMetrics.considerationRate.rate;
       }
-      var scenarioPresence = baseline.scenarioPresenceRate;
-      if (scenarioPresence == null && d.executiveMetrics && d.executiveMetrics.scenarioPresence) {
-        scenarioPresence = d.executiveMetrics.scenarioPresence.rate;
+      if (baseline.scenarioPresenceRate == null && d.executiveMetrics && d.executiveMetrics.scenarioPresence) {
+        baseline.scenarioPresenceRate = d.executiveMetrics.scenarioPresence.rate;
       }
-      var realityCoverage = baseline.propertyRealityCoverage;
-      emptyEl.hidden = false;
-      emptyEl.innerHTML =
-        '<p class="aiv-empty__message"><strong>Baseline — ' + esc(baselineDate) + '</strong></p>' +
-        '<p class="aiv-empty__message">AI Consideration Rate: ' + (consideration != null ? fmtPct(consideration) : "\u2014") + '</p>' +
-        '<p class="aiv-empty__message">Scenario Presence: ' + (scenarioPresence != null ? fmtPct(scenarioPresence) : "\u2014") + '</p>' +
-        (realityCoverage != null ? '<p class="aiv-empty__message">Reality Coverage: ' + fmtPct(realityCoverage) + '</p>' : '') +
-        '<p class="aiv-empty__message" style="margin-top:0.75rem;"><strong>Change</strong><br>Not available until the next comparable monitoring period.</p>';
-      if (summaryEl) {
-        summaryEl.hidden = false;
-        summaryEl.innerHTML =
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Baseline</div><div class="aiv-detail-trend-stat__value">' + esc(baselineDate) + '</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (consideration != null ? fmtPct(consideration) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (scenarioPresence != null ? fmtPct(scenarioPresence) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">1</div></div>';
-      }
-      if (chartWrap) chartWrap.hidden = true;
-      return;
     }
 
     var labels = trends.map(function(t) {
       var s = t.date || "";
-      return s.slice(0, 10) + " \u00b7 " + (s.slice(11, 16) || "");
+      return s.slice(0, 10) + (s.slice(11, 16) ? " \u00b7 " + s.slice(11, 16) : "");
     });
 
     var realityData = trends.map(function(t) { return t.propertyRealityCoverage != null ? Math.round(t.propertyRealityCoverage * 10) / 10 : null; });
@@ -1025,7 +1006,7 @@
     var considerationData = trends.map(function(t) { return t.considerationRate != null ? Math.round(t.considerationRate * 10) / 10 : null; });
 
     var last = trends[trends.length - 1];
-    var prev = trends[trends.length - 2];
+    var prev = singlePeriod ? null : trends[trends.length - 2];
     function ppChange(cur, prior) {
       if (cur == null || prior == null) return null;
       return Math.round((cur - prior) * 10) / 10;
@@ -1033,14 +1014,23 @@
 
     if (summaryEl) {
       summaryEl.hidden = false;
-      var rcCh = ppChange(last.propertyRealityCoverage, prev.propertyRealityCoverage);
-      var spCh = ppChange(last.scenarioPresenceRate, prev.scenarioPresenceRate);
-      var crCh = ppChange(last.considerationRate, prev.considerationRate);
-      summaryEl.innerHTML =
-        '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (rcCh == null ? "" : (rcCh > 0 ? "+" : "") + rcCh + " pp") + '</div></div>' +
-        '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (spCh == null ? "" : (spCh > 0 ? "+" : "") + spCh + " pp") + '</div></div>' +
-        '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (crCh == null ? "" : (crCh > 0 ? "+" : "") + crCh + " pp") + '</div></div>' +
-        '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">' + trends.length + '</div></div>';
+      if (singlePeriod) {
+        // Same summary chrome as multi-period, but no fabricated delta — awaiting next comparable period.
+        summaryEl.innerHTML =
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">1</div></div>';
+      } else {
+        var rcCh = ppChange(last.propertyRealityCoverage, prev.propertyRealityCoverage);
+        var spCh = ppChange(last.scenarioPresenceRate, prev.scenarioPresenceRate);
+        var crCh = ppChange(last.considerationRate, prev.considerationRate);
+        summaryEl.innerHTML =
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (rcCh == null ? "" : (rcCh > 0 ? "+" : "") + rcCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (spCh == null ? "" : (spCh > 0 ? "+" : "") + spCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (crCh == null ? "" : (crCh > 0 ? "+" : "") + crCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">' + trends.length + '</div></div>';
+      }
     }
 
     if (!canvas || typeof window.Chart !== "function") {
@@ -1050,9 +1040,18 @@
       return;
     }
 
-    emptyEl.hidden = true;
+    // Always render the existing line-chart component (including single-period baseline).
+    emptyEl.hidden = !singlePeriod;
+    if (singlePeriod) {
+      emptyEl.innerHTML = '<p class="aiv-empty__message adp-trend-awaiting-note">Awaiting next comparable monitoring period</p>';
+    } else {
+      emptyEl.innerHTML = "";
+    }
     if (chartWrap) chartWrap.hidden = false;
     canvas.style.display = "block";
+
+    var pointRadius = singlePeriod ? 6 : 4;
+    var showLine = !singlePeriod;
 
     adpTrendChart = new window.Chart(canvas.getContext("2d"), {
       type: "line",
@@ -1067,7 +1066,9 @@
             fill: false,
             tension: 0.35,
             borderWidth: 2,
-            pointRadius: 4,
+            pointRadius: pointRadius,
+            pointHoverRadius: pointRadius + 2,
+            showLine: showLine,
             spanGaps: false
           },
           {
@@ -1078,7 +1079,9 @@
             fill: false,
             tension: 0.35,
             borderWidth: 2,
-            pointRadius: 4,
+            pointRadius: pointRadius,
+            pointHoverRadius: pointRadius + 2,
+            showLine: showLine,
             spanGaps: false
           },
           {
@@ -1089,7 +1092,9 @@
             fill: false,
             tension: 0.35,
             borderWidth: 2,
-            pointRadius: 4,
+            pointRadius: pointRadius,
+            pointHoverRadius: pointRadius + 2,
+            showLine: showLine,
             spanGaps: false
           }
         ]
