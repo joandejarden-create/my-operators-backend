@@ -108,6 +108,11 @@ function extractKpis(payload) {
     })),
     topAlternative: payload.lostDemand?.displacement?.[0]?.name || null,
     actionImpacts: (payload.actions || []).map((a) => a.expectedImpact),
+    actionDescriptions: (payload.actions || []).map((a) => a.description || ""),
+    openaiPresence: (payload.evidence?.providers || []).find((p) => p.provider === "openai")?.presence ?? null,
+    providerPresence: Object.fromEntries(
+      (payload.evidence?.providers || []).map((p) => [p.provider, p.presence])
+    ),
     baselineMarker: payload.period?.baselineMarker || payload.period?.officialBaselineMarker || null,
     officialPeriod: payload.period?.officialPeriod ?? null,
     providerCount: payload.period?.providerCount ?? null,
@@ -280,6 +285,24 @@ for (const propertyId of ALL) {
       old: oldK.actionImpacts,
       new: newK.actionImpacts,
       reason: "unsupported numeric impact neutralized",
+    },
+    {
+      area: "Action descriptions",
+      old: oldK.actionDescriptions,
+      new: newK.actionDescriptions,
+      reason: "remove unsupported causal uplift language",
+    },
+    {
+      area: "Provider presence (OpenAI)",
+      old: oldK.openaiPresence,
+      new: newK.openaiPresence,
+      reason: "subject matching on existing raw observations (no new LLM)",
+    },
+    {
+      area: "Provider presence (all)",
+      old: oldK.providerPresence,
+      new: newK.providerPresence,
+      reason: "provider differences preserved; not equalized",
     },
     {
       area: "Trend payload",

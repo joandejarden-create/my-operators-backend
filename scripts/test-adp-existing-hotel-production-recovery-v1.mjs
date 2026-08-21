@@ -94,6 +94,10 @@ function main() {
       "no unsupported numeric impact: " + impact
     );
     assert.equal(action.expectedImpact, null);
+    assert.ok(
+      !/would increase demand capture/i.test(String(action.description || "")),
+      "no causal uplift language in action description"
+    );
   }
 
   // Baseline inventory: exactly one active official baseline marker per portfolio property.
