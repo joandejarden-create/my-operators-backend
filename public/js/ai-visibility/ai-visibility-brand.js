@@ -23,7 +23,7 @@
     tab: "executive",
     geography: "CALA",
     provider: "openai",
-    language: null,
+    language: "en",
     brandId: null,
     intent: "",
     questionFilter: "all",
@@ -509,8 +509,9 @@
       if (geo) state.geography = geo;
       if (provider) state.provider = provider;
       if (language) state.language = language;
+      if (!state.language) state.language = "en";
     } catch (_) {
-      /* ignore */
+      if (!state.language) state.language = "en";
     }
   }
 
@@ -6668,37 +6669,35 @@
         ALL_LANGUAGES_OPTION: false,
       }
     );
-    // First load often omits language; contract then picks EN/ES. Re-fetch only when
-    // the resolved UI language differs from what the server already returned.
+    // Server can return language:"en" while omitting brand rows when the query
+    // did not send language= explicitly. Always re-fetch once in that case.
+    var overviewBrands =
+      (data.portfolioOverview && data.portfolioOverview.brands) || [];
     if (
-      !requestedLanguage &&
+      !state._execLanguageReconciled &&
       state.language &&
-      !state._execLanguageReconciled
+      (!requestedLanguage || overviewBrands.length === 0)
     ) {
       state._execLanguageReconciled = true;
-      var serverLang = String(data.language || "").toLowerCase();
-      var uiLang = String(state.language || "").toLowerCase();
-      if (serverLang !== uiLang) {
-        if (!token.isCurrent()) return null;
-        data = await apiGet(
-          "/api/ai-visibility/brand/executive-summary" + qs(),
-          fetchOpts
-        );
-        if (!shouldApplyLoadResult(token, data)) return null;
-        state.executive = data;
-        applyAvailableProviders(data);
-        applyLanguageFilterContract(
-          data.languageFilterContract || {
-            availableLanguages: data.availableLanguages || [],
-            visible: (data.availableLanguages || []).length > 1,
-            defaultSelection:
-              (data.availableLanguages || []).indexOf("en") >= 0
-                ? "en"
-                : (data.availableLanguages || [])[0] || null,
-            ALL_LANGUAGES_OPTION: false,
-          }
-        );
-      }
+      if (!token.isCurrent()) return null;
+      data = await apiGet(
+        "/api/ai-visibility/brand/executive-summary" + qs(),
+        fetchOpts
+      );
+      if (!shouldApplyLoadResult(token, data)) return null;
+      state.executive = data;
+      applyAvailableProviders(data);
+      applyLanguageFilterContract(
+        data.languageFilterContract || {
+          availableLanguages: data.availableLanguages || [],
+          visible: (data.availableLanguages || []).length > 1,
+          defaultSelection:
+            (data.availableLanguages || []).indexOf("en") >= 0
+              ? "en"
+              : (data.availableLanguages || [])[0] || null,
+          ALL_LANGUAGES_OPTION: false,
+        }
+      );
     }
     if (!token.isCurrent()) return null;
     applyDemoPortfolioKeyFromPayload(data);
@@ -7196,14 +7195,14 @@
     $("aivReset").addEventListener("click", function () {
       state.geography = "CALA";
       state.provider = "openai";
-      state.language = null;
+      state.language = "en";
       state.intent = "";
       state.questionFilter = "all";
       state._execLanguageReconciled = false;
       invalidateTabCaches();
       $("aivGeography").value = "CALA";
       if ($("aivProvider")) $("aivProvider").value = "openai";
-      if ($("aivLanguage")) $("aivLanguage").value = "";
+      if ($("aivLanguage")) $("aivLanguage").value = "en";
       if ($("aivIntent")) $("aivIntent").value = "";
       if (state.tab === "detail") {
         state.brandId = restoreBrand((state.portfolio && state.portfolio.brands) || []);
