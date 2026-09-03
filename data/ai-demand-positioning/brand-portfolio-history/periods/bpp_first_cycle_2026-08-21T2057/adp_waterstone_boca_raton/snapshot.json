@@ -1,0 +1,1528 @@
+{
+  "schema": "ADP_BPP_REPORT_SNAPSHOT_V1",
+  "snapshotId": "bpp_snap_adp_waterstone_boca_raton_bpp_first_cycle_2026-08-21T2057_b061672b89",
+  "propertyId": "adp_waterstone_boca_raton",
+  "monitoringPeriodId": "adp_week_2026-08-21",
+  "measurementPeriodId": "bpp_first_cycle_2026-08-21T2057",
+  "measurementFamily": "BRAND_PORTFOLIO",
+  "monitoringDate": "2026-08-21",
+  "generatedAt": "2026-08-21T22:23:17.100Z",
+  "certifiedAt": "2026-08-21T22:23:17.100Z",
+  "publishedAt": "2026-08-21T22:23:17.100Z",
+  "certificationStatus": "CUSTOMER_PUBLISHED",
+  "assuranceStatus": "CUSTOMER_READY",
+  "publicationVersion": "bpp-customer-v1.1-20260821",
+  "reportEdition": "CUSTOMER_PUBLISHED_BASELINE_V1_1",
+  "measurementContract": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+  "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+  "lensId": "hilton_honors",
+  "lensLabel": "Hilton Honors",
+  "affiliationSnapshot": {
+    "brand": "Curio Collection",
+    "affiliation": "Curio Collection by Hilton",
+    "parentCompany": "Hilton",
+    "officialBrandDomain": "hilton.com"
+  },
+  "peerSetId": "bps_adp_waterstone_boca_raton_hilton_honors_certified_v1",
+  "peerSetVersion": "ADP_LOYALTY_ECOSYSTEM_PEER_UNIVERSE_V1_CERTIFIED",
+  "peerSetHash": "c0b21f6b7756509dd42427ce262643823b16a235aeacafa4cfa9ec8dff06cbd4",
+  "promptManifestHash": "a5b8e190898fcd88cd8f30c8221e5f21ab34029f68b07bf1cf8d00f572122705",
+  "providerCoverage": [
+    {
+      "provider": "openai",
+      "observations": 10,
+      "subjectHits": 2,
+      "presenceRate": 0.2
+    },
+    {
+      "provider": "gemini",
+      "observations": 10,
+      "subjectHits": 9,
+      "presenceRate": 0.9
+    },
+    {
+      "provider": "perplexity",
+      "observations": 10,
+      "subjectHits": 9,
+      "presenceRate": 0.9
+    },
+    {
+      "provider": "claude",
+      "observations": 10,
+      "subjectHits": 0,
+      "presenceRate": 0
+    }
+  ],
+  "customerVisibleContentHash": "b061672b89b727066010a29523d6f62cc4d4d1dca2dc3f38504c10f60a739504",
+  "assetCacheTokenAtPublication": "adp-v70-20260822-bpp-visual",
+  "synthetic": false,
+  "versions": {
+    "bppHistorySchema": "adp_bpp_history_schema_v1",
+    "publicationVersion": "bpp-customer-v1.1-20260821",
+    "kpiContractVersion": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+    "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+    "rendererVersion": "adp-v70-20260822-bpp-visual",
+    "promptManifestHash": "a5b8e190898fcd88cd8f30c8221e5f21ab34029f68b07bf1cf8d00f572122705"
+  },
+  "disclosures": [
+    {
+      "code": "PORTFOLIO_METRIC_GRAIN_MISMATCH",
+      "note": "Original scenario-any candidate never customer-published; V1.1 observation-grain is the published baseline."
+    }
+  ],
+  "correctionLineage": {
+    "stages": [
+      "ORIGINAL_FIRST_CYCLE_CANDIDATE",
+      "CORRECTED_FIRST_CYCLE_CANDIDATE",
+      "CUSTOMER_PUBLISHED_BASELINE"
+    ],
+    "reason": "PORTFOLIO_METRIC_GRAIN_MISMATCH",
+    "originalNeverCustomerPublished": true,
+    "lineageRef": "ADP_BRAND_PORTFOLIO_CORRECTION_LINEAGE_V1_1.json"
+  },
+  "comparability": {
+    "rankMovementState": "INITIAL",
+    "hasPriorComparablePeriod": false,
+    "policyVersion": "BPP_COMPARABILITY_POLICY_V1"
+  },
+  "customerPayload": {
+    "ok": true,
+    "sectionId": "brand-portfolio-position",
+    "contractVersion": "ADP_BRAND_PORTFOLIO_POSITION_CONTRACT_V1",
+    "sectionVisible": true,
+    "title": "Brand & Portfolio Position",
+    "subtitle": "How this hotel performs within its brand, collection, portfolio, or loyalty ecosystem.",
+    "sectionMode": "BRAND_PORTFOLIO_POSITION",
+    "status": "READY",
+    "renderState": "READY",
+    "customerState": null,
+    "emptyMessage": null,
+    "lens": {
+      "lensId": "hilton_honors",
+      "label": "Hilton Honors",
+      "portfolioType": "LOYALTY_ECOSYSTEM",
+      "status": "DEFAULT"
+    },
+    "optionalFutureLenses": [
+      {
+        "lensId": "curio_collection",
+        "label": "Curio Collection",
+        "status": "OPTIONAL_FUTURE"
+      }
+    ],
+    "assuranceStatus": "CUSTOMER_READY",
+    "showAnalyticalScaffolding": true,
+    "kpis": [
+      {
+        "id": "portfolioAiPresence",
+        "label": "Portfolio AI Presence",
+        "value": "50.0%",
+        "valueRaw": 0.5,
+        "meta": "20 of 40 provider observations",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioRank",
+        "label": "Portfolio Rank",
+        "value": "#2 of 6",
+        "valueRaw": 2,
+        "meta": "Among frozen same-ecosystem peers + subject",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioBenchmark",
+        "label": "Portfolio Benchmark",
+        "value": "36.5%",
+        "valueRaw": 0.365,
+        "meta": "Mean peer observation-grain AI Presence",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioPresenceIndex",
+        "label": "Portfolio Presence Index",
+        "value": "137",
+        "valueRaw": 137,
+        "meta": "Subject / peer benchmark × 100",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "numberOneAppearance",
+        "label": "#1 Appearance",
+        "value": "0.0%",
+        "valueRaw": 0,
+        "meta": "0 scenarios with explicit #1 position",
+        "grain": "UNIQUE_SCENARIO",
+        "available": true
+      },
+      {
+        "id": "top3Appearance",
+        "label": "Top-3 Appearance",
+        "value": "80.0%",
+        "valueRaw": 0.8,
+        "meta": "Scenario grain — best ordinal across providers",
+        "grain": "UNIQUE_SCENARIO",
+        "available": true
+      }
+    ],
+    "ranking": {
+      "rows": [
+        {
+          "rank": 1,
+          "rankLabel": "#1",
+          "name": "Hilton Boca Raton Suites",
+          "brand": "Hilton Hotels & Resorts",
+          "isSubject": false,
+          "presenceDisplay": "77.5%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "1",
+          "sharedDisplay": "9",
+          "canonicalEntityId": "peer_hilton_boca_suites"
+        },
+        {
+          "rank": 2,
+          "rankLabel": "#2",
+          "name": "Waterstone Resort & Marina",
+          "brand": "Curio Collection",
+          "isSubject": true,
+          "presenceDisplay": "50%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "—",
+          "sharedDisplay": "—",
+          "canonicalEntityId": "adp_waterstone_boca_raton"
+        },
+        {
+          "rank": 3,
+          "rankLabel": "#3",
+          "name": "Embassy Suites by Hilton Boca Raton",
+          "brand": "Embassy Suites",
+          "isSubject": false,
+          "presenceDisplay": "45%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "1",
+          "sharedDisplay": "8",
+          "canonicalEntityId": "peer_hilton_embassy_boca"
+        },
+        {
+          "rank": 4,
+          "rankLabel": "#4",
+          "name": "Embassy Suites by Hilton Deerfield Beach Resort & Spa",
+          "brand": "Embassy Suites",
+          "isSubject": false,
+          "presenceDisplay": "45%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "1",
+          "sharedDisplay": "8",
+          "canonicalEntityId": "peer_hilton_embassy_deerfield"
+        },
+        {
+          "rank": 5,
+          "rankLabel": "#5",
+          "name": "Hilton Garden Inn Boca Raton",
+          "brand": "Hilton Garden Inn",
+          "isSubject": false,
+          "presenceDisplay": "15%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "1",
+          "sharedDisplay": "3",
+          "canonicalEntityId": "peer_hilton_garden_boca"
+        },
+        {
+          "rank": 6,
+          "rankLabel": "#6",
+          "name": "The Ray Hotel Delray Beach, Curio Collection by Hilton",
+          "brand": "Curio Collection",
+          "isSubject": false,
+          "presenceDisplay": "0%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "0",
+          "sharedDisplay": "0",
+          "canonicalEntityId": "peer_hilton_ray_delray"
+        }
+      ],
+      "hasPriorPeriod": false,
+      "firstPeriodDeltaLabel": "—"
+    },
+    "tableColumns": [
+      "Rank",
+      "Hotel",
+      "AI Presence",
+      "Δ vs Prior Run",
+      "Displacement vs You",
+      "Scenarios Shared"
+    ],
+    "dataAvailability": {
+      "validObservations": 12,
+      "invalidObservations": 0,
+      "needsRerunObservations": 0,
+      "propertySpecificOtherObservations": 52,
+      "validScenarios": 3,
+      "sufficientForRanking": false,
+      "historicalCandidateReuseAvailable": true,
+      "source": "ADP_BRAND_PORTFOLIO_OBSERVATION_RECLASS_V1"
+    },
+    "affiliationSnapshot": {
+      "brand": "Curio Collection",
+      "affiliation": "Curio Collection by Hilton",
+      "parentCompany": "Hilton",
+      "officialBrandDomain": "hilton.com"
+    },
+    "coreIsolation": true,
+    "gate": "CORE_PORTFOLIO_MEASUREMENT_ISOLATION",
+    "principles": [
+      "NO_EMPTY_ANALYTICAL_SCAFFOLDING_BEFORE_MEASUREMENT",
+      "PORTFOLIO_TABLE_REQUIRES_READY_MEASUREMENT",
+      "PORTFOLIO_METRIC_MISSING_IS_NOT_ZERO"
+    ],
+    "doesNotAlterCoreMetrics": true,
+    "narrative": {
+      "version": "ADP_BRAND_PORTFOLIO_NARRATIVE_V1_1_CUSTOMER",
+      "grain": "PROVIDER_OBSERVATION",
+      "headline": "50.0% Portfolio AI Presence · #2 of 6 · Index 137",
+      "body": "Waterstone Resort & Marina ranks #2 of 6 within the governed Hilton Honors competitive set, with 50.0% cross-model Portfolio AI Presence — moderate absolute visibility, not broadly dominant coverage. Presence Index 137 is about 37% above the peer benchmark (36.5%), so relative portfolio position is strong. Provider inconsistency remains material: Gemini and Perplexity are stronger; OpenAI and Claude are weaker (OpenAI 20.0% · Gemini 90.0% · Perplexity 90.0% · Claude 0.0%). Index and rank do not imply uniformly strong AI visibility across every provider.",
+      "absoluteBand": "moderate",
+      "providerSpread": "OpenAI 20.0% · Gemini 90.0% · Perplexity 90.0% · Claude 0.0%",
+      "actions": [
+        {
+          "priority": "medium",
+          "title": "Close OpenAI and Claude gaps",
+          "description": "Relative #2 standing and Index 137 sit atop 50% absolute presence. Strengthen signals that OpenAI and Claude cite so cross-model coverage catches up to Gemini/Perplexity."
+        },
+        {
+          "priority": "medium",
+          "title": "Keep absolute and relative reads separate",
+          "description": "Above-benchmark Index measures ecosystem standing vs peers — it does not mean travelers see you consistently across all major AI providers."
+        }
+      ],
+      "customerFacing": true,
+      "distinguishesAbsoluteVsRelative": true
+    },
+    "actions": [
+      {
+        "priority": "medium",
+        "title": "Close OpenAI and Claude gaps",
+        "description": "Relative #2 standing and Index 137 sit atop 50% absolute presence. Strengthen signals that OpenAI and Claude cite so cross-model coverage catches up to Gemini/Perplexity."
+      },
+      {
+        "priority": "medium",
+        "title": "Keep absolute and relative reads separate",
+        "description": "Above-benchmark Index measures ecosystem standing vs peers — it does not mean travelers see you consistently across all major AI providers."
+      }
+    ],
+    "byProvider": {
+      "openai": {
+        "provider": "openai",
+        "observations": 10,
+        "subjectHits": 2,
+        "presenceRate": 0.2,
+        "errors": 0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "observations": 10,
+        "subjectHits": 9,
+        "presenceRate": 0.9,
+        "errors": 0
+      },
+      "perplexity": {
+        "provider": "perplexity",
+        "observations": 10,
+        "subjectHits": 9,
+        "presenceRate": 0.9,
+        "errors": 0
+      },
+      "claude": {
+        "provider": "claude",
+        "observations": 10,
+        "subjectHits": 0,
+        "presenceRate": 0,
+        "errors": 0
+      }
+    },
+    "providerPresence": {
+      "grain": "PROVIDER_SPECIFIC_OBSERVATION",
+      "rows": [
+        {
+          "provider": "openai",
+          "label": "OpenAI",
+          "presenceDisplay": "20.0%",
+          "presenceRate": 0.2,
+          "observations": 10,
+          "subjectHits": 2
+        },
+        {
+          "provider": "gemini",
+          "label": "Gemini",
+          "presenceDisplay": "90.0%",
+          "presenceRate": 0.9,
+          "observations": 10,
+          "subjectHits": 9
+        },
+        {
+          "provider": "perplexity",
+          "label": "Perplexity",
+          "presenceDisplay": "90.0%",
+          "presenceRate": 0.9,
+          "observations": 10,
+          "subjectHits": 9
+        },
+        {
+          "provider": "claude",
+          "label": "Claude",
+          "presenceDisplay": "0.0%",
+          "presenceRate": 0,
+          "observations": 10,
+          "subjectHits": 0
+        }
+      ]
+    },
+    "byTerritory": {
+      "business": {
+        "territory": "business",
+        "scenarios": 3,
+        "observations": 12,
+        "subjectHits": 7,
+        "presenceRate": 0.5833333333333334,
+        "presenceDisplay": "58.3%",
+        "portfolioRank": 4,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.4333333333333334,
+        "portfolioPresenceIndex": 135,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_hilton_boca_suites",
+            "name": "Hilton Boca Raton Suites",
+            "brand": "Hilton Hotels & Resorts",
+            "presenceRate": 0.8333333333333334,
+            "obsHits": 10,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 83.3,
+            "numerator": 10,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.5833333333333334,
+            "obsHits": 7,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 58.3,
+            "numerator": 7,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_deerfield",
+            "name": "Embassy Suites by Hilton Deerfield Beach Resort & Spa",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.5833333333333334,
+            "obsHits": 7,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 58.3,
+            "numerator": 7,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_waterstone_boca_raton",
+            "name": "Waterstone Resort & Marina",
+            "brand": "Curio Collection",
+            "presenceRate": 0.5833333333333334,
+            "obsHits": 7,
+            "obsDenom": 12,
+            "isSubject": true,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 58.3,
+            "numerator": 7,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_garden_boca",
+            "name": "Hilton Garden Inn Boca Raton",
+            "brand": "Hilton Garden Inn",
+            "presenceRate": 0.16666666666666666,
+            "obsHits": 2,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 16.7,
+            "numerator": 2,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_ray_delray",
+            "name": "The Ray Hotel Delray Beach, Curio Collection by Hilton",
+            "brand": "Curio Collection",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 12,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "leisure": {
+        "territory": "leisure",
+        "scenarios": 2,
+        "observations": 8,
+        "subjectHits": 5,
+        "presenceRate": 0.625,
+        "presenceDisplay": "62.5%",
+        "portfolioRank": 1,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.175,
+        "portfolioPresenceIndex": 357,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "adp_waterstone_boca_raton",
+            "name": "Waterstone Resort & Marina",
+            "brand": "Curio Collection",
+            "presenceRate": 0.625,
+            "obsHits": 5,
+            "obsDenom": 8,
+            "isSubject": true,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 62.5,
+            "numerator": 5,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_boca_suites",
+            "name": "Hilton Boca Raton Suites",
+            "brand": "Hilton Hotels & Resorts",
+            "presenceRate": 0.5,
+            "obsHits": 4,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 50,
+            "numerator": 4,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.125,
+            "obsHits": 1,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 12.5,
+            "numerator": 1,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_deerfield",
+            "name": "Embassy Suites by Hilton Deerfield Beach Resort & Spa",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.125,
+            "obsHits": 1,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 12.5,
+            "numerator": 1,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_garden_boca",
+            "name": "Hilton Garden Inn Boca Raton",
+            "brand": "Hilton Garden Inn",
+            "presenceRate": 0.125,
+            "obsHits": 1,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 12.5,
+            "numerator": 1,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_ray_delray",
+            "name": "The Ray Hotel Delray Beach, Curio Collection by Hilton",
+            "brand": "Curio Collection",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 8,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "couples": {
+        "territory": "couples",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 2,
+        "presenceRate": 0.5,
+        "presenceDisplay": "50.0%",
+        "portfolioRank": 4,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.4,
+        "portfolioPresenceIndex": 125,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_hilton_boca_suites",
+            "name": "Hilton Boca Raton Suites",
+            "brand": "Hilton Hotels & Resorts",
+            "presenceRate": 0.75,
+            "obsHits": 3,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 75,
+            "numerator": 3,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_deerfield",
+            "name": "Embassy Suites by Hilton Deerfield Beach Resort & Spa",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_waterstone_boca_raton",
+            "name": "Waterstone Resort & Marina",
+            "brand": "Curio Collection",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_garden_boca",
+            "name": "Hilton Garden Inn Boca Raton",
+            "brand": "Hilton Garden Inn",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_ray_delray",
+            "name": "The Ray Hotel Delray Beach, Curio Collection by Hilton",
+            "brand": "Curio Collection",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "family": {
+        "territory": "family",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 2,
+        "presenceRate": 0.5,
+        "presenceDisplay": "50.0%",
+        "portfolioRank": 2,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.25,
+        "portfolioPresenceIndex": 200,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_hilton_boca_suites",
+            "name": "Hilton Boca Raton Suites",
+            "brand": "Hilton Hotels & Resorts",
+            "presenceRate": 0.75,
+            "obsHits": 3,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 75,
+            "numerator": 3,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_waterstone_boca_raton",
+            "name": "Waterstone Resort & Marina",
+            "brand": "Curio Collection",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_deerfield",
+            "name": "Embassy Suites by Hilton Deerfield Beach Resort & Spa",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_garden_boca",
+            "name": "Hilton Garden Inn Boca Raton",
+            "brand": "Hilton Garden Inn",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_ray_delray",
+            "name": "The Ray Hotel Delray Beach, Curio Collection by Hilton",
+            "brand": "Curio Collection",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "group_meetings": {
+        "territory": "group_meetings",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 0,
+        "presenceRate": 0,
+        "presenceDisplay": "0.0%",
+        "portfolioRank": 6,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.7,
+        "portfolioPresenceIndex": 0,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_hilton_embassy_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "brand": "Embassy Suites",
+            "presenceRate": 1,
+            "obsHits": 4,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 100,
+            "numerator": 4,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_deerfield",
+            "name": "Embassy Suites by Hilton Deerfield Beach Resort & Spa",
+            "brand": "Embassy Suites",
+            "presenceRate": 1,
+            "obsHits": 4,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 100,
+            "numerator": 4,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_boca_suites",
+            "name": "Hilton Boca Raton Suites",
+            "brand": "Hilton Hotels & Resorts",
+            "presenceRate": 1,
+            "obsHits": 4,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 100,
+            "numerator": 4,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_garden_boca",
+            "name": "Hilton Garden Inn Boca Raton",
+            "brand": "Hilton Garden Inn",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_ray_delray",
+            "name": "The Ray Hotel Delray Beach, Curio Collection by Hilton",
+            "brand": "Curio Collection",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_waterstone_boca_raton",
+            "name": "Waterstone Resort & Marina",
+            "brand": "Curio Collection",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 0
+      },
+      "celebrations": {
+        "territory": "celebrations",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 2,
+        "presenceRate": 0.5,
+        "presenceDisplay": "50.0%",
+        "portfolioRank": 2,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.3,
+        "portfolioPresenceIndex": 167,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_hilton_boca_suites",
+            "name": "Hilton Boca Raton Suites",
+            "brand": "Hilton Hotels & Resorts",
+            "presenceRate": 1,
+            "obsHits": 4,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 100,
+            "numerator": 4,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_waterstone_boca_raton",
+            "name": "Waterstone Resort & Marina",
+            "brand": "Curio Collection",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_deerfield",
+            "name": "Embassy Suites by Hilton Deerfield Beach Resort & Spa",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_garden_boca",
+            "name": "Hilton Garden Inn Boca Raton",
+            "brand": "Hilton Garden Inn",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_ray_delray",
+            "name": "The Ray Hotel Delray Beach, Curio Collection by Hilton",
+            "brand": "Curio Collection",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "wellness": {
+        "territory": "wellness",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 2,
+        "presenceRate": 0.5,
+        "presenceDisplay": "50.0%",
+        "portfolioRank": 4,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.35,
+        "portfolioPresenceIndex": 143,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_hilton_boca_suites",
+            "name": "Hilton Boca Raton Suites",
+            "brand": "Hilton Hotels & Resorts",
+            "presenceRate": 0.75,
+            "obsHits": 3,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 75,
+            "numerator": 3,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_boca",
+            "name": "Embassy Suites by Hilton Boca Raton",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_embassy_deerfield",
+            "name": "Embassy Suites by Hilton Deerfield Beach Resort & Spa",
+            "brand": "Embassy Suites",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_waterstone_boca_raton",
+            "name": "Waterstone Resort & Marina",
+            "brand": "Curio Collection",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_garden_boca",
+            "name": "Hilton Garden Inn Boca Raton",
+            "brand": "Hilton Garden Inn",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_hilton_ray_delray",
+            "name": "The Ray Hotel Delray Beach, Curio Collection by Hilton",
+            "brand": "Curio Collection",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      }
+    },
+    "territoryOptions": [
+      {
+        "id": "overall",
+        "label": "Overall"
+      },
+      {
+        "id": "business",
+        "label": "Business"
+      },
+      {
+        "id": "leisure",
+        "label": "Leisure"
+      },
+      {
+        "id": "couples",
+        "label": "Couples"
+      },
+      {
+        "id": "family",
+        "label": "Family"
+      },
+      {
+        "id": "group_meetings",
+        "label": "Group Meetings"
+      },
+      {
+        "id": "celebrations",
+        "label": "Celebrations"
+      },
+      {
+        "id": "wellness",
+        "label": "Wellness"
+      }
+    ],
+    "evidence": {
+      "positive": [
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_01_openai_a1_d2d25d",
+          "scenarioId": "bpp_waterstone_boca_raton_business_01",
+          "provider": "openai",
+          "territory": "business",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "deal for unwinding after a day of meetings.\n\n3. **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**: Located on the Intracoastal Waterway, this hotel offers s",
+          "position": 4,
+          "aiResponse": "For a corporate executive trip to Boca Raton with a focus on evening downtime by the water, you might consider the following Hilton-affiliated hotels:\n\n1. **Hilton Boca Raton Suites**: This hotel offers spacious suites and is situated near several corporate offices, making it convenient for business travelers. Although it is not directly on the water, it is just a short drive from the beach and other waterfront activities.\n\n2. **Boca Beach Club, A Waldorf Astoria Resort**: While not branded directly under Hilton, the Boca Beach Club is part of the Hilton’s luxury collection through Waldorf Astoria. It offers a more upscale, resort-style experience with direct access to the beach and elegant dining options. This could be ideal for unwinding after a day of meetings.\n\n3. **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**: Located on the Intracoastal Waterway, this hotel offers stunning water views, a marina, and easy access to various water activities. It has a more relaxed and luxurious vibe, perfect for enjoying some downtime by the water in the evenings.\n\nThese options provide a range of amenities and settings that cater to corporate travelers looking for both convenience and relaxation opportunities."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_01_gemini_a1_6457d9",
+          "scenarioId": "bpp_waterstone_boca_raton_business_01",
+          "provider": "gemini",
+          "territory": "business",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "s for your trip:\n\n---\n\n### 1. The Clear Winner: **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n* **The Vibe:** Upscale, boutique, executive-friendly, and",
+          "position": null,
+          "aiResponse": "For a corporate executive trip in Boca Raton that prioritizes high-end comfort and quality evening downtime on the water, **there is one clear standout within the Hilton portfolio**, along with a couple of strong nearby alternatives depending on your exact definition of \"on the water.\"\n\nHere is the breakdown of the best Hilton options for your trip:\n\n---\n\n### 1. The Clear Winner: **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n* **The Vibe:** Upscale, boutique, executive-friendly, and distinctively coastal.\n* **Location:** Situated directly on the Intracoastal Waterway near the Boca Inlet.\n\n**Why it’s ideal for a Corporate Executive:**\n* **True Waterfront Experience:** Unlike standard business hotels, every room here features a private balcony with water views (either the Intracoastal or the Atlantic Ocean). \n* **Premium Evening Downtime:** You don’t need to leave the property to unwind. \n  * **Boca Landing:** An upscale waterfront restaurant offering fresh seafood, fine wine, and indoor/outdoor dining right over the water—perfect for entertaining clients or a quiet solo executive dinner.\n  * **Waterstone Bar & Grill:** A poolside, dockside bar ideal for evening cocktails while watching yachts navigate the Intracoastal.\n* **Executive Amenities:** As part of the Curio Collection, it offers higher-end finishes, flexible meeting/event spaces, strong Wi-Fi, and a quieter, more sophisticated atmosphere than standard commercial hotels.\n\n---\n\n### 2. The Practical Business Alternative: **Hilton Boca Raton Suites**\n* **The Vibe:** Classic corporate hotel with extra room to work.\n* **Location:** Inland (Glades Road / Town Center area), close to major corporate parks and Arvida Park of Commerce.\n\n**Why consider it (with caveats):**\n* **\"Waterfront\" Aspect:** It is set on a private **lake** rather than the ocean or Intracoastal. You can sit by the lake in the evening, but it lacks the luxury marina/coastal vibe of the Waterstone.\n* **Executive Appeal:** It offers spacious two-room suites with dedicated workspaces, complimentary cooked-to-order breakfast, and an evening reception. \n* **Best Used For:** An executive who prioritizes being 5 minutes from inland corporate offices over coastal night life.\n\n---\n\n### 3. The Nearby Luxury Backup: **Conrad Fort Lauderdale Beach** *(~25 mins South of Boca)*\n* **The Vibe:** Ultra-luxury, five-star executive experience.\n* **Location:** Directly on Fort Lauderdale Beach (A1A).\n\n**Why consider it:**\n* If your executive is looking for a **top-tier luxury experience** (Conrad is Hilton’s flagship luxury brand) and doesn't mind a short 20–25 minute drive to Boca Raton for daytime meetings.\n* **Evening Downtime:** Unmatched oceanfront dining, a 20,000-square-foot elevated pool deck overlooking the ocean, and exceptional executive-level service.\n\n---\n\n### Executive Recommendation:\nBook **Waterstone Resort & Marina (Curio Collection)**. \n\nIt hits the exact sweet spot: it is located *in* Boca Raton, offers proper executive-level accommodations, and provides seamless evening downtime right on the Intracoastal Waterway without having to fight South Florida traffic after hours. \n\n*Tip:* Request a high-floor room facing the **Intracoastal/Inlet** for the best sunset views during evening downtime."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_01_perplexity_a1_3086e7",
+          "scenarioId": "bpp_waterstone_boca_raton_business_01",
+          "provider": "perplexity",
+          "territory": "business",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "er**, the best Hilton options in Boca Raton are **Waterstone Resort & Marina Boca Raton** and **Hilton Boca Raton Suites**, with **Embassy Suites by Hilton Boca Raton** as a pr",
+          "position": null,
+          "aiResponse": "For a **corporate executive trip with evening downtime on the water**, the best Hilton options in Boca Raton are **Waterstone Resort & Marina Boca Raton** and **Hilton Boca Raton Suites**, with **Embassy Suites by Hilton Boca Raton** as a practical backup for business-first stays. Waterstone is the strongest fit if “on the water” is the priority, while Hilton Boca Raton Suites is better if you want a more corporate, inland base with easy access to the business corridor.[1][4][5][7]\n\n- **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** — Best overall for your brief. Hilton lists it as a Boca Raton beach-area property, and it specifically features **ocean views** plus **7,500 sq. ft. of meeting space** and a ballroom, which makes it the best match for combining executive meetings with waterfront evening downtime.[1][5][13]\n- **Hilton Boca Raton Suites** — Best for a classic corporate stay. Hilton highlights **outdoor pool, hot tub, fitness center, and room service**, and third-party coverage notes it is well positioned for Boca’s corporate corridor on Glades Road, which is useful if your trip is meeting-heavy rather than leisure-heavy.[4][9][17][18]\n- **Embassy Suites by Hilton Boca Raton** — Best if you want more meeting capacity and a built-in evening social element. Hilton says it offers **free breakfast, an outdoor pool, and a nightly Evening Reception**, and venue listings show **15,000+ sq. ft. of indoor function space with outdoor venues**, making it a solid executive-event choice.[7][15]\n\nIf you want the **most polished executive-waterfront experience**, choose **Waterstone**. If you want the **best pure business convenience**, choose **Hilton Boca Raton Suites**. If you want a **group-friendly corporate hotel with a reliable evening reception**, choose **Embassy Suites**.[1][4][5][7][15]"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_02_gemini_a1_682ff7",
+          "scenarioId": "bpp_waterstone_boca_raton_business_02",
+          "provider": "gemini",
+          "territory": "business",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "Boca Raton for meetings near Mizner Park is the **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**. \n\nHere is why it is the top choice for your meeting, alon",
+          "position": null,
+          "aiResponse": "The best Hilton property in Boca Raton for meetings near Mizner Park is the **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**. \n\nHere is why it is the top choice for your meeting, along with an alternative depending on your event's size:\n\n---\n\n### **Top Choice: Waterstone Resort & Marina (Curio Collection by Hilton)**\n* **Distance to Mizner Park:** ~1.5 miles (a 5-minute drive or ride-share)\n* **Best For:** Executive retreats, medium-sized corporate meetings, board meetings, and high-end client presentations.\n\n**Why it’s the best:**\n* **Prime Location:** It is the closest Hilton property to Mizner Park, located right on the Intracoastal Waterway near the Boca Raton Inlet. \n* **Unique Meeting Spaces:** The hotel features around 6,000 sq. ft. of flexible meeting space. The highlight is the **SeaBreeze Ballroom**, located on the top floor, offering floor-to-ceiling windows with panoramic Atlantic Ocean and Intracoastal views. \n* **Outdoor/Indoor Flow:** Great options for cocktail receptions or outdoor breakouts on the waterfront promenade.\n* **Atmosphere:** As a Curio Collection property, it offers a boutique, upscale feel rather than a cookie-cutter corporate vibe, which attendees usually appreciate.\n\n---\n\n### **Runner-Up (For Larger Groups): Embassy Suites by Hilton Boca Raton**\n* **Distance to Mizner Park:** ~3.5 miles (a 10-minute drive)\n* **Best For:** Large conferences, trade shows, or events requiring a lot of breakout rooms and all-suite accommodations.\n\n**Why consider it:**\n* **More Space:** It has over 15,000 sq. ft. of meeting space, making it better suited for large-scale corporate events than the Waterstone.\n* **Suite Accommodations:** Every guest gets a two-room suite, plus free made-to-order breakfast and an evening reception, which can help stretch event budgets.\n* **Drawback:** It is located closer to I-95/Congress Ave, so you lose the luxury waterfront feel and proximity to downtown/Mizner.\n\n---\n\n### **Summary Recommendation**\nBook **Waterstone Resort & Marina**. It offers the best mix of proximity to Mizner Park's dining/entertainment, premium meeting facilities with waterfront views, and high-end accommodations for attendees."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_02_perplexity_a1_715559",
+          "scenarioId": "bpp_waterstone_boca_raton_business_02",
+          "provider": "perplexity",
+          "territory": "business",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "trongest Hilton-branded choice in Boca Raton is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** because it is explicitly **less than 10 minutes from Mizne",
+          "position": null,
+          "aiResponse": "For **meetings near Mizner Park**, the strongest Hilton-branded choice in Boca Raton is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** because it is explicitly **less than 10 minutes from Mizner Park** and is the closest Hilton option in the results you provided.[1]\n\nIf your priority is **meeting space**, **Hilton Boca Raton Suites** is the better fit operationally because its meetings page says it is an **ideal choice for small meetings and events** with **dedicated event support**.[6] It is also in Boca Raton, though the hotel page places it **within 20 minutes of Mizner Park** rather than right nearby.[2][4]\n\nA practical ranking for your use case would be:\n\n- **Best overall near Mizner Park:** **Waterstone Resort & Marina Boca Raton** — best location for attendees who want to be close to Mizner Park.[1]\n- **Best for small meetings:** **Hilton Boca Raton Suites** — better positioned if the event itself is the main priority.[6]\n- **Best for larger built-in meeting inventory among Hilton-branded options in the area:** **Embassy Suites by Hilton Boca Raton** — it offers **over 15,000 square feet of indoor function space** with outdoor venues, though the search result does not place it as close to Mizner Park as Waterstone.[8]\n\nIf you want, I can also narrow this down by **meeting size, budget, or whether you need walkability to Mizner Park restaurants**."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_leisure_03_openai_a1_448dda",
+          "scenarioId": "bpp_waterstone_boca_raton_leisure_03",
+          "provider": "openai",
+          "territory": "leisure",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "er the following Hilton-affiliated options:\n\n1. **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**: This hotel is ideally located on the Intracoastal Waterwa",
+          "position": 2,
+          "aiResponse": "For a relaxing waterfront weekend in Boca Raton, you might consider the following Hilton-affiliated options:\n\n1. **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**: This hotel is ideally located on the Intracoastal Waterway and offers stunning water views. It features a marina, modern amenities, and dining options with waterfront seating, making it perfect for a relaxing stay.\n\n2. **Boca Beach Club, A Waldorf Astoria Resort**: Although not directly part of the Hilton brand, it is part of the Hilton Honors program. This luxurious resort offers private beach access and a range of upscale amenities, perfect for a tranquil waterfront getaway.\n\nBoth options provide beautiful views and a serene atmosphere ideal for relaxation by the water. Be sure to check current reviews and availability to ensure they meet your specific needs and preferences."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_leisure_03_gemini_a1_515b36",
+          "scenarioId": "bpp_waterstone_boca_raton_leisure_03",
+          "provider": "gemini",
+          "territory": "leisure",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "Boca Raton:\n\n---\n\n### 1. The Best Overall Choice: Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton\n**Location:** 999 E Camino Real, Boca Raton  \n**Vibe:** Upsc",
+          "position": null,
+          "aiResponse": "When it comes to a relaxing waterfront weekend in Boca Raton, there is **one clear top choice within the Hilton portfolio**, along with a fantastic nearby alternative just minutes over the city line. \n\n*(Note: The famous Boca Raton Resort & Beach Club used to be a Waldorf Astoria/Hilton property, but it is now independent, so it is no longer eligible for Hilton points/stays).*\n\nHere are the best Hilton options for a waterfront getaway in and around Boca Raton:\n\n---\n\n### 1. The Best Overall Choice: Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton\n**Location:** 999 E Camino Real, Boca Raton  \n**Vibe:** Upscale, boutique waterfront resort  \n**Waterfront Type:** Intracoastal Waterway / Lake Boca Raton  \n\nIf you want to stay strictly in Boca Raton, **Waterstone Resort & Marina is your best option.** It sits directly on Lake Boca and the Intracoastal Waterway, just steps from the Boca Inlet.\n\n*   **Why it’s great for a relaxing weekend:**\n    *   **Guaranteed Water Views:** The hotel is custom-designed so that **every single guest room** features a private balcony with a view of either the Intracoastal Waterway or the Atlantic Ocean.\n    *   **Dockside Dining:** You can eat and drink right at the water's edge at *Waterstone Waterfront Grille* (casual poolside dining) or *Boca Landing* (seafood-forward dining overlooking the marina). \n    *   **Pool Deck:** The waterfront pool sits right on the inlet, allowing you to watch luxury yachts pass by while you relax with a cocktail.\n    *   **Beach Access:** While the resort is on the Intracoastal, it is only a 5-minute walk (or a quick shuttle ride provided by the resort) to South Inlet Park Beach. \n    *   **Water Activities:** You can rent paddleboards, kayaks, or charter boats directly from the hotel’s marina.\n\n---\n\n### 2. The Best \"Step-Onto-the-Sand\" Alternative: Embassy Suites by Hilton Deerfield Beach Resort & Spa\n**Location:** 950 S Ocean Dr, Deerfield Beach (Just 5–10 minutes south of Boca Raton)  \n**Vibe:** Relaxed beach resort with full-service amenities  \n**Waterfront Type:** Direct Oceanfront (Atlantic Ocean)  \n\nWhile technically in Deerfield Beach, this resort is located just across the Boca Raton border and is actually closer to the ocean than most Boca properties. If your idea of a waterfront weekend means **walking directly onto the ocean beach**, this is the better choice over Waterstone.\n\n*   **Why it’s great for a relaxing weekend:**\n    *   **Direct Beachfront:** You cross no streets to get to the sand; it sits directly on Deerfield Beach, which is known for its quiet, wide, clean coastline and famous fishing pier.\n    *   **Suite Layouts:** Every room is a two-room suite, giving you plenty of space to stretch out.\n    *   **Perks:** Includes Embassy Suites’ signatures: cooked-to-order free breakfast every morning and a complimentary evening reception with drinks and snacks.\n    *   **On-Site Spa & Dining:** Features Spa 950 for massages/treatments and *BT's Oceanfront Ocean Grille* for outdoor dining with ocean breezes.\n\n---\n\n### 3. The Budget/Inland Waterfront Option: Hilton Boca Raton Suites\n**Location:** 7920 Glades Rd, Boca Raton (Central Boca)  \n**Vibe:** Relaxed, suburban lakeside hotel  \n**Waterfront Type:** Inland Lake  \n\n*   **The Catch:** This hotel is **not near the ocean or the Intracoastal** (it is about a 15–20 minute drive west of the beach). \n*   **Why consider it?** It sits on a peaceful, man-made inland lake surrounded by Boca Center (an upscale shopping and dining plaza). It features a nice lakeside pool deck, free breakfast, and spacious suite accommodations. It is significantly less expensive than the Waterstone and is great if you want a quiet, poolside weekend with easy access to shopping and dining rather than coastal ocean views.\n\n---\n\n### Summary Recommendation\n*   For a **luxurious, romantic, yacht-watching vibe on the Intracoastal**, book **[Waterstone Resort & Marina](https://www.hilton.com/en/hotels/bctcuru-waterstone-resort-and-marina-boca-raton/)**. \n*   For **direct access to the ocean sand and waves**, go 5 minutes south to **[Embassy Suites Deerfield Beach](https://www.hilton.com/en/hotels/mifdees-embassy-suites-deerfield-beach-resort-and-spa/)**."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_leisure_03_perplexity_a1_459705",
+          "scenarioId": "bpp_waterstone_boca_raton_leisure_03",
+          "provider": "perplexity",
+          "territory": "leisure",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "d** in Boca Raton, the clear Hilton standout is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** because Hilton describes it as being “on the edge of Lake",
+          "position": null,
+          "aiResponse": "For a **relaxing waterfront weekend** in Boca Raton, the clear Hilton standout is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** because Hilton describes it as being “on the edge of Lake Boca Raton” with a **heated outdoor pool with waterfront views**.[5] It also appears as Hilton’s featured waterfront/beach option in Boca Raton, and Tripadvisor ranks it as the top Hilton hotel in the area.[1][2][3]\n\nThe best Hilton options, depending on the kind of weekend you want, are:\n\n- **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** — best overall for **waterfront atmosphere** and a more resort-like stay.[5][6]\n- **Hilton Boca Raton Suites** — better if you want a **quieter, more spacious suites-style stay** away from the water; Hilton places it near the Florida Turnpike and shopping/golf, not on the waterfront.[13][14]\n- **Hilton Garden Inn Boca Raton** — a practical choice if you want a **good-rated Hilton** with an outdoor pool, but it is primarily an inland business-style hotel off I-95.[17][18]\n\nIf your priority is specifically **waterfront relaxation**, I’d choose **Waterstone** first. If you want, I can also compare these by **beach access, pool quality, room style, and price/value**."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_leisure_04_gemini_a1_4a0130",
+          "scenarioId": "bpp_waterstone_boca_raton_leisure_04",
+          "provider": "gemini",
+          "territory": "leisure",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "ring both a great pool and marina access is the **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**. \n\nIn fact, it is the **only** Hilton property in Boca Rat",
+          "position": null,
+          "aiResponse": "The absolute best Hilton hotel in Boca Raton for a vacation requiring both a great pool and marina access is the **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**. \n\nIn fact, it is the **only** Hilton property in Boca Raton that directly sits on the water with its own private marina.\n\nHere is why it fits your vacation needs perfectly:\n\n### 1. Marina Access & Water Activities\n* **On-Site Marina:** The resort features its own private marina situated on Lake Boca and the Intracoastal Waterway, just minutes from the Boca Raton Inlet (direct ocean access).\n* **Boating & Water Sports:** Through the marina, you can arrange boat slips, yacht charters, jet ski rentals, paddleboarding, kayaking, and deep-sea fishing trips directly from the property. \n\n### 2. The Pool Experience\n* **Waterfront Pool:** The resort features a heated outdoor pool deck that sits right on the edge of the Intracoastal. \n* **Poolside Vibe:** You can relax in loungers or private cabanas while watching yachts cruise by on Lake Boca. \n* **Food & Drink:** The *Waterstone Rum Bar & Grill* provides poolside food and cocktail service throughout the day.\n\n### 3. Ideal Vacation Location & Amenities\n* **Guaranteed Water Views:** Every single guest room and suite features a private balcony with water views (either facing the Atlantic Ocean or the Intracoastal Waterway/Lake Boca).\n* **Beach Access:** While the resort is on the Intracoastal/Marina side, it is just a 5-minute walk (or a quick shuttle/golf cart ride provided by the hotel) across the bridge to South Inlet Park Beach on the ocean.\n* **Dining:** In addition to the poolside bar, the hotel features *Boca Landing*, an upscale waterfront restaurant specializing in seafood and local ingredients with stunning sunset views.\n\n### Summary\nIf you want a Hilton points/loyalty stay in Boca Raton that delivers a true coastal vacation experience—complete with boats, a pool on the water, and beach proximity—**Waterstone Resort & Marina** is your best and only direct match."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_leisure_04_perplexity_a1_e6afc1",
+          "scenarioId": "bpp_waterstone_boca_raton_leisure_04",
+          "provider": "perplexity",
+          "territory": "leisure",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "n with both a **pool** and **marina access** is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**.[1][3]\n\nIt stands out because Hilton’s Boca Raton location",
+          "position": null,
+          "aiResponse": "The **best Hilton choice** in Boca Raton for a vacation with both a **pool** and **marina access** is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**.[1][3]\n\nIt stands out because Hilton’s Boca Raton location list identifies it as the marina property, and Hilton says it has a **heated outdoor pool with waterfront views**.[1][3] Tripadvisor also lists it among Hilton hotels in Boca Raton with a pool, which supports it as the strongest match for your criteria.[2]\n\nIf you want a close backup, **Hilton Boca Raton Suites** has an **outdoor pool**, but the search results do not show marina access for that property.[6][9][20]"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_couples_05_gemini_a1_5b2f69",
+          "scenarioId": "bpp_waterstone_boca_raton_couples_05",
+          "provider": "gemini",
+          "territory": "couples",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "trip, ranked by vibe and location:\n\n---\n\n### 1. **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n*(Best Overall for a Boca Raton Address & Chic Vibe)*\n\n* *",
+          "position": null,
+          "aiResponse": "For a romantic coastal getaway in the Boca Raton area, Hilton’s portfolio offers a few strong options. Because Boca Raton itself has strict coastal development laws, Hilton’s offerings are split between an upscale Intracoastal boutique resort in Boca proper and a direct-oceanfront resort just minutes down the road.\n\nHere are the best Hilton properties for a romantic coastal trip, ranked by vibe and location:\n\n---\n\n### 1. **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n*(Best Overall for a Boca Raton Address & Chic Vibe)*\n\n* **The Vibe:** Boutique, upscale, and intimate. As part of Hilton’s Curio Collection, it has a distinct personality rather than a corporate feel.\n* **Location:** Located on the Intracoastal Waterway in Boca Raton, right at the Boca Inlet. It is a 2-minute walk across the bridge to South Inlet Park Beach.\n* **Why it’s romantic:** \n  * **Water Views:** Every single guest room features a private balcony with water views (either the Intracoastal Waterway or the Atlantic Ocean).\n  * **Dining:** You can have a romantic dinner right on the water at **Boca Landing** or casual drinks at the waterfront **Waterstone Balcony Grill**. \n  * **Arrival:** You can arrive by boat or yacht, adding a high-end luxury feel to the trip.\n* **Best Room Choice:** Book a **High-Floor Ocean View King** for sweeping sunrise views over the Atlantic, or an **Intracoastal King** to watch yachts sail by during sunset.\n\n---\n\n### 2. **Embassy Suites by Hilton Deerfield Beach Resort & Spa**\n*(Best for Direct Oceanfront & Beach Access — 5 Minutes from Boca)*\n\n* **The Vibe:** Relaxed beach resort with full-service amenities. \n* **Location:** Technically in Deerfield Beach, but located literally seconds south of the Boca Raton city line (about a 5-minute drive to downtown Boca Raton/Mizner Park).\n* **Why it’s romantic:** \n  * **On the Sand:** Unlike properties in Boca proper, this resort sits directly on the ocean. You can step out of the resort directly onto the beach.\n  * **Spa & Amenities:** It features an on-site spa (Spa 950) for couples' massages, a heated outdoor pool, and oceanfront dining at *BT's Oceanfront Products*.\n  * **Spacious Rooms:** All rooms are two-room suites, giving you a separate living area and oceanfront or ocean-view balconies.\n  * **Perks:** Includes complimentary cooked-to-order breakfast and a daily evening reception with complimentary drinks/snacks.\n\n---\n\n### 3. **Alternative Luxury Option nearby: Conrad Fort Lauderdale Beach**\n*(Best if you want 5-Star Luxury and don't mind a 20-minute drive)*\n\n* **The Vibe:** Ultra-luxury, modern, nautical elegance.\n* **Location:** Fort Lauderdale Beach (about 25 minutes south of Boca Raton).\n* **Why consider it:** If you are using Hilton Honors points or looking for a true 5-star flagship luxury experience that Boca's current Hilton footprint doesn't quite match, the Conrad is exceptional. It features custom poolside cabanas, a world-class spa, elevated dining, and top-tier service right across from the ocean.\n\n---\n\n### ⚠️ Important Note for Hilton Loyalty Members:\nIf you are reading older travel blogs, you might see **The Boca Raton** (formerly *Boca Raton Resort & Club*) listed as a Waldorf Astoria/Hilton property. **It is no longer affiliated with Hilton.** It became an independent luxury resort a few years ago, so you cannot earn or redeem Hilton Honors points there.\n\n### Summary Recommendation:\n* Choose **Waterstone Resort & Marina** if you want to stay strictly in Boca Raton, love watching yachts on the Intracoastal, and want a boutique upscale feel.\n* Choose **Embassy Suites Deerfield Beach** if walking out of your room directly onto the ocean sand is your top priority for a romantic trip."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_couples_05_perplexity_a1_6218f9",
+          "scenarioId": "bpp_waterstone_boca_raton_couples_05",
+          "provider": "perplexity",
+          "territory": "couples",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "a Raton, the strongest Hilton-branded choice is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**. Hilton lists it as a beachfront-area resort on Lake Boca",
+          "position": null,
+          "aiResponse": "For a **romantic coastal getaway** in Boca Raton, the strongest Hilton-branded choice is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**. Hilton lists it as a beachfront-area resort on Lake Boca Raton, with rooms within walking distance of the beach and close to Mizner Park and Royal Palm Place, while Tripadvisor ranks it among the best romantic hotels in Boca Raton.[12][3]\n\nOther Hilton options are more convenient than coastal-romantic:\n\n- **Embassy Suites by Hilton Boca Raton** — a standard Boca Raton stay, but not highlighted by Hilton’s Boca beach/resort pages as a coastal pick.[15]\n- **Hilton Boca Raton Suites** — useful for an inland stay near shopping and golf, but it is not a beachfront resort.[7][13]\n- **Hilton Garden Inn Boca Raton** — practical, but less aligned with a romantic waterfront trip than Waterstone.[16][19]\n\nIf you want the most *romantic* Hilton stay in Boca Raton, choose **Waterstone Resort & Marina**. If you want, I can also compare it with non-Hilton romantic beachfront hotels in Boca Raton."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_family_06_gemini_a1_fdc392",
+          "scenarioId": "bpp_waterstone_boca_raton_family_06",
+          "provider": "gemini",
+          "territory": "family",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "ch:\n\n---\n\n### 1. The Best in Boca Raton Proper: **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n\nIf you want to stay strictly in Boca Raton, this is the b",
+          "position": null,
+          "aiResponse": "The absolute best Hilton option depends slightly on whether you want to stay in **Boca Raton proper** or if you are willing to stay **5 minutes down the road for direct beach access and family perks**. \n\nHere are the top two choices for a family stay near the beach:\n\n---\n\n### 1. The Best in Boca Raton Proper: **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n\nIf you want to stay strictly in Boca Raton, this is the best (and practically only) Hilton property close to the ocean. \n\n*   **Location:** Situated on the Intracoastal Waterway, right across the bridge from South Beach Park (Boca’s public beach). It’s about a 5- to 7-minute walk or a 2-minute golf-cart/shuttle ride to the sand.\n*   **Why it’s great for families:** \n    *   **Spacious Rooms:** Every room has a private balcony with water views (either ocean or Intracoastal), giving families extra space to relax.\n    *   **Waterfront Pool:** The pool sits right on the marina, where kids can watch yachts and boats pass by. \n    *   **Water Sports:** You can rent paddleboards, kayaks, or jet skis directly from the resort marina.\n*   **Keep in mind:** It is on the Intracoastal side, not directly on the sand, so you do have to walk across the inlet bridge to get to the ocean beach.\n\n---\n\n### 2. The Best Overall for Families (Best \"Secret\" Option): **Embassy Suites by Hilton Deerfield Beach Resort & Spa**\n\nWhile technically located just over the city line in Deerfield Beach (less than 5 minutes south of Boca Raton), this is often considered the **best choice for families**.\n\n*   **Location:** Directly oceanfront (you walk out of the pool gate right onto the sand).\n*   **Why it’s great for families:** \n    *   **True Oceanfront:** No walking across bridges or busy streets—you are right on the beach.\n    *   **Two-Room Suites:** All accommodations are suites with a separate living room (pull-out sofa) and bedroom, giving parents privacy and kids their own space.\n    *   **Free Made-to-Order Breakfast:** Saves a lot of money and hassle for family mornings.\n    *   **Free Evening Reception:** Complimentary drinks and snacks every afternoon by the pool/lobby.\n    *   **Walkability:** Located right on the Deerfield Beach boardwalk, within easy walking distance to the Deerfield Pier, surf shops, ice cream parlors, and family-friendly restaurants.\n\n---\n\n### The Verdict: Which should you choose?\n\n*   Choose **Waterstone Resort** if you want a slightly more upscale, boutique feel, prefer staying strictly in Boca Raton, and don't mind a short 5-minute walk to the beach.\n*   Choose **Embassy Suites Deerfield Beach** if direct beach access, space (suites), and family amenities (free breakfast/snacks) are your top priorities. \n\n*(Note: Avoid the standard \"Hilton Boca Raton Suites\" or \"Embassy Suites Boca Raton\" if your goal is the beach—both are located miles inland near I-95).*"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_family_06_perplexity_a1_0d080e",
+          "scenarioId": "bpp_waterstone_boca_raton_family_06",
+          "provider": "perplexity",
+          "territory": "family",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "a Raton for a **family stay near the beach** is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**. Hilton lists it as a **beach hotel** in Boca Raton, and i",
+          "position": null,
+          "aiResponse": "The **best Hilton choice** in Boca Raton for a **family stay near the beach** is **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**. Hilton lists it as a **beach hotel** in Boca Raton, and its own description says the rooms are **walking distance from the beachfront**; Tripadvisor also ranks it among the top family-friendly Hilton properties in the area.[3][17][1]\n\nWhy it stands out:\n- **Closest beach access among Hilton-branded options** in Boca Raton, based on Hilton’s beach-hotel listing and the hotel’s own location description.[3][17]\n- **Family-friendly popularity**: Booking.com notes it is popular with guests booking family stays.[12]\n- **Strong traveler feedback**: Tripadvisor lists it among the best Hilton hotels in Boca Raton with a 4.2/5 traveler rating.[1]\n\nIf you want a more budget-oriented family stay, **Hampton Inn Boca Raton Deerfield Beach** is another family-friendly Hilton option, but it is **farther from Boca Raton’s main beach area** than Waterstone.[1][8]\n\n"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_celebrations_08_gemini_a1_0fcea4",
+          "scenarioId": "bpp_waterstone_boca_raton_celebrations_08",
+          "provider": "gemini",
+          "territory": "celebrations",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "-\n\n### 1. The Top Pick for a Luxe/Trendy Vibe: \n**Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n*   **The Vibe:** Boutique, upscale, coastal chic, and pho",
+          "position": null,
+          "aiResponse": "For a celebration weekend with friends in Boca Raton, the best Hilton property depends heavily on the vibe your group is looking for—whether that’s chic waterfront lounging, budget-friendly suite space for pre-gaming, or easy access to beach bars.\n\nHere is the breakdown of the top Hilton options in and around Boca Raton to help you pick the perfect spot:\n\n---\n\n### 1. The Top Pick for a Luxe/Trendy Vibe: \n**Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n*   **The Vibe:** Boutique, upscale, coastal chic, and photogenic. \n*   **Why it’s great for a celebration:** \n    *   **Location:** It sits right on the Intracoastal Waterway near the Boca Inlet, just a short walk/ride across the bridge to South Inlet Beach. \n    *   **Scene:** It features a lively waterfront pool deck with cabana rentals and a great pool bar. \n    *   **Dining:** Home to *Boca Landing* and *Waterstone Grill*, offering upscale waterfront dining and cocktails without leaving the hotel.\n    *   **Activities:** You can rent jet skis, paddleboards, or charter a boat directly from the hotel’s marina.\n*   **Best for:** Groups who want upscale resort energy, cute photo ops, and great water views.\n\n---\n\n### 2. Best for Party Groups on a Budget / Space:\n**Hilton Boca Raton Suites**\n*   **The Vibe:** Relaxed, spacious, and high-value.\n*   **Why it’s great for a celebration:**\n    *   **All-Suite Setup:** Every room is a two-room suite with a separate living area, making it ideal for groups splitting rooms or getting ready together.\n    *   **Free Drinks & Breakfast:** Includes **complimentary made-to-order breakfast** every morning and a **complimentary Evening Reception** (free drinks and snacks for two hours every night)—a huge plus for pre-gaming before hitting the town.\n    *   **Location:** Located in West Boca on a lake, right next to the Town Center at Boca Raton (great shopping and upscale dining like Capital Grille and Rocco’s Tacos).\n*   **Best for:** Friends who prioritize extra room space, free drinks/breakfast, and getting maximum value for their money.\n\n---\n\n### 3. Best for Beach & Walkable Bar Hopping:\n**DoubleTree by Hilton Hotel Deerfield Beach - Boca Raton**\n*(Note: Located just 5 minutes south of Boca Raton proper)*\n*   **The Vibe:** Laid-back beach town energy.\n*   **Why it’s great for a celebration:**\n    *   **Location:** It is just two blocks from Deerfield Beach and the Deerfield Pier.\n    *   **Walkability:** Unlike much of Boca, which requires Ubers, this spot allows your group to walk directly to popular, casual oceanfront bar spots like *JB’s on the Beach*, *Ocean 234*, and *Kahuna Bar*.\n*   **Best for:** Groups who want a day-drinking, toes-in-the-sand vibe with easy access to casual beach bars.\n\n---\n\n### Recommendations for Your Weekend Itinerary:\n\n*   **Nightlife & Dining:** Head to **Mizner Park** in downtown Boca (very close to Waterstone) for high-end dining, lounges, and people-watching. If your group wants a wilder nightlife scene, take a 15-minute Uber north to **Atlantic Avenue in Delray Beach**.\n*   **Day Party / Boat Day:** Look into renting a pontoon boat or yacht for a few hours to hang out at the **Boca Raton Lake Inlet Sandbar** (a massive local weekend boat party spot). \n*   **Group Brunch:** Check out *Louie Bossi’s* on Atlantic Ave (Delray) or *Luff’s Fish House* in Boca for a fun group brunch setup.\n\n### **Final Verdict:**\n*   Book **Waterstone Resort & Marina** if you want a trendy, classy celebration.\n*   Book **Hilton Boca Raton Suites** if you want maximum room space and free pre-game drinks."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_celebrations_08_perplexity_a1_f7d310",
+          "scenarioId": "bpp_waterstone_boca_raton_celebrations_08",
+          "provider": "perplexity",
+          "territory": "celebrations",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "the best Hilton choice in Boca Raton is usually **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** because it has the most *resort-like* setting and is on th",
+          "position": null,
+          "aiResponse": "For a **celebration weekend with friends**, the best Hilton choice in Boca Raton is usually **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** because it has the most *resort-like* setting and is on the waterfront with ocean views, which fits a social getaway better than a standard business-style hotel.[1][3][9]\n\nIf you want a slightly more practical option, **Embassy Suites by Hilton Boca Raton** is a strong second choice because it offers **free breakfast**, **free parking**, and an outdoor pool, which can be convenient for a group trip.[18] **Hilton Boca Raton Suites** is also worth considering if you want more of an all-suite stay with a relaxed feel and meeting/event support.[4][14]\n\nA simple way to choose:\n- **Best vibe for a celebration:** Waterstone Resort & Marina Boca Raton[1][3][9]\n- **Best value/convenience for a group:** Embassy Suites by Hilton Boca Raton[18]\n- **Best if you want suites and a quieter base:** Hilton Boca Raton Suites[4][14]\n\nIf you want, I can also narrow this down by **budget**, **nightlife access**, or **best pool/room setup for friends**."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_wellness_09_gemini_a1_034a80",
+          "scenarioId": "bpp_waterstone_boca_raton_wellness_09",
+          "provider": "gemini",
+          "territory": "wellness",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "on:\n\n---\n\n### 1. The Best in Boca Raton Proper: **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n* **The Vibe:** Boutique luxury, serene waterfront views,",
+          "position": null,
+          "aiResponse": "When looking for a restorative, spa-focused stay in Boca Raton under the Hilton portfolio, it helps to know that **Hilton’s lineup directly inside Boca Raton leans toward boutique waterfront or suite-style properties**, rather than massive mega-spa resorts. *(Note: The famous luxury property \"The Boca Raton\" left the Hilton/Waldorf Astoria umbrella a few years ago).*\n\nHowever, you can still craft a deeply relaxing, restorative stay depending on whether you want to stay strictly in Boca Raton or are willing to look a few minutes down the coast for a dedicated luxury spa.\n\nHere are the best Hilton options for a restorative stay in and around Boca Raton:\n\n---\n\n### 1. The Best in Boca Raton Proper: **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**\n* **The Vibe:** Boutique luxury, serene waterfront views, intimate and calm.\n* **Why it’s great for downtime:** Located right on the Intracoastal Waterway near Lake Boca, Waterstone offers a much quieter, more relaxed atmosphere than mega-resorts. Every room has a private balcony with water views, making it ideal for sleeping in, reading, and watching boats pass by. It has a chic, waterfront pool and excellent outdoor dining at *Boca Landing*.\n* **The Spa / Wellness Aspect:** While Waterstone is a boutique property without a massive standalone subterranean spa on-site, it is ideal for a **\"DIY Wellness\" stay**. They offer a complimentary shuttle to South Inlet Park Beach (a much quieter, less crowded beach), yoga-friendly spaces, and can arrange in-room massage services or appointments at top-tier luxury day spas nearby in Boca (such as *The Spa at the Boca Raton* or local high-end wellness boutiques just a 5-minute Uber away).\n\n---\n\n### 2. Best for Quiet, Spacious Solitude: **Hilton Boca Raton Suites**\n* **The Vibe:** Suburban, lakefront, low-key, and unpretentious.\n* **Why it’s great for downtime:** Located in West Boca, set around a quiet 7-acre lake, this property is far removed from the hustle of the beach scene. If your idea of restorative downtime means spacious two-room suites, sitting by a calm lakeside pool with a book, and zero crowd noise, this fits the bill. \n* **The Spa / Wellness Aspect:** There is no full-service spa on-site, but it sits right next to Boca’s premier shopping and wellness district (near Town Center Mall), putting you minutes away from top Boca day spas, cryotherapy centers, and high-end fitness studios.\n\n---\n\n### 3. Best for a True World-Class Hilton Spa (25 Mins South): **Conrad Fort Lauderdale Beach**\n* **The Vibe:** Ultra-luxury, peaceful, beachfront sophistication.\n* **Why consider it:** If a **dedicated, full-service, high-end spa** is an absolute dealbreaker for your stay, it is worth looking just 25 minutes south of Boca Raton to the **Conrad Fort Lauderdale Beach**. \n* **The Spa / Wellness Aspect:** \n  * Features the **Conrad Spa**, a top-tier sanctuary offering customized massage therapies, body wraps, facial treatments, and outdoor deck relaxation.\n  * Offers a 20,000-square-foot ocean-facing pool deck, elevated wellness programming, quiet luxury cabanas, and tailored restorative experiences right on the water.\n\n---\n\n### Recommendation Summary:\n* **Choose Waterstone Resort (Curio Collection)** if you want to stay **in Boca Raton**, love water views, desire a peaceful boutique atmosphere, and are happy pairing your stay with local nearby day-spa visits.\n* **Choose Conrad Fort Lauderdale Beach** if your primary goal is an **all-in-one luxury retreat** where you can walk straight from your room to a world-class hotel spa without leaving the property. \n\n**Pro Tip for Waterstone:** Ask for a high-floor corner room facing Lake Boca for the quietest room setup and the best sunrise views."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_wellness_09_perplexity_a1_c505ce",
+          "scenarioId": "bpp_waterstone_boca_raton_wellness_09",
+          "provider": "perplexity",
+          "territory": "wellness",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "ongest Hilton-branded options in Boca Raton are **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** and **Hilton Boca Raton Suites**; if you’re open to stayin",
+          "position": null,
+          "aiResponse": "For a **restorative stay with spa and downtime**, the strongest Hilton-branded options in Boca Raton are **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** and **Hilton Boca Raton Suites**; if you’re open to staying just outside Boca proper, **Embassy Suites by Hilton Deerfield Beach Resort & Spa** is the clearest Hilton resort-style spa choice in the area.[6][8][1]\n\n- **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** — best for a quieter, upscale, waterfront feel. Hilton describes it as a resort on the edge of Lake Boca Raton with a heated outdoor pool and waterfront views, which supports a more relaxed downtime-oriented stay.[6]\n\n- **Hilton Boca Raton Suites** — best for a calm, comfortable base with simple leisure amenities. Hilton lists an outdoor pool, hot tub, fitness center, and room service, which makes it a practical pick if you want rest without a full resort experience.[8]\n\n- **Embassy Suites by Hilton Deerfield Beach Resort & Spa** — best if a true **spa resort** matters most. Hilton’s Boca Raton area spa listings surface this property as the nearby Hilton resort with spa amenities, and it is about 3.18 miles from Boca Raton.[1][3][12]\n\nIf you want the **best overall restorative stay**, I’d rank them this way:\n\n1. **Waterstone Resort & Marina Boca Raton** for the most serene *Boca-adjacent* Hilton stay with scenic downtime features.[6]\n2. **Embassy Suites by Hilton Deerfield Beach Resort & Spa** for the most explicit spa-and-resort experience in the Hilton ecosystem near Boca Raton.[1][12]\n3. **Hilton Boca Raton Suites** for a dependable, quieter stay with basic relaxation amenities.[8]\n\nIf you want, I can also narrow this down by **budget, beach access, or the best spa-like atmosphere**."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_10_gemini_a1_6d3ef7",
+          "scenarioId": "bpp_waterstone_boca_raton_business_10",
+          "provider": "gemini",
+          "territory": "business",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "for High-Value Point Redemptions & \"Bleisure\": **Waterstone Resort & Marina Boca Raton, Curio Collection**\nIf you want to use your work trip to treat yourself, or if you plan",
+          "position": null,
+          "aiResponse": "When choosing a Hilton Honors hotel in Boca Raton for a work trip, your best option depends on whether your priority is **practicality and location** (best for routine work trips and earning points efficiently) or **upscale \"bleisure\"** (best for redeeming points for a high-value stay).\n\n*Note: The iconic resort formerly known as the Waldorf Astoria Boca Raton left the Hilton portfolio a few years ago and is now independent (\"The Boca Raton\").*\n\nHere is the breakdown of the best Hilton properties in Boca Raton for earning and redeeming points on a business trip.\n\n---\n\n### 1. Best Overall for Work & Earning Points: **Hilton Garden Inn Boca Raton**\nLocated in the **BRiC (Boca Raton Innovation Center)** / Park at Broken Sound area (just off I-95 and Congress Ave), this is the undisputed top choice for standard business travel.\n\n* **Why it’s great for work:** \n  * Prime location near major corporate offices and business parks.\n  * Reliable, spacious work desks in rooms, comfortable chairs, and strong Wi-Fi.\n  * On-site restaurant/bar (Great American Grill) for quick meals or informal work drinks.\n* **Earning Points:** \n  * Earns **10 base points per $1 spent** (plus your Elite status bonus). \n  * Cash rates here are usually very reasonable, making it easy to book under corporate travel expense caps while stacking Hilton promotional bonus points (e.g., 2x or 3x points promos).\n* **Using Points:** \n  * Typically requires a moderate amount of points (around 30,000–50,000 points/night). It’s a reliable standard-tier redemption if you just need a free, hassle-free place to sleep during a work week.\n\n---\n\n### 2. Best for Extra Space & Food/Drink Value: **Embassy Suites by Hilton Boca Raton**\nSituated off Yamato Road near I-95, this property is ideal if you need space to work or are staying for more than a couple of nights.\n\n* **Why it’s great for work:** \n  * All-suite setup gives you a separate living room with a dining/work table—ideal if you need to take Zoom calls or spread out paperwork without staring at your bed.\n  * **Free made-to-order breakfast** saves time and hassle in the morning.\n  * **Complimentary Evening Reception** (free drinks/light snacks) is great for unwinding after a long workday.\n* **Earning Points:** \n  * Earns **10 base points per $1 spent**. \n  * Because cash rates can fluctuate higher during peak Florida seasons, paying cash here can net a substantial pool of points.\n* **Using Points:** \n  * Excellent redemption value during **peak winter/spring season (January–April)** when South Florida cash rates skyrocket. You can often get 0.6 to 0.8 cents per point in value here during high season.\n\n---\n\n### 3. Best for High-Value Point Redemptions & \"Bleisure\": **Waterstone Resort & Marina Boca Raton, Curio Collection**\nIf you want to use your work trip to treat yourself, or if you plan to redeem points for a high-end experience, the Waterstone (located on the Intracoastal Waterway near the beach) is the premier Hilton property in town.\n\n* **Why it’s great for work:** \n  * Waterfront views, upscale atmosphere, and two excellent waterfront dining options (Boca Landing and Waterstone Grill) make it ideal for hosting clients.\n  * Balconies in every room provide a great backdrop for catching up on emails.\n* **Earning Points:** \n  * Being a Curio Collection hotel, it earns **10 base points per $1 spent**. \n  * Higher cash rates mean **massive point earnings** per stay—especially if charged to a corporate card or Hilton Honors Credit Card.\n* **Using Points:** \n  * **This is the best hotel to USE points.** Because cash rates can exceed $400–$600+ per night in season, using Hilton points for a \"Standard Room Reward\" here yields a high cent-per-point value. \n  * *Tip:* If you have Hilton Free Night Rewards (from Hilton Amex cards), this is the best property in Boca Raton to redeem them.\n\n---\n\n### 4. Best Low-Maintenance / Quick Trip Option: **Hilton Boca Raton Suites**\nLocated near the Town Center at Boca Raton mall (Glades Road area).\n\n* **Why it’s great for work:** Central location near dozens of dining options and shopping. Like the Embassy Suites, it offers two-room suites and free breakfast.\n* **Points Strategy:** Solid mid-tier option for both earning and burning points, particularly if your work takes you closer to central/west Boca rather than the I-95 corridor.\n\n---\n\n### Summary & Strategy Recommendation\n\n* **To EARN maximum points on company dime:** Stay at the **Curio Collection Waterstone Resort** (high room rate = more points) or **Embassy Suites** during double/triple point promotion windows. Make sure to register for Hilton’s quarterly global promotions before your stay.\n* **To USE points for maximum value:** Redeem at **Waterstone Resort** during the winter high season, or at **Embassy Suites** to cover breakfast and evening meals while saving out-of-pocket expenses.\n* **For a pure, efficient business setup:** Book the **Hilton Garden Inn Boca Raton**."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_10_perplexity_a1_ba5854",
+          "scenarioId": "bpp_waterstone_boca_raton_business_10",
+          "provider": "perplexity",
+          "territory": "business",
+          "matchedVariant": "Waterstone Resort & Marina",
+          "context": "ton Boca Raton**, **Hilton Boca Raton Suites**, **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**, and **DoubleTree by Hilton Deerfield Beach Boca Raton** b",
+          "position": null,
+          "aiResponse": "For a **work trip**, the best Hilton Honors options in Boca Raton are usually **Hilton Garden Inn Boca Raton**, **Embassy Suites by Hilton Boca Raton**, **Hilton Boca Raton Suites**, **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton**, and **DoubleTree by Hilton Deerfield Beach Boca Raton** because they all participate in Hilton Honors earning/redemption and are positioned for either business access or usable meeting space.[2][3][6][8][9]\n\nIf your priority is **earning points efficiently while staying practical for work**, the strongest picks are:\n\n| Hotel | Why it’s good for a work trip | Hilton Honors value |\n|---|---|---|\n| **Hilton Garden Inn Boca Raton** | Standard business-friendly Hilton brand; listed with Hilton Honors discount and points earning.[6] | Often the most straightforward choice for a work stay. |\n| **Embassy Suites by Hilton Boca Raton** | Close to FAU, Lynn University, and Spanish River Beach, which can help if your work trip mixes meetings and local travel.[8] | Good if you want suite-style space and a points-earning Hilton stay. |\n| **Hilton Boca Raton Suites** | Suite-style property in Boca Raton with Honors rate shown.[9][18] | Useful if you want more room to work in the hotel. |\n| **DoubleTree by Hilton Deerfield Beach Boca Raton** | Explicitly described as being off I-95 near Boca Raton’s business district.[3] | Strong option for commuting and business access. |\n| **Waterstone Resort & Marina Boca Raton, Curio Collection by Hilton** | Has over 7,500 sq. ft. of meeting space and a ballroom for up to 225 guests.[2] | Best if your trip includes client events, meetings, or entertaining. |\n\nA few practical recommendations:\n\n- Choose **Hilton Garden Inn Boca Raton** if you want the most standard, efficient business stay with predictable Hilton points earning.[6]\n- Choose **DoubleTree by Hilton Deerfield Beach Boca Raton** if you need the easiest access to the business district and I-95.[3]\n- Choose **Waterstone Resort & Marina** if you’ll host meetings or need event space on-property.[2]\n- Choose **Embassy Suites** or **Hilton Boca Raton Suites** if you want a larger room/suite setup for working from the hotel.[8][9]\n\nIf you want, I can also rank these by **best for location**, **best for suite comfort**, or **best value in points per night**."
+        }
+      ],
+      "missing": [
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_01_claude_a1_504ce9",
+          "scenarioId": "bpp_waterstone_boca_raton_business_01",
+          "provider": "claude",
+          "territory": "business",
+          "aiResponse": "# Hilton Hotels in Boca Raton for Corporate Executive Trips\n\nHere are the strongest options to consider:\n\n## Top Recommendations\n\n### **Boca Raton Marriott at Boca Center**\n*(Note: Worth verifying current Hilton brand affiliations, as properties change flags)*\n\n### **Hilton Boca Raton Suites**\n- Suite-style rooms work well for executives needing workspace\n- Located near corporate corridors along I-95/Glades Road\n\n### **The Boca Raton (formerly Boca Raton Resort)**\n- Historically the premier luxury option in the area\n- Beach and Intracoastal access for evening downtime\n- Full-service amenities suited to executive travel\n\n---\n\n## Honest Caveats\n\nI want to be straightforward with you:\n\n- **My information may be outdated** regarding which specific properties currently fly Hilton flags vs. other brands\n- Properties in Boca Raton **frequently rebrand**\n- The luxury resort market there has seen significant changes\n\n## My Recommendation\n\nCheck **Hilton.com directly** and filter by:\n- Boca Raton, FL\n- Full-service properties\n- Amenities: waterfront, meeting spaces\n\nWould you like suggestions on **what features to prioritize** for executive group travel in that area specifically?"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_02_openai_a1_74946d",
+          "scenarioId": "bpp_waterstone_boca_raton_business_02",
+          "provider": "openai",
+          "territory": "business",
+          "aiResponse": "In Boca Raton, one of the best Hilton options for meetings near Mizner Park is the **Hilton Boca Raton Suites**. Located conveniently with easy access to major highways and close to Mizner Park, this hotel offers a range of amenities suitable for business travelers and meetings. The hotel features meeting rooms, a business center, and offers services that can cater to various event needs. Additionally, the all-suite accommodations provide extra space and comfort for extended stays. Always check the latest reviews and amenities to ensure it meets your specific requirements."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_02_claude_a1_e18390",
+          "scenarioId": "bpp_waterstone_boca_raton_business_02",
+          "provider": "claude",
+          "territory": "business",
+          "aiResponse": "Based on my knowledge, the **Boca Raton Marriott at Boca Center** is actually a Marriott, so let me focus on Hilton options:\n\nThe **Hilton Boca Raton Suites** has been a notable option in the area, but I want to be straightforward with you - I'm not fully confident in giving you a precise recommendation about the **closest Hilton property to Mizner Park** specifically, as hotel inventory and branding can change.\n\n## I'd suggest verifying directly:\n\n- **Hilton's website** (hilton.com) - search Boca Raton properties and filter for meeting facilities\n- Check for properties like **DoubleTree by Hilton** or **Embassy Suites** brands under the Hilton portfolio in Boca Raton\n- The **Boca Raton Resort** (now a Waldorf Astoria, part of Hilton) is a landmark property with extensive meeting space, though it's on the beach side\n\n## Key questions to consider:\n- **Group size** for meetings\n- **AV/catering needs**\n- **Breakout room requirements**\n\nWould you like suggestions on what to look for when evaluating meeting spaces, or do you have more specifics about your event? That might help narrow things down more accurately."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_leisure_03_claude_a1_442de8",
+          "scenarioId": "bpp_waterstone_boca_raton_leisure_03",
+          "provider": "claude",
+          "territory": "leisure",
+          "aiResponse": "I want to be straightforward with you rather than risk giving you inaccurate details.\n\n## What I Can Tell You Honestly\n\nI don't have reliably detailed, current information about **specific Hilton-branded properties in Boca Raton** and their exact waterfront features to confidently recommend one over another.\n\n## What I'd Suggest Instead\n\n**For accurate, current information:**\n- **Hilton's official website** (hilton.com) lets you filter by location and amenities\n- **HHonors app** shows current property details and availability\n- **TripAdvisor or Google Reviews** have recent guest experiences specifically mentioning waterfront views and relaxation\n\n**Questions worth asking when researching:**\n- Is the waterfront view of the ocean, Intracoastal, or a pool area?\n- Does the property have a spa?\n- What's the beach access situation (private vs. public)?\n- Are there quiet pool areas separate from family/activity areas?\n\n**Nearby areas to also consider:**\n- Some travelers find better waterfront options in **Delray Beach** or **Deerfield Beach** nearby\n\nWould you like suggestions on **what to look for** in a relaxing waterfront hotel, or help thinking through questions to ask a travel booking agent? I'd rather be helpful within what I actually know well."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_leisure_04_openai_a1_f083c7",
+          "scenarioId": "bpp_waterstone_boca_raton_leisure_04",
+          "provider": "openai",
+          "territory": "leisure",
+          "aiResponse": "For a vacation in Boca Raton with a focus on enjoying a pool and marina access, the **Hilton Boca Raton Suites** is a popular choice, though it might not directly offer marina access. While it features a pool, if marina access is a priority, you may want to consider other nearby options or check for Hilton properties in neighboring areas, as Boca Raton itself is more known for its luxury resorts and private clubs than large marinas directly associated with hotels.\n\nFor a more comprehensive experience, including marina access, you might need to explore larger resorts or clubs in the area that offer day passes or membership options. Always consider reaching out directly to the hotel for the most current offerings and partnerships they might have with local marinas."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_leisure_04_claude_a1_3ae864",
+          "scenarioId": "bpp_waterstone_boca_raton_leisure_04",
+          "provider": "claude",
+          "territory": "leisure",
+          "aiResponse": "# Hilton Hotels in Boca Raton\n\nBased on what I know, the **Boca Raton Resort & Club** (now rebranded as **Waldorf Astoria Boca Raton**) is the most notable luxury property in that area, though it has gone through brand changes.\n\n## What I'd Suggest Checking\n\nFor a Hilton-branded property with **pool and marina access** in Boca Raton, I'd recommend:\n\n- **Searching Hilton.com directly** for current Boca Raton properties, as hotel brands and amenities change\n- Looking at the **Waldorf Astoria Boca Raton Resort & Club**, which is part of the Hilton portfolio and offers:\n  - Multiple pools\n  - Beach access\n  - Marina facilities\n  - Full resort amenities\n\n## Tips for Your Search\n\n- **Filter by amenities** on Hilton's website (pool, marina)\n- Check if properties offer **HHonors points**\n- Read recent guest reviews for current pool/marina conditions\n- Ask the hotel directly about **marina slip availability** if you're bringing a boat\n\nI'd recommend **verifying current details directly** with Hilton or the hotel, since my information may not reflect the most current branding or amenity offerings.\n\nWould you like tips on what to look for in a resort with marina access?"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_couples_05_openai_a1_60692b",
+          "scenarioId": "bpp_waterstone_boca_raton_couples_05",
+          "provider": "openai",
+          "territory": "couples",
+          "aiResponse": "For a romantic coastal getaway in Boca Raton, several Hilton-branded hotels can offer a memorable experience. Here are a few options you might consider:\n\n1. **Boca Beach Club, A Waldorf Astoria Resort**: Although not directly under the Hilton name, Waldorf Astoria is part of the Hilton portfolio. This luxurious resort offers a stunning beachfront location, elegant accommodations, and a wealth of amenities perfect for couples, including fine dining, a spa, and private beach access.\n\n2. **Boca Raton Resort and Club, A Waldorf Astoria Resort**: Another Waldorf Astoria property, this expansive resort features beautiful grounds, a variety of dining options, a golf course, a spa, and several pools. Its historic charm and modern luxury make it a great choice for a romantic escape.\n\n3. **Hilton Boca Raton Suites**: While not directly on the coast, this hotel provides easy access to Boca Raton's beaches and offers spacious suites ideal for couples looking for a comfortable and relaxing stay. The hotel has a serene atmosphere, an outdoor pool, and complimentary breakfast.\n\nWhen planning your stay, consider what amenities and proximity to the beach are most important to you and your partner. Each of these options provides a different experience, so you can choose the one that best fits your idea of a romantic getaway."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_couples_05_claude_a1_a51a1c",
+          "scenarioId": "bpp_waterstone_boca_raton_couples_05",
+          "provider": "claude",
+          "territory": "couples",
+          "aiResponse": "Based on what I know about the Boca Raton area, here are some Hilton-affiliated options worth considering:\n\n## Hilton Hotels in/near Boca Raton\n\n**Hilton Boca Raton Suites**\n- All-suite format can feel more private and spacious\n- Good for couples wanting extra comfort\n\n**Hampton Inn & Suites** (Hilton brand)\n- More budget-friendly option in the area\n\n## Important Considerations\n\nI'd suggest **verifying current options** because:\n- Hotel properties change ownership and branding\n- The iconic **Boca Raton Resort & Club** (now operated as **Waldorf Astoria**) is a top luxury option in the area and is actually a **Hilton brand** property\n- This resort offers beachfront access, spa services, and upscale dining - likely the **best romantic choice**\n\n## Tips for Booking\n\n- Check **Hilton.com** directly for current Boca Raton properties\n- Look for **ocean/Intracoastal views**\n- Ask about romance packages (couples spa, champagne, etc.)\n- Consider visiting during **fall/winter** for ideal weather\n\nWould you like suggestions on what to look for in a romantic coastal hotel package, or information about the Boca Raton area itself?"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_family_06_openai_a1_8a1160",
+          "scenarioId": "bpp_waterstone_boca_raton_family_06",
+          "provider": "openai",
+          "territory": "family",
+          "aiResponse": "For a family stay near the beach in Boca Raton, the **Hilton Boca Raton Suites** is a popular choice. While it's not directly on the beach, it offers a convenient location with easy access to both the city and the coastline. This hotel provides spacious suites, which are great for families, and includes amenities like an outdoor pool and complimentary breakfast. For beach access, you can easily drive to nearby public beaches such as South Beach Park or Red Reef Park, both offering beautiful ocean views and family-friendly facilities."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_family_06_claude_a1_1aa7d3",
+          "scenarioId": "bpp_waterstone_boca_raton_family_06",
+          "provider": "claude",
+          "territory": "family",
+          "aiResponse": "## Hilton Hotels in Boca Raton for Families\n\nThe **Hilton Boca Raton Suites** is a solid option for families, offering suite-style accommodations that give more space than standard rooms.\n\nHowever, I'd particularly highlight looking into the **Boca Beach Club** (part of the Boca Raton Resort & Club), though I want to be straightforward with you:\n\n### A Few Honest Notes:\n- **Boca Raton's beach access** is somewhat limited compared to other South Florida cities\n- The most famous luxury resort in Boca (Boca Raton Resort & Club/Waldorf Astoria) **isn't a Hilton property** currently\n- Hilton's direct beachfront options in Boca specifically are **limited**\n\n### What I'd Suggest:\n- **Check Hilton.com directly** for current properties, as hotel affiliations change\n- Consider nearby **Delray Beach or Deerfield Beach** if beachfront is a priority, where there may be more options\n- Look at **Hilton Honors family packages**\n\n### For Families Generally Look For:\n- Suite availability\n- Pool facilities\n- Proximity to beach access points\n\nWould you like suggestions on **what to look for** in a family beach hotel, or are you flexible on the exact Boca Raton location? I want to give you accurate rather than potentially outdated specifics."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_group_meetings_07_openai_a1_652c73",
+          "scenarioId": "bpp_waterstone_boca_raton_group_meetings_07",
+          "provider": "openai",
+          "territory": "group_meetings",
+          "aiResponse": "For a small corporate retreat in Boca Raton, there are a few Hilton-affiliated hotels that offer suitable meeting spaces and amenities:\n\n1. **Hilton Boca Raton Suites**: This hotel provides a range of meeting spaces that can accommodate small to medium-sized corporate events. The hotel offers a business center, Wi-Fi, and audio-visual equipment, making it a convenient choice for business meetings and retreats.\n\n2. **Hampton Inn Boca Raton**: While more modest in size, this hotel includes some meeting space options and offers a comfortable setting for smaller corporate gatherings. It’s known for its friendly service and convenient location.\n\n3. **Embassy Suites by Hilton Boca Raton**: This is another great option, offering larger meeting spaces and a more comprehensive range of services. The all-suite accommodations might be particularly appealing for a retreat, providing more room for guests.\n\nWhen planning your corporate retreat, it’s a good idea to contact the hotels directly to discuss your specific needs, such as the number of attendees, catering options, and any special equipment required. Additionally, checking guest reviews and recent feedback can provide further insight into the suitability of each hotel for your event."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_group_meetings_07_gemini_a1_6e8c37",
+          "scenarioId": "bpp_waterstone_boca_raton_group_meetings_07",
+          "provider": "gemini",
+          "territory": "group_meetings",
+          "aiResponse": "For a small corporate retreat in Boca Raton, the best Hilton options depend on whether your priority is an **upscale/executive vibe**, a **functional budget-friendly setup**, or **all-suite accommodations**. \n\nHere are the top Hilton properties in Boca Raton tailored for a small corporate retreat, ranked by suitability:\n\n---\n\n### 1. Best Overall for Executive Retreats: Waterstone Boca Raton, Curio Collection by Hilton\nIf you are hosting executives or want a scenic, higher-end environment that doesn’t feel like a standard business hotel, this is your best option.\n\n* **Vibe:** Boutique, upscale, waterfront (located right on Lake Boca Raton and the Intracoastal Waterway).\n* **Meeting Space:** ~6,000 sq. ft. of event space, including the *Atlantic Ballroom* with floor-to-ceiling windows overlooking the water, plus outdoor terrace options.\n* **Why it works for a retreat:** \n  * Beautiful waterfront dining at *Boca Landing* and *Waterstone Rum Bar & Grill*.\n  * Boutique size means your group won't get lost in a massive convention crowd.\n  * Walking distance or a short shuttle ride to the beach.\n  * Private balcony for every guest room.\n\n---\n\n### 2. Best for Productivity & Group Value: Embassy Suites by Hilton Boca Raton\nLocated in central/north Boca Raton, this is an ideal choice if you want a seamless layout, space for attendees to work, and included amenities.\n\n* **Vibe:** Professional, spacious, and practical.\n* **Meeting Space:** Over 15,000 sq. ft. of flexible meeting space, including small boardrooms and break-out rooms ideal for small-to-medium groups.\n* **Why it works for a retreat:**\n  * **All-Suite Property:** Every guest gets a two-room suite (separate living room and bedroom), which gives attendees extra space to work or relax.\n  * **Built-in Value:** Free cooked-to-order breakfast and evening manager’s reception (free drinks/snacks), which double as easy, informal team networking times.\n  * Tropical outdoor pool and courtyard area for casual break-outs.\n\n---\n\n### 3. Best for Mid-Range Comfort & Relaxation: Hilton Boca Raton Suites\nSituated in West Boca near the Town Center Mall, this property sits on a peaceful lakefront complex.\n\n* **Vibe:** Relaxed, suburban resort feel.\n* **Meeting Space:** Roughly 4,000 sq. ft. of meeting space, well-suited for groups under 50 people.\n* **Why it works for a retreat:**\n  * Also an all-suite property, providing spacious rooms for attendees.\n  * Lakeside terrace available for outdoor receptions, lunches, or evening cocktails.\n  * Complimentary breakfast and evening receptions included.\n  * Located right next to upscale shopping and dining at *Park Place* and *Town Center*.\n\n---\n\n### 4. Best for Purely Functional/Budget-Conscious Meetings: Hilton Garden Inn Boca Raton\nLocated in the Arvida Park of Commerce (North Boca business district).\n\n* **Vibe:** Standard corporate business hotel.\n* **Meeting Space:** Smaller, functional meeting space (around 1,200–1,500 sq. ft.), best for board meetings or single-room presentations.\n* **Why it works for a retreat:** \n  * Very cost-effective.\n  * High-speed internet, print centers, and straightforward corporate logistics.\n  * *Note:* Lacks the \"retreat/vacation\" feel of the Waterstone or Embassy Suites, but works well for short, intense work sessions.\n\n---\n\n### Summary Recommendation:\n* **For an impressive, high-end experience:** Book **Waterstone Boca Raton (Curio Collection)**.\n* **For team-building, budget efficiency, and room to spread out:** Book **Embassy Suites by Hilton Boca Raton**.\n\n*(Note: If you were previously familiar with \"The Boca Raton Resort & Club,\" note that it used to be a Waldorf Astoria/Hilton property, but it is now independent and no longer affiliated with Hilton.)*"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_group_meetings_07_perplexity_a1_cdbfe1",
+          "scenarioId": "bpp_waterstone_boca_raton_group_meetings_07",
+          "provider": "perplexity",
+          "territory": "group_meetings",
+          "aiResponse": "For a **small corporate retreat with meeting space** in Boca Raton, the best Hilton options are **Hilton Boca Raton Suites** and **Embassy Suites by Hilton Boca Raton**.[2][10][12][13]\n\n- **Hilton Boca Raton Suites** — Best fit for *small* retreats: it offers **2,025 sq. ft.** of flexible meeting space for **10 to 75 guests**, plus dedicated event support and a setting designed for business gatherings.[2][13]\n- **Embassy Suites by Hilton Boca Raton** — Best if you want a larger all-suite property with more room to scale: it has **over 15,000 sq. ft.** of indoor function space, with meeting rooms that include a **100-person** room and a **475-person** ballroom section, so it can handle small retreats comfortably while leaving room to grow.[10][12][18]\n- **Hilton Garden Inn Boca Raton** — Worth considering if you want a straightforward business hotel, but the provided results do not show its meeting-space size, so it is harder to rank confidently for retreat planning.[1]\n\nIf your group is truly small, **Hilton Boca Raton Suites** is the strongest choice because its published event space and guest range are the most directly aligned with a compact corporate retreat.[2][13] If you want more meeting-room flexibility or anticipate breakout sessions, **Embassy Suites by Hilton Boca Raton** is the better second option.[10][12]"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_group_meetings_07_claude_a1_cb547f",
+          "scenarioId": "bpp_waterstone_boca_raton_group_meetings_07",
+          "provider": "claude",
+          "territory": "group_meetings",
+          "aiResponse": "# Hilton Hotels in Boca Raton for Corporate Retreats\n\nHere are the main Hilton-brand options in Boca Raton worth considering:\n\n## Top Options\n\n### **Boca Raton Marriott at Boca Center**\n*(Note: verify current brand affiliation)*\n\n### **Hilton Boca Raton Suites**\n- All-suite property\n- Some meeting space available\n- Good for smaller groups needing comfortable accommodations\n\n### **Embassy Suites by Hilton Boca Raton**\n- All-suite rooms give attendees more space\n- Typically includes meeting rooms\n- Good value with breakfast included\n\n## What to Look For\n\nWhen evaluating any property, I'd recommend checking:\n- **Breakout room availability**\n- **AV equipment included vs. rental fees**\n- **Catering options**\n- **Room block minimums**\n- **Outdoor space** for breaks\n\n## Honest Caveat\n\nI'd encourage you to **verify current details directly** because:\n- Hotel brands and names change\n- My information has a knowledge cutoff\n- Meeting space availability varies seasonally\n\n## Better Resources\n- **Hilton.com** (filter by meeting space)\n- **Cvent** or **Knowland** for venue sourcing\n- A local CVB (Visit Boca Raton)\n\nWould you like tips on what questions to ask venues?"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_celebrations_08_openai_a1_85caff",
+          "scenarioId": "bpp_waterstone_boca_raton_celebrations_08",
+          "provider": "openai",
+          "territory": "celebrations",
+          "aiResponse": "For a celebration weekend with friends in Boca Raton, you might consider staying at the **Hilton Boca Raton Suites**. This hotel offers spacious accommodations with separate living areas, which can be ideal for groups. Additionally, it features an outdoor pool and is conveniently located near shopping, dining, and entertainment options.\n\nAnother option to consider is the **Boca Beach Club, A Waldorf Astoria Resort**, which is part of the Hilton portfolio. Although not directly in Boca Raton, it is nearby and provides a more luxurious beachfront experience. It offers various amenities such as multiple pools, a private beach, and several dining options, making it a great choice for a special celebration.\n\nBoth of these options provide different atmospheres, so your choice may depend on whether you prefer a more relaxed and spacious setting or a luxurious beachfront experience."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_celebrations_08_claude_a1_9b10fe",
+          "scenarioId": "bpp_waterstone_boca_raton_celebrations_08",
+          "provider": "claude",
+          "territory": "celebrations",
+          "aiResponse": "# Hilton Hotels in Boca Raton for a Celebration Weekend\n\nHere are some good options to consider:\n\n## Top Picks\n\n### 🏨 Boca Raton Marriott at Boca Center\n*(Note: You may want to verify current Hilton-branded properties, as the hotel landscape changes)*\n\n## Known Hilton-Brand Options in the Area\n\n### **Hampton Inn & Suites Boca Raton**\n- More **budget-friendly** option\n- Good for groups watching costs\n- Practical amenities\n\n### **Hilton Boca Raton Suites**\n- **Suite-style rooms** great for groups\n- More space to gather together\n- Good value for celebrations\n\n## Things to Consider for Your Weekend\n\n- **Pool access** for group hangouts\n- **Proximity to Atlantic Ave** in Delray Beach (nearby nightlife/dining)\n- **Mizner Park area** access for restaurants and entertainment\n- **Room configuration** - suites vs. standard rooms\n- **Event/gathering spaces**\n\n## My Honest Suggestion\n\nI'd recommend **checking Hilton.com directly** for current Boca Raton properties since hotel brands and properties change, and you can:\n- Compare current rates\n- Check group booking options\n- Look for **celebration packages**\n\nWould you like tips on what to **do in Boca Raton** during your celebration weekend? 🎉"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_wellness_09_openai_a1_95a6f4",
+          "scenarioId": "bpp_waterstone_boca_raton_wellness_09",
+          "provider": "openai",
+          "territory": "wellness",
+          "aiResponse": "For a restorative stay with spa services and ample downtime in Boca Raton, consider the following Hilton-affiliated hotels:\n\n1. **Boca Raton Resort & Club, A Waldorf Astoria Resort**: This luxurious resort offers a wide range of spa services and wellness facilities. The Waldorf Astoria Spa is renowned for its extensive menu of treatments, including massages, facials, and body therapies. The resort also features multiple pools, a private beach, and various dining options, making it ideal for a relaxing getaway.\n\n2. **Hilton Boca Raton Suites**: While this hotel does not have a full-service spa, it provides a tranquil environment with spacious suites and a beautiful lakeside location. Guests can enjoy the outdoor pool and fitness center, and the hotel is conveniently located near local spas and wellness centers.\n\nThese options provide a combination of relaxation and comfort, ideal for a restorative stay in Boca Raton. Be sure to check the current offerings and availability directly with the hotels, as services and amenities may change."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_wellness_09_claude_a1_c2e1db",
+          "scenarioId": "bpp_waterstone_boca_raton_wellness_09",
+          "provider": "claude",
+          "territory": "wellness",
+          "aiResponse": "# Hilton Hotels in Boca Raton for a Restorative Stay\n\nHere are the top options worth considering:\n\n## Top Picks\n\n### **Boca Raton Resort & Club, A Waldorf Astoria Resort**\n- Iconic luxury property with an extensive **full-service spa**\n- Multiple pools, beach access, and golf\n- Widely considered the premier restorative choice in the area\n- *(Note: This is Waldorf Astoria brand, which is under the Hilton portfolio)*\n\n### **Embassy Suites by Hilton Boca Raton**\n- More relaxed, suite-style accommodations\n- Good for unwinding with extra space\n- Pool and complimentary amenities\n\n---\n\n## Things to Keep in Mind\n\n- **I'd recommend verifying current offerings** directly with hotels, as spa services, amenities, and even property statuses can change\n- Checking **Hilton's official website** will show you current availability and any wellness packages\n- Reading **recent guest reviews** on TripAdvisor or Google can give you the most current picture of the spa and relaxation experience\n\n---\n\nThe **Waldorf Astoria Boca Raton** is generally the standout choice if a full spa and resort experience is your priority. Would you like help thinking through what specific amenities matter most to you?"
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_10_openai_a1_a82d53",
+          "scenarioId": "bpp_waterstone_boca_raton_business_10",
+          "provider": "openai",
+          "territory": "business",
+          "aiResponse": "When selecting a Hilton Honors hotel in Boca Raton for a work trip where you can effectively earn and use Hilton Honors points, consider factors such as location, amenities, and the specific benefits offered to Hilton Honors members. Here are a few Hilton-affiliated hotels in the area that are well-suited for business travelers:\n\n1. **Hilton Boca Raton Suites**: This hotel is particularly appealing for business travelers due to its all-suite accommodations, which provide extra space for work and relaxation. The hotel offers amenities like complimentary breakfast and an evening reception, which can enhance your stay. Additionally, its location near major highways makes it convenient for accessing business centers.\n\n2. **Hampton Inn Boca Raton**: Known for its reliable service and business-friendly amenities, this hotel offers complimentary Wi-Fi, a business center, and meeting rooms. As a Hilton Honors member, you can enjoy earning points on your stay and redeeming them for various perks.\n\n3. **Embassy Suites by Hilton Boca Raton**: This property offers spacious two-room suites ideal for business travelers who need extra space. The hotel provides complimentary breakfast and an evening reception, as well as a business center and meeting spaces. Hilton Honors members can benefit from earning points and using them for upgrades or future stays.\n\n4. **Homewood Suites by Hilton Boca Raton**: If your work trip is extended, this hotel offers the convenience of a full kitchen in each suite, along with complimentary breakfast and evening socials. The hotel also provides business services and meeting rooms, making it a practical choice for business travelers.\n\nWhen booking your stay, make sure to check for any current promotions or special offers for Hilton Honors members that could enhance your ability to earn and redeem points. Additionally, always consider the specific needs of your work trip, such as proximity to meeting locations or necessary amenities, when making your selection."
+        },
+        {
+          "observationId": "bpp_obs_adp_waterstone_boca_raton_bpp_waterstone_boca_raton_business_10_claude_a1_73f70a",
+          "scenarioId": "bpp_waterstone_boca_raton_business_10",
+          "provider": "claude",
+          "territory": "business",
+          "aiResponse": "# Hilton Honors Hotels in Boca Raton for Points Earning & Redemption\n\nHere are the main Hilton properties in the Boca Raton area worth considering for business travel:\n\n## Primary Options\n\n### **Boca Raton Marriott... **\n*(Note: I should be careful here)*\n\n---\n\n## Honest Caveat\n\nI want to be straightforward with you - **I don't have reliably current, specific data** on:\n- Current Hilton Honors point redemption rates for specific Boca Raton properties\n- Which properties are in which award category right now\n- Current bonus earning opportunities\n\nHilton frequently adjusts its **dynamic pricing** for award nights, so point values change regularly.\n\n## What I'd Recommend Doing\n\n1. **Check Hilton.com directly** - filter by Boca Raton and toggle \"Use Points\" to see current redemption costs\n2. **Look for properties labeled \"Honors Discount\"** which signal better redemption value\n3. **Consider brand tier** - Hampton Inn/Hilton Garden Inn properties typically cost **fewer points** than full-service Hilton hotels\n4. **Use the Hilton app** to compare cash vs. points pricing ratio\n\n## General Business Travel Tips for Hilton\n- Book directly for 10x base points\n- Gold/Diamond status gets free breakfast at many properties\n- Look for **Double Points** promotions\n\nWould you like tips on **maximizing points value** more generally?"
+        }
+      ],
+      "displacement": [
+        {
+          "scenarioId": "bpp_waterstone_boca_raton_group_meetings_07",
+          "territory": "group_meetings",
+          "peersPresent": [
+            "peer_hilton_embassy_boca",
+            "peer_hilton_boca_suites",
+            "peer_hilton_embassy_deerfield",
+            "peer_hilton_garden_boca"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "For a small corporate retreat in Boca Raton, there are a few Hilton-affiliated hotels that offer suitable meeting spaces and amenities:\n\n1. **Hilton Boca Raton Suites**: This hotel provides a range of meeting spaces that can accommodate small to medium-sized corporate events. The hotel offers a business center, Wi-Fi, and audio-visual equipment, making it a convenient choice for business meetings and retreats.\n\n2. **Hampton Inn Boca Raton**: While more modest in size, this hotel includes some meeting space options and offers a comfortable setting for smaller corporate gatherings. It’s known for its friendly service and convenient location.\n\n3. **Embassy Suites by Hilton Boca Raton**: This is another great option, offering larger meeting spaces and a more comprehensive range of services. The all-suite accommodations might be particularly appealing for a retreat, providing more room for guests.\n\nWhen planning your corporate retreat, it’s a good idea to contact the hotels directly to discuss your specific needs, such as the number of attendees, catering options, and any special equipment required. Additionally, checking guest reviews and recent feedback can provide further insight into the suitability of each hotel for your event.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        }
+      ]
+    },
+    "measurement": {
+      "kpiContractVersion": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+      "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+      "grain": "PROVIDER_OBSERVATION",
+      "periodId": "bpp_first_cycle_2026-08-21T2057",
+      "publicationVersion": "bpp-customer-v1.1-20260821",
+      "customerPublished": true,
+      "correctionReason": "PORTFOLIO_METRIC_GRAIN_MISMATCH"
+    },
+    "publicationVersion": "bpp-customer-v1.1-20260821",
+    "customerPublished": true
+  },
+  "contentHash": "b061672b89b727066010a29523d6f62cc4d4d1dca2dc3f38504c10f60a739504",
+  "envelopeHash": "e1fc13f84c31fbf885ab27e15fa216c954c00b1ddb1b51845e48a94a9b3803b9"
+}

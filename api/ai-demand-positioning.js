@@ -24,6 +24,7 @@ import {
   buildBppReportCacheKey,
 } from "../lib/ai-demand-positioning/brand-portfolio/bpp-publication-meta-v1.js";
 import { filterPropertiesForOwnerApp } from "../lib/ai-demand-positioning/share/adp-owner-app-property-access-v1.js";
+import { attachBppRowLevelPriorComparisons } from "../lib/ai-demand-positioning/longitudinal/attach-row-level-prior-comparisons-v1.js";
 import fs from "fs";
 import path from "path";
 
@@ -69,13 +70,14 @@ export function loadCustomerPublishedBrandPortfolio(propertyId) {
     null;
   if (!payload) return null;
   const publicationVersion = pack.publicationVersion || BPP_CUSTOMER_PUBLICATION_VERSION;
+  const withRowMovement = attachBppRowLevelPriorComparisons(canonicalId || propertyId, payload);
   return {
-    ...payload,
+    ...withRowMovement,
     publicationVersion,
     customerPublished: true,
-    status: payload.status || "READY",
-    assuranceStatus: payload.assuranceStatus || "CUSTOMER_READY",
-    showAnalyticalScaffolding: payload.showAnalyticalScaffolding !== false,
+    status: withRowMovement.status || payload.status || "READY",
+    assuranceStatus: withRowMovement.assuranceStatus || payload.assuranceStatus || "CUSTOMER_READY",
+    showAnalyticalScaffolding: withRowMovement.showAnalyticalScaffolding !== false,
     _bppPackVersion: publicationVersion,
     _bppPayloadHash: pack.payloadHash || null,
     _bppResolvedPropertyId: canonicalId,

@@ -1,0 +1,1372 @@
+{
+  "schema": "ADP_BPP_REPORT_SNAPSHOT_V1",
+  "snapshotId": "bpp_snap_adp_renaissance_times_square_bpp_first_cycle_2026-08-21T2057_d86760e862",
+  "propertyId": "adp_renaissance_times_square",
+  "monitoringPeriodId": "adp_week_2026-08-21",
+  "measurementPeriodId": "bpp_first_cycle_2026-08-21T2057",
+  "measurementFamily": "BRAND_PORTFOLIO",
+  "monitoringDate": "2026-08-21",
+  "generatedAt": "2026-08-21T22:23:17.100Z",
+  "certifiedAt": "2026-08-21T22:23:17.100Z",
+  "publishedAt": "2026-08-21T22:23:17.100Z",
+  "certificationStatus": "CUSTOMER_PUBLISHED",
+  "assuranceStatus": "CUSTOMER_READY",
+  "publicationVersion": "bpp-customer-v1.1-20260821",
+  "reportEdition": "CUSTOMER_PUBLISHED_BASELINE_V1_1",
+  "measurementContract": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+  "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+  "lensId": "marriott_bonvoy",
+  "lensLabel": "Marriott Bonvoy",
+  "affiliationSnapshot": {
+    "brand": "Renaissance Hotels",
+    "affiliation": "Renaissance Hotels (Marriott)",
+    "parentCompany": "Marriott International",
+    "officialBrandDomain": "marriott.com"
+  },
+  "peerSetId": "bps_adp_renaissance_times_square_marriott_bonvoy_certified_v1",
+  "peerSetVersion": "ADP_LOYALTY_ECOSYSTEM_PEER_UNIVERSE_V1_CERTIFIED",
+  "peerSetHash": "8e722b8a9ef70198bc4b6df1cb78c3830a67c0efb6145b7ca0337d5b94befac4",
+  "promptManifestHash": "a5b8e190898fcd88cd8f30c8221e5f21ab34029f68b07bf1cf8d00f572122705",
+  "providerCoverage": [
+    {
+      "provider": "openai",
+      "observations": 9,
+      "subjectHits": 5,
+      "presenceRate": 0.5555555555555556
+    },
+    {
+      "provider": "gemini",
+      "observations": 9,
+      "subjectHits": 7,
+      "presenceRate": 0.7777777777777778
+    },
+    {
+      "provider": "perplexity",
+      "observations": 9,
+      "subjectHits": 4,
+      "presenceRate": 0.4444444444444444
+    },
+    {
+      "provider": "claude",
+      "observations": 9,
+      "subjectHits": 1,
+      "presenceRate": 0.1111111111111111
+    }
+  ],
+  "customerVisibleContentHash": "d86760e862625a94dbd587019d1d2097bd796def2519a44cb230174f28a2a731",
+  "assetCacheTokenAtPublication": "adp-v70-20260822-bpp-visual",
+  "synthetic": false,
+  "versions": {
+    "bppHistorySchema": "adp_bpp_history_schema_v1",
+    "publicationVersion": "bpp-customer-v1.1-20260821",
+    "kpiContractVersion": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+    "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+    "rendererVersion": "adp-v70-20260822-bpp-visual",
+    "promptManifestHash": "a5b8e190898fcd88cd8f30c8221e5f21ab34029f68b07bf1cf8d00f572122705"
+  },
+  "disclosures": [
+    {
+      "code": "PORTFOLIO_METRIC_GRAIN_MISMATCH",
+      "note": "Original scenario-any candidate never customer-published; V1.1 observation-grain is the published baseline."
+    }
+  ],
+  "correctionLineage": {
+    "stages": [
+      "ORIGINAL_FIRST_CYCLE_CANDIDATE",
+      "CORRECTED_FIRST_CYCLE_CANDIDATE",
+      "CUSTOMER_PUBLISHED_BASELINE"
+    ],
+    "reason": "PORTFOLIO_METRIC_GRAIN_MISMATCH",
+    "originalNeverCustomerPublished": true,
+    "lineageRef": "ADP_BRAND_PORTFOLIO_CORRECTION_LINEAGE_V1_1.json"
+  },
+  "comparability": {
+    "rankMovementState": "INITIAL",
+    "hasPriorComparablePeriod": false,
+    "policyVersion": "BPP_COMPARABILITY_POLICY_V1"
+  },
+  "customerPayload": {
+    "ok": true,
+    "sectionId": "brand-portfolio-position",
+    "contractVersion": "ADP_BRAND_PORTFOLIO_POSITION_CONTRACT_V1",
+    "sectionVisible": true,
+    "title": "Brand & Portfolio Position",
+    "subtitle": "How this hotel performs within its brand, collection, portfolio, or loyalty ecosystem.",
+    "sectionMode": "BRAND_PORTFOLIO_POSITION",
+    "status": "READY",
+    "renderState": "READY",
+    "customerState": null,
+    "emptyMessage": null,
+    "lens": {
+      "lensId": "marriott_bonvoy",
+      "label": "Marriott Bonvoy",
+      "portfolioType": "LOYALTY_ECOSYSTEM",
+      "status": "DEFAULT"
+    },
+    "optionalFutureLenses": [
+      {
+        "lensId": "renaissance",
+        "label": "Renaissance",
+        "status": "OPTIONAL_FUTURE"
+      }
+    ],
+    "assuranceStatus": "CUSTOMER_READY",
+    "showAnalyticalScaffolding": true,
+    "kpis": [
+      {
+        "id": "portfolioAiPresence",
+        "label": "Portfolio AI Presence",
+        "value": "47.2%",
+        "valueRaw": 0.4722222222222222,
+        "meta": "17 of 36 provider observations",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioRank",
+        "label": "Portfolio Rank",
+        "value": "#3 of 6",
+        "valueRaw": 3,
+        "meta": "Among frozen same-ecosystem peers + subject",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioBenchmark",
+        "label": "Portfolio Benchmark",
+        "value": "41.1%",
+        "valueRaw": 0.41111111111111115,
+        "meta": "Mean peer observation-grain AI Presence",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioPresenceIndex",
+        "label": "Portfolio Presence Index",
+        "value": "115",
+        "valueRaw": 115,
+        "meta": "Subject / peer benchmark × 100",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "numberOneAppearance",
+        "label": "#1 Appearance",
+        "value": "0.0%",
+        "valueRaw": 0,
+        "meta": "0 scenarios with explicit #1 position",
+        "grain": "UNIQUE_SCENARIO",
+        "available": true
+      },
+      {
+        "id": "top3Appearance",
+        "label": "Top-3 Appearance",
+        "value": "66.7%",
+        "valueRaw": 0.6666666666666666,
+        "meta": "Scenario grain — best ordinal across providers",
+        "grain": "UNIQUE_SCENARIO",
+        "available": true
+      }
+    ],
+    "ranking": {
+      "rows": [
+        {
+          "rank": 1,
+          "rankLabel": "#1",
+          "name": "New York Marriott Marquis",
+          "brand": "Marriott Hotels",
+          "isSubject": false,
+          "presenceDisplay": "97.2%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "1",
+          "sharedDisplay": "8",
+          "canonicalEntityId": "peer_bonvoy_marriott_marquis"
+        },
+        {
+          "rank": 2,
+          "rankLabel": "#2",
+          "name": "W New York - Times Square",
+          "brand": "W Hotels",
+          "isSubject": false,
+          "presenceDisplay": "50%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "1",
+          "sharedDisplay": "8",
+          "canonicalEntityId": "peer_bonvoy_w_ts"
+        },
+        {
+          "rank": 3,
+          "rankLabel": "#3",
+          "name": "Renaissance New York Times Square Hotel",
+          "brand": "Renaissance Hotels",
+          "isSubject": true,
+          "presenceDisplay": "47.2%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "—",
+          "sharedDisplay": "—",
+          "canonicalEntityId": "adp_renaissance_times_square"
+        },
+        {
+          "rank": 4,
+          "rankLabel": "#4",
+          "name": "The Westin New York at Times Square",
+          "brand": "Westin",
+          "isSubject": false,
+          "presenceDisplay": "22.2%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "1",
+          "sharedDisplay": "5",
+          "canonicalEntityId": "peer_bonvoy_westin_ts"
+        },
+        {
+          "rank": 5,
+          "rankLabel": "#5",
+          "name": "AC Hotel New York Times Square",
+          "brand": "AC Hotels",
+          "isSubject": false,
+          "presenceDisplay": "19.4%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "0",
+          "sharedDisplay": "4",
+          "canonicalEntityId": "peer_bonvoy_ac_ts"
+        },
+        {
+          "rank": 6,
+          "rankLabel": "#6",
+          "name": "Sheraton New York Times Square Hotel",
+          "brand": "Sheraton",
+          "isSubject": false,
+          "presenceDisplay": "16.7%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "1",
+          "sharedDisplay": "3",
+          "canonicalEntityId": "peer_bonvoy_sheraton_ts"
+        }
+      ],
+      "hasPriorPeriod": false,
+      "firstPeriodDeltaLabel": "—"
+    },
+    "tableColumns": [
+      "Rank",
+      "Hotel",
+      "AI Presence",
+      "Δ vs Prior Run",
+      "Displacement vs You",
+      "Scenarios Shared"
+    ],
+    "dataAvailability": {
+      "validObservations": 8,
+      "invalidObservations": 0,
+      "needsRerunObservations": 4,
+      "propertySpecificOtherObservations": 52,
+      "validScenarios": 2,
+      "sufficientForRanking": false,
+      "historicalCandidateReuseAvailable": true,
+      "source": "ADP_BRAND_PORTFOLIO_OBSERVATION_RECLASS_V1"
+    },
+    "affiliationSnapshot": {
+      "brand": "Renaissance Hotels",
+      "affiliation": "Renaissance Hotels (Marriott)",
+      "parentCompany": "Marriott International",
+      "officialBrandDomain": "marriott.com"
+    },
+    "coreIsolation": true,
+    "gate": "CORE_PORTFOLIO_MEASUREMENT_ISOLATION",
+    "principles": [
+      "NO_EMPTY_ANALYTICAL_SCAFFOLDING_BEFORE_MEASUREMENT",
+      "PORTFOLIO_TABLE_REQUIRES_READY_MEASUREMENT",
+      "PORTFOLIO_METRIC_MISSING_IS_NOT_ZERO"
+    ],
+    "doesNotAlterCoreMetrics": true,
+    "narrative": {
+      "version": "ADP_BRAND_PORTFOLIO_NARRATIVE_V1_1_CUSTOMER",
+      "grain": "PROVIDER_OBSERVATION",
+      "headline": "47.2% Portfolio AI Presence · #3 of 6 · Index 115",
+      "body": "Renaissance New York Times Square Hotel ranks #3 of 6 within the governed Marriott Bonvoy competitive set, with 47.2% cross-model Portfolio AI Presence. Presence Index 115 is modestly above the peer benchmark (41.1%) — do not overstate that edge. There remains meaningful room to strengthen consistency across AI providers (OpenAI 55.6% · Gemini 77.8% · Perplexity 44.4% · Claude 11.1%).",
+      "absoluteBand": "moderate",
+      "providerSpread": "OpenAI 55.6% · Gemini 77.8% · Perplexity 44.4% · Claude 11.1%",
+      "actions": [
+        {
+          "priority": "medium",
+          "title": "Improve cross-provider consistency",
+          "description": "Near-parity Index 115 with ~47% absolute presence leaves clear headroom, especially where Claude and Perplexity under-index."
+        }
+      ],
+      "customerFacing": true,
+      "distinguishesAbsoluteVsRelative": true
+    },
+    "actions": [
+      {
+        "priority": "medium",
+        "title": "Improve cross-provider consistency",
+        "description": "Near-parity Index 115 with ~47% absolute presence leaves clear headroom, especially where Claude and Perplexity under-index."
+      }
+    ],
+    "byProvider": {
+      "openai": {
+        "provider": "openai",
+        "observations": 9,
+        "subjectHits": 5,
+        "presenceRate": 0.5555555555555556,
+        "errors": 0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "observations": 9,
+        "subjectHits": 7,
+        "presenceRate": 0.7777777777777778,
+        "errors": 0
+      },
+      "perplexity": {
+        "provider": "perplexity",
+        "observations": 9,
+        "subjectHits": 4,
+        "presenceRate": 0.4444444444444444,
+        "errors": 0
+      },
+      "claude": {
+        "provider": "claude",
+        "observations": 9,
+        "subjectHits": 1,
+        "presenceRate": 0.1111111111111111,
+        "errors": 0
+      }
+    },
+    "providerPresence": {
+      "grain": "PROVIDER_SPECIFIC_OBSERVATION",
+      "rows": [
+        {
+          "provider": "openai",
+          "label": "OpenAI",
+          "presenceDisplay": "55.6%",
+          "presenceRate": 0.5555555555555556,
+          "observations": 9,
+          "subjectHits": 5
+        },
+        {
+          "provider": "gemini",
+          "label": "Gemini",
+          "presenceDisplay": "77.8%",
+          "presenceRate": 0.7777777777777778,
+          "observations": 9,
+          "subjectHits": 7
+        },
+        {
+          "provider": "perplexity",
+          "label": "Perplexity",
+          "presenceDisplay": "44.4%",
+          "presenceRate": 0.4444444444444444,
+          "observations": 9,
+          "subjectHits": 4
+        },
+        {
+          "provider": "claude",
+          "label": "Claude",
+          "presenceDisplay": "11.1%",
+          "presenceRate": 0.1111111111111111,
+          "observations": 9,
+          "subjectHits": 1
+        }
+      ]
+    },
+    "byTerritory": {
+      "business": {
+        "territory": "business",
+        "scenarios": 3,
+        "observations": 12,
+        "subjectHits": 6,
+        "presenceRate": 0.5,
+        "presenceDisplay": "50.0%",
+        "portfolioRank": 3,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.4666666666666666,
+        "portfolioPresenceIndex": 107,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_bonvoy_marriott_marquis",
+            "name": "New York Marriott Marquis",
+            "brand": "Marriott Hotels",
+            "presenceRate": 1,
+            "obsHits": 12,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 100,
+            "numerator": 12,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_w_ts",
+            "name": "W New York - Times Square",
+            "brand": "W Hotels",
+            "presenceRate": 0.5833333333333334,
+            "obsHits": 7,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 58.3,
+            "numerator": 7,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_renaissance_times_square",
+            "name": "Renaissance New York Times Square Hotel",
+            "brand": "Renaissance Hotels",
+            "presenceRate": 0.5,
+            "obsHits": 6,
+            "obsDenom": 12,
+            "isSubject": true,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 50,
+            "numerator": 6,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_westin_ts",
+            "name": "The Westin New York at Times Square",
+            "brand": "Westin",
+            "presenceRate": 0.4166666666666667,
+            "obsHits": 5,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 41.7,
+            "numerator": 5,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_ac_ts",
+            "name": "AC Hotel New York Times Square",
+            "brand": "AC Hotels",
+            "presenceRate": 0.16666666666666666,
+            "obsHits": 2,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 16.7,
+            "numerator": 2,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_sheraton_ts",
+            "name": "Sheraton New York Times Square Hotel",
+            "brand": "Sheraton",
+            "presenceRate": 0.16666666666666666,
+            "obsHits": 2,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 16.7,
+            "numerator": 2,
+            "denominator": 12,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "leisure": {
+        "territory": "leisure",
+        "scenarios": 2,
+        "observations": 8,
+        "subjectHits": 5,
+        "presenceRate": 0.625,
+        "presenceDisplay": "62.5%",
+        "portfolioRank": 2,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.35,
+        "portfolioPresenceIndex": 179,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_bonvoy_marriott_marquis",
+            "name": "New York Marriott Marquis",
+            "brand": "Marriott Hotels",
+            "presenceRate": 1,
+            "obsHits": 8,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 100,
+            "numerator": 8,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_renaissance_times_square",
+            "name": "Renaissance New York Times Square Hotel",
+            "brand": "Renaissance Hotels",
+            "presenceRate": 0.625,
+            "obsHits": 5,
+            "obsDenom": 8,
+            "isSubject": true,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 62.5,
+            "numerator": 5,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_w_ts",
+            "name": "W New York - Times Square",
+            "brand": "W Hotels",
+            "presenceRate": 0.375,
+            "obsHits": 3,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 37.5,
+            "numerator": 3,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_ac_ts",
+            "name": "AC Hotel New York Times Square",
+            "brand": "AC Hotels",
+            "presenceRate": 0.125,
+            "obsHits": 1,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 12.5,
+            "numerator": 1,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_sheraton_ts",
+            "name": "Sheraton New York Times Square Hotel",
+            "brand": "Sheraton",
+            "presenceRate": 0.125,
+            "obsHits": 1,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 12.5,
+            "numerator": 1,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_westin_ts",
+            "name": "The Westin New York at Times Square",
+            "brand": "Westin",
+            "presenceRate": 0.125,
+            "obsHits": 1,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 12.5,
+            "numerator": 1,
+            "denominator": 8,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "couples": {
+        "territory": "couples",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 2,
+        "presenceRate": 0.5,
+        "presenceDisplay": "50.0%",
+        "portfolioRank": 2,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.4,
+        "portfolioPresenceIndex": 125,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_bonvoy_marriott_marquis",
+            "name": "New York Marriott Marquis",
+            "brand": "Marriott Hotels",
+            "presenceRate": 1,
+            "obsHits": 4,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 100,
+            "numerator": 4,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_renaissance_times_square",
+            "name": "Renaissance New York Times Square Hotel",
+            "brand": "Renaissance Hotels",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_w_ts",
+            "name": "W New York - Times Square",
+            "brand": "W Hotels",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_ac_ts",
+            "name": "AC Hotel New York Times Square",
+            "brand": "AC Hotels",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_westin_ts",
+            "name": "The Westin New York at Times Square",
+            "brand": "Westin",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_sheraton_ts",
+            "name": "Sheraton New York Times Square Hotel",
+            "brand": "Sheraton",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "family": {
+        "territory": "family",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 0,
+        "presenceRate": 0,
+        "presenceDisplay": "0.0%",
+        "portfolioRank": 6,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.35,
+        "portfolioPresenceIndex": 0,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_bonvoy_marriott_marquis",
+            "name": "New York Marriott Marquis",
+            "brand": "Marriott Hotels",
+            "presenceRate": 0.75,
+            "obsHits": 3,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 75,
+            "numerator": 3,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_sheraton_ts",
+            "name": "Sheraton New York Times Square Hotel",
+            "brand": "Sheraton",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_westin_ts",
+            "name": "The Westin New York at Times Square",
+            "brand": "Westin",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_w_ts",
+            "name": "W New York - Times Square",
+            "brand": "W Hotels",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_ac_ts",
+            "name": "AC Hotel New York Times Square",
+            "brand": "AC Hotels",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_renaissance_times_square",
+            "name": "Renaissance New York Times Square Hotel",
+            "brand": "Renaissance Hotels",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 0
+      },
+      "celebrations": {
+        "territory": "celebrations",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 2,
+        "presenceRate": 0.5,
+        "presenceDisplay": "50.0%",
+        "portfolioRank": 3,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.4,
+        "portfolioPresenceIndex": 125,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_bonvoy_marriott_marquis",
+            "name": "New York Marriott Marquis",
+            "brand": "Marriott Hotels",
+            "presenceRate": 1,
+            "obsHits": 4,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 100,
+            "numerator": 4,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_w_ts",
+            "name": "W New York - Times Square",
+            "brand": "W Hotels",
+            "presenceRate": 0.75,
+            "obsHits": 3,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 75,
+            "numerator": 3,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_renaissance_times_square",
+            "name": "Renaissance New York Times Square Hotel",
+            "brand": "Renaissance Hotels",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_sheraton_ts",
+            "name": "Sheraton New York Times Square Hotel",
+            "brand": "Sheraton",
+            "presenceRate": 0.25,
+            "obsHits": 1,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 25,
+            "numerator": 1,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_ac_ts",
+            "name": "AC Hotel New York Times Square",
+            "brand": "AC Hotels",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_westin_ts",
+            "name": "The Westin New York at Times Square",
+            "brand": "Westin",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      },
+      "group_meetings": {
+        "territory": "group_meetings",
+        "scenarios": 1,
+        "observations": 4,
+        "subjectHits": 2,
+        "presenceRate": 0.5,
+        "presenceDisplay": "50.0%",
+        "portfolioRank": 3,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.45,
+        "portfolioPresenceIndex": 111,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_bonvoy_marriott_marquis",
+            "name": "New York Marriott Marquis",
+            "brand": "Marriott Hotels",
+            "presenceRate": 1,
+            "obsHits": 4,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 100,
+            "numerator": 4,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_ac_ts",
+            "name": "AC Hotel New York Times Square",
+            "brand": "AC Hotels",
+            "presenceRate": 0.75,
+            "obsHits": 3,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 75,
+            "numerator": 3,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_renaissance_times_square",
+            "name": "Renaissance New York Times Square Hotel",
+            "brand": "Renaissance Hotels",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": true,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_w_ts",
+            "name": "W New York - Times Square",
+            "brand": "W Hotels",
+            "presenceRate": 0.5,
+            "obsHits": 2,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 50,
+            "numerator": 2,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_sheraton_ts",
+            "name": "Sheraton New York Times Square Hotel",
+            "brand": "Sheraton",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_bonvoy_westin_ts",
+            "name": "The Westin New York at Times Square",
+            "brand": "Westin",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 4,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 4,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 1
+      }
+    },
+    "territoryOptions": [
+      {
+        "id": "overall",
+        "label": "Overall"
+      },
+      {
+        "id": "business",
+        "label": "Business"
+      },
+      {
+        "id": "leisure",
+        "label": "Leisure"
+      },
+      {
+        "id": "couples",
+        "label": "Couples"
+      },
+      {
+        "id": "family",
+        "label": "Family"
+      },
+      {
+        "id": "celebrations",
+        "label": "Celebrations"
+      },
+      {
+        "id": "group_meetings",
+        "label": "Group Meetings"
+      }
+    ],
+    "evidence": {
+      "positive": [
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_01_openai_a1_e3d9c5",
+          "scenarioId": "bpp_renaissance_times_square_business_01",
+          "provider": "openai",
+          "territory": "business",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "oadway shows and Midtown business meetings.\n\n2. **Renaissance New York Times Square Hotel**: This hotel combines modern luxury with a great location. It offers a quieter environment despite",
+          "position": 3,
+          "aiResponse": "For a business trip to Midtown Manhattan near Broadway, there are several Marriott hotels in the Times Square area that you might consider:\n\n1. **New York Marriott Marquis**: Located right in the heart of Times Square, this hotel offers spacious rooms and is equipped with business-friendly amenities such as a business center and multiple meeting spaces. Its central location makes it convenient for accessing Broadway shows and Midtown business meetings.\n\n2. **Renaissance New York Times Square Hotel**: This hotel combines modern luxury with a great location. It offers a quieter environment despite being steps away from the hustle and bustle of Times Square. The hotel also features meeting rooms and a 24-hour fitness center.\n\n3. **Courtyard by Marriott New York Manhattan/Times Square**: This hotel provides a comfortable stay with practical amenities for business travelers, including free Wi-Fi and a business center. It's slightly off the main Times Square area, offering a quieter environment while still being close to Broadway and Midtown offices.\n\n4. **AC Hotel by Marriott New York Times Square**: Known for its sleek and modern design, this hotel is ideal for business travelers looking for a stylish stay. It offers business-friendly services and is conveniently located near public transportation options.\n\n5. **Fairfield Inn & Suites by Marriott New York Manhattan/Times Square**: This hotel offers a good balance between comfort and affordability. It provides business amenities like free Wi-Fi and a business center, and is within walking distance of Broadway theaters and Midtown business districts.\n\nEach of these options offers different benefits, so your choice may depend on specific preferences such as amenities, price range, or proximity to certain locations."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_01_gemini_a1_45d6c3",
+          "scenarioId": "bpp_renaissance_times_square_business_01",
+          "provider": "gemini",
+          "territory": "business",
+          "matchedVariant": "Renaissance New York Times Square",
+          "context": "-\n\n### 2. Best Boutique Feel & Client Meetings: **Renaissance New York Times Square**\n* **Location:** 714 Seventh Ave (48th St & Broadway)\n* **Vibe:** Sleek, modern, and slightly more",
+          "position": null,
+          "aiResponse": "For a business trip to Midtown near Broadway, you want a Marriott property that balances a central location with **soundproofing, great Wi-Fi, functional workspaces, and solid loyalty perks** (like Executive/M Club lounges). \n\nHere are the best Marriott Bonvoy hotels in the Times Square/Broadway area, categorized by what kind of business traveler you are:\n\n---\n\n### 1. Best Overall for Business: **New York Marriott Marquis**\n* **Location:** 1535 Broadway (45th & Broadway — literally in the heart of Times Square)\n* **Vibe:** Massive, high-energy, classic corporate hub.\n* **Why it’s great for business:**\n  * **Location:** You are directly on Broadway, steps from major Midtown corporate offices and subways.\n  * **M Club Lounge:** One of the best Marriott lounges in the city (accessible for Platinum members and above, or via upgraded room bookings). It provides free breakfast, evening hors d’oeuvres, and a quiet space to work or hold quick catch-ups.\n  * **Workspaces:** Rooms feature large, dedicated desks with plenty of outlets.\n  * **Soundproofing:** Despite being in the middle of Times Square, the rooms are surprisingly quiet, especially on higher floors.\n  * **Gym:** Massive, well-equipped fitness center.\n\n---\n\n### 2. Best Boutique Feel & Client Meetings: **Renaissance New York Times Square**\n* **Location:** 714 Seventh Ave (48th St & Broadway)\n* **Vibe:** Sleek, modern, and slightly more intimate than the Marquis.\n* **Why it’s great for business:**\n  * **R Lounge:** The hotel lobby lounge overlooks Times Square and is an impressive spot to host a client for drinks or an informal meeting.\n  * **Elevated Comfort:** It feels less like a massive conference hotel and more like a upscale boutique hotel, but with full business amenities.\n  * **Quiet Rooms:** High-spec glass helps block out street noise. Hardwood floors and ergonomic desk setups in the rooms.\n\n---\n\n### 3. Best for Wellness & Comfort: **The Westin New York at Times Square**\n* **Location:** 270 W 43rd St (43rd St & 8th Ave — 1 block off Broadway)\n* **Vibe:** Focus on wellness, comfort, and productivity.\n* **Why it’s great for business:**\n  * **Slightly Removed from Noise:** Sitting on 8th Avenue, it’s just one block off Broadway, making it much easier for taxis/Ubers to pick you up without getting stuck in Times Square gridlock.\n  * **Westin Heavenly Beds & Desks:** Renowned for great sleep quality and large, comfortable work desks in every room.\n  * **Direct Subway Access:** Connected internally to the 42nd St–Port Authority subway station (A/C/E lines), making transit around the city effortless in bad weather.\n\n---\n\n### 4. Best Luxury / High-End Client Impressions: **The Times Square EDITION**\n* **Location:** 20 Times Square (7th Ave & 47th St)\n* **Vibe:** Ultra-chic, minimalist, luxury.\n* **Why it’s great for business:**\n  * **Serene Atmosphere:** The moment you step into the lobby, the chaos of Broadway disappears. It smells amazing, is dead quiet, and feels exclusive.\n  * **High-End Dining:** Features Michelin-starred chef John Fraser’s restaurants, ideal for entertaining high-value clients.\n  * **Modern Workspaces:** Rooms are smaller than the Marquis, but beautifully designed with sleek work surfaces and high-speed tech.\n\n---\n\n### 5. Best for Quieter Midtown Location (Upper Broadway): **Courtyard / Residence Inn Central Park**\n* **Location:** 1717 Broadway (54th St & Broadway)\n* **Vibe:** Dual-branded skyscraper; practical and quiet.\n* **Why it’s great for business:**\n  * **Location:** Located at 54th and Broadway, it is technically \"Times Square North,\" closer to Columbus Circle and Central Park. It is significantly quieter and easier to navigate than lower Broadway.\n  * **Highest Hotel Views:** It occupies the tallest hotel-only building in North America; rooms above the 35th floor offer stunning views and zero street noise.\n  * **Extended Stay Option:** The **Residence Inn** side features kitchenettes, larger desks, and free hot breakfast, perfect if your business trip is 4+ days.\n\n---\n\n### Quick Decision Guide:\n\n* **Choose the Marriott Marquis** if you want the ultimate central location, need a great M Club lounge, or are attending a conference.\n* **Choose the Renaissance** if you want a stylish space to entertain clients right on Broadway without feeling like you're in a mega-hotel.\n* **Choose the Westin** if you want a great night's sleep, easy taxi access, and standard corporate ergonomics.\n* **Choose the EDITION** if budget allows and you want to impress clients with luxury.\n* **Choose the Courtyard/Residence Inn Central Park** if your meetings are in Upper Midtown or you prefer a quieter residential feel with a kitchenette."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_02_perplexity_a1_3bba7d",
+          "scenarioId": "bpp_renaissance_times_square_business_02",
+          "provider": "perplexity",
+          "territory": "business",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "nities.[13]\n\nIf you want strong alternatives:\n- **Renaissance New York Times Square Hotel**: a solid Times Square option at **714 Seventh Avenue at W. 48th Street**, which is very central f",
+          "position": null,
+          "aiResponse": "For **meetings in Midtown Manhattan**, the strongest Marriott pick is the **New York Marriott Marquis** in Times Square. Marriott describes it as a “premier destination for weddings, meetings, and milestone gatherings,” and it has a full **events and meeting spaces** program on-site.[6][2]\n\nWhy it stands out:\n- **Best meeting infrastructure**: Marriott explicitly markets the Marquis around **world-class service, innovative catering, versatile spaces, and cutting-edge technology** for meetings.[6]\n- **Best Times Square location**: it is at **1535 Broadway** in the heart of Times Square, which is among the most central Marriott locations for Midtown meetings.[2]\n- **Business-ready positioning**: the hotel’s own site highlights **M Club, fitness center, and business center** amenities.[13]\n\nIf you want strong alternatives:\n- **Renaissance New York Times Square Hotel**: a solid Times Square option at **714 Seventh Avenue at W. 48th Street**, which is very central for Midtown access.[3]\n- **Sheraton New York Times Square Hotel**: another major Midtown property at **811 7th Avenue and 53rd Street**, useful if your meetings are closer to central or north Midtown.[9]\n- **W New York - Times Square**: a more design-forward option at **1567 Broadway**, but it is generally less obviously meeting-focused than the Marquis based on the Marriott pages provided.[5][1]\n\nIf your priority is *the best overall Marriott for meetings*, the **New York Marriott Marquis** is the clearest choice from the available Marriott listings.[6][2]"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_leisure_03_gemini_a1_49ee92",
+          "scenarioId": "bpp_renaissance_times_square_leisure_03",
+          "provider": "gemini",
+          "territory": "leisure",
+          "matchedVariant": "Renaissance New York Times Square",
+          "context": ".\n\n---\n\n### 2. The Best for Views & Atmosphere: **Renaissance New York Times Square**\n* **Location:** 714 Seventh Ave (48th St. & 7th Ave) – *North end of Times Square*\n* **Vibe:** Bo",
+          "position": null,
+          "aiResponse": "For a first-time visitor to New York City who wants an immersive Times Square experience, staying at a Marriott property puts you right in the heart of the action. However, because Times Square is sensory overload, the \"best\" hotel depends on whether you want to be **right in the middle of the lights**, **luxury surrounded by chaos**, or **just one block away for a better night's sleep**.\n\nHere are the top Marriott hotels in and around Times Square, categorized by travel style:\n\n---\n\n### 1. The Classic First-Timer Choice: **New York Marriott Marquis**\n* **Location:** 1535 Broadway (45th St. & Broadway) – *Directly in Times Square*\n* **Vibe:** Grand, bustling, quintessential NYC.\n* **Why it’s great for first-timers:** \n  * It is physically inside the main Times Square pedestrian plaza. You step out the front door right into the billboards and excitement.\n  * It features a massive indoor glass-elevator atrium and high-floor lounge/dining options (**Revel & Rye** and **Broadway Lounge**) with floor-to-ceiling views of the billboards.\n  * Rooms are unusually spacious by NYC standards and remarkably soundproofed given the location.\n* **Best for:** Families, first-time tourists who want the iconic \"I'm in New York\" feeling, and Broadway theater-goers (it even houses its own Broadway theater inside the hotel).\n\n---\n\n### 2. The Best for Views & Atmosphere: **Renaissance New York Times Square**\n* **Location:** 714 Seventh Ave (48th St. & 7th Ave) – *North end of Times Square*\n* **Vibe:** Boutique, stylish, elevated.\n* **Why it’s great for first-timers:** \n  * It sits right above the iconic TKTS red steps.\n  * The highlight is **R Lounge**, which offers one of the absolute best, unobstructed, panoramic views straight down Times Square. It’s a great spot for a evening drink without leaving your hotel.\n  * It feels a bit more intimate and \"boutique\" than the massive Marriott Marquis across the street.\n* **Best for:** Couples, travelers wanting great photos/views, and those looking for a slightly more sophisticated atmosphere.\n\n---\n\n### 3. The Luxury Pick: **The Times Square EDITION**\n* **Location:** 20 Times Square (7th Ave & 47th St) – *Directly in Times Square*\n* **Vibe:** High-end luxury, serene, Instagram-worthy.\n* **Why it’s great for first-timers:** \n  * It offers a total sanctuary from the chaos outside. As soon as you enter, the scented lobby and lush greenery make you forget the crowds.\n  * Features fine dining by Michelin-starred Chef John Fraser and **The Terrace Outdoor Gardens**, an incredible outdoor dining space overlooking Times Square.\n  * Extremely chic rooms with floor-to-ceiling windows.\n* **Best for:** Luxury travelers, couples on a romantic trip, or anyone who wants a 5-star experience right in the theater district.\n\n---\n\n### 4. The Smart \"One Block Away\" Choice: **The Westin New York at Times Square**\n* **Location:** 270 W 43rd St (43rd St & 8th Ave) – *1 block west of Times Square*\n* **Vibe:** Modern, comfortable, relaxed.\n* **Why it’s great for first-timers:** \n  * **Proximity win:** It is only a 2-minute walk to Times Square, but being on 8th Avenue means it is significantly quieter, and pulling up in a taxi/uber is *much* easier than on Broadway.\n  * It features Westin’s famous \"Heavenly Beds,\" which are a lifesaver after walking 10+ miles sightseeing.\n  * Direct underground access to the A/C/E subway lines, making exploring the rest of NYC effortless.\n* **Best for:** Travelers who want fast access to Times Square but prefer a peaceful room for sleeping.\n\n---\n\n### 5. Best for High-Floor Views & Families: **Courtyard / Residence Inn Manhattan/Central Park**\n* **Location:** 1717 Broadway (54th St & Broadway) – *5 blocks north of Times Square*\n* **Vibe:** Modern, practical, soaring heights.\n* **Why it’s great for first-timers:** \n  * This dual-branded building is the **tallest hotel in North America**. \n  * Because it is higher up Broadway (54th St), you are a short 5-minute walk to Times Square *and* a 5-minute walk to Central Park.\n  * If you book a high floor, the views looking south toward Times Square or north toward Central Park are incredible.\n  * The **Residence Inn** half features kitchenettes and complimentary hot breakfast, which saves a ton of money for families.\n* **Best for:** Families, longer stays, and travelers who want to split their time between Times Square and Central Park.\n\n---\n\n### Summary Recommendation:\n* **Go with the Marriott Marquis** if you want the ultimate, iconic, \"center of the universe\" first trip.\n* **Go with the Renaissance or EDITION** if you want a stylish/luxury experience with great nightlife views.\n* **Go with The Westin** if you prioritize comfort, sleep quality, and easier transportation."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_leisure_03_perplexity_a1_b67f44",
+          "scenarioId": "bpp_renaissance_times_square_leisure_03",
+          "provider": "perplexity",
+          "territory": "leisure",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "tt Marquis**, **The Times Square EDITION**, and **Renaissance New York Times Square Hotel** because they are explicitly in the Times Square area and sit in the heart of Midtown’s theater/Ti",
+          "position": null,
+          "aiResponse": "For a **first-time New York visit centered on Times Square**, the strongest Marriott picks are **New York Marriott Marquis**, **The Times Square EDITION**, and **Renaissance New York Times Square Hotel** because they are explicitly in the Times Square area and sit in the heart of Midtown’s theater/Times Square corridor.[4][11][13]\n\n- **New York Marriott Marquis** — Best overall for a first trip if you want the classic Times Square experience. Marriott describes it as an “iconic Times Square hotel,” and it sits at 1535 Broadway, right in the center of the area.[4][10] It is the most straightforward choice for easy access to Times Square, Broadway, and the crowds/energy people usually want on a first visit.[4][10]\n- **The Times Square EDITION** — Best if you want a more upscale, modern stay in the same core location. Marriott positions it as a **5-star hotel** in Times Square at 701 7th Avenue.[13] It is a good fit if design, dining, and a quieter-luxury feel matter more than the classic big-hotel vibe.[13]\n- **Renaissance New York Times Square Hotel** — Best mid-to-upscale option for being close to the action without necessarily going as big as the Marquis.[11] Its address places it in the Times Square/48th Street area, which is still very central for first-time visitors.[11]\n- **W New York - Times Square** — A strong alternative if you want a stylish, contemporary Marriott property directly on Broadway in the Times Square area.[8] It is especially attractive for travelers who want a younger, trendier feel.[8]\n- **Sheraton New York Times Square Hotel** — Good if you want a large, familiar full-service Marriott near Times Square but slightly north of the busiest core.[14] It is still very convenient for Midtown sightseeing, though less “in the middle of Times Square” than the Marquis or EDITION.[14]\n\nIf your priority is **“I want to step outside and be in Times Square immediately,”** choose **New York Marriott Marquis** first.[4][10] If you want **the nicest upscale stay in the same area**, choose **The Times Square EDITION**.[13] If you want **a solid all-around Midtown base**, choose **Renaissance New York Times Square Hotel**.[11]\n\nIf you want, I can also rank these by **best for families, couples, or budget-conscious travelers**."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_leisure_03_claude_a1_8bc057",
+          "scenarioId": "bpp_renaissance_times_square_leisure_03",
+          "provider": "claude",
+          "territory": "leisure",
+          "matchedVariant": "Renaissance New York Times Square",
+          "context": "the quintessential Times Square experience\n\n### **Renaissance New York Times Square**\n- **Location:** Steps from Times Square\n- **Why it's great:** More boutique feel, stylish rooms,",
+          "position": null,
+          "aiResponse": "# Marriott Hotels in Times Square for First-Time Visitors\n\nHere are the main Marriott-brand options in or immediately around Times Square:\n\n## Top Choices\n\n### **New York Marriott Marquis**\n- **Location:** Right in the heart of Times Square (1535 Broadway)\n- **Why it's great for first-timers:** Iconic revolving rooftop restaurant/bar (The View), rooms with direct Times Square views, massive hotel with great amenities\n- **Vibe:** Classic, bustling, very touristy in a good way\n- **Consider if:** You want the quintessential Times Square experience\n\n### **Renaissance New York Times Square**\n- **Location:** Steps from Times Square\n- **Why it's great:** More boutique feel, stylish rooms, R Lounge has excellent Times Square views\n- **Vibe:** Slightly more polished than the Marquis\n- **Consider if:** You want Times Square access but a quieter atmosphere\n\n### **Courtyard by Marriott Times Square**\n- *(Several locations nearby)*\n- More budget-friendly option under the Marriott umbrella\n\n---\n\n## Practical Tips for Choosing\n- **Request high floors** for the best views\n- **Book well in advance** - these fill up fast\n- **Prices are high** across all options given the location\n\n**My honest recommendation:** The **Marriott Marquis** is hard to beat for a first New York visit - the location and experience are genuinely memorable.\n\nWould you like details on pricing, nearby attractions, or anything else?"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_leisure_04_gemini_a1_278048",
+          "scenarioId": "bpp_renaissance_times_square_leisure_04",
+          "provider": "gemini",
+          "territory": "leisure",
+          "matchedVariant": "Renaissance New York Times Square",
+          "context": "--\n\n### 3. Best for Views & Pre-Show Cocktails: **Renaissance New York Times Square**\nLocated right on 7th Avenue at 48th Street, the Renaissance offers a boutique-style feel right ab",
+          "position": null,
+          "aiResponse": "The \"best\" Marriott hotel in Times Square depends on the specific vibe, luxury level, and type of nightlife you are looking for. However, **The Times Square EDITION** and the **New York Marriott Marquis** stand out as the top choices for theater and nightlife, depending on your style.\n\nHere is a breakdown of the top options based on what you might be prioritizing:\n\n---\n\n### 1. Best Overall for Luxury & Sophisticated Nightlife: **The Times Square EDITION**\nIf you want luxury, high-end nightlife, and a tranquil retreat right in the middle of the madness, this is the top pick.\n\n* **Theater Access:** Located at 7th Ave and 47th St, you are within a 2- to 5-minute walk of nearly every major Broadway theater (like the *Barrymore*, *Lunt-Fontanne*, and *Palace*).\n* **Nightlife Scene:** Excellent. It houses **Paradise Club**, a trendy, high-concept nightlife and cabaret venue, as well as **The Roof** (a outdoor garden terrace bar) and **701West** (fine dining/cocktails by Michelin-starred chef John Fraser). It attracts a stylish, energetic crowd.\n* **The Vibe:** Modern, lush, elevated, and quiet once you step inside. \n\n---\n\n### 2. Best for Pure Broadway Convenience & Classic Vibe: **New York Marriott Marquis**\nThis is the flagship Times Square property. If your primary goal is stepping outside directly into the epicenter of the Theater District, this is it.\n\n* **Theater Access:** Unbeatable. It literally has a Broadway theater (**The Marquis Theatre**) *inside* the hotel on the 3rd floor. It sits on 45th and Broadway, the heart of the theater strip.\n* **Nightlife Scene:** It features the **Broadway Lounge**, an expansive multi-level bar/restaurant with floor-to-ceiling glass walls offering bird’s-eye views directly over Times Square and the lights. It's lively and iconic, though very tourist-heavy.\n* **The Vibe:** Massive, bustling, high-energy, and completely renovated recently.\n\n---\n\n### 3. Best for Views & Pre-Show Cocktails: **Renaissance New York Times Square**\nLocated right on 7th Avenue at 48th Street, the Renaissance offers a boutique-style feel right above the action.\n\n* **Theater Access:** Steps away from the *Eugene O'Neill*, *Walter Kerr*, and *Longacre* theaters. \n* **Nightlife Scene:** The hotel is famous for **R Lounge**, which boasts one of the absolute best, direct glass-front views of the main Times Square billboard strip. It’s an ideal, stylish spot for pre- or post-theater cocktails without the overwhelming street-level crowds.\n* **The Vibe:** Chic, artsy, quieter than the Marquis, with excellent personalized service.\n\n---\n\n### 4. Best for Party Vibe & Trendy Nightlife (Boutique/Budget-Friendly): **Moxy NYC Times Square**\nLocated slightly south of the core billboards (36th and 7th), it's a 7-minute walk to the theaters, but it excels at nightlife.\n\n* **Theater Access:** A short walk north puts you right in the heart of the Theater District.\n* **Nightlife Scene:** Home to **Magic Hour Rooftop Bar & Lounge**, one of the most popular, high-energy rooftop lounges in NYC (known for its playful decor, DJs, carousel seating, and Empire State Building views). It also features *Bar Moxy* and a hidden seafood brasserie.\n* **The Vibe:** Playful, young, social, and energetic. **Note:** Guest rooms here are \"micro-rooms\" (very small), designed for travelers who spend most of their time out exploring or partying.\n\n---\n\n### Quick Recommendation Summary:\n* **Go with The Times Square EDITION** if you want luxury, fine dining, chic cocktails, and a trendy nightlife crowd.\n* **Go with the Marriott Marquis** if you want maximum Broadway convenience, larger standard rooms, and iconic Times Square views.\n* **Go with the Renaissance** if you want a boutique feel with the best cocktail lounge view in the area."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_leisure_04_perplexity_a1_fa78ef",
+          "scenarioId": "bpp_renaissance_times_square_leisure_04",
+          "provider": "perplexity",
+          "territory": "leisure",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "Marriott, the **W New York - Times Square** and **Renaissance New York Times Square Hotel** are also solid, but the Marquis is usually the best all-around choice for sheer proximity to both",
+          "position": null,
+          "aiResponse": "For **theater and nightlife near Times Square**, the **New York Marriott Marquis** is the strongest Marriott pick. Marriott describes it as an iconic Times Square hotel in the Theater District, and multiple listings place it right in the middle of the action on Broadway and Times Square.[5][16][19]\n\nWhy it stands out:\n- It is in the **Theater District / Times Square** itself, which is the most convenient location for Broadway access.[5][16][19]\n- It is widely described as being **right in the middle of the action**, which is ideal if you want to walk to shows and nightlife.[3][8]\n- It has the classic “big Times Square hotel” feel, so it is better suited to a lively stay than quieter Midtown options.[5][16]\n\nIf you want alternatives within Marriott, the **W New York - Times Square** and **Renaissance New York Times Square Hotel** are also solid, but the Marquis is usually the best all-around choice for sheer proximity to both **Broadway** and late-night Times Square energy.[10][12]"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_couples_05_openai_a1_22897c",
+          "scenarioId": "bpp_renaissance_times_square_couples_05",
+          "provider": "openai",
+          "territory": "couples",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "with panoramic views, and a fitness center.\n\n2. **Renaissance New York Times Square Hotel**: Situated on Seventh Avenue, this hotel provides a boutique experience with a vibrant atmosphere.",
+          "position": 3,
+          "aiResponse": "For a weekend getaway near Broadway in Times Square, several Marriott hotels offer convenient locations and excellent amenities:\n\n1. **New York Marriott Marquis**: Located right in Times Square, this iconic hotel is just steps away from Broadway theaters. It offers spacious rooms, a revolving restaurant with panoramic views, and a fitness center.\n\n2. **Renaissance New York Times Square Hotel**: Situated on Seventh Avenue, this hotel provides a boutique experience with a vibrant atmosphere. Guests can enjoy modern rooms, a stylish lounge, and close proximity to numerous theaters.\n\n3. **AC Hotel by Marriott New York Times Square**: This hotel offers a sleek, European-inspired design and is just a short walk from Broadway. It features a rooftop bar with impressive views, ideal for unwinding after a day of theater.\n\n4. **Courtyard New York Manhattan/Times Square**: Just a few blocks from Times Square, this hotel provides comfortable accommodations and a convenient location. It’s a great choice for travelers looking for a balance of comfort and value.\n\n5. **Moxy NYC Times Square**: While not branded under Marriott, it's part of the Marriott Bonvoy collection. This hotel is known for its trendy design, affordable pricing, and lively social spaces, including a rooftop bar and indoor/outdoor lounge.\n\nAll these options offer easy access to Broadway theaters, dining, and entertainment, making them ideal for a weekend getaway focused on enjoying the best of New York’s theater district."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_couples_05_gemini_a1_aa6189",
+          "scenarioId": "bpp_renaissance_times_square_couples_05",
+          "provider": "gemini",
+          "territory": "couples",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "ellobby.\n\n### 3. The Best Views & Boutique Feel\n**Renaissance New York Times Square Hotel**\n* **Location:** 714 7th Avenue (At 48th St)\n* **The Vibe:** Stylish, intimate, elevated urban lif",
+          "position": null,
+          "aiResponse": "For a weekend getaway centered around Broadway shows, Marriott has several distinct properties right in or adjacent to Times Square. The \"best\" choice depends on the vibe, budget, and level of luxury you want. \n\nHere are the top Marriott Bonvoy hotels in Times Square for a theater weekend, broken down by style:\n\n---\n\n### 1. The Best Overall & Classic Broadway Experience\n**New York Marriott Marquis**\n* **Location:** 1535 Broadway (Between 45th & 46th St)\n* **The Vibe:** High-energy, iconic, bustling hub.\n* **Why it’s great for Broadway:** You literally cannot get closer. It is located directly on Broadway, surrounded by major theaters, and actually houses its own Broadway venue (*The Marquis Theatre*) inside the hotel. \n* **Highlights:** It recently underwent a massive multi-million dollar renovation. The rooms are surprisingly spacious for NYC, the high-floor views of the neon lights are unbeatable, and the 8th-floor atrium bar is great for pre- or post-show drinks.\n* **Best for:** First-timers, families, or anyone who wants to step out the front door directly into the heart of the Theater District.\n\n### 2. The Best Luxury & Romantic Getaway\n**The Times Square EDITION**\n* **Location:** 701 7th Avenue (At 47th St)\n* **The Vibe:** Ultra-sleek, sophisticated, luxury oasis.\n* **Why it’s great for Broadway:** It sits right at the northern edge of Times Square, placing you within a 5-minute walk of nearly every major playhouse, but feels like an exclusive sanctuary once you step inside.\n* **Highlights:** Designed by boutique hotel pioneer Ian Schrager. Features lush green terraces, Michelin-caliber dining (The Terrace and Outdoor Gardens), sophisticated cocktail bars, and floor-to-ceiling windows with curated, serene room designs. \n* **Best for:** Couples, luxury travelers, and anyone wanting a chic, upscale weekend without the chaos of a traditional mass-market hotellobby.\n\n### 3. The Best Views & Boutique Feel\n**Renaissance New York Times Square Hotel**\n* **Location:** 714 7th Avenue (At 48th St)\n* **The Vibe:** Stylish, intimate, elevated urban lifestyle.\n* **Why it’s great for Broadway:** Located right on the northern point of the red stairs (Father Duffy Square), making theater access effortless.\n* **Highlights:** The standout feature is the **R Lounge**, which features floor-to-ceiling glass walls offering arguably the single best panoramic view of Times Square. It’s one of the best spots in the city for a post-theater nightcap. Rooms feel more private and boutique than the massive Marquis down the street.\n* **Best for:** Couples looking for a balance of vibrant views, great cocktails, and a mid-sized, stylish property.\n\n### 4. The Best Trendy & Budget-Conscious Choice\n**Moxy NYC Times Square**\n* **Location:** 485 7th Avenue (At 36th St – *Technically South Times Square/Garment District*)\n* **The Vibe:** Playful, social, boutique, nightlife-focused.\n* **Why it’s great for Broadway:** It's a short 8-to-10-minute walk north to the main theater cluster, but being slightly south places you closer to Penn Station/Hudson Yards while remaining walkable to Broadway.\n* **Highlights:** Home to **Magic Hour Rooftop Bar & Lounge** (one of NYC’s most popular photo spots/bars). The rooms use smart, compact designs (expect pegboards, fold-out desks, and walk-in showers rather than large suites). \n* **Best for:** Younger travelers, solo travelers, or friends who plan to spend minimal time in the room and more time out at shows and bars.\n\n### 5. The Best Quiet Comfort (Just Outside the Chaos)\n**AC Hotel New York Times Square**\n* **Location:** 260 W 40th St (Between 7th & 8th Ave)\n* **The Vibe:** Modern, minimalist, Spanish-inspired.\n* **Why it’s great for Broadway:** It is located on 40th Street—just one block south of the main theater block. You can walk to any theater in under 10 minutes, but you avoid the overwhelming foot traffic outside your front door.\n* **Highlights:** Clean lines, quiet rooms, glass-enclosed showers, and **Castell Rooftop Lounge**, a fantastic, understated cocktail bar on the 21st floor. \n* **Best for:** Travelers who want a peaceful night's sleep and modern aesthetics without paying top-tier luxury prices.\n\n---\n\n### Quick Recommendation Summary:\n* **For luxury & romance:** Choose **The Times Square EDITION**.\n* **For maximum convenience & big views:** Choose **New York Marriott Marquis**.\n* **For iconic cocktail views:** Choose **Renaissance Times Square**.\n* **For a modern, quieter stay:** Choose **AC Hotel Times Square**.\n\n### Insider Tip for a Broadway Weekend:\nIf you are aiming to see popular shows, ask the hotel's **concierge desk** (especially at the EDITION or Marriott Marquis) as soon as you book. They often have access to house seats or last-minute cancellations that aren't available on standard ticketing apps."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_celebrations_07_openai_a1_0267c0",
+          "scenarioId": "bpp_renaissance_times_square_celebrations_07",
+          "provider": "openai",
+          "territory": "celebrations",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "xperience with panoramic views of the city.\n\n3. **Renaissance New York Times Square Hotel**: This hotel combines a boutique feel with the reliability of the Marriott brand. It offers stylis",
+          "position": 4,
+          "aiResponse": "For a special occasion like a birthday or anniversary weekend in Midtown Manhattan, you have several excellent Marriott options in the Times Square area. Here are a few suggestions based on different preferences:\n\n1. **The Times Square EDITION**: Known for its luxurious and modern design, this hotel offers a chic atmosphere with upscale amenities. It features beautiful rooms with floor-to-ceiling windows, a rooftop terrace, and several dining options, making it perfect for a celebratory stay.\n\n2. **New York Marriott Marquis**: Located right in the heart of Times Square, this hotel is ideal if you want to be in the middle of the action. The Marriott Marquis offers spacious rooms, some with stunning views of Times Square. It also has a revolving restaurant, The View, which provides a unique dining experience with panoramic views of the city.\n\n3. **Renaissance New York Times Square Hotel**: This hotel combines a boutique feel with the reliability of the Marriott brand. It offers stylish rooms and a vibrant atmosphere. The R Lounge, with its views of Times Square, is a great spot for a celebratory drink.\n\n4. **Residence Inn New York Manhattan/Times Square**: If you prefer a suite-style accommodation with more space and kitchen facilities, this hotel is a great choice. It offers a more home-like feel, which can be ideal for longer stays or if you prefer a quieter environment.\n\nEach of these options provides a different experience, so consider what aspects are most important for your stay, such as location, amenities, or room style, to make the best choice for your celebration."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_celebrations_07_gemini_a1_04eb31",
+          "scenarioId": "bpp_renaissance_times_square_celebrations_07",
+          "provider": "gemini",
+          "territory": "celebrations",
+          "matchedVariant": "Renaissance NYC Times Square",
+          "context": "**The Times Square EDITION** (chic/upscale) or **Renaissance NYC Times Square** (great bar views and energy).\n\n### 💡 Pro-Tips for Special Occasions:\n1. **Contact the Hotel in A",
+          "position": null,
+          "aiResponse": "For a special occasion like a birthday or anniversary in Times Square, you want a hotel that feels like an **elevated sanctuary**—somewhere that lets you enjoy the energy of Midtown without feeling overwhelmed by the crowds. \n\nHere are the top Marriott properties in and around Times Square, categorized by the type of vibe you are looking for:\n\n---\n\n### 1. The Ultimate Luxury & Chic Vibe (Top Pick)\n**The Times Square EDITION**\n* **The Vibe:** Sleek, modern luxury, intimate, and sophisticated. \n* **Why it’s perfect for a celebration:** Designed by legendary hotelier Ian Schrager, this hotel feels like a peaceful oasis floating above the chaos. It features stunning green terraces, sophisticated bars, and exceptional dining at **701West** (led by Michelin-starred Chef John Fraser). \n* **Best for:** Couples wanting a sexy, high-end, and stylish anniversary or birthday experience. \n* **Tip:** Book a *Times Square View* room on a high floor for dramatic, floor-to-ceiling views of the neon lights.\n\n---\n\n### 2. Classic Romance & Intimate Elegance\n**The Chatwal, A Luxury Collection Hotel**\n* **The Vibe:** 1930s Art Deco glam, romantic, quiet, and boutique.\n* **Why it’s perfect for a celebration:** Located on 44th Street (just half a block off Times Square proper), The Chatwal offers butler service, an intimate cocktail lounge (The Lambs Club), and a rich historic feel. It feels very private and exclusive, making it ideal for a romantic anniversary.\n* **Best for:** Those who want luxury, personalized service, and a quiet retreat that is still steps from Broadway theaters.\n\n---\n\n### 3. Best Views & Direct \"Times Square\" Energy\n**Renaissance New York Times Square**\n* **The Vibe:** Upscale, boutique-feeling, vibrantly designed.\n* **Why it’s perfect for a celebration:** Perched right over 7th Avenue, its highlight is the **R Lounge**, which features floor-to-ceiling glass windows with arguably the *best panoramic view* of Times Square in the city. It’s a spectacular spot for a celebratory birthday cocktail.\n* **Best for:** First-timers or view-lovers who want to feel like they are in the center of the action without staying in a massive, crowded convention hotel.\n\n---\n\n### 4. High-Energy & Fun (Great for Birthdays)\n**W New York – Times Square** or **Moxy Times Square**\n* **W New York - Times Square:** Offers a lively, nightlife-centric vibe with sleek room design, a great lobby lounge (Living Room), and easy access to Broadway. Good for a fun, music-filled birthday weekend.\n* **Moxy Times Square:** Much more budget-friendly/casual with tiny rooms, but home to **Magic Hour Rooftop Bar & Lounge** (a massive, wildly popular rooftop venue with a carousel, fun cocktails, and Empire State Building views). Great if your priority is drinking, dining, and socializing.\n\n---\n\n### 5. The Grand Classic (If you want the mega-hotel experience)\n**New York Marriott Marquis**\n* **The Vibe:** Massive, iconic, bustling, recently renovated.\n* **Why it’s perfect for a celebration:** It is the quintessential Times Square hotel. They recently completed a massive multi-million dollar renovation of the rooms, lobby, and restaurants. \n* **Best for:** People who want floor-to-ceiling views of the ball drop/Times Square and love the buzz of a giant, energetic hotel. *(Note: It can get very busy in the lobby/elevators, so it feels less \"intimate\" than the EDITION or Chatwal).*\n\n---\n\n### Summary Recommendation:\n* **For a Romantic Anniversary:** Book **The Times Square EDITION** (for modern luxury) or **The Chatwal** (for classic romance).\n* **For a Fun Birthday Weekend:** Book **The Times Square EDITION** (chic/upscale) or **Renaissance NYC Times Square** (great bar views and energy).\n\n### 💡 Pro-Tips for Special Occasions:\n1. **Contact the Hotel in Advance:** Call or message the front desk via the Marriott Bonvoy app 2–3 days before arrival. Mention the exact occasion (e.g., \"Celebrating my wife's 30th birthday\" or \"5th Anniversary\"). Marriott properties are usually great about leaving a complimentary note, dessert, or glass of prosecco in the room.\n2. **Request a High Floor:** Times Square is noisy. Requesting a floor **above the 15th-20th level** ensures better views and a quieter night's sleep."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_group_meetings_08_openai_a1_bb5222",
+          "scenarioId": "bpp_renaissance_times_square_group_meetings_08",
+          "provider": "openai",
+          "territory": "group_meetings",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "ns, which can be convenient for team meals.\n\n2. **Renaissance New York Times Square Hotel**: Known for its stylish design and modern amenities, this hotel provides a more boutique experienc",
+          "position": 3,
+          "aiResponse": "For a small team offsite near Times Square, you have several Marriott-affiliated hotels to choose from. Each offers different amenities that might suit your team's needs. Here are a few options:\n\n1. **New York Marriott Marquis**: Located right in Times Square, this hotel offers spacious meeting rooms and event spaces that can accommodate small to medium-sized groups. It also features a business center and various dining options, which can be convenient for team meals.\n\n2. **Renaissance New York Times Square Hotel**: Known for its stylish design and modern amenities, this hotel provides a more boutique experience. It has smaller meeting spaces suitable for intimate gatherings and a great location for team activities around Times Square.\n\n3. **Moxy NYC Times Square**: While Moxy hotels are known for their trendy and vibrant atmosphere, this location offers flexible meeting spaces, including a rooftop bar that can be used for informal gatherings. It’s a good choice if you’re looking for a more relaxed and creative environment.\n\n4. **AC Hotel New York Times Square**: This hotel offers a European-inspired experience with sleek meeting rooms ideal for small team meetings. The rooftop bar can also serve as a great spot for networking or casual team discussions.\n\n5. **Courtyard New York Manhattan/Times Square**: Offering a more budget-friendly option, this Courtyard has meeting spaces and a business center that can cater to smaller groups. Its central location makes it easy to access Times Square attractions.\n\nWhen choosing a hotel, consider the specific needs of your team, such as the size of the meeting space required, technological amenities, proximity to other activities, and budget. It's also a good idea to contact the hotels directly to discuss your requirements and see if they offer any special packages for corporate groups."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_group_meetings_08_gemini_a1_41c738",
+          "scenarioId": "bpp_renaissance_times_square_group_meetings_08",
+          "provider": "gemini",
+          "territory": "group_meetings",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "d.\n* **Location:** 701 7th Ave (47th St).\n\n### 2. Renaissance New York Times Square Hotel\n**Best for:** Balanced offsites (Professional + Fun), mid-to-large budgets.\n* **The Vibe:** Boutiqu",
+          "position": 2,
+          "aiResponse": "For a small team offsite in Times Square, the ideal hotel depends on your team's budget, style, and whether you prioritize **quiet luxury, high-tech meeting spaces, or a vibrant social scene.** \n\nWhile Times Square is notoriously high-energy, several Marriott properties offer excellent retreats from the street-level chaos with solid work spaces.\n\nHere are the best Marriott options for a small team offsite, categorized by team vibe:\n\n---\n\n### 1. The Times Square EDITION\n**Best for:** Executive teams, high-budget offsites, and modern luxury.\n* **The Vibe:** Sleek, sophisticated, and surprisingly quiet once inside. It feels more like a private club than a Times Square hotel.\n* **Why it works for a team:**\n  * Beautiful, light-filled private event and meeting spaces (including small boardrooms and terraces).\n  * Exceptional food and beverage program curated by Michelin-starred Chef John Fraser (great for team dinners).\n  * High-end amenities and stylish rooms that will make the team feel rewarded.\n* **Location:** 701 7th Ave (47th St).\n\n### 2. Renaissance New York Times Square Hotel\n**Best for:** Balanced offsites (Professional + Fun), mid-to-large budgets.\n* **The Vibe:** Boutique-feeling luxury right in the heart of the theater district.\n* **Why it works for a team:**\n  * **R Lounge:** Features floor-to-ceiling glass windows overlooking Times Square—ideal for a team cocktail hour or casual evening recap.\n  * Good inventory of small-to-medium meeting rooms with full AV capabilities.\n  * Elevated service and comfortable, newly renovated rooms.\n  * Elevated above the street, keeping the noise out while keeping the views in.\n* **Location:** 714 7th Ave (48th St).\n\n### 3. New York Marriott Marquis\n**Best for:** Classic corporate offsites needing top-tier tech and traditional meeting rooms.\n* **The Vibe:** Grand, massive, and energetic. (It is the flagship Marriott in NYC).\n* **Why it works for a team:**\n  * **Unmatched meeting infrastructure:** If your offsite requires heavy presentation tech, dedicated breakout rooms, and seamless catering, the Marquis is best equipped.\n  * Newly renovated rooms and atrium.\n  * *Note:* Because it’s a giant hotel, it lacks a \"boutique\" feel, but its efficiency for business events is second to none.\n* **Location:** 1535 Broadway (45th St).\n\n### 4. AC Hotel New York Times Square\n**Best for:** Modern/tech teams, mid-range budget, focused work.\n* **The Vibe:** Minimalist, European-inspired design—sleek, clean, and functional.\n* **Why it works for a team:**\n  * Located on 40th Street (on the southern edge of Times Square), meaning it's much quieter and easier for Ubers/taxis to access.\n  * Excellent shared spaces and smaller private meeting rooms.\n  * **Castell Rooftop Lounge:** Great space to end the day with drinks and city views.\n  * Rooms are designed for productivity (great desks, strong Wi-Fi, zero clutter).\n* **Location:** 260 W 40th St.\n\n### 5. The Chatwal, a Luxury Collection Hotel\n**Best for:** C-Suite/Executive retreats (5–10 people max).\n* **The Vibe:** Art Deco 1930s glam, ultra-exclusive, and quiet.\n* **Why it works for a team:**\n  * Highly personalized, butler-level service.\n  * Offers intimate private dining rooms and a small, high-end boardroom setup (Stanford White Studio).\n  * Features *The Lambs Club* restaurant for impressive team meals.\n  * Ideal if the offsite is focused on high-level strategy rather than long slide presentations.\n* **Location:** 130 W 44th St.\n\n---\n\n### Quick Recommendation Summary:\n\n* **Go with EDITION** if you want to impress the team with top-tier luxury and food.\n* **Go with Renaissance** for the best balance of view, location, and meeting facilities.\n* **Go with AC Hotel** if you want a modern, cost-effective, distraction-free environment just on the edge of the chaos.\n* **Go with Marriott Marquis** if you need robust presentation technology and dedicated event planners.\n\n### 💡 Pro-Tip for Times Square Offsites:\nRequest meeting space on **higher floors** or interior rooms to completely eliminate street noise, and ask the sales department about package deals that bundle team breakfasts and rooftop cocktail hours into the room rate."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_09_openai_a1_1f515d",
+          "scenarioId": "bpp_renaissance_times_square_business_09",
+          "provider": "openai",
+          "territory": "business",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "estaurant with panoramic views of the city.\n\n4. **Renaissance New York Times Square Hotel**: This boutique-like hotel offers a more intimate feel with elegant design and is just steps away",
+          "position": 5,
+          "aiResponse": "When looking to use Marriott Bonvoy points for a stay in Times Square, several properties offer great options, each with its unique advantages. Here are a few Marriott Bonvoy hotels in the Times Square area that are popular choices:\n\n1. **The Westin New York at Times Square**: This hotel is well-situated for theatergoers and those wanting to be in the heart of the action. It offers comfortable accommodations and great amenities like a fitness studio.\n\n2. **W New York – Times Square**: Known for its modern and trendy vibe, the W offers a vibrant atmosphere with stylish rooms and is ideal for those seeking a lively experience.\n\n3. **New York Marriott Marquis**: Located right in Times Square, this hotel features spacious rooms and several dining options, including a revolving restaurant with panoramic views of the city.\n\n4. **Renaissance New York Times Square Hotel**: This boutique-like hotel offers a more intimate feel with elegant design and is just steps away from Broadway theaters.\n\n5. **AC Hotel New York Times Square**: A more budget-friendly option, this hotel offers a sleek, European-inspired design and is close to major attractions while maintaining a quieter ambiance.\n\nWhen booking, consider the points redemption rate and the specific amenities that matter most to you. Checking for special promotions or deals can also enhance the value of your points."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_09_gemini_a1_bc3807",
+          "scenarioId": "bpp_renaissance_times_square_business_09",
+          "provider": "gemini",
+          "territory": "business",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "er Broadway.\n\n### 3. Best Views & Boutique Vibe\n**Renaissance New York Times Square Hotel**\n* **Vibe:** Stylish, theater-inspired, slightly more intimate than the Marquis.\n* **Location:** 7",
+          "position": null,
+          "aiResponse": "When redeeming Marriott Bonvoy points in Times Square, your choice depends on whether you want **luxury, maximum point value, room space, or perks like free breakfast**. Because cash rates in Midtown Manhattan are often astronomical ($400–$800+/night), using points here usually yields a very high **cents-per-point (CPP)** value.\n\nHere are the best Marriott Bonvoy properties in and around Times Square for a points redemption, categorized by what they do best:\n\n---\n\n### 1. Best for Luxury & High Cents-Per-Point Value\n**The Times Square EDITION**\n* **Vibe:** Sleek, high-end luxury, serene escape from the chaos below.\n* **Location:** 7th Ave & 47th St (Right in the heart of Times Square).\n* **Why it’s great for points:** Cash rates here frequently exceed $700–$1,000+ per night, making it one of the absolute best uses of Bonvoy points for raw value. \n* **Highlights:** Incredible dining (701 West), sophisticated rooms, and lush outdoor terraces. \n* **Note:** As an EDITION, it does **not** offer free breakfast as an Elite status welcome gift, but the luxury level makes up for it.\n\n### 2. Best Classic \"Heart of Times Square\" Experience\n**New York Marriott Marquis**\n* **Vibe:** Massive, bustling, iconic mega-hotel.\n* **Location:** Broadway & 45th St (Literally steps from theater marquees).\n* **Why it’s great for points:** Following a massive multi-million dollar renovation, the rooms are surprisingly huge by NYC standards. \n* **Highlights:** Features a massive **M Club Lounge** (great for Platinum, Titanium, and Ambassador Elites for free breakfast and snacks), the famous 8th-floor atrium bar, and views right over Broadway.\n\n### 3. Best Views & Boutique Vibe\n**Renaissance New York Times Square Hotel**\n* **Vibe:** Stylish, theater-inspired, slightly more intimate than the Marquis.\n* **Location:** 7th Ave & 48th St (Overlooking the iconic TKTS Red Stairs).\n* **Why it’s great for points:** It offers some of the best people-watching views in the city without having to leave the hotel.\n* **Highlights:** The **R Lounge** features floor-to-ceiling windows looking directly down 7th Avenue over Times Square. Rooms are modern and quiet despite the location.\n\n### 4. Best for Families, Space & Free Breakfast (Best Overall Value)\n**Residence Inn New York Manhattan/Times Square**\n* **Vibe:** Practical, spacious, slightly quieter.\n* **Location:** 39th St & 6th Ave (Technically near Bryant Park, 5 minutes south of Times Square).\n* **Why it’s great for points:** \n  1. **Free Hot Breakfast** for all guests (saves a family $80–$100/day in NYC).\n  2. Rooms feature **kitchenettes** with full-sized refrigerators and microwave.\n* **Highlights:** It sits just outside the overwhelming core of Times Square, making it much easier to sleep, while giving you access to both Times Square and Bryant Park.\n\n### 5. Best for Modern Style & Nightlife\n**W New York - Times Square**\n* **Vibe:** Trendy, dim lighting, upbeat energy.\n* **Location:** 47th St & Broadway.\n* **Why it’s great for points:** Great middle-ground between standard upscale and luxury. Often requires slightly fewer points than the EDITION while keeping a stylish, hip vibe.\n* **Highlights:** Living Room Bar is a popular spot for pre-theater drinks; rooms feature the signature comfortable W bed and deep soaking tubs.\n\n---\n\n### 💡 Crucial Tips for Using Points in Times Square\n\n1. **Beware of mandatory \"Destination Fees\":** \n   * Almost all NYC hotels charge a **Destination Fee / Amenity Fee** (usually **$35 to $50 + tax per night**). \n   * **Important:** Marriott does *not* waive these fees on points redemptions (unlike Hilton or Hyatt). However, these fees usually include a daily food & beverage credit (e.g., $35/day) to offset the cost.\n2. **Use the \"5th Night Free\" Promo:** \n   * If you book **5 consecutive nights** on points, you get the lowest-point night completely **free**. This maximizes your point value significantly.\n3. **Check the Location Nuance:** \n   * If you want to be *in the middle of the noise*, pick the **Marquis, Renaissance, or EDITION**. \n   * If you want to actually *sleep*, look at properties slightly on the edge, like the **Residence Inn Times Square/Bryant Park** or the **Courtyard Manhattan/Midtown West**."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_09_perplexity_a1_1a8d80",
+          "scenarioId": "bpp_renaissance_times_square_business_09",
+          "provider": "perplexity",
+          "territory": "business",
+          "matchedVariant": "Renaissance New York Times Square Hotel",
+          "context": "tt Marquis**, **The Times Square EDITION**, and **Renaissance New York Times Square Hotel** because they are all in the core Times Square/Midtown area and are established Bonvoy redemption",
+          "position": null,
+          "aiResponse": "For a **Midtown Times Square stay with Marriott Bonvoy points**, the best bets from your results are the **New York Marriott Marquis**, **The Times Square EDITION**, and **Renaissance New York Times Square Hotel** because they are all in the core Times Square/Midtown area and are established Bonvoy redemption options.[2][7][8]\n\nIf you want the strongest mix of **location + premium feel**, I’d prioritize:\n\n- **New York Marriott Marquis** — iconic Times Square address at 1535 Broadway, and a large flagship hotel that often has strong point-redemption value for the area.[2][20]\n- **The Times Square EDITION** — a higher-end 5-star option at 701 7th Avenue, good if you want a more upscale stay and are willing to spend more points.[7]\n- **Renaissance New York Times Square Hotel** — very central at Two Times Square / 714 Seventh Avenue at W. 48th Street, a solid Midtown choice if you want to be close to the lights and transit.[8]\n\nFor **best value on points**, these usually make more sense than the luxury options:\n\n- **Courtyard by Marriott New York Manhattan/Times Square** — 114 West 40th Street, very central and typically a practical redemption choice.[3]\n- **Fairfield by Marriott New York Manhattan Times Square** — 330 West 40th Street, another efficient points-use option in a strong Midtown location.[4][5]\n- **AC Hotel New York Times Square** — 260 West 40th Street, good if you want a newer-style business-friendly stay near the action.[11]\n- **Residence Inn by Marriott New York Manhattan/Times Square** — 1033 Avenue of the Americas, useful if you want more of an extended-stay setup.[12]\n\nA good rule of thumb: **use points at the most expensive properties on your dates**—usually the Marquis or EDITION—because that tends to maximize the cash value of your points.[2][7][20]\n\nIf you want, I can turn this into a **ranked shortlist by “best value,” “best luxury,” and “best for families”** using only the Times Square Marriott Bonvoy hotels in your results."
+        }
+      ],
+      "missing": [
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_01_perplexity_a1_073837",
+          "scenarioId": "bpp_renaissance_times_square_business_01",
+          "provider": "perplexity",
+          "territory": "business",
+          "aiResponse": "For a **Midtown business trip near Broadway**, the strongest Marriott picks in Times Square are **The Times Square EDITION**, **New York Marriott Marquis**, **W New York - Times Square**, and **The Westin New York at Times Square**.[6][16][3][5] If you want the most practical, central option for meetings plus theater access, **Marriott Marquis** is usually the best all-around choice because it is directly on Broadway in Times Square and is explicitly described as ideal for business travel.[1][18][11]\n\n- **Best overall:** **New York Marriott Marquis** — 1535 Broadway, in the heart of Times Square and the Broadway theater district, with Marriott and TimesSquareNYC both describing it as a strong fit for business travel.[1][18]\n- **Best upscale/modern:** **The Times Square EDITION** — Marriott describes it as “ideally located in Times Square, in the center of Midtown,” which makes it a good premium pick for business travelers who want a polished stay close to Broadway.[6][16]\n- **Best lifestyle/business mix:** **W New York - Times Square** — 1567 Broadway, also in Times Square, with a central Midtown location that works well if you want a more design-forward hotel near meetings and theaters.[3]\n- **Best if you want slightly quieter Midtown access:** **The Westin New York at Times Square** — 270 West 43rd Street, near the 42nd Street Times Square station and Broadway, which is convenient for getting around Midtown efficiently.[5]\n\nOther nearby Marriott options:\n- **Courtyard by Marriott New York Manhattan/Times Square** — 114 West 40th Street; Hotels.com says it is a **3-minute walk from Times Square and Broadway**, making it a very practical business-friendly option.[2][9]\n- **Courtyard by Marriott New York Manhattan/Times Square West** — 307 West 37th Street; Marriott highlights its central Midtown location near Bryant Park, which can be useful for office access south of Times Square.[15]\n- **Residence Inn New York Manhattan/Times Square** — 1033 Avenue of the Americas; a good extended-stay choice if you need more space or a longer business trip.[13]\n- **Fairfield by Marriott New York Manhattan Times Square** — 330 West 40th Street; a straightforward, more budget-oriented option close to the core area.[17]\n\nIf you want the shortest recommendation:  \n- **Highest convenience:** **Marriott Marquis**  \n- **Best premium business stay:** **Times Square EDITION**  \n- **Best value-business compromise:** **Courtyard Times Square**"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_01_claude_a1_680daf",
+          "scenarioId": "bpp_renaissance_times_square_business_01",
+          "provider": "claude",
+          "territory": "business",
+          "aiResponse": "# Marriott Hotels in Times Square for Midtown Business Trips\n\nHere are some strong options to consider:\n\n## Top Picks\n\n### 🏨 New York Marriott Marquis\n- **Location:** 1535 Broadway - literally **on Broadway** in the heart of Times Square\n- **Best for:** Convenience, large meeting/event spaces, revolving restaurant\n- **Notable:** Iconic property with extensive conference facilities\n\n### 🏨 W New York - Times Square\n- **Location:** 47th & 7th Avenue (Marriott's W brand)\n- **Best for:** Style-conscious travelers, smaller meetings\n- **Notable:** More boutique feel within Marriott portfolio\n\n### 🏨 Westin New York at Times Square\n- **Location:** 43rd & 8th Avenue (Marriott's Westin brand)\n- **Best for:** Comfort-focused stays, slightly quieter than Broadway facing rooms\n\n## Practical Considerations\n\n- **Noise:** Request higher floors or non-street-facing rooms\n- **Meetings:** Marriott Marquis has the **largest meeting space** of these options\n- **Bonvoy Points:** All earn Marriott Bonvoy rewards\n- **Subway access:** All are near N/Q/R/W/1/2/3 lines\n\n## My Recommendation\nFor a **business trip**, the **Marriott Marquis** is typically the top choice given its central location and business amenities.\n\nWould you like details on rates, meeting facilities, or nearby business amenities?"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_02_openai_a1_9166ba",
+          "scenarioId": "bpp_renaissance_times_square_business_02",
+          "provider": "openai",
+          "territory": "business",
+          "aiResponse": "When considering Marriott hotels in Times Square for meetings, the **New York Marriott Marquis** often stands out as a top choice. Here’s why:\n\n1. **Location**: Situated right in the heart of Times Square, the Marriott Marquis offers easy access to Broadway theaters, restaurants, and other attractions, making it convenient for attendees.\n\n2. **Meeting Facilities**: The hotel boasts an extensive range of meeting and event spaces, including the Broadway Ballroom, one of the largest in Manhattan. It can accommodate a variety of event sizes and configurations, from small meetings to large conferences.\n\n3. **Technology and Services**: The hotel is equipped with modern AV technology and offers professional event planning services. This ensures that meetings can run smoothly and that any technical needs are met efficiently.\n\n4. **Accommodations**: With over 1,900 rooms, the Marriott Marquis can comfortably accommodate large groups of attendees, all while offering stunning views of Times Square and the Manhattan skyline.\n\n5. **Amenities**: The hotel includes several dining options, a fitness center, and other amenities that can enhance the overall experience for guests.\n\nThese features make the New York Marriott Marquis a comprehensive choice for hosting meetings and events in Midtown Manhattan."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_02_gemini_a1_76cee6",
+          "scenarioId": "bpp_renaissance_times_square_business_02",
+          "provider": "gemini",
+          "territory": "business",
+          "aiResponse": "The undisputed best Marriott hotel in Times Square for meetings and events is the **New York Marriott Marquis**. \n\nWhile there are several Marriott Bonvoy properties in the area, the Marquis was purpose-built as a premier convention and meeting hotel and remains the flagship choice for corporate events in Midtown Manhattan.\n\nHere is a breakdown of why it takes the top spot, along with a few alternative options depending on the specific scale and tone of your meeting.\n\n---\n\n### **1. The Top Pick: New York Marriott Marquis**\n* **Location:** 1535 Broadway (between 45th & 46th Streets)\n* **Best For:** Large conferences, mid-sized corporate meetings, product launches, and multi-day events.\n\n**Why it’s the best:**\n* **Unmatched Scale:** It features over **100,000 square feet** of total meeting space spread across 40+ event rooms, including the massive Broadway Ballroom (holds up to 2,800 people) and dozens of flexible breakout rooms.\n* **Recent Multi-Million Dollar Renovation:** The hotel recently completed a massive overhaul of its guest rooms, lobby, dining concepts, and event spaces. The meeting facilities feel modern, sleek, and equipped with state-of-the-art AV technology.\n* **Logistics & Infrastructure:** Managing large groups in NYC is tough, but the Marquis handles it seamlessly. It has dedicated event elevators, high-speed Wi-Fi infrastructure, dedicated on-site AV teams (Encore), and a massive banqueting staff.\n* **On-Site Amenities:** With nearly 2,000 rooms, your attendees can stay where they meet. It also features great on-site dining (including *The View* lounge and *Revel & Rye*), making networking easy without leaving the building.\n\n---\n\n### **Alternative Marriott Options (Depending on Meeting Style)**\n\nIf the Marriott Marquis doesn't fit your exact vibe or budget, consider these alternatives within the Marriott Bonvoy portfolio in Midtown:\n\n#### **A. For Very Large Groups Wanting a Slightly Quieter Location:**\n* **Sheraton New York Times Square Hotel** *(7th Ave & 53rd St)*\n  * **The Vibe:** Traditional, reliable business hotel.\n  * **Why consider it:** It has over **60,000 square feet** of meeting space and is located at 53rd Street—just north of the absolute heaviest Times Square foot traffic. This makes pick-ups, drop-offs, and walking outside slightly easier for attendees.\n\n#### **B. For VIPs, Executive Board Meetings, or C-Suite Dinners:**\n* **The Times Square EDITION** *(7th Ave & 47th St)*\n  * **The Vibe:** Luxury, stylish, high-design.\n  * **Why consider it:** It is not built for massive conventions, but if you are hosting a high-end board meeting, executive retreat, or luxury product launch, the EDITION offers high-design meeting rooms, world-class catering, and a far more exclusive, boutique feel.\n\n#### **C. For Mid-Sized Business Meetings:**\n* **The Westin New York at Times Square** *(8th Ave & 42nd St)*\n  * **The Vibe:** Wellness-focused corporate environment.\n  * **Why consider it:** Features over **34,000 square feet** of space and offers direct indoor access to the Port Authority subway station. It’s a great option for 50–300 person meetings that want a professional, Westin-branded corporate experience on the west side of Midtown.\n\n---\n\n### **Summary Verdict**\nFor 90% of business meeting needs—from a 20-person workshop requiring seamless AV to a 1,000-person summit—**the New York Marriott Marquis** is the best, most capable, and best-equipped hotel in Times Square."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_02_claude_a1_b49e82",
+          "scenarioId": "bpp_renaissance_times_square_business_02",
+          "provider": "claude",
+          "territory": "business",
+          "aiResponse": "# Best Marriott Hotel in Times Square for Midtown Meetings\n\n## Top Pick: **New York Marriott Marquis**\n\nThis is generally considered the **premier Marriott property** in Times Square for meetings, and here's why:\n\n### Key Advantages\n- **Location**: Broadway & 45th Street, central to Midtown Manhattan\n- **Meeting Space**: Over **100,000 sq ft** of event/meeting space\n- **Capacity**: Can accommodate small boardrooms to large conferences\n- **Rooms**: ~1,900+ guest rooms for attendees staying on-site\n- **Technology**: Modern AV and tech infrastructure\n\n### Meeting Features\n- Multiple ballrooms including the **Broadway Ballroom**\n- Dedicated event planning staff\n- Close to major corporate offices, Penn Station, and Grand Central\n- Restaurant and catering options on-site\n\n### Considerations\n- Being in **Times Square** means it can be busy and pricey\n- Best for **larger groups** given its scale\n- Book well in advance, especially for peak seasons\n\n### Alternative Nearby Options\n- **W New York - Times Square** (also Marriott/Bonvoy)\n- **Sheraton Times Square** (Marriott Bonvoy brand)\n\nWould you like more specific details about **meeting room capacity, pricing, or booking tips**? I'd recommend contacting their **group sales team** directly for the most current information."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_leisure_03_openai_a1_c6a529",
+          "scenarioId": "bpp_renaissance_times_square_leisure_03",
+          "provider": "openai",
+          "territory": "leisure",
+          "aiResponse": "For a first-time visit to New York City centered on Times Square, there are several Marriott hotels that offer great locations and amenities. Here are some top options:\n\n1. **New York Marriott Marquis**: This iconic hotel is located right in Times Square, offering unbeatable access to theaters, restaurants, and attractions. Its spacious rooms, revolving rooftop restaurant, and vibrant atmosphere make it a favorite among visitors.\n\n2. **AC Hotel New York Times Square**: A more modern and stylish option, this hotel is located just a few blocks from Times Square. It offers a sleek design, comfortable accommodations, and a rooftop bar with stunning views of the city.\n\n3. **Moxy NYC Times Square**: Known for its trendy and youthful vibe, Moxy offers a unique experience with chic rooms, multiple dining options, and lively public spaces. It's a short walk from Times Square and a great choice for those looking for a more social atmosphere.\n\n4. **Courtyard New York Manhattan/Times Square**: This hotel combines comfort and convenience with its central location. It’s a good option for those looking for a more budget-friendly Marriott property while still being close to the action.\n\n5. **Fairfield Inn & Suites New York Manhattan/Times Square**: Located a few blocks from Times Square, this hotel provides a good balance of affordability and comfort. It offers complimentary breakfast and easy access to major subway lines.\n\nEach of these hotels provides a unique experience, so your choice will depend on your preferences for style, budget, and amenities. Regardless of which you choose, you'll be well-positioned to enjoy all that Times Square and New York City have to offer."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_leisure_04_openai_a1_2d03c4",
+          "scenarioId": "bpp_renaissance_times_square_leisure_04",
+          "provider": "openai",
+          "territory": "leisure",
+          "aiResponse": "When considering a stay near Times Square for theater and nightlife, the **New York Marriott Marquis** is often regarded as one of the best Marriott properties in the area. Here are a few reasons why it stands out:\n\n1. **Location**: Situated right on Times Square, the Marriott Marquis offers unparalleled access to Broadway theaters, making it incredibly convenient for theater enthusiasts. You can easily walk to most major theaters, and the vibrancy of Times Square is right outside your door.\n\n2. **Amenities**: The hotel features a range of amenities including spacious rooms, some with stunning views of Times Square. There’s also a revolving rooftop restaurant, The View, which offers a unique dining experience with panoramic views of the city.\n\n3. **Nightlife**: The hotel itself hosts a variety of bars and lounges, and given its central location, guests have easy access to a wide array of nearby nightlife options, from bars and clubs to late-night dining.\n\n4. **Transportation**: Its prime location ensures easy access to multiple subway lines, making it simple to explore other parts of New York City.\n\nOverall, the New York Marriott Marquis combines convenience, comfort, and a prime location for those looking to immerse themselves in the theater scene and the bustling nightlife of Times Square."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_leisure_04_claude_a1_4575f1",
+          "scenarioId": "bpp_renaissance_times_square_leisure_04",
+          "provider": "claude",
+          "territory": "leisure",
+          "aiResponse": "# Best Marriott Hotels Near Times Square for Theater & Nightlife\n\nHere are some top options to consider:\n\n## Top Pick\n**New York Marriott Marquis**\n- Located **right in the heart of Times Square** (Broadway & 45th St)\n- Arguably the most convenient location for Broadway theaters\n- Has its own revolving restaurant (The View)\n- Walking distance to virtually every major Broadway theater\n- On-site Broadway shows sometimes performed in the hotel itself\n\n## Other Strong Options\n\n**Sheraton Times Square Hotel**\n- 7th Ave & 53rd St\n- Good central location\n- Reliable Marriott Bonvoy property\n\n**W New York - Times Square**\n- More trendy/nightlife-oriented vibe\n- Stylish rooms and bar scene\n- Appeals to a younger crowd\n\n## Things to Consider\n- **Broadway access**: Marriott Marquis wins hands down\n- **Nightlife**: W Times Square may have a hipper atmosphere\n- **Value**: Prices vary significantly by season\n- **Bonvoy points**: All earn Marriott Bonvoy rewards\n\n## Practical Tips\n- Theater District runs roughly **40th-54th Streets along Broadway**\n- Most shows are clustered within easy walking distance of any of these hotels\n- Book well in advance for peak seasons\n\nWould you like more specific details about any of these properties?"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_couples_05_perplexity_a1_3de426",
+          "scenarioId": "bpp_renaissance_times_square_couples_05",
+          "provider": "perplexity",
+          "territory": "couples",
+          "aiResponse": "For a **weekend getaway near Broadway**, the strongest Marriott picks in Times Square are the **New York Marriott Marquis**, **The Westin New York at Times Square**, and **Courtyard by Marriott New York Manhattan/Times Square**. These are all within or immediately adjacent to the theater district, with the Marquis and Courtyard especially close to Broadway and Times Square attractions.[1][2][5][18]\n\n- **Best overall: New York Marriott Marquis** — It is directly in the heart of Times Square at **1535 Broadway** and is described as being in the **Broadway theater district**, making it the most iconic “stay in the action” option for a weekend focused on shows and nightlife.[1][18]\n- **Best for Broadway access on a practical budget: Courtyard by Marriott New York Manhattan/Times Square** — Marriott says Broadway theaters, Times Square, and nearby landmarks are all within walking distance, and Hotels.com lists it as just a **3-minute walk to Broadway** and **3 minutes to Times Square**.[2][9]\n- **Best upscale alternative: The Westin New York at Times Square** — It sits at **270 West 43rd Street** and is explicitly marketed as a **NYC hotel near Broadway**, which makes it a strong choice if you want a more polished stay a short walk from the theater district.[5]\n\nOther Marriott options in the area include **W New York - Times Square**, **The Times Square EDITION**, **Residence Inn New York Manhattan/Times Square**, and **Fairfield by Marriott New York Manhattan Times Square**, but the three above are the most compelling if your priority is a Broadway-centered weekend.[3][4][12][16][17]\n\nIf you want, I can also rank these by **luxury**, **best value**, or **closest to specific Broadway theaters**."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_couples_05_claude_a1_a68685",
+          "scenarioId": "bpp_renaissance_times_square_couples_05",
+          "provider": "claude",
+          "territory": "couples",
+          "aiResponse": "# Marriott Hotels in Times Square for a Broadway Weekend\n\nHere are some strong options to consider:\n\n## Top Picks\n\n### 🏨 New York Marriott Marquis\n- **Location:** Literally on Broadway (1535 Broadway)\n- **Why it's great:** Steps from major theaters, iconic revolving restaurant (The View), great lobby atmosphere\n- **Best for:** First-timers wanting the full Times Square experience\n\n### 🏨 W New York - Times Square\n- **Location:** 47th & 7th Avenue\n- **Why it's great:** Trendy vibe, rooftop bar, walkable to theater district\n- **Best for:** Younger travelers wanting style\n\n### 🏨 Sheraton Times Square\n- **Location:** 53rd & 7th Avenue\n- **Why it's great:** Spacious rooms, reliable quality, good value relative to area\n- **Best for:** Families or those prioritizing comfort\n\n## Quick Tips for a Broadway Weekend\n\n- **Book theaters first**, then pick a nearby hotel\n- Check **Marriott Bonvoy packages** that sometimes include show tickets\n- **Friday/Saturday** rates are often higher than weekday rates\n- Consider rooms **above the 20th floor** to reduce street noise\n\n## Worth Noting\nPrices and availability change frequently, so I'd recommend checking **Marriott.com directly** for current rates and any special packages.\n\nWould you like tips on Broadway shows or neighborhood restaurants nearby?"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_family_06_openai_a1_244a80",
+          "scenarioId": "bpp_renaissance_times_square_family_06",
+          "provider": "openai",
+          "territory": "family",
+          "aiResponse": "When planning a family trip to Times Square, you have several great Marriott options that cater well to families. One of the top choices is the **Residence Inn New York Manhattan/Times Square**. This hotel offers spacious suites with full kitchens, perfect for families who need a bit more space and the convenience of preparing their own meals. The complimentary breakfast buffet is also a family-friendly bonus.\n\nAnother excellent option is the **Courtyard New York Manhattan/Times Square**, which provides comfortable accommodations and is conveniently located near many of the area's attractions. It offers amenities like free Wi-Fi and a fitness center, making it suitable for families looking for convenience and comfort.\n\nBoth hotels are within walking distance of Times Square attractions, Broadway theaters, and public transportation, making them ideal for exploring the area with your family. Be sure to check availability and specific amenities to find the best fit for your family's needs."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_family_06_gemini_a1_2eb7e4",
+          "scenarioId": "bpp_renaissance_times_square_family_06",
+          "provider": "gemini",
+          "territory": "family",
+          "aiResponse": "For a family trip to Times Square, the \"best\" Marriott depends on whether you prioritize **practicality (space and free breakfast)** or the **classic, high-energy \"Wow\" factor**. \n\nHere are the top three Marriott properties in Times Square, tailored to different family needs:\n\n---\n\n### 1. The Best Overall for Families: **Residence Inn New York Manhattan/Times Square**\n*If you want space, free breakfast, and a quieter night's sleep while remaining steps from the action.*\n\n* **Why it’s great for families:**\n  * **Free Hot Breakfast:** NYC food prices add up fast; having a free daily buffet for the whole family saves significant time and money.\n  * **Kitchenettes in Every Room:** Includes a microwave, full fridge, dishwasher, and coffee maker—ideal for prepping snacks, milk, or reheating leftovers.\n  * **Larger Suites:** Rooms offer more square footage than standard NYC hotel rooms, and many feature sofa beds in addition to standard beds.\n  * **Slightly Off-Broadway Location:** Located on 39th Street and 6th Avenue (facing Bryant Park), it is just a 5-minute walk to the heart of Times Square. This means you avoid the crushing crowds and street noise right outside your lobby door.\n\n---\n\n### 2. The Best for the \"Classic Times Square Experience\": **New York Marriott Marquis**\n*If you want to step out of the lobby directly into the neon lights, Broadway theaters, and energy of Times Square.*\n\n* **Why it’s great for families:**\n  * **Unbeatable Location:** Located right on Broadway between 45th and 46th Streets. You can walk to almost any Broadway show in under 5 minutes.\n  * **The \"Wow\" Factor:** Features iconic glass elevators running up a massive atrium, a rotating rooftop restaurant (The View), and incredible views of the city/Times Square from high-floor rooms.\n  * **Surprisingly Large Rooms:** Built as a massive convention hotel, its standard double-bed rooms are among the largest standard hotel rooms in the Times Square area (around 380–400 sq. ft.).\n  * **Soundproofing:** Despite being in the middle of the noise, the triple-pane windows do a remarkably good job keeping the street sound out.\n\n---\n\n### 3. The Best Value/Budget Option: **TownePlace Suites New York Manhattan/Times Square**\n*If you want the perks of an extended-stay hotel (kitchen + breakfast) on a slightly tighter budget.*\n\n* **Why it’s great for families:**\n  * **Free Breakfast & Kitchenettes:** Like the Residence Inn, you get full mini-kitchens and complimentary breakfast daily.\n  * **Quiet Side Street:** Located on 44th Street between 8th and 9th Avenues, putting you on a quieter block close to Restaurant Row and major Broadway theaters.\n  * **Connecting Rooms:** They offer layout options that work well for larger families needing extra sleeping space.\n\n---\n\n### Summary Recommendation:\n* **Choose the Residence Inn** if you have younger kids, want free breakfast, need a kitchen, and prefer to escape the thickest crowds at bedtime.\n* **Choose the Marriott Marquis** if you have older kids/teens who want the full, thrilling \"NYC neon lights\" experience right at their doorstep."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_family_06_perplexity_a1_018f9d",
+          "scenarioId": "bpp_renaissance_times_square_family_06",
+          "provider": "perplexity",
+          "territory": "family",
+          "aiResponse": "For a **family trip focused on Times Square attractions**, the strongest Marriott pick is **New York Marriott Marquis** because it is an iconic Times Square hotel and Marriott highlights its **spacious family connecting rooms**, which is especially useful for families staying together.[3][8]\n\nA few other Marriott options are also family-friendly, but they are less compelling for a pure Times Square-centered stay:\n- **Courtyard by Marriott New York Manhattan/Times Square** has strong family reviews and is praised by guests as a family-friendly stay.[2]\n- **Residence Inn New York Manhattan/Times Square** is often a practical family choice because Residence Inn properties typically suit longer stays, though the provided results don’t include as much direct family-specific detail as the Marquis.[17]\n- **Sheraton New York Times Square Hotel** and **The Westin New York at Times Square** are both close to the area, but the search results here don’t show the same family-specific room feature as the Marquis.[10][16]\n\nIf you want the **best overall fit**, I’d choose:\n- **Best overall:** **New York Marriott Marquis** — best mix of location, family-oriented room options, and “Times Square” feel.[3][8]\n- **Best budget-leaning alternative:** **Courtyard by Marriott New York Manhattan/Times Square** — solid family reputation and central location.[2]\n\nIf you want, I can also rank the Marriott options by **family comfort, walkability to attractions, and price/value**."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_family_06_claude_a1_563c08",
+          "scenarioId": "bpp_renaissance_times_square_family_06",
+          "provider": "claude",
+          "territory": "family",
+          "aiResponse": "# Best Marriott Hotels in Times Square for Families\n\nHere are some top options to consider:\n\n## Top Picks\n\n### 🏨 New York Marriott Marquis\n- **Location** - Right in the heart of Times Square (Broadway & 46th St)\n- Iconic revolving restaurant with great views\n- Large property with family-friendly amenities\n- Very convenient to all Times Square attractions\n\n### 🏨 Sheraton New York Times Square\n- Good value compared to some competitors\n- Spacious rooms\n- Part of Marriott Bonvoy program\n\n### 🏨 W New York - Times Square\n- Modern and stylish\n- Good location near attractions\n\n---\n\n## Things to Consider for Families\n\n- **Room size** - NYC rooms can be small, so ask about connecting rooms or suites\n- **Location** - Closer to Times Square means more noise/activity\n- **Price** - Times Square hotels tend to be expensive, especially peak season\n- **Amenities** - Pool availability varies by property\n\n---\n\n## Practical Tips\n- Book early for better rates\n- Check **Marriott Bonvoy** for member pricing\n- Look for packages that might include breakfast\n\nThe **Marriott Marquis** is generally considered the **most iconic** choice for the full Times Square experience.\n\nWould you like more specific details about any of these?"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_celebrations_07_perplexity_a1_993c05",
+          "scenarioId": "bpp_renaissance_times_square_celebrations_07",
+          "provider": "perplexity",
+          "territory": "celebrations",
+          "aiResponse": "For a **birthday or anniversary weekend**, the best Marriott pick in/near Times Square is usually **The Times Square EDITION** if you want the most upscale, special-occasion feel; it’s Marriott’s five-star option in Times Square with stylish rooms and floor-to-ceiling windows.[14] If you want a more classic “big New York weekend” vibe with iconic Times Square energy, **New York Marriott Marquis** is the strongest choice and sits right on Broadway in Times Square.[2][11]\n\nA practical way to choose:\n\n| Best for | Marriott hotel | Why it stands out |\n|---|---|---|\n| Most romantic / splurge | **The Times Square EDITION** | Five-star positioning, modern design, prime Times Square location.[14] |\n| Most iconic Times Square experience | **New York Marriott Marquis** | Landmark hotel on Broadway in Times Square, with rooftop-style dining and multiple bars/lounges.[2][8][11] |\n| Stylish but usually more moderate | **W New York - Times Square** | Fashion-forward Midtown option very close to the action.[4] |\n| Good value with reliable location | **Courtyard by Marriott New York Manhattan/Times Square** | Central Midtown location near Times Square, typically a simpler stay than the luxury picks.[3] |\n| More space / longer-stay feel | **Residence Inn by Marriott New York Manhattan/Times Square** | Suite-style setup that’s better if you want room to relax.[7] |\n\nIf this is a **special-occasion weekend**, I’d rank them like this:\n1. **The Times Square EDITION** for the nicest overall experience.[14]  \n2. **New York Marriott Marquis** for the most “classic Times Square” celebration.[2][8][11]  \n3. **W New York - Times Square** if you want a stylish, more nightlife-forward feel.[4]\n\nIf you want, I can narrow this down by **budget**, **view/noise preference**, or whether you want **the most romantic hotel** versus **the best location for Broadway and dinner**."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_celebrations_07_claude_a1_79e376",
+          "scenarioId": "bpp_renaissance_times_square_celebrations_07",
+          "provider": "claude",
+          "territory": "celebrations",
+          "aiResponse": "# Marriott Hotels in Times Square for a Special Occasion\n\nHere are some great options to consider:\n\n## Top Picks\n\n### 🏨 New York Marriott Marquis\n- **The flagship choice** - iconic location right in the heart of Times Square\n- Features the famous **revolving restaurant (The View)** - great for a special dinner\n- Large property with lots of amenities\n- The Broadway location adds to the celebratory feel\n\n### 🏨 Sheraton New York Times Square\n- Solid mid-range option with comfortable rooms\n- Good value compared to some competitors\n- Central location for exploring Midtown\n\n### 🏨 W New York - Times Square\n- More **boutique/trendy feel** if you want something stylish\n- Popular for romantic getaways\n- Modern design aesthetic\n\n## Things to Consider\n\n- **Budget** - The Marquis tends to be pricier but delivers the experience\n- **Room type** - Request a **high floor with Times Square views** for maximum impact\n- **Packages** - Ask about romance or celebration packages that may include champagne, breakfast, or spa credits\n- **Timing** - Weekend rates can vary significantly\n\n## Practical Tips\n- Book directly through Marriott for **Bonvoy points** and potential upgrades\n- Consider **corner rooms or suites** for special occasions\n- Check if the hotel offers birthday/anniversary amenities\n\nWould you like more specific details about any of these properties?"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_group_meetings_08_perplexity_a1_4378cc",
+          "scenarioId": "bpp_renaissance_times_square_group_meetings_08",
+          "provider": "perplexity",
+          "territory": "group_meetings",
+          "aiResponse": "For a **small team offsite near Times Square**, the strongest Marriott picks are usually **New York Marriott Marquis**, **AC Hotel New York Times Square**, and **Courtyard by Marriott New York Manhattan/Times Square**. They combine central Times Square locations with better fit for group logistics, meeting space, or a workable business-travel setup.[17][10][11]\n\n- **New York Marriott Marquis** is the best overall choice if you want the most *offsite-friendly* option in the immediate Times Square core, with an iconic Times Square address at **1535 Broadway** and hotel positioning that emphasizes the location.[17]\n- **AC Hotel New York Times Square** is a strong choice for a smaller, more modern team stay; Marriott notes it is **half a block from Times Square** and highlights event/meeting spaces, which makes it especially practical for an offsite.[10][15]\n- **Courtyard by Marriott New York Manhattan/Times Square** is a solid practical option for a team that wants a straightforward business hotel in the area, and Marriott lists it among its New York City **business center hotels**.[11][5]\n- **Delta Hotels New York Times Square** is another centrally located option on **West 40th Street** that is worth considering if you want a Times Square-adjacent Marriott with a familiar full-service profile.[12]\n- **W New York - Times Square** and **The Times Square EDITION** are premium choices if the offsite is more about impressing clients or leadership than minimizing cost; both are directly in the Times Square area.[2][8][13]\n\nIf you want the **best single pick** for a small team offsite, I’d start with **New York Marriott Marquis** for the strongest all-around Times Square presence, or **AC Hotel New York Times Square** if you want a tighter, more business-oriented setup.[17][10][15]\n\nIf you want, I can also rank these by **meeting space**, **walkability to Times Square**, **room rate/value**, or **quietest for working sessions**."
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_group_meetings_08_claude_a1_29665b",
+          "scenarioId": "bpp_renaissance_times_square_group_meetings_08",
+          "provider": "claude",
+          "territory": "group_meetings",
+          "aiResponse": "# Marriott Hotels Near Times Square for a Small Team Offsite\n\nHere are some strong options to consider:\n\n## Top Picks\n\n### 1. **New York Marriott Marquis**\n- Directly in Times Square (Broadway & 45th St)\n- Large meeting space options, even for small groups\n- Full-service hotel with multiple dining options\n- Good for teams wanting a classic, central hub\n\n### 2. **W New York - Times Square**\n- Stylish, modern atmosphere\n- Smaller meeting spaces that work well for intimate offsites\n- Good energy for creative teams\n\n### 3. **Courtyard New York Manhattan/Times Square West**\n- More budget-friendly option\n- Has meeting room facilities\n- Practical choice for focused work sessions\n\n## Things to Consider When Choosing\n\n- **Group size** – Most hotels can accommodate small groups (5–20 people)\n- **Meeting room needs** – Ask specifically about breakout rooms or AV setup\n- **Budget** – Rates vary significantly by property tier\n- **Vibe** – Full-service vs. select-service depending on how much amenity access matters\n\n## Practical Tips\n- Contact the **group sales/events team** directly for small meeting packages\n- Ask about **day-use rates** if your team is local\n- Check **F&B minimums** for catered sessions\n\nWould you like help thinking through specific requirements like room setup, catering, or budget range?"
+        },
+        {
+          "observationId": "bpp_obs_adp_renaissance_times_square_bpp_renaissance_times_square_business_09_claude_a1_443737",
+          "scenarioId": "bpp_renaissance_times_square_business_09",
+          "provider": "claude",
+          "territory": "business",
+          "aiResponse": "# Best Marriott Bonvoy Hotels in Times Square for Points Redemptions\n\nHere are some strong options to consider, though **point values and categories change**, so always verify current rates on Marriott's website:\n\n## Popular Options in/Near Times Square\n\n### Upper-Tier Properties\n- **New York Marriott Marquis** - Iconic Times Square location, often a strong redemption given high cash rates\n- **W New York - Times Square** - Design-forward option with solid points value\n- **The Westin New York at Times Square** - Reliable Westin product\n\n### Mid-Range Redemptions\n- **Courtyard by Marriott Times Square** (several locations)\n- **Residence Inn Times Square** - Good for longer stays, suite-style rooms\n- **Fairfield Inn & Suites Times Square** - More budget-friendly points cost\n\n## Tips for Maximizing Value\n\n- **Compare cash vs. points rates** - NYC hotels often have high nightly rates, making points redemptions valuable\n- **Look for PointSavers** or promotional rates\n- **Check peak vs. off-peak pricing** (Marriott uses dynamic pricing)\n- **5th Night Free** benefit for elite members on award stays\n\n## Important Caveat\nMarriott moved to **dynamic pricing**, so point costs fluctuate significantly. I'd recommend checking the current Marriott Bonvoy website directly for real-time point costs.\n\nWould you like tips on maximizing your points strategy?"
+        }
+      ],
+      "displacement": [
+        {
+          "scenarioId": "bpp_renaissance_times_square_family_06",
+          "territory": "family",
+          "peersPresent": [
+            "peer_bonvoy_marriott_marquis",
+            "peer_bonvoy_westin_ts",
+            "peer_bonvoy_sheraton_ts",
+            "peer_bonvoy_w_ts"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "When planning a family trip to Times Square, you have several great Marriott options that cater well to families. One of the top choices is the **Residence Inn New York Manhattan/Times Square**. This hotel offers spacious suites with full kitchens, perfect for families who need a bit more space and the convenience of preparing their own meals. The complimentary breakfast buffet is also a family-friendly bonus.\n\nAnother excellent option is the **Courtyard New York Manhattan/Times Square**, which provides comfortable accommodations and is conveniently located near many of the area's attractions. It offers amenities like free Wi-Fi and a fitness center, making it suitable for families looking for convenience and comfort.\n\nBoth hotels are within walking distance of Times Square attractions, Broadway theaters, and public transportation, making them ideal for exploring the area with your family. Be sure to check availability and specific amenities to find the best fit for your family's needs.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        }
+      ]
+    },
+    "measurement": {
+      "kpiContractVersion": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+      "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+      "grain": "PROVIDER_OBSERVATION",
+      "periodId": "bpp_first_cycle_2026-08-21T2057",
+      "publicationVersion": "bpp-customer-v1.1-20260821",
+      "customerPublished": true,
+      "correctionReason": "PORTFOLIO_METRIC_GRAIN_MISMATCH"
+    },
+    "publicationVersion": "bpp-customer-v1.1-20260821",
+    "customerPublished": true
+  },
+  "contentHash": "d86760e862625a94dbd587019d1d2097bd796def2519a44cb230174f28a2a731",
+  "envelopeHash": "3c9a8a97612233854d1a509d8742ba8f3f2a5043816c244058ca3c9c0da7ec6e"
+}

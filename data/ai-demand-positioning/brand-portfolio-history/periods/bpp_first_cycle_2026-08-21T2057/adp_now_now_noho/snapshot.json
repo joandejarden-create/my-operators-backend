@@ -1,0 +1,957 @@
+{
+  "schema": "ADP_BPP_REPORT_SNAPSHOT_V1",
+  "snapshotId": "bpp_snap_adp_now_now_noho_bpp_first_cycle_2026-08-21T2057_d1478978b4",
+  "propertyId": "adp_now_now_noho",
+  "monitoringPeriodId": "adp_week_2026-08-21",
+  "measurementPeriodId": "bpp_first_cycle_2026-08-21T2057",
+  "measurementFamily": "BRAND_PORTFOLIO",
+  "monitoringDate": "2026-08-21",
+  "generatedAt": "2026-08-21T22:23:17.100Z",
+  "certifiedAt": "2026-08-21T22:23:17.100Z",
+  "publishedAt": "2026-08-21T22:23:17.100Z",
+  "certificationStatus": "CUSTOMER_PUBLISHED",
+  "assuranceStatus": "CUSTOMER_READY",
+  "publicationVersion": "bpp-customer-v1.1-20260821",
+  "reportEdition": "CUSTOMER_PUBLISHED_BASELINE_V1_1",
+  "measurementContract": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+  "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+  "lensId": "independent_positioning",
+  "lensLabel": "Independent Positioning",
+  "affiliationSnapshot": {
+    "brand": "Independent",
+    "affiliation": "Independent",
+    "parentCompany": null,
+    "operatorCompany": "Dovetail + Co",
+    "officialBrandDomain": null
+  },
+  "peerSetId": "bps_adp_now_now_noho_independent_positioning_certified_v1",
+  "peerSetVersion": "ADP_LOYALTY_ECOSYSTEM_PEER_UNIVERSE_V1_CERTIFIED",
+  "peerSetHash": "75cb4f5b5fbf70e2edf79b9543582af02edb50239d14cd7a9680d11ec3f18ec4",
+  "promptManifestHash": "a5b8e190898fcd88cd8f30c8221e5f21ab34029f68b07bf1cf8d00f572122705",
+  "providerCoverage": [
+    {
+      "provider": "openai",
+      "observations": 8,
+      "subjectHits": 0,
+      "presenceRate": 0
+    },
+    {
+      "provider": "gemini",
+      "observations": 8,
+      "subjectHits": 0,
+      "presenceRate": 0
+    },
+    {
+      "provider": "perplexity",
+      "observations": 8,
+      "subjectHits": 1,
+      "presenceRate": 0.125
+    },
+    {
+      "provider": "claude",
+      "observations": 8,
+      "subjectHits": 0,
+      "presenceRate": 0
+    }
+  ],
+  "customerVisibleContentHash": "d1478978b47b8364f0937174c88fa40fdeb53f43b970294a9e5a9c22cdb94c84",
+  "assetCacheTokenAtPublication": "adp-v70-20260822-bpp-visual",
+  "synthetic": false,
+  "versions": {
+    "bppHistorySchema": "adp_bpp_history_schema_v1",
+    "publicationVersion": "bpp-customer-v1.1-20260821",
+    "kpiContractVersion": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+    "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+    "rendererVersion": "adp-v70-20260822-bpp-visual",
+    "promptManifestHash": "a5b8e190898fcd88cd8f30c8221e5f21ab34029f68b07bf1cf8d00f572122705"
+  },
+  "disclosures": [
+    {
+      "code": "PORTFOLIO_METRIC_GRAIN_MISMATCH",
+      "note": "Original scenario-any candidate never customer-published; V1.1 observation-grain is the published baseline."
+    }
+  ],
+  "correctionLineage": {
+    "stages": [
+      "ORIGINAL_FIRST_CYCLE_CANDIDATE",
+      "CORRECTED_FIRST_CYCLE_CANDIDATE",
+      "CUSTOMER_PUBLISHED_BASELINE"
+    ],
+    "reason": "PORTFOLIO_METRIC_GRAIN_MISMATCH",
+    "originalNeverCustomerPublished": true,
+    "lineageRef": "ADP_BRAND_PORTFOLIO_CORRECTION_LINEAGE_V1_1.json"
+  },
+  "comparability": {
+    "rankMovementState": "INITIAL",
+    "hasPriorComparablePeriod": false,
+    "policyVersion": "BPP_COMPARABILITY_POLICY_V1"
+  },
+  "customerPayload": {
+    "ok": true,
+    "sectionId": "brand-portfolio-position",
+    "contractVersion": "ADP_BRAND_PORTFOLIO_POSITION_CONTRACT_V1",
+    "sectionVisible": true,
+    "title": "Brand & Portfolio Position",
+    "subtitle": "How this hotel performs when travelers specifically consider independent hotels in its market.",
+    "sectionMode": "INDEPENDENT_POSITIONING",
+    "status": "READY",
+    "renderState": "READY",
+    "customerState": null,
+    "emptyMessage": null,
+    "lens": {
+      "lensId": "independent_positioning",
+      "label": "Independent Positioning",
+      "portfolioType": "INDEPENDENT_POSITIONING",
+      "status": "DEFAULT"
+    },
+    "optionalFutureLenses": [],
+    "assuranceStatus": "CUSTOMER_READY",
+    "showAnalyticalScaffolding": true,
+    "kpis": [
+      {
+        "id": "portfolioAiPresence",
+        "label": "Portfolio AI Presence",
+        "value": "3.1%",
+        "valueRaw": 0.03125,
+        "meta": "1 of 32 provider observations",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioRank",
+        "label": "Portfolio Rank",
+        "value": "#6 of 6",
+        "valueRaw": 6,
+        "meta": "Among frozen same-ecosystem peers + subject",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioBenchmark",
+        "label": "Portfolio Benchmark",
+        "value": "21.9%",
+        "valueRaw": 0.21875,
+        "meta": "Mean peer observation-grain AI Presence",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "portfolioPresenceIndex",
+        "label": "Portfolio Presence Index",
+        "value": "14",
+        "valueRaw": 14,
+        "meta": "Subject / peer benchmark × 100",
+        "grain": "PROVIDER_OBSERVATION",
+        "available": true
+      },
+      {
+        "id": "numberOneAppearance",
+        "label": "#1 Appearance",
+        "value": "0.0%",
+        "valueRaw": 0,
+        "meta": "0 scenarios with explicit #1 position",
+        "grain": "UNIQUE_SCENARIO",
+        "available": true
+      },
+      {
+        "id": "top3Appearance",
+        "label": "Top-3 Appearance",
+        "value": "12.5%",
+        "valueRaw": 0.125,
+        "meta": "Scenario grain — best ordinal across providers",
+        "grain": "UNIQUE_SCENARIO",
+        "available": true
+      }
+    ],
+    "ranking": {
+      "rows": [
+        {
+          "rank": 1,
+          "rankLabel": "#1",
+          "name": "The Greenwich Hotel",
+          "brand": "Independent",
+          "isSubject": false,
+          "presenceDisplay": "37.5%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "6",
+          "sharedDisplay": "0",
+          "canonicalEntityId": "peer_ind_greenwich_hotel"
+        },
+        {
+          "rank": 2,
+          "rankLabel": "#2",
+          "name": "The Mercer",
+          "brand": "Independent",
+          "isSubject": false,
+          "presenceDisplay": "28.1%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "5",
+          "sharedDisplay": "1",
+          "canonicalEntityId": "peer_ind_mercer_soho"
+        },
+        {
+          "rank": 3,
+          "rankLabel": "#3",
+          "name": "The Bowery Hotel",
+          "brand": "Independent / BD Hotels",
+          "isSubject": false,
+          "presenceDisplay": "25%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "3",
+          "sharedDisplay": "1",
+          "canonicalEntityId": "peer_ind_bowery"
+        },
+        {
+          "rank": 4,
+          "rankLabel": "#4",
+          "name": "Nine Orchard",
+          "brand": "Independent boutique",
+          "isSubject": false,
+          "presenceDisplay": "9.4%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "3",
+          "sharedDisplay": "0",
+          "canonicalEntityId": "peer_ind_nine_orchard"
+        },
+        {
+          "rank": 5,
+          "rankLabel": "#5",
+          "name": "Soho Grand Hotel",
+          "brand": "Independent / GrandLife",
+          "isSubject": false,
+          "presenceDisplay": "9.4%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "2",
+          "sharedDisplay": "1",
+          "canonicalEntityId": "peer_ind_soho_grand"
+        },
+        {
+          "rank": 6,
+          "rankLabel": "#6",
+          "name": "NOW NOW NOHO",
+          "brand": "Independent",
+          "isSubject": true,
+          "presenceDisplay": "3.1%",
+          "deltaDisplay": "—",
+          "displacementDisplay": "—",
+          "sharedDisplay": "—",
+          "canonicalEntityId": "adp_now_now_noho"
+        }
+      ],
+      "hasPriorPeriod": false,
+      "firstPeriodDeltaLabel": "—"
+    },
+    "tableColumns": [
+      "Rank",
+      "Hotel",
+      "AI Presence",
+      "Δ vs Prior Run",
+      "Displacement vs You",
+      "Scenarios Shared"
+    ],
+    "dataAvailability": {
+      "validObservations": 0,
+      "invalidObservations": 8,
+      "needsRerunObservations": 0,
+      "propertySpecificOtherObservations": 56,
+      "validScenarios": 0,
+      "sufficientForRanking": false,
+      "historicalCandidateReuseAvailable": false,
+      "source": "ADP_BRAND_PORTFOLIO_OBSERVATION_RECLASS_V1"
+    },
+    "affiliationSnapshot": {
+      "brand": "Independent",
+      "affiliation": "Independent",
+      "parentCompany": null,
+      "operatorCompany": "Dovetail + Co",
+      "officialBrandDomain": null
+    },
+    "coreIsolation": true,
+    "gate": "CORE_PORTFOLIO_MEASUREMENT_ISOLATION",
+    "principles": [
+      "NO_EMPTY_ANALYTICAL_SCAFFOLDING_BEFORE_MEASUREMENT",
+      "PORTFOLIO_TABLE_REQUIRES_READY_MEASUREMENT",
+      "PORTFOLIO_METRIC_MISSING_IS_NOT_ZERO"
+    ],
+    "doesNotAlterCoreMetrics": true,
+    "narrative": {
+      "version": "ADP_BRAND_PORTFOLIO_NARRATIVE_V1_1_CUSTOMER",
+      "grain": "PROVIDER_OBSERVATION",
+      "headline": "3.1% Portfolio AI Presence · #6 of 6 · Index 14",
+      "body": "NOW NOW NOHO shows very weak visibility within the measured Independent Positioning universe: 3.1% Portfolio AI Presence, rank #6 of 6, and Presence Index 14 vs peer benchmark 21.9%. This is a measured outcome for the governed scenario and provider set — not a technical failure, and not a claim about broader market demand beyond that universe. Provider mix: OpenAI 0.0% · Gemini 0.0% · Perplexity 12.5% · Claude 0.0%.",
+      "absoluteBand": "very_weak",
+      "providerSpread": "OpenAI 0.0% · Gemini 0.0% · Perplexity 12.5% · Claude 0.0%",
+      "actions": [
+        {
+          "priority": "high",
+          "title": "Build independent AI discoverability",
+          "description": "Absolute observation-grain presence is 3.1%. Prioritize consistent naming and citeable independent signals across providers."
+        }
+      ],
+      "customerFacing": true,
+      "distinguishesAbsoluteVsRelative": true
+    },
+    "actions": [
+      {
+        "priority": "high",
+        "title": "Build independent AI discoverability",
+        "description": "Absolute observation-grain presence is 3.1%. Prioritize consistent naming and citeable independent signals across providers."
+      }
+    ],
+    "byProvider": {
+      "openai": {
+        "provider": "openai",
+        "observations": 8,
+        "subjectHits": 0,
+        "presenceRate": 0,
+        "errors": 0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "observations": 8,
+        "subjectHits": 0,
+        "presenceRate": 0,
+        "errors": 0
+      },
+      "perplexity": {
+        "provider": "perplexity",
+        "observations": 8,
+        "subjectHits": 1,
+        "presenceRate": 0.125,
+        "errors": 0
+      },
+      "claude": {
+        "provider": "claude",
+        "observations": 8,
+        "subjectHits": 0,
+        "presenceRate": 0,
+        "errors": 0
+      }
+    },
+    "providerPresence": {
+      "grain": "PROVIDER_SPECIFIC_OBSERVATION",
+      "rows": [
+        {
+          "provider": "openai",
+          "label": "OpenAI",
+          "presenceDisplay": "0.0%",
+          "presenceRate": 0,
+          "observations": 8,
+          "subjectHits": 0
+        },
+        {
+          "provider": "gemini",
+          "label": "Gemini",
+          "presenceDisplay": "0.0%",
+          "presenceRate": 0,
+          "observations": 8,
+          "subjectHits": 0
+        },
+        {
+          "provider": "perplexity",
+          "label": "Perplexity",
+          "presenceDisplay": "12.5%",
+          "presenceRate": 0.125,
+          "observations": 8,
+          "subjectHits": 1
+        },
+        {
+          "provider": "claude",
+          "label": "Claude",
+          "presenceDisplay": "0.0%",
+          "presenceRate": 0,
+          "observations": 8,
+          "subjectHits": 0
+        }
+      ]
+    },
+    "byTerritory": {
+      "business": {
+        "territory": "business",
+        "scenarios": 3,
+        "observations": 12,
+        "subjectHits": 1,
+        "presenceRate": 0.08333333333333333,
+        "presenceDisplay": "8.3%",
+        "portfolioRank": 6,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.24999999999999994,
+        "portfolioPresenceIndex": 33,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_ind_bowery",
+            "name": "The Bowery Hotel",
+            "brand": "Independent / BD Hotels",
+            "presenceRate": 0.4166666666666667,
+            "obsHits": 5,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 41.7,
+            "numerator": 5,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_mercer_soho",
+            "name": "The Mercer",
+            "brand": "Independent",
+            "presenceRate": 0.3333333333333333,
+            "obsHits": 4,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 33.3,
+            "numerator": 4,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_greenwich_hotel",
+            "name": "The Greenwich Hotel",
+            "brand": "Independent",
+            "presenceRate": 0.25,
+            "obsHits": 3,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 25,
+            "numerator": 3,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_soho_grand",
+            "name": "Soho Grand Hotel",
+            "brand": "Independent / GrandLife",
+            "presenceRate": 0.16666666666666666,
+            "obsHits": 2,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 16.7,
+            "numerator": 2,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_nine_orchard",
+            "name": "Nine Orchard",
+            "brand": "Independent boutique",
+            "presenceRate": 0.08333333333333333,
+            "obsHits": 1,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 8.3,
+            "numerator": 1,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_now_now_noho",
+            "name": "NOW NOW NOHO",
+            "brand": "Independent",
+            "presenceRate": 0.08333333333333333,
+            "obsHits": 1,
+            "obsDenom": 12,
+            "isSubject": true,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 8.3,
+            "numerator": 1,
+            "denominator": 12,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 0.3333333333333333
+      },
+      "leisure": {
+        "territory": "leisure",
+        "scenarios": 3,
+        "observations": 12,
+        "subjectHits": 0,
+        "presenceRate": 0,
+        "presenceDisplay": "0.0%",
+        "portfolioRank": 6,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.18333333333333332,
+        "portfolioPresenceIndex": 0,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_ind_greenwich_hotel",
+            "name": "The Greenwich Hotel",
+            "brand": "Independent",
+            "presenceRate": 0.3333333333333333,
+            "obsHits": 4,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 33.3,
+            "numerator": 4,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_mercer_soho",
+            "name": "The Mercer",
+            "brand": "Independent",
+            "presenceRate": 0.25,
+            "obsHits": 3,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 25,
+            "numerator": 3,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_bowery",
+            "name": "The Bowery Hotel",
+            "brand": "Independent / BD Hotels",
+            "presenceRate": 0.16666666666666666,
+            "obsHits": 2,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 16.7,
+            "numerator": 2,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_nine_orchard",
+            "name": "Nine Orchard",
+            "brand": "Independent boutique",
+            "presenceRate": 0.08333333333333333,
+            "obsHits": 1,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 8.3,
+            "numerator": 1,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_soho_grand",
+            "name": "Soho Grand Hotel",
+            "brand": "Independent / GrandLife",
+            "presenceRate": 0.08333333333333333,
+            "obsHits": 1,
+            "obsDenom": 12,
+            "isSubject": false,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 8.3,
+            "numerator": 1,
+            "denominator": 12,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_now_now_noho",
+            "name": "NOW NOW NOHO",
+            "brand": "Independent",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 12,
+            "isSubject": true,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 12,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 0
+      },
+      "couples": {
+        "territory": "couples",
+        "scenarios": 2,
+        "observations": 8,
+        "subjectHits": 0,
+        "presenceRate": 0,
+        "presenceDisplay": "0.0%",
+        "portfolioRank": 5,
+        "portfolioRankOf": 6,
+        "portfolioBenchmark": 0.225,
+        "portfolioPresenceIndex": 0,
+        "rankingUniverse": [
+          {
+            "canonicalEntityId": "peer_ind_greenwich_hotel",
+            "name": "The Greenwich Hotel",
+            "brand": "Independent",
+            "presenceRate": 0.625,
+            "obsHits": 5,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 1,
+            "rankLabel": "#1",
+            "presencePct": 62.5,
+            "numerator": 5,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_mercer_soho",
+            "name": "The Mercer",
+            "brand": "Independent",
+            "presenceRate": 0.25,
+            "obsHits": 2,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 2,
+            "rankLabel": "#2",
+            "presencePct": 25,
+            "numerator": 2,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_nine_orchard",
+            "name": "Nine Orchard",
+            "brand": "Independent boutique",
+            "presenceRate": 0.125,
+            "obsHits": 1,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 3,
+            "rankLabel": "#3",
+            "presencePct": 12.5,
+            "numerator": 1,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_bowery",
+            "name": "The Bowery Hotel",
+            "brand": "Independent / BD Hotels",
+            "presenceRate": 0.125,
+            "obsHits": 1,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 4,
+            "rankLabel": "#4",
+            "presencePct": 12.5,
+            "numerator": 1,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "adp_now_now_noho",
+            "name": "NOW NOW NOHO",
+            "brand": "Independent",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 8,
+            "isSubject": true,
+            "rank": 5,
+            "rankLabel": "#5",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 8,
+            "tieState": null
+          },
+          {
+            "canonicalEntityId": "peer_ind_soho_grand",
+            "name": "Soho Grand Hotel",
+            "brand": "Independent / GrandLife",
+            "presenceRate": 0,
+            "obsHits": 0,
+            "obsDenom": 8,
+            "isSubject": false,
+            "rank": 6,
+            "rankLabel": "#6",
+            "presencePct": 0,
+            "numerator": 0,
+            "denominator": 8,
+            "tieState": null
+          }
+        ],
+        "legacyScenarioAnyPresence": 0
+      }
+    },
+    "territoryOptions": [
+      {
+        "id": "overall",
+        "label": "Overall"
+      },
+      {
+        "id": "business",
+        "label": "Business"
+      },
+      {
+        "id": "leisure",
+        "label": "Leisure"
+      },
+      {
+        "id": "couples",
+        "label": "Couples"
+      }
+    ],
+    "evidence": {
+      "positive": [
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_business_01_perplexity_a1_91c151",
+          "scenarioId": "bpp_now_now_noho_business_01",
+          "provider": "perplexity",
+          "territory": "business",
+          "matchedVariant": "NOW NOW NOHO",
+          "context": "you want a quieter, design-forward stay.[10]\n- **Now Now NoHo** — best if you want to be especially close to NoHo and the Bowery/Lower Manhattan junction, with s",
+          "position": null,
+          "aiResponse": "For **downtown meetings near SoHo and NoHo**, my top independent pick is **Crosby Street Hotel** in SoHo. It’s a boutique hotel on Crosby Street in Lower Manhattan, and it explicitly offers **three flexible event rooms** plus a private screening room, which makes it especially strong if you need a meeting-capable property rather than just a place to sleep.[5]\n\nA few other strong independent options nearby:\n\n- **The Dominick Hotel** — a luxury SoHo hotel at the intersection of Hudson Square and SoHo, placing it right in downtown Manhattan.[3]\n- **ModernHaus SoHo** — a boutique luxury hotel in SoHo with a central downtown location in the cast-iron district.[12]\n- **The Manner** — a 97-room boutique hotel on a tree-lined street in SoHo, good if you want a quieter, design-forward stay.[10]\n- **Now Now NoHo** — best if you want to be especially close to NoHo and the Bowery/Lower Manhattan junction, with subway access and a very walkable location.[4]\n- **Moxy NYC Lower East Side** — a strong alternative if you want easy access to SoHo, NoHo, Nolita, and the East Village, and don’t mind being slightly east of SoHo.[11]\n\nIf you want the **best overall balance of location + meeting usefulness**, I’d choose **Crosby Street Hotel**.[5] If you want a more **luxury, classic SoHo** option, choose **The Dominick**.[3]"
+        }
+      ],
+      "missing": [
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_business_01_openai_a1_33f8c7",
+          "scenarioId": "bpp_now_now_noho_business_01",
+          "provider": "openai",
+          "territory": "business",
+          "aiResponse": "For a stay in downtown Manhattan with easy access to SoHo and NoHo, you might consider The Ludlow Hotel. This independent hotel is located on the Lower East Side, which is within walking distance to both SoHo and NoHo. The Ludlow offers a boutique experience with stylish rooms, many of which provide great views of the city. The ambiance is trendy and welcoming, making it a great choice for business travelers attending downtown meetings. Additionally, the hotel has a well-regarded restaurant, Dirty French, and is close to many other dining and entertainment options."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_business_01_gemini_a1_5800ec",
+          "scenarioId": "bpp_now_now_noho_business_01",
+          "provider": "gemini",
+          "territory": "business",
+          "aiResponse": "For a business trip with meetings centered in SoHo and NoHo, **The Bowery Hotel** is the absolute top recommendation, followed closely by a few strong alternatives depending on your style. \n\nHere are the best independent options, ranked by proximity, business-friendliness, and quality.\n\n---\n\n### 1. The Top Recommendation: **The Bowery Hotel**\n* **Location:** 335 Bowery (Right on the NoHo / East Village border)\n* **Vibe:** Old-world luxury, moody, cozy, and highly discreet.\n* **Why it’s perfect for business:** \n  * **The Lobby:** The Bowery’s lobby lounge (with its plush velvet sofas, fireplaces, and private outdoor terrace) is arguably the best informal meeting space in Downtown Manhattan. It’s quiet enough during the day for pitch meetings or catching up on emails.\n  * **Rooms:** Generously sized by NYC standards, featuring floor-to-ceiling factory-style windows, work desks, and marble bathrooms. \n  * **Dining:** *Gemma*, the glass-enclosed rustic Italian restaurant on the ground floor, is excellent for business breakfasts or dinners.\n\n---\n\n### 2. Best for High-End/Client Meetings: **Crosby Street Hotel**\n* **Location:** 79 Crosby Street (SoHo)\n* **Vibe:** Vibrant, ultra-luxurious, and sophisticated British design (Firmdale Hotels).\n* **Why it’s perfect for business:**\n  * **Prime Location:** Situated on a quiet, cobbled street in the heart of SoHo, offering immediate access to NoHo (a 5-minute walk).\n  * **Meeting Spaces:** In addition to *The Crosby Bar* (great for power lunches), the hotel features dedicated private meeting rooms, private dining rooms, and even a 99-seat state-of-the-art screening room if you need to give a presentation.\n  * **Service:** Flawless, highly attentive service that impresses clients.\n\n---\n\n### 3. Best Classic SoHo Business Hotel: **SoHo Grand Hotel**\n* **Location:** 310 West Broadway (SoHo)\n* **Vibe:** Industrial chic, high-end, classic downtown cool.\n* **Why it’s perfect for business:**\n  * **Work Spaces:** The *Grand Bar & Lounge* acts as SoHo's living room. It has high ceilings, plenty of seating, fast Wi-Fi, and a solid coffee program, making it ideal for remote work between meetings.\n  * **Private Events:** They have exceptional loft spaces available to book for larger private meetings or corporate cocktail hours.\n  * **Location:** Located on the quieter southern edge of SoHo, making street drop-offs/pickups by taxi/Uber much easier than on crowded central SoHo streets.\n\n---\n\n### 4. Best Minimalist & Discreet Option: **The Mercer**\n* **Location:** 147 Mercer Street (SoHo)\n* **Vibe:** Loft-style, understated, private, and quiet.\n* **Why it’s perfect for business:**\n  * **Loft Layouts:** The guest rooms feel like high-end Manhattan apartments, featuring large work tables and deep sitting areas that allow you to host quiet, private, 1-on-1 meetings right in your room.\n  * **Discretion:** It is a favorite for executives and creatives who want absolute privacy away from the usual hotel bustle.\n\n---\n\n### Quick Recommendation Summary:\n* **For the best lobby to host casual meetings:** Book **The Bowery Hotel**.\n* **To impress an important client over lunch/formal meeting:** Book **Crosby Street Hotel**.\n* **For a great workspace environment and easy taxi access:** Book **SoHo Grand**."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_business_01_claude_a1_39e6c7",
+          "scenarioId": "bpp_now_now_noho_business_01",
+          "provider": "claude",
+          "territory": "business",
+          "aiResponse": "# Independent Hotels in Downtown Manhattan Near SoHo/NoHo\n\nHere are some solid options worth considering:\n\n## Top Recommendations\n\n### **The Nolitan Hotel**\n- Located in Nolita, directly between SoHo and NoHo\n- Boutique, independently operated\n- Meeting-friendly common spaces\n- Walkable to both neighborhoods\n\n### **Crosby Street Hotel**\n- Situated **directly in SoHo**\n- Upscale boutique property\n- Has dedicated event/meeting spaces\n- Known for professional hospitality\n\n### **The Mercer**\n- Classic SoHo boutique hotel\n- Discreet, upscale atmosphere\n- Popular with business travelers\n- Excellent central location\n\n---\n\n## Things to Consider When Booking\n\n- **Meeting space availability** - confirm room capacity ahead of time\n- **AV equipment** included or available for rent\n- **Catering options** for longer sessions\n- **Proximity to subway** (A/C/E, B/D/F/M, 6 lines serve the area)\n\n---\n\n## Practical Tips\n> Call the hotel directly to negotiate meeting room rates, as independent properties often have more flexibility than chain hotels.\n\nWould you like more specific details about any of these properties or additional alternatives?"
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_business_02_openai_a1_ecc4f2",
+          "scenarioId": "bpp_now_now_noho_business_02",
+          "provider": "openai",
+          "territory": "business",
+          "aiResponse": "For a creative-industry work trip in Lower Manhattan, you might consider staying at the **NoMo SoHo**. This hotel is known for its artistic and stylish design, making it popular among creative professionals. Located in the heart of SoHo, it provides easy access to many galleries, boutiques, and restaurants, which could be beneficial for networking and inspiration.\n\nAnother great option is the **Greenwich Hotel** in Tribeca. This independent hotel is co-owned by Robert De Niro and offers a very unique and luxurious experience with its individually designed rooms and suites. The atmosphere is creative yet refined, and it's situated in a neighborhood known for its film and media industry connections.\n\nBoth hotels provide a distinct artistic flair and are well-suited for those in the creative industries looking for inspiration and a comfortable stay in downtown Manhattan."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_business_02_gemini_a1_993d50",
+          "scenarioId": "bpp_now_now_noho_business_02",
+          "provider": "gemini",
+          "territory": "business",
+          "aiResponse": "For a creative-industry work trip to Lower Manhattan, the absolute best independent hotel is **Walker Hotel Tribeca**. \n\nIt strikes the perfect balance between **aesthetically inspiring design, functional workspaces, and a central location** right at the nexus of Tribeca, SoHo, Chinatown, and the Financial District (where many tech, advertising, fashion, and media hubs are located).\n\nHere is a breakdown of why it’s the top choice, along with a few tailored alternatives depending on your specific work style and budget.\n\n---\n\n### **1. Top Pick Overall: Walker Hotel Tribeca**\n* **The Vibe:** Mid-century modern meets industrial NY chic. It feels like a boutique sanctuary curated for designers, writers, and tech founders.\n* **Why it’s great for a work trip:**\n  * **Exceptional Workspace:** Unlike many downtown boutiques with tiny, form-over-function lobbies, the Walker features a massive, multi-room subterranean lounge (the *Walker Lounge*) and a ground-floor lobby with plenty of seating, power outlets, and fast Wi-Fi. It functions like a high-end co-working club by day.\n  * **Coffee & Dining:** They have an in-house **Blue Bottle Coffee** for morning caffeine runs and a sophisticated cocktail lounge for low-key client meetings. \n  * **Location:** 77 Walker St. You can walk to client meetings in SoHo, FiDi, or the Lower East Side in under 15 minutes, and multiple subway lines (N/Q/R/W, 6, J/Z, 1) are right outside the door.\n* **Good to Know:** Standard rooms in NYC are notoriously small. If you plan to work *in* your room rather than the lobby, upgrade to a **Core King** or **Executive King** so you get a proper dedicated desk.\n\n---\n\n### **2. Best for Networking & Atmosphere: The Ludlow Hotel (Lower East Side)**\n* **The Vibe:** Lower East Side downtown cool—exposed brick, dark wood, brass accents, and plush velvet. \n* **Why it’s great for a creative trip:**\n  * **The Lobby Lounge:** The Ludlow's lobby (with its giant fireplace and glass-enclosed garden) is one of downtown’s premier meeting spots for the fashion, media, and arts crowds. It’s ideal for transitioning seamlessly from laptop work in the afternoon to client drinks at night.\n  * **Dining:** Home to *Dirty French* (Major Food Group), perfect for an impressive business dinner.\n  * **The Rooms:** Industrial-chic aesthetic with floor-to-ceiling windows and marble bathrooms. Many rooms feature terraced views of the skyline.\n* **Best for:** Solopreneurs, creative directors, and anyone whose \"work trip\" relies heavily on evening networking.\n\n---\n\n### **3. Best for High-Budget / Executive Trips: Crosby Street Hotel (SoHo)**\n* **The Vibe:** Sophisticated, high-design luxury by British designer Kit Kemp. Part of the independent Firmdale Hotels group.\n* **Why it’s great for a work trip:**\n  * **Quiet & Private:** Tucked away on a cobblestone street in SoHo, it offers complete privacy away from the noise, making it a favorite for high-level creative executives, agency heads, and talent.\n  * **Space to Meet:** Features beautiful private drawing rooms, a tranquil courtyard garden, and a private 99-seat screening room. \n  * **Top-Tier Service:** Impeccable, highly discreet service that caters to demanding schedules.\n\n---\n\n### **4. Best for Design Purists & Quiet Luxury: Nine Orchard (Lower East Side)**\n* **The Vibe:** Thoughtfully restored turn-of-the-century bank turned ultra-chic boutique hotel.\n* **Why it’s great for a work trip:**\n  * **Impeccable Aesthetic:** If your work trip involves architecture, interior design, or art, Nine Orchard is a masterclass in modern restoration.\n  * **Food & Drink:** F&B is handled by Ignacio Mattos (of Estela fame). The Swan Room (the former bank teller room) is stunning for evening drinks, while the corner bistro, Corner Bar, is great for breakfast meetings.\n  * **Tech Details:** Custom Ojas sound systems in every room (great if you need to review audio/video cuts or just work to great sound).\n\n---\n\n### **Summary Recommendation:**\n* **Book Walker Hotel Tribeca** if you need a vibrant, laptop-friendly lobby, great coffee, and central convenience at a fair price.\n* **Book The Ludlow** if your trip is focused on dinner meetings, drinks, and the LES creative scene.\n* **Book Crosby Street Hotel** if corporate is paying and you want the ultimate luxury design experience."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_business_02_perplexity_a1_fb2233",
+          "scenarioId": "bpp_now_now_noho_business_02",
+          "provider": "perplexity",
+          "territory": "business",
+          "aiResponse": "For a **creative-industry work trip in Lower Manhattan**, the strongest single pick from the options surfaced is **The Manner** in the Lower East Side/SoHo area: it’s a **design-forward, independently minded boutique hotel** with a strong creative pedigree and is explicitly highlighted by Michelin as one of Downtown Manhattan’s coolest hotels.[14]\n\nWhy it fits best:\n- **Creative atmosphere:** Michelin notes the hotel’s collaboration between **Herzog & de Meuron**, **Ian Schrager**, and chef **Diego Muñoz**, which signals serious design and cultural credibility.[14]\n- **Downtown location:** It sits in the **Lower East Side / Downtown Manhattan** cluster, which is convenient for meetings, galleries, studios, and client dinners in Lower Manhattan.[14]\n- **Boutique feel:** It’s presented as a standout among **boutique and luxury hotels** in Downtown Manhattan rather than a chain-style business hotel.[11][12]\n\nIf you want the best *alternatives* depending on your work style:\n- **Arlo SoHo** — often ranks well for Downtown Manhattan and is a practical choice if you want a lively, work-friendly base near SoHo and Tribeca.[10]\n- **Frederick Hotel** — a more understated boutique option in Lower Manhattan, described as a “hidden gem” in downtown boutique roundups.[5]\n- **Crosby Street Hotel** — excellent if you want a more polished, design-heavy stay closer to SoHo, though it’s more luxury-boutique than purely work-oriented.[16]\n\nIf you want, I can also narrow this to the best option for **quiet work**, **client entertaining**, or **best value** in Lower Manhattan."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_business_02_claude_a1_2dbd88",
+          "scenarioId": "bpp_now_now_noho_business_02",
+          "provider": "claude",
+          "territory": "business",
+          "aiResponse": "# Best Independent Hotels for Creative Work Trips in Lower Manhattan\n\nHere are some strong options worth considering:\n\n## Top Picks\n\n**The Beekman** (Tribeca/Financial District)\n- Stunning 9-story atrium in a historic building\n- Strong design aesthetic, good for creative clients\n- Tom Colicchio restaurant on-site\n\n**11 Howard** (SoHo)\n- Genuinely design-forward, Scandinavian-influenced\n- Popular with creative industry travelers\n- Good work spaces throughout\n\n**The Williamsburg Hotel** (Brooklyn-adjacent, if flexibility allows)\n- Rooftop, strong creative culture\n\n## Worth Knowing\n\n**Arlo SoHo** leans independent in feel though it's a small brand - good value with solid common work areas\n\n## Practical Considerations\n\n- **For client meetings:** The Beekman probably wins on impressiveness\n- **For actual working:** Look for hotels with solid lobby co-working vibes\n- **Location:** SoHo/Tribeca puts you well-positioned for Lower Manhattan creative firms\n\n## Honest Caveat\nThis is a fast-changing market and my information has a cutoff, so I'd **verify current ownership status and reviews** on sites like Tablet Hotels or Mr & Mrs Smith, which specifically curate independent properties.\n\nWhat type of creative industry are you in? That might help narrow it further."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_leisure_03_openai_a1_ed0757",
+          "scenarioId": "bpp_now_now_noho_leisure_03",
+          "provider": "openai",
+          "territory": "leisure",
+          "aiResponse": "For a charming and independent hotel experience in downtown Manhattan, consider booking a stay at The Marlton Hotel. Located in Greenwich Village, this boutique hotel offers a cozy, stylish atmosphere with easy access to SoHo, NoHo, and the surrounding neighborhoods. The hotel is within walking distance of numerous trendy shops, cafes, and cultural attractions, making it a great base for exploring the vibrant downtown area. Plus, its historic charm and well-appointed rooms provide a unique and comfortable stay."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_leisure_03_gemini_a1_0760df",
+          "scenarioId": "bpp_now_now_noho_leisure_03",
+          "provider": "gemini",
+          "territory": "leisure",
+          "aiResponse": "The top recommendation for an independent hotel in this area is **The Mercer Hotel**.\n\nLocated at the corner of Mercer and Prince Streets in SoHo, The Mercer is an iconic, privately owned 75-room boutique hotel housed in a historic 1890 Romanesque Revival building. It sits precisely at the intersection of your target neighborhoods, making it an ideal base camp.\n\n---\n\n### Why It’s the Best Choice:\n\n*   **Unbeatable Location:**\n    *   **SoHo:** You are right in the heart of it—step outside onto cobblestone streets lined with boutiques, galleries, and historic cast-iron architecture.\n    *   **NoHo:** A 3-minute walk north across Houston Street puts you directly in NoHo’s historic, quieter enclave (Broadway, Lafayette, and Great Jones St).\n    *   **Greenwich Village:** A 7-to-10-minute walk northwest brings you into the tree-lined residential streets, brownstones, and West Village dining scene.\n*   **True Independent Character:** \n    Original developer André Balazs designed The Mercer to feel like living in a high-end downtown loft rather than a standard hotel. It avoids all corporate chain tropes, featuring residential-style layouts, high ceilings, massive windows, and understated luxury designed by Christian Liaigre.\n*   **The Vibe & Amenities:** \n    It strikes a balance between discreet, high-end privacy and neighborhood buzz. Downstairs features **Sartiano’s**, a modern Italian restaurant that has quickly become a local hotspot.\n\n---\n\n### Alternate Independent Options (Depending on Your Vibe):\n\nIf you want a slightly different style or location within that same target zone, consider these two excellent alternatives:\n\n1.  **The Marlton Hotel (Greenwich Village)**\n    *   *The Vibe:* Cozy, Parisian-chic, literary, and historic.\n    *   *Location:* West 8th Street, just off Washington Square Park. \n    *   *Why choose it:* If you prefer your \"home base\" to feel more like classic Greenwich Village rather than SoHo. It’s an independent property owned by local hoteliers Sean MacPherson and Eric Goode, featuring a great lobby fireplace and the vibrant Mediterranean restaurant *Margaux*.\n\n2.  **Crosby Street Hotel (SoHo/NoHo Border)**\n    *   *The Vibe:* Whimsical, colorful British design with lush private gardens.\n    *   *Location:* Crosby Street (a quiet, paved alley running parallel to Broadway).\n    *   *Why choose it:* Part of the small, family-owned Firmdale Hotels group. It offers quiet luxury just seconds from the energy of NoHo and SoHo, with some of the largest floor-to-ceiling windows in downtown Manhattan.\n\n### Walking Tip for Your Trip:\nStarting from **The Mercer**, walk **North** up Mercer or Broadway to explore NoHo's architecture, head **West** past Washington Square Park to get lost in the winding streets of Greenwich Village, and stroll **South** along Spring and Broome Streets to take in SoHo. Everything is reachable within a 15-minute walk."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_leisure_03_perplexity_a1_f9ad71",
+          "scenarioId": "bpp_now_now_noho_leisure_03",
+          "provider": "perplexity",
+          "territory": "leisure",
+          "aiResponse": "A strong pick is **Crosby Street Hotel** in SoHo. It’s an independent boutique hotel on cobblestoned Crosby Street in the heart of SoHo, and it’s described as being just minutes from the West Village, NoHo, and Nolita, which makes it especially well placed for exploring all three neighborhoods.[4][6][16]\n\nIf you want a few good alternatives, these also fit the brief:\n\n- **The Marlton Hotel** — a classic independent option in Greenwich Village, on 8th Street just north of Washington Square Park, so it’s excellent for Village wandering and still close to NoHo/SoHo.[1][4]\n- **Walker Hotel Greenwich Village** — another independent hotel in Greenwich Village that puts you steps from Washington Square Park and the Village’s core streets.[1][6][10]\n- **NoMo SoHo** — a boutique hotel in SoHo on Crosby Street, good if you want to be directly in SoHo with easy access to nearby downtown neighborhoods.[2][13]\n- **The Manner** — a newer independent SoHo hotel on a tree-lined street, well suited if you want a quieter, design-forward base.[8][11]\n\nIf you want the best *single* recommendation for sightseeing convenience, **Crosby Street Hotel** is the strongest all-around choice because it sits between SoHo and the surrounding downtown neighborhoods rather than farther out in one of them.[6][16]"
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_leisure_03_claude_a1_e075ca",
+          "scenarioId": "bpp_now_now_noho_leisure_03",
+          "provider": "claude",
+          "territory": "leisure",
+          "aiResponse": "# Independent Hotel Recommendations for Downtown Manhattan\n\n## Top Pick: **The Marlton Hotel** (West Village/Greenwich Village)\n*5 West 8th Street*\n\n**Why it works well for your needs:**\n- Centrally positioned between all three neighborhoods\n- Boutique, independently operated with distinct personality\n- Walking distance to:\n  - Greenwich Village (essentially your doorstep)\n  - NoHo (5-10 minute walk)\n  - SoHo (10-15 minute walk)\n\n**What to expect:**\n- Parisian-inspired décor\n- Modest but thoughtfully designed rooms\n- Ground-floor café and bar scene\n- Generally more affordable than chain competitors nearby\n\n---\n\n## A Few Honest Considerations\n\n**Worth noting before booking:**\n- Rooms can be on the smaller side, which is typical for the area\n- **Check recent reviews** since staff and management quality can shift at independent properties\n- Compare against the **Crosby Street Hotel** (SoHo) if budget allows, though it's more of a boutique group property\n\n**Questions that might refine this further:**\n- What's your approximate budget per night?\n- Do you prioritize location or specific amenities?\n- Travel dates matter since availability varies considerably\n\nWould you like more specific neighborhood walking suggestions once you've settled on lodging?"
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_leisure_04_openai_a1_d7c75b",
+          "scenarioId": "bpp_now_now_noho_leisure_04",
+          "provider": "openai",
+          "territory": "leisure",
+          "aiResponse": "For a design-forward stay in downtown Manhattan, one of the best independent hotels to consider is The Greenwich Hotel. Located in the Tribeca neighborhood, it is co-owned by actor Robert De Niro and is known for its unique design that blends luxury with a homey feel. The interiors feature a mix of globally sourced furnishings and art, creating a distinctive and inviting atmosphere. The hotel also offers amenities like a serene courtyard, a beautiful pool, and an excellent on-site restaurant, Locanda Verde. Its attention to detail and design makes it a standout choice for those seeking an independent hotel experience in downtown New York."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_leisure_04_gemini_a1_076aec",
+          "scenarioId": "bpp_now_now_noho_leisure_04",
+          "provider": "gemini",
+          "territory": "leisure",
+          "aiResponse": "The absolute best independent hotel in downtown Manhattan for a design-forward stay right now is **Nine Orchard**.\n\nLocated on the border of the Lower East Side and Chinatown, this hotel captured the zeitgeist of downtown New York design when it opened and remains the premier choice for travelers who care deeply about architecture, interiors, and atmosphere.\n\nHere is why **Nine Orchard** takes the top spot, along with three runner-up alternatives tailored to different design sensibilities.\n\n---\n\n### **The Winner: Nine Orchard (Lower East Side)**\n\nNine Orchard sits in the meticulously restored 1912 Jarmulowsky Bank Building. Rather than relying on modern gimmicks, the hotel’s design ethos—led by SL Studio and DLJ Real Estate—is a masterclass in understated elegance, historic preservation, and warm, residential-feeling minimalism.\n\n* **The Design Vibe:** Neo-Renaissance grandeur meets subtle, mid-century-leaning warmth. Think rich oak paneling, custom-curved headboards, muted botanical textiles, and soaring restored plaster ceilings.\n* **Standout Details:** \n  * **Acoustics & Tech:** Every room features a custom-built, audiophile-grade **Ojas sound system** with curated radio stations, making music a central component of the room ambiance.\n  * **Public Spaces:** The lobby bar, **The Swan Room**, is set beneath a towering, ornate vaulted ceiling that is easily one of the most stunning architectural spaces in New York.\n  * **F&B Integration:** Food and beverage are run by Michelin-starred chef Ignacio Mattos (Estela), giving the property an authentic, local culinary draw rather than a generic hotel dining feel.\n* **Why it feels authentic:** It is fiercely independent, deeply tied to the surrounding neighborhood, and avoids the flashy, trend-chasing aesthetics of many newer boutique hotels.\n\n---\n\n### **Runners-Up by Design Aesthetic**\n\nIf Nine Orchard’s tailored, historic aesthetic isn't your exact style, these three independent downtown properties excel in distinct design directions:\n\n#### **1. For Wabi-Sabi & Craftsmanship: The Greenwich Hotel (Tribeca)**\n* **The Vibe:** Owned by Robert De Niro, this hotel is a masterpiece of tactile, artisanal luxury. \n* **Design Highlights:** Designed using reclaimed materials—hundreds-of-years-old timber, hand-molded terracotta tiles, and leaded glass windows. The crowning achievement is the **TriBeCa Penthouse**, designed by Belgian minimalist **Axel Vervoordt** and Japanese architect Tatsuro Miki, incorporating ancient Japanese *wabi-sabi* philosophy.\n* **Best For:** Travelers seeking quiet luxury, incredible privacy, and organic, textured design.\n\n#### **2. For Industrial Downtown Grit-Glamour: The Ludlow (Lower East Side)**\n* **The Vibe:** Created by legendary NYC hotel artisans Sean MacPherson and Eric Goode, this hotel captures the quintessential \"artist loft\" downtown cool.\n* **Design Highlights:** Black iron factory-style windows, exposed brick, raw wood beams, vintage Persian rugs, and marble bathrooms equipped with deep soaking tubs framed by views of the city skyline. \n* **Best For:** Anyone wanting a classic, slightly edgy downtown loft aesthetic with high energy and a bustling lobby scene.\n\n#### **3. For Bold, Contemporary Maximalism: Crosby Street Hotel (SoHo)**\n* **The Vibe:** Kit Kemp’s signature British eclectic style, situated on a quiet cobblestone street in the heart of SoHo.\n* **Design Highlights:** Floor-to-ceiling warehouse windows, dramatic custom upholstered headboards, a curated collection of original contemporary art and sculpture, and a lush, private leafy courtyard garden.\n* **Best For:** Travelers who love vibrant color, rich textures, and bold art-driven spaces.\n\n---\n\n### **Summary Recommendation**\n\n* Choose **Nine Orchard** if you want the current high-water mark for downtown style, great music, and historic restoration.\n* Choose **The Greenwich Hotel** for serene, ultra-luxurious, organic textures.\n* Choose **The Ludlow** for classic, moody downtown loft vibes."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_leisure_04_perplexity_a1_d0a6bd",
+          "scenarioId": "bpp_now_now_noho_leisure_04",
+          "provider": "perplexity",
+          "territory": "leisure",
+          "aiResponse": "For a **design-forward independent hotel in downtown Manhattan**, **The Beekman, A Thompson Hotel** is the strongest all-around pick. It is repeatedly singled out by design-focused guides as a standout for architecture and interiors, and it has the kind of historic-downtown character that fits a stylish Lower Manhattan stay.[5][14]\n\nA few reasons it rises to the top:\n- **Best design pedigree:** It is explicitly recommended as “best for design nerds” by *The Independent*.[14]\n- **Downtown fit:** It sits in the downtown core rather than Midtown, making it a better base for a Lower Manhattan/New York “downtown” experience.[5][13][14]\n- **Independent feel:** While now under the Thompson brand, it is not a large chain-style business hotel in the usual sense; the appeal is its distinctive, one-off design and historic building character.[5][14]\n\nIf you want the closest alternatives, these are also worth considering:\n- **The Mercer** — often praised for its loft-like Soho feel and iconic downtown style.[8]\n- **The Wall Street Hotel** — a newer Financial District option with interiors that nod to the area’s history and beaux-arts architecture.[13]\n- **Crosby Street Hotel** — excellent for design, but it is in SoHo rather than deeper downtown.[1]\n\nIf you want, I can narrow this down by **budget**, **SoHo vs Financial District vs Tribeca**, or **most photogenic lobby/rooms**."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_leisure_04_claude_a1_e8ec2a",
+          "scenarioId": "bpp_now_now_noho_leisure_04",
+          "provider": "claude",
+          "territory": "leisure",
+          "aiResponse": "# Design-Forward Independent Hotels in Downtown Manhattan\n\nHere are some strong options worth considering:\n\n## Top Picks\n\n**The Beekman** (Tribune Building, Financial District)\n- Stunning 9-story Victorian atrium\n- Tom Colicchio restaurant on-site\n- Genuinely historic architecture with contemporary design\n\n**11 Howard** (SoHo)\n- Scandinavian-influenced design\n- Strong independent identity\n- Great neighborhood location\n\n**The Crosby Street Hotel** (SoHo)\n- Kit Kemp's distinctive maximalist aesthetic\n- Feels genuinely individual\n- Though it's part of Firmdale Hotels\n\n## Also Worth Considering\n- **The Nomo SoHo** - boutique feel, solid design\n- **Arlo SoHo** - more compact/budget-friendly but design-conscious\n\n## Honest Caveats\n- \"Best\" depends heavily on your priorities (neighborhood, price point, aesthetic preference)\n- The downtown hotel landscape shifts regularly\n- Some properties have changed management or quality since I last have reliable information\n\n**The Beekman** is probably the most architecturally distinctive choice if the Financial District works for you, while **11 Howard** might suit someone wanting a more **SoHo-neighborhood experience**.\n\nWhat matters most to you - neighborhood, price range, or aesthetic style?"
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_couples_05_openai_a1_91ffce",
+          "scenarioId": "bpp_now_now_noho_couples_05",
+          "provider": "openai",
+          "territory": "couples",
+          "aiResponse": "For a stylish downtown weekend getaway in Manhattan, consider staying at The Greenwich Hotel. Located in the vibrant Tribeca neighborhood, this independent hotel is known for its elegant design and attention to detail. It offers a blend of luxury and comfort, featuring individually decorated rooms with a mix of vintage and contemporary furnishings. The hotel also boasts exceptional amenities, including a serene courtyard, a beautiful spa, and the acclaimed Locanda Verde restaurant. Its prime location provides easy access to trendy boutiques, art galleries, and some of the city's best dining options, making it an ideal choice for a chic and memorable stay in downtown Manhattan."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_couples_05_gemini_a1_1e3b10",
+          "scenarioId": "bpp_now_now_noho_couples_05",
+          "provider": "gemini",
+          "territory": "couples",
+          "aiResponse": "The top recommendation for a stylish, independent downtown weekend getaway is **Nine Orchard**.\n\nLocated where the Lower East Side meets Chinatown, Nine Orchard is a meticulously restored 1912 neo-Renaissance landmark (formerly the Jarmulowsky Bank building) that has quickly become one of the most elegant and magnetic independent spots in New York City.\n\n---\n\n### **The Top Pick: Nine Orchard**\n* **The Vibe:** Refined, historic grand-hotel glamour blended with effortless downtown cool. It avoids trendy gimmicks in favor of timeless craftsmanship.\n* **The Rooms:** Bright, residential, and understated. Expect custom-designed wooden furniture, plush bedding, original architectural moldings, and bespoke sound systems curated by Devialet featuring local NYC radio stations. Ask for a high-floor corner room for stunning views of downtown and the Manhattan Bridge.\n* **Food & Drink:** The hotel’s culinary offerings are spearheaded by Michelin-starred chef Ignacio Mattos (of Estela fame):\n  * **The Swan Room:** Housed in the bank's original teller room with soaring vaulted ceilings, this is currently one of the dynamic cocktail lounges in the city. \n  * **Corner Bar:** A chic, warm neighborhood bistro serving elevated classic dishes for breakfast, lunch, and dinner.\n* **The Location:** Perfect for exploring the independent boutiques of the Lower East Side, galleries on the Bowery, and the incredible food scenes of Chinatown and DUMBO (just across the Manhattan Bridge).\n\n---\n\n### **Alternative Options (Depending on Your Style)**\n\nIf Nine Orchard’s historic-classic aesthetic isn't quite what you're looking for, here are two other outstanding independent downtown options:\n\n#### 1. **The Ludlow Hotel (Lower East Side)**\n* **The Vibe:** Industrial-chic romance. Exposed brick, dark wood, Moroccan rugs, and grand fireplace hearths.\n* **Why go:** It has an undeniably sexy atmosphere. The higher-category rooms feature deep marble soaking tubs with massive floor-to-ceiling windows overlooking the skyline.\n* **Bonus:** Dirty French, the hotel's ground-floor bistro, is a perennial scene for strong drinks and lively dinners.\n\n#### 2. **The Greenwich Hotel (TriBeCa)**\n* **The Vibe:** Discreet, ultra-luxurious, and tactile. Co-owned by Robert De Niro, no two rooms are alike, featuring reclaimed wood, hand-cast tiles, and Tibetan silk rugs.\n* **Why go:** It feels like a private residence rather than a commercial hotel. It boasts a hidden courtyard garden and the **Shibui Spa**, which features a 250-year-old bamboo lantern-lit indoor pool brought over from Japan. \n* **Best for:** A quieter, high-end getaway focused on relaxation and privacy.\n\n---\n\n### **Weekend Tips for Nine Orchard / LES:**\n* **Drinks:** Start your night with a cocktail at *The Swan Room*, then walk five minutes to *Kiki's* for casual Greek food or *Superbueno* for inventive Mexican-inspired cocktails.\n* **Coffee & Pastries:** Grab a morning espresso at *Mel Bakery* nearby.\n* **Shopping:** Explore the vintage shops along Ludlow and Orchard Streets, or browse contemporary art at galleries like *Perrotin* and *Derek Eller*."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_couples_05_perplexity_a1_ceee83",
+          "scenarioId": "bpp_now_now_noho_couples_05",
+          "provider": "perplexity",
+          "territory": "couples",
+          "aiResponse": "For a **stylish downtown weekend getaway**, I’d recommend **ModernHaus SoHo**. It’s consistently cited as one of downtown Manhattan’s coolest and most stylish stays, with a strong design-forward vibe that fits a short, chic city break.[5][8]\n\nA few good alternatives, depending on your style:\n- **The Wall Street Hotel** — best if you want a polished Financial District stay with elegant, history-inspired interiors and a more refined downtown feel.[10][2]\n- **The Roxy Hotel Tribeca** — a classic choice for “downtown chic,” with a livelier, more social atmosphere.[7]\n- **The Marlton** — a smaller, independently minded option near Washington Square Park, good if you want intimate, old-New-York character.[1]\n\nIf you want just one pick: **ModernHaus SoHo** is the strongest fit for a stylish, independent downtown weekend."
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_couples_05_claude_a1_b1607a",
+          "scenarioId": "bpp_now_now_noho_couples_05",
+          "provider": "claude",
+          "territory": "couples",
+          "aiResponse": "# The Nolitan Hotel – Nolita, Manhattan\n\n## Why It Stands Out\nThe Nolitan is a genuinely **independent boutique hotel** tucked into one of Manhattan's most charming neighborhoods, sitting at the crossroads of Nolita, SoHo, and the Lower East Side.\n\n---\n\n## What You Can Expect\n\n**The Rooms**\n- Clean, modern design with **floor-to-ceiling windows**\n- Thoughtful details without feeling overdone\n- Many rooms have **skyline or city street views**\n\n**The Location**\n- Walkable to **SoHo shopping**, Little Italy, Chinatown\n- Great independent restaurants and cafés steps away\n- Easy access to multiple subway lines\n\n**The Vibe**\n- Genuinely stylish without being pretentious\n- Feels local rather than corporate\n- Rooftop access for city views\n\n---\n\n## Weekend Itinerary Pairing\n- Morning coffee at **Café Gitane** nearby\n- Browse **McNally Jackson Books**\n- Dinner in SoHo or the West Village\n- Evening drinks at a neighborhood bar\n\n---\n\n## Practical Notes\n- 📍 **241 Elizabeth Street**\n- Typically more affordable than comparable Midtown options\n- Book directly for potentially better rates\n\n---\n\n*It strikes a nice balance between **style, location, and independence** that chain hotels rarely match.*\n\nWould you like neighborhood restaurant recommendations to go with it?"
+        },
+        {
+          "observationId": "bpp_obs_adp_now_now_noho_bpp_now_now_noho_couples_06_openai_a1_c2659e",
+          "scenarioId": "bpp_now_now_noho_couples_06",
+          "provider": "openai",
+          "territory": "couples",
+          "aiResponse": "For a quiet boutique experience near SoHo shopping and dining, consider staying at the Crosby Street Hotel. Located on a quiet cobblestone street in SoHo, this hotel offers a serene atmosphere combined with stylish and eclectic design. The hotel features individually designed rooms, a beautiful courtyard garden, and is within walking distance of many shops, galleries, and restaurants.\n\nAnother option is the Greenwich Hotel in TriBeCa, which is a bit further from SoHo but still offers easy access. This hotel provides a peaceful retreat with its warm, inviting decor and excellent amenities, including a spa and a cozy drawing room for guests.\n\nBoth of these hotels offer a unique and intimate experience, making them excellent choices for a quiet stay in downtown Manhattan."
+        }
+      ],
+      "displacement": [
+        {
+          "scenarioId": "bpp_now_now_noho_business_02",
+          "territory": "business",
+          "peersPresent": [
+            "peer_ind_greenwich_hotel",
+            "peer_ind_nine_orchard"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "For a creative-industry work trip in Lower Manhattan, you might consider staying at the **NoMo SoHo**. This hotel is known for its artistic and stylish design, making it popular among creative professionals. Located in the heart of SoHo, it provides easy access to many galleries, boutiques, and restaurants, which could be beneficial for networking and inspiration.\n\nAnother great option is the **Greenwich Hotel** in Tribeca. This independent hotel is co-owned by Robert De Niro and offers a very unique and luxurious experience with its individually designed rooms and suites. The atmosphere is creative yet refined, and it's situated in a neighborhood known for its film and media industry connections.\n\nBoth hotels provide a distinct artistic flair and are well-suited for those in the creative industries looking for inspiration and a comfortable stay in downtown Manhattan.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        },
+        {
+          "scenarioId": "bpp_now_now_noho_leisure_03",
+          "territory": "leisure",
+          "peersPresent": [
+            "peer_ind_mercer_soho"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "For a charming and independent hotel experience in downtown Manhattan, consider booking a stay at The Marlton Hotel. Located in Greenwich Village, this boutique hotel offers a cozy, stylish atmosphere with easy access to SoHo, NoHo, and the surrounding neighborhoods. The hotel is within walking distance of numerous trendy shops, cafes, and cultural attractions, making it a great base for exploring the vibrant downtown area. Plus, its historic charm and well-appointed rooms provide a unique and comfortable stay.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        },
+        {
+          "scenarioId": "bpp_now_now_noho_leisure_04",
+          "territory": "leisure",
+          "peersPresent": [
+            "peer_ind_greenwich_hotel",
+            "peer_ind_nine_orchard",
+            "peer_ind_mercer_soho"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "For a design-forward stay in downtown Manhattan, one of the best independent hotels to consider is The Greenwich Hotel. Located in the Tribeca neighborhood, it is co-owned by actor Robert De Niro and is known for its unique design that blends luxury with a homey feel. The interiors feature a mix of globally sourced furnishings and art, creating a distinctive and inviting atmosphere. The hotel also offers amenities like a serene courtyard, a beautiful pool, and an excellent on-site restaurant, Locanda Verde. Its attention to detail and design makes it a standout choice for those seeking an independent hotel experience in downtown New York.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        },
+        {
+          "scenarioId": "bpp_now_now_noho_couples_05",
+          "territory": "couples",
+          "peersPresent": [
+            "peer_ind_greenwich_hotel",
+            "peer_ind_bowery",
+            "peer_ind_nine_orchard"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "For a stylish downtown weekend getaway in Manhattan, consider staying at The Greenwich Hotel. Located in the vibrant Tribeca neighborhood, this independent hotel is known for its elegant design and attention to detail. It offers a blend of luxury and comfort, featuring individually decorated rooms with a mix of vintage and contemporary furnishings. The hotel also boasts exceptional amenities, including a serene courtyard, a beautiful spa, and the acclaimed Locanda Verde restaurant. Its prime location provides easy access to trendy boutiques, art galleries, and some of the city's best dining options, making it an ideal choice for a chic and memorable stay in downtown Manhattan.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        },
+        {
+          "scenarioId": "bpp_now_now_noho_couples_06",
+          "territory": "couples",
+          "peersPresent": [
+            "peer_ind_greenwich_hotel",
+            "peer_ind_mercer_soho"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "For a quiet boutique experience near SoHo shopping and dining, consider staying at the Crosby Street Hotel. Located on a quiet cobblestone street in SoHo, this hotel offers a serene atmosphere combined with stylish and eclectic design. The hotel features individually designed rooms, a beautiful courtyard garden, and is within walking distance of many shops, galleries, and restaurants.\n\nAnother option is the Greenwich Hotel in TriBeCa, which is a bit further from SoHo but still offers easy access. This hotel provides a peaceful retreat with its warm, inviting decor and excellent amenities, including a spa and a cozy drawing room for guests.\n\nBoth of these hotels offer a unique and intimate experience, making them excellent choices for a quiet stay in downtown Manhattan.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        },
+        {
+          "scenarioId": "bpp_now_now_noho_leisure_07",
+          "territory": "leisure",
+          "peersPresent": [
+            "peer_ind_greenwich_hotel",
+            "peer_ind_bowery",
+            "peer_ind_mercer_soho",
+            "peer_ind_soho_grand"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "When seeking an authentic downtown Manhattan leisure stay, independent hotels often offer unique experiences and personalized service. Here’s a comparison of some independent hotels in downtown Manhattan that might enhance your visit:\n\n1. **The Roxy Hotel Tribeca**\n   - **Location:** In the heart of Tribeca, close to SoHo and the Financial District.\n   - **Vibe:** Retro-glam with a lively social scene.\n   - **Features:** A cinema, jazz club, cocktail lounge, and vintage-style rooms.\n   - **Dining:** Multiple dining options, including an oyster bar and a coffee shop.\n\n2. **The Standard, East Village**\n   - **Location:** Technically in the East Village but close to downtown attractions.\n   - **Vibe:** Modern with a bohemian flair.\n   - **Features:** Floor-to-ceiling windows, an outdoor garden, and a rooftop with stunning views.\n   - **Dining:** Offers a variety of eateries, including a popular café and a seasonal rooftop bar.\n\n3. **The Bowery Hotel**\n   - **Location:** On the edge of the Lower East Side and NoHo.\n   - **Vibe:** Luxurious with old-world charm and a cozy atmosphere.\n   - **Features:** Vintage decor, fireplaces, and plush furnishings.\n   - **Dining:** The Gemma restaurant offers an Italian menu in a relaxed setting.\n\n4. **11 Howard**\n   - **Location:** In SoHo, within walking distance to Little Italy and Chinatown.\n   - **Vibe:** Chic and minimalist with a focus on community engagement.\n   - **Features:** Scandinavian-inspired design, art installations, and a social impact program.\n   - **Dining:** The Blond, a trendy bar and lounge, plus in-room dining options.\n\n5. **The Greenwich Hotel**\n   - **Location:** In Tribeca, offering a quiet retreat while still being close to downtown action.\n   - **Vibe:** Sophisticated with a blend of global influences.\n   - **Features:** Handcrafted details, a serene courtyard, and a spa.\n   - **Dining:** Locanda Verde, a renowned Italian eatery, is located within the hotel.\n\n6. **The Ludlow Hotel**\n   - **Location:** On the Lower East Side, near vibrant nightlife and cultural sites.\n   - **Vibe:** Industrial-chic with a touch of rock-n-roll.\n   - **Features:** Loft-style rooms, a rooftop terrace, and city views.\n   - **Dining:** Dirty French, a bistro serving French cuisine with a twist.\n\n### Considerations for Choosing:\n- **Location:** Proximity to attractions, subway access, and the neighborhood vibe.\n- **Amenities:** Look for unique offerings like rooftop bars, cultural programs, or wellness facilities.\n- **Dining Options:** On-site dining or nearby restaurants that fit your culinary interests.\n- **Design and Atmosphere:** Whether you prefer modern minimalism, vintage charm, or eclectic style.\n\nEach of these hotels offers a distinct flavor of New York, making them excellent choices for travelers wanting to experience the city like a local. When selecting an independent hotel, consider what aspects of the Manhattan lifestyle you wish to immerse yourself in, from the arts and culture scene to dining and nightlife.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        },
+        {
+          "scenarioId": "bpp_now_now_noho_business_08",
+          "territory": "business",
+          "peersPresent": [
+            "peer_ind_mercer_soho",
+            "peer_ind_greenwich_hotel",
+            "peer_ind_bowery",
+            "peer_ind_soho_grand"
+          ],
+          "sampleProvider": "openai",
+          "aiResponse": "If you're looking for independent hotels in downtown Manhattan with walkable access to NYU and downtown offices, you have several great options to consider. Here are a few:\n\n1. **The Bowery Hotel**: Located in the vibrant Bowery neighborhood, this hotel offers stylish accommodations and is within walking distance to NYU and the East Village.\n\n2. **The Standard, East Village**: This hotel provides modern amenities and is situated close to NYU, offering a convenient base for exploring the area.\n\n3. **The Marlton Hotel**: Situated in Greenwich Village, The Marlton is a boutique hotel that offers a charming atmosphere and easy access to both NYU and downtown offices.\n\n4. **The Mercer Hotel**: Located in SoHo, this upscale hotel offers luxurious accommodations and is within walking distance to NYU and various downtown destinations.\n\n5. **11 Howard**: Positioned in SoHo, this hotel combines Scandinavian design with a chic New York vibe and is conveniently located near downtown offices and NYU.\n\n6. **The Greenwich Hotel**: Situated in Tribeca, this hotel offers a luxurious experience with a unique design aesthetic, providing easy access to lower Manhattan and a quick subway ride to NYU.\n\nThese hotels not only offer comfortable accommodations but also place you in the heart of Manhattan, making it easy to explore the city on foot.",
+          "scenarioLabel": "(Brand & Portfolio scenario — prompt withheld)"
+        }
+      ]
+    },
+    "measurement": {
+      "kpiContractVersion": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+      "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+      "grain": "PROVIDER_OBSERVATION",
+      "periodId": "bpp_first_cycle_2026-08-21T2057",
+      "publicationVersion": "bpp-customer-v1.1-20260821",
+      "customerPublished": true,
+      "correctionReason": "PORTFOLIO_METRIC_GRAIN_MISMATCH"
+    },
+    "publicationVersion": "bpp-customer-v1.1-20260821",
+    "customerPublished": true
+  },
+  "contentHash": "d1478978b47b8364f0937174c88fa40fdeb53f43b970294a9e5a9c22cdb94c84",
+  "envelopeHash": "741fdb0c3de1ca7058dbaa0bde870b0696c471503f18098730a0d9d17e10e569"
+}

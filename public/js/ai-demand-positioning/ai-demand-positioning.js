@@ -1516,6 +1516,8 @@
     var rows = bpp.ranking && bpp.ranking.rows ? bpp.ranking.rows : [];
     if (territoryId && territoryId !== "overall" && bpp.byTerritory && bpp.byTerritory[territoryId]) {
       var tRank = bpp.byTerritory[territoryId].rankingUniverse || [];
+      // Territory views do not currently carry governed prior-row attachments —
+      // do not invent deltas; leave Prior Run as unavailable for that scope.
       rows = tRank.map(function (r) {
         return {
           rank: r.rank,
@@ -1524,15 +1526,20 @@
           brand: r.brand,
           isSubject: r.isSubject,
           presenceDisplay: r.presencePct != null ? r.presencePct + "%" : "—",
-          deltaDisplay: "—",
+          deltaDisplay: r.deltaDisplay != null ? r.deltaDisplay : "—",
           displacementDisplay: "—",
           sharedDisplay: "—",
         };
       });
     }
     var deltaCell = function (row) {
-      if (row.deltaDisplay != null && row.deltaDisplay !== "") return esc(row.deltaDisplay);
+      if (row.deltaDisplay != null && row.deltaDisplay !== "" && row.deltaDisplay !== "—") {
+        return esc(row.deltaDisplay);
+      }
       if (bpp.ranking && bpp.ranking.hasPriorPeriod === false) {
+        return '<span class="aiv-avail-insufficient_history aiv-delta-none">—</span>';
+      }
+      if (row.deltaDisplay === "—") {
         return '<span class="aiv-avail-insufficient_history aiv-delta-none">—</span>';
       }
       return "—";
@@ -2213,7 +2220,29 @@
           html += '<td class="aiv-metric-cell aiv-intent-index-cell">' + developingCell() + '</td>';
         }
       }
-      html += '<td class="aiv-metric-cell aiv-delta-cell aiv-chg-metric-cell aiv-intent-col-secondary">' + insufficientHistoryCell() + '</td>';
+      var intentDelta =
+        (idxData && idxData.deltaDisplay) ||
+        (data && data.deltaDisplay) ||
+        null;
+      var intentDeltaCell;
+      if (intentDelta && intentDelta !== "—") {
+        intentDeltaCell = esc(intentDelta);
+      } else if (
+        currentPayload &&
+        currentPayload.executiveMetrics &&
+        currentPayload.executiveMetrics.currentVsPrior &&
+        currentPayload.executiveMetrics.currentVsPrior.priorComparablePeriodId &&
+        idxData &&
+        idxData.delta == null &&
+        idxData.priorSubjectRatePct == null
+      ) {
+        intentDeltaCell = insufficientHistoryCell();
+      } else if (intentDelta === "—" || intentDelta == null) {
+        intentDeltaCell = insufficientHistoryCell();
+      } else {
+        intentDeltaCell = esc(String(intentDelta));
+      }
+      html += '<td class="aiv-metric-cell aiv-delta-cell aiv-chg-metric-cell aiv-intent-col-secondary">' + intentDeltaCell + '</td>';
       html += '<td class="aiv-metric-cell aiv-monitored-cell aiv-intent-col-secondary">' + monitored + '</td>';
       html += '<td class="aiv-metric-cell aiv-intent-col-secondary">' + missing + '</td>';
       html += '<td class="aiv-metric-cell aiv-intent-col-secondary">' + peerGaps + '</td>';
@@ -2682,7 +2711,9 @@
       "your property";
     var html = "";
     rows.forEach(function(row) {
-      var rankDisplay = row.displayRank === "—" ? "—" : "#" + row.displayRank;
+      var rankDisplay =
+        row.rankDisplay ||
+        (row.displayRank === "—" ? "—" : "#" + row.displayRank);
       var presence = row.aiPresencePct != null ? fmtPct(row.aiPresencePct) : "—";
       if (row.isZeroPresenceCore || row.isZeroPresenceSubject) presence = "0.0%";
       var dispCount =
@@ -2711,11 +2742,20 @@
         dispCell = '<span style="color:var(--aiv-text-secondary)">—</span>';
       }
 
+      var deltaRaw = row.deltaDisplay;
+      var deltaCellHtml;
+      if (deltaRaw != null && deltaRaw !== "" && deltaRaw !== "—") {
+        deltaCellHtml = esc(String(deltaRaw));
+      } else {
+        deltaCellHtml =
+          '<span class="aiv-avail-insufficient_history aiv-delta-none">—</span>';
+      }
+
       html += '<tr' + rowClass + ' data-entity-id="' + esc(row.entityId || "") + '">' +
-        '<td>' + rankDisplay + '</td>' +
+        '<td>' + esc(String(rankDisplay)) + '</td>' +
         '<td>' + relationshipPill(row, isOverall) + '</td>' +
         '<td>' + presence + '</td>' +
-        '<td class="aiv-metric-cell aiv-delta-cell aiv-chg-metric-cell"><span class="aiv-avail-insufficient_history aiv-delta-none">—</span></td>' +
+        '<td class="aiv-metric-cell aiv-delta-cell aiv-chg-metric-cell">' + deltaCellHtml + '</td>' +
         '<td>' + dispCell + '</td>' +
         '<td>' + (row.isSubject ? '—' : (row.appearances + " scenarios")) + '</td>' +
         '<td>' + esc(territory) + '</td>' +
