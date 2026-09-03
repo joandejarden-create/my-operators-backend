@@ -1,0 +1,27 @@
+# Dealality gitleaks config — extends defaults; scoped allowlists only.
+title = "Dealality secret scan"
+
+[extend]
+useDefault = true
+
+# Share capability registries store public token IDs (sht_… / sht_baip_…),
+# not HMAC signing secrets. The signed capability string and signing secret
+# live in env / issued URLs, not these metadata files.
+[[allowlists]]
+description = "ADP/BAI signed-share registry token IDs (not signing secrets)"
+paths = [
+  '''config/client-share/.+-share-registry/active-tokens\.json$''',
+  '''data/.+/share-registry/active-tokens\.json$''',
+]
+
+# Local Playwright shell E2E uses a clearly invalid Memberstack-shaped JWT.
+[[allowlists]]
+description = "ADP owner-app shell Playwright fixture JWT (invalid_sig)"
+condition = "AND"
+paths = [
+  '''scripts/playwright-adp-owner-app-shell-property-access-v1\.mjs$''',
+]
+regexTarget = "line"
+regexes = [
+  '''invalid_sig_for_local_shell_e2e''',
+]
