@@ -7,7 +7,36 @@
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
   <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-parent-share-v1-20260903">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-  <script>window.authFetch = function(url, opts) { return fetch(url, opts); };</script>
+  <script>
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var shareToken = params.get('share') || '';
+    function appendShare(url) {
+      if (!shareToken) return url;
+      var sep = url.indexOf('?') >= 0 ? '&' : '?';
+      return url + sep + 'share=' + encodeURIComponent(shareToken);
+    }
+    function shareFetch(url, opts) {
+      opts = opts || {};
+      var headers = Object.assign({ Accept: 'application/json' }, opts.headers || {});
+      if (shareToken) {
+        headers['X-BAI-Share-Capability'] = shareToken;
+      }
+      var fetchOpts = Object.assign({}, opts, { headers: headers, credentials: 'omit' });
+      delete fetchOpts.waitForLogin;
+      delete fetchOpts.maxWaitMs;
+      return fetch(appendShare(url), fetchOpts);
+    }
+    window.authFetch = shareFetch;
+    window.DealalityMemberstackAuth = {
+      authFetch: shareFetch,
+      getMemberstackJwt: function() { return Promise.resolve(null); },
+      getMemberstackJwtWhenReady: function() { return Promise.resolve(null); },
+      getAuthHeaders: function() { return Promise.resolve({ headers: { Accept: 'application/json' } }); },
+      inspectMemberstackAuth: function() { return Promise.resolve({ clientCount: 0, apis: [], hasJwt: false }); },
+    };
+  })();
+  </script>
   <script src="/js/ai-visibility/ai-visibility-shared.js?v=bai-parent-share-v1-20260903" defer></script>
   <script src="/js/ai-visibility/ai-visibility-brand.js?v=bai-parent-share-v1-20260903" defer></script>
 </head>
