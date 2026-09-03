@@ -50,8 +50,19 @@ import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } fr
 import { getTravelInfrastructure, getRadarMapTravelInfrastructurePoints, postTravelInfrastructureImportPreview, postTravelInfrastructureImportCommit } from "./api/travel-infrastructure.js";
 import { getDemandAnchors, getRadarMapDemandAnchorsPoints, postDemandAnchorsImportPreview, postDemandAnchorsImportCommit } from "./api/demand-anchors.js";
 import { getRadarBuildoutCountries, getRadarBuildoutCountry } from "./api/radar-buildout.js";
-import { getAiDemandPositioningProperties, getAiDemandPositioningReport, getAiDemandPositioningCostEstimate, getAiDemandPositioningEvidence, getAiDemandPositioningReadHealth } from "./api/ai-demand-positioning.js";
+import {
+  getAiDemandPositioningProperties,
+  getAiDemandPositioningReport,
+  getAiDemandPositioningCostEstimate,
+  getAiDemandPositioningEvidence,
+  getAiDemandPositioningReadHealth,
+  getAiDemandPositioningPublicationMeta,
+} from "./api/ai-demand-positioning.js";
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
+import {
+  requireAdpShareCapability,
+  getAdpShareResolve,
+} from "./middleware/adpShareCapabilityAuth.js";
 import {
   getGrowthSignalsSummary,
   getGrowthSignalTypes,
@@ -792,11 +803,45 @@ app.get(
   ...operatorAiVisibilityAuth,
   getOperatorAiCustomerPayload
 );
-app.get("/api/ai-demand-positioning/properties", getAiDemandPositioningProperties);
-app.get("/api/ai-demand-positioning/read-health", getAiDemandPositioningReadHealth);
-app.get("/api/ai-demand-positioning/property/:propertyId/report", getAiDemandPositioningReport);
-app.get("/api/ai-demand-positioning/property/:propertyId/evidence", getAiDemandPositioningEvidence);
-app.get("/api/ai-demand-positioning/property/:propertyId/cost-estimate", getAiDemandPositioningCostEstimate);
+// ADP: Memberstack owner app OR signed share capability (fail closed).
+const adpAuthBase = [optionalDealalityAuth];
+app.get("/api/ai-demand-positioning/share/resolve", getAdpShareResolve);
+app.get(
+  "/api/ai-demand-positioning/publication-meta",
+  ...adpAuthBase,
+  requireAdpShareCapability({ requiredSurface: "publication_meta", allowMemberstack: true }),
+  getAiDemandPositioningPublicationMeta
+);
+app.get(
+  "/api/ai-demand-positioning/properties",
+  ...adpAuthBase,
+  requireAdpShareCapability({ requiredSurface: "properties", allowMemberstack: true }),
+  getAiDemandPositioningProperties
+);
+app.get(
+  "/api/ai-demand-positioning/read-health",
+  ...adpAuthBase,
+  requireAdpShareCapability({ allowMemberstack: true }),
+  getAiDemandPositioningReadHealth
+);
+app.get(
+  "/api/ai-demand-positioning/property/:propertyId/report",
+  ...adpAuthBase,
+  requireAdpShareCapability({ requiredSurface: "report", allowMemberstack: true }),
+  getAiDemandPositioningReport
+);
+app.get(
+  "/api/ai-demand-positioning/property/:propertyId/evidence",
+  ...adpAuthBase,
+  requireAdpShareCapability({ requiredSurface: "evidence", allowMemberstack: true }),
+  getAiDemandPositioningEvidence
+);
+app.get(
+  "/api/ai-demand-positioning/property/:propertyId/cost-estimate",
+  ...adpAuthBase,
+  requireAdpShareCapability({ allowMemberstack: true }),
+  getAiDemandPositioningCostEstimate
+);
 
 app.get(
   "/api/ai-intelligence/validation/summary",
