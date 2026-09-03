@@ -25,3 +25,18 @@ regexTarget = "line"
 regexes = [
   '''invalid_sig_for_local_shell_e2e''',
 ]
+
+# Cache/deploy version tokens (adp-vNN-…) are public asset cache busters, not API keys.
+[[allowlists]]
+description = "ADP/BPP public cache and deploy version tokens"
+paths = [
+  '''lib/ai-demand-positioning/brand-portfolio/bpp-publication-meta-v1\.js$''',
+  '''data/ai-demand-positioning/published/_cache_token\.json$''',
+  '''public/adp-core-trends-p2-deploy-marker\.json$''',
+]
+regexTarget = "line"
+regexes = [
+  '''adp-v\d+-''',
+  '''BPP_ASSET_CACHE_TOKEN''',
+  '''"token"\s*:\s*"adp-v''',
+]
