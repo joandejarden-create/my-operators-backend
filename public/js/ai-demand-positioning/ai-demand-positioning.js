@@ -330,7 +330,15 @@
     if (res && res.status === 403) {
       return "You do not have access to this property report. Choose another property or contact Dealality.";
     }
-    return "Sign in to Dealality to view AI Demand Positioning reports.";
+    return "Sign in to Dealality to view your AI Demand Positioning reports.";
+  }
+
+  function adpZeroAssignmentMessage() {
+    return "No AI Demand Positioning reports are assigned to your account.";
+  }
+
+  function adpAuthorizationErrorMessage() {
+    return "Unable to load your AI Demand Positioning reports. Try again or contact Dealality.";
   }
 
   function withAdpShareCapability(url) {
@@ -386,15 +394,24 @@
       fetchOpts.headers["X-Dealality-Owner-App"] = "1";
       if (auth && typeof auth.getAuthHeaders === "function") {
         try {
+          // Embedded /app iframe needs waitForLogin so Test Mode JWT is ready.
+          // Standalone owner HTML can fall through to governed local DEV_AUTH_BYPASS —
+          // do not block 12s when Memberstack is absent.
+          var embedded = false;
+          try {
+            embedded = window.self !== window.top;
+          } catch (eEmb) {
+            embedded = true;
+          }
           var ownerHdrs = await auth.getAuthHeaders(null, {
-            waitForLogin: false,
-            maxWaitMs: 2000,
+            waitForLogin: embedded,
+            maxWaitMs: embedded ? 12000 : 2500,
           });
           if (!ownerHdrs.error) {
             Object.assign(fetchOpts.headers, ownerHdrs.headers);
           }
         } catch (eOwnerHdr) {
-          /* JWT optional — server enforces Memberstack in production */
+          /* JWT optional — server may use governed local DEV_AUTH_BYPASS */
         }
       }
       return fetch(shareUrl, fetchOpts);
@@ -548,15 +565,19 @@
       }
 
       var res = await authFetch(API_BASE + "/properties");
-      var data = await res.json();
+      var data = await res.json().catch(function () { return null; });
       var sel = document.getElementById("adpProperty");
-      if (!sel || !data.ok) {
-        if (res.status === 401 || res.status === 403) {
-          hideAll();
-          show("adpStateError");
-          var errAuth = document.getElementById("adpErrorMessage");
-          if (errAuth) {
+      if (!sel || !data || !data.ok) {
+        hideAll();
+        show("adpStateError");
+        var errAuth = document.getElementById("adpErrorMessage");
+        if (errAuth) {
+          if (res.status === 401) {
             errAuth.textContent = adpAuthRequiredMessage(res);
+          } else if (res.status === 403) {
+            errAuth.textContent = adpAuthRequiredMessage(res);
+          } else {
+            errAuth.textContent = adpAuthorizationErrorMessage();
           }
         }
         return;
@@ -588,14 +609,24 @@
         }
       }
       sel.addEventListener("change", loadReport);
-      if (data.properties.length) loadReport();
-      else if (isAdpOwnerAppSurface()) {
+      if (data.properties.length) {
+        loadReport();
+      } else if (isAdpOwnerAppSurface()) {
         hideAll();
         show("adpStateError");
         var errEmpty = document.getElementById("adpErrorMessage");
         if (errEmpty) {
-          errEmpty.textContent =
-            "No AI Demand Positioning reports are assigned to your account yet.";
+          // OWNER_APP_AUTH_ERROR_STATE_ACCURACY
+          var authMeta = data.auth || {};
+          if (authMeta.authenticated === false || res.status === 401) {
+            errEmpty.textContent = adpAuthRequiredMessage(res);
+          } else if (authMeta.authenticated === true) {
+            errEmpty.textContent = adpZeroAssignmentMessage();
+          } else {
+            // Missing JWT on owner-app request often looks like empty list if enforcement
+            // is mis-modeled — prefer sign-in when Owner-App header path had no session.
+            errEmpty.textContent = adpAuthRequiredMessage({ status: 401 });
+          }
         }
       }
     } catch (e) {

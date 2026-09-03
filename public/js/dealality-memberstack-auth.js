@@ -381,6 +381,11 @@
     var fromUrl = jwtFromUrlParams();
     if (fromUrl) acceptEmbedJwt(fromUrl);
     if (embedJwtFromParent) return embedJwtFromParent;
+    // Parent shell may publish via DealalityAppShellAuth.publishJwt before Memberstack client is ready.
+    try {
+      var published = global.__dealalityMemberstackJwt;
+      if (isValidBearerToken(published)) return String(published).trim();
+    } catch (_) {}
     try {
       var jwt = await getMemberstackJwtFromAnyClient();
       if (jwt) return jwt;

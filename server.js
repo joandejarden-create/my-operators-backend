@@ -64,6 +64,10 @@ import {
   getAdpShareResolve,
 } from "./middleware/adpShareCapabilityAuth.js";
 import {
+  requireBaiShareCapability,
+  getBaiShareResolve,
+} from "./middleware/baiShareCapabilityAuth.js";
+import {
   getGrowthSignalsSummary,
   getGrowthSignalTypes,
   getGrowthSignalsCountries,
@@ -771,9 +775,8 @@ const internalRunbookAuth = [memberstackAuth, requireDealalityUser, requireInter
 const ownerOdrAuth = [...myDealsAuth, requireOwnerOdrCreateAccess];
 const ownerOdrDealAuth = [...myDealsDealAuth, requireOwnerOdrCreateAccess];
 const brandAiVisibilityAuth = [
-  memberstackAuth,
-  requireDealalityUser,
-  requireBrandAiVisibilityAccess,
+  optionalDealalityAuth,
+  requireBaiShareCapability({ allowMemberstack: true }),
 ];
 const operatorAiVisibilityAuth = [
   memberstackAuth,
@@ -786,6 +789,7 @@ const aiIntelligenceValidationAuth = [
   requireAiIntelligenceValidationAccess,
 ];
 
+app.get("/api/ai-visibility/brand/share/resolve", getBaiShareResolve);
 app.get("/api/ai-visibility/brand/portfolio", ...brandAiVisibilityAuth, getAiVisibilityBrandPortfolio);
 app.get("/api/ai-visibility/brand/executive-summary", ...brandAiVisibilityAuth, getAiVisibilityBrandExecutiveSummary);
 app.get("/api/ai-visibility/brand/:brandId/overview", ...brandAiVisibilityAuth, getAiVisibilityBrandOverview);

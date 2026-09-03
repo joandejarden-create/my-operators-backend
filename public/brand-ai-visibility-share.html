@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand AI Intelligence — Dealality</title>
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-parent-share-v1-20260903">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script>window.authFetch = function(url, opts) { return fetch(url, opts); };</script>
+  <script src="/js/ai-visibility/ai-visibility-shared.js?v=bai-parent-share-v1-20260903" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-brand.js?v=bai-parent-share-v1-20260903" defer></script>
+</head>
+<body class="aiv-page embed-mode">
+  <div class="dashboard-container aiv-dashboard">
+    <header class="dashboard-header aiv-dashboard-header">
+      <div class="dashboard-header-left">
+        <div class="dashboard-title-container">
+          <h1>Brand AI Intelligence</h1>
+        </div>
+        <p class="aiv-header-subtitle">How your brands appear when hotel owners ask AI about development, conversion, and positioning — tracked by geography and provider with governed evidence.</p>
+      </div>
+      <div class="aiv-disclaimer-box" role="note" data-testid="aiv-methodology-footnote">
+        <div class="aiv-disclaimer-box__title">Disclaimer</div>
+        <ul class="aiv-disclaimer-box__list">
+          <li class="aiv-disclaimer-box__item">AI model outputs are probabilistic and may vary between monitoring runs.</li>
+          <li class="aiv-disclaimer-box__item">Dealality validates calculation accuracy, evidence traceability, and monitoring consistency.</li>
+          <li class="aiv-disclaimer-box__item">Interpret AI answers as observed model behavior—not guaranteed fact or advice. Results are calculated from monitored runs using consistent rules.</li>
+        </ul>
+      </div>
+    </header>
+
+    <nav class="bdd-section-nav aiv-section-nav" aria-label="Brand AI Intelligence views" role="tablist">
+      <button type="button" class="section-nav-item active" role="tab" aria-selected="true" data-tab="executive" id="aivTabExecutive">
+        <div class="section-nav-icon" title="Executive Summary">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <span class="section-nav-label">Executive<br>Summary</span>
+      </button>
+      <button type="button" class="section-nav-item" role="tab" aria-selected="false" data-tab="detail" id="aivTabDetail">
+        <div class="section-nav-icon" title="Detailed View">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <span class="section-nav-label">Detailed<br>View</span>
+      </button>
+    </nav>
+
+    <section class="filters-section aiv-filters-section" aria-label="Filters">
+      <div class="filter-group">
+        <label class="filter-label" for="aivGeography">Geography</label>
+        <select class="filter-select" id="aivGeography">
+          <option value="CALA" selected>CALA</option>
+          <option value="Global">Global</option>
+          <option value="North America">North America</option>
+          <option value="Europe">Europe</option>
+          <option value="MEA">MEA</option>
+          <option value="Asia Pacific">Asia Pacific</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="aivProvider">Provider</label>
+        <select class="filter-select" id="aivProvider" title="Provider is a first-class monitoring dimension. All Providers is a derived cross-provider view only — never a combined run. Missing provider data is Not Monitored, not zero.">
+          <option value="openai" selected>OpenAI</option>
+        </select>
+      </div>
+      <div class="filter-group" id="aivLanguageFilterGroup" hidden>
+        <label class="filter-label" for="aivLanguage">Language</label>
+        <select class="filter-select" id="aivLanguage" title="Monitoring language. Shown only when more than one language has completed data for the selected geography."></select>
+      </div>
+      <div class="filter-group" id="aivBrandFilterGroup">
+        <label class="filter-label" for="aivBrand">Brand</label>
+        <select class="filter-select" id="aivBrand"></select>
+      </div>
+      <div class="filter-group" id="aivIntentFilterGroup" hidden>
+        <label class="filter-label" for="aivIntent">Intent</label>
+        <select class="filter-select" id="aivIntent" title="Detailed View: filters Owner Questions by Intent Territory.">
+          <option value="">All intents</option>
+          <option value="Brand Selection">Brand Selection</option>
+          <option value="Operator Selection">Operator Selection</option>
+          <option value="Conversion">Conversion</option>
+          <option value="New Build">New Build</option>
+          <option value="HMA vs Franchise">HMA vs Franchise</option>
+          <option value="Owner Economics">Owner Economics</option>
+          <option value="Owner Flexibility">Owner Flexibility</option>
+          <option value="Branded Residences">Branded Residences</option>
+          <option value="Mixed Use">Mixed Use</option>
+          <option value="Market / Geography">Market / Geography</option>
+          <option value="Chain Scale / Positioning">Chain Scale / Positioning</option>
+          <option value="Development Strategy">Development Strategy</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="filter-group aiv-filter-actions">
+        <button type="button" class="btn-clear" id="aivReset">Reset</button>
+        <button type="button" class="aiv-btn-apply" id="aivApply">Run Report</button>
+      </div>
+    </section>
+
+    <div id="aivFreshnessStrip" class="aiv-freshness-strip" hidden role="status" aria-live="polite"></div>
+    <div id="aivPartialBanner" class="aiv-banner aiv-banner--partial" hidden role="status"></div>
+    <div id="aivStateBanner" class="aiv-banner" hidden></div>
+    <div id="aivError" class="aiv-error" hidden></div>
+
+    <div class="bdd-toast aiv-loading-toast" id="aivLoading" role="status" aria-live="polite" aria-busy="false" hidden>
+      <div class="toast-wave-container">
+        <div class="wave-container">
+          <div class="wave wave-1"></div>
+          <div class="wave wave-2"></div>
+          <div class="wave wave-3"></div>
+          <div class="wave-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+          </div>
+        </div>
+      </div>
+      <div class="toast-message" id="aivLoadingMessage">Loading Brand AI Intelligence…</div>
+    </div>
+
+    <!-- Executive Summary — restored spine + surgical Wave integration (no mega-wrapper) -->
+    <div id="aivExecutiveView" class="aiv-tab-panel" role="tabpanel" aria-labelledby="aivTabExecutive">
+
+      <section class="aiv-theme-group aiv-insight-layer" aria-labelledby="aivThemeInsights" id="aivExecInsightSection" hidden>
+        <h2 id="aivThemeInsights" class="aiv-theme-title">Executive Summary</h2>
+        <p class="aiv-theme-help help-text">Key takeaways from the current monitoring period—what changed, where you stand, and why it matters.</p>
+        <div class="aiv-insight-row aiv-exec-insight-tiles" id="aivExecInsights"></div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivThemePosition">
+        <h2 id="aivThemePosition" class="aiv-theme-title">Portfolio Snapshot</h2>
+        <p class="aiv-theme-help help-text">Factual indicators for your entitled brands in the selected geography — no composite score.</p>
+        <div class="aiv-kpi-row aiv-theme-kpis" id="aivExecPosition"></div>
+        <p class="aiv-prompt-mix help-text" id="aivExecPromptMix" hidden></p>
+      </section>
+
+      <section class="aiv-theme-group aiv-theme-group--secondary" aria-labelledby="aivThemeMarkets">
+        <h2 id="aivThemeMarkets" class="aiv-theme-title">Markets &amp; Movement</h2>
+        <p class="aiv-theme-help help-text">Which regions are monitored, which brand leads there, and how AI Presence changed between the latest two comparable monitoring runs.</p>
+        <div class="aiv-markets-grid">
+          <div class="aiv-theme-card aiv-theme-card--flush">
+            <h3 class="aiv-theme-label">Regional / Market View</h3>
+            <div class="deals-table-container aiv-portfolio-table-wrap aiv-regional-table-wrap">
+              <table class="deals-table aiv-portfolio-table aiv-regional-table" id="aivRegionalTable">
+                <thead>
+                  <tr>
+                    <th class="no-sort">Region</th>
+                    <th class="no-sort">Brands Monitored</th>
+                    <th class="no-sort">Leading Brand</th>
+                    <th class="no-sort">AI Presence</th>
+                    <th class="no-sort">Best Rank Brand</th>
+                    <th class="no-sort">Competitive Position</th>
+                  </tr>
+                </thead>
+                <tbody id="aivExecRegional"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="aiv-theme-card aiv-chart-card">
+            <div class="aiv-chart-header">
+              <div class="aiv-chart-title-row">
+                <h3 class="aiv-theme-label aiv-chart-title">AI Presence Over Time</h3>
+                <span class="aiv-chart-value" id="aivMarketTrendValue">—</span>
+              </div>
+            </div>
+            <div class="aiv-chart-container">
+              <canvas id="aivMarketTrendChart" aria-label="AI Presence over time for entitled brands"></canvas>
+              <div id="aivMarketTrendEmpty" class="aiv-empty" hidden></div>
+            </div>
+            <div class="aiv-chart-legend" id="aivMarketTrendLegend" hidden></div>
+            <div class="aiv-chart-meta">
+              <span id="aivMarketTrendMeta"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivThemeSignals">
+        <h2 id="aivThemeSignals" class="aiv-theme-title">Visibility Signals</h2>
+        <p class="aiv-theme-help help-text">Where your brands appear most often, and where they are still missing from monitored owner questions.</p>
+        <div class="aiv-signals-grid">
+          <div class="aiv-theme-card aiv-theme-card--signals">
+            <h3 class="aiv-theme-label">Top Strengths</h3>
+            <p class="aiv-theme-block-help help-text">Highest AI Presence and best peer rank from current monitoring.</p>
+            <div id="aivExecStrengths"></div>
+          </div>
+          <div class="aiv-theme-card aiv-theme-card--signals">
+            <h3 class="aiv-theme-label">Gaps / Risks</h3>
+            <p class="aiv-theme-block-help help-text">Brands not yet monitored, weak coverage, or questions where brands did not appear.</p>
+            <div id="aivExecGaps"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group aiv-portfolio-section" aria-labelledby="aivThemePortfolio">
+        <h2 id="aivThemePortfolio" class="aiv-theme-title">Your Brands</h2>
+        <p class="aiv-theme-help help-text">All brands linked to this company. Δ is the change in AI Presence vs the prior comparable monitoring run (in percentage points). Select a row to open Detailed View.</p>
+        <div id="aivNotableMoves" class="aiv-notable-moves" hidden></div>
+        <div class="results-row aiv-portfolio-results" id="aivPortfolioResults" hidden>
+          <div class="results-count" id="aivPortfolioCount"></div>
+        </div>
+        <div class="aiv-theme-card aiv-theme-card--flush">
+          <h3 class="aiv-theme-label">Portfolio Overview</h3>
+          <div class="deals-table-container aiv-portfolio-table-wrap">
+            <table class="deals-table aiv-portfolio-table" id="aivPortfolioTable">
+              <thead>
+                <tr>
+                  <th data-sort="brandName"><span class="aiv-th-label"><span class="aiv-th-text">Brand</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Brand"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Brand</strong><br>What it is: A hotel brand linked to your company in this portfolio.<br><br>How to read: Each row is one brand. Click a row to open Detailed View for that brand.<br><br>Why it matters: This is your starting point for comparing Presence, gaps, and competitive position brand by brand.</div></span></span></th>
+                  <th data-sort="aiPresence"><span class="aiv-th-label"><span class="aiv-th-text">AI<br>Presence</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About AI Presence"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>AI Presence</strong><br>What it is: How often this brand appeared in AI answers to the monitored owner questions.<br><br>How to read: Higher % means the brand showed up in more monitored answers. 0% means it was monitored but not observed. “—” or Not Monitored means there is no comparable data yet — not a zero score.<br><br>Why it matters: Presence is the core Brand AI Visibility signal. It shows whether owners asking AI about development and positioning are seeing your brand at all.</div></span></span></th>
+                  <th data-sort="aiPresenceChange"><span class="aiv-th-label"><span class="aiv-th-text">Δ vs<br>prior run</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Δ vs prior run"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Δ vs prior run</strong><br>What it is: Change in AI Presence versus the previous comparable monitoring run.<br><br>How to read: Shown in percentage points (pp). Positive means Presence improved; negative means it declined. If periods are not comparable, you will see Not Comparable or Insufficient History instead of a number.<br><br>Why it matters: It tells you whether visibility is moving — not just where you stand today.</div></span></span></th>
+                  <th data-sort="competitivePosition"><span class="aiv-th-label"><span class="aiv-th-text">Competitive<br>Position</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Competitive Position"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Competitive Position</strong><br>What it is: This brand’s rank by AI Presence among the fixed peer set in the selected geography.<br><br>How to read: #1 means the highest Presence among peers. A higher number means more peers outrank this brand. Rank is based only on Observed Presence — not recommendations or a composite score.<br><br>Why it matters: It shows whether you are leading, keeping pace, or trailing peers on the questions owners ask AI.</div></span></span></th>
+                  <th data-sort="questionsMissing"><span class="aiv-th-label"><span class="aiv-th-text">Questions<br>Missing</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Questions Missing"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Questions Missing</strong><br>What it is: Monitored owner-decision scenarios where this brand did not appear in the AI answer.<br><br>How to read: Shown as % (count). Higher % or count means more owner decisions went unanswered for your brand. Use Detailed View → Questions Missing Watchlist to review Owner Intent and Decision Context for each gap.<br><br>Why it matters: Missing observations are concrete gaps — places where owners asked AI and your brand was absent.</div></span></span></th>
+                  <th data-sort="topDecisionTerritory" class="aiv-col-secondary"><span class="aiv-th-label"><span class="aiv-th-text">Top Decision<br>Territory</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Top Decision Territory"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Top Decision Territory</strong><br>What it is: The owner-intent question type (prompt family) where this brand appeared most often.<br><br>How to read: The label is the strongest prompt family by Presence for this brand. It is not a weighted score or priority ranking across families.<br><br>Why it matters: It shows which owner decision themes already surface your brand — a useful contrast to families where you are missing.</div></span></span></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivThemePeers">
+        <h2 id="aivThemePeers" class="aiv-theme-title">Peer Context &amp; Next Review</h2>
+        <p class="aiv-theme-help help-text">How your portfolio compares with peers and the evidence-backed items worth reviewing next.</p>
+        <div class="aiv-peers-grid aiv-peers-grid--compact">
+          <div class="aiv-theme-card aiv-peers-card aiv-peers-card--competitive">
+            <h3 class="aiv-theme-label">Competitive Snapshot</h3>
+            <div id="aivExecCompetitive"></div>
+          </div>
+          <div class="aiv-theme-card aiv-peers-card aiv-peers-card--priority">
+            <h3 class="aiv-theme-label">Priority Review</h3>
+            <div id="aivExecPriority"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group aiv-evidence-discovery" aria-labelledby="aivThemeEvidence">
+        <h2 id="aivThemeEvidence" class="aiv-theme-title">Evidence, Sources &amp; Discovery</h2>
+        <p class="aiv-theme-help help-text">Citation patterns, recurring sources, provider visibility, discoverability, and language differences for the selected cohort.</p>
+
+        <div class="aiv-evidence-exec-grid">
+          <div class="aiv-theme-card aiv-evidence-citation-col">
+            <h3 class="aiv-theme-label">Citation Intelligence</h3>
+            <div id="aivExecCitations" class="aiv-citation-exec"></div>
+            <p class="aiv-evidence-exec-insight" id="aivExecCitationInsight" hidden></p>
+            <p class="aiv-evidence-zero-line" id="aivExecCitationNote" hidden></p>
+          </div>
+
+          <div class="aiv-theme-card aiv-source-landscape">
+            <h3 class="aiv-theme-label">
+              Source Landscape
+              <span class="info-tooltip aiv-col-info">
+                <span class="info-icon" role="button" tabindex="0" aria-label="About Citation Frequency">
+                  <svg width="12" height="12" aria-hidden="true"><use href="#aiv-info-icon"></use></svg>
+                </span>
+                <div class="tooltip-content" hidden>
+                  <strong>Citation Frequency</strong><br>
+                  What it is: How often this domain was cited in successful monitored AI responses in the current cohort.<br><br>
+                  How to read: A higher % means the domain appeared as a citation in more responses. Compare rows to see which sources show up most often. Frequency can differ by provider, question, geography, language, and run.<br><br>
+                  Why it matters: It shows which websites AI answers are pointing to when they cite sources. It does not measure influence, authority, or ranking power — only observed citation frequency.
+                </div>
+              </span>
+            </h3>
+            <p class="aiv-theme-block-help help-text" id="aivExecEvidenceNote" hidden></p>
+            <div id="aivExecEvidence"></div>
+            <button type="button" class="aiv-btn-text aiv-link aiv-sources-view-all" id="aivExecSourcesViewAll" hidden>View all sources →</button>
+          </div>
+        </div>
+
+        <div class="aiv-evidence-discovery-diagnostics" id="aivExecIntelligenceOverviewSection" hidden>
+          <div class="aiv-intel-overview aiv-intel-overview--compact" id="aivExecIntelligenceOverview" data-count="0">
+            <article class="aiv-theme-card aiv-intel-card" id="aivExecProviderCard" hidden>
+              <h3 class="aiv-theme-label">Provider Visibility</h3>
+              <div id="aivExecAllProviders"></div>
+            </article>
+            <article class="aiv-theme-card aiv-intel-card" id="aivExecDiscoverabilityCard" hidden>
+              <h3 class="aiv-theme-label">Public Discoverability</h3>
+              <div id="aivExecDiscoverability"></div>
+            </article>
+            <article class="aiv-theme-card aiv-intel-card" id="aivExecLanguageCard" hidden>
+              <h3 class="aiv-theme-label">Language Comparison</h3>
+              <div id="aivExecLanguage"></div>
+            </article>
+          </div>
+        </div>
+        <div id="aivExecCitationCard" hidden></div>
+        <div id="aivExecTopSources" hidden></div>
+      </section>
+
+    </div>
+
+    <!-- Detailed View — diagnostic depth (aligned to Exec design system) -->
+    <div id="aivDetailView" class="aiv-tab-panel" role="tabpanel" aria-labelledby="aivTabDetail" hidden>
+
+      <section class="aiv-theme-group aiv-insight-layer" aria-labelledby="aivDetailThemeInsights" id="aivDetailInsightSection" hidden>
+        <h2 id="aivDetailThemeInsights" class="aiv-theme-title">Brand Overview</h2>
+        <p class="aiv-theme-help help-text">Key takeaways for the selected brand and current filters—what changed, where you stand, and why it matters.</p>
+        <div class="aiv-insight-row aiv-exec-insight-tiles" id="aivDetailInsights"></div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeTopline" id="aivDetailToplineSection">
+        <h2 id="aivDetailThemeTopline" class="aiv-theme-title">Brand Detail</h2>
+        <p class="aiv-theme-help help-text">Orientation for the selected brand in the current monitoring cohort.</p>
+        <div class="aiv-kpi-row aiv-theme-kpis aiv-detail-kpi-row" id="aivKpiRow" aria-label="Brand detail topline"></div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeTrends" id="aivDetailTrendSection">
+        <h2 id="aivDetailThemeTrends" class="aiv-theme-title">Trends</h2>
+        <p class="aiv-theme-help help-text">Change across completed comparable monitoring runs for this brand.</p>
+        <div class="aiv-theme-card aiv-detail-trend-card" id="aivDetailTrendCard">
+          <div class="aiv-detail-trend-summary" id="aivDetailTrendSummary" hidden></div>
+          <div class="aiv-chart-container aiv-detail-trend-chart-wrap" id="aivDetailTrendChartWrap" hidden>
+            <canvas id="aivDetailTrendChart" aria-label="AI Presence over time for selected brand"></canvas>
+          </div>
+          <div id="aivDetailTrendEmpty" class="aiv-empty aiv-empty--compact" hidden></div>
+          <p class="aiv-theme-block-help help-text" id="aivTrendHelp"></p>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeCoverage" id="aivDetailCoverageSection">
+        <h2 id="aivDetailThemeCoverage" class="aiv-theme-title">Coverage Diagnostics</h2>
+        <p class="aiv-theme-help help-text">How this brand performs across providers and monitored owner-decision scenarios.</p>
+        <div class="aiv-kpi-row aiv-theme-kpis aiv-coverage-summary" id="aivCoverageSummary" aria-label="Coverage diagnostics summary"></div>
+        <div class="aiv-coverage-grid">
+          <div class="aiv-theme-card aiv-theme-card--flush aiv-coverage-col" id="aivProviderPresencePanel">
+            <div class="aiv-coverage-col__head">
+              <h3 class="aiv-theme-label">Provider Presence</h3>
+              <p class="aiv-theme-block-help help-text">Per-provider Observed Presence from successful monitoring. Not Monitored and Provider Error never show as 0%.</p>
+            </div>
+            <div id="aivProviderPresenceBody"></div>
+            <p class="aiv-theme-block-help help-text aiv-coverage-col__note" id="aivProviderPresenceNote"></p>
+          </div>
+          <div class="aiv-theme-card aiv-theme-card--flush aiv-coverage-col aiv-coverage-col--intent" id="aivDetailIntentSection">
+            <div class="aiv-coverage-col__head">
+              <h3 class="aiv-theme-label">AI Presence by Owner Intent</h3>
+              <p class="aiv-theme-block-help help-text">Presence, gaps and competitive position across monitored owner decisions.</p>
+            </div>
+            <div id="aivDetailIntentCoverage"></div>
+          </div>
+        </div>
+        <p class="aiv-theme-block-help help-text aiv-coverage-footer">Detailed question-level diagnostics remain in Questions Missing Watchlist.</p>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeWatchlist" id="aivDetailWatchlistSection">
+        <h2 id="aivDetailThemeWatchlist" class="aiv-theme-title">Questions Missing Watchlist <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Questions Missing"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Questions Missing</strong><br>A question is considered missing when your brand is absent across every comparable monitored provider for that owner-decision observation. Missing does not mean zero demand or that another brand won.</div></span></h2>
+        <p class="aiv-theme-help help-text">Owner-decision scenarios where this brand was not observed. Each row shows governed Owner Intent and Decision Context — not exact production prompt wording.</p>
+        <div class="aiv-theme-card aiv-theme-card--flush">
+          <div class="aiv-detail-questions-head">
+            <h3 class="aiv-theme-label">Watchlist</h3>
+            <div class="aiv-tabs" id="aivWatchlistTabs" aria-label="Watchlist modes">
+              <button type="button" data-watchlist="missing" class="is-active">Questions Missing</button>
+              <button type="button" data-watchlist="peer_gaps">Peers Appearing Where We Are Not</button>
+            </div>
+          </div>
+          <div class="aiv-watchlist-filters filters-section aiv-filters-section aiv-filters-section--inline" id="aivWatchlistFilters" aria-label="Watchlist filters">
+            <div class="filter-group">
+              <label class="filter-label" for="aivWlFamily">Owner Intent</label>
+              <select class="filter-select" id="aivWlFamily"><option value="">All</option></select>
+            </div>
+          </div>
+          <div class="deals-table-container aiv-portfolio-table-wrap aiv-questions-table-wrap">
+            <table class="deals-table aiv-portfolio-table aiv-questions-table" id="aivWatchlistTable">
+              <thead>
+                <tr>
+                  <th class="no-sort">Owner Intent <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Owner Intent"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Owner Intent</strong><br>Owner Intent represents the hotel owner or developer decision Dealality is testing, such as brand affiliation, conversion, flexibility or market entry. Dealality may use multiple governed question formulations to measure the same decision.</div></span></th>
+                  <th class="no-sort">Decision Context <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Decision Context"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Decision Context</strong><br>Decision Context describes the business situation behind the measurement. It helps explain what the AI was being asked to evaluate without exposing Dealality's exact production prompt.</div></span></th>
+                  <th class="no-sort">Geography</th>
+                  <th class="no-sort">Language</th>
+                  <th class="no-sort">Missing</th>
+                  <th class="no-sort">Core Peers Present</th>
+                  <th class="no-sort">Priority</th>
+                  <th class="no-sort">Evidence</th>
+                </tr>
+              </thead>
+              <tbody id="aivWatchlistBody"></tbody>
+            </table>
+          </div>
+          <div class="aiv-pagination" id="aivWatchlistPagination" hidden></div>
+          <p class="aiv-theme-block-help help-text" id="aivWatchlistNote"></p>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemePeers" id="aivDetailPeerSection">
+        <h2 id="aivDetailThemePeers" class="aiv-theme-title">Competitive / Peer Analysis</h2>
+        <p class="aiv-theme-help help-text">How this brand ranks among the fixed peer set in the selected geography.</p>
+        <div class="aiv-theme-card aiv-theme-card--flush">
+          <div id="aivCompetitors"></div>
+          <p class="aiv-theme-block-help help-text" id="aivDetailPeerGapNote" hidden></p>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeAssociations" id="aivDetailAssociationsSection" hidden>
+        <h2 id="aivDetailThemeAssociations" class="aiv-theme-title">AI Associations</h2>
+        <p class="aiv-theme-help help-text">Validated AI association patterns from monitored owner-decision responses.</p>
+        <div class="aiv-theme-card aiv-theme-card--flush" id="aivDetailAssociations"></div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeNarrative" id="aivDetailNarrativeSection" hidden>
+        <h2 id="aivDetailThemeNarrative" class="aiv-theme-title">Narrative Intelligence</h2>
+        <p class="aiv-theme-help help-text">Recurring commercial narratives AI associates with this brand across owner-decision scenarios. Sources cited alongside each narrative are shown where available.</p>
+        <div class="aiv-theme-card aiv-theme-card--flush">
+          <div class="deals-table-container aiv-portfolio-table-wrap">
+            <table class="deals-table aiv-portfolio-table aiv-narrative-table" id="aivNarrativeTable">
+              <thead>
+                <tr>
+                  <th class="no-sort">Narrative</th>
+                  <th class="no-sort">Relationship</th>
+                  <th class="no-sort">Recurrence</th>
+                  <th class="no-sort">Providers</th>
+                  <th class="no-sort">Scenario</th>
+                  <th class="no-sort">Disposition</th>
+                </tr>
+              </thead>
+              <tbody id="aivNarrativeBody"></tbody>
+            </table>
+          </div>
+          <div id="aivNarrativeEmpty" class="aiv-empty aiv-empty--compact" hidden>No qualified narrative patterns in the selected cohort.</div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeAiVs" id="aivDetailAiVsSection" hidden>
+        <h2 id="aivDetailThemeAiVs" class="aiv-theme-title">AI vs Dealality Context <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="How Dealality Measures AI"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>How Dealality Measures AI</strong><br>Dealality tests representative hotel owner and developer decision scenarios across monitored AI providers, markets and languages. Exact production prompts and testing sequences are proprietary.</div></span></h2>
+        <p class="aiv-theme-help help-text">What owner decision AI responded to, how your brand was represented, and governed Brand Basics context when available.</p>
+        <div class="aiv-theme-card aiv-theme-card--flush">
+          <div class="deals-table-container aiv-portfolio-table-wrap">
+            <table class="deals-table aiv-portfolio-table aiv-hdv-context-table" id="aivDetailContextTable">
+              <thead>
+                <tr>
+                  <th class="no-sort">Owner Intent <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Owner Intent"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Owner Intent</strong><br>Owner Intent represents the hotel owner or developer decision Dealality is testing, such as brand affiliation, conversion, flexibility or market entry. Dealality may use multiple governed question formulations to measure the same decision.</div></span></th>
+                  <th class="no-sort">Decision Context <span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Decision Context"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Decision Context</strong><br>Decision Context describes the business situation behind the measurement. It helps explain what the AI was being asked to evaluate without exposing Dealality's exact production prompt.</div></span></th>
+                  <th class="no-sort">AI Representation</th>
+                  <th class="no-sort">Dealality Context</th>
+                  <th class="no-sort">Status</th>
+                </tr>
+              </thead>
+              <tbody id="aivDetailContextBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeReview" id="aivDetailReviewSection" hidden>
+        <h2 id="aivDetailThemeReview" class="aiv-theme-title">Review Items</h2>
+        <p class="aiv-theme-help help-text">Monitoring findings with linked evidence for this brand.</p>
+        <div class="aiv-hdv-review-grid" id="aivDetailReviewItems"></div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeEvidence" id="aivDetailCitationSection">
+        <h2 id="aivDetailThemeEvidence" class="aiv-theme-title">Citation &amp; Source Intelligence</h2>
+        <p class="aiv-theme-help help-text">Citation coverage and sources returned in observed AI answers for this brand. Cited sources are not ranking factors.</p>
+        <div class="aiv-theme-card">
+          <div id="aivDetailCitationTopline" class="aiv-detail-citation-topline"></div>
+          <h3 class="aiv-theme-label">Cited Sources</h3>
+          <p class="aiv-theme-block-help help-text" id="aivDetailSourcesNote"></p>
+          <div id="aivSources"></div>
+          <div id="aivEvidenceFootprint" hidden></div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeDiscoverability" id="aivDetailDiscoverabilitySection">
+        <h2 id="aivDetailThemeDiscoverability" class="aiv-theme-title">Public Discoverability</h2>
+        <p class="aiv-theme-help help-text">Public accessibility of official brand sources — factual baseline only, not a score.</p>
+        <div class="aiv-theme-card aiv-discoverability-compact">
+          <div id="aivDetailDiscoverability"></div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group" aria-labelledby="aivDetailThemeLanguage" id="aivDetailLanguageSection" hidden>
+        <h2 id="aivDetailThemeLanguage" class="aiv-theme-title">Language Comparison</h2>
+        <p class="aiv-theme-help help-text">Side-by-side EN and ES monitoring for this brand when both languages are available.</p>
+        <div class="aiv-theme-card">
+          <div id="aivDetailLanguage"></div>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group aiv-theme-group--muted" aria-labelledby="aivDetailThemeOpportunity" hidden>
+        <h2 id="aivDetailThemeOpportunity" class="aiv-theme-title">Opportunity Engine</h2>
+        <p class="aiv-theme-help help-text">Not activated for Brand V1.</p>
+        <div class="aiv-theme-card" id="aivDetailOpportunity"></div>
+      </section>
+
+    </div>
+
+  <dialog id="aivEvidenceDrawer" class="aiv-drawer aiv-evidence-drawer">
+    <form method="dialog" class="aiv-drawer-inner">
+      <header class="aiv-evidence-header">
+        <h2>Evidence</h2>
+        <button type="submit" class="aiv-evidence-close" aria-label="Close evidence" title="Close evidence">×</button>
+      </header>
+      <div id="aivEvidenceBody" class="aiv-evidence-body"></div>
+    </form>
+  </dialog>
+
+
+  <!-- Radar-style info icon sprite + fixed popup host -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+    <symbol id="aiv-info-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M12 16v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="8" r="1" fill="currentColor"/>
+    </symbol>
+  </svg>
+  <div id="aivTooltipContainer" class="aiv-tooltip-container" aria-live="polite"></div>
+</body>
+</html>
