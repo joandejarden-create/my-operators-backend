@@ -1,7 +1,10 @@
 ﻿
 # Keep Railway uploads lean — local-only / generated bulk paths
 matcha/
-reports/
+# Lean-exclude report trees, but keep the customer BPP published pack deployable.
+reports/*
+!reports/ai-demand-positioning/
+!reports/ai-demand-positioning/ADP_BRAND_PORTFOLIO_CUSTOMER_PUBLISHED_V1.json
 uploads/
 engagements/
 rail-explore/
@@ -16,22 +19,30 @@ deploy-census-v4-worker-v3d/
 security/
 .agents/
 tmp-*/
-data/
-# ADP official periods + published snapshots (customer SoT when filesystem-backed)
+# Ignore data contents (not the directory node) so ADP un-ignores can take effect.
+data/*
+# ADP customer SoT only — published snapshots + certified period runtimes (not full history corpora).
 !data/ai-demand-positioning/
-!data/ai-demand-positioning/**
-data/ai-demand-positioning/runtime/
+!data/ai-demand-positioning/published/
+!data/ai-demand-positioning/published/**
+data/ai-demand-positioning/runtime/*
 !data/ai-demand-positioning/runtime/.gitkeep
 !data/ai-demand-positioning/runtime/adp_period_adp_waterstone_boca_raton_20260820131042_a69590.json
 !data/ai-demand-positioning/runtime/adp_period_adp_renaissance_times_square_20260820131042_18731c.json
 !data/ai-demand-positioning/runtime/adp_period_adp_cambridge_beaches_bermuda_20260820141258_547a7b.json
 !data/ai-demand-positioning/runtime/adp_period_adp_now_now_noho_20260820141258_2fe3a3.json
 !data/ai-demand-positioning/runtime/adp_period_adp_hotel_phillips_kansas_city_20260820194028_21bf47.json
+!data/ai-demand-positioning/runtime/adp_period_adp_waterstone_boca_raton_20260902231159_77334c.json
+!data/ai-demand-positioning/runtime/adp_period_adp_renaissance_times_square_20260902235427_7d74ca.json
+!data/ai-demand-positioning/runtime/adp_period_adp_hotel_phillips_kansas_city_20260903003324_88084d.json
+!data/ai-demand-positioning/runtime/adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437.json
+!data/ai-demand-positioning/runtime/adp_period_adp_now_now_noho_20260903014340_520794.json
 # Brand AI Visibility V1 pilot measured baseline (no raw monitoring corpora / experiments)
 !data/ai-visibility/runtime/wave1-showcase/
 !data/ai-visibility/runtime/wave1-showcase/**
 !data/ai-visibility/runtime/provider-baselines/
 !data/ai-visibility/runtime/provider-baselines/**
+# Client share capability registries live under config/ (see REGISTRY_PATH) so Railway uploads stay lean.
 !data/ai-visibility/truth-comparisons/
 !data/ai-visibility/truth-comparisons/**
 !data/ai-visibility/gaps/

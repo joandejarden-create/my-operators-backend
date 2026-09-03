@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Demand Positioning | Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
-  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=adp-v52-20260820-leisure-travel">
-  <link rel="stylesheet" href="/js/ai-demand-positioning/ai-demand-positioning.css?v=adp-v52-20260820-leisure-travel">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=adp-v75-20260903-share-selector">
+  <link rel="stylesheet" href="/js/ai-demand-positioning/ai-demand-positioning.css?v=adp-v75-20260903-share-selector">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script src="/js/dealality-memberstack-auth.js" defer></script>
-  <script src="/js/ai-demand-positioning/ai-demand-positioning.js?v=adp-v52-20260820-leisure-travel" defer></script>
+  <script src="/js/ai-demand-positioning/ai-demand-positioning.js?v=adp-v76-20260903-trends-p2" defer></script>
 </head>
 <body class="aiv-page embed-mode">
   <div class="dashboard-container aiv-dashboard">
@@ -140,7 +140,24 @@
                 <div id="adpProviderTableContainer"></div>
               </div>
             </div>
-            <p class="aiv-theme-help help-text" style="margin-top:8px;font-size:11px;color:var(--neutral--500)">Territory totals can be higher than any single model because a traveler need counts if at least one model mentioned your hotel.</p>
+            <p class="aiv-theme-help help-text adp-provider-territory-note" style="margin-top:8px;font-size:11px;color:var(--neutral--500)">Territory totals can be higher than any single model because a traveler need counts if at least one model mentioned your hotel.</p>
+          </section>
+
+          <section class="aiv-theme-group" aria-labelledby="adpThemeBrandPortfolio" data-adp-section="brand-portfolio-position" id="adpBrandPortfolioSection">
+            <h2 id="adpThemeBrandPortfolio" class="aiv-theme-title">Brand &amp; Portfolio Position</h2>
+            <p class="aiv-theme-help help-text" id="adpBrandPortfolioSubtitle">How this hotel performs within its brand, collection, portfolio, or loyalty ecosystem.</p>
+            <p class="adp-bpp-lens-meta" id="adpBrandPortfolioLens" hidden></p>
+            <div id="adpBrandPortfolioKpis" class="aiv-kpi-row adp-bpp-kpi-row" hidden></div>
+            <div id="adpBrandPortfolioNarrative" hidden></div>
+            <div id="adpBrandPortfolioProviderHost" hidden></div>
+            <div id="adpBrandPortfolioEvidenceHost" hidden></div>
+            <div id="adpBrandPortfolioTerritoryWrap" hidden></div>
+            <div id="adpBrandPortfolioStatus" class="adp-bpp-status" hidden>
+              <h3 class="aiv-theme-label" id="adpBrandPortfolioStatusLabel"></h3>
+              <p class="adp-bpp-status__body" id="adpBrandPortfolioStatusBody"></p>
+              <p class="adp-bpp-status__secondary" id="adpBrandPortfolioStatusSecondary" hidden></p>
+            </div>
+            <div id="adpBrandPortfolioTableHost" hidden></div>
           </section>
 
           <section class="aiv-theme-group" aria-labelledby="adpThemeSignals" data-adp-section="ai-reality-gaps">
@@ -247,7 +264,7 @@
   <dialog id="adpEvidenceDrawer" class="aiv-drawer aiv-evidence-drawer">
     <form method="dialog" class="aiv-drawer-inner">
       <header class="aiv-evidence-header">
-        <h2>Evidence</h2>
+        <h2 id="adpEvidenceTitle">Evidence</h2>
         <button type="submit" class="aiv-evidence-close" aria-label="Close evidence" title="Close evidence">×</button>
       </header>
       <div id="adpEvidenceBody" class="aiv-evidence-body"></div>

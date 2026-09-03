@@ -33,14 +33,20 @@ data/ai-visibility/runtime/
 !data/ai-visibility/runtime/provider-baselines/
 !data/ai-visibility/runtime/provider-baselines/**
 
-# ADP runtime corpora — keep official baseline periods only in git
-data/ai-demand-positioning/runtime/
+# ADP runtime corpora — keep official baseline + Period-002 certified periods
+# Use runtime/* (not runtime/) so file-level negation works for git + Railway upload.
+data/ai-demand-positioning/runtime/*
+!data/ai-demand-positioning/runtime/.gitkeep
 !data/ai-demand-positioning/runtime/adp_period_adp_waterstone_boca_raton_20260820131042_a69590.json
 !data/ai-demand-positioning/runtime/adp_period_adp_renaissance_times_square_20260820131042_18731c.json
 !data/ai-demand-positioning/runtime/adp_period_adp_cambridge_beaches_bermuda_20260820141258_547a7b.json
 !data/ai-demand-positioning/runtime/adp_period_adp_now_now_noho_20260820141258_2fe3a3.json
 !data/ai-demand-positioning/runtime/adp_period_adp_hotel_phillips_kansas_city_20260820194028_21bf47.json
-!data/ai-demand-positioning/runtime/.gitkeep
+!data/ai-demand-positioning/runtime/adp_period_adp_waterstone_boca_raton_20260902231159_77334c.json
+!data/ai-demand-positioning/runtime/adp_period_adp_renaissance_times_square_20260902235427_7d74ca.json
+!data/ai-demand-positioning/runtime/adp_period_adp_hotel_phillips_kansas_city_20260903003324_88084d.json
+!data/ai-demand-positioning/runtime/adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437.json
+!data/ai-demand-positioning/runtime/adp_period_adp_now_now_noho_20260903014340_520794.json
 
 # Licensed CoStar exports — internal GTM only (never commit)
 
@@ -76,3 +82,10 @@ reports/research-engine-v2/_tmp-*.html
 fixtures/research-engine-v2/*-sample.html
 data/_security-*.json
 scripts/_security-*.mjs
+
+data/ai-demand-positioning/share-registry/issued-share-urls.local.json
+data/ai-demand-positioning/share-registry/*.local.json
+data/ai-visibility/share-registry/issued-share-urls.local.json
+data/ai-visibility/share-registry/*.local.json
+
+data/ai-visibility/share-registry/production-share-secrets.local.json

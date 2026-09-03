@@ -1,0 +1,1288 @@
+{
+  "ok": true,
+  "publishedAt": "2026-08-20T06:30:41.938Z",
+  "productVersion": "ai_demand_positioning_v1",
+  "propertyId": "adp_waterstone_boca_raton",
+  "periodId": "adp_period_adp_waterstone_boca_raton_20260820053047_9cb18e",
+  "censusRecordId": null,
+  "payload": {
+    "ok": true,
+    "version": "ai_demand_positioning_v1",
+    "property": {
+      "propertyId": "adp_waterstone_boca_raton",
+      "name": "Waterstone Resort & Marina",
+      "city": "Boca Raton",
+      "state": "Florida",
+      "chainScale": "Upper Upscale",
+      "affiliation": "Curio Collection by Hilton",
+      "rooms": 139
+    },
+    "period": {
+      "periodId": "adp_period_adp_waterstone_boca_raton_20260820053047_9cb18e",
+      "executionDate": "2026-08-20T05:30:47.022Z",
+      "scenarioCount": 78,
+      "providerCount": 4,
+      "status": "PARSED"
+    },
+    "demandCapture": {
+      "overallRate": 75.6,
+      "totalScenarios": 78,
+      "capturedScenarios": 59,
+      "missedScenarios": 19,
+      "byIntent": {
+        "business": {
+          "total": 12,
+          "captured": 11,
+          "rate": 91.7
+        },
+        "leisure": {
+          "total": 12,
+          "captured": 10,
+          "rate": 83.3
+        },
+        "couples": {
+          "total": 9,
+          "captured": 7,
+          "rate": 77.8
+        },
+        "group_meeting": {
+          "total": 13,
+          "captured": 9,
+          "rate": 69.2
+        },
+        "family": {
+          "total": 9,
+          "captured": 6,
+          "rate": 66.7
+        },
+        "celebration": {
+          "total": 8,
+          "captured": 7,
+          "rate": 87.5
+        },
+        "wellness": {
+          "total": 8,
+          "captured": 4,
+          "rate": 50
+        },
+        "adventure": {
+          "total": 7,
+          "captured": 5,
+          "rate": 71.4
+        }
+      },
+      "display": "75.6%"
+    },
+    "intentPresenceIndex": {
+      "business": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Business Travel",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "provider_concentration"
+        ],
+        "index": null,
+        "myRate": 50,
+        "subjectRatePct": 50,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark developing",
+        "coreCount": 6,
+        "scenarioCount": 12,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 48,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "leisure": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Resort Leisure",
+        "status": "PRODUCTION_VALIDATED",
+        "blockers": [],
+        "index": 556,
+        "myRate": 52.1,
+        "subjectRatePct": 52.1,
+        "coreBenchmarkRatePct": 9.4,
+        "avgCompRate": 9.4,
+        "developing": false,
+        "developingLabel": "Benchmark developing",
+        "coreCount": 6,
+        "scenarioCount": 12,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 48,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "couples": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Couples / Romantic Stay",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "scenario_loo"
+        ],
+        "index": null,
+        "myRate": 66.7,
+        "subjectRatePct": 66.7,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark developing",
+        "coreCount": 7,
+        "scenarioCount": 9,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 36,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "group_meeting": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Meetings & Groups",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "provider_concentration"
+        ],
+        "index": null,
+        "myRate": 51.2,
+        "subjectRatePct": 51.2,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark developing",
+        "coreCount": 4,
+        "scenarioCount": 13,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 50,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "family": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Family Travel",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "scenario_loo"
+        ],
+        "index": null,
+        "myRate": 33.3,
+        "subjectRatePct": 33.3,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark developing",
+        "coreCount": 6,
+        "scenarioCount": 9,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 36,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "celebration": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Celebrations & Events",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "scenario_loo"
+        ],
+        "index": null,
+        "myRate": 65.6,
+        "subjectRatePct": 65.6,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark developing",
+        "coreCount": 4,
+        "scenarioCount": 8,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 32,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "wellness": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Wellness",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "provider_concentration"
+        ],
+        "index": null,
+        "myRate": 15.6,
+        "subjectRatePct": 15.6,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark developing",
+        "coreCount": 4,
+        "scenarioCount": 8,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 31,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "adventure": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Adventure & Experiences",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "core_lt_4",
+          "scenario_loo"
+        ],
+        "index": null,
+        "myRate": 60.7,
+        "subjectRatePct": 60.7,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark developing",
+        "coreCount": 3,
+        "scenarioCount": 7,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 28,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      }
+    },
+    "lostDemand": {
+      "totalLost": 19,
+      "highRelevanceLost": 4,
+      "displacement": [
+        {
+          "name": "Eau Palm Beach Resort",
+          "displacementCount": 14
+        },
+        {
+          "name": "Eau Palm Beach Resort & Spa",
+          "displacementCount": 13
+        },
+        {
+          "name": "Four Seasons Resort",
+          "displacementCount": 8
+        },
+        {
+          "name": "Four Seasons Resort Palm Beach",
+          "displacementCount": 7
+        },
+        {
+          "name": "The Diplomat Beach Resort",
+          "displacementCount": 6
+        }
+      ],
+      "topReasons": [
+        {
+          "reason": "High competitor density. Stronger authority signals needed",
+          "count": 13
+        },
+        {
+          "reason": "Meeting/event capability may be underrepresented in AI sources",
+          "count": 3
+        },
+        {
+          "reason": "Marina/waterfront attribute not consistently recognized by AI",
+          "count": 2
+        },
+        {
+          "reason": "Property may not be positioned as luxury tier by AI",
+          "count": 1
+        }
+      ],
+      "scenarios": [
+        {
+          "intent": "leisure",
+          "competitorsPresent": [
+            "Acqualina Resort & Residences on the Beach",
+            "For a Relaxed Island Getaway: Isla Bella Beach Resort (Marathon, Florida Keys)",
+            "Every single room and suite at the resort",
+            "Top Recommendation: 1 Hotel South Beach",
+            "Many of the rooms and suites"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "couples",
+          "competitorsPresent": [
+            "that you are celebrating an anniversary when booking. South Florida luxury hotel",
+            "only private island resort in the United States",
+            "Four Seasons Hotel Fort Lauderdale",
+            "Little Palm Island Resort & Spa",
+            "Four Seasons Resort Palm Beach"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "wellness",
+          "competitorsPresent": [
+            "Waldorf Astoria Resort",
+            "Boca Raton Resort",
+            "A relaxed, protein-rich dinner at the resort",
+            "Alternative Option: The Seagate Hotel & Spa",
+            "The Seagate Hotel"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "wellness",
+          "competitorsPresent": [
+            "Eau Palm Beach Resort",
+            "classic luxury resort environment",
+            "sprawling, iconic resort getaway",
+            "Eau Palm Beach Resort & Spa",
+            "Choose Amrit Ocean Resort"
+          ],
+          "likelyReason": "Property may not be positioned as luxury tier by AI",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "adventure",
+          "competitorsPresent": [
+            "Situated right on the Intracoastal Waterway, this hotel",
+            "Located in the heart of the Florida Keys, this resort",
+            "The Westin Cape Coral Resort at Marina Village",
+            "With its beachfront location, this resort",
+            "Pelican Grand Beach Resort"
+          ],
+          "likelyReason": "Marina/waterfront attribute not consistently recognized by AI",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "leisure",
+          "competitorsPresent": [
+            "Diplomat Beach Resort",
+            "The Collector Luxury Inn & Gardens",
+            "Hotel Maren Fort Lauderdale Beach",
+            "Opened relatively recently, Hotel",
+            "Best Full-Scale Beach Resort"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "Conveniently located near the Palm Beach Convention Center, this hotel",
+            "Four Seasons Resort Palm Beach",
+            "Eau Palm Beach Resort & Spa",
+            "PGA National Resort & Spa",
+            "This iconic luxury hotel"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "couples",
+          "competitorsPresent": [
+            "The Leopard Lounge & Restaurant provides a unique dining experience, and the hotel",
+            "Eau Palm Beach Resort & Spa",
+            "Tideline Ocean Resort & Spa",
+            "The Brazilian Court Hotel",
+            "Eau Palm Beach Resort"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "group_meeting",
+          "competitorsPresent": [
+            "Eau Palm Beach Resort & Spa",
+            "Eau Palm Beach Resort",
+            "It feels like a private island resort",
+            "If you don't want a massive resort",
+            "Baker's Cay Resort"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "group_meeting",
+          "competitorsPresent": [
+            "Situated along the Atlantic Ocean, the hotel",
+            "The rooms and suites",
+            "Palm Beach Marriott Singer Island Beach Resort & Spa",
+            "it is described as a downtown waterfront hotel",
+            "Palm Beach Marriott Singer Island Beach Resort"
+          ],
+          "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
+          "relevance": "HIGH"
+        }
+      ]
+    },
+    "competitiveSet": {
+      "declaredCount": 6,
+      "observedCount": 840,
+      "overlapRate": 1666.7,
+      "surprises": [
+        {
+          "name": "Eau Palm Beach Resort",
+          "mentions": 43,
+          "scenarioCount": 20,
+          "isCore": false
+        },
+        {
+          "name": "Eau Palm Beach Resort & Spa",
+          "mentions": 29,
+          "scenarioCount": 18,
+          "isCore": false
+        },
+        {
+          "name": "The Seagate Hotel",
+          "mentions": 21,
+          "scenarioCount": 18,
+          "isCore": false
+        },
+        {
+          "name": "Delray Sands Resort",
+          "mentions": 21,
+          "scenarioCount": 14,
+          "isCore": false
+        },
+        {
+          "name": "Four Seasons Resort",
+          "mentions": 15,
+          "scenarioCount": 9,
+          "isCore": false
+        }
+      ],
+      "observed": [
+        {
+          "name": "Boca Raton Resort",
+          "mentions": 107,
+          "scenarioCount": 53,
+          "isCore": true
+        },
+        {
+          "name": "Eau Palm Beach Resort",
+          "mentions": 43,
+          "scenarioCount": 20,
+          "isCore": false
+        },
+        {
+          "name": "Renaissance Boca Raton Hotel",
+          "mentions": 35,
+          "scenarioCount": 20,
+          "isCore": true
+        },
+        {
+          "name": "Eau Palm Beach Resort & Spa",
+          "mentions": 29,
+          "scenarioCount": 18,
+          "isCore": false
+        },
+        {
+          "name": "The Seagate Hotel",
+          "mentions": 21,
+          "scenarioCount": 18,
+          "isCore": false
+        },
+        {
+          "name": "Delray Sands Resort",
+          "mentions": 21,
+          "scenarioCount": 14,
+          "isCore": false
+        },
+        {
+          "name": "Embassy Suites by Hilton Boca Raton",
+          "mentions": 16,
+          "scenarioCount": 10,
+          "isCore": true
+        },
+        {
+          "name": "Hilton Boca Raton Suites",
+          "mentions": 16,
+          "scenarioCount": 10,
+          "isCore": true
+        },
+        {
+          "name": "Boca Raton Resort & Club, A Waldorf Astoria Resort",
+          "mentions": 15,
+          "scenarioCount": 15,
+          "isCore": true
+        },
+        {
+          "name": "The Boca Raton (formerly The Boca Raton Resort & Club)",
+          "mentions": 15,
+          "scenarioCount": 13,
+          "isCore": true
+        }
+      ],
+      "declaredButNotObserved": []
+    },
+    "realityGap": {
+      "gapScore": 58.8,
+      "display": "58.8%",
+      "totalAttributes": 17,
+      "recognizedCount": 7,
+      "gapCount": 10,
+      "recognized": [
+        {
+          "attribute": "waterfront",
+          "label": "Waterfront Location",
+          "recognitionRate": 94.1,
+          "count": 144,
+          "total": 153
+        },
+        {
+          "attribute": "marina",
+          "label": "Marina & Boat Access",
+          "recognitionRate": 99.3,
+          "count": 152,
+          "total": 153
+        },
+        {
+          "attribute": "intracoastal_waterway",
+          "label": "Intracoastal Waterway",
+          "recognitionRate": 73.9,
+          "count": 113,
+          "total": 153
+        },
+        {
+          "attribute": "heated_outdoor_pool",
+          "label": "Heated Outdoor Pool",
+          "recognitionRate": 43.8,
+          "count": 67,
+          "total": 153
+        },
+        {
+          "attribute": "soft_brand",
+          "label": "Soft Brand / Independence",
+          "recognitionRate": 51,
+          "count": 78,
+          "total": 153
+        },
+        {
+          "attribute": "hilton_honors",
+          "label": "Hilton Honors Integration",
+          "recognitionRate": 56.2,
+          "count": 86,
+          "total": 153
+        },
+        {
+          "attribute": "boutique_feel",
+          "label": "Boutique Character",
+          "recognitionRate": 66.7,
+          "count": 102,
+          "total": 153
+        }
+      ],
+      "gaps": [
+        {
+          "attribute": "watersports",
+          "label": "Water Sports",
+          "priority": "medium",
+          "recognitionRate": 22.2,
+          "count": 34,
+          "total": 153,
+          "severity": "MEDIUM"
+        },
+        {
+          "attribute": "near_mizner_park",
+          "label": "Near Mizner Park",
+          "priority": "medium",
+          "recognitionRate": 20.3,
+          "count": 31,
+          "total": 153,
+          "severity": "MEDIUM"
+        },
+        {
+          "attribute": "panoramic_views",
+          "label": "Panoramic Views",
+          "priority": "medium",
+          "recognitionRate": 16.3,
+          "count": 25,
+          "total": 153,
+          "severity": "MEDIUM"
+        },
+        {
+          "attribute": "walking_distance_beach",
+          "label": "Walking Distance to Beach",
+          "priority": "medium",
+          "recognitionRate": 9.8,
+          "count": 15,
+          "total": 153,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "pet_friendly",
+          "label": "Pet-Friendly",
+          "priority": "low",
+          "recognitionRate": 2,
+          "count": 3,
+          "total": 153,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "ev_charging",
+          "label": "EV Charging",
+          "priority": "low",
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 153,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "meeting_space",
+          "label": "Meeting & Event Space",
+          "priority": "high",
+          "recognitionRate": 39.9,
+          "count": 61,
+          "total": 153,
+          "severity": "LOW"
+        },
+        {
+          "attribute": "event_space_outdoor",
+          "label": "Outdoor Event Space",
+          "priority": "medium",
+          "recognitionRate": 9.2,
+          "count": 14,
+          "total": 153,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "ballroom",
+          "label": "Ballroom",
+          "priority": "medium",
+          "recognitionRate": 9.2,
+          "count": 14,
+          "total": 153,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "private_balconies",
+          "label": "Private Balconies",
+          "priority": "medium",
+          "recognitionRate": 26.1,
+          "count": 40,
+          "total": 153,
+          "severity": "LOW"
+        }
+      ],
+      "totalPropertyMentions": 153
+    },
+    "whiteSpace": {
+      "totalOpportunities": 10,
+      "highOpportunities": 5,
+      "opportunities": [
+        {
+          "intent": "business",
+          "ownerIntentSummary": "Upscale hotel in Palm Beach County with good WiFi and",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority.",
+          "topCompetitors": [
+            {
+              "name": "Eau Palm Beach Resort",
+              "count": 2
+            },
+            {
+              "name": "Four Seasons Resort",
+              "count": 2
+            },
+            {
+              "name": "Conveniently located near the Palm Beach Convention Center, this hotel",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "intent": "couples",
+          "ownerIntentSummary": "Recommend a waterfront hotel in South Florida for an anniver...",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "unowned",
+          "rationale": "No clear leader in AI responses for this demand.",
+          "topCompetitors": [
+            {
+              "name": "that you are celebrating an anniversary when booking. South Florida luxury hotel",
+              "count": 1
+            },
+            {
+              "name": "only private island resort in the United States",
+              "count": 1
+            },
+            {
+              "name": "Four Seasons Hotel Fort Lauderdale",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "intent": "wellness",
+          "ownerIntentSummary": "Resort in South Florida with yoga, pool, and healthy dining",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority.",
+          "topCompetitors": [
+            {
+              "name": "Carillon Miami Wellness Resort",
+              "count": 2
+            },
+            {
+              "name": "Eau Palm Beach Resort",
+              "count": 2
+            },
+            {
+              "name": "Situated on Belle Isle, the resort",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "intent": "wellness",
+          "ownerIntentSummary": "Recommend a luxury wellness escape in the Boca Raton or",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority.",
+          "topCompetitors": [
+            {
+              "name": "Eau Palm Beach Resort",
+              "count": 2
+            },
+            {
+              "name": "Eau Palm Beach Resort & Spa",
+              "count": 2
+            },
+            {
+              "name": "Amrit Ocean Resort",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "intent": "adventure",
+          "ownerIntentSummary": "Hotel in South Florida near boating, kayaking, and paddleboa...",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority.",
+          "topCompetitors": [
+            {
+              "name": "Pelican Grand Beach Resort",
+              "count": 2
+            },
+            {
+              "name": "Cheeca Lodge",
+              "count": 2
+            },
+            {
+              "name": "Cheeca Lodge & Spa (Islamorada)",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "intent": "leisure",
+          "ownerIntentSummary": "Recommend a waterfront resort in South Florida with a pool",
+          "opportunityScore": "HIGH",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority. Your property attributes align well with this demand.",
+          "topCompetitors": [
+            {
+              "name": "Acqualina Resort & Residences on the Beach",
+              "count": 2
+            },
+            {
+              "name": "For a Relaxed Island Getaway: Isla Bella Beach Resort (Marathon, Florida Keys)",
+              "count": 1
+            },
+            {
+              "name": "Every single room and suite at the resort",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "intent": "group_meeting",
+          "ownerIntentSummary": "Best hotel with meeting space and waterfront views in Palm",
+          "opportunityScore": "HIGH",
+          "currentOwnership": "unowned",
+          "rationale": "No clear leader in AI responses for this demand. Your property attributes align well with this demand. Your 18,899 sq ft event space is relevant.",
+          "topCompetitors": [
+            {
+              "name": "Situated along the Atlantic Ocean, the hotel",
+              "count": 1
+            },
+            {
+              "name": "The rooms and suites",
+              "count": 1
+            },
+            {
+              "name": "Palm Beach Marriott Singer Island Beach Resort & Spa",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "intent": "group_meeting",
+          "ownerIntentSummary": "Where to hold a board meeting for 20 executives in",
+          "opportunityScore": "HIGH",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority. Your property attributes align well with this demand. Your 18,899 sq ft event space is relevant.",
+          "topCompetitors": [
+            {
+              "name": "Eau Palm Beach Resort",
+              "count": 2
+            },
+            {
+              "name": "Situated in the Brickell district, this hotel",
+              "count": 1
+            },
+            {
+              "name": "Hyatt Regency Coconut Point Resort and Spa",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "intent": "wellness",
+          "ownerIntentSummary": "Recommend an upscale Boca Raton hotel for a fitness and",
+          "opportunityScore": "HIGH",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority. Your property attributes align well with this demand.",
+          "topCompetitors": [
+            {
+              "name": "Boca Raton Resort",
+              "count": 2
+            },
+            {
+              "name": "Waldorf Astoria Resort",
+              "count": 1
+            },
+            {
+              "name": "A relaxed, protein-rich dinner at the resort",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "intent": "group_meeting",
+          "ownerIntentSummary": "Hotel for a yacht club event or boating-themed corporate out...",
+          "opportunityScore": "HIGH",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority. Your property attributes align well with this demand.",
+          "topCompetitors": [
+            {
+              "name": "Marriott Harbor Beach Resort",
+              "count": 2
+            },
+            {
+              "name": "Pier Sixty-Six Hotel",
+              "count": 2
+            },
+            {
+              "name": "With its private beach and proximity to marinas, this resort",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    "brief": {
+      "items": [
+        {
+          "type": "headline",
+          "text": "Your property captured 75.6% of relevant AI demand scenarios this period."
+        },
+        {
+          "type": "risk",
+          "text": "4 high-relevance demand scenarios did not include your property."
+        },
+        {
+          "type": "insight",
+          "text": "5 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
+        },
+        {
+          "type": "opportunity",
+          "text": "5 high-potential demand opportunities identified where no competitor dominates."
+        },
+        {
+          "type": "gap",
+          "text": "AI Reality Gap: 58.8%. AI misses or misrepresents 10 of your property's key attributes."
+        }
+      ],
+      "generatedAt": "2026-08-20T06:30:40.400Z"
+    },
+    "actions": [
+      {
+        "priority": "HIGH",
+        "category": "REALITY_GAP",
+        "title": "Improve AI representation of walking distance to beach",
+        "description": "AI currently misses or underrepresents your walking distance to beach. Review third-party content and authority signals for this attribute before estimating impact.",
+        "expectedImpact": null
+      },
+      {
+        "priority": "HIGH",
+        "category": "WHITE_SPACE",
+        "title": "Pursue 5 high-potential demand opportunities",
+        "description": "5 demand scenarios have weak competitor ownership where your property attributes align. Building authority here could establish category ownership.",
+        "expectedImpact": null
+      },
+      {
+        "priority": "MEDIUM",
+        "category": "DISPLACEMENT",
+        "title": "Address displacement by Eau Palm Beach Resort",
+        "description": "Eau Palm Beach Resort appears in 14 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
+        "expectedImpact": null
+      }
+    ],
+    "evidence": {
+      "citationRate": 25.3,
+      "avgSourcesPerCitation": 19.2,
+      "totalWithSources": 79,
+      "totalObservations": 312,
+      "topSources": [
+        {
+          "domain": "tripadvisor.com",
+          "count": 63,
+          "frequency": 79.7
+        },
+        {
+          "domain": "thebocaraton.com",
+          "count": 51,
+          "frequency": 64.6
+        },
+        {
+          "domain": "marriott.com",
+          "count": 50,
+          "frequency": 63.3
+        },
+        {
+          "domain": "expedia.com",
+          "count": 49,
+          "frequency": 62
+        },
+        {
+          "domain": "booking.com",
+          "count": 38,
+          "frequency": 48.1
+        },
+        {
+          "domain": "hotels.com",
+          "count": 33,
+          "frequency": 41.8
+        },
+        {
+          "domain": "ar.tripadvisor.com",
+          "count": 26,
+          "frequency": 32.9
+        },
+        {
+          "domain": "reddit.com",
+          "count": 26,
+          "frequency": 32.9
+        },
+        {
+          "domain": "hilton.com",
+          "count": 21,
+          "frequency": 26.6
+        },
+        {
+          "domain": "travelocity.com",
+          "count": 20,
+          "frequency": 25.3
+        }
+      ],
+      "providers": [
+        {
+          "provider": "gemini",
+          "total": 78,
+          "mentioned": 51,
+          "presence": 65.4
+        },
+        {
+          "provider": "claude",
+          "total": 78,
+          "mentioned": 37,
+          "presence": 47.4
+        },
+        {
+          "provider": "openai",
+          "total": 78,
+          "mentioned": 33,
+          "presence": 42.3
+        },
+        {
+          "provider": "perplexity",
+          "total": 78,
+          "mentioned": 32,
+          "presence": 41
+        }
+      ],
+      "providerCitations": {
+        "openai": 0,
+        "gemini": 1.3,
+        "perplexity": 100,
+        "claude": 0
+      },
+      "discovery": [
+        {
+          "intent": "group_meeting",
+          "citationRate": 26.9,
+          "total": 52
+        },
+        {
+          "intent": "business",
+          "citationRate": 25,
+          "total": 48
+        },
+        {
+          "intent": "leisure",
+          "citationRate": 25,
+          "total": 48
+        },
+        {
+          "intent": "couples",
+          "citationRate": 25,
+          "total": 36
+        },
+        {
+          "intent": "family",
+          "citationRate": 25,
+          "total": 36
+        },
+        {
+          "intent": "celebration",
+          "citationRate": 25,
+          "total": 32
+        },
+        {
+          "intent": "wellness",
+          "citationRate": 25,
+          "total": 32
+        },
+        {
+          "intent": "adventure",
+          "citationRate": 25,
+          "total": 28
+        }
+      ]
+    },
+    "executiveMetrics": {
+      "version": "adp_optional_executive_metrics_v2",
+      "considerationRate": {
+        "rate": 49.5,
+        "presentObservations": 153,
+        "comparableObservations": 309
+      },
+      "scenarioPresence": {
+        "rate": 75.6,
+        "capturedScenarios": 59,
+        "eligibleScenarios": 78
+      },
+      "rankMetrics": {
+        "rankEligibleN": 53,
+        "numberOneAppearanceRate": 17,
+        "topThreeAppearanceRate": 71.7,
+        "numberOneCount": 9,
+        "topThreeCount": 38
+      },
+      "competitorPresentScenarios": {
+        "scenarioCount": 53,
+        "observationCount": 151
+      }
+    },
+    "trends": [
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819094555_3e9e55",
+        "date": "2026-08-19T09:45:55.632Z",
+        "demandCaptureRate": null,
+        "providerCount": 4,
+        "observationCount": 260
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819094700_c5a40b",
+        "date": "2026-08-19T09:47:00.571Z",
+        "demandCaptureRate": 37.2,
+        "providerCount": 4,
+        "observationCount": 195
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110501_5bf4a0",
+        "date": "2026-08-19T11:05:01.774Z",
+        "demandCaptureRate": null,
+        "providerCount": 4,
+        "observationCount": 130
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110616_3f9ca5",
+        "date": "2026-08-19T11:06:16.460Z",
+        "demandCaptureRate": null,
+        "providerCount": 4,
+        "observationCount": 195
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819110643_16d0c7",
+        "date": "2026-08-19T11:06:43.954Z",
+        "demandCaptureRate": 41,
+        "providerCount": 4,
+        "observationCount": 195
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819113317_726131",
+        "date": "2026-08-19T11:33:17.628Z",
+        "demandCaptureRate": 46.2,
+        "providerCount": 4,
+        "observationCount": 195
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819122848_742e26",
+        "date": "2026-08-19T12:28:48.731Z",
+        "demandCaptureRate": 48.7,
+        "providerCount": 4,
+        "observationCount": 195
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819133040_68d371",
+        "date": "2026-08-19T13:30:40.124Z",
+        "demandCaptureRate": 52.6,
+        "providerCount": 4,
+        "observationCount": 260
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819142020_ea2bcf",
+        "date": "2026-08-19T14:20:20.396Z",
+        "demandCaptureRate": 65.4,
+        "providerCount": 4,
+        "observationCount": 260
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819143945_0feb6d",
+        "date": "2026-08-19T14:39:45.057Z",
+        "demandCaptureRate": 61.5,
+        "providerCount": 4,
+        "observationCount": 260
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260819144128_fb2e16",
+        "date": "2026-08-19T14:41:28.468Z",
+        "demandCaptureRate": 62.8,
+        "providerCount": 4,
+        "observationCount": 260
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260820051538_045e71",
+        "date": "2026-08-20T05:15:38.129Z",
+        "demandCaptureRate": 76.9,
+        "providerCount": 4,
+        "observationCount": 312
+      },
+      {
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260820053047_9cb18e",
+        "date": "2026-08-20T05:30:47.022Z",
+        "demandCaptureRate": 75.6,
+        "providerCount": 4,
+        "observationCount": 312
+      }
+    ]
+  }
+}

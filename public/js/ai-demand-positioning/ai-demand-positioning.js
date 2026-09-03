@@ -11,6 +11,27 @@
   function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
   function toProperCase(s) { return (s || "").replace(/\b\w/g, function(c) { return c.toUpperCase(); }); }
 
+  /**
+   * PEER_TEXT_VISUAL_BALANCE + CUSTOMER_ACTION_PROPER_CASE
+   * Two-line peer evidence actions: View / Missing · View / Examples
+   */
+  function adpPeerEvidenceActionHtml(attrHtml, kind) {
+    var line2 = kind === "missing" ? "Missing" : "Examples";
+    var aria = kind === "missing" ? "View Missing" : "View Examples";
+    return (
+      '<button type="button" class="aiv-btn-text aiv-link adp-evidence-action-btn" aria-label="' +
+      aria +
+      '"' +
+      (attrHtml || "") +
+      ">" +
+      '<span class="adp-evidence-action__line">View</span>' +
+      '<span class="adp-evidence-action__line">' +
+      line2 +
+      "</span>" +
+      "</button>"
+    );
+  }
+
   function adpGovernedIndexTip() {
     return "<strong>AI Presence Index</strong><br><br>" +
       "AI Presence Index compares how often your hotel appears in monitored AI responses with the average appearance rate of relevant CORE comparable hotels for the same demand territory.<br><br>" +
@@ -57,10 +78,10 @@
 
   function adpTopObservedAlternativeTip() {
     return adpExecutiveMetricTip("Top Observed AI Alternative", {
-      summary: "This is the hotel AI named most often alongside or instead of yours across monitored answers this period.",
-      definition: "The single hotel that appeared most frequently as an alternative in the comparable AI answers we collected.",
-      formula: "Among hotels named in monitored AI answers, the one with the highest appearance count in this period.",
-      grain: "Counted from observed hotel names in AI answers. Ties are resolved by the highest observed count.",
+      summary: "This is the hotel that appears most often alongside or instead of yours across monitored answers this period.",
+      definition: "The single non-subject hotel with the highest Overall AI Presence in comparable monitored answers — the same ranking as Competitive Overview Overall.",
+      formula: "Among hotels named in monitored AI answers, the one present in the most comparable responses (max one credit per hotel per answer). Ties use alphabetical display name.",
+      grain: "Unique-per-observation presence on comparable answers only. Duplicate names in one answer count once. Same grain as Competitive Overview AI Presence.",
       whyTrack: "Gives a practical read on which hotel AI surfaces most often in your competitive context — useful for understanding who travelers may see when AI answers stay questions.",
       important: "An observed AI alternative is not automatically a direct commercial competitor. This is an observation from AI answers, not a judgment of brand, rate, or market set membership."
     });
@@ -276,12 +297,181 @@
     return fmtPct(Number(ratio) * 100);
   }
 
-  async function authFetch(url) {
-    var auth = window.DealalityMemberstackAuth;
-    if (auth && typeof auth.authFetch === "function") {
-      return auth.authFetch(url, { waitForLogin: true, maxWaitMs: 12000 });
+  function getAdpShareCapabilityToken() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      return params.get("share") || "";
+    } catch (e) {
+      return "";
     }
-    return fetch(url, { headers: { Accept: "application/json" }, credentials: "include" });
+  }
+
+  function isAdpExternalShareSurface() {
+    if (getAdpShareCapabilityToken()) return true;
+    try {
+      return /owner-ai-demand-share\.html/i.test(window.location.pathname || "");
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isAdpOwnerAppSurface() {
+    try {
+      return /owner-ai-demand\.html/i.test(window.location.pathname || "") && !isAdpExternalShareSurface();
+    } catch (e) {
+      return !isAdpExternalShareSurface();
+    }
+  }
+
+  function adpAuthRequiredMessage(res) {
+    if (isAdpExternalShareSurface()) {
+      return "A signed share link is required to view this report.";
+    }
+    if (res && res.status === 403) {
+      return "You do not have access to this property report. Choose another property or contact Dealality.";
+    }
+    return "Sign in to Dealality to view AI Demand Positioning reports.";
+  }
+
+  function withAdpShareCapability(url) {
+    var token = getAdpShareCapabilityToken();
+    if (!token) return url;
+    var u = String(url);
+    if (u.indexOf("share=") !== -1) return u;
+    return u + (u.indexOf("?") >= 0 ? "&" : "?") + "share=" + encodeURIComponent(token);
+  }
+
+  /**
+   * Same native <select> as the owner app. EXTERNAL_SHARE: disabled + one option.
+   * OWNER_APP: enabled with authorized inventory (caller populates options).
+   */
+  function applyExternalShareEntitySelect(sel, spec) {
+    if (!sel) return;
+    sel.innerHTML = "";
+    var opt = document.createElement("option");
+    opt.value = spec.value;
+    opt.textContent = spec.label || spec.value;
+    sel.appendChild(opt);
+    sel.value = spec.value;
+    sel.disabled = true;
+    sel.setAttribute("aria-disabled", "true");
+    sel.setAttribute("title", spec.title || "This report is scoped to the selected property");
+    sel.classList.add("filter-select--share-locked");
+  }
+
+  function unlockOwnerAppEntitySelect(sel) {
+    if (!sel) return;
+    sel.disabled = false;
+    sel.removeAttribute("aria-disabled");
+    sel.removeAttribute("title");
+    sel.classList.remove("filter-select--share-locked");
+  }
+
+  async function authFetch(url, opts) {
+    opts = opts || {};
+    var shareUrl = withAdpShareCapability(url);
+    var auth = window.DealalityMemberstackAuth;
+    var fetchOpts = {
+      headers: { Accept: "application/json", ...(opts.headers || {}) },
+      credentials: "include",
+      cache: opts.cache || "no-store",
+    };
+    var token = getAdpShareCapabilityToken();
+    if (token) {
+      fetchOpts.headers["X-ADP-Share-Capability"] = token;
+    }
+
+    // Owner app: Memberstack JWT when available + owner-app marker (never require share token).
+    if (isAdpOwnerAppSurface() && !token) {
+      fetchOpts.headers["X-Dealality-Owner-App"] = "1";
+      if (auth && typeof auth.getAuthHeaders === "function") {
+        try {
+          var ownerHdrs = await auth.getAuthHeaders(null, {
+            waitForLogin: false,
+            maxWaitMs: 2000,
+          });
+          if (!ownerHdrs.error) {
+            Object.assign(fetchOpts.headers, ownerHdrs.headers);
+          }
+        } catch (eOwnerHdr) {
+          /* JWT optional — server enforces Memberstack in production */
+        }
+      }
+      return fetch(shareUrl, fetchOpts);
+    }
+
+    // Share page may bind window.authFetch = fetch (no Memberstack).
+    if (typeof window.authFetch === "function" && !(auth && typeof auth.authFetch === "function")) {
+      return window.authFetch(shareUrl, fetchOpts);
+    }
+    if (auth && typeof auth.authFetch === "function") {
+      return auth.authFetch(shareUrl, {
+        waitForLogin: true,
+        maxWaitMs: 12000,
+        cache: fetchOpts.cache,
+        headers: fetchOpts.headers,
+      });
+    }
+    return fetch(shareUrl, fetchOpts);
+  }
+
+  var ADP_BPP_SESSION_META_KEY = "adp_bpp_publication_meta_v1";
+
+  async function fetchAdpPublicationMeta() {
+    try {
+      var res = await authFetch(API_BASE + "/publication-meta", { cache: "no-store" });
+      if (!res.ok) return null;
+      var data = await res.json();
+      if (!data || !data.ok || !data.bpp) return null;
+      try {
+        sessionStorage.setItem(
+          ADP_BPP_SESSION_META_KEY,
+          JSON.stringify({
+            publicationVersion: data.bpp.publicationVersion,
+            payloadHash: data.bpp.payloadHash,
+            assetCacheToken: data.bpp.assetCacheToken,
+            fetchedAt: Date.now(),
+          })
+        );
+      } catch (e) {}
+      return data.bpp;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function readStoredBppMeta() {
+    try {
+      var raw = sessionStorage.getItem(ADP_BPP_SESSION_META_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function buildReportUrl(propertyId, pubMeta) {
+    var url = API_BASE + "/property/" + encodeURIComponent(propertyId) + "/report";
+    var params = [];
+    if (pubMeta && pubMeta.publicationVersion) {
+      params.push("bppPub=" + encodeURIComponent(pubMeta.publicationVersion));
+    }
+    if (pubMeta && pubMeta.payloadHash) {
+      params.push("bppHash=" + encodeURIComponent(String(pubMeta.payloadHash).slice(0, 16)));
+    }
+    try {
+      var pageParams = new URLSearchParams(window.location.search);
+      if (pageParams.get("bppPeriod2Local") === "1") {
+        params.push("bppPeriod2Local=1");
+      }
+      if (pageParams.get("bppLocalReady") === "1") {
+        params.push("bppLocalReady=1");
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    // Cache key must include publication version — never propertyId alone
+    params.push("_cb=" + encodeURIComponent((pubMeta && pubMeta.publicationVersion) || "live"));
+    return url + "?" + params.join("&");
   }
 
   function show(id) { var el = document.getElementById(id); if (el) el.hidden = false; }
@@ -327,10 +517,51 @@
 
   async function loadProperties() {
     try {
+      var shareToken = getAdpShareCapabilityToken();
+      if (shareToken) {
+        var resolveRes = await authFetch(API_BASE + "/share/resolve", { cache: "no-store" });
+        var resolved = await resolveRes.json().catch(function () { return null; });
+        if (!resolveRes.ok || !resolved || !resolved.ok || !resolved.propertyId) {
+          hideAll();
+          show("adpStateError");
+          var errShare = document.getElementById("adpErrorMessage");
+          if (errShare) {
+            errShare.textContent =
+              (resolved && resolved.message) ||
+              "This share link is invalid, expired, or revoked. Request a new link from Dealality.";
+          }
+          return;
+        }
+        var selShare = document.getElementById("adpProperty");
+        var shareLabel =
+          (resolved.property && resolved.property.label) ||
+          resolved.propertyId;
+        applyExternalShareEntitySelect(selShare, {
+          value: resolved.propertyId,
+          label: shareLabel,
+          title: "This report is scoped to this property",
+        });
+        // EXTERNAL_SHARE_DOES_NOT_ENUMERATE_OTHER_ENTITIES — never fetch /properties
+        // merely to label the disabled selector. Token-bound display comes from /share/resolve.
+        loadReport();
+        return;
+      }
+
       var res = await authFetch(API_BASE + "/properties");
       var data = await res.json();
       var sel = document.getElementById("adpProperty");
-      if (!sel || !data.ok) return;
+      if (!sel || !data.ok) {
+        if (res.status === 401 || res.status === 403) {
+          hideAll();
+          show("adpStateError");
+          var errAuth = document.getElementById("adpErrorMessage");
+          if (errAuth) {
+            errAuth.textContent = adpAuthRequiredMessage(res);
+          }
+        }
+        return;
+      }
+      unlockOwnerAppEntitySelect(sel);
       sel.innerHTML = "";
       (data.properties || []).forEach(function (p) {
         var opt = document.createElement("option");
@@ -339,12 +570,43 @@
         sel.appendChild(opt);
       });
       var requested = getQueryPropertyId();
-      if (requested && sel.querySelector('option[value="' + requested + '"]')) {
-        sel.value = requested;
+      if (requested) {
+        if (sel.querySelector('option[value="' + requested + '"]')) {
+          sel.value = requested;
+        } else {
+          // CROSS_PROPERTY_DATA_ISOLATION — never fall back to another hotel on unknown propertyId
+          sel.value = "";
+          hideAll();
+          show("adpStateError");
+          var errEl = document.getElementById("adpErrorMessage");
+          if (errEl) {
+            errEl.textContent =
+              "This property report is not available. Check the link or select a property from the list.";
+          }
+          sel.addEventListener("change", loadReport);
+          return;
+        }
       }
       sel.addEventListener("change", loadReport);
       if (data.properties.length) loadReport();
-    } catch (e) { console.error("[ADP] loadProperties error", e); }
+      else if (isAdpOwnerAppSurface()) {
+        hideAll();
+        show("adpStateError");
+        var errEmpty = document.getElementById("adpErrorMessage");
+        if (errEmpty) {
+          errEmpty.textContent =
+            "No AI Demand Positioning reports are assigned to your account yet.";
+        }
+      }
+    } catch (e) {
+      console.error("[ADP] loadProperties error", e);
+      if (isAdpOwnerAppSurface()) {
+        hideAll();
+        show("adpStateError");
+        var errCatch = document.getElementById("adpErrorMessage");
+        if (errCatch) errCatch.textContent = adpAuthRequiredMessage(null);
+      }
+    }
   }
 
   async function loadReport() {
@@ -352,12 +614,84 @@
     if (!sel || !sel.value) return;
     hideAll(); show("adpStateLoading");
     try {
-      var res = await authFetch(API_BASE + "/property/" + encodeURIComponent(sel.value) + "/report");
+      var pubMeta = (await fetchAdpPublicationMeta()) || readStoredBppMeta();
+      var reportUrl = buildReportUrl(sel.value, pubMeta);
+      var res = await authFetch(reportUrl, { cache: "no-store" });
       var data = await res.json();
       if (!data.ok) {
         if (data.error === "no_monitoring_data") { hideAll(); show("adpStateNoData"); return; }
         throw new Error(data.message || data.error);
       }
+
+      function bppLooksPublishedReady(bpp) {
+        return !!(
+          bpp &&
+          bpp.customerPublished === true &&
+          bpp.status === "READY" &&
+          bpp.assuranceStatus === "CUSTOMER_READY" &&
+          Array.isArray(bpp.kpis) &&
+          bpp.kpis.length > 0 &&
+          bpp.ranking &&
+          Array.isArray(bpp.ranking.rows) &&
+          bpp.ranking.rows.length > 0
+        );
+      }
+
+      // If publication-meta says this property is customer-published but report BPP is still
+      // awaiting/stale, force one no-store refetch (CUSTOMER_REPORT_PUBLICATION_CACHE_INVALIDATION).
+      // Skip when explicitly previewing controlled Period-2 local output.
+      var pageParams = new URLSearchParams(window.location.search);
+      var period2LocalPreview = pageParams.get("bppPeriod2Local") === "1";
+      var metaSaysPublished =
+        pubMeta &&
+        pubMeta.publicationVersion &&
+        String(pubMeta.publicationVersion).indexOf("bpp-customer-") === 0;
+      if (
+        metaSaysPublished &&
+        !period2LocalPreview &&
+        !bppLooksPublishedReady(data.brandPortfolioPosition)
+      ) {
+        pubMeta = (await fetchAdpPublicationMeta()) || pubMeta;
+        res = await authFetch(buildReportUrl(sel.value, pubMeta), { cache: "no-store" });
+        data = await res.json();
+        if (!data.ok) throw new Error(data.message || data.error || "Unable to load report.");
+      }
+
+      // CUSTOMER_PUBLISHED_READY_STATE_DELIVERY — normalize published READY for renderer
+      var bpp = data.brandPortfolioPosition;
+      if (bppLooksPublishedReady(bpp)) {
+        bpp.status = "READY";
+        bpp.assuranceStatus = "CUSTOMER_READY";
+        bpp.showAnalyticalScaffolding = true;
+        bpp.customerPublished = true;
+        data.brandPortfolioPosition = bpp;
+      } else if (
+        bpp &&
+        period2LocalPreview &&
+        bpp.controlledPeriod2LocalPreview === true &&
+        bpp.status === "READY" &&
+        Array.isArray(bpp.kpis) &&
+        bpp.kpis.length > 0
+      ) {
+        bpp.showAnalyticalScaffolding = true;
+        bpp.customerPublished = false;
+        data.brandPortfolioPosition = bpp;
+      }
+
+      try {
+        sessionStorage.setItem(
+          ADP_BPP_SESSION_META_KEY,
+          JSON.stringify({
+            publicationVersion: data._bppPublicationVersion || (pubMeta && pubMeta.publicationVersion) || null,
+            payloadHash: data._bppPayloadHash || (pubMeta && pubMeta.payloadHash) || null,
+            assetCacheToken: data._bppAssetCacheToken || (pubMeta && pubMeta.assetCacheToken) || null,
+            reportCacheKey: data._reportCacheKey || null,
+            propertyId: sel.value,
+            fetchedAt: Date.now(),
+          })
+        );
+      } catch (e) {}
+
       currentPayload = data;
       selectedCompTerritory = null;
       hideAll(); show("adpStateSuccess");
@@ -383,6 +717,7 @@
     renderExecIntentTable(d.demandCapture);
     renderTrends(d);
     renderProviderPresenceTable(d);
+    renderBrandPortfolioPosition(d);
     renderRealityKpis(d.realityGap);
     renderExecStrengthsGaps(d.realityGap);
     renderExecCompTable(d);
@@ -517,9 +852,12 @@
     var realityCard = propertyRealityCoverageSnapshot(rg);
     var scenariosCard = scenariosMonitoredSnapshot(d);
     var travelerNeeds = travelerNeedsAppearanceSnapshot(d);
-    var topAlternative = cs.observed && cs.observed.length ? cs.observed[0].name : "—";
-    var topAlternativeMeta = cs.observed && cs.observed.length
-      ? "Most frequently named alternative hotel across monitored AI responses this period."
+    var topAlt =
+      (cs.topObservedAlternative && cs.topObservedAlternative.name) ||
+      (cs.observed && cs.observed.length ? cs.observed[0].name : null);
+    var topAlternative = topAlt || "—";
+    var topAlternativeMeta = topAlt
+      ? "Hotel appearing most often across monitored AI responses this period."
       : "No observed AI alternatives are available for this period yet.";
 
     el.innerHTML =
@@ -781,6 +1119,518 @@
       '</div></article>';
   }
 
+  /**
+   * Brand & Portfolio Position — mutually exclusive READY vs status states.
+   * BRAND_PORTFOLIO_READY_STATE_ATOMIC_RENDER
+   * BRAND_PORTFOLIO_RENDER_STATE_EXCLUSIVITY
+   * NO_EMPTY_ANALYTICAL_CONTAINER
+   */
+  function bppUnmountAnalytical(hosts) {
+    hosts.forEach(function (el) {
+      if (!el) return;
+      el.hidden = true;
+      el.setAttribute("hidden", "");
+      el.innerHTML = "";
+      el.classList.remove(
+        "aiv-theme-card",
+        "aiv-theme-card--flush",
+        "adp-bpp-narrative",
+        "adp-bpp-portfolio-read",
+        "adp-executive-read",
+        "adp-bpp-provider-block"
+      );
+      el.removeAttribute("data-bpp-analytical");
+      el.removeAttribute("data-kpi-count");
+    });
+  }
+
+  function bppMountAnalyticalShell(el, extraClass) {
+    if (!el) return;
+    el.hidden = false;
+    el.removeAttribute("hidden");
+    el.setAttribute("data-bpp-analytical", "1");
+    if (extraClass) el.className = extraClass;
+  }
+
+  function isBrandPortfolioReady(bpp) {
+    if (!bpp) return false;
+    var status = bpp.status || bpp.renderState || "";
+    var assuranceOk =
+      bpp.assuranceStatus === "CUSTOMER_READY" ||
+      bpp.assuranceStatus === "PERIOD_2_CERTIFIED_LOCAL" ||
+      bpp.controlledPeriod2LocalPreview === true;
+    return (
+      status === "READY" &&
+      assuranceOk &&
+      Array.isArray(bpp.kpis) &&
+      bpp.kpis.length > 0 &&
+      bpp.ranking &&
+      Array.isArray(bpp.ranking.rows) &&
+      bpp.ranking.rows.length > 0 &&
+      bpp.showAnalyticalScaffolding !== false
+    );
+  }
+
+  /** Infer unique-scenario denominator from observation meta (4 providers). */
+  function bppInferScenarioCount(bpp) {
+    var presence = (bpp.kpis || []).find(function (k) {
+      return k && k.id === "portfolioAiPresence";
+    });
+    var m = presence && presence.meta ? String(presence.meta).match(/(\d+)\s+of\s+(\d+)/i) : null;
+    if (m) {
+      var obs = Number(m[2]);
+      if (obs > 0 && obs % 4 === 0) return obs / 4;
+    }
+    return null;
+  }
+
+  function bppCustomerKpiMeta(kpi, bpp) {
+    if (!kpi) return "";
+    var peerCount = bpp.ranking && bpp.ranking.rows ? bpp.ranking.rows.length : null;
+    var lens = (bpp.lens && bpp.lens.label) || "peer set";
+    var scenarios = bppInferScenarioCount(bpp);
+    var id = kpi.id || "";
+    var base = "";
+
+    if (id === "portfolioAiPresence") {
+      var obsMatch = String(kpi.meta || "").match(/(\d+)\s+of\s+(\d+)/i);
+      if (obsMatch) base = obsMatch[1] + " of " + obsMatch[2] + " AI observations";
+      else base = kpi.meta || "";
+    } else if (id === "portfolioRank") {
+      if (peerCount) base = "Among " + peerCount + " relevant " + lens + " hotels";
+      else base = "Among relevant " + lens + " hotels";
+    } else if (id === "portfolioBenchmark") {
+      base = "Average AI Presence of the peer set";
+    } else if (id === "portfolioPresenceIndex") {
+      base = "Your presence vs. peer benchmark";
+    } else if (id === "numberOneAppearance") {
+      var n1 = String(kpi.meta || "").match(/^(\d+)\s+scenarios/i);
+      var n1Count = n1 ? Number(n1[1]) : null;
+      if (n1Count != null && scenarios != null) base = n1Count + " of " + scenarios + " scenarios";
+      else if (n1Count != null) base = n1Count + " of scenarios";
+      else base = kpi.meta || "";
+    } else if (id === "top3Appearance") {
+      if (scenarios != null && typeof kpi.valueRaw === "number") {
+        var topCount = Math.round(kpi.valueRaw * scenarios);
+        base = topCount + " of " + scenarios + " scenarios";
+      } else base = kpi.meta || "";
+    } else {
+      base = kpi.meta || "";
+    }
+
+    if (kpi.deltaDisplay && String(kpi.deltaDisplay).trim() && kpi.deltaDisplay !== "—") {
+      base = base ? base + " · Prior Run " + kpi.deltaDisplay : "Prior Run " + kpi.deltaDisplay;
+    }
+    return base;
+  }
+
+  function bppKpiTooltip(kpi) {
+    var id = kpi && kpi.id;
+    var tips = {
+      portfolioAiPresence:
+        "Share of provider observations where this hotel appears within the governed portfolio lens. Observation grain.",
+      portfolioRank:
+        "Rank of this hotel versus the governed same-ecosystem peer set for this period, by Portfolio AI Presence.",
+      portfolioBenchmark:
+        "Average Portfolio AI Presence across peers in the governed set (excludes the subject hotel).",
+      portfolioPresenceIndex:
+        "Subject Portfolio AI Presence divided by peer benchmark, multiplied by 100. Values above 100 outperform the peer average.",
+      numberOneAppearance:
+        "Share of unique demand scenarios where this hotel is the explicit #1 recommendation (best ordinal across providers).",
+      top3Appearance:
+        "Share of unique demand scenarios where this hotel finishes in the top 3 (best ordinal across providers).",
+    };
+    return tips[id] || "";
+  }
+
+  function bppSupportedKpis(bpp) {
+    return (bpp.kpis || []).filter(function (k) {
+      return k && k.available !== false && k.value != null && k.value !== "";
+    });
+  }
+
+  function renderBrandPortfolioPosition(d) {
+    var section = document.getElementById("adpBrandPortfolioSection");
+    if (!section) return;
+    var bpp = d && d.brandPortfolioPosition;
+    section.hidden = false;
+
+    var titleEl = document.getElementById("adpThemeBrandPortfolio");
+    var subEl = document.getElementById("adpBrandPortfolioSubtitle");
+    var lensEl = document.getElementById("adpBrandPortfolioLens");
+    var kpiEl = document.getElementById("adpBrandPortfolioKpis");
+    var statusPanel = document.getElementById("adpBrandPortfolioStatus");
+    var statusLabel = document.getElementById("adpBrandPortfolioStatusLabel");
+    var statusBody = document.getElementById("adpBrandPortfolioStatusBody");
+    var statusSecondary = document.getElementById("adpBrandPortfolioStatusSecondary");
+    var tableHost = document.getElementById("adpBrandPortfolioTableHost");
+    var narrativeHost = document.getElementById("adpBrandPortfolioNarrative");
+    var providerHost = document.getElementById("adpBrandPortfolioProviderHost");
+    var evidenceHost = document.getElementById("adpBrandPortfolioEvidenceHost");
+    var territoryWrap = document.getElementById("adpBrandPortfolioTerritoryWrap");
+
+    var analyticalHosts = [kpiEl, narrativeHost, providerHost, evidenceHost, territoryWrap, tableHost];
+
+    if (!bpp || bpp.sectionVisible === false) {
+      section.hidden = true;
+      bppUnmountAnalytical(analyticalHosts);
+      if (statusPanel) {
+        statusPanel.hidden = true;
+        statusPanel.setAttribute("hidden", "");
+      }
+      return;
+    }
+
+    if (titleEl) titleEl.textContent = bpp.title || "Brand & Portfolio Position";
+    if (subEl) {
+      subEl.textContent =
+        bpp.subtitle ||
+        "How this hotel performs within its brand, collection, portfolio, or loyalty ecosystem.";
+    }
+
+    if (lensEl) {
+      if (bpp.lens && bpp.lens.label) {
+        lensEl.hidden = false;
+        lensEl.removeAttribute("hidden");
+        lensEl.innerHTML = '<span class="adp-bpp-lens-k">Lens:</span> <strong>' + esc(bpp.lens.label) + "</strong>";
+      } else {
+        lensEl.hidden = true;
+        lensEl.setAttribute("hidden", "");
+        lensEl.innerHTML = "";
+      }
+    }
+
+    var ready = isBrandPortfolioReady(bpp);
+    var status = bpp.status || bpp.renderState || "";
+    section.setAttribute("data-bpp-ready", ready ? "1" : "0");
+    section.setAttribute("data-bpp-status", status || "unknown");
+    section.setAttribute("data-bpp-render-mode", ready ? "READY" : "STATUS_ONLY");
+
+    // NON-READY: header + lens + ONE status card only — no analytical shells
+    if (!ready) {
+      bppUnmountAnalytical(analyticalHosts);
+
+      if (statusPanel) {
+        statusPanel.hidden = false;
+        statusPanel.removeAttribute("hidden");
+        statusPanel.className = "aiv-theme-card aiv-theme-card--flush adp-bpp-status";
+        if (bpp.customerState) {
+          if (statusLabel) statusLabel.textContent = bpp.customerState.headline || bpp.customerState.statusLabel || "";
+          if (statusBody) statusBody.textContent = bpp.customerState.body || bpp.emptyMessage || "";
+          if (statusSecondary) {
+            if (bpp.customerState.secondary) {
+              statusSecondary.hidden = false;
+              statusSecondary.removeAttribute("hidden");
+              statusSecondary.textContent = bpp.customerState.secondary;
+            } else {
+              statusSecondary.hidden = true;
+              statusSecondary.setAttribute("hidden", "");
+              statusSecondary.textContent = "";
+            }
+          }
+        } else {
+          if (statusLabel) statusLabel.textContent = "Portfolio monitoring not yet available";
+          if (statusBody) {
+            statusBody.textContent =
+              bpp.emptyMessage ||
+              "Brand & Portfolio insights will appear here after the first monitoring cycle.";
+          }
+          if (statusSecondary) {
+            statusSecondary.hidden = false;
+            statusSecondary.removeAttribute("hidden");
+            statusSecondary.textContent =
+              "You’ll see AI Presence, portfolio rank, and the properties most often competing with this hotel.";
+          }
+        }
+      }
+      return;
+    }
+
+    // READY: unmount status card; mount analytical content only
+    if (statusPanel) {
+      statusPanel.hidden = true;
+      statusPanel.setAttribute("hidden", "");
+      statusPanel.innerHTML =
+        '<h3 class="aiv-theme-label" id="adpBrandPortfolioStatusLabel"></h3>' +
+        '<p class="adp-bpp-status__body" id="adpBrandPortfolioStatusBody"></p>' +
+        '<p class="adp-bpp-status__secondary" id="adpBrandPortfolioStatusSecondary" hidden></p>';
+      statusPanel.className = "adp-bpp-status";
+      statusPanel.classList.remove("aiv-theme-card", "aiv-theme-card--flush");
+    }
+
+    if (kpiEl) {
+      var supported = bppSupportedKpis(bpp);
+      bppMountAnalyticalShell(kpiEl, "aiv-kpi-row adp-bpp-kpi-row");
+      kpiEl.setAttribute("data-kpi-count", String(supported.length));
+      kpiEl.setAttribute("data-bpp-kpi-grid", "1");
+      kpiEl.innerHTML = supported
+        .map(function (k) {
+          var tip = bppKpiTooltip(k);
+          var meta = bppCustomerKpiMeta(k, bpp);
+          if (tip) {
+            return kpiCardWithInfo(
+              k.label,
+              k.value,
+              meta,
+              adpTipPlain(tip, "Methodology detail for this Portfolio KPI."),
+              "adp-executive-metric-tooltip"
+            );
+          }
+          return kpiCard(k.label, k.value, meta);
+        })
+        .join("");
+    }
+
+    if (narrativeHost) {
+      if (bpp.narrative && bpp.narrative.body) {
+        bppMountAnalyticalShell(
+          narrativeHost,
+          "adp-executive-read adp-bpp-portfolio-read"
+        );
+        narrativeHost.innerHTML =
+          '<div class="adp-executive-read__main">' +
+          '<h3 class="adp-executive-read__main-title">Portfolio Read</h3>' +
+          (bpp.narrative.headline
+            ? '<p class="adp-bpp-read-eyebrow" id="adpBrandPortfolioNarrativeHeadline"></p>'
+            : "") +
+          '<p class="adp-executive-read__narrative" id="adpBrandPortfolioNarrativeBody"></p>' +
+          "</div>";
+        var nh = document.getElementById("adpBrandPortfolioNarrativeHeadline");
+        var nb = document.getElementById("adpBrandPortfolioNarrativeBody");
+        if (nh) nh.textContent = bpp.narrative.headline || "";
+        if (nb) nb.textContent = bpp.narrative.body || "";
+      } else {
+        bppUnmountAnalytical([narrativeHost]);
+      }
+    }
+
+    if (providerHost) {
+      if (bpp.providerPresence && Array.isArray(bpp.providerPresence.rows) && bpp.providerPresence.rows.length) {
+        bppMountAnalyticalShell(providerHost, "aiv-theme-card aiv-theme-card--flush adp-bpp-provider-block");
+        providerHost.innerHTML =
+          '<h3 class="aiv-theme-label">Provider Presence</h3>' +
+          '<p class="adp-bpp-provider-help">Average across providers matches Portfolio AI Presence when all four complete.</p>' +
+          '<div class="aiv-kpi-row adp-bpp-provider-row" data-kpi-count="' +
+          bpp.providerPresence.rows.length +
+          '">' +
+          bpp.providerPresence.rows
+            .map(function (r) {
+              var help =
+                (r.subjectHits || 0) + " of " + (r.observations || 0) + " observations";
+              if (r.deltaDisplay && r.deltaDisplay !== "—" && r.priorPresenceDisplay) {
+                help +=
+                  " · Prior Run " +
+                  r.priorPresenceDisplay +
+                  " → " +
+                  (r.presenceDisplay || "—") +
+                  " (" +
+                  r.deltaDisplay +
+                  ")";
+              } else if (r.movementDisplay) {
+                help += " · " + r.movementDisplay;
+              }
+              return kpiCard(r.label, r.presenceDisplay || "—", help);
+            })
+            .join("") +
+          "</div>";
+      } else {
+        bppUnmountAnalytical([providerHost]);
+      }
+    }
+
+    if (evidenceHost) {
+      if (bpp.evidence) {
+        bppMountAnalyticalShell(evidenceHost, "adp-bpp-evidence-actions");
+        evidenceHost.innerHTML =
+          '<div class="adp-bpp-evidence-bar">' +
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="positive">View Positive Evidence</button>' +
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="missing">View Missing Evidence</button>' +
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="displacement">View Portfolio Displacement Evidence</button>' +
+          "</div>";
+        evidenceHost.querySelectorAll("[data-bpp-evidence]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            openBrandPortfolioEvidenceDrawer(btn.getAttribute("data-bpp-evidence"), bpp);
+          });
+        });
+      } else {
+        bppUnmountAnalytical([evidenceHost]);
+      }
+    }
+
+    if (territoryWrap) {
+      if (Array.isArray(bpp.territoryOptions) && bpp.territoryOptions.length > 1) {
+        bppMountAnalyticalShell(territoryWrap, "adp-comp-territory-wrap");
+        var opts = bpp.territoryOptions
+          .map(function (t) {
+            return '<option value="' + esc(t.id) + '">' + esc(t.label) + "</option>";
+          })
+          .join("");
+        territoryWrap.innerHTML =
+          '<label class="adp-comp-territory-label" for="adpBppTerritorySelect">Demand Territory</label>' +
+          '<select id="adpBppTerritorySelect" class="adp-comp-territory-select" aria-label="Select Brand and Portfolio territory">' +
+          opts +
+          "</select>";
+        var sel = document.getElementById("adpBppTerritorySelect");
+        if (sel) {
+          sel.addEventListener("change", function () {
+            renderBrandPortfolioTableRows(bpp, sel.value || "overall");
+          });
+        }
+      } else {
+        bppUnmountAnalytical([territoryWrap]);
+      }
+    }
+
+    if (tableHost) {
+      bppMountAnalyticalShell(tableHost, "");
+      tableHost.innerHTML =
+        '<div class="aiv-theme-card aiv-theme-card--flush" id="adpBrandPortfolioTableWrap">' +
+        '<div class="adp-comp-overview-title-row">' +
+        '<h3 class="aiv-theme-label adp-comp-overview-title">Portfolio Competitive Overview</h3>' +
+        "</div>" +
+        '<div class="deals-table-container aiv-portfolio-table-wrap">' +
+        '<table class="deals-table aiv-portfolio-table adp-comp-table-fixed" id="adpBrandPortfolioTable" aria-label="Brand and portfolio ranking">' +
+        "<thead><tr>" +
+        "<th>Rank</th><th>Hotel</th>" +
+        '<th class="num">AI Presence</th>' +
+        '<th class="num">Δ vs Prior Run</th>' +
+        '<th class="num">Displacement vs You</th>' +
+        '<th class="num">Scenarios Shared</th>' +
+        "</tr></thead>" +
+        '<tbody id="adpBrandPortfolioTableBody"></tbody></table></div></div>';
+      renderBrandPortfolioTableRows(bpp, "overall");
+    }
+  }
+
+  // Test / QA hook — do not use in customer product logic
+  if (typeof window !== "undefined") {
+    window.__adpTestRenderBrandPortfolio = function (payload) {
+      renderBrandPortfolioPosition(payload || {});
+    };
+    window.__adpIsBrandPortfolioReady = isBrandPortfolioReady;
+  }
+
+  function renderBrandPortfolioTableRows(bpp, territoryId) {
+    var tbody = document.getElementById("adpBrandPortfolioTableBody");
+    if (!tbody || !bpp) return;
+    var rows = bpp.ranking && bpp.ranking.rows ? bpp.ranking.rows : [];
+    if (territoryId && territoryId !== "overall" && bpp.byTerritory && bpp.byTerritory[territoryId]) {
+      var tRank = bpp.byTerritory[territoryId].rankingUniverse || [];
+      rows = tRank.map(function (r) {
+        return {
+          rank: r.rank,
+          rankLabel: r.rankLabel || "#" + r.rank,
+          name: r.name,
+          brand: r.brand,
+          isSubject: r.isSubject,
+          presenceDisplay: r.presencePct != null ? r.presencePct + "%" : "—",
+          deltaDisplay: "—",
+          displacementDisplay: "—",
+          sharedDisplay: "—",
+        };
+      });
+    }
+    var deltaCell = function (row) {
+      if (row.deltaDisplay != null && row.deltaDisplay !== "") return esc(row.deltaDisplay);
+      if (bpp.ranking && bpp.ranking.hasPriorPeriod === false) {
+        return '<span class="aiv-avail-insufficient_history aiv-delta-none">—</span>';
+      }
+      return "—";
+    };
+    tbody.innerHTML = rows
+      .map(function (row) {
+        var name = esc(row.name || "");
+        if (row.brand && !row.isSubject) {
+          name +=
+            '<div class="adp-bpp-brand-secondary">' +
+            esc(row.brand) +
+            "</div>";
+        }
+        if (row.isSubject) name += ' <span class="badge-you">You</span>';
+        return (
+          "<tr" +
+          (row.isSubject ? ' class="subject-row"' : "") +
+          "><td>" +
+          esc(row.rankLabel || String(row.rank || "—")) +
+          "</td><td>" +
+          name +
+          '</td><td class="num">' +
+          esc(row.presenceDisplay || "—") +
+          '</td><td class="num">' +
+          deltaCell(row) +
+          '</td><td class="num">' +
+          esc(row.displacementDisplay != null ? String(row.displacementDisplay) : "—") +
+          '</td><td class="num">' +
+          esc(row.sharedDisplay != null ? String(row.sharedDisplay) : "—") +
+          "</td></tr>"
+        );
+      })
+      .join("");
+  }
+
+  function openBrandPortfolioEvidenceDrawer(kind, bpp) {
+    var drawer = document.getElementById("adpEvidenceDrawer");
+    var body = document.getElementById("adpEvidenceBody");
+    var title = document.getElementById("adpEvidenceTitle");
+    var pack =
+      kind === "positive"
+        ? (bpp.evidence && bpp.evidence.positive) || []
+        : kind === "missing"
+          ? (bpp.evidence && bpp.evidence.missing) || []
+          : (bpp.evidence && bpp.evidence.displacement) || [];
+    var heading =
+      kind === "positive"
+        ? "Brand & Portfolio — Positive Evidence"
+        : kind === "missing"
+          ? "Brand & Portfolio — Missing Evidence"
+          : "Brand & Portfolio — Displacement Evidence";
+    if (title) title.textContent = heading;
+    if (!body) return;
+    if (!pack.length) {
+      body.innerHTML = '<div class="aiv-empty">No evidence items for this view.</div>';
+    } else {
+      var html = "";
+      pack.forEach(function (ev) {
+        var providerLine = formatProviderDisplayName(ev.provider || ev.sampleProvider || "unknown");
+        html +=
+          '<div class="aiv-evidence">' +
+          '<section class="aiv-evidence-meta" aria-label="Evidence details">' +
+          '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Provider</div>' +
+          '<div class="aiv-evidence-value">' +
+          esc(providerLine) +
+          "</div></div>" +
+          (ev.territory
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Territory</div>' +
+              '<div class="aiv-evidence-value">' +
+              esc(ev.territory) +
+              "</div></div>"
+            : "") +
+          (ev.matchedVariant
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Match</div>' +
+              '<div class="aiv-evidence-value">' +
+              esc(ev.matchedVariant) +
+              "</div></div>"
+            : "") +
+          "</section>" +
+          '<section class="aiv-evidence-section aiv-evidence-section--ai-response">' +
+          '<div class="aiv-evidence-label">AI Response</div>' +
+          '<pre class="aiv-evidence-response" style="white-space:pre-wrap;font-family:inherit;margin:0;">' +
+          esc(ev.aiResponse || "") +
+          "</pre></section></div>";
+      });
+      body.innerHTML = html;
+      body.scrollTop = 0;
+    }
+    if (drawer) {
+      if (typeof drawer.showModal === "function" && !drawer.open) drawer.showModal();
+      else {
+        drawer.hidden = false;
+        drawer.classList.add("is-open", "open");
+        drawer.setAttribute("aria-hidden", "false");
+      }
+    }
+  }
+
   function hideExecutiveMetricsSection() {
     var section = document.getElementById("adpExecutiveMetricsSection");
     if (section) section.hidden = true;
@@ -1009,9 +1859,13 @@
       }
     }
 
-    var labels = trends.map(function(t) {
+    var labels = trends.map(function(t, idx) {
       var s = t.date || "";
-      return s.slice(0, 10) + (s.slice(11, 16) ? " \u00b7 " + s.slice(11, 16) : "");
+      var dateLabel = s.slice(0, 10) + (s.slice(11, 16) ? " \u00b7 " + s.slice(11, 16) : "");
+      if (singlePeriod) return dateLabel;
+      if (idx === trends.length - 1) return dateLabel + " \u00b7 Current";
+      if (idx === trends.length - 2) return dateLabel + " \u00b7 Prior Run";
+      return dateLabel;
     });
 
     var realityData = trends.map(function(t) { return t.propertyRealityCoverage != null ? Math.round(t.propertyRealityCoverage * 10) / 10 : null; });
@@ -1028,21 +1882,26 @@
     if (summaryEl) {
       summaryEl.hidden = false;
       if (singlePeriod) {
-        // Same summary chrome as multi-period, but no fabricated delta — awaiting next comparable period.
+        // Same summary chrome as multi-period; KPI delta text is data-driven (no fabricated pp change).
+        // Lower chart callout intentionally omitted — see REDUNDANT_STATUS_CONTAINER.
+        summaryEl.setAttribute("data-adp-peer-grid", "trends-kpi");
+        summaryEl.setAttribute("data-adp-peer-count", "4");
         summaryEl.innerHTML =
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">1</div></div>';
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="1"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="2"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="4"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">1</div></div>';
       } else {
         var rcCh = ppChange(last.propertyRealityCoverage, prev.propertyRealityCoverage);
         var spCh = ppChange(last.scenarioPresenceRate, prev.scenarioPresenceRate);
         var crCh = ppChange(last.considerationRate, prev.considerationRate);
+        summaryEl.setAttribute("data-adp-peer-grid", "trends-kpi");
+        summaryEl.setAttribute("data-adp-peer-count", "4");
         summaryEl.innerHTML =
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (rcCh == null ? "" : (rcCh > 0 ? "+" : "") + rcCh + " pp") + '</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (spCh == null ? "" : (spCh > 0 ? "+" : "") + spCh + " pp") + '</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (crCh == null ? "" : (crCh > 0 ? "+" : "") + crCh + " pp") + '</div></div>' +
-          '<div class="aiv-detail-trend-stat"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">' + trends.length + '</div></div>';
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="1"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (rcCh == null ? "" : (rcCh > 0 ? "+" : "") + rcCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="2"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (spCh == null ? "" : (spCh > 0 ? "+" : "") + spCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (crCh == null ? "" : (crCh > 0 ? "+" : "") + crCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="4"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">' + trends.length + '</div></div>';
       }
     }
 
@@ -1054,12 +1913,9 @@
     }
 
     // Always render the existing line-chart component (including single-period baseline).
-    emptyEl.hidden = !singlePeriod;
-    if (singlePeriod) {
-      emptyEl.innerHTML = '<p class="aiv-empty__message adp-trend-awaiting-note">Awaiting next comparable monitoring period</p>';
-    } else {
-      emptyEl.innerHTML = "";
-    }
+    // No lower status/callout under the chart — one-period state lives in KPI deltas only.
+    emptyEl.hidden = true;
+    emptyEl.innerHTML = "";
     if (chartWrap) chartWrap.hidden = false;
     canvas.style.display = "block";
 
@@ -1082,7 +1938,8 @@
             pointRadius: pointRadius,
             pointHoverRadius: pointRadius + 2,
             showLine: showLine,
-            spanGaps: false
+            spanGaps: false,
+            clip: false
           },
           {
             label: "Scenario Presence",
@@ -1095,7 +1952,8 @@
             pointRadius: pointRadius,
             pointHoverRadius: pointRadius + 2,
             showLine: showLine,
-            spanGaps: false
+            spanGaps: false,
+            clip: false
           },
           {
             label: "Consideration Rate",
@@ -1108,14 +1966,17 @@
             pointRadius: pointRadius,
             pointHoverRadius: pointRadius + 2,
             showLine: showLine,
-            spanGaps: false
+            spanGaps: false,
+            clip: false
           }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: { padding: { top: 18, right: 8, bottom: 2, left: 2 } },
+        // Keep markers fully visible at plot edges (esp. single-period / 100% points).
+        clip: false,
+        layout: { padding: { top: 20, right: 14, bottom: 6, left: 6 } },
         interaction: { mode: "index", intersect: false },
         plugins: {
           legend: {
@@ -1166,23 +2027,62 @@
     });
   }
 
+  var ADP_PROVIDER_TERRITORY_METHODOLOGY_NOTE =
+    "Territory totals can be higher than any single model because a traveler need counts if at least one model mentioned your hotel.";
+
+  /** Coverage footnotes live in the shared note below the table — never inside the table container. */
+  function syncProviderTerritoryNote(footnotes) {
+    var noteEl = document.querySelector(".adp-provider-territory-note");
+    if (!noteEl) return;
+    var html = esc(ADP_PROVIDER_TERRITORY_METHODOLOGY_NOTE);
+    if (footnotes && footnotes.length) {
+      footnotes.forEach(function(fn) {
+        html +=
+          ' <span class="adp-provider-coverage-fn" data-adp-coverage-footnote="' +
+          fn.num +
+          '"><span class="adp-table-fn-mark">(' +
+          fn.num +
+          ")</span> " +
+          esc(fn.text) +
+          "</span>";
+      });
+    }
+    noteEl.innerHTML = html;
+  }
+
   function renderProviderPresenceTable(d) {
     var el = document.getElementById("adpProviderTableContainer");
     if (!el) return;
     var ev = d.evidence;
     if (!ev || !ev.providers || !ev.providers.length) {
       el.innerHTML = '<p class="aiv-empty-message">No provider data available.</p>';
+      syncProviderTerritoryNote([]);
       return;
     }
 
-    var totalScenarios = d.demandCapture.totalScenarios;
-    var html = '<table class="deals-table aiv-portfolio-table aiv-coverage-table">';
+    // TABLE_EXCEPTION_TO_FOOTNOTE — keep Monitored cells compact; coverage detail in shared note below.
+    var footnoteByNote = Object.create(null);
+    var footnotes = [];
+    function footnoteMarkForCoverage(denom, scheduled) {
+      if (scheduled == null || denom == null || Number(scheduled) <= Number(denom)) return "";
+      var note = denom + " of " + scheduled + " observations captured.";
+      if (!footnoteByNote[note]) {
+        var num = footnotes.length + 1;
+        footnoteByNote[note] = num;
+        footnotes.push({ num: num, text: note });
+      }
+      return '<span class="adp-table-fn-mark" title="See footnote in note below table">(' + footnoteByNote[note] + ")</span>";
+    }
+
+    var html = '<table class="deals-table aiv-portfolio-table aiv-coverage-table" data-adp-table="provider-presence">';
     html += '<thead><tr>';
     html += thCol('Provider', adpTipHtml('Provider', 'Which AI model was queried on its own for each demand scenario?', 'Models do not behave the same. You need provider-level visibility to fix gaps on each one.'));
     html += thCol('Status', adpTipHtml('Status', 'Was this provider included in the current monitoring period?', 'Confirms the row reflects live monitored responses, not an estimate or partial run.'));
     html += thCol('AI<br>Presence', adpTipHtml('AI Presence', 'When this provider alone answers a monitored demand question, how often does it mention your property?', 'Each model learns from different sources. A gap here means travelers using that tool may never see you.'));
     html += thCol('Monitored', adpTipHtml('Monitored', 'How many comparable provider answers mentioned your property, out of successfully captured answers for this model? Failed or missing provider calls are excluded from the denominator.', 'Denominator = comparable observations included in the metric — not theoretical scheduled scenarios.'));
     html += thCol('Missing', adpTipHtml('Missing', 'Among comparable answers from this provider, how many did not mention your property?', 'Excludes failed/missing provider calls that were never included in the presence rate.'));
+    html += thCol('Missing<br>Evidence', adpTipHtml('Missing Evidence', 'All governed observations from this provider where your property did not appear.', 'Forensic completeness — not a curated sample.'));
+    html += thCol('Positive<br>Evidence', adpTipHtml('Positive Evidence', 'Representative governed examples where this provider mentioned your property.', 'SHOW WHAT WE MEASURE — not exact production prompts.'));
     html += thCol('Citation', adpTipHtml('Citation', 'When this provider answers, how often does it include source links in the response?', 'Citation-backed answers show which websites AI is reading. Without citations, it is harder to trace and improve what the model uses.'));
     html += thCol('Owned', adpTipHtml('Owned', 'Of this provider\u2019s citations, what share point to your owned websites?', 'Owned sources give you direct control over how AI describes your property. Requires configured owned domains.'));
     html += '</tr></thead><tbody>';
@@ -1208,20 +2108,34 @@
       }
 
       var monitoredLabel = unavailable ? "\u2014" : (p.mentioned + " / " + denom);
-      var coverageNote = p.coverageNote || null;
-      if (!coverageNote && scheduled != null && denom != null && scheduled !== denom) {
-        coverageNote = denom + " of " + scheduled + " observations captured";
+      if (!unavailable) {
+        var mark = footnoteMarkForCoverage(denom, scheduled);
+        if (mark) monitoredLabel += " " + mark;
       }
-      if (coverageNote) {
-        monitoredLabel += ' <span class="aiv-cell-submeta" title="Scenarios scheduled on this provider vs comparable answers included in the metric">(' + esc(coverageNote) + ")</span>";
+
+      var evidenceCell = '<span class="adp-evidence-empty" aria-hidden="true">\u2014</span>';
+      if (!unavailable && (p.mentioned || 0) > 0) {
+        evidenceCell = adpPeerEvidenceActionHtml(
+          ' data-adp-evidence-provider="' + esc(p.provider) + '" data-adp-evidence-type="present"',
+          "examples"
+        );
+      }
+      var missingEvidenceCell = '<span class="adp-evidence-empty" aria-hidden="true">\u2014</span>';
+      if (!unavailable && Number(missing) > 0 && missing !== "\u2014") {
+        missingEvidenceCell = adpPeerEvidenceActionHtml(
+          ' data-adp-evidence-provider="' + esc(p.provider) + '" data-adp-evidence-type="missing"',
+          "missing"
+        );
       }
 
       html += "<tr>";
       html += "<td>" + esc(name) + "</td>";
       html += "<td>" + (unavailable ? "Unavailable" : "Monitored") + "</td>";
       html += '<td class="aiv-metric-cell aiv-presence-metric-cell">' + presenceVisual + "</td>";
-      html += '<td class="aiv-metric-cell">' + monitoredLabel + "</td>";
+      html += '<td class="aiv-metric-cell aiv-metric-cell--monitored">' + monitoredLabel + "</td>";
       html += '<td class="aiv-metric-cell">' + missing + "</td>";
+      html += '<td class="aiv-metric-cell adp-evidence-action-cell">' + missingEvidenceCell + "</td>";
+      html += '<td class="aiv-metric-cell adp-evidence-action-cell">' + evidenceCell + "</td>";
       html += '<td class="aiv-metric-cell">' + citRate + "</td>";
       html += '<td class="aiv-metric-cell">\u2014</td>';
       html += "</tr>";
@@ -1229,6 +2143,15 @@
 
     html += '</tbody></table>';
     el.innerHTML = html;
+    el.querySelectorAll("[data-adp-evidence-provider]").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        openAdpEvidence({
+          type: btn.getAttribute("data-adp-evidence-type") || "present",
+          provider: btn.getAttribute("data-adp-evidence-provider"),
+        });
+      });
+    });
+    syncProviderTerritoryNote(footnotes);
   }
 
   function renderExecIntentTable(dc) {
@@ -1245,7 +2168,9 @@
     html += thCol('Monitored', adpTipHtml('Monitored', 'How many demand scenarios in this intent were tested, and how many captured your property?', 'Confirms sample size and shows captured versus total for this intent category.'), 'aiv-intent-col-secondary');
     html += thCol('Missing', adpTipHtml('Missing', 'In this intent, how many scenarios had no AI mention of your property?', 'These are concrete lost-demand moments for that traveler type.'), 'aiv-intent-col-secondary');
     html += thCol('Peer-Present<br>Gaps', adpTipHtml('Peer-Present Gaps', 'In this intent, how often do competitors appear in scenarios where you do not?', 'This is competitive displacement: rivals are winning the recommendation when you are absent.'), 'aiv-intent-col-secondary');
-    html += thCol('Missing<br>Evidence', adpTipHtml('Missing Evidence', 'What did AI actually say in scenarios where you were missing from this intent?', 'Lets you read real responses and diagnose why competitors were chosen instead.'), 'aiv-intent-col-secondary');
+    // Evidence actions stay primary (not aiv-intent-col-secondary) so peer View Missing / View Examples remain clickable under 1440px.
+    html += thCol('Missing<br>Evidence', adpTipHtml('Missing Evidence', 'All governed observations in this demand territory where your property did not appear.', 'Forensic completeness for the selected territory — not a curated sample.'));
+    html += thCol('Positive<br>Evidence', adpTipHtml('Positive Evidence', 'Representative governed examples where your property appeared in this demand territory.', 'Trust/illustration lane — approximately 3–5 examples by default.'));
     html += '</tr></thead><tbody>';
 
     var entries = Object.entries(dc.byIntent);
@@ -1292,12 +2217,21 @@
       html += '<td class="aiv-metric-cell aiv-monitored-cell aiv-intent-col-secondary">' + monitored + '</td>';
       html += '<td class="aiv-metric-cell aiv-intent-col-secondary">' + missing + '</td>';
       html += '<td class="aiv-metric-cell aiv-intent-col-secondary">' + peerGaps + '</td>';
-      // Missing Evidence link
-      if (missing > 0) {
-        html += '<td class="aiv-metric-cell aiv-intent-col-secondary"><button type="button" class="aiv-btn-text aiv-link" data-adp-evidence-intent="' + esc(intent) + '">' + missing + ' Missing</button></td>';
-      } else {
-        html += '<td class="aiv-metric-cell aiv-intent-col-secondary"><span style="color:var(--aiv-text-secondary)">—</span></td>';
-      }
+      // Two distinct evidence lanes — PEER_TEXT_VISUAL_BALANCE (two-line Proper Case)
+      var missingEvCell = missing > 0
+        ? adpPeerEvidenceActionHtml(
+            ' data-adp-evidence-intent="' + esc(intent) + '" data-adp-evidence-type="missing"',
+            "missing"
+          )
+        : '<span class="adp-evidence-empty" aria-hidden="true">\u2014</span>';
+      var positiveEvCell = data.captured > 0
+        ? adpPeerEvidenceActionHtml(
+            ' data-adp-evidence-intent="' + esc(intent) + '" data-adp-evidence-type="present"',
+            "examples"
+          )
+        : '<span class="adp-evidence-empty" aria-hidden="true">\u2014</span>';
+      html += '<td class="aiv-metric-cell adp-evidence-action-cell">' + missingEvCell + '</td>';
+      html += '<td class="aiv-metric-cell adp-evidence-action-cell">' + positiveEvCell + '</td>';
       html += '</tr>';
     });
 
@@ -1307,7 +2241,10 @@
     // Wire evidence links
     el.querySelectorAll("[data-adp-evidence-intent]").forEach(function(btn) {
       btn.addEventListener("click", function() {
-        openAdpEvidence(btn.getAttribute("data-adp-evidence-intent"));
+        openAdpEvidence({
+          intent: btn.getAttribute("data-adp-evidence-intent"),
+          type: btn.getAttribute("data-adp-evidence-type") || "missing",
+        });
       });
     });
 
@@ -1319,11 +2256,19 @@
     });
   }
 
-  function openAdpEvidence(intent) {
+  function openAdpEvidence(opts) {
+    var intent = typeof opts === "string" ? opts : (opts && opts.intent) || null;
+    var type = (opts && opts.type) || "missing";
+    var provider = (opts && opts.provider) || null;
+    var offset = (opts && opts.offset) || 0;
+    var append = Boolean(opts && opts.append);
     var drawer = document.getElementById("adpEvidenceDrawer");
     var body = document.getElementById("adpEvidenceBody");
+    var titleEl = document.getElementById("adpEvidenceTitle");
     if (!drawer || !body) return;
-    body.innerHTML = '<div class="aiv-empty">Loading evidence\u2026</div>';
+    if (!append) {
+      body.innerHTML = '<div class="aiv-empty">Loading evidence\u2026</div>';
+    }
     if (typeof drawer.showModal === "function" && !drawer.open) drawer.showModal();
 
     var pid = getActivePropertyId();
@@ -1331,64 +2276,201 @@
       body.innerHTML = '<div class="aiv-empty">Select a property to view evidence.</div>';
       return;
     }
-    fetch("/api/ai-demand-positioning/property/" + encodeURIComponent(pid) + "/evidence?intent=" + encodeURIComponent(intent) + "&type=missing")
+    var isPresent = type === "present";
+    var pageLimit = isPresent ? 5 : 25;
+    var qs = "type=" + encodeURIComponent(type);
+    qs += "&mode=" + encodeURIComponent(isPresent ? "positive" : "missing");
+    qs += "&limit=" + encodeURIComponent(pageLimit);
+    qs += "&offset=" + encodeURIComponent(offset);
+    if (intent) qs += "&intent=" + encodeURIComponent(intent);
+    if (provider) qs += "&provider=" + encodeURIComponent(provider);
+    if (titleEl) {
+      var lane = isPresent ? "Positive Evidence" : "Missing Evidence";
+      var ctx = intent ? formatIntentTerritoryLabel(intent) : (provider ? formatProviderDisplayName(provider) : "");
+      titleEl.textContent = ctx ? (lane + " · " + ctx) : lane;
+    }
+    authFetch("/api/ai-demand-positioning/property/" + encodeURIComponent(pid) + "/evidence?" + qs)
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (!data.ok || !data.evidence || !data.evidence.length) {
-          body.innerHTML = '<div class="aiv-empty">Evidence unavailable for this observation. No valid provider evidence was captured for this demand intent (or none matched the selected filter).</div>';
+          if (!append) {
+            body.innerHTML = '<div class="aiv-empty">Evidence unavailable for this observation. No valid provider evidence was captured for this filter.</div>';
+          }
           return;
         }
-        var intentLabel = formatIntentTerritoryLabel(intent);
+        var intentLabel = intent ? formatIntentTerritoryLabel(intent) : (provider ? formatProviderDisplayName(provider) : "Evidence");
         var html = '';
+        if (!append) {
+          if (isPresent && data.label) {
+            html += '<p class="aiv-theme-help help-text" style="margin-bottom:1rem;">' + esc(data.label) + '</p>';
+          } else if (!isPresent && data.label) {
+            html += '<p class="aiv-theme-help help-text" style="margin-bottom:1rem;">' + esc(data.label) + '</p>';
+          }
+        }
         data.evidence.forEach(function(ev) {
           var providerLine = formatProviderDisplayName(ev.provider || "unknown");
           var citations = ev.sourcesCited || ev.providerCitations || [];
-          var competitors = ev.competitorsMentioned || [];
+          var competitors = ev.competitorsAlongside
+            ? ev.competitorsAlongside.map(function(c) { return c.name || c; })
+            : (ev.competitorsMentioned || []);
           var metaBits = [];
           if (ev.timestamp) metaBits.push(String(ev.timestamp).slice(0, 19).replace("T", " "));
+          if (ev.demandTerritory) metaBits.push(ev.demandTerritory);
+          if (isPresent && ev.rankEligible && ev.rank != null) metaBits.push("Rank #" + ev.rank);
+
+          var decisionContext = ev.decisionContext || ev.scenarioLabel || "";
+          var aiResponse = ev.aiResponse || ev.excerpt || ev.responseExcerpt || "";
+          var subjectMentions = isPresent ? (ev.subjectMentions || []) : [];
+          var statusBadge = isPresent
+            ? '<span class="aiv-status-badge aiv-status-badge--present">Appeared</span>'
+            : '<span class="aiv-status-badge aiv-status-badge--missing">Missing</span>';
+          var entityLine = isPresent
+            ? (esc(pid) + " · subject appeared: YES")
+            : (esc(pid) + " · not observed");
 
           html += '<div class="aiv-evidence">' +
             '<section class="aiv-evidence-question">' +
             '<div class="aiv-evidence-label">Owner Intent</div>' +
-            '<p class="aiv-evidence-question-text">' + esc(intentLabel) + '</p>' +
+            '<p class="aiv-evidence-question-text">' + esc(ev.demandTerritory || intentLabel) + '</p>' +
             '<div class="aiv-evidence-label aiv-evidence-label--sub">Decision Context</div>' +
-            '<p class="aiv-evidence-decision-context">' + esc(ev.scenarioLabel || "") + '</p>' +
+            '<p class="aiv-evidence-decision-context">' + esc(decisionContext) + '</p>' +
             '</section>' +
             '<section class="aiv-evidence-meta" aria-label="Evidence details">' +
             '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Status</div>' +
-            '<div class="aiv-evidence-value"><span class="aiv-status-badge aiv-status-badge--missing">Missing</span></div></div>' +
+            '<div class="aiv-evidence-value">' + statusBadge + '</div></div>' +
             '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Provider</div>' +
             '<div class="aiv-evidence-value">' + esc(providerLine) + '</div></div>' +
             '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Context</div>' +
             '<div class="aiv-evidence-value">' + esc(metaBits.join(" \u00b7 ") || "\u2014") + '</div></div>' +
             '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Entity</div>' +
-            '<div class="aiv-evidence-value">' + esc(pid) + ' \u00b7 not observed</div></div>' +
+            '<div class="aiv-evidence-value">' + entityLine + '</div></div>' +
             '</section>' +
             (competitors.length ? '<section class="aiv-evidence-chips" aria-label="Competitors present">' +
               competitors.slice(0, 8).map(function(c){ return '<span class="aiv-evidence-chip">' + esc(c) + '</span>'; }).join("") +
               '</section>' : '') +
-            '<section class="aiv-evidence-section">' +
-            '<div class="aiv-evidence-label">AI response excerpt</div>' +
-            '<div class="aiv-excerpt aiv-excerpt--rich">' + formatExcerpt(ev.responseExcerpt || "") + '</div>' +
+            '<section class="aiv-evidence-section aiv-evidence-section--ai-response">' +
+            '<div class="aiv-evidence-label">AI Response</div>' +
+            formatAiResponse(aiResponse, subjectMentions, { allowJump: isPresent }) +
             '</section>' +
             (citations.length ? '<section class="aiv-evidence-section">' +
               '<div class="aiv-evidence-label">Cited sources</div>' +
               '<ul class="aiv-exec-list aiv-sources-list aiv-evidence-sources">' +
               citations.slice(0, 8).map(function(c){ var url = typeof c === 'string' ? c : (c.url || c.domain || ""); return '<li><a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(url) + '</a></li>'; }).join("") +
               '</ul></section>' : '') +
-            '</div><hr style="border-color:var(--neutral--700);margin:1.5rem 0;">';
+            '</div>';
         });
-        html += '<p class="aiv-theme-help help-text" style="margin-top:0.5rem;">Showing ' + data.evidence.length + ' of ' + data.total + ' missing observations for ' + esc(intentLabel) + '.</p>';
-        body.innerHTML = html;
+        var shownSoFar = (Number(data.offset) || 0) + data.evidence.length;
+        var totalQ = data.totalQualifying != null ? data.totalQualifying : data.total;
+        var polarity = isPresent ? "appearance" : "missing";
+        html += '<p class="aiv-theme-help help-text" style="margin-top:0.5rem;" data-adp-evidence-footer="1">Showing ' + shownSoFar + ' of ' + totalQ + ' ' + polarity + ' observations for ' + esc(intentLabel) + '.</p>';
+        if (data.hasMore) {
+          html += '<p style="margin-top:0.75rem;"><button type="button" class="aiv-btn-text aiv-link" data-adp-evidence-more="1">Show More</button></p>';
+        } else if (isPresent && totalQ > shownSoFar) {
+          html += '<p class="aiv-theme-help help-text">Additional examples available on request (Show More).</p>';
+        }
+        if (append) {
+          var oldFooter = body.querySelector("[data-adp-evidence-footer]");
+          if (oldFooter) {
+            var moreBtn = body.querySelector("[data-adp-evidence-more]");
+            if (moreBtn && moreBtn.parentNode) moreBtn.parentNode.remove();
+            oldFooter.remove();
+          }
+          body.insertAdjacentHTML("beforeend", html);
+        } else {
+          body.innerHTML = html;
+          body.scrollTop = 0;
+        }
+        wireAiResponseControls(body);
+        var loadMore = body.querySelector("[data-adp-evidence-more]");
+        if (loadMore) {
+          loadMore.addEventListener("click", function() {
+            openAdpEvidence({
+              intent: intent,
+              type: type,
+              provider: provider,
+              offset: shownSoFar,
+              append: true,
+            });
+          });
+        }
       })
       .catch(function() {
-        body.innerHTML = '<div class="aiv-empty">Error loading evidence.</div>';
+        if (!append) body.innerHTML = '<div class="aiv-empty">Error loading evidence.</div>';
       });
   }
 
-  function formatExcerpt(text) {
-    if (!text) return '<em>No response excerpt available.</em>';
-    return '<div style="max-height:300px;overflow-y:auto;white-space:pre-wrap;font-size:12px;line-height:1.5;color:var(--neutral--200,#e2e8f0);">' + esc(text) + '</div>';
+  /**
+   * INTENTIONAL_EVIDENCE_RESPONSE_SCROLL — full verbatim text in a bounded viewport.
+   * Highlight markup is presentation-only; textContent must equal captured response.
+   */
+  function formatAiResponse(text, mentions, opts) {
+    opts = opts || {};
+    if (!text) return '<em>No AI response available for this observation.</em>';
+    var highlighted = buildHighlightedResponseHtml(text, mentions || []);
+    var jump = "";
+    if (opts.allowJump && mentions && mentions.length) {
+      jump =
+        '<button type="button" class="aiv-btn-text aiv-link adp-jump-to-mention" data-adp-jump-mention="1">Jump to Mention</button>';
+    }
+    return (
+      jump +
+      '<div class="aiv-ai-response-viewport" tabindex="0" data-adp-ai-response="1">' +
+      '<div class="aiv-ai-response-text" data-adp-ai-response-text="1">' +
+      highlighted +
+      "</div></div>"
+    );
+  }
+
+  function buildHighlightedResponseHtml(text, mentions) {
+    var raw = String(text || "");
+    if (!mentions || !mentions.length) {
+      return esc(raw);
+    }
+    var sorted = mentions
+      .slice()
+      .filter(function(m) {
+        return m && Number.isFinite(m.start) && Number.isFinite(m.end) && m.end > m.start;
+      })
+      .sort(function(a, b) {
+        return a.start - b.start;
+      });
+    var html = "";
+    var cursor = 0;
+    sorted.forEach(function(m) {
+      var start = Math.max(0, Math.min(raw.length, m.start));
+      var end = Math.max(start, Math.min(raw.length, m.end));
+      if (start < cursor) return;
+      // Verify span still matches source text (presentation integrity)
+      var slice = raw.slice(start, end);
+      if (m.text && slice !== m.text) return;
+      html += esc(raw.slice(cursor, start));
+      html +=
+        '<mark class="adp-subject-mention" data-adp-subject-mention="1">' + esc(slice) + "</mark>";
+      cursor = end;
+    });
+    html += esc(raw.slice(cursor));
+    return html;
+  }
+
+  function wireAiResponseControls(root) {
+    if (!root) return;
+    root.querySelectorAll("[data-adp-jump-mention]").forEach(function(btn) {
+      if (btn.getAttribute("data-wired") === "1") return;
+      btn.setAttribute("data-wired", "1");
+      btn.addEventListener("click", function() {
+        var section = btn.closest(".aiv-evidence-section--ai-response") || btn.parentNode;
+        var mark = section && section.querySelector("[data-adp-subject-mention]");
+        var viewport = section && section.querySelector("[data-adp-ai-response]");
+        if (mark && viewport) {
+          var top = mark.offsetTop - 12;
+          viewport.scrollTop = Math.max(0, top);
+          mark.classList.add("adp-subject-mention--flash");
+          setTimeout(function() {
+            mark.classList.remove("adp-subject-mention--flash");
+          }, 1200);
+        }
+      });
+    });
   }
 
   function renderRealityKpis(rg) {
@@ -1681,7 +2763,7 @@
         ? "&scope=overall"
         : "&scope=demand_territory&intent=" + encodeURIComponent(scopeKey));
 
-    fetch("/api/ai-demand-positioning/property/" + encodeURIComponent(pid) + "/evidence?" + qs)
+    authFetch("/api/ai-demand-positioning/property/" + encodeURIComponent(pid) + "/evidence?" + qs)
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (!data.ok || !data.evidence || !data.evidence.length) {
@@ -1721,19 +2803,21 @@
             (competitors.length ? '<section class="aiv-evidence-chips" aria-label="All competitors mentioned">' +
               competitors.slice(0, 8).map(function(c){ return '<span class="aiv-evidence-chip">' + esc(c) + '</span>'; }).join("") +
               '</section>' : '') +
-            '<section class="aiv-evidence-section">' +
-            '<div class="aiv-evidence-label">AI response excerpt</div>' +
-            '<div class="aiv-excerpt aiv-excerpt--rich">' + formatExcerpt(ev.responseExcerpt || "") + '</div>' +
+            '<section class="aiv-evidence-section aiv-evidence-section--ai-response">' +
+            '<div class="aiv-evidence-label">AI Response</div>' +
+            formatAiResponse(ev.aiResponse || ev.responseExcerpt || "", [], { allowJump: false }) +
             '</section>' +
             (citations.length ? '<section class="aiv-evidence-section">' +
               '<div class="aiv-evidence-label">Cited sources</div>' +
               '<ul class="aiv-exec-list aiv-sources-list aiv-evidence-sources">' +
               citations.slice(0, 8).map(function(c){ var url = typeof c === 'string' ? c : (c.url || c.domain || ""); return '<li><a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(url) + '</a></li>'; }).join("") +
               '</ul></section>' : '') +
-            '</div><hr style="border-color:var(--neutral--700);margin:1.5rem 0;">';
+            '</div>';
         });
         html += '<p class="aiv-theme-help help-text" style="margin-top:0.5rem;">Showing ' + data.evidence.length + ' of ' + data.total + ' displacement scenarios for ' + esc(competitorName) + '.</p>';
         body.innerHTML = html;
+        body.scrollTop = 0;
+        wireAiResponseControls(body);
       })
       .catch(function() {
         body.innerHTML = '<div class="aiv-empty">Error loading displacement evidence.</div>';

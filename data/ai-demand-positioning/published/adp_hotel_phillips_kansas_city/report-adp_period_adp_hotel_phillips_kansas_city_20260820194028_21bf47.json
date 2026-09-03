@@ -1,10 +1,12 @@
 {
   "ok": true,
-  "publishedAt": "2026-08-21T00:55:35.747Z",
+  "publishedAt": "2026-08-21T13:13:45.725Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_hotel_phillips_kansas_city",
   "periodId": "adp_period_adp_hotel_phillips_kansas_city_20260820194028_21bf47",
   "censusRecordId": null,
+  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
+  "reportEdition": "CORRECTED_V1_1",
   "payload": {
     "ok": true,
     "version": "ai_demand_positioning_v1",
@@ -90,8 +92,8 @@
           "provider_concentration"
         ],
         "index": null,
-        "myRate": 36.9,
-        "subjectRatePct": 36.9,
+        "myRate": 38.5,
+        "subjectRatePct": 38.5,
         "coreBenchmarkRatePct": null,
         "avgCompRate": 0,
         "developing": true,
@@ -104,7 +106,7 @@
           "perplexity",
           "claude"
         ],
-        "comparableN": 49,
+        "comparableN": 52,
         "zeroPresenceCoreIncluded": true,
         "secondaryInDenominator": 0,
         "scoreCap": "NONE",
@@ -127,8 +129,8 @@
           "provider_concentration"
         ],
         "index": null,
-        "myRate": 30.5,
-        "subjectRatePct": 30.5,
+        "myRate": 31.3,
+        "subjectRatePct": 31.3,
         "coreBenchmarkRatePct": null,
         "avgCompRate": 0,
         "developing": true,
@@ -141,7 +143,7 @@
           "perplexity",
           "claude"
         ],
-        "comparableN": 47,
+        "comparableN": 48,
         "zeroPresenceCoreIncluded": true,
         "secondaryInDenominator": 0,
         "scoreCap": "NONE",
@@ -159,14 +161,12 @@
         "territory": "Couples / Romantic Stay",
         "status": "CONDITIONALLY_ELIGIBLE",
         "blockers": [
-          "scenario_loo_core",
-          "scenario_loo",
           "provider_concentration_subject",
           "provider_concentration"
         ],
         "index": null,
-        "myRate": 41,
-        "subjectRatePct": 41,
+        "myRate": 41.7,
+        "subjectRatePct": 41.7,
         "coreBenchmarkRatePct": null,
         "avgCompRate": 0,
         "developing": true,
@@ -179,7 +179,7 @@
           "perplexity",
           "claude"
         ],
-        "comparableN": 35,
+        "comparableN": 36,
         "zeroPresenceCoreIncluded": true,
         "secondaryInDenominator": 0,
         "scoreCap": "NONE",
@@ -271,8 +271,8 @@
           "provider_concentration"
         ],
         "index": null,
-        "myRate": 41.7,
-        "subjectRatePct": 41.7,
+        "myRate": 39.3,
+        "subjectRatePct": 39.3,
         "coreBenchmarkRatePct": null,
         "avgCompRate": 0,
         "developing": true,
@@ -285,7 +285,7 @@
           "perplexity",
           "claude"
         ],
-        "comparableN": 27,
+        "comparableN": 28,
         "zeroPresenceCoreIncluded": true,
         "secondaryInDenominator": 0,
         "scoreCap": "NONE",
@@ -310,8 +310,8 @@
           "zero_denominator"
         ],
         "index": null,
-        "myRate": 27.3,
-        "subjectRatePct": 27.3,
+        "myRate": 25,
+        "subjectRatePct": 25,
         "coreBenchmarkRatePct": null,
         "avgCompRate": 0,
         "developing": true,
@@ -319,7 +319,7 @@
         "coreCount": 0,
         "scenarioCount": 3,
         "includedProviders": [],
-        "comparableN": 11,
+        "comparableN": 12,
         "zeroPresenceCoreIncluded": true,
         "secondaryInDenominator": 0,
         "scoreCap": "NONE",
@@ -366,55 +366,48 @@
       }
     },
     "lostDemand": {
-      "totalLost": 14,
+      "totalLost": 11,
       "highRelevanceLost": 0,
       "displacement": [
         {
-          "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
-          "displacementCount": 22,
-          "entityId": "hotel_kansas_city"
-        },
-        {
-          "name": "Loews Kansas City Hotel",
-          "displacementCount": 15,
-          "entityId": "loews_kansas_city"
-        },
-        {
           "name": "Crossroads Hotel",
-          "displacementCount": 12,
+          "displacementCount": 9,
           "entityId": "crossroads_hotel_kc"
         },
         {
-          "name": "Museum Hotel",
-          "displacementCount": 10,
-          "entityId": null
+          "name": "Loews Kansas City Hotel",
+          "displacementCount": 9,
+          "entityId": "loews_kansas_city"
         },
         {
-          "name": "21c Museum Hotel",
-          "displacementCount": 9,
-          "entityId": null
+          "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
+          "displacementCount": 8,
+          "entityId": "hotel_kansas_city"
+        },
+        {
+          "name": "Ambassador Hotel Kansas City, Autograph Collection",
+          "displacementCount": 5,
+          "entityId": "ambassador_hotel_kansas_city"
         }
       ],
       "topReasons": [
         {
-          "reason": "High competitor density. Stronger authority signals needed",
-          "count": 10
+          "reason": "Competitor has stronger authority or recency signals for this demand",
+          "count": 5
         },
         {
           "reason": "Meeting/event capability may be underrepresented in AI sources",
           "count": 3
         },
         {
-          "reason": "Competitor has stronger authority or recency signals for this demand",
-          "count": 1
+          "reason": "High competitor density. Stronger authority signals needed",
+          "count": 3
         }
       ],
       "scenarios": [
         {
           "intent": "group_meeting",
           "competitorsPresent": [
-            "The 21c Museum Hotel",
-            "Museum Hotel",
             "Crossroads Hotel",
             "Hotel Kansas City, in The Unbound Collection by Hyatt",
             "Loews Kansas City Hotel"
@@ -426,10 +419,7 @@
           "intent": "group_meeting",
           "competitorsPresent": [
             "Crossroads Hotel",
-            "Loews Kansas City Hotel",
-            "21c Museum Hotel",
-            "Classic hotel",
-            "Museum Hotel"
+            "Loews Kansas City Hotel"
           ],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
           "relevance": "MEDIUM"
@@ -437,25 +427,20 @@
         {
           "intent": "business",
           "competitorsPresent": [
-            "Museum Hotel",
-            "Hotel Kansas City, in The Unbound Collection by Hyatt",
-            "Loews Kansas City Hotel",
-            "Ambassador Hotel Kansas City, Autograph Collection",
-            "The Raphael Hotel"
+            "Crossroads Hotel",
+            "Hotel Kansas City, in The Unbound Collection by Hyatt"
           ],
-          "likelyReason": "High competitor density. Stronger authority signals needed",
-          "relevance": "LOW"
+          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
+          "relevance": "MEDIUM"
         },
         {
           "intent": "business",
           "competitorsPresent": [
             "Hotel Kansas City, in The Unbound Collection by Hyatt",
             "Loews Kansas City Hotel",
-            "Unique boutique hotel",
-            "21c Museum Hotel",
-            "Museum Hotel"
+            "Ambassador Hotel Kansas City, Autograph Collection"
           ],
-          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
           "relevance": "LOW"
         },
         {
@@ -464,8 +449,7 @@
             "Crossroads Hotel",
             "Hotel Kansas City, in The Unbound Collection by Hyatt",
             "Loews Kansas City Hotel",
-            "21c Museum Hotel",
-            "Museum Hotel"
+            "Ambassador Hotel Kansas City, Autograph Collection"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -473,47 +457,30 @@
         {
           "intent": "leisure",
           "competitorsPresent": [
-            "Museum Hotel",
-            "Savoy Hotel",
             "Crossroads Hotel",
             "Loews Kansas City Hotel",
+            "Hotel Kansas City, in The Unbound Collection by Hyatt",
+            "Ambassador Hotel Kansas City, Autograph Collection"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "leisure",
+          "competitorsPresent": [
+            "Crossroads Hotel",
             "Hotel Kansas City, in The Unbound Collection by Hyatt"
           ],
-          "likelyReason": "High competitor density. Stronger authority signals needed",
-          "relevance": "LOW"
-        },
-        {
-          "intent": "leisure",
-          "competitorsPresent": [
-            "Crossroads Hotel",
-            "Hotel Kansas City, in The Unbound Collection by Hyatt",
-            "21c Museum Hotel",
-            "Savoy Hotel",
-            "It is both a boutique hotel"
-          ],
-          "likelyReason": "High competitor density. Stronger authority signals needed",
-          "relevance": "LOW"
-        },
-        {
-          "intent": "couples",
-          "competitorsPresent": [
-            "The Godfrey Hotel",
-            "The Ludlow Hotel",
-            "The Betsy Hotel",
-            "Look for hotel",
-            "The Thompson, Kimpton, The Hoxton, W Hotel"
-          ],
-          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
           "relevance": "LOW"
         },
         {
           "intent": "couples",
           "competitorsPresent": [
             "Hotel Kansas City, in The Unbound Collection by Hyatt",
-            "21c Museum Hotel",
             "Ambassador Hotel Kansas City, Autograph Collection",
-            "Museum Hotel",
-            "Crossroads Hotel"
+            "Crossroads Hotel",
+            "Loews Kansas City Hotel"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -523,157 +490,184 @@
           "competitorsPresent": [
             "Hotel Kansas City, in The Unbound Collection by Hyatt",
             "Loews Kansas City Hotel",
-            "21c Museum Hotel",
             "Crossroads Hotel",
-            "A true luxury boutique hotel"
+            "Ambassador Hotel Kansas City, Autograph Collection"
           ],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "family",
+          "competitorsPresent": [
+            "Loews Kansas City Hotel"
+          ],
+          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
           "relevance": "LOW"
         }
       ]
     },
     "competitiveSet": {
       "declaredCount": 6,
-      "observedCount": 189,
-      "overlapRate": 383.3,
-      "surprises": [
-        {
-          "name": "Museum Hotel",
-          "mentions": 76,
-          "scenarioCount": 46,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "21c Museum Hotel",
-          "mentions": 62,
-          "scenarioCount": 39,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "The Raphael Hotel",
-          "mentions": 28,
-          "scenarioCount": 21,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Savoy Hotel",
-          "mentions": 11,
-          "scenarioCount": 9,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Hampton Inn & Suites",
-          "mentions": 6,
-          "scenarioCount": 5,
-          "entityId": null,
-          "isCore": false
-        }
-      ],
+      "observedCount": 9,
+      "overlapRate": 150,
+      "surprises": [],
       "observed": [
         {
-          "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
-          "mentions": 145,
-          "scenarioCount": 49,
-          "entityId": "hotel_kansas_city",
+          "name": "Loews Kansas City Hotel",
+          "entityId": "loews_kansas_city",
+          "appearances": 111,
+          "aiPresencePct": 44,
+          "aiPresenceRate": 0.44047619047619047,
+          "mentions": 111,
+          "scenarioCount": 41,
+          "rawMentionCount": 118,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
           "isCore": true
         },
         {
-          "name": "Loews Kansas City Hotel",
-          "mentions": 111,
-          "scenarioCount": 40,
-          "entityId": "loews_kansas_city",
+          "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
+          "entityId": "hotel_kansas_city",
+          "appearances": 102,
+          "aiPresencePct": 40.5,
+          "aiPresenceRate": 0.40476190476190477,
+          "mentions": 102,
+          "scenarioCount": 51,
+          "rawMentionCount": 158,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
           "isCore": true
         },
         {
           "name": "Crossroads Hotel",
-          "mentions": 87,
-          "scenarioCount": 39,
           "entityId": "crossroads_hotel_kc",
+          "appearances": 81,
+          "aiPresencePct": 32.1,
+          "aiPresenceRate": 0.32142857142857145,
+          "mentions": 81,
+          "scenarioCount": 44,
+          "rawMentionCount": 104,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
           "isCore": true
-        },
-        {
-          "name": "Museum Hotel",
-          "mentions": 76,
-          "scenarioCount": 46,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "21c Museum Hotel",
-          "mentions": 62,
-          "scenarioCount": 39,
-          "entityId": null,
-          "isCore": false
         },
         {
           "name": "Ambassador Hotel Kansas City, Autograph Collection",
-          "mentions": 48,
-          "scenarioCount": 49,
           "entityId": "ambassador_hotel_kansas_city",
+          "appearances": 54,
+          "aiPresencePct": 21.4,
+          "aiPresenceRate": 0.21428571428571427,
+          "mentions": 54,
+          "scenarioCount": 34,
+          "rawMentionCount": 54,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
           "isCore": true
         },
         {
-          "name": "The Raphael Hotel",
-          "mentions": 28,
-          "scenarioCount": 21,
-          "entityId": null,
-          "isCore": false
+          "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
+          "entityId": "hotel_phillips_kansas_city",
+          "appearances": 7,
+          "aiPresencePct": 2.8,
+          "aiPresenceRate": 0.027777777777777776,
+          "mentions": 7,
+          "scenarioCount": 7,
+          "rawMentionCount": 7,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "isCore": true
         },
         {
-          "name": "Savoy Hotel",
-          "mentions": 11,
-          "scenarioCount": 9,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Hampton Inn & Suites",
-          "mentions": 6,
-          "scenarioCount": 5,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Look for hotel",
+          "name": "Hilton President Kansas City",
+          "entityId": "hilton_president_kansas_city",
+          "appearances": 5,
+          "aiPresencePct": 2,
+          "aiPresenceRate": 0.01984126984126984,
           "mentions": 5,
-          "scenarioCount": 4,
-          "entityId": null,
-          "isCore": false
+          "scenarioCount": 5,
+          "rawMentionCount": 5,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "isCore": true
+        },
+        {
+          "name": "Sheraton Kansas City Hotel at Crown Center",
+          "entityId": "sheraton_kansas_city_crown_center",
+          "appearances": 4,
+          "aiPresencePct": 1.6,
+          "aiPresenceRate": 0.015873015873015872,
+          "mentions": 4,
+          "scenarioCount": 3,
+          "rawMentionCount": 4,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "isCore": true
+        },
+        {
+          "name": "Kansas City Marriott Downtown",
+          "entityId": "kansas_city_marriott_downtown",
+          "appearances": 2,
+          "aiPresencePct": 0.8,
+          "aiPresenceRate": 0.007936507936507936,
+          "mentions": 2,
+          "scenarioCount": 2,
+          "rawMentionCount": 2,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "isCore": true
+        },
+        {
+          "name": "Fairfield Inn & Suites Kansas City Downtown/Union Hill",
+          "entityId": "fairfield_inn_downtown_kc",
+          "appearances": 1,
+          "aiPresencePct": 0.4,
+          "aiPresenceRate": 0.003968253968253968,
+          "mentions": 1,
+          "scenarioCount": 1,
+          "rawMentionCount": 2,
+          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "isCore": true
         }
       ],
-      "declaredButNotObserved": []
+      "topObservedAlternative": {
+        "entityId": "loews_kansas_city",
+        "name": "Loews Kansas City Hotel",
+        "appearances": 111,
+        "aiPresencePct": 44,
+        "aiPresenceRate": 0.44047619047619047,
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "mentions": 111
+      },
+      "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+      "declaredButNotObserved": [],
+      "rawCompetitorMentionMetric": "RAW_COMPETITOR_MENTION_COUNT"
     },
     "realityGap": {
-      "gapScore": 62.5,
-      "display": "62.5%",
+      "gapScore": 50,
+      "display": "50.0%",
       "totalAttributes": 8,
-      "recognizedCount": 3,
-      "gapCount": 5,
+      "recognizedCount": 4,
+      "gapCount": 4,
       "recognized": [
         {
           "attribute": "soft_brand",
           "label": "Soft Brand / Independence",
-          "recognitionRate": 60,
-          "count": 51,
-          "total": 85
+          "recognitionRate": 58.9,
+          "count": 53,
+          "total": 90
         },
         {
           "attribute": "hilton_honors",
           "label": "Hilton Honors Integration",
-          "recognitionRate": 68.2,
-          "count": 58,
-          "total": 85
+          "recognitionRate": 67.8,
+          "count": 61,
+          "total": 90
         },
         {
           "attribute": "boutique_feel",
           "label": "Boutique Character",
-          "recognitionRate": 75.3,
-          "count": 64,
-          "total": 85
+          "recognitionRate": 76.7,
+          "count": 69,
+          "total": 90
+        },
+        {
+          "attribute": "meeting_space",
+          "label": "Meeting & Event Space",
+          "recognitionRate": 42.2,
+          "count": 38,
+          "total": 90
         }
       ],
       "gaps": [
@@ -681,49 +675,40 @@
           "attribute": "ballroom",
           "label": "Ballroom",
           "priority": "medium",
-          "recognitionRate": 11.8,
+          "recognitionRate": 11.1,
           "count": 10,
-          "total": 85,
+          "total": 90,
           "severity": "MEDIUM"
-        },
-        {
-          "attribute": "meeting_space",
-          "label": "Meeting & Event Space",
-          "priority": "high",
-          "recognitionRate": 38.8,
-          "count": 33,
-          "total": 85,
-          "severity": "LOW"
         },
         {
           "attribute": "pet_friendly",
           "label": "Pet-Friendly",
           "priority": "low",
-          "recognitionRate": 2.4,
-          "count": 2,
-          "total": 85,
+          "recognitionRate": 1.1,
+          "count": 1,
+          "total": 90,
           "severity": "HIGH"
         },
         {
           "attribute": "business_center",
           "label": "Business Center",
           "priority": "low",
-          "recognitionRate": 1.2,
-          "count": 1,
-          "total": 85,
+          "recognitionRate": 4.4,
+          "count": 4,
+          "total": 90,
           "severity": "HIGH"
         },
         {
           "attribute": "full_service",
           "label": "Full-Service Hotel",
           "priority": "medium",
-          "recognitionRate": 8.2,
-          "count": 7,
-          "total": 85,
+          "recognitionRate": 8.9,
+          "count": 8,
+          "total": 90,
           "severity": "HIGH"
         }
       ],
-      "totalPropertyMentions": 85
+      "totalPropertyMentions": 90
     },
     "whiteSpace": {
       "totalOpportunities": 4,
@@ -822,15 +807,11 @@
           "text": "Your property captured 77.8% of relevant AI demand scenarios this period."
         },
         {
-          "type": "insight",
-          "text": "5 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
-        },
-        {
           "type": "gap",
-          "text": "AI Reality Gap: 62.5%. AI misses or misrepresents 5 of your property's key attributes."
+          "text": "AI Reality Gap: 50.0%. AI misses or misrepresents 4 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-08-21T00:55:34.953Z"
+      "generatedAt": "2026-08-21T13:13:44.868Z"
     },
     "actions": [
       {
@@ -844,30 +825,35 @@
       {
         "priority": "MEDIUM",
         "category": "DISPLACEMENT",
-        "title": "Address displacement by Hotel Kansas City, in The Unbound Collection by Hyatt",
-        "description": "Hotel Kansas City, in The Unbound Collection by Hyatt appears in 22 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
+        "title": "Address displacement by Crossroads Hotel",
+        "description": "Crossroads Hotel appears in 9 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
         "expectedImpact": null,
         "impactNote": "Displacement count is observational; expected reduction is not certified."
       }
     ],
     "evidence": {
-      "citationRate": 26.2,
-      "avgSourcesPerCitation": 18.9,
+      "citationRate": 25.4,
+      "avgSourcesPerCitation": 19,
       "totalWithSources": 64,
-      "totalObservations": 244,
+      "totalObservations": 252,
       "scheduledObservations": 252,
-      "comparableObservations": 244,
+      "comparableObservations": 252,
       "providerDenominatorGrain": "comparable_observations",
       "topSources": [
         {
           "domain": "tripadvisor.com",
-          "count": 54,
-          "frequency": 84.4
+          "count": 55,
+          "frequency": 85.9
         },
         {
           "domain": "expedia.com",
-          "count": 41,
-          "frequency": 64.1
+          "count": 43,
+          "frequency": 67.2
+        },
+        {
+          "domain": "marriott.com",
+          "count": 39,
+          "frequency": 60.9
         },
         {
           "domain": "visitkc.com",
@@ -875,14 +861,14 @@
           "frequency": 59.4
         },
         {
-          "domain": "marriott.com",
-          "count": 37,
-          "frequency": 57.8
+          "domain": "hyatt.com",
+          "count": 34,
+          "frequency": 53.1
         },
         {
-          "domain": "hyatt.com",
-          "count": 32,
-          "frequency": 50
+          "domain": "reddit.com",
+          "count": 33,
+          "frequency": 51.6
         },
         {
           "domain": "hotels.com",
@@ -890,24 +876,19 @@
           "frequency": 48.4
         },
         {
-          "domain": "reddit.com",
-          "count": 30,
-          "frequency": 46.9
-        },
-        {
           "domain": "crossroadshotelkc.com",
-          "count": 25,
-          "frequency": 39.1
-        },
-        {
-          "domain": "loewshotels.com",
-          "count": 19,
-          "frequency": 29.7
+          "count": 27,
+          "frequency": 42.2
         },
         {
           "domain": "travelocity.com",
-          "count": 19,
-          "frequency": 29.7
+          "count": 21,
+          "frequency": 32.8
+        },
+        {
+          "domain": "thefontainehotel.com",
+          "count": 20,
+          "frequency": 31.3
         }
       ],
       "providers": [
@@ -915,17 +896,17 @@
           "provider": "gemini",
           "scenariosScheduled": 63,
           "scheduled": 63,
-          "observationsCaptured": 55,
-          "comparable": 55,
-          "captured": 55,
-          "mentioned": 27,
-          "excludedFromMetric": 8,
-          "incompleteCoverage": true,
-          "coverageNote": "55 of 63 observations captured",
+          "observationsCaptured": 63,
+          "comparable": 63,
+          "captured": 63,
+          "mentioned": 33,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
           "denominatorGrain": "comparable_observations",
           "formula": "subject_present_comparable / comparable_observations_for_provider",
-          "total": 55,
-          "presence": 49.1,
+          "total": 63,
+          "presence": 52.4,
           "presenceUnavailable": false
         },
         {
@@ -935,14 +916,14 @@
           "observationsCaptured": 63,
           "comparable": 63,
           "captured": 63,
-          "mentioned": 30,
+          "mentioned": 28,
           "excludedFromMetric": 0,
           "incompleteCoverage": false,
           "coverageNote": null,
           "denominatorGrain": "comparable_observations",
           "formula": "subject_present_comparable / comparable_observations_for_provider",
           "total": 63,
-          "presence": 47.6,
+          "presence": 44.4,
           "presenceUnavailable": false
         },
         {
@@ -969,20 +950,20 @@
           "observationsCaptured": 63,
           "comparable": 63,
           "captured": 63,
-          "mentioned": 3,
+          "mentioned": 4,
           "excludedFromMetric": 0,
           "incompleteCoverage": false,
           "coverageNote": null,
           "denominatorGrain": "comparable_observations",
           "formula": "subject_present_comparable / comparable_observations_for_provider",
           "total": 63,
-          "presence": 4.8,
+          "presence": 6.3,
           "presenceUnavailable": false
         }
       ],
       "providerCitations": {
         "openai": 0,
-        "gemini": 1.8,
+        "gemini": 1.6,
         "perplexity": 100,
         "claude": 0
       },
@@ -993,54 +974,54 @@
           "total": 20
         },
         {
-          "intent": "wellness",
-          "citationRate": 27.3,
-          "total": 11
-        },
-        {
-          "intent": "adventure",
-          "citationRate": 27.3,
-          "total": 11
-        },
-        {
           "intent": "business",
-          "citationRate": 26.5,
-          "total": 49
-        },
-        {
-          "intent": "celebration",
-          "citationRate": 25.9,
-          "total": 27
-        },
-        {
-          "intent": "couples",
-          "citationRate": 25.7,
-          "total": 35
+          "citationRate": 25,
+          "total": 52
         },
         {
           "intent": "leisure",
-          "citationRate": 25.5,
-          "total": 47
+          "citationRate": 25,
+          "total": 48
+        },
+        {
+          "intent": "couples",
+          "citationRate": 25,
+          "total": 36
         },
         {
           "intent": "group_meeting",
           "citationRate": 25,
           "total": 44
+        },
+        {
+          "intent": "celebration",
+          "citationRate": 25,
+          "total": 28
+        },
+        {
+          "intent": "wellness",
+          "citationRate": 25,
+          "total": 12
+        },
+        {
+          "intent": "adventure",
+          "citationRate": 25,
+          "total": 12
         }
       ],
-      "ownedSourceShare": 6.3,
-      "externalSourceShare": 93.8,
+      "ownedSourceShare": 4.7,
+      "externalSourceShare": 95.3,
       "unknownSourceShare": 0,
       "ownedSourceMix": {
         "version": "adp_owned_source_classification_v1",
         "domainsConfigured": true,
         "ownedSourceDefinition": "OWNED_SOURCE means a source directly controlled by (A) the subject hotel/property OR (B) the hotel's official parent brand/operator when the page directly represents the specific property. Brand corporate pages that do not represent the subject property are not owned. UNKNOWN is retained separately and must not silently become OWNED or EXTERNAL.",
         "responsesWithCitations": 64,
-        "ownedResponses": 4,
-        "externalOnlyResponses": 60,
+        "ownedResponses": 3,
+        "externalOnlyResponses": 61,
         "unknownOnlyResponses": 0,
-        "ownedShare": 6.3,
-        "externalShare": 93.8,
+        "ownedShare": 4.7,
+        "externalShare": 95.3,
         "unknownShare": 0,
         "grain": "RESPONSES_WITH_CITATIONS_UNIQUE_DOMAIN_PER_RESPONSE",
         "customerNote": "Owned / External shares are observed citation presence among responses that included sources — not AI trust, preference, or influence."
@@ -1050,9 +1031,9 @@
     "executiveMetrics": {
       "version": "adp_optional_executive_metrics_v2",
       "considerationRate": {
-        "rate": 34,
-        "presentObservations": 83,
-        "comparableObservations": 244
+        "rate": 35.7,
+        "presentObservations": 90,
+        "comparableObservations": 252
       },
       "scenarioPresence": {
         "rate": 77.8,
@@ -1060,15 +1041,15 @@
         "eligibleScenarios": 63
       },
       "rankMetrics": {
-        "rankEligibleN": 29,
-        "numberOneAppearanceRate": 17.2,
-        "topThreeAppearanceRate": 65.5,
-        "numberOneCount": 5,
+        "rankEligibleN": 54,
+        "numberOneAppearanceRate": 11.1,
+        "topThreeAppearanceRate": 35.2,
+        "numberOneCount": 6,
         "topThreeCount": 19
       },
       "competitorPresentScenarios": {
-        "scenarioCount": 52,
-        "observationCount": 148
+        "scenarioCount": 51,
+        "observationCount": 151
       }
     },
     "competitiveRankingByTerritory": {
@@ -1080,16 +1061,16 @@
           "viewType": "overall",
           "intent": "overall",
           "territory": "Overall",
-          "comparableN": 244,
+          "comparableN": 252,
           "baseObservedRows": 10,
           "displayRows": [
             {
               "entityId": "loews_kansas_city",
               "name": "Loews Kansas City Hotel",
               "isSubject": false,
-              "appearances": 105,
-              "aiPresenceRate": 0.430327868852459,
-              "aiPresencePct": 43,
+              "appearances": 111,
+              "aiPresenceRate": 0.44047619047619047,
+              "aiPresencePct": 44,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 1,
@@ -1100,7 +1081,7 @@
               "topDemandTerritory": "Leisure Travel",
               "topDemandTerritoryIntent": "leisure",
               "displacement": {
-                "count": 10,
+                "count": 9,
                 "evidenceAvailable": true,
                 "competitorId": "loews_kansas_city"
               }
@@ -1109,9 +1090,9 @@
               "entityId": "hotel_kansas_city",
               "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
               "isSubject": false,
-              "appearances": 92,
-              "aiPresenceRate": 0.3770491803278688,
-              "aiPresencePct": 37.7,
+              "appearances": 102,
+              "aiPresenceRate": 0.40476190476190477,
+              "aiPresencePct": 40.5,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 2,
@@ -1119,8 +1100,8 @@
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
-              "topDemandTerritory": "Meetings & Groups",
-              "topDemandTerritoryIntent": "group_meeting",
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
               "displacement": {
                 "count": 8,
                 "evidenceAvailable": true,
@@ -1131,9 +1112,9 @@
               "entityId": "__subject__",
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": true,
-              "appearances": 85,
-              "aiPresenceRate": 0.3483606557377049,
-              "aiPresencePct": 34.8,
+              "appearances": 90,
+              "aiPresenceRate": 0.35714285714285715,
+              "aiPresencePct": 35.7,
               "relationship": "SUBJECT",
               "isCore": false,
               "observedRank": 3,
@@ -1153,9 +1134,9 @@
               "entityId": "crossroads_hotel_kc",
               "name": "Crossroads Hotel",
               "isSubject": false,
-              "appearances": 68,
-              "aiPresenceRate": 0.2786885245901639,
-              "aiPresencePct": 27.9,
+              "appearances": 81,
+              "aiPresenceRate": 0.32142857142857145,
+              "aiPresencePct": 32.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 4,
@@ -1166,7 +1147,7 @@
               "topDemandTerritory": "Leisure Travel",
               "topDemandTerritoryIntent": "leisure",
               "displacement": {
-                "count": 8,
+                "count": 9,
                 "evidenceAvailable": true,
                 "competitorId": "crossroads_hotel_kc"
               }
@@ -1175,9 +1156,9 @@
               "entityId": "ambassador_hotel_kansas_city",
               "name": "Ambassador Hotel Kansas City, Autograph Collection",
               "isSubject": false,
-              "appearances": 48,
-              "aiPresenceRate": 0.19672131147540983,
-              "aiPresencePct": 19.7,
+              "appearances": 54,
+              "aiPresenceRate": 0.21428571428571427,
+              "aiPresencePct": 21.4,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -1188,7 +1169,7 @@
               "topDemandTerritory": "Business Travel",
               "topDemandTerritoryIntent": "business",
               "displacement": {
-                "count": 6,
+                "count": 5,
                 "evidenceAvailable": true,
                 "competitorId": "ambassador_hotel_kansas_city"
               }
@@ -1197,9 +1178,9 @@
               "entityId": "hotel_phillips_kansas_city",
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": false,
-              "appearances": 6,
-              "aiPresenceRate": 0.02459016393442623,
-              "aiPresencePct": 2.5,
+              "appearances": 7,
+              "aiPresenceRate": 0.027777777777777776,
+              "aiPresencePct": 2.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 6,
@@ -1220,7 +1201,7 @@
               "name": "Hilton President Kansas City",
               "isSubject": false,
               "appearances": 5,
-              "aiPresenceRate": 0.020491803278688523,
+              "aiPresenceRate": 0.01984126984126984,
               "aiPresencePct": 2,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
@@ -1242,7 +1223,7 @@
               "name": "Sheraton Kansas City Hotel at Crown Center",
               "isSubject": false,
               "appearances": 4,
-              "aiPresenceRate": 0.01639344262295082,
+              "aiPresenceRate": 0.015873015873015872,
               "aiPresencePct": 1.6,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
@@ -1264,7 +1245,7 @@
               "name": "Kansas City Marriott Downtown",
               "isSubject": false,
               "appearances": 2,
-              "aiPresenceRate": 0.00819672131147541,
+              "aiPresenceRate": 0.007936507936507936,
               "aiPresencePct": 0.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
@@ -1276,8 +1257,8 @@
               "topDemandTerritory": "Business Travel",
               "topDemandTerritoryIntent": "business",
               "displacement": {
-                "count": 1,
-                "evidenceAvailable": true,
+                "count": 0,
+                "evidenceAvailable": false,
                 "competitorId": "kansas_city_marriott_downtown"
               }
             },
@@ -1286,7 +1267,7 @@
               "name": "Fairfield Inn & Suites Kansas City Downtown/Union Hill",
               "isSubject": false,
               "appearances": 1,
-              "aiPresenceRate": 0.004098360655737705,
+              "aiPresenceRate": 0.003968253968253968,
               "aiPresencePct": 0.4,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
@@ -1329,16 +1310,16 @@
             "hilton_president_kansas_city",
             "ambassador_hotel_kansas_city"
           ],
-          "comparableN": 49,
+          "comparableN": 52,
           "baseObservedRows": 10,
           "displayRows": [
             {
               "entityId": "hotel_kansas_city",
               "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
               "isSubject": false,
-              "appearances": 20,
-              "aiPresenceRate": 0.40816326530612246,
-              "aiPresencePct": 40.8,
+              "appearances": 28,
+              "aiPresenceRate": 0.5384615384615384,
+              "aiPresencePct": 53.8,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 1,
@@ -1353,16 +1334,36 @@
               }
             },
             {
-              "entityId": "__subject__",
-              "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
-              "isSubject": true,
-              "appearances": 18,
-              "aiPresenceRate": 0.3673469387755102,
-              "aiPresencePct": 36.7,
-              "relationship": "SUBJECT",
+              "entityId": "loews_kansas_city",
+              "name": "Loews Kansas City Hotel",
+              "isSubject": false,
+              "appearances": 23,
+              "aiPresenceRate": 0.4423076923076923,
+              "aiPresencePct": 44.2,
+              "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 2,
               "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "loews_kansas_city"
+              }
+            },
+            {
+              "entityId": "__subject__",
+              "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
+              "isSubject": true,
+              "appearances": 20,
+              "aiPresenceRate": 0.38461538461538464,
+              "aiPresencePct": 38.5,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1373,32 +1374,12 @@
               }
             },
             {
-              "entityId": "loews_kansas_city",
-              "name": "Loews Kansas City Hotel",
-              "isSubject": false,
-              "appearances": 18,
-              "aiPresenceRate": 0.3673469387755102,
-              "aiPresencePct": 36.7,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
-              "observedRank": 3,
-              "displayRank": 3,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "displacement": {
-                "count": 2,
-                "evidenceAvailable": true,
-                "competitorId": "loews_kansas_city"
-              }
-            },
-            {
               "entityId": "ambassador_hotel_kansas_city",
               "name": "Ambassador Hotel Kansas City, Autograph Collection",
               "isSubject": false,
-              "appearances": 14,
-              "aiPresenceRate": 0.2857142857142857,
-              "aiPresencePct": 28.6,
+              "appearances": 19,
+              "aiPresenceRate": 0.36538461538461536,
+              "aiPresencePct": 36.5,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 4,
@@ -1407,7 +1388,7 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 2,
+                "count": 1,
                 "evidenceAvailable": true,
                 "competitorId": "ambassador_hotel_kansas_city"
               }
@@ -1416,9 +1397,9 @@
               "entityId": "crossroads_hotel_kc",
               "name": "Crossroads Hotel",
               "isSubject": false,
-              "appearances": 6,
-              "aiPresenceRate": 0.12244897959183673,
-              "aiPresencePct": 12.2,
+              "appearances": 16,
+              "aiPresenceRate": 0.3076923076923077,
+              "aiPresencePct": 30.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -1427,8 +1408,8 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
+                "count": 1,
+                "evidenceAvailable": true,
                 "competitorId": "crossroads_hotel_kc"
               }
             },
@@ -1437,8 +1418,8 @@
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": false,
               "appearances": 2,
-              "aiPresenceRate": 0.04081632653061224,
-              "aiPresencePct": 4.1,
+              "aiPresenceRate": 0.038461538461538464,
+              "aiPresencePct": 3.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 6,
@@ -1457,8 +1438,8 @@
               "name": "Hilton President Kansas City",
               "isSubject": false,
               "appearances": 1,
-              "aiPresenceRate": 0.02040816326530612,
-              "aiPresencePct": 2,
+              "aiPresenceRate": 0.019230769230769232,
+              "aiPresencePct": 1.9,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 7,
@@ -1477,8 +1458,8 @@
               "name": "Kansas City Marriott Downtown",
               "isSubject": false,
               "appearances": 1,
-              "aiPresenceRate": 0.02040816326530612,
-              "aiPresencePct": 2,
+              "aiPresenceRate": 0.019230769230769232,
+              "aiPresencePct": 1.9,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 8,
@@ -1487,8 +1468,8 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 1,
-                "evidenceAvailable": true,
+                "count": 0,
+                "evidenceAvailable": false,
                 "competitorId": "kansas_city_marriott_downtown"
               }
             }
@@ -1518,7 +1499,7 @@
             "ambassador_hotel_kansas_city",
             "hilton_president_kansas_city"
           ],
-          "comparableN": 47,
+          "comparableN": 48,
           "baseObservedRows": 10,
           "displayRows": [
             {
@@ -1526,8 +1507,8 @@
               "name": "Loews Kansas City Hotel",
               "isSubject": false,
               "appearances": 29,
-              "aiPresenceRate": 0.6170212765957447,
-              "aiPresencePct": 61.7,
+              "aiPresenceRate": 0.6041666666666666,
+              "aiPresencePct": 60.4,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 1,
@@ -1545,9 +1526,9 @@
               "entityId": "crossroads_hotel_kc",
               "name": "Crossroads Hotel",
               "isSubject": false,
-              "appearances": 22,
-              "aiPresenceRate": 0.46808510638297873,
-              "aiPresencePct": 46.8,
+              "appearances": 23,
+              "aiPresenceRate": 0.4791666666666667,
+              "aiPresencePct": 47.9,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1566,8 +1547,8 @@
               "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
               "isSubject": false,
               "appearances": 18,
-              "aiPresenceRate": 0.3829787234042553,
-              "aiPresencePct": 38.3,
+              "aiPresenceRate": 0.375,
+              "aiPresencePct": 37.5,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 3,
@@ -1585,9 +1566,9 @@
               "entityId": "__subject__",
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": true,
-              "appearances": 14,
-              "aiPresenceRate": 0.2978723404255319,
-              "aiPresencePct": 29.8,
+              "appearances": 15,
+              "aiPresenceRate": 0.3125,
+              "aiPresencePct": 31.3,
               "relationship": "SUBJECT",
               "isCore": false,
               "observedRank": 4,
@@ -1606,8 +1587,8 @@
               "name": "Ambassador Hotel Kansas City, Autograph Collection",
               "isSubject": false,
               "appearances": 8,
-              "aiPresenceRate": 0.1702127659574468,
-              "aiPresencePct": 17,
+              "aiPresenceRate": 0.16666666666666666,
+              "aiPresencePct": 16.7,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 5,
@@ -1626,8 +1607,8 @@
               "name": "Hilton President Kansas City",
               "isSubject": false,
               "appearances": 2,
-              "aiPresenceRate": 0.0425531914893617,
-              "aiPresencePct": 4.3,
+              "aiPresenceRate": 0.041666666666666664,
+              "aiPresencePct": 4.2,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 6,
@@ -1646,8 +1627,8 @@
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": false,
               "appearances": 2,
-              "aiPresenceRate": 0.0425531914893617,
-              "aiPresencePct": 4.3,
+              "aiPresenceRate": 0.041666666666666664,
+              "aiPresencePct": 4.2,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 7,
@@ -1687,16 +1668,16 @@
             "ambassador_hotel_kansas_city",
             "hotel_savoy_kansas_city"
           ],
-          "comparableN": 35,
+          "comparableN": 36,
           "baseObservedRows": 10,
           "displayRows": [
             {
               "entityId": "__subject__",
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": true,
-              "appearances": 14,
-              "aiPresenceRate": 0.4,
-              "aiPresencePct": 40,
+              "appearances": 15,
+              "aiPresenceRate": 0.4166666666666667,
+              "aiPresencePct": 41.7,
               "relationship": "SUBJECT",
               "isCore": false,
               "observedRank": 1,
@@ -1714,9 +1695,9 @@
               "entityId": "crossroads_hotel_kc",
               "name": "Crossroads Hotel",
               "isSubject": false,
-              "appearances": 10,
-              "aiPresenceRate": 0.2857142857142857,
-              "aiPresencePct": 28.6,
+              "appearances": 11,
+              "aiPresenceRate": 0.3055555555555556,
+              "aiPresencePct": 30.6,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1734,9 +1715,9 @@
               "entityId": "hotel_kansas_city",
               "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
               "isSubject": false,
-              "appearances": 9,
-              "aiPresenceRate": 0.2571428571428571,
-              "aiPresencePct": 25.7,
+              "appearances": 10,
+              "aiPresenceRate": 0.2777777777777778,
+              "aiPresencePct": 27.8,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 3,
@@ -1754,9 +1735,9 @@
               "entityId": "ambassador_hotel_kansas_city",
               "name": "Ambassador Hotel Kansas City, Autograph Collection",
               "isSubject": false,
-              "appearances": 6,
-              "aiPresenceRate": 0.17142857142857143,
-              "aiPresencePct": 17.1,
+              "appearances": 7,
+              "aiPresenceRate": 0.19444444444444445,
+              "aiPresencePct": 19.4,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 4,
@@ -1775,8 +1756,8 @@
               "name": "Loews Kansas City Hotel",
               "isSubject": false,
               "appearances": 2,
-              "aiPresenceRate": 0.05714285714285714,
-              "aiPresencePct": 5.7,
+              "aiPresenceRate": 0.05555555555555555,
+              "aiPresencePct": 5.6,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -1795,8 +1776,8 @@
               "name": "Hilton President Kansas City",
               "isSubject": false,
               "appearances": 1,
-              "aiPresenceRate": 0.02857142857142857,
-              "aiPresencePct": 2.9,
+              "aiPresenceRate": 0.027777777777777776,
+              "aiPresencePct": 2.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 6,
@@ -1808,6 +1789,26 @@
                 "count": 0,
                 "evidenceAvailable": false,
                 "competitorId": "hilton_president_kansas_city"
+              }
+            },
+            {
+              "entityId": "hotel_phillips_kansas_city",
+              "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.027777777777777776,
+              "aiPresencePct": 2.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "hotel_phillips_kansas_city"
               }
             },
             {
@@ -2046,16 +2047,16 @@
             "ambassador_hotel_kansas_city",
             "hilton_president_kansas_city"
           ],
-          "comparableN": 11,
+          "comparableN": 12,
           "baseObservedRows": 10,
           "displayRows": [
             {
               "entityId": "hotel_kansas_city",
               "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
               "isSubject": false,
-              "appearances": 7,
-              "aiPresenceRate": 0.6363636363636364,
-              "aiPresencePct": 63.6,
+              "appearances": 8,
+              "aiPresenceRate": 0.6666666666666666,
+              "aiPresencePct": 66.7,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 1,
@@ -2073,9 +2074,9 @@
               "entityId": "crossroads_hotel_kc",
               "name": "Crossroads Hotel",
               "isSubject": false,
-              "appearances": 5,
-              "aiPresenceRate": 0.45454545454545453,
-              "aiPresencePct": 45.5,
+              "appearances": 6,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -2093,9 +2094,9 @@
               "entityId": "__subject__",
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": true,
-              "appearances": 5,
-              "aiPresenceRate": 0.45454545454545453,
-              "aiPresencePct": 45.5,
+              "appearances": 6,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
               "relationship": "SUBJECT",
               "isCore": false,
               "observedRank": 3,
@@ -2114,8 +2115,8 @@
               "name": "Loews Kansas City Hotel",
               "isSubject": false,
               "appearances": 3,
-              "aiPresenceRate": 0.2727272727272727,
-              "aiPresencePct": 27.3,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 4,
@@ -2134,8 +2135,8 @@
               "name": "Ambassador Hotel Kansas City, Autograph Collection",
               "isSubject": false,
               "appearances": 1,
-              "aiPresenceRate": 0.09090909090909091,
-              "aiPresencePct": 9.1,
+              "aiPresenceRate": 0.08333333333333333,
+              "aiPresencePct": 8.3,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 5,
@@ -2154,8 +2155,8 @@
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": false,
               "appearances": 1,
-              "aiPresenceRate": 0.09090909090909091,
-              "aiPresencePct": 9.1,
+              "aiPresenceRate": 0.08333333333333333,
+              "aiPresencePct": 8.3,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 6,
@@ -2216,7 +2217,7 @@
             "hilton_president_kansas_city",
             "crossroads_hotel_kc"
           ],
-          "comparableN": 27,
+          "comparableN": 28,
           "baseObservedRows": 10,
           "displayRows": [
             {
@@ -2224,8 +2225,8 @@
               "name": "Hotel Phillips Kansas City, Curio Collection by Hilton",
               "isSubject": true,
               "appearances": 11,
-              "aiPresenceRate": 0.4074074074074074,
-              "aiPresencePct": 40.7,
+              "aiPresenceRate": 0.39285714285714285,
+              "aiPresencePct": 39.3,
               "relationship": "SUBJECT",
               "isCore": false,
               "observedRank": 1,
@@ -2244,8 +2245,8 @@
               "name": "Hotel Kansas City, in The Unbound Collection by Hyatt",
               "isSubject": false,
               "appearances": 10,
-              "aiPresenceRate": 0.37037037037037035,
-              "aiPresencePct": 37,
+              "aiPresenceRate": 0.35714285714285715,
+              "aiPresencePct": 35.7,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -2264,8 +2265,8 @@
               "name": "Loews Kansas City Hotel",
               "isSubject": false,
               "appearances": 10,
-              "aiPresenceRate": 0.37037037037037035,
-              "aiPresencePct": 37,
+              "aiPresenceRate": 0.35714285714285715,
+              "aiPresencePct": 35.7,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 3,
@@ -2284,8 +2285,8 @@
               "name": "Ambassador Hotel Kansas City, Autograph Collection",
               "isSubject": false,
               "appearances": 5,
-              "aiPresenceRate": 0.18518518518518517,
-              "aiPresencePct": 18.5,
+              "aiPresenceRate": 0.17857142857142858,
+              "aiPresencePct": 17.9,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 4,
@@ -2304,8 +2305,8 @@
               "name": "Crossroads Hotel",
               "isSubject": false,
               "appearances": 4,
-              "aiPresenceRate": 0.14814814814814814,
-              "aiPresencePct": 14.8,
+              "aiPresenceRate": 0.14285714285714285,
+              "aiPresencePct": 14.3,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 5,
@@ -2401,7 +2402,7 @@
           "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 7
+          "VISIBLE_ROWS": 8
         },
         {
           "PROPERTY": "Hotel Phillips Kansas City, Curio Collection by Hilton",
@@ -2455,10 +2456,10 @@
       "current": {
         "positionPattern": "BROAD_VISIBILITY_INCONSISTENT_CONSIDERATION",
         "label": "broad AI visibility but less consistent consideration",
-        "narrative": "Hotel Phillips Kansas City, Curio Collection by Hilton appears in 77.8% of monitored demand scenarios but in 34% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 65.5% of ranked responses. AI visibility is broader than consideration consistency: the hotel appears in 77.8% of monitored demand scenarios but only 34% of individual comparable AI responses.",
+        "narrative": "Hotel Phillips Kansas City, Curio Collection by Hilton appears in 77.8% of monitored demand scenarios but in 35.7% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. The hotel appears across 77.8% of monitored demand scenarios, indicating broad demand-scenario reach. AI visibility is broader than consideration consistency: the hotel appears in 77.8% of monitored demand scenarios but only 35.7% of individual comparable AI responses.",
         "primaryStrength": {
-          "key": "TOP3_PROMINENCE",
-          "label": "Top-3 prominence"
+          "key": "DEMAND_REACH",
+          "label": "Demand reach"
         },
         "primaryConstraint": {
           "key": "CONSIDERATION_CONSISTENCY",
@@ -2481,17 +2482,17 @@
         "label": "broad AI visibility but less consistent consideration"
       },
       "primaryStrength": {
-        "key": "TOP3_PROMINENCE",
-        "label": "Top-3 prominence"
+        "key": "DEMAND_REACH",
+        "label": "Demand reach"
       },
       "primaryConstraint": {
         "key": "CONSIDERATION_CONSISTENCY",
         "label": "Consideration consistency"
       },
-      "narrative": "Hotel Phillips Kansas City, Curio Collection by Hilton appears in 77.8% of monitored demand scenarios but in 34% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 65.5% of ranked responses. AI visibility is broader than consideration consistency: the hotel appears in 77.8% of monitored demand scenarios but only 34% of individual comparable AI responses. This is the baseline monitoring period for this property.",
+      "narrative": "Hotel Phillips Kansas City, Curio Collection by Hilton appears in 77.8% of monitored demand scenarios but in 35.7% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. The hotel appears across 77.8% of monitored demand scenarios, indicating broad demand-scenario reach. AI visibility is broader than consideration consistency: the hotel appears in 77.8% of monitored demand scenarios but only 35.7% of individual comparable AI responses. This is the baseline monitoring period for this property.",
       "meta": {
         "overall": "This is the baseline monitoring period for this property",
-        "primaryStrength": "Top-3 prominence",
+        "primaryStrength": "Demand reach",
         "primaryConstraint": "Consideration consistency"
       },
       "safety": {
@@ -2501,7 +2502,7 @@
         "MARKETING_STYLE_LANGUAGE": 0,
         "USES_ACTUAL_VALUES": 1,
         "UNDEFINED_JARGON": 0,
-        "DUPLICATE_EXECUTIVE_FINDING_WITHOUT_NEW_MEANING": 0,
+        "DUPLICATE_EXECUTIVE_FINDING_WITHOUT_NEW_MEANING": 1,
         "PLAIN_BUSINESS_MEANING_FIRST": 1
       },
       "ux": {
@@ -2512,13 +2513,13 @@
         "PROPERTY_SPECIFIC_EXECUTIVE_COPY_CODE": 0,
         "biggestStrength": {
           "sectionLabel": "BIGGEST STRENGTH",
-          "headline": "Often placed near the top when AI ranks hotels",
-          "body": "Among AI answers where hotel ranking could be measured, Hotel Phillips Kansas City, Curio Collection by Hilton appeared in the Top 3 65.5% of the time. This shows how prominently the hotel is positioned when AI includes it."
+          "headline": "Recognized across many traveler needs",
+          "body": "Hotel Phillips Kansas City, Curio Collection by Hilton appeared in at least one AI answer for 77.8% of the traveler needs we tested. This shows that AI recognizes the hotel as relevant across a broad range of stay occasions."
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
           "headline": "Not appearing consistently in AI answers",
-          "body": "The hotel appeared in at least one AI answer for 77.8% of the traveler needs we tested, but across all individual AI answers it appeared 34% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+          "body": "The hotel appeared in at least one AI answer for 77.8% of the traveler needs we tested, but across all individual AI answers it appeared 35.7% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
         },
         "changeSinceLastRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -2527,7 +2528,7 @@
         },
         "executiveSummary": {
           "title": "WHAT THE DATA SAYS",
-          "narrative": "Hotel Phillips Kansas City, Curio Collection by Hilton appeared in at least one AI answer for 77.8% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Hotel Phillips Kansas City, Curio Collection by Hilton appeared 34% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Hotel Phillips Kansas City, Curio Collection by Hilton in the hotel options surfaced.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, Hotel Phillips Kansas City, Curio Collection by Hilton appeared in the Top 3 65.5% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+          "narrative": "Hotel Phillips Kansas City, Curio Collection by Hilton appeared in at least one AI answer for 77.8% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Hotel Phillips Kansas City, Curio Collection by Hilton appeared 35.7% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Hotel Phillips Kansas City, Curio Collection by Hilton in the hotel options surfaced.\n\nThe clearest strength in this period is recognized across many traveler needs. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, Hotel Phillips Kansas City, Curio Collection by Hilton appeared in the Top 3 35.2% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
         },
         "safety": {
           "VAGUE_UNEXPLAINED_PHRASES": 0,
@@ -2535,20 +2536,20 @@
           "UNSUPPORTED_CAUSAL_CLAIMS": 0,
           "USES_ACTUAL_VALUES": 1,
           "UNDEFINED_JARGON": 0,
-          "DUPLICATE_EXECUTIVE_FINDING_WITHOUT_NEW_MEANING": 0,
+          "DUPLICATE_EXECUTIVE_FINDING_WITHOUT_NEW_MEANING": 1,
           "PLAIN_BUSINESS_MEANING_FIRST": 1
         }
       },
       "summary": {
         "biggestStrength": {
           "sectionLabel": "BIGGEST STRENGTH",
-          "headline": "Often placed near the top when AI ranks hotels",
-          "body": "Among AI answers where hotel ranking could be measured, Hotel Phillips Kansas City, Curio Collection by Hilton appeared in the Top 3 65.5% of the time. This shows how prominently the hotel is positioned when AI includes it."
+          "headline": "Recognized across many traveler needs",
+          "body": "Hotel Phillips Kansas City, Curio Collection by Hilton appeared in at least one AI answer for 77.8% of the traveler needs we tested. This shows that AI recognizes the hotel as relevant across a broad range of stay occasions."
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
           "headline": "Not appearing consistently in AI answers",
-          "body": "The hotel appeared in at least one AI answer for 77.8% of the traveler needs we tested, but across all individual AI answers it appeared 34% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+          "body": "The hotel appeared in at least one AI answer for 77.8% of the traveler needs we tested, but across all individual AI answers it appeared 35.7% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
         },
         "changeSinceLastComparableRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -2558,19 +2559,53 @@
       },
       "writeup": {
         "title": "WHAT THE DATA SAYS",
-        "body": "Hotel Phillips Kansas City, Curio Collection by Hilton appeared in at least one AI answer for 77.8% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Hotel Phillips Kansas City, Curio Collection by Hilton appeared 34% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Hotel Phillips Kansas City, Curio Collection by Hilton in the hotel options surfaced.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, Hotel Phillips Kansas City, Curio Collection by Hilton appeared in the Top 3 65.5% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+        "body": "Hotel Phillips Kansas City, Curio Collection by Hilton appeared in at least one AI answer for 77.8% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Hotel Phillips Kansas City, Curio Collection by Hilton appeared 35.7% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Hotel Phillips Kansas City, Curio Collection by Hilton in the hotel options surfaced.\n\nThe clearest strength in this period is recognized across many traveler needs. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, Hotel Phillips Kansas City, Curio Collection by Hilton appeared in the Top 3 35.2% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
       }
     },
+    "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
+    "correction": {
+      "type": "PROMPT_MEASUREMENT_CONTRACT_CORRECTION",
+      "version": "ADP_NEUTRAL_DEMAND_CORRECTION_V1_1",
+      "appliedAt": "2026-08-21T13:01:58.075Z",
+      "measurementContractTarget": "ADP_MEASUREMENT_CONTRACT_V1_1",
+      "promptIntegrityVersion": "ADP_PROMPT_INTEGRITY_CONTRACT_V1",
+      "marketGeographyIntegrityVersion": "PROMPT_MARKET_GEOGRAPHY_INTEGRITY_V1",
+      "manifestHash": "99b287b7b5d0000a5db1b6864aeb8adf2472be689748f008b976ece52bc2c566"
+    },
+    "reportVersionLabel": "CORRECTED_V1_1",
     "trends": [
       {
         "periodId": "adp_period_adp_hotel_phillips_kansas_city_20260820194028_21bf47",
         "date": "2026-08-20T19:40:28.695Z",
-        "propertyRealityCoverage": 37.5,
+        "propertyRealityCoverage": 50,
         "scenarioPresenceRate": 77.8,
-        "considerationRate": 34,
+        "considerationRate": 35.7,
         "providerCount": 4,
-        "observationCount": 252
+        "observationCount": 252,
+        "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1"
       }
     ]
+  },
+  "_certification": {
+    "certificationStatus": "CERTIFIED_WITH_DISCLOSURES",
+    "assuranceVersion": "adp_measurement_assurance_v1",
+    "certificationTimestamp": "2026-08-21T13:13:45.737Z",
+    "reason": "Founder-directed V1.1 Neutral Demand Core correction publication after controlled material review PASS",
+    "deploymentCommit": "1e3d0c0b0807368e6d1d1558b62840f2587d3efa",
+    "disclosures": [
+      "Report updated following a measurement-quality review.",
+      "Core measurement contract: ADP_MEASUREMENT_CONTRACT_V1_1 (NEUTRAL_DEMAND only)",
+      "ORIGINAL_V1 snapshots preserved in publication backup + corrections registry",
+      "Same frozen monitoring period — not Period 2"
+    ],
+    "correction": {
+      "type": "PROMPT_MEASUREMENT_CONTRACT_CORRECTION",
+      "from": "ADP_MEASUREMENT_CONTRACT_V1",
+      "to": "ADP_MEASUREMENT_CONTRACT_V1_1",
+      "promptManifestHash": "99b287b7b5d0000a5db1b6864aeb8adf2472be689748f008b976ece52bc2c566",
+      "reportEdition": "CORRECTED_V1_1"
+    },
+    "publishGuard": "CERTIFIED",
+    "override": null
   }
 }
