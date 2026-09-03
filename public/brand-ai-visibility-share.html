@@ -35,6 +35,13 @@
       getAuthHeaders: function() { return Promise.resolve({ headers: { Accept: 'application/json' } }); },
       inspectMemberstackAuth: function() { return Promise.resolve({ clientCount: 0, apis: [], hasJwt: false }); },
     };
+    // Pre-seed language so the first API call includes language=en and avoids
+    // a LANGUAGE_REQUIRED round-trip that leaves the page visually empty.
+    try {
+      if (!sessionStorage.getItem('aiv_brand_language')) {
+        sessionStorage.setItem('aiv_brand_language', 'en');
+      }
+    } catch (_) {}
   })();
   </script>
   <script src="/js/ai-visibility/ai-visibility-shared.js?v=bai-parent-share-v1-20260903" defer></script>
