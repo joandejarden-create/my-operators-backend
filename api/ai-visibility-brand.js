@@ -35,6 +35,10 @@ import {
   buildBaiWave3FullCohortReconciliationV1,
   BAI_WAVE3_NO_CUSTOMER_PUBLICATION_MUTATION,
 } from "../lib/ai-visibility/brand-longitudinal/bai-wave3-longitudinal-intelligence-v1.js";
+import {
+  buildBaiWave4LongitudinalPresentationV1,
+  BAI_WAVE4_NO_CUSTOMER_PUBLICATION_MUTATION,
+} from "../lib/ai-visibility/brand-longitudinal/bai-wave4-longitudinal-presentation-v1.js";
 
 /**
  * Hotel Decision Visibility public route retired in Phase 3A.4.
@@ -540,6 +544,14 @@ export async function getBaiInternalLongitudinalQa(req, res) {
       !parentRaw ||
       /^(all|\*|full|cohort)$/i.test(parentRaw);
 
+    // Wave 4 presentation consumes Wave 3 canonically (no recompute / no provider calls).
+    const wave4 = buildBaiWave4LongitudinalPresentationV1({
+      viewMode: BAI_VIEW_MODE.INTERNAL_CANDIDATE_LONGITUDINAL_QA,
+      geography: req.query.geography || "CALA",
+      scope: wantsFull ? "full_cohort" : "parent_filter",
+      parentCompanyName: wantsFull ? "all" : parentRaw,
+    });
+
     const payload = wantsFull
       ? buildBaiWave3FullCohortReconciliationV1({
           viewMode: BAI_VIEW_MODE.INTERNAL_CANDIDATE_LONGITUDINAL_QA,
@@ -553,15 +565,18 @@ export async function getBaiInternalLongitudinalQa(req, res) {
 
     return res.status(200).json({
       success: true,
-      ok: payload.ok !== false,
+      ok: payload.ok !== false && wave4.ok !== false,
       accessClass: "INTERNAL_LONGITUDINAL_QA",
       SHARE_CAPABILITY_FORBIDDEN: true,
       PERIOD_2_PUBLICATION_STATE: "UNPROMOTED",
       scope: wantsFull ? "full_cohort" : "parent_filter",
+      wave: 4,
       ...payload,
+      wave4,
       AIRTABLE_WRITES: 0,
       LIVE_PROVIDER_CALLS: 0,
       PROVIDER_CALLS: 0,
+      ANALYTICAL_CONTRACT_CHANGES: "NONE",
     });
   } catch (err) {
     console.error("[ai-visibility-brand] internal-longitudinal-qa:", err.message);
@@ -570,6 +585,7 @@ export async function getBaiInternalLongitudinalQa(req, res) {
       success: false,
       error: "server_error",
       message: "Failed to load internal longitudinal QA.",
+      gate: BAI_WAVE4_NO_CUSTOMER_PUBLICATION_MUTATION,
     });
   }
 }
