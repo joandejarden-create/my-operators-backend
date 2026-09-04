@@ -1,7 +1,10 @@
 /**
- * BAI customer longitudinal surfaces — Prior Run, Trends, abs/rel, disclosures.
+ * BAI customer longitudinal surfaces — Executive Read, Prior Run KPIs, Trends.
  * Consumes customerLongitudinal from executive-summary (post-promotion) or
  * /api/ai-visibility/brand/customer-promotion-preview (internal preview only).
+ *
+ * Visual grammar: ADP-family Executive Read + Wave 1–4 customer KPI/card tokens.
+ * Measurement / period identity is payload-owned — this module only presents.
  */
 (function (global) {
   var charts = {};
@@ -42,14 +45,220 @@
     );
   }
 
-  function chip(kind, label) {
+  function chipKindFromLabel(label) {
+    var l = String(label || "").toLowerCase();
+    if (l.indexOf("improv") >= 0) return "improved";
+    if (l.indexOf("declin") >= 0) return "declined";
+    if (l.indexOf("weaken") >= 0) return "weakened";
+    if (l.indexOf("stable") >= 0) return "stable";
+    return "neutral";
+  }
+
+  function statusChip(label) {
+    var kind = chipKindFromLabel(label);
     return (
-      '<span class="bai-w4-chip bai-w4-chip-kind--' +
-      esc(kind || "") +
+      '<span class="bai-w4-chip bai-w4-chip--' +
+      esc(kind) +
       '">' +
-      esc(label || "") +
+      esc(label || "—") +
       "</span>"
     );
+  }
+
+  function formatShortDate(iso) {
+    var s = String(iso || "").slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return s || "—";
+    var months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    var m = Number(s.slice(5, 7)) - 1;
+    var d = Number(s.slice(8, 10));
+    return months[m] + " " + d;
+  }
+
+  function formatDateRange(priorIso, currentIso) {
+    return formatShortDate(priorIso) + " → " + formatShortDate(currentIso);
+  }
+
+  function setDisclosure(wrapId, bodyId, text) {
+    var wrap = $(wrapId);
+    var body = $(bodyId);
+    var t = String(text || "").trim();
+    if (body) body.textContent = t;
+    if (wrap) wrap.hidden = !t;
+  }
+
+  function buildWhatChangedItems(pv) {
+    var items = [];
+    var port = pv.portfolio || {};
+    var provider = pv.provider || {};
+
+    if (port.strongestPositiveMover) {
+      items.push({
+        label: "Strongest gain",
+        value:
+          port.strongestPositiveMover.brandName +
+          " " +
+          (port.strongestPositiveMover.deltaDisplay || ""),
+      });
+    } else if (port.noBrandsImproved) {
+      items.push({
+        label: "Strongest gain",
+        value: port.mostStableBrand
+          ? "None — most stable: " +
+            port.mostStableBrand.brandName +
+            " (" +
+            (port.mostStableBrand.deltaDisplay || "—") +
+            ")"
+          : "None — all brands declined or held",
+      });
+    }
+
+    if (port.largestVisibilityLoss) {
+      items.push({
+        label: "Largest decline",
+        value:
+          port.largestVisibilityLoss.brandName +
+          " " +
+          (port.largestVisibilityLoss.deltaDisplay || ""),
+      });
+    }
+
+    var strongest = provider.strongestProvider;
+    if (!strongest && provider.rows && provider.rows.length) {
+      strongest = provider.rows.reduce(function (best, row) {
+        if (!best) return row;
+        return Number(row.currentPresence) > Number(best.currentPresence)
+          ? row
+          : best;
+      }, null);
+    }
+    if (strongest) {
+      items.push({
+        label: "Strongest current provider",
+        value:
+          (strongest.providerLabel || strongest.provider || "Provider") +
+          " " +
+          fmtPct(strongest.currentPresence),
+      });
+    }
+
+    return items;
+  }
+
+  function renderExecutiveRead(pv, cl) {
+    var position = $("aivCustLongErPosition");
+    var changed = $("aivCustLongErChanged");
+    if (!position || !changed) return;
+
+    var port = pv.portfolio || {};
+    var priorIso = cl.priorDate || pv.priorDate || "";
+    var currentIso = cl.currentDate || pv.currentDate || "";
+    var monitoring = formatDateRange(priorIso, currentIso);
+
+    position.innerHTML =
+      '<article class="aiv-er-summary-box bai-er-position" data-bai-er="position">' +
+      '<p class="aiv-er-summary-box__label">Current Portfolio Position</p>' +
+      '<p class="bai-er-position__value" data-bai-er-value="current">' +
+      esc(fmtPct(port.currentPresence)) +
+      "</p>" +
+      '<p class="bai-er-position__delta" data-bai-er-value="delta">' +
+      esc(port.deltaDisplay || "—") +
+      " <span class=\"bai-er-position__delta-suffix\">vs Prior Run</span></p>" +
+      '<div class="bai-er-absrel" data-bai-er="abs-rel">' +
+      '<div class="bai-er-absrel__cell">' +
+      '<span class="bai-er-absrel__label">Absolute</span>' +
+      statusChip(port.absoluteLabel) +
+      "</div>" +
+      '<div class="bai-er-absrel__cell">' +
+      '<span class="bai-er-absrel__label">Relative</span>' +
+      statusChip(port.relativeLabel) +
+      "</div>" +
+      "</div>" +
+      '<dl class="bai-er-position__meta">' +
+      "<div><dt>Prior Run</dt><dd>" +
+      esc(fmtPct(port.priorPresence)) +
+      "</dd></div>" +
+      "<div><dt>Monitoring</dt><dd>" +
+      esc(monitoring) +
+      "</dd></div>" +
+      "</dl>" +
+      "</article>";
+
+    var items = buildWhatChangedItems(pv);
+    var listHtml = items
+      .map(function (it) {
+        return (
+          '<li class="bai-er-changed__item">' +
+          '<span class="bai-er-changed__label">' +
+          esc(it.label) +
+          "</span>" +
+          '<span class="bai-er-changed__value">' +
+          esc(it.value) +
+          "</span>" +
+          "</li>"
+        );
+      })
+      .join("");
+
+    changed.innerHTML =
+      '<p class="aiv-executive-read__main-title">What Changed</p>' +
+      (listHtml
+        ? '<ul class="bai-er-changed__list">' + listHtml + "</ul>"
+        : '<p class="aiv-executive-read__narrative">Portfolio movement is available in Brand Movement below.</p>') +
+      '<p class="bai-er-changed__next">Next to inspect: <strong>Brand Movement</strong> → <strong>Competitive Movement</strong></p>';
+  }
+
+  function renderFourKpis(pv, cl) {
+    var kpis = $("aivCustLongKpis");
+    if (!kpis || !pv.portfolio) return;
+    var port = pv.portfolio;
+    var priorIso = cl.priorDate || pv.priorDate || "";
+    var currentIso = cl.currentDate || pv.currentDate || "";
+    var datesValue = formatDateRange(priorIso, currentIso);
+
+    kpis.innerHTML =
+      '<div class="bai-w4-kpi-grid" data-bai-w4-layout="kpi" data-bai-kpi-count="4" role="group" aria-label="Longitudinal KPIs">' +
+      '<article class="bai-w4-kpi bai-w4-kpi--primary" data-bai-kpi="current">' +
+      '<div class="bai-w4-kpi__label">Current</div>' +
+      '<div class="bai-w4-kpi__value">' +
+      esc(fmtPct(port.currentPresence)) +
+      "</div>" +
+      '<div class="bai-w4-kpi__meta">AI Presence</div>' +
+      "</article>" +
+      '<article class="bai-w4-kpi" data-bai-kpi="prior">' +
+      '<div class="bai-w4-kpi__label">Prior</div>' +
+      '<div class="bai-w4-kpi__value bai-w4-kpi__value--secondary">' +
+      esc(fmtPct(port.priorPresence)) +
+      "</div>" +
+      '<div class="bai-w4-kpi__meta">Prior Run</div>' +
+      "</article>" +
+      '<article class="bai-w4-kpi" data-bai-kpi="change">' +
+      '<div class="bai-w4-kpi__label">Change</div>' +
+      '<div class="bai-w4-kpi__value bai-w4-kpi__value--tertiary">' +
+      esc(port.deltaDisplay || "—") +
+      "</div>" +
+      '<div class="bai-w4-kpi__meta">vs Prior Run</div>' +
+      "</article>" +
+      '<article class="bai-w4-kpi" data-bai-kpi="dates">' +
+      '<div class="bai-w4-kpi__label">Dates</div>' +
+      '<div class="bai-w4-kpi__value bai-w4-kpi__value--dates">' +
+      esc(datesValue) +
+      "</div>" +
+      '<div class="bai-w4-kpi__meta">Monitoring pair</div>' +
+      "</article>" +
+      "</div>";
   }
 
   function renderTrend(trend) {
@@ -96,17 +305,24 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: { autoPadding: true, padding: { top: 12, right: 12, bottom: 8, left: 8 } },
+        layout: { autoPadding: true, padding: { top: 8, right: 10, bottom: 4, left: 4 } },
         plugins: { legend: { display: false } },
         scales: {
+          x: {
+            ticks: { color: "#9aa6c7", font: { size: 11 } },
+            grid: { display: false },
+          },
           y: {
             beginAtZero: true,
             suggestedMax: 100,
             ticks: {
+              color: "#9aa6c7",
+              font: { size: 11 },
               callback: function (v) {
                 return v + "%";
               },
             },
+            grid: { color: "rgba(55,68,107,0.35)" },
           },
         },
       },
@@ -117,15 +333,21 @@
     var note = $("aivCustLongProviderNote");
     var thead = $("aivCustLongProviderHead");
     var body = $("aivCustLongProviderBody");
-    if (note) {
-      note.textContent =
-        (pv.provider && pv.provider.customerDisclosure) ||
-        (pv.disclosures && pv.disclosures.provider) ||
-        "Change vs Prior Run is not comparable for this monitoring pair.";
+    var disclosure =
+      (pv.provider && pv.provider.customerDisclosure) ||
+      (pv.disclosures && pv.disclosures.provider) ||
+      "Change vs Prior Run is not comparable for this monitoring pair.";
+    setDisclosure(
+      "aivCustLongProviderDisclosure",
+      "aivCustLongProviderNote",
+      disclosure
+    );
+    if (note && !note.closest(".bai-long-disclosure")) {
+      note.textContent = disclosure;
     }
     if (thead) {
       thead.innerHTML =
-        "<tr><th>Provider</th><th class=\"num\">Current</th></tr>";
+        '<tr><th scope="col">Provider</th><th class="num" scope="col">Current</th></tr>';
     }
     if (!body) return;
     body.innerHTML = ((pv.provider && pv.provider.rows) || [])
@@ -157,10 +379,15 @@
           esc(b.deltaDisplay) +
           "</td><td>" +
           esc(b.rankDisplay || "") +
-          "</td><td>" +
-          chip("abs", b.absoluteLabel) +
-          " / " +
-          chip("rel", b.relativeLabel) +
+          '</td><td class="bai-cust-absrel-cell">' +
+          '<span class="bai-cust-absrel-pair">' +
+          '<span class="bai-er-absrel__label">Abs</span> ' +
+          statusChip(b.absoluteLabel) +
+          "</span> " +
+          '<span class="bai-cust-absrel-pair">' +
+          '<span class="bai-er-absrel__label">Rel</span> ' +
+          statusChip(b.relativeLabel) +
+          "</span>" +
           "</td></tr>"
         );
       })
@@ -183,69 +410,60 @@
       return;
     }
     root.hidden = false;
+    root.setAttribute("data-bai-customer-visual", "executive-read-v1");
+
     var banner = $("aivCustLongPreviewBanner");
     if (banner) {
       banner.hidden = !opts.previewMode;
     }
+
     var title = $("aivCustLongTitle");
     if (title) {
       title.textContent =
         (pv.parentCompanyName || "Portfolio") + " · Prior Run & Trends";
     }
-    var dates = $("aivCustLongDates");
-    if (dates) {
-      dates.textContent =
-        "Current " +
-        (cl.currentDate || pv.currentDate || "") +
-        " · Prior Run " +
-        (cl.priorDate || pv.priorDate || "");
+
+    // Dates live in the KPI row; keep help line as SR-only meta when present.
+    var datesHelp = $("aivCustLongDates");
+    if (datesHelp) {
+      datesHelp.textContent =
+        "Monitoring pair: " +
+        formatDateRange(
+          cl.priorDate || pv.priorDate,
+          cl.currentDate || pv.currentDate
+        );
+      datesHelp.classList.add("bai-cust-dates-help");
     }
-    var exec = $("aivCustLongExec");
-    if (exec) {
-      exec.textContent =
-        (pv.executiveRead && pv.executiveRead.narrative) || "";
-    }
-    var kpis = $("aivCustLongKpis");
-    if (kpis && pv.portfolio) {
-      kpis.innerHTML =
-        '<div class="bai-w4-kpi-grid" data-bai-w4-layout="kpi">' +
-        '<article class="bai-w4-kpi bai-w4-kpi--primary"><div class="bai-w4-kpi__label">Current</div><div class="bai-w4-kpi__value">' +
-        esc(fmtPct(pv.portfolio.currentPresence)) +
-        '</div></article>' +
-        '<article class="bai-w4-kpi"><div class="bai-w4-kpi__label">Prior Run</div><div class="bai-w4-kpi__value bai-w4-kpi__value--secondary">' +
-        esc(fmtPct(pv.portfolio.priorPresence)) +
-        '</div></article>' +
-        '<article class="bai-w4-kpi"><div class="bai-w4-kpi__label">Change</div><div class="bai-w4-kpi__value bai-w4-kpi__value--tertiary">' +
-        esc(pv.portfolio.deltaDisplay || "") +
-        "</div><div class=\"bai-w4-kpi__meta\">" +
-        chip("abs", "Abs " + (pv.portfolio.absoluteLabel || "")) +
-        " " +
-        chip("rel", "Rel " + (pv.portfolio.relativeLabel || "")) +
-        "</div></article></div>";
-    }
-    var cohortNote = $("aivCustLongCohortNote");
-    if (cohortNote) {
-      cohortNote.textContent =
-        (pv.disclosures && pv.disclosures.cohortChange) ||
+
+    renderExecutiveRead(pv, cl);
+    renderFourKpis(pv, cl);
+
+    setDisclosure(
+      "aivCustLongCohortNote",
+      "aivCustLongCohortNoteBody",
+      (pv.disclosures && pv.disclosures.cohortChange) ||
         (pv.competitive &&
           pv.competitive.story &&
           pv.competitive.story.cohortChangeDisclosure) ||
-        "";
-      cohortNote.hidden = !cohortNote.textContent;
-    }
-    var intentNote = $("aivCustLongIntentNote");
-    if (intentNote) {
-      intentNote.textContent =
-        (pv.ownerIntent && pv.ownerIntent.presentation) ||
+        ""
+    );
+    setDisclosure(
+      "aivCustLongIntentNote",
+      "aivCustLongIntentNoteBody",
+      (pv.ownerIntent && pv.ownerIntent.presentation) ||
         (pv.disclosures && pv.disclosures.intent) ||
-        "";
-    }
+        ""
+    );
+
     var competitive = $("aivCustLongCompetitive");
     if (competitive) {
       competitive.textContent =
-        (pv.competitive && pv.competitive.story && pv.competitive.story.narrative) ||
+        (pv.competitive &&
+          pv.competitive.story &&
+          pv.competitive.story.narrative) ||
         "";
     }
+
     renderTrend(pv.trend);
     renderProvider(pv);
     renderBrandTable(pv);

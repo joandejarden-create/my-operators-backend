@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brand AI Intelligence — Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
-  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-p2-customer-published-20260904b">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-cust-er-kpi-20260904c">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script>
   (function() {
@@ -45,7 +45,7 @@
   })();
   </script>
   <script src="/js/ai-visibility/ai-visibility-shared.js?v=bai-wave3-longitudinal-20260904" defer></script>
-  <script src="/js/ai-visibility/bai-customer-longitudinal.js?v=bai-p2-longitudinal-surfaces-20260904" defer></script>
+  <script src="/js/ai-visibility/bai-customer-longitudinal.js?v=bai-cust-er-kpi-20260904c" defer></script>
   <script src="/js/ai-visibility/ai-visibility-brand.js?v=bai-p2-longitudinal-surfaces-20260904" defer></script>
 </head>
 <body class="aiv-page embed-mode">
@@ -205,32 +205,57 @@
           INTERNAL PREVIEW · Hypothetical customer view if Period 2 were published · Live customer publication remains Aug 14 · Not available on signed shares
         </div>
         <h2 class="aiv-theme-title" id="aivCustLongTitle">Prior Run &amp; Trends</h2>
-        <p class="aiv-theme-help help-text" id="aivCustLongDates"></p>
-        <p class="bai-w4-exec" id="aivCustLongExec"></p>
-        <div id="aivCustLongKpis"></div>
-        <p class="bai-w4-help" id="aivCustLongCohortNote" hidden></p>
-        <p class="bai-w4-help" id="aivCustLongIntentNote"></p>
-        <div class="bai-w4-card-grid" style="margin-top:1rem">
-          <article class="bai-w4-card">
-            <h3 class="aiv-theme-label">Portfolio trend</h3>
+        <p class="aiv-theme-help help-text bai-cust-dates-help" id="aivCustLongDates"></p>
+
+        <div class="aiv-executive-read-section bai-cust-er-section">
+          <h3 class="aiv-theme-label bai-cust-er-section-label">Executive Read</h3>
+          <div class="aiv-executive-read bai-customer-er" id="aivCustLongExecRead" data-bai-er-shell="1">
+            <div class="aiv-executive-read__grid">
+              <div class="aiv-executive-read__summaries" id="aivCustLongErPosition"></div>
+              <div class="aiv-executive-read__main" id="aivCustLongErChanged"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="aivCustLongKpis" class="bai-cust-kpi-host" data-bai-kpi-row="four"></div>
+
+        <div class="bai-long-disclosures" id="aivCustLongDisclosures" data-bai-disclosure-host="1">
+          <aside class="bai-long-disclosure" id="aivCustLongCohortNote" hidden>
+            <span class="bai-long-disclosure__eyebrow">Comparison Note</span>
+            <p class="bai-long-disclosure__body" id="aivCustLongCohortNoteBody"></p>
+          </aside>
+          <aside class="bai-long-disclosure" id="aivCustLongIntentNote" hidden>
+            <span class="bai-long-disclosure__eyebrow">Monitoring Note</span>
+            <p class="bai-long-disclosure__body" id="aivCustLongIntentNoteBody"></p>
+          </aside>
+        </div>
+
+        <div class="bai-w4-card-grid bai-cust-analytics-grid">
+          <article class="bai-w4-card bai-cust-trend-card">
+            <h3 class="aiv-theme-label">Portfolio Trends</h3>
+            <p class="bai-w4-help bai-cust-card-help">Comparable AI Presence across the published monitoring pair.</p>
             <div id="aivCustLongTrendWrap" class="bai-w4-chart-wrap">
               <canvas id="aivCustLongTrendChart" aria-label="Portfolio presence trend"></canvas>
             </div>
             <p id="aivCustLongTrendEmpty" class="bai-w4-empty" hidden></p>
           </article>
-          <article class="bai-w4-card">
-            <h3 class="aiv-theme-label">Provider current</h3>
-            <p id="aivCustLongProviderNote" class="bai-w4-help"></p>
-            <div class="deals-table-container">
-              <table>
+          <article class="bai-w4-card bai-cust-provider-card">
+            <h3 class="aiv-theme-label">Provider Current</h3>
+            <aside class="bai-long-disclosure bai-long-disclosure--compact" id="aivCustLongProviderDisclosure" hidden>
+              <span class="bai-long-disclosure__eyebrow">Comparison Note</span>
+              <p class="bai-long-disclosure__body" id="aivCustLongProviderNote"></p>
+            </aside>
+            <div class="deals-table-container bai-cust-provider-table-wrap">
+              <table class="bai-cust-provider-table">
                 <thead id="aivCustLongProviderHead"></thead>
                 <tbody id="aivCustLongProviderBody"></tbody>
               </table>
             </div>
           </article>
         </div>
-        <h3 class="aiv-theme-label" style="margin-top:1.25rem">Brand movement</h3>
-        <div class="deals-table-container aiv-portfolio-table-wrap">
+
+        <h3 class="aiv-theme-label bai-cust-section-label">Brand Movement</h3>
+        <div class="deals-table-container aiv-portfolio-table-wrap bai-cust-brand-table-wrap">
           <table class="deals-table aiv-portfolio-table">
             <thead>
               <tr>
@@ -245,8 +270,9 @@
             <tbody id="aivCustLongBrandBody"></tbody>
           </table>
         </div>
-        <h3 class="aiv-theme-label" style="margin-top:1.25rem">Competitive movement</h3>
-        <p id="aivCustLongCompetitive" class="bai-w4-exec"></p>
+
+        <h3 class="aiv-theme-label bai-cust-section-label">Competitive Movement</h3>
+        <p id="aivCustLongCompetitive" class="bai-cust-competitive"></p>
       </section>
 
       <section class="aiv-theme-group aiv-theme-group--secondary" aria-labelledby="aivThemeMarkets">
