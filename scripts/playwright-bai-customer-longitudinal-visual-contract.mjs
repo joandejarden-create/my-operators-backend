@@ -37,7 +37,7 @@ const SHARE_TOKENS = {
     "baiparent.v1.eyJ2IjoxLCJraW5kIjoiQkFJX1BBUkVOVF9DT01QQU5ZX1NIQVJFIiwidGlkIjoic2h0X2JhaXBfNWRlNDI4ZDdkMjg0MDU0Yjg3NTZjZjBhIiwicGFyZW50Q29tcGFueUlkIjoiaGlsdG9uIiwic3VyZmFjZXMiOlsicmVwb3J0IiwiZXZpZGVuY2UiLCJwb3J0Zm9saW8iLCJleGVjdXRpdmVfc3VtbWFyeSJdLCJyZXBvcnRTY29wZSI6ImN1cnJlbnRfcHVibGlzaGVkIiwiaWF0IjoxNzg4NDEwMDQzLCJleHAiOm51bGx9.Z3e_o3ODbKOrVB9Nz1zSAHU3Zj6TOR0JTzJ6q4BTnEM",
   choice:
     process.env.BAI_CHOICE_SHARE ||
-    "baiparent.v1.eyJ2IjoxLCJraW5kIjoiQkFJX1BBUkVOVF9DT01QQU5ZX1NIQVJFIiwidGlkIjoic2h0X2JhaXBfYmFhNGU0MDgzNzZlZjhkY2IwMzMxYzVlIiwicGFyZW50Q29tcGFueUlkIjoiY2hvaWNlIiwic3VyZmFjZXMiOlsicmVwb3J0IiwiZXZpZGVuY2UiLCJwb3Rmb2xpbyIsImV4ZWN1dGl2ZV9zdW1tYXJ5Il0sInJlcG9ydFNjb3BlIjoiY3VycmVudF9wdWJsaXNoZWQiLCJpYXQiOjE3ODg0MTAwNDMsImV4cCI6bnVsbH0.rj370Pew8tQGhIjni_POVQWjhQYamWD6MOWKyUHiVSo",
+    "baiparent.v1.eyJ2IjoxLCJraW5kIjoiQkFJX1BBUkVOVF9DT01QQU5ZX1NIQVJFIiwidGlkIjoic2h0X2JhaXBfYmFhNGU0MDgzNzZlZjhkY2IwMzMxYzVlIiwicGFyZW50Q29tcGFueUlkIjoiY2hvaWNlIiwic3VyZmFjZXMiOlsicmVwb3J0IiwiZXZpZGVuY2UiLCJwb3J0Zm9saW8iLCJleGVjdXRpdmVfc3VtbWFyeSJdLCJyZXBvcnRTY29wZSI6ImN1cnJlbnRfcHVibGlzaGVkIiwiaWF0IjoxNzg4NDEwMDQzLCJleHAiOm51bGx9.rj370Pew8tQGhIjni_POVQWjhQYamWD6MOWKyUHiVSo",
   ihg:
     process.env.BAI_IHG_SHARE ||
     "baiparent.v1.eyJ2IjoxLCJraW5kIjoiQkFJX1BBUkVOVF9DT01QQU5ZX1NIQVJFIiwidGlkIjoic2h0X2JhaXBfZTUwN2Y4MTY5Mzc0ZjAxMTI5ZWI5OTA4IiwicGFyZW50Q29tcGFueUlkIjoiaWhnIiwic3VyZmFjZXMiOlsicmVwb3J0IiwiZXZpZGVuY2UiLCJwb3J0Zm9saW8iLCJleGVjdXRpdmVfc3VtbWFyeSJdLCJyZXBvcnRTY29wZSI6ImN1cnJlbnRfcHVibGlzaGVkIiwiaWF0IjoxNzg4NDEwMDQzLCJleHAiOm51bGx9.-7pEnvoWF2LhiFadMCyDTi86qXqJ6h_OU-VlJfMaHIk",
@@ -110,9 +110,22 @@ function startStaticServer() {
 
 async function inspectLongitudinal(page, label) {
   const section = page.locator("#aivCustomerLongitudinal");
-  await section.waitFor({ state: "visible", timeout: 30000 }).catch(() => null);
-  const visible = await section.isVisible().catch(() => false);
-  if (!visible) {
+  await section.waitFor({ state: "attached", timeout: 30000 }).catch(() => null);
+  // Prefer DOM readiness over Playwright isVisible — tab panels can report
+  // not-visible briefly while KPIs are already mounted.
+  const ready = await page
+    .waitForFunction(
+      () => {
+        const root = document.getElementById("aivCustomerLongitudinal");
+        if (!root || root.hidden) return false;
+        const grid = root.querySelector(".bai-w4-kpi-grid");
+        return !!(grid && grid.querySelectorAll("[data-bai-kpi]").length === 4);
+      },
+      { timeout: 20000 }
+    )
+    .then(() => true)
+    .catch(() => false);
+  if (!ready) {
     fail(`${label}: longitudinal section not visible`);
     return null;
   }
@@ -367,29 +380,60 @@ async function runProduction(browser) {
     const token = SHARE_TOKENS[parent];
     const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
     const url = `${PROD}/brand-ai-visibility-share.html?share=${encodeURIComponent(token)}`;
-    await page.goto(url, { waitUntil: "networkidle", timeout: 120000 });
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 120000 });
     // Wait for longitudinal attach from live executive-summary
-    await page.waitForFunction(
-      () => {
-        const root = document.getElementById("aivCustomerLongitudinal");
-        return root && !root.hidden && root.querySelector(".bai-w4-kpi-grid");
-      },
-      { timeout: 90000 }
-    ).catch(() => null);
+    const attached = await page
+      .waitForFunction(
+        () => {
+          const root = document.getElementById("aivCustomerLongitudinal");
+          return (
+            root &&
+            !root.hidden &&
+            root.querySelectorAll("[data-bai-kpi]").length === 4
+          );
+        },
+        { timeout: 120000 }
+      )
+      .then(() => true)
+      .catch(() => false);
+    if (!attached) {
+      // One recovery reload for slow/cold share boots
+      await page.reload({ waitUntil: "domcontentloaded", timeout: 120000 });
+      await page
+        .waitForFunction(
+          () => {
+            const root = document.getElementById("aivCustomerLongitudinal");
+            return (
+              root &&
+              !root.hidden &&
+              root.querySelectorAll("[data-bai-kpi]").length === 4
+            );
+          },
+          { timeout: 90000 }
+        )
+        .catch(() => null);
+    }
+    await page.waitForTimeout(1500);
+    await page.evaluate(() => {
+      const root = document.getElementById("aivCustomerLongitudinal");
+      if (root) root.scrollIntoView({ block: "start" });
+    });
     const probe = await inspectLongitudinal(page, `prod-${parent}`);
     assertDesktopFourInRow(probe, `prod-${parent}`, 1440);
-    await page.locator("#aivCustomerLongitudinal").screenshot({
-      path: path.join(outDir, `prod-${parent}-1440.png`),
-    });
+    await shot(
+      page.locator("#aivCustomerLongitudinal"),
+      path.join(outDir, `prod-${parent}-1440.png`)
+    );
     if (parent === "marriott") {
       for (const width of desktopWidths) {
         await page.setViewportSize({ width, height: 1200 });
         await page.waitForTimeout(300);
         const p2 = await inspectLongitudinal(page, `prod-marriott-${width}`);
         assertDesktopFourInRow(p2, `prod-marriott`, width);
-        await page.locator("#aivCustLongKpis").screenshot({
-          path: path.join(outDir, `prod-marriott-kpi-${width}.png`),
-        });
+        await shot(
+          page.locator("#aivCustLongKpis"),
+          path.join(outDir, `prod-marriott-kpi-${width}.png`)
+        );
       }
     }
     await page.close();
