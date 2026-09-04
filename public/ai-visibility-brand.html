@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brand AI Intelligence — Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
-  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-cust-er-kpi-20260904c">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-cust-visual-cleanup-20260904d">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script src="/js/dealality-memberstack-auth.js" defer></script>
   <script src="/js/ai-visibility/ai-visibility-shared.js?v=coverage-unification-v2-20260818" defer></script>
-  <script src="/js/ai-visibility/bai-customer-longitudinal.js?v=bai-cust-er-kpi-20260904c" defer></script>
+  <script src="/js/ai-visibility/bai-customer-longitudinal.js?v=bai-cust-visual-cleanup-20260904d" defer></script>
   <script src="/js/ai-visibility/ai-visibility-brand.js?v=bai-p2-longitudinal-surfaces-20260904" defer></script>
 </head>
 <body class="aiv-page embed-mode">
@@ -169,75 +169,83 @@
         <h2 class="aiv-theme-title" id="aivCustLongTitle">Prior Run &amp; Trends</h2>
         <p class="aiv-theme-help help-text bai-cust-dates-help" id="aivCustLongDates"></p>
 
-        <div class="aiv-executive-read-section bai-cust-er-section">
-          <h3 class="aiv-theme-label bai-cust-er-section-label">Executive Read</h3>
+        <div class="bai-cust-block bai-cust-er-section" data-bai-section="executive-read">
+          <h3 class="aiv-theme-label bai-cust-block__label">Executive Read</h3>
           <div class="aiv-executive-read bai-customer-er" id="aivCustLongExecRead" data-bai-er-shell="1">
             <div class="aiv-executive-read__grid">
-              <div class="aiv-executive-read__summaries" id="aivCustLongErPosition"></div>
-              <div class="aiv-executive-read__main" id="aivCustLongErChanged"></div>
+              <div class="aiv-executive-read__summaries bai-er-panel" id="aivCustLongErPosition"></div>
+              <div class="aiv-executive-read__main bai-er-panel bai-er-panel--changed" id="aivCustLongErChanged"></div>
             </div>
           </div>
         </div>
 
-        <div id="aivCustLongKpis" class="bai-cust-kpi-host" data-bai-kpi-row="four"></div>
+        <!-- Duplicate summary KPI row removed — Executive Read is the single primary summary. -->
+        <div id="aivCustLongKpis" class="bai-cust-kpi-host" hidden data-bai-kpi-row="removed" aria-hidden="true"></div>
 
-        <div class="bai-long-disclosures" id="aivCustLongDisclosures" data-bai-disclosure-host="1">
-          <aside class="bai-long-disclosure" id="aivCustLongCohortNote" hidden>
-            <span class="bai-long-disclosure__eyebrow">Comparison Note</span>
-            <p class="bai-long-disclosure__body" id="aivCustLongCohortNoteBody"></p>
-          </aside>
-          <aside class="bai-long-disclosure" id="aivCustLongIntentNote" hidden>
-            <span class="bai-long-disclosure__eyebrow">Monitoring Note</span>
-            <p class="bai-long-disclosure__body" id="aivCustLongIntentNoteBody"></p>
-          </aside>
+        <div class="bai-long-disclosures bai-long-disclosures--strip" id="aivCustLongDisclosures" data-bai-disclosure-host="1" hidden>
+          <span class="bai-long-disclosure__eyebrow">Comparison Notes</span>
+          <ul class="bai-long-disclosure__list">
+            <li class="bai-long-disclosure__item" id="aivCustLongCohortNote" hidden>
+              <span class="bai-long-disclosure__body" id="aivCustLongCohortNoteBody"></span>
+            </li>
+            <li class="bai-long-disclosure__item" id="aivCustLongIntentNote" hidden>
+              <span class="bai-long-disclosure__body" id="aivCustLongIntentNoteBody"></span>
+            </li>
+          </ul>
         </div>
 
-        <div class="bai-w4-card-grid bai-cust-analytics-grid">
-          <article class="bai-w4-card bai-cust-trend-card">
-            <h3 class="aiv-theme-label">Portfolio Trends</h3>
-            <p class="bai-w4-help bai-cust-card-help">Comparable AI Presence across the published monitoring pair.</p>
-            <div id="aivCustLongTrendWrap" class="bai-w4-chart-wrap">
-              <canvas id="aivCustLongTrendChart" aria-label="Portfolio presence trend"></canvas>
-            </div>
-            <p id="aivCustLongTrendEmpty" class="bai-w4-empty" hidden></p>
-          </article>
-          <article class="bai-w4-card bai-cust-provider-card">
-            <h3 class="aiv-theme-label">Provider Current</h3>
-            <aside class="bai-long-disclosure bai-long-disclosure--compact" id="aivCustLongProviderDisclosure" hidden>
-              <span class="bai-long-disclosure__eyebrow">Comparison Note</span>
-              <p class="bai-long-disclosure__body" id="aivCustLongProviderNote"></p>
-            </aside>
-            <div class="deals-table-container bai-cust-provider-table-wrap">
-              <table class="bai-cust-provider-table">
-                <thead id="aivCustLongProviderHead"></thead>
-                <tbody id="aivCustLongProviderBody"></tbody>
-              </table>
-            </div>
-          </article>
+        <div class="bai-cust-block bai-cust-analytics-block" data-bai-section="trends-provider">
+          <div class="bai-cust-analytics-grid">
+            <article class="bai-cust-panel bai-cust-trend-card">
+              <h3 class="aiv-theme-label">Portfolio Trends</h3>
+              <p class="bai-cust-card-help">Comparable AI Presence across the published monitoring pair.</p>
+              <div id="aivCustLongTrendWrap" class="bai-w4-chart-wrap">
+                <canvas id="aivCustLongTrendChart" aria-label="Portfolio presence trend"></canvas>
+              </div>
+              <p id="aivCustLongTrendEmpty" class="bai-w4-empty" hidden></p>
+            </article>
+            <article class="bai-cust-panel bai-cust-provider-card">
+              <h3 class="aiv-theme-label">Provider Current</h3>
+              <aside class="bai-long-disclosure bai-long-disclosure--inline" id="aivCustLongProviderDisclosure" hidden>
+                <span class="bai-long-disclosure__eyebrow">Comparison Note</span>
+                <p class="bai-long-disclosure__body" id="aivCustLongProviderNote"></p>
+              </aside>
+              <div class="deals-table-container bai-cust-provider-table-wrap">
+                <table class="bai-cust-provider-table">
+                  <thead id="aivCustLongProviderHead"></thead>
+                  <tbody id="aivCustLongProviderBody"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
         </div>
 
-        <h3 class="aiv-theme-label bai-cust-section-label">Brand Movement</h3>
-        <div class="deals-table-container aiv-portfolio-table-wrap bai-cust-brand-table-wrap">
-          <table class="deals-table aiv-portfolio-table">
-            <thead>
-              <tr>
-                <th>Brand</th>
-                <th class="num">Current</th>
-                <th class="num">Prior</th>
-                <th class="num">Δ</th>
-                <th>Rank</th>
-                <th>Abs / Rel</th>
-              </tr>
-            </thead>
-            <tbody id="aivCustLongBrandBody"></tbody>
-          </table>
+        <div class="bai-cust-block" data-bai-section="brand-movement">
+          <h3 class="aiv-theme-label bai-cust-block__label">Brand Movement</h3>
+          <div class="deals-table-container aiv-portfolio-table-wrap bai-cust-brand-table-wrap">
+            <table class="deals-table aiv-portfolio-table">
+              <thead>
+                <tr>
+                  <th>Brand</th>
+                  <th class="num">Current</th>
+                  <th class="num">Prior</th>
+                  <th class="num">Δ</th>
+                  <th>Rank</th>
+                  <th>Abs / Rel</th>
+                </tr>
+              </thead>
+              <tbody id="aivCustLongBrandBody"></tbody>
+            </table>
+          </div>
         </div>
 
-        <h3 class="aiv-theme-label bai-cust-section-label">Competitive Movement</h3>
-        <p id="aivCustLongCompetitive" class="bai-cust-competitive"></p>
+        <div class="bai-cust-block" data-bai-section="competitive-movement">
+          <h3 class="aiv-theme-label bai-cust-block__label">Competitive Movement</h3>
+          <p id="aivCustLongCompetitive" class="bai-cust-narrative"></p>
+        </div>
       </section>
 
-      <section class="aiv-theme-group aiv-theme-group--secondary" aria-labelledby="aivThemeMarkets">
+      <section class="aiv-theme-group" aria-labelledby="aivThemeMarkets">
         <h2 id="aivThemeMarkets" class="aiv-theme-title">Markets &amp; Movement</h2>
         <p class="aiv-theme-help help-text">Which regions are monitored, which brand leads there, and how AI Presence changed between the latest two comparable monitoring runs.</p>
         <div class="aiv-markets-grid">
