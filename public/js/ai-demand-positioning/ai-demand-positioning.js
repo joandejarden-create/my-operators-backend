@@ -1000,11 +1000,12 @@
     if (raw == null || raw === "") return "";
     var key = String(raw).trim().toLowerCase();
     var labels = {
-      openai: "OpenAI",
-      chatgpt: "OpenAI",
-      "gpt-4": "OpenAI",
-      "gpt-4o": "OpenAI",
+      openai: "ChatGPT",
+      chatgpt: "ChatGPT",
+      "gpt-4": "ChatGPT",
+      "gpt-4o": "ChatGPT",
       gemini: "Gemini",
+      google: "Gemini",
       perplexity: "Perplexity",
       claude: "Claude",
       anthropic: "Claude",
@@ -1704,7 +1705,7 @@
           summary: "This is about frequency — across all provider responses, how often you actually made the consideration set.",
           definition: "How often your hotel is named in the AI answers we collected for traveler questions that apply to your property.",
           formula: "AI answers that mention your hotel, divided by all usable AI answers in this period.",
-          grain: "Each AI answer counts on its own. If OpenAI mentions you and Gemini does not, that is one yes and one no \u2014 not a single combined result.",
+          grain: "Each AI answer counts on its own. If ChatGPT mentions you and Gemini does not, that is one yes and one no \u2014 not a single combined result.",
           whyTrack: "This is the simplest read on whether AI is putting your hotel in front of travelers at all, across every answer we collected.",
           important: "Being named is not the same as being recommended, ranked first, or winning a booking. This does not measure actual demand captured."
         }),

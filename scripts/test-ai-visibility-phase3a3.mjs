@@ -168,7 +168,7 @@ test("review rules require evidenceId and reuse 15pp gap", () => {
   assert.ok(withEvidence.length >= 1);
   assert.ok(withEvidence.every((i) => i.evidenceId));
   assert.ok(withEvidence.every((i) => i.provider === "openai"));
-  assert.ok(withEvidence.every((i) => i.providerLabel === "OpenAI"));
+  assert.ok(withEvidence.every((i) => i.providerLabel === "ChatGPT"));
   assert.ok(withEvidence.every((i) => i.rulesVersion === HDV_REVIEW_RULES_VERSION));
   assert.ok(withEvidence.every((i) => /OpenAI monitoring/.test(i.description)));
   assert.ok(!JSON.stringify(withEvidence).includes("confidence"));

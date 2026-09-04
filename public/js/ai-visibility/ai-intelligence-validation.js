@@ -299,7 +299,7 @@
       esc(m.LATEST_MONITORING_DATE || "—") +
       " · <strong>Latest Publishable Batch:</strong> " +
       esc(m.LATEST_PUBLISHABLE_BATCH_DATE || "—") +
-      " · <strong>Last OpenAI:</strong> " +
+      " · <strong>Last ChatGPT:</strong> " +
       esc(m.LAST_OPENAI_RUN || "—") +
       " · <strong>Last Gemini:</strong> " +
       esc(m.LAST_GEMINI_RUN || "—") +

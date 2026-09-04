@@ -52,7 +52,7 @@ Every number is scoped by the filters you select, then **Run Report**.
 | On-screen control | What it does |
 |-------------------|--------------|
 | **Geography** | Region for the monitored question set (for example, CALA, Global, North America, Europe) |
-| **Provider** | Which AI platform’s answers are measured (OpenAI, Gemini, Perplexity, Claude), or **All Providers** |
+| **Provider** | Which AI model’s answers are measured (ChatGPT, Gemini, Perplexity, Claude), or **All Providers** |
 | **Language** | Shown when more than one language has completed data (for example, English / Spanish) |
 | **Brand** | Detailed View only — which linked brand you are inspecting |
 | **Intent** | Detailed View only — optional filter on owner-intent question type |
@@ -261,7 +261,7 @@ Reserved / future workflow area. Do not treat an empty Opportunity Engine as a P
 
 | Selection | How to read |
 |-----------|-------------|
-| **OpenAI / Gemini / Perplexity / Claude** | Results from that provider’s completed monitoring only. Use this for Competitive Position rank. |
+| **ChatGPT / Gemini / Perplexity / Claude** | Results from that model’s completed monitoring only. Use this for Competitive Position rank. |
 | **All Providers** | A **derived** comparison across completed providers — averages / missing-across-all / disagreement. **Not** a fifth combined AI model. |
 
 **Practical tip:** Start with one provider for a clean story. Switch to **All Providers** when you want to show disagreement or “missing on every provider.”

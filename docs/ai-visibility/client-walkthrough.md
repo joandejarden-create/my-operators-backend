@@ -12,7 +12,7 @@
 2. **Portfolio AI Presence** — “Share of monitored owner questions where at least one of your linked brands appeared.”
 3. **Strongest / weakest brand** — Your Brands table; click into Autograph (Marriott) or Hotel Indigo (IHG).
 4. **Owner Decision Scenario gaps** — From Executive Intelligence or Priority Review; distinguish **Action Required** vs **Review Required** vs **No Action Indicated** (expected positioning).
-5. **Provider differences** — Start **OpenAI**; then switch to **All Providers** (derived cross-provider view — not a fifth model). Explain: “OpenAI is one perspective; we also monitor Gemini, Perplexity, and Claude to see whether the pattern is consistent.”
+5. **Provider differences** — Start **ChatGPT**; then switch to **All Providers** (derived cross-provider view — not a fifth model). Explain: “ChatGPT is one perspective; we also monitor Gemini, Perplexity, and Claude to see whether the pattern is consistent.”
 6. **Questions Missing** — Count + open watchlist; clarify absence ≠ automatic poor fit; out-of-scope scenarios are not executive problems.
 7. **Peer context** — Competitive position / peer gaps (provider-specific rank).
 8. **Sources** — Citation coverage; owned vs external; recurring domains (**cited / associated** — not causal).

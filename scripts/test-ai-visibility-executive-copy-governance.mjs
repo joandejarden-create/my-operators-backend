@@ -148,7 +148,7 @@ test("I. provider percentages rendered from payload fields", () => {
   const out = applyExecutiveCopyGovernance([
     {
       findingType: "PROVIDER_DISAGREEMENT",
-      providerStrongLabel: "OpenAI",
+      providerStrongLabel: "ChatGPT",
       providerWeakLabel: "Perplexity",
       providerStrongPct: "91.7%",
       providerWeakPct: "58.3%",
@@ -156,7 +156,7 @@ test("I. provider percentages rendered from payload fields", () => {
       title: "Provider Comparison",
     },
   ]).findings[0];
-  assert.ok(/OpenAI 91.7% vs Perplexity 58.3%/i.test(out.governedEvidence));
+  assert.ok(/ChatGPT 91.7% vs Perplexity 58.3%/i.test(out.governedEvidence));
 });
 
 test("J. body adds commercial interpretation and does not restate headline", () => {
@@ -253,7 +253,7 @@ test("M. portfolio executive findings fit five lines without truncation budget",
     },
     {
       findingType: "PROVIDER_DISAGREEMENT",
-      providerStrongLabel: "OpenAI",
+      providerStrongLabel: "ChatGPT",
       providerWeakLabel: "Perplexity",
       providerStrongPct: "91.7%",
       providerWeakPct: "58.3%",

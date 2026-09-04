@@ -98,7 +98,7 @@ Not Airtable Opportunities. No impact/confidence scores.
 
 Provider is a first-class analytical filter for Hotel Decision Visibility (and all Brand AI Visibility reads).
 
-- Canonical ids: `openai`, `gemini`, `perplexity` (product labels: OpenAI / Gemini / Perplexity).
+- Canonical ids: `openai`, `gemini`, `perplexity` (product labels: ChatGPT / Gemini / Perplexity).
 - Available options = completed monitoring datasets only (`listAvailableAiVisibilityProviders`).
 - No `All AI`, no blended presence, no provider weights.
 - AI vs Dealality: Provider scopes **AI Pattern** only; Dealality Context is provider-independent Brand Basics facts.

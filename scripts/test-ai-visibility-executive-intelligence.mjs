@@ -275,7 +275,7 @@ async function main() {
     });
     const pd = r.findings.find((f) => f.findingType === FINDING_TYPES.PROVIDER_DISAGREEMENT);
     assert.ok(pd);
-    assert.ok(pd.headline.includes("OpenAI"));
+    assert.ok(pd.headline.includes("ChatGPT"));
   });
 
   await test("provider disagreement incomparable blocked", async () => {

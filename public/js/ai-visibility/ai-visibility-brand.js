@@ -650,7 +650,7 @@
     if (!list.length) {
       list = [
         { id: "all", label: "All Providers" },
-        { id: "openai", label: "OpenAI" },
+        { id: "openai", label: "ChatGPT" },
         { id: "gemini", label: "Gemini" },
         { id: "perplexity", label: "Perplexity" },
         { id: "claude", label: "Claude" },
@@ -685,7 +685,7 @@
           (id === "all"
             ? "All Providers"
             : id === "openai"
-              ? "OpenAI"
+              ? "ChatGPT"
               : id.charAt(0).toUpperCase() + id.slice(1));
         if (p.monitored === false && id !== "all") {
           label = label + " (Not Monitored)";
@@ -1101,10 +1101,16 @@
     if (!raw) return "—";
     var key = raw.toLowerCase();
     var labels = {
-      openai: "OpenAI",
+      openai: "ChatGPT",
+      chatgpt: "ChatGPT",
+      gpt: "ChatGPT",
+      "gpt-4": "ChatGPT",
+      "gpt-4o": "ChatGPT",
       gemini: "Gemini",
+      google: "Gemini",
       perplexity: "Perplexity",
       claude: "Claude",
+      anthropic: "Claude",
     };
     if (labels[key]) return labels[key];
     if (/^[A-Z]/.test(raw) && raw.indexOf(" ") === -1 && key !== raw) return raw;
