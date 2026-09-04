@@ -4762,6 +4762,39 @@
     // Wave 2 — Executive Read first (existing governed fields only)
     renderBaiExecutiveRead(data);
 
+    // Customer longitudinal (Prior Run / Trends) — only when payload attached
+    // (post-promotion) or when internal promotion-preview overwrote state.
+    try {
+      if (window.BaiCustomerLongitudinal) {
+        var isShare = false;
+        try {
+          isShare = !!(
+            new URLSearchParams(window.location.search || "").get("share") || ""
+          );
+        } catch (_) {}
+        var previewMode =
+          !isShare &&
+          window.BaiCustomerLongitudinal.isPromotionPreviewUrl &&
+          window.BaiCustomerLongitudinal.isPromotionPreviewUrl();
+        if (data.customerLongitudinal && data.customerLongitudinal.available) {
+          window.BaiCustomerLongitudinal.render(data, {
+            previewMode: previewMode,
+            parentKey:
+              (previewMode &&
+                window.BaiCustomerLongitudinal.previewParentKey &&
+                window.BaiCustomerLongitudinal.previewParentKey()) ||
+              null,
+          });
+        } else if (!previewMode) {
+          window.BaiCustomerLongitudinal.render(null);
+        }
+      }
+    } catch (longErr) {
+      if (typeof console !== "undefined" && console.warn) {
+        console.warn("[bai] customer longitudinal render:", longErr.message);
+      }
+    }
+
     // Additional Findings not primary (tile-first replaced)
     var insightSection = $("aivExecInsightSection");
     if (insightSection) insightSection.hidden = true;
@@ -6987,6 +7020,48 @@
     persistFilterPrefs();
     syncFilterControlsFromState();
     renderExecutive(data);
+
+    // Internal promotion preview: fetch customer-mode P2 longitudinal via
+    // normal customer page path. Never on signed shares. Does not promote.
+    try {
+      var isShareSurface = false;
+      try {
+        isShareSurface = !!(
+          new URLSearchParams(window.location.search || "").get("share") || ""
+        );
+      } catch (_) {}
+      if (
+        !isShareSurface &&
+        window.BaiCustomerLongitudinal &&
+        window.BaiCustomerLongitudinal.isPromotionPreviewUrl &&
+        window.BaiCustomerLongitudinal.isPromotionPreviewUrl()
+      ) {
+        var parentKey =
+          window.BaiCustomerLongitudinal.previewParentKey() || "marriott";
+        var preview = await apiGet(
+          "/api/ai-visibility/brand/customer-promotion-preview?parent=" +
+            encodeURIComponent(parentKey) +
+            "&geography=CALA",
+          fetchOpts
+        );
+        if (token.isCurrent() && preview && preview.ok !== false) {
+          data.customerLongitudinal = preview.customerLongitudinal || preview;
+          state.executive = data;
+          window.BaiCustomerLongitudinal.render(preview, {
+            previewMode: true,
+            parentKey: parentKey,
+          });
+        }
+      }
+    } catch (previewErr) {
+      if (typeof console !== "undefined" && console.warn) {
+        console.warn(
+          "[bai] promotion preview load:",
+          previewErr && previewErr.message
+        );
+      }
+    }
+
     state._execCacheFp = execTabCacheFp();
     return data;
   }

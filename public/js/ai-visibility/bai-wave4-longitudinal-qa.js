@@ -195,12 +195,18 @@
     var body = $("baiW4ProviderBody");
     var wrap = $("baiW4ProviderChartWrap");
     var canvas = $("baiW4ProviderChart");
-    if (note) note.textContent = provider.note || "";
+    if (note) {
+      note.textContent =
+        provider.customerDisclosure ||
+        provider.note ||
+        "Change vs Prior Run is not comparable for this monitoring pair.";
+    }
     if (!provider.rows || !provider.rows.length) {
-      if (body) body.innerHTML = '<tr><td colspan="4">No provider rows.</td></tr>';
+      if (body) body.innerHTML = '<tr><td colspan="2">No provider rows.</td></tr>';
       return;
     }
     if (body) {
+      // Current-only table — no Prior/Δ columns (noncomparability disclosure).
       body.innerHTML = provider.rows
         .map(function (r) {
           return (
@@ -208,13 +214,7 @@
             esc(r.providerLabel) +
             '</td><td class="num bai-w4-primary-num">' +
             esc(fmtPct(r.currentPresence)) +
-            '</td><td class="num bai-w4-secondary-num">' +
-            esc(fmtPct(r.priorPresence)) +
-            '</td><td class="num">' +
-            esc(r.deltaDisplay) +
-            " <span class='bai-w4-muted'>(" +
-            esc(r.comparabilityState) +
-            ")</span></td></tr>"
+            "</td></tr>"
           );
         })
         .join("");
