@@ -5734,3 +5734,388 @@ div.aiv-source-row,
     font-size: 24px;
   }
 }
+
+/* ==========================================================================
+   BAI customer longitudinal — ADP-family Executive Read + 4-KPI desktop row
+   (Wave 4 QA styles stay under .bai-wave4-qa; customer uses its own scope.)
+   Gates: BAI_CUSTOMER_EXECUTIVE_READ_VISUAL_INTEGRITY,
+          BAI_LONGITUDINAL_FOUR_KPI_DESKTOP_SINGLE_ROW,
+          BAI_LONGITUDINAL_DISCLOSURE_VISUAL_HIERARCHY
+   ========================================================================== */
+.bai-customer-longitudinal {
+  --bai-cust-gap: 12px;
+}
+.bai-customer-longitudinal .bai-cust-dates-help {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.bai-customer-longitudinal .bai-cust-er-section {
+  margin: 0 0 14px;
+}
+.bai-customer-longitudinal .bai-cust-er-section-label {
+  margin: 0 0 8px;
+}
+.bai-customer-longitudinal .bai-customer-er {
+  margin: 0;
+}
+.bai-customer-longitudinal .bai-er-position {
+  gap: 8px;
+}
+.bai-customer-longitudinal .bai-er-position__value {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+  color: var(--neutral--100, #f8fafc);
+  letter-spacing: -0.02em;
+}
+.bai-customer-longitudinal .bai-er-position__delta {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--neutral--200, #e2e8f0);
+}
+.bai-customer-longitudinal .bai-er-position__delta-suffix {
+  font-weight: 500;
+  color: var(--neutral--400, #9aa6c7);
+}
+.bai-customer-longitudinal .bai-er-absrel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+.bai-customer-longitudinal .bai-er-absrel__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+.bai-customer-longitudinal .bai-er-absrel__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+}
+.bai-customer-longitudinal .bai-er-position__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding-top: 8px;
+  border-top: 0.6px solid rgba(55, 68, 107, 0.65);
+}
+.bai-customer-longitudinal .bai-er-position__meta dt {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+}
+.bai-customer-longitudinal .bai-er-position__meta dd {
+  margin: 2px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--neutral--200, #e2e8f0);
+}
+.bai-customer-longitudinal .bai-er-changed__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bai-customer-longitudinal .bai-er-changed__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.bai-customer-longitudinal .bai-er-changed__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+}
+.bai-customer-longitudinal .bai-er-changed__value {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--neutral--100, #f8fafc);
+}
+.bai-customer-longitudinal .bai-er-changed__next {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 0.6px solid rgba(55, 68, 107, 0.65);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--neutral--400, #9aa6c7);
+}
+.bai-customer-longitudinal .bai-er-changed__next strong {
+  color: var(--neutral--200, #e2e8f0);
+  font-weight: 600;
+}
+
+/* Four-KPI row — hard desktop single row (never 3+1) */
+.bai-customer-longitudinal .bai-cust-kpi-host {
+  margin: 0 0 14px;
+}
+.bai-customer-longitudinal .bai-w4-kpi-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+}
+.bai-customer-longitudinal .bai-w4-kpi {
+  border: 0.6px solid #334155;
+  border-radius: 8px;
+  padding: 12px 12px 10px;
+  background: rgba(15, 23, 42, 0.55);
+  min-height: 96px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.bai-customer-longitudinal .bai-w4-kpi--primary {
+  border-color: rgba(125, 211, 252, 0.45);
+  background: rgba(14, 116, 144, 0.18);
+}
+.bai-customer-longitudinal .bai-w4-kpi__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--neutral--400, #9aa6c7);
+  font-weight: 600;
+}
+.bai-customer-longitudinal .bai-w4-kpi__value {
+  margin-top: 6px;
+  font-size: 28px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  color: var(--neutral--100, #f8fafc);
+}
+.bai-customer-longitudinal .bai-w4-kpi__value--secondary {
+  font-size: 24px;
+  color: var(--neutral--200, #e2e8f0);
+}
+.bai-customer-longitudinal .bai-w4-kpi__value--tertiary {
+  font-size: 22px;
+  color: var(--neutral--200, #e2e8f0);
+}
+.bai-customer-longitudinal .bai-w4-kpi__value--dates {
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bai-customer-longitudinal .bai-w4-kpi__meta {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--neutral--500, #7e89ac);
+}
+
+/* Disclosures — subordinate methodology callouts */
+.bai-customer-longitudinal .bai-long-disclosures {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+.bai-customer-longitudinal .bai-long-disclosure {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 0.6px solid rgba(71, 85, 105, 0.55);
+  background: rgba(15, 23, 42, 0.35);
+  max-width: 920px;
+}
+.bai-customer-longitudinal .bai-long-disclosure--compact {
+  margin: 0 0 10px;
+  max-width: none;
+}
+.bai-customer-longitudinal .bai-long-disclosure__eyebrow {
+  display: block;
+  margin: 0 0 3px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+}
+.bai-customer-longitudinal .bai-long-disclosure__body {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--neutral--400, #9aa6c7);
+}
+
+/* Trends + Provider analytical cards */
+.bai-customer-longitudinal .bai-w4-card-grid,
+.bai-customer-longitudinal .bai-cust-analytics-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  margin: 0 0 16px;
+}
+.bai-customer-longitudinal .bai-w4-card {
+  border: 0.6px solid #334155;
+  border-radius: 8px;
+  padding: 12px 14px 14px;
+  background: rgba(15, 23, 42, 0.4);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.bai-customer-longitudinal .bai-cust-card-help,
+.bai-customer-longitudinal .bai-w4-help,
+.bai-customer-longitudinal .bai-w4-empty {
+  margin: 0 0 8px;
+  color: var(--neutral--400, #9aa6c7);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.bai-customer-longitudinal .bai-w4-chart-wrap {
+  position: relative;
+  height: 200px;
+  margin: 4px 0 0;
+  flex: 1 1 auto;
+}
+.bai-customer-longitudinal .bai-cust-provider-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.bai-customer-longitudinal .bai-cust-provider-table th,
+.bai-customer-longitudinal .bai-cust-provider-table td {
+  padding: 8px 10px;
+  border-bottom: 0.6px solid rgba(55, 68, 107, 0.55);
+  text-align: left;
+}
+.bai-customer-longitudinal .bai-cust-provider-table th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--neutral--500, #7e89ac);
+  font-weight: 600;
+}
+.bai-customer-longitudinal .bai-cust-provider-table .num,
+.bai-customer-longitudinal .bai-w4-primary-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--neutral--100, #f8fafc);
+}
+.bai-customer-longitudinal .bai-w4-secondary-num {
+  color: var(--neutral--400, #9aa6c7);
+  font-variant-numeric: tabular-nums;
+}
+.bai-customer-longitudinal .bai-w4-chip {
+  display: inline-block;
+  font-size: 10px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 0.6px solid #475569;
+  color: #cbd5e1;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+}
+.bai-customer-longitudinal .bai-w4-chip--improved {
+  border-color: rgba(52, 211, 153, 0.5);
+  color: #a7f3d0;
+}
+.bai-customer-longitudinal .bai-w4-chip--declined,
+.bai-customer-longitudinal .bai-w4-chip--weakened {
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fecaca;
+}
+.bai-customer-longitudinal .bai-w4-chip--stable,
+.bai-customer-longitudinal .bai-w4-chip--neutral {
+  border-color: rgba(148, 163, 184, 0.45);
+}
+.bai-customer-longitudinal .bai-cust-section-label {
+  margin: 4px 0 10px;
+}
+.bai-customer-longitudinal .bai-cust-brand-table-wrap {
+  margin-bottom: 16px;
+}
+.bai-customer-longitudinal .bai-cust-absrel-cell {
+  white-space: nowrap;
+}
+.bai-customer-longitudinal .bai-cust-absrel-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 6px;
+}
+.bai-customer-longitudinal .bai-cust-competitive {
+  margin: 0 0 8px;
+  max-width: 820px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--neutral--300, #c7d0e8);
+}
+
+/* Breakpoints — never 3+1 for the four-KPI row */
+@media (max-width: 1279px) and (min-width: 1024px) {
+  .bai-customer-longitudinal .bai-w4-kpi-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .bai-customer-longitudinal .bai-w4-kpi__value {
+    font-size: 24px;
+  }
+  .bai-customer-longitudinal .bai-w4-kpi__value--dates {
+    font-size: 15px;
+  }
+}
+@media (max-width: 1023px) {
+  .bai-customer-longitudinal .bai-w4-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bai-customer-longitudinal .bai-w4-card-grid,
+  .bai-customer-longitudinal .bai-cust-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 960px) {
+  .bai-customer-longitudinal .aiv-executive-read__grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 599px) {
+  .bai-customer-longitudinal .bai-w4-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .bai-customer-longitudinal .bai-er-position__value {
+    font-size: 30px;
+  }
+  .bai-customer-longitudinal .bai-w4-kpi__value {
+    font-size: 24px;
+  }
+  .bai-customer-longitudinal .bai-w4-kpi__value--dates {
+    white-space: normal;
+    font-size: 16px;
+  }
+  .bai-customer-longitudinal .bai-er-absrel,
+  .bai-customer-longitudinal .bai-er-position__meta {
+    grid-template-columns: 1fr;
+  }
+}
