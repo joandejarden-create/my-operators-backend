@@ -91,12 +91,24 @@
     return formatShortDate(priorIso) + " → " + formatShortDate(currentIso);
   }
 
-  function setDisclosure(wrapId, bodyId, text) {
-    var wrap = $(wrapId);
+  function setDisclosureItem(itemId, bodyId, text) {
+    var item = $(itemId);
     var body = $(bodyId);
     var t = String(text || "").trim();
     if (body) body.textContent = t;
-    if (wrap) wrap.hidden = !t;
+    if (item) item.hidden = !t;
+    return !!t;
+  }
+
+  function syncDisclosureStrip() {
+    var strip = $("aivCustLongDisclosures");
+    if (!strip) return;
+    var cohort = $("aivCustLongCohortNote");
+    var intent = $("aivCustLongIntentNote");
+    strip.hidden = !(
+      (cohort && !cohort.hidden) ||
+      (intent && !intent.hidden)
+    );
   }
 
   function buildWhatChangedItems(pv) {
@@ -168,7 +180,7 @@
     var monitoring = formatDateRange(priorIso, currentIso);
 
     position.innerHTML =
-      '<article class="aiv-er-summary-box bai-er-position" data-bai-er="position">' +
+      '<div class="bai-er-position" data-bai-er="position">' +
       '<p class="aiv-er-summary-box__label">Current Portfolio Position</p>' +
       '<p class="bai-er-position__value" data-bai-er-value="current">' +
       esc(fmtPct(port.currentPresence)) +
@@ -194,7 +206,7 @@
       esc(monitoring) +
       "</dd></div>" +
       "</dl>" +
-      "</article>";
+      "</div>";
 
     var items = buildWhatChangedItems(pv);
     var listHtml = items
@@ -220,45 +232,18 @@
       '<p class="bai-er-changed__next">Next to inspect: <strong>Brand Movement</strong> → <strong>Competitive Movement</strong></p>';
   }
 
-  function renderFourKpis(pv, cl) {
+  /**
+   * Duplicate Current/Prior/Change/Dates KPI row removed.
+   * Executive Read remains the single primary summary surface.
+   * Gate: BAI_LONGITUDINAL_NO_DUPLICATE_SUMMARY_KPIS
+   */
+  function clearDuplicateSummaryKpis() {
     var kpis = $("aivCustLongKpis");
-    if (!kpis || !pv.portfolio) return;
-    var port = pv.portfolio;
-    var priorIso = cl.priorDate || pv.priorDate || "";
-    var currentIso = cl.currentDate || pv.currentDate || "";
-    var datesValue = formatDateRange(priorIso, currentIso);
-
-    kpis.innerHTML =
-      '<div class="bai-w4-kpi-grid" data-bai-w4-layout="kpi" data-bai-kpi-count="4" role="group" aria-label="Longitudinal KPIs">' +
-      '<article class="bai-w4-kpi bai-w4-kpi--primary" data-bai-kpi="current">' +
-      '<div class="bai-w4-kpi__label">Current</div>' +
-      '<div class="bai-w4-kpi__value">' +
-      esc(fmtPct(port.currentPresence)) +
-      "</div>" +
-      '<div class="bai-w4-kpi__meta">AI Presence</div>' +
-      "</article>" +
-      '<article class="bai-w4-kpi" data-bai-kpi="prior">' +
-      '<div class="bai-w4-kpi__label">Prior</div>' +
-      '<div class="bai-w4-kpi__value bai-w4-kpi__value--secondary">' +
-      esc(fmtPct(port.priorPresence)) +
-      "</div>" +
-      '<div class="bai-w4-kpi__meta">Prior Run</div>' +
-      "</article>" +
-      '<article class="bai-w4-kpi" data-bai-kpi="change">' +
-      '<div class="bai-w4-kpi__label">Change</div>' +
-      '<div class="bai-w4-kpi__value bai-w4-kpi__value--tertiary">' +
-      esc(port.deltaDisplay || "—") +
-      "</div>" +
-      '<div class="bai-w4-kpi__meta">vs Prior Run</div>' +
-      "</article>" +
-      '<article class="bai-w4-kpi" data-bai-kpi="dates">' +
-      '<div class="bai-w4-kpi__label">Dates</div>' +
-      '<div class="bai-w4-kpi__value bai-w4-kpi__value--dates">' +
-      esc(datesValue) +
-      "</div>" +
-      '<div class="bai-w4-kpi__meta">Monitoring pair</div>' +
-      "</article>" +
-      "</div>";
+    if (!kpis) return;
+    kpis.innerHTML = "";
+    kpis.hidden = true;
+    kpis.setAttribute("data-bai-kpi-row", "removed");
+    kpis.setAttribute("aria-hidden", "true");
   }
 
   function renderTrend(trend) {
@@ -337,7 +322,7 @@
       (pv.provider && pv.provider.customerDisclosure) ||
       (pv.disclosures && pv.disclosures.provider) ||
       "Change vs Prior Run is not comparable for this monitoring pair.";
-    setDisclosure(
+    setDisclosureItem(
       "aivCustLongProviderDisclosure",
       "aivCustLongProviderNote",
       disclosure
@@ -410,7 +395,7 @@
       return;
     }
     root.hidden = false;
-    root.setAttribute("data-bai-customer-visual", "executive-read-v1");
+    root.setAttribute("data-bai-customer-visual", "cleanup-v2");
 
     var banner = $("aivCustLongPreviewBanner");
     if (banner) {
@@ -423,7 +408,7 @@
         (pv.parentCompanyName || "Portfolio") + " · Prior Run & Trends";
     }
 
-    // Dates live in the KPI row; keep help line as SR-only meta when present.
+    // Dates live in Executive Read Monitoring; keep help line as SR-only meta.
     var datesHelp = $("aivCustLongDates");
     if (datesHelp) {
       datesHelp.textContent =
@@ -436,9 +421,9 @@
     }
 
     renderExecutiveRead(pv, cl);
-    renderFourKpis(pv, cl);
+    clearDuplicateSummaryKpis();
 
-    setDisclosure(
+    setDisclosureItem(
       "aivCustLongCohortNote",
       "aivCustLongCohortNoteBody",
       (pv.disclosures && pv.disclosures.cohortChange) ||
@@ -447,13 +432,14 @@
           pv.competitive.story.cohortChangeDisclosure) ||
         ""
     );
-    setDisclosure(
+    setDisclosureItem(
       "aivCustLongIntentNote",
       "aivCustLongIntentNoteBody",
       (pv.ownerIntent && pv.ownerIntent.presentation) ||
         (pv.disclosures && pv.disclosures.intent) ||
         ""
     );
+    syncDisclosureStrip();
 
     var competitive = $("aivCustLongCompetitive");
     if (competitive) {

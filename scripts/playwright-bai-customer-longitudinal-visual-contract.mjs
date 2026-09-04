@@ -7,7 +7,7 @@
  *
  * Gates:
  *   BAI_CUSTOMER_EXECUTIVE_READ_VISUAL_INTEGRITY
- *   BAI_LONGITUDINAL_FOUR_KPI_DESKTOP_SINGLE_ROW
+ *   BAI_LONGITUDINAL_NO_DUPLICATE_SUMMARY_KPIS
  *   BAI_CUSTOMER_LONGITUDINAL_KNOWN_GOOD_VISUAL_CONTRACT
  *   BAI_CUSTOMER_SHARE_VISUAL_PARITY
  *   BAI_EXECUTIVE_READ_CONTENT_STRESS_INTEGRITY
@@ -111,15 +111,16 @@ function startStaticServer() {
 async function inspectLongitudinal(page, label) {
   const section = page.locator("#aivCustomerLongitudinal");
   await section.waitFor({ state: "attached", timeout: 30000 }).catch(() => null);
-  // Prefer DOM readiness over Playwright isVisible — tab panels can report
-  // not-visible briefly while KPIs are already mounted.
   const ready = await page
     .waitForFunction(
       () => {
         const root = document.getElementById("aivCustomerLongitudinal");
         if (!root || root.hidden) return false;
-        const grid = root.querySelector(".bai-w4-kpi-grid");
-        return !!(grid && grid.querySelectorAll("[data-bai-kpi]").length === 4);
+        return !!(
+          root.querySelector("[data-bai-er-shell]") &&
+          root.querySelector('[data-bai-er="position"]') &&
+          root.querySelector(".bai-cust-provider-table")
+        );
       },
       { timeout: 20000 }
     )
@@ -132,46 +133,52 @@ async function inspectLongitudinal(page, label) {
 
   const probe = await page.evaluate(() => {
     const root = document.getElementById("aivCustomerLongitudinal");
-    const grid = root && root.querySelector(".bai-w4-kpi-grid");
-    const kpis = grid ? Array.from(grid.querySelectorAll("[data-bai-kpi]")) : [];
-    const cs = grid ? getComputedStyle(grid) : null;
-    const cols = cs ? cs.gridTemplateColumns.split(/\s+/).filter(Boolean) : [];
     const kpiHost = root && root.querySelector("#aivCustLongKpis");
-    const kpiText = kpiHost ? kpiHost.innerText : "";
-    const absRelRawInKpis = /Abs\s+\w+\s+Rel\s+\w+/i.test(kpiText);
-    const hasStructuredAbsRel = !!(
-      root && root.querySelector('[data-bai-er="abs-rel"] .bai-er-absrel__cell')
-    );
+    const kpiGrid = root && root.querySelector(".bai-w4-kpi-grid");
+    const kpiCards = root
+      ? root.querySelectorAll("[data-bai-kpi], .bai-w4-kpi")
+      : [];
     const text = root ? root.innerText : "";
     const er = root && root.querySelector("[data-bai-er-shell]");
-    const hasExecLabel = /Executive Read/i.test(text);
-    const hasWhatChanged = /What Changed/i.test(text);
-    const hasProviderTable =
-      !!root && !!root.querySelector(".bai-cust-provider-table tbody tr");
-    const disclosureEyebrows = root
-      ? Array.from(root.querySelectorAll(".bai-long-disclosure__eyebrow")).map(
-          (el) => el.textContent.trim()
+    const competitive = root && root.querySelector('[data-bai-section="competitive-movement"]');
+    const brand = root && root.querySelector('[data-bai-section="brand-movement"]');
+    const analytics = root && root.querySelector('[data-bai-section="trends-provider"]');
+    const narrative = root && root.querySelector(".bai-cust-narrative");
+    const narrCs = narrative ? getComputedStyle(narrative) : null;
+    const erNarr = root && root.querySelector(".bai-er-changed__value, .aiv-executive-read__narrative");
+    const erCs = erNarr ? getComputedStyle(erNarr) : null;
+    const panels = root
+      ? Array.from(root.querySelectorAll(".bai-cust-panel")).map((el) =>
+          getComputedStyle(el).backgroundColor
         )
       : [];
-    const kpiKeys = kpis.map((el) => el.getAttribute("data-bai-kpi"));
-    const kpiBoxes = kpis.map((el) => {
-      const r = el.getBoundingClientRect();
-      return { key: el.getAttribute("data-bai-kpi"), top: Math.round(r.top), left: Math.round(r.left), width: Math.round(r.width) };
-    });
     return {
-      kpiCount: kpis.length,
-      kpiKeys,
-      colCount: cols.length,
-      gridTemplateColumns: cs ? cs.gridTemplateColumns : null,
-      display: cs ? cs.display : null,
-      absRelRawInKpis,
-      hasStructuredAbsRel,
-      hasExecLabel,
-      hasWhatChanged,
+      duplicateKpiVisible:
+        !!(kpiGrid && getComputedStyle(kpiGrid).display !== "none") ||
+        (kpiCards.length > 0 &&
+          !(kpiHost && (kpiHost.hidden || kpiHost.getAttribute("data-bai-kpi-row") === "removed"))),
+      kpiHostRemoved:
+        !kpiHost ||
+        kpiHost.hidden ||
+        kpiHost.getAttribute("data-bai-kpi-row") === "removed",
+      kpiHostEmpty: !kpiHost || !kpiHost.innerHTML.trim(),
+      hasStructuredAbsRel: !!(
+        root && root.querySelector('[data-bai-er="abs-rel"] .bai-er-absrel__cell')
+      ),
+      hasExecLabel: /Executive Read/i.test(text),
+      hasWhatChanged: /What Changed/i.test(text),
       hasErShell: !!er,
-      hasProviderTable,
-      disclosureEyebrows,
-      kpiBoxes,
+      hasProviderTable:
+        !!root && !!root.querySelector(".bai-cust-provider-table tbody tr"),
+      hasCompetitiveBlock: !!(competitive && competitive.querySelector(".bai-cust-narrative")),
+      hasBrandBlock: !!(brand && brand.querySelector("table")),
+      hasAnalyticsBlock: !!(analytics && analytics.querySelector(".bai-cust-analytics-grid")),
+      narrativeColor: narrCs ? narrCs.color : null,
+      erBodyColor: erCs ? erCs.color : null,
+      panelBackgrounds: panels,
+      disclosureStrip: !!(
+        root && root.querySelector(".bai-long-disclosures--strip")
+      ),
       hasAug18: text.includes("2026-08-18") || /\bAug\s*18\b/.test(text),
       textSample: text.slice(0, 400),
     };
@@ -180,45 +187,17 @@ async function inspectLongitudinal(page, label) {
   return probe;
 }
 
-function assertDesktopFourInRow(probe, label, width) {
+function assertLongitudinalVisual(probe, label, width) {
   if (!probe) return;
-  if (probe.kpiCount !== 4 || probe.kpiKeys.join(",") !== "current,prior,change,dates") {
-    fail(`${label}: expected 4 KPIs current/prior/change/dates got ${probe.kpiKeys}`);
+
+  if (probe.duplicateKpiVisible || !probe.kpiHostRemoved || !probe.kpiHostEmpty) {
+    fail(`${label}: duplicate summary KPI row still present`);
   } else {
-    pass(`${label}: 4 KPI cards present`);
+    pass(`${label}: no duplicate summary KPIs`);
   }
 
-  if (width >= 1280) {
-    if (probe.colCount !== 4) {
-      fail(
-        `${label}@${width}: KPI grid cols=${probe.colCount} (need 4) → ${probe.gridTemplateColumns}`
-      );
-    } else {
-      pass(`${label}@${width}: 4×1 KPI grid`);
-    }
-    const tops = [...new Set((probe.kpiBoxes || []).map((b) => b.top))];
-    if (tops.length > 1) {
-      fail(`${label}@${width}: KPI cards wrap (tops=${tops.join(",")}) — 3+1 defect`);
-    } else if (probe.kpiBoxes?.length === 4) {
-      pass(`${label}@${width}: single KPI row (no wrap)`);
-    }
-  } else if (width >= 600 && width <= 1023) {
-    if (probe.colCount !== 2 && probe.colCount !== 4) {
-      fail(`${label}@${width}: unexpected cols=${probe.colCount}`);
-    } else {
-      pass(`${label}@${width}: governed ${probe.colCount}-col KPI grid`);
-    }
-  } else if (width <= 599) {
-    if (probe.colCount !== 1) {
-      fail(`${label}@${width}: expected 1 col got ${probe.colCount}`);
-    } else {
-      pass(`${label}@${width}: 1-col KPI stack`);
-    }
-  }
-
-  if (probe.absRelRawInKpis) fail(`${label}: raw Abs/Rel dump inside KPI row`);
-  else if (!probe.hasStructuredAbsRel) fail(`${label}: missing structured Abs/Rel in Executive Read`);
-  else pass(`${label}: Abs/Rel structured (not KPI dump)`);
+  if (!probe.hasStructuredAbsRel) fail(`${label}: missing structured Abs/Rel in Executive Read`);
+  else pass(`${label}: Abs/Rel structured in Executive Read`);
 
   if (!probe.hasErShell || !probe.hasExecLabel || !probe.hasWhatChanged) {
     fail(`${label}: Executive Read hierarchy incomplete`);
@@ -229,7 +208,35 @@ function assertDesktopFourInRow(probe, label, width) {
   if (!probe.hasProviderTable) fail(`${label}: provider table empty`);
   else pass(`${label}: provider table populated`);
 
+  if (!probe.hasCompetitiveBlock || !probe.hasBrandBlock || !probe.hasAnalyticsBlock) {
+    fail(`${label}: missing section wrappers (competitive/brand/analytics)`);
+  } else {
+    pass(`${label}: section wrappers present`);
+  }
+
+  if (!probe.disclosureStrip) fail(`${label}: disclosure strip missing`);
+  else pass(`${label}: disclosure strip present`);
+
   if (probe.hasAug18) fail(`${label}: Aug 18 leaked into customer surface`);
+
+  // Soft contrast check — body should not be much darker than ER values
+  if (probe.narrativeColor && probe.erBodyColor && probe.narrativeColor !== probe.erBodyColor) {
+    // Accept if both are high-luminance-ish (rgb > ~180 on at least one channel average)
+    const parse = (c) => {
+      const m = String(c).match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      if (!m) return null;
+      return (Number(m[1]) + Number(m[2]) + Number(m[3])) / 3;
+    };
+    const n = parse(probe.narrativeColor);
+    const e = parse(probe.erBodyColor);
+    if (n != null && e != null && n + 25 < e) {
+      fail(`${label}: narrative contrast lagging ER (${probe.narrativeColor} vs ${probe.erBodyColor})`);
+    } else {
+      pass(`${label}@${width}: body contrast parity`);
+    }
+  } else {
+    pass(`${label}@${width}: body contrast parity`);
+  }
 }
 
 async function renderInjected(page, base, htmlPath, parentKey) {
@@ -295,7 +302,7 @@ async function runLocal(browser, base) {
     const page = await browser.newPage({ viewport: { width, height: 1100 } });
     await renderInjected(page, base, "/ai-visibility-brand.html", "marriott");
     const probe = await inspectLongitudinal(page, `local-marriott`);
-    assertDesktopFourInRow(probe, `local-marriott`, width);
+    assertLongitudinalVisual(probe, `local-marriott`, width);
     const shotPath = path.join(outDir, `local-marriott-${width}.png`);
     await shot(page.locator("#aivCustomerLongitudinal"), shotPath);
     await page.close();
@@ -333,7 +340,7 @@ async function runLocal(browser, base) {
     const authPage = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
     await renderInjected(authPage, base, "/ai-visibility-brand.html", parent);
     const authProbe = await inspectLongitudinal(authPage, `local-${parent}-auth`);
-    assertDesktopFourInRow(authProbe, `local-${parent}-auth`, 1440);
+    assertLongitudinalVisual(authProbe, `local-${parent}-auth`, 1440);
     await shot(
       authPage.locator("#aivCustomerLongitudinal"),
       path.join(outDir, `local-${parent}-auth-1440.png`)
@@ -342,7 +349,7 @@ async function runLocal(browser, base) {
     const sharePage = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
     await renderInjected(sharePage, base, "/brand-ai-visibility-share.html", parent);
     const shareProbe = await inspectLongitudinal(sharePage, `local-${parent}-share`);
-    assertDesktopFourInRow(shareProbe, `local-${parent}-share`, 1440);
+    assertLongitudinalVisual(shareProbe, `local-${parent}-share`, 1440);
     await shot(
       sharePage.locator("#aivCustomerLongitudinal"),
       path.join(outDir, `local-${parent}-share-1440.png`)
@@ -351,8 +358,9 @@ async function runLocal(browser, base) {
     if (
       authProbe &&
       shareProbe &&
-      authProbe.kpiKeys.join() === shareProbe.kpiKeys.join() &&
-      authProbe.hasWhatChanged === shareProbe.hasWhatChanged
+      authProbe.hasWhatChanged === shareProbe.hasWhatChanged &&
+      authProbe.kpiHostRemoved === shareProbe.kpiHostRemoved &&
+      authProbe.hasCompetitiveBlock === shareProbe.hasCompetitiveBlock
     ) {
       pass(`share parity structure: ${parent}`);
     } else {
@@ -389,7 +397,7 @@ async function runProduction(browser) {
           return (
             root &&
             !root.hidden &&
-            root.querySelectorAll("[data-bai-kpi]").length === 4
+            root.querySelector("[data-bai-er-shell]") && root.querySelector('[data-bai-er="position"]')
           );
         },
         { timeout: 120000 }
@@ -406,7 +414,7 @@ async function runProduction(browser) {
             return (
               root &&
               !root.hidden &&
-              root.querySelectorAll("[data-bai-kpi]").length === 4
+              root.querySelector("[data-bai-er-shell]") && root.querySelector('[data-bai-er="position"]')
             );
           },
           { timeout: 90000 }
@@ -419,7 +427,7 @@ async function runProduction(browser) {
       if (root) root.scrollIntoView({ block: "start" });
     });
     const probe = await inspectLongitudinal(page, `prod-${parent}`);
-    assertDesktopFourInRow(probe, `prod-${parent}`, 1440);
+    assertLongitudinalVisual(probe, `prod-${parent}`, 1440);
     await shot(
       page.locator("#aivCustomerLongitudinal"),
       path.join(outDir, `prod-${parent}-1440.png`)
@@ -429,7 +437,7 @@ async function runProduction(browser) {
         await page.setViewportSize({ width, height: 1200 });
         await page.waitForTimeout(300);
         const p2 = await inspectLongitudinal(page, `prod-marriott-${width}`);
-        assertDesktopFourInRow(p2, `prod-marriott`, width);
+        assertLongitudinalVisual(p2, `prod-marriott`, width);
         await shot(
           page.locator("#aivCustLongKpis"),
           path.join(outDir, `prod-marriott-kpi-${width}.png`)
@@ -466,7 +474,7 @@ try {
 results.failed = failed;
 results.gates = {
   BAI_CUSTOMER_EXECUTIVE_READ_VISUAL_INTEGRITY: failed === 0 ? "PASS" : "FAIL",
-  BAI_LONGITUDINAL_FOUR_KPI_DESKTOP_SINGLE_ROW: failed === 0 ? "PASS" : "FAIL",
+  BAI_LONGITUDINAL_NO_DUPLICATE_SUMMARY_KPIS: failed === 0 ? "PASS" : "FAIL",
   BAI_CUSTOMER_LONGITUDINAL_KNOWN_GOOD_VISUAL_CONTRACT:
     failed === 0 ? "PASS" : "FAIL",
   BAI_CUSTOMER_SHARE_VISUAL_PARITY: failed === 0 ? "PASS" : "FAIL",
