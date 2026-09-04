@@ -3810,15 +3810,15 @@
     if (viewAll) {
       if (domains.length > DEFAULT_VISIBLE_SOURCES) {
         viewAll.hidden = false;
-        viewAll.textContent = "View all sources →";
+        viewAll.textContent = "View All Sources";
         viewAll.onclick = function () {
           var list = el.querySelector(".aiv-recurring-sources-wrap");
           if (!list) return;
           var truncated = list.getAttribute("data-truncated") === "true";
           list.setAttribute("data-truncated", truncated ? "false" : "true");
           viewAll.textContent = truncated
-            ? "Show fewer sources"
-            : "View all sources →";
+            ? "Show Fewer Sources"
+            : "View All Sources";
         };
       } else {
         viewAll.hidden = true;
@@ -4371,6 +4371,8 @@
       "aivExecAllProviders",
       "aivExecDiscoverability",
       "aivExecLanguage",
+      "aivExecutiveReadSummaries",
+      "aivExecutiveReadNarrative",
     ];
     ids.forEach(function (id) {
       var el = $(id);
@@ -4387,7 +4389,7 @@
       el.hidden = true;
       if (el.tagName === "BUTTON") {
         el.onclick = null;
-        el.textContent = "View all sources →";
+        el.textContent = "View All Sources";
       } else {
         el.textContent = "";
       }
@@ -4417,6 +4419,10 @@
       mix.hidden = true;
       mix.innerHTML = "";
     }
+    var erGrid = $("aivExecutiveReadGrid");
+    if (erGrid) erGrid.hidden = true;
+    var erEmpty = $("aivExecutiveReadEmpty");
+    if (erEmpty) erEmpty.hidden = true;
   }
 
   function renderExecutivePromptMix(summary) {
@@ -4478,6 +4484,220 @@
     );
   }
 
+﻿  function firstListItemText(list) {
+    if (!Array.isArray(list) || !list.length) return null;
+    var item = list[0] || {};
+    var label = String(item.label || item.type || item.title || "").trim();
+    var text = String(item.text || item.value || item.finding || item.body || "").trim();
+    if (label && text) return { label: label, text: text };
+    if (text) return { label: label || "Finding", text: text };
+    if (label) return { label: label, text: "" };
+    return null;
+  }
+
+  function renderBaiErSummaryBox(box) {
+    if (!box || !box.headline) return "";
+    return (
+      '<article class="aiv-er-summary-box">' +
+      '<p class="aiv-er-summary-box__label">' +
+      AiVisibilityUi.escapeHtml(box.label || "") +
+      "</p>" +
+      '<p class="aiv-er-summary-box__headline">' +
+      AiVisibilityUi.escapeHtml(box.headline) +
+      "</p>" +
+      (box.body
+        ? '<p class="aiv-er-summary-box__body">' +
+          AiVisibilityUi.escapeHtml(box.body) +
+          "</p>"
+        : "") +
+      "</article>"
+    );
+  }
+
+  function buildBaiExecutiveReadPresentation(data) {
+    data = data || {};
+    var cp = data.currentPosition || {};
+    var pap = cp.portfolioAiPresence || {};
+    var top = cp.topBrandByAiPresence || {};
+    var bestPos = cp.bestCompetitivePosition || cp.topBrandByCompetitivePosition || {};
+    var qm = cp.questionsMissing || {};
+    var brandsMon = cp.brandsMonitored || {};
+    var geo =
+      (data.geography &&
+        (data.geography.key || data.geography.commercialRegion)) ||
+      state.geography ||
+      "this geography";
+    var providerLabel =
+      data.providerLabel ||
+      (state.provider === "all" ? "All Providers" : String(state.provider || "provider"));
+
+    var presenceDisplay = String(pap.display || "").trim();
+    var strongestName = String(top.brandName || top.brandId || "").trim();
+    var competitiveDisplay = formatBestCompetitivePosition(bestPos);
+    var missingDisplay = String(qm.display || "").trim();
+    var monitoredDisplay = String(brandsMon.display || "").trim();
+
+    var strengthItem = firstListItemText(data.strengths);
+    var gapItem = firstListItemText(data.gaps);
+    var priorityItems =
+      (data.priorityReviewItems && data.priorityReviewItems.items) || [];
+    var priorityItem = firstListItemText(priorityItems);
+
+    var boxes = [];
+    boxes.push({
+      label: "Current Position",
+      headline: presenceDisplay || "Not Available",
+      body: monitoredDisplay
+        ? "Portfolio AI Presence · " + monitoredDisplay + " brands monitored · " + providerLabel
+        : "Portfolio AI Presence · " + providerLabel,
+    });
+    if (strongestName) {
+      boxes.push({
+        label: "Strongest",
+        headline: strongestName,
+        body:
+          strengthItem && strengthItem.text
+            ? strengthItem.text
+            : "Highest Observed Presence among entitled brands in " + geo + ".",
+      });
+    } else if (strengthItem) {
+      boxes.push({
+        label: "Strongest",
+        headline: strengthItem.label,
+        body: strengthItem.text,
+      });
+    }
+    if (missingDisplay && missingDisplay !== "—") {
+      boxes.push({
+        label: "Visibility Gap",
+        headline: missingDisplay,
+        body:
+          (gapItem && gapItem.text) ||
+          "Share of monitored owner questions where entitled brands were absent.",
+      });
+    } else if (gapItem) {
+      boxes.push({
+        label: "Visibility Gap",
+        headline: gapItem.label,
+        body: gapItem.text,
+      });
+    } else if (competitiveDisplay && competitiveDisplay !== "Not Monitored") {
+      boxes.push({
+        label: "Competitive Position",
+        headline: competitiveDisplay,
+        body: "Best peer rank among entitled brands in this geography.",
+      });
+    }
+
+    boxes = boxes.slice(0, 3);
+
+    var narrativeParts = [];
+    if (presenceDisplay) {
+      narrativeParts.push(
+        "In " +
+          geo +
+          " on " +
+          providerLabel +
+          ", portfolio AI Presence is " +
+          presenceDisplay +
+          (monitoredDisplay ? " with " + monitoredDisplay + " brands monitored" : "") +
+          "."
+      );
+    }
+    if (strongestName) {
+      narrativeParts.push(
+        strongestName + " leads entitled brands on Observed Presence."
+      );
+    }
+    if (competitiveDisplay && competitiveDisplay !== "Not Monitored") {
+      narrativeParts.push("Best competitive position: " + competitiveDisplay + ".");
+    }
+    if (
+      missingDisplay &&
+      missingDisplay !== "—" &&
+      missingDisplay !== "0%" &&
+      missingDisplay !== "0.0%"
+    ) {
+      narrativeParts.push("Questions Missing stands at " + missingDisplay + ".");
+    }
+    if (priorityItem && priorityItem.text) {
+      narrativeParts.push("Next inspection: " + priorityItem.text);
+    } else {
+      narrativeParts.push(
+        "Next inspection: open Detailed View for the strongest brand, then compare Questions Missing Watchlist."
+      );
+    }
+
+    return {
+      available: Boolean(
+        presenceDisplay || strongestName || boxes.length || narrativeParts.length
+      ),
+      title: "Portfolio Position",
+      boxes: boxes,
+      narrative: narrativeParts.join(" "),
+    };
+  }
+
+  function renderBaiExecutiveRead(data) {
+    var gridEl = $("aivExecutiveReadGrid");
+    var summariesEl = $("aivExecutiveReadSummaries");
+    var titleEl = $("aivExecutiveReadMainTitle");
+    var narrativeEl = $("aivExecutiveReadNarrative");
+    var emptyEl = $("aivExecutiveReadEmpty");
+    var section = $("aivExecutiveReadSection");
+    if (!narrativeEl || !section) return;
+
+    var presentation = buildBaiExecutiveReadPresentation(data);
+    if (!presentation.available || !presentation.narrative) {
+      if (gridEl) gridEl.hidden = true;
+      narrativeEl.textContent = "";
+      if (summariesEl) summariesEl.innerHTML = "";
+      if (emptyEl) emptyEl.hidden = false;
+      return;
+    }
+
+    if (emptyEl) emptyEl.hidden = true;
+    if (gridEl) gridEl.hidden = false;
+    if (summariesEl) {
+      summariesEl.innerHTML = (presentation.boxes || [])
+        .map(renderBaiErSummaryBox)
+        .join("");
+    }
+    if (titleEl) titleEl.textContent = presentation.title || "Portfolio Position";
+    narrativeEl.textContent = presentation.narrative;
+  }
+
+  async function hydrateBaiParentShareContext() {
+    var ctx = $("aivParentContext");
+    var nameEl = $("aivParentCompanyName");
+    if (!ctx || !nameEl) return;
+    var share = "";
+    try {
+      share = new URLSearchParams(window.location.search || "").get("share") || "";
+    } catch (_) {
+      share = "";
+    }
+    if (!share || share.indexOf("baiparent.v1.") !== 0) {
+      ctx.hidden = true;
+      return;
+    }
+    try {
+      var res = await apiGet("/api/ai-visibility/brand/share/resolve");
+      var company =
+        (res && (res.parentCompanyName || res.canonicalCompanyName)) || "";
+      if (!company) {
+        ctx.hidden = true;
+        return;
+      }
+      nameEl.textContent = company;
+      ctx.hidden = false;
+      document.title = company + " — Brand AI Intelligence";
+    } catch (_) {
+      ctx.hidden = true;
+    }
+  }
+
+
   function renderExecutive(data) {
     setActiveTab("executive");
     clearExecutiveDomForFreshPaint();
@@ -4491,29 +4711,19 @@
     var pap = cp.portfolioAiPresence || {};
     var bestPos = cp.bestCompetitivePosition || cp.topBrandByCompetitivePosition || {};
 
-    // 1. Executive Summary tiles — P0E intelligence primary; legacy insights fallback
-    var p0eInsights =
-      data.executiveIntelligenceInsights &&
-      Array.isArray(data.executiveIntelligenceInsights.boxes) &&
-      data.executiveIntelligenceInsights.boxes.length
-        ? data.executiveIntelligenceInsights
-        : null;
-    var insightFiltered = filterInsightsForExecDedupe(
-      p0eInsights || data.executiveInsights,
-      data
-    );
+    // Wave 2 — Executive Read first (existing governed fields only)
+    renderBaiExecutiveRead(data);
+
+    // Additional Findings not primary (tile-first replaced)
+    var insightSection = $("aivExecInsightSection");
+    if (insightSection) insightSection.hidden = true;
     state._execInsightFilterFp = [
       state.geography,
       state.provider,
       state.language || "",
     ].join("|");
-    renderInsightBoxes(
-      "aivExecInsights",
-      "aivExecInsightSection",
-      insightFiltered
-    );
 
-    // 2. Portfolio Snapshot — equal KPI tiles (unchanged)
+    // Portfolio Snapshot — equal KPI tiles
     var cards = [
       [
         pap.label || "Portfolio AI Presence",
@@ -4552,9 +4762,9 @@
     $("aivExecPosition").innerHTML = cards
       .map(function (c) {
         return (
-          '<article class="aiv-kpi"><h3>' +
+          '<article class="aiv-kpi"><h3><span class="aiv-kpi-label">' +
           AiVisibilityUi.escapeHtml(c[0]) +
-          '</h3><div class="aiv-value">' +
+          '</span></h3><div class="aiv-value">' +
           AiVisibilityUi.escapeHtml(c[1]) +
           '</div><div class="aiv-meta">' +
           AiVisibilityUi.escapeHtml(c[2]) +
@@ -7279,6 +7489,7 @@
     }
     ensureDemoBrandPortfolioClientContext();
     wire();
+    hydrateBaiParentShareContext();
     loadAll();
   });
 })();

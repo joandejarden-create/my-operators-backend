@@ -5247,3 +5247,247 @@ div.aiv-source-row,
   color: var(--neutral--100, #e2e8f0);
 }
 
+
+/* ========================================================================
+ * BAI × ADP product-grammar Wave 1+2 (2026-09-04)
+ * Visual family parity only — no measurement contract changes.
+ * BAI_KPI_VISUAL_GRAMMAR_PARITY · BAI_KPI_GRID_NO_ORPHANED_FINAL_ROW
+ * BAI_SECTION_VERTICAL_RHYTHM_CONSISTENCY · BAI_TABLE_VISUAL_GRAMMAR_PARITY
+ * ======================================================================== */
+
+.aiv-parent-context {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+  line-height: 1.25;
+}
+.aiv-parent-context__company {
+  display: inline-block;
+}
+
+/* Executive Read — ADP-shaped two-column grammar (BAI naming) */
+.aiv-executive-read {
+  padding: 12px 14px 14px;
+  background: var(--secondary--color-1, rgba(11, 23, 56, 0.55));
+  border: 0.6px solid var(--neutral--600, #37446b);
+  border-radius: 10px;
+}
+.aiv-executive-read__grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 32%) 1fr;
+  gap: 14px 18px;
+  align-items: stretch;
+}
+.aiv-executive-read__summaries {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  align-self: stretch;
+}
+.aiv-er-summary-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(11, 23, 56, 0.45);
+  border: 0.6px solid var(--neutral--600, #37446b);
+  border-radius: 8px;
+  padding: 10px 12px;
+  min-width: 0;
+}
+.aiv-er-summary-box__label {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+  line-height: 1.25;
+}
+.aiv-er-summary-box__headline {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--neutral--100, #f8fafc);
+}
+.aiv-er-summary-box__body {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--neutral--300, #c7d0e8);
+}
+.aiv-executive-read__main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 2px 0;
+}
+.aiv-executive-read__main-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--400, #9aa6c7);
+}
+.aiv-executive-read__narrative {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--neutral--100, #f8fafc);
+  font-weight: 500;
+}
+.aiv-executive-read__empty {
+  margin: 0;
+  padding: 8px 0 0;
+}
+.aiv-executive-read-section {
+  margin-bottom: 10px;
+}
+.aiv-insight-layer--secondary {
+  opacity: 0.95;
+}
+
+@media (max-width: 1440px) {
+  .aiv-executive-read__grid {
+    grid-template-columns: minmax(200px, 34%) 1fr;
+  }
+}
+@media (max-width: 960px) {
+  .aiv-executive-read__grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 599px) {
+  .aiv-executive-read {
+    padding: 10px 12px 12px;
+  }
+  .aiv-er-summary-box__headline {
+    font-size: 13px;
+  }
+  .aiv-er-summary-box__body {
+    font-size: 11px;
+  }
+}
+
+/* Portfolio Snapshot 5-KPI — ADP hierarchy + no orphan final row */
+#aivExecPosition.aiv-kpi-row {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+#aivExecPosition .aiv-kpi {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  min-width: 0;
+  height: 100%;
+  min-height: 128px;
+  border-radius: 10px;
+}
+#aivExecPosition .aiv-kpi h3 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  margin: 0;
+}
+#aivExecPosition .aiv-kpi .aiv-value {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+  font-variant-numeric: tabular-nums;
+}
+#aivExecPosition .aiv-kpi .aiv-meta {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 10px;
+  line-height: 1.35;
+  min-height: calc(1.35em * 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* >=1280: single balanced row of 5 */
+@media (min-width: 1280px) {
+  #aivExecPosition.aiv-kpi-row {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+/* 600–1279: 3+2 (never 4+1 orphan) */
+@media (max-width: 1279px) and (min-width: 600px) {
+  #aivExecPosition.aiv-kpi-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* <=599: single column */
+@media (max-width: 599px) {
+  #aivExecPosition.aiv-kpi-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dense analytical tables — Dealality family */
+.aiv-portfolio-table.aiv-portfolio-table,
+.aiv-regional-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.aiv-portfolio-table th,
+.aiv-portfolio-table td {
+  padding: 8px 10px;
+  vertical-align: middle;
+  border-bottom: 0.6px solid rgba(55, 68, 107, 0.55);
+}
+.aiv-portfolio-table th {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--neutral--400, #9aa6c7);
+}
+.aiv-portfolio-table .aiv-metric-cell {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.aiv-portfolio-table tbody tr:hover td {
+  background: rgba(154, 145, 251, 0.06);
+}
+
+/* Compact empty / not-ready — no tall scaffolding */
+.aiv-empty {
+  padding: 8px 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--neutral--500, #7e89ac);
+  min-height: 0;
+}
+.aiv-theme-group .aiv-theme-help.help-text {
+  margin: 0 0 8px;
+}
+.aiv-theme-group > .aiv-theme-title {
+  margin-bottom: 4px;
+}
+
+/* Filters / brand selector rhythm on share */
+.aiv-filters-section.filters-section {
+  gap: 10px 12px;
+  align-items: flex-end;
+}
+.aiv-filters-section .filter-group {
+  margin-bottom: 0;
+}
+

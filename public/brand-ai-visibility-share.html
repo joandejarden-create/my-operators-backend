@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brand AI Intelligence — Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
-  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-parent-share-v2-20260903">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-adp-grammar-w12-20260904">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script>
   (function() {
@@ -44,14 +44,17 @@
     } catch (_) {}
   })();
   </script>
-  <script src="/js/ai-visibility/ai-visibility-shared.js?v=bai-parent-share-v2-20260903" defer></script>
-  <script src="/js/ai-visibility/ai-visibility-brand.js?v=bai-parent-share-v2-20260903" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-shared.js?v=bai-adp-grammar-w12-20260904" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-brand.js?v=bai-adp-grammar-w12-20260904" defer></script>
 </head>
 <body class="aiv-page embed-mode">
   <div class="dashboard-container aiv-dashboard">
     <header class="dashboard-header aiv-dashboard-header">
       <div class="dashboard-header-left">
         <div class="dashboard-title-container">
+          <p class="aiv-parent-context" id="aivParentContext" hidden>
+            <span class="aiv-parent-context__company" id="aivParentCompanyName"></span>
+          </p>
           <h1>Brand AI Intelligence</h1>
         </div>
         <p class="aiv-header-subtitle">How your brands appear when hotel owners ask AI about development, conversion, and positioning — tracked by geography and provider with governed evidence.</p>
@@ -165,19 +168,34 @@
       <div class="toast-message" id="aivLoadingMessage">Loading Brand AI Intelligence…</div>
     </div>
 
-    <!-- Executive Summary — restored spine + surgical Wave integration (no mega-wrapper) -->
+    <!-- Executive Summary — ADP product grammar: Executive Read → Portfolio Snapshot KPIs -->
     <div id="aivExecutiveView" class="aiv-tab-panel" role="tabpanel" aria-labelledby="aivTabExecutive">
 
-      <section class="aiv-theme-group aiv-insight-layer" aria-labelledby="aivThemeInsights" id="aivExecInsightSection" hidden>
-        <h2 id="aivThemeInsights" class="aiv-theme-title">Executive Summary</h2>
-        <p class="aiv-theme-help help-text">Key takeaways from the current monitoring period—what changed, where you stand, and why it matters.</p>
+      <section class="aiv-theme-group aiv-executive-read-section" aria-labelledby="aivThemeExecutiveRead" id="aivExecutiveReadSection">
+        <h2 id="aivThemeExecutiveRead" class="aiv-theme-title">Executive Read</h2>
+        <p class="aiv-theme-help help-text">Where the portfolio stands in this monitoring period — strongest, weakest, competitive position, and what to inspect next.</p>
+        <div class="aiv-executive-read" data-bai-product-grammar="adp-family-w12">
+          <div class="aiv-executive-read__grid" id="aivExecutiveReadGrid" hidden>
+            <div class="aiv-executive-read__summaries" id="aivExecutiveReadSummaries"></div>
+            <div class="aiv-executive-read__main">
+              <h3 class="aiv-executive-read__main-title" id="aivExecutiveReadMainTitle">Portfolio Position</h3>
+              <p class="aiv-executive-read__narrative" id="aivExecutiveReadNarrative"></p>
+            </div>
+          </div>
+          <p class="aiv-executive-read__empty aiv-empty" id="aivExecutiveReadEmpty" hidden>Executive Read is not available for this filter set yet.</p>
+        </div>
+      </section>
+
+      <section class="aiv-theme-group aiv-insight-layer aiv-insight-layer--secondary" aria-labelledby="aivThemeInsights" id="aivExecInsightSection" hidden>
+        <h2 id="aivThemeInsights" class="aiv-theme-title">Additional Findings</h2>
+        <p class="aiv-theme-help help-text">Supporting monitoring findings for this geography and provider.</p>
         <div class="aiv-insight-row aiv-exec-insight-tiles" id="aivExecInsights"></div>
       </section>
 
       <section class="aiv-theme-group" aria-labelledby="aivThemePosition">
         <h2 id="aivThemePosition" class="aiv-theme-title">Portfolio Snapshot</h2>
         <p class="aiv-theme-help help-text">Factual indicators for your entitled brands in the selected geography — no composite score.</p>
-        <div class="aiv-kpi-row aiv-theme-kpis" id="aivExecPosition"></div>
+        <div class="aiv-kpi-row aiv-theme-kpis" id="aivExecPosition" data-kpi-count="5"></div>
         <p class="aiv-prompt-mix help-text" id="aivExecPromptMix" hidden></p>
       </section>
 
