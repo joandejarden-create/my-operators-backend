@@ -11,6 +11,11 @@
  *   BAI_CUSTOMER_LONGITUDINAL_KNOWN_GOOD_VISUAL_CONTRACT
  *   BAI_CUSTOMER_SHARE_VISUAL_PARITY
  *   BAI_EXECUTIVE_READ_CONTENT_STRESS_INTEGRITY
+ *   BAI_PORTFOLIO_POSITION_SECTION_WRAPPER_INTEGRITY
+ *   BAI_COMPETITIVE_NARRATIVE_WIDTH_UTILIZATION
+ *   BAI_PORTFOLIO_POSITION_NARRATIVE_WIDTH_UTILIZATION
+ *   BAI_SECTION_BACKGROUND_HIERARCHY_CONSISTENCY
+ *   BAI_BODY_TEXT_CONTRAST_PARITY
  */
 import { chromium } from "playwright";
 import fs from "node:fs";
@@ -152,6 +157,41 @@ async function inspectLongitudinal(page, label) {
           getComputedStyle(el).backgroundColor
         )
       : [];
+
+    // Competitive narrative width utilization vs section content box
+    let competitiveWidthRatio = null;
+    let competitiveMaxWidth = null;
+    if (competitive && narrative) {
+      const cBox = competitive.getBoundingClientRect();
+      const nBox = narrative.getBoundingClientRect();
+      const cStyle = getComputedStyle(competitive);
+      const padX =
+        (parseFloat(cStyle.paddingLeft) || 0) + (parseFloat(cStyle.paddingRight) || 0);
+      const usable = Math.max(1, cBox.width - padX);
+      competitiveWidthRatio = nBox.width / usable;
+      competitiveMaxWidth = narrCs ? narrCs.maxWidth : null;
+    }
+
+    // Portfolio Position (page Executive Read) wrapper + narrative column fill
+    const portfolio = document.getElementById("aivExecutiveReadSection");
+    const portfolioShell =
+      portfolio && portfolio.querySelector(".bai-portfolio-position-shell, .aiv-executive-read");
+    const portfolioCol =
+      portfolio &&
+      portfolio.querySelector(".bai-portfolio-position-narrative-col, .aiv-executive-read__main");
+    const portfolioNarr =
+      portfolio &&
+      portfolio.querySelector(".bai-portfolio-position-narrative, .aiv-executive-read__narrative");
+    const portfolioCs = portfolio ? getComputedStyle(portfolio) : null;
+    const portfolioShellCs = portfolioShell ? getComputedStyle(portfolioShell) : null;
+    const portfolioNarrCs = portfolioNarr ? getComputedStyle(portfolioNarr) : null;
+    let portfolioNarrWidthRatio = null;
+    if (portfolioCol && portfolioNarr) {
+      const colBox = portfolioCol.getBoundingClientRect();
+      const nBox = portfolioNarr.getBoundingClientRect();
+      portfolioNarrWidthRatio = nBox.width / Math.max(1, colBox.width);
+    }
+
     return {
       duplicateKpiVisible:
         !!(kpiGrid && getComputedStyle(kpiGrid).display !== "none") ||
@@ -181,6 +221,23 @@ async function inspectLongitudinal(page, label) {
       ),
       hasAug18: text.includes("2026-08-18") || /\bAug\s*18\b/.test(text),
       textSample: text.slice(0, 400),
+      competitiveWidthRatio,
+      competitiveMaxWidth,
+      portfolioWrapperOk: !!(
+        portfolio &&
+        portfolio.classList.contains("aiv-theme-group") &&
+        portfolio.classList.contains("bai-portfolio-position-section") &&
+        portfolio.getAttribute("data-bai-section") === "portfolio-position" &&
+        portfolioShell &&
+        portfolioCs &&
+        portfolioCs.borderTopWidth !== "0px" &&
+        portfolioShellCs &&
+        portfolioShellCs.backgroundColor &&
+        portfolioShellCs.backgroundColor !== "rgba(0, 0, 0, 0)"
+      ),
+      portfolioNarrMaxWidth: portfolioNarrCs ? portfolioNarrCs.maxWidth : null,
+      portfolioNarrWidthRatio,
+      portfolioNarrColor: portfolioNarrCs ? portfolioNarrCs.color : null,
     };
   });
 
@@ -237,6 +294,61 @@ function assertLongitudinalVisual(probe, label, width) {
   } else {
     pass(`${label}@${width}: body contrast parity`);
   }
+
+  if (!probe.portfolioWrapperOk) {
+    fail(`${label}: Portfolio Position section wrapper integrity`);
+  } else {
+    pass(`${label}: BAI_PORTFOLIO_POSITION_SECTION_WRAPPER_INTEGRITY`);
+  }
+
+  if (
+    probe.competitiveMaxWidth &&
+    probe.competitiveMaxWidth !== "none" &&
+    /110ch|90ch|100ch/.test(String(probe.competitiveMaxWidth))
+  ) {
+    fail(`${label}: competitive narrative still narrowly capped (${probe.competitiveMaxWidth})`);
+  } else if (
+    probe.competitiveWidthRatio == null ||
+    probe.competitiveWidthRatio < 0.85
+  ) {
+    fail(
+      `${label}: competitive narrative width utilization low (${probe.competitiveWidthRatio})`
+    );
+  } else {
+    pass(`${label}: BAI_COMPETITIVE_NARRATIVE_WIDTH_UTILIZATION`);
+  }
+
+  if (
+    probe.portfolioNarrMaxWidth &&
+    probe.portfolioNarrMaxWidth !== "none" &&
+    /ch|px/.test(String(probe.portfolioNarrMaxWidth)) &&
+    probe.portfolioNarrMaxWidth !== "100%"
+  ) {
+    // Allow percentage; reject fixed ch/px caps that starve the column
+    if (/ch/.test(String(probe.portfolioNarrMaxWidth))) {
+      fail(
+        `${label}: portfolio narrative still ch-capped (${probe.portfolioNarrMaxWidth})`
+      );
+    } else if (
+      probe.portfolioNarrWidthRatio != null &&
+      probe.portfolioNarrWidthRatio < 0.85
+    ) {
+      fail(
+        `${label}: portfolio narrative width utilization low (${probe.portfolioNarrWidthRatio})`
+      );
+    } else {
+      pass(`${label}: BAI_PORTFOLIO_POSITION_NARRATIVE_WIDTH_UTILIZATION`);
+    }
+  } else if (
+    probe.portfolioNarrWidthRatio != null &&
+    probe.portfolioNarrWidthRatio < 0.85
+  ) {
+    fail(
+      `${label}: portfolio narrative width utilization low (${probe.portfolioNarrWidthRatio})`
+    );
+  } else {
+    pass(`${label}: BAI_PORTFOLIO_POSITION_NARRATIVE_WIDTH_UTILIZATION`);
+  }
 }
 
 async function renderInjected(page, base, htmlPath, parentKey) {
@@ -269,6 +381,32 @@ async function renderInjected(page, base, htmlPath, parentKey) {
           root.removeAttribute("hidden");
           root.style.display = "block";
           root.scrollIntoView({ block: "start" });
+        }
+        // Ensure Portfolio Position shell is visible for wrapper/width probes
+        const erSection = document.getElementById("aivExecutiveReadSection");
+        if (erSection) {
+          erSection.hidden = false;
+          erSection.removeAttribute("hidden");
+        }
+        const erGrid = document.getElementById("aivExecutiveReadGrid");
+        if (erGrid) {
+          erGrid.hidden = false;
+          erGrid.removeAttribute("hidden");
+        }
+        const erNarr = document.getElementById("aivExecutiveReadNarrative");
+        if (erNarr && !String(erNarr.textContent || "").trim()) {
+          erNarr.textContent =
+            "Portfolio Position uses the full right column width in this monitoring period. " +
+            "Presence, competitive movement, and provider posture should read as one continuous executive surface.";
+        }
+        const erEmpty = document.getElementById("aivExecutiveReadEmpty");
+        if (erEmpty) erEmpty.hidden = true;
+        const summaries = document.getElementById("aivExecutiveReadSummaries");
+        if (summaries && !summaries.innerHTML.trim()) {
+          summaries.innerHTML =
+            '<div class="aiv-er-summary-box"><p class="aiv-er-summary-box__label">Current Position</p>' +
+            '<p class="aiv-er-summary-box__headline">Structured</p>' +
+            '<p class="aiv-er-summary-box__body">Local visual integrity seed.</p></div>';
         }
       },
       { payload: customerPayload, parentKey: parent?.parentCompanyKey || parentKey }
@@ -331,6 +469,14 @@ async function runLocal(browser, base) {
     await shot(
       page.locator(".bai-cust-brand-table-wrap"),
       path.join(outDir, `known-good-marriott-brand-movement-${width}.png`)
+    );
+    await shot(
+      page.locator('[data-bai-section="competitive-movement"]'),
+      path.join(outDir, `known-good-marriott-competitive-${width}.png`)
+    );
+    await shot(
+      page.locator("#aivExecutiveReadSection"),
+      path.join(outDir, `known-good-marriott-portfolio-position-${width}.png`)
     );
     await page.close();
   }
@@ -433,6 +579,28 @@ async function runProduction(browser) {
       path.join(outDir, `prod-${parent}-1440.png`)
     );
     if (parent === "marriott") {
+      for (const width of [1440, 1024, 390]) {
+        await page.setViewportSize({ width, height: 1400 });
+        await page.waitForTimeout(400);
+        await page.evaluate(() => {
+          const competitive = document.querySelector(
+            '[data-bai-section="competitive-movement"]'
+          );
+          if (competitive) competitive.scrollIntoView({ block: "center" });
+        });
+        await shot(
+          page.locator('[data-bai-section="competitive-movement"]'),
+          path.join(outDir, `prod-marriott-competitive-${width}.png`)
+        );
+        await page.evaluate(() => {
+          const portfolio = document.getElementById("aivExecutiveReadSection");
+          if (portfolio) portfolio.scrollIntoView({ block: "center" });
+        });
+        await shot(
+          page.locator("#aivExecutiveReadSection"),
+          path.join(outDir, `prod-marriott-portfolio-position-${width}.png`)
+        );
+      }
       for (const width of desktopWidths) {
         await page.setViewportSize({ width, height: 1200 });
         await page.waitForTimeout(300);
@@ -481,6 +649,13 @@ results.gates = {
   BAI_EXECUTIVE_READ_CONTENT_STRESS_INTEGRITY: failed === 0 ? "PASS" : "FAIL",
   BAI_EXECUTIVE_READ_ADP_FAMILY_PARITY: failed === 0 ? "PASS" : "FAIL",
   BAI_LONGITUDINAL_DISCLOSURE_VISUAL_HIERARCHY: failed === 0 ? "PASS" : "FAIL",
+  BAI_PORTFOLIO_POSITION_SECTION_WRAPPER_INTEGRITY:
+    failed === 0 ? "PASS" : "FAIL",
+  BAI_COMPETITIVE_NARRATIVE_WIDTH_UTILIZATION: failed === 0 ? "PASS" : "FAIL",
+  BAI_PORTFOLIO_POSITION_NARRATIVE_WIDTH_UTILIZATION:
+    failed === 0 ? "PASS" : "FAIL",
+  BAI_SECTION_BACKGROUND_HIERARCHY_CONSISTENCY: failed === 0 ? "PASS" : "FAIL",
+  BAI_BODY_TEXT_CONTRAST_PARITY: failed === 0 ? "PASS" : "FAIL",
 };
 
 fs.writeFileSync(

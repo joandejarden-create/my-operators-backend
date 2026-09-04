@@ -5743,6 +5743,9 @@ div.aiv-source-row,
           BAI_NO_REDUNDANT_NESTED_CONTAINERS,
           BAI_BODY_TEXT_CONTRAST_PARITY,
           BAI_NARRATIVE_WIDTH_UTILIZATION,
+          BAI_COMPETITIVE_NARRATIVE_WIDTH_UTILIZATION,
+          BAI_PORTFOLIO_POSITION_SECTION_WRAPPER_INTEGRITY,
+          BAI_PORTFOLIO_POSITION_NARRATIVE_WIDTH_UTILIZATION,
           BAI_EXECUTIVE_READ_TWO_COLUMN_BALANCE,
           BAI_DISCLOSURE_COMPACTNESS,
           BAI_TRENDS_PROVIDER_VISUAL_BALANCE,
@@ -6093,14 +6096,55 @@ div.aiv-source-row,
   margin-right: 6px;
 }
 
-/* Full-width readable narrative (Competitive Movement etc.) */
+/* Full-width section narrative (Competitive Movement)
+   Gate: BAI_COMPETITIVE_NARRATIVE_WIDTH_UTILIZATION
+   Span the section; avoid legacy ~110ch column that leaves empty right space. */
 .bai-customer-longitudinal .bai-cust-narrative {
   margin: 0;
-  max-width: min(110ch, 100%);
+  width: 100%;
+  max-width: none;
   font-size: 14px;
   line-height: 1.55;
   font-weight: 500;
   color: var(--bai-body);
+}
+.bai-customer-longitudinal [data-bai-section="competitive-movement"] {
+  width: 100%;
+  max-width: none;
+}
+
+/* Portfolio Position — same Level-2 section grammar + full narrative column
+   Gates: BAI_PORTFOLIO_POSITION_SECTION_WRAPPER_INTEGRITY,
+          BAI_PORTFOLIO_POSITION_NARRATIVE_WIDTH_UTILIZATION,
+          BAI_SECTION_BACKGROUND_HIERARCHY_CONSISTENCY */
+.aiv-page #aivExecutiveReadSection.bai-portfolio-position-section {
+  --bai-section-gap: 14px;
+  --bai-block-gap: 12px;
+  --bai-body: var(--neutral--100, #f8fafc);
+  --bai-inner-bg: rgba(15, 23, 42, 0.28);
+  --bai-border: var(--neutral--600, #37446b);
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.6px solid var(--bai-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 0 0 var(--bai-section-gap);
+}
+.aiv-page #aivExecutiveReadSection .bai-portfolio-position-shell.aiv-executive-read {
+  background: var(--bai-inner-bg);
+  border: 0.6px solid var(--bai-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.aiv-page #aivExecutiveReadSection .bai-portfolio-position-narrative-col {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+.aiv-page #aivExecutiveReadSection .bai-portfolio-position-narrative,
+.aiv-page #aivExecutiveReadSection .aiv-executive-read__narrative {
+  width: 100%;
+  max-width: none;
+  color: var(--bai-body, var(--neutral--100, #f8fafc));
 }
 
 @media (max-width: 1023px) {
