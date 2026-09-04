@@ -179,7 +179,7 @@ await test(BAI_WAVE4_19_BRAND_DISPLAY_RECONCILIATION, () => {
 });
 
 await test(BAI_WAVE4_UNPROMOTED_PERIOD_ISOLATION, () => {
-  assert.equal(full.PERIOD_2_PUBLICATION_STATE, "UNPROMOTED");
+  assert.equal(full.PERIOD_2_PUBLICATION_STATE, "PUBLISHED");
   assert.doesNotMatch(SHARE_HTML + AUTH_HTML, /bai-wave4-longitudinal-qa/);
   assert.doesNotMatch(SHARE_HTML, /aiv_brand_longitudinal_period_20260902_d3d713/);
 });

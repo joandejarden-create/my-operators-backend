@@ -28,6 +28,8 @@ import { getBrandBenchmarkPayload } from "../lib/ai-visibility/competitive-moat/
 import { CUSTOMER_PAYLOAD_ALLOWLIST } from "../lib/ai-visibility/competitive-moat/customer-payload.js";
 import {
   BAI_VIEW_MODE,
+  BAI_PERIOD_2_CANDIDATE_ID,
+  BAI_CUSTOMER_PUBLISHED_PERIOD_ID,
   assertBaiCustomerPublicationIsolation,
 } from "../lib/ai-visibility/brand-longitudinal/resolve-bai-prior-comparable-period-v1.js";
 import {
@@ -39,6 +41,12 @@ import {
   buildBaiWave4LongitudinalPresentationV1,
   BAI_WAVE4_NO_CUSTOMER_PUBLICATION_MUTATION,
 } from "../lib/ai-visibility/brand-longitudinal/bai-wave4-longitudinal-presentation-v1.js";
+import {
+  buildBaiCustomerPromotionPreviewV1,
+  applyBaiPublishedLongitudinalToCustomerPayload,
+  assertBaiPromotionPreviewNotOnShare,
+  BAI_PROMOTION_PREVIEW_INTERNAL_ONLY,
+} from "../lib/ai-visibility/brand-longitudinal/bai-customer-longitudinal-payload-v1.js";
 
 /**
  * Hotel Decision Visibility public route retired in Phase 3A.4.
@@ -226,18 +234,36 @@ export async function getBrandExecutiveSummary(req, res) {
         portfolioAiPresence: payload?.currentPosition?.portfolioAiPresence?.display || null,
       });
     }
+
+    // Attach published Period 2 longitudinal when customer current has Prior Run.
+    // Share tokens use current_published only — never preview/candidate modes.
+    const previewBlocked = assertBaiPromotionPreviewNotOnShare(req);
+    const parentKey =
+      ent.demoBrandPortfolioKey ||
+      req.dealalityUser?.demoBrandPortfolioKey ||
+      req.baiShare?.parentCompanyId ||
+      null;
+    const publishedPayload = applyBaiPublishedLongitudinalToCustomerPayload(payload, {
+      geography: req.query.geography || "CALA",
+      parentCompanyKey: parentKey,
+    });
+
     return res.status(200).json({
       success: true,
-      ...payload,
+      ...publishedPayload,
       entitlementSource: ent.source || null,
-      demoBrandPortfolioKey:
-        ent.demoBrandPortfolioKey || req.dealalityUser?.demoBrandPortfolioKey || null,
-      entitledCount: Array.isArray(payload?.portfolioOverview?.brands)
-        ? payload.portfolioOverview.brands.length
+      demoBrandPortfolioKey: parentKey,
+      entitledCount: Array.isArray(publishedPayload?.portfolioOverview?.brands)
+        ? publishedPayload.portfolioOverview.brands.length
         : null,
       AIRTABLE_WRITES: 0,
       LIVE_PROVIDER_CALLS: 0,
       OPPORTUNITY_WRITES: 0,
+      PERIOD_2_PUBLICATION_STATE:
+        BAI_CUSTOMER_PUBLISHED_PERIOD_ID === BAI_PERIOD_2_CANDIDATE_ID
+          ? "PUBLISHED"
+          : "UNPROMOTED",
+      BAI_PROMOTION_PREVIEW_BLOCKED_ON_SHARE: previewBlocked.ok === false,
     });
   } catch (err) {
     console.error("[ai-visibility-brand] executive-summary:", err.message);
@@ -586,6 +612,61 @@ export async function getBaiInternalLongitudinalQa(req, res) {
       error: "server_error",
       message: "Failed to load internal longitudinal QA.",
       gate: BAI_WAVE4_NO_CUSTOMER_PUBLICATION_MUTATION,
+    });
+  }
+}
+
+/**
+ * Internal-only customer promotion preview — renders the exact customer
+ * longitudinal experience as if P2 were published. Does NOT flip publication.
+ * Forbidden for signed share tokens.
+ */
+export async function getBaiCustomerPromotionPreview(req, res) {
+  try {
+    const shareGuard = assertBaiPromotionPreviewNotOnShare(req);
+    if (!shareGuard.ok) {
+      return res.status(403).json({
+        ok: false,
+        success: false,
+        error: "share_forbidden",
+        gate: BAI_PROMOTION_PREVIEW_INTERNAL_ONLY,
+        message: "Customer promotion preview is internal-only.",
+      });
+    }
+
+    const parentRaw = String(
+      req.query.parent || req.query.parentCompany || "all"
+    ).trim();
+    const scope = String(req.query.scope || "").trim().toLowerCase();
+    const wantsFull =
+      scope === "full_cohort" ||
+      !parentRaw ||
+      /^(all|\*|full|cohort)$/i.test(parentRaw);
+
+    const preview = buildBaiCustomerPromotionPreviewV1({
+      parentCompanyName: wantsFull ? "all" : parentRaw,
+      scope: wantsFull ? "full_cohort" : "parent_filter",
+      geography: req.query.geography || "CALA",
+    });
+
+    return res.status(200).json({
+      success: true,
+      ok: preview.ok !== false,
+      ...preview,
+      AIRTABLE_WRITES: 0,
+      LIVE_PROVIDER_CALLS: 0,
+      PROVIDER_CALLS: 0,
+      ANALYTICAL_CONTRACT_CHANGES: "NONE",
+      PROMOTION_PERFORMED: false,
+    });
+  } catch (err) {
+    console.error("[ai-visibility-brand] customer-promotion-preview:", err.message);
+    return res.status(500).json({
+      ok: false,
+      success: false,
+      error: "server_error",
+      message: "Failed to load customer promotion preview.",
+      gate: BAI_PROMOTION_PREVIEW_INTERNAL_ONLY,
     });
   }
 }

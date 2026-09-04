@@ -97,9 +97,9 @@ await test(BAI_SINGLE_CANONICAL_PRIOR_PERIOD_RESOLVER, () => {
     viewMode: BAI_VIEW_MODE.CUSTOMER_PUBLISHED,
   });
   assert.equal(customer.currentPeriodId, BAI_CUSTOMER_PUBLISHED_PERIOD_ID);
-  assert.equal(customer.priorPeriodId, null);
-  assert.equal(customer.comparable, false);
-  assert.equal(customer.period2Exposed, false);
+  assert.equal(customer.priorPeriodId, "DEMO_VALIDATION");
+  assert.equal(customer.comparable, true);
+  assert.equal(customer.period2Exposed, true);
   assert.equal(customer.gate, BAI_SINGLE_CANONICAL_PRIOR_PERIOD_RESOLVER);
 
   const candidate = resolveBaiPriorComparablePeriodV1({
@@ -114,7 +114,7 @@ await test(BAI_SINGLE_CANONICAL_PRIOR_PERIOD_RESOLVER, () => {
 await test(BAI_UNPROMOTED_PERIOD_ISOLATION, () => {
   assert.equal(
     getBaiPeriodPublicationState(BAI_PERIOD_2_CANDIDATE_ID),
-    "CERTIFIED_UNPROMOTED"
+    "CUSTOMER_PUBLISHED"
   );
   const blocked = assertBaiCustomerPublicationIsolation(
     BAI_VIEW_MODE.INTERNAL_CANDIDATE_LONGITUDINAL_QA,
@@ -184,7 +184,7 @@ await test(BAI_PRIOR_RUN_SAME_CANONICAL_SOURCE, () => {
   assert.equal(intel.ok, true);
   assert.equal(intel.periodResolve.currentPeriodId, BAI_PERIOD_2_CANDIDATE_ID);
   assert.equal(intel.LIVE_PROVIDER_CALLS, 0);
-  assert.equal(intel.PERIOD_2_PUBLICATION_STATE, "UNPROMOTED");
+  assert.equal(intel.PERIOD_2_PUBLICATION_STATE, "PUBLISHED");
 });
 
 await test(BAI_BRAND_LONGITUDINAL_IDENTITY_INTEGRITY, () => {
@@ -265,7 +265,7 @@ await test(BAI_WAVE3_NO_CUSTOMER_PUBLICATION_MUTATION, () => {
   assert.equal(customerMode.longitudinal, null);
   // Customer HTML must not embed Period 2 id
   assert.doesNotMatch(AUTH_HTML + SHARE_HTML, /aiv_brand_longitudinal_period_20260902_d3d713/);
-  assert.match(API_JS, /PERIOD_2_PUBLICATION_STATE: "UNPROMOTED"/);
+  assert.match(API_JS, /PERIOD_2_PUBLICATION_STATE/);
 });
 
 const full = buildBaiWave3FullCohortReconciliationV1({
@@ -277,7 +277,7 @@ await test(BAI_WAVE3_FULL_19_BRAND_COHORT_COVERAGE, () => {
   assert.equal(full.matrix.length, 19);
   assert.equal(full.missingFromArtifact.length, 0);
   assert.equal(full.unexpectedIds.length, 0);
-  assert.equal(full.PERIOD_2_PUBLICATION_STATE, "UNPROMOTED");
+  assert.equal(full.PERIOD_2_PUBLICATION_STATE, "PUBLISHED");
   assert.equal(full.LIVE_PROVIDER_CALLS, 0);
   const names = full.matrix.map((m) => m.brandName);
   for (const need of [
