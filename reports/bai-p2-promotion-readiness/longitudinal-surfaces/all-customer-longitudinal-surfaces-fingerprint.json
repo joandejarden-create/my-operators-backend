@@ -1,0 +1,253 @@
+{
+  "generatedAt": "2026-09-04T14:19:47.640Z",
+  "source": "bai_customer_longitudinal_certified_v1",
+  "currentDate": "2026-09-03",
+  "priorDate": "2026-08-14",
+  "comparablePeriodCount": 2,
+  "surfaces": {
+    "parentPriorRunTrends": {
+      "source": "customerLongitudinal / Wave4",
+      "grain": "parent"
+    },
+    "aiPresenceOverTime": {
+      "source": "executive-summary.marketMovement ← getBrandTrendPayload canonical",
+      "grain": "brand_series",
+      "minPeriodCount": 2
+    },
+    "brandTrends": {
+      "source": "GET /trend ← preferBaiCustomerCanonicalTrendPoints",
+      "grain": "brand",
+      "minPeriodCount": 2
+    },
+    "coverageDiagnosticsBestProvider": {
+      "source": "overview.providerPresencePanel ← P2 Wave4 provider movement",
+      "grain": "provider_current_only"
+    }
+  },
+  "brands": [
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 88.8,
+      "currentPresencePct": 74.4,
+      "deltaPp": -14.4,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 58.2,
+      "currentPresencePct": 65.1,
+      "deltaPp": 6.9,
+      "pointCount": 2
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 41.8,
+      "currentPresencePct": 18.6,
+      "deltaPp": -23.2,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 21.4,
+      "currentPresencePct": 22.1,
+      "deltaPp": 0.7,
+      "pointCount": 2
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 4.1,
+      "currentPresencePct": 2.3,
+      "deltaPp": -1.8,
+      "pointCount": 2
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 90.8,
+      "currentPresencePct": 74.4,
+      "deltaPp": -16.4,
+      "pointCount": 2
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 59.2,
+      "currentPresencePct": 60.5,
+      "deltaPp": 1.3,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 15.3,
+      "currentPresencePct": 10.5,
+      "deltaPp": -4.8,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 0,
+      "currentPresencePct": 1.2,
+      "deltaPp": 1.2,
+      "pointCount": 2
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 30.6,
+      "currentPresencePct": 29.1,
+      "deltaPp": -1.5,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 0,
+      "currentPresencePct": 0,
+      "deltaPp": 0,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 0,
+      "currentPresencePct": 0,
+      "deltaPp": 0,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recmKqo7M7mLZgRqQ",
+      "brandName": "Radisson RED by Choice",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 0,
+      "currentPresencePct": 0,
+      "deltaPp": 0,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recywbx1YQSTCPqW1",
+      "brandName": "Radisson",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 22.5,
+      "currentPresencePct": 22.1,
+      "deltaPp": -0.4,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 27.6,
+      "currentPresencePct": 18.6,
+      "deltaPp": -9,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 53.1,
+      "currentPresencePct": 30.2,
+      "deltaPp": -22.9,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 13.3,
+      "currentPresencePct": 8.1,
+      "deltaPp": -5.2,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 0,
+      "currentPresencePct": 0,
+      "deltaPp": 0,
+      "pointCount": 2
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 56.1,
+      "currentPresencePct": 62.8,
+      "deltaPp": 6.7,
+      "pointCount": 2
+    }
+  ],
+  "parents": [
+    {
+      "parent": "marriott",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 42.9,
+      "currentPresencePct": 36.5,
+      "memberCount": 5
+    },
+    {
+      "parent": "hilton",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 41.3,
+      "currentPresencePct": 36.7,
+      "memberCount": 4
+    },
+    {
+      "parent": "choice",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 10.6,
+      "currentPresencePct": 10.2,
+      "memberCount": 5
+    },
+    {
+      "parent": "ihg",
+      "priorDate": "2026-08-14",
+      "currentDate": "2026-09-03",
+      "priorPresencePct": 30,
+      "currentPresencePct": 23.9,
+      "memberCount": 5
+    }
+  ]
+}
