@@ -103,7 +103,7 @@ body.aiv-page {
 }
 
 .aiv-disclaimer-box__item::before {
-  content: "â¢";
+  content: "\2022"; /* bullet via CSS escape; avoids UTF-8 double-encoding */
   position: absolute;
   left: 0;
   color: var(--accent--primary-1);
@@ -4670,7 +4670,7 @@ div.aiv-source-row,
 }
 
 .aiv-sources-list li::before {
-  content: "â¢";
+  content: "\2022";
   position: absolute;
   left: 0;
   color: var(--neutral--400, #aeb9e1);

@@ -48,6 +48,10 @@ import {
   BAI_P2_PROMOTION_ROLLBACK_READY,
   BAI_P2_CUSTOMER_EVIDENCE_BIND_READY,
 } from "../lib/ai-visibility/brand-longitudinal/bai-customer-longitudinal-payload-v1.js";
+import {
+  BAI_PROMOTED_PERIOD_STORE_DEPLOYMENT_COMPLETENESS,
+  evaluateBaiPromotedPeriodStoreDeploymentCompletenessV1,
+} from "../lib/ai-visibility/brand-longitudinal/bai-promoted-period-store-deployment-completeness-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -265,6 +269,11 @@ await test("four_parent_customer_preview_scope", () => {
   }
 });
 
+const deployCompleteness = evaluateBaiPromotedPeriodStoreDeploymentCompletenessV1({
+  periodId: BAI_PERIOD_2_CANDIDATE_ID,
+  repoRoot: ROOT,
+});
+
 await test(BAI_P2_EXPECTED_CUSTOMER_FINGERPRINT_READY, () => {
   const outDir = path.join(ROOT, "reports/bai-p2-promotion-readiness");
   fs.mkdirSync(outDir, { recursive: true });
@@ -312,6 +321,9 @@ await test(BAI_P2_EXPECTED_CUSTOMER_FINGERPRINT_READY, () => {
           ? "PASS"
           : "FAIL",
         BAI_PROMOTION_PREP_NO_CURRENT_PUBLICATION_MUTATION: "PASS",
+        BAI_PROMOTED_PERIOD_STORE_DEPLOYMENT_COMPLETENESS: deployCompleteness.ok
+          ? "PASS"
+          : "FAIL",
         PERIOD_2_PUBLICATION_STATE: "PUBLISHED",
         LIVE_PROVIDER_CALLS: 0,
         PROMOTION_PERFORMED: false,
@@ -323,6 +335,18 @@ await test(BAI_P2_EXPECTED_CUSTOMER_FINGERPRINT_READY, () => {
   assert.ok(
     fs.existsSync(path.join(outDir, "hypothetical-customer-fingerprints.json"))
   );
+});
+
+await test(BAI_PROMOTED_PERIOD_STORE_DEPLOYMENT_COMPLETENESS, () => {
+  assert.equal(
+    deployCompleteness.ok,
+    true,
+    JSON.stringify(deployCompleteness.failures, null, 2)
+  );
+  assert.equal(deployCompleteness.LIVE_MUTATION, false);
+  assert.ok(deployCompleteness.trackedCounts.evidence > 0);
+  assert.ok(deployCompleteness.trackedCounts.mentions > 0);
+  assert.equal(deployCompleteness.periodId, BAI_PERIOD_2_CANDIDATE_ID);
 });
 
 console.log(`\nBAI P2 promotion-prep: ${passed} passed, ${failed} failed`);
