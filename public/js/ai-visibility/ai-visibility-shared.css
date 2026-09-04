@@ -1,4 +1,4 @@
-/* AI Visibility shared styles — Dealality dark dashboard tokens (reusable for Operator later).
+/* AI Visibility shared styles â Dealality dark dashboard tokens (reusable for Operator later).
  * Page shell / header / filters reuse deal-workspace-shell.css conventions.
  */
 :root {
@@ -32,7 +32,7 @@ body.aiv-page {
   line-height: 1.5;
 }
 
-/* Full available width — same as Brand Development / workspace dashboards */
+/* Full available width â same as Brand Development / workspace dashboards */
 .aiv-dashboard.dashboard-container {
   max-width: 100%;
   width: 100%;
@@ -40,7 +40,7 @@ body.aiv-page {
   padding: 30px;
 }
 
-/* Clause Library–style: title + intro | disclaimer, then tabs */
+/* Clause Libraryâstyle: title + intro | disclaimer, then tabs */
 .aiv-dashboard-header.dashboard-header {
   grid-template-columns: 1fr minmax(260px, 0.9fr);
   align-items: stretch;
@@ -64,7 +64,7 @@ body.aiv-page {
   justify-content: flex-end;
 }
 
-/* Clause / Financial Term Library–style disclaimer */
+/* Clause / Financial Term Libraryâstyle disclaimer */
 .aiv-disclaimer-box {
   background: rgba(108, 114, 255, 0.08);
   border: 0.6px solid var(--neutral--600);
@@ -103,7 +103,7 @@ body.aiv-page {
 }
 
 .aiv-disclaimer-box__item::before {
-  content: "•";
+  content: "â¢";
   position: absolute;
   left: 0;
   color: var(--accent--primary-1);
@@ -192,7 +192,7 @@ body.aiv-page {
   display: none !important;
 }
 
-/* Watchlist filters — same select chrome as page-top filters, nested in card */
+/* Watchlist filters â same select chrome as page-top filters, nested in card */
 .aiv-watchlist-filters.aiv-filters-section--inline {
   margin: 0 0 12px;
   padding: 12px;
@@ -311,7 +311,7 @@ body.aiv-page {
   margin-bottom: 12px;
 }
 
-/* Executive Summary Portfolio Snapshot — five equal KPI cards (pre-Wave working layout) */
+/* Executive Summary Portfolio Snapshot â five equal KPI cards (pre-Wave working layout) */
 #aivExecPosition.aiv-kpi-row {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
@@ -331,7 +331,7 @@ body.aiv-page {
   overflow: auto;
 }
 
-/* AI Intelligence Overview — same card grammar as Peer / Evidence / Snapshot */
+/* AI Intelligence Overview â same card grammar as Peer / Evidence / Snapshot */
 .aiv-intel-overview {
   display: grid;
   gap: 12px;
@@ -367,7 +367,7 @@ body.aiv-page {
   min-height: 0;
 }
 
-/* Provider Visibility — soft KPI pair (match Portfolio Snapshot density) */
+/* Provider Visibility â soft KPI pair (match Portfolio Snapshot density) */
 .aiv-intel-kpi-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -466,7 +466,7 @@ body.aiv-page {
   min-width: 3.25rem;
 }
 
-/* Public Discoverability — same row grammar as Priority Review / kv */
+/* Public Discoverability â same row grammar as Priority Review / kv */
 .aiv-intel-status-list {
   display: flex;
   flex-direction: column;
@@ -524,7 +524,7 @@ body.aiv-page {
   color: var(--neutral--400, #9facd6);
 }
 
-/* Language Comparison — compact executive matrix */
+/* Language Comparison â compact executive matrix */
 .aiv-lang-matrix {
   display: flex;
   flex-direction: column;
@@ -601,7 +601,7 @@ body.aiv-page {
   }
 }
 
-/* Detailed View Brand Detail topline — 4 compact facts */
+/* Detailed View Brand Detail topline â 4 compact facts */
 #aivKpiRow.aiv-detail-kpi-row {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
@@ -717,7 +717,7 @@ body.aiv-page {
   min-width: 3.5rem;
 }
 
-/* Coverage Diagnostics — summary uses same KPI card grammar as Brand Detail topline */
+/* Coverage Diagnostics â summary uses same KPI card grammar as Brand Detail topline */
 .aiv-theme-group .aiv-coverage-summary.aiv-kpi-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1358,7 +1358,7 @@ body.aiv-page {
   font-size: 12px;
 }
 
-/* Peer Analysis — same deals-table density as Portfolio Overview */
+/* Peer Analysis â same deals-table density as Portfolio Overview */
 .aiv-peers-table-wrap.deals-table-container {
   margin: 0;
 }
@@ -1666,8 +1666,8 @@ body.aiv-page {
   font-size: 12px;
 }
 
-/* Thematic grouping — Operator Explorer section grammar
-   Outer box (.section) → Title (.section-title) → Help → Inner card → ALL CAPS labels */
+/* Thematic grouping â Operator Explorer section grammar
+   Outer box (.section) â Title (.section-title) â Help â Inner card â ALL CAPS labels */
 .aiv-theme-group {
   background: rgba(255, 255, 255, 0.03);
   border: 0.6px solid var(--neutral--600);
@@ -1735,7 +1735,7 @@ body.aiv-page {
   border-radius: 10px;
   padding: 12px 14px;
   min-height: 0;
-  /* Flex prevents margin-collapse so title→content gap matches chart card */
+  /* Flex prevents margin-collapse so titleâcontent gap matches chart card */
   display: flex;
   flex-direction: column;
 }
@@ -1750,7 +1750,7 @@ body.aiv-page {
   gap: 18px 24px;
 }
 
-/* Inner card subheaders — Brand Explorer / OE white ALL CAPS labels */
+/* Inner card subheaders â Brand Explorer / OE white ALL CAPS labels */
 .aiv-theme-label,
 .aiv-theme-group .aiv-kpi h3,
 .aiv-card .aiv-section-head h2,
@@ -1766,9 +1766,9 @@ body.aiv-page {
 }
 
 /*
- * Shared subsection title → content gap.
+ * Shared subsection title â content gap.
  * Chart side also has Chart.js top scale padding, so use a slightly larger
- * label gap + matching min-height with the chart title row (title + “3”).
+ * label gap + matching min-height with the chart title row (title + â3â).
  */
 .aiv-theme-card > .aiv-theme-label,
 .aiv-theme-block > .aiv-theme-label,
@@ -1780,7 +1780,7 @@ body.aiv-page {
   align-items: center;
 }
 
-/* Deal Intake pattern: title → description is tight (4px), not the 13px content gap */
+/* Deal Intake pattern: title â description is tight (4px), not the 13px content gap */
 .aiv-theme-card > .aiv-theme-label:has(+ .aiv-theme-block-help),
 .aiv-theme-block > .aiv-theme-label:has(+ .aiv-theme-block-help) {
   margin-bottom: 4px;
@@ -1806,7 +1806,7 @@ body.aiv-page {
   opacity: 0.95;
 }
 
-/* Quick Facts–style KPI row inside theme outer box */
+/* Quick Factsâstyle KPI row inside theme outer box */
 .aiv-theme-group .aiv-theme-kpis.aiv-kpi-row,
 .aiv-theme-group .aiv-kpi-row {
   margin: 0;
@@ -1889,7 +1889,7 @@ body.aiv-page {
   vertical-align: middle;
 }
 
-/* YOU is identified by the inline badge only — no lightened row wash
+/* YOU is identified by the inline badge only â no lightened row wash
  * (wash read too bright on Source Landscape vs peer Detailed View). */
 .aiv-peers-table tr.aiv-peer-row--you td,
 .aiv-recurring-sources-table tr.aiv-source-row--you td,
@@ -1968,7 +1968,7 @@ body.aiv-page {
   }
 }
 
-/* Visibility Signals — two separate sub-boxes + explorer KV rows */
+/* Visibility Signals â two separate sub-boxes + explorer KV rows */
 .aiv-signals-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2058,7 +2058,7 @@ body.aiv-page {
   }
 }
 
-/* Peer Context — Competitive Snapshot (~40%) + Priority Review (~60%) */
+/* Peer Context â Competitive Snapshot (~40%) + Priority Review (~60%) */
 .aiv-peers-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2101,7 +2101,7 @@ body.aiv-page {
   padding-top: 12px;
 }
 
-/* Competitive Snapshot — scoreboard (match Citation Intelligence KPI card size) */
+/* Competitive Snapshot â scoreboard (match Citation Intelligence KPI card size) */
 .aiv-snap-scoreboard {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2260,7 +2260,7 @@ body.aiv-page {
   text-decoration: underline;
 }
 
-/* Priority Review — structured watchlist */
+/* Priority Review â structured watchlist */
 .aiv-priority-context {
   font-size: 11px;
   color: var(--neutral--400, #9facd6);
@@ -2428,7 +2428,7 @@ body.aiv-page {
   -webkit-line-clamp: 2;
 }
 
-/* Citation Intelligence — Owned Coverage + Source Mix (executive reframe) */
+/* Citation Intelligence â Owned Coverage + Source Mix (executive reframe) */
 .aiv-citation-exec {
   display: flex;
   flex-direction: column;
@@ -2878,7 +2878,7 @@ body.aiv-page {
   font-size: 13px;
 }
 
-/* Source Landscape domains — same hyperlink treatment as .aiv-link / inline deep-links */
+/* Source Landscape domains â same hyperlink treatment as .aiv-link / inline deep-links */
 .aiv-recurring-sources-table.deals-table a.aiv-source-link,
 .aiv-recurring-sources-table.deals-table a.aiv-source-link.project-name-text,
 .aiv-sources-freq-domain a.aiv-source-link {
@@ -2914,7 +2914,7 @@ body.aiv-page {
   outline: none;
 }
 
-/* Detail Cited Sources — same dark deals-table chrome as Source Landscape / Portfolio */
+/* Detail Cited Sources â same dark deals-table chrome as Source Landscape / Portfolio */
 .aiv-detail-sources-wrap.deals-table-container {
   width: 100%;
   max-width: 100%;
@@ -3352,7 +3352,7 @@ body.aiv-page {
   }
 }
 
-/* Markets & Movement — Regional + LOI-style trend chart */
+/* Markets & Movement â Regional + LOI-style trend chart */
 .aiv-markets-grid {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
@@ -3517,7 +3517,7 @@ body.aiv-page {
 
 .aiv-table td { color: var(--neutral--300); }
 
-/* Portfolio Overview — My Deals / workspace table treatment */
+/* Portfolio Overview â My Deals / workspace table treatment */
 .aiv-portfolio-section.aiv-theme-group {
   margin-bottom: 12px;
 }
@@ -3752,7 +3752,7 @@ body.aiv-page {
   text-align: center;
 }
 
-/* Owner Questions — regular-weight values (body defaults to 500) */
+/* Owner Questions â regular-weight values (body defaults to 500) */
 .aiv-questions-table.deals-table tbody tr {
   cursor: default;
 }
@@ -3776,7 +3776,7 @@ body.aiv-page {
   text-align: center;
 }
 
-/* Regional / Market View — same deals-table treatment as Portfolio Overview */
+/* Regional / Market View â same deals-table treatment as Portfolio Overview */
 .aiv-regional-table-wrap.deals-table-container {
   margin-bottom: 4px;
 }
@@ -3907,7 +3907,7 @@ button.aiv-btn-text.aiv-link:focus-visible {
   gap: 12px;
 }
 
-/* Executive Summary — compact insight tiles spanning full section width */
+/* Executive Summary â compact insight tiles spanning full section width */
 #aivExecInsights.aiv-exec-insight-tiles,
 #aivDetailInsights.aiv-exec-insight-tiles {
   display: grid;
@@ -4271,7 +4271,7 @@ div.aiv-source-row,
   border-bottom: 1px solid var(--neutral--600);
 }
 
-/* Peer Context cards — body defaults to 500; keep content regular weight */
+/* Peer Context cards â body defaults to 500; keep content regular weight */
 #aivExecCompetitive,
 #aivExecPriority,
 #aivExecOpportunity,
@@ -4302,7 +4302,7 @@ div.aiv-source-row,
   color: var(--neutral--300);
   max-width: 640px;
   width: calc(100% - 32px);
-  /* Universal * { margin: 0 } kills UA dialog centering — restore it */
+  /* Universal * { margin: 0 } kills UA dialog centering â restore it */
   margin: auto;
   position: fixed;
   inset: 0;
@@ -4346,7 +4346,7 @@ div.aiv-source-row,
   letter-spacing: 0.01em;
 }
 
-/* Match My Deals / iframe modal close (×) */
+/* Match My Deals / iframe modal close (Ã) */
 .aiv-evidence-close {
   flex: 0 0 auto;
   width: 32px;
@@ -4611,7 +4611,7 @@ div.aiv-source-row,
   margin: 0 0 8px;
 }
 
-/* Sources Summary — fill the full section width across columns */
+/* Sources Summary â fill the full section width across columns */
 .aiv-sources-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -4670,7 +4670,7 @@ div.aiv-source-row,
 }
 
 .aiv-sources-list li::before {
-  content: "•";
+  content: "â¢";
   position: absolute;
   left: 0;
   color: var(--neutral--400, #aeb9e1);
@@ -4711,7 +4711,7 @@ div.aiv-source-row,
   }
 }
 
-/* �� Controlled pilot freshness / partial banner �� */
+/* ï¿½ï¿½ Controlled pilot freshness / partial banner ï¿½ï¿½ */
 .aiv-freshness-strip {
   display: flex;
   flex-wrap: wrap;
@@ -4765,7 +4765,7 @@ div.aiv-source-row,
   margin-left: 4px;
 }
 
-/* �� Pilot table polish �� */
+/* ï¿½ï¿½ Pilot table polish ï¿½ï¿½ */
 .aiv-table th.aiv-num,
 .aiv-table td.aiv-num,
 .aiv-table td[data-align="right"] {
@@ -4804,7 +4804,7 @@ div.aiv-source-row,
   }
 }
 
-/* Secondary theme group — reduced prominence */
+/* Secondary theme group â reduced prominence */
 .aiv-theme-group--secondary {
   border-color: var(--neutral--700, #3a3a3c);
   background: transparent;
@@ -4918,7 +4918,7 @@ div.aiv-source-row,
   }
 }
 
-/* === OPERATOR AI V2 — Enhanced Styles === */
+/* === OPERATOR AI V2 â Enhanced Styles === */
 
 .aiv-section-title {
   font-size: 1.1rem;
@@ -4940,7 +4940,7 @@ div.aiv-source-row,
 .aiv-kpi--critical .aiv-value { color: #ef4444; }
 .aiv-kpi--neutral .aiv-value { color: var(--neutral--100, #e2e8f0); }
 
-/* Executive insight tiles — operator variant */
+/* Executive insight tiles â operator variant */
 .aiv-insight-box--operator {
   border: 1px solid var(--neutral--700, #334155);
   border-radius: 8px;
@@ -5249,10 +5249,10 @@ div.aiv-source-row,
 
 
 /* ========================================================================
- * BAI � ADP product-grammar Wave 1+2 (2026-09-04)
- * Visual family parity only � no measurement contract changes.
- * BAI_KPI_VISUAL_GRAMMAR_PARITY � BAI_KPI_GRID_NO_ORPHANED_FINAL_ROW
- * BAI_SECTION_VERTICAL_RHYTHM_CONSISTENCY � BAI_TABLE_VISUAL_GRAMMAR_PARITY
+ * BAI × ADP product-grammar Wave 1+2 (2026-09-04)
+ * Visual family parity only  no measurement contract changes.
+ * BAI_KPI_VISUAL_GRAMMAR_PARITY · BAI_KPI_GRID_NO_ORPHANED_FINAL_ROW
+ * BAI_SECTION_VERTICAL_RHYTHM_CONSISTENCY · BAI_TABLE_VISUAL_GRAMMAR_PARITY
  * ======================================================================== */
 
 .aiv-parent-context {
@@ -5268,7 +5268,7 @@ div.aiv-source-row,
   display: inline-block;
 }
 
-/* Executive Read � ADP-shaped two-column grammar (BAI naming) */
+/* Executive Read  ADP-shaped two-column grammar (BAI naming) */
 .aiv-executive-read {
   padding: 12px 14px 14px;
   background: var(--secondary--color-1, rgba(11, 23, 56, 0.55));
@@ -5375,7 +5375,7 @@ div.aiv-source-row,
   }
 }
 
-/* Portfolio Snapshot 5-KPI � ADP hierarchy + no orphan final row */
+/* Portfolio Snapshot 5-KPI  ADP hierarchy + no orphan final row */
 #aivExecPosition.aiv-kpi-row {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
@@ -5425,7 +5425,7 @@ div.aiv-source-row,
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
-/* 600�1279: 3+2 (never 4+1 orphan) */
+/* 6001279: 3+2 (never 4+1 orphan) */
 @media (max-width: 1279px) and (min-width: 600px) {
   #aivExecPosition.aiv-kpi-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5438,7 +5438,7 @@ div.aiv-source-row,
   }
 }
 
-/* Dense analytical tables � Dealality family */
+/* Dense analytical tables  Dealality family */
 .aiv-portfolio-table.aiv-portfolio-table,
 .aiv-regional-table {
   border-collapse: separate;
@@ -5466,7 +5466,7 @@ div.aiv-source-row,
   background: rgba(154, 145, 251, 0.06);
 }
 
-/* Compact empty / not-ready � no tall scaffolding */
+/* Compact empty / not-ready  no tall scaffolding */
 .aiv-empty {
   padding: 8px 0;
   margin: 0;
@@ -5562,4 +5562,175 @@ div.aiv-source-row,
 .bai-longitudinal-qa .delta {
   color: var(--neutral--300, #c7d0e8);
   font-weight: 500;
+}
+
+.bai-wave4-qa {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+.bai-wave4-qa .deals-table-container {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.bai-wave4-qa table {
+  width: 100%;
+  min-width: 520px;
+}
+.bai-wave4-qa .bai-w4-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  margin: 14px 0 18px;
+  align-items: end;
+}
+.bai-wave4-qa .bai-w4-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--neutral--400, #9aa6c7);
+}
+.bai-wave4-qa .bai-w4-controls select {
+  min-width: 180px;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 0.6px solid #334155;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+.bai-wave4-qa .bai-w4-section {
+  margin: 0 0 22px;
+}
+.bai-wave4-qa .bai-w4-section h2,
+.bai-wave4-qa .bai-w4-section h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.bai-wave4-qa .bai-w4-exec {
+  margin: 0 0 10px;
+  line-height: 1.5;
+  color: var(--neutral--200, #e2e8f0);
+  font-size: 14px;
+}
+.bai-wave4-qa .bai-w4-help,
+.bai-wave4-qa .bai-w4-muted,
+.bai-wave4-qa .bai-w4-empty {
+  color: var(--neutral--400, #9aa6c7);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.bai-wave4-qa .bai-w4-kpi-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.bai-wave4-qa .bai-w4-kpi {
+  border: 0.6px solid #334155;
+  border-radius: 8px;
+  padding: 12px 12px 10px;
+  background: rgba(15, 23, 42, 0.55);
+  min-height: 96px;
+}
+.bai-wave4-qa .bai-w4-kpi--primary {
+  border-color: rgba(125, 211, 252, 0.45);
+  background: rgba(14, 116, 144, 0.18);
+}
+.bai-wave4-qa .bai-w4-kpi__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--neutral--400, #9aa6c7);
+}
+.bai-wave4-qa .bai-w4-kpi__value {
+  margin-top: 6px;
+  font-size: 28px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.bai-wave4-qa .bai-w4-kpi__value--secondary {
+  font-size: 22px;
+  color: var(--neutral--200, #e2e8f0);
+}
+.bai-wave4-qa .bai-w4-kpi__value--tertiary {
+  font-size: 18px;
+  color: var(--neutral--300, #c7d0e8);
+}
+.bai-wave4-qa .bai-w4-kpi__meta {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--neutral--400, #9aa6c7);
+}
+.bai-wave4-qa .bai-w4-card-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+.bai-wave4-qa .bai-w4-card {
+  border: 0.6px solid #334155;
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(15, 23, 42, 0.4);
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+.bai-wave4-qa .bai-w4-chart-wrap {
+  position: relative;
+  height: 200px;
+  margin: 8px 0 10px;
+}
+.bai-wave4-qa .bai-w4-primary-num {
+  font-weight: 600;
+  color: #f8fafc;
+}
+.bai-wave4-qa .bai-w4-secondary-num {
+  color: var(--neutral--400, #9aa6c7);
+}
+.bai-wave4-qa .bai-w4-chip {
+  display: inline-block;
+  font-size: 10px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 0.6px solid #475569;
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+.bai-wave4-qa .bai-w4-chip--improved {
+  border-color: rgba(52, 211, 153, 0.5);
+  color: #a7f3d0;
+}
+.bai-wave4-qa .bai-w4-chip--declined,
+.bai-wave4-qa .bai-w4-chip--weakened {
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fecaca;
+}
+.bai-wave4-qa .bai-w4-chip--stable {
+  border-color: rgba(148, 163, 184, 0.45);
+}
+.bai-wave4-qa .bai-w4-intent {
+  border-top: 0.6px solid #334155;
+  padding-top: 14px;
+  max-width: 720px;
+}
+@media (max-width: 1279px) {
+  .bai-wave4-qa .bai-w4-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bai-wave4-qa .bai-w4-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 599px) {
+  .bai-wave4-qa .bai-w4-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .bai-wave4-qa .bai-w4-kpi__value {
+    font-size: 24px;
+  }
 }
