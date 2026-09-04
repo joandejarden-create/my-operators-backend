@@ -32,6 +32,7 @@ import {
 } from "../lib/ai-visibility/brand-longitudinal/resolve-bai-prior-comparable-period-v1.js";
 import {
   buildBaiWave3LongitudinalIntelligenceV1,
+  buildBaiWave3FullCohortReconciliationV1,
   BAI_WAVE3_NO_CUSTOMER_PUBLICATION_MUTATION,
 } from "../lib/ai-visibility/brand-longitudinal/bai-wave3-longitudinal-intelligence-v1.js";
 
@@ -530,14 +531,25 @@ export async function getBaiInternalLongitudinalQa(req, res) {
       });
     }
 
-    const parent =
-      String(req.query.parent || req.query.parentCompany || "Marriott").trim() ||
-      "Marriott";
-    const payload = buildBaiWave3LongitudinalIntelligenceV1({
-      viewMode: BAI_VIEW_MODE.INTERNAL_CANDIDATE_LONGITUDINAL_QA,
-      parentCompanyName: parent,
-      geography: req.query.geography || "CALA",
-    });
+    const parentRaw = String(
+      req.query.parent || req.query.parentCompany || "all"
+    ).trim();
+    const scope = String(req.query.scope || "").trim().toLowerCase();
+    const wantsFull =
+      scope === "full_cohort" ||
+      !parentRaw ||
+      /^(all|\*|full|cohort)$/i.test(parentRaw);
+
+    const payload = wantsFull
+      ? buildBaiWave3FullCohortReconciliationV1({
+          viewMode: BAI_VIEW_MODE.INTERNAL_CANDIDATE_LONGITUDINAL_QA,
+          geography: req.query.geography || "CALA",
+        })
+      : buildBaiWave3LongitudinalIntelligenceV1({
+          viewMode: BAI_VIEW_MODE.INTERNAL_CANDIDATE_LONGITUDINAL_QA,
+          parentCompanyName: parentRaw,
+          geography: req.query.geography || "CALA",
+        });
 
     return res.status(200).json({
       success: true,
@@ -545,6 +557,7 @@ export async function getBaiInternalLongitudinalQa(req, res) {
       accessClass: "INTERNAL_LONGITUDINAL_QA",
       SHARE_CAPABILITY_FORBIDDEN: true,
       PERIOD_2_PUBLICATION_STATE: "UNPROMOTED",
+      scope: wantsFull ? "full_cohort" : "parent_filter",
       ...payload,
       AIRTABLE_WRITES: 0,
       LIVE_PROVIDER_CALLS: 0,

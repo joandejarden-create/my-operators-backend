@@ -28,8 +28,14 @@ import {
   BAI_LONGITUDINAL_NARRATIVE_RECONCILIATION,
   BAI_PRIOR_RUN_SAME_CANONICAL_SOURCE,
   BAI_WAVE3_NO_CUSTOMER_PUBLICATION_MUTATION,
+  BAI_WAVE3_FULL_19_BRAND_COHORT_COVERAGE,
+  BAI_WAVE3_ALL_PARENT_GROUPS_RECONCILED,
+  BAI_WAVE3_NO_BRAND_LEFT_WITH_UNEXPLAINED_HISTORY,
+  BAI_INTENT_NONCOMPARABILITY_IS_EXPLICIT,
+  INTENT_COMPARABILITY_STATE,
   BAI_WAVE3_MARRIOTT_BRAND_IDS,
   buildBaiWave3LongitudinalIntelligenceV1,
+  buildBaiWave3FullCohortReconciliationV1,
   rankBrandsInPeriodUniverse,
   PERFORMANCE_DIRECTION,
 } from "../lib/ai-visibility/brand-longitudinal/bai-wave3-longitudinal-intelligence-v1.js";
@@ -261,6 +267,86 @@ await test(BAI_WAVE3_NO_CUSTOMER_PUBLICATION_MUTATION, () => {
   assert.doesNotMatch(AUTH_HTML + SHARE_HTML, /aiv_brand_longitudinal_period_20260902_d3d713/);
   assert.match(API_JS, /PERIOD_2_PUBLICATION_STATE: "UNPROMOTED"/);
 });
+
+const full = buildBaiWave3FullCohortReconciliationV1({
+  viewMode: BAI_VIEW_MODE.INTERNAL_CANDIDATE_LONGITUDINAL_QA,
+});
+
+await test(BAI_WAVE3_FULL_19_BRAND_COHORT_COVERAGE, () => {
+  assert.equal(full.ok, true, JSON.stringify(full.gates));
+  assert.equal(full.matrix.length, 19);
+  assert.equal(full.missingFromArtifact.length, 0);
+  assert.equal(full.unexpectedIds.length, 0);
+  assert.equal(full.PERIOD_2_PUBLICATION_STATE, "UNPROMOTED");
+  assert.equal(full.LIVE_PROVIDER_CALLS, 0);
+  const names = full.matrix.map((m) => m.brandName);
+  for (const need of [
+    "Autograph Collection",
+    "Curio Collection by Hilton",
+    "Ascend Hotel Collection",
+    "Hotel Indigo",
+    "Vignette Collection",
+    "Tempo by Hilton",
+    "Radisson",
+  ]) {
+    assert.ok(names.includes(need), "missing " + need);
+  }
+});
+
+await test(BAI_WAVE3_ALL_PARENT_GROUPS_RECONCILED, () => {
+  assert.equal(full.gates[BAI_WAVE3_ALL_PARENT_GROUPS_RECONCILED], true);
+  assert.equal(full.parentSummaries.length, 4);
+  const keys = full.parentSummaries.map((p) => p.parentCompanyKey).sort();
+  assert.deepEqual(keys, ["choice", "hilton", "ihg", "marriott"]);
+  for (const p of full.parentSummaries) {
+    assert.equal(p.brandCount, p.expectedBrandCount);
+    assert.equal(p.allIdentityMatched, true);
+    assert.ok(isFiniteNumberLike(p.currentPresence));
+    assert.ok(isFiniteNumberLike(p.priorPresence));
+    assert.ok(isFiniteNumberLike(p.portfolioDeltaPp));
+  }
+});
+
+await test(BAI_WAVE3_NO_BRAND_LEFT_WITH_UNEXPLAINED_HISTORY, () => {
+  assert.equal(full.gates[BAI_WAVE3_NO_BRAND_LEFT_WITH_UNEXPLAINED_HISTORY], true);
+  assert.equal(full.unexplainedBrandIds.length, 0);
+  for (const row of full.matrix) {
+    assert.equal(row.canonicalBrandIdMatch, true, row.brandId);
+    assert.equal(row.historyExplained, true, row.brandName);
+    assert.ok(row.membershipState);
+    assert.ok(row.absolutePerformance);
+    assert.ok(row.relativePerformance);
+    assert.ok(Number.isFinite(row.currentPresence));
+    assert.ok(Number.isFinite(row.priorPresence));
+    assert.ok(Number.isFinite(row.deltaPp));
+  }
+});
+
+await test(BAI_INTENT_NONCOMPARABILITY_IS_EXPLICIT, () => {
+  assert.equal(full.gates[BAI_INTENT_NONCOMPARABILITY_IS_EXPLICIT], true);
+  assert.equal(
+    full.ownerIntentCohortState,
+    INTENT_COMPARABILITY_STATE.NOT_COMPARABLE_FOR_THIS_PERIOD_PAIR
+  );
+  for (const row of full.matrix) {
+    const oi = row.ownerIntent;
+    assert.ok(oi, row.brandName);
+    assert.equal(oi.intentCount, 4, row.brandName);
+    assert.equal(oi.comparableIntentCount, 0, row.brandName);
+    assert.equal(
+      oi.intentComparabilityState,
+      INTENT_COMPARABILITY_STATE.NOT_COMPARABLE_FOR_THIS_PERIOD_PAIR,
+      row.brandName
+    );
+    assert.equal(oi.fabricatedZeroDeltas, false, row.brandName);
+    assert.equal(oi.strongestGain, null);
+    assert.equal(oi.largestLoss, null);
+  }
+});
+
+function isFiniteNumberLike(n) {
+  return n != null && Number.isFinite(Number(n));
+}
 
 console.log("");
 console.log(
