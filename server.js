@@ -292,6 +292,7 @@ import {
   getBrandEvidence as getAiVisibilityBrandEvidence,
   getAiVisibilityBrandBenchmark,
   getAiVisibilityBrandBenchmarkDiagnostics,
+  getBaiInternalLongitudinalQa,
 } from "./api/ai-visibility-brand.js";
 import { getOperatorAiFoundation, getOperatorAiCustomerUniverse, getOperatorAiCustomerPayload } from "./api/ai-visibility-operator.js";
 import {
@@ -792,6 +793,7 @@ const aiIntelligenceValidationAuth = [
 app.get("/api/ai-visibility/brand/share/resolve", getBaiShareResolve);
 app.get("/api/ai-visibility/brand/portfolio", ...brandAiVisibilityAuth, getAiVisibilityBrandPortfolio);
 app.get("/api/ai-visibility/brand/executive-summary", ...brandAiVisibilityAuth, getAiVisibilityBrandExecutiveSummary);
+app.get("/api/ai-visibility/brand/internal-longitudinal-qa", ...internalRunbookAuth, getBaiInternalLongitudinalQa);
 app.get("/api/ai-visibility/brand/:brandId/overview", ...brandAiVisibilityAuth, getAiVisibilityBrandOverview);
 app.get("/api/ai-visibility/brand/:brandId/trend", ...brandAiVisibilityAuth, getAiVisibilityBrandTrend);
 app.get("/api/ai-visibility/brand/:brandId/questions", ...brandAiVisibilityAuth, getAiVisibilityBrandQuestions);

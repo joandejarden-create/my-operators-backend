@@ -26,6 +26,14 @@ import {
 import { toClientAccessError } from "../lib/ai-visibility/access-reason-codes.js";
 import { getBrandBenchmarkPayload } from "../lib/ai-visibility/competitive-moat/brand-benchmark-read-service.js";
 import { CUSTOMER_PAYLOAD_ALLOWLIST } from "../lib/ai-visibility/competitive-moat/customer-payload.js";
+import {
+  BAI_VIEW_MODE,
+  assertBaiCustomerPublicationIsolation,
+} from "../lib/ai-visibility/brand-longitudinal/resolve-bai-prior-comparable-period-v1.js";
+import {
+  buildBaiWave3LongitudinalIntelligenceV1,
+  BAI_WAVE3_NO_CUSTOMER_PUBLICATION_MUTATION,
+} from "../lib/ai-visibility/brand-longitudinal/bai-wave3-longitudinal-intelligence-v1.js";
 
 /**
  * Hotel Decision Visibility public route retired in Phase 3A.4.
@@ -163,6 +171,22 @@ export async function getBrandPortfolio(req, res) {
  */
 export async function getBrandExecutiveSummary(req, res) {
   try {
+    // Share / customer publication must never attach unpromoted Period 2 longitudinal.
+    if (req.baiShare || req.baiShareAuth?.mode === "SHARE_CAPABILITY") {
+      const iso = assertBaiCustomerPublicationIsolation(
+        BAI_VIEW_MODE.CUSTOMER_PUBLISHED,
+        req.baiShare?.reportScope || "current_published"
+      );
+      if (!iso.ok) {
+        return res.status(403).json({
+          ok: false,
+          success: false,
+          error: "publication_isolation",
+          gate: iso.gate,
+          reason: iso.reason,
+        });
+      }
+    }
     const ent = await withEntitlements(req);
     if (typeof console !== "undefined" && console.info) {
       console.info("[ai-visibility-brand] executive-summary entitlement", {
@@ -486,6 +510,53 @@ export async function getAiVisibilityBrandBenchmarkDiagnostics(req, res) {
       success: false,
       error: "server_error",
       message: "Failed to load benchmark diagnostics.",
+    });
+  }
+}
+
+/**
+ * Internal-only Wave 3 longitudinal QA — Period 2 candidate.
+ * Forbidden for share capability tokens. No provider calls. No publication mutation.
+ */
+export async function getBaiInternalLongitudinalQa(req, res) {
+  try {
+    if (req.baiShare || req.baiShareAuth?.mode === "SHARE_CAPABILITY") {
+      return res.status(403).json({
+        ok: false,
+        success: false,
+        error: "share_forbidden",
+        gate: BAI_WAVE3_NO_CUSTOMER_PUBLICATION_MUTATION,
+        message: "Internal longitudinal QA is not available on signed share surfaces.",
+      });
+    }
+
+    const parent =
+      String(req.query.parent || req.query.parentCompany || "Marriott").trim() ||
+      "Marriott";
+    const payload = buildBaiWave3LongitudinalIntelligenceV1({
+      viewMode: BAI_VIEW_MODE.INTERNAL_CANDIDATE_LONGITUDINAL_QA,
+      parentCompanyName: parent,
+      geography: req.query.geography || "CALA",
+    });
+
+    return res.status(200).json({
+      success: true,
+      ok: payload.ok !== false,
+      accessClass: "INTERNAL_LONGITUDINAL_QA",
+      SHARE_CAPABILITY_FORBIDDEN: true,
+      PERIOD_2_PUBLICATION_STATE: "UNPROMOTED",
+      ...payload,
+      AIRTABLE_WRITES: 0,
+      LIVE_PROVIDER_CALLS: 0,
+      PROVIDER_CALLS: 0,
+    });
+  } catch (err) {
+    console.error("[ai-visibility-brand] internal-longitudinal-qa:", err.message);
+    return res.status(500).json({
+      ok: false,
+      success: false,
+      error: "server_error",
+      message: "Failed to load internal longitudinal QA.",
     });
   }
 }
