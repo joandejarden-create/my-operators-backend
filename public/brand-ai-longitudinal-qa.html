@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAI Internal Longitudinal QA — Dealality</title>
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-wave3-longitudinal-20260904">
+  <script src="/js/dealality-memberstack-auth.js" defer></script>
+</head>
+<body class="aiv-page">
+  <main class="bai-longitudinal-qa" id="baiLongitudinalQa">
+    <h1>BAI Internal Longitudinal QA</h1>
+    <p class="aiv-header-subtitle">Candidate Period 2 vs prior comparable run — founder/internal only. Not customer-published.</p>
+    <div class="bai-qa-banner" role="status">
+      INTERNAL ONLY · Period 2 remains <strong>UNPROMOTED</strong> · Signed share capability cannot access this surface · No provider calls
+    </div>
+    <div id="baiQaStatus">Loading…</div>
+    <section id="baiQaExecutive" hidden>
+      <h2>Executive Read (longitudinal)</h2>
+      <p id="baiQaNarrative"></p>
+    </section>
+    <section id="baiQaPortfolio" hidden>
+      <h2>Portfolio Prior Run</h2>
+      <div id="baiQaPortfolioMeta"></div>
+    </section>
+    <section id="baiQaBrands" hidden>
+      <h2>Brand Movement (Marriott)</h2>
+      <div class="deals-table-container" style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Brand</th>
+              <th class="num">Current</th>
+              <th class="num">Prior</th>
+              <th class="num">Δ</th>
+              <th>Abs / Rel</th>
+              <th>Rank</th>
+              <th>Membership</th>
+            </tr>
+          </thead>
+          <tbody id="baiQaBrandBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+  (function () {
+    function esc(s) {
+      return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    async function load() {
+      var status = document.getElementById("baiQaStatus");
+      try {
+        var fetchFn = (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.authFetch) || fetch;
+        var res = await fetchFn("/api/ai-visibility/brand/internal-longitudinal-qa?parent=Marriott&geography=CALA", {
+          headers: { Accept: "application/json" },
+        });
+        var data = await res.json();
+        if (!res.ok || !data.ok) {
+          status.textContent = "Blocked or failed: " + (data.message || data.error || res.status);
+          return;
+        }
+        status.textContent =
+          "Loaded candidate " +
+          (data.periodResolve && data.periodResolve.currentPeriodId) +
+          " · prior " +
+          (data.periodResolve && data.periodResolve.priorPeriodId) +
+          " · publication " +
+          data.PERIOD_2_PUBLICATION_STATE;
+        var er = data.executiveLongitudinal || {};
+        if (er.available) {
+          document.getElementById("baiQaExecutive").hidden = false;
+          document.getElementById("baiQaNarrative").textContent = er.narrative || "";
+        }
+        var p = data.portfolio || {};
+        if (p.ok) {
+          document.getElementById("baiQaPortfolio").hidden = false;
+          document.getElementById("baiQaPortfolioMeta").innerHTML =
+            "<p>Portfolio presence " +
+            esc(p.priorPresence) +
+            "% → " +
+            esc(p.currentPresence) +
+            "% (" +
+            esc(p.portfolioDeltaDisplay) +
+            "). Improving " +
+            esc(p.brandsImproving) +
+            " · Declining " +
+            esc(p.brandsDeclining) +
+            " · Stable " +
+            esc(p.brandsStable) +
+            ".</p><p>" +
+            esc(p.absoluteRelativeNarrative) +
+            "</p>";
+        }
+        var brands = data.brands || [];
+        if (brands.length) {
+          document.getElementById("baiQaBrands").hidden = false;
+          document.getElementById("baiQaBrandBody").innerHTML = brands
+            .map(function (b) {
+              var ar = b.absoluteRelative || {};
+              return (
+                "<tr><td>" +
+                esc(b.brandName) +
+                '</td><td class="num">' +
+                esc(b.currentPresence != null ? b.currentPresence.toFixed(1) + "%" : "—") +
+                '</td><td class="num">' +
+                esc(b.priorPresence != null ? b.priorPresence.toFixed(1) + "%" : "—") +
+                '</td><td class="num delta">' +
+                esc(b.deltaDisplay) +
+                "</td><td>" +
+                esc(ar.absolutePerformance) +
+                " / " +
+                esc(ar.relativePerformance) +
+                "</td><td>" +
+                esc(b.rankDisplay) +
+                "</td><td>" +
+                esc(b.membershipState) +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+      } catch (err) {
+        status.textContent = "Error: " + (err && err.message ? err.message : String(err));
+      }
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", load);
+    } else {
+      load();
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -4514,6 +4514,54 @@
     );
   }
 
+  function baiKpiTipHtml(title, question, why) {
+    return (
+      "<strong>" +
+      AiVisibilityUi.escapeHtml(title) +
+      "</strong><br><br><strong>Question:</strong> " +
+      AiVisibilityUi.escapeHtml(question) +
+      "<br><br><strong>Why track it:</strong> " +
+      AiVisibilityUi.escapeHtml(why)
+    );
+  }
+
+  /** ADP-family KPI card: label + info icon → value → quieter meta. */
+  function renderBaiKpiCardWithInfo(card) {
+    card = card || {};
+    var tipHtml = card.tip
+      ? '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="Info about ' +
+        AiVisibilityUi.escapeHtml(card.label || "metric") +
+        '"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden>' +
+        card.tip +
+        "</div></span>"
+      : "";
+    var priorMeta = "";
+    if (card.priorRun && card.priorRun.deltaDisplay) {
+      priorMeta =
+        '<div class="aiv-kpi-prior aiv-delta-quiet" data-bai-prior-run="1">' +
+        AiVisibilityUi.escapeHtml(card.priorRun.deltaDisplay) +
+        (card.priorRun.comparisonPeriodDate
+          ? ' <span class="aiv-kpi-prior-date">vs ' +
+            AiVisibilityUi.escapeHtml(card.priorRun.comparisonPeriodDate) +
+            "</span>"
+          : "") +
+        "</div>";
+    }
+    return (
+      '<article class="aiv-kpi" data-bai-kpi-info="1"><h3><span class="aiv-kpi-label">' +
+      AiVisibilityUi.escapeHtml(card.label || "") +
+      "</span>" +
+      tipHtml +
+      '</h3><div class="aiv-value">' +
+      AiVisibilityUi.escapeHtml(card.value || "—") +
+      '</div><div class="aiv-meta">' +
+      AiVisibilityUi.escapeHtml(card.meta || "") +
+      "</div>" +
+      priorMeta +
+      "</article>"
+    );
+  }
+
   function buildBaiExecutiveReadPresentation(data) {
     data = data || {};
     var cp = data.currentPosition || {};
@@ -4723,55 +4771,72 @@
       state.language || "",
     ].join("|");
 
-    // Portfolio Snapshot — equal KPI tiles
+    // Portfolio Snapshot — equal KPI tiles (ADP-family: label + info icon → value → meta)
     var cards = [
-      [
-        pap.label || "Portfolio AI Presence",
-        pap.display || "—",
-        pap.helper ||
+      {
+        label: pap.label || "Portfolio AI Presence",
+        value: pap.display || "—",
+        meta:
+          pap.helper ||
           (String(state.provider || "").toLowerCase() === "all"
             ? "Mean of each linked brand’s cross-provider average Presence — not a single combined AI run."
             : "Share of monitored owner questions where at least one of your linked brands appeared."),
-      ],
-      [
-        "Brands Monitored",
-        (cp.brandsMonitored && cp.brandsMonitored.display) || "—",
-        "How many of your linked brands are included in monitoring here.",
-      ],
-      [
-        "Strongest Brand",
-        (cp.topBrandByAiPresence &&
-          (cp.topBrandByAiPresence.brandName || cp.topBrandByAiPresence.brandId)) ||
+        tip: baiKpiTipHtml(
+          pap.label || "Portfolio AI Presence",
+          "How often did at least one of your linked brands appear when AI answered monitored owner questions in this geography?",
+          "Presence is the core Brand AI Visibility signal. It shows whether owners asking AI about development and positioning encounter your brands."
+        ),
+      },
+      {
+        label: "Brands Monitored",
+        value: (cp.brandsMonitored && cp.brandsMonitored.display) || "—",
+        meta: "How many of your linked brands are included in monitoring here.",
+        tip: baiKpiTipHtml(
+          "Brands Monitored",
+          "How many of your entitled brands have comparable monitoring coverage in this geography and provider scope?",
+          "Confirms which brands are included in the portfolio roll-up. Gaps here mean some brands cannot yet be compared."
+        ),
+      },
+      {
+        label: "Strongest Brand",
+        value:
+          (cp.topBrandByAiPresence &&
+            (cp.topBrandByAiPresence.brandName || cp.topBrandByAiPresence.brandId)) ||
           "—",
-        "Entitled brand with the highest Observed Presence in this geography.",
-      ],
-      [
-        "Best Competitive Position",
-        formatBestCompetitivePosition(bestPos),
-        "Your brand with the best peer rank in this geography.",
-      ],
-      [
-        "Questions Missing",
-        (cp.questionsMissing && cp.questionsMissing.display) || "—",
-        (cp.questionsMissing && cp.questionsMissing.helper) ||
+        meta: "Entitled brand with the highest Observed Presence in this geography.",
+        tip: baiKpiTipHtml(
+          "Strongest Brand",
+          "Which entitled brand has the highest Observed Presence in the selected geography?",
+          "Use this as the starting point for Detailed View — then compare Questions Missing and competitive rank."
+        ),
+      },
+      {
+        label: "Best Competitive Position",
+        value: formatBestCompetitivePosition(bestPos),
+        meta: "Your brand with the best peer rank in this geography.",
+        tip: baiKpiTipHtml(
+          "Best Competitive Position",
+          "Which entitled brand ranks highest by Observed Presence among the fixed peer set?",
+          "Rank is based only on Observed Presence — not recommendations or a composite score."
+        ),
+      },
+      {
+        label: "Questions Missing",
+        value: (cp.questionsMissing && cp.questionsMissing.display) || "—",
+        meta:
+          (cp.questionsMissing && cp.questionsMissing.helper) ||
           (String(state.provider || "").toLowerCase() === "all"
             ? "Comparable owner questions where none of your linked brands appeared on any monitored provider."
             : "Questions where none of your brands appeared in the answer."),
-      ],
+        tip: baiKpiTipHtml(
+          "Questions Missing",
+          "In what share of monitored owner questions did none of your linked brands appear?",
+          "These are concrete visibility gaps — places where owners asking AI did not encounter your brands."
+        ),
+      },
     ];
-    $("aivExecPosition").innerHTML = cards
-      .map(function (c) {
-        return (
-          '<article class="aiv-kpi"><h3><span class="aiv-kpi-label">' +
-          AiVisibilityUi.escapeHtml(c[0]) +
-          '</span></h3><div class="aiv-value">' +
-          AiVisibilityUi.escapeHtml(c[1]) +
-          '</div><div class="aiv-meta">' +
-          AiVisibilityUi.escapeHtml(c[2]) +
-          "</div></article>"
-        );
-      })
-      .join("");
+    $("aivExecPosition").innerHTML = cards.map(renderBaiKpiCardWithInfo).join("");
+    $("aivExecPosition").setAttribute("data-bai-kpi-info-icon-parity", "1");
 
     renderExecutivePromptMix(data.promptOriginSummary || null);
 
