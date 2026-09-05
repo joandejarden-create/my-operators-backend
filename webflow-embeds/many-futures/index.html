@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Many Futures — Local Prototype | Dealality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #080f25;
+      color: rgba(255,255,255,.62);
+      font-family: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+    .many-futures-section {
+      padding: 96px 1.5rem 72px;
+      background: #080f25;
+      border-top: 1px solid rgba(255,255,255,.07);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .many-futures-container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .many-futures-intro {
+      max-width: 760px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+    /* Default / desktop eyebrow */
+    .many-futures-eyebrow {
+      display: inline-flex;
+      margin: 0 0 1rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(108,114,255,.28);
+      background: rgba(108,114,255,.1);
+      color: #8b90ff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    /* Mobile Option A: compact two-line (default for comparison page A) */
+    .many-futures-eyebrow--a {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.12rem;
+      margin: 0 auto 0.85rem;
+      padding: 0.4rem 0.7rem;
+      max-width: 11.5rem;
+      border-radius: 10px;
+      border: 1px solid rgba(108,114,255,.28);
+      background: rgba(108,114,255,.1);
+      color: #8b90ff;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      line-height: 1.25;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    /* Mobile Option B: shortened single line */
+    .many-futures-eyebrow--b {
+      display: none;
+      margin: 0 auto 0.85rem;
+      padding: 0.32rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(108,114,255,.28);
+      background: rgba(108,114,255,.1);
+      color: #8b90ff;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    .many-futures-intro h2 {
+      margin: 0 0 16px;
+      color: #fff;
+      font-size: clamp(1.65rem, 3.1vw, 2.45rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+    .many-futures-intro p {
+      margin: 0 auto;
+      max-width: 640px;
+      color: rgba(255,255,255,.62);
+      font-size: 1.02rem;
+      line-height: 1.65;
+    }
+    .many-futures-embed { margin-top: 0; }
+    .proto-note {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem 2rem;
+      color: rgba(255,255,255,.4);
+      font-size: 0.8rem;
+    }
+    .fake-grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 1.5rem 96px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .fake-grid h3 {
+      margin: 0 0 1rem;
+      color: #fff;
+      text-align: center;
+    }
+    .fake-grid-inner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .fake-card {
+      min-height: 140px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: #111b3a;
+    }
+    @media (max-width: 767px) {
+      .fake-grid-inner { grid-template-columns: 1fr; }
+      .many-futures-section { padding: 48px 1rem 40px; }
+      .many-futures-intro { margin-bottom: 28px; }
+      .many-futures-intro h2 { font-size: 1.55rem; margin-bottom: 12px; }
+      .many-futures-intro p { font-size: 0.95rem; line-height: 1.55; }
+      /* Default prototype uses Option A on mobile */
+      .many-futures-eyebrow { display: none; }
+      .many-futures-eyebrow--a { display: inline-flex; }
+    }
+    body[data-eyebrow="b"] .many-futures-eyebrow--a { display: none !important; }
+    body[data-eyebrow="b"] .many-futures-eyebrow--b { display: inline-flex; }
+    @media (min-width: 768px) {
+      body[data-eyebrow="b"] .many-futures-eyebrow--b { display: none; }
+      body[data-eyebrow="b"] .many-futures-eyebrow { display: inline-flex; }
+    }
+  </style>
+  <link rel="stylesheet" href="many-futures.css" />
+</head>
+<body>
+  <section id="many-futures" class="many-futures-section">
+    <div class="many-futures-container">
+      <div class="many-futures-intro">
+        <p class="many-futures-eyebrow">Strategic clarity, before commitment</p>
+        <p class="many-futures-eyebrow--a" aria-label="Strategic clarity before commitment">
+          <span>Strategic clarity</span>
+          <span>Before commitment</span>
+        </p>
+        <p class="many-futures-eyebrow--b">Before commitment</p>
+        <h2>One Hotel. Many Futures.</h2>
+        <p>
+          A hotel opportunity may support more than one credible path. Dealality helps
+          owners explore brands, operators, structures, and strategic alternatives
+          before momentum becomes commitment.
+        </p>
+      </div>
+      <div class="many-futures-embed">
+        <!-- MARKUP_START -->
+        <!-- inlined by build; for local preview we include via fetch or paste -->
+      </div>
+    </div>
+  </section>
+
+  <p class="proto-note">Local prototype only. Existing Features grid below is a placeholder stand-in — untouched on the live site. Hotel image and curated crops are temporary local assets pending Phase 3 approval.</p>
+  <div class="fake-grid" aria-hidden="true">
+    <h3>#platform-features (existing grid — not modified)</h3>
+    <div class="fake-grid-inner">
+      <div class="fake-card"></div>
+      <div class="fake-card"></div>
+      <div class="fake-card"></div>
+    </div>
+  </div>
+
+  <script>
+    fetch("markup.html")
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var host = document.querySelector(".many-futures-embed");
+        var tmp = document.createElement("div");
+        tmp.innerHTML = html;
+        var root = tmp.querySelector("#dealality-many-futures") || tmp.firstElementChild;
+        host.appendChild(root);
+        var s = document.createElement("script");
+        s.src = "many-futures.js";
+        document.body.appendChild(s);
+      });
+  </script>
+</body>
+</html>
