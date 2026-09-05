@@ -15,8 +15,13 @@
  *   GUIDED_TOUR_DURABLE_TARGET_ANCHORS
  *   GUIDED_TOUR_REPORT_STATE_PRESERVATION
  *   GUIDED_TOUR_ACCESSIBILITY
+ *   GUIDED_TOUR_DOCUMENT_ORDER
+ *   GUIDED_TOUR_FINISH_NO_SCROLL_JUMP
  *   GUIDED_TOUR_CLEAR_NOT_CLEVER
  *   GUIDED_TOUR_ANALYTICAL_TERMINOLOGY_INTEGRITY
+ *   GUIDED_TOUR_CONCISE_BULLET_READABILITY
+ *   GUIDED_TOUR_EXECUTIVE_INTERPRETATION_COMPLETE
+ *   GUIDED_TOUR_NO_FAKE_GOOD_BAD_THRESHOLDS
  *
  * State restore policy:
  *   Exit early → restore captured scroll + filters
@@ -25,100 +30,144 @@
 (function (global) {
   "use strict";
 
-  var TOUR_VERSION = "ADP_GUIDED_REPORT_TOUR_V1_1";
+  var TOUR_VERSION = "ADP_GUIDED_REPORT_TOUR_V1_3_DOC_ORDER";
   var ANALYTICS_KEY = "adp_guided_tour_analytics_v1";
   var BUTTON_ID = "adpHowToReadReport";
   var SAFE_TOP = 100;
   var SAFE_BOTTOM = 160;
   var CALLOUT_W = 380;
 
+  /**
+   * Document top-to-bottom order (no mid-tour scroll jumps).
+   * GUIDED_TOUR_DOCUMENT_ORDER
+   * Hybrid step shape: guide line (demo voice) + Stronger/Weaker + Look next.
+   * GUIDED_TOUR_CONCISE_BULLET_READABILITY
+   */
   var STEP_DEFS = [
     {
       id: "executive-read",
       target: '[data-adp-tour-target="executive-read"]',
       title: "Start With the Executive Read",
-      body:
-        "This is the fastest way to understand the property's current AI demand position. Start here for the overall assessment, strongest signal, principal constraint, and the area management should review first.",
-      lookFor: "Read this before drilling into the detailed sections below.",
+      guide:
+        "This is where you get the hotel's current AI demand position in one place — strongest signal, main constraint, and the management priority.",
+      signal:
+        "A stronger read shows broad, consistent visibility; a weaker read points to where attention is needed.",
+      lookNext: "Note the two or three issues worth reviewing in more detail below.",
     },
     {
       id: "ai-consideration",
       target: '[data-adp-tour-target="ai-consideration"]',
       title: "AI Consideration",
-      body:
-        "Shows how often the hotel appeared across the AI answers monitored during this period. Use it as the broadest measure of how consistently the property enters AI consideration.",
-      lookFor: "Compare the current result with Prior Run when a comparable period is available.",
+      guide:
+        "This is the broadest read on how often the hotel appears across the AI answers Dealality monitors.",
+      signal:
+        "Higher is generally better. Low or declining means the hotel is left out of more monitored answers.",
+      lookNext: "Compare with Prior Run, then open Demand Territories to see where it comes from.",
     },
     {
       id: "scenario-presence",
       target: '[data-adp-tour-target="scenario-presence"]',
-      title: "Breadth of Visibility",
-      body:
-        "Shows how many monitored traveler scenarios included the hotel at least once. Read it with AI Consideration: broad scenario coverage can still contain inconsistent appearance across individual AI answers.",
-      lookFor: "High breadth with lower consideration often means visibility is uneven rather than absent.",
+      title: "Scenario Presence",
+      guide:
+        "This shows how broadly the hotel shows up across the different traveler situations we test.",
+      signal:
+        "Higher coverage means relevance across more trip types; lower means some needs may not recognize the hotel at all.",
+      lookNext: "Read this beside AI Consideration to separate broad visibility from uneven visibility.",
     },
     {
       id: "presence-index",
       target: '[data-adp-tour-target="presence-index"]',
-      title: "Relative AI Presence",
-      body:
-        "Compares the hotel's observed AI presence with the comparable hotels used in the analysis. A value around 100 indicates parity with the governed peer average; above or below 100 shows relative over- or under-representation.",
-      lookFor: "Use this for relative position, not as a revenue or market-share index.",
+      title: "Presence Index",
+      guide:
+        "This compares the hotel's AI presence with the average of the governed comparable hotels.",
+      signal:
+        "Around 100 is peer parity. Above 100 is stronger relative presence; below 100 is weaker.",
+      lookNext: "Read the Index with the underlying hotel and peer presence rates.",
+      note: "This is not market share or RevPAR Index.",
       optional: true,
     },
     {
       id: "demand-territories",
       target: '[data-adp-tour-target="demand-territories"]',
       title: "Demand Territories",
-      body:
-        "Breaks AI presence down by traveler need. Compare the hotel with the comparable hotels used for each territory, and identify where the property appears consistently — and where it does not.",
-      lookFor: "Use this to identify which traveler needs deserve the next level of review.",
-    },
-    {
-      id: "competitive-displacement",
-      target: '[data-adp-tour-target="competitive-displacement"]',
-      title: "See Who Appears Instead",
-      body:
-        "When the hotel is absent, Dealality tracks which comparable hotels appear in the same monitored answers. Repeated displacement helps identify where another hotel is being surfaced more consistently.",
-      lookFor: "Open the evidence before drawing conclusions about why the competitor appeared.",
-    },
-    {
-      id: "reality-gaps",
-      target: '[data-adp-tour-target="reality-gaps"]',
-      title: "Check What AI Recognizes About the Hotel",
-      body:
-        "Reality Gaps compares important property attributes with what is actually reflected in monitored AI answers. Low recognition can indicate that a relevant hotel attribute is missing, inconsistent, or not being surfaced reliably.",
-      lookFor: "Prioritize material property attributes rather than trying to correct every small gap.",
-    },
-    {
-      id: "evidence",
-      target: '[data-adp-tour-target="evidence"]',
-      title: "Read the Underlying Evidence",
-      body:
-        "Evidence shows the monitored AI responses behind the metrics and findings. Use it to confirm what the model said, which hotels appeared, and whether the issue is real before taking action.",
-      lookFor: "Evidence should support the conclusion — not merely illustrate it.",
-    },
-    {
-      id: "provider-presence",
-      target: '[data-adp-tour-target="provider-presence"]',
-      title: "Check Provider Consistency",
-      body:
-        "Shows whether the hotel's visibility is consistent across the AI providers being monitored. A property can perform well overall while still being materially weaker on one provider.",
-      lookFor: "Focus on persistent provider gaps rather than small one-period differences.",
-      optional: true,
+      guide:
+        "This breaks visibility down by traveler need so you can see which trip types are driving the result.",
+      signal:
+        "Stronger territories show consistent recognition; weaker ones show gaps or competitor advantage.",
+      lookNext: "Start with commercially important territories that have the largest gaps.",
     },
     {
       id: "trends",
       target: '[data-adp-tour-target="trends"]',
-      title: "Track What Changes Over Time",
-      body:
-        "Trends compares certified monitoring periods when they are genuinely comparable. Use this section to see whether visibility is strengthening, weakening, or remaining stable after management actions and market changes.",
-      lookFor: "Movement after an action is useful evidence, but it does not by itself prove that the action caused the change.",
-      closing:
-        "Use the Monthly Executive Review for the priority actions and accountability items generated from the monitoring period.",
+      title: "Trends",
+      guide:
+        "Trends shows how the hotel's AI demand position moves across comparable monitoring periods.",
+      signal:
+        "Improving results are generally positive; repeated declines deserve investigation. One movement alone is not a trend.",
+      lookNext: "Connect changes back to Demand Territories, evidence, and open management actions.",
+      note: "Movement after an action does not by itself prove causation.",
       optional: true,
     },
+    {
+      id: "provider-presence",
+      target: '[data-adp-tour-target="provider-presence"]',
+      title: "Provider Presence",
+      guide:
+        "This shows how consistently the hotel appears across the AI platforms Dealality monitors.",
+      signal:
+        "Balanced visibility across providers is generally stronger than depending heavily on one.",
+      lookNext: "Focus on large or persistent provider gaps, not small one-period differences.",
+      optional: true,
+    },
+    {
+      id: "reality-gaps",
+      target: '[data-adp-tour-target="reality-gaps"]',
+      title: "Reality Gaps",
+      guide:
+        "This checks whether important property attributes are actually recognized in monitored AI answers.",
+      signal:
+        "High recognition is stronger. Low recognition may mean an attribute is missing, unclear, or not being surfaced.",
+      lookNext: "Prioritize commercially important attributes with low recognition.",
+    },
+    {
+      id: "competitive-displacement",
+      target: '[data-adp-tour-target="competitive-displacement"]',
+      title: "Competitive Displacement",
+      guide:
+        "When your hotel is absent, this shows which comparable hotels appear in the same monitored answers.",
+      signal:
+        "Repeated displacement by the same competitor matters more than a one-off appearance.",
+      lookNext: "Open the evidence to see the exact traveler scenarios where it happens.",
+    },
+    {
+      id: "evidence",
+      target: '[data-adp-tour-target="evidence"]',
+      title: "Evidence",
+      guide:
+        "Evidence is the actual monitored AI response behind a metric or finding — use it to verify the pattern.",
+      signal:
+        "Evidence is not scored good or bad; it confirms whether the observed pattern is real and understandable.",
+      lookNext: "Check evidence before acting on surprising, material, or competitive findings.",
+    },
   ];
+
+  /**
+   * Finish card — no page target / no scroll (GUIDED_TOUR_FINISH_NO_SCROLL_JUMP).
+   * Stays at the last content scroll position (typically Evidence).
+   */
+  var FINISH_STEP = {
+    id: "how-to-use",
+    target: null,
+    title: "How to Use the Report",
+    finishCard: true,
+    noScroll: true,
+    bullets: [
+      "Start with the Executive Read.",
+      "Identify where visibility is strong or weak by traveler need.",
+      "Verify the evidence, review competitors, and track whether the position changes over time.",
+    ],
+    note: "Use the Monthly Executive Review for recommended actions, accountable owners, and next-monitoring priorities.",
+  };
 
   var state = {
     active: false,
@@ -209,12 +258,14 @@
   function resolveSteps() {
     var out = [];
     STEP_DEFS.forEach(function (step) {
-      if (!isTargetResolvable(step.target)) {
+      if (!step.target || !isTargetResolvable(step.target)) {
         if (!step.optional) warnSkip(step.id, "target unavailable");
         return;
       }
       out.push(step);
     });
+    // Finish is always appended when any content steps resolve — no page target / no scroll.
+    if (out.length) out.push(FINISH_STEP);
     return out;
   }
 
@@ -389,8 +440,16 @@
       "  </div>" +
       '  <h2 class="adp-gt__title" id="adpGtTitle"></h2>' +
       '  <p class="adp-gt__body" id="adpGtBody"></p>' +
-      '  <p class="adp-gt__look" id="adpGtLook"></p>' +
-      '  <p class="adp-gt__closing" id="adpGtClosing" hidden></p>' +
+      '  <ul class="adp-gt__finish-list" id="adpGtFinishList" hidden></ul>' +
+      '  <div class="adp-gt__row" id="adpGtSignalRow">' +
+      '    <p class="adp-gt__row-label">Stronger / Weaker</p>' +
+      '    <p class="adp-gt__row-text" id="adpGtSignal"></p>' +
+      "  </div>" +
+      '  <div class="adp-gt__row" id="adpGtLookRow">' +
+      '    <p class="adp-gt__row-label">Look Next</p>' +
+      '    <p class="adp-gt__row-text" id="adpGtLook"></p>' +
+      "  </div>" +
+      '  <p class="adp-gt__note" id="adpGtNote" hidden></p>' +
       '  <div class="adp-gt__actions">' +
       '    <button type="button" class="adp-gt__btn adp-gt__btn--quiet" data-adp-gt="exit">Exit</button>' +
       '    <button type="button" class="adp-gt__btn adp-gt__btn--secondary" data-adp-gt="restart" hidden>Restart</button>' +
@@ -510,28 +569,89 @@
     var fill = state.root.querySelector("#adpGtProgressFill");
     var title = state.root.querySelector("#adpGtTitle");
     var body = state.root.querySelector("#adpGtBody");
+    var finishList = state.root.querySelector("#adpGtFinishList");
+    var signalRow = state.root.querySelector("#adpGtSignalRow");
+    var lookRow = state.root.querySelector("#adpGtLookRow");
+    var signal = state.root.querySelector("#adpGtSignal");
     var look = state.root.querySelector("#adpGtLook");
-    var closing = state.root.querySelector("#adpGtClosing");
+    var note = state.root.querySelector("#adpGtNote");
     var nextBtn = state.root.querySelector('[data-adp-gt="next"]');
     var backBtn = state.root.querySelector('[data-adp-gt="back"]');
     var restartBtn = state.root.querySelector('[data-adp-gt="restart"]');
     var isLast = index >= total - 1;
+    var isFinish = !!step.finishCard;
 
     if (progress) progress.textContent = index + 1 + " of " + total;
     if (fill) fill.style.width = Math.round(((index + 1) / total) * 100) + "%";
     if (title) title.textContent = step.title;
-    if (body) body.textContent = step.body;
-    if (look) {
-      look.textContent = step.lookFor ? "What to look for: " + step.lookFor : "";
-      look.hidden = !step.lookFor;
+
+    if (isFinish) {
+      if (body) {
+        body.textContent = "";
+        body.hidden = true;
+      }
+      if (finishList) {
+        finishList.hidden = false;
+        finishList.innerHTML = (step.bullets || [])
+          .map(function (b) {
+            return "<li>" + b + "</li>";
+          })
+          .join("");
+      }
+      if (signalRow) signalRow.hidden = true;
+      if (lookRow) lookRow.hidden = true;
+    } else {
+      if (body) {
+        body.hidden = false;
+        body.textContent = step.guide || "";
+      }
+      if (finishList) {
+        finishList.hidden = true;
+        finishList.innerHTML = "";
+      }
+      if (signalRow) signalRow.hidden = !step.signal;
+      if (lookRow) lookRow.hidden = !step.lookNext;
+      if (signal) signal.textContent = step.signal || "";
+      if (look) look.textContent = step.lookNext || "";
     }
-    if (closing) {
-      closing.textContent = isLast && step.closing ? step.closing : "";
-      closing.hidden = !(isLast && step.closing);
+
+    if (note) {
+      note.textContent = step.note || "";
+      note.hidden = !step.note;
     }
     if (backBtn) backBtn.disabled = index === 0;
     if (restartBtn) restartBtn.hidden = !isLast;
     if (nextBtn) nextBtn.textContent = isLast ? "Finish" : "Next";
+  }
+
+  function clearHighlight() {
+    var highlight = state.root && state.root.querySelector('[data-adp-gt="highlight"]');
+    if (!highlight) return;
+    highlight.style.top = "0px";
+    highlight.style.left = "0px";
+    highlight.style.width = "0px";
+    highlight.style.height = "0px";
+    highlight.classList.add("adp-gt__highlight--muted");
+  }
+
+  /** Finish card: keep current scroll; place callout in viewport without re-anchoring. */
+  function placeFinishCallout() {
+    var callout = state.root.querySelector(".adp-gt__callout");
+    if (!callout) return false;
+    clearHighlight();
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var w = Math.min(CALLOUT_W, vw - 24);
+    callout.style.width = w + "px";
+    callout.removeAttribute("hidden");
+    var h = Math.min(callout.scrollHeight || 320, Math.floor(vh * 0.7));
+    var top = Math.max(16, Math.min(Math.round((vh - h) / 2), vh - h - 16));
+    var left = Math.max(12, Math.round((vw - w) / 2));
+    callout.style.top = top + "px";
+    callout.style.left = left + "px";
+    callout.setAttribute("data-adp-gt-placement", "finish-center");
+    var box = callout.getBoundingClientRect();
+    return box.top >= 0 && box.bottom <= vh + 1 && box.left >= 0 && box.right <= vw + 1;
   }
 
   function renderStep() {
@@ -548,6 +668,10 @@
       var i = fromIndex;
       while (i < steps.length) {
         var candidate = steps[i];
+        if (candidate.finishCard || candidate.noScroll || !candidate.target) {
+          state.stepIndex = i;
+          return candidate;
+        }
         var el = $(candidate.target);
         if (el && elementExistsInReport(el)) {
           state.stepIndex = i;
@@ -565,9 +689,20 @@
       return;
     }
 
-    var el = $(step.target);
     fillStepContent(step, state.stepIndex, steps.length);
 
+    // GUIDED_TOUR_FINISH_NO_SCROLL_JUMP — do not re-target Executive Read / scroll to top.
+    if (step.finishCard || step.noScroll || !step.target) {
+      placeFinishCallout();
+      showCallout();
+      clearHighlight();
+      track("stepViewed", { lastStepReached: step.id, index: state.stepIndex, total: steps.length });
+      var finishNext = state.root.querySelector('[data-adp-gt="next"]');
+      if (finishNext) finishNext.focus();
+      return;
+    }
+
+    var el = $(step.target);
     scrollTargetIntoSafeZone(el).then(function (ok) {
       if (token !== state.transitionToken || !state.active) return;
       if (!ok || !elementExistsInReport(el)) {
@@ -718,6 +853,7 @@
     },
     resolveSteps: resolveSteps,
     stepDefs: STEP_DEFS,
+    finishStep: FINISH_STEP,
     buttonId: BUTTON_ID,
     analyticsKey: ANALYTICS_KEY,
     isActive: function () {

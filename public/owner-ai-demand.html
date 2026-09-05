@@ -6,11 +6,11 @@
   <title>AI Demand Positioning | Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
   <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=adp-methodology-bullet-20260904">
-  <link rel="stylesheet" href="/js/ai-demand-positioning/ai-demand-positioning.css?v=adp-v79-20260903-visual-restore">
-  <link rel="stylesheet" href="/js/ai-demand-positioning/adp-guided-report-tour.css?v=adp-guided-tour-v1-3-btn-clear-20260905">
+  <link rel="stylesheet" href="/js/ai-demand-positioning/ai-demand-positioning.css?v=adp-v83-bpp-read-full-20260905">
+  <link rel="stylesheet" href="/js/ai-demand-positioning/adp-guided-report-tour.css?v=adp-guided-tour-v1-7-doc-order-20260905">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script src="/js/dealality-memberstack-auth.js" defer></script>
-  <script src="/js/ai-demand-positioning/adp-guided-report-tour.js?v=adp-guided-tour-v1-1-20260905" defer></script>
+  <script src="/js/ai-demand-positioning/adp-guided-report-tour.js?v=adp-guided-tour-v1-7-doc-order-20260905" defer></script>
   <script src="/js/ai-demand-positioning/ai-demand-positioning.js?v=adp-v81-guided-tour-20260905" defer></script>
 </head>
 <body class="aiv-page embed-mode">
@@ -45,7 +45,7 @@
       <div class="adp-section-nav__actions">
         <button
           type="button"
-          class="btn-clear adp-howto-read-btn"
+          class="adp-howto-read-btn"
           id="adpHowToReadReport"
           data-adp-guided-tour-entry="1"
           aria-label="How to Read This Report"
@@ -60,15 +60,13 @@
       </div>
     </nav>
 
-    <section class="filters-section aiv-filters-section adp-filter-row" aria-label="Property selection">
-      <div class="adp-filter-row__inner">
-        <div class="filter-group adp-filter-row__filter">
-          <label class="filter-label" for="adpProperty">Property</label>
-          <select class="filter-select" id="adpProperty"></select>
-        </div>
-        <div class="adp-filter-row__right aiv-filter-actions">
-          <button type="button" class="aiv-btn-apply" id="adpLoadReport">Load Report</button>
-        </div>
+    <section class="filters-section aiv-filters-section" aria-label="Property selection">
+      <div class="filter-group">
+        <label class="filter-label" for="adpProperty">Property</label>
+        <select class="filter-select" id="adpProperty"></select>
+      </div>
+      <div class="filter-group aiv-filter-actions">
+        <button type="button" class="aiv-btn-apply" id="adpLoadReport">Load Report</button>
       </div>
     </section>
 

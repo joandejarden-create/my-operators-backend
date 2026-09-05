@@ -39,6 +39,9 @@ const results = {
   GUIDED_TOUR_ACCESSIBILITY: "FAIL",
   GUIDED_TOUR_CLEAR_NOT_CLEVER: "FAIL",
   GUIDED_TOUR_ANALYTICAL_TERMINOLOGY_INTEGRITY: "FAIL",
+  GUIDED_TOUR_CONCISE_BULLET_READABILITY: "FAIL",
+  GUIDED_TOUR_EXECUTIVE_INTERPRETATION_COMPLETE: "FAIL",
+  GUIDED_TOUR_NO_FAKE_GOOD_BAD_THRESHOLDS: "FAIL",
   playwright: null,
 };
 
@@ -66,10 +69,13 @@ for (const [label, html] of [
 }
 results.ADP_GUIDED_TOUR_FILTER_ROW_ENTRY_POINT = "PASS"; // retained key; location is now tab row
 
-assert.ok(tourCss.includes("btn-clear") && tourCss.includes("adp-howto-read-btn"));
-assert.ok(tourCss.includes("--secondary--color-5") || tourCss.includes("#fdb52a"));
-assert.ok(ownerHtml.includes("btn-clear adp-howto-read-btn") || ownerHtml.includes('class="btn-clear adp-howto-read-btn"'));
-assert.ok(shareHtml.includes("btn-clear adp-howto-read-btn") || shareHtml.includes('class="btn-clear adp-howto-read-btn"'));
+assert.ok(tourCss.includes("adp-section-nav-with-tour") && tourCss.includes("adp-howto-read-btn"));
+assert.ok(tourCss.includes("background: transparent"));
+assert.ok(tourCss.includes("#aeb9e1"));
+assert.ok(!ownerHtml.includes("btn-clear adp-howto-read-btn"));
+assert.ok(!shareHtml.includes("btn-clear adp-howto-read-btn"));
+assert.ok(tourCss.includes("--secondary--color-5") || tourCss.includes("#fdb52a") || tourCss.includes("253, 181, 42"));
+assert.ok(!/progress-fill[\s\S]{0,80}#57c3ff/.test(tourCss));
 results.ADP_GUIDED_TOUR_BUTTON_PLATFORM_PARITY = "PASS";
 
 assert.ok(tourCss.includes("adp-gt__callout") && tourCss.includes("--secondary--color-1"));
@@ -141,10 +147,54 @@ assert.ok(tourCss.includes("prefers-reduced-motion"));
 results.GUIDED_TOUR_ACCESSIBILITY = "PASS";
 
 assert.ok(tourJs.includes("AI Consideration") && tourJs.includes("Demand Territories"));
-assert.ok(tourJs.includes("Reality Gaps") && tourJs.includes("AI Presence"));
+assert.ok(tourJs.includes("Reality Gaps") && tourJs.includes("Presence Index"));
+assert.ok(tourJs.includes("lookNext") && tourJs.includes("Stronger / Weaker"));
+assert.ok(tourJs.includes("FINISH_STEP") && tourJs.includes("How to Use the Report"));
 assert.ok(!/"Start Here"|"Help Me"|"Learn ADP"|"Tutorial"/.test(tourJs));
 results.GUIDED_TOUR_CLEAR_NOT_CLEVER = "PASS";
 results.GUIDED_TOUR_ANALYTICAL_TERMINOLOGY_INTEGRITY = "PASS";
+
+// Hybrid concise readability — guide + signal + lookNext; no muted lookFor-only path
+assert.ok(tourJs.includes("GUIDED_TOUR_CONCISE_BULLET_READABILITY"));
+assert.ok(tourCss.includes("adp-gt__row-label") && tourCss.includes("adp-gt__row-text"));
+assert.ok(!tourCss.includes(".adp-gt__look {") || !/adp-gt__look\s*\{[^}]*neutral--500/.test(tourCss));
+assert.ok(tourJs.includes("guide:") && tourJs.includes("signal:") && tourJs.includes("lookNext:"));
+const fakeThresholds = /\b(must be|should be|needs to be)\s+\d+%|\bthreshold of\s+\d+/i;
+assert.ok(!fakeThresholds.test(tourJs));
+results.GUIDED_TOUR_CONCISE_BULLET_READABILITY = "PASS";
+results.GUIDED_TOUR_NO_FAKE_GOOD_BAD_THRESHOLDS = "PASS";
+results.GUIDED_TOUR_EXECUTIVE_INTERPRETATION_COMPLETE = "PASS";
+
+// Document order: Executive → KPIs → Territories → Trends → Provider → Reality → Competitive → Evidence → Finish
+{
+  const ids = [...tourJs.matchAll(/\bid:\s*"([^"]+)"/g)].map((m) => m[1]);
+  const expected = [
+    "executive-read",
+    "ai-consideration",
+    "scenario-presence",
+    "presence-index",
+    "demand-territories",
+    "trends",
+    "provider-presence",
+    "reality-gaps",
+    "competitive-displacement",
+    "evidence",
+    "how-to-use",
+  ];
+  const start = ids.indexOf("executive-read");
+  assert.ok(start >= 0, "executive-read present");
+  const slice = ids.slice(start, start + expected.length);
+  assert.deepEqual(slice, expected, "GUIDED_TOUR_DOCUMENT_ORDER");
+  assert.ok(tourJs.includes("GUIDED_TOUR_DOCUMENT_ORDER"));
+  results.GUIDED_TOUR_DOCUMENT_ORDER = "PASS";
+}
+
+// Finish must not re-target Executive Read (scroll jump to top)
+assert.ok(tourJs.includes("GUIDED_TOUR_FINISH_NO_SCROLL_JUMP"));
+assert.ok(tourJs.includes("placeFinishCallout") && tourJs.includes("noScroll: true"));
+assert.ok(!/FINISH_STEP\s*=\s*\{[^}]*executive-read/.test(tourJs));
+assert.ok(/FINISH_STEP\s*=\s*\{[\s\S]*?target:\s*null/.test(tourJs));
+results.GUIDED_TOUR_FINISH_NO_SCROLL_JUMP = "PASS";
 
 console.log("Static gates:");
 for (const [k, v] of Object.entries(results)) {
@@ -368,7 +418,7 @@ async function runViewport(width, height) {
   await assertFilterRow(page);
   await seedReportDom(page);
   const count = await page.evaluate(() => window.AdpGuidedReportTour.resolveSteps().length);
-  assert.ok(count >= 6 && count <= 10, `dynamic count ${count}`);
+  assert.ok(count >= 6 && count <= 11, `dynamic count ${count}`);
   pw.dynamicCount = true;
   await page.locator("#adpHowToReadReport").click();
   await page.waitForSelector(".adp-gt__callout:not([hidden])");
@@ -380,8 +430,14 @@ async function runViewport(width, height) {
   const m = progress.replace(/\s+/g, " ").match(/(\d+)\s+of\s+(\d+)/i);
   assert.ok(m, `progress format: ${progress}`);
   assert.equal(Number(m[1]), 1);
-  assert.ok(Number(m[2]) >= 6 && Number(m[2]) <= 10);
+  assert.ok(Number(m[2]) >= 6 && Number(m[2]) <= 11);
   assert.equal(Number(m[2]), count);
+  // Hybrid rows present on step 1
+  assert.ok(await page.locator("#adpGtSignalRow").isVisible());
+  assert.ok(await page.locator("#adpGtLookRow").isVisible());
+  const lookColor = await page.evaluate(() => getComputedStyle(document.getElementById("adpGtLook")).color);
+  const signalColor = await page.evaluate(() => getComputedStyle(document.getElementById("adpGtSignal")).color);
+  assert.equal(lookColor, signalColor);
   await shot(page, "step1-1440");
   // Back/Next smoke
   await page.locator('[data-adp-gt="next"]').click({ force: true });
