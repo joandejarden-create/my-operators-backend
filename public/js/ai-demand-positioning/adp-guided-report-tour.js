@@ -30,7 +30,7 @@
 (function (global) {
   "use strict";
 
-  var TOUR_VERSION = "ADP_GUIDED_REPORT_TOUR_V1_3_DOC_ORDER";
+  var TOUR_VERSION = "ADP_GUIDED_REPORT_TOUR_V1_4_DT_BEFORE_PI";
   var ANALYTICS_KEY = "adp_guided_tour_analytics_v1";
   var BUTTON_ID = "adpHowToReadReport";
   var SAFE_TOP = 100;
@@ -75,6 +75,16 @@
       lookNext: "Read this beside AI Consideration to separate broad visibility from uneven visibility.",
     },
     {
+      id: "demand-territories",
+      target: '[data-adp-tour-target="demand-territories"]',
+      title: "Demand Territories",
+      guide:
+        "This breaks visibility down by traveler need so you can see which trip types are driving the result.",
+      signal:
+        "Stronger territories show consistent recognition; weaker ones show gaps or competitor advantage.",
+      lookNext: "Start with commercially important territories that have the largest gaps.",
+    },
+    {
       id: "presence-index",
       target: '[data-adp-tour-target="presence-index"]',
       title: "Presence Index",
@@ -85,16 +95,6 @@
       lookNext: "Read the Index with the underlying hotel and peer presence rates.",
       note: "This is not market share or RevPAR Index.",
       optional: true,
-    },
-    {
-      id: "demand-territories",
-      target: '[data-adp-tour-target="demand-territories"]',
-      title: "Demand Territories",
-      guide:
-        "This breaks visibility down by traveler need so you can see which trip types are driving the result.",
-      signal:
-        "Stronger territories show consistent recognition; weaker ones show gaps or competitor advantage.",
-      lookNext: "Start with commercially important territories that have the largest gaps.",
     },
     {
       id: "trends",
