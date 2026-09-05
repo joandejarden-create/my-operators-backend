@@ -246,9 +246,22 @@
     return '<span class="aiv-intent-rate-value">' + fmtPct(idxData.coreBenchmarkRatePct) + '</span>' + basedOn;
   }
   
-  function adpTipHtml(title, question, why) {
-    return "<strong>" + title + "</strong><br><br><strong>Question:</strong> " + question +
+  function adpTipHtml(title, question, why, moreHtml) {
+    var html = "<strong>" + title + "</strong><br><br><strong>Question:</strong> " + question +
       "<br><br><strong>Why track it:</strong> " + why;
+    if (moreHtml) html += "<br><br>" + moreHtml;
+    return html;
+  }
+
+  /** Owner-facing ownership + typical reliance notes for monitored LLM products. */
+  function adpProviderOwnershipTipHtml() {
+    return (
+      "<strong>Who we monitor:</strong><br>" +
+      "• <strong>ChatGPT</strong> — owned by OpenAI. Typically relies on OpenAI’s trained model knowledge, with optional tools or browsing when enabled.<br>" +
+      "• <strong>Gemini</strong> — owned by Google. Typically relies on Google’s model stack and often Google Search grounding for live web context.<br>" +
+      "• <strong>Claude</strong> — owned by Anthropic. Typically relies on Anthropic’s trained models for careful reasoning from learned knowledge (live web only when tools are added).<br>" +
+      "• <strong>Perplexity</strong> — owned by Perplexity. Typically relies on live web retrieval and cites sources in its answers."
+    );
   }
 
   /** Detailed tooltips for optional executive metrics only. */
@@ -761,6 +774,9 @@
       legacyInsights.hidden = true;
       legacyInsights.innerHTML = "";
     }
+    try {
+      document.dispatchEvent(new CustomEvent("adp:report-loaded", { detail: { propertyId: d && d.propertyId } }));
+    } catch (_) {}
   }
 
   function resolveExecutiveReadPresentation(er) {
@@ -1142,10 +1158,14 @@
   function kpiCardWithInfo(label, value, metaText, tooltipHtml, tooltipClass, opts) {
     var tipClass = "tooltip-content" + (tooltipClass ? " " + tooltipClass : "");
     var valueClass = opts && opts.metricState ? " aiv-value--metric-state" : "";
+    var tourAttr =
+      opts && opts.tourTarget
+        ? ' data-adp-tour-target="' + esc(opts.tourTarget) + '"'
+        : "";
     var infoHtml = tooltipHtml
       ? '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="Info about ' + esc(label) + '"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="' + tipClass + '" hidden>' + tooltipHtml + '</div></span>'
       : "";
-    return '<article class="aiv-kpi"><h3><span class="aiv-kpi-label">' + esc(label) + '</span>' + infoHtml +
+    return '<article class="aiv-kpi"' + tourAttr + '><h3><span class="aiv-kpi-label">' + esc(label) + '</span>' + infoHtml +
       '</h3><div class="aiv-value' + valueClass + '">' + esc(value) +
       '</div><div class="aiv-meta">' + esc(metaText) +
       '</div></article>';
@@ -1709,7 +1729,8 @@
           whyTrack: "This is the simplest read on whether AI is putting your hotel in front of travelers at all, across every answer we collected.",
           important: "Being named is not the same as being recommended, ranked first, or winning a booking. This does not measure actual demand captured."
         }),
-        "adp-executive-metric-tooltip"
+        "adp-executive-metric-tooltip",
+        { tourTarget: "ai-consideration" }
       ));
     } else {
       cards.push(kpiCardWithInfo(
@@ -1722,7 +1743,7 @@
           important: "This metric requires enough comparable AI responses. It is not shown as 0% when data is insufficient."
         }),
         "adp-executive-metric-tooltip",
-        metricStateOpts()
+        Object.assign({}, metricStateOpts(), { tourTarget: "ai-consideration" })
       ));
     }
 
@@ -1744,7 +1765,8 @@
           whyTrack: "This shows how widely you appear across different traveler needs (business, leisure, family, and so on), rather than how often you appear in every individual AI answer.",
           important: "This is not the same as AI Consideration Rate. That metric counts every AI answer separately. This one asks: for each traveler question, did any model mention you?"
         }),
-        "adp-executive-metric-tooltip"
+        "adp-executive-metric-tooltip",
+        { tourTarget: "scenario-presence" }
       ));
     } else {
       cards.push(kpiCardWithInfo(
@@ -1757,7 +1779,7 @@
           important: "This metric requires enough monitored scenario observations. It is not shown as 0% when data is insufficient."
         }),
         "adp-executive-metric-tooltip",
-        metricStateOpts()
+        Object.assign({}, metricStateOpts(), { tourTarget: "scenario-presence" })
       ));
     }
 
@@ -1861,8 +1883,9 @@
 
   var SORT_ARROWS = '<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span>';
 
-  function thCol(label, tooltip, thClass) {
-    return '<th class="no-sort' + (thClass ? ' ' + thClass : '') + '"><span class="aiv-th-label"><span class="aiv-th-text">' + label + '</span>' + SORT_ARROWS + (tooltip ? '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="Info"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content adp-benchmark-tooltip" hidden>' + tooltip + '</div></span>' : '') + '</span></th>';
+  function thCol(label, tooltip, thClass, tourTarget) {
+    var tourAttr = tourTarget ? ' data-adp-tour-target="' + esc(tourTarget) + '"' : "";
+    return '<th class="no-sort' + (thClass ? ' ' + thClass : '') + '"' + tourAttr + '><span class="aiv-th-label"><span class="aiv-th-text">' + label + '</span>' + SORT_ARROWS + (tooltip ? '<span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="Info"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content adp-benchmark-tooltip" hidden>' + tooltip + '</div></span>' : '') + '</span></th>';
   }
 
   var adpTrendChart = null;
@@ -2115,7 +2138,7 @@
 
     var html = '<table class="deals-table aiv-portfolio-table aiv-coverage-table" data-adp-table="provider-presence">';
     html += '<thead><tr>';
-    html += thCol('Provider', adpTipHtml('Provider', 'Which AI model was queried on its own for each demand scenario?', 'Models do not behave the same. You need provider-level visibility to fix gaps on each one.'));
+    html += thCol('Provider', adpTipHtml('Provider', 'Which AI model was queried on its own for each demand scenario?', 'Models do not behave the same. You need provider-level visibility to fix gaps on each one.', adpProviderOwnershipTipHtml()));
     html += thCol('Status', adpTipHtml('Status', 'Was this provider included in the current monitoring period?', 'Confirms the row reflects live monitored responses, not an estimate or partial run.'));
     html += thCol('AI<br>Presence', adpTipHtml('AI Presence', 'When this provider alone answers a monitored demand question, how often does it mention your property?', 'Each model learns from different sources. A gap here means travelers using that tool may never see you.'));
     html += thCol('Monitored', adpTipHtml('Monitored', 'How many comparable provider answers mentioned your property, out of successfully captured answers for this model? Failed or missing provider calls are excluded from the denominator.', 'Denominator = comparable observations included in the metric — not theoretical scheduled scenarios.'));
@@ -2202,7 +2225,7 @@
     html += thCol('Demand<br>Territory', adpTipHtml('Demand Territory', 'Which type of traveler demand is being measured (business, leisure travel, couples, meetings, and so on)? Leisure Travel covers vacations, weekend trips, city breaks, resort stays, sightseeing and entertainment-led travel.', 'Capture varies by trip purpose. You need to know where AI recommends you and where demand leaks by intent.'));
     html += thCol('Your AI<br>Presence', adpYourAiPresenceTip());
     html += thCol('CORE<br>Benchmark', adpCoreBenchmarkTip());
-    html += thCol('AI Presence<br>Index', adpGovernedIndexTip());
+    html += thCol('AI Presence<br>Index', adpGovernedIndexTip(), null, 'presence-index');
     html += thCol('\u0394 vs<br>Prior Run', adpTipHtml('\u0394 vs Prior Run', 'Is your presence in this intent improving or declining compared with the last comparable monitoring run?', 'A single period does not show direction. Tracking change tells you whether recent content or positioning work is working.'), 'aiv-intent-col-secondary');
     html += thCol('Monitored', adpTipHtml('Monitored', 'How many demand scenarios in this intent were tested, and how many captured your property?', 'Confirms sample size and shows captured versus total for this intent category.'), 'aiv-intent-col-secondary');
     html += thCol('Missing', adpTipHtml('Missing', 'In this intent, how many scenarios had no AI mention of your property?', 'These are concrete lost-demand moments for that traveler type.'), 'aiv-intent-col-secondary');
@@ -2810,14 +2833,17 @@
 
   function openAdpDisplacementEvidence(opts) {
     opts = opts || {};
+    // Reset prior modal invocation — never reuse last competitor label/id.
     var competitorName = opts.competitorName || "";
     var competitorId = opts.competitorId || "";
+    var expectedCount = Number(opts.expectedCount || 0);
     var subjectName = opts.subjectName || "your property";
     var scopeKey = opts.scopeKey || selectedCompTerritory || "overall";
     var drawer = document.getElementById("adpEvidenceDrawer");
     var body = document.getElementById("adpEvidenceBody");
     if (!drawer || !body) return;
     body.innerHTML = '<div class="aiv-empty">Loading displacement evidence\u2026</div>';
+    body.setAttribute("data-adp-displacement-modal-competitor-id", competitorId || "");
     if (typeof drawer.showModal === "function" && !drawer.open) drawer.showModal();
 
     var pid = getActivePropertyId();
@@ -2825,12 +2851,17 @@
       body.innerHTML = '<div class="aiv-empty">Select a property to view evidence.</div>';
       return;
     }
+    if (!competitorId) {
+      body.innerHTML =
+        '<div class="aiv-empty">Displacement evidence requires a canonical competitor identity. Please refresh and try again.</div>';
+      return;
+    }
 
     var isOverall = scopeKey === "overall";
     var qs =
       "type=displacement" +
       "&competitor=" + encodeURIComponent(competitorName) +
-      (competitorId ? "&competitorId=" + encodeURIComponent(competitorId) : "") +
+      "&competitorId=" + encodeURIComponent(competitorId) +
       (isOverall
         ? "&scope=overall"
         : "&scope=demand_territory&intent=" + encodeURIComponent(scopeKey));
@@ -2838,23 +2869,51 @@
     authFetch("/api/ai-demand-positioning/property/" + encodeURIComponent(pid) + "/evidence?" + qs)
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        if (!data.ok || !data.evidence || !data.evidence.length) {
-          body.innerHTML = '<div class="aiv-empty">No displacement evidence available for ' + esc(competitorName) + '.</div>';
+        // Header derives from API canonical competitor — not click label alone.
+        var canonicalName = (data && data.competitorName) || competitorName;
+        var canonicalId = (data && data.competitorId) || competitorId;
+        if (!data.ok || (data.integrity && data.integrity.failClosed)) {
+          body.innerHTML =
+            '<div class="aiv-empty">Displacement evidence failed an analytical integrity check and was not shown. Dealality has logged this for review.</div>';
           return;
         }
+        if (!data.evidence || !data.evidence.length) {
+          body.innerHTML = '<div class="aiv-empty">No displacement evidence available for ' + esc(canonicalName) + '.</div>';
+          return;
+        }
+        var scoped = data.evidence.filter(function(ev) {
+          var rowId = ev.displacementCompetitorEntityId || ev.competitorEntityId || "";
+          if (rowId && canonicalId && rowId !== canonicalId) return false;
+          var rowName = String(ev.displacingCompetitor || "").trim().toLowerCase();
+          var want = String(canonicalName || "").trim().toLowerCase();
+          if (rowName && want && rowName !== want) return false;
+          return true;
+        });
+        if (!scoped.length) {
+          body.innerHTML =
+            '<div class="aiv-empty">Displacement evidence was suppressed because competitor identity did not reconcile with the selected row.</div>';
+          return;
+        }
+        if (expectedCount > 0 && Number(data.total) !== expectedCount) {
+          console.warn("[ADP] ADP_PARENT_COUNT_DRILLDOWN_COUNT_PARITY", {
+            competitorId: canonicalId,
+            expectedCount: expectedCount,
+            total: data.total,
+          });
+        }
         var html =
-          '<p class="aiv-theme-help help-text" style="margin-bottom:1rem;">Scenarios where <strong>' +
-          esc(competitorName) +
+          '<p class="aiv-theme-help help-text" style="margin-bottom:1rem;" data-adp-displacement-modal-header="1">Scenarios where <strong>' +
+          esc(canonicalName) +
           "</strong> appeared and <strong>" +
           esc(subjectName) +
           "</strong> did not.</p>";
-        data.evidence.forEach(function(ev) {
+        scoped.forEach(function(ev) {
           var providerLine = formatProviderDisplayName(ev.provider || "unknown");
           var citations = ev.sourcesCited || ev.providerCitations || [];
           var competitors = ev.competitorsMentioned || [];
           var territoryLine = normalizeLeisureTerritoryLabel(ev.territory) || formatIntentTerritoryLabel(ev.intent || "");
 
-          html += '<div class="aiv-evidence">' +
+          html += '<div class="aiv-evidence" data-adp-displacement-competitor-id="' + esc(canonicalId) + '">' +
             (territoryLine
               ? '<section class="aiv-evidence-meta" aria-label="Demand territory" style="margin-bottom:0.5rem;">' +
                 '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Demand Territory</div>' +
@@ -2870,7 +2929,7 @@
             '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Provider</div>' +
             '<div class="aiv-evidence-value">' + esc(providerLine) + '</div></div>' +
             '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Displacing Competitor</div>' +
-            '<div class="aiv-evidence-value">' + esc(ev.displacingCompetitor || competitorName) + '</div></div>' +
+            '<div class="aiv-evidence-value">' + esc(ev.displacingCompetitor || canonicalName) + '</div></div>' +
             '</section>' +
             (competitors.length ? '<section class="aiv-evidence-chips" aria-label="All competitors mentioned">' +
               competitors.slice(0, 8).map(function(c){ return '<span class="aiv-evidence-chip">' + esc(c) + '</span>'; }).join("") +
@@ -2886,7 +2945,7 @@
               '</ul></section>' : '') +
             '</div>';
         });
-        html += '<p class="aiv-theme-help help-text" style="margin-top:0.5rem;">Showing ' + data.evidence.length + ' of ' + data.total + ' displacement scenarios for ' + esc(competitorName) + '.</p>';
+        html += '<p class="aiv-theme-help help-text" style="margin-top:0.5rem;">Showing ' + scoped.length + ' of ' + data.total + ' displacement scenarios for ' + esc(canonicalName) + '.</p>';
         body.innerHTML = html;
         body.scrollTop = 0;
         wireAiResponseControls(body);
@@ -2933,11 +2992,40 @@
       el.innerHTML = '<p class="aiv-empty-message">No displacement data.</p>';
       return;
     }
+    var subjectName =
+      (currentPayload && currentPayload.property && currentPayload.property.name) ||
+      "your property";
     var html = '<ul class="aiv-signal-list">';
     ld.displacement.forEach(function (d) {
-      html += '<li class="aiv-signal-item aiv-signal-item--gap"><span class="aiv-signal-icon">⚡</span><span class="aiv-signal-text">' + esc(d.name) + '</span><span class="aiv-signal-badge aiv-signal-badge--high">' + d.displacementCount + ' scenarios</span></li>';
+      var cid = d.entityId || "";
+      var count = d.displacementCount || 0;
+      if (cid && count > 0) {
+        html +=
+          '<li class="aiv-signal-item aiv-signal-item--gap">' +
+          '<span class="aiv-signal-icon">⚡</span>' +
+          '<button type="button" class="aiv-btn-text aiv-link aiv-signal-text" data-adp-displacement="1"' +
+          ' data-adp-competitor-id="' +
+          esc(cid) +
+          '" data-adp-competitor-name="' +
+          esc(d.name) +
+          '" data-adp-displacement-count="' +
+          count +
+          '">' +
+          esc(d.name) +
+          "</button>" +
+          '<span class="aiv-signal-badge aiv-signal-badge--high">' +
+          count +
+          " scenarios</span></li>";
+      } else {
+        html +=
+          '<li class="aiv-signal-item aiv-signal-item--gap"><span class="aiv-signal-icon">⚡</span><span class="aiv-signal-text">' +
+          esc(d.name) +
+          '</span><span class="aiv-signal-badge aiv-signal-badge--high">' +
+          count +
+          " scenarios</span></li>";
+      }
     });
-    html += '</ul>';
+    html += "</ul>";
     if (ld.topReasons && ld.topReasons.length) {
       html += '<div style="margin-top:0.75rem;padding:0.75rem;background:rgba(251,191,36,0.06);border-radius:6px;border:1px solid rgba(251,191,36,0.12)">';
       html += '<p style="font-size:0.75rem;font-weight:700;color:#fbbf24;margin:0 0 0.4rem;text-transform:uppercase">Top Reasons</p>';
@@ -2946,6 +3034,17 @@
       html += '</ul></div>';
     }
     el.innerHTML = html;
+    el.querySelectorAll("[data-adp-displacement]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        openAdpDisplacementEvidence({
+          competitorId: btn.getAttribute("data-adp-competitor-id"),
+          competitorName: btn.getAttribute("data-adp-competitor-name"),
+          expectedCount: Number(btn.getAttribute("data-adp-displacement-count") || 0),
+          subjectName: subjectName,
+          scopeKey: "overall",
+        });
+      });
+    });
   }
 
   function renderExecActions(actions) {
@@ -3281,5 +3380,8 @@
     if (btn) btn.addEventListener("click", loadReport);
     var retry = document.getElementById("adpRetry");
     if (retry) retry.addEventListener("click", loadReport);
+    if (window.AdpGuidedReportTour && typeof window.AdpGuidedReportTour.init === "function") {
+      window.AdpGuidedReportTour.init();
+    }
   });
 })();

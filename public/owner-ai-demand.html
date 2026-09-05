@@ -7,9 +7,11 @@
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
   <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=adp-methodology-bullet-20260904">
   <link rel="stylesheet" href="/js/ai-demand-positioning/ai-demand-positioning.css?v=adp-v79-20260903-visual-restore">
+  <link rel="stylesheet" href="/js/ai-demand-positioning/adp-guided-report-tour.css?v=adp-guided-tour-v1-3-btn-clear-20260905">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script src="/js/dealality-memberstack-auth.js" defer></script>
-  <script src="/js/ai-demand-positioning/ai-demand-positioning.js?v=adp-v79-20260903-visual-restore" defer></script>
+  <script src="/js/ai-demand-positioning/adp-guided-report-tour.js?v=adp-guided-tour-v1-1-20260905" defer></script>
+  <script src="/js/ai-demand-positioning/ai-demand-positioning.js?v=adp-v81-guided-tour-20260905" defer></script>
 </head>
 <body class="aiv-page embed-mode">
   <div class="dashboard-container aiv-dashboard">
@@ -30,7 +32,7 @@
       </div>
     </header>
 
-    <nav class="bdd-section-nav aiv-section-nav" aria-label="AI Demand Positioning views" role="tablist">
+    <nav class="bdd-section-nav aiv-section-nav adp-section-nav-with-tour" aria-label="AI Demand Positioning views" role="tablist" data-adp-guided-tour-tab-row="1">
       <button type="button" class="section-nav-item active" role="tab" aria-selected="true" data-tab="executive" id="adpTabExec" aria-controls="adpPanelExecutive">
         <div class="section-nav-icon" title="Executive Summary">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -40,15 +42,33 @@
         </div>
         <span class="section-nav-label">Executive<br>Summary</span>
       </button>
+      <div class="adp-section-nav__actions">
+        <button
+          type="button"
+          class="btn-clear adp-howto-read-btn"
+          id="adpHowToReadReport"
+          data-adp-guided-tour-entry="1"
+          aria-label="How to Read This Report"
+        >
+          <svg class="adp-howto-read-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 11v5"></path>
+            <circle cx="12" cy="8" r="0.75" fill="currentColor" stroke="none"></circle>
+          </svg>
+          <span class="adp-howto-read-btn__label">How to Read This Report</span>
+        </button>
+      </div>
     </nav>
 
-    <section class="filters-section aiv-filters-section" aria-label="Property selection">
-      <div class="filter-group">
-        <label class="filter-label" for="adpProperty">Property</label>
-        <select class="filter-select" id="adpProperty"></select>
-      </div>
-      <div class="filter-group aiv-filter-actions">
-        <button type="button" class="aiv-btn-apply" id="adpLoadReport">Load Report</button>
+    <section class="filters-section aiv-filters-section adp-filter-row" aria-label="Property selection">
+      <div class="adp-filter-row__inner">
+        <div class="filter-group adp-filter-row__filter">
+          <label class="filter-label" for="adpProperty">Property</label>
+          <select class="filter-select" id="adpProperty"></select>
+        </div>
+        <div class="adp-filter-row__right aiv-filter-actions">
+          <button type="button" class="aiv-btn-apply" id="adpLoadReport">Load Report</button>
+        </div>
       </div>
     </section>
 
@@ -78,7 +98,7 @@
         <div class="adp-layer adp-layer--executive" data-adp-layer="executive-summary">
           <p class="adp-layer-label" hidden>Executive Summary</p>
 
-          <section class="aiv-theme-group adp-section-executive-read" aria-labelledby="adpThemeExecutiveRead" data-adp-section="executive-summary" id="adpExecutiveReadSection">
+          <section class="aiv-theme-group adp-section-executive-read" aria-labelledby="adpThemeExecutiveRead" data-adp-section="executive-summary" data-adp-tour-target="executive-read" id="adpExecutiveReadSection">
             <h2 id="adpThemeExecutiveRead" class="aiv-theme-title">Executive Summary</h2>
             <p class="aiv-theme-help help-text">A plain language summary of where the hotel is strongest, where it is weakest, and what changed since the last monitoring period we can fairly compare against.</p>
             <div class="adp-executive-read" id="adpExecutiveRead">
@@ -105,7 +125,7 @@
             <div class="aiv-kpi-row aiv-theme-kpis" id="adpExecutiveMetricsRow" aria-label="AI Demand Positioning Metrics"></div>
           </section>
 
-          <section class="aiv-theme-group aiv-theme-group--secondary adp-section-territory" aria-labelledby="adpThemeDemand" data-adp-section="ai-presence-by-demand-territory">
+          <section class="aiv-theme-group aiv-theme-group--secondary adp-section-territory" aria-labelledby="adpThemeDemand" data-adp-section="ai-presence-by-demand-territory" data-adp-tour-target="demand-territories">
             <h2 id="adpThemeDemand" class="aiv-theme-title">AI Presence by Demand Territory</h2>
             <p class="aiv-theme-help help-text">For each type of traveler need, how often your hotel appeared in AI answers compared with the comparable hotels used in this analysis. An index of 100 means your hotel appeared about as often as those comparable hotels.</p>
             <div class="aiv-theme-card aiv-theme-card--flush">
@@ -120,7 +140,7 @@
         <div class="adp-layer adp-layer--detailed" data-adp-layer="detailed-intelligence">
           <p class="adp-layer-label">Detailed Intelligence</p>
 
-          <section class="aiv-theme-group" aria-labelledby="adpThemeTrends" id="adpTrendSection" data-adp-section="trends">
+          <section class="aiv-theme-group" aria-labelledby="adpThemeTrends" id="adpTrendSection" data-adp-section="trends" data-adp-tour-target="trends">
             <h2 id="adpThemeTrends" class="aiv-theme-title">Trends</h2>
             <p class="aiv-theme-help help-text">How these results change from one comparable monitoring period to the next.</p>
             <div class="aiv-theme-card aiv-detail-trend-card" id="adpTrendCard">
@@ -132,7 +152,7 @@
             </div>
           </section>
 
-          <section class="aiv-theme-group" aria-labelledby="adpThemeProviders" data-adp-section="provider-presence">
+          <section class="aiv-theme-group" aria-labelledby="adpThemeProviders" data-adp-section="provider-presence" data-adp-tour-target="provider-presence">
             <h2 id="adpThemeProviders" class="aiv-theme-title">Provider Presence</h2>
             <p class="aiv-theme-help help-text">How often each AI model mentioned your hotel when asked on its own. Each model is shown separately.</p>
             <div class="aiv-theme-card aiv-theme-card--flush">
@@ -160,7 +180,7 @@
             <div id="adpBrandPortfolioTableHost" hidden></div>
           </section>
 
-          <section class="aiv-theme-group" aria-labelledby="adpThemeSignals" data-adp-section="ai-reality-gaps">
+          <section class="aiv-theme-group" aria-labelledby="adpThemeSignals" data-adp-section="ai-reality-gaps" data-adp-tour-target="reality-gaps">
             <h2 id="adpThemeSignals" class="aiv-theme-title">AI Reality Gaps <span class="info-tooltip aiv-col-info" style="display:inline-flex;vertical-align:middle;margin-left:6px;"><span class="info-icon" role="button" tabindex="0" aria-label="About AI Reality Gaps"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>AI Reality Gaps</strong><br><br><strong>Question:</strong> Does AI accurately describe your property's key attributes?<br><br><strong>Why track it:</strong> If AI misses facts about your hotel, it will recommend rivals that are better described.</div></span></h2>
             <p class="aiv-theme-help help-text">What AI gets right about your hotel and what it still misses.</p>
             <div class="aiv-signals-grid aiv-signals-grid--three">
@@ -222,7 +242,7 @@
             <h2 id="adpThemePeers" class="aiv-theme-title">Competitive Context &amp; Priority Actions</h2>
             <p class="aiv-theme-help help-text">Where competing hotels appear when yours does not, and the priority actions to review next.</p>
             <div class="aiv-peers-grid aiv-peers-grid--compact">
-              <div class="aiv-theme-card aiv-peers-card aiv-peers-card--competitive">
+              <div class="aiv-theme-card aiv-peers-card aiv-peers-card--competitive" data-adp-tour-target="competitive-displacement">
                 <h3 class="aiv-theme-label">Competitive Displacement</h3>
                 <div id="adpExecDisplacement"></div>
               </div>
@@ -235,7 +255,7 @@
         </div>
 
         <div class="adp-layer adp-layer--evidence" data-adp-layer="evidence-discovery">
-          <section class="aiv-theme-group aiv-evidence-discovery" aria-labelledby="adpThemeEvidence" data-adp-section="evidence-sources-discovery">
+          <section class="aiv-theme-group aiv-evidence-discovery" aria-labelledby="adpThemeEvidence" data-adp-section="evidence-sources-discovery" data-adp-tour-target="evidence">
             <h2 id="adpThemeEvidence" class="aiv-theme-title">Evidence, Sources &amp; Discovery</h2>
             <p class="aiv-theme-help help-text">Which websites AI cites when talking about your hotel or competing hotels. This shows which sources may be shaping those answers.</p>
 
