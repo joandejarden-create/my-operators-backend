@@ -78,7 +78,7 @@ export function postHelenaCmoApprovalAction(req, res) {
       ok: false,
       error: 'STRATEGY_REVIEW_REQUIRED',
       message:
-        'Strategy is STRATEGY_PENDING_FOUNDER_REVIEW. Review strategy before approving tactical PREPARE items.',
+        'Strategy is still pending founder discussion/review. Discuss strategy before approving tactical PREPARE items.',
       console: consoleVm,
     });
   }

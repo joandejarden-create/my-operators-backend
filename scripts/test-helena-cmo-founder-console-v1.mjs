@@ -188,8 +188,12 @@ try {
     const vm = buildFounderConsoleV2ViewModel();
     if (!vm.ok) throw new Error(vm.error || 'console v2 not ok');
     if (vm.defaultTab !== 'assessment') throw new Error('default must be assessment');
-    if (vm.meta?.strategyState !== 'STRATEGY_PENDING_FOUNDER_REVIEW') {
-      throw new Error('expected STRATEGY_PENDING_FOUNDER_REVIEW');
+    const okStates = new Set([
+      'STRATEGY_PENDING_FOUNDER_REVIEW',
+      'STRATEGY_PENDING_FOUNDER_DISCUSSION',
+    ]);
+    if (!okStates.has(vm.meta?.strategyState)) {
+      throw new Error(`expected pending founder strategy state, got ${vm.meta?.strategyState}`);
     }
     if (!vm.executiveAssessment?.centralProblem) throw new Error('missing diagnosis');
     if (!(vm.roadmap?.NOW || []).length) throw new Error('missing NOW roadmap');
@@ -238,7 +242,7 @@ try {
       throw new Error('expected validation source coverage');
     }
     if (vm.executiveAssessment?.strategyApprovalRequested) {
-      throw new Error('strategy approval must not be requested in 6D');
+      throw new Error('strategy approval must not be requested in 6D/6E');
     }
     if (vm.executiveAssessment?.strategyChallengeDecision !== 'AMEND') {
       throw new Error('expected strategy challenge AMEND');
@@ -246,6 +250,30 @@ try {
     return {
       coverage: vm.sourceCoverage.coveragePercent,
       health: vm.overallMarketingHealth?.score,
+    };
+  });
+
+  test('FC-16', 'Phase 6E strategy decision pack + DISCUSS CTA', () => {
+    const vm = buildFounderConsoleV2ViewModel();
+    if (!vm.strategyDecision?.recommended?.id) throw new Error('missing strategy decision recommendation');
+    if (vm.meta?.primaryCta !== 'DISCUSS_STRATEGY') throw new Error('primary CTA must be DISCUSS_STRATEGY');
+    if (vm.meta?.strategyApprovalRequested) throw new Error('approval must stay false');
+    if (vm.meta?.strategyState !== 'STRATEGY_PENDING_FOUNDER_DISCUSSION') {
+      throw new Error(`expected DISCUSSION state, got ${vm.meta?.strategyState}`);
+    }
+    if (vm.executiveAssessment?.helenaRecommendationId !== 'B_ADP_ENTRY_DEALMAKING_ARCHITECTURE') {
+      throw new Error('expected Option B recommendation');
+    }
+    if (vm.strategyDecision?.dataCompletenessDecision?.answer !== 'PARTIALLY') {
+      throw new Error('expected PARTIALLY data completeness decision');
+    }
+    const html = fs.readFileSync(path.join(ROOT, 'public/js/admin-helena-cmo.js'), 'utf8');
+    if (!html.includes('DISCUSS STRATEGY')) throw new Error('UI must show DISCUSS STRATEGY');
+    if (/APPROVE STRATEGY/.test(html)) throw new Error('must not push APPROVE STRATEGY as primary');
+    return {
+      recommendation: vm.strategyDecision.recommended.id,
+      score: vm.strategyDecision.recommended.score,
+      dataDecision: vm.strategyDecision.dataCompletenessDecision.answer,
     };
   });
 } finally {

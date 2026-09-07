@@ -66,7 +66,11 @@
     var pending = !!(vm.meta && vm.meta.pendingStrategyReview);
     var first = ea.whatShouldHappenFirst || [];
     var cov = vm.sourceCoverage || {};
+    var sd = vm.strategyDecision || {};
     var thesis = ea.revisedStrategyThesis || ea.recommendedStrategyThesis || "";
+    var opts = ea.strategicOptions || sd.alternatives || [];
+    var gaps = (sd.blockingGaps && sd.blockingGaps.gaps) || [];
+    var dataDec = ea.dataCompletenessDecision || sd.dataCompletenessDecision || {};
 
     el.innerHTML =
       '<div class="helena-section"><h2>Source coverage</h2>' +
@@ -93,51 +97,68 @@
       '<p class="helena-muted">' +
       esc(cov.honesty || "Validation pack required for full coverage detail.") +
       '</p><button type="button" class="helena-btn ghost" data-tab-jump="baseline">Drill into coverage</button></div></div>' +
-      '<div class="helena-section"><h2>Where we stand</h2><p class="helena-prose">' +
+      '<div class="helena-section"><h2>Current state</h2><p class="helena-prose">' +
       esc(ea.whereWeStand) +
-      "</p></div>" +
-      '<div class="helena-section"><h2>Overall marketing health</h2>' +
-      '<div class="helena-scoregrid"><div class="helena-score"><div class="label">Health</div><div class="value">' +
+      '</p><div class="helena-scoregrid"><div class="helena-score"><div class="label">Health</div><div class="value">' +
       esc(health.score) +
       "/10</div><div class=\"helena-muted\">" +
       esc(health.label || "") +
       (health.priorScore != null ? " · prior " + esc(health.priorScore) : "") +
       "</div></div></div>" +
       (health.whyRevised ? '<p class="helena-muted">' + esc(health.whyRevised) + "</p>" : "") +
-      "</div>" +
-      '<div class="helena-section"><h2>Top strengths</h2>' +
+      "<h3>Strengths</h3>" +
       listHtml(ea.topStrengths) +
-      "</div>" +
-      '<div class="helena-section"><h2>Top opportunities</h2>' +
-      listHtml(ea.topOpportunities) +
-      "</div>" +
-      '<div class="helena-section"><h2>What is not working</h2>' +
+      "<h3>Not working</h3>" +
       listHtml(ea.whatIsNotWorking) +
       "</div>" +
-      '<div class="helena-section"><h2>What is unknown</h2>' +
-      listHtml(ea.unknowns) +
-      "</div>" +
-      '<div class="helena-section"><h2>CMO strategic read <span class="helena-chip">' +
+      '<div class="helena-section"><h2>Strategic diagnosis <span class="helena-chip">' +
       esc(ea.centralProblemConfidence || "MEDIUM_CONFIDENCE") +
       "</span></h2><p class=\"helena-prose\">" +
       esc(ea.centralProblem) +
       "</p></div>" +
-      '<div class="helena-section"><h2>Recommended strategy <span class="helena-chip">' +
-      esc(ea.strategyChallengeDecision || "PENDING CHALLENGE") +
-      "</span></h2><p class=\"helena-prose\">" +
+      '<div class="helena-section"><h2>Strategic options</h2>' +
+      listHtml(
+        opts.map(function (o) {
+          return (
+            (o.recommended ? "★ " : "") +
+            (o.id || "") +
+            " — " +
+            (o.name || "") +
+            (o.score != null ? " (" + o.score + "/10)" : "")
+          );
+        }),
+      ) +
+      "</div>" +
+      '<div class="helena-section"><h2>Helena recommendation <span class="helena-chip">' +
+      esc(ea.helenaRecommendationScore != null ? ea.helenaRecommendationScore + "/10" : ea.strategyChallengeDecision || "READY") +
+      "</span></h2><p class=\"helena-prose\"><strong>" +
+      esc(ea.helenaRecommendationName || "Pending 6E pack") +
+      "</strong></p><p class=\"helena-prose\">" +
       esc(thesis) +
-      "</p>" +
-      listHtml((ea.pillars || []).map(function (p) { return p.id + " — " + p.name; })) +
-      '<p class="helena-muted">Strategy approval is <strong>not</strong> requested in Phase 6D. Evidence validation first.</p></div>' +
+      "</p><h3>Will not prioritize</h3>" +
+      listHtml(ea.willNotPrioritize || []) +
+      '<p class="helena-muted">Primary CTA is <strong>DISCUSS STRATEGY</strong> — not approve/lock.</p></div>' +
+      '<div class="helena-section"><h2>Uncertainties</h2>' +
+      listHtml(ea.uncertainties || ea.unknowns || []) +
+      "<h3>Data completeness</h3><p class=\"helena-prose\">" +
+      esc((dataDec.answer || "—") + " — " + (dataDec.explanation || "")) +
+      "</p><h3>Gap classes</h3>" +
+      listHtml(
+        gaps.map(function (g) {
+          return g.gap + " → " + g.classification;
+        }),
+      ) +
+      "</div>" +
+      '<div class="helena-section"><h2>Founder discussion</h2>' +
+      '<div class="helena-card"><p class="helena-prose">' +
+      esc(ea.founderDiscussionPrompt || "Discuss the recommended strategic choice before any lock.") +
+      '</p><button type="button" class="helena-btn primary" data-open-decision="STRATEGY-V1">DISCUSS STRATEGY</button> ' +
+      '<button type="button" class="helena-btn" data-tab-jump="strategy">Open strategy detail</button></div></div>' +
       '<div class="helena-section"><h2>Top 3 things that matter first</h2>' +
       listHtml(first.slice(0, 3)) +
       "</div>" +
-      '<div class="helena-section"><h2>Founder review</h2>' +
-      '<div class="helena-card"><p class="helena-prose">Read the deep brief and source coverage before any strategy lock. Primary next step is understanding — not approving tactics.</p>' +
-      '<button type="button" class="helena-btn" data-tab-jump="strategy">Open strategy page</button> ' +
-      '<button type="button" class="helena-btn ghost" data-open-decision="STRATEGY-V1">Strategy notes (not approval ask)</button></div></div>' +
       (pending
-        ? '<div class="helena-section"><h2>Proposed actions (not ready to approve)</h2><p class="helena-muted">Shown for context only while strategy is pending review.</p>' +
+        ? '<div class="helena-section"><h2>Proposed actions (not ready to approve)</h2><p class="helena-muted">Context only while strategy is in founder discussion.</p>' +
           listHtml((vm.joanNeedsToDecide || []).map(function (d) {
             return d.id + ": " + d.decision + " — " + (d.displayStatus || "PROPOSED — PENDING STRATEGY REVIEW");
           })) +
@@ -227,34 +248,51 @@
   function renderStrategy(vm) {
     var el = document.getElementById("tab-strategy");
     var st = vm.strategy || {};
+    var sd = vm.strategyDecision || {};
     var pending = !!st.pendingStrategyReview;
+    var thesis =
+      (st.recommendation && st.recommendation.name) ||
+      (sd.recommended && sd.recommended.name) ||
+      st.thesis;
+    var channels = sd.channelRoles || [];
     el.innerHTML =
       '<div class="helena-section"><h2>Strategy state</h2><span class="helena-chip">' +
       esc(st.state) +
-      "</span></div>" +
-      '<div class="helena-section"><h2>Strategic thesis</h2><p class="helena-prose">' +
-      esc(st.thesis) +
-      "</p></div>" +
-      '<div class="helena-section"><h2>Target clients</h2><p class="helena-prose">' +
-      esc(st.who) +
-      "</p></div>" +
-      '<div class="helena-section"><h2>Buyer problem / urgency</h2><p class="helena-prose">' +
-      esc(st.problem) +
+      '</span><p class="helena-muted">Primary CTA: DISCUSS STRATEGY — approval/lock not requested in Phase 6E.</p></div>' +
+      '<div class="helena-section"><h2>Helena recommendation</h2><p class="helena-prose"><strong>' +
+      esc(thesis) +
+      "</strong>" +
+      (st.recommendation && st.recommendation.score != null
+        ? " · " + esc(st.recommendation.score) + "/10"
+        : "") +
       "</p><p class=\"helena-prose\">" +
-      esc(st.urgency) +
+      esc((st.choice && st.choice.competeWhere) || st.thesis || "") +
       "</p></div>" +
-      '<div class="helena-section"><h2>Strategic pillars</h2>' +
-      listHtml((st.pillars || []).map(function (p) { return p.id + " — " + p.name + ": " + (p.rationale || ""); })) +
-      '</div><div class="helena-section"><h2>Channel roles</h2><ul class="helena-list">' +
-      "<li>Website: " + esc(st.websiteRole) + "</li>" +
-      "<li>LinkedIn: " + esc(st.linkedinRole) + "</li>" +
-      "<li>ABM: " + esc(st.abmRole) + "</li>" +
-      "<li>SEO: " + esc(st.seoRole) + "</li></ul></div>" +
-      '<div class="helena-section"><h2>What we will not do</h2>' +
-      listHtml(st.stopDoing || []) +
+      '<div class="helena-section"><h2>Win first</h2><p class="helena-prose">' +
+      esc((st.choice && st.choice.winFirst) || st.who || "") +
+      "</p></div>" +
+      '<div class="helena-section"><h2>Lead problem / entry offer</h2><p class="helena-prose">' +
+      esc((st.choice && st.choice.leadProblem) || st.problem || "") +
+      "</p><p class=\"helena-prose\">Entry: " +
+      esc((st.choice && st.choice.entryOffer) || "") +
+      "</p></div>" +
+      '<div class="helena-section"><h2>Channel roles</h2>' +
+      (channels.length
+        ? listHtml(
+            channels.map(function (c) {
+              return c.channel + " [" + c.rank + "] — " + c.job;
+            }),
+          )
+        : '<ul class="helena-list"><li>Website: ' +
+          esc(st.websiteRole) +
+          "</li><li>LinkedIn: " +
+          esc(st.linkedinRole) +
+          "</li></ul>") +
+      '</div><div class="helena-section"><h2>What we will not do</h2>' +
+      listHtml((st.choice && st.choice.willNotDo) || st.stopDoing || []) +
       '</div><div class="helena-section"><h2>Founder action</h2>' +
       (pending
-        ? '<button type="button" class="helena-btn primary" data-open-decision="STRATEGY-V1">REVIEW STRATEGY</button>'
+        ? '<button type="button" class="helena-btn primary" data-open-decision="STRATEGY-V1">DISCUSS STRATEGY</button>'
         : '<p class="helena-muted">State is ' + esc(st.state) + ". Not auto-locked.</p>") +
       "</div>";
   }
@@ -294,15 +332,15 @@
     var html =
       '<div class="helena-section"><h2>Actions &amp; approvals</h2><p class="helena-prose">' +
       (pending
-        ? "Strategy is still pending founder review. Tactical items are proposed only — Helena will not treat them as the primary ask."
+        ? "Strategy is in founder discussion. Tactical items are proposed only — Helena will not treat them as the primary ask."
         : "Strategy reviewed. Tactical PREPARE approvals may proceed (EXECUTE still OFF).") +
       "</p></div>";
 
     html += '<div class="helena-section"><h2>Strategy gate</h2><div class="helena-card">';
     html +=
       '<p class="helena-prose">' +
-      esc((vm.founderStrategyDecision && vm.founderStrategyDecision.decision) || "Review strategy") +
-      '</p><button type="button" class="helena-btn primary" data-open-decision="STRATEGY-V1">REVIEW STRATEGY</button></div></div>';
+      esc((vm.founderStrategyDecision && vm.founderStrategyDecision.decision) || "Discuss strategy") +
+      '</p><button type="button" class="helena-btn primary" data-open-decision="STRATEGY-V1">DISCUSS STRATEGY</button></div></div>';
 
     html += '<div class="helena-section"><h2>Joan needs to decide (tactical)</h2>';
     (vm.joanNeedsToDecide || []).forEach(function (d) {
@@ -449,11 +487,16 @@
     var title = document.getElementById("helenaDialogTitle");
     document.getElementById("helenaDialogNote").value = "";
     if (id === "STRATEGY-V1") {
-      title.textContent = "Review strategy";
+      title.textContent = "Discuss strategy";
       body.innerHTML =
         '<p class="helena-prose">' +
         esc((consoleVm.founderStrategyDecision && consoleVm.founderStrategyDecision.decision) || "") +
-        '</p><p class="helena-muted">Lock = accept strategy for now. Amend = accept with note. Hold = keep pending. Does not enable EXECUTE.</p>';
+        '</p><p class="helena-prose">' +
+        esc(
+          (consoleVm.executiveAssessment && consoleVm.executiveAssessment.helenaRecommendationName) ||
+            "",
+        ) +
+        '</p><p class="helena-muted">Primary ask is discussion. Use Amend to capture notes. Hold keeps discussion open. Lock is only if you are ready after discussion — it still does not enable EXECUTE, publish, or merge.</p>';
     } else {
       var d = (consoleVm.joanNeedsToDecide || []).find(function (x) {
         return x.id === id;

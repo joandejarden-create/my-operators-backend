@@ -1,0 +1,13 @@
+# Console update (6E)
+
+Executive Assessment separates:
+- CURRENT STATE
+- STRATEGIC DIAGNOSIS
+- STRATEGIC OPTIONS
+- HELENA RECOMMENDATION
+- UNCERTAINTIES
+- FOUNDER DISCUSSION
+
+Primary CTA: **DISCUSS STRATEGY** (not APPROVE STRATEGY).
+`strategyApprovalRequested: false`
+`primaryCta: DISCUSS_STRATEGY`
