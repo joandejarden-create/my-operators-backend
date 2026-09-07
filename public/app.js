@@ -327,6 +327,7 @@
     var openGroups = {};
     var searchText = '';
     var helenaAttentionCount = 0;
+    var helenaAttentionFetchInFlight = false;
 
     var ROUTE_ALIASES = {
         '/': '/home',
@@ -852,23 +853,58 @@
     }
 
     /**
+     * Helena CMO API/nav capability — matches server canAccessHelenaCmoAdmin.
+     * Requires resolved /api/me; never isDevMode alone (avoids 403 spam).
+     */
+    function canAccessHelenaCmoApi() {
+        if (!meContextLoaded || !meDealality) return false;
+        if (hasAdminNavAccess()) return true;
+        if (meDealality.founderNavOverridesAvailable === true) return true;
+        if (
+            meDealality.canonicalWorkspaceOptions &&
+            meDealality.canonicalWorkspaceOptions.founderNavOverridesAvailable === true
+        ) {
+            return true;
+        }
+        if (
+            (meDealality.demoStakeholderMode === true || meDealality.isDemo) &&
+            switchableWorkspaces.indexOf('Brand') !== -1 &&
+            switchableWorkspaces.indexOf('Owner') !== -1
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Optional attention badge for Helena CMO (pending founder decisions + PREPARE approvals).
      */
     function refreshHelenaAttentionCount() {
-        if (!(hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode)) return;
+        if (!canAccessHelenaCmoApi()) return;
+        if (helenaAttentionFetchInFlight) return;
         var auth = window.DealalityMemberstackAuth;
         if (!auth || typeof auth.authFetch !== 'function') return;
+        helenaAttentionFetchInFlight = true;
         auth.authFetch('/api/admin/helena-cmo/attention-count')
             .then(function (res) { return res.json().then(function (body) { return { res: res, body: body }; }); })
             .then(function (pack) {
-                if (!pack.res.ok || !pack.body || !pack.body.ok) return;
+                helenaAttentionFetchInFlight = false;
+                if (!pack.res.ok || !pack.body || !pack.body.ok) {
+                    if (typeof console !== 'undefined' && console.warn) {
+                        console.warn('[Helena CMO] attention-count unavailable', pack.res.status, pack.body && pack.body.error);
+                    }
+                    return;
+                }
                 var next = Number(pack.body.count) || 0;
                 if (next === helenaAttentionCount) return;
                 helenaAttentionCount = next;
                 renderNav(currentRole, searchText);
             })
-            .catch(function () {
-                // Non-blocking — badge is optional.
+            .catch(function (err) {
+                helenaAttentionFetchInFlight = false;
+                if (typeof console !== 'undefined' && console.warn) {
+                    console.warn('[Helena CMO] attention-count request failed', err && err.message ? err.message : err);
+                }
             });
     }
 
@@ -883,7 +919,7 @@
             return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
         }
         if (normalized === '/admin/helena-cmo') {
-            return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
+            return canAccessHelenaCmoApi();
         }
         if (isAdminExclusiveRoute(normalized) && !hasAdminNavAccess()) return false;
         var navRole = resolveCurrentNavRole();
@@ -1152,7 +1188,7 @@
             return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
         }
         if (child.helenaCmoAdmin) {
-            return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
+            return canAccessHelenaCmoApi();
         }
         if (child.stakeholderProduct && window.DealalityStakeholderNav) {
             return window.DealalityStakeholderNav.stakeholderProductVisible(child.stakeholderProduct, role);

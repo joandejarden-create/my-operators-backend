@@ -5,6 +5,7 @@
  */
 import fs from 'fs';
 import path from 'path';
+import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import {
   buildFounderBriefViewModel,
@@ -12,6 +13,8 @@ import {
   recordFounderConsoleDecision,
   recordFounderConsoleApproval,
 } from '../lib/helena-cmo/founder-console/brief-view-model.js';
+import { canAccessHelenaCmoAdmin } from '../middleware/requireHelenaCmoAdminAccess.js';
+import { requireAdminAccess } from '../middleware/requireAdminAccess.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -109,11 +112,69 @@ try {
       'public/js/admin-helena-cmo.js',
       'public/css/admin-helena-cmo.css',
       'api/admin-helena-cmo.js',
+      'middleware/requireHelenaCmoAdminAccess.js',
     ];
     for (const f of files) {
       if (!fs.existsSync(path.join(ROOT, f))) throw new Error(`missing ${f}`);
     }
     return { files: files.length };
+  });
+
+  test('FC-09', 'Browser-delivered JS parses (node --check)', () => {
+    const files = [
+      'public/js/admin-helena-cmo.js',
+      'public/js/support-admin-gate.js',
+    ];
+    for (const rel of files) {
+      const r = spawnSync(process.execPath, ['--check', path.join(ROOT, rel)], {
+        encoding: 'utf8',
+      });
+      if (r.status !== 0) {
+        throw new Error(`${rel}: ${r.stderr || r.stdout || 'parse failed'}`);
+      }
+    }
+    return { checked: files.length };
+  });
+
+  test('FC-10', 'Founder/admin auth policy (not bare requireAdminAccess)', () => {
+    const founderOnly = {
+      isAdmin: false,
+      flags: {},
+      workspaceAccess: [],
+      isDemo: true,
+      demoStakeholderMode: true,
+    };
+    if (!canAccessHelenaCmoAdmin(founderOnly)) {
+      throw new Error('founder constellation must pass Helena gate');
+    }
+    let adminRejected = false;
+    requireAdminAccess(
+      { dealalityUser: founderOnly },
+      {
+        status(code) {
+          this.statusCode = code;
+          return this;
+        },
+        json() {
+          adminRejected = this.statusCode === 403;
+          return this;
+        },
+      },
+      () => {
+        adminRejected = false;
+      },
+    );
+    if (!adminRejected) {
+      throw new Error('expected bare requireAdminAccess to reject founder-only (documents prior mismatch)');
+    }
+    const serverJs = fs.readFileSync(path.join(ROOT, 'server.js'), 'utf8');
+    if (!serverJs.includes('helenaCmoAdminAuth') || !serverJs.includes('requireHelenaCmoAdminAccess')) {
+      throw new Error('server must wire helenaCmoAdminAuth');
+    }
+    if (/app\.get\("\/api\/admin\/helena-cmo\/attention-count", \.\.\.adminAuth/.test(serverJs)) {
+      throw new Error('attention-count still on bare adminAuth');
+    }
+    return { founderAllowed: true, bareAdminRejectsFounder: true };
   });
 } finally {
   if (actionsBackup != null) fs.writeFileSync(ACTIONS, actionsBackup);

@@ -296,7 +296,7 @@
           return "<li><strong>" + esc(k) + "</strong>: " + esc(ms[k]) + "</li>";
         })
         .join("") +
-      "</ul><p class="helena-muted">Likes / sessions / impressions are not commercial success.</p></div>";
+      "</ul><p class=\"helena-muted\">Likes / sessions / impressions are not commercial success.</p></div>";
   }
 
   function renderAdp(b) {
@@ -309,7 +309,7 @@
         ? ""
         : '<div class="helena-card"><p>' +
           esc((b.adpPilots && b.adpPilots.emptyState) || "No pilots") +
-          "</p><p class="helena-muted">Booking/revenue causality: not claimed.</p></div>") +
+          '</p><p class="helena-muted">Booking/revenue causality: not claimed.</p></div>') +
       "</div>" +
       '<div class="helena-section"><h2>Candidate classes (not named accounts)</h2>' +
       candidates
@@ -323,7 +323,7 @@
             esc(c.whyNow) +
             "</p><p><strong>Next:</strong> " +
             esc(c.nextStep) +
-            "</p><p class=\"helena-muted\">" +
+            '</p><p class="helena-muted">' +
             esc(c.evidenceClass) +
             "</p></article>"
           );
@@ -491,16 +491,26 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    if (window.DealalityWaveLoader) {
+    if (
+      window.DealalityWaveLoader &&
+      typeof window.DealalityWaveLoader.mount === "function"
+    ) {
       window.DealalityWaveLoader.mount("#supportGateLoading", { label: "Loading Helena CMO…" });
     }
     var gate = window.SupportAdminGate;
-    if (!gate) return;
+    if (!gate || typeof gate.requireHelenaCmoAdmin !== "function") {
+      var err = document.getElementById("helenaError");
+      if (err) {
+        err.hidden = false;
+        err.textContent = "Helena admin gate unavailable.";
+      }
+      return;
+    }
     gate
-      .requireAdmin({
-        loadingEl: "#supportGateLoading",
-        deniedEl: "#supportGateDenied",
-        contentEl: "#supportGateContent",
+      .requireHelenaCmoAdmin({
+        loadingId: "supportGateLoading",
+        deniedId: "supportGateDenied",
+        contentId: "supportGateContent",
       })
       .then(function (ok) {
         if (!ok) return;
