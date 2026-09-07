@@ -58,6 +58,12 @@ import {
   getAiDemandPositioningReadHealth,
   getAiDemandPositioningPublicationMeta,
 } from "./api/ai-demand-positioning.js";
+import {
+  getHelenaCmoBrief,
+  getHelenaCmoAttentionCount,
+  postHelenaCmoDecisionAction,
+  postHelenaCmoApprovalAction,
+} from "./api/admin-helena-cmo.js";
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
 import {
   requireAdpShareCapability,
@@ -773,6 +779,12 @@ const myDealsAuth = [memberstackAuth, requireDealalityUser, requireMyDealsAccess
 const partnerIntelligenceAuth = [memberstackAuth, requireDealalityUser, requirePartnerIntelligenceAccess];
 const myDealsDealAuth = [...myDealsAuth, requireDealRecordAccess];
 const adminAuth = [memberstackAuth, requireDealalityUser, requireAdminAccess];
+
+// Admin — Helena CMO Founder Console (local decision log; EXECUTE/recurring OFF)
+app.get("/api/admin/helena-cmo/brief", ...adminAuth, getHelenaCmoBrief);
+app.get("/api/admin/helena-cmo/attention-count", ...adminAuth, getHelenaCmoAttentionCount);
+app.post("/api/admin/helena-cmo/decisions/:id/action", ...adminAuth, postHelenaCmoDecisionAction);
+app.post("/api/admin/helena-cmo/approvals/:id/action", ...adminAuth, postHelenaCmoApprovalAction);
 const internalRunbookAuth = [memberstackAuth, requireDealalityUser, requireInternalRunbookAdmin];
 const ownerOdrAuth = [...myDealsAuth, requireOwnerOdrCreateAccess];
 const ownerOdrDealAuth = [...myDealsDealAuth, requireOwnerOdrCreateAccess];
