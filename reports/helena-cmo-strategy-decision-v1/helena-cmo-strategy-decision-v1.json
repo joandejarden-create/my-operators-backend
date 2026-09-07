@@ -1,0 +1,413 @@
+{
+  "schemaVersion": "helena-cmo-strategy-decision-v1",
+  "generatedAt": "2026-09-07T13:43:12.636Z",
+  "meta": {
+    "executeEnabled": false,
+    "recurringHelenaEnabled": false,
+    "strategyApprovalRequested": false,
+    "strategyState": "STRATEGY_PENDING_FOUNDER_DISCUSSION",
+    "primaryCta": "DISCUSS_STRATEGY",
+    "note": "Phase 6E presents an explicit strategic choice for founder discussion — not lock/approval."
+  },
+  "dataCompletenessDecision": {
+    "answer": "PARTIALLY",
+    "explanation": "Remaining gaps (live GA4/GSC, LinkedIn API, outreach attribution) are unlikely to flip category/positioning. Named warm-owner access confirmation COULD change confidence in ADP-entry sequencing or force a temporary dealmaking-only commercial focus — so gaps are partially material to execution sequencing, not to the recommended strategic territory.",
+    "requestFounderLock": false,
+    "requestFounderDiscussion": true
+  },
+  "blockingGaps": {
+    "minimumEvidenceThreshold": "Locked founder GTM/ICP/positioning + product maturity for entry offer + public identity check (live site) + honest measurement status + LinkedIn role evidence + commercial access hypothesis (warm network OR explicit cold motion). Named CRM rows and live GA4 are NOT required to recommend a near-term GTM strategy.",
+    "gaps": [
+      {
+        "gap": "Live GA4 API",
+        "classification": "IMPORTANT_BUT_NON_BLOCKING",
+        "why": "Changes channel diagnostics and CTA measurement; unlikely to change ICP/GTM category choice."
+      },
+      {
+        "gap": "Live GSC API",
+        "classification": "OPERATIONAL_LATER",
+        "why": "SEO priority already MIXED_WEAK from stale snapshot; live refresh refines defense, not strategy."
+      },
+      {
+        "gap": "LinkedIn analytics API",
+        "classification": "IMPORTANT_BUT_NON_BLOCKING",
+        "why": "Role can be set from content history + engagement quality proxy; ROI remains UNKNOWN."
+      },
+      {
+        "gap": "Webflow CMS API inventory",
+        "classification": "IMPORTANT_BUT_NON_BLOCKING",
+        "why": "Public HTML inventory resolves what prospects see TODAY; CMS helps editorial ops later."
+      },
+      {
+        "gap": "Named commercial pipeline (warm ADP accounts)",
+        "classification": "BLOCKING_FOR_STRATEGY",
+        "nuance": "Blocking for confident ADP-entry EXECUTION sequencing and for strategy LOCK confidence on access — not blocking for discussing the recommended strategic choice. Founder relationship input closes this.",
+        "why": "If warm ADP-relevant owners do not exist, near-term paid-pilot thesis weakens and sequencing must shift."
+      },
+      {
+        "gap": "Email/outreach attribution",
+        "classification": "OPERATIONAL_LATER",
+        "why": "Required for learning loops; does not choose category/positioning."
+      },
+      {
+        "gap": "Conversion-grade public proof",
+        "classification": "IMPORTANT_BUT_NON_BLOCKING",
+        "why": "Affects conversion rate and messaging strength; strategy still leads with paid learning to CREATE proof."
+      }
+    ]
+  },
+  "connectors": {
+    "ga4": "NOT_CONNECTED",
+    "gsc": "NOT_CONNECTED",
+    "linkedInAnalytics": "NOT_CONNECTED",
+    "webflowCms": "NOT_CONNECTED",
+    "publicWebsiteHtml": "CONNECTED_AND_WORKING",
+    "marketingOsAirtable": "CONNECTED_BUT_NOT_WIRED_TO_HELENA",
+    "gtmPilotTargetList": "CONNECTED_BUT_NOT_WIRED_TO_HELENA",
+    "gtmOwnerTargets": "CONNECTED_BUT_NOT_WIRED_TO_HELENA",
+    "acquisitionNetwork": "CONNECTED_BUT_NOT_WIRED_TO_HELENA",
+    "landingEvents": "CONNECTED_BUT_NOT_WIRED_TO_HELENA",
+    "emailAttribution": "NOT_CONNECTED",
+    "staleAnalyticsSnapshots": "CONNECTED_AND_WORKING"
+  },
+  "analytics": {
+    "schemaVersion": "helena-cmo-analytics-contract-v1",
+    "generatedAt": "2026-09-07T13:43:12.619Z",
+    "connectors": {
+      "ga4LiveApi": "NOT_CONNECTED",
+      "gscLiveApi": "NOT_CONNECTED",
+      "linkedInAnalyticsApi": "NOT_CONNECTED",
+      "snapshotFiles": "NOT_CONNECTED",
+      "marketingOsPerformance": "CONNECTED_BUT_NOT_WIRED_TO_HELENA",
+      "landingEvents": "CONNECTED_BUT_NOT_WIRED_TO_HELENA"
+    },
+    "blockers": {
+      "ga4": "No Google Analytics Data API client or GA4_* credentials in repo/.env.example.",
+      "gsc": "No Search Console API client or GSC_* credentials in repo/.env.example.",
+      "linkedIn": "No LinkedIn Marketing/Analytics OAuth integration; scrape/CSV only."
+    },
+    "acquisition": {
+      "users": null,
+      "sessions": null,
+      "dateRange": "2026-06-01_2026-09-06",
+      "freshness": "STALE_SNAPSHOT",
+      "sourceMediumTop": [],
+      "landingPagesTop": [],
+      "newVsReturning": "UNKNOWN",
+      "geography": "UNKNOWN"
+    },
+    "commercialIntent": {
+      "status": "NOT_INSTRUMENTED_OR_UNKNOWN",
+      "ctaClicks": "UNKNOWN",
+      "demoIntent": "UNKNOWN",
+      "pilotIntent": "UNKNOWN",
+      "formStarts": "UNKNOWN",
+      "formCompletions": "UNKNOWN",
+      "productPageEngagement": "UNKNOWN",
+      "note": "GA4 snapshot lacks conversion/event grain usable for CMO commercial intent."
+    },
+    "organic": {
+      "freshness": "STALE_SNAPSHOT",
+      "dateRange": "2026-06-01_2026-09-06",
+      "topPages": [],
+      "topQueries": [],
+      "brandedVsNonBranded": "PARTIAL_UNKNOWN"
+    },
+    "trend": {
+      "status": "NOT_AVAILABLE_AS_30_VS_PRIOR",
+      "note": "Snapshot is a single Jun–Sep window; cannot compute current-30 vs prior-30 without live API."
+    },
+    "linkedIn": {
+      "freshness": "MISSING",
+      "liveApi": false,
+      "postCount": null,
+      "impressions": "NULL_IN_SCRAPE",
+      "contentPerformance": "AVAILABLE_PROXY_LIKES_COMMENTS",
+      "audienceSignal": "WEAK_PROXY",
+      "commercialImpact": "UNKNOWN",
+      "roleDecisionSufficient": true,
+      "roleDecisionNote": "Enough to set LinkedIn ROLE (founder commercial education + warm activation) without precise ROI.",
+      "summaryExcerpt": ""
+    },
+    "conclusions": {
+      "businessOutcomes": [
+        "No attributable revenue, pilots, or qualified opportunities in analytics grain.",
+        "Traffic volume alone is not commercial success (sessions ~553 over ~3 months in snapshot)."
+      ],
+      "commercialIntent": [
+        "Commercial-intent events (CTA/demo/pilot/form) are UNKNOWN in available GA4 export.",
+        "Cannot separate interested owners from anonymous browsing."
+      ],
+      "channelActivity": [
+        "Direct-heavy acquisition pattern in prior Helena reads; organic thin.",
+        "LinkedIn→site attribution UNKNOWN.",
+        "GSC shows thin clicks relative to some vanity impressions (per prior GSC summary)."
+      ]
+    },
+    "provenance": {
+      "ga4Path": null,
+      "gscPath": null,
+      "ga4SummaryPresent": false,
+      "gscSummaryPresent": false
+    }
+  },
+  "website": {
+    "method": "public_html_fetch_no_cms_token",
+    "ok200": 39,
+    "adpVisibleOnPublicSite": false,
+    "homepageTitle": "Dealality | Find the best path for your hotel",
+    "homepageIdentity": "OWNER_DEALMAKING",
+    "insightsTheme": "BRAND_OPERATOR_SELECTION_HEAVY",
+    "brandExplorerPublicPage": false,
+    "operatorExplorerPublicPage": false,
+    "opportunityReviewPath": "/opportunity-review",
+    "repoV9Note": "Repo marketing/dealality-landing-v9.html remains selection-forward — NOT what prospects see on live homepage.",
+    "authority": "LIVE_WEBSITE"
+  },
+  "commercialPipelineModel": {
+    "preferredReuse": [
+      "GTM Pilot Target List (outreach contacts)",
+      "GTM Acquisition Network Relationships (founder LinkedIn graph)",
+      "GTM Decision Opportunities (project-level)",
+      "Marketing OS Growth Opportunities / Audiences (class-level only)"
+    ],
+    "doNotCreateGiantCrm": true,
+    "canonicalFields": [
+      "ACCOUNT",
+      "CONTACT_RELATIONSHIP",
+      "CLIENT_TYPE",
+      "ICP",
+      "GTM_TRACK",
+      "HOTELS_PORTFOLIO",
+      "WARMTH",
+      "CURRENT_NEED",
+      "TRIGGER",
+      "LAST_CONTACT",
+      "CURRENT_STAGE",
+      "NEXT_STEP",
+      "PRODUCT",
+      "PRICING_STATUS",
+      "OBJECTION",
+      "OWNER",
+      "SOURCE",
+      "EVIDENCE",
+      "CONFIDENCE"
+    ],
+    "warmthRule": "Helena must NOT fabricate relationship warmth — founder-supplied or evidenced only.",
+    "namedPipelineStatus": "DATA_GAP"
+  },
+  "founderRelationshipInputContract": {
+    "purpose": "Capture high-value known relationships without inventing warmth",
+    "fields": [
+      "person",
+      "company",
+      "relationshipStrength",
+      "role",
+      "likelyRelevance",
+      "hotelsPortfolioIfKnown",
+      "lastInteraction",
+      "notes",
+      "gtmTrackHint",
+      "productHint"
+    ],
+    "helenaMayThen": [
+      "research public facts",
+      "score opportunity against ICP/GTM",
+      "propose next step"
+    ],
+    "helenaMustNot": [
+      "invent warmth",
+      "auto-outreach",
+      "EXECUTE"
+    ],
+    "uiStatus": "CONTRACT_ONLY_THIS_PHASE"
+  },
+  "strategicChoice": {
+    "competeWhere": "Owner-controlled hotel dealmaking platform with proprietary intelligence — entered commercially via AI Demand Positioning paid diagnostics for owners who need a clearer demand/path decision now.",
+    "winFirst": "Warm owner / owner-advisor relationships with an active or near-term brand/operator/path decision OR visible AI-demand uncertainty on an existing/asset hotel — high access, high willingness to pay for a bounded pilot, strong proof potential.",
+    "leadProblem": "Owners make path and demand decisions with incomplete, brand-biased, or uninstrumented information — costly when the first brand/operator conversation already constrains outcomes, and when AI demand representation is invisible or weak.",
+    "whyDealality": "Combines owner-controlled dealmaking workflow + hotel/brand/operator intelligence depth + AI demand positioning evidence — not generic GEO SaaS, not a broker, not a listing site, not advice-only consulting.",
+    "alternatives": [
+      "Do nothing / delay",
+      "Spreadsheets and manual research",
+      "Consultants/advisors",
+      "Brand/operator direct outreach first",
+      "Hospitality data platforms",
+      "GEO / AI visibility tools",
+      "Broker-led processes"
+    ],
+    "entryOffer": "MARKET_TEST ADP paid pilot / diagnostic with scorecard for warm accounts",
+    "expansionPath": "Pilot → proof narrative → broader dealmaking modules (Explorers, alignment, opportunity review) when the owner’s next decision is path/selection — never forced cross-sell.",
+    "willNotDo": [
+      "Brand/operator primary acquisition as NOW GTM",
+      "Paid media scale",
+      "SEO vanity expansion before conversion paths",
+      "AO LinkedIn volume as primary growth engine",
+      "Website full rebuild before dual-track ADP visibility PREPARE",
+      "EXECUTE / recurring Helena / external publish without founder path",
+      "Claiming ROI without instrumentation"
+    ]
+  },
+  "recommended": {
+    "id": "B_ADP_ENTRY_DEALMAKING_ARCHITECTURE",
+    "name": "ADP paid-pilot entry for warm owners · owner dealmaking as company architecture",
+    "score": 7.6,
+    "scores": {
+      "marketUrgency": 7,
+      "productReadiness": 8,
+      "differentiation": 8,
+      "accessToBuyers": 6,
+      "revenuePotential": 7,
+      "adoptionFriction": 6,
+      "proofAbility": 5,
+      "recurringPotential": 7,
+      "companyIdentityCoherence": 7,
+      "longTermStrategicValue": 9
+    }
+  },
+  "alternatives": [
+    {
+      "id": "A_DEALMAKING_FIRST",
+      "name": "Owner dealmaking first · ADP as supporting product",
+      "score": 6.2,
+      "whyNotNow": "Live site already leads with dealmaking; without a paid entry wedge and proof loop, marketing stays narrative-heavy and revenue-light. ADP would remain invisible longer."
+    },
+    {
+      "id": "C_OWNER_INTELLIGENCE_PLATFORM",
+      "name": "Owner intelligence / decision platform first",
+      "score": 5.4,
+      "whyNotNow": "Strong long-term category, but packaging is broader than current GTM readiness, proof, and named pipeline. Higher message risk and slower paid learning."
+    }
+  ],
+  "positioning": {
+    "internal": "Dealality is building the owner-controlled operating system for hotel path decisions — demand, brand, operator, and deal structure — starting commercial learning with AI Demand Positioning pilots while the public brand remains dealmaking-forward.",
+    "owner": "Dealality helps you find the best path for your hotel with owner-controlled process and evidence — so you are not forced into the first brand or operator conversation unprepared.",
+    "adpEntry": "If AI systems already shape how guests discover hotels, you need to know how your hotel (and alternatives) show up — and what to do about it — before you lock a path. ADP is a paid diagnostic designed for that.",
+    "brandOperator": "Brands and operators get annual intelligence access; they are not the near-term acquisition priority while owner paid learning is the commercial constraint."
+  },
+  "channelRoles": [
+    {
+      "channel": "JOAN_LINKEDIN",
+      "rank": "CORE",
+      "job": "Founder trust + commercial education + warm activation toward ADP/dealmaking conversations — not vanity reach."
+    },
+    {
+      "channel": "WARM_OUTREACH",
+      "rank": "CORE",
+      "job": "Convert known relationships into instrumented paid-pilot discussions."
+    },
+    {
+      "channel": "ADVISORS",
+      "rank": "SUPPORTING",
+      "job": "Trusted introductions into owner decisions; not a volume channel."
+    },
+    {
+      "channel": "WEBSITE",
+      "rank": "CORE",
+      "job": "Public identity (dealmaking) + dual-track ADP discoverability + opportunity capture — conversion surface, not blog vanity."
+    },
+    {
+      "channel": "SEO",
+      "rank": "SUPPORTING",
+      "job": "Defend owner-intent pages already ranking; do not fund vanity impression programs."
+    },
+    {
+      "channel": "ADP_DIAGNOSTIC",
+      "rank": "CORE",
+      "job": "Entry commercial offer that creates paid learning and proof."
+    },
+    {
+      "channel": "AO_COMPANY_LINKEDIN",
+      "rank": "EXPERIMENT",
+      "job": "Secondary distribution only if it supports Joan/warm motion; not primary."
+    },
+    {
+      "channel": "PAID_ACQUISITION",
+      "rank": "PARK",
+      "job": "Park until proof + attribution exist."
+    }
+  ],
+  "proofSequence": [
+    "People will pay (paid pilot commitment)",
+    "They use the output (engagement with ADP deliverable)",
+    "They act on recommendations (documented decisions/next steps)",
+    "Value persists / expands (repeat, portfolio, adjacent modules)",
+    "Commercial outcome where attribution permits"
+  ],
+  "scorecard90d": [
+    {
+      "metric": "Named warm accounts activated",
+      "businessQuestion": "Do we have real commercial targets in motion?"
+    },
+    {
+      "metric": "Meaningful commercial conversations",
+      "businessQuestion": "Are owners engaging beyond polite interest?"
+    },
+    {
+      "metric": "Paid pilots started",
+      "businessQuestion": "Will they pay for ADP learning?"
+    },
+    {
+      "metric": "Pilot conversion rate (discuss→paid)",
+      "businessQuestion": "Is the offer clear and valued?"
+    },
+    {
+      "metric": "Pilot usage of deliverable",
+      "businessQuestion": "Is the product used, not just bought?"
+    },
+    {
+      "metric": "Proof assets created (anonymized)",
+      "businessQuestion": "Can marketing show evidence without inventing ROI?"
+    },
+    {
+      "metric": "Expansion signals (next module interest)",
+      "businessQuestion": "Does ADP open dealmaking naturally?"
+    },
+    {
+      "metric": "Attributed revenue (when join exists)",
+      "businessQuestion": "What cash did this motion produce?"
+    },
+    {
+      "metric": "Attribution gaps closed (P0 events)",
+      "businessQuestion": "Can we learn from the funnel at all?"
+    },
+    {
+      "metric": "Public ADP dual-track visibility PREPARE ready",
+      "businessQuestion": "Can prospects find the entry offer without identity rewrite?"
+    }
+  ],
+  "assumptions": [
+    {
+      "assumption": "Owners care enough about AI demand positioning to pay for a bounded pilot.",
+      "whyMatters": "Core revenue wedge",
+      "evidence": "Product MARKET_TEST + founder locks; no public conversion proof yet",
+      "confidence": "MEDIUM",
+      "howTest": "Warm paid-pilot closes",
+      "disprove": "Consistent polite interest + refusal to pay after clear offer"
+    },
+    {
+      "assumption": "Joan’s warm network can produce the first ADP cohort.",
+      "whyMatters": "Access is the near-term bottleneck",
+      "evidence": "Locks + GTM structures exist; named ADP warmth DATA_GAP",
+      "confidence": "MEDIUM_LOW",
+      "howTest": "Founder relationship input + outreach outcomes",
+      "disprove": "No ADP-relevant warm accounts after honest inventory"
+    },
+    {
+      "assumption": "ADP creates recurring / expansion value beyond one-shot PDF.",
+      "whyMatters": "Long-term SaaS coherence",
+      "evidence": "Product depth; longitudinal capability; unproven commercially",
+      "confidence": "MEDIUM",
+      "howTest": "Pilot usage + expansion asks",
+      "disprove": "One-and-done with no revisit or adjacent need"
+    },
+    {
+      "assumption": "Owner dealmaking remains coherent public identity while ADP is entry offer.",
+      "whyMatters": "Brand risk if ADP overshoots",
+      "evidence": "Live homepage already dealmaking-forward; ADP absent",
+      "confidence": "HIGH",
+      "howTest": "Dual-track PREPARE messaging tests",
+      "disprove": "Prospects misread Dealality as GEO-only or broker"
+    }
+  ]
+}

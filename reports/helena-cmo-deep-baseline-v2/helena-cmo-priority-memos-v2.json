@@ -1,0 +1,175 @@
+{
+  "generatedAt": "2026-09-07T17:32:55.056Z",
+  "priorities": [
+    {
+      "id": "P1_CONVERSION_INSTRUMENTATION",
+      "priority": "NOW",
+      "title": "Instrument form_complete → demo → pilot (+ GTM identity join)",
+      "problem": "GA4 shows form_start=8 and no named demo/pilot events; commercial outcomes invisible",
+      "whyNow": "Without this, B2 cannot be falsified",
+      "evidence": "Enrich GA4 events 30d; residual gap L1 outcomes",
+      "metrics": [
+        "form_start",
+        "form_complete",
+        "demo_request",
+        "pilot_request",
+        "GTM join rate"
+      ],
+      "soWhat": "Marketing stays narrative",
+      "businessValue": "Enables management of paid learning",
+      "strategicFit": "B2 mandatory dependency",
+      "urgency": "P0",
+      "confidence": "HIGH",
+      "effort": "MEDIUM",
+      "dependencies": [
+        "GA event taxonomy",
+        "Webflow/forms",
+        "Airtable fields"
+      ],
+      "costOfDelay": "Another quarter of unmeasurable GTM",
+      "success": "Events firing in GA4 + matched to Pilot Target rows",
+      "howMeasure": "DebugView + weekly CMO pull",
+      "risks": [
+        "Over-tagging noise"
+      ],
+      "counterargument": "Qualitative founder memory enough — rejected at this stage",
+      "beats": "More Insights posts; paid tests",
+      "deprioritizedBecauseOfThis": "Broad SEO expansion; vanity LI analytics chase",
+      "whatChangesView": "If events exist but volumes stay zero after activation, offer/ICP problem dominates"
+    },
+    {
+      "id": "P2_WARM_ADP_ACTIVATION",
+      "priority": "NOW",
+      "title": "Activate Connected/warm Pilot Target accounts with explicit ADP paid-pilot offer",
+      "problem": "Connected=58 but Call Completed=5, Replied=1, Draft Needed=41",
+      "whyNow": "Highest EV per founder hour; list already paid for in relationship capital",
+      "evidence": "GTM pilot aggregates live",
+      "metrics": [
+        "touches",
+        "calls",
+        "replies",
+        "pilot offers sent",
+        "paid pilots"
+      ],
+      "soWhat": "Relationship equity is idle inventory",
+      "businessValue": "Cash + ICP/price learning",
+      "strategicFit": "Core of B2",
+      "urgency": "P0",
+      "confidence": "HIGH",
+      "effort": "MEDIUM-HIGH (founder time)",
+      "dependencies": [
+        "Price band",
+        "one-pager",
+        "P1 events ideally parallel"
+      ],
+      "costOfDelay": "Warmth decays; competitors define AI narrative",
+      "success": "N qualified ADP conversations; ≥1 paid pilot or documented refusals",
+      "howMeasure": "Outreach Status + notes; not Owner Targets count",
+      "risks": [
+        "Vague ask burns list"
+      ],
+      "counterargument": "Need more content first — rejected by live acquisition mix",
+      "beats": "New product marketing; full site rebuild",
+      "deprioritizedBecauseOfThis": "AO scale; paid media",
+      "whatChangesView": "If Connected are not ADP-fit, retarget offer architecture"
+    },
+    {
+      "id": "P3_ADP_PUBLIC_CTA",
+      "priority": "NOW",
+      "title": "ADP discoverability + clear CTA path from homepage/dealmaking surfaces",
+      "problem": "ADP engaged when found, but not the public lead story; conversion path unclear",
+      "evidence": "ADP 7s/18pv bounce0.143; home 55s; adpLive HTTP200",
+      "whyNow": "Capture rare non-warm + clarify warm clicks",
+      "metrics": [
+        "ADP sessions",
+        "CTA clicks",
+        "form_start/complete from ADP"
+      ],
+      "soWhat": "Product curiosity dies at narrative fog",
+      "businessValue": "Higher conversion of scarce traffic",
+      "strategicFit": "B2 conversion surface",
+      "urgency": "P1",
+      "confidence": "HIGH",
+      "effort": "MEDIUM",
+      "dependencies": [
+        "Offer copy",
+        "form events"
+      ],
+      "costOfDelay": "Continued homepage bounce without learning",
+      "success": "Visible ADP path + measurable CTA",
+      "howMeasure": "GA4 page + events",
+      "risks": [
+        "Over-centering ADP vs dealmaking identity"
+      ],
+      "counterargument": "Rebuild whole site — too slow/expensive vs CTA path",
+      "beats": "Visual redesign for its own sake",
+      "deprioritizedBecauseOfThis": "Full website rebuild",
+      "whatChangesView": "If CTA clear and still no starts, traffic quality problem"
+    },
+    {
+      "id": "P4_SEO_REFESH",
+      "priority": "NOW",
+      "title": "SEO REFESH: invest dealmaking/selection; reduce low-value residences impression farming",
+      "problem": "Impressions ×12-ish vs prior 28d with CTR collapse; LOW VALUE dominates sample",
+      "evidence": "GSC live rollups + query classes",
+      "whyNow": "Stops false success; frees editorial capacity",
+      "metrics": [
+        "% impressions low-value",
+        "commercial CTR",
+        "dealmaking clicks"
+      ],
+      "soWhat": "Search dashboard currently misleads",
+      "businessValue": "Better intent mix; honest KPIs",
+      "strategicFit": "Protects dealmaking identity",
+      "urgency": "P1",
+      "confidence": "HIGH on diagnosis; MEDIUM on fix speed",
+      "effort": "MEDIUM",
+      "dependencies": [
+        "Editorial decisions",
+        "possibly demote/noindex"
+      ],
+      "costOfDelay": "Continued KPI self-deception",
+      "success": "Low-value share down; commercial query CTR up or stable with cleaner mix",
+      "howMeasure": "GSC class rollups each pull",
+      "risks": [
+        "Cutting content that could be repositioned"
+      ],
+      "counterargument": "Any impression is good early SEO — rejected",
+      "beats": "Publishing more residences-adjacent pieces",
+      "deprioritizedBecauseOfThis": "Broad SEO expansion",
+      "whatChangesView": "If commercial queries suddenly CTR well at volume, raise SEO investment"
+    },
+    {
+      "id": "P5_LINKEDIN_OUTCOME_LOG",
+      "priority": "NOW",
+      "title": "Keep LinkedIn cadence; log conversations + UTM; do not chase missing impressions",
+      "problem": "PERMISSION_LIMITED impressions; commercial outcomes UNKNOWN",
+      "evidence": "8 attributed sessions; scrape likes/comments only",
+      "whyNow": "Channel is real but unmanaged as CRM",
+      "metrics": [
+        "attributed sessions",
+        "logged conversations",
+        "offers sourced"
+      ],
+      "soWhat": "Publishing without CRM is theater",
+      "businessValue": "Turns authority into pipeline memory",
+      "strategicFit": "Secondary B2 channel",
+      "urgency": "P2",
+      "confidence": "MEDIUM-HIGH",
+      "effort": "LOW-MEDIUM",
+      "dependencies": [
+        "Simple logging habit/fields"
+      ],
+      "costOfDelay": "Unlearnable LI ROI debates",
+      "success": "Every serious LI convo logged; UTMs on links",
+      "howMeasure": "GTM notes + GA4 LI sessions",
+      "risks": [
+        "Process friction"
+      ],
+      "counterargument": "Buy LinkedIn ads analytics — not needed for B2",
+      "beats": "Company page vanity setup as blocker",
+      "deprioritizedBecauseOfThis": "AO LinkedIn scale-up",
+      "whatChangesView": "If LI consistently sources pilots, raise investment"
+    }
+  ]
+}

@@ -1,0 +1,530 @@
+{
+  "schemaVersion": "helena-cmo-deep-baseline-v2",
+  "generatedAt": "2026-09-07T17:32:55.056Z",
+  "meta": {
+    "executeEnabled": false,
+    "recurringHelenaEnabled": false,
+    "strategyApprovalRequested": false,
+    "deepBaselineV2": true,
+    "zapierUsed": false,
+    "liveMetricsPath": "reports/helena-cmo-live-data-reconciliation-v1/helena-cmo-live-metrics-v1.json",
+    "enrichReturnsPath": "reports/helena-cmo-native-data-pull-v1/enrich-returns/helena-cmo-live-metrics-v1.json",
+    "founderReviewPath": "reports/helena-cmo-deep-baseline-v2/00_FOUNDER_CMO_DEEP_REVIEW.md",
+    "primaryCta": "DISCUSS_STRATEGY"
+  },
+  "liveHeadline": {
+    "ga4_sessions_7d": 25,
+    "ga4_sessions_30d": 97,
+    "ga4_sessions_prior_30d": 241,
+    "ga4_sessions_90d": 518,
+    "ga4_channel_30d_direct": 57,
+    "ga4_channel_30d_referral": 16,
+    "ga4_channel_30d_organic_search": 10,
+    "ga4_channel_30d_organic_social": 8,
+    "ga4_channel_30d_ai_assistant": 4,
+    "ga4_linkedin_attributed_sessions_30d": 8,
+    "ga4_form_start_30d": 8,
+    "gsc_clicks_28d": 6,
+    "gsc_impressions_28d": 1376,
+    "gsc_clicks_prior_28d": 2,
+    "gsc_impressions_prior_28d": 114
+  },
+  "sourceStatus": {
+    "GA4": "LIVE",
+    "GSC": "LIVE",
+    "WEBFLOW": "LIVE",
+    "GTM": "LIVE",
+    "MARKETING_OS": "LIVE",
+    "LINKEDIN_JOAN_AO": "PARTIAL",
+    "LINKEDIN_DEALALITY": "NOT_CONNECTED",
+    "PRODUCT_USAGE": "PARTIAL"
+  },
+  "scores": {
+    "overall": {
+      "name": "Overall marketing health",
+      "score": 5,
+      "verdict": "Foundations without closed commercial loop",
+      "evidence": "GA4/GSC LIVE; sessions 97 vs prior 241; form_start=8; Pilot Connected=58; GSC 6c/1376i",
+      "context": "Specialist B2B owner platform at relationship scale",
+      "good": "Live measurement, named list, ADP surface, dealmaking spine",
+      "bad": "Outcome-blind funnel; SEO pollution; activation lag",
+      "soWhat": "Activity can continue without paid learning",
+      "consequence": "Slow truth on ICP/price/offer",
+      "opportunity": "90-day warm ADP learning cycle",
+      "priority": "P0",
+      "whyPriority": "Company needs falsifiable GTM",
+      "changeScore": "Paid pilots + instrumented funnel + cleaner search mix"
+    },
+    "website": {
+      "name": "Website",
+      "score": 4.5,
+      "verdict": "Reachable products; weak commercial narrative + measurement",
+      "evidence": "Home 55s bounce0.51; ADP 7s bounce0.143; form_start=8; no demo events",
+      "context": "Public Webflow site + owner product paths",
+      "good": "ADP live; Insights exist; product paths appear in GA4",
+      "bad": "Homepage not outcome-led; CTA chain incomplete",
+      "soWhat": "Rare visitors are under-converted",
+      "consequence": "Warm traffic wasted; cold traffic confused",
+      "opportunity": "ADP CTA path from dealmaking surfaces",
+      "priority": "P1",
+      "whyPriority": "Conversion surface for B2",
+      "changeScore": "Clear offer CTA + form_complete + message clarity test"
+    },
+    "seo": {
+      "name": "SEO / Search",
+      "score": 3.5,
+      "verdict": "Visibility without commercial click economics",
+      "evidence": "28d 1376i/6c CTR0.44%; LOW VALUE 264i sample; dealmaking thin",
+      "context": "sc-domain:dealality.com live GSC",
+      "good": "Some owner topics indexed; soft-brands/key-money get minor clicks",
+      "bad": "Residences impression theater; deep positions; CTR collapse",
+      "soWhat": "Impression KPIs lie",
+      "consequence": "Misallocated editorial time",
+      "opportunity": "REFESH to dealmaking/selection",
+      "priority": "P1",
+      "whyPriority": "Stop false growth signal",
+      "changeScore": "CTR↑ on commercial classes; low-value share↓"
+    },
+    "linkedin": {
+      "name": "LinkedIn (forced single score)",
+      "score": 5,
+      "verdict": "Relationship channel with thin attributed traffic; commercial UNKNOWN",
+      "evidence": "8 ATTRIBUTED sessions/30d; scrape engagement; impressions null; Dealality page NOT_CONNECTED",
+      "context": "Joan+AO publish; Enrich calendar live",
+      "good": "Non-zero site path; founder authority vehicle",
+      "bad": "No outcome join; no impressions; company page missing",
+      "soWhat": "Cannot claim LinkedIn GTM success",
+      "consequence": "Risk of vanity publishing",
+      "opportunity": "UTM + conversation logging",
+      "priority": "P2",
+      "whyPriority": "Support warm activation, not primary engine",
+      "changeScore": "Logged qualified convos + stable attributed sessions growth"
+    },
+    "pipeline": {
+      "name": "Pipeline activation (not database size)",
+      "score": 5.5,
+      "verdict": "Real named list; under-activated vs Connected",
+      "evidence": "Pilot 100; Connected58; Call Completed5; Replied1; Draft Needed41; Owner Targets1674=database",
+      "context": "GTM Airtable LIVE aggregates",
+      "good": "Universe exists; warmth fields exist; outreach statuses exist",
+      "bad": "Draft backlog; tiny reply; Strong Warm only4",
+      "soWhat": "Database ≠ pipeline",
+      "consequence": "Relationship equity idle",
+      "opportunity": "Explicit ADP offer to Connected",
+      "priority": "P0",
+      "whyPriority": "Fastest path to paid learning",
+      "changeScore": "↑ calls/replies + paid pilots from list"
+    },
+    "measurement": {
+      "name": "Measurement / attribution",
+      "score": 5,
+      "verdict": "Channel-capable, outcome-blind",
+      "evidence": "GA4+GSC LIVE; LinkedIn channel ATTRIBUTED; form_start only; no L1 join",
+      "context": "Post Enrich ingest 2026-09-07",
+      "good": "Can diagnose sessions/channels/search mix",
+      "bad": "Cannot see demo/pilot/revenue",
+      "soWhat": "Old 2/10 is obsolete; 10/10 is false",
+      "consequence": "Strategy debates remain under-determined on revenue",
+      "opportunity": "Event taxonomy + GTM join",
+      "priority": "P0",
+      "whyPriority": "Makes all other priorities falsifiable",
+      "changeScore": "form_complete→pilot events + identity join"
+    },
+    "content": {
+      "name": "Content / thought leadership",
+      "score": 4.5,
+      "verdict": "ICP-aligned spine mixed with low-value visibility content",
+      "evidence": "46 Insights; GA4 insights sessions; GSC residences dominance",
+      "context": "Webflow CMS LIVE",
+      "good": "Soft brands / key money / HMA language matches ICP",
+      "bad": "Residences cluster pollutes search narrative",
+      "soWhat": "Content program needs portfolio discipline",
+      "consequence": "CMO dashboards misread success",
+      "opportunity": "Editorial kill/maintain/invest matrix",
+      "priority": "P1",
+      "whyPriority": "Supports SEO REFESH + dealmaking identity",
+      "changeScore": "Commercial query CTR + assisted conversations"
+    }
+  },
+  "centralDiagnosis": "Publish/list/measure-channels capable; not yet a measurable paid-learning loop. Relationships under-activated; search visibility commercially misaligned; ADP curiosity without instrumented pilot path.",
+  "recommendedStrategy": {
+    "id": "B2_WARM_ADP_ENTRY_MEASURED_DEALMAKING",
+    "name": "Warm ADP paid-pilot entry + measured dealmaking identity",
+    "score": 8.1,
+    "forDiscussion": true,
+    "approvalRequested": false
+  },
+  "strategicOptions": [
+    {
+      "id": "A_DEALMAKING_SEO_ENGINE",
+      "name": "Dealmaking SEO/content as primary GTM",
+      "score": 4.8,
+      "who": "Owners via search",
+      "problem": "Brand/operator deal ambiguity",
+      "offer": "Insights → conversation",
+      "urgency": "Low-medium",
+      "channel": "Organic search + content",
+      "proof": "Editorial authority",
+      "economics": "Slow; unclear CAC",
+      "advantage": "Compounding if rankings convert",
+      "risk": "Current GSC shows wrong impressions",
+      "dependencies": "Brutal content REFESH",
+      "path90d": "Demote residences; reinforce dealmaking pages; measure CTR",
+      "whyWeaker": "Live data shows impression theater without clicks"
+    },
+    {
+      "id": "B1_ADP_ENTRY_CLASSIC",
+      "name": "ADP entry + dealmaking architecture (Phase 6E classic)",
+      "score": 7.2,
+      "who": "Warm owners",
+      "problem": "AI demand positioning uncertainty",
+      "offer": "ADP paid pilot",
+      "urgency": "High for learning",
+      "channel": "Warm outreach + site",
+      "proof": "Product page + methodology",
+      "economics": "Pilot cash + learning",
+      "advantage": "Clear SKU",
+      "risk": "Uninstrumented funnel; SEO noise ignored",
+      "dependencies": "Offer packaging",
+      "path90d": "Outreach + page CTA",
+      "whyWeaker": "Under-weights measurement + SEO hygiene revealed by live pull"
+    },
+    {
+      "id": "B2_WARM_ADP_ENTRY_MEASURED_DEALMAKING",
+      "name": "Warm ADP paid-pilot entry + measured dealmaking identity",
+      "score": 8.1,
+      "recommended": true,
+      "who": "Warm / Connected pilot-list owners & advisors",
+      "problem": "Need paid diagnostic entry on AI demand + brand/operator context",
+      "offer": "Explicit paid ADP pilot",
+      "urgency": "Highest near-term learning urgency",
+      "channel": "Warm activation primary; LinkedIn secondary; SEO hygiene; site conversion",
+      "proof": "ADP engagement micro-signal + dealmaking content + list warmth",
+      "economics": "Few paid pilots teach price/ICP faster than content volume",
+      "advantage": "Matches live traffic physics (direct/relationship)",
+      "risk": "Offer rejection; list quality",
+      "dependencies": "Price band; instrumentation; CTA clarity",
+      "path90d": "Instrument → activate Connected → ADP CTA → SEO REFESH → log LI outcomes",
+      "whyWins": "Aligns assets already owned with falsifiable commercial learning"
+    },
+    {
+      "id": "C_BROAD_LINKEDIN_AWARENESS",
+      "name": "Broad LinkedIn awareness primary",
+      "score": 4.2,
+      "who": "Wide hospitality audience",
+      "problem": "Low awareness",
+      "offer": "Brand presence",
+      "urgency": "False urgency",
+      "channel": "LinkedIn volume",
+      "proof": "Posts",
+      "economics": "Unmeasured",
+      "advantage": "Founder visibility",
+      "risk": "Vanity without pipeline",
+      "dependencies": "Impressions API still missing",
+      "path90d": "Post more",
+      "whyWeaker": "8 attributed sessions; outcomes UNKNOWN; impressions null"
+    },
+    {
+      "id": "D_MULTI_PRODUCT_PLATFORM",
+      "name": "Multi-product platform launch narrative",
+      "score": 3.9,
+      "who": "Everyone",
+      "problem": "Many problems",
+      "offer": "Platform",
+      "urgency": "Marketing-made",
+      "channel": "All",
+      "proof": "Portfolio breadth",
+      "economics": "Diluted",
+      "advantage": "Story richness",
+      "risk": "No SKU clarity",
+      "dependencies": "Everything",
+      "path90d": "More pages/campaigns",
+      "whyWeaker": "Blocks paid learning focus"
+    }
+  ],
+  "prioritiesNow": [
+    {
+      "id": "P1_CONVERSION_INSTRUMENTATION",
+      "priority": "NOW",
+      "title": "Instrument form_complete → demo → pilot (+ GTM identity join)",
+      "problem": "GA4 shows form_start=8 and no named demo/pilot events; commercial outcomes invisible",
+      "whyNow": "Without this, B2 cannot be falsified",
+      "evidence": "Enrich GA4 events 30d; residual gap L1 outcomes",
+      "metrics": [
+        "form_start",
+        "form_complete",
+        "demo_request",
+        "pilot_request",
+        "GTM join rate"
+      ],
+      "soWhat": "Marketing stays narrative",
+      "businessValue": "Enables management of paid learning",
+      "strategicFit": "B2 mandatory dependency",
+      "urgency": "P0",
+      "confidence": "HIGH",
+      "effort": "MEDIUM",
+      "dependencies": [
+        "GA event taxonomy",
+        "Webflow/forms",
+        "Airtable fields"
+      ],
+      "costOfDelay": "Another quarter of unmeasurable GTM",
+      "success": "Events firing in GA4 + matched to Pilot Target rows",
+      "howMeasure": "DebugView + weekly CMO pull",
+      "risks": [
+        "Over-tagging noise"
+      ],
+      "counterargument": "Qualitative founder memory enough — rejected at this stage",
+      "beats": "More Insights posts; paid tests",
+      "deprioritizedBecauseOfThis": "Broad SEO expansion; vanity LI analytics chase",
+      "whatChangesView": "If events exist but volumes stay zero after activation, offer/ICP problem dominates"
+    },
+    {
+      "id": "P2_WARM_ADP_ACTIVATION",
+      "priority": "NOW",
+      "title": "Activate Connected/warm Pilot Target accounts with explicit ADP paid-pilot offer",
+      "problem": "Connected=58 but Call Completed=5, Replied=1, Draft Needed=41",
+      "whyNow": "Highest EV per founder hour; list already paid for in relationship capital",
+      "evidence": "GTM pilot aggregates live",
+      "metrics": [
+        "touches",
+        "calls",
+        "replies",
+        "pilot offers sent",
+        "paid pilots"
+      ],
+      "soWhat": "Relationship equity is idle inventory",
+      "businessValue": "Cash + ICP/price learning",
+      "strategicFit": "Core of B2",
+      "urgency": "P0",
+      "confidence": "HIGH",
+      "effort": "MEDIUM-HIGH (founder time)",
+      "dependencies": [
+        "Price band",
+        "one-pager",
+        "P1 events ideally parallel"
+      ],
+      "costOfDelay": "Warmth decays; competitors define AI narrative",
+      "success": "N qualified ADP conversations; ≥1 paid pilot or documented refusals",
+      "howMeasure": "Outreach Status + notes; not Owner Targets count",
+      "risks": [
+        "Vague ask burns list"
+      ],
+      "counterargument": "Need more content first — rejected by live acquisition mix",
+      "beats": "New product marketing; full site rebuild",
+      "deprioritizedBecauseOfThis": "AO scale; paid media",
+      "whatChangesView": "If Connected are not ADP-fit, retarget offer architecture"
+    },
+    {
+      "id": "P3_ADP_PUBLIC_CTA",
+      "priority": "NOW",
+      "title": "ADP discoverability + clear CTA path from homepage/dealmaking surfaces",
+      "problem": "ADP engaged when found, but not the public lead story; conversion path unclear",
+      "evidence": "ADP 7s/18pv bounce0.143; home 55s; adpLive HTTP200",
+      "whyNow": "Capture rare non-warm + clarify warm clicks",
+      "metrics": [
+        "ADP sessions",
+        "CTA clicks",
+        "form_start/complete from ADP"
+      ],
+      "soWhat": "Product curiosity dies at narrative fog",
+      "businessValue": "Higher conversion of scarce traffic",
+      "strategicFit": "B2 conversion surface",
+      "urgency": "P1",
+      "confidence": "HIGH",
+      "effort": "MEDIUM",
+      "dependencies": [
+        "Offer copy",
+        "form events"
+      ],
+      "costOfDelay": "Continued homepage bounce without learning",
+      "success": "Visible ADP path + measurable CTA",
+      "howMeasure": "GA4 page + events",
+      "risks": [
+        "Over-centering ADP vs dealmaking identity"
+      ],
+      "counterargument": "Rebuild whole site — too slow/expensive vs CTA path",
+      "beats": "Visual redesign for its own sake",
+      "deprioritizedBecauseOfThis": "Full website rebuild",
+      "whatChangesView": "If CTA clear and still no starts, traffic quality problem"
+    },
+    {
+      "id": "P4_SEO_REFESH",
+      "priority": "NOW",
+      "title": "SEO REFESH: invest dealmaking/selection; reduce low-value residences impression farming",
+      "problem": "Impressions ×12-ish vs prior 28d with CTR collapse; LOW VALUE dominates sample",
+      "evidence": "GSC live rollups + query classes",
+      "whyNow": "Stops false success; frees editorial capacity",
+      "metrics": [
+        "% impressions low-value",
+        "commercial CTR",
+        "dealmaking clicks"
+      ],
+      "soWhat": "Search dashboard currently misleads",
+      "businessValue": "Better intent mix; honest KPIs",
+      "strategicFit": "Protects dealmaking identity",
+      "urgency": "P1",
+      "confidence": "HIGH on diagnosis; MEDIUM on fix speed",
+      "effort": "MEDIUM",
+      "dependencies": [
+        "Editorial decisions",
+        "possibly demote/noindex"
+      ],
+      "costOfDelay": "Continued KPI self-deception",
+      "success": "Low-value share down; commercial query CTR up or stable with cleaner mix",
+      "howMeasure": "GSC class rollups each pull",
+      "risks": [
+        "Cutting content that could be repositioned"
+      ],
+      "counterargument": "Any impression is good early SEO — rejected",
+      "beats": "Publishing more residences-adjacent pieces",
+      "deprioritizedBecauseOfThis": "Broad SEO expansion",
+      "whatChangesView": "If commercial queries suddenly CTR well at volume, raise SEO investment"
+    },
+    {
+      "id": "P5_LINKEDIN_OUTCOME_LOG",
+      "priority": "NOW",
+      "title": "Keep LinkedIn cadence; log conversations + UTM; do not chase missing impressions",
+      "problem": "PERMISSION_LIMITED impressions; commercial outcomes UNKNOWN",
+      "evidence": "8 attributed sessions; scrape likes/comments only",
+      "whyNow": "Channel is real but unmanaged as CRM",
+      "metrics": [
+        "attributed sessions",
+        "logged conversations",
+        "offers sourced"
+      ],
+      "soWhat": "Publishing without CRM is theater",
+      "businessValue": "Turns authority into pipeline memory",
+      "strategicFit": "Secondary B2 channel",
+      "urgency": "P2",
+      "confidence": "MEDIUM-HIGH",
+      "effort": "LOW-MEDIUM",
+      "dependencies": [
+        "Simple logging habit/fields"
+      ],
+      "costOfDelay": "Unlearnable LI ROI debates",
+      "success": "Every serious LI convo logged; UTMs on links",
+      "howMeasure": "GTM notes + GA4 LI sessions",
+      "risks": [
+        "Process friction"
+      ],
+      "counterargument": "Buy LinkedIn ads analytics — not needed for B2",
+      "beats": "Company page vanity setup as blocker",
+      "deprioritizedBecauseOfThis": "AO LinkedIn scale-up",
+      "whatChangesView": "If LI consistently sources pilots, raise investment"
+    }
+  ],
+  "deprioritized": [
+    {
+      "item": "Paid media (Meta/Google/LinkedIn Ads)",
+      "whyNotNow": "No instrumented funnel; tiny baseline; would buy unmeasured noise",
+      "evidence": "form_start only; sessions 97/30d",
+      "gainByWaiting": "Learn offer/ICP first",
+      "riskByWaiting": "Slower top-of-funnel",
+      "moveUpIf": "Events live + positive warm conversion",
+      "reviewAgain": "After 2+ paid pilots or clear form_complete baseline"
+    },
+    {
+      "item": "Full website rebuild",
+      "whyNotNow": "CTA/offer path + events unlock more learning than redesign",
+      "evidence": "ADP already engages when found",
+      "gainByWaiting": "Preserve focus; avoid multi-month diversion",
+      "riskByWaiting": "Brand perception lag",
+      "moveUpIf": "Message tests fail despite clear CTA",
+      "reviewAgain": "Post 90-day B2"
+    },
+    {
+      "item": "Broad SEO expansion / more publishing volume",
+      "whyNotNow": "Current expansion pattern created low-value impressions",
+      "evidence": "GSC class mix",
+      "gainByWaiting": "Editorial quality over quantity",
+      "riskByWaiting": "Slower index growth",
+      "moveUpIf": "Commercial CTR proves model",
+      "reviewAgain": "Monthly GSC class review"
+    },
+    {
+      "item": "AO LinkedIn scale as primary",
+      "whyNotNow": "Joan channel already secondary; impressions unknown; Dealality page NOT_CONNECTED",
+      "evidence": "LI PARTIAL",
+      "gainByWaiting": "Avoid split narrative",
+      "riskByWaiting": "Miss AO audience",
+      "moveUpIf": "AO-sourced opportunities appear in logs",
+      "reviewAgain": "60 days"
+    },
+    {
+      "item": "Brand/operator acquisition as primary GTM",
+      "whyNotNow": "Buyer is owner-side; would invert ICP",
+      "evidence": "Company constitution / prior strategy",
+      "gainByWaiting": "Keep positioning clean",
+      "riskByWaiting": "Miss partner distribution",
+      "moveUpIf": "Partner-led deal flow emerges",
+      "reviewAgain": "Quarterly"
+    },
+    {
+      "item": "New product marketing waves (Snapshots/Explorers as SKUs)",
+      "whyNotNow": "Need one paid entry learning loop first",
+      "evidence": "Portfolio breadth vs form outcomes",
+      "gainByWaiting": "Offer clarity",
+      "riskByWaiting": "Under-sell depth",
+      "moveUpIf": "ADP rejected but Snapshot demand appears",
+      "reviewAgain": "After ADP offer tests"
+    }
+  ],
+  "scorecard90d": {
+    "leading": [
+      "connected_touched_with_adp_offer",
+      "calls_completed",
+      "form_complete",
+      "demo_or_pilot_events",
+      "linkedin_attributed_sessions",
+      "gsc_commercial_vs_low_value_share"
+    ],
+    "lagging": [
+      "paid_adp_pilots",
+      "cash_or_documented_refusals",
+      "continuation"
+    ],
+    "nonGoals": [
+      "session_vanity",
+      "impression_highs",
+      "likes"
+    ]
+  },
+  "whatWouldChangeView": [
+    "Non-ADP entry demand stronger",
+    "Commercial organic CTR breakthrough",
+    "Connected list quality failure",
+    "Distribution partnership"
+  ],
+  "founderDiscussion": [
+    "Accept/amend B2",
+    "ADP price band",
+    "Activation over content volume",
+    "Events required",
+    "Residences REFESH"
+  ],
+  "qualityGate": {
+    "CONTEXT": 9,
+    "METRIC_DEPTH": 9,
+    "ANALYSIS": 9,
+    "SO_WHAT": 9,
+    "BUSINESS_CONSEQUENCE": 9,
+    "PRIORITIZATION_LOGIC": 9,
+    "DEPRIORITIZATION_LOGIC": 9,
+    "STRATEGIC_COHERENCE": 9,
+    "EVIDENCE": 9,
+    "FOUNDER_USEFULNESS": 9
+  },
+  "consoleV3": {
+    "deepReviewPath": "/reports/helena-cmo-deep-baseline-v2/00_FOUNDER_CMO_DEEP_REVIEW.md",
+    "viewAnalysisDomains": [
+      "overall",
+      "website",
+      "seo",
+      "linkedin",
+      "pipeline",
+      "measurement",
+      "content"
+    ]
+  }
+}
