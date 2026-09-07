@@ -276,6 +276,36 @@ try {
       dataDecision: vm.strategyDecision.dataCompletenessDecision.answer,
     };
   });
+
+  test('FC-17', 'Phase 6F-A marketing intelligence panel from live reconciliation', () => {
+    const vm = buildFounderConsoleV2ViewModel();
+    const mi = vm.marketingIntelligence;
+    if (!mi || !Array.isArray(mi.sources) || mi.sources.length < 5) {
+      throw new Error('marketing intelligence sources missing');
+    }
+    const webflow = mi.sources.find((s) => s.id === 'WEBFLOW_CMS');
+    const gtm = mi.sources.find((s) => s.id === 'AIRTABLE_GTM');
+    const ga4 = mi.sources.find((s) => s.id === 'GA4');
+    if (!webflow || webflow.status !== 'LIVE') throw new Error('Webflow CMS must be LIVE after 6F-A');
+    if (!gtm || gtm.status !== 'LIVE') throw new Error('GTM Airtable must be LIVE after 6F-A');
+    if (!ga4 || ga4.status === 'LIVE') throw new Error('GA4 must not claim LIVE without auth');
+    if (!mi.corrections || !mi.corrections.length) throw new Error('expected 6E corrections');
+    const html = fs.readFileSync(path.join(ROOT, 'public/js/admin-helena-cmo.js'), 'utf8');
+    if (!html.includes('Marketing intelligence')) throw new Error('UI panel missing');
+    const reader = fs.readFileSync(
+      path.join(ROOT, 'lib/helena-cmo/analytics/cmo-analytics-reader.js'),
+      'utf8',
+    );
+    if (/liveGa4 = false/.test(reader) && !/DYNAMIC/.test(reader)) {
+      throw new Error('analytics reader must not hard-code liveGa4=false as SoT');
+    }
+    return {
+      webflow: webflow.status,
+      gtm: gtm.status,
+      ga4: ga4.status,
+      adpStatus: mi.adpPublicPage?.status,
+    };
+  });
 } finally {
   if (actionsBackup != null) fs.writeFileSync(ACTIONS, actionsBackup);
   else if (fs.existsSync(ACTIONS)) fs.unlinkSync(ACTIONS);

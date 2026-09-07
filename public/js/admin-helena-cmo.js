@@ -73,6 +73,45 @@
     var dataDec = ea.dataCompletenessDecision || sd.dataCompletenessDecision || {};
 
     el.innerHTML =
+      '<div class="helena-section"><h2>Marketing intelligence</h2>' +
+      '<div class="helena-card helena-coverage"><p class="helena-muted">Connection freshness — LIVE / PARTIAL / STALE / NOT CONNECTED. Assessment must not claim completeness when material sources are stale.</p>' +
+      '<div class="helena-scoregrid">' +
+      (function () {
+        var mi = vm.marketingIntelligence || {};
+        var src = mi.sources || [];
+        if (!src.length) return '<p class="helena-muted">Live reconciliation pack not loaded.</p>';
+        return src
+          .map(function (s) {
+            var cls =
+              s.status === "LIVE"
+                ? ""
+                : s.status === "STALE" || s.status === "PARTIAL"
+                  ? "warn"
+                  : "off";
+            return (
+              '<div class="helena-score"><div class="label">' +
+              esc(s.label) +
+              '</div><div class="value"><span class="helena-pill ' +
+              cls +
+              '">' +
+              esc(s.status) +
+              "</span></div><div class=\"helena-muted\">pull " +
+              esc(s.lastPull ? String(s.lastPull).slice(0, 16) : "—") +
+              "</div></div>"
+            );
+          })
+          .join("");
+      })() +
+      "</div>" +
+      (vm.marketingIntelligence && vm.marketingIntelligence.corrections
+        ? "<h3>6E corrections</h3>" +
+          listHtml(
+            (vm.marketingIntelligence.corrections || []).map(function (c) {
+              return c.claim + " → " + c.verdict;
+            }),
+          )
+        : "") +
+      '<button type="button" class="helena-btn ghost" data-tab-jump="baseline">Drill sources</button></div></div>' +
       '<div class="helena-section"><h2>Source coverage</h2>' +
       '<div class="helena-card helena-coverage">' +
       '<div class="helena-scoregrid">' +

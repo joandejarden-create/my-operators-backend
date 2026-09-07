@@ -1,0 +1,533 @@
+{
+  "schemaVersion": "helena-cmo-live-data-reconciliation-v1",
+  "generatedAt": "2026-09-07T15:39:55.500Z",
+  "meta": {
+    "executeEnabled": false,
+    "recurringHelenaEnabled": false,
+    "strategyApprovalRequested": false,
+    "deepBaselineV2Deferred": true,
+    "note": "6F-A reconciles native connectors before Deep Baseline V2 rewrite."
+  },
+  "connectors": [
+    {
+      "source": "GA4",
+      "platform": "Google Analytics 4",
+      "helena_native_connection": "PARTIAL",
+      "authenticated": "NO",
+      "read_access": false,
+      "write_access": false,
+      "account_scope": "UNKNOWN — Zapier GA4 enabled but 0 connections",
+      "last_successful_sync": null,
+      "freshness": "STALE_SNAPSHOT_ONLY",
+      "data_available": "Jun–Sep 2026 export snapshot in phase-0 pack",
+      "limitations": "Zapier GoogleAnalytics4CLIAPI needs Joan OAuth. Repo has no GA4 Data API client.",
+      "live_read": "LIVE_READ_FAILED",
+      "auth_setup_required": "Connect Google Analytics 4 at Zapier MCP auth URL (Joan). Then Helena can runReport READ.",
+      "recommendation": "Joan authenticates Zapier GA4 — do NOT build duplicate repo GA4 connector first."
+    },
+    {
+      "source": "GSC",
+      "platform": "Google Search Console",
+      "helena_native_connection": "NO",
+      "authenticated": "NO",
+      "read_access": false,
+      "write_access": false,
+      "account_scope": null,
+      "last_successful_sync": null,
+      "freshness": "STALE_SNAPSHOT_ONLY",
+      "data_available": "Jun–Sep 2026 GSC_SUMMARY export",
+      "limitations": "Not present in Zapier catalog under Search Console / Google Search / Webmaster.",
+      "live_read": "STALE_ONLY",
+      "recommendation": "P0 Cursor: Google Search Console API service account OR Enrich native if Joan confirms Enrich has GSC."
+    },
+    {
+      "source": "LINKEDIN_JOAN",
+      "platform": "LinkedIn personal",
+      "helena_native_connection": "NO",
+      "authenticated": "NO",
+      "read_access": false,
+      "write_access": false,
+      "freshness": "STALE_SCRAPE",
+      "data_available": "phase-0 linkedin_posts_metrics scrape",
+      "limitations": "Zapier LinkedIn has write/search only — no analytics read actions.",
+      "live_read": "STALE_ONLY",
+      "recommendation": "EXPORT_ONLY / MANUAL_INPUT contract for personal analytics; do not fake API."
+    },
+    {
+      "source": "LINKEDIN_DEALALITY",
+      "platform": "LinkedIn company",
+      "helena_native_connection": "NO",
+      "authenticated": "UNKNOWN",
+      "read_access": false,
+      "freshness": "STALE_SCRAPE",
+      "live_read": "STALE_ONLY",
+      "recommendation": "EXPORT_ONLY until company page analytics API entitlement exists."
+    },
+    {
+      "source": "LINKEDIN_AO",
+      "platform": "LinkedIn company",
+      "helena_native_connection": "NO",
+      "authenticated": "UNKNOWN",
+      "read_access": false,
+      "freshness": "STALE_SCRAPE",
+      "live_read": "STALE_ONLY",
+      "recommendation": "EXPORT_ONLY; secondary channel."
+    },
+    {
+      "source": "WEBFLOW_CMS",
+      "platform": "Webflow Data API via Cursor MCP",
+      "helena_native_connection": "YES",
+      "authenticated": "YES",
+      "read_access": true,
+      "write_access": true,
+      "account_scope": "Deal Capture MVP (dealality.com)",
+      "last_successful_sync": "2026-09-07T15:39:55.500Z",
+      "freshness": "LIVE",
+      "data_available": "Sites, pages, CMS collections, Insights items, forms",
+      "limitations": "Analyze reports 403 without Analyze entitlement",
+      "live_read": "LIVE_READ_SUCCESS",
+      "recommendation": "Canonical CONTENT_INVENTORY source. Do NOT rebuild CMS connector."
+    },
+    {
+      "source": "WEBFLOW_ANALYZE",
+      "platform": "Webflow Analyze",
+      "helena_native_connection": "YES",
+      "authenticated": "YES",
+      "read_access": false,
+      "freshness": "PERMISSION_LIMITED",
+      "live_read": "PERMISSION_LIMITED",
+      "limitations": "403 Analyze entitlement required",
+      "recommendation": "Upgrade Webflow Analyze entitlement OR rely on GA4 once authenticated."
+    },
+    {
+      "source": "PUBLIC_SITE_HTML",
+      "platform": "dealality.com HTTP",
+      "helena_native_connection": "YES",
+      "authenticated": "N/A",
+      "read_access": true,
+      "freshness": "LIVE",
+      "live_read": "LIVE_READ_SUCCESS",
+      "data_available": "Public page HTML; ADP page confirmed 200",
+      "recommendation": "Secondary check for prospect-visible state."
+    },
+    {
+      "source": "AIRTABLE_GTM",
+      "platform": "Airtable GTM base",
+      "helena_native_connection": "YES",
+      "authenticated": "YES",
+      "read_access": true,
+      "write_access": true,
+      "account_scope": "AIRTABLE_GTM_BASE_ID",
+      "last_successful_sync": "2026-09-07T15:39:55.500Z",
+      "freshness": "LIVE",
+      "data_available": {
+        "Pilot Target List": {
+          "ok": true,
+          "count": 100
+        },
+        "Owner Targets": {
+          "ok": true,
+          "count": 1674
+        },
+        "Acquisition Network Relationships": {
+          "ok": true,
+          "count": 725
+        },
+        "Contacts": {
+          "ok": true,
+          "count": 1635
+        },
+        "Companies": {
+          "ok": true,
+          "count": 1543
+        }
+      },
+      "live_read": "LIVE_READ_SUCCESS",
+      "recommendation": "Canonical PIPELINE source. Wire into Helena CMO observation layer (aggregates only in reports)."
+    },
+    {
+      "source": "AIRTABLE_MARKETING_OS",
+      "platform": "Airtable Marketing OS",
+      "helena_native_connection": "YES",
+      "authenticated": "YES",
+      "read_access": true,
+      "write_access": true,
+      "account_scope": "appiEwwMGILJxJHt3",
+      "last_successful_sync": "2026-09-07T15:39:55.500Z",
+      "freshness": "LIVE",
+      "data_available": {
+        "Performance": {
+          "ok": true,
+          "count": 175
+        },
+        "Campaigns": {
+          "ok": true,
+          "count": 0
+        },
+        "Proof Library": {
+          "ok": true,
+          "count": 0
+        },
+        "Content Library": {
+          "ok": true,
+          "count": 77
+        },
+        "Growth Opportunities": {
+          "ok": true,
+          "count": 8
+        },
+        "Marketing Decisions": {
+          "ok": true,
+          "count": 16
+        }
+      },
+      "live_read": "LIVE_READ_SUCCESS",
+      "recommendation": "Canonical MARKETING MEMORY. Already partially used; keep READ in CMO layer."
+    },
+    {
+      "source": "ZAPIER_AIRTABLE",
+      "platform": "Zapier MCP Airtable",
+      "helena_native_connection": "YES",
+      "authenticated": "YES",
+      "read_access": true,
+      "connections": 1,
+      "live_read": "LIVE_READ_SUCCESS",
+      "recommendation": "Alternate path to same Airtable truth — prefer direct Dealality Airtable PAT for batch aggregates."
+    },
+    {
+      "source": "ZAPIER_WEBFLOW",
+      "platform": "Zapier MCP Webflow",
+      "helena_native_connection": "YES",
+      "authenticated": "YES",
+      "read_access": true,
+      "connections": 1,
+      "live_read": "LIVE_READ_SUCCESS",
+      "recommendation": "Redundant with Webflow MCP; prefer native Webflow MCP for CMS inventory."
+    },
+    {
+      "source": "ZAPIER_MEMBERSTACK",
+      "platform": "Zapier MCP Memberstack",
+      "helena_native_connection": "YES",
+      "authenticated": "YES",
+      "read_access": true,
+      "connections": 1,
+      "live_read": "PARTIAL",
+      "limitations": "Trigger/search oriented — not full usage analytics export in one call this phase.",
+      "recommendation": "P1 product-usage path for members/plans; wire carefully without writes."
+    },
+    {
+      "source": "ENRICH_LABS",
+      "platform": "Enrich Labs (external Helena runtime)",
+      "helena_native_connection": "UNKNOWN_FROM_THIS_SESSION",
+      "authenticated": "UNKNOWN",
+      "read_access": false,
+      "live_read": "LIVE_READ_FAILED",
+      "limitations": "No Enrich Labs MCP/API tools callable from this Cursor session (documented Phase 0). Founder asserts Enrich may hold GA4/GSC — cannot prove from here.",
+      "recommendation": "Joan: either authenticate Zapier GA4 here, OR export Enrich live pulls into helena-cmo observation pack. Do not assume Enrich access from Cursor."
+    },
+    {
+      "source": "LANDING_EVENTS",
+      "platform": "Dealality first-party JSONL",
+      "helena_native_connection": "PARTIAL",
+      "authenticated": "N/A",
+      "read_access": false,
+      "freshness": "UNKNOWN_IN_LOCAL_ENV",
+      "live_read": "LIVE_READ_FAILED",
+      "limitations": "LANDING_ANALYTICS_* env not set in this process.",
+      "recommendation": "P1 Cursor wire when enabled in deploy env."
+    },
+    {
+      "source": "PRODUCT_USAGE_TELEMETRY",
+      "platform": "Dealality app events",
+      "helena_native_connection": "NO",
+      "authenticated": "N/A",
+      "read_access": false,
+      "live_read": "LIVE_READ_FAILED",
+      "recommendation": "P0/P1 residual — Explorer/ADP usage events not exposed to Helena CMO."
+    }
+  ],
+  "webflowMcp": {
+    "sitesList": "LIVE_READ_SUCCESS",
+    "cmsCollections": "LIVE_READ_SUCCESS",
+    "pagesList": "LIVE_READ_SUCCESS",
+    "insightsItems": "LIVE_READ_SUCCESS",
+    "forms": "LIVE_READ_SUCCESS",
+    "analyzeTraffic": "PERMISSION_LIMITED",
+    "analyzeNote": "Webflow Analyze entitlement required (403 Forbidden)",
+    "siteId": "68108c29063eeb5d1bd7ae4a",
+    "siteName": "Deal Capture MVP",
+    "collections": [
+      "Users",
+      "Insights Posts"
+    ],
+    "insightsItemCount": 46,
+    "materialPublicPages": [
+      {
+        "path": "/hotel-owner/ai-demand-positioning",
+        "title": "AI Demand Positioning",
+        "status": 200
+      },
+      {
+        "path": "/brand/ai-visibility",
+        "title": "Brand AI Visibility"
+      },
+      {
+        "path": "/hotel-owner/brand-explorer-new",
+        "title": "Brand Explorer New"
+      },
+      {
+        "path": "/opportunity-review",
+        "title": "Tell us about your hotel opportunity"
+      },
+      {
+        "path": "/insights",
+        "title": "Insights"
+      }
+    ]
+  },
+  "adpLive": {
+    "status": 200,
+    "url": "https://www.dealality.com/hotel-owner/ai-demand-positioning",
+    "title": "AI Demand Positioning",
+    "hasAdpCopy": true
+  },
+  "dealalityInternal": {
+    "gtm": {
+      "Pilot Target List": {
+        "ok": true,
+        "count": 100
+      },
+      "Owner Targets": {
+        "ok": true,
+        "count": 1674
+      },
+      "Acquisition Network Relationships": {
+        "ok": true,
+        "count": 725
+      },
+      "Contacts": {
+        "ok": true,
+        "count": 1635
+      },
+      "Companies": {
+        "ok": true,
+        "count": 1543
+      }
+    },
+    "mos": {
+      "Performance": {
+        "ok": true,
+        "count": 175
+      },
+      "Campaigns": {
+        "ok": true,
+        "count": 0
+      },
+      "Proof Library": {
+        "ok": true,
+        "count": 0
+      },
+      "Content Library": {
+        "ok": true,
+        "count": 77
+      },
+      "Growth Opportunities": {
+        "ok": true,
+        "count": 8
+      },
+      "Marketing Decisions": {
+        "ok": true,
+        "count": 16
+      }
+    },
+    "pilotAggregates": {
+      "ok": true,
+      "rowCount": 100,
+      "aggregates": {
+        "status": {
+          "Connected": 58,
+          "Not Contacted": 35,
+          "In Progress": 6,
+          "Completed": 1
+        },
+        "warmth": {
+          "Met Once": 22,
+          "UNKNOWN": 26,
+          "Cold": 9,
+          "LinkedIn / Light Connection": 34,
+          "Strong Warm Relationship": 4,
+          "Warm Intro": 1,
+          "Warm Relationship": 1,
+          "Known Contact": 3
+        },
+        "outreachStatus": {
+          "Sent": 24,
+          "Draft Needed": 41,
+          "Not Started": 21,
+          "Needs Review": 6,
+          "Call Scheduling": 2,
+          "Call Completed": 5,
+          "Replied": 1
+        },
+        "category": {
+          "Advisor": 9,
+          "Owner": 22,
+          "UNKNOWN": 24,
+          "Operator Referral Source": 6,
+          "Brand Referral Source": 24,
+          "Consultant": 5,
+          "Lawyer": 8,
+          "Owner / Developer": 1,
+          "Advisor / Asset Manager": 1
+        }
+      }
+    },
+    "pilotOutreachAggregates": {
+      "outreach": {
+        "Sent": 24,
+        "Draft Needed": 41,
+        "Not Started": 21,
+        "Needs Review": 6,
+        "Call Scheduling": 2,
+        "Call Completed": 5,
+        "Replied": 1
+      },
+      "warmIntro": {
+        "true": 80,
+        "UNKNOWN": 20
+      },
+      "priority": {
+        "P1": 27,
+        "P2": 48,
+        "P3": 25
+      },
+      "category": {
+        "Owner": 22,
+        "Advisor": 9,
+        "Brand Referral Source": 24,
+        "Operator Referral Source": 6,
+        "Consultant": 5,
+        "Lawyer": 8,
+        "Owner / Developer": 1,
+        "Advisor / Asset Manager": 1,
+        "UNKNOWN": 24
+      },
+      "sendChannel": {
+        "LinkedIn": 57,
+        "Email": 11,
+        "WhatsApp": 3,
+        "LinkedIn + WhatsApp": 1,
+        "UNKNOWN": 28
+      }
+    }
+  },
+  "phase6eCorrections": [
+    {
+      "claim": "GA4 live API = NOT_CONNECTED",
+      "verdict": "STILL TRUE for live metrics",
+      "nuance": "Zapier GA4 action pack now enabled but UNAUTHENTICATED (0 connections). Not the same as Enrich native proof."
+    },
+    {
+      "claim": "Named CRM/pipeline = DATA_GAP",
+      "verdict": "INCORRECT / OVERSTATED",
+      "nuance": "GTM Pilot Target List has 100 live rows with Status/Relationship Strength/Outreach Status. Gap was Helena CMO wiring + ADP-labeled warmth clarity — not empty CRM."
+    },
+    {
+      "claim": "ADP invisible on public site",
+      "verdict": "INCORRECT for product page path",
+      "nuance": "Live Webflow + HTTP prove /hotel-owner/ai-demand-positioning returns 200 titled AI Demand Positioning. Homepage still does not surface ADP prominently — dual-track discoverability issue remains."
+    },
+    {
+      "claim": "Webflow CMS = not connected",
+      "verdict": "INCORRECT for this Cursor/Helena session",
+      "nuance": "Webflow MCP + Zapier Webflow both authenticated; CMS inventory live."
+    }
+  ],
+  "sourceOfTruth": {
+    "WEBSITE_BEHAVIOR": "GA4 (once live) — until then STALE snapshot; Webflow Analyze PERMISSION_LIMITED",
+    "SEARCH": "GSC (missing live) — STALE snapshot interim",
+    "CONTENT_INVENTORY": "Webflow CMS MCP (LIVE)",
+    "SOCIAL": "EXPORT/MANUAL for personal LinkedIn; Acquisition Network for graph",
+    "PIPELINE": "Airtable GTM Pilot Target List + related tables (LIVE)",
+    "PRODUCT_USAGE": "Dealality telemetry (MISSING) + Memberstack (PARTIAL)",
+    "MARKETING_MEMORY": "Marketing OS Airtable (LIVE)",
+    "ADP_PROOF": "ADP pilot scorecard / telemetry (NOT_CONNECTED)"
+  },
+  "residualGaps": [
+    {
+      "what": "Live GA4 property metrics",
+      "why": "Traffic, acquisition, conversion events",
+      "blocked": "Cannot refresh channel diagnosis or CTA measurement",
+      "workaround": "Stale Jun–Sep snapshot",
+      "priority": "P0",
+      "cursorCanConnect": true,
+      "credentialRequired": true,
+      "effort": "LOW if Joan completes Zapier GA4 OAuth; MEDIUM if service account in repo",
+      "note": "Do not build duplicate connector before trying Zapier auth / Enrich export"
+    },
+    {
+      "what": "Live GSC query/page metrics",
+      "why": "Search demand classification",
+      "blocked": "Cannot refresh SEO commercial relevance",
+      "workaround": "Stale GSC_SUMMARY",
+      "priority": "P0",
+      "cursorCanConnect": true,
+      "credentialRequired": true,
+      "effort": "MEDIUM — Zapier has no GSC app; need API or Enrich"
+    },
+    {
+      "what": "LinkedIn analytics (Joan / Dealality / AO)",
+      "why": "Social commercial effectiveness",
+      "blocked": "Precise impressions/ROI",
+      "workaround": "Scrape + content history; ROLE decidable",
+      "priority": "P1",
+      "cursorCanConnect": false,
+      "credentialRequired": true,
+      "effort": "EXPORT/MANUAL contract"
+    },
+    {
+      "what": "Webflow Analyze traffic",
+      "why": "On-site engagement without GA4",
+      "blocked": "Webflow-native traffic dimensions",
+      "workaround": "CMS inventory + public HTML + future GA4",
+      "priority": "P2",
+      "cursorCanConnect": false,
+      "credentialRequired": true,
+      "effort": "Webflow plan entitlement"
+    },
+    {
+      "what": "Product usage telemetry (Explorers/ADP)",
+      "why": "Adoption proof",
+      "blocked": "Usage → expansion evidence",
+      "workaround": "Memberstack partial; manual",
+      "priority": "P0",
+      "cursorCanConnect": true,
+      "credentialRequired": false,
+      "effort": "MEDIUM — wire existing Dealality events"
+    },
+    {
+      "what": "Outreach attribution join",
+      "why": "Sent→reply→pilot→paid",
+      "blocked": "Channel ROI",
+      "workaround": "Pilot Target Outreach Status fields exist but not attributed to web",
+      "priority": "P1",
+      "cursorCanConnect": true,
+      "credentialRequired": false,
+      "effort": "MEDIUM"
+    }
+  ],
+  "enoughLiveDataToRerunBaseline": {
+    "answer": "PARTIAL_YES",
+    "explanation": "Enough to correct website/pipeline/content inventory and re-score commercial access. NOT enough to replace GA4/GSC channel diagnosis with live analytics. Rerun Deep Baseline V2 after Joan GA4 auth (and ideally GSC), using these live CMS/GTM facts immediately as inputs."
+  },
+  "unnecessaryProposedConnectors": [
+    "Duplicate Webflow CMS client in repo (MCP already LIVE)",
+    "Duplicate Airtable Marketing OS/GTM client (PAT already LIVE)",
+    "Building GA4 in repo before Joan completes Zapier GA4 OAuth / Enrich export check"
+  ],
+  "joanImmediateActions": [
+    "Authenticate Zapier Google Analytics 4 (MCP auth URL already issued this session)",
+    "Confirm whether Enrich Labs independently has GA4/GSC — if yes, export a live pull pack into reports/",
+    "Do not treat Phase 6E ADP-invisible claim as current truth for /hotel-owner/ai-demand-positioning"
+  ]
+}
