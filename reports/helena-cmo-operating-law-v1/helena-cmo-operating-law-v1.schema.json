@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "helena-cmo-operating-law-v1.schema.json",
+  "title": "Helena CMO Operating Law v1",
+  "type": "object",
+  "required": [
+    "version",
+    "effectiveDate",
+    "founderLocks",
+    "authorityHierarchy",
+    "pricingClasses",
+    "icpLabels",
+    "recurringHelenaEnabled",
+    "executeEnabled"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "effectiveDate": {
+      "type": "string"
+    },
+    "recurringHelenaEnabled": {
+      "const": false
+    },
+    "executeEnabled": {
+      "const": false
+    },
+    "autonomousPrioritizationEnabled": {
+      "const": false
+    },
+    "founderLocks": {
+      "type": "object"
+    },
+    "authorityHierarchy": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pricingClasses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "icpLabels": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Helena CMO — Dealality Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/admin-helena-cmo.css?v=3" />
+  <script>
+    (function () {
+      if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
+        document.documentElement.classList.add("embed-mode");
+      }
+    })();
+  </script>
+</head>
+<body class="support-page helena-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>Helena CMO is for Dealality admin / founder use only.</p>
+  </div>
+
+  <div class="support-page-shell helena-shell" id="supportGateContent" hidden>
+    <header class="helena-header">
+      <div>
+        <p class="helena-kicker">Internal · Founder Console V2</p>
+        <h1>Helena CMO</h1>
+        <p class="helena-subtitle" id="helenaSubtitle">Executive assessment — understand before you approve</p>
+      </div>
+      <div class="helena-safety" id="helenaSafety" aria-label="Safety status"></div>
+    </header>
+
+    <nav class="helena-tabs" aria-label="Helena sections">
+      <button type="button" class="helena-tab active" data-tab="assessment">Executive Assessment</button>
+      <button type="button" class="helena-tab" data-tab="baseline">Baseline</button>
+      <button type="button" class="helena-tab" data-tab="findings">Findings</button>
+      <button type="button" class="helena-tab" data-tab="strategy">Strategy</button>
+      <button type="button" class="helena-tab" data-tab="priorities">Priorities</button>
+      <button type="button" class="helena-tab" data-tab="actions">Actions &amp; Approvals</button>
+      <button type="button" class="helena-tab" data-tab="performance">Performance</button>
+      <button type="button" class="helena-tab" data-tab="adp">ADP Pilots</button>
+      <button type="button" class="helena-tab" data-tab="history">History</button>
+      <button type="button" class="helena-tab" data-tab="evidence">Evidence</button>
+    </nav>
+
+    <div id="helenaError" class="helena-error" hidden></div>
+
+    <section id="tab-assessment" class="helena-panel" data-panel="assessment"></section>
+    <section id="tab-baseline" class="helena-panel" data-panel="baseline" hidden></section>
+    <section id="tab-findings" class="helena-panel" data-panel="findings" hidden></section>
+    <section id="tab-strategy" class="helena-panel" data-panel="strategy" hidden></section>
+    <section id="tab-priorities" class="helena-panel" data-panel="priorities" hidden></section>
+    <section id="tab-actions" class="helena-panel" data-panel="actions" hidden></section>
+    <section id="tab-performance" class="helena-panel" data-panel="performance" hidden></section>
+    <section id="tab-adp" class="helena-panel" data-panel="adp" hidden></section>
+    <section id="tab-history" class="helena-panel" data-panel="history" hidden></section>
+    <section id="tab-evidence" class="helena-panel" data-panel="evidence" hidden></section>
+  </div>
+
+  <dialog id="helenaDecisionDialog" class="helena-dialog">
+    <form method="dialog" id="helenaDecisionForm">
+      <h2 id="helenaDialogTitle">Decision</h2>
+      <div id="helenaDialogBody" class="helena-dialog-body"></div>
+      <label class="helena-note-label">Note (optional)
+        <textarea id="helenaDialogNote" rows="3" placeholder="Amendment or hold reason"></textarea>
+      </label>
+      <p class="helena-dialog-warn">Persists to local admin log only. Does not publish, send, deploy, or write Marketing OS yet.</p>
+      <div class="helena-dialog-actions">
+        <button type="submit" value="cancel" class="helena-btn ghost">Close</button>
+        <button type="button" data-action="HOLD" class="helena-btn warn">Hold / Reject</button>
+        <button type="button" data-action="AMEND" class="helena-btn">Amend</button>
+        <button type="button" data-action="LOCK" class="helena-btn primary">Lock / Approve</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script src="/js/admin-helena-cmo.js?v=3"></script>
+</body>
+</html>

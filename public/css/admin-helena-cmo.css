@@ -1,0 +1,365 @@
+/* Helena CMO Founder Console — premium brief, not a metric dump */
+.helena-page .helena-shell {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+}
+
+.helena-baseline-card {
+  margin-bottom: 12px;
+}
+
+.helena-card-title {
+  margin: 4px 0 8px;
+  font-size: 16px;
+  color: var(--runbook-heading);
+}
+
+.helena-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.helena-kicker {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--runbook-muted);
+}
+
+.helena-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--runbook-heading);
+  font-weight: 700;
+}
+
+.helena-subtitle {
+  margin: 8px 0 0;
+  color: var(--runbook-muted);
+}
+
+.helena-safety {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.helena-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--runbook-border);
+  color: var(--runbook-text);
+  background: var(--runbook-surface);
+}
+
+.helena-pill.off {
+  border-color: var(--runbook-ok);
+  color: #9dffc8;
+}
+
+.helena-pill.warn {
+  border-color: var(--runbook-warn-border);
+  color: #ffd58a;
+}
+
+.helena-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--runbook-border);
+  padding-bottom: 10px;
+}
+
+.helena-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--runbook-muted);
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.helena-tab:hover {
+  color: var(--runbook-heading);
+  background: rgba(108, 114, 255, 0.08);
+}
+
+.helena-tab.active {
+  color: var(--runbook-heading);
+  background: rgba(108, 114, 255, 0.18);
+}
+
+.helena-section {
+  margin-bottom: 28px;
+}
+
+.helena-section h2 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--runbook-muted);
+  font-weight: 700;
+}
+
+.helena-prose {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--runbook-heading);
+}
+
+.helena-card {
+  background: var(--runbook-surface);
+  border: 1px solid var(--runbook-border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+}
+
+.helena-card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  color: var(--runbook-heading);
+}
+
+.helena-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.helena-chip {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(174, 185, 225, 0.08);
+  color: var(--runbook-text);
+}
+
+.helena-scoregrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.helena-score {
+  background: var(--runbook-surface);
+  border: 1px solid var(--runbook-border);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.helena-score .label {
+  font-size: 11px;
+  color: var(--runbook-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.helena-score .value {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--runbook-heading);
+}
+
+.helena-score .value.gap {
+  font-size: 14px;
+  color: #ffd58a;
+}
+
+.helena-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--runbook-text);
+}
+
+.helena-list li {
+  margin-bottom: 6px;
+}
+
+.helena-btn {
+  appearance: none;
+  border: 1px solid var(--runbook-border);
+  background: var(--runbook-surface);
+  color: var(--runbook-heading);
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.helena-btn.primary {
+  background: var(--runbook-accent);
+  border-color: var(--runbook-accent);
+  color: #fff;
+}
+
+.helena-btn.warn {
+  border-color: var(--runbook-warn-border);
+  color: #ffd58a;
+}
+
+.helena-btn.ghost {
+  background: transparent;
+}
+
+.helena-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.helena-flag {
+  border-left: 3px solid var(--runbook-danger-border);
+  padding-left: 12px;
+}
+
+.helena-flag.info {
+  border-left-color: var(--runbook-accent);
+}
+
+.helena-flag.high {
+  border-left-color: var(--runbook-danger-border);
+}
+
+.helena-muted {
+  color: var(--runbook-muted);
+  font-size: 13px;
+}
+
+.helena-error {
+  background: var(--runbook-danger-bg);
+  border: 1px solid var(--runbook-danger-border);
+  color: #ffb4ba;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.helena-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.helena-table th,
+.helena-table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--runbook-border);
+  vertical-align: top;
+}
+
+.helena-table th {
+  color: var(--runbook-muted);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.helena-dialog {
+  border: 1px solid var(--runbook-border);
+  border-radius: 16px;
+  background: #0c142c;
+  color: var(--runbook-text);
+  padding: 0;
+  width: min(560px, calc(100vw - 24px));
+}
+
+.helena-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.helena-dialog form {
+  padding: 20px;
+}
+
+.helena-dialog h2 {
+  margin: 0 0 12px;
+  color: var(--runbook-heading);
+}
+
+.helena-dialog-body {
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.helena-dialog-body p {
+  margin: 0 0 8px;
+}
+
+.helena-note-label {
+  display: block;
+  font-size: 12px;
+  color: var(--runbook-muted);
+  margin-bottom: 10px;
+}
+
+.helena-note-label textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid var(--runbook-border);
+  background: #080f25;
+  color: var(--runbook-heading);
+  padding: 8px 10px;
+  font: inherit;
+}
+
+.helena-dialog-warn {
+  font-size: 12px;
+  color: #ffd58a;
+}
+
+.helena-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.helena-evidence a {
+  color: #9db0ff;
+  text-decoration: none;
+}
+
+.helena-evidence a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .helena-header {
+    flex-direction: column;
+  }
+  .helena-scoregrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .helena-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

@@ -33,6 +33,30 @@
     return isAdminMe(data);
   }
 
+  /** Founder/admin constellation — matches server canAccessHelenaCmoAdmin. */
+  function isHelenaCmoAdminMe(data) {
+    if (isAdminMe(data)) return true;
+    var d = data && data.dealality;
+    if (!d) return false;
+    if (d.flags && d.flags.isAdmin === true) return true;
+    if (d.founderNavOverridesAvailable === true) return true;
+    if (
+      d.canonicalWorkspaceOptions &&
+      d.canonicalWorkspaceOptions.founderNavOverridesAvailable === true
+    ) {
+      return true;
+    }
+    if (
+      (d.demoStakeholderMode === true || d.isDemo) &&
+      Array.isArray(d.switchableWorkspaces) &&
+      d.switchableWorkspaces.indexOf("Brand") !== -1 &&
+      d.switchableWorkspaces.indexOf("Owner") !== -1
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   function resolveEl(idOrEl) {
     if (!idOrEl) return null;
     return typeof idOrEl === "string" ? document.getElementById(idOrEl) : idOrEl;
@@ -181,14 +205,62 @@
     return true;
   }
 
+  async function requireHelenaCmoAdmin(options) {
+    options = options || {};
+    var loadingEl = document.getElementById(options.loadingId || "supportGateLoading");
+    var deniedEl = document.getElementById(options.deniedId || "supportGateDenied");
+    var contentEl = document.getElementById(options.contentId || "supportGateContent");
+
+    var result = await fetchMe();
+
+    if (loadingEl) hidePageLoading(loadingEl);
+
+    if (!result.ok) {
+      if (deniedEl) {
+        deniedEl.hidden = false;
+        var msg = deniedEl.querySelector("[data-gate-message]");
+        if (msg) {
+          msg.textContent =
+            result.reason === "auth_unavailable"
+              ? "Sign in through the Dealality app to view this page."
+              : "Authentication required. Sign in and try again.";
+        }
+      }
+      if (contentEl) contentEl.hidden = true;
+      return false;
+    }
+
+    if (!isHelenaCmoAdminMe(result.data)) {
+      if (deniedEl) {
+        deniedEl.hidden = false;
+        var deniedMsg = deniedEl.querySelector("[data-gate-message]");
+        if (deniedMsg) {
+          deniedMsg.textContent =
+            "Helena CMO is for Dealality founder/admin use only.";
+        }
+      }
+      if (contentEl) contentEl.hidden = true;
+      return false;
+    }
+
+    if (deniedEl) deniedEl.hidden = true;
+    if (contentEl) contentEl.hidden = false;
+    if (typeof options.onAllowed === "function") {
+      options.onAllowed(result.data);
+    }
+    return true;
+  }
+
   global.SupportAdminGate = {
     fetchMe: fetchMe,
     isAdminMe: isAdminMe,
     isInternalRunbookMe: isInternalRunbookMe,
+    isHelenaCmoAdminMe: isHelenaCmoAdminMe,
     showPageLoading: showPageLoading,
     setPageLoadingMessage: setPageLoadingMessage,
     hidePageLoading: hidePageLoading,
     requireAdmin: requireAdmin,
     requireInternalRunbook: requireInternalRunbook,
+    requireHelenaCmoAdmin: requireHelenaCmoAdmin,
   };
 })(window);

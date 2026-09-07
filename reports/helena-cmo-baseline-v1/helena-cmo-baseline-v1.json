@@ -1,0 +1,789 @@
+{
+  "schemaVersion": "helena-cmo-baseline-v1",
+  "meta": {
+    "baselineVersion": "v1",
+    "lastDeepReviewDate": "2026-09-07",
+    "confidence": "MEDIUM_HIGH_FOR_DIRECTION_MEDIUM_FOR_PUBLIC_GTM_EFFECTIVENESS",
+    "dataFreshness": "POINT_IN_TIME_2026-09-07",
+    "strategyState": "STRATEGY_PENDING_FOUNDER_REVIEW",
+    "executeEnabled": false,
+    "recurringHelenaEnabled": false,
+    "marketingOsSync": false,
+    "deepBaselineCadenceNote": "Deep baseline is one-time until quarterly/major-event refresh. Weekly Helena updates deltas only."
+  },
+  "workflow": [
+    "RESEARCH",
+    "BASELINE",
+    "DIAGNOSE",
+    "SYNTHESIZE_FINDINGS",
+    "STRATEGY",
+    "PRIORITIZE",
+    "PLAN",
+    "PREPARE",
+    "FOUNDER_APPROVAL",
+    "MANUAL_EXECUTION",
+    "MEASURE",
+    "LEARN",
+    "ADJUST"
+  ],
+  "overallMarketingHealth": {
+    "score": 4.5,
+    "label": "GOVERNANCE AHEAD OF PUBLIC GTM",
+    "rationale": "Founder locks + Operating Law give directional clarity (~7–8/10 governance), but public story, proof, attribution, and conversion architecture remain immature (~3/10). Prior maturity pack ~4.3/10; locks improved governance without fixing public commercialization."
+  },
+  "sourceCoverage": [
+    {
+      "area": "Company / strategy",
+      "sourcesAvailable": [
+        "reports/helena-cmo-founder-decisions/*",
+        "reports/helena-cmo-operating-law-v1/*",
+        "reports/helena-cmo-phase-3c1/*",
+        "reports/helena-cmo-strategy-lock-and-maturity/*"
+      ],
+      "sourcesReviewed": [
+        "D1–D5 + JD-6B locks",
+        "Operating Law v1",
+        "3c1 reconciled strategy",
+        "strategy maturity ~4.3"
+      ],
+      "sourcesMissing": [
+        "Live Meet recordings completeness",
+        "Final public category phrase (OPEN under D1)"
+      ],
+      "freshness": "2026-09-07",
+      "confidence": "HIGH"
+    },
+    {
+      "area": "Products",
+      "sourcesAvailable": [
+        "AGENTS.md product map",
+        "ADP/Explorer/Census docs",
+        "phase-3c1 ADP GTM"
+      ],
+      "sourcesReviewed": [
+        "ADP maturity PILOT_READY",
+        "Explorer/Census as platform depth",
+        "Alignment snapshots"
+      ],
+      "sourcesMissing": [
+        "Unified product marketing readiness scorecard in Marketing OS"
+      ],
+      "freshness": "2026-09-07",
+      "confidence": "MEDIUM_HIGH"
+    },
+    {
+      "area": "Website",
+      "sourcesAvailable": [
+        "public/marketing/dealality-landing-v9.html",
+        "README",
+        "Week01 website PREPARE brief",
+        "manual-cycle website review"
+      ],
+      "sourcesReviewed": [
+        "v9 landing",
+        "dual-track restructure PREPARE brief",
+        "manual-cycle B restructure verdict"
+      ],
+      "sourcesMissing": [
+        "Live Webflow CMS crawl today",
+        "Full mobile UX lab session"
+      ],
+      "freshness": "POINT_IN_TIME_REPO_V9",
+      "confidence": "MEDIUM"
+    },
+    {
+      "area": "Messaging",
+      "sourcesAvailable": [
+        "PACK_CORE messaging-guide",
+        "D1 positioning lock",
+        "NAMING_AND_COPY_GUIDE",
+        "phase-0 message evolution"
+      ],
+      "sourcesReviewed": [
+        "Clear-not-clever principles",
+        "D1 territory lock",
+        "historical Deal CaptureT messaging"
+      ],
+      "sourcesMissing": [
+        "Founder-approved final tagline"
+      ],
+      "freshness": "MIXED",
+      "confidence": "MEDIUM"
+    },
+    {
+      "area": "LinkedIn / social",
+      "sourcesAvailable": [
+        "04_SOCIAL_ANALYTICS/LINKEDIN_ENGAGEMENT_SUMMARY.md",
+        "linkedin_posts_metrics.json",
+        "JD_6B_003",
+        "Week01 LinkedIn pack",
+        "calendar export"
+      ],
+      "sourcesReviewed": [
+        "34 scraped posts sample",
+        "61 published items commercial outcome UNKNOWN (cycle)",
+        "Joan role lock"
+      ],
+      "sourcesMissing": [
+        "Complete impression series",
+        "CRM-attributed pipeline outcomes"
+      ],
+      "freshness": "POINT_IN_TIME_JUN_SEP_2026",
+      "confidence": "MEDIUM_LOW_FOR_COMMERCIAL_EFFECTIVENESS"
+    },
+    {
+      "area": "SEO / discovery",
+      "sourcesAvailable": [
+        "GSC_SUMMARY.md",
+        "GSC snapshot JSON",
+        "Webflow insights catalog",
+        "Week01 SEO priority"
+      ],
+      "sourcesReviewed": [
+        "GSC 2026-06-01→09-06",
+        "insights posts catalog"
+      ],
+      "sourcesMissing": [
+        "Live GSC API",
+        "AI discovery measurement pack"
+      ],
+      "freshness": "POINT_IN_TIME_2026-09-06",
+      "confidence": "MEDIUM"
+    },
+    {
+      "area": "Analytics / attribution",
+      "sourcesAvailable": [
+        "GA4_SUMMARY",
+        "GA4 snapshot",
+        "Week01 measurement audit",
+        "tracking TWIs"
+      ],
+      "sourcesReviewed": [
+        "GA4 PARTIAL",
+        "attribution BROKEN"
+      ],
+      "sourcesMissing": [
+        "CRM↔Marketing OS join",
+        "email/outreach attribution",
+        "ADP pilot scorecard instances"
+      ],
+      "freshness": "2026-09-07",
+      "confidence": "HIGH_THAT_GAP_EXISTS"
+    },
+    {
+      "area": "Proof",
+      "sourcesAvailable": [
+        "phase-3c1 proof strategy",
+        "ADP commercial evidence JSON",
+        "leak-audit demo pack",
+        "decks"
+      ],
+      "sourcesReviewed": [
+        "Proof vacuum verdict from manual cycle",
+        "pilot scorecard SPEC only"
+      ],
+      "sourcesMissing": [
+        "Conversion-grade named customer proof",
+        "public case metrics"
+      ],
+      "freshness": "2026-09-07",
+      "confidence": "HIGH"
+    },
+    {
+      "area": "Sales / commercial support",
+      "sourcesAvailable": [
+        "docs/gtm-resources",
+        "strike lists",
+        "ADP one-pager PREPARE",
+        "outreach APIs"
+      ],
+      "sourcesReviewed": [
+        "Warm ADP path",
+        "GTM pilot kits"
+      ],
+      "sourcesMissing": [
+        "Named Week1 CRM targets (DATA_GAP)",
+        "Systematic ABM attribution"
+      ],
+      "freshness": "2026-09-07",
+      "confidence": "MEDIUM"
+    }
+  ],
+  "executiveAssessment": {
+    "whereWeStand": "Dealality has strong product depth and newly locked dual-track GTM direction (ADP commercialization + owner dealmaking), but public marketing still largely sells a selection-era platform story. ADP is commercially real and pilot-ready, yet nearly invisible on the website. LinkedIn volume exists without attributed commercial outcomes. Measurement can partially observe traffic/engagement but cannot yet prove what marketing creates pilots or revenue.",
+    "overallHealth": {
+      "score": 4.5,
+      "label": "GOVERNANCE AHEAD OF PUBLIC GTM"
+    },
+    "topStrengths": [
+      "Product depth: ADP, Brand/Operator Explorer, Census, Owner Intelligence",
+      "Founder network + warm-account path for ADP pilots",
+      "Locked strategy direction: owner-first, dual-track GTM, marketplace role, ICP v1, ADP pricing authority",
+      "Operating Law + Marketing OS foundation (PREPARE governance, epistemic honesty)",
+      "Research/intelligence differentiation vs generic hotel SaaS marketing"
+    ],
+    "topOpportunities": [
+      "Make ADP visible and urgent in public narrative without abandoning dealmaking",
+      "Instrument paid pilots so proof compounds",
+      "Fix attribution chain so learning is possible",
+      "Reset Joan LinkedIn to commercial education + warm activation (not vanity engagement)",
+      "Use existing Marketing OS assets (messaging, Target OS, Thought Leadership OS) instead of inventing more systems"
+    ],
+    "whatIsNotWorking": [
+      "Public story lag vs locked dual-track strategy",
+      "Attribution chain LinkedIn→site→lead→pilot→revenue BROKEN",
+      "Proof vacuum for conversion-grade GTM",
+      "Website hierarchy underweights ADP urgency",
+      "Engagement treated as proxy for commercial effectiveness"
+    ],
+    "unknowns": [
+      "Which LinkedIn themes create warm conversations vs noise",
+      "True organic owner acquisition contribution of SEO/insights",
+      "Which warm ADP accounts Joan will personally advance this week (named CRM DATA_GAP)",
+      "Whether current landing CTAs convert owners into qualified conversations",
+      "Live GA4/GSC trend since 2026-09-06 snapshot"
+    ],
+    "centralProblem": "Public marketing still communicates a selection-era Dealality while the locked strategy is dual-track (ADP commercialization + owner dealmaking); ADP is commercially real but nearly invisible; outcomes are unattributed; proof is insufficient for conversion-grade GTM.",
+    "recommendedStrategyThesis": "Lead near-term marketing with ADP paid-pilot commercialization for warm owner/hotel accounts, while keeping owner-dealmaking as the durable identity track—public narrative, LinkedIn, and website hierarchy must reflect both tracks, with proof and attribution as non-optional learning systems.",
+    "pillars": [
+      {
+        "id": "P1",
+        "name": "Dual-track public narrative"
+      },
+      {
+        "id": "P2",
+        "name": "ADP pilot commercialization + instrumentation"
+      },
+      {
+        "id": "P3",
+        "name": "Warm ABM / founder activation"
+      },
+      {
+        "id": "P4",
+        "name": "Measurement & attribution repair"
+      },
+      {
+        "id": "P5",
+        "name": "Proof compounding"
+      }
+    ],
+    "whatShouldHappenFirst": [
+      "Founder reviews and accepts (or amends) this CMO strategy before tactical PREPARE approvals become normal workflow",
+      "Confirm 3–7 named warm ADP pilot conversations",
+      "Require ADP Pilot Scorecard at any pilot start",
+      "Approve/hold P0 attribution tracking TWIs (PREPARE only)",
+      "Finish website dual-track restructure PREPARE brief (no build this week)"
+    ],
+    "founderReviewCta": "REVIEW STRATEGY"
+  },
+  "scorecard": {
+    "company_positioning": {
+      "score": 6,
+      "currentState": "Territory locked; public phrase OPEN",
+      "why": "D1 locks dealmaking territory but not final tagline; public still selection-forward",
+      "evidence": [
+        "D1_POSITIONING_DIRECTION_LOCK",
+        "manual-cycle public story lag"
+      ],
+      "biggestGap": "Final public category/urgency phrase",
+      "opportunity": "Approve dual-track public framing",
+      "confidence": "HIGH"
+    },
+    "owner_relevance": {
+      "score": 7,
+      "currentState": "Owner-first doctrine locked",
+      "why": "ICP + locks prioritize owners; public proof of owner outcomes thin",
+      "evidence": [
+        "D4_ICP_V1_LOCK",
+        "JD-6B"
+      ],
+      "biggestGap": "Owner outcome proof",
+      "opportunity": "Owner-specific ADP + dealmaking proof assets",
+      "confidence": "HIGH"
+    },
+    "urgency": {
+      "score": 4,
+      "currentState": "Strategic urgency clear internally; public WEAK–MODERATE",
+      "why": "Manual cycle: ADP urgency missing on site",
+      "evidence": [
+        "manual-cycle-00"
+      ],
+      "biggestGap": "Public ADP urgency",
+      "opportunity": "Lead with AI demand risk / opportunity for existing hotels",
+      "confidence": "MEDIUM"
+    },
+    "product_market_communication": {
+      "score": 4,
+      "currentState": "Many products, unclear lead hierarchy publicly",
+      "why": "Explorers/Census deeper than public hierarchy; ADP under-communicated",
+      "evidence": [
+        "landing v9",
+        "product map"
+      ],
+      "biggestGap": "Lead product hierarchy",
+      "opportunity": "ADP + dealmaking as dual lead; others support",
+      "confidence": "MEDIUM"
+    },
+    "adp_commercialization_readiness": {
+      "score": 6,
+      "currentState": "Product PILOT_READY; public GTM lagging",
+      "why": "Pricing MARKET_TEST; scorecard SPEC; named pipeline DATA_GAP",
+      "evidence": [
+        "D5",
+        "Week01 ADP packs"
+      ],
+      "biggestGap": "Named warm pipeline + instrumentation",
+      "opportunity": "Run instrumented paid pilots",
+      "confidence": "HIGH"
+    },
+    "dealmaking_commercialization_readiness": {
+      "score": 5,
+      "currentState": "Identity track locked; conversion proof thin",
+      "why": "Signals/ABM packs exist; public dealmaking CTA path mixed",
+      "evidence": [
+        "D1",
+        "D2",
+        "Week01 owner signals"
+      ],
+      "biggestGap": "Conversion-grade dealmaking proof",
+      "opportunity": "Warm dealmaking ABM with tracked outcomes",
+      "confidence": "MEDIUM"
+    },
+    "website": {
+      "score": 5,
+      "currentState": "MIXED — v9 exists; hierarchy lag",
+      "why": "Restructure class B recommended; ADP visibility weak; build NOT this week",
+      "evidence": [
+        "landing v9",
+        "04_WEBSITE_RESTRUCTURE_BRIEF"
+      ],
+      "biggestGap": "Dual-track hierarchy",
+      "opportunity": "PREPARE then later implement",
+      "confidence": "MEDIUM"
+    },
+    "messaging": {
+      "score": 5,
+      "currentState": "Principles exist; consistency mixed",
+      "why": "Clear-not-clever + locks; historical messaging still present",
+      "evidence": [
+        "PACK_CORE messaging-guide",
+        "D1"
+      ],
+      "biggestGap": "Approved dual-track message architecture",
+      "opportunity": "Lock short public message set",
+      "confidence": "MEDIUM"
+    },
+    "founder_linkedin": {
+      "score": 5,
+      "currentState": "Volume exists; commercial role reset needed",
+      "why": "JD-6B-003 locks Joan role reset; outcomes UNKNOWN",
+      "evidence": [
+        "JD_6B_003",
+        "LinkedIn summary"
+      ],
+      "biggestGap": "Attributed conversations",
+      "opportunity": "Commercial education + warm activation cadence",
+      "confidence": "MEDIUM_LOW"
+    },
+    "seo_discovery": {
+      "score": 4,
+      "currentState": "Thin clicks; mixed intent payoff",
+      "why": "GSC: home 6 clicks; branded residences 744 impr / 0 clicks",
+      "evidence": [
+        "GSC_SUMMARY"
+      ],
+      "biggestGap": "Owner-intent pages that convert",
+      "opportunity": "Defend CALA/owner pages; stop vanity volume",
+      "confidence": "MEDIUM"
+    },
+    "proof": {
+      "score": 3,
+      "currentState": "Proof vacuum",
+      "why": "Neither ADP nor dealmaking has conversion-grade public proof",
+      "evidence": [
+        "manual-cycle-00",
+        "10_PROOF_GAPS"
+      ],
+      "biggestGap": "Named outcomes + methodology proof",
+      "opportunity": "Pilot scorecard → publishable proof later",
+      "confidence": "HIGH"
+    },
+    "conversion_architecture": {
+      "score": 4,
+      "currentState": "Paths exist; join broken",
+      "why": "Forms/outreach exist; attribution/CRM join DATA_GAP",
+      "evidence": [
+        "Week01 measurement"
+      ],
+      "biggestGap": "End-to-end conversion map",
+      "opportunity": "P0 tracking TWIs + CRM join",
+      "confidence": "HIGH"
+    },
+    "measurement_attribution": {
+      "score": 2,
+      "currentState": "GA4 PARTIAL; attribution BROKEN",
+      "why": "Explicit Week01 audit",
+      "evidence": [
+        "12_MEASUREMENT_ATTRIBUTION_AUDIT"
+      ],
+      "biggestGap": "LinkedIn→revenue chain",
+      "opportunity": "Approve P0 TWIs then implement",
+      "confidence": "HIGH"
+    },
+    "owner_acquisition": {
+      "score": 4,
+      "currentState": "Warm path stronger than systematic",
+      "why": "Named Week1 targets DATA_GAP",
+      "evidence": [
+        "Week01 ADP focus"
+      ],
+      "biggestGap": "Named warm list + follow-up system",
+      "opportunity": "Joan-led warm ADP activation",
+      "confidence": "MEDIUM"
+    },
+    "brand_operator_acquisition": {
+      "score": 4,
+      "currentState": "Secondary track; not primary near-term",
+      "why": "D4 secondary commercial; public still brand-heavy historically",
+      "evidence": [
+        "D4"
+      ],
+      "biggestGap": "Avoid distraction from owner ADP",
+      "opportunity": "Secondary ABM only when owner track instrumented",
+      "confidence": "MEDIUM"
+    },
+    "channel_strategy": {
+      "score": 5,
+      "currentState": "Channels known; roles not enforced publicly",
+      "why": "LinkedIn primary; SEO secondary; paid PARK",
+      "evidence": [
+        "3c1 LinkedIn/ABM"
+      ],
+      "biggestGap": "Channel role discipline",
+      "opportunity": "Enforce stop list",
+      "confidence": "MEDIUM"
+    },
+    "marketing_operating_system": {
+      "score": 6,
+      "currentState": "OS seeded; console local-only",
+      "why": "Marketing OS exists; Founder Console not syncing writes",
+      "evidence": [
+        "phase-2c",
+        "console docs"
+      ],
+      "biggestGap": "OS↔console sync later",
+      "opportunity": "Use OS as source library now",
+      "confidence": "HIGH"
+    },
+    "cmo_execution_readiness": {
+      "score": 5,
+      "currentState": "PREPARE-ready; EXECUTE intentionally OFF",
+      "why": "Law + weekly pack + console; strategy review gate missing until V2",
+      "evidence": [
+        "operating law",
+        "Week01"
+      ],
+      "biggestGap": "Founder strategy acceptance",
+      "opportunity": "Strategy review then tactical PREPARE",
+      "confidence": "HIGH"
+    }
+  },
+  "domains": {
+    "website": {
+      "verdict": "MIXED",
+      "score": 5,
+      "rationale": "Landing v9 is a real production surface with clearer structure than early archives, but the public narrative hierarchy still underweights ADP urgency relative to locked dual-track strategy. Manual cycle recommended page restructure (B), not full rebuild. Build is correctly NOT this week.",
+      "good": [
+        "v9 exists and is maintained as current",
+        "Audience pages exist (owners/brands/operators)",
+        "Analytics helpers present on landing"
+      ],
+      "bad": [
+        "ADP nearly invisible / low urgency",
+        "Selection-era hierarchy still dominates first read",
+        "Proof/trust conversion assets thin",
+        "Attribution from site actions incomplete"
+      ]
+    },
+    "linkedin": {
+      "verdict": "IMPROVE",
+      "whatWorked": [
+        "Sustained publishing cadence",
+        "Owner-relevant CALA/brand themes",
+        "Founder voice capability"
+      ],
+      "whatDidNot": [
+        "Treating likes as business outcomes",
+        "Weak ADP commercial education publicly",
+        "Unclear CTA→conversation path"
+      ],
+      "unknown": [
+        "Which posts create warm intros or pilots",
+        "True impression reach (often null)",
+        "Company vs founder channel ROI"
+      ],
+      "why": "Volume without attribution cannot guide spend of founder attention."
+    },
+    "seo": {
+      "verdict": "MIXED_WEAK",
+      "score": 4,
+      "rationale": "GSC Jun–Sep 2026 shows very thin click volume (home 6 clicks). Some owner-intent articles get impressions without clicks (branded residences 744 impr / 0 clicks). Near-page-1 Spanish/CALA pages are defensive assets. Not a primary near-term acquisition engine."
+    },
+    "adp": {
+      "verdict": "PRODUCT_AHEAD_OF_PUBLIC_GTM",
+      "score": 6,
+      "rationale": "ADP is PILOT_READY with MARKET_TEST pricing authority and decks/demo packs, but public commercialization, named warm pipeline, and live scorecard instances lag."
+    },
+    "ownerAcquisition": {
+      "verdict": "WARM_PARTIAL_SYSTEMATIC_WEAK",
+      "score": 4,
+      "rationale": "Warm founder path is the real near-term channel; systematic owner acquisition and proof are weak."
+    },
+    "measurement": {
+      "verdict": "WEAK",
+      "score": 2,
+      "canMeasure": [
+        "Some GA4 sessions (PARTIAL)",
+        "Some GSC clicks/impr (snapshot)",
+        "Some LinkedIn likes/comments when present"
+      ],
+      "partiallyMeasure": [
+        "Landing analytics events",
+        "Marketing OS performance fields"
+      ],
+      "cannotMeasure": [
+        "LinkedIn→site→lead→pilot→revenue",
+        "ADP pilot commercial outcomes in OS",
+        "CRM join completeness"
+      ]
+    }
+  },
+  "findings": {
+    "strengths": [
+      {
+        "id": "S1",
+        "title": "Product depth",
+        "evidence": "ADP/Explorers/Census/Owner Intelligence in product"
+      },
+      {
+        "id": "S2",
+        "title": "Founder network",
+        "evidence": "JD-6B warm ADP activation priority"
+      },
+      {
+        "id": "S3",
+        "title": "Locked dual-track direction",
+        "evidence": "D1–D5 + JD-6B"
+      },
+      {
+        "id": "S4",
+        "title": "Operating Law / epistemic honesty",
+        "evidence": "operating-law-v1 + console DATA_GAP rules"
+      },
+      {
+        "id": "S5",
+        "title": "Research differentiation",
+        "evidence": "intelligence products vs generic hotel SaaS"
+      },
+      {
+        "id": "S6",
+        "title": "Marketing OS corpus recovered",
+        "evidence": "phase-0 PACK_CORE + analytics snapshots"
+      },
+      {
+        "id": "S7",
+        "title": "Pilot kits exist",
+        "evidence": "gtm-resources + ADP decks"
+      }
+    ],
+    "improvements": [
+      {
+        "issue": "Public story lag",
+        "evidence": "manual-cycle-00",
+        "consequence": "Market hears wrong Dealality",
+        "opportunity": "Dual-track narrative",
+        "urgency": "NOW"
+      },
+      {
+        "issue": "Attribution broken",
+        "evidence": "Week01 measurement audit",
+        "consequence": "Cannot learn",
+        "opportunity": "P0 TWIs",
+        "urgency": "NOW"
+      },
+      {
+        "issue": "Proof vacuum",
+        "evidence": "manual-cycle + proof gaps",
+        "consequence": "Hard to convert cold",
+        "opportunity": "Instrumented pilots",
+        "urgency": "NOW"
+      },
+      {
+        "issue": "ADP public invisibility",
+        "evidence": "website review",
+        "consequence": "Misses near-term revenue wedge",
+        "opportunity": "Website hierarchy PREPARE",
+        "urgency": "NOW"
+      },
+      {
+        "issue": "LinkedIn commercial reset incomplete",
+        "evidence": "JD-6B-003",
+        "consequence": "Founder time under-leveraged",
+        "opportunity": "Role-aligned content",
+        "urgency": "NEXT"
+      },
+      {
+        "issue": "Named warm pipeline DATA_GAP",
+        "evidence": "Week01 ADP focus",
+        "consequence": "Stays class-level targeting",
+        "opportunity": "Joan named list",
+        "urgency": "NOW"
+      },
+      {
+        "issue": "SEO vanity volume risk",
+        "evidence": "GSC branded residences",
+        "consequence": "Impressions without owner payoff",
+        "opportunity": "Intent filter",
+        "urgency": "LATER"
+      },
+      {
+        "issue": "OS↔console write not connected",
+        "evidence": "console contract",
+        "consequence": "Decisions local-only",
+        "opportunity": "Later sync",
+        "urgency": "LATER"
+      },
+      {
+        "issue": "Final tagline OPEN",
+        "evidence": "D1",
+        "consequence": "Public phrase drift",
+        "opportunity": "Founder lock later",
+        "urgency": "LATER"
+      },
+      {
+        "issue": "Underused OS assets",
+        "evidence": "PACK_CORE Target/Thought Leadership OS",
+        "consequence": "Reinvention waste",
+        "opportunity": "Reuse before rebuild",
+        "urgency": "NEXT"
+      }
+    ],
+    "unknowns": [
+      "Named Week1 ADP targets",
+      "Commercial outcome of published LinkedIn corpus",
+      "Live analytics since snapshot",
+      "Landing CTA conversion quality",
+      "Which insights pages create owner conversations"
+    ]
+  },
+  "historicalActivities": [
+    {
+      "name": "Joan LinkedIn publishing",
+      "wasGoodIdea": "YES",
+      "executedWell": "PARTIAL",
+      "generatedEvidence": "ENGAGEMENT_ONLY",
+      "classification": "IMPROVE",
+      "why": "Keep cadence; reset to commercial education + warm activation; stop vanity KPI."
+    },
+    {
+      "name": "SEO / Insights content",
+      "wasGoodIdea": "YES_WITH_FILTER",
+      "executedWell": "MIXED",
+      "generatedEvidence": "IMPRESSIONS_THIN_CLICKS",
+      "classification": "IMPROVE",
+      "why": "Defend owner-intent; stop volume without payoff."
+    },
+    {
+      "name": "Website landing iterations (v5→v9)",
+      "wasGoodIdea": "YES",
+      "executedWell": "PARTIAL",
+      "generatedEvidence": "SURFACE_EXISTS",
+      "classification": "IMPROVE",
+      "why": "Restructure hierarchy for dual-track; no vanity rebuild."
+    },
+    {
+      "name": "Thought Leadership OS",
+      "wasGoodIdea": "YES",
+      "executedWell": "UNKNOWN",
+      "generatedEvidence": "SYSTEM_EXISTS",
+      "classification": "KEEP",
+      "why": "Useful operating asset if subordinated to strategy."
+    },
+    {
+      "name": "Target OS",
+      "wasGoodIdea": "YES",
+      "executedWell": "PARTIAL",
+      "generatedEvidence": "CLASS_LEVEL",
+      "classification": "IMPROVE",
+      "why": "Needs named warm CRM join for ADP week."
+    },
+    {
+      "name": "ADP decks / demo packs",
+      "wasGoodIdea": "YES",
+      "executedWell": "GOOD",
+      "generatedEvidence": "SALES_ASSETS",
+      "classification": "KEEP",
+      "why": "Core commercial support for pilots."
+    },
+    {
+      "name": "Advisor / AO social posts",
+      "wasGoodIdea": "MIXED",
+      "executedWell": "PARTIAL",
+      "generatedEvidence": "LOW_ENGAGEMENT_SAMPLE",
+      "classification": "UNKNOWN",
+      "why": "Insufficient commercial attribution."
+    },
+    {
+      "name": "Beta / generic CTAs",
+      "wasGoodIdea": "MIXED",
+      "executedWell": "UNKNOWN",
+      "generatedEvidence": "DATA_GAP",
+      "classification": "IMPROVE",
+      "why": "CTAs must match MARKET_TEST / pilot intent."
+    },
+    {
+      "name": "Content calendar volume",
+      "wasGoodIdea": "PARTIAL",
+      "executedWell": "YES_VOLUME",
+      "generatedEvidence": "PUBLISH_COUNT",
+      "classification": "IMPROVE",
+      "why": "Volume ≠ pipeline."
+    },
+    {
+      "name": "Brand visibility without ADP",
+      "wasGoodIdea": "NO_AS_PRIMARY",
+      "executedWell": "N/A",
+      "generatedEvidence": "STORY_LAG",
+      "classification": "STOP",
+      "why": "Do not lead with selection-only story while ADP is the near-term wedge."
+    }
+  ],
+  "diagnosis": {
+    "centralProblem": "Public marketing still communicates a selection-era Dealality while the locked strategy is dual-track (ADP commercialization + owner dealmaking); ADP is commercially real but nearly invisible; outcomes are unattributed; proof is insufficient for conversion-grade GTM.",
+    "whyExists": [
+      "Strategy locks progressed faster than public narrative updates",
+      "Content systems optimized for publishing cadence over commercial instrumentation",
+      "ADP matured as product before marketing hierarchy caught up",
+      "Attribution/CRM joins never became a hard gate"
+    ],
+    "ifDoNothing": [
+      "Founder time continues on unattributable content",
+      "ADP pilots risk starting without proof systems",
+      "Market keeps misunderstanding Dealality as selection-only",
+      "Near-term revenue wedge under-supported publicly"
+    ],
+    "leverage": [
+      "Named warm ADP pilot activation + scorecard",
+      "Dual-track public narrative (website PREPARE + LinkedIn reset)",
+      "Attribution repair so learning compounds"
+    ],
+    "doNotSolveYet": [
+      "Full website rebuild",
+      "Paid acquisition",
+      "EXECUTE / recurring Helena",
+      "Sales CSO takeover of CMO",
+      "Final brand tagline perfection before dual-track hierarchy",
+      "Broad brand/operator acquisition push"
+    ]
+  }
+}
