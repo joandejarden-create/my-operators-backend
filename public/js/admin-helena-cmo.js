@@ -165,6 +165,14 @@
       '<p class="helena-muted">' +
       esc(cov.honesty || "Validation pack required for full coverage detail.") +
       '</p><button type="button" class="helena-btn ghost" data-tab-jump="baseline">Drill into coverage</button></div></div>' +
+      '<div class="helena-section"><h2>Deep CMO review</h2>' +
+      '<div class="helena-card"><p class="helena-prose">Authoritative live-evidence assessment (Deep Baseline V2). Console cards summarize; the deep review is the full argument.</p>' +
+      '<p class="helena-muted">Freshness: ' +
+      esc((vm.meta && vm.meta.assessmentFreshness) || "—") +
+      " · Pack: " +
+      esc((vm.meta && vm.meta.deepBaselinePack) || "missing") +
+      '</p><button type="button" class="helena-btn primary" data-open-deep-review="1">VIEW DEEP CMO REVIEW</button> ' +
+      '<button type="button" class="helena-btn ghost" data-tab-jump="baseline">VIEW ANALYSIS cards</button></div></div>' +
       '<div class="helena-section"><h2>Current state</h2><p class="helena-prose">' +
       esc(ea.whereWeStand) +
       '</p><div class="helena-scoregrid"><div class="helena-score"><div class="label">Health</div><div class="value">' +
@@ -274,6 +282,9 @@
 
     keys.forEach(function (k) {
       var r = card[k];
+      var analysis =
+        (vm.deepBaseline && vm.deepBaseline.analysisByDomain && vm.deepBaseline.analysisByDomain[k]) ||
+        null;
       html +=
         '<div class="helena-card helena-baseline-card"><div class="helena-meta">' +
         esc(k) +
@@ -289,7 +300,30 @@
         esc(r.opportunity) +
         " · Confidence: " +
         esc(r.confidence) +
-        "</p></div>";
+        '</p><button type="button" class="helena-btn ghost" data-open-analysis="' +
+        esc(k) +
+        '">VIEW ANALYSIS</button>';
+      if (analysis) {
+        html +=
+          '<div class="helena-analysis" id="analysis-' +
+          esc(k) +
+          '" hidden><h3>Analysis</h3><p><strong>Verdict:</strong> ' +
+          esc(analysis.verdict) +
+          "</p><p><strong>Evidence:</strong> " +
+          esc(analysis.evidence) +
+          "</p><p><strong>So what:</strong> " +
+          esc(analysis.soWhat) +
+          "</p><p><strong>Business consequence:</strong> " +
+          esc(analysis.consequence) +
+          "</p><p><strong>Priority logic:</strong> " +
+          esc(analysis.priority) +
+          " — " +
+          esc(analysis.whyPriority) +
+          "</p><p><strong>What would change the view:</strong> " +
+          esc(analysis.changeScore) +
+          "</p></div>";
+      }
+      html += "</div>";
     });
     el.innerHTML = html;
   }
@@ -654,6 +688,33 @@
       var open = e.target.closest("[data-open-decision]");
       if (open) {
         openDecision(open.getAttribute("data-open-decision"));
+        return;
+      }
+      var deep = e.target.closest("[data-open-deep-review]");
+      if (deep) {
+        var db = consoleVm && consoleVm.deepBaseline;
+        var body =
+          "<p class=\"helena-prose\"><strong>" +
+          esc((db && db.recommendationId) || "B2") +
+          "</strong> — " +
+          esc((db && db.recommendationName) || "") +
+          " (" +
+          esc((db && db.recommendationScore) || "—") +
+          "/10)</p><p class=\"helena-prose\">" +
+          esc((db && db.centralDiagnosis) || "") +
+          '</p><p class="helena-muted">Authoritative file: ' +
+          esc((db && db.founderReviewPath) || "reports/helena-cmo-deep-baseline-v2/00_FOUNDER_CMO_DEEP_REVIEW.md") +
+          "</p><p class=\"helena-muted\">Open that markdown in the repo for the full 25–40 minute founder briefing. Console stays discussion-only.</p>";
+        document.getElementById("helenaDialogTitle").textContent = "Deep CMO Review (V2)";
+        document.getElementById("helenaDialogBody").innerHTML = body;
+        document.getElementById("helenaDecisionDialog").showModal();
+        return;
+      }
+      var analysisBtn = e.target.closest("[data-open-analysis]");
+      if (analysisBtn) {
+        var key = analysisBtn.getAttribute("data-open-analysis");
+        var panel = document.getElementById("analysis-" + key);
+        if (panel) panel.hidden = !panel.hidden;
         return;
       }
       var appr = e.target.closest("[data-approval-action]");

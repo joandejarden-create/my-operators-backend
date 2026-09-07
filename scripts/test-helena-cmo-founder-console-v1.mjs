@@ -255,14 +255,20 @@ try {
 
   test('FC-16', 'Phase 6E strategy decision pack + DISCUSS CTA', () => {
     const vm = buildFounderConsoleV2ViewModel();
-    if (!vm.strategyDecision?.recommended?.id) throw new Error('missing strategy decision recommendation');
+    if (!vm.strategyDecision?.recommended?.id && !vm.deepBaseline?.recommendationId) {
+      throw new Error('missing strategy decision recommendation');
+    }
     if (vm.meta?.primaryCta !== 'DISCUSS_STRATEGY') throw new Error('primary CTA must be DISCUSS_STRATEGY');
     if (vm.meta?.strategyApprovalRequested) throw new Error('approval must stay false');
     if (vm.meta?.strategyState !== 'STRATEGY_PENDING_FOUNDER_DISCUSSION') {
       throw new Error(`expected DISCUSSION state, got ${vm.meta?.strategyState}`);
     }
-    if (vm.executiveAssessment?.helenaRecommendationId !== 'B_ADP_ENTRY_DEALMAKING_ARCHITECTURE') {
-      throw new Error('expected Option B recommendation');
+    const recId = vm.executiveAssessment?.helenaRecommendationId;
+    if (
+      recId !== 'B_ADP_ENTRY_DEALMAKING_ARCHITECTURE' &&
+      recId !== 'B2_WARM_ADP_ENTRY_MEASURED_DEALMAKING'
+    ) {
+      throw new Error(`unexpected recommendation id ${recId}`);
     }
     if (vm.strategyDecision?.dataCompletenessDecision?.answer !== 'PARTIALLY') {
       throw new Error('expected PARTIALLY data completeness decision');
@@ -271,8 +277,8 @@ try {
     if (!html.includes('DISCUSS STRATEGY')) throw new Error('UI must show DISCUSS STRATEGY');
     if (/APPROVE STRATEGY/.test(html)) throw new Error('must not push APPROVE STRATEGY as primary');
     return {
-      recommendation: vm.strategyDecision.recommended.id,
-      score: vm.strategyDecision.recommended.score,
+      recommendation: recId,
+      score: vm.executiveAssessment?.helenaRecommendationScore,
       dataDecision: vm.strategyDecision.dataCompletenessDecision.answer,
     };
   });
@@ -358,6 +364,53 @@ try {
       sessions30d: canonical.headline.ga4_sessions_30d,
       deepBaselineReady: canonical.deepBaselineReadiness?.answer,
       deepBaselineRun: canonical.ingest.deepBaselineV2Run,
+    };
+  });
+
+  test('FC-19', 'Deep Baseline V2 live-evidence pack + Console V3', () => {
+    const packDir = path.join(ROOT, 'reports/helena-cmo-deep-baseline-v2');
+    const deepPath = path.join(packDir, 'helena-cmo-deep-baseline-v2.json');
+    const reviewPath = path.join(packDir, '00_FOUNDER_CMO_DEEP_REVIEW.md');
+    if (!fs.existsSync(deepPath)) throw new Error('deep baseline JSON missing');
+    if (!fs.existsSync(reviewPath)) throw new Error('founder deep review missing');
+    const deep = JSON.parse(fs.readFileSync(deepPath, 'utf8'));
+    if (deep.recommendedStrategy?.id !== 'B2_WARM_ADP_ENTRY_MEASURED_DEALMAKING') {
+      throw new Error('expected B2 recommendation');
+    }
+    if (deep.meta?.strategyApprovalRequested) throw new Error('must not request strategy approval');
+    if (deep.meta?.zapierUsed) throw new Error('must not use Zapier');
+    if (!Array.isArray(deep.prioritiesNow) || deep.prioritiesNow.length > 5) {
+      throw new Error('NOW priorities must exist and be ≤5');
+    }
+    const required = [
+      '01_EXECUTIVE_ASSESSMENT.md',
+      '23_PRIORITY_MEMOS.md',
+      '24_DEPRIORITIZATION_MEMOS.md',
+      'helena-cmo-priority-memos-v2.json',
+      'helena-cmo-strategy-options-v2.json',
+    ];
+    for (const f of required) {
+      if (!fs.existsSync(path.join(packDir, f))) throw new Error(`missing ${f}`);
+    }
+    const vm = buildFounderConsoleV2ViewModel();
+    if (vm.consoleVersion !== 'v3.6fb') throw new Error(`expected console v3.6fb, got ${vm.consoleVersion}`);
+    if (!vm.deepBaseline?.recommendationId) throw new Error('console missing deepBaseline');
+    if (vm.meta?.assessmentFreshness !== 'LIVE_CHANNELS') {
+      throw new Error(`expected LIVE_CHANNELS freshness, got ${vm.meta?.assessmentFreshness}`);
+    }
+    if (vm.executiveAssessment?.helenaRecommendationId !== 'B2_WARM_ADP_ENTRY_MEASURED_DEALMAKING') {
+      throw new Error('console must surface B2');
+    }
+    const html = fs.readFileSync(path.join(ROOT, 'public/js/admin-helena-cmo.js'), 'utf8');
+    if (!html.includes('VIEW DEEP CMO REVIEW')) throw new Error('missing deep review CTA');
+    if (!html.includes('VIEW ANALYSIS')) throw new Error('missing VIEW ANALYSIS');
+    const words = fs.readFileSync(reviewPath, 'utf8').split(/\s+/).filter(Boolean).length;
+    if (words < 3500) throw new Error(`founder review too short (${words} words)`);
+    return {
+      recommendation: deep.recommendedStrategy.id,
+      overall: deep.scores.overall.score,
+      words,
+      freshness: vm.meta.assessmentFreshness,
     };
   });
 } finally {
