@@ -1,0 +1,234 @@
+{
+  "schemaVersion": "helena-cmo-native-data-pull-v1",
+  "generatedAt": "2026-09-07T15:55:54.361Z",
+  "meta": {
+    "executeEnabled": false,
+    "recurringHelenaEnabled": false,
+    "strategyApprovalRequested": false,
+    "deepBaselineV2Run": false,
+    "zapierUsedForGa4Gsc": false,
+    "note": "Helena-native = Enrich Labs. This Cursor session cannot invoke Enrich tool runtime."
+  },
+  "accessBoundary": {
+    "helenaNativeHome": "Enrich Labs (enrichlabs.ai / agent.enrichlabs.ai)",
+    "evidence": "Phase 0 verified Enrich Labs identity; historical skills use get_traffic, post_linkedin, Webflow CMS; GA4 snapshot notes cite get_traffic",
+    "thisSession": "Cursor IDE agent (Dealality repo + Cursor MCP tools)",
+    "enrichMcpToolsInThisSession": false,
+    "enrichApiCredentialsInEnv": false,
+    "canQueryEnrichNativeGa4FromHere": false,
+    "canQueryEnrichNativeGscFromHere": false,
+    "canQueryEnrichNativeLinkedInAnalyticsFromHere": false
+  },
+  "inventory": [
+    {
+      "source": "GA4",
+      "connected_on_enrich": "ASSERTED_HISTORICAL (get_traffic produced Jun–Sep snapshot)",
+      "connected_in_this_cursor_session": false,
+      "account_property": "UNKNOWN (Enrich-side; not visible here)",
+      "read_access_here": false,
+      "last_successful_access_here": null,
+      "latest_data_available_here": "STALE export 2026-06-01→2026-09-06 (553 sessions)",
+      "limitations": "Must be pulled inside Enrich Helena runtime",
+      "live_read_here": "FAILED",
+      "classification": "AVAILABLE_THROUGH_HELENA_ENRICH_BUT_UNREACHABLE_FROM_CURSOR"
+    },
+    {
+      "source": "GSC",
+      "connected_on_enrich": "ASSERTED_HISTORICAL (GSC snapshot in Enrich export pack)",
+      "connected_in_this_cursor_session": false,
+      "account_property": "sc-domain:dealality.com (from stale summary)",
+      "read_access_here": false,
+      "last_successful_access_here": null,
+      "latest_data_available_here": "STALE GSC_SUMMARY Jun–Sep 2026",
+      "limitations": "Must be pulled inside Enrich Helena",
+      "live_read_here": "FAILED",
+      "classification": "AVAILABLE_THROUGH_HELENA_ENRICH_BUT_UNREACHABLE_FROM_CURSOR"
+    },
+    {
+      "source": "LINKEDIN_JOAN",
+      "connected_on_enrich": "ASSERTED (post_linkedin skill + calendar)",
+      "connected_in_this_cursor_session": false,
+      "account_property": "Joan personal profile",
+      "read_access_here": false,
+      "latest_data_available_here": "STALE scrape metrics in phase-0 pack",
+      "live_read_here": "FAILED",
+      "classification": "AVAILABLE_THROUGH_HELENA_ENRICH_BUT_UNREACHABLE_FROM_CURSOR",
+      "note": "Publish path ≠ analytics path; analytics may still be export-limited on Enrich"
+    },
+    {
+      "source": "LINKEDIN_DEALALITY",
+      "connected_on_enrich": "UNKNOWN",
+      "connected_in_this_cursor_session": false,
+      "live_read_here": "FAILED",
+      "classification": "UNKNOWN_ON_ENRICH"
+    },
+    {
+      "source": "LINKEDIN_AO",
+      "connected_on_enrich": "ASSERTED_PARTIAL (AO cadence in skills)",
+      "connected_in_this_cursor_session": false,
+      "live_read_here": "FAILED",
+      "classification": "AVAILABLE_THROUGH_HELENA_ENRICH_BUT_UNREACHABLE_FROM_CURSOR"
+    },
+    {
+      "source": "WEBFLOW_CMS",
+      "connected_on_enrich": "YES (publish skills + CMS IDs in crons)",
+      "connected_in_this_cursor_session": true,
+      "account_property": "Deal Capture MVP / dealality.com",
+      "read_access_here": true,
+      "last_successful_access_here": "2026-09-07T15:55:54.361Z",
+      "latest_data_available_here": "Live pages + Insights CMS (proven 6F-A)",
+      "live_read_here": "LIVE_READ_SUCCESS",
+      "classification": "ALREADY_AVAILABLE_THROUGH_HELENA_AND_CURSOR_MCP",
+      "note": "Cursor Webflow MCP is Joan account access — not a Zapier rebuild of GA4"
+    },
+    {
+      "source": "WEBFLOW_ANALYZE",
+      "connected_on_enrich": "UNKNOWN",
+      "connected_in_this_cursor_session": true,
+      "read_access_here": false,
+      "live_read_here": "PERMISSION_LIMITED",
+      "limitations": "403 Analyze entitlement",
+      "classification": "AVAILABLE_BUT_PERMISSION_LIMITED"
+    },
+    {
+      "source": "AIRTABLE_GTM_PIPELINE",
+      "connected_on_enrich": "UNKNOWN",
+      "connected_in_this_cursor_session": true,
+      "read_access_here": true,
+      "live_read_here": "LIVE_READ_SUCCESS",
+      "classification": "NEEDS_DEALALITY_CURSOR_CONNECTION (Dealality-side truth; not Enrich GA4)",
+      "note": "Already live via Dealality PAT — Cursor should normalize for CMO; not a duplicate analytics connector"
+    },
+    {
+      "source": "AIRTABLE_MARKETING_OS",
+      "connected_on_enrich": "PARTIAL (exports seeded OS)",
+      "connected_in_this_cursor_session": true,
+      "read_access_here": true,
+      "live_read_here": "LIVE_READ_SUCCESS",
+      "classification": "NEEDS_DEALALITY_CURSOR_CONNECTION"
+    },
+    {
+      "source": "PRODUCT_USAGE",
+      "connected_on_enrich": "NO",
+      "connected_in_this_cursor_session": false,
+      "live_read_here": "NOT_CONNECTED",
+      "classification": "NEEDS_DEALALITY_CURSOR_CONNECTION"
+    },
+    {
+      "source": "ZAPIER_GA4",
+      "connected_on_enrich": "N/A",
+      "connected_in_this_cursor_session": "FALLBACK_ONLY_DO_NOT_USE_YET",
+      "live_read_here": "NOT_REQUESTED",
+      "classification": "FALLBACK_ONLY_AFTER_ENRICH_NATIVE_FAILS",
+      "note": "Founder rule: do not ask Joan to authenticate Zapier until Enrich-native GA4 tested"
+    }
+  ],
+  "liveReadsAttemptedFromCursor": [
+    {
+      "source": "Enrich GA4 get_traffic",
+      "result": "FAILED",
+      "reason": "No Enrich MCP/API in session",
+      "pull_timestamp": "2026-09-07T15:55:54.361Z"
+    },
+    {
+      "source": "Enrich GSC",
+      "result": "FAILED",
+      "reason": "No Enrich MCP/API in session",
+      "pull_timestamp": "2026-09-07T15:55:54.361Z"
+    },
+    {
+      "source": "Enrich LinkedIn analytics",
+      "result": "FAILED",
+      "reason": "No Enrich MCP/API in session",
+      "pull_timestamp": "2026-09-07T15:55:54.361Z"
+    },
+    {
+      "source": "Webflow CMS (Cursor MCP)",
+      "result": "LIVE_READ_SUCCESS",
+      "pull_timestamp": "2026-09-07T15:55:54.361Z",
+      "latest_data_date": "2026-09-07T15:55:54.361Z",
+      "reporting_period": "point_in_time"
+    },
+    {
+      "source": "Airtable GTM/MOS (Dealality PAT)",
+      "result": "LIVE_READ_SUCCESS",
+      "pull_timestamp": "2026-09-07T15:55:54.361Z",
+      "note": "See 6F-A reconciliation aggregates"
+    }
+  ],
+  "ga4CurrentMetrics": {
+    "status": "NOT_PULLED_LIVE — Enrich-native required",
+    "staleFallback": {
+      "period": "2026-06-01 to 2026-09-06",
+      "sessions_total": 553,
+      "sessions_by_source": {
+        "direct": 277,
+        "googleOrganic": 19,
+        "googlePaid": 0,
+        "facebook": 0,
+        "tiktok": 0,
+        "email": 0
+      },
+      "freshness": "STALE",
+      "provenance": "Enrich export pack get_traffic snapshot"
+    }
+  },
+  "gscCurrentMetrics": {
+    "status": "NOT_PULLED_LIVE — Enrich-native required",
+    "staleFallback": {
+      "period": "2026-06-01 to 2026-09-06",
+      "notes": "See GSC_SUMMARY.md — home 6 clicks; vanity impressions on branded residences",
+      "freshness": "STALE"
+    }
+  },
+  "linkedInCurrentMetrics": {
+    "status": "NOT_PULLED_LIVE — Enrich-native required",
+    "staleFallback": {
+      "freshness": "STALE_SCRAPE",
+      "note": "phase-0 linkedin_posts_metrics.json"
+    }
+  },
+  "otherMetricsAvailableNow": {
+    "webflowCms": "LIVE via Cursor Webflow MCP",
+    "gtmPipelineAggregates": "LIVE via Dealality Airtable",
+    "marketingOsCounts": "LIVE via Dealality Airtable",
+    "adpPublicPage": "LIVE HTTP 200 /hotel-owner/ai-demand-positioning"
+  },
+  "doNotRebuildInCursor": [
+    "GA4 — until Enrich-native live pull is proven failed",
+    "GSC — until Enrich-native live pull is proven failed",
+    "Webflow CMS — already live (Enrich historically + Cursor MCP)",
+    "Zapier GA4 OAuth — forbidden as next step by founder clarification"
+  ],
+  "trueRemainingGaps": [
+    {
+      "gap": "Enrich-native live GA4/GSC/LinkedIn cannot be executed from Cursor",
+      "class": "ACCESS_BRIDGE",
+      "nextStep": "Run ENRICH_LIVE_PULL_BRIEF inside Enrich Labs Helena",
+      "cursorRebuild": false
+    },
+    {
+      "gap": "Product usage telemetry",
+      "class": "NEEDS_DEALALITY_CURSOR_CONNECTION",
+      "cursorRebuild": true
+    },
+    {
+      "gap": "Landing/CTA attribution join",
+      "class": "NEEDS_DEALALITY_CURSOR_CONNECTION",
+      "cursorRebuild": true
+    },
+    {
+      "gap": "ADP pilot scorecard instances",
+      "class": "NEEDS_DEALALITY_CURSOR_CONNECTION",
+      "cursorRebuild": true
+    }
+  ],
+  "deepBaselineReady": {
+    "answer": "NO",
+    "why": "Live GA4/GSC/LinkedIn not yet returned from Enrich-native Helena. Partial CMS/pipeline live data exists but channel analytics remain STALE."
+  },
+  "joanAction": {
+    "do": "Paste reports/helena-cmo-native-data-pull-v1/02_ENRICH_LIVE_PULL_BRIEF.md into Enrich Labs Helena and return the JSON artifact",
+    "doNot": "Authenticate Zapier GA4 / build Cursor GA4 connector yet"
+  }
+}
