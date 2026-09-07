@@ -288,7 +288,17 @@ try {
     const ga4 = mi.sources.find((s) => s.id === 'GA4');
     if (!webflow || webflow.status !== 'LIVE') throw new Error('Webflow CMS must be LIVE after 6F-A');
     if (!gtm || gtm.status !== 'LIVE') throw new Error('GTM Airtable must be LIVE after 6F-A');
-    if (!ga4 || ga4.status === 'LIVE') throw new Error('GA4 must not claim LIVE without auth');
+    if (!ga4) throw new Error('GA4 source missing');
+    // After Enrich ingest GA4 is LIVE; before ingest it must not falsely claim LIVE.
+    const enrichIngested = fs.existsSync(
+      path.join(ROOT, 'reports/helena-cmo-native-data-pull-v1/enrich-returns/helena-cmo-live-metrics-v1.json'),
+    );
+    if (enrichIngested && ga4.status !== 'LIVE') {
+      throw new Error('GA4 must be LIVE after Enrich native ingest');
+    }
+    if (!enrichIngested && ga4.status === 'LIVE') {
+      throw new Error('GA4 must not claim LIVE without Enrich ingest or auth');
+    }
     if (!mi.corrections || !mi.corrections.length) throw new Error('expected 6E corrections');
     const html = fs.readFileSync(path.join(ROOT, 'public/js/admin-helena-cmo.js'), 'utf8');
     if (!html.includes('Marketing intelligence')) throw new Error('UI panel missing');
@@ -304,6 +314,50 @@ try {
       gtm: gtm.status,
       ga4: ga4.status,
       adpStatus: mi.adpPublicPage?.status,
+    };
+  });
+
+  test('FC-18', 'Enrich-native live metrics ingest (no Zapier GA4 rebuild)', () => {
+    const enrichPath = path.join(
+      ROOT,
+      'reports/helena-cmo-native-data-pull-v1/enrich-returns/helena-cmo-live-metrics-v1.json',
+    );
+    if (!fs.existsSync(enrichPath)) throw new Error('enrich-returns metrics missing');
+    const enrich = JSON.parse(fs.readFileSync(enrichPath, 'utf8'));
+    if (!Array.isArray(enrich.metrics) || enrich.metrics.length < 100) {
+      throw new Error(`expected ~145 Enrich metrics, got ${enrich.metrics?.length}`);
+    }
+    const canonical = JSON.parse(
+      fs.readFileSync(
+        path.join(ROOT, 'reports/helena-cmo-live-data-reconciliation-v1/helena-cmo-live-metrics-v1.json'),
+        'utf8',
+      ),
+    );
+    if (canonical.ingest?.status !== 'INGESTED') throw new Error('canonical ingest status not INGESTED');
+    if (canonical.ingest?.zapierUsed) throw new Error('Zapier must not be used for GA4/GSC');
+    if (canonical.ingest?.deepBaselineV2Run) throw new Error('Deep Baseline must not auto-run');
+    if (canonical.connectorStatus?.GA4?.live_read !== 'LIVE_READ_SUCCESS') {
+      throw new Error('GA4 connectorStatus must be LIVE_READ_SUCCESS');
+    }
+    if (canonical.connectorStatus?.GSC?.live_read !== 'LIVE_READ_SUCCESS') {
+      throw new Error('GSC connectorStatus must be LIVE_READ_SUCCESS');
+    }
+    if (canonical.headline?.ga4_sessions_30d !== 97) {
+      throw new Error(`expected sessions 30d=97, got ${canonical.headline?.ga4_sessions_30d}`);
+    }
+    const vm = buildFounderConsoleV2ViewModel();
+    const ga4 = vm.marketingIntelligence?.sources?.find((s) => s.id === 'GA4');
+    const gsc = vm.marketingIntelligence?.sources?.find((s) => s.id === 'GSC');
+    if (ga4?.status !== 'LIVE' || gsc?.status !== 'LIVE') {
+      throw new Error('console must show GA4+GSC LIVE after ingest');
+    }
+    const html = fs.readFileSync(path.join(ROOT, 'public/js/admin-helena-cmo.js'), 'utf8');
+    if (!html.includes('Live channel headline')) throw new Error('UI headline strip missing');
+    return {
+      enrichMetrics: enrich.metrics.length,
+      sessions30d: canonical.headline.ga4_sessions_30d,
+      deepBaselineReady: canonical.deepBaselineReadiness?.answer,
+      deepBaselineRun: canonical.ingest.deepBaselineV2Run,
     };
   });
 } finally {

@@ -103,6 +103,35 @@
           .join("");
       })() +
       "</div>" +
+      (function () {
+        var mi = vm.marketingIntelligence || {};
+        var h = mi.headline || {};
+        if (!h || h.ga4_sessions_30d == null) return "";
+        return (
+          "<h3>Live channel headline (Enrich)</h3><div class=\"helena-scoregrid\">" +
+          '<div class="helena-score"><div class="label">GA4 30d</div><div class="value">' +
+          esc(h.ga4_sessions_30d) +
+          '</div><div class="helena-muted">prior ' +
+          esc(h.ga4_sessions_prior_30d) +
+          "</div></div>" +
+          '<div class="helena-score"><div class="label">GSC 28d</div><div class="value">' +
+          esc(h.gsc_clicks_28d) +
+          "c / " +
+          esc(h.gsc_impressions_28d) +
+          "i</div></div>" +
+          '<div class="helena-score"><div class="label">LI→site 30d</div><div class="value">' +
+          esc(h.ga4_linkedin_attributed_sessions_30d) +
+          "</div></div>" +
+          '<div class="helena-score"><div class="label">form_start</div><div class="value">' +
+          esc(h.ga4_form_start_30d) +
+          "</div></div></div>" +
+          (mi.enoughForDeepBaseline
+            ? '<p class="helena-muted">Deep Baseline V2: ' +
+              esc(mi.enoughForDeepBaseline.answer || "—") +
+              " — not auto-run.</p>"
+            : "")
+        );
+      })() +
       (vm.marketingIntelligence && vm.marketingIntelligence.corrections
         ? "<h3>6E corrections</h3>" +
           listHtml(

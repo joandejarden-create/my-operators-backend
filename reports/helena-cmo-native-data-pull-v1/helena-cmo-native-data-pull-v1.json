@@ -7,7 +7,9 @@
     "strategyApprovalRequested": false,
     "deepBaselineV2Run": false,
     "zapierUsedForGa4Gsc": false,
-    "note": "Helena-native = Enrich Labs. This Cursor session cannot invoke Enrich tool runtime."
+    "note": "Enrich-native live GA4/GSC ingested from enrich-returns artifact.",
+    "enrichReachableViaArtifact": true,
+    "enrichLivePullIngested": true
   },
   "accessBoundary": {
     "helenaNativeHome": "Enrich Labs (enrichlabs.ai / agent.enrichlabs.ai)",
@@ -230,5 +232,24 @@
   "joanAction": {
     "do": "Paste reports/helena-cmo-native-data-pull-v1/02_ENRICH_LIVE_PULL_BRIEF.md into Enrich Labs Helena and return the JSON artifact",
     "doNot": "Authenticate Zapier GA4 / build Cursor GA4 connector yet"
-  }
+  },
+  "ingest": {
+    "status": "COMPLETE",
+    "enrichPullTimestamp": "2026-09-07T16:16:49Z",
+    "ingestedAt": "2026-09-07T16:42:36.583Z",
+    "metricsCount": 145,
+    "mergedMetricsCount": 154,
+    "zapierUsed": false,
+    "deepBaselineV2Run": false
+  },
+  "liveReadsFromEnrichArtifact": {
+    "GA4": "LIVE_READ_SUCCESS",
+    "GSC": "LIVE_READ_SUCCESS",
+    "LINKEDIN_JOAN": "PERMISSION_LIMITED",
+    "LINKEDIN_AO": "PERMISSION_LIMITED",
+    "LINKEDIN_DEALALITY": "NOT_CONNECTED",
+    "WEBFLOW": "LIVE_READ_SUCCESS",
+    "AIRTABLE": "LIVE_READ_SUCCESS"
+  },
+  "answersUpdatedAt": "2026-09-07T16:42:36.583Z"
 }

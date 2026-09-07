@@ -1,21 +1,21 @@
-# Exact answers
+# Exact answers (post Enrich ingest)
 
-1. **Helena itself can access (Enrich-side, historical/asserted):** GA4 via `get_traffic`, GSC (export evidence), LinkedIn publish tools, Webflow CMS. **This Cursor session cannot invoke those Enrich tools.**
+1. **Helena live sources:** GA4 `530177196` · GSC `sc-domain:dealality.com` · Webflow · Airtable Owner Targets base · LinkedIn Joan/AO (permission-limited) · Clarity (partial) · Enrich calendars/tasks
 
-2. **Live reads succeeded here:** Webflow CMS · Airtable GTM/MOS. **Failed:** Enrich GA4/GSC/LinkedIn.
+2. **Live reads that succeeded:** GA4 · GSC · Webflow · Airtable base list. **Limited:** LinkedIn Joan/AO · Clarity. **Not connected:** LinkedIn Dealality · Email ESP
 
-3. **Current GA4 metrics:** Live = **none**. Stale Enrich export: 553 sessions (direct 277, organic 19) for 2026-06-01→09-06.
+3. **GA4 (live):** sessions 7d **25** · 30d **97** (prior 241) · 90d **518**. Channels 30d: Direct 57 · Referral 16 · Organic Search 10 · Organic Social 8 · AI Assistant 4. LinkedIn-attributed 8. form_start=8; no named demo/pilot events.
 
-4. **Current GSC metrics:** Live = **none**. Stale summary only.
+4. **GSC (live):** page-sum 28d **6** clicks / **~1,336–1,376** impr · prior 28d 2 / ~114. Residences 0c/789i · CALA brand selection 0c/20i ~pos 5.
 
-5. **Current LinkedIn metrics:** Live = **none**. Stale scrape only.
+5. **LinkedIn:** public likes/comments/shares only; impressions mostly null. Dealality company page NOT_CONNECTED. Channel attribution via GA4 only.
 
-6. **Other current metrics Helena/Dealality already has live:** Webflow CMS inventory · GTM Pilot Target aggregates · Marketing OS counts · ADP public page.
+6. **Other:** Webflow 46 Insights · Enrich tasks live · Clarity present in GA referrals · GTM pipeline still live from Dealality PAT
 
-7. **Cursor does NOT need to rebuild:** GA4/GSC (pending Enrich) · Webflow CMS · Zapier GA4 auth path.
+7. **Cursor does NOT rebuild:** GA4 · GSC · Webflow CMS · Zapier GA4 auth
 
-8. **True remaining gaps:** Enrich→Cursor analytics bridge · product usage · CTA attribution · ADP pilot telemetry.
+8. **True gaps:** LinkedIn impressions time series · L1 demo/pilot outcomes · Airtable record-level join · Email ESP · full Clarity API · Dealality LI page
 
-9. **Gaps requiring Cursor:** product usage · landing/CTA attribution · ADP pilot instances · GTM→CMO normalization (not GA4).
+9. **Cursor gaps:** product/CTA attribution join · ADP pilot telemetry · GTM→CMO record normalization · optional GA event tagging audit
 
-10. **Deep Baseline V2 from live data?** **NO** — wait for Enrich-native GA4/GSC/LinkedIn artifact.
+10. **Deep Baseline V2 from live data?** **YES ready · NOT run** (await Joan request)

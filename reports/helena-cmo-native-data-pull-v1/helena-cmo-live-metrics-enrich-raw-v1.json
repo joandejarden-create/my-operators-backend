@@ -1,318 +1,140 @@
 {
-  "schemaVersion": "helena-cmo-live-metrics-v1",
-  "generatedAt": "2026-09-07T16:42:36.583Z",
-  "ingest": {
-    "status": "INGESTED",
-    "source": "Enrich Labs native connectors",
-    "enrichPullTimestamp": "2026-09-07T16:16:49Z",
-    "enrichPullLocalParis": "2026-09-07T18:16:49+02:00",
-    "ingestedAt": "2026-09-07T16:42:36.583Z",
-    "artifactDir": "reports/helena-cmo-native-data-pull-v1/enrich-returns/",
-    "zapierUsed": false,
-    "cursorUsedForGa4Gsc": false,
-    "deepBaselineV2Run": false,
-    "strategyApprovalRequested": false
-  },
-  "enrichPull": {
-    "schema": "helena-cmo-live-metrics-v1",
-    "version": "1.0.0",
-    "pulled_by": "Helena Enrich Labs native connectors",
-    "business": "Dealality",
-    "site": "www.dealality.com",
-    "notes": [
-      "No Zapier. No Cursor used for GA4/GSC.",
-      "Pre-2026-06-22 GA4 treated as baseline-only per locked memory; last_90d includes post-dedupe period from Jun 22.",
-      "Commercial outcomes from social = UNKNOWN unless pipeline join.",
-      "SEO North Star is owner decision intent not traffic volume."
-    ],
-    "executive_signal": {
-      "what_happened": [
-        "Last 30d GA4 sessions fell vs prior 30d (97 vs 241) while GSC impressions exploded (page-sum ~1336 last 28d vs ~114 prior 28d) with only 6 clicks.",
-        "Direct still dominates acquisition; Organic Search remains thin; Organic Social and AI Assistant are real but small live channels.",
-        "LinkedIn UTM path is ATTRIBUTED in GA4 (linkedin/social + linkedin.com/referral = 8 sessions / 30d).",
-        "Product paths AI Demand Positioning and Brand Explorer appear in GA4 page paths (internal/product usage signal).",
-        "form_start=8 is the only conversion-like event; no demo/pilot key events in the event stream."
-      ],
-      "one_thing": "If you remember only one thing: search is discovering Dealality pages (especially branded residences) far faster than it is converting, while site sessions are still mostly direct/social and not yet an owner-outcome engine."
+  "schema": "helena-cmo-live-metrics-v1",
+  "version": "1.0.0",
+  "pull_timestamp": "2026-09-07T16:16:49Z",
+  "pull_timestamp_local_paris": "2026-09-07T18:16:49+02:00",
+  "pulled_by": "Helena Enrich Labs native connectors",
+  "business": "Dealality",
+  "site": "www.dealality.com",
+  "notes": [
+    "No Zapier. No Cursor used for GA4/GSC.",
+    "Pre-2026-06-22 GA4 treated as baseline-only per locked memory; last_90d includes post-dedupe period from Jun 22.",
+    "Commercial outcomes from social = UNKNOWN unless pipeline join.",
+    "SEO North Star is owner decision intent not traffic volume."
+  ],
+  "integrations_inventory": [
+    {
+      "name": "Google Analytics 4",
+      "connected": true,
+      "account": "Dealalilty / Dealality - GA4",
+      "property_id": "530177196",
+      "read_access": true,
+      "last_success": "2026-09-07T16:16:49Z",
+      "last_data_date": "2026-09-06",
+      "limitations": "Key event configuration not fully enumerated; revenue/conversions may be under-tagged; simple get_traffic channel map incomplete vs advanced dimensions",
+      "live_read_status": "LIVE_READ_SUCCESS"
     },
-    "integrations_inventory": [
-      {
-        "name": "Google Analytics 4",
-        "connected": true,
-        "account": "Dealalilty / Dealality - GA4",
-        "property_id": "530177196",
-        "read_access": true,
-        "last_success": "2026-09-07T16:16:49Z",
-        "last_data_date": "2026-09-06",
-        "limitations": "Key event configuration not fully enumerated; revenue/conversions may be under-tagged; simple get_traffic channel map incomplete vs advanced dimensions",
-        "live_read_status": "LIVE_READ_SUCCESS"
-      },
-      {
-        "name": "Google Search Console",
-        "connected": true,
-        "account": "sc-domain:dealality.com (selected); aohospitalityadvisors.com present unselected",
-        "read_access": true,
-        "last_success": "2026-09-07T16:16:49Z",
-        "last_data_date": "2026-09-06",
-        "limitations": "GSC data lag 2-3 days typical; query totals != page totals; AO site not pulled this run",
-        "live_read_status": "LIVE_READ_SUCCESS"
-      },
-      {
-        "name": "LinkedIn Joan Dejarden (personal)",
-        "connected": true,
-        "account": "profile_type=personal, autopilot OFF",
-        "read_access": "PERMISSION_LIMITED",
-        "last_success": "2026-09-07T16:16:49Z",
-        "last_data_date": "public scrape ~2026-09-03",
-        "limitations": "No native LinkedIn Analytics API impressions/clicks/followers time series; public scrape likes/comments/shares only; post publish via Enrich calendar",
-        "live_read_status": "PERMISSION_LIMITED"
-      },
-      {
-        "name": "LinkedIn AO Hospitality Advisors (company)",
-        "connected": true,
-        "account": "profile_type=organization, autopilot OFF",
-        "read_access": "PERMISSION_LIMITED",
-        "last_success": "2026-09-07T16:16:49Z",
-        "last_data_date": "public scrape",
-        "limitations": "Same as personal: public engagement only",
-        "live_read_status": "PERMISSION_LIMITED"
-      },
-      {
-        "name": "LinkedIn Dealality company page",
-        "connected": false,
-        "account": null,
-        "read_access": false,
-        "last_success": null,
-        "last_data_date": null,
-        "limitations": "Not in connected LinkedIn targets",
-        "live_read_status": "NOT_CONNECTED"
-      },
-      {
-        "name": "Webflow",
-        "connected": true,
-        "account": "site_id 68108c29063eeb5d1bd7ae4a",
-        "read_access": true,
-        "last_success": "2026-09-07T16:16:49Z",
-        "last_data_date": "2026-09-03 latest insights publish in list",
-        "limitations": "slim list only this run; full HTML bodies not re-fetched",
-        "live_read_status": "LIVE_READ_SUCCESS"
-      },
-      {
-        "name": "Airtable",
-        "connected": true,
-        "account": "Owner Targets Table appKZuK006BWIVjNW",
-        "read_access": true,
-        "last_success": "2026-09-07T16:16:49Z",
-        "last_data_date": "schema/list only",
-        "limitations": "Records not pulled this run; pipeline join to LI/GA UNKNOWN",
-        "live_read_status": "LIVE_READ_SUCCESS"
-      },
-      {
-        "name": "Microsoft Clarity",
-        "connected": true,
-        "account": "third-party integration",
-        "read_access": "AVAILABLE_NOT_FULLY_PULLED",
-        "last_success": "GA4 shows clarity referrals",
-        "last_data_date": "2026-09-06",
-        "limitations": "Full Clarity REST metrics not pulled this run",
-        "live_read_status": "PERMISSION_LIMITED"
-      },
-      {
-        "name": "Wix API key",
-        "connected": true,
-        "account": "third-party",
-        "read_access": "UNKNOWN_RELEVANCE",
-        "last_success": null,
-        "last_data_date": null,
-        "limitations": "Not used for Dealality.com primary stack",
-        "live_read_status": "NOT_CONNECTED"
-      },
-      {
-        "name": "Cursor",
-        "connected": true,
-        "account": "third-party",
-        "read_access": false,
-        "last_success": null,
-        "last_data_date": null,
-        "limitations": "Dev tooling; not a marketing metrics source for this pull",
-        "live_read_status": "NOT_CONNECTED"
-      },
-      {
-        "name": "Email (Klaviyo/etc)",
-        "connected": false,
-        "account": null,
-        "read_access": false,
-        "last_success": null,
-        "last_data_date": null,
-        "limitations": "No email ESP connected in native marketing integrations for this pull",
-        "live_read_status": "NOT_CONNECTED"
-      },
-      {
-        "name": "Enrich content calendar + crons",
-        "connected": true,
-        "account": "workspace joandejarden@gmail.com",
-        "read_access": true,
-        "last_success": "2026-09-07T16:16:49Z",
-        "last_data_date": "2026-09-07T16:16:49Z",
-        "limitations": "Calendar get limited to 50 items this run",
-        "live_read_status": "LIVE_READ_SUCCESS"
-      }
-    ],
-    "residual_gaps": [
-      {
-        "item": "GA4 native sessions/users/channels/pages/events/geo/device",
-        "status": "ALREADY AVAILABLE",
-        "notes": "Live pulled"
-      },
-      {
-        "item": "GSC queries/pages/country/device multi-window",
-        "status": "ALREADY AVAILABLE",
-        "notes": "Live pulled"
-      },
-      {
-        "item": "Webflow Insights inventory",
-        "status": "ALREADY AVAILABLE",
-        "notes": "46 posts listed"
-      },
-      {
-        "item": "LinkedIn public likes/comments/shares Joan+AO",
-        "status": "ALREADY AVAILABLE",
-        "notes": "Scrape; impressions null"
-      },
-      {
-        "item": "LinkedIn organic impressions/reach/clicks/follower growth time series",
-        "status": "PERMISSION LIMITED",
-        "notes": "Need LinkedIn native analytics or export"
-      },
-      {
-        "item": "Dealality LinkedIn company page",
-        "status": "NOT AVAILABLE",
-        "notes": "Not connected"
-      },
-      {
-        "item": "Post-level LinkedIn → GA4 multi-touch attribution",
-        "status": "PERMISSION LIMITED",
-        "notes": "Can CORRELATE UTM sessions; no post ID join"
-      },
-      {
-        "item": "Demo/pilot/qualified owner outcomes (L1)",
-        "status": "NOT AVAILABLE",
-        "notes": "No conversion events named; Airtable records not pulled"
-      },
-      {
-        "item": "Airtable Owner Targets full pipeline metrics",
-        "status": "ALREADY AVAILABLE",
-        "notes": "Base connected; needs follow-up record pull"
-      },
-      {
-        "item": "Email campaign metrics",
-        "status": "NOT AVAILABLE",
-        "notes": "ESP not connected"
-      },
-      {
-        "item": "AO GSC site full pull",
-        "status": "ALREADY AVAILABLE",
-        "notes": "Site listed unselected; not pulled this run"
-      },
-      {
-        "item": "Microsoft Clarity heatmaps/session metrics API",
-        "status": "PERMISSION LIMITED",
-        "notes": "Integration present; not fully queried"
-      },
-      {
-        "item": "GA4 key event configuration audit + custom conversions",
-        "status": "NEEDS DEALALITY-CURSOR",
-        "notes": "or Helena follow-up if admin access to GA UI tagging"
-      },
-      {
-        "item": "Paid ads (Meta/Google/LinkedIn Ads)",
-        "status": "NOT AVAILABLE",
-        "notes": "Ads deferred per strategy; not connected"
-      }
-    ],
-    "raw_window_snapshots": {
-      "ga4_simple": {
-        "last_7d": {
-          "sessions": 25,
-          "direct": 15,
-          "googleOrganic": 0,
-          "daily": {
-            "2026-08-31": 1,
-            "2026-09-01": 3,
-            "2026-09-02": 6,
-            "2026-09-03": 1,
-            "2026-09-04": 1,
-            "2026-09-05": 6,
-            "2026-09-06": 7
-          }
-        },
-        "last_30d": {
-          "sessions": 97,
-          "direct": 61,
-          "googleOrganic": 4
-        },
-        "previous_30d": {
-          "sessions": 241,
-          "direct": 132,
-          "googleOrganic": 6
-        },
-        "last_90d": {
-          "sessions": 518,
-          "direct": 277,
-          "googleOrganic": 18
-        }
-      },
-      "gsc_page_sums": {
-        "last_7d": {
-          "clicks": 3,
-          "impressions": 497,
-          "ctr": 0.006036
-        },
-        "last_28d": {
-          "clicks": 6,
-          "impressions": 1376,
-          "ctr": 0.00436
-        },
-        "previous_28d": {
-          "clicks": 2,
-          "impressions": 114,
-          "ctr": 0.017544
-        },
-        "last_90d": {
-          "clicks": 12,
-          "impressions": 1551,
-          "ctr": 0.007737
-        }
-      },
-      "linkedin_scrape_count": 29,
-      "webflow_insights_count": 46,
-      "cron_active_names": [
-        "Weekly SEO Article — Bilingual EN + ES (Dealality / Webflow)",
-        "Monthly SEO Deep Dive — Dealality",
-        "AO Hospitality Advisors — Weekly LinkedIn Post",
-        "Daily LinkedIn Post – Joan / Dealality",
-        "Monday Morning Performance Digest",
-        "Weekly Automation Suggestions"
-      ]
+    {
+      "name": "Google Search Console",
+      "connected": true,
+      "account": "sc-domain:dealality.com (selected); aohospitalityadvisors.com present unselected",
+      "read_access": true,
+      "last_success": "2026-09-07T16:16:49Z",
+      "last_data_date": "2026-09-06",
+      "limitations": "GSC data lag 2-3 days typical; query totals != page totals; AO site not pulled this run",
+      "live_read_status": "LIVE_READ_SUCCESS"
+    },
+    {
+      "name": "LinkedIn Joan Dejarden (personal)",
+      "connected": true,
+      "account": "profile_type=personal, autopilot OFF",
+      "read_access": "PERMISSION_LIMITED",
+      "last_success": "2026-09-07T16:16:49Z",
+      "last_data_date": "public scrape ~2026-09-03",
+      "limitations": "No native LinkedIn Analytics API impressions/clicks/followers time series; public scrape likes/comments/shares only; post publish via Enrich calendar",
+      "live_read_status": "PERMISSION_LIMITED"
+    },
+    {
+      "name": "LinkedIn AO Hospitality Advisors (company)",
+      "connected": true,
+      "account": "profile_type=organization, autopilot OFF",
+      "read_access": "PERMISSION_LIMITED",
+      "last_success": "2026-09-07T16:16:49Z",
+      "last_data_date": "public scrape",
+      "limitations": "Same as personal: public engagement only",
+      "live_read_status": "PERMISSION_LIMITED"
+    },
+    {
+      "name": "LinkedIn Dealality company page",
+      "connected": false,
+      "account": null,
+      "read_access": false,
+      "last_success": null,
+      "last_data_date": null,
+      "limitations": "Not in connected LinkedIn targets",
+      "live_read_status": "NOT_CONNECTED"
+    },
+    {
+      "name": "Webflow",
+      "connected": true,
+      "account": "site_id 68108c29063eeb5d1bd7ae4a",
+      "read_access": true,
+      "last_success": "2026-09-07T16:16:49Z",
+      "last_data_date": "2026-09-03 latest insights publish in list",
+      "limitations": "slim list only this run; full HTML bodies not re-fetched",
+      "live_read_status": "LIVE_READ_SUCCESS"
+    },
+    {
+      "name": "Airtable",
+      "connected": true,
+      "account": "Owner Targets Table appKZuK006BWIVjNW",
+      "read_access": true,
+      "last_success": "2026-09-07T16:16:49Z",
+      "last_data_date": "schema/list only",
+      "limitations": "Records not pulled this run; pipeline join to LI/GA UNKNOWN",
+      "live_read_status": "LIVE_READ_SUCCESS"
+    },
+    {
+      "name": "Microsoft Clarity",
+      "connected": true,
+      "account": "third-party integration",
+      "read_access": "AVAILABLE_NOT_FULLY_PULLED",
+      "last_success": "GA4 shows clarity referrals",
+      "last_data_date": "2026-09-06",
+      "limitations": "Full Clarity REST metrics not pulled this run",
+      "live_read_status": "PERMISSION_LIMITED"
+    },
+    {
+      "name": "Wix API key",
+      "connected": true,
+      "account": "third-party",
+      "read_access": "UNKNOWN_RELEVANCE",
+      "last_success": null,
+      "last_data_date": null,
+      "limitations": "Not used for Dealality.com primary stack",
+      "live_read_status": "NOT_CONNECTED"
+    },
+    {
+      "name": "Cursor",
+      "connected": true,
+      "account": "third-party",
+      "read_access": false,
+      "last_success": null,
+      "last_data_date": null,
+      "limitations": "Dev tooling; not a marketing metrics source for this pull",
+      "live_read_status": "NOT_CONNECTED"
+    },
+    {
+      "name": "Email (Klaviyo/etc)",
+      "connected": false,
+      "account": null,
+      "read_access": false,
+      "last_success": null,
+      "last_data_date": null,
+      "limitations": "No email ESP connected in native marketing integrations for this pull",
+      "live_read_status": "NOT_CONNECTED"
+    },
+    {
+      "name": "Enrich content calendar + crons",
+      "connected": true,
+      "account": "workspace joandejarden@gmail.com",
+      "read_access": true,
+      "last_success": "2026-09-07T16:16:49Z",
+      "last_data_date": "2026-09-07T16:16:49Z",
+      "limitations": "Calendar get limited to 50 items this run",
+      "live_read_status": "LIVE_READ_SUCCESS"
     }
-  },
-  "headline": {
-    "ga4_sessions_7d": 25,
-    "ga4_sessions_30d": 97,
-    "ga4_sessions_prior_30d": 241,
-    "ga4_sessions_90d": 518,
-    "ga4_channel_30d_direct": 57,
-    "ga4_channel_30d_referral": 16,
-    "ga4_channel_30d_organic_search": 10,
-    "ga4_channel_30d_organic_social": 8,
-    "ga4_channel_30d_ai_assistant": 4,
-    "ga4_linkedin_attributed_sessions_30d": 8,
-    "ga4_form_start_30d": 8,
-    "gsc_clicks_28d": 6,
-    "gsc_impressions_28d": 1376,
-    "gsc_clicks_prior_28d": 2,
-    "gsc_impressions_prior_28d": 114
-  },
+  ],
   "metrics": [
     {
       "metric_id": "ga4.sessions.last_7d",
@@ -856,7 +678,7 @@
         "engagedSessions": 4,
         "screenPageViews": 32,
         "engagementRate": 0.8,
-        "avgEngagementTime_sec_per_session": 187
+        "avgEngagementTime_sec_per_session": 187.0
       },
       "prior_value": null,
       "delta": null,
@@ -887,7 +709,7 @@
         "engagedSessions": 3,
         "screenPageViews": 7,
         "engagementRate": 0.75,
-        "avgEngagementTime_sec_per_session": 73
+        "avgEngagementTime_sec_per_session": 73.0
       },
       "prior_value": null,
       "delta": null,
@@ -944,11 +766,11 @@
         "sessions": 3,
         "activeUsers": 3,
         "newUsers": 3,
-        "bounceRate": 0,
+        "bounceRate": 0.0,
         "userEngagementDuration_sec": 28,
         "engagedSessions": 3,
         "screenPageViews": 5,
-        "engagementRate": 1,
+        "engagementRate": 1.0,
         "avgEngagementTime_sec_per_session": 9.33
       },
       "prior_value": null,
@@ -975,12 +797,12 @@
         "sessions": 1,
         "activeUsers": 1,
         "newUsers": 0,
-        "bounceRate": 1,
+        "bounceRate": 1.0,
         "userEngagementDuration_sec": 16,
         "engagedSessions": 0,
         "screenPageViews": 0,
-        "engagementRate": 0,
-        "avgEngagementTime_sec_per_session": 16
+        "engagementRate": 0.0,
+        "avgEngagementTime_sec_per_session": 16.0
       },
       "prior_value": null,
       "delta": null,
@@ -1301,7 +1123,7 @@
         "sessions": 4,
         "pageViews": 11,
         "activeUsers": 2,
-        "bounceRate": 0
+        "bounceRate": 0.0
       },
       "prior_value": null,
       "delta": null,
@@ -1379,7 +1201,7 @@
         "sessions": 3,
         "pageViews": 3,
         "activeUsers": 3,
-        "bounceRate": 0
+        "bounceRate": 0.0
       },
       "prior_value": null,
       "delta": null,
@@ -1431,7 +1253,7 @@
         "sessions": 2,
         "pageViews": 5,
         "activeUsers": 2,
-        "bounceRate": 0
+        "bounceRate": 0.0
       },
       "prior_value": null,
       "delta": null,
@@ -1457,7 +1279,7 @@
         "sessions": 1,
         "pageViews": 1,
         "activeUsers": 1,
-        "bounceRate": 0
+        "bounceRate": 0.0
       },
       "prior_value": null,
       "delta": null,
@@ -2142,7 +1964,7 @@
       "current_value": {
         "clicks": 0,
         "impressions": 789,
-        "ctr": 0,
+        "ctr": 0.0,
         "position": 49.07
       },
       "prior_value": null,
@@ -2168,7 +1990,7 @@
       "current_value": {
         "clicks": 0,
         "impressions": 78,
-        "ctr": 0,
+        "ctr": 0.0,
         "position": 48.21
       },
       "prior_value": null,
@@ -2194,8 +2016,8 @@
       "current_value": {
         "clicks": 0,
         "impressions": 20,
-        "ctr": 0,
-        "position": 5
+        "ctr": 0.0,
+        "position": 5.0
       },
       "prior_value": null,
       "delta": null,
@@ -2220,8 +2042,8 @@
       "current_value": {
         "clicks": 0,
         "impressions": 4,
-        "ctr": 0,
-        "position": 7
+        "ctr": 0.0,
+        "position": 7.0
       },
       "prior_value": null,
       "delta": null,
@@ -2246,8 +2068,8 @@
       "current_value": {
         "clicks": 0,
         "impressions": 4,
-        "ctr": 0,
-        "position": 4
+        "ctr": 0.0,
+        "position": 4.0
       },
       "prior_value": null,
       "delta": null,
@@ -3397,7 +3219,7 @@
         "impressions": null,
         "type": "image",
         "url": "https://www.linkedin.com/posts/aohospitalityadvisors_revpar-is-recovering-the-development-math-activity-7478604662565175296-L6CG?utm_source=combined_share_message&utm_medium=member_desktop&rcm=ACoAAEQ8vnUBjKB3AkorBAdU-FLQ_OdUTF5zO8E",
-        "text_preview": "RevPAR is recovering. The development math is not.\n\nCoStar and Tourism Economics upgraded their 2026 U.S. RevPAR growth forecast to +2.8% in June — up from a cautious +0.6% project"
+        "text_preview": "RevPAR is recovering. The development math is not.\n\nCoStar and Tourism Economics upgraded their 2026 U.S. RevPAR growth forecast to +2.8% in June \u2014 up from a cautious +0.6% project"
       },
       "prior_value": null,
       "delta": null,
@@ -3760,7 +3582,7 @@
     },
     {
       "metric_id": "webflow.post.6a55fa9fcfa24839a58b23e6",
-      "metric_name": "¿Qué es un Contrato de Gestión Hotelera? Términos Clave para Propietarios",
+      "metric_name": "\u00bfQu\u00e9 es un Contrato de Gesti\u00f3n Hotelera? T\u00e9rminos Clave para Propietarios",
       "category": "cms_content",
       "source_system": "Webflow",
       "source_account": "68108c29063eeb5d1bd7ae4a",
@@ -3835,7 +3657,7 @@
     },
     {
       "metric_id": "webflow.post.6a6767aff5d7b8bb323a03b2",
-      "metric_name": "Key Money en Franquicias Hoteleras: Cómo Negociar Capital Inicial",
+      "metric_name": "Key Money en Franquicias Hoteleras: C\u00f3mo Negociar Capital Inicial",
       "category": "cms_content",
       "source_system": "Webflow",
       "source_account": "68108c29063eeb5d1bd7ae4a",
@@ -3860,7 +3682,7 @@
     },
     {
       "metric_id": "webflow.post.6a30f5b59c3335849dc39125",
-      "metric_name": "Contrato de Administración vs Franquicia: Antes de Negociar",
+      "metric_name": "Contrato de Administraci\u00f3n vs Franquicia: Antes de Negociar",
       "category": "cms_content",
       "source_system": "Webflow",
       "source_account": "68108c29063eeb5d1bd7ae4a",
@@ -3885,7 +3707,7 @@
     },
     {
       "metric_id": "webflow.post.6a967daa5bb90a49dee7c50f",
-      "metric_name": "Negociación del Contrato de Franquicia Hotelera: Términos Clave Que los Propietarios Deben Definir Antes de Firmar",
+      "metric_name": "Negociaci\u00f3n del Contrato de Franquicia Hotelera: T\u00e9rminos Clave Que los Propietarios Deben Definir Antes de Firmar",
       "category": "cms_content",
       "source_system": "Webflow",
       "source_account": "68108c29063eeb5d1bd7ae4a",
@@ -3960,7 +3782,7 @@
     },
     {
       "metric_id": "webflow.post.6a67645bae529c0a5a7f3485",
-      "metric_name": "Residencias con Marca y Uso Mixto: Guía para Propietarios",
+      "metric_name": "Residencias con Marca y Uso Mixto: Gu\u00eda para Propietarios",
       "category": "cms_content",
       "source_system": "Webflow",
       "source_account": "68108c29063eeb5d1bd7ae4a",
@@ -4010,7 +3832,7 @@
     },
     {
       "metric_id": "webflow.post.6a675b356c48b1545cf87f5d",
-      "metric_name": "Cambio de Marca Hotelera: Guía de Conversión para Propietarios",
+      "metric_name": "Cambio de Marca Hotelera: Gu\u00eda de Conversi\u00f3n para Propietarios",
       "category": "cms_content",
       "source_system": "Webflow",
       "source_account": "68108c29063eeb5d1bd7ae4a",
@@ -4069,22 +3891,22 @@
         "total_crons": 10,
         "active": [
           {
-            "name": "Weekly SEO Article — Bilingual EN + ES (Dealality / Webflow)",
+            "name": "Weekly SEO Article \u2014 Bilingual EN + ES (Dealality / Webflow)",
             "last_run_at": "2026-09-01T07:12:08.881Z",
             "schedule": "0 9 * * 2"
           },
           {
-            "name": "Monthly SEO Deep Dive — Dealality",
+            "name": "Monthly SEO Deep Dive \u2014 Dealality",
             "last_run_at": "2026-09-06T07:10:29.974Z",
             "schedule": "0 9 1 * *"
           },
           {
-            "name": "AO Hospitality Advisors — Weekly LinkedIn Post",
+            "name": "AO Hospitality Advisors \u2014 Weekly LinkedIn Post",
             "last_run_at": "2026-09-03T07:08:30.100Z",
             "schedule": "0 9 * * 4"
           },
           {
-            "name": "Daily LinkedIn Post – Joan / Dealality",
+            "name": "Daily LinkedIn Post \u2013 Joan / Dealality",
             "last_run_at": "2026-09-07T06:09:31.891Z",
             "schedule": "0 8 * * 1,3,5"
           },
@@ -4102,8 +3924,8 @@
         "completed_one_time": [
           "Publish operator look-for pair EN+ES Sept 4",
           "Publish Branded Residences Articles. Aug 4",
-          "Publish \"Why the First Conversation\" article — EN + ES + LinkedIn",
-          "SEO Articles Week 1 — EN + ES: How to Select a Hotel Brand"
+          "Publish \"Why the First Conversation\" article \u2014 EN + ES + LinkedIn",
+          "SEO Articles Week 1 \u2014 EN + ES: How to Select a Hotel Brand"
         ]
       },
       "prior_value": null,
@@ -4167,335 +3989,153 @@
       "strategic_relevance": "Clarity referral sessions prove tag live; full Clarity API not pulled this run",
       "attribution_level": "CORRELATED",
       "provenance": "GA4 referral clarity.microsoft.com + third-party integration available"
-    },
-    {
-      "metric_id": "gtm.pilot_target_list.rows",
-      "metric_name": "Pilot Target List rows",
-      "source": "AIRTABLE_GTM",
-      "source_system": "Airtable",
-      "source_account": null,
-      "category": "COMMERCIAL_INTENT",
-      "current_value": 100,
-      "prior_value": null,
-      "delta": null,
-      "unit": "count",
-      "period": "point_in_time",
-      "segment": null,
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "Do we have named commercial targets?",
-      "strategic_relevance": "Corrects Phase 6E named-pipeline DATA_GAP overstatement",
-      "attribution_level": "COMMERCIAL",
-      "provenance": "Airtable GTM Pilot Target List count @ pull"
-    },
-    {
-      "metric_id": "gtm.owner_targets.rows",
-      "metric_name": "Owner Targets rows",
-      "source": "AIRTABLE_GTM",
-      "source_system": "Airtable",
-      "source_account": null,
-      "category": "ACQUISITION",
-      "current_value": 1674,
-      "prior_value": null,
-      "delta": null,
-      "unit": "count",
-      "period": null,
-      "segment": null,
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "How large is the owner ICP index?",
-      "strategic_relevance": "Target universe scale (not warmth)",
-      "attribution_level": "DIAGNOSTIC",
-      "provenance": null
-    },
-    {
-      "metric_id": "gtm.acquisition_network.rows",
-      "metric_name": "Acquisition Network Relationships",
-      "source": "AIRTABLE_GTM",
-      "source_system": "Airtable",
-      "source_account": null,
-      "category": "SOCIAL",
-      "current_value": 725,
-      "prior_value": null,
-      "delta": null,
-      "unit": "count",
-      "period": null,
-      "segment": null,
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "How large is founder network graph?",
-      "strategic_relevance": "",
-      "attribution_level": "DIAGNOSTIC",
-      "provenance": null
-    },
-    {
-      "metric_id": "mos.performance.rows",
-      "metric_name": "Marketing OS Performance rows",
-      "source": "AIRTABLE_MARKETING_OS",
-      "source_system": "Airtable",
-      "source_account": null,
-      "category": "DIAGNOSTIC",
-      "current_value": 175,
-      "prior_value": null,
-      "delta": null,
-      "unit": "count",
-      "period": null,
-      "segment": null,
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "Is marketing memory populated?",
-      "strategic_relevance": "",
-      "attribution_level": "DIAGNOSTIC",
-      "provenance": null
-    },
-    {
-      "metric_id": "gtm.pilot.status.connected",
-      "metric_name": "Pilot Status: Connected",
-      "source": "AIRTABLE_GTM",
-      "source_system": "Airtable",
-      "source_account": null,
-      "category": "COMMERCIAL_INTENT",
-      "current_value": 58,
-      "prior_value": null,
-      "delta": null,
-      "unit": "count",
-      "period": null,
-      "segment": "Connected",
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "Where are pilot targets in the funnel?",
-      "strategic_relevance": "",
-      "attribution_level": "DIAGNOSTIC",
-      "provenance": null
-    },
-    {
-      "metric_id": "gtm.pilot.status.not_contacted",
-      "metric_name": "Pilot Status: Not Contacted",
-      "source": "AIRTABLE_GTM",
-      "source_system": "Airtable",
-      "source_account": null,
-      "category": "COMMERCIAL_INTENT",
-      "current_value": 35,
-      "prior_value": null,
-      "delta": null,
-      "unit": "count",
-      "period": null,
-      "segment": "Not Contacted",
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "Where are pilot targets in the funnel?",
-      "strategic_relevance": "",
-      "attribution_level": "DIAGNOSTIC",
-      "provenance": null
-    },
-    {
-      "metric_id": "gtm.pilot.status.in_progress",
-      "metric_name": "Pilot Status: In Progress",
-      "source": "AIRTABLE_GTM",
-      "source_system": "Airtable",
-      "source_account": null,
-      "category": "COMMERCIAL_INTENT",
-      "current_value": 6,
-      "prior_value": null,
-      "delta": null,
-      "unit": "count",
-      "period": null,
-      "segment": "In Progress",
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "Where are pilot targets in the funnel?",
-      "strategic_relevance": "",
-      "attribution_level": "DIAGNOSTIC",
-      "provenance": null
-    },
-    {
-      "metric_id": "gtm.pilot.status.completed",
-      "metric_name": "Pilot Status: Completed",
-      "source": "AIRTABLE_GTM",
-      "source_system": "Airtable",
-      "source_account": null,
-      "category": "COMMERCIAL_INTENT",
-      "current_value": 1,
-      "prior_value": null,
-      "delta": null,
-      "unit": "count",
-      "period": null,
-      "segment": "Completed",
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "Where are pilot targets in the funnel?",
-      "strategic_relevance": "",
-      "attribution_level": "DIAGNOSTIC",
-      "provenance": null
-    },
-    {
-      "metric_id": "webflow.public.adp_page_http_status",
-      "metric_name": "ADP public page HTTP status",
-      "source": "PUBLIC_SITE_HTML",
-      "source_system": "dealality.com",
-      "source_account": null,
-      "category": "WEBSITE",
-      "current_value": 200,
-      "prior_value": null,
-      "delta": null,
-      "unit": "http_status",
-      "period": null,
-      "segment": null,
-      "freshness": "LIVE",
-      "pull_timestamp": "2026-09-07T15:39:55.500Z",
-      "confidence": "HIGH",
-      "business_question": "Is ADP publicly reachable today?",
-      "strategic_relevance": "Phase 6E claimed ADP invisible — incorrect for /hotel-owner/ai-demand-positioning",
-      "attribution_level": "DIAGNOSTIC",
-      "provenance": null
     }
   ],
-  "connectorStatus": {
-    "GA4": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "LIVE_READ_SUCCESS",
-      "freshness": "LIVE",
-      "last_successful_sync": "2026-09-07T16:16:49Z",
-      "property_id": "530177196",
-      "account": "Dealalilty / Dealality - GA4",
-      "provenance": "Enrich Labs native get_traffic"
+  "residual_gaps": [
+    {
+      "item": "GA4 native sessions/users/channels/pages/events/geo/device",
+      "status": "ALREADY AVAILABLE",
+      "notes": "Live pulled"
     },
-    "GSC": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "LIVE_READ_SUCCESS",
-      "freshness": "LIVE",
-      "last_successful_sync": "2026-09-07T16:16:49Z",
-      "account": "sc-domain:dealality.com (selected); aohospitalityadvisors.com present unselected",
-      "provenance": "Enrich Labs native GSC"
+    {
+      "item": "GSC queries/pages/country/device multi-window",
+      "status": "ALREADY AVAILABLE",
+      "notes": "Live pulled"
     },
-    "LINKEDIN_JOAN": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "PERMISSION_LIMITED",
-      "freshness": "PARTIAL",
-      "last_successful_sync": "2026-09-07T16:16:49Z",
-      "limitations": "No native LinkedIn Analytics API impressions/clicks/followers time series; public scrape likes/comments/shares only; post publish via Enrich calendar"
+    {
+      "item": "Webflow Insights inventory",
+      "status": "ALREADY AVAILABLE",
+      "notes": "46 posts listed"
     },
-    "LINKEDIN_DEALALITY": {
-      "helena_native_connection": "NO",
-      "authenticated": "NO",
-      "live_read": "NOT_CONNECTED",
-      "freshness": "NOT_CONNECTED",
-      "last_successful_sync": null
+    {
+      "item": "LinkedIn public likes/comments/shares Joan+AO",
+      "status": "ALREADY AVAILABLE",
+      "notes": "Scrape; impressions null"
     },
-    "LINKEDIN_AO": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "PERMISSION_LIMITED",
-      "freshness": "PARTIAL",
-      "last_successful_sync": "2026-09-07T16:16:49Z"
+    {
+      "item": "LinkedIn organic impressions/reach/clicks/follower growth time series",
+      "status": "PERMISSION LIMITED",
+      "notes": "Need LinkedIn native analytics or export"
     },
-    "WEBFLOW_CMS": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "LIVE_READ_SUCCESS",
-      "freshness": "LIVE",
-      "last_successful_sync": "2026-09-07T16:16:49Z"
+    {
+      "item": "Dealality LinkedIn company page",
+      "status": "NOT AVAILABLE",
+      "notes": "Not connected"
     },
-    "WEBFLOW_ANALYZE": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "PERMISSION_LIMITED",
-      "freshness": "PERMISSION_LIMITED",
-      "last_successful_sync": null
+    {
+      "item": "Post-level LinkedIn \u2192 GA4 multi-touch attribution",
+      "status": "PERMISSION LIMITED",
+      "notes": "Can CORRELATE UTM sessions; no post ID join"
     },
-    "PUBLIC_SITE_HTML": {
-      "helena_native_connection": "YES",
-      "authenticated": "N/A",
-      "live_read": "LIVE_READ_SUCCESS",
-      "freshness": "LIVE",
-      "last_successful_sync": null
+    {
+      "item": "Demo/pilot/qualified owner outcomes (L1)",
+      "status": "NOT AVAILABLE",
+      "notes": "No conversion events named; Airtable records not pulled"
     },
-    "AIRTABLE_GTM": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "LIVE_READ_SUCCESS",
-      "freshness": "LIVE",
-      "last_successful_sync": "2026-09-07T15:39:55.500Z",
-      "note": "Enrich listed Owner Targets base; Dealality PAT still owns record-level pipeline"
+    {
+      "item": "Airtable Owner Targets full pipeline metrics",
+      "status": "ALREADY AVAILABLE",
+      "notes": "Base connected; needs follow-up record pull"
     },
-    "AIRTABLE_MARKETING_OS": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "LIVE_READ_SUCCESS",
-      "freshness": "LIVE",
-      "last_successful_sync": "2026-09-07T15:39:55.500Z"
+    {
+      "item": "Email campaign metrics",
+      "status": "NOT AVAILABLE",
+      "notes": "ESP not connected"
     },
-    "ZAPIER_AIRTABLE": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "LIVE_READ_SUCCESS",
-      "last_successful_sync": null
+    {
+      "item": "AO GSC site full pull",
+      "status": "ALREADY AVAILABLE",
+      "notes": "Site listed unselected; not pulled this run"
     },
-    "ZAPIER_WEBFLOW": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "LIVE_READ_SUCCESS",
-      "last_successful_sync": null
+    {
+      "item": "Microsoft Clarity heatmaps/session metrics API",
+      "status": "PERMISSION LIMITED",
+      "notes": "Integration present; not fully queried"
     },
-    "ZAPIER_MEMBERSTACK": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "PARTIAL",
-      "last_successful_sync": null
+    {
+      "item": "GA4 key event configuration audit + custom conversions",
+      "status": "NEEDS DEALALITY-CURSOR",
+      "notes": "or Helena follow-up if admin access to GA UI tagging"
     },
-    "ENRICH_LABS": {
-      "helena_native_connection": "YES",
-      "authenticated": "YES",
-      "live_read": "LIVE_READ_SUCCESS",
-      "freshness": "LIVE",
-      "last_successful_sync": "2026-09-07T16:16:49Z",
-      "artifact": "reports/helena-cmo-native-data-pull-v1/enrich-returns/"
-    },
-    "LANDING_EVENTS": {
-      "helena_native_connection": "PARTIAL",
-      "authenticated": "N/A",
-      "live_read": "PARTIAL",
-      "freshness": "PARTIAL",
-      "note": "form_start=8 in GA4; no named demo/pilot events",
-      "last_successful_sync": "2026-09-07T16:16:49Z"
-    },
-    "PRODUCT_USAGE_TELEMETRY": {
-      "helena_native_connection": "PARTIAL",
-      "authenticated": "N/A",
-      "live_read": "PARTIAL",
-      "freshness": "PARTIAL",
-      "note": "Product paths visible in GA4 page grain; no first-party product event warehouse",
-      "last_successful_sync": "2026-09-07T16:16:49Z"
-    },
-    "CLARITY": {
-      "helena_native_connection": "YES",
-      "authenticated": "PARTIAL",
-      "live_read": "PERMISSION_LIMITED",
-      "freshness": "PARTIAL",
-      "last_successful_sync": "2026-09-07T16:16:49Z"
+    {
+      "item": "Paid ads (Meta/Google/LinkedIn Ads)",
+      "status": "NOT AVAILABLE",
+      "notes": "Ads deferred per strategy; not connected"
     }
+  ],
+  "raw_window_snapshots": {
+    "ga4_simple": {
+      "last_7d": {
+        "sessions": 25,
+        "direct": 15,
+        "googleOrganic": 0,
+        "daily": {
+          "2026-08-31": 1,
+          "2026-09-01": 3,
+          "2026-09-02": 6,
+          "2026-09-03": 1,
+          "2026-09-04": 1,
+          "2026-09-05": 6,
+          "2026-09-06": 7
+        }
+      },
+      "last_30d": {
+        "sessions": 97,
+        "direct": 61,
+        "googleOrganic": 4
+      },
+      "previous_30d": {
+        "sessions": 241,
+        "direct": 132,
+        "googleOrganic": 6
+      },
+      "last_90d": {
+        "sessions": 518,
+        "direct": 277,
+        "googleOrganic": 18
+      }
+    },
+    "gsc_page_sums": {
+      "last_7d": {
+        "clicks": 3,
+        "impressions": 497,
+        "ctr": 0.006036
+      },
+      "last_28d": {
+        "clicks": 6,
+        "impressions": 1376,
+        "ctr": 0.00436
+      },
+      "previous_28d": {
+        "clicks": 2,
+        "impressions": 114,
+        "ctr": 0.017544
+      },
+      "last_90d": {
+        "clicks": 12,
+        "impressions": 1551,
+        "ctr": 0.007737
+      }
+    },
+    "linkedin_scrape_count": 29,
+    "webflow_insights_count": 46,
+    "cron_active_names": [
+      "Weekly SEO Article \u2014 Bilingual EN + ES (Dealality / Webflow)",
+      "Monthly SEO Deep Dive \u2014 Dealality",
+      "AO Hospitality Advisors \u2014 Weekly LinkedIn Post",
+      "Daily LinkedIn Post \u2013 Joan / Dealality",
+      "Monday Morning Performance Digest",
+      "Weekly Automation Suggestions"
+    ]
   },
-  "nativePullPolicy": {
-    "updatedAt": "2026-09-07T16:42:36.583Z",
-    "rule": "Enrich-native first; Zapier GA4/GSC is FALLBACK ONLY after Enrich-native fail",
-    "nativePullPack": "reports/helena-cmo-native-data-pull-v1/",
-    "enrichReturns": "reports/helena-cmo-native-data-pull-v1/enrich-returns/",
-    "ga4GscRebuildNeeded": false
-  },
-  "deepBaselineReadiness": {
-    "answer": "YES_CHANNEL_LIVE_DATA_READY",
-    "run": false,
-    "explanation": "GA4 + GSC live Enrich pulls ingested. Deep Baseline V2 can run from live channel data when Joan requests it. Residual gaps: LinkedIn impressions, L1 demo/pilot outcomes, email ESP, record-level Airtable join, full Clarity API."
+  "executive_signal": {
+    "what_happened": [
+      "Last 30d GA4 sessions fell vs prior 30d (97 vs 241) while GSC impressions exploded (page-sum ~1336 last 28d vs ~114 prior 28d) with only 6 clicks.",
+      "Direct still dominates acquisition; Organic Search remains thin; Organic Social and AI Assistant are real but small live channels.",
+      "LinkedIn UTM path is ATTRIBUTED in GA4 (linkedin/social + linkedin.com/referral = 8 sessions / 30d).",
+      "Product paths AI Demand Positioning and Brand Explorer appear in GA4 page paths (internal/product usage signal).",
+      "form_start=8 is the only conversion-like event; no demo/pilot key events in the event stream."
+    ],
+    "one_thing": "If you remember only one thing: search is discovering Dealality pages (especially branded residences) far faster than it is converting, while site sessions are still mostly direct/social and not yet an owner-outcome engine."
   }
 }

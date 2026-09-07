@@ -517,17 +517,24 @@
     }
   ],
   "enoughLiveDataToRerunBaseline": {
-    "answer": "PARTIAL_YES",
-    "explanation": "Enough to correct website/pipeline/content inventory and re-score commercial access. NOT enough to replace GA4/GSC channel diagnosis with live analytics. Rerun Deep Baseline V2 after Joan GA4 auth (and ideally GSC), using these live CMS/GTM facts immediately as inputs."
+    "answer": "YES",
+    "explanation": "Enrich-native GA4 (530177196) and GSC (sc-domain:dealality.com) live metrics ingested. CMS/GTM already live. Deep Baseline V2 may run when requested — not auto-run. Residual: LinkedIn impressions API, L1 outcomes, email, full Clarity."
   },
   "unnecessaryProposedConnectors": [
     "Duplicate Webflow CMS client in repo (MCP already LIVE)",
     "Duplicate Airtable Marketing OS/GTM client (PAT already LIVE)",
-    "Building GA4 in repo before Joan completes Zapier GA4 OAuth / Enrich export check"
+    "Zapier or Cursor GA4/GSC rebuild (Enrich-native live pull succeeded)"
   ],
   "joanImmediateActions": [
-    "Authenticate Zapier Google Analytics 4 (MCP auth URL already issued this session)",
-    "Confirm whether Enrich Labs independently has GA4/GSC — if yes, export a live pull pack into reports/",
-    "Do not treat Phase 6E ADP-invisible claim as current truth for /hotel-owner/ai-demand-positioning"
-  ]
+    "Enrich live pull ingested — no Zapier GA4 auth needed for channel baseline",
+    "Optional: connect Dealality LinkedIn company page / LinkedIn analytics export for impressions",
+    "Optional: Helena/Cursor record-level Airtable Owner Targets join for L1 outcomes",
+    "Run Deep Baseline V2 only when Joan explicitly requests it"
+  ],
+  "enrichIngest": {
+    "ingestedAt": "2026-09-07T16:42:36.583Z",
+    "enrichPullTimestamp": "2026-09-07T16:16:49Z",
+    "metricsCount": 145,
+    "path": "reports/helena-cmo-native-data-pull-v1/enrich-returns/"
+  }
 }

@@ -1,15 +1,14 @@
-# Executive verdict — Native data pull
+# Executive verdict — Native data pull (post-ingest)
 
-**Helena’s analytics home is Enrich Labs — not this Cursor session.**
+**Enrich Labs live pull succeeded and is ingested.**
 
-This Cursor agent **cannot** invoke Enrich-native `get_traffic` / GSC / LinkedIn analytics tools. There is **no Enrich MCP** and **no Enrich API credential** in the Dealality env for this session.
+- GA4 + GSC = **LIVE** via Enrich native connectors (artifact in `enrich-returns/`)
+- Zapier was **not** used and is **not** required for channel baseline
+- LinkedIn analytics remain **PERMISSION_LIMITED** (public scrape)
+- Deep Baseline V2 = **READY but NOT RUN**
 
-Therefore:
-- **Live GA4 / GSC / LinkedIn analytics were NOT pulled** (correctly — not via Zapier).
-- **Zapier GA4 auth is NOT requested.**
-- **Deep Baseline V2 is NOT run.**
+## One thing
+Search is discovering Dealality pages (esp. branded residences) far faster than it converts; sessions are still mostly direct/social — not yet an owner-outcome engine.
 
-## What Joan should do next
-Paste `02_ENRICH_LIVE_PULL_BRIEF.md` into **Enrich Labs Helena** and return the JSON artifact into this repo.
-
-Until that returns: channel analytics remain **STALE** Enrich exports; CMS/pipeline remain LIVE from Dealality-side sources.
+## Next (only when Joan asks)
+Run Deep Baseline V2 from this live metrics pack.
