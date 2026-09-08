@@ -17,6 +17,7 @@ import { join } from "path";
 import { issueShareCapability } from "../lib/ai-demand-positioning/share/adp-signed-share-capability-v1.js";
 import { loadPublishedManifest } from "../lib/ai-demand-positioning/published-snapshot.js";
 import { MONTERREY_VALLE_PROPERTY_IDS } from "../lib/ai-demand-positioning/execution/monterrey-valle-baseline-period-001-v1.js";
+import { CALA_SIX_PROPERTY_IDS } from "../lib/ai-demand-positioning/execution/cala-six-baseline-period-001-v1.js";
 
 const args = process.argv.slice(2);
 const publicBase =
@@ -27,6 +28,9 @@ const publicBase =
 let propertyIds = [];
 if (args.includes("--monterrey-valle")) {
   propertyIds = [...MONTERREY_VALLE_PROPERTY_IDS];
+}
+if (args.includes("--cala-six")) {
+  propertyIds.push(...CALA_SIX_PROPERTY_IDS);
 }
 const propIdx = args.indexOf("--property");
 if (propIdx >= 0 && args[propIdx + 1]) propertyIds.push(args[propIdx + 1]);
@@ -45,7 +49,7 @@ if (propsEq) {
 
 propertyIds = [...new Set(propertyIds)];
 if (!propertyIds.length) {
-  console.error("Provide --property, --properties, or --monterrey-valle");
+  console.error("Provide --property, --properties, --monterrey-valle, or --cala-six");
   process.exit(1);
 }
 
@@ -74,21 +78,31 @@ for (const propertyId of propertyIds) {
   });
 }
 
+const cohortTag = args.includes("--cala-six")
+  ? "cala-six"
+  : args.includes("--monterrey-valle")
+    ? "monterrey-valle"
+    : "ad-hoc";
+
 const inventory = {
   warning: "LOCAL ONLY — share tokens grant report access. Do not commit production tokens.",
   issuedAt: new Date().toISOString(),
   publicBase,
+  cohortTag,
   links,
 };
 
 const localDir = join(process.cwd(), "data/ai-demand-positioning/share-registry");
 mkdirSync(localDir, { recursive: true });
-const localPath = join(localDir, `issued-share-urls.monterrey-valle.${stamp}.json`);
+const localPath = join(localDir, `issued-share-urls.${cohortTag}.${stamp}.json`);
 writeFileSync(localPath, JSON.stringify(inventory, null, 2) + "\n");
 
 const reportDir = join(process.cwd(), "reports/client-share-links");
 mkdirSync(reportDir, { recursive: true });
-const reportPath = join(reportDir, `MONTERREY_VALLE_CLIENT_SHARE_LINKS_${stamp}.json`);
+const reportPath = join(
+  reportDir,
+  `${cohortTag.toUpperCase().replace(/-/g, "_")}_CLIENT_SHARE_LINKS_${stamp}.json`
+);
 writeFileSync(reportPath, JSON.stringify(inventory, null, 2) + "\n");
 
 // Merge into active local inventory if present (append/replace by propertyId)
