@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Demand Leak Audits — Dealality Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=1" />
+  <link rel="stylesheet" href="/css/admin-adp-leak-audits.css?v=4-adp-picker" />
+</head>
+<body class="support-page ala-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>AI Demand Leak Audits is for Dealality admin use only.</p>
+  </div>
+
+  <div class="support-page-shell adr-shell ala-reports-shell" id="supportGateContent" hidden>
+    <header class="adr-header">
+      <h1>AI Demand Leak Audits</h1>
+      <p class="adr-subtitle">
+        Limited diagnostics used to review how a hotel appears in AI answers before a paid ADP pilot.
+      </p>
+      <p class="ala-admin-links">
+        <a href="/admin/adp-leak-audits/new">New Audit</a>
+        ·
+        <a href="/admin/adp-leak-audits/queue">Request Queue</a>
+        ·
+        <a href="/admin/adp-leak-audits/workflow">Workflow</a>
+        ·
+        <a href="/admin/adp-leak-audits/samples">Samples</a>
+      </p>
+    </header>
+
+    <aside id="alaNavDebug" class="ala-nav-debug" hidden aria-label="Leak audit nav diagnostics">
+      <h2>Nav debug (?debug=nav)</h2>
+      <pre id="alaNavDebugBody"></pre>
+    </aside>
+
+    <aside id="alaNavDebug" class="ala-nav-debug" hidden aria-label="Leak audit nav diagnostics">
+      <h2>Nav debug (?debug=nav)</h2>
+      <pre id="alaNavDebugBody"></pre>
+    </aside>
+
+    <section class="adr-filters ala-picker" aria-label="Report picker">
+      <label>
+        Report Type
+        <select id="alaFilterReportType">
+          <option value="all">All</option>
+          <option value="single_property">Single-property</option>
+          <option value="portfolio">Portfolio</option>
+          <option value="sample">Sample</option>
+        </select>
+      </label>
+      <label>
+        Status
+        <select id="alaFilterStatus">
+          <option value="all">All</option>
+          <option value="Draft">Draft</option>
+          <option value="Approved">Approved</option>
+          <option value="Sent">Sent</option>
+          <option value="Converted">Converted</option>
+          <option value="Error">Error</option>
+        </select>
+      </label>
+      <label>
+        Source
+        <select id="alaFilterSource">
+          <option value="all">All</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="Referral">Referral</option>
+          <option value="Direct">Direct</option>
+          <option value="Manual">Manual</option>
+          <option value="Sample">Sample</option>
+        </select>
+      </label>
+      <label class="ala-picker__report">
+        Report
+        <select id="alaReportSelect">
+          <option value="">Select a report…</option>
+        </select>
+      </label>
+      <div class="ala-picker__actions" role="group" aria-label="Report actions">
+        <button type="button" class="adr-btn" id="alaLoadReport">Load Report</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="alaOpenWeb" disabled>Open Web Report</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="alaDownloadPdf" disabled>Download PDF</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="alaCopyShare" disabled>Copy Share Link</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="alaMarkSent" disabled>Mark Sent</button>
+        <button type="button" class="adr-btn" id="alaPromote" disabled>Promote to Paid ADP Pilot</button>
+      </div>
+      <p class="ala-picker__status" id="alaPickerStatus" aria-live="polite"></p>
+    </section>
+
+    <section class="ala-preview" aria-label="Report preview">
+      <div class="ala-preview__empty" id="alaPreviewEmpty">
+        Select a report and click <strong>Load Report</strong> to preview the client-safe deliverable.
+      </div>
+      <iframe
+        id="alaPreviewFrame"
+        class="ala-preview__frame"
+        title="AI Demand Leak Audit report preview"
+        hidden
+      ></iframe>
+    </section>
+  </div>
+
+  <div id="alaPromoteModal" class="ala-modal" hidden>
+    <div class="ala-modal__card" role="dialog" aria-modal="true" aria-labelledby="alaPromoteTitle">
+      <h2 id="alaPromoteTitle">Promote to Paid ADP Pilot</h2>
+      <p id="alaPromoteBody"></p>
+      <p class="ala-modal__note">
+        Confirmation creates a Phase 1 promotion stub only. Leak Audit records stay separate.
+        No production ADP monitoring records are created or overwritten unless a later Phase 2D
+        promotion path is explicitly approved.
+      </p>
+      <div class="ala-modal__actions">
+        <button type="button" class="adr-btn adr-btn--secondary" id="alaPromoteCancel">Cancel</button>
+        <button type="button" class="adr-btn" id="alaPromoteConfirm">Confirm promotion stub</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js?v=adp-mr-admin-3"></script>
+  <script>
+    (function () {
+      if (window.SupportAdminGate) {
+        window.SupportAdminGate.showPageLoading("supportGateLoading", "Verifying access…");
+      }
+    })();
+  </script>
+  <script src="/js/admin-adp-leak-audits-reports.js?v=3-adp-picker"></script>
+</body>
+</html>

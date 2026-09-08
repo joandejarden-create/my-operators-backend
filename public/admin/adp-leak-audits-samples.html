@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Sample Leak Audits — Dealality Admin</title>
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=1" />
+  <link rel="stylesheet" href="/css/admin-adp-leak-audits.css?v=2" />
+</head>
+<body class="support-page ala-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>AI Demand Leak Audits is for Dealality admin use only.</p>
+  </div>
+  <div class="support-page-shell adr-shell" id="supportGateContent" hidden>
+    <header class="adr-header">
+      <h1>Sample Reports</h1>
+      <p class="adr-subtitle">
+        Client-safe sample diagnostics for prospecting and education. Private / unlisted — not public website content.
+      </p>
+      <p class="ala-admin-links"><a href="/admin/adp-leak-audits/reports">Back to Audit Reports</a></p>
+    </header>
+    <div class="ala-card-list">
+      <article class="ala-card">
+        <h2>Cambridge Beaches Resort &amp; Spa — Single-property</h2>
+        <p>Sample limited diagnostic used for outreach demos.</p>
+        <a class="adr-btn" href="/adp-leak-audit/sample" target="_blank" rel="noopener">Open sample</a>
+        <a class="adr-btn adr-btn--secondary" href="/admin/adp-leak-audits/reports">Load in report picker</a>
+      </article>
+      <article class="ala-card">
+        <h2>Dovetail Portfolio — Portfolio</h2>
+        <p>
+          Portfolio roll-up sample. Includes Cambridge Beaches, NOW NOW NOHO, and Hotel Phillips Kansas City
+          as hotels needing attention — not separate public site pages.
+        </p>
+        <a class="adr-btn" href="/adp-leak-audit/sample-portfolio" target="_blank" rel="noopener">Open portfolio sample</a>
+      </article>
+    </div>
+  </div>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js?v=adp-mr-admin-3"></script>
+  <script>
+    (async function () {
+      var gate = window.SupportAdminGate;
+      if (!gate) return;
+      gate.showPageLoading("supportGateLoading", "Verifying access…");
+      var ok = await gate.requireAdpMonthlyReviewAdmin({ contentId: "supportGateContent" });
+      if (!ok) return;
+      gate.hidePageLoading(document.getElementById("supportGateLoading"));
+      document.getElementById("supportGateContent").hidden = false;
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+/**
+ * Thin Leak Audit overlay on Dealality Report System (BAS + DRS)
+ * + ADP product surface (blue metric/evidence language).
+ *
+ * Alignment plan:
+ * - Cover: BAS proportions + cover footnotes + screen footer legal
+ * - KPI: aiv-kpi cards + info icons inside navy metric panel
+ * - Evidence: aiv-evidence AI-response boxes in drawer
+ * - Actions: Priority AI Demand Improvements
+ * - Responsive: centered max-width that expands; KPI 5→3→2→1
+ */
+body.ala-drs-host {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 520px at 12% -10%, rgba(108, 114, 255, 0.22), transparent 55%),
+    radial-gradient(900px 420px at 92% 0%, rgba(16, 25, 53, 0.55), transparent 50%),
+    linear-gradient(180deg, #0b1228 0%, #121a33 38%, #eceff8 38%, #e8ecf6 100%);
+  color: var(--drs-ink, #101935);
+  font-family: var(--drs-font, "Mona Sans", "Inter", system-ui, sans-serif);
+}
+
+.ala-rpt-state {
+  max-width: 640px;
+  margin: 72px auto;
+  padding: 24px;
+  text-align: center;
+  color: #aeb9e1;
+  font-family: var(--drs-font, "Mona Sans", "Inter", system-ui, sans-serif);
+}
+
+.ala-leak-audit-report.brand-alignment-snapshot.drs-report {
+  width: min(1100px, calc(100% - 32px));
+  max-width: 1100px;
+  margin: 28px auto 64px;
+  background: var(--drs-paper, #fff);
+  border: 1px solid rgba(174, 185, 225, 0.28);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 18px 48px rgba(8, 15, 37, 0.28);
+}
+
+.ala-leak-audit-report .bas-cover-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: min(72vh, 640px);
+  padding: 36px 40px 28px;
+  background: var(--bas-cover-bg, #080f25);
+  color: #d7def5;
+}
+
+.ala-leak-audit-report .bas-cover-page.bas-book-page-surface {
+  height: auto;
+}
+
+.ala-leak-audit-report .bas-cover-block {
+  margin-top: 48px;
+  margin-bottom: 28px;
+}
+
+.ala-leak-audit-report .bas-cover-doc-type {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #aeb9e1;
+}
+
+.ala-leak-audit-report .bas-cover-title {
+  margin: 12px 0 0;
+  max-width: 18ch;
+  line-height: 1.12;
+}
+
+.ala-leak-audit-report .bas-cover-disclaimer {
+  max-width: 62ch;
+  margin: 18px 0 12px;
+  color: #aeb9e1;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.ala-cover-footnotes {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(174, 185, 225, 0.18);
+}
+
+.ala-cover-footnotes__line,
+.ala-cover-footnotes__legal {
+  margin: 0 0 8px;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: #7e89ac;
+  max-width: 78ch;
+}
+
+.ala-cover-footnotes__legal {
+  margin-top: 12px;
+  color: #aeb9e1;
+  font-weight: 600;
+}
+
+.ala-report-screen-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 14px 28px 18px;
+  border-top: 1px solid var(--drs-border, #d9e1fa);
+  background: #f7f8fd;
+  color: #5b6789;
+  font-size: 0.6875rem;
+}
+
+.ala-drs-body {
+  padding: 32px clamp(20px, 4vw, 40px) 40px;
+}
+
+.ala-drs-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.ala-drs-meta .drs-pill {
+  margin: 0;
+}
+
+.ala-adp-section-lede {
+  margin: -4px 0 14px;
+  max-width: 68ch;
+}
+
+.ala-adp-metric-panel {
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #101935 0%, #0c142c 100%);
+  border: 1px solid rgba(108, 114, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.ala-adp-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.ala-adp-kpi-row--6 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ala-adp-kpi-row--4,
+.ala-adp-kpi-row--3 {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.ala-leak-audit-report .aiv-kpi {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 128px;
+  height: 100%;
+  padding: 12px 12px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(174, 185, 225, 0.16);
+  color: #f8fafc;
+}
+
+.ala-leak-audit-report .aiv-kpi--watch {
+  border-color: rgba(253, 181, 42, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(253, 181, 42, 0.18);
+}
+
+.ala-leak-audit-report .aiv-kpi h3 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #aeb9e1;
+}
+
+.ala-leak-audit-report .aiv-kpi-label {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.ala-leak-audit-report .aiv-value {
+  margin-top: 10px;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #fff;
+  word-break: break-word;
+}
+
+.ala-leak-audit-report .aiv-meta {
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  color: #aeb9e1;
+}
+
+.ala-adp-info {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.ala-adp-info__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #aeb9e1;
+  cursor: pointer;
+}
+
+.ala-adp-info__btn:hover,
+.ala-adp-info__btn[aria-expanded="true"] {
+  color: #fff;
+  border-color: rgba(108, 114, 255, 0.7);
+  background: rgba(108, 114, 255, 0.25);
+}
+
+.ala-adp-info__tip {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(320px, calc(100vw - 48px));
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #101935;
+  border: 1px solid rgba(174, 185, 225, 0.28);
+  color: #d7def5;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.45;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.ala-adp-info__tip[hidden] {
+  display: none !important;
+}
+
+.ala-leak-audit-report .drs-link,
+.ala-leak-audit-report button.drs-link,
+.ala-leak-audit-report .aiv-link {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0 12px 0 0;
+  color: var(--drs-accent, #6c72ff);
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ala-leak-audit-report .drs-link:hover,
+.ala-leak-audit-report button.drs-link:hover {
+  color: #9a91fb;
+  text-decoration: underline;
+}
+
+.ala-leak-audit-report .aiv-kpi .drs-link,
+.ala-leak-audit-report .aiv-kpi .aiv-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #9a91fb;
+}
+
+.ala-howto-guide-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin: 0 0 22px;
+  padding: 14px 16px;
+  border: 1px solid var(--drs-border, #d9e1fa);
+  border-left: 3px solid var(--drs-accent, #6c72ff);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(108, 114, 255, 0.08), #f4f6fc 42%);
+}
+
+.ala-howto-guide-entry__copy {
+  margin: 0;
+  flex: 1 1 240px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--drs-muted, #5b6789);
+}
+
+.ala-leak-audit-report .ala-howto-guide-entry .adp-howto-read-btn,
+.ala-drs-host .ala-howto-guide-entry .adp-howto-read-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 0;
+  min-height: 40px;
+  padding: 8px 14px;
+  box-sizing: border-box;
+  background: var(--drs-cover-bg, #080f25);
+  border: 1px solid rgba(108, 114, 255, 0.45);
+  border-radius: 6px;
+  color: #f8fafc;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ala-leak-audit-report .ala-howto-guide-entry .adp-howto-read-btn:hover,
+.ala-drs-host .ala-howto-guide-entry .adp-howto-read-btn:hover {
+  background: #101935;
+  border-color: var(--drs-accent, #6c72ff);
+  color: #fff;
+}
+
+.ala-howto-guide-entry .adp-howto-read-btn[hidden] {
+  display: none !important;
+}
+
+.ala-adp-action {
+  border-left: 3px solid var(--drs-accent, #6c72ff);
+}
+
+.ala-adp-action__dealality {
+  background: rgba(108, 114, 255, 0.06);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.ala-who-card--dealality {
+  border-top: 3px solid var(--drs-accent, #6c72ff);
+}
+
+.ala-rank-band {
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--drs-cover-bg, #080f25);
+  color: #d7def5;
+}
+
+.ala-rank-band__title {
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #aeb9e1;
+}
+
+.ala-rank-band__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ala-rank-band__item {
+  padding: 10px 0;
+  border-top: 1px solid rgba(174, 185, 225, 0.16);
+}
+
+.ala-rank-band__badge {
+  display: inline-block;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fdb52a;
+}
+
+.ala-rank-band__note {
+  margin: 10px 0 0;
+  font-size: 0.75rem;
+  color: #aeb9e1;
+}
+
+.ala-who-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ala-who-card {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--drs-border, #d9e1fa);
+  background: var(--drs-surface, #f4f6fc);
+}
+
+.ala-who-card h3 {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5b6789;
+}
+
+.ala-who-card p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.ala-cta {
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #101935, #1a2450);
+  color: #d7def5;
+}
+
+.ala-cta p {
+  margin: 0 0 10px;
+  line-height: 1.45;
+}
+
+.ala-cta p:last-child {
+  margin-bottom: 0;
+}
+
+.ala-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+}
+
+.ala-drawer[hidden] {
+  display: none !important;
+}
+
+.ala-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 12, 28, 0.62);
+}
+
+.ala-drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(460px, 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #0c142c;
+  color: #d7def5;
+  border-left: 1px solid rgba(174, 185, 225, 0.22);
+  box-shadow: -16px 0 40px rgba(0, 0, 0, 0.35);
+}
+
+.ala-drawer__header {
+  position: relative;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid rgba(174, 185, 225, 0.16);
+}
+
+.ala-drawer__eyebrow {
+  margin: 0 0 4px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7e89ac;
+}
+
+.ala-drawer__header h2 {
+  margin: 0;
+  padding-right: 36px;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.ala-drawer__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #aeb9e1;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.ala-drawer__body {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 18px 24px;
+}
+
+.ala-drawer__footer {
+  padding: 12px 18px 16px;
+  border-top: 1px solid rgba(174, 185, 225, 0.16);
+  font-size: 0.6875rem;
+  color: #7e89ac;
+}
+
+.ala-adp-evidence .aiv-evidence-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+.ala-adp-evidence .aiv-evidence-meta-item {
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(174, 185, 225, 0.14);
+}
+
+.ala-adp-evidence .aiv-evidence-label {
+  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #7e89ac;
+  margin-bottom: 4px;
+}
+
+.ala-adp-evidence .aiv-evidence-value {
+  font-size: 0.8125rem;
+  color: #f8fafc;
+  line-height: 1.35;
+}
+
+.ala-adp-evidence .aiv-evidence-section {
+  margin: 0 0 16px;
+}
+
+.ala-adp-evidence .aiv-evidence-section h3 {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #aeb9e1;
+}
+
+.ala-adp-evidence .aiv-evidence-section--ai-response {
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(108, 114, 255, 0.1);
+  border: 1px solid rgba(108, 114, 255, 0.28);
+}
+
+.ala-adp-evidence .aiv-evidence-response {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #e8ecf8;
+}
+
+.ala-adp-evidence .aiv-excerpt-p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #c5cde8;
+}
+
+.ala-adp-evidence .aiv-source-link {
+  display: inline-block;
+  margin: 0 10px 8px 0;
+}
+
+body.ala-drawer-open {
+  overflow: hidden;
+}
+
+@media print {
+  body.ala-drs-host {
+    background: #fff;
+  }
+
+  .ala-howto-guide-entry,
+  .ala-drawer,
+  .adp-gt {
+    display: none !important;
+  }
+
+  .ala-leak-audit-report.brand-alignment-snapshot.drs-report {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .drs-action,
+  .drs-evidence,
+  .drs-callout,
+  .ala-rank-band,
+  .ala-cta,
+  .drs-table-wrap,
+  .aiv-kpi {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 1100px) {
+  .ala-adp-kpi-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .ala-leak-audit-report .bas-cover-page {
+    min-height: auto;
+    padding: 28px 22px 22px;
+  }
+
+  .ala-leak-audit-report .bas-cover-block {
+    margin-top: 24px;
+  }
+
+  .ala-adp-kpi-row,
+  .ala-adp-kpi-row--6,
+  .ala-who-grid,
+  .ala-kpi-grid--portfolio {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ala-adp-evidence .aiv-evidence-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .ala-leak-audit-report.brand-alignment-snapshot.drs-report {
+    width: calc(100% - 16px);
+    margin: 12px auto 40px;
+    border-radius: 10px;
+  }
+
+  .ala-drs-body {
+    padding: 22px 16px 28px;
+  }
+
+  .ala-adp-kpi-row,
+  .ala-adp-kpi-row--6,
+  .ala-who-grid,
+  .ala-kpi-grid--portfolio {
+    grid-template-columns: 1fr;
+  }
+
+  .ala-howto-guide-entry .adp-howto-read-btn {
+    width: 100%;
+  }
+
+  .ala-drawer__panel {
+    width: 100%;
+  }
+
+  .ala-adp-info__tip {
+    right: auto;
+    left: 0;
+  }
+}

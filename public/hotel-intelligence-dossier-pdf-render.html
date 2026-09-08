@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hotel Intelligence Dossier — Canonical PDF Render</title>
+  <!-- Packet 2.6B-R9: headless-only print surface for Download PDF + QA -->
+  <link rel="stylesheet" href="/css/brand-alignment-snapshot.css" />
+  <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-dossier.css?v=23" />
+  <style>
+    html, body { margin: 0; padding: 0; background: #fff; }
+    #hid-boot { font-family: Inter, system-ui, sans-serif; padding: 24px; color: #333; }
+    #hid-boot[hidden] { display: none !important; }
+  </style>
+</head>
+<body class="hid-print-active hid-print-pdf-export">
+  <div id="hid-boot">Preparing canonical PDF…</div>
+  <script src="/js/dealality-report-print-chrome.js?v=4"></script>
+  <script src="/js/hotel-intelligence-dossier.js?v=28"></script>
+  <script>
+    (async function () {
+      var boot = document.getElementById("hid-boot");
+      var params = new URLSearchParams(window.location.search || "");
+      var dossierId = (params.get("dossierId") || "").trim();
+      var recordId = (params.get("recordId") || "recUNycnMwOVFX0hc").trim();
+      try {
+        var dossier = null;
+        if (dossierId) {
+          var r1 = await fetch("/api/hotel-intelligence/dossiers/" + encodeURIComponent(dossierId));
+          var j1 = await r1.json();
+          if (!j1.ok || !j1.dossier) throw new Error(j1.error || "dossier_not_found");
+          dossier = j1.dossier;
+        } else {
+          var r2 = await fetch(
+            "/api/hotel-intelligence/hotels/" + encodeURIComponent(recordId) + "/dossiers"
+          );
+          var j2 = await r2.json();
+          if (!j2.ok || !j2.dossier) throw new Error(j2.error || "dossier_not_found");
+          dossier = j2.dossier;
+        }
+        var html =
+          window.HotelIntelligenceDossier &&
+          window.HotelIntelligenceDossier.buildPrintFlowHtml
+            ? window.HotelIntelligenceDossier.buildPrintFlowHtml(dossier, {
+                omitRunningFooter: true,
+              })
+            : "";
+        if (!html) throw new Error("print_flow_unavailable");
+        var old = document.getElementById("hid-print-host");
+        if (old) old.remove();
+        var host = document.createElement("div");
+        host.id = "hid-print-host";
+        host.className =
+          "hid-print-host hid-print-host--flow hid-print-host--pdf-export";
+        host.setAttribute("data-hid-pdf-ready", "1");
+        host.setAttribute("data-hid-dossier-id", dossier.dossier_id || "");
+        host.setAttribute("data-hid-hotel-name", dossier.hotel_name || "");
+        host.setAttribute(
+          "data-hid-report-type",
+          dossier.dossier_type || dossier.report_type || ""
+        );
+        host.setAttribute("data-hid-template-id", dossier.template_id || "");
+        host.setAttribute("data-hid-completed-at", dossier.completed_at || "");
+        host.innerHTML = html;
+        host.querySelectorAll("[data-dealality-report-footer]").forEach(function (el) {
+          el.remove();
+        });
+        document.body.appendChild(host);
+        boot.hidden = true;
+        var docLabel =
+          String(dossier.dossier_type || "").toUpperCase() === "RESEARCH_ADDENDUM"
+            ? dossier.cover && dossier.cover.investigation_name
+              ? dossier.cover.investigation_name
+              : "Research Addendum"
+            : "Full Hotel Intelligence Investigation";
+        document.title = (dossier.hotel_name || "Hotel") + " — " + docLabel;
+      } catch (err) {
+        boot.hidden = false;
+        boot.textContent = "PDF render failed: " + (err && err.message ? err.message : err);
+        boot.setAttribute("data-hid-pdf-error", "1");
+      }
+    })();
+  </script>
+</body>
+</html>
