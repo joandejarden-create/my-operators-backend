@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-09-08T02:17:09.787Z",
+  "publishedAt": "2026-09-08T07:39:34.933Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_jw_marriott_monterrey_valle",
   "periodId": "adp_period_adp_jw_marriott_monterrey_valle_20260908010206_4d363a",
@@ -28,14 +28,7 @@
       "executionDate": "2026-09-08T01:02:06.598Z",
       "scenarioCount": 63,
       "providerCount": 4,
-      "status": "PARSED",
-      "officialPeriod": true,
-      "baselineMarker": "ADP_JW_MARRIOTT_MONTERREY_VALLE_BASELINE_PERIOD_001",
-      "firstOfficialPropertyPeriod": true,
-      "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
-      "measurementContractHash": "e4d85401c091e105946a8efc77c0d29fd94bdac3aa2df973b8b37feb25ac3823",
-      "certified": true,
-      "priorComparablePeriod": null
+      "status": "PARSED"
     },
     "demandCapture": {
       "overallRate": 92.1,
@@ -593,17 +586,52 @@
       "declaredButNotObserved": []
     },
     "realityGap": {
-      "gapScore": 33.3,
-      "display": "33.3%",
-      "totalAttributes": 3,
-      "recognizedCount": 2,
-      "gapCount": 1,
+      "gapScore": 53.3,
+      "display": "53.3%",
+      "totalAttributes": 15,
+      "recognizedCount": 7,
+      "gapCount": 8,
       "recognized": [
+        {
+          "attribute": "monterrey_valle",
+          "label": "Monterrey Valle Location",
+          "recognitionRate": 98.2,
+          "count": 112,
+          "total": 114
+        },
+        {
+          "attribute": "san_pedro_garza_garcia",
+          "label": "San Pedro Garza García",
+          "recognitionRate": 78.9,
+          "count": 90,
+          "total": 114
+        },
+        {
+          "attribute": "luxury",
+          "label": "Luxury Positioning",
+          "recognitionRate": 81.6,
+          "count": 93,
+          "total": 114
+        },
+        {
+          "attribute": "jw_marriott",
+          "label": "JW Marriott Brand",
+          "recognitionRate": 100,
+          "count": 114,
+          "total": 114
+        },
         {
           "attribute": "marriott_bonvoy",
           "label": "Marriott Bonvoy Loyalty",
           "recognitionRate": 100,
           "count": 114,
+          "total": 114
+        },
+        {
+          "attribute": "spa",
+          "label": "On-Site Spa",
+          "recognitionRate": 92.1,
+          "count": 105,
           "total": 114
         },
         {
@@ -616,6 +644,15 @@
       ],
       "gaps": [
         {
+          "attribute": "valle_del_campestre",
+          "label": "Valle del Campestre",
+          "priority": "medium",
+          "recognitionRate": 17.5,
+          "count": 20,
+          "total": 114,
+          "severity": "MEDIUM"
+        },
+        {
           "attribute": "full_service",
           "label": "Full-Service Hotel",
           "priority": "medium",
@@ -623,6 +660,60 @@
           "count": 25,
           "total": 114,
           "severity": "MEDIUM"
+        },
+        {
+          "attribute": "business_district",
+          "label": "Business District Location",
+          "priority": "high",
+          "recognitionRate": 14,
+          "count": 16,
+          "total": 114,
+          "severity": "MEDIUM"
+        },
+        {
+          "attribute": "outdoor_pool",
+          "label": "Outdoor Pool",
+          "priority": "medium",
+          "recognitionRate": 31.6,
+          "count": 36,
+          "total": 114,
+          "severity": "LOW"
+        },
+        {
+          "attribute": "fitness_center_24hr",
+          "label": "24-Hour Fitness Center",
+          "priority": "medium",
+          "recognitionRate": 4.4,
+          "count": 5,
+          "total": 114,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "executive_lounge",
+          "label": "Executive Lounge",
+          "priority": "high",
+          "recognitionRate": 34.2,
+          "count": 39,
+          "total": 114,
+          "severity": "LOW"
+        },
+        {
+          "attribute": "financial_center",
+          "label": "Financial Center Location",
+          "priority": "medium",
+          "recognitionRate": 3.5,
+          "count": 4,
+          "total": 114,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "aimbridge_managed",
+          "label": "Aimbridge Managed",
+          "priority": "medium",
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 114,
+          "severity": "HIGH"
         }
       ],
       "totalPropertyMentions": 114
@@ -670,12 +761,20 @@
         },
         {
           "type": "gap",
-          "text": "AI Reality Gap: 33.3%. AI misses or misrepresents 1 of your property's key attributes."
+          "text": "AI Reality Gap: 53.3%. AI misses or misrepresents 8 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-09-08T02:17:09.115Z"
+      "generatedAt": "2026-09-08T07:39:34.216Z"
     },
     "actions": [
+      {
+        "priority": "HIGH",
+        "category": "REALITY_GAP",
+        "title": "Improve AI representation of 24-hour fitness center",
+        "description": "AI currently misses or underrepresents your 24-hour fitness center. Review third-party content and authority signals for this attribute before estimating impact.",
+        "expectedImpact": null,
+        "impactNote": "Review evidence for this attribute gap before estimating scenario impact."
+      },
       {
         "priority": "MEDIUM",
         "category": "DISPLACEMENT",
@@ -2447,7 +2546,7 @@
       {
         "periodId": "adp_period_adp_jw_marriott_monterrey_valle_20260908010206_4d363a",
         "date": "2026-09-08T01:02:06.598Z",
-        "propertyRealityCoverage": 66.7,
+        "propertyRealityCoverage": 46.7,
         "scenarioPresenceRate": 92.1,
         "considerationRate": 45.2,
         "providerCount": 4,
