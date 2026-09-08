@@ -1,0 +1,100 @@
+{
+  "corpus_id": "HOTEL_INTELLIGENCE_LEARNING_CORPUS_V1",
+  "frozen_at": "2026-09-08T07:00:00.000Z",
+  "immutable": true,
+  "note": "Pointers to existing artifacts only — do not overwrite source files. Packet 2.8 learning extraction reads from these paths.",
+  "provider_spend_usd_recorded": 25.4,
+  "cala_census_baseline_hotels": 5956,
+  "hotels": [
+    {
+      "hotel_airtable_record_id": "recUNycnMwOVFX0hc",
+      "hotel_name": "Krystal Grand Puerto Vallarta",
+      "slug": "kgpv",
+      "research_runs": [
+        {
+          "run_key": "kgpv_full_hi_webhound",
+          "webhound_session_id": "23969ba8-60d2-402d-887d-c94f555d3e3b",
+          "template_id": "FULL_HOTEL_INTELLIGENCE",
+          "report_id": "dossier_kgpv_full_hi_v1",
+          "cost_usd": 5.4
+        },
+        {
+          "run_key": "kgpv_change_opportunity_webhound",
+          "webhound_session_id": "9839ce88-4b31-4f41-baac-208921f7a06e",
+          "template_id": "CHANGE_OPPORTUNITY",
+          "report_id": "addendum_change_opportunity_ff3e5bf2",
+          "cost_usd": 5
+        }
+      ],
+      "deep_research_fixture": "fixtures/golden-demo/krystal-grand-pv-deep-research-v1.json",
+      "dossier_fixture": "fixtures/hotel-intelligence/dossier/kgpv-full-hotel-intelligence-investigation-v1.json",
+      "module_archive": "fixtures/hotel-intelligence/dossier/source-archive/",
+      "research_store": "data/hotel-intelligence/research/hotels/recUNycnMwOVFX0hc/",
+      "ownership_cohort": "lib/hotel-intelligence/ownership/golden-demo/gsf-cohort.js"
+    },
+    {
+      "hotel_airtable_record_id": "recIwaP1etgx2g9nA",
+      "hotel_name": "Cambridge Beaches Resort & Spa",
+      "slug": "cambridge-beaches",
+      "research_runs": [
+        {
+          "run_key": "cambridge_full_hi_webhound",
+          "webhound_session_id": "9d6b0a8d-e038-44ce-ab61-2ee92a2a4807",
+          "template_id": "FULL_HOTEL_INTELLIGENCE",
+          "report_id": "dossier_cambridge_beaches_full_hi_v3",
+          "cost_usd": 5
+        }
+      ],
+      "deep_research_fixture": "fixtures/golden-demo/cambridge-beaches-deep-research-v1.json",
+      "dossier_fixture": "fixtures/hotel-intelligence/dossier/cambridge-beaches-full-hotel-intelligence-investigation-v3.json",
+      "research_store": "data/hotel-intelligence/research/hotels/recIwaP1etgx2g9nA/",
+      "ownership_cohort": "lib/hotel-intelligence/ownership/golden-demo/cambridge-cohort.js"
+    },
+    {
+      "hotel_airtable_record_id": "recsYJb2R1jarPpK3",
+      "hotel_name": "Sheraton Guadalajara Expo",
+      "slug": "sheraton-gdl-expo",
+      "research_runs": [
+        {
+          "run_key": "sheraton_gdl_full_hi_webhound",
+          "webhound_session_id": "e4a61251-a016-4c47-a5e4-a1ff57b996cb",
+          "template_id": "FULL_HOTEL_INTELLIGENCE",
+          "report_id": "dossier_sheraton_gdl_expo_full_hi_v1",
+          "cost_usd": 5
+        }
+      ],
+      "deep_research_fixture": "fixtures/golden-demo/sheraton-gdl-expo-deep-research-v1.json",
+      "dossier_fixture": "fixtures/hotel-intelligence/dossier/sheraton-gdl-expo-full-hotel-intelligence-investigation-v1.json",
+      "research_store": "data/hotel-intelligence/research/hotels/recsYJb2R1jarPpK3/",
+      "ownership_cohort": "lib/hotel-intelligence/ownership/golden-demo/mexico-explorer-demo-cohort.js",
+      "radar_fixture": "fixtures/golden-demo/radar/hotel-recsYJb2R1jarPpK3.json"
+    },
+    {
+      "hotel_airtable_record_id": "recTYaiA4S6fR6ixx",
+      "hotel_name": "voco Cancún Zona Hotelera",
+      "slug": "voco-cancun-real-inn",
+      "research_runs": [
+        {
+          "run_key": "real_inn_cancun_full_hi_webhound",
+          "webhound_session_id": "799762c4-5a98-488c-890c-d8e5acc8c616",
+          "template_id": "FULL_HOTEL_INTELLIGENCE",
+          "report_id": "dossier_real_inn_cancun_full_hi_v1",
+          "cost_usd": 5
+        }
+      ],
+      "deep_research_fixture": "fixtures/golden-demo/real-inn-cancun-deep-research-v1.json",
+      "dossier_fixture": "fixtures/hotel-intelligence/dossier/real-inn-cancun-full-hotel-intelligence-investigation-v1.json",
+      "research_store": "data/hotel-intelligence/research/hotels/recTYaiA4S6fR6ixx/",
+      "ownership_cohort": "lib/hotel-intelligence/ownership/golden-demo/mexico-explorer-demo-cohort.js",
+      "radar_fixture": "fixtures/golden-demo/radar/hotel-recTYaiA4S6fR6ixx.json"
+    }
+  ],
+  "shared_prompt_artifacts": [
+    "data/hotel-intelligence/prompts/FULL_HOTEL_INTELLIGENCE_PROMPT_V1.txt",
+    "data/hotel-intelligence/mexico-explorer-demo-webhound-v1/CAMBRIDGE_PROMPT_TEMPLATE.txt",
+    "data/hotel-intelligence/mexico-explorer-demo-webhound-v1/KGPV_PROMPT_TEMPLATE.txt",
+    "lib/hotel-intelligence/research/templates.js",
+    "lib/hotel-intelligence/research/hotel-seed.js"
+  ],
+  "regression_fixture_policy": "These four hotels are permanent Hotel Explorer / research regression fixtures. Do not use them as the next 25-hotel pilot set."
+}

@@ -19,6 +19,10 @@ import {
   previewDemandAnchorsImport,
   commitDemandAnchorsImport,
 } from "../lib/demand-anchors/import-commit.js";
+import {
+  loadMexicoDemandAnchorFixturePoints,
+  shouldUseMexicoRadarFixtureFallback,
+} from "../lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js";
 
 function parseBool(v) {
   return v === "1" || v === "true" || v === "yes";
@@ -43,6 +47,19 @@ function emptyPayload(extra = {}) {
   };
 }
 
+function mexicoFixtureDemandResponse(query) {
+  const points = loadMexicoDemandAnchorFixturePoints({
+    country: query.country,
+    market: query.market,
+  });
+  if (!points.length) return null;
+  return {
+    ...buildRadarResponse({ points, anchors: points, tableName: "Demand Anchors (fixture)" }, query),
+    source: "golden_demo_radar_fixture",
+    fixtureFallback: true,
+  };
+}
+
 function buildRadarResponse(result, query) {
   const pointTypeFilter = query.pointTypeFilter || query.layerFilter || "";
   const grouped = groupDemandAnchorsLayers(result.points, pointTypeFilter);
@@ -62,8 +79,26 @@ function buildRadarResponse(result, query) {
 }
 
 async function handleDemandAnchorsRequest(req, res) {
+  const query = {
+    pointType: req.query.pointType,
+    pointTypeFilter: req.query.pointTypeFilter || req.query.layerFilter,
+    country: req.query.country,
+    region: req.query.region,
+    market: req.query.market,
+    dealId: req.query.dealId,
+    dealRecordId: req.query.dealRecordId,
+    includeHidden: parseBool(req.query.includeHidden),
+  };
+
+  const tryMexicoFixture = () => {
+    if (!shouldUseMexicoRadarFixtureFallback(query)) return null;
+    return mexicoFixtureDemandResponse(query);
+  };
+
   const cfg = getDemandAnchorsAirtableConfig();
   if (!cfg) {
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
     return res.status(500).json({
       success: false,
       setupNeeded: true,
@@ -75,6 +110,8 @@ async function handleDemandAnchorsRequest(req, res) {
 
   const verified = await verifyDemandAnchorsTable(cfg.baseId, cfg.apiKey);
   if (!verified.ok) {
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
     return res.status(200).json(
       emptyPayload({
         message: "Demand Anchors table is not configured yet.",
@@ -83,19 +120,10 @@ async function handleDemandAnchorsRequest(req, res) {
   }
 
   try {
-    const query = {
-      pointType: req.query.pointType,
-      pointTypeFilter: req.query.pointTypeFilter || req.query.layerFilter,
-      country: req.query.country,
-      region: req.query.region,
-      market: req.query.market,
-      dealId: req.query.dealId,
-      dealRecordId: req.query.dealRecordId,
-      includeHidden: parseBool(req.query.includeHidden),
-    };
-
     const result = await fetchDemandAnchorRecords(query);
     if (result.error === "airtable_config_missing") {
+      const fixture = tryMexicoFixture();
+      if (fixture) return res.json(fixture);
       return res.status(500).json({
         success: false,
         setupNeeded: true,
@@ -105,6 +133,8 @@ async function handleDemandAnchorsRequest(req, res) {
       });
     }
     if (result.error === "demand_anchors_table_missing") {
+      const fixture = tryMexicoFixture();
+      if (fixture) return res.json(fixture);
       return res.status(200).json(
         emptyPayload({
           message: "Demand Anchors table is not configured yet.",
@@ -113,9 +143,16 @@ async function handleDemandAnchorsRequest(req, res) {
       );
     }
 
-    return res.json(buildRadarResponse(result, query));
+    const live = buildRadarResponse(result, query);
+    if ((!live.points || !live.points.length) && shouldUseMexicoRadarFixtureFallback(query)) {
+      const fixture = mexicoFixtureDemandResponse(query);
+      if (fixture) return res.json(fixture);
+    }
+    return res.json(live);
   } catch (error) {
     console.error("[demand-anchors] API error:", error);
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
     return res.status(500).json({
       success: false,
       error: "server_error",

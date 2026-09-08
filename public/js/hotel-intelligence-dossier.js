@@ -6,8 +6,8 @@
 (function (global) {
   "use strict";
 
-  var HID_BUILD_ID = "2.7-R6";
-  var HID_ASSET_VERSION = "28";
+  var HID_BUILD_ID = "2.7-R7";
+  var HID_ASSET_VERSION = "31";
 
   var DEALALITY_LOGO_URL =
     "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png";
@@ -287,11 +287,52 @@
     },
   };
 
+  /** Set while rendering a dossier so people cards can resolve LinkedIn from people[]. */
+  var activeDossierPeopleByName = {};
+
+  function indexDossierPeople(dossier) {
+    activeDossierPeopleByName = {};
+    (dossier && dossier.people ? dossier.people : []).forEach(function (p) {
+      if (!p || !p.name) return;
+      activeDossierPeopleByName[normalizePersonKey(p.name)] = p;
+    });
+  }
+
+  function personRecordByName(personName) {
+    return activeDossierPeopleByName[normalizePersonKey(personName)] || null;
+  }
+
+  function linkedInFromPersonRecord(person) {
+    if (!person || typeof person !== "object") return "";
+    var nested =
+      person.professional_profile && typeof person.professional_profile === "object"
+        ? person.professional_profile
+        : null;
+    var url = String(
+      (nested && nested.url) ||
+        person.professional_profile_url ||
+        person.linkedin_url ||
+        ""
+    ).trim();
+    var verified =
+      nested && typeof nested.verified === "boolean"
+        ? nested.verified
+        : person.professional_profile_verified === true ||
+          String(person.professional_profile_status || "").toUpperCase() === "VERIFIED";
+    if (!verified || !isVerifiedLinkedInProfileUrl(url)) return "";
+    return url;
+  }
+
   function resolveProfessionalProfile(personName, publicContact) {
     var fromContact = extractLinkedInProfileUrl(publicContact);
     var key = normalizePersonKey(personName);
     var fromCorpus = CORPUS_PROFESSIONAL_PROFILES[key] || null;
-    var url = fromContact || (fromCorpus && fromCorpus.professional_profile_url) || "";
+    var fromPeople = linkedInFromPersonRecord(personRecordByName(personName));
+    var url =
+      fromContact ||
+      fromPeople ||
+      (fromCorpus && fromCorpus.professional_profile_url) ||
+      "";
     if (!isVerifiedLinkedInProfileUrl(url)) {
       return {
         professional_profile_url: "",
@@ -308,7 +349,7 @@
       professional_profile_verified: true,
       profile_source:
         (fromCorpus && fromCorpus.profile_source) ||
-        "dossier Public contact field",
+        (fromPeople ? "dossier people[] professional profile" : "dossier Public contact field"),
       profile_match_basis:
         (fromCorpus && fromCorpus.profile_match_basis) ||
         "Exact LinkedIn /in/ URL present in dossier corpus",
@@ -363,7 +404,11 @@
       var org = cell(row, "organization");
       var role = cellByKeys(row, idx, ["role / relevance", "role/relevance"]);
       var evidence = cell(row, "evidence");
-      var contactRaw = cell(row, "public contact");
+      var personRec = personRecordByName(name);
+      var contactRaw =
+        cell(row, "public contact") ||
+        (personRec && personRec.contact) ||
+        "";
       var profile = resolveProfessionalProfile(name, contactRaw);
       var contact = stripLinkedInFromContact(contactRaw, profile.professional_profile_url);
       html +=
@@ -1561,6 +1606,7 @@
    * Research Addenda flow from their template sections (no Full-HI exec regrouping).
    */
   function buildDocumentHtml(dossier) {
+    indexDossierPeople(dossier);
     var parts = [];
     var isAddendum =
       String(dossier.dossier_type || "").toUpperCase() === "RESEARCH_ADDENDUM" ||

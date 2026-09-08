@@ -19,9 +19,33 @@ import {
   previewTravelInfrastructureImport,
   commitTravelInfrastructureImport,
 } from "../lib/travel-infrastructure/import-commit.js";
+import {
+  loadMexicoTravelInfrastructureFixturePoints,
+  shouldUseMexicoRadarFixtureFallback,
+} from "../lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js";
 
 function parseBool(v) {
   return v === "1" || v === "true" || v === "yes";
+}
+
+function mexicoFixtureTravelResponse(query) {
+  const points = loadMexicoTravelInfrastructureFixturePoints({
+    country: query.country,
+    market: query.market,
+  });
+  if (!points.length) return null;
+  return {
+    ...buildRadarResponse(
+      {
+        points,
+        infrastructure: points,
+        tableName: "Travel Infrastructure (fixture)",
+      },
+      query
+    ),
+    source: "golden_demo_radar_fixture",
+    fixtureFallback: true,
+  };
 }
 
 function buildRadarResponse(result, query) {
@@ -43,8 +67,44 @@ function buildRadarResponse(result, query) {
 }
 
 async function handleTravelInfrastructureRequest(req, res) {
+  const query = {
+    type: req.query.type,
+    pointType: req.query.pointType,
+    country: req.query.country,
+    region: req.query.region,
+    market: req.query.market,
+    pointTypeFilter: req.query.pointTypeFilter || req.query.layerFilter,
+    includeHidden: parseBool(req.query.includeHidden),
+  };
+
+  const emptyBody = {
+    success: true,
+    setupNeeded: true,
+    message: "Travel Infrastructure Data table is not configured yet.",
+    infrastructure: [],
+    points: [],
+    layers: {},
+    layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
+    statistics: {
+      totalInfrastructure: 0,
+      typeCounts: {},
+      subtypeCounts: {},
+      countryCounts: {},
+      regionCounts: {},
+      mapIconCounts: {},
+    },
+    totalCount: 0,
+  };
+
+  const tryMexicoFixture = () => {
+    if (!shouldUseMexicoRadarFixtureFallback(query)) return null;
+    return mexicoFixtureTravelResponse(query);
+  };
+
   const cfg = getTravelInfrastructureAirtableConfig();
   if (!cfg) {
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
     return res.status(500).json({
       success: false,
       setupNeeded: true,
@@ -54,52 +114,23 @@ async function handleTravelInfrastructureRequest(req, res) {
       points: [],
       layers: {},
       layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
-      statistics: {
-        totalInfrastructure: 0,
-        typeCounts: {},
-        subtypeCounts: {},
-        countryCounts: {},
-        regionCounts: {},
-        mapIconCounts: {},
-      },
+      statistics: emptyBody.statistics,
       totalCount: 0,
     });
   }
 
   const verified = await verifyTravelInfrastructureTable(cfg.baseId, cfg.apiKey);
   if (!verified.ok) {
-    return res.status(200).json({
-      success: true,
-      setupNeeded: true,
-      message: "Travel Infrastructure Data table is not configured yet.",
-      infrastructure: [],
-      points: [],
-      layers: {},
-      layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
-      statistics: {
-        totalInfrastructure: 0,
-        typeCounts: {},
-        subtypeCounts: {},
-        countryCounts: {},
-        regionCounts: {},
-        mapIconCounts: {},
-      },
-      totalCount: 0,
-    });
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
+    return res.status(200).json(emptyBody);
   }
 
   try {
-    const query = {
-      type: req.query.type,
-      pointType: req.query.pointType,
-      country: req.query.country,
-      region: req.query.region,
-      pointTypeFilter: req.query.pointTypeFilter || req.query.layerFilter,
-      includeHidden: parseBool(req.query.includeHidden),
-    };
-
     const result = await fetchTravelInfrastructureRecords(query);
     if (result.error === "airtable_config_missing") {
+      const fixture = tryMexicoFixture();
+      if (fixture) return res.json(fixture);
       return res.status(500).json({
         success: false,
         setupNeeded: true,
@@ -110,30 +141,24 @@ async function handleTravelInfrastructureRequest(req, res) {
       });
     }
     if (result.error === "travel_infrastructure_table_missing") {
+      const fixture = tryMexicoFixture();
+      if (fixture) return res.json(fixture);
       return res.status(200).json({
-        success: true,
-        setupNeeded: true,
-        message: "Travel Infrastructure Data table is not configured yet.",
+        ...emptyBody,
         tableName: result.tableName,
-        infrastructure: [],
-        points: [],
-        layers: {},
-        layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
-        statistics: {
-          totalInfrastructure: 0,
-          typeCounts: {},
-          subtypeCounts: {},
-          countryCounts: {},
-          regionCounts: {},
-          mapIconCounts: {},
-        },
-        totalCount: 0,
       });
     }
 
-    return res.json(buildRadarResponse(result, query));
+    const live = buildRadarResponse(result, query);
+    if ((!live.points || !live.points.length) && shouldUseMexicoRadarFixtureFallback(query)) {
+      const fixture = mexicoFixtureTravelResponse(query);
+      if (fixture) return res.json(fixture);
+    }
+    return res.json(live);
   } catch (error) {
     console.error("[travel-infrastructure] API error:", error);
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
     return res.status(500).json({
       success: false,
       error: "server_error",

@@ -50,9 +50,14 @@
   }
 
   function preferCoord(preferred, fallback) {
+    // null/undefined/"" must not coerce to 0 and wipe a real fallback coordinate.
+    if (preferred == null || preferred === "") {
+      var fb = Number(fallback);
+      return Number.isFinite(fb) ? fb : null;
+    }
     var a = Number(preferred);
     var b = Number(fallback);
-    if (Number.isFinite(a) && !(a === 0 && (!Number.isFinite(b) || b === 0))) return a;
+    if (Number.isFinite(a) && !(a === 0 && Number.isFinite(b) && b !== 0)) return a;
     if (Number.isFinite(b)) return b;
     return null;
   }

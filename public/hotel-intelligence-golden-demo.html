@@ -31,26 +31,27 @@
     <p>Legacy workspace (reference only): <a href="/hotel-intelligence-reference.html?autopen=1">open Packet 2.6 layout</a></p>
     <button type="button" id="openBtn">Open default (KGPV)</button>
     <div class="links">
-      <div><a href="?autopen=1&hotelExplorer=recUNycnMwOVFX0hc&hexTab=hotel">KGPV route</a></div>
+      <div><a href="/hotel-explorer-share.html?pack=mexico">Mexico pack (both hotels + reports)</a></div>
+      <div><a href="?autopen=1&share=1&hotelExplorer=recsYJb2R1jarPpK3&hexTab=hotel">Sheraton Guadalajara Expo</a></div>
+      <div><a href="?autopen=1&share=1&hotelExplorer=recTYaiA4S6fR6ixx&hexTab=hotel">voco Cancún Zona Hotelera</a></div>
+      <div><a href="?autopen=1&share=1&hotelExplorer=recUNycnMwOVFX0hc&hexTab=hotel">KGPV route</a></div>
       <div><a href="?autopen=1&hotelExplorer=recIwaP1etgx2g9nA&hexTab=hotel">Cambridge route</a></div>
-      <div><a href="?autopen=1&hotelExplorer=recsYJb2R1jarPpK3&hexTab=hotel">Sheraton Guadalajara Expo</a></div>
-      <div><a href="?autopen=1&hotelExplorer=recTYaiA4S6fR6ixx&hexTab=hotel">voco Cancún Zona Hotelera</a></div>
     </div>
     <p id="status" style="margin-top:12px;font-size:13px;opacity:0.8"></p>
   </div>
   <script src="/js/travel-infrastructure-radar-layer.js?v=2"></script>
   <script src="/js/demand-anchors-radar-layer.js"></script>
   <script src="/js/dealality-chain-scale-theme.js?v=1"></script>
-  <script src="/js/dealality-hotel-property-merge.js?v=1"></script>
-  <script src="/js/hotel-detail-panel.js?v=62"></script>
+  <script src="/js/dealality-hotel-property-merge.js?v=2"></script>
+  <script src="/js/hotel-detail-panel.js?v=63"></script>
   <script src="/js/hotel-ownership-intelligence.js?v=24"></script>
   <script src="/js/hotel-intelligence-workspace.js?v=61"></script>
   <script src="/js/dealality-book-shell.js?v=1"></script>
   <script src="/js/dealality-report-print-chrome.js?v=4"></script>
-  <script src="/js/hotel-intelligence-dossier.js?v=30"></script>
+  <script src="/js/hotel-intelligence-dossier.js?v=31"></script>
   <script src="/js/hotel-intelligence-research-center.js?v=10"></script>
-  <script src="/js/hotel-intelligence-golden-demo-route.js?v=6"></script>
-  <script src="/js/hotel-explorer.js?v=59"></script>
+  <script src="/js/hotel-intelligence-golden-demo-route.js?v=8"></script>
+  <script src="/js/hotel-explorer.js?v=60"></script>
   <script>
     (function () {
       var Route = window.HotelIntelligenceGoldenDemoRoute;
@@ -118,6 +119,17 @@
           });
       }
 
+      function openLinkedReport(launch) {
+        if (!launch || !launch.openReport || !window.HotelExplorer) return;
+        if (launch.dossierId && window.HotelExplorer.openDossierById) {
+          window.HotelExplorer.openDossierById(launch.dossierId);
+          return;
+        }
+        if (window.HotelExplorer.openDossierForHotel) {
+          window.HotelExplorer.openDossierForHotel();
+        }
+      }
+
       function openExplorer(launch) {
         if (!window.HotelExplorer) {
           setStatus("Hotel Explorer failed to load.");
@@ -151,6 +163,7 @@
           });
           document.getElementById("boot").style.display = "none";
           setStatus("");
+          openLinkedReport(launch);
           return hotel;
         });
       }
