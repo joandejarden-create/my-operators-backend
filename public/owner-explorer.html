@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Owner Explorer</title>
+  <link rel="stylesheet" href="/css/hotel-explorer.css?v=61" />
+  <style>
+    body { margin: 0; background: #0b1220; color: #e8eef7; font-family: Georgia, "Times New Roman", serif; }
+    .oe { max-width: 1100px; margin: 0 auto; padding: 28px 20px 64px; }
+    .oe h1 { font-size: 1.75rem; margin: 0 0 6px; }
+    .oe .sub { color: #9db0c9; margin: 0 0 24px; font-size: 0.95rem; }
+    .oe section { margin: 28px 0; }
+    .oe h2 { font-size: 1.1rem; letter-spacing: 0.02em; color: #f0d38a; margin: 0 0 12px; }
+    .oe table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    .oe th, .oe td { text-align: left; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); vertical-align: top; }
+    .oe th { color: #9db0c9; font-weight: 600; }
+    .oe .facts { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    .oe .fact { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; }
+    .oe .fact b { display: block; font-size: 1.25rem; color: #fff; }
+    .oe .fact span { color: #9db0c9; font-size: 0.8rem; }
+    .oe a { color: #8ec5ff; }
+    .oe .focus { color: #7ddea0; font-weight: 700; }
+    .oe .err, .oe .load { color: #9db0c9; }
+    .oe .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: rgba(240,211,138,0.15); color: #f0d38a; font-size: 0.75rem; margin-left: 8px; }
+    @media (max-width: 800px) { .oe .facts { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="oe" id="oeRoot">
+    <p class="load" id="oeStatus">Loading owner profile…</p>
+  </div>
+  <script>
+  (function () {
+    var params = new URLSearchParams(window.location.search || "");
+    var owner = String(params.get("owner") || params.get("slug") || "grupo-hotelero-santa-fe").trim();
+    var focusHotel = String(params.get("focusHotel") || params.get("hotel") || "").trim();
+    var root = document.getElementById("oeRoot");
+    var status = document.getElementById("oeStatus");
+
+    function esc(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function hotelHref(row) {
+      var id = row.airtable_record_id;
+      if (!id) return null;
+      return "/hotel-intelligence-golden-demo.html?autopen=1&share=1&hotelExplorer=" +
+        encodeURIComponent(id) + "&hexTab=organization";
+    }
+
+    function rowsHtml(list, emptyMsg) {
+      if (!list || !list.length) return "<p class='load'>" + esc(emptyMsg) + "</p>";
+      return (
+        "<table><thead><tr><th>Hotel</th><th>Bucket</th><th>Brand</th><th>Rooms</th><th>Why in portfolio</th></tr></thead><tbody>" +
+        list
+          .map(function (h) {
+            var href = hotelHref(h);
+            var name = esc(h.hotel_name || "—");
+            var focus =
+              focusHotel &&
+              (h.airtable_record_id === focusHotel || h.focus_hotel)
+                ? " <span class='focus'>FOCUS</span>"
+                : "";
+            var link = href ? "<a href='" + href + "'>" + name + "</a>" : name;
+            if (h.census_match_status === "UNRESOLVED_HOTEL_CANDIDATE") {
+              link = name + " <span class='pill'>candidate</span>";
+            }
+            return (
+              "<tr><td>" +
+              link +
+              focus +
+              "</td><td>" +
+              esc(h.bucket || "—") +
+              "</td><td>" +
+              esc(h.brand || "—") +
+              "</td><td>" +
+              esc(h.rooms != null ? h.rooms : "—") +
+              "</td><td>" +
+              esc(h.why_in_portfolio || h.attribution_reason || "—") +
+              "</td></tr>"
+            );
+          })
+          .join("") +
+        "</tbody></table>"
+      );
+    }
+
+    fetch("/api/owner-intelligence/owners/" + encodeURIComponent(owner) + "/portfolio" +
+      (focusHotel ? "?focusHotel=" + encodeURIComponent(focusHotel) : ""))
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data || !data.success || !data.profile) {
+          status.textContent = "Owner portfolio not available.";
+          status.className = "err";
+          return;
+        }
+        var p = data.profile;
+        var m = p.metrics || {};
+        document.title = "Owner Explorer — " + (p.owner_display_name || owner);
+        root.innerHTML =
+          "<h1>" +
+          esc(p.owner_display_name || owner) +
+          "<span class='pill'>" +
+          esc(p.customer_label || p.completeness || "Known Portfolio") +
+          "</span></h1>" +
+          "<p class='sub'>Organization-level Owner Explorer · reusable across Hotel Explorer · " +
+          (focusHotel ? "opened from hotel " + esc(focusHotel) + " · " : "") +
+          "portfolio is organization-wide</p>" +
+          "<section><h2>Overview</h2><div class='facts'>" +
+          "<div class='fact'><b>" + esc(m.portfolio_hotels || 0) + "</b><span>Known hotels</span></div>" +
+          "<div class='fact'><b>" + esc(m.owned_controlled || 0) + "</b><span>Owned / Controlled</span></div>" +
+          "<div class='fact'><b>" + esc(m.operated_managed || 0) + "</b><span>Operated / Managed</span></div>" +
+          "<div class='fact'><b>" + esc(m.related_entities || 0) + "</b><span>Related entities</span></div>" +
+          "</div></section>" +
+          "<section><h2>Related entities</h2>" +
+          (p.related_entities && p.related_entities.length
+            ? "<table><thead><tr><th>Entity</th><th>Type</th><th>Association</th><th>Why</th></tr></thead><tbody>" +
+              p.related_entities
+                .map(function (e) {
+                  return (
+                    "<tr><td>" +
+                    esc(e.display_name) +
+                    "</td><td>" +
+                    esc(e.entity_type) +
+                    "</td><td>" +
+                    esc(e.association_level || e.via_relationship_type || "—") +
+                    "</td><td>" +
+                    esc(e.why_associated || "—") +
+                    "</td></tr>"
+                  );
+                })
+                .join("") +
+              "</tbody></table>"
+            : "<p class='load'>No related entities.</p>") +
+          "</section>" +
+          "<section><h2>Owned / Controlled hotels</h2>" +
+          rowsHtml(data.buckets && data.buckets.owned_controlled, "No owned/controlled hotels certified.") +
+          "</section>" +
+          "<section><h2>Operated / Managed hotels</h2>" +
+          rowsHtml(data.buckets && data.buckets.operated_managed, "No managed hotels.") +
+          "</section>" +
+          "<section><h2>Sponsored / JV / Other</h2>" +
+          rowsHtml(
+            [].concat(
+              (data.buckets && data.buckets.sponsored) || [],
+              (data.buckets && data.buckets.jv_partial) || []
+            ),
+            "No sponsored or JV rows."
+          ) +
+          "</section>" +
+          "<section><h2>Sources</h2><ul>" +
+          (p.sources || [])
+            .map(function (s) {
+              return "<li>" + esc(s.title || s.source_id) + " · " + esc(s.authority || "") + "</li>";
+            })
+            .join("") +
+          "</ul></section>";
+      })
+      .catch(function (err) {
+        status.className = "err";
+        status.textContent = "Failed to load owner portfolio: " + (err && err.message ? err.message : err);
+      });
+  })();
+  </script>
+</body>
+</html>

@@ -52,6 +52,17 @@ import {
   getGoldenDemoOwnershipGroup,
   getGoldenDemoOwnershipNeighbors,
 } from "./api/golden-demo-ownership.js";
+import {
+  getOwnerIntelligenceMeta,
+  listOwnerIntelligenceOwners,
+  getOwnerIntelligenceOwner,
+  getOwnerIntelligencePortfolio,
+  getOwnerIntelligenceRelated,
+  getOwnerIntelligenceHotels,
+  getOwnerIntelligencePeople,
+  getOwnerIntelligenceSources,
+  getHotelOwnerAnchor,
+} from "./api/owner-intelligence.js";
 
 import {
   listHotelIntelligenceDossiers,
@@ -775,6 +786,35 @@ app.get(
 app.get(
   "/api/golden-demo/ownership/hotel/:recordId",
   getGoldenDemoHotelOwnership
+);
+
+// Packet 2.8B-2 — Owner Intelligence (org-level portfolio / control graph)
+app.get("/api/owner-intelligence/meta", getOwnerIntelligenceMeta);
+app.get("/api/owner-intelligence/owners", listOwnerIntelligenceOwners);
+app.get("/api/owner-intelligence/owners/:ownerId", getOwnerIntelligenceOwner);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/portfolio",
+  getOwnerIntelligencePortfolio
+);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/related-entities",
+  getOwnerIntelligenceRelated
+);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/hotels",
+  getOwnerIntelligenceHotels
+);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/people",
+  getOwnerIntelligencePeople
+);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/sources",
+  getOwnerIntelligenceSources
+);
+app.get(
+  "/api/owner-intelligence/hotels/:hotelId/owner-anchor",
+  getHotelOwnerAnchor
 );
 
 // Hotel Intelligence Dossiers
