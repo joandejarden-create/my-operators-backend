@@ -195,7 +195,13 @@
       headers: { "ngrok-skip-browser-warning": "true" },
     })
       .then(function (r) {
-        return r.json();
+        return r.json().then(function (body) {
+          if (!r.ok || (body && body.success === false) || (body && body.ok === false)) {
+            console.warn("[HotelExplorer] org group unavailable", slug, body && body.error);
+            return null;
+          }
+          return body;
+        });
       })
       .catch(function (err) {
         console.warn("[HotelExplorer] org fetch failed", err);

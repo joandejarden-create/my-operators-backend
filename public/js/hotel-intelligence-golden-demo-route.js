@@ -8,6 +8,8 @@
   var KGPV_ID = "recUNycnMwOVFX0hc";
   var CAMBRIDGE_ID = "recIwaP1etgx2g9nA";
   var CAMBRIDGE_DHL = "dhl_06G6TRD5N8Q1YVXKSFD1A5E2NT";
+  var SHERATON_GDL_ID = "recsYJb2R1jarPpK3";
+  var REAL_INN_CANCUN_ID = "recTYaiA4S6fR6ixx";
 
   var DEMO_SLUGS = {
     kgpv: KGPV_ID,
@@ -16,6 +18,12 @@
     "cambridge-beaches": CAMBRIDGE_ID,
     cambridge: CAMBRIDGE_ID,
     "golden-demo-2": CAMBRIDGE_ID,
+    "sheraton-gdl-expo": SHERATON_GDL_ID,
+    "sheraton-guadalajara-expo": SHERATON_GDL_ID,
+    "sheraton-gdl": SHERATON_GDL_ID,
+    "real-inn-cancun": REAL_INN_CANCUN_ID,
+    "voco-cancun": REAL_INN_CANCUN_ID,
+    "voco-real-inn-cancun": REAL_INN_CANCUN_ID,
   };
 
   var HOTEL_SEEDS = {};
@@ -55,6 +63,48 @@
     id: CAMBRIDGE_ID,
     recordId: CAMBRIDGE_ID,
   });
+  HOTEL_SEEDS[SHERATON_GDL_ID] = {
+    id: SHERATON_GDL_ID,
+    recordId: SHERATON_GDL_ID,
+    name: "Sheraton Guadalajara Expo",
+    city: "Zapopan",
+    market: "Pacific Central",
+    country: "Mexico",
+    rooms: 216,
+    chainScale: "Upper Upscale Chain",
+    chain_scale: "Upper Upscale Chain",
+    brand: "Sheraton Hotel",
+    parentCompany: "Marriott International",
+    managementCompany: "Aimbridge LATAM",
+    website:
+      "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview",
+    latitude: 20.652993,
+    longitude: -103.3959898,
+    status: "Open",
+  };
+  HOTEL_SEEDS[REAL_INN_CANCUN_ID] = {
+    id: REAL_INN_CANCUN_ID,
+    recordId: REAL_INN_CANCUN_ID,
+    name: "voco Cancún Zona Hotelera",
+    city: "Cancun",
+    market: "Cancun",
+    country: "Mexico",
+    rooms: 160,
+    chainScale: "Upper Midscale Chain",
+    chain_scale: "Upper Midscale Chain",
+    brand: "voco",
+    brandAliases: ["Real Inn", "Real Inn Cancun", "voco Cancún"],
+    brandDisplayNote:
+      "Current brand is voco (IHG). Current marketed property name is voco Cancún Zona Hotelera. Former trading name Real Inn Cancun.",
+    parentCompany: "IHG Hotels & Resorts",
+    managementCompany: "Aimbridge LATAM",
+    website: "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
+    amenities:
+      "Outdoor swimming pool, Fitness center, Free WiFi, Free on-site parking, Restaurant (Stock Cafe), Bar / lounge, Room service, 24-hour front desk, Meeting rooms, Business center, Terrace / garden, Laundry facilities, Air conditioning, Non-smoking rooms, Facilities for disabled guests, Near Langosta / Tortuga beach corridor",
+    latitude: 21.1430049,
+    longitude: -86.7778885,
+    status: "Open",
+  };
 
   function normalizeHexTab(tab) {
     var t = String(tab || "hotel").trim() || "hotel";
@@ -75,13 +125,22 @@
    * 3. demo slug
    * 4. default KGPV (only when nothing specified)
    */
+  function normalizeAirtableRecordId(id) {
+    var key = String(id || "").trim();
+    // Common typo: "rect…" instead of "rec…"
+    if (/^rect[A-Za-z0-9]{14}$/.test(key)) {
+      key = "rec" + key.slice(4);
+    }
+    return key;
+  }
+
   function resolveRequestedHotelId(params) {
     params = params || new URLSearchParams();
     var explicit =
       String(params.get("hotelExplorer") || "").trim() ||
       String(params.get("hotel") || "").trim() ||
       "";
-    if (explicit) return explicit;
+    if (explicit) return normalizeAirtableRecordId(explicit);
     var fromDemo = resolveDemoSlug(params.get("demo"));
     if (fromDemo) return fromDemo;
     return KGPV_ID;
@@ -141,6 +200,8 @@
     KGPV_ID: KGPV_ID,
     CAMBRIDGE_ID: CAMBRIDGE_ID,
     CAMBRIDGE_DHL: CAMBRIDGE_DHL,
+    SHERATON_GDL_ID: SHERATON_GDL_ID,
+    REAL_INN_CANCUN_ID: REAL_INN_CANCUN_ID,
     DEMO_SLUGS: DEMO_SLUGS,
     resolveDemoSlug: resolveDemoSlug,
     resolveRequestedHotelId: resolveRequestedHotelId,

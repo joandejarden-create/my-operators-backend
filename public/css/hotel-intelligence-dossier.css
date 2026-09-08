@@ -297,6 +297,11 @@
 .hid-reader .hid-chapter .hid-body,
 .hid-reader .hid-chapter .hid-list,
 .hid-reader .hid-chapter .hid-list li,
+.hid-reader .hid-chapter .hid-trace,
+.hid-reader .hid-chapter .hid-trace li,
+.hid-reader .hid-chapter .hid-trace__role,
+.hid-reader .hid-chapter .hid-trace__entity,
+.hid-reader .hid-chapter .hid-trace__head,
 .hid-reader .hid-chapter .hid-chapter-h,
 .hid-reader .hid-chapter .hid-subhead,
 .hid-reader .hid-chapter .hid-exec-group__title,
@@ -304,6 +309,10 @@
 .hid-reader .hid-chapter th,
 .hid-reader .hid-chapter p {
   color: #101935;
+}
+.hid-reader .hid-chapter .hid-trace__note,
+.hid-reader .hid-chapter .hid-trace__status {
+  color: #2a3350;
 }
 .hid-runtime-error {
   margin: 24px;
@@ -491,6 +500,41 @@
 }
 .hid-list li {
   margin: 0 0 6px;
+}
+
+/* Ownership chain / entity trace — titles must stay dark and readable */
+.hid-trace {
+  margin: 0 0 14px;
+  padding-left: 1.35rem;
+  color: #101935;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.hid-trace__item {
+  margin: 0 0 14px;
+  color: #101935;
+}
+.hid-trace__head {
+  color: #101935;
+  line-height: 1.45;
+}
+.hid-trace__role {
+  font-weight: 750;
+  color: #101935;
+}
+.hid-trace__entity {
+  font-weight: 650;
+  color: #101935;
+}
+.hid-trace__status {
+  font-weight: 650;
+  color: #2a3350;
+}
+.hid-trace__note {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #2a3350;
 }
 
 .hid-exec-group {

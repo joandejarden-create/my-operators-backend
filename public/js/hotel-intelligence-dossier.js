@@ -828,13 +828,43 @@
     if (b.type === "trace") {
       var t = '<ol class="hid-trace">';
       (b.nodes || []).forEach(function (n) {
+        var roleLabel =
+          n.role_label ||
+          String(n.role || "")
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, function (c) {
+              return c.toUpperCase();
+            });
+        if (/^propco$/i.test(String(n.role || ""))) roleLabel = "Property company";
+        if (/^economic_owner$/i.test(String(n.role || ""))) roleLabel = "Economic owner";
+        if (/^sponsor_principals$/i.test(String(n.role || ""))) roleLabel = "Sponsor / buyer principals";
+        if (/^former_owner$/i.test(String(n.role || ""))) roleLabel = "Former owner";
+        if (/^ubo$/i.test(String(n.role || ""))) roleLabel = "Ultimate beneficial owner";
+        if (/^hotel$/i.test(String(n.role || ""))) roleLabel = "Hotel";
+        var statusRaw = String(n.status || "").trim();
+        var statusLabel = statusRaw
+          .replace(/^HIGH$/i, "High")
+          .replace(/^UNKNOWN$/i, "Unverified")
+          .replace(/^PROBABLE$/i, "Probable")
+          .replace(/^FORMER$/i, "Former")
+          .replace(/^VERIFIED$/i, "Verified")
+          .replace(/^CURRENT$/i, "Current")
+          .replace(/^MEDIUM$/i, "Medium")
+          .replace(/^LOW$/i, "Low");
         t +=
-          "<li><strong>" +
-          esc(String(n.role || "").replace(/_/g, " ")) +
-          "</strong> — " +
+          '<li class="hid-trace__item">' +
+          '<div class="hid-trace__head">' +
+          '<strong class="hid-trace__role">' +
+          esc(roleLabel) +
+          "</strong>" +
+          '<span class="hid-trace__entity"> — ' +
           esc(n.name || "—") +
-          (n.status ? ' <span class="hid-muted">(' + esc(n.status) + ")</span>" : "") +
-          (n.note ? '<p class="hid-muted">' + esc(n.note) + "</p>" : "") +
+          "</span>" +
+          (statusLabel
+            ? ' <span class="hid-trace__status">(' + esc(statusLabel) + ")</span>"
+            : "") +
+          "</div>" +
+          (n.note ? '<p class="hid-trace__note">' + esc(n.note) + "</p>" : "") +
           "</li>";
       });
       t += "</ol>";
@@ -1262,7 +1292,13 @@
             .filter(Boolean)
             .join(", "))) ||
       "";
-    if (!loc || /^location\s+pending$/i.test(String(loc).trim())) {
+    if (!loc || /^location\s+pending$/i.test(String(loc).trim()) || /^location\s+not\s+available$/i.test(String(loc).trim())) {
+      loc =
+        (dossier.hotel_location &&
+          [dossier.hotel_location.city, dossier.hotel_location.country].filter(Boolean).join(", ")) ||
+        "";
+    }
+    if (!loc || /^location\s+pending$/i.test(String(loc).trim()) || /^location\s+not\s+available$/i.test(String(loc).trim())) {
       loc = "Location not available";
     }
     var Chrome = global.DealalityReportPrintChrome;

@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=40" />
   <link rel="stylesheet" href="/css/hotel-ownership-intelligence.css?v=24" />
   <link rel="stylesheet" href="/css/hotel-intelligence-workspace.css?v=29" />
-  <link rel="stylesheet" href="/css/hotel-explorer.css?v=48" />
+  <link rel="stylesheet" href="/css/hotel-explorer.css?v=49" />
   <link rel="stylesheet" href="/css/brand-alignment-snapshot.css" />
   <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
-  <link rel="stylesheet" href="/css/hotel-intelligence-dossier.css?v=23" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-dossier.css?v=24" />
   <link rel="stylesheet" href="/css/hotel-intelligence-research-center.css?v=7" />
   <style>
     body { margin: 0; min-height: 100vh; background: #080f25; color: #c5cef0; font-family: Inter, "Segoe UI", system-ui, sans-serif; }
@@ -33,6 +33,8 @@
     <div class="links">
       <div><a href="?autopen=1&hotelExplorer=recUNycnMwOVFX0hc&hexTab=hotel">KGPV route</a></div>
       <div><a href="?autopen=1&hotelExplorer=recIwaP1etgx2g9nA&hexTab=hotel">Cambridge route</a></div>
+      <div><a href="?autopen=1&hotelExplorer=recsYJb2R1jarPpK3&hexTab=hotel">Sheraton Guadalajara Expo</a></div>
+      <div><a href="?autopen=1&hotelExplorer=recTYaiA4S6fR6ixx&hexTab=hotel">voco Cancún Zona Hotelera</a></div>
     </div>
     <p id="status" style="margin-top:12px;font-size:13px;opacity:0.8"></p>
   </div>
@@ -42,17 +44,21 @@
   <script src="/js/dealality-hotel-property-merge.js?v=1"></script>
   <script src="/js/hotel-detail-panel.js?v=62"></script>
   <script src="/js/hotel-ownership-intelligence.js?v=24"></script>
-  <script src="/js/hotel-intelligence-workspace.js?v=56"></script>
+  <script src="/js/hotel-intelligence-workspace.js?v=61"></script>
   <script src="/js/dealality-book-shell.js?v=1"></script>
   <script src="/js/dealality-report-print-chrome.js?v=4"></script>
-  <script src="/js/hotel-intelligence-dossier.js?v=28"></script>
-  <script src="/js/hotel-intelligence-research-center.js?v=9"></script>
-  <script src="/js/hotel-intelligence-golden-demo-route.js?v=2"></script>
-  <script src="/js/hotel-explorer.js?v=58"></script>
+  <script src="/js/hotel-intelligence-dossier.js?v=30"></script>
+  <script src="/js/hotel-intelligence-research-center.js?v=10"></script>
+  <script src="/js/hotel-intelligence-golden-demo-route.js?v=6"></script>
+  <script src="/js/hotel-explorer.js?v=59"></script>
   <script>
     (function () {
       var Route = window.HotelIntelligenceGoldenDemoRoute;
       var statusEl = document.getElementById("status");
+      var bootParams = new URLSearchParams(window.location.search || "");
+      if (bootParams.get("share") === "1" || bootParams.get("share") === "true") {
+        window.__HOTEL_EXPLORER_SHARE_MODE = true;
+      }
 
       function setStatus(msg) {
         if (statusEl) statusEl.textContent = msg || "";

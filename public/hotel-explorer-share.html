@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Hotel Explorer — Shared Preview</title>
+  <link rel="stylesheet" href="/css/hotel-explorer-share-shell.css?v=1" />
+</head>
+<body>
+  <div class="hes-page">
+    <p class="hes-draft-banner" id="hesDraftBanner" hidden>
+      <strong>Shared preview.</strong>
+      Hotel Explorer demo pack — no login required. Ownership claims are evidence-backed only; operator is not treated as owner.
+    </p>
+    <div class="hes-toolbar">
+      <div>
+        <h1 class="hes-toolbar__title" id="hesTitle">Hotel Explorer</h1>
+        <p class="hes-toolbar__meta" id="hesMeta">Shared preview · no login required</p>
+      </div>
+      <nav class="hes-packs" id="hesPacks" aria-label="Demo packs"></nav>
+    </div>
+    <div class="hes-panel" id="hesPanel">
+      <div class="hes-loading" id="hesLoading" role="status" aria-live="polite">
+        Loading Hotel Explorer…
+      </div>
+      <iframe
+        class="hes-frame"
+        id="hesFrame"
+        title="Hotel Explorer share pack"
+        src="about:blank"
+      ></iframe>
+    </div>
+  </div>
+  <script>
+  (function () {
+    "use strict";
+
+    var SHARE_PACKS = {
+      kgpv: {
+        key: "kgpv",
+        label: "KGPV",
+        title: "Hotel Explorer — Krystal Grand Puerto Vallarta",
+        hotelExplorer: "recUNycnMwOVFX0hc",
+        hexTab: "ownership",
+        meta: "Shared KGPV pack · no login required · reports via Deep Research",
+      },
+      "sheraton-gdl": {
+        key: "sheraton-gdl",
+        label: "Sheraton GDL",
+        title: "Hotel Explorer — Sheraton Guadalajara Expo",
+        hotelExplorer: "recsYJb2R1jarPpK3",
+        hexTab: "hotel",
+        meta: "Shared Sheraton Guadalajara Expo pack · no login required",
+      },
+      "voco-cancun": {
+        key: "voco-cancun",
+        label: "voco Cancún",
+        title: "Hotel Explorer — voco Cancún Zona Hotelera",
+        hotelExplorer: "recTYaiA4S6fR6ixx",
+        hexTab: "hotel",
+        meta: "Shared voco Cancún Zona Hotelera pack · former Real Inn · no login required",
+      },
+    };
+
+    var PACK_ALIASES = {
+      "real-inn-cancun": "voco-cancun",
+      "voco-cancun-zona-hotelera": "voco-cancun",
+      "sheraton-guadalajara-expo": "sheraton-gdl",
+    };
+
+    var DEFAULT_PACK = "kgpv";
+    var params = new URLSearchParams(window.location.search || "");
+    var packKey = String(params.get("pack") || DEFAULT_PACK)
+      .trim()
+      .toLowerCase();
+    packKey = PACK_ALIASES[packKey] || packKey;
+    var pack = SHARE_PACKS[packKey] || SHARE_PACKS[DEFAULT_PACK];
+    var tab = String(params.get("hexTab") || params.get("tab") || pack.hexTab || "hotel").trim();
+    var showDraft =
+      params.get("draft") !== "0" && params.get("draft") !== "false";
+
+    var loading = document.getElementById("hesLoading");
+    var frame = document.getElementById("hesFrame");
+    var titleEl = document.getElementById("hesTitle");
+    var metaEl = document.getElementById("hesMeta");
+    var packsEl = document.getElementById("hesPacks");
+    var draftBanner = document.getElementById("hesDraftBanner");
+
+    function esc(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function packHref(key) {
+      var q = new URLSearchParams();
+      q.set("pack", key);
+      if (!showDraft) q.set("draft", "0");
+      return "/hotel-explorer-share.html?" + q.toString();
+    }
+
+    function buildFrameUrl() {
+      var q = new URLSearchParams();
+      q.set("autopen", "1");
+      q.set("hotelExplorer", pack.hotelExplorer);
+      q.set("hexTab", tab);
+      q.set("share", "1");
+      q.set("sharePack", pack.key);
+      return "/hotel-intelligence-golden-demo.html?" + q.toString();
+    }
+
+    function applyChrome() {
+      document.title = pack.title;
+      if (titleEl) titleEl.textContent = pack.title;
+      if (metaEl) metaEl.textContent = pack.meta;
+      if (draftBanner) draftBanner.hidden = !showDraft;
+      if (packsEl) {
+        packsEl.innerHTML = Object.keys(SHARE_PACKS)
+          .map(function (key) {
+            var p = SHARE_PACKS[key];
+            var active = key === pack.key ? " is-active" : "";
+            return (
+              '<a class="hes-pack' +
+              active +
+              '" href="' +
+              esc(packHref(key)) +
+              '">' +
+              esc(p.label) +
+              "</a>"
+            );
+          })
+          .join("");
+      }
+    }
+
+    function showError(title, message) {
+      if (!loading) return;
+      loading.hidden = false;
+      loading.classList.add("is-error");
+      loading.innerHTML =
+        "<div><h2>" +
+        esc(title || "Preview unavailable") +
+        "</h2><p>" +
+        esc(message || "") +
+        "</p></div>";
+      if (frame) frame.style.display = "none";
+    }
+
+    applyChrome();
+
+    fetch("/hotel-intelligence-golden-demo.html", { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("golden_demo_missing_" + res.status);
+        frame.src = buildFrameUrl();
+        frame.addEventListener("load", function () {
+          if (loading) loading.hidden = true;
+          frame.classList.add("is-ready");
+        });
+      })
+      .catch(function (err) {
+        console.error("[HotelExplorerShare]", err);
+        showError(
+          "Hotel Explorer unavailable",
+          "This share pack is not deployed on this host yet."
+        );
+      });
+  })();
+  </script>
+</body>
+</html>

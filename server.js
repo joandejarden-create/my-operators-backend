@@ -1832,6 +1832,18 @@ app.get("/operator-explorer-preview/", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/operator-explorer-share.html" + q);
 });
+app.get("/hotel-explorer-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-explorer-share.html" + q);
+});
+app.get("/hotel-explorer-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-explorer-share.html" + q);
+});
+app.get("/hotel-explorer-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "hotel-explorer-share.html"));
+});
 app.get("/brand-explorer-share", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/brand-explorer-share.html" + q);

@@ -115,31 +115,10 @@
   }
 
   function buildDataDrivenStructureChart(hotel, ctrl, opName) {
-    var propcoName =
-      (ctrl.legal_property_owner_propco && ctrl.legal_property_owner_propco.name) ||
-      "Property company (name not verified)";
-    var econName =
-      (ctrl.economic_owner_or_group && ctrl.economic_owner_or_group.name) ||
-      "Economic owner (name not verified)";
-    var econKnown = !!(ctrl.economic_owner_or_group && ctrl.economic_owner_or_group.known);
-    var ownedOperated =
-      econKnown &&
-      opName &&
-      opName !== "—" &&
-      shortCompare(econName, opName);
-    return orgChart(
-      chainNode(hotel.name, "Hotel", null, "focus") +
-        chainEdge("Held through") +
-        chainNode(truncateEntityLabel(propcoName), "Property Company / PropCo", "High", "org") +
-        chainEdge("Controlled by") +
-        chainNode(
-          truncateEntityLabel(econName),
-          ownedOperated ? "Economic Owner · owned & operated" : "Economic Owner / Sponsor",
-          "High",
-          "org"
-        ),
-      "Ownership structure"
-    );
+    return buildOwnershipStructureChart(hotel, ctrl, opName, {
+      ariaLabel: "Ownership structure",
+      forceEcon: true,
+    });
   }
 
   function shortCompare(a, b) {
@@ -678,6 +657,73 @@
     return (ownership && ownership.report && ownership.report.ownership_and_control) || {};
   }
 
+  function controlPartyKnown(party) {
+    return !!(party && party.known === true && party.name);
+  }
+
+  function controlPartyMeta(party, fallbackWhenUnknown) {
+    if (controlPartyKnown(party)) {
+      return friendlyStatus(party.status || party.confidence || "HIGH");
+    }
+    return fallbackWhenUnknown || "Not verified";
+  }
+
+  function buildOwnershipStructureChart(hotel, ctrl, opName, opts) {
+    opts = opts || {};
+    var propco = ctrl.legal_property_owner_propco || {};
+    var econ = ctrl.economic_owner_or_group || {};
+    var propcoKnown = controlPartyKnown(propco);
+    var econKnown = controlPartyKnown(econ);
+    var propcoLabel = propcoKnown
+      ? truncateEntityLabel(propco.name)
+      : "Property company (name not verified)";
+    var econLabel = econKnown
+      ? truncateEntityLabel(econ.name)
+      : "Economic owner (name not verified)";
+    var op =
+      opName && opName !== "—"
+        ? opName
+        : (ctrl.operator && ctrl.operator.name) || null;
+    var brand = opts.brand || null;
+    var brandStatus = opts.brandStatus || null;
+    var ownedOperated =
+      econKnown &&
+      op &&
+      shortCompare(econ.name || econLabel, op);
+
+    var html = chainNode(hotel.name, "Hotel / Property", null, "focus");
+    html += chainEdge(propcoKnown ? "Held through" : "Title vehicle");
+    html += chainNode(
+      propcoLabel,
+      "Property Company / PropCo",
+      controlPartyMeta(propco, "Unknown"),
+      propcoKnown ? "org" : "gap"
+    );
+    if (econKnown || opts.forceEcon) {
+      html += chainEdge("Controlled / sponsored by");
+      html += chainNode(
+        econLabel,
+        ownedOperated ? "Economic Owner · owned & operated" : "Economic Owner / Package Owner",
+        controlPartyMeta(econ, "Not verified"),
+        econKnown ? "org" : "gap"
+      );
+    }
+    if (opts.includeOperator && op) {
+      html += chainEdge("Operated / managed by");
+      html += chainNode(
+        op,
+        "Operator / Management Company",
+        friendlyStatus((ctrl.operator && (ctrl.operator.status || ctrl.operator.verification_bucket)) || "HIGH"),
+        "org"
+      );
+    }
+    if (opts.includeBrand && brand) {
+      html += chainEdge("Current brand");
+      html += chainNode(brand, "Brand", brandStatus || "Current", "brand");
+    }
+    return orgChart(html, opts.ariaLabel || "Ownership structure");
+  }
+
   function renderHeader(hotel, ownership) {
     var ctrl = getControl(ownership);
     var econ = ctrl.economic_owner_or_group || {};
@@ -693,19 +739,20 @@
       (ownership && ownership.hotel && ownership.hotel.brand_display_status) || "";
     var cites = state.citations || [];
     var rich = isRichCase(ownership);
-    var ownerKnown = econ.known === true && econ.name;
+    var ownerKnown = controlPartyKnown(econ);
+    var propcoKnown = controlPartyKnown(propco);
     var ownerValue = ownerKnown ? econ.name : "Not yet verified";
     var ownerMeta = ownerKnown
-      ? friendlyStatus(econ.status || "HIGH") + (rich ? " · owned & operated" : "")
+      ? friendlyStatus(econ.status || "HIGH")
       : "Research gap";
-    var propcoValue = propco.name || (rich ? "Property company verified" : "—");
-    var propcoMeta = propco.name
+    var propcoValue = propcoKnown ? propco.name : "Not yet verified";
+    var propcoMeta = propcoKnown
       ? friendlyStatus(propco.status || propco.confidence || "HIGH")
-      : rich
-        ? "Property vehicle"
-        : "Not established";
+      : "Research gap";
     var researchMeta = rich
-      ? "Primary filings validated"
+      ? ownerKnown || propcoKnown
+        ? "Primary ownership evidence reviewed"
+        : "Case A · ownership gaps remain"
       : ownership && ownership.in_cohort
         ? "Operator-known · owner unresolved"
         : "Limited coverage";
@@ -741,16 +788,14 @@
       '<span class="hiw-ind__meta">' +
       esc(ownerMeta) +
       "</span></button>" +
-      (propco.name || rich
-        ? '<button type="button" class="hiw-ind" data-hiw-tab="ownership">' +
-          '<span class="hiw-ind__label">Property Company</span>' +
-          '<span class="hiw-ind__value">' +
-          esc(propcoValue.length > 42 ? propcoValue.slice(0, 40) + "…" : propcoValue) +
-          "</span>" +
-          '<span class="hiw-ind__meta">' +
-          esc(propcoMeta) +
-          "</span></button>"
-        : "") +
+      '<button type="button" class="hiw-ind" data-hiw-tab="ownership">' +
+      '<span class="hiw-ind__label">Property Company</span>' +
+      '<span class="hiw-ind__value">' +
+      esc(propcoValue.length > 42 ? propcoValue.slice(0, 40) + "…" : propcoValue) +
+      "</span>" +
+      '<span class="hiw-ind__meta">' +
+      esc(propcoMeta) +
+      "</span></button>" +
       '<button type="button" class="hiw-ind" data-hiw-tab="ownership">' +
       '<span class="hiw-ind__label">Operator</span>' +
       '<span class="hiw-ind__value">' +
@@ -1211,7 +1256,7 @@
       wrapTable(
         "<tbody>" +
           row("Economic owner", ownerKnown ? econ.name : "Not yet verified") +
-          row("Property company", propco.name || (rich ? "Verified in filings" : "Not established")) +
+          row("Property company", propco.name || "Not yet verified") +
           row("Operator", op) +
           row("Current brand", brand) +
           "</tbody>"
@@ -1319,11 +1364,24 @@
         ownership.report.decision_authority &&
         ownership.report.decision_authority.people) ||
       [];
-    var history = (ownership.report && ownership.report.property_history) || [];
     var chain = (ownership.report && ownership.report.ownership_chain) || [];
     var contacts = (ownership.report && ownership.report.corporate_contacts) || {};
     var pursuit = (ownership.report && ownership.report.commercial_pursuit) || {};
     var brandChrono = (ownership.report && ownership.report.brand_chronology) || [];
+    var history = (ownership.report && ownership.report.property_history) || [];
+    if (!history.length && ownership.deep_research && Array.isArray(ownership.deep_research.property_history)) {
+      history = ownership.deep_research.property_history;
+    }
+    if (!history.length && brandChrono.length) {
+      history = brandChrono.map(function (b) {
+        return {
+          date: b.date || b.label || "—",
+          event: b.event || b.label || b.brand || "Brand / identity event",
+          status: b.status || "HIGH",
+          confidence: "HIGH",
+        };
+      });
+    }
     var orgPayload = state.org || null;
     var portfolio = (orgPayload && orgPayload.portfolio) || [];
 
@@ -2005,17 +2063,20 @@
     var owned = h.relationship_type === "OWNED_BY" || h.economic_owner_verified;
     var rawRel = String(h.relationship_type || "").toUpperCase();
     var rel = owned
-      ? "Owned / Controlled" +
-        (h.secondary_relationship_type === "OPERATED_BY" ? " · Operated" : "")
+      ? h.secondary_relationship_type === "OPERATED_BY"
+        ? "Owned / Controlled · 3rd-party operated"
+        : "Owned / Controlled"
       : rawRel === "SPONSORED_BY"
         ? "Sponsored"
         : rawRel === "DEVELOPED_BY"
           ? "Developed"
           : rawRel === "OPERATED_BY"
             ? "Operated / Managed"
-            : rawRel
-              ? rawRel.replace(/_/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); })
-              : "Operated / Managed";
+            : rawRel === "SIBLING_PROPERTY_OF"
+              ? "Sibling portfolio asset"
+              : rawRel
+                ? rawRel.replace(/_/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); })
+                : "Related";
     var id = h.airtable_record_id || "";
     return (
       "<tr>" +
@@ -2049,9 +2110,90 @@
     );
   }
 
+  function synthesizeOrgPayloadFromOwnership(ownership, hotel) {
+    if (!ownership || !ownership.report) return null;
+    var org = ownership.organization || ownership.ownership_group || {};
+    var portfolioRows =
+      (ownership.report.organization_and_portfolio &&
+        ownership.report.organization_and_portfolio.hotels) ||
+      [];
+    var assets = (ownership.deep_research &&
+      ownership.deep_research.portfolio_notes &&
+      ownership.deep_research.portfolio_notes.assets) ||
+      [];
+    var portfolio = portfolioRows.length
+      ? portfolioRows.map(function (h) {
+          return {
+            name: h.hotel || h.name,
+            city: h.market || null,
+            market: h.market || null,
+            rooms: h.rooms,
+            rooms_display: h.rooms,
+            brand_display: h.brand || null,
+            relationship_type: h.relationship || "RELATED",
+            verification_bucket: h.confidence || "HIGH",
+            economic_owner_verified: /OWNED/i.test(String(h.relationship || "")),
+          };
+        })
+      : assets.map(function (a) {
+          var rels = Array.isArray(a.relationships) ? a.relationships : [];
+          return {
+            name: a.name,
+            city: a.market || null,
+            rooms: a.rooms,
+            rooms_display: a.rooms,
+            brand_display: a.brand || null,
+            relationship_type: rels.some(function (r) {
+              return /OWNED/i.test(String(r));
+            })
+              ? "OWNED_BY"
+              : "OPERATED_BY",
+            verification_bucket: a.confidence || "HIGH",
+            economic_owner_verified: rels.some(function (r) {
+              return /OWNED/i.test(String(r));
+            }),
+          };
+        });
+    if (!org.display_name && !portfolio.length) return null;
+    return {
+      group: {
+        display_name: org.display_name || org.legal_name || "Related organization",
+        legal_name: org.legal_name || org.display_name || null,
+        website: org.website || null,
+        headquarters: org.headquarters || null,
+        known_current_hotel_count: portfolio.length || org.known_hotel_count || 0,
+        known_hotel_relationships: portfolio.length || org.known_hotel_count || 0,
+        relationship_summary: {
+          total_relationships: portfolio.length,
+          owned_or_controlled_verified: portfolio.filter(function (h) {
+            return h.economic_owner_verified || h.relationship_type === "OWNED_BY";
+          }).length,
+          operated_or_managed: portfolio.length,
+          ownership_unknown: 0,
+        },
+      },
+      portfolio: portfolio,
+      page_framing: {
+        title: "Known hotel relationships",
+        kicker: "Organization profile",
+      },
+      why_this_matters: {
+        text:
+          (ownership.report.commercial_pursuit &&
+            ownership.report.commercial_pursuit.why_matters) ||
+          (ownership.report.executive_summary && ownership.report.executive_summary.why_this_hotel_matters) ||
+          "",
+      },
+      _synthesized_from_ownership: true,
+    };
+  }
+
   function renderOrganization(hotel, ownership, orgPayload) {
     if (orgPayload && !orgPayload.group && orgPayload.organization) {
       orgPayload = Object.assign({}, orgPayload, { group: orgPayload.organization });
+    }
+    if ((!orgPayload || !orgPayload.group) && ownership) {
+      orgPayload = synthesizeOrgPayloadFromOwnership(ownership, hotel);
     }
     if (!orgPayload || !orgPayload.group) {
       return '<div class="hiw-empty">Organization profile not available for this hotel.</div>';
@@ -2061,6 +2203,20 @@
     var hotelName = hotel.name || "This hotel";
     var focusId = recordId(hotel);
     var ownedFocus = isRichCase(ownership) || (ownership && ownership.hotel && ownership.hotel.economic_owner_verified === true);
+    var opName =
+      (ownership &&
+        ownership.report &&
+        ownership.report.ownership_and_control &&
+        ownership.report.ownership_and_control.operator &&
+        ownership.report.ownership_and_control.operator.name) ||
+      "";
+    var orgNameLower = String(g.display_name || "").toLowerCase();
+    var opNameLower = String(opName || "").toLowerCase();
+    var ownerOperatorSame =
+      ownedFocus &&
+      opNameLower &&
+      orgNameLower &&
+      (orgNameLower.indexOf(opNameLower) >= 0 || opNameLower.indexOf(orgNameLower.slice(0, 12)) >= 0);
     var portfolio = orgPayload.portfolio || [];
     var ownedRows = portfolio.filter(function (h) {
       return h.relationship_type === "OWNED_BY" || h.economic_owner_verified;
@@ -2076,6 +2232,10 @@
         ownership.report.decision_authority.people) ||
       [];
 
+    var framingNote =
+      (orgPayload.why_this_matters && orgPayload.why_this_matters.text) ||
+      (g.evidence_summary || "");
+
     return (
       '<article class="hiw-report">' +
       '<h2 class="hiw-report__title">' +
@@ -2084,7 +2244,10 @@
       '<p class="hiw-report__subtitle">Organization intelligence · related hotel: ' +
       esc(hotelName) +
       (ownedFocus
-        ? " · Economic owner &amp; operator"
+        ? ownerOperatorSame
+          ? " · Economic owner &amp; operator"
+          : " · Public economic owner · operator is separate" +
+            (opName ? " (" + esc(opName) + ")" : "")
         : " · Operator / manager · ownership not implied") +
       "</p>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Organization Overview</h3>' +
@@ -2092,7 +2255,11 @@
       esc(g.display_name) +
       (g.legal_name ? " (" + esc(g.legal_name) + ")" : "") +
       (g.ticker ? " · " + esc(g.ticker) : "") +
-      ". Known Dealality portfolio relationships below separate owned / controlled hotels from operated / managed hotels. Portfolio inclusion does not invent property-company ownership.</p></div></section>" +
+      ". Known Dealality portfolio relationships below separate owned / controlled hotels from operated / managed hotels. Portfolio inclusion does not invent property-company ownership." +
+      (framingNote
+        ? "</p><p>" + esc(framingNote)
+        : "") +
+      "</p></div></section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Known Dealality Portfolio</h3>' +
       '<div class="hex-facts hex-facts--5 hex-facts--own" aria-label="Known Dealality portfolio">' +
       hexFact(
@@ -2168,14 +2335,36 @@
     );
   }
 
-  function edgeCategory(type) {
-    var t = String(type || "").toUpperCase();
+  function edgeEndpoint(e, side) {
+    if (!e || typeof e !== "object") return "";
+    if (side === "from") {
+      return e.from || e.subject || e.from_label || e.source || "";
+    }
+    return e.to || e.object || e.to_label || e.target || "";
+  }
+
+  function edgeTemporal(e) {
+    if (!e || typeof e !== "object") return "CURRENT";
+    return e.temporal_status || e.temporal || e.status || "CURRENT";
+  }
+
+  function edgeCategory(edgeOrType) {
+    var e = edgeOrType && typeof edgeOrType === "object" ? edgeOrType : null;
+    var t = String((e && (e.type || e.relationship_type)) || edgeOrType || "").toUpperCase();
+    var temporal = String(e ? edgeTemporal(e) : "").toUpperCase();
+    // Historical first: former edges and disposition events (SOLD), even when type is OPERATED_BY/BRANDED_BY.
+    if (
+      /FORMER|HISTORICAL|PAST/.test(temporal) ||
+      /FORMER|HISTOR|SOLD|DISPOS|ACQUIRED_FROM/.test(t) ||
+      (/SOLD/.test(t) && temporal && temporal !== "CURRENT" && temporal !== "ANNOUNCED")
+    ) {
+      return "historical";
+    }
     if (/OWN|CONTROL|SPONSOR/.test(t)) return "ownership";
     if (/OPERAT|MANAGE|ASSET/.test(t)) return "operator";
-    if (/BRAND/.test(t)) return "brand";
+    if (/BRAND|FRANCHIS/.test(t)) return "brand";
     if (/DEVELOP/.test(t)) return "developed";
     if (/JV|JOINT/.test(t)) return "jv";
-    if (/FORMER|HISTOR/.test(t)) return "historical";
     if (/PERSON|PEOPLE/.test(t)) return "people";
     return "other";
   }
@@ -2184,6 +2373,10 @@
     var edges =
       (ownership && ownership.deep_research && ownership.deep_research.relationships) ||
       (ownership && ownership.report && ownership.report.relationship_edges) ||
+      (ownership &&
+        ownership.report &&
+        ownership.report.relationships &&
+        ownership.report.relationships.edges) ||
       [];
     if (!edges.length) return "";
     var f = filter || state.relFilter || "all";
@@ -2197,12 +2390,12 @@
     ];
     var counts = { all: edges.length };
     edges.forEach(function (e) {
-      var cat = edgeCategory(e.type || e.relationship_type);
+      var cat = edgeCategory(e);
       counts[cat] = (counts[cat] || 0) + 1;
     });
     var filtered = edges.filter(function (e) {
       if (f === "all") return true;
-      return edgeCategory(e.type || e.relationship_type) === f;
+      return edgeCategory(e) === f;
     });
     var pills =
       '<div class="hiw-filter-group">' +
@@ -2238,13 +2431,13 @@
               .map(function (e) {
                 return (
                   "<tr><td>" +
-                  esc(e.from) +
+                  esc(edgeEndpoint(e, "from")) +
                   "</td><td>" +
                   esc(relTypeLabel(e.type || e.relationship_type)) +
                   "</td><td>" +
-                  esc(e.to) +
+                  esc(edgeEndpoint(e, "to")) +
                   "</td><td>" +
-                  esc(friendlyStatus(e.temporal_status || e.status || "CURRENT")) +
+                  esc(friendlyStatus(edgeTemporal(e))) +
                   "</td><td>" +
                   esc(friendlyStatus(e.confidence || "HIGH")) +
                   "</td></tr>"
@@ -2269,43 +2462,31 @@
     var brandStatus =
       (ownership && ownership.hotel && ownership.hotel.brand_display_status) || "";
     var contested = String(brandStatus) === "CONTESTED";
-    var rich = isRichCase(ownership);
     var propco = ctrl.legal_property_owner_propco || {};
     var econ = ctrl.economic_owner_or_group || {};
     var chain = (ownership && ownership.report && ownership.report.ownership_chain) ||
       (ownership && ownership.deep_research && ownership.deep_research.ownership_chain) ||
       [];
-    var propcoName =
-      propco.name ||
-      ((chain.find(function (n) {
-        return n.role === "propco";
-      }) || {}).name);
-    var econName =
-      (econ.known && econ.name) ||
-      ((chain.find(function (n) {
-        return n.role === "economic_owner";
-      }) || {}).name);
+    var propcoKnown = controlPartyKnown(propco);
+    var econKnown =
+      controlPartyKnown(econ) ||
+      !!(
+        chain.find(function (n) {
+          return n.role === "economic_owner" && n.name;
+        }) || {}
+      ).name;
 
-    var hotelDiagram = rich && propcoName && econName
+    var hotelDiagram = econKnown || propcoKnown
       ? '<section class="hiw-section"><h3 class="hiw-section__h">Hotel Structure</h3>' +
-        orgChart(
-          chainNode(hotel.name, "Hotel / Property", null, "focus") +
-            chainEdge("Held through") +
-            chainNode(
-              truncateEntityLabel(propcoName),
-              "Property Company / PropCo",
-              "High",
-              "org"
-            ) +
-            chainEdge("Controlled by") +
-            chainNode(econName, "Economic Owner", "High", "org") +
-            chainEdge("Operated / managed by") +
-            chainNode(op, "Operator / Management Company", "High", "org") +
-            chainEdge("Current brand") +
-            chainNode(brand, "Brand", brandStatus || "Current", "brand"),
-          "Hotel structure"
-        ) +
-        '<div class="hiw-prose"><p>Ownership, operations, and brand are separate relationships. Operator or brand is never drawn as owner.</p></div>' +
+        buildOwnershipStructureChart(hotel, ctrl, op, {
+          includeOperator: true,
+          includeBrand: true,
+          brand: brand,
+          brandStatus: brandStatus,
+          forceEcon: true,
+          ariaLabel: "Hotel structure",
+        }) +
+        '<div class="hiw-prose"><p>Ownership, operations, and brand are separate relationships. Package / economic owner naming is not the same as a verified Mexican PropCo or deed vehicle. Operator or brand is never drawn as owner.</p></div>' +
         renderRelationshipEdgesTable(ownership, state.relFilter) +
         '<div class="hiw-actions"><button type="button" class="hiw-btn hiw-btn--primary" data-hiw-org-network>Show Organization Network</button></div>' +
         '<div id="hiwOrgNetwork" hidden></div>' +
@@ -2825,22 +3006,24 @@
     if (!box) return;
     box.hidden = false;
     box.innerHTML = '<p class="hiw-empty">Loading organization network…</p>';
-    var orgId =
-      (state.ownership &&
-        state.ownership.organization &&
-        state.ownership.organization.entity_id) ||
-      "dle_06G6AB1VK0BCCD94DNN7W8DRWZ";
+    var org =
+      (state.ownership && (state.ownership.organization || state.ownership.ownership_group)) ||
+      {};
+    var orgId = org.entity_id || org.slug || "dle_06G6AB1VK0BCCD94DNN7W8DRWZ";
     fetch(
       "/api/golden-demo/ownership/graph/neighbors?node_id=" +
         encodeURIComponent(orgId) +
-        "&node_type=organization&limit=6&relationship_categories=ownership,operator,other&include_probable=1",
+        "&node_type=organization&limit=12&relationship_categories=ownership,operator,brand,other&include_probable=1",
       { headers: { "ngrok-skip-browser-warning": "true" } }
     )
       .then(function (r) {
-        return r.json();
+        return r.json().then(function (data) {
+          return { okHttp: r.ok, data: data };
+        });
       })
-      .then(function (data) {
-        if (!data || !data.nodes) {
+      .then(function (pack) {
+        var data = pack && pack.data;
+        if (!pack.okHttp || !data || data.success === false || !Array.isArray(data.nodes) || !data.nodes.length) {
           box.innerHTML = '<p class="hiw-empty">Unable to load network.</p>';
           return;
         }
@@ -2896,7 +3079,16 @@
           (a.x + b.x) / 2 +
           '" y="' +
           ((a.y + b.y) / 2 - 6) +
-          '" text-anchor="middle">Operates</text></g>'
+          '" text-anchor="middle">' +
+          esc(
+            e.relationship_label ||
+              (/OWN|CONTROL/i.test(String(e.relationship_type || ""))
+                ? "Owns"
+                : /BRAND|FRANCHIS/i.test(String(e.relationship_type || ""))
+                  ? "Brands"
+                  : "Operates")
+          ) +
+          "</text></g>"
         );
       })
       .join("");

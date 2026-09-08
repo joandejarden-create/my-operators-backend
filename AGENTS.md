@@ -113,6 +113,7 @@ For meaningful product, platform, data, or AI-output work, read the relevant doc
 
 ## Common mistakes (append when you fix one)
 
+- Putting Dealality infrastructure in customer dossiers (Census, Airtable, Webhound, Research Center, fixtures, auto_promote, ontology codes) — reports are external-facing; see `docs/data-intelligence/hotel-intelligence-external-facing-report-copy.md`.
 - Treating STR Market/Submarket as product geography — use Dealality Market + corridor Submarket instead.
 - Explaining census gaps as "STR-sourced" or leaving `a Member of Design Hotels` in census `name` — use Affiliation + canonical property names.
 - Assuming new-base operator writer is primary — it is **not** unless `OPERATOR_SETUP_USE_NEW_BASE_WRITER=1`.

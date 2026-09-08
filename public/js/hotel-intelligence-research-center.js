@@ -27,6 +27,16 @@
 
   var toastHideTimer = null;
 
+  function isShareMode() {
+    try {
+      if (window.__HOTEL_EXPLORER_SHARE_MODE === true) return true;
+      var q = new URLSearchParams(window.location.search || "");
+      return q.get("share") === "1" || q.get("share") === "true";
+    } catch (err) {
+      return false;
+    }
+  }
+
   function esc(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;")
@@ -441,7 +451,11 @@
         esc(p.first_use.title) +
         "</h4><p>" +
         esc(p.first_use.description) +
-        '</p><button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="FULL_HOTEL_INTELLIGENCE">Run Full Investigation</button></article></section>';
+        "</p>" +
+        (isShareMode()
+          ? '<p class="hi-research-meta">Research runs are disabled on shared previews.</p>'
+          : '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="FULL_HOTEL_INTELLIGENCE">Run Full Investigation</button>') +
+        "</article></section>";
     } else if (p.latest_investigation) {
       html +=
         '<section class="hi-research-section"><h3 class="hi-research-section__title">Latest Investigation</h3>' +
@@ -465,9 +479,12 @@
           '<button type="button" class="hi-research-btn hi-research-btn--secondary" data-rc-detail="' +
           esc(tid) +
           '">Review Scope</button>' +
-          '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="' +
-          esc(tid) +
-          '">Run Research</button></div></article>';
+          (isShareMode()
+            ? ""
+            : '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="' +
+              esc(tid) +
+              '">Run Research</button>') +
+          "</div></article>";
       });
       html += "</section>";
     }
@@ -655,9 +672,12 @@
       '</p><p class="hi-research-label">Scope</p>' +
       scopeHtml +
       '<div class="hi-research-actions">' +
-      '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="' +
-      esc(t.template_id) +
-      '">Run Research</button></div></article>'
+      (isShareMode()
+        ? '<p class="hi-research-meta">Research runs are disabled on shared previews.</p>'
+        : '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="' +
+          esc(t.template_id) +
+          '">Run Research</button>') +
+      "</div></article>"
     );
   }
 
@@ -989,6 +1009,14 @@
   }
 
   function submitResearch(templateId) {
+    if (isShareMode()) {
+      showDealalityToast({
+        kind: "error",
+        title: "Shared preview",
+        body: "Research runs are disabled on shared previews.",
+      });
+      return;
+    }
     if (!state.hotelId || !templateId || state.confirmSubmitting) return;
     var live =
       state.payload &&
