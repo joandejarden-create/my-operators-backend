@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-09-08T02:17:10.681Z",
+  "publishedAt": "2026-09-08T07:39:36.259Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_westin_monterrey_valle",
   "periodId": "adp_period_adp_westin_monterrey_valle_20260908013810_b5bb91",
@@ -28,14 +28,7 @@
       "executionDate": "2026-09-08T01:38:10.664Z",
       "scenarioCount": 63,
       "providerCount": 4,
-      "status": "PARSED",
-      "officialPeriod": true,
-      "baselineMarker": "ADP_WESTIN_MONTERREY_VALLE_BASELINE_PERIOD_001",
-      "firstOfficialPropertyPeriod": true,
-      "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
-      "measurementContractHash": "e4d85401c091e105946a8efc77c0d29fd94bdac3aa2df973b8b37feb25ac3823",
-      "certified": true,
-      "priorComparablePeriod": null
+      "status": "PARSED"
     },
     "demandCapture": {
       "overallRate": 84.1,
@@ -652,12 +645,47 @@
       "declaredButNotObserved": []
     },
     "realityGap": {
-      "gapScore": 33.3,
-      "display": "33.3%",
-      "totalAttributes": 3,
-      "recognizedCount": 2,
-      "gapCount": 1,
+      "gapScore": 56.3,
+      "display": "56.3%",
+      "totalAttributes": 16,
+      "recognizedCount": 7,
+      "gapCount": 9,
       "recognized": [
+        {
+          "attribute": "monterrey_valle",
+          "label": "Monterrey Valle Location",
+          "recognitionRate": 96.3,
+          "count": 103,
+          "total": 107
+        },
+        {
+          "attribute": "san_pedro_garza_garcia",
+          "label": "San Pedro Garza García",
+          "recognitionRate": 80.4,
+          "count": 86,
+          "total": 107
+        },
+        {
+          "attribute": "punto_valle",
+          "label": "Punto Valle Adjacency",
+          "recognitionRate": 65.4,
+          "count": 70,
+          "total": 107
+        },
+        {
+          "attribute": "upper_upscale",
+          "label": "Upper-Upscale Positioning",
+          "recognitionRate": 70.1,
+          "count": 75,
+          "total": 107
+        },
+        {
+          "attribute": "westin",
+          "label": "Westin Brand",
+          "recognitionRate": 100,
+          "count": 107,
+          "total": 107
+        },
         {
           "attribute": "marriott_bonvoy",
           "label": "Marriott Bonvoy Loyalty",
@@ -682,6 +710,78 @@
           "count": 21,
           "total": 107,
           "severity": "MEDIUM"
+        },
+        {
+          "attribute": "infinity_pool",
+          "label": "Infinity Pool",
+          "priority": "high",
+          "recognitionRate": 21.5,
+          "count": 23,
+          "total": 107,
+          "severity": "MEDIUM"
+        },
+        {
+          "attribute": "heavenly_spa",
+          "label": "Heavenly Spa",
+          "priority": "high",
+          "recognitionRate": 38.3,
+          "count": 41,
+          "total": 107,
+          "severity": "LOW"
+        },
+        {
+          "attribute": "fitness_center",
+          "label": "Fitness Center",
+          "priority": "medium",
+          "recognitionRate": 28,
+          "count": 30,
+          "total": 107,
+          "severity": "LOW"
+        },
+        {
+          "attribute": "westin_club",
+          "label": "Westin Club",
+          "priority": "medium",
+          "recognitionRate": 3.7,
+          "count": 4,
+          "total": 107,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "rooftop_dining",
+          "label": "Rooftop Dining",
+          "priority": "high",
+          "recognitionRate": 28,
+          "count": 30,
+          "total": 107,
+          "severity": "LOW"
+        },
+        {
+          "attribute": "business_district",
+          "label": "Business District Location",
+          "priority": "high",
+          "recognitionRate": 7.5,
+          "count": 8,
+          "total": 107,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "financial_center",
+          "label": "Financial Center Location",
+          "priority": "medium",
+          "recognitionRate": 4.7,
+          "count": 5,
+          "total": 107,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "aimbridge_managed",
+          "label": "Aimbridge Managed",
+          "priority": "medium",
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 107,
+          "severity": "HIGH"
         }
       ],
       "totalPropertyMentions": 107
@@ -746,12 +846,20 @@
         },
         {
           "type": "gap",
-          "text": "AI Reality Gap: 33.3%. AI misses or misrepresents 1 of your property's key attributes."
+          "text": "AI Reality Gap: 56.3%. AI misses or misrepresents 9 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-09-08T02:17:10.116Z"
+      "generatedAt": "2026-09-08T07:39:35.489Z"
     },
     "actions": [
+      {
+        "priority": "HIGH",
+        "category": "REALITY_GAP",
+        "title": "Improve AI representation of westin club",
+        "description": "AI currently misses or underrepresents your westin club. Review third-party content and authority signals for this attribute before estimating impact.",
+        "expectedImpact": null,
+        "impactNote": "Review evidence for this attribute gap before estimating scenario impact."
+      },
       {
         "priority": "MEDIUM",
         "category": "DISPLACEMENT",
@@ -2581,7 +2689,7 @@
       {
         "periodId": "adp_period_adp_westin_monterrey_valle_20260908013810_b5bb91",
         "date": "2026-09-08T01:38:10.664Z",
-        "propertyRealityCoverage": 66.7,
+        "propertyRealityCoverage": 43.8,
         "scenarioPresenceRate": 84.1,
         "considerationRate": 38.5,
         "providerCount": 4,
