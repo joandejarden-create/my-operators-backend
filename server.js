@@ -46,6 +46,29 @@ import { cronMarketAlertsRssSync } from "./api/run-market-alerts-rss-sync.js";
 import { startMarketAlertsRssScheduler } from "./api/market-alerts-rss-scheduler.js";
 import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandPresenceHotelById, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
+import {
+  getGoldenDemoOwnershipIndex,
+  getGoldenDemoHotelOwnership,
+  getGoldenDemoOwnershipGroup,
+  getGoldenDemoOwnershipNeighbors,
+} from "./api/golden-demo-ownership.js";
+
+import {
+  listHotelIntelligenceDossiers,
+  getHotelIntelligenceDossier,
+  getHotelIntelligenceDossierForHotel,
+  downloadHotelIntelligenceDossierPdf,
+} from "./api/hotel-intelligence-dossier.js";
+
+import {
+  getHotelResearchCenter,
+  listHotelResearchRequests,
+  getResearchRequest,
+  createHotelResearchRequest,
+  listResearchTemplates,
+  getResearchReportMeta,
+  enrichHotelPeopleProfiles,
+} from "./api/hotel-intelligence-research.js";
 import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } from "./api/operators-by-brand-region.js";
 import { getTravelInfrastructure, getRadarMapTravelInfrastructurePoints, postTravelInfrastructureImportPreview, postTravelInfrastructureImportCommit } from "./api/travel-infrastructure.js";
 import { getDemandAnchors, getRadarMapDemandAnchorsPoints, postDemandAnchorsImportPreview, postDemandAnchorsImportCommit } from "./api/demand-anchors.js";
@@ -58,6 +81,22 @@ import {
   getAiDemandPositioningReadHealth,
   getAiDemandPositioningPublicationMeta,
 } from "./api/ai-demand-positioning.js";
+import {
+  getAdminLeakAuditMeta,
+  getAdminLeakAudits,
+  getAdminLeakAuditReportCatalog,
+  postAdminLeakAuditCreate,
+  getAdminLeakAuditById,
+  postAdminLeakAuditApprove,
+  postAdminLeakAuditRun,
+  postAdminLeakAuditMarkSent,
+  postAdminLeakAuditPromote,
+  getLeakAuditClientReport,
+  getLeakAuditSampleReport,
+  getLeakAuditPortfolioSampleReport,
+  getLeakAuditDemoDiagnostics,
+} from "./api/admin-adp-leak-audits.js";
+
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
 import {
   requireAdpShareCapability,
@@ -718,6 +757,95 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Memberstack + Airtable user context (Phase A)
+
+// ============================================================
+// HOTEL / OWNER EXPLORER — RECOVERED GOLDEN DEMO ROUTES
+// ============================================================
+
+// Golden Demo Ownership
+app.get("/api/golden-demo/ownership", getGoldenDemoOwnershipIndex);
+app.get(
+  "/api/golden-demo/ownership/graph/neighbors",
+  getGoldenDemoOwnershipNeighbors
+);
+app.get(
+  "/api/golden-demo/ownership/groups/:slug",
+  getGoldenDemoOwnershipGroup
+);
+app.get(
+  "/api/golden-demo/ownership/hotel/:recordId",
+  getGoldenDemoHotelOwnership
+);
+
+// Hotel Intelligence Dossiers
+app.get(
+  "/api/hotel-intelligence/dossiers",
+  listHotelIntelligenceDossiers
+);
+
+app.get(
+  "/api/hotel-intelligence/dossiers/:dossierId",
+  getHotelIntelligenceDossier
+);
+
+app.get(
+  "/api/hotel-intelligence/dossiers/:dossierId/pdf",
+  downloadHotelIntelligenceDossierPdf
+);
+
+app.get(
+  "/api/hotel-intelligence/hotels/:recordId/dossiers",
+  getHotelIntelligenceDossierForHotel
+);
+
+app.get(
+  "/api/hotel-intelligence/hotels/:recordId/dossiers/pdf",
+  function (req, res) {
+    req.params.dossierId = "";
+    req.query.recordId = req.params.recordId;
+    return downloadHotelIntelligenceDossierPdf(req, res);
+  }
+);
+
+// Deep Research Center
+app.get(
+  "/api/hotel-intelligence/research/templates",
+  listResearchTemplates
+);
+
+app.get(
+  "/api/hotel-intelligence/research/reports/:reportId",
+  getResearchReportMeta
+);
+
+app.get(
+  "/api/hotel-intelligence/research/requests/:requestId",
+  getResearchRequest
+);
+
+app.get(
+  "/api/hotel-intelligence/hotels/:hotelId/research",
+  getHotelResearchCenter
+);
+
+app.get(
+  "/api/hotel-intelligence/hotels/:hotelId/research/requests",
+  listHotelResearchRequests
+);
+
+app.post(
+  "/api/hotel-intelligence/hotels/:hotelId/research/requests",
+  createHotelResearchRequest
+);
+
+app.post(
+  "/api/hotel-intelligence/hotels/:hotelId/research/enrich-profiles",
+  enrichHotelPeopleProfiles
+);
+
+// ============================================================
+// END HOTEL / OWNER EXPLORER RECOVERY
+// ============================================================
 app.get("/api/me", getMe);
 app.post("/api/me", getMe);
 
@@ -850,6 +978,47 @@ app.get(
   requireAdpShareCapability({ allowMemberstack: true }),
   getAiDemandPositioningCostEstimate
 );
+
+// AI Demand Leak Audit — free diagnostic (sample + client report + admin)
+const adpLeakAuditAdminAuth = adminAuth;
+app.get("/api/admin/adp-leak-audits/meta", ...adpLeakAuditAdminAuth, getAdminLeakAuditMeta);
+app.get(
+  "/api/admin/adp-leak-audits/report-catalog",
+  ...adpLeakAuditAdminAuth,
+  getAdminLeakAuditReportCatalog
+);
+app.get("/api/admin/adp-leak-audits", ...adpLeakAuditAdminAuth, getAdminLeakAudits);
+app.post("/api/admin/adp-leak-audits", ...adpLeakAuditAdminAuth, postAdminLeakAuditCreate);
+app.get(
+  "/api/admin/adp-leak-audits/:requestId",
+  ...adpLeakAuditAdminAuth,
+  getAdminLeakAuditById
+);
+app.post(
+  "/api/admin/adp-leak-audits/:requestId/approve",
+  ...adpLeakAuditAdminAuth,
+  postAdminLeakAuditApprove
+);
+app.post(
+  "/api/admin/adp-leak-audits/:requestId/run",
+  ...adpLeakAuditAdminAuth,
+  postAdminLeakAuditRun
+);
+app.post(
+  "/api/admin/adp-leak-audits/:requestId/mark-sent",
+  ...adpLeakAuditAdminAuth,
+  postAdminLeakAuditMarkSent
+);
+app.post(
+  "/api/admin/adp-leak-audits/:requestId/promote",
+  ...adpLeakAuditAdminAuth,
+  postAdminLeakAuditPromote
+);
+app.get("/api/adp-leak-audit/sample-report", getLeakAuditSampleReport);
+app.get("/api/adp-leak-audit/sample-portfolio-report", getLeakAuditPortfolioSampleReport);
+app.get("/api/adp-leak-audit/demo-diagnostics", getLeakAuditDemoDiagnostics);
+app.get("/api/adp-leak-audit/report/:reportId", getLeakAuditClientReport);
+app.get("/api/adp-leak-audit/share/:shareToken", getLeakAuditClientReport);
 
 app.get(
   "/api/ai-intelligence/validation/summary",
@@ -1703,6 +1872,80 @@ app.get("/ai-demand-positioning-share/", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/owner-ai-demand-share.html" + q);
 });
+
+app.get("/adp-leak-audit/sample", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/sample/", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/sample-portfolio", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-sample-portfolio.html");
+});
+app.get("/adp-leak-audit/sample-portfolio/", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-sample-portfolio.html");
+});
+app.get("/admin/adp-leak-audits", (req, res) => {
+  res.redirect(302, "/admin/adp-leak-audits/reports");
+});
+app.get("/admin/adp-leak-audits/", (req, res) => {
+  res.redirect(302, "/admin/adp-leak-audits/reports");
+});
+app.get("/admin/adp-leak-audits/reports", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-reports.html");
+});
+app.get("/admin/adp-leak-audits/reports/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-reports.html");
+});
+app.get("/admin/adp-leak-audits/samples", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-samples.html");
+});
+app.get("/admin/adp-leak-audits/samples/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-samples.html");
+});
+app.get("/admin/adp-leak-audits/portfolios", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-portfolios.html");
+});
+app.get("/admin/adp-leak-audits/portfolios/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-portfolios.html");
+});
+app.get("/admin/adp-leak-audits/converted", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-converted.html");
+});
+app.get("/admin/adp-leak-audits/converted/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-converted.html");
+});
+app.get("/admin/adp-leak-audits/queue", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits.html");
+});
+app.get("/admin/adp-leak-audits/queue/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits.html");
+});
+app.get("/admin/adp-leak-audits/new", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-new.html");
+});
+app.get("/admin/adp-leak-audits/new/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-new.html");
+});
+app.get("/admin/adp-leak-audits/workflow", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-workflow.html");
+});
+app.get("/admin/adp-leak-audits/workflow/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-workflow.html");
+});
+app.get("/adp-leak-audit/share/:shareToken", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/share/:shareToken/", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/:reportId", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/:reportId/", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+
 app.get("/getting-started", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, 'public', 'getting-started.html'));

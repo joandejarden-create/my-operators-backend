@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hotel Explorer — Golden Demo</title>
+  <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=40" />
+  <link rel="stylesheet" href="/css/hotel-ownership-intelligence.css?v=24" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-workspace.css?v=29" />
+  <link rel="stylesheet" href="/css/hotel-explorer.css?v=48" />
+  <link rel="stylesheet" href="/css/brand-alignment-snapshot.css" />
+  <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-dossier.css?v=23" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-research-center.css?v=7" />
+  <style>
+    body { margin: 0; min-height: 100vh; background: #080f25; color: #c5cef0; font-family: Inter, "Segoe UI", system-ui, sans-serif; }
+    .boot { max-width: 42rem; margin: 10vh auto; padding: 24px; }
+    .boot h1 { color: #fff; font-size: 1.4rem; }
+    .boot a { color: #9a91fb; }
+    .boot button {
+      margin-top: 12px; border: 1px solid #6c72ff; background: #6c72ff; color: #fff;
+      border-radius: 8px; padding: 10px 14px; font-weight: 650; cursor: pointer;
+    }
+    .boot .links { margin-top: 16px; font-size: 13px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="boot" id="boot">
+    <h1>Hotel Explorer Golden Demo</h1>
+    <p>Property-driven Hotel Explorer. Pass <code>hotelExplorer=&lt;censusId&gt;</code> (or <code>hotel=</code> / <code>demo=</code>) to open a hotel. Default with no hotel param is KGPV.</p>
+    <p>Legacy workspace (reference only): <a href="/hotel-intelligence-reference.html?autopen=1">open Packet 2.6 layout</a></p>
+    <button type="button" id="openBtn">Open default (KGPV)</button>
+    <div class="links">
+      <div><a href="?autopen=1&hotelExplorer=recUNycnMwOVFX0hc&hexTab=hotel">KGPV route</a></div>
+      <div><a href="?autopen=1&hotelExplorer=recIwaP1etgx2g9nA&hexTab=hotel">Cambridge route</a></div>
+    </div>
+    <p id="status" style="margin-top:12px;font-size:13px;opacity:0.8"></p>
+  </div>
+  <script src="/js/travel-infrastructure-radar-layer.js?v=2"></script>
+  <script src="/js/demand-anchors-radar-layer.js"></script>
+  <script src="/js/dealality-chain-scale-theme.js?v=1"></script>
+  <script src="/js/dealality-hotel-property-merge.js?v=1"></script>
+  <script src="/js/hotel-detail-panel.js?v=62"></script>
+  <script src="/js/hotel-ownership-intelligence.js?v=24"></script>
+  <script src="/js/hotel-intelligence-workspace.js?v=56"></script>
+  <script src="/js/dealality-book-shell.js?v=1"></script>
+  <script src="/js/dealality-report-print-chrome.js?v=4"></script>
+  <script src="/js/hotel-intelligence-dossier.js?v=28"></script>
+  <script src="/js/hotel-intelligence-research-center.js?v=9"></script>
+  <script src="/js/hotel-intelligence-golden-demo-route.js?v=2"></script>
+  <script src="/js/hotel-explorer.js?v=58"></script>
+  <script>
+    (function () {
+      var Route = window.HotelIntelligenceGoldenDemoRoute;
+      var statusEl = document.getElementById("status");
+
+      function setStatus(msg) {
+        if (statusEl) statusEl.textContent = msg || "";
+      }
+
+      function isUnknownLabel(v) {
+        var s = String(v || "").trim();
+        if (!s) return true;
+        return /^unknown(\s+hotel)?$/i.test(s) || /^unknown\s+(city|country|market)/i.test(s);
+      }
+
+      function preferSeed(seedVal, apiVal) {
+        if (!isUnknownLabel(seedVal) && isUnknownLabel(apiVal)) return seedVal;
+        if (apiVal == null || apiVal === "") return seedVal;
+        return apiVal;
+      }
+
+      function enrichHotel(hotel) {
+        var id = hotel && (hotel.id || hotel.recordId);
+        if (!id || String(id).indexOf("rec") !== 0) return Promise.resolve(hotel);
+        return fetch("/api/brand-presence/hotel/" + encodeURIComponent(id), {
+          headers: { "ngrok-skip-browser-warning": "true" },
+        })
+          .then(function (r) {
+            return r.json();
+          })
+          .then(function (payload) {
+            if (payload && payload.success && payload.hotel) {
+              var api = payload.hotel;
+              return Object.assign({}, hotel, api, {
+                id: hotel.id || api.id || id,
+                recordId: hotel.recordId || api.recordId || id,
+                name: preferSeed(hotel.name, api.name),
+                city: preferSeed(hotel.city, api.city),
+                market: preferSeed(hotel.market, api.market),
+                country: preferSeed(hotel.country, api.country),
+                brand: preferSeed(hotel.brand, api.brand || api.affiliation),
+                rooms:
+                  api.rooms != null && Number(api.rooms) > 0
+                    ? api.rooms
+                    : hotel.rooms != null
+                      ? hotel.rooms
+                      : api.rooms,
+                chainScale: preferSeed(hotel.chainScale || hotel.chain_scale, api.chainScale || api.chain_scale),
+                chain_scale: preferSeed(hotel.chainScale || hotel.chain_scale, api.chainScale || api.chain_scale),
+                website: hotel.website || api.website || "",
+                latitude: hotel.latitude != null ? hotel.latitude : api.latitude,
+                longitude: hotel.longitude != null ? hotel.longitude : api.longitude,
+                status: preferSeed(hotel.status, api.status),
+              });
+            }
+            return hotel;
+          })
+          .catch(function (err) {
+            console.warn("[golden-demo] brand-presence enrich failed", err);
+            return hotel;
+          });
+      }
+
+      function openExplorer(launch) {
+        if (!window.HotelExplorer) {
+          setStatus("Hotel Explorer failed to load.");
+          return Promise.resolve(null);
+        }
+        if (!Route) {
+          setStatus("Golden demo route resolver failed to load.");
+          return Promise.resolve(null);
+        }
+        var requestedId = launch.hotelId;
+        setStatus("Opening " + requestedId + "…");
+        return enrichHotel(launch.hotel).then(function (hotel) {
+          var guard = Route.assertRequestedMatchesRendered(requestedId, hotel);
+          if (!guard.ok && hotel && (hotel.id || hotel.recordId)) {
+            // Seed id may be dhl alias mapped to census — allow known Cambridge alias.
+            if (
+              requestedId === Route.CAMBRIDGE_DHL &&
+              (hotel.id === Route.CAMBRIDGE_ID || hotel.recordId === Route.CAMBRIDGE_ID)
+            ) {
+              guard.ok = true;
+            }
+          }
+          if (!guard.ok) {
+            console.error("[golden-demo] REQUESTED_HOTEL_ID mismatch before open", guard);
+            setStatus("Route guard failed: requested " + requestedId + " ≠ " + guard.rendered_hotel_id);
+            return null;
+          }
+          window.HotelExplorer.open(hotel, {
+            tab: launch.tab || "hotel",
+            requestedHotelId: requestedId,
+          });
+          document.getElementById("boot").style.display = "none";
+          setStatus("");
+          return hotel;
+        });
+      }
+
+      document.getElementById("openBtn").addEventListener("click", function () {
+        var launch = Route.resolveGoldenDemoLaunch("");
+        openExplorer(launch);
+      });
+
+      var params = new URLSearchParams(window.location.search);
+      if (params.get("reference") === "1") {
+        window.location.replace(
+          "/hotel-intelligence-reference.html?autopen=1&tab=" +
+            encodeURIComponent(params.get("tab") || params.get("hexTab") || "overview")
+        );
+        return;
+      }
+      if (params.get("autopen") === "1") {
+        var launch = Route.resolveGoldenDemoLaunch(params);
+        openExplorer(launch);
+      }
+    })();
+  </script>
+</body>
+</html>

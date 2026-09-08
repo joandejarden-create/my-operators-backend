@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>New AI Demand Leak Audit — Dealality Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=1" />
+  <link rel="stylesheet" href="/css/admin-adp-leak-audits.css?v=1" />
+</head>
+<body class="support-page ala-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>AI Demand Leak Audits is for Dealality admin use only.</p>
+  </div>
+
+  <div class="support-page-shell adr-shell" id="supportGateContent" hidden>
+    <header class="adr-header">
+      <h1>New Leak Audit Request</h1>
+      <p class="adr-subtitle">
+        Creates an <code>AdpLeakAuditRequests</code> record with status <strong>requested</strong>. No production hotel records are updated.
+      </p>
+      <p><a class="adr-btn adr-btn--secondary" href="/admin/adp-leak-audits/reports">Back to Audit Reports</a></p>
+    </header>
+
+    <form id="alaIntakeForm" class="ala-form" novalidate>
+      <div class="ala-form-grid">
+        <label>Hotel name *<input name="hotelName" required /></label>
+        <label>Hotel website<input name="hotelWebsite" type="url" placeholder="https://" /></label>
+        <label>City<input name="city" /></label>
+        <label>Market<input name="market" /></label>
+        <label>Country<input name="country" /></label>
+        <label>Contact name<input name="contactName" /></label>
+        <label>Contact email<input name="contactEmail" type="email" /></label>
+        <label>Company<input name="companyName" /></label>
+        <label>Role<input name="role" /></label>
+        <label>
+          Demand segment of interest
+          <select name="demandSegmentOfInterest">
+            <option value="">Select…</option>
+            <option value="leisure">Leisure Travel</option>
+            <option value="couples">Couples / Romantic Stay</option>
+            <option value="meetings_groups">Meetings &amp; Groups</option>
+            <option value="wellness">Wellness</option>
+            <option value="family">Family Travel</option>
+            <option value="business">Business Travel</option>
+            <option value="celebration">Celebrations &amp; Events</option>
+          </select>
+        </label>
+        <label>
+          Source
+          <select name="source">
+            <option value="manual">manual</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="referral">referral</option>
+            <option value="direct">direct</option>
+            <option value="other">other</option>
+          </select>
+        </label>
+      </div>
+        <label class="ala-notes">
+          Open to a paid monthly pilot if gaps are meaningful?
+          <select name="openToPaidPilot">
+            <option value="">Select…</option>
+            <option value="yes">Yes</option>
+            <option value="maybe">Maybe</option>
+            <option value="not_now">Not now</option>
+          </select>
+        </label>
+        <label class="ala-notes">
+          Open to a paid monthly pilot if gaps are meaningful?
+          <select name="openToPaidPilot">
+            <option value="">Select…</option>
+            <option value="yes">Yes</option>
+            <option value="maybe">Maybe</option>
+            <option value="not_now">Not now</option>
+          </select>
+        </label>
+      <label class="ala-notes">Notes<textarea name="notes" rows="4"></textarea></label>
+      <p id="alaFormError" class="ala-error" hidden></p>
+      <p id="alaFormSuccess" class="ala-success" hidden></p>
+      <button type="submit" class="adr-btn" id="alaSubmit">Create Request</button>
+    </form>
+  </div>
+
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js?v=adp-mr-admin-2"></script>
+  <script>
+    (function () {
+      if (window.SupportAdminGate) {
+        window.SupportAdminGate.showPageLoading("supportGateLoading", "Verifying access…");
+      }
+    })();
+  </script>
+  <script src="/js/admin-adp-leak-audits-new.js?v=1"></script>
+</body>
+</html>

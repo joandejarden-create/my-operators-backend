@@ -1,0 +1,1372 @@
+/**
+ * AI Demand Leak Audit — ADP-native 3-page report surface.
+ * Page 1: BAS/HID Dealality cover (A4)
+ * Page 2: Executive Diagnostic (navy ADP)
+ * Page 3: Action + Conversion (navy ADP)
+ * Shared by /adp-leak-audit/sample and /adp-leak-audit/:reportId.
+ */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+/* Neutralize ADP monthly print pagination only — do not restyle HID/BAS cover */
+@media print {
+  .ala-adp-report-host.adp-mr-pdf-host .adp-mr-section--movement {
+    page-break-before: auto !important;
+    break-before: auto !important;
+  }
+}
+
+:root {
+  --ala-navy: #080f25;
+  --ala-panel: #101935;
+  --ala-ink: #d7def5;
+  --ala-muted: #aeb9e1;
+  --ala-dim: #7e89ac;
+  --ala-accent: #6c72ff;
+  --ala-gold: #fdb52a;
+  --ala-font: "Mona Sans", "Inter", system-ui, sans-serif;
+}
+
+html,
+body.ala-adp-host {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: #060b1a;
+  color: var(--ala-ink);
+  font-family: var(--ala-font);
+}
+
+.ala-boot {
+  max-width: 640px;
+  margin: 72px auto;
+  padding: 24px;
+  text-align: center;
+  color: var(--ala-muted);
+}
+
+.ala-adp-report-host {
+  width: min(210mm, calc(100% - 24px));
+  max-width: 210mm;
+  margin: 16px auto 48px;
+  background: transparent;
+}
+
+/*
+ * COVER — do not restyle.
+ * Exact Hotel Intelligence / BAS cover shell via:
+ *   brand-alignment-snapshot.css + hotel-intelligence-dossier.css
+ *   classes: .bas-cover-page.hid-cover-page inside .brand-alignment-snapshot / .hid-print-host--flow
+ * Only keep page-break after the cover and keep the DOM foot visible (leak PDF has no Playwright footer).
+ */
+.ala-adp-report-host .hid-cover-page.bas-cover-page {
+  /* Match HID reader cover sheet height; do not let BAS height:100% collapse. */
+  min-height: var(--hid-page-h, 1123px);
+  height: auto;
+  page-break-after: always;
+  break-after: page;
+  page-break-before: auto;
+  break-before: auto;
+}
+
+/* HID print hides cover foot (Playwright chrome). Leak Audit keeps the DOM foot. */
+.ala-adp-report-host.hid-print-host--flow .hid-cover-page__foot,
+.ala-adp-host .hid-cover-page__foot {
+  display: flex !important;
+}
+
+/* —— PAGES 2–3: ADP product navy surface (aiv-* grammar) —— */
+.ala-adp-report-page {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(297mm - 14mm - 18mm);
+  padding: 14mm 12mm 12mm;
+  background: var(--neutral--800, #080f25);
+  color: var(--neutral--400, #aeb9e1);
+  border: 1px solid rgba(174, 185, 225, 0.14);
+  page-break-after: always;
+  break-after: page;
+  display: flex;
+  flex-direction: column;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.ala-adp-report-page--actions {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+.ala-adp-web-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0;
+}
+
+.ala-adp-web-chrome__copy {
+  margin: 0;
+  font-size: 13px;
+  color: var(--neutral--500, #7e89ac);
+}
+
+/* Match ADP tab-row How to Read control (subtle text action, not a yellow box) */
+.ala-adp-web-chrome.adp-section-nav-with-tour .adp-section-nav__actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 0 0 0 12px;
+  flex: 0 0 auto;
+}
+
+.ala-adp-web-chrome .adp-howto-read-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 0;
+  min-height: 40px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: #aeb9e1;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-transform: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: none;
+  transition: color 0.2s ease;
+}
+
+.ala-adp-web-chrome .adp-howto-read-btn:hover {
+  color: #fff;
+}
+
+.ala-adp-web-chrome .adp-howto-read-btn:focus-visible {
+  outline: 2px solid var(--accent--primary-1, #6c72ff);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.ala-adp-print-guide-note,
+.ala-print-only {
+  display: none;
+}
+
+.ala-adp-report-page .aiv-theme-group.ala-sec {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.6px solid var(--neutral--600, #37446b);
+  border-radius: 12px;
+}
+
+.ala-adp-report-page .aiv-theme-title {
+  margin: 0 0 10px;
+  color: var(--neutral--100, #ffffff);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+.ala-adp-report-page .aiv-theme-help,
+.ala-adp-report-page .ala-sec__note {
+  margin: 0 0 12px;
+  color: var(--neutral--500, #7e89ac);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.ala-sec__p,
+.ala-exec p,
+.ala-adp-report-page .aiv-theme-body p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--neutral--300, #d1dbf9);
+}
+
+.ala-exec p:last-child {
+  margin-bottom: 0;
+}
+
+/* ADP-native KPI row — keep aiv-kpi look, denser for 5-up diagnostic */
+.ala-adp-kpi-row.aiv-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.ala-adp-report-page .aiv-kpi {
+  margin: 0;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--secondary--color-1, #101935);
+  border: 1px solid var(--neutral--600, #37446b);
+  box-shadow: 0 8px 24px var(--general--shadow-01, #14142b0f);
+}
+
+.ala-adp-report-page .aiv-kpi--watch {
+  border-color: rgba(253, 181, 42, 0.55);
+}
+
+.ala-adp-report-page .aiv-kpi h3 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--neutral--100, #ffffff);
+  line-height: 1.3;
+}
+
+.ala-adp-report-page .aiv-value {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 650;
+  color: var(--neutral--100, #ffffff);
+  line-height: 1.2;
+}
+
+.ala-adp-report-page .aiv-meta {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--neutral--500, #7e89ac);
+}
+
+/* ADP info icons — do not invent bordered buttons */
+.ala-adp-report-page .info-tooltip.aiv-col-info {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+
+.ala-adp-report-page .info-tooltip.aiv-col-info .info-icon {
+  cursor: pointer;
+  opacity: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--neutral--400, #aeb9e1);
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.ala-adp-report-page .info-tooltip.aiv-col-info .info-icon:hover,
+.ala-adp-report-page .info-tooltip.aiv-col-info .info-icon:focus-visible {
+  opacity: 0.85;
+  color: var(--neutral--100, #ffffff);
+  outline: none;
+}
+
+.ala-adp-report-page .info-tooltip.aiv-col-info .tooltip-content {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  right: 0;
+  width: min(280px, 70vw);
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--secondary--color-1, #101935);
+  border: 1px solid var(--neutral--600, #37446b);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.45;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.ala-adp-report-page .info-tooltip.aiv-col-info .tooltip-content[hidden] {
+  display: none !important;
+}
+
+.ala-adp-report-page .aiv-kpi-label {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Force readable ink on navy — DRS/monthly paper ink must not win. */
+.ala-adp-report-page,
+.ala-adp-report-page .aiv-theme-body,
+.ala-adp-report-page .aiv-theme-body p,
+.ala-adp-report-page .ala-exec p,
+.ala-adp-report-page .ala-sec__p,
+.ala-adp-report-page .ala-sec__note,
+.ala-adp-report-page .aiv-theme-help,
+.ala-adp-report-page .ala-ref-list,
+.ala-adp-report-page .drs-action,
+.ala-adp-report-page .drs-action__field p,
+.ala-adp-report-page .drs-action__field li,
+.ala-adp-report-page .aiv-card,
+.ala-adp-report-page .aiv-card p,
+.ala-adp-report-page .ala-comp-card__meta,
+.ala-adp-report-page .ala-comp-card__mean,
+.ala-adp-report-page .ala-evidence-example__summary,
+.ala-adp-report-page .ala-who__card p,
+.ala-adp-report-page .ala-next--cta p {
+  color: #d1dbf9 !important;
+  opacity: 1 !important;
+}
+
+.ala-adp-report-page .aiv-theme-title,
+.ala-adp-report-page .aiv-kpi h3,
+.ala-adp-report-page .aiv-value,
+.ala-adp-report-page .ala-evidence-example .aiv-kpi-label,
+.ala-adp-report-page .ala-evidence-example__label,
+.ala-adp-report-page .drs-action__title,
+.ala-adp-report-page .ala-next--cta p:first-child {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Competitor hierarchy — must beat `.aiv-card p` (higher specificity). */
+.ala-adp-report-page .aiv-card p.ala-comp-card__name,
+.ala-adp-report-page p.ala-comp-card__name {
+  color: #fdb52a !important;
+  opacity: 1 !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+
+.ala-adp-report-page .aiv-card p.ala-comp-card__badge,
+.ala-adp-report-page p.ala-comp-card__badge {
+  color: #fdb52a !important;
+  opacity: 1 !important;
+  font-weight: 650 !important;
+}
+
+.ala-adp-report-page .ala-comp-card__mean > .ala-comp-card__mean-body,
+.ala-adp-report-page .ala-comp-card__mean-body {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.ala-adp-report-page .ala-comp-card__pill {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.ala-adp-report-page .aiv-meta,
+.ala-adp-report-page .drs-action__eyebrow,
+.ala-adp-report-page .drs-action__field .drs-label,
+.ala-adp-report-page .ala-comp-card__meta > span:first-child,
+.ala-adp-report-page .ala-comp-card__mean > span:first-child,
+.ala-adp-report-page .ala-evidence-example__label,
+.ala-adp-report-page .ala-who__card h3 {
+  color: #aeb9e1 !important;
+  opacity: 1 !important;
+}
+
+.ala-adp-report-page .ala-who__card--dealality h3,
+.ala-adp-report-page .ala-adp-action__dealality .drs-label {
+  color: #c4bfff !important;
+}
+
+.ala-adp-report-page .ala-adp-action__why .drs-label {
+  color: #fdb52a !important;
+}
+
+.ala-adp-report-page .ala-adp-action__why-body,
+.ala-adp-report-page .ala-adp-action__chip {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.ala-adp-report-page .ala-who__card h3 {
+  color: #fdb52a !important;
+  font-size: 12px;
+  line-height: 1.25;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+.ala-adp-report-page .ala-who__card p {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  max-width: 100%;
+  font-size: 12px;
+}
+
+.ala-adp-report-page .ala-who__card--publish p {
+  white-space: pre-line !important;
+}
+
+.ala-evidence-with-scenarios {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: stretch;
+}
+
+.ala-evidence-with-scenarios .ala-adp-evidence-grid,
+.ala-evidence-with-scenarios .ala-evidence-examples {
+  display: contents;
+}
+
+.ala-evidence-with-scenarios .ala-scenarios-monitored {
+  display: contents;
+}
+
+.ala-scenarios-monitored__card {
+  height: 100%;
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+.ala-scenarios-monitored__value {
+  margin-top: 8px !important;
+  font-size: 18px !important;
+  font-weight: 650;
+}
+
+.ala-scenarios-monitored__sub {
+  margin-top: 2px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #aeb9e1;
+}
+
+.ala-ref-list {
+  margin: 4px 0 0;
+  padding-left: 1.2em;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--neutral--300, #d1dbf9);
+}
+
+.ala-comp-table,
+.ala-adp-comp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.ala-adp-report-page .ala-comp-card.aiv-card,
+.ala-adp-report-page .ala-evidence-example.aiv-card,
+.ala-adp-report-page .ala-who__card.aiv-card,
+.ala-adp-report-page .ala-adp-action.aiv-card,
+.ala-adp-report-page .ala-next.aiv-card {
+  background: var(--secondary--color-1, #101935);
+  border: 1px solid var(--neutral--600, #37446b);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px var(--general--shadow-01, #14142b0f);
+}
+
+.ala-comp-card__rank {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--secondary--color-5, #fdb52a);
+}
+
+.ala-comp-card__name {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fdb52a;
+  line-height: 1.25;
+}
+
+.ala-comp-card__badge {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #fdb52a;
+}
+
+.ala-comp-card__meta,
+.ala-comp-card__mean {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--neutral--300, #d1dbf9);
+}
+
+.ala-comp-card__meta > span:first-child,
+.ala-comp-card__mean > span:first-child {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.ala-comp-card__pill {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(108, 114, 255, 0.22);
+  border: 1px solid rgba(174, 185, 225, 0.4);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+.ala-comp-card__mean-body {
+  display: block;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.ala-evidence-examples,
+.ala-adp-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.ala-evidence-example {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.ala-evidence-example__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.ala-evidence-example__label,
+.ala-adp-report-page .ala-evidence-example .aiv-kpi-label,
+.ala-adp-report-page .aiv-evidence-label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--100, #ffffff);
+}
+
+.ala-evidence-example__summary {
+  flex: 1 1 auto;
+  margin: 8px 0 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--neutral--300, #d1dbf9);
+}
+
+.ala-evidence-links {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+/* ADP hyperlinks — aiv-btn-text.aiv-link */
+.ala-adp-report-page button.aiv-btn-text.aiv-link,
+.ala-evidence-links button.aiv-btn-text.aiv-link {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  color: var(--accent--primary-1, #6c72ff);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ala-adp-report-page button.aiv-btn-text.aiv-link:hover,
+.ala-evidence-links button.aiv-btn-text.aiv-link:hover {
+  color: #9a91fb;
+  text-decoration: underline;
+}
+
+/* Actions — drs-action on navy aiv-card */
+.ala-adp-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.ala-adp-report-page .drs-action.ala-adp-action {
+  margin: 0;
+  padding: 14px 16px;
+  color: var(--neutral--300, #d1dbf9);
+}
+
+.ala-adp-report-page .drs-action__eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--secondary--color-5, #fdb52a);
+}
+
+.ala-adp-report-page .drs-action__title {
+  margin: 0 0 12px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--neutral--100, #ffffff);
+  line-height: 1.3;
+}
+
+.ala-adp-report-page .drs-action__field {
+  margin: 0 0 12px;
+}
+
+.ala-adp-report-page .drs-action__field:last-child {
+  margin-bottom: 0;
+}
+
+.ala-adp-report-page .drs-action__field .drs-label {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+}
+
+.ala-adp-report-page .drs-action__field p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--neutral--300, #d1dbf9);
+}
+
+.ala-adp-report-page .ala-adp-action__why .drs-label {
+  color: #fdb52a;
+}
+
+.ala-adp-report-page .ala-adp-action__dealality .drs-label {
+  color: #9a91fb;
+}
+
+.ala-who--readable,
+.ala-adp-report-page .aiv-secondary-row.ala-who {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.ala-who__card {
+  padding: 14px;
+}
+
+.ala-who__step {
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #aeb9e1;
+}
+
+.ala-who__card h3 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--secondary--color-5, #fdb52a);
+}
+
+.ala-who__card--dealality h3 {
+  color: #9a91fb;
+}
+
+.ala-who__card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--neutral--300, #d1dbf9);
+}
+
+.ala-next--cta {
+  padding: 16px 18px;
+  border-color: rgba(108, 114, 255, 0.45) !important;
+  background: rgba(108, 114, 255, 0.12) !important;
+}
+
+.ala-next--cta p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--neutral--300, #d1dbf9);
+}
+
+.ala-next--cta p:first-child {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--neutral--100, #ffffff);
+}
+
+.ala-next--cta p:last-child {
+  margin-bottom: 0;
+}
+
+/* Page footers — screen + print, HID-like placement */
+.ala-page-foot {
+  display: flex;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(174, 185, 225, 0.18);
+  font-size: 10px;
+  color: rgba(213, 220, 245, 0.88);
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.ala-page-foot__right {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* ADP evidence drawer extras on dialog.aiv-drawer */
+.ala-drawer__eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--secondary--color-5, #fdb52a);
+}
+
+.ala-drawer__footer-note {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--neutral--600, #37446b);
+  color: var(--neutral--500, #7e89ac);
+  font-size: 12px;
+}
+
+.ala-adp-evidence .aiv-evidence-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.ala-adp-evidence .aiv-evidence-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--neutral--500, #7e89ac);
+  margin-bottom: 4px;
+}
+
+.ala-adp-evidence .aiv-evidence-value {
+  color: var(--neutral--100, #ffffff);
+  font-size: 13px;
+}
+
+.ala-adp-evidence .aiv-evidence-section {
+  margin: 12px 0;
+}
+
+.ala-adp-evidence .aiv-evidence-section--ai-response {
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--neutral--600, #37446b);
+}
+
+.ala-adp-evidence .aiv-evidence-response {
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+  color: var(--neutral--300, #d1dbf9);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ala-adp-evidence .aiv-excerpt-p {
+  margin: 6px 0 0;
+  color: var(--neutral--300, #d1dbf9);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+body.ala-drawer-open {
+  overflow: hidden;
+}
+
+@media screen and (max-width: 720px) {
+  .ala-adp-kpi-row.aiv-kpi-row,
+  .ala-comp-table,
+  .ala-adp-comp-grid,
+  .ala-evidence-examples,
+  .ala-adp-evidence-grid,
+  .ala-evidence-with-scenarios,
+  .ala-who--readable,
+  .ala-adp-report-page .aiv-secondary-row.ala-who {
+    grid-template-columns: 1fr;
+  }
+
+  .ala-evidence-with-scenarios .ala-adp-evidence-grid,
+  .ala-evidence-with-scenarios .ala-evidence-examples,
+  .ala-evidence-with-scenarios .ala-scenarios-monitored {
+    display: block;
+  }
+}
+
+.ala-comp-card__meta,
+.ala-comp-card__mean {
+  margin: 3px 0 0;
+  font-size: 8pt;
+  line-height: 1.35;
+  color: var(--ala-ink);
+}
+
+.ala-comp-card__meta span,
+.ala-comp-card__mean span {
+  display: block;
+  font-size: 6.5pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ala-dim);
+}
+
+.ala-evidence-examples {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.ala-evidence-example {
+  padding: 8px 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(174, 185, 225, 0.14);
+}
+
+.ala-evidence-example__label {
+  margin: 0;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ala-muted);
+}
+
+.ala-evidence-example__summary {
+  margin: 4px 0 6px;
+  font-size: 8pt;
+  line-height: 1.35;
+  color: var(--ala-ink);
+}
+
+.ala-web-ev button,
+button.ala-ev-link {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  color: #9a91fb;
+  font: inherit;
+  font-size: 8pt;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ala-web-ev button:hover,
+button.ala-ev-link:hover {
+  text-decoration: underline;
+}
+
+/* Page 3 readable actions */
+.ala-action-table--readable {
+  display: grid;
+  gap: 10px;
+}
+
+.ala-action-row {
+  display: grid;
+  grid-template-columns: 1.15fr 1.2fr 1.35fr 1.1fr 1.35fr;
+  gap: 8px 10px;
+  padding: 10px 11px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(174, 185, 225, 0.14);
+  border-left: 3px solid var(--ala-accent);
+}
+
+.ala-action-row__title {
+  margin: 0;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.ala-action-row__label {
+  margin: 0;
+  font-size: 7pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ala-dim);
+}
+
+.ala-action-row__val {
+  margin: 3px 0 0;
+  font-size: 8.5pt;
+  line-height: 1.35;
+  color: var(--ala-ink);
+}
+
+.ala-who--readable {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ala-who__card {
+  padding: 10px 11px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(174, 185, 225, 0.14);
+}
+
+.ala-who__card h3 {
+  margin: 0 0 6px;
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ala-gold);
+}
+
+.ala-who__card--dealality h3 {
+  color: #9a91fb;
+}
+
+.ala-who__card p {
+  margin: 0;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  color: var(--ala-ink);
+}
+
+.ala-next--cta {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(108, 114, 255, 0.12);
+  border: 1px solid rgba(108, 114, 255, 0.35);
+}
+
+.ala-next--cta p {
+  margin: 0 0 8px;
+  font-size: 10pt;
+  line-height: 1.45;
+  color: #fff;
+}
+
+.ala-next--cta p:first-child {
+  font-size: 12pt;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ala-next--cta p:last-child {
+  margin-bottom: 0;
+  color: var(--ala-ink);
+  font-weight: 400;
+  font-size: 9.5pt;
+}
+
+.ala-page-foot {
+  display: none;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid rgba(174, 185, 225, 0.18);
+  font-size: 7.5pt;
+  color: var(--ala-dim);
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Evidence drawer */
+.ala-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+
+.ala-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 8, 20, 0.62);
+}
+
+.ala-drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(440px, 100%);
+  height: 100%;
+  background: #0c142c;
+  border-left: 1px solid rgba(174, 185, 225, 0.2);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -18px 0 40px rgba(0, 0, 0, 0.35);
+}
+
+.ala-drawer__header,
+.ala-drawer__footer {
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(174, 185, 225, 0.14);
+}
+
+.ala-drawer__footer {
+  border-bottom: 0;
+  border-top: 1px solid rgba(174, 185, 225, 0.14);
+  color: var(--ala-dim);
+  font-size: 12px;
+}
+
+.ala-drawer__eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ala-gold);
+}
+
+.ala-drawer__header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.ala-drawer__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--ala-muted);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.ala-drawer__body {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 18px;
+}
+
+.ala-adp-evidence .aiv-evidence-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ala-adp-evidence .aiv-evidence-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ala-dim);
+}
+
+.ala-adp-evidence .aiv-evidence-value {
+  color: #fff;
+  font-size: 13px;
+}
+
+.ala-adp-evidence .aiv-evidence-section--ai-response {
+  margin: 12px 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ala-adp-evidence .aiv-evidence-response {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+  color: var(--ala-ink);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+body.ala-drawer-open {
+  overflow: hidden;
+}
+
+@media screen and (max-width: 720px) {
+  .ala-adp-kpi-row.aiv-kpi-row,
+  .ala-comp-table,
+  .ala-evidence-examples,
+  .ala-who--readable,
+  .ala-action-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  html,
+  body.ala-adp-host {
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ala-boot,
+  .ala-drawer,
+  dialog.aiv-drawer,
+  .adp-gt,
+  .ala-no-print,
+  .ala-adp-web-chrome,
+  .ala-web-ev,
+  .ala-evidence-links,
+  button.aiv-btn-text.aiv-link,
+  button.ala-ev-link,
+  button.ala-evidence-link,
+  .ala-adp-report-page .info-tooltip.aiv-col-info {
+    display: none !important;
+  }
+
+  .ala-print-only,
+  .ala-adp-print-guide-note {
+    display: block !important;
+    margin: 0 0 6px;
+    font-size: 9pt;
+    color: #aeb9e1;
+  }
+
+  .ala-page-foot {
+    display: flex !important;
+    margin-top: auto !important;
+    padding-top: 6px !important;
+    font-size: 8pt !important;
+    color: rgba(213, 220, 245, 0.88) !important;
+  }
+
+  .ala-adp-report-host {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  /* Cover uses HID/BAS print sizing — do not force a different sheet height here */
+  .ala-adp-report-host .hid-cover-page.bas-cover-page {
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-before: auto !important;
+    break-before: auto !important;
+  }
+
+  .ala-adp-report-host.hid-print-host--flow .hid-cover-page__foot {
+    display: flex !important;
+  }
+
+  /* Pages 2–3 ADP navy diagnostic lock */
+  .ala-adp-report-page {
+    box-sizing: border-box !important;
+    width: 210mm !important;
+    min-height: 0 !important;
+    height: 296mm !important;
+    max-height: 296mm !important;
+    overflow: hidden !important;
+    padding: 11mm 11mm 9mm !important;
+    background: #080f25 !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  .ala-adp-report-page--exec,
+  .ala-adp-report-page--actions {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  .ala-adp-report-page,
+  .ala-adp-report-host .bas-cover-page {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .ala-adp-report-page .aiv-theme-group.ala-sec {
+    margin-bottom: 8px !important;
+    padding: 8px 10px !important;
+  }
+
+  .ala-adp-report-page .aiv-theme-title {
+    font-size: 12pt !important;
+    margin-bottom: 6px !important;
+  }
+
+  .ala-exec p,
+  .ala-sec__p,
+  .ala-sec__note,
+  .aiv-theme-help {
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .ala-adp-kpi-row.aiv-kpi-row {
+    gap: 6px !important;
+  }
+
+  .ala-adp-kpi-row.aiv-kpi-row .aiv-kpi {
+    padding: 7px 8px !important;
+  }
+
+  .ala-adp-kpi-row.aiv-kpi-row .aiv-value {
+    font-size: 14pt !important;
+    margin-top: 12px !important;
+  }
+
+  .ala-adp-kpi-row.aiv-kpi-row .aiv-meta {
+    font-size: 7.5pt !important;
+    line-height: 1.25 !important;
+  }
+
+  .ala-ref-list {
+    font-size: 8.5pt !important;
+    line-height: 1.35 !important;
+  }
+
+  .ala-comp-table,
+  .ala-adp-comp-grid,
+  .ala-evidence-examples,
+  .ala-adp-evidence-grid {
+    gap: 7px !important;
+  }
+
+  .ala-comp-card,
+  .ala-evidence-example,
+  .drs-action.ala-adp-action,
+  .ala-who__card {
+    padding: 7px 9px !important;
+  }
+
+  .ala-comp-card__name,
+  .drs-action__title {
+    font-size: 11pt !important;
+  }
+
+  .ala-comp-card__name {
+    color: #fdb52a !important;
+    font-size: 12pt !important;
+  }
+
+  .ala-comp-card__meta,
+  .ala-comp-card__mean,
+  .ala-evidence-example__summary,
+  .drs-action__field p,
+  .ala-who__card p {
+    font-size: 8pt !important;
+    line-height: 1.3 !important;
+  }
+
+  .ala-adp-actions {
+    gap: 7px !important;
+  }
+
+  .ala-adp-report-page .drs-action__field {
+    padding: 6px 8px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .ala-adp-action__chip {
+    padding: 3px 7px !important;
+    font-size: 8pt !important;
+  }
+
+  .ala-adp-action__why-body {
+    font-size: 9pt !important;
+  }
+
+  .ala-who--readable,
+  .ala-adp-report-page .aiv-secondary-row.ala-who {
+    gap: 7px !important;
+  }
+
+  .ala-next--cta {
+    padding: 9px 11px !important;
+  }
+
+  .ala-next--cta p {
+    font-size: 9pt !important;
+    margin-bottom: 5px !important;
+  }
+
+  .ala-next--cta p:first-child {
+    font-size: 11pt !important;
+  }
+
+  .ala-sec,
+  .aiv-theme-group,
+  .drs-action,
+  .ala-comp-card,
+  .ala-evidence-example,
+  .ala-who__card,
+  .aiv-kpi {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+
+/* Preserve hotel-name word spaces in the PDF text layer. */
+body.ala-adp-host .ala-adp-report-host .bas-cover-title,
+body.ala-adp-host .ala-adp-report-host .bas-cover-title .ala-cover-title-word,
+body.ala-adp-host .ala-adp-report-host .bas-cover-title .ala-cover-title-line {
+  letter-spacing: 0 !important;
+  word-spacing: 0.06em !important;
+}
+
+body.ala-adp-host .ala-adp-report-host .bas-cover-title .ala-cover-title-space {
+  white-space: pre !important;
+  letter-spacing: 0 !important;
+}

@@ -1,0 +1,1344 @@
+/**
+ * Packet 2.6B-R2 — Deep Research PDF-parity document reader styles.
+ */
+
+.hotel-intelligence-dossier.hid-reader {
+  --hid-verified: #1f7a4d;
+  --hid-research: #4f5fd6;
+  --hid-unresolved: #9a6b00;
+  --hid-paper: #ffffff;
+  --hid-ink: #101935;
+  --hid-muted: #5b647a;
+  --hid-canvas: #0b1224;
+  --hid-scale: 1;
+  --hid-page-w: 794px;
+  --hid-page-h: 1123px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--hid-canvas);
+  color: var(--hid-ink);
+  outline: none;
+}
+
+.hid-reader-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: nowrap;
+  padding: 6px 10px;
+  background: rgba(8, 14, 32, 0.96);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 5;
+  overflow-x: auto;
+}
+.hid-tool-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: #e8edff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.hid-reader-toolbar__left,
+.hid-reader-toolbar__zoom,
+.hid-reader-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.hid-reader-pageind {
+  color: #d7def5;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 64px;
+}
+.hid-zoom-label {
+  color: #c5ceea;
+  font-size: 12px;
+  min-width: 64px;
+  text-align: center;
+}
+
+.hid-reader-canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px 24px 40px;
+  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+    radial-gradient(ellipse at top, rgba(70, 90, 160, 0.18), transparent 55%),
+    var(--hid-canvas);
+  /* Match Hotel Explorer / Brand Explorer–family thin scrollbar */
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neutral--600, #37446b) var(--neutral--800, #0b1224);
+}
+.hid-reader-canvas::-webkit-scrollbar {
+  width: 6px;
+}
+.hid-reader-canvas::-webkit-scrollbar-track {
+  background: var(--neutral--800, #0b1224);
+}
+.hid-reader-canvas::-webkit-scrollbar-thumb {
+  background: var(--neutral--600, #37446b);
+  border-radius: 0;
+}
+.hid-reader-canvas::-webkit-scrollbar-thumb:hover {
+  background: var(--neutral--500, #4a556f);
+}
+
+.hid-reader-scale-slot {
+  flex: 0 0 auto;
+  margin: 0 auto;
+  position: relative;
+  overflow: visible;
+}
+
+.hid-reader-stage,
+.hid-doc-stage {
+  width: var(--hid-page-w);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  flex: 0 0 auto;
+  transform-origin: top left;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+/* Continuous document — body chapters are NOT fixed A4 clips */
+.hid-doc-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  background: transparent;
+}
+
+/* Screen continuous cover — reuse BAS cover surface inside reader width */
+.hid-reader .hid-cover-page.bas-cover-page {
+  width: 100%;
+  min-height: var(--hid-page-h);
+  margin: 0 0 18px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.hid-chapter {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--hid-paper);
+  color: var(--hid-ink);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  padding: 0 0 12px;
+  margin: 0 0 18px;
+  overflow: visible;
+}
+.hid-chapter__band {
+  padding: 10px 28px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3a4566;
+  border-bottom: 1px solid #e4e8f4;
+}
+.hid-chapter .hid-chapter-h {
+  margin: 14px 28px 12px;
+}
+.hid-chapter .hid-body,
+.hid-chapter .hid-list,
+.hid-chapter .hid-exec-group,
+.hid-chapter .hid-finding-callout,
+.hid-chapter .hid-dual-present,
+.hid-chapter .hid-ownership-diagram,
+.hid-chapter .hid-people-grid,
+.hid-chapter .hid-callout,
+.hid-chapter .hid-print-stack,
+.hid-chapter .hid-bibliography,
+.hid-chapter .hid-contact-table,
+.hid-chapter .hid-subhead {
+  margin-left: 28px;
+  margin-right: 28px;
+}
+.hid-chapter__foot {
+  margin: 18px 28px 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e8ecf6;
+  font-size: 10px;
+  color: #7a849e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.hid-chapter__foot-left {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hid-chapter__foot-right {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: #5b647a;
+  white-space: nowrap;
+}
+
+/* Screen cover footer — Page X of Y (hidden in print host; PDF uses Playwright footer) */
+.hid-cover-page__foot {
+  position: absolute;
+  left: 2rem;
+  right: 2rem;
+  bottom: 0.85rem;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  color: rgba(213, 220, 245, 0.88);
+  pointer-events: none;
+}
+.hid-cover-page__foot .hid-chapter__foot-right {
+  color: rgba(232, 236, 255, 0.95);
+}
+
+/* R9 cover fidelity — secondary labels must stay legible on screen AND print */
+.hid-reader .hid-cover-page.bas-cover-page,
+.hid-print-host .hid-cover-page.bas-cover-page {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+.hid-reader .hid-cover-page .bas-cover-doc-type,
+.hid-reader .hid-cover-page .bas-cover-location,
+.hid-reader .hid-cover-page .bas-cover-sub,
+.hid-print-host .hid-cover-page .bas-cover-doc-type,
+.hid-print-host .hid-cover-page .bas-cover-location,
+.hid-print-host .hid-cover-page .bas-cover-sub {
+  color: #d7def5 !important;
+  opacity: 1 !important;
+}
+.hid-reader .hid-cover-page .bas-cover-confidential,
+.hid-reader .hid-cover-page .bas-cover-disclaimer,
+.hid-print-host .hid-cover-page .bas-cover-confidential,
+.hid-print-host .hid-cover-page .bas-cover-disclaimer {
+  color: #c5cef0 !important;
+  opacity: 1 !important;
+}
+.hid-reader .hid-cover-page .bas-cover-date,
+.hid-print-host .hid-cover-page .bas-cover-date {
+  color: #fdb52a !important;
+  opacity: 1 !important;
+}
+.hid-reader .hid-cover-page .bas-cover-accent-line,
+.hid-print-host .hid-cover-page .bas-cover-accent-line {
+  background: #6c72ff !important;
+  opacity: 1 !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+.hid-reader .hid-cover-page .bas-cover-title,
+.hid-print-host .hid-cover-page .bas-cover-title {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+.hid-reader .hid-cover-page .bas-cover-geometric,
+.hid-print-host .hid-cover-page .bas-cover-geometric,
+.hid-reader .hid-cover-page .bas-cover-geometric::before,
+.hid-reader .hid-cover-page .bas-cover-geometric::after,
+.hid-print-host .hid-cover-page .bas-cover-geometric::before,
+.hid-print-host .hid-cover-page .bas-cover-geometric::after {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  opacity: 1 !important;
+}
+
+/* Legacy sheet selectors kept for tests that still query them — no clipping */
+.hid-pdf-sheet {
+  width: var(--hid-page-w);
+  min-height: 0;
+  height: auto;
+  box-sizing: border-box;
+  background: var(--hid-paper);
+  color: var(--hid-ink);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.hid-pdf-sheet__body {
+  flex: 1 1 auto;
+  overflow: visible;
+  padding: 18px 28px 8px;
+  box-sizing: border-box;
+}
+
+.hid-reader .hid-chapter,
+.hid-reader .hid-chapter .hid-body,
+.hid-reader .hid-chapter .hid-list,
+.hid-reader .hid-chapter .hid-list li,
+.hid-reader .hid-chapter .hid-chapter-h,
+.hid-reader .hid-chapter .hid-subhead,
+.hid-reader .hid-chapter .hid-exec-group__title,
+.hid-reader .hid-chapter td,
+.hid-reader .hid-chapter th,
+.hid-reader .hid-chapter p {
+  color: #101935;
+}
+.hid-runtime-error {
+  margin: 24px;
+  padding: 20px;
+  background: #1a1020;
+  border: 1px solid #a33b3b;
+  color: #ffd7d7;
+  max-width: 720px;
+}
+.hid-runtime-error h2 {
+  margin-top: 0;
+  color: #fff;
+}
+
+.hid-page-band {
+  flex: 0 0 auto;
+  padding: 10px 28px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3a4566;
+  border-bottom: 1px solid #e4e8f4;
+}
+.hid-page-band--continued {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #6b7694;
+  background: #f7f8fc;
+}
+
+.hid-pdf-sheet__body {
+  flex: 1 1 auto;
+  overflow: visible;
+  padding: 18px 28px 8px;
+  box-sizing: border-box;
+}
+
+.hid-table td,
+.hid-table th {
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: manual;
+}
+.hid-table .hid-td-url,
+.hid-contact-line,
+.hid-bibliography__url a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.hid-pdf-sheet--cover .hid-pdf-sheet__body {
+  display: flex;
+  align-items: stretch;
+}
+
+.hid-pdf-sheet__footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 28px 12px;
+  font-size: 10px;
+  color: #7a849e;
+  border-top: 1px solid #e8ecf6;
+}
+.hid-pdf-sheet--cover .hid-pdf-sheet__footer {
+  border-top-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.hid-nav-fab {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(20, 28, 52, 0.75);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 4;
+  opacity: 0.55;
+}
+.hid-nav-fab:hover,
+.hid-nav-fab:focus-visible {
+  opacity: 1;
+  outline: 2px solid #8ea0ff;
+}
+.hid-nav-fab:disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+.hid-nav-fab--prev {
+  left: 8px;
+}
+.hid-nav-fab--next {
+  right: 8px;
+}
+
+/* Typography hierarchy */
+.hid-cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px 8px;
+}
+.hid-cover__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 18px;
+}
+.hid-cover__doc-type {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0 0 14px;
+  color: #b8c4ff;
+}
+.hid-cover__title {
+  font-size: 30px;
+  line-height: 1.15;
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+.hid-cover__sub {
+  font-size: 16px;
+  margin: 0 0 18px;
+  color: rgba(255, 255, 255, 0.82);
+}
+.hid-cover__meta,
+.hid-cover__date {
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+.hid-cover__disclaimer {
+  margin-top: 28px;
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 42rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+.hid-cover__logo {
+  margin-top: 36px;
+  width: 140px;
+  height: auto;
+}
+
+.hid-chapter-h {
+  margin: 0 0 12px;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--hid-ink);
+  letter-spacing: 0.01em;
+}
+.hid-subhead {
+  margin: 14px 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--hid-ink);
+}
+.hid-body {
+  margin: 0 0 10px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--hid-ink);
+  word-break: normal;
+  overflow-wrap: normal;
+}
+.hid-muted {
+  color: var(--hid-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.hid-list {
+  margin: 0 0 12px;
+  padding-left: 1.2rem;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.hid-list li {
+  margin: 0 0 6px;
+}
+
+.hid-exec-group {
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8ecf6;
+}
+.hid-exec-group__title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #4a5680;
+}
+
+.hid-status {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+.hid-status--verified_intelligence {
+  color: var(--hid-verified);
+}
+.hid-status--research_finding {
+  color: var(--hid-research);
+}
+.hid-status--unresolved {
+  color: var(--hid-unresolved);
+}
+.hid-status--superseded_finding {
+  color: #6b7280;
+}
+
+.hid-finding-callout {
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e4e8f4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.hid-finding-callout__headline {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  max-width: 100%;
+}
+.hid-finding-callout__body {
+  margin: 0;
+}
+.hid-callout {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-left: 3px solid #4f5fd6;
+  background: #f5f7ff;
+}
+.hid-callout--superseded {
+  border-left-color: #6b7280;
+  background: #f3f4f6;
+}
+.hid-callout--authority,
+.hid-callout--note {
+  border-left-color: #1f7a4d;
+  background: #f1f8f4;
+}
+.hid-callout__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.hid-cite {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #3b4fd6;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 1px;
+}
+.hid-cite:hover,
+.hid-cite:focus-visible {
+  text-decoration: underline;
+  outline: none;
+}
+
+.hid-table-wrap {
+  margin: 0 0 14px;
+  overflow-x: auto;
+}
+.hid-table th,
+.hid-table td {
+  vertical-align: top;
+  padding: 6px 8px;
+  border-bottom: 1px solid #e6eaf4;
+}
+.hid-table--executive th,
+.hid-table--executive td {
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.hid-table--evidence th,
+.hid-table--evidence td {
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+.hid-table thead th {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5b647a;
+  background: #f7f8fc;
+}
+
+.hid-ownership-diagram {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid #dbe2f5;
+  background: #f8f9fd;
+  border-radius: 6px;
+}
+.hid-ownership-diagram__node {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid #d7def2;
+  border-radius: 4px;
+}
+.hid-ownership-diagram__role {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5b647a;
+}
+.hid-ownership-diagram__name {
+  font-size: 13.5px;
+  font-weight: 650;
+  color: var(--hid-ink);
+}
+.hid-ownership-diagram__arrow {
+  text-align: center;
+  color: #7a849e;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.hid-ownership-diagram__note {
+  margin: 10px 0 0;
+  font-size: 11px;
+  color: #5b647a;
+  line-height: 1.45;
+}
+
+.hid-people-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+.hid-people-card {
+  border: 1px solid #e1e6f4;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fff;
+  /* Long profiles may split; keep name with first evidence via break-after on name */
+  break-inside: auto;
+  page-break-inside: auto;
+}
+.hid-people-card__name {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.hid-people-card__meta {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+}
+.hid-people-card__label {
+  margin: 6px 0 2px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #5b647a;
+}
+.hid-profile-line {
+  margin: 0 0 2px;
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+.hid-profile-line--empty {
+  color: #8a93a8;
+}
+.hid-profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+  font-weight: 600;
+  text-decoration: none;
+}
+.hid-profile-link:hover,
+.hid-profile-link:focus-visible {
+  text-decoration: underline;
+}
+
+.hid-library-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+.hid-library-item {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #d9e1fa;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Dual presentation: screen grids vs print stacks */
+.hid-media-print {
+  display: none;
+}
+.hid-dual-present {
+  margin: 0 0 14px;
+}
+
+.hid-conf {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: #eef1fb;
+  color: #1a2450;
+  white-space: nowrap;
+}
+.hid-conf--high {
+  background: #e5f6ee;
+  color: #156b45;
+}
+.hid-status-inline {
+  font-size: 12px;
+  font-weight: 650;
+  color: #1a2450;
+  white-space: nowrap;
+}
+
+/* Break policy: only SHORT atomic units avoid split. Large evidence may flow. */
+.hid-bibliography__item,
+.hid-ownership-diagram__node,
+.hid-contact-table tr,
+.hid-timeline-block:not(.hid-timeline-block--history) {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.hid-finding-callout,
+.hid-timeline-block--history,
+.hid-research-row,
+.hid-people-card,
+.hid-exec-group,
+.hid-chapter,
+.hid-print-stack--ownership .hid-research-row,
+.hid-print-stack--history .hid-timeline-block {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+.hid-chapter-h,
+.hid-subhead,
+.hid-exec-group__title,
+.hid-research-row__head,
+.hid-people-card__name,
+.hid-timeline-block__when,
+.hid-timeline-block__title,
+.hid-finding-callout__headline {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+.hid-doc-flow,
+.hid-print-flow,
+.hid-chapter {
+  orphans: 3;
+  widows: 3;
+}
+
+.hid-timeline-block__evidence-label {
+  margin: 6px 0 2px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #5b647a;
+}
+
+.hid-research-row {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #dbe2f5;
+  border-radius: 6px;
+  background: #fff;
+}
+.hid-research-row__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+}
+.hid-research-row__role {
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1a2450;
+  white-space: normal;
+}
+.hid-research-row__entity {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  font-weight: 650;
+  line-height: 1.35;
+  color: #101935;
+}
+.hid-research-row__evidence-label {
+  margin: 0 0 2px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #5b647a;
+}
+.hid-research-row__evidence {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #101935;
+}
+
+.hid-timeline-block {
+  margin: 0 0 12px;
+  padding: 10px 12px 12px;
+  border-left: 3px solid #6c72ff;
+  background: #f8f9fd;
+}
+.hid-timeline-block__when {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #3a4566;
+}
+.hid-timeline-block__title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #101935;
+}
+.hid-timeline-block__status {
+  margin: 0 0 8px;
+}
+.hid-timeline-block__evidence {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #101935;
+}
+
+.hid-year-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hid-year-timeline__item {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 12px;
+  margin: 0 0 12px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid #e6eaf4;
+}
+.hid-year-timeline__year {
+  font-size: 15px;
+  font-weight: 750;
+  color: #1a2450;
+  line-height: 1.2;
+}
+.hid-year-timeline__event {
+  margin: 0 0 4px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #101935;
+}
+.hid-year-timeline__meta {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #2a3350;
+}
+
+.hid-bibliography {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: none;
+}
+.hid-bibliography__item {
+  margin: 0 0 14px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid #e6eaf4;
+}
+.hid-bibliography__title {
+  margin: 0 0 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #101935;
+  line-height: 1.35;
+}
+.hid-bibliography__num {
+  color: #4f5fd6;
+}
+.hid-bibliography__meta {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: #3a4560;
+  line-height: 1.4;
+}
+.hid-bibliography__sep {
+  margin: 0 6px;
+  color: #9aa3bc;
+}
+.hid-bibliography__url {
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.4;
+}
+.hid-ext-link {
+  color: #2f46c8;
+  text-decoration: none;
+  font-weight: 600;
+}
+.hid-ext-link:hover,
+.hid-ext-link:focus-visible {
+  text-decoration: underline;
+}
+.hid-ext-link__mark {
+  font-size: 0.85em;
+}
+
+.hid-contact-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12px;
+  color: #101935;
+}
+.hid-contact-col-channel {
+  width: 28%;
+}
+.hid-contact-col-contact {
+  width: 42%;
+}
+.hid-contact-col-basis {
+  width: 30%;
+}
+.hid-contact-table th,
+.hid-contact-table td {
+  vertical-align: top;
+  padding: 7px 8px;
+  border-bottom: 1px solid #e6eaf4;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+.hid-contact-table thead th {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5b647a;
+  background: #f7f8fc;
+  text-align: left;
+}
+.hid-contact-line {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 11.5px;
+}
+
+/* Screen table column hints (web may stay denser; horizontal scroll OK) */
+.hid-table-wrap--ownership .hid-td-level,
+.hid-table-wrap--brand_chronology .hid-td-status,
+.hid-table-wrap--brand_chronology .hid-td-confidence,
+.hid-table-wrap--property_history .hid-td-year,
+.hid-table-wrap--property_history .hid-td-confidence {
+  white-space: nowrap;
+  min-width: 4.5rem;
+}
+.hid-table-wrap--ownership .hid-td-evidence,
+.hid-table-wrap--brand_chronology .hid-td-evidence {
+  min-width: 14rem;
+}
+
+/* Print / PDF — natural paged media on continuous document */
+@media print {
+  @page {
+    size: A4 portrait;
+    /* Bottom band reserved for Playwright footerTemplate (~20mm safe zone) */
+    margin: 14mm 12mm 20mm;
+  }
+  @page :first {
+    margin: 12mm 12mm 20mm;
+  }
+  body.hid-print-active > *:not(#hid-print-host) {
+    display: none !important;
+  }
+  body.hid-print-active #hid-print-host {
+    display: block !important;
+  }
+  .bas-no-print,
+  .hid-nav-fab,
+  .hid-reader-toolbar {
+    display: none !important;
+  }
+
+  .hid-media-screen {
+    display: none !important;
+  }
+  .hid-media-print {
+    display: block !important;
+  }
+
+  .hid-print-host--flow {
+    color: #101935 !important;
+    background: #fff !important;
+    font-size: 10.5pt;
+    line-height: 1.45;
+    orphans: 3;
+    widows: 3;
+  }
+  .hid-print-host--flow .hid-body,
+  .hid-print-host--flow .hid-research-row__evidence,
+  .hid-print-host--flow .hid-research-row__entity,
+  .hid-print-host--flow .hid-timeline-block__evidence,
+  .hid-print-host--flow .hid-bibliography__title,
+  .hid-print-host--flow li,
+  .hid-print-host--flow p {
+    color: #101935 !important;
+    opacity: 1 !important;
+  }
+  .hid-print-host--flow .hid-muted,
+  .hid-print-host--flow .hid-chapter__band,
+  .hid-print-host--flow .hid-chapter__foot,
+  .hid-print-host--flow .hid-research-row__evidence-label,
+  .hid-print-host--flow .hid-people-card__label,
+  .hid-print-host--flow .hid-timeline-block__evidence-label {
+    color: #4a556f !important;
+  }
+
+  .hid-print-host--flow .hid-doc-flow {
+    gap: 0;
+  }
+  .hid-print-host--flow .hid-chapter {
+    box-shadow: none !important;
+    border: 0 !important;
+    margin: 0 0 6mm !important;
+    break-before: auto;
+    page-break-before: auto;
+    break-inside: auto;
+    /* Keep body clear of footer safe band */
+    padding-bottom: 4mm !important;
+  }
+  .hid-print-host--flow .hid-chapter__band,
+  .hid-print-host--flow .hid-chapter__foot {
+    display: none;
+  }
+  .hid-print-host--flow .hid-chapter .hid-chapter-h,
+  .hid-print-host--flow .hid-chapter .hid-body,
+  .hid-print-host--flow .hid-chapter .hid-list,
+  .hid-print-host--flow .hid-chapter .hid-exec-group,
+  .hid-print-host--flow .hid-chapter .hid-finding-callout,
+  .hid-print-host--flow .hid-chapter .hid-dual-present,
+  .hid-print-host--flow .hid-chapter .hid-ownership-diagram,
+  .hid-print-host--flow .hid-chapter .hid-people-grid,
+  .hid-print-host--flow .hid-chapter .hid-callout,
+  .hid-print-host--flow .hid-chapter .hid-print-stack,
+  .hid-print-host--flow .hid-chapter .hid-bibliography,
+  .hid-print-host--flow .hid-chapter .hid-contact-table,
+  .hid-print-host--flow .hid-chapter .hid-contact-block,
+  .hid-print-host--flow .hid-chapter .hid-subhead {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hid-print-host--flow {
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+  }
+  .hid-print-host--flow,
+  .hid-print-host--flow * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* Cover — Brand Alignment Snapshot family */
+  .hid-print-host--flow .hid-cover-page.bas-cover-page {
+    width: 100% !important;
+    /* Fit inside Playwright content box (A4 − top/bottom margins) — avoid blank trailing page */
+    min-height: calc(297mm - 14mm - 20mm) !important;
+    height: auto !important;
+    max-height: calc(297mm - 14mm - 20mm) !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    break-after: page;
+    page-break-after: always;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #080f25 !important;
+    overflow: hidden !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-doc-type,
+  .hid-print-host--flow .hid-cover-page .bas-cover-confidential,
+  .hid-print-host--flow .hid-cover-page .bas-cover-sub {
+    letter-spacing: 0.08em !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-location {
+    letter-spacing: 0.02em !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-geometric {
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  /* Cover secondary text — readable against texture (R7/R9) */
+  .hid-print-host--flow .hid-cover-page .bas-cover-doc-type,
+  .hid-print-host--flow .hid-cover-page .bas-cover-location,
+  .hid-print-host--flow .hid-cover-page .bas-cover-sub,
+  .hid-print-host--flow .hid-cover-page .bas-cover-confidential {
+    color: #d7def5 !important;
+    opacity: 1 !important;
+    font-weight: 500 !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-doc-type {
+    font-size: 0.72rem !important;
+    letter-spacing: 0.18em !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-location {
+    font-size: 1.05rem !important;
+    color: #e4e9fb !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-sub {
+    font-size: 0.78rem !important;
+    line-height: 1.45 !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-date {
+    color: #fdb52a !important;
+    opacity: 1 !important;
+    font-size: 0.72rem !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-accent-line {
+    background: #6c72ff !important;
+    width: 48px !important;
+    height: 3px !important;
+    opacity: 1 !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-title {
+    color: #ffffff !important;
+    font-size: 2rem !important;
+    line-height: 1.1 !important;
+  }
+  .hid-print-host--flow .hid-cover-page .bas-cover-deal-hook,
+  .hid-print-host--flow .hid-cover-page .bas-cover-disclaimer {
+    color: #c5cef0 !important;
+    opacity: 1 !important;
+  }
+  .hid-print-host--flow .hid-cover-page__foot {
+    display: none !important;
+  }
+
+  /* Large research rows may split; short people cards must not */
+  .hid-print-host--flow .hid-timeline-block--history,
+  .hid-print-host--flow .hid-research-row {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .hid-print-host--flow .hid-people-card,
+  .hid-print-host--flow .hid-people-card--block,
+  .hid-print-host--flow article.hid-people {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .hid-print-host--flow .hid-people-card__name,
+  .hid-print-host--flow .hid-people-card__meta {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /*
+   * Citation keep-with-previous — only the nearest word + [n] (R9.1).
+   * Do NOT nowrap long prose chunks (caused mid-word PDF splits).
+   */
+  .hid-cite-keep {
+    display: inline;
+    white-space: nowrap;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .hid-cite {
+    white-space: nowrap;
+    display: inline;
+  }
+  .hid-print-host--flow .hid-finding-callout,
+  .hid-print-host--flow .hid-callout {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .hid-print-host--flow .hid-research-row__evidence-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .hid-print-host--flow .hid-research-row__head,
+  .hid-print-host--flow .hid-research-row__entity,
+  .hid-print-host--flow .hid-research-row__evidence-label {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .hid-print-host--flow .hid-research-row__evidence {
+    orphans: 3;
+    widows: 3;
+  }
+  /* If a heading would follow a dangling cite, prefer moving heading with prior chunk */
+  .hid-print-host--flow .hid-chapter-h {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Appendix B contact table — keep short table together */
+  .hid-print-host--flow .hid-contact-block,
+  .hid-print-host--flow .hid-contact-table {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .hid-print-host--flow [data-hid-section="contacts_appendix"] .hid-chapter-h {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .hid-print-host--flow [data-hid-section="contacts_appendix"] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Bibliography — denser packing so final page is not a single source */
+  .hid-print-host--flow .hid-bibliography {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  .hid-print-host--flow .hid-bibliography__item {
+    margin: 0 0 2px;
+    padding: 0 0 2px;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .hid-print-host--flow .hid-bibliography__title {
+    margin: 0 0 1px;
+    line-height: 1.25;
+    font-size: 9.5pt;
+  }
+  .hid-print-host--flow .hid-bibliography__meta,
+  .hid-print-host--flow .hid-bibliography__url {
+    margin: 0;
+    line-height: 1.25;
+    font-size: 8.5pt;
+  }
+
+  .hid-print-host--flow .hid-chapter-h {
+    font-size: 16pt;
+    margin: 0 0 10px;
+    color: #101935 !important;
+    break-after: avoid;
+  }
+  .hid-print-host--flow .hid-body,
+  .hid-print-host--flow .hid-exec-group p,
+  .hid-print-host--flow .hid-finding-callout,
+  .hid-print-host--flow .hid-research-row__evidence,
+  .hid-print-host--flow .hid-timeline-block__evidence,
+  .hid-print-host--flow .hid-callout,
+  .hid-print-host--flow .hid-dual-present p {
+    font-size: 10pt;
+    line-height: 1.45;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+  }
+  .hid-print-host--flow .hid-bibliography__url a,
+  .hid-print-host--flow .hid-td-url,
+  .hid-print-host--flow .hid-contact-line {
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+  .hid-print-host--flow .hid-research-row__evidence,
+  .hid-print-host--flow .hid-timeline-block__evidence {
+    font-size: 9.5pt;
+  }
+  .hid-cite {
+    color: #2f46c8 !important;
+  }
+
+  .hid-print-host--flow .hid-research-row {
+    border: 0;
+    border-bottom: 1px solid #e6eaf4;
+    border-radius: 0;
+    padding: 8px 0 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hid-reader-canvas {
+    padding: 12px 10px 28px;
+  }
+  .hid-reader-toolbar {
+    gap: 8px;
+  }
+  .hid-tool-btn[data-hid-fit-page],
+  .hid-tool-btn[data-hid-zoom-100] {
+    display: none;
+  }
+}

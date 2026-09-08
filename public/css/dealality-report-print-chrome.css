@@ -1,0 +1,62 @@
+/**
+ * Shared Dealality report print chrome (Brand Alignment / Deal Brief family).
+ * Used by Hotel Intelligence Dossier continuous PDF flow.
+ *
+ * R7: Playwright footerTemplate owns PDF footers. DOM running footer is for
+ * window.print() only — hide it when exporting via Playwright
+ * (.hid-print-host--pdf-export).
+ */
+
+.dealality-report-running-footer,
+.bas-print-running-footer {
+  display: none;
+}
+
+@media print {
+  .dealality-report-running-footer,
+  .bas-print-running-footer {
+    display: flex !important;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    box-sizing: border-box;
+    padding: 4mm 12mm 5mm;
+    margin: 0;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    font-size: 7.5pt;
+    line-height: 1.2;
+    color: #4a5568;
+    background: transparent;
+    pointer-events: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Playwright PDF path — DOM footer must not paint (dual chrome / top clone bug) */
+  .hid-print-host--pdf-export .dealality-report-running-footer,
+  .hid-print-host--pdf-export .bas-print-running-footer,
+  body.hid-print-pdf-export .dealality-report-running-footer,
+  body.hid-print-pdf-export .bas-print-running-footer {
+    display: none !important;
+  }
+
+  .dealality-report-running-footer__legal {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .dealality-report-running-footer__mark {
+    flex: 0 0 auto;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: right;
+  }
+}
