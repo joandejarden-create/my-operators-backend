@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Leak Audit Admin Workflow — Dealality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=1" />
+  <link rel="stylesheet" href="/css/admin-adp-leak-audits.css?v=1" />
+</head>
+<body class="support-page ala-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>AI Demand Leak Audits is for Dealality admin use only.</p>
+  </div>
+
+  <div class="support-page-shell adr-shell" id="supportGateContent" hidden>
+    <header class="adr-header">
+      <h1>AI Demand Leak Audit — Admin Workflow</h1>
+      <p class="adr-subtitle">
+        Simple operating checklist for Joan or a future team member. Free audit writes stay isolated from production ADP.
+      </p>
+      <p>
+        <a class="adr-btn adr-btn--secondary" href="/admin/adp-leak-audits/reports">Audit Reports</a>
+        <a class="adr-btn" href="/admin/adp-leak-audits/queue">Request Queue</a>
+        <a class="adr-btn" href="/adp-leak-audit/sample" target="_blank" rel="noopener">Open Sample Report</a>
+        <a class="adr-btn adr-btn--secondary" href="/admin/adp-leak-audits/new">New Request</a>
+      </p>
+    </header>
+
+    <ol class="ala-workflow">
+      <li>
+        <h2>1. Create request</h2>
+        <p>Go to <a href="/admin/adp-leak-audits/new">New Audit Request</a>. Capture hotel name, website, market, contact, demand segment, and source.</p>
+        <p><strong>Result:</strong> status = <code>requested</code>. No production hotel records are updated.</p>
+      </li>
+      <li>
+        <h2>2. Approve request</h2>
+        <p>On the <a href="/admin/adp-leak-audits/queue">request queue</a>, click <strong>Approve</strong> after a quick qualification check.</p>
+        <p><strong>Result:</strong> status = <code>approved</code>.</p>
+      </li>
+      <li>
+        <h2>3. Run audit</h2>
+        <p>Click <strong>Run Audit</strong>. Phase 1 creates a leak-audit run with limited territories and stores observations only in the leak-audit store.</p>
+        <p><strong>Result:</strong> status moves through <code>running</code> → <code>completed</code>.</p>
+      </li>
+      <li>
+        <h2>4. Review observations</h2>
+        <p>Open the request detail via API/admin review. Confirm subject mentions, competitor displacement, and demand territories look sensible. Failed provider notes stay on the leak-audit run only.</p>
+      </li>
+      <li>
+        <h2>5. Generate / open report</h2>
+        <p>Phase 1 auto-generates the one-page report on run completion. Click <strong>View Report</strong> and confirm the commercial sections read cleanly for a hotel owner.</p>
+        <p>Sales demo: use the <a href="/adp-leak-audit/sample" target="_blank" rel="noopener">sample report</a>.</p>
+      </li>
+      <li>
+        <h2>6. Mark sent</h2>
+        <p>After the report is shared with the prospect, click <strong>Mark Sent</strong>.</p>
+        <p><strong>Result:</strong> request status = <code>sent</code>; report status = <code>sent</code>.</p>
+      </li>
+      <li>
+        <h2>7. Promote to pilot</h2>
+        <p>Only if the prospect agrees to discuss paid monitoring. Click <strong>Promote to Paid ADP Pilot</strong>, read the confirmation text, then confirm.</p>
+        <p><strong>Phase 1.5 result:</strong> promotion stub only; status = <code>converted</code>. No production ADP records are created yet.</p>
+      </li>
+    </ol>
+
+    <section class="ala-workflow-notes">
+      <h2>Safety reminders</h2>
+      <ul>
+        <li>Never paste full proprietary prompts into the client report.</li>
+        <li>Never write to Census, Brand Explorer, Operator Explorer, or paid ADP monitoring from this workflow.</li>
+        <li>Use cautious language: “evidence suggests,” not “this proves.”</li>
+        <li>Keep the conversation on the limited diagnostic → paid pilot path.</li>
+      </ul>
+    </section>
+  </div>
+
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js?v=adp-mr-admin-2"></script>
+  <script>
+    (async function () {
+      var loadingEl = document.getElementById("supportGateLoading");
+      if (!window.SupportAdminGate) {
+        loadingEl.hidden = true;
+        document.getElementById("supportGateDenied").hidden = false;
+        return;
+      }
+      window.SupportAdminGate.showPageLoading("supportGateLoading", "Verifying access…");
+      var allowed = await window.SupportAdminGate.requireAdpMonthlyReviewAdmin({
+        contentId: "supportGateContent",
+      });
+      if (!allowed) return;
+      window.SupportAdminGate.hidePageLoading(loadingEl);
+      document.getElementById("supportGateContent").hidden = false;
+    })();
+  </script>
+</body>
+</html>

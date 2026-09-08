@@ -1,0 +1,256 @@
+{
+  "schema_version": "gold-entity-mappings-v1",
+  "packet": "2.5B",
+  "note": "EVALUATION ONLY — never import from pipeline / entity-resolve runtime.",
+  "anti_merge_pairs": [
+    { "a": "dhl_kgpv", "b": "dhl_krystal_resort_pv", "reason": "adjacent_distinct_hotels" },
+    { "a": "dle_gsf", "b": "dle_ihvsf", "reason": "parent_vs_propco" },
+    { "a": "dhl_chable_maroma", "b": "dhl_chable_yucatan", "reason": "same_group_distinct_hotels" },
+    { "a": "dle_grupo_chable", "b": "dhl_chable_maroma", "reason": "org_vs_hotel" },
+    { "a": "dle_grupo_chable", "b": "dhl_chable_yucatan", "reason": "org_vs_hotel" },
+    { "a": "dle_mhkl", "b": "dle_fideicomiso_mahekal", "reason": "propco_vs_trust" },
+    { "a": "dle_breathless_brand", "b": "dhl_kgpv", "reason": "announced_brand_vs_hotel" },
+    { "a": "dle_hyatt", "b": "dhl_kgpv", "reason": "brand_company_vs_hotel" },
+    { "a": "dle_nakheel", "b": "dhl_palmilla", "reason": "jv_partner_vs_hotel" }
+  ],
+  "mention_cases": [
+    {
+      "id": "er_kgpv_exact",
+      "raw": "Krystal Grand Puerto Vallarta",
+      "kind": "hotel",
+      "expected_id": "dhl_kgpv",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_kgpv_former_hilton",
+      "raw": "Hilton Puerto Vallarta Resort",
+      "kind": "hotel",
+      "expected_id": "dhl_kgpv",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true,
+      "note": "former brand identity of same physical asset"
+    },
+    {
+      "id": "er_kgpv_altitude",
+      "raw": "Krystal Altitude Puerto Vallarta",
+      "kind": "hotel",
+      "expected_id": "dhl_kgpv",
+      "min_decision": "MATCHED_PROBABLE",
+      "critical": true
+    },
+    {
+      "id": "er_resort_exact",
+      "raw": "Krystal Resort Puerto Vallarta",
+      "kind": "hotel",
+      "expected_id": "dhl_krystal_resort_pv",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_grand_not_resort",
+      "raw": "Krystal Grand Puerto Vallarta",
+      "kind": "hotel",
+      "forbidden_ids": ["dhl_krystal_resort_pv"],
+      "expected_id": "dhl_kgpv",
+      "critical": true
+    },
+    {
+      "id": "er_gsf_legal",
+      "raw": "Grupo Hotelero Santa Fe, S.A.B. de C.V.",
+      "kind": "organization",
+      "expected_id": "dle_gsf",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_gsf_abbrev",
+      "raw": "GSF",
+      "kind": "organization",
+      "expected_id": "dle_gsf",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_gsf_ticker",
+      "raw": "BMV: HOTEL",
+      "kind": "organization",
+      "expected_id": "dle_gsf",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_bare_hotel_not_ticker",
+      "raw": "hotel",
+      "kind": "organization",
+      "forbidden_ids": ["dle_gsf", "dle_ihvsf"],
+      "expect_unresolved": true,
+      "critical": true,
+      "note": "bare common noun must not map to BMV ticker"
+    },
+    {
+      "id": "er_ihvsf_abbrev",
+      "raw": "IHVSF",
+      "kind": "organization",
+      "expected_id": "dle_ihvsf",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_ihvsf_legal",
+      "raw": "Inmobiliaria en Hotelería Vallarta Santa Fe, S. de R.L. de C.V.",
+      "kind": "organization",
+      "expected_id": "dle_ihvsf",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_gsf_not_ihvsf",
+      "raw": "GSF",
+      "kind": "organization",
+      "expected_id": "dle_gsf",
+      "forbidden_ids": ["dle_ihvsf"],
+      "critical": true
+    },
+    {
+      "id": "er_ihvsf_not_gsf",
+      "raw": "IHVSF",
+      "kind": "organization",
+      "expected_id": "dle_ihvsf",
+      "forbidden_ids": ["dle_gsf"],
+      "critical": true
+    },
+    {
+      "id": "er_mhkl",
+      "raw": "MHKL",
+      "kind": "organization",
+      "expected_id": "dle_mhkl",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_fideicomiso",
+      "raw": "Fideicomiso Mahekal",
+      "kind": "organization",
+      "expected_id": "dle_fideicomiso_mahekal",
+      "forbidden_ids": ["dle_mhkl"],
+      "min_decision": "MATCHED_HIGH",
+      "critical": true
+    },
+    {
+      "id": "er_nakheel",
+      "raw": "Nakheel Hotels",
+      "kind": "organization",
+      "expected_id": "dle_nakheel",
+      "forbidden_ids": ["dhl_palmilla"],
+      "critical": true
+    },
+    {
+      "id": "er_chable_maroma",
+      "raw": "Chablé Maroma",
+      "kind": "hotel",
+      "expected_id": "dhl_chable_maroma",
+      "forbidden_ids": ["dhl_chable_yucatan", "dle_grupo_chable"],
+      "critical": true
+    },
+    {
+      "id": "er_chable_yucatan",
+      "raw": "Chablé Yucatán",
+      "kind": "hotel",
+      "expected_id": "dhl_chable_yucatan",
+      "forbidden_ids": ["dhl_chable_maroma", "dle_grupo_chable"],
+      "critical": true
+    },
+    {
+      "id": "er_grupo_chable",
+      "raw": "Grupo Chablé",
+      "kind": "organization",
+      "expected_id": "dle_grupo_chable",
+      "forbidden_ids": ["dhl_chable_maroma", "dhl_chable_yucatan"],
+      "critical": true
+    },
+    {
+      "id": "er_breathless_not_hotel",
+      "raw": "Breathless Puerto Vallarta",
+      "kind": "mention",
+      "expected_id": "dle_breathless_brand",
+      "forbidden_ids": ["dhl_kgpv", "dle_hyatt"],
+      "critical": true
+    },
+    {
+      "id": "er_pedregal_former",
+      "raw": "Capella Pedregal",
+      "kind": "hotel",
+      "expected_id": "dhl_pedregal",
+      "min_decision": "MATCHED_PROBABLE",
+      "critical": true
+    },
+    {
+      "id": "er_walton_mx",
+      "raw": "Walton Street Capital Mexico",
+      "kind": "organization",
+      "expected_id": "dle_walton_mx",
+      "forbidden_ids": ["dle_hilton", "dhl_pedregal"],
+      "critical": true
+    },
+    {
+      "id": "er_unseen_gsf_trade",
+      "raw": "Grupo Hotelero Santa Fe",
+      "kind": "organization",
+      "expected_id": "dle_gsf",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true,
+      "unseen_variant": true
+    },
+    {
+      "id": "er_unseen_ihvsf_no_accents",
+      "raw": "Inmobiliaria en Hoteleria Vallarta Santa Fe",
+      "kind": "organization",
+      "expected_id": "dle_ihvsf",
+      "min_decision": "MATCHED_HIGH",
+      "critical": true,
+      "unseen_variant": true
+    }
+  ],
+  "scope_cases": [
+    {
+      "id": "scope_ihvsf_propco",
+      "entity_id": "dle_ihvsf",
+      "expected_scope": "PROPERTY_SPECIFIC",
+      "allowed_hotel_ids": ["dhl_kgpv"],
+      "blocked_hotel_ids": ["dhl_krystal_resort_pv", "dhl_mahekal", "dhl_sparse_gsf_op"]
+    },
+    {
+      "id": "scope_gsf_org",
+      "entity_id": "dle_gsf",
+      "expected_scope": "ORGANIZATION_LEVEL"
+    },
+    {
+      "id": "scope_mhkl",
+      "entity_id": "dle_mhkl",
+      "expected_scope": "PROPERTY_SPECIFIC",
+      "allowed_hotel_ids": ["dhl_mahekal"],
+      "blocked_hotel_ids": ["dhl_kgpv"]
+    }
+  ],
+  "relation_cases": [
+    {
+      "id": "rel_ihvsf_subsidiary_gsf",
+      "a": "dle_ihvsf",
+      "b": "dle_gsf",
+      "expected_relation": "SUBSIDIARY_OF"
+    },
+    {
+      "id": "rel_gsf_parent_ihvsf",
+      "a": "dle_gsf",
+      "b": "dle_ihvsf",
+      "expected_relation": "PARENT_OF"
+    },
+    {
+      "id": "rel_gsf_same",
+      "a": "dle_gsf",
+      "b": "dle_gsf",
+      "expected_relation": "SAME_ENTITY"
+    }
+  ]
+}

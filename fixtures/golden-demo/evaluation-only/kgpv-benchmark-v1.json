@@ -1,0 +1,203 @@
+{
+  "version": "kgpv-benchmark-v1",
+  "evaluation_only": true,
+  "hotel_airtable_record_id": "recUNycnMwOVFX0hc",
+  "hotel_canonical": "Krystal Grand Puerto Vallarta",
+  "external_benchmark_cost_usd": 5.4,
+  "external_benchmark_session_id": "23969ba8-60d2-402d-887d-c94f555d3e3b",
+  "note": "Do not load during native execution. Compare only after blind run completes.",
+  "claims": [
+    {
+      "claim_id": "A01_hotel_identity",
+      "importance": "A",
+      "entities": ["Krystal Grand Puerto Vallarta"],
+      "relationship": "IDENTITY",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["hotel_first_party", "gsf_first_party_hotel_page"],
+      "supporting_sources": ["gsf_annual_report"],
+      "expected_semantics": "canonical_trading_name_krystal_grand_pv",
+      "known_false_alternative": "treat Breathless Census affiliation as current completed reflag"
+    },
+    {
+      "claim_id": "A02_adjacent_resort_distinct",
+      "importance": "A",
+      "entities": ["Krystal Grand Puerto Vallarta", "Krystal Resort Puerto Vallarta"],
+      "relationship": "ADJACENT_ASSET_DISTINCT",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["gsf_relevant_event_2016_third_party", "gsf_annual_report"],
+      "supporting_sources": [],
+      "expected_semantics": "grand_neq_resort",
+      "known_false_alternative": "merge Chartwell Resort ownership onto Grand"
+    },
+    {
+      "claim_id": "A03_economic_owner_gsf",
+      "importance": "A",
+      "entities": ["Grupo Hotelero Santa Fe", "Krystal Grand Puerto Vallarta"],
+      "relationship": "OWNED_BY",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["gsf_annual_report"],
+      "supporting_sources": ["bmv_issuer_profile"],
+      "expected_semantics": "gsf_economic_control_current",
+      "known_false_alternative": "operator-only relationship"
+    },
+    {
+      "claim_id": "A04_propco_ihvsf",
+      "importance": "A",
+      "entities": ["IHVSF", "Inmobiliaria en Hotelería Vallarta Santa Fe"],
+      "relationship": "PROPCO_HOLDS",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["gsf_annual_report"],
+      "supporting_sources": [],
+      "expected_semantics": "ihvsf_property_vehicle_not_deed_scan",
+      "known_false_alternative": "assert deed title from IR alone"
+    },
+    {
+      "claim_id": "A05_operator_gsf",
+      "importance": "A",
+      "entities": ["Grupo Hotelero Santa Fe", "Krystal Grand Puerto Vallarta"],
+      "relationship": "OPERATED_BY",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["census_management_company", "gsf_first_party_hotel_page"],
+      "supporting_sources": ["gsf_annual_report"],
+      "expected_semantics": "gsf_operates_current",
+      "known_false_alternative": null
+    },
+    {
+      "claim_id": "A06_brand_current_krystal_grand",
+      "importance": "A",
+      "entities": ["Krystal Grand"],
+      "relationship": "BRANDED_BY",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["hotel_first_party", "gsf_first_party_hotel_page"],
+      "supporting_sources": ["gsf_annual_report"],
+      "expected_semantics": "current_brand_krystal_grand",
+      "known_false_alternative": "Census Breathless as CURRENT"
+    },
+    {
+      "claim_id": "A07_breathless_announced",
+      "importance": "A",
+      "entities": ["Breathless Puerto Vallarta", "Hyatt", "Grupo Hotelero Santa Fe"],
+      "relationship": "ANNOUNCED_BRAND_PROJECT",
+      "temporal_status": "ANNOUNCED",
+      "confidence": "HIGH",
+      "decisive_sources": ["hyatt_newsroom"],
+      "supporting_sources": [],
+      "expected_semantics": "announced_not_current_reflag",
+      "known_false_alternative": "Breathless CURRENT affiliation of Grand"
+    },
+    {
+      "claim_id": "A08_hilton_altitude_former",
+      "importance": "A",
+      "entities": ["Hilton", "Krystal Altitude"],
+      "relationship": "FORMER_BRAND",
+      "temporal_status": "FORMER",
+      "confidence": "HIGH",
+      "decisive_sources": ["gsf_annual_report"],
+      "supporting_sources": ["hotel_first_party"],
+      "expected_semantics": "hilton_altitude_former",
+      "known_false_alternative": "Hilton CURRENT"
+    },
+    {
+      "claim_id": "A09_chartwell_historical_scoped",
+      "importance": "A",
+      "entities": ["Grupo Chartwell", "Krystal Grand Puerto Vallarta"],
+      "relationship": "FORMER_CO_OWNER",
+      "temporal_status": "FORMER",
+      "confidence": "HIGH",
+      "decisive_sources": ["gsf_annual_report"],
+      "supporting_sources": [],
+      "expected_semantics": "chartwell_former_on_grand_current_on_resort_only",
+      "known_false_alternative": "Chartwell CURRENT owner of Grand"
+    },
+    {
+      "claim_id": "A10_no_false_natural_ubo",
+      "importance": "A",
+      "entities": [],
+      "relationship": "NATURAL_PERSON_UBO",
+      "temporal_status": "UNKNOWN",
+      "confidence": "NOT_VERIFIED",
+      "decisive_sources": [],
+      "supporting_sources": [],
+      "expected_semantics": "ubo_not_verified",
+      "known_false_alternative": "promote named executive as UBO"
+    },
+    {
+      "claim_id": "A11_no_false_signatory",
+      "importance": "A",
+      "entities": [],
+      "relationship": "LEGAL_OR_FRANCHISE_SIGNATORY",
+      "temporal_status": "UNKNOWN",
+      "confidence": "NOT_VERIFIED",
+      "decisive_sources": [],
+      "supporting_sources": [],
+      "expected_semantics": "title_not_authority",
+      "known_false_alternative": "CEO equals QUALIFIED SIGNATORY"
+    },
+    {
+      "claim_id": "B01_ownership_transition_2014",
+      "importance": "B",
+      "entities": ["Grupo Hotelero Santa Fe", "Grupo Chartwell"],
+      "relationship": "OWNERSHIP_CHANGE",
+      "temporal_status": "FORMER",
+      "confidence": "HIGH",
+      "decisive_sources": ["gsf_annual_report"],
+      "expected_semantics": "2014_remaining_interest_acquisition"
+    },
+    {
+      "claim_id": "B02_opening_2012",
+      "importance": "B",
+      "entities": ["Hilton Puerto Vallarta"],
+      "relationship": "OPENING",
+      "temporal_status": "FORMER",
+      "confidence": "HIGH",
+      "decisive_sources": ["gsf_annual_report"],
+      "expected_semantics": "opened_2012_as_hilton"
+    },
+    {
+      "claim_id": "B03_hacienda_expansion",
+      "importance": "B",
+      "entities": ["The Hacienda"],
+      "relationship": "EXPANSION",
+      "temporal_status": "FORMER",
+      "confidence": "HIGH",
+      "decisive_sources": ["gsf_annual_report"],
+      "expected_semantics": "hacienda_2018_rooms_to_451"
+    },
+    {
+      "claim_id": "B04_public_company_context",
+      "importance": "B",
+      "entities": ["Grupo Hotelero Santa Fe", "BMV:HOTEL"],
+      "relationship": "PUBLIC_COMPANY",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["bmv_issuer_profile", "gsf_annual_report"],
+      "expected_semantics": "bmv_hotel_issuer"
+    },
+    {
+      "claim_id": "B05_people_governance",
+      "importance": "B",
+      "entities": ["Francisco Medina Elizalde", "Carlos Gerardo Ancira Elizondo"],
+      "relationship": "GOVERNANCE_PEOPLE",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["bmv_issuer_profile", "gsf_annual_report"],
+      "expected_semantics": "named_executives_title_verified_authority_not"
+    },
+    {
+      "claim_id": "C01_corporate_contacts",
+      "importance": "C",
+      "entities": ["Grupo Hotelero Santa Fe"],
+      "relationship": "CORPORATE_CONTACT",
+      "temporal_status": "CURRENT",
+      "confidence": "HIGH",
+      "decisive_sources": ["bmv_issuer_profile", "gsf_corporate"],
+      "expected_semantics": "hq_phone_ir_email_field_specific"
+    }
+  ]
+}
