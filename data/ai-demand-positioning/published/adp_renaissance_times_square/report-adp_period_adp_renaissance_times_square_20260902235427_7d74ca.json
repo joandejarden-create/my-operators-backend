@@ -1,12 +1,12 @@
 {
   "ok": true,
-  "publishedAt": "2026-09-03T02:26:05.443Z",
+  "publishedAt": "2026-09-08T21:10:33.626Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_renaissance_times_square",
   "periodId": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca",
   "censusRecordId": null,
-  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-  "reportEdition": "CORRECTED_V1_1",
+  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+  "reportEdition": "ORIGINAL_V1",
   "payload": {
     "ok": true,
     "version": "ai_demand_positioning_v1",
@@ -31,10 +31,10 @@
       "status": "PARSED"
     },
     "demandCapture": {
-      "overallRate": 29.2,
+      "overallRate": 24.6,
       "totalScenarios": 65,
-      "capturedScenarios": 19,
-      "missedScenarios": 46,
+      "capturedScenarios": 16,
+      "missedScenarios": 49,
       "byIntent": {
         "business": {
           "total": 13,
@@ -43,8 +43,8 @@
         },
         "leisure": {
           "total": 13,
-          "captured": 6,
-          "rate": 46.2
+          "captured": 4,
+          "rate": 30.8
         },
         "couples": {
           "total": 9,
@@ -73,11 +73,11 @@
         },
         "adventure": {
           "total": 3,
-          "captured": 1,
-          "rate": 33.3
+          "captured": 0,
+          "rate": 0
         }
       },
-      "display": "29.2%"
+      "display": "24.6%"
     },
     "intentPresenceIndex": {
       "business": {
@@ -86,9 +86,9 @@
         "territory": "Business Travel",
         "status": "PRODUCTION_VALIDATED",
         "blockers": [],
-        "index": 133,
-        "myRate": 17.3,
-        "subjectRatePct": 17.3,
+        "index": 119,
+        "myRate": 15.4,
+        "subjectRatePct": 15.4,
         "coreBenchmarkRatePct": 13,
         "avgCompRate": 13,
         "developing": false,
@@ -119,9 +119,9 @@
         "territory": "Leisure Travel",
         "status": "PRODUCTION_VALIDATED",
         "blockers": [],
-        "index": 180,
-        "myRate": 17.3,
-        "subjectRatePct": 17.3,
+        "index": 100,
+        "myRate": 9.6,
+        "subjectRatePct": 9.6,
         "coreBenchmarkRatePct": 9.6,
         "avgCompRate": 9.6,
         "developing": false,
@@ -152,9 +152,9 @@
         "territory": "Couples / Romantic Stay",
         "status": "PRODUCTION_VALIDATED",
         "blockers": [],
-        "index": 83,
-        "myRate": 11.1,
-        "subjectRatePct": 11.1,
+        "index": 42,
+        "myRate": 5.6,
+        "subjectRatePct": 5.6,
         "coreBenchmarkRatePct": 13.3,
         "avgCompRate": 13.3,
         "developing": false,
@@ -218,13 +218,11 @@
         "territory": "Family Travel",
         "status": "BENCHMARK_DEVELOPING",
         "blockers": [
-          "scenario_density",
-          "scenario_loo_subject",
-          "scenario_loo"
+          "scenario_density"
         ],
         "index": null,
-        "myRate": 12.5,
-        "subjectRatePct": 12.5,
+        "myRate": 4.2,
+        "subjectRatePct": 4.2,
         "coreBenchmarkRatePct": null,
         "avgCompRate": 0,
         "developing": true,
@@ -259,8 +257,8 @@
           "scenario_density"
         ],
         "index": null,
-        "myRate": 10.7,
-        "subjectRatePct": 10.7,
+        "myRate": 7.1,
+        "subjectRatePct": 7.1,
         "coreBenchmarkRatePct": null,
         "avgCompRate": 0,
         "developing": true,
@@ -332,8 +330,8 @@
           "zero_denominator"
         ],
         "index": null,
-        "myRate": 8.3,
-        "subjectRatePct": 8.3,
+        "myRate": 0,
+        "subjectRatePct": 0,
         "coreBenchmarkRatePct": null,
         "avgCompRate": 0,
         "developing": true,
@@ -355,12 +353,12 @@
       }
     },
     "lostDemand": {
-      "totalLost": 43,
+      "totalLost": 49,
       "highRelevanceLost": 2,
       "displacement": [
         {
           "name": "The Knickerbocker",
-          "displacementCount": 29,
+          "displacementCount": 32,
           "entityId": "knickerbocker_nyc"
         },
         {
@@ -370,32 +368,28 @@
         },
         {
           "name": "New York Marriott Marquis",
-          "displacementCount": 17,
+          "displacementCount": 18,
           "entityId": "marriott_marquis_nyc"
         },
         {
           "name": "The Civilian Hotel",
-          "displacementCount": 12,
+          "displacementCount": 14,
           "entityId": "civil_hotel_nyc"
         },
         {
           "name": "Hard Rock Hotel New York",
-          "displacementCount": 8,
+          "displacementCount": 9,
           "entityId": "hard_rock_nyc"
         }
       ],
       "topReasons": [
         {
           "reason": "High competitor density. Stronger authority signals needed",
-          "count": 19
-        },
-        {
-          "reason": "Competitor has stronger authority or recency signals for this demand",
-          "count": 17
+          "count": 40
         },
         {
           "reason": "Meeting/event capability may be underrepresented in AI sources",
-          "count": 7
+          "count": 9
         }
       ],
       "scenarios": [
@@ -423,12 +417,24 @@
         },
         {
           "intent": "group_meeting",
+          "competitorsPresent": [],
+          "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "group_meeting",
           "competitorsPresent": [
             "The Knickerbocker",
             "Hard Rock Hotel New York",
             "New York Marriott Marquis",
             "The Westin New York at Times Square"
           ],
+          "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "group_meeting",
+          "competitorsPresent": [],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
           "relevance": "MEDIUM"
         },
@@ -445,10 +451,18 @@
         {
           "intent": "leisure",
           "competitorsPresent": [
+            "The Knickerbocker"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "MEDIUM"
+        },
+        {
+          "intent": "leisure",
+          "competitorsPresent": [
             "The Whitby Hotel",
             "The Civilian Hotel"
           ],
-          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
+          "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "MEDIUM"
         },
         {
@@ -473,36 +487,6 @@
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "MEDIUM"
-        },
-        {
-          "intent": "business",
-          "competitorsPresent": [
-            "Equinox Hotel New York"
-          ],
-          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
-          "relevance": "LOW"
-        },
-        {
-          "intent": "business",
-          "competitorsPresent": [
-            "The Knickerbocker",
-            "Kimpton Hotel Eventi",
-            "The Westin New York at Times Square",
-            "Equinox Hotel New York",
-            "Archer Hotel New York"
-          ],
-          "likelyReason": "High competitor density. Stronger authority signals needed",
-          "relevance": "LOW"
-        },
-        {
-          "intent": "business",
-          "competitorsPresent": [
-            "New York Marriott Marquis",
-            "W New York - Times Square",
-            "The Westin New York at Times Square"
-          ],
-          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
-          "relevance": "LOW"
         }
       ]
     },
@@ -512,188 +496,114 @@
       "overlapRate": 100,
       "surprises": [
         {
-          "name": "The Civilian Hotel",
-          "entityId": "civil_hotel_nyc",
-          "appearances": 17,
-          "aiPresencePct": 6.5,
-          "aiPresenceRate": 0.06538461538461539,
-          "mentions": 17,
-          "scenarioCount": 14,
-          "rawMentionCount": 20,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
-        },
-        {
           "name": "Hard Rock Hotel New York",
-          "entityId": "hard_rock_nyc",
-          "appearances": 13,
-          "aiPresencePct": 5,
-          "aiPresenceRate": 0.05,
-          "mentions": 13,
+          "mentions": 27,
           "scenarioCount": 12,
-          "rawMentionCount": 27,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "hard_rock_nyc",
           "isCore": false
         },
         {
-          "name": "The Whitby Hotel",
-          "entityId": "whitby_hotel_nyc",
-          "appearances": 13,
-          "aiPresencePct": 5,
-          "aiPresenceRate": 0.05,
-          "mentions": 13,
-          "scenarioCount": 8,
-          "rawMentionCount": 13,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "name": "The Civilian Hotel",
+          "mentions": 20,
+          "scenarioCount": 14,
+          "entityId": "civil_hotel_nyc",
           "isCore": false
         },
         {
           "name": "Archer Hotel New York",
-          "entityId": "archer_hotel_nyc",
-          "appearances": 8,
-          "aiPresencePct": 3.1,
-          "aiPresenceRate": 0.03076923076923077,
-          "mentions": 8,
+          "mentions": 15,
           "scenarioCount": 8,
-          "rawMentionCount": 15,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "archer_hotel_nyc",
           "isCore": false
         },
         {
-          "name": "Baccarat Hotel New York",
-          "entityId": "baccarat_hotel_nyc",
-          "appearances": 8,
-          "aiPresencePct": 3.1,
-          "aiPresenceRate": 0.03076923076923077,
-          "mentions": 8,
-          "scenarioCount": 7,
-          "rawMentionCount": 8,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "name": "The Whitby Hotel",
+          "mentions": 13,
+          "scenarioCount": 8,
+          "entityId": "whitby_hotel_nyc",
+          "isCore": false
+        },
+        {
+          "name": "Equinox Hotel New York",
+          "mentions": 12,
+          "scenarioCount": 5,
+          "entityId": "equinox_hotel_nyc",
           "isCore": false
         }
       ],
       "observed": [
         {
           "name": "The Knickerbocker",
-          "entityId": "knickerbocker_nyc",
-          "appearances": 95,
-          "aiPresencePct": 36.5,
-          "aiPresenceRate": 0.36538461538461536,
           "mentions": 95,
           "scenarioCount": 45,
-          "rawMentionCount": 95,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "knickerbocker_nyc",
           "isCore": true
         },
         {
           "name": "New York Marriott Marquis",
-          "entityId": "marriott_marquis_nyc",
-          "appearances": 55,
-          "aiPresencePct": 21.2,
-          "aiPresenceRate": 0.21153846153846154,
           "mentions": 55,
           "scenarioCount": 29,
-          "rawMentionCount": 55,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "marriott_marquis_nyc",
           "isCore": true
         },
         {
           "name": "The Westin New York at Times Square",
-          "entityId": "westin_times_square",
-          "appearances": 39,
-          "aiPresencePct": 15,
-          "aiPresenceRate": 0.15,
           "mentions": 39,
           "scenarioCount": 28,
-          "rawMentionCount": 39,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "westin_times_square",
           "isCore": true
-        },
-        {
-          "name": "The Civilian Hotel",
-          "entityId": "civil_hotel_nyc",
-          "appearances": 17,
-          "aiPresencePct": 6.5,
-          "aiPresenceRate": 0.06538461538461539,
-          "mentions": 17,
-          "scenarioCount": 14,
-          "rawMentionCount": 20,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
         },
         {
           "name": "Hard Rock Hotel New York",
-          "entityId": "hard_rock_nyc",
-          "appearances": 13,
-          "aiPresencePct": 5,
-          "aiPresenceRate": 0.05,
-          "mentions": 13,
+          "mentions": 27,
           "scenarioCount": 12,
-          "rawMentionCount": 27,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "hard_rock_nyc",
           "isCore": false
         },
         {
-          "name": "The Whitby Hotel",
-          "entityId": "whitby_hotel_nyc",
-          "appearances": 13,
-          "aiPresencePct": 5,
-          "aiPresenceRate": 0.05,
-          "mentions": 13,
-          "scenarioCount": 8,
-          "rawMentionCount": 13,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "name": "The Civilian Hotel",
+          "mentions": 20,
+          "scenarioCount": 14,
+          "entityId": "civil_hotel_nyc",
           "isCore": false
-        },
-        {
-          "name": "W New York - Times Square",
-          "entityId": "w_nyc_times_square",
-          "appearances": 11,
-          "aiPresencePct": 4.2,
-          "aiPresenceRate": 0.04230769230769231,
-          "mentions": 11,
-          "scenarioCount": 11,
-          "rawMentionCount": 11,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": true
         },
         {
           "name": "Margaritaville Resort Times Square",
-          "entityId": "margaritaville_nyc",
-          "appearances": 10,
-          "aiPresencePct": 3.8,
-          "aiPresenceRate": 0.038461538461538464,
-          "mentions": 10,
+          "mentions": 16,
           "scenarioCount": 10,
-          "rawMentionCount": 16,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "margaritaville_nyc",
           "isCore": true
         },
         {
           "name": "Archer Hotel New York",
-          "entityId": "archer_hotel_nyc",
-          "appearances": 8,
-          "aiPresencePct": 3.1,
-          "aiPresenceRate": 0.03076923076923077,
-          "mentions": 8,
+          "mentions": 15,
           "scenarioCount": 8,
-          "rawMentionCount": 15,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "archer_hotel_nyc",
           "isCore": false
         },
         {
-          "name": "Baccarat Hotel New York",
-          "entityId": "baccarat_hotel_nyc",
-          "appearances": 8,
-          "aiPresencePct": 3.1,
-          "aiPresenceRate": 0.03076923076923077,
-          "mentions": 8,
-          "scenarioCount": 7,
-          "rawMentionCount": 8,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "name": "The Whitby Hotel",
+          "mentions": 13,
+          "scenarioCount": 8,
+          "entityId": "whitby_hotel_nyc",
           "isCore": false
+        },
+        {
+          "name": "Equinox Hotel New York",
+          "mentions": 12,
+          "scenarioCount": 5,
+          "entityId": "equinox_hotel_nyc",
+          "isCore": false
+        },
+        {
+          "name": "W New York - Times Square",
+          "mentions": 11,
+          "scenarioCount": 11,
+          "entityId": "w_nyc_times_square",
+          "isCore": true
         }
       ],
+      "declaredButNotObserved": [],
       "topObservedAlternative": {
         "entityId": "knickerbocker_nyc",
         "name": "The Knickerbocker",
@@ -703,131 +613,139 @@
         "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
         "mentions": 95
       },
-      "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-      "declaredButNotObserved": [],
-      "rawCompetitorMentionMetric": "RAW_COMPETITOR_MENTION_COUNT"
+      "topObservedAlternativeMeta": {
+        "version": "adp_top_observed_ai_alternative_overall_presence_v1",
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "tiedMaxSet": [
+          {
+            "entityId": "knickerbocker_nyc",
+            "name": "The Knickerbocker",
+            "appearances": 95
+          }
+        ]
+      }
     },
     "realityGap": {
-      "gapScore": 62.5,
-      "display": "62.5%",
-      "totalAttributes": 16,
+      "gapScore": 64.7,
+      "display": "64.7%",
+      "totalAttributes": 17,
       "recognizedCount": 6,
-      "gapCount": 10,
+      "gapCount": 11,
       "recognized": [
         {
           "attribute": "times_square_location",
           "label": "Times Square Location",
           "recognitionRate": 100,
-          "count": 31,
-          "total": 31
+          "count": 20,
+          "total": 20
         },
         {
           "attribute": "broadway_theater_district",
           "label": "Broadway / Theater District",
-          "recognitionRate": 64.5,
-          "count": 20,
-          "total": 31
+          "recognitionRate": 55,
+          "count": 11,
+          "total": 20
         },
         {
           "attribute": "rooftop_bar",
           "label": "Rooftop Bar",
-          "recognitionRate": 87.1,
-          "count": 27,
-          "total": 31
+          "recognitionRate": 80,
+          "count": 16,
+          "total": 20
         },
         {
           "attribute": "marriott_bonvoy",
           "label": "Marriott Bonvoy Loyalty",
-          "recognitionRate": 80.6,
-          "count": 25,
-          "total": 31
+          "recognitionRate": 75,
+          "count": 15,
+          "total": 20
         },
         {
           "attribute": "meeting_space",
           "label": "Meeting & Event Space",
-          "recognitionRate": 41.9,
-          "count": 13,
-          "total": 31
+          "recognitionRate": 50,
+          "count": 10,
+          "total": 20
         },
         {
           "attribute": "design_forward",
           "label": "Design-Forward Interiors",
-          "recognitionRate": 67.7,
-          "count": 21,
-          "total": 31
+          "recognitionRate": 80,
+          "count": 16,
+          "total": 20
         }
       ],
       "gaps": [
         {
+          "attribute": "times_square_views",
+          "label": "Times Square Views",
+          "priority": "medium",
+          "recognitionRate": 20,
+          "count": 4,
+          "total": 20,
+          "severity": "MEDIUM"
+        },
+        {
           "attribute": "business_center",
           "label": "Business Center",
           "priority": "low",
-          "recognitionRate": 16.1,
-          "count": 5,
-          "total": 31,
+          "recognitionRate": 20,
+          "count": 4,
+          "total": 20,
+          "severity": "MEDIUM"
+        },
+        {
+          "attribute": "near_central_park",
+          "label": "Near Central Park",
+          "priority": "medium",
+          "recognitionRate": 10,
+          "count": 2,
+          "total": 20,
           "severity": "MEDIUM"
         },
         {
           "attribute": "full_service",
           "label": "Full-Service Hotel",
           "priority": "medium",
-          "recognitionRate": 16.1,
-          "count": 5,
-          "total": 31,
-          "severity": "MEDIUM"
-        },
-        {
-          "attribute": "concierge",
-          "label": "Concierge Service",
-          "priority": "low",
-          "recognitionRate": 12.9,
-          "count": 4,
-          "total": 31,
+          "recognitionRate": 10,
+          "count": 2,
+          "total": 20,
           "severity": "MEDIUM"
         },
         {
           "attribute": "midtown_manhattan",
           "label": "Midtown Manhattan",
           "priority": "medium",
-          "recognitionRate": 32.3,
-          "count": 10,
-          "total": 31,
+          "recognitionRate": 25,
+          "count": 5,
+          "total": 20,
           "severity": "LOW"
         },
         {
-          "attribute": "times_square_views",
-          "label": "Times Square Views",
+          "attribute": "fitness_center",
+          "label": "Fitness Center",
           "priority": "medium",
-          "recognitionRate": 35.5,
-          "count": 11,
-          "total": 31,
-          "severity": "LOW"
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 20,
+          "severity": "HIGH"
         },
         {
           "attribute": "walking_distance_broadway",
           "label": "Walking Distance to Broadway",
           "priority": "medium",
-          "recognitionRate": 6.5,
-          "count": 2,
-          "total": 31,
-          "severity": "HIGH"
-        },
-        {
-          "attribute": "near_central_park",
-          "label": "Near Central Park",
-          "priority": "medium",
-          "recognitionRate": 6.5,
-          "count": 2,
-          "total": 31,
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 20,
           "severity": "HIGH"
         },
         {
           "attribute": "near_rockefeller_center",
           "label": "Near Rockefeller Center",
           "priority": "medium",
-          "recognitionRate": 6.5,
-          "count": 2,
-          "total": 31,
+          "recognitionRate": 5,
+          "count": 1,
+          "total": 20,
           "severity": "HIGH"
         },
         {
@@ -836,7 +754,16 @@
           "priority": "medium",
           "recognitionRate": 0,
           "count": 0,
-          "total": 31,
+          "total": 20,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "concierge",
+          "label": "Concierge Service",
+          "priority": "low",
+          "recognitionRate": 5,
+          "count": 1,
+          "total": 20,
           "severity": "HIGH"
         },
         {
@@ -845,11 +772,11 @@
           "priority": "low",
           "recognitionRate": 0,
           "count": 0,
-          "total": 31,
+          "total": 20,
           "severity": "HIGH"
         }
       ],
-      "totalPropertyMentions": 31
+      "totalPropertyMentions": 20
     },
     "whiteSpace": {
       "totalOpportunities": 11,
@@ -1071,7 +998,7 @@
       "items": [
         {
           "type": "headline",
-          "text": "Your property captured 29.2% of relevant AI demand scenarios this period."
+          "text": "Your property captured 24.6% of relevant AI demand scenarios this period."
         },
         {
           "type": "risk",
@@ -1083,17 +1010,17 @@
         },
         {
           "type": "gap",
-          "text": "AI Reality Gap: 62.5%. AI misses or misrepresents 10 of your property's key attributes."
+          "text": "AI Reality Gap: 64.7%. AI misses or misrepresents 11 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-09-03T02:26:03.992Z"
+      "generatedAt": "2026-09-08T21:10:31.624Z"
     },
     "actions": [
       {
         "priority": "HIGH",
         "category": "REALITY_GAP",
-        "title": "Improve AI representation of walking distance to broadway",
-        "description": "AI currently misses or underrepresents your walking distance to broadway. Review third-party content and authority signals for this attribute before estimating impact.",
+        "title": "Improve AI representation of fitness center",
+        "description": "AI currently misses or underrepresents your fitness center. Review third-party content and authority signals for this attribute before estimating impact.",
         "expectedImpact": null,
         "impactNote": "Review evidence for this attribute gap before estimating scenario impact."
       },
@@ -1101,7 +1028,7 @@
         "priority": "MEDIUM",
         "category": "DISPLACEMENT",
         "title": "Address displacement by The Knickerbocker",
-        "description": "The Knickerbocker appears in 29 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
+        "description": "The Knickerbocker appears in 32 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
         "expectedImpact": null,
         "impactNote": "Displacement count is observational; expected reduction is not certified."
       },
@@ -1311,97 +1238,28 @@
       },
       "ownedDomainsConfigured": true
     },
-    "brandPortfolioPosition": {
-      "ok": true,
-      "sectionId": "brand-portfolio-position",
-      "contractVersion": "ADP_BRAND_PORTFOLIO_POSITION_CONTRACT_V1",
-      "sectionVisible": true,
-      "title": "Brand & Portfolio Position",
-      "subtitle": "How this hotel performs within its brand, collection, portfolio, or loyalty ecosystem.",
-      "sectionMode": "BRAND_PORTFOLIO_POSITION",
-      "status": "AWAITING_FIRST_MONITORING",
-      "renderState": "AWAITING_FIRST_MONITORING",
-      "customerState": {
-        "statusLabel": "Portfolio monitoring not yet available",
-        "headline": "Portfolio monitoring not yet available",
-        "body": "Brand & Portfolio insights will appear here after the first monitoring cycle.",
-        "secondary": "You’ll see AI Presence, portfolio rank, and the properties most often competing with this hotel."
-      },
-      "emptyMessage": "Brand & Portfolio insights will appear here after the first monitoring cycle.",
-      "lens": {
-        "lensId": "marriott_bonvoy",
-        "label": "Marriott Bonvoy",
-        "portfolioType": "LOYALTY_ECOSYSTEM",
-        "status": "DEFAULT"
-      },
-      "optionalFutureLenses": [
-        {
-          "lensId": "renaissance",
-          "label": "Renaissance",
-          "status": "OPTIONAL_FUTURE"
-        }
-      ],
-      "assuranceStatus": "NOT_READY",
-      "showAnalyticalScaffolding": false,
-      "kpis": null,
-      "ranking": null,
-      "tableColumns": null,
-      "dataAvailability": {
-        "validObservations": 8,
-        "invalidObservations": 0,
-        "needsRerunObservations": 4,
-        "propertySpecificOtherObservations": 52,
-        "validScenarios": 2,
-        "sufficientForRanking": false,
-        "historicalCandidateReuseAvailable": true,
-        "source": "ADP_BRAND_PORTFOLIO_OBSERVATION_RECLASS_V1"
-      },
-      "affiliationSnapshot": {
-        "brand": "Renaissance Hotels",
-        "affiliation": "Renaissance Hotels (Marriott)",
-        "parentCompany": "Marriott International",
-        "officialBrandDomain": "marriott.com"
-      },
-      "coreIsolation": true,
-      "gate": "CORE_PORTFOLIO_MEASUREMENT_ISOLATION",
-      "principles": [
-        "NO_EMPTY_ANALYTICAL_SCAFFOLDING_BEFORE_MEASUREMENT",
-        "PORTFOLIO_TABLE_REQUIRES_READY_MEASUREMENT",
-        "PORTFOLIO_METRIC_MISSING_IS_NOT_ZERO"
-      ],
-      "doesNotAlterCoreMetrics": true
-    },
     "executiveMetrics": {
       "version": "adp_optional_executive_metrics_v2",
       "considerationRate": {
-        "rate": 11.9,
-        "presentObservations": 31,
+        "rate": 7.7,
+        "presentObservations": 20,
         "comparableObservations": 260
       },
       "scenarioPresence": {
-        "rate": 29.2,
-        "capturedScenarios": 19,
+        "rate": 24.6,
+        "capturedScenarios": 16,
         "eligibleScenarios": 65
       },
       "rankMetrics": {
-        "rankEligibleN": 26,
-        "numberOneAppearanceRate": 7.7,
-        "topThreeAppearanceRate": 34.6,
-        "numberOneCount": 2,
-        "topThreeCount": 9
+        "rankEligibleN": 14,
+        "numberOneAppearanceRate": 7.1,
+        "topThreeAppearanceRate": 35.7,
+        "numberOneCount": 1,
+        "topThreeCount": 5
       },
       "competitorPresentScenarios": {
-        "scenarioCount": 52,
-        "observationCount": 212
-      },
-      "currentVsPrior": {
-        "currentPeriodId": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca",
-        "priorComparablePeriodId": "adp_period_adp_renaissance_times_square_20260820131042_18731c",
-        "deltas": {
-          "considerationRate": -2.8,
-          "scenarioPresence": -6.2,
-          "numberOneAppearanceRate": 3.9
-        }
+        "scenarioCount": 54,
+        "observationCount": 223
       }
     },
     "competitiveRankingByTerritory": {
@@ -1433,7 +1291,7 @@
               "topDemandTerritory": "Leisure Travel",
               "topDemandTerritoryIntent": "leisure",
               "displacement": {
-                "count": 29,
+                "count": 32,
                 "evidenceAvailable": true,
                 "competitorId": "knickerbocker_nyc"
               }
@@ -1455,7 +1313,7 @@
               "topDemandTerritory": "Business Travel",
               "topDemandTerritoryIntent": "business",
               "displacement": {
-                "count": 17,
+                "count": 18,
                 "evidenceAvailable": true,
                 "competitorId": "marriott_marquis_nyc"
               }
@@ -1486,9 +1344,9 @@
               "entityId": "__subject__",
               "name": "Renaissance New York Times Square Hotel",
               "isSubject": true,
-              "appearances": 31,
-              "aiPresenceRate": 0.11923076923076924,
-              "aiPresencePct": 11.9,
+              "appearances": 20,
+              "aiPresenceRate": 0.07692307692307693,
+              "aiPresencePct": 7.7,
               "relationship": "SUBJECT",
               "isCore": false,
               "observedRank": 4,
@@ -1521,7 +1379,7 @@
               "topDemandTerritory": "Leisure Travel",
               "topDemandTerritoryIntent": "leisure",
               "displacement": {
-                "count": 12,
+                "count": 14,
                 "evidenceAvailable": true,
                 "competitorId": "civil_hotel_nyc"
               }
@@ -1543,7 +1401,7 @@
               "topDemandTerritory": "Meetings & Groups",
               "topDemandTerritoryIntent": "group_meeting",
               "displacement": {
-                "count": 8,
+                "count": 9,
                 "evidenceAvailable": true,
                 "competitorId": "hard_rock_nyc"
               }
@@ -1587,7 +1445,7 @@
               "topDemandTerritory": "Business Travel",
               "topDemandTerritoryIntent": "business",
               "displacement": {
-                "count": 5,
+                "count": 6,
                 "evidenceAvailable": true,
                 "competitorId": "w_nyc_times_square"
               }
@@ -1729,9 +1587,9 @@
               "entityId": "__subject__",
               "name": "Renaissance New York Times Square Hotel",
               "isSubject": true,
-              "appearances": 9,
-              "aiPresenceRate": 0.17307692307692307,
-              "aiPresencePct": 17.3,
+              "appearances": 8,
+              "aiPresenceRate": 0.15384615384615385,
+              "aiPresencePct": 15.4,
               "relationship": "SUBJECT",
               "isCore": false,
               "observedRank": 4,
@@ -1952,7 +1810,7 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 4,
+                "count": 6,
                 "evidenceAvailable": true,
                 "competitorId": "knickerbocker_nyc"
               }
@@ -1972,7 +1830,7 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 2,
+                "count": 3,
                 "evidenceAvailable": true,
                 "competitorId": "marriott_marquis_nyc"
               }
@@ -1981,9 +1839,9 @@
               "entityId": "__subject__",
               "name": "Renaissance New York Times Square Hotel",
               "isSubject": true,
-              "appearances": 9,
-              "aiPresenceRate": 0.17307692307692307,
-              "aiPresencePct": 17.3,
+              "appearances": 5,
+              "aiPresenceRate": 0.09615384615384616,
+              "aiPresencePct": 9.6,
               "relationship": "SUBJECT",
               "isCore": false,
               "observedRank": 3,
@@ -2052,7 +1910,7 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 3,
+                "count": 4,
                 "evidenceAvailable": true,
                 "competitorId": "civil_hotel_nyc"
               }
@@ -2249,26 +2107,6 @@
               }
             },
             {
-              "entityId": "__subject__",
-              "name": "Renaissance New York Times Square Hotel",
-              "isSubject": true,
-              "appearances": 4,
-              "aiPresenceRate": 0.1111111111111111,
-              "aiPresencePct": 11.1,
-              "relationship": "SUBJECT",
-              "isCore": false,
-              "observedRank": 3,
-              "displayRank": 3,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": null
-              }
-            },
-            {
               "entityId": "civil_hotel_nyc",
               "name": "The Civilian Hotel",
               "isSubject": false,
@@ -2277,8 +2115,8 @@
               "aiPresencePct": 11.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 4,
-              "displayRank": 4,
+              "observedRank": 3,
+              "displayRank": 3,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -2297,8 +2135,8 @@
               "aiPresencePct": 11.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 5,
-              "displayRank": 5,
+              "observedRank": 4,
+              "displayRank": 4,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -2317,8 +2155,8 @@
               "aiPresencePct": 8.3,
               "relationship": "CORE",
               "isCore": true,
-              "observedRank": 6,
-              "displayRank": 6,
+              "observedRank": 5,
+              "displayRank": 5,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -2337,8 +2175,8 @@
               "aiPresencePct": 5.6,
               "relationship": "CORE",
               "isCore": true,
-              "observedRank": 7,
-              "displayRank": 7,
+              "observedRank": 6,
+              "displayRank": 6,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -2357,6 +2195,26 @@
               "aiPresencePct": 5.6,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_marquis_nyc"
+              }
+            },
+            {
+              "entityId": "__subject__",
+              "name": "Renaissance New York Times Square Hotel",
+              "isSubject": true,
+              "appearances": 2,
+              "aiPresenceRate": 0.05555555555555555,
+              "aiPresencePct": 5.6,
+              "relationship": "SUBJECT",
+              "isCore": false,
               "observedRank": 8,
               "displayRank": 8,
               "isAppendedCore": false,
@@ -2365,7 +2223,7 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "marriott_marquis_nyc"
+                "competitorId": null
               }
             },
             {
@@ -2558,26 +2416,6 @@
               }
             },
             {
-              "entityId": "__subject__",
-              "name": "Renaissance New York Times Square Hotel",
-              "isSubject": true,
-              "appearances": 3,
-              "aiPresenceRate": 0.125,
-              "aiPresencePct": 12.5,
-              "relationship": "SUBJECT",
-              "isCore": false,
-              "observedRank": 6,
-              "displayRank": 6,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": null
-              }
-            },
-            {
               "entityId": "hard_rock_nyc",
               "name": "Hard Rock Hotel New York",
               "isSubject": false,
@@ -2586,8 +2424,8 @@
               "aiPresencePct": 8.3,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 7,
-              "displayRank": 7,
+              "observedRank": 6,
+              "displayRank": 6,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -2606,8 +2444,8 @@
               "aiPresencePct": 8.3,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 8,
-              "displayRank": 8,
+              "observedRank": 7,
+              "displayRank": 7,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -2615,6 +2453,26 @@
                 "count": 1,
                 "evidenceAvailable": true,
                 "competitorId": "park_central_nyc"
+              }
+            },
+            {
+              "entityId": "__subject__",
+              "name": "Renaissance New York Times Square Hotel",
+              "isSubject": true,
+              "appearances": 1,
+              "aiPresenceRate": 0.041666666666666664,
+              "aiPresencePct": 4.2,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
               }
             },
             {
@@ -3144,26 +3002,6 @@
               }
             },
             {
-              "entityId": "__subject__",
-              "name": "Renaissance New York Times Square Hotel",
-              "isSubject": true,
-              "appearances": 3,
-              "aiPresenceRate": 0.10714285714285714,
-              "aiPresencePct": 10.7,
-              "relationship": "SUBJECT",
-              "isCore": false,
-              "observedRank": 4,
-              "displayRank": 4,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": null
-              }
-            },
-            {
               "entityId": "hard_rock_nyc",
               "name": "Hard Rock Hotel New York",
               "isSubject": false,
@@ -3172,8 +3010,8 @@
               "aiPresencePct": 7.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 5,
-              "displayRank": 5,
+              "observedRank": 4,
+              "displayRank": 4,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -3192,8 +3030,8 @@
               "aiPresencePct": 7.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 6,
-              "displayRank": 6,
+              "observedRank": 5,
+              "displayRank": 5,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -3201,6 +3039,26 @@
                 "count": 1,
                 "evidenceAvailable": true,
                 "competitorId": "margaritaville_nyc"
+              }
+            },
+            {
+              "entityId": "__subject__",
+              "name": "Renaissance New York Times Square Hotel",
+              "isSubject": true,
+              "appearances": 2,
+              "aiPresenceRate": 0.07142857142857142,
+              "aiPresencePct": 7.1,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
               }
             },
             {
@@ -3411,7 +3269,7 @@
       "current": {
         "positionPattern": "LIMITED_AI_DEMAND_REACH",
         "label": "limited AI demand reach",
-        "narrative": "Renaissance New York Times Square Hotel appears in 29.2% of monitored demand scenarios but in 11.9% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Leisure Travel is a relative strength: the hotel appears in 17.3% of monitored AI responses compared with a 9.6% CORE benchmark, producing an AI Presence Index of 180. AI visibility is broader than consideration consistency: the hotel appears in 29.2% of monitored demand scenarios but only 11.9% of individual comparable AI responses.",
+        "narrative": "Renaissance New York Times Square Hotel appears in 24.6% of monitored demand scenarios but in 7.7% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Business Travel is a relative strength: the hotel appears in 15.4% of monitored AI responses compared with a 13% CORE benchmark, producing an AI Presence Index of 119. AI visibility is broader than consideration consistency: the hotel appears in 24.6% of monitored demand scenarios but only 7.7% of individual comparable AI responses.",
         "primaryStrength": {
           "key": "ABOVE_BENCHMARK_TERRITORY",
           "label": "Above-benchmark territory presence"
@@ -3421,11 +3279,11 @@
           "label": "Consideration consistency"
         },
         "benchmarkFinding": {
-          "intent": "leisure",
-          "territory": "Leisure Travel",
-          "index": 180,
-          "subjectRatePct": 17.3,
-          "coreBenchmarkRatePct": 9.6
+          "intent": "business",
+          "territory": "Business Travel",
+          "index": 119,
+          "subjectRatePct": 15.4,
+          "coreBenchmarkRatePct": 13
         }
       },
       "trend": {
@@ -3450,7 +3308,7 @@
         "key": "CONSIDERATION_CONSISTENCY",
         "label": "Consideration consistency"
       },
-      "narrative": "Renaissance New York Times Square Hotel appears in 29.2% of monitored demand scenarios but in 11.9% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Leisure Travel is a relative strength: the hotel appears in 17.3% of monitored AI responses compared with a 9.6% CORE benchmark, producing an AI Presence Index of 180. AI visibility is broader than consideration consistency: the hotel appears in 29.2% of monitored demand scenarios but only 11.9% of individual comparable AI responses. This is the baseline monitoring period for this property.",
+      "narrative": "Renaissance New York Times Square Hotel appears in 24.6% of monitored demand scenarios but in 7.7% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Business Travel is a relative strength: the hotel appears in 15.4% of monitored AI responses compared with a 13% CORE benchmark, producing an AI Presence Index of 119. AI visibility is broader than consideration consistency: the hotel appears in 24.6% of monitored demand scenarios but only 7.7% of individual comparable AI responses. This is the baseline monitoring period for this property.",
       "meta": {
         "overall": "This is the baseline monitoring period for this property",
         "primaryStrength": "Above-benchmark territory presence",
@@ -3474,13 +3332,13 @@
         "PROPERTY_SPECIFIC_EXECUTIVE_COPY_CODE": 0,
         "biggestStrength": {
           "sectionLabel": "BIGGEST STRENGTH",
-          "headline": "Strong visibility for Leisure Travel",
-          "body": "For Leisure Travel searches, Renaissance New York Times Square Hotel appeared in 17.3% of AI answers, compared with 9.6% for the comparable hotels used in this analysis. That means the hotel was surfaced about 80% more often than the comparable hotels used in this analysis. In practical terms, this is the area where the hotel is showing its clearest visibility advantage versus similar hotels."
+          "headline": "Strong visibility for Business Travel",
+          "body": "For Business Travel searches, Renaissance New York Times Square Hotel appeared in 15.4% of AI answers, compared with 13% for the comparable hotels used in this analysis. That means the hotel was surfaced about 19% more often than the comparable hotels used in this analysis. In practical terms, this is the area where the hotel is showing its clearest visibility advantage versus similar hotels."
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
           "headline": "Not appearing consistently in AI answers",
-          "body": "The hotel appeared in at least one AI answer for 29.2% of the traveler needs we tested, but across all individual AI answers it appeared 11.9% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+          "body": "The hotel appeared in at least one AI answer for 24.6% of the traveler needs we tested, but across all individual AI answers it appeared 7.7% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
         },
         "changeSinceLastRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -3489,7 +3347,7 @@
         },
         "executiveSummary": {
           "title": "WHAT THE DATA SAYS",
-          "narrative": "Renaissance New York Times Square Hotel appeared in at least one AI answer for 29.2% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Renaissance New York Times Square Hotel appeared 11.9% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Renaissance New York Times Square Hotel in the hotel options surfaced.\n\nLeisure Travel is Renaissance New York Times Square Hotel's clearest competitive strength. The hotel appeared in 17.3% of AI answers for these searches, compared with 9.6% for the comparable hotels used in this analysis — about 80% more often than the comparable hotels used in this analysis. Among AI answers where hotel ranking could be measured, Renaissance New York Times Square Hotel appeared in the Top 3 34.6% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+          "narrative": "Renaissance New York Times Square Hotel appeared in at least one AI answer for 24.6% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Renaissance New York Times Square Hotel appeared 7.7% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Renaissance New York Times Square Hotel in the hotel options surfaced.\n\nBusiness Travel is Renaissance New York Times Square Hotel's clearest competitive strength. The hotel appeared in 15.4% of AI answers for these searches, compared with 13% for the comparable hotels used in this analysis — about 19% more often than the comparable hotels used in this analysis. Among AI answers where hotel ranking could be measured, Renaissance New York Times Square Hotel appeared in the Top 3 35.7% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
         },
         "safety": {
           "VAGUE_UNEXPLAINED_PHRASES": 0,
@@ -3504,13 +3362,13 @@
       "summary": {
         "biggestStrength": {
           "sectionLabel": "BIGGEST STRENGTH",
-          "headline": "Strong visibility for Leisure Travel",
-          "body": "For Leisure Travel searches, Renaissance New York Times Square Hotel appeared in 17.3% of AI answers, compared with 9.6% for the comparable hotels used in this analysis. That means the hotel was surfaced about 80% more often than the comparable hotels used in this analysis. In practical terms, this is the area where the hotel is showing its clearest visibility advantage versus similar hotels."
+          "headline": "Strong visibility for Business Travel",
+          "body": "For Business Travel searches, Renaissance New York Times Square Hotel appeared in 15.4% of AI answers, compared with 13% for the comparable hotels used in this analysis. That means the hotel was surfaced about 19% more often than the comparable hotels used in this analysis. In practical terms, this is the area where the hotel is showing its clearest visibility advantage versus similar hotels."
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
           "headline": "Not appearing consistently in AI answers",
-          "body": "The hotel appeared in at least one AI answer for 29.2% of the traveler needs we tested, but across all individual AI answers it appeared 11.9% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+          "body": "The hotel appeared in at least one AI answer for 24.6% of the traveler needs we tested, but across all individual AI answers it appeared 7.7% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
         },
         "changeSinceLastComparableRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -3520,35 +3378,579 @@
       },
       "writeup": {
         "title": "WHAT THE DATA SAYS",
-        "body": "Renaissance New York Times Square Hotel appeared in at least one AI answer for 29.2% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Renaissance New York Times Square Hotel appeared 11.9% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Renaissance New York Times Square Hotel in the hotel options surfaced.\n\nLeisure Travel is Renaissance New York Times Square Hotel's clearest competitive strength. The hotel appeared in 17.3% of AI answers for these searches, compared with 9.6% for the comparable hotels used in this analysis — about 80% more often than the comparable hotels used in this analysis. Among AI answers where hotel ranking could be measured, Renaissance New York Times Square Hotel appeared in the Top 3 34.6% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+        "body": "Renaissance New York Times Square Hotel appeared in at least one AI answer for 24.6% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Renaissance New York Times Square Hotel appeared 7.7% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Renaissance New York Times Square Hotel in the hotel options surfaced.\n\nBusiness Travel is Renaissance New York Times Square Hotel's clearest competitive strength. The hotel appeared in 15.4% of AI answers for these searches, compared with 13% for the comparable hotels used in this analysis — about 19% more often than the comparable hotels used in this analysis. Among AI answers where hotel ranking could be measured, Renaissance New York Times Square Hotel appeared in the Top 3 35.7% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+      },
+      "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "sections": {
+        "headline": "Renaissance New York Times Square Hotel's primary issue is entering AI consideration at all, especially for Meetings & Groups.",
+        "keyInsight": "AI Consideration is 7.7%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, The Knickerbocker repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+        "whyItMatters": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+        "focusNow": "Focus first on how the hotel is represented for Meetings & Groups. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+        "watch": null,
+        "whatToReview": "Compare evidence from scenarios where The Knickerbocker appears with the property information currently available for Renaissance New York Times Square Hotel. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+      },
+      "numericAnchors": [
+        {
+          "metricId": "executiveMetrics.considerationRate.rate",
+          "displayValue": "7.7%",
+          "section": "KEY_INSIGHT",
+          "reason": "Establishes severity of consideration / entry",
+          "paritySource": "executiveMetrics.considerationRate.rate",
+          "removingWeakensInsight": true,
+          "anchorType": "severity_indicator"
+        }
+      ],
+      "primaryIssueId": "entry_group_meeting",
+      "insightArchetype": "HIDDEN_WEAKNESS",
+      "evidenceTrace": [
+        {
+          "kind": "metric",
+          "ref": "executiveMetrics.considerationRate.rate",
+          "value": 7.7
+        },
+        {
+          "kind": "territory",
+          "ref": "group_meeting"
+        },
+        {
+          "kind": "numericAnchor",
+          "ref": "executiveMetrics.considerationRate.rate",
+          "displayValue": "7.7%"
+        },
+        {
+          "kind": "period",
+          "ref": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca"
+        }
+      ],
+      "qualityGates": {
+        "gates": {
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+            "pass": true,
+            "detail": "keyInsight length"
+          },
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+            "pass": true,
+            "detail": "property name referenced"
+          },
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+            "pass": true,
+            "detail": null
+          }
+        },
+        "gateIds": [
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+        ],
+        "claimDiscipline": {
+          "unsupportedCausalImplication": 0,
+          "overstated": 0,
+          "pass": true
+        },
+        "wordCount": 214,
+        "allRequiredPass": true,
+        "failed": []
+      },
+      "sourceSnapshotHash": "28d1ca2249783f81",
+      "compositionHash": "5f6a95909e557e10",
+      "editionId": "adp_er_v3_renaissance_times_square_mtu7d41o_5f6a95",
+      "compositionV3": {
+        "ok": true,
+        "contract": "ADP_EXECUTIVE_READ_V3",
+        "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "generatedAt": "2026-09-09T14:37:32.217Z",
+        "propertyId": "adp_renaissance_times_square",
+        "propertyName": "Renaissance New York Times Square Hotel",
+        "periodId": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca",
+        "primaryIssueId": "entry_group_meeting",
+        "insightArchetype": "HIDDEN_WEAKNESS",
+        "constraintClass": "ENTRY",
+        "sections": {
+          "headline": "Renaissance New York Times Square Hotel's primary issue is entering AI consideration at all, especially for Meetings & Groups.",
+          "keyInsight": "AI Consideration is 7.7%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, The Knickerbocker repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+          "whyItMatters": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+          "focusNow": "Focus first on how the hotel is represented for Meetings & Groups. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+          "watch": null,
+          "whatToReview": "Compare evidence from scenarios where The Knickerbocker appears with the property information currently available for Renaissance New York Times Square Hotel. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+        },
+        "numericAnchors": [
+          {
+            "metricId": "executiveMetrics.considerationRate.rate",
+            "displayValue": "7.7%",
+            "section": "KEY_INSIGHT",
+            "reason": "Establishes severity of consideration / entry",
+            "paritySource": "executiveMetrics.considerationRate.rate",
+            "removingWeakensInsight": true,
+            "anchorType": "severity_indicator"
+          }
+        ],
+        "evidenceTrace": [
+          {
+            "kind": "metric",
+            "ref": "executiveMetrics.considerationRate.rate",
+            "value": 7.7
+          },
+          {
+            "kind": "territory",
+            "ref": "group_meeting"
+          },
+          {
+            "kind": "numericAnchor",
+            "ref": "executiveMetrics.considerationRate.rate",
+            "displayValue": "7.7%"
+          },
+          {
+            "kind": "period",
+            "ref": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca"
+          }
+        ],
+        "qualityGates": {
+          "gates": {
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+              "pass": true,
+              "detail": "keyInsight length"
+            },
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+              "pass": true,
+              "detail": "property name referenced"
+            },
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+              "pass": true,
+              "detail": null
+            }
+          },
+          "gateIds": [
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+          ],
+          "claimDiscipline": {
+            "unsupportedCausalImplication": 0,
+            "overstated": 0,
+            "pass": true
+          },
+          "wordCount": 214,
+          "allRequiredPass": true,
+          "failed": []
+        },
+        "sourceSnapshotHash": "28d1ca2249783f81",
+        "compositionHash": "5f6a95909e557e10",
+        "activated": true,
+        "customerFacingDefault": true,
+        "zeroCodePath": true,
+        "usedHardcodedMap": false,
+        "historicalImmutability": {
+          "enforced": true,
+          "policy": {
+            "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+            "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+            "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+            "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+            "silentInPlaceMutation": "PROHIBITED",
+            "activationRequiredForCustomerDefault": true
+          },
+          "writePolicy": {
+            "allowed": true,
+            "mode": "CUSTOMER_DEFAULT_V3",
+            "reason": "ACTIVATED",
+            "policy": {
+              "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+              "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+              "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+              "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+              "silentInPlaceMutation": "PROHIBITED",
+              "activationRequiredForCustomerDefault": true
+            },
+            "enforced": true,
+            "customerDefault": true
+          }
+        },
+        "wordCount": 214,
+        "watchOmitted": true,
+        "candidates": [
+          {
+            "candidateId": "cand_rank_metrics_supporting_diagnostic",
+            "archetype": "OTHER_EVIDENCE_BACKED",
+            "priorityScore": 0.33299999999999996,
+            "summary": "Top-3 / #1 metrics are supporting diagnostic only (rank-eligible n=14)."
+          },
+          {
+            "candidateId": "cand_concentrated_displacement",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.969,
+            "summary": "The Knickerbocker appears in 32 monitored scenarios where the hotel is absent."
+          },
+          {
+            "candidateId": "cand_competitor_present_gaps",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.7020000000000001,
+            "summary": "Competitors appear in a material share of scenarios where the hotel is absent (83.1%)."
+          },
+          {
+            "candidateId": "cand_reality_gap_fitness_center",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "Fitness Center is recognized in only 0% of monitored answers."
+          },
+          {
+            "candidateId": "cand_reality_gap_walking_distance_broadway",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "Walking Distance to Broadway is recognized in only 0% of monitored answers."
+          },
+          {
+            "candidateId": "cand_entry_problem",
+            "archetype": "HIDDEN_WEAKNESS",
+            "priorityScore": 1.314,
+            "summary": "AI Consideration is 7.7% — the primary constraint is entering consideration, not rank after inclusion."
+          },
+          {
+            "candidateId": "cand_top_observed_alternative",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.774,
+            "summary": "The Knickerbocker is the top observed AI alternative in the monitored set."
+          }
+        ],
+        "selectionMeta": {
+          "rules": [
+            "ADP_EXECUTIVE_READ_INPUT_V3",
+            "ADP_EXECUTIVE_INSIGHT_CANDIDATE_GENERATION_V3",
+            "ADP_EXECUTIVE_INSIGHT_PRIORITY_V3",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY"
+          ],
+          "supportingCandidateIds": []
+        },
+        "doctrine": [
+          "METHODOLOGY_IS_GOVERNED; QUALITY_CONTROLS_LEARN.",
+          "EXECUTIVE_INSIGHT_LEARNS_INTERPRETATION; MEASUREMENT_REMAINS_GOVERNED."
+        ],
+        "methodologyChanged": false,
+        "rendererViewModel": {
+          "ok": true,
+          "contract": "ADP_EXECUTIVE_READ_RENDERER_CONTRACT_V3",
+          "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+          "activated": true,
+          "primaryIssueId": "entry_group_meeting",
+          "insightArchetype": "HIDDEN_WEAKNESS",
+          "sections": [
+            {
+              "key": "headline",
+              "label": "Headline",
+              "text": "Renaissance New York Times Square Hotel's primary issue is entering AI consideration at all, especially for Meetings & Groups.",
+              "anchors": []
+            },
+            {
+              "key": "keyInsight",
+              "label": "Key Insight",
+              "text": "AI Consideration is 7.7%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, The Knickerbocker repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+              "anchors": [
+                {
+                  "metricId": "executiveMetrics.considerationRate.rate",
+                  "displayValue": "7.7%",
+                  "section": "KEY_INSIGHT",
+                  "reason": "Establishes severity of consideration / entry",
+                  "paritySource": "executiveMetrics.considerationRate.rate",
+                  "removingWeakensInsight": true,
+                  "anchorType": "severity_indicator"
+                }
+              ]
+            },
+            {
+              "key": "whyItMatters",
+              "label": "Why It Matters",
+              "text": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+              "anchors": []
+            },
+            {
+              "key": "focusNow",
+              "label": "Focus Now",
+              "text": "Focus first on how the hotel is represented for Meetings & Groups. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+              "anchors": []
+            },
+            {
+              "key": "whatToReview",
+              "label": "What to Review",
+              "text": "Compare evidence from scenarios where The Knickerbocker appears with the property information currently available for Renaissance New York Times Square Hotel. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes.",
+              "anchors": []
+            }
+          ],
+          "flattenedProseForLegacy": "Renaissance New York Times Square Hotel's primary issue is entering AI consideration at all, especially for Meetings & Groups.\n\nAI Consideration is 7.7%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, The Knickerbocker repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.\n\nFine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.\n\nFocus first on how the hotel is represented for Meetings & Groups. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.\n\nCompare evidence from scenarios where The Knickerbocker appears with the property information currently available for Renaissance New York Times Square Hotel. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+        },
+        "editionId": "adp_er_v3_renaissance_times_square_mtu7d41o_5f6a95"
+      },
+      "editionLineage": {
+        "gate": "ADP_EXECUTIVE_V3_IMMUTABLE_EDITION_LINEAGE",
+        "priorEditionId": "adp_er_v3_renaissance_times_square_mtu4e684_5f6a95",
+        "newEditionId": "adp_er_v3_renaissance_times_square_mtu7d41o_5f6a95",
+        "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "sourcePeriodId": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca",
+        "sourceSnapshotHash": "28d1ca2249783f81",
+        "compositionHash": "5f6a95909e557e10",
+        "generatedAt": "2026-09-09T14:37:32.217Z",
+        "writeupPreserved": true,
+        "writeupUxHashBefore": "c2be00625f94999b6409ef0c69d35f7abcbbfaa652fafa24d1b7f363cf09443e",
+        "writeupUxHashAfter": "c2be00625f94999b6409ef0c69d35f7abcbbfaa652fafa24d1b7f363cf09443e"
       }
     },
-    "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-    "correction": null,
-    "reportVersionLabel": "CORRECTED_V1_1",
-    "trends": [
-      {
-        "periodId": "adp_period_adp_renaissance_times_square_20260820131042_18731c",
-        "date": "2026-08-20T13:10:42.020Z",
-        "propertyRealityCoverage": 37.5,
-        "scenarioPresenceRate": 32.3,
-        "considerationRate": 13.1,
-        "providerCount": 4,
-        "observationCount": 260,
-        "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-        "role": "prior_run"
+    "metricScopeLabels": {
+      "version": "adp_metric_scope_labels_v1",
+      "subjectObservationGrain": {
+        "productLabel": "AI Consideration",
+        "technicalLabel": "AI Consideration Rate",
+        "grain": "property × scenario × provider × period (comparable observations)",
+        "definition": "Share of comparable monitored AI responses where the subject hotel appears."
       },
+      "subjectScenarioGrain": {
+        "productLabel": "AI Scenario Presence",
+        "technicalLabel": "Demand Scenario Coverage",
+        "grain": "property × scenario (aggregates providers)",
+        "definition": "Share of monitored demand scenarios where the subject hotel appears on at least one comparable provider."
+      },
+      "competitorScenarioAppearance": {
+        "productLabel": "Scenario Appearance",
+        "technicalLabel": "Competitor Scenario Appearance",
+        "grain": "non-subject hotel × scenario (within subject hotel report)",
+        "definition": "Share of monitored scenarios in this report where a competitor hotel appears. Not the same metric as that hotel's own AI Consideration.",
+        "forbiddenClientLabels": [
+          "Presence",
+          "AI Presence"
+        ]
+      },
+      "competitorObservationAppearance": {
+        "productLabel": "Observation Appearance",
+        "technicalLabel": "Competitor Observation Appearance",
+        "grain": "non-subject hotel × observation (within subject hotel report)",
+        "definition": "Share of comparable monitored answers in this report where a competitor hotel appears. Not interchangeable with subject AI Consideration unless same-scope certified."
+      },
+      "scopeRule": "SAME_SCOPE_SAME_CANONICAL_METRIC",
+      "ambiguityRule": "ADP_METRIC_SCOPE_UNAMBIGUOUS"
+    },
+    "trends": [
       {
         "periodId": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca",
         "date": "2026-09-02T23:54:27.872Z",
-        "propertyRealityCoverage": 37.5,
-        "scenarioPresenceRate": 29.2,
-        "considerationRate": 11.9,
+        "propertyRealityCoverage": 35.3,
+        "scenarioPresenceRate": 24.6,
+        "considerationRate": 7.7,
         "providerCount": 4,
         "observationCount": 260,
         "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
         "role": "current"
       }
     ]
-  }
+  },
+  "executiveReadEditionId": "adp_er_v3_renaissance_times_square_mtu7d41o_5f6a95",
+  "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3"
 }
