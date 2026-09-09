@@ -111,6 +111,18 @@ Each marketing section loads the actual Dealality page in a framed iframe. Deal 
 | `dealRoom` | `/deal-room-owner.html?embed=1&dealId={demoDealId}&marketingEmbed=1` |
 | `loiHandoff` | `/deal-setup.html?embed=1&id={demoDealId}&edit=1&marketingEmbed=1` |
 
+### Product asset library (live platform)
+
+Publication-ready stills and short website videos captured from the **real Dealality product UI** (not HTML mocks):
+
+| Path | Purpose |
+|------|---------|
+| `product-assets/` | Stills, MP4/WebM clips, posters, placement metadata |
+| `product-assets/ASSET-REPORT.md` | Capture report, demo projects used, limitations |
+| `product-assets/website-placement.json` | Section, caption, alt, playback recommendations |
+
+Demo surfaces include Alcove Gloria, Sample Coastal Conversion, Atelier North, and Command Center. Regenerate: `node scripts/capture-live-platform-product-assets.mjs`.
+
 ### Files
 
 | File | Purpose |
