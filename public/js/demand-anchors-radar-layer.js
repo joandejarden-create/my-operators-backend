@@ -53,6 +53,11 @@
     if (opts.region) params.push("region=" + encodeURIComponent(opts.region));
     if (opts.market) params.push("market=" + encodeURIComponent(opts.market));
     if (opts.dealRecordId) params.push("dealRecordId=" + encodeURIComponent(opts.dealRecordId));
+    if (opts.countsOnly) {
+      params.push("countsOnly=1");
+    } else if (opts.view !== "full") {
+      params.push("view=map");
+    }
     var base = "/api/radar-map-points/demand-anchors";
     return params.length ? base + "?" + params.join("&") : base;
   }

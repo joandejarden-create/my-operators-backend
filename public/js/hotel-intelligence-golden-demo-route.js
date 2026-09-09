@@ -69,6 +69,7 @@
     name: "Sheraton Guadalajara Expo",
     city: "Zapopan",
     market: "Pacific Central",
+    submarket: "Guadalajara",
     country: "Mexico",
     rooms: 216,
     chainScale: "Upper Upscale Chain",
@@ -78,6 +79,10 @@
     managementCompany: "Aimbridge LATAM",
     website:
       "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview",
+    hotelDescription:
+      "Upper Upscale Chain hotel affiliated with Sheraton under Marriott International, operated by Aimbridge LATAM near Expo Guadalajara.",
+    amenities:
+      "Restaurant, Bar / lounge, Fitness center, Outdoor pool, Meeting rooms, Business center, Free WiFi, Parking, 24-hour front desk",
     latitude: 20.652993,
     longitude: -103.3959898,
     status: "Open",
@@ -88,6 +93,7 @@
     name: "voco Cancún Zona Hotelera",
     city: "Cancun",
     market: "Cancun",
+    submarket: "Cancún Hotel Zone",
     country: "Mexico",
     rooms: 160,
     chainScale: "Upper Midscale Chain",
@@ -99,6 +105,8 @@
     parentCompany: "IHG Hotels & Resorts",
     managementCompany: "Aimbridge LATAM",
     website: "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
+    hotelDescription:
+      "Upper Midscale Chain hotel affiliated with voco under IHG Hotels & Resorts (formerly Real Inn Cancun), operated by Aimbridge LATAM in Cancún Zona Hotelera.",
     amenities:
       "Outdoor swimming pool, Fitness center, Free WiFi, Free on-site parking, Restaurant (Stock Cafe), Bar / lounge, Room service, 24-hour front desk, Meeting rooms, Business center, Terrace / garden, Laundry facilities, Air conditioning, Non-smoking rooms, Facilities for disabled guests, Near Langosta / Tortuga beach corridor",
     latitude: 21.1430049,
@@ -158,6 +166,15 @@
     };
   }
 
+  function resolveDossierId(params) {
+    params = params || new URLSearchParams();
+    var raw = String(params.get("dossier") || params.get("reportId") || "").trim();
+    if (!raw) return null;
+    // Flags like dossier=1 mean "open the hotel's report", not a dossier id.
+    if (raw === "1" || raw === "true") return null;
+    return raw;
+  }
+
   function resolveGoldenDemoLaunch(search) {
     var params =
       search instanceof URLSearchParams
@@ -166,10 +183,18 @@
     var hotelId = resolveRequestedHotelId(params);
     var hotel = seedForHotelId(hotelId);
     var tab = normalizeHexTab(params.get("hexTab") || params.get("tab") || "hotel");
+    var dossierId = resolveDossierId(params);
+    var openReport =
+      Boolean(dossierId) ||
+      params.get("openReport") === "1" ||
+      params.get("report") === "1" ||
+      params.get("dossier") === "1";
     return {
       hotelId: hotelId,
       hotel: hotel,
       tab: tab,
+      dossierId: dossierId,
+      openReport: openReport,
       demo: params.get("demo") || null,
       usedExplicitHotelParam: Boolean(
         String(params.get("hotelExplorer") || "").trim() ||

@@ -19,6 +19,10 @@ import {
   previewDemandAnchorsImport,
   commitDemandAnchorsImport,
 } from "../lib/demand-anchors/import-commit.js";
+import {
+  loadMexicoDemandAnchorFixturePoints,
+  shouldUseMexicoRadarFixtureFallback,
+} from "../lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js";
 
 function parseBool(v) {
   return v === "1" || v === "true" || v === "yes";
@@ -43,27 +47,109 @@ function emptyPayload(extra = {}) {
   };
 }
 
+function mexicoFixtureDemandResponse(query) {
+  const points = loadMexicoDemandAnchorFixturePoints({
+    country: query.country,
+    market: query.market,
+  });
+  if (!points.length) return null;
+  return {
+    ...buildRadarResponse({ points, anchors: points, tableName: "Demand Anchors (fixture)" }, query),
+    source: "golden_demo_radar_fixture",
+    fixtureFallback: true,
+  };
+}
+
+function slimMapPoint(point) {
+  if (!point || typeof point !== "object") return point;
+  const lat = point.latitude != null ? point.latitude : point.lat;
+  const lng = point.longitude != null ? point.longitude : point.lng;
+  const out = {
+    id: point.id,
+    name: point.name,
+    pointType: point.pointType || point.type,
+    pointSubtype: point.pointSubtype,
+    type: point.type || point.pointType,
+    latitude: lat,
+    longitude: lng,
+    lat,
+    lng,
+    city: point.city,
+    country: point.country,
+    region: point.region,
+    mapIconType: point.mapIconType,
+    includeOnRadarMap: point.includeOnRadarMap,
+    dataConfidence: point.dataConfidence,
+    demandSegment: point.demandSegment,
+    demandRelevance: point.demandRelevance,
+  };
+  for (const key of Object.keys(out)) {
+    if (out[key] == null || out[key] === "") delete out[key];
+  }
+  return out;
+}
+
 function buildRadarResponse(result, query) {
   const pointTypeFilter = query.pointTypeFilter || query.layerFilter || "";
   const grouped = groupDemandAnchorsLayers(result.points, pointTypeFilter);
   const stats = calculateDemandAnchorsStatistics(result.allPoints || result.points);
+  const countsOnly = query.countsOnly === true;
+  const mapView = query.view === "map";
+
+  if (countsOnly) {
+    return {
+      success: true,
+      setupNeeded: false,
+      tableName: result.tableName,
+      anchors: [],
+      points: [],
+      layers: {},
+      layerFilters: grouped.layerFilters,
+      statistics: stats,
+      totalCount: stats.totalDemandAnchors,
+      view: "counts",
+    };
+  }
+
+  const points = mapView ? grouped.points.map(slimMapPoint) : grouped.points;
 
   return {
     success: true,
     setupNeeded: false,
     tableName: result.tableName,
-    anchors: result.anchors,
-    points: grouped.points,
-    layers: grouped.layers,
+    anchors: mapView ? points : result.anchors,
+    points,
+    layers: mapView ? undefined : grouped.layers,
     layerFilters: grouped.layerFilters,
     statistics: stats,
     totalCount: stats.totalDemandAnchors,
+    view: mapView ? "map" : "full",
   };
 }
 
 async function handleDemandAnchorsRequest(req, res) {
+  const query = {
+    pointType: req.query.pointType,
+    pointTypeFilter: req.query.pointTypeFilter || req.query.layerFilter,
+    country: req.query.country,
+    region: req.query.region,
+    market: req.query.market,
+    dealId: req.query.dealId,
+    dealRecordId: req.query.dealRecordId,
+    includeHidden: parseBool(req.query.includeHidden),
+    countsOnly: parseBool(req.query.countsOnly),
+    view: String(req.query.view || "").trim().toLowerCase() === "map" ? "map" : "full",
+  };
+
+  const tryMexicoFixture = () => {
+    if (!shouldUseMexicoRadarFixtureFallback(query)) return null;
+    return mexicoFixtureDemandResponse(query);
+  };
+
   const cfg = getDemandAnchorsAirtableConfig();
   if (!cfg) {
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
     return res.status(500).json({
       success: false,
       setupNeeded: true,
@@ -75,6 +161,8 @@ async function handleDemandAnchorsRequest(req, res) {
 
   const verified = await verifyDemandAnchorsTable(cfg.baseId, cfg.apiKey);
   if (!verified.ok) {
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
     return res.status(200).json(
       emptyPayload({
         message: "Demand Anchors table is not configured yet.",
@@ -83,19 +171,10 @@ async function handleDemandAnchorsRequest(req, res) {
   }
 
   try {
-    const query = {
-      pointType: req.query.pointType,
-      pointTypeFilter: req.query.pointTypeFilter || req.query.layerFilter,
-      country: req.query.country,
-      region: req.query.region,
-      market: req.query.market,
-      dealId: req.query.dealId,
-      dealRecordId: req.query.dealRecordId,
-      includeHidden: parseBool(req.query.includeHidden),
-    };
-
     const result = await fetchDemandAnchorRecords(query);
     if (result.error === "airtable_config_missing") {
+      const fixture = tryMexicoFixture();
+      if (fixture) return res.json(fixture);
       return res.status(500).json({
         success: false,
         setupNeeded: true,
@@ -105,6 +184,8 @@ async function handleDemandAnchorsRequest(req, res) {
       });
     }
     if (result.error === "demand_anchors_table_missing") {
+      const fixture = tryMexicoFixture();
+      if (fixture) return res.json(fixture);
       return res.status(200).json(
         emptyPayload({
           message: "Demand Anchors table is not configured yet.",
@@ -113,9 +194,16 @@ async function handleDemandAnchorsRequest(req, res) {
       );
     }
 
-    return res.json(buildRadarResponse(result, query));
+    const live = buildRadarResponse(result, query);
+    if ((!live.points || !live.points.length) && shouldUseMexicoRadarFixtureFallback(query)) {
+      const fixture = mexicoFixtureDemandResponse(query);
+      if (fixture) return res.json(fixture);
+    }
+    return res.json(live);
   } catch (error) {
     console.error("[demand-anchors] API error:", error);
+    const fixture = tryMexicoFixture();
+    if (fixture) return res.json(fixture);
     return res.status(500).json({
       success: false,
       error: "server_error",

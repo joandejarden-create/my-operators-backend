@@ -2249,6 +2249,11 @@
           : " · Public economic owner · operator is separate" +
             (opName ? " (" + esc(opName) + ")" : "")
         : " · Operator / manager · ownership not implied") +
+      (orgPayload.owner_explorer_path
+        ? ' · <a href="' +
+          esc(orgPayload.owner_explorer_path) +
+          '">Open Owner Explorer</a>'
+        : "") +
       "</p>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Organization Overview</h3>' +
       '<div class="hiw-prose"><p>' +
@@ -3215,6 +3220,97 @@
       });
   }
 
+  function fetchHotelOwnerAnchor(hotelId) {
+    return fetch(
+      "/api/owner-intelligence/hotels/" + encodeURIComponent(hotelId) + "/owner-anchor",
+      { headers: { "ngrok-skip-browser-warning": "true" } }
+    )
+      .then(function (r) {
+        return r.json();
+      })
+      .catch(function () {
+        return null;
+      });
+  }
+
+  function fetchOwnerPortfolio(ownerId, focusHotelId) {
+    if (!ownerId) return Promise.resolve(null);
+    var q = focusHotelId ? "?focusHotel=" + encodeURIComponent(focusHotelId) : "";
+    return fetch(
+      "/api/owner-intelligence/owners/" + encodeURIComponent(ownerId) + "/portfolio" + q,
+      { headers: { "ngrok-skip-browser-warning": "true" } }
+    )
+      .then(function (r) {
+        return r.json();
+      })
+      .catch(function () {
+        return null;
+      });
+  }
+
+  /** Prefer org-level owner portfolio over cohort arrays when available. */
+  function orgPayloadFromOwnerPortfolio(ownerApi, focusHotelId) {
+    if (!ownerApi || !ownerApi.success || !ownerApi.profile) return null;
+    var p = ownerApi.profile;
+    var owned = (ownerApi.buckets && ownerApi.buckets.owned_controlled) || [];
+    var managed = (ownerApi.buckets && ownerApi.buckets.operated_managed) || [];
+    function mapRow(h) {
+      return {
+        name: h.hotel_name,
+        hotel: h.hotel_name,
+        id: h.airtable_record_id || null,
+        airtable_record_id: h.airtable_record_id || null,
+        market: h.market,
+        market_display: h.market,
+        rooms: h.rooms,
+        brand: h.brand,
+        brand_display: h.brand,
+        relationship_type: h.relationship_type,
+        economic_owner_verified: Boolean(h.include_as_owned),
+        verification_bucket: h.confidence,
+        why_in_portfolio: h.why_in_portfolio,
+        census_match_status: h.census_match_status,
+        focus_hotel: Boolean(h.focus_hotel) || h.airtable_record_id === focusHotelId,
+      };
+    }
+    return {
+      ok: true,
+      source: "owner_portfolio_org_level",
+      group: {
+        display_name: p.owner_display_name,
+        legal_name: p.owner_legal_name,
+        entity_id: p.owner_entity_id,
+        known_hotel_relationships: (p.hotel_relationships || []).length,
+        known_rooms: (p.hotel_relationships || []).reduce(function (s, h) {
+          return s + (Number(h.rooms) || 0);
+        }, 0),
+        markets: p.markets || [],
+        evidence_summary:
+          (p.customer_label || "Known Portfolio") +
+          " · owned/controlled " +
+          owned.length +
+          " · managed " +
+          managed.length,
+        relationship_summary: {
+          total_relationships: (p.hotel_relationships || []).length,
+          owned_or_controlled_verified: owned.length,
+          operated_or_managed: managed.length,
+        },
+      },
+      portfolio: owned.map(mapRow).concat(managed.map(mapRow)),
+      owner_explorer_path:
+        "/owner-explorer.html?owner=" +
+        encodeURIComponent(p.owner_entity_id) +
+        (focusHotelId ? "&focusHotel=" + encodeURIComponent(focusHotelId) : ""),
+      related_entities: p.related_entities || [],
+      why_this_matters: {
+        text:
+          "Organization-level portfolio from Owner Control Graph. Operator relationships stay separate from ownership. Every hotel row carries an attribution path.",
+      },
+      _from_owner_portfolio: true,
+    };
+  }
+
   function open(hotel, opts) {
     opts = opts || {};
     if (!hotel) return;
@@ -3238,18 +3334,33 @@
       }
     }
 
+    var hotelId = recordId(hotel);
     Promise.all([
       fetchOwnership(hotel),
       fetchOrg("grupo-hotelero-santa-fe"),
-    ]).then(
-      function (pair) {
+      fetchHotelOwnerAnchor(hotelId),
+    ]).then(function (triple) {
+      if (!state.open) return;
+      state.ownership = triple[0];
+      var legacyOrg = triple[1];
+      var anchor = triple[2];
+      var ownerId =
+        (anchor &&
+          anchor.anchor &&
+          anchor.anchor.primary_owner_entity_id) ||
+        null;
+      return fetchOwnerPortfolio(ownerId, hotelId).then(function (ownerPort) {
         if (!state.open) return;
-        state.ownership = pair[0];
-        state.org = pair[1];
+        state.org =
+          orgPayloadFromOwnerPortfolio(ownerPort, hotelId) || legacyOrg;
+        if (anchor && anchor.owner_explorer_path && state.org) {
+          state.org.owner_explorer_path =
+            state.org.owner_explorer_path || anchor.owner_explorer_path;
+        }
         state.citations = buildCitations(hotel, state.ownership);
         paint();
-      }
-    );
+      });
+    });
   }
 
   function close() {

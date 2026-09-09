@@ -52,6 +52,12 @@
     if (opts.region) {
       params.push("region=" + encodeURIComponent(opts.region));
     }
+    if (opts.countsOnly) {
+      params.push("countsOnly=1");
+    } else if (opts.view !== "full") {
+      // Default map clients to sparse DTO (omit narrative fields + duplicate arrays).
+      params.push("view=map");
+    }
     var base = "/api/radar-map-points/travel-infrastructure";
     return params.length ? base + "?" + params.join("&") : base;
   }

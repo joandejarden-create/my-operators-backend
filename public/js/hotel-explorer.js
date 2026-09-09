@@ -1145,6 +1145,8 @@
         console.warn("[HotelExplorer] unembed on reset failed", err);
       }
     }
+    window.__hexAreaHotelsCensusCache = null;
+    window.__hexAreaHotelsCensusCacheKey = "";
     state.radarEmbedded = false;
   }
 

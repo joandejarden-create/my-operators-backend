@@ -2521,7 +2521,13 @@
   function ensureAreaHotelsCensus(hotel) {
     var existing = window.allHotels || [];
     if (existing.length) return Promise.resolve(existing);
-    if (window.__hexAreaHotelsCensusCache && window.__hexAreaHotelsCensusCache.length) {
+
+    var cacheKey = areaHotelsCensusCacheKey(hotel);
+    if (
+      window.__hexAreaHotelsCensusCache &&
+      window.__hexAreaHotelsCensusCacheKey === cacheKey &&
+      window.__hexAreaHotelsCensusCache.length
+    ) {
       return Promise.resolve(window.__hexAreaHotelsCensusCache);
     }
 
@@ -2533,6 +2539,7 @@
       return fetchAreaHotelsCensusByQuery(queries[i]).then(function (rows) {
         if (rows.length) {
           window.__hexAreaHotelsCensusCache = rows;
+          window.__hexAreaHotelsCensusCacheKey = cacheKey;
           if (!(window.allHotels && window.allHotels.length)) {
             window.allHotels = rows;
           }
@@ -2548,6 +2555,16 @@
       }
       return [];
     });
+  }
+
+  function areaHotelsCensusCacheKey(hotel) {
+    if (!hotel) return "";
+    return [
+      hotel.id || hotel.recordId || "",
+      hotel.city || "",
+      hotel.market || "",
+      hotel.country || "",
+    ].join("|");
   }
 
   function loadAreaHotelsTab(hotel) {
