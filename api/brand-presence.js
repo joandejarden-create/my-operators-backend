@@ -7,19 +7,6 @@ import {
   searchFixtureHotels,
   shouldUseMexicoRadarFixtureFallback,
 } from "../lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js";
-import {
-  MAP_HOTEL_FIELDS,
-  MAP_DTO_SCHEMA_VERSION,
-  formatMapHotelRecord,
-  fetchCanonicalMapHotelsFromAirtable,
-} from "../lib/hotel-census/map-hotel-dto.js";
-import {
-  censusMapSnapshotEnabled,
-  resolveCensusMapSnapshotForRead,
-  noteCensusMapFallbackUsed,
-  getCensusMapSnapshotMetrics,
-  scheduleCensusMapSnapshotRebuildAfterApply,
-} from "../lib/hotel-census/census-map-snapshot.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
@@ -40,6 +27,29 @@ function fixtureHotelResponse(recordId) {
   return { success: true, hotel, source: "golden_demo_radar_fixture" };
 }
 
+function fixtureSearchResponse({ search, limit, page = 0, view = "full" } = {}) {
+  if (!shouldUseMexicoRadarFixtureFallback({ search, country: search })) return null;
+  const hotels = searchFixtureHotels(search || "", { limit: limit || 400 });
+  if (!hotels.length) return null;
+  return {
+    success: true,
+    hotels,
+    statistics: {},
+    insights: [],
+    totalCount: hotels.length,
+    totalWithCoordinates: hotels.filter(
+      (h) => Number.isFinite(h.lat) && Number.isFinite(h.lng) && (h.lat !== 0 || h.lng !== 0)
+    ).length,
+    skippedNoCoordinates: 0,
+    hasMore: false,
+    page: parseInt(page, 10) || 0,
+    limit,
+    view,
+    cached: false,
+    source: "golden_demo_radar_fixture",
+  };
+}
+
 // In-memory cache for performance optimization
 const cache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
@@ -48,8 +58,7 @@ const CACHE_SCHEMA_VERSION = 7;
 
 // Cache helper functions
 function getCacheKey(query) {
-  const version = query && query.view === "map" ? CACHE_SCHEMA_VERSION_MAP : CACHE_SCHEMA_VERSION;
-  return `brand-presence-v${version}-${JSON.stringify(query)}`;
+  return `brand-presence-v${CACHE_SCHEMA_VERSION}-${JSON.stringify(query)}`;
 }
 
 function getFromCache(key) {
@@ -64,8 +73,27 @@ function setCache(key, data) {
   cache.set(key, { data, timestamp: Date.now() });
 }
 
-// Previous "background refresh" only cleared the Map (forcing cold Airtable cliffs).
-// TTL expiry already refreshes on next miss; do not periodically wipe warm entries.
+// Background data refresh to keep cache fresh
+let isRefreshing = false;
+async function refreshCacheInBackground() {
+  if (isRefreshing) return;
+  
+  isRefreshing = true;
+  console.log('🔄 Background cache refresh started...');
+  
+  try {
+    // Clear existing cache to force fresh data on next request
+    cache.clear();
+    console.log('✅ Background cache refresh completed - cache cleared');
+  } catch (error) {
+    console.error('❌ Background cache refresh failed:', error);
+  } finally {
+    isRefreshing = false;
+  }
+}
+
+// Refresh cache every 10 minutes
+setInterval(refreshCacheInBackground, 10 * 60 * 1000);
 
 // Field mappings for brand presence data
 const F = {
@@ -124,9 +152,30 @@ const F = {
   }
 };
 
-/** Fields required for map markers and filters — canonical SoT: lib/hotel-census/map-hotel-dto.js */
-/** Bump when map DTO shape changes (invalidates in-memory cache keys). */
-const CACHE_SCHEMA_VERSION_MAP = `${CACHE_SCHEMA_VERSION}-${MAP_DTO_SCHEMA_VERSION}`;
+/** Fields required for map markers and filters — keep bulk load lean. */
+const MAP_HOTEL_FIELDS = [
+  F.hotels.name,
+  F.hotels.brand,
+  F.hotels.parentCompany,
+  F.hotels.status,
+  F.hotels.lat,
+  F.hotels.lng,
+  F.hotels.city,
+  F.hotels.country,
+  F.hotels.region,
+  F.hotels.locationType,
+  F.hotels.rooms,
+  F.hotels.strNumber,
+  F.hotels.chainScale,
+  F.hotels.projectPhase,
+  F.hotels.propertyType,
+  F.hotels.operationType,
+  F.hotels.managementCompany,
+  F.hotels.market,
+  F.hotels.submarket,
+  F.hotels.censusPropertyType,
+  F.hotels.hotelServiceModel,
+];
 
 function readTextField(fields, key) {
   const raw = fields[key];
@@ -263,6 +312,7 @@ export async function getBrandPresenceHotelById(req, res) {
         formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
       }
     }
+
     res.json({ success: true, hotel: formatted });
   } catch (error) {
     const fixture = fixtureHotelResponse(recordId);
@@ -289,114 +339,17 @@ export async function getBrandPresence(req, res) {
   const requestedLimit = parseInt(req.query.limit, 10);
   const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : null;
   const { brand, status, region, search, page = 0 } = req.query;
-  const viewRaw = String(req.query.view || "").trim().toLowerCase();
-  const view = viewRaw === "map" ? "map" : "full";
-
-  function fixtureSearchResponse() {
-    if (!shouldUseMexicoRadarFixtureFallback({ search, country: search })) return null;
-    const hotels = searchFixtureHotels(search || "", { limit: limit || 400 });
-    if (!hotels.length) return null;
-    return {
-      success: true,
-      hotels,
-      statistics: {},
-      insights: [],
-      totalCount: hotels.length,
-      totalWithCoordinates: hotels.filter(
-        (h) => Number.isFinite(h.lat) && Number.isFinite(h.lng) && (h.lat !== 0 || h.lng !== 0)
-      ).length,
-      skippedNoCoordinates: 0,
-      hasMore: false,
-      page: parseInt(page, 10) || 0,
-      limit,
-      view,
-      cached: false,
-      source: "golden_demo_radar_fixture",
-    };
-  }
+  const view = "full";
 
   if (!base) {
-    const fixture = fixtureSearchResponse();
+    const fixture = fixtureSearchResponse({ search, limit, page, view });
     if (fixture) return res.json(fixture);
     return res.status(500).json({ error: "Missing Airtable API key or base id for brand presence" });
   }
 
   try {
-    // Unfiltered map universe — prefer filesystem snapshot (Tier C) over Airtable pagination.
-    const isUnfilteredMapUniverse =
-      view === "map" &&
-      !brand &&
-      !status &&
-      !region &&
-      !search &&
-      censusMapSnapshotEnabled();
-
-    if (isUnfilteredMapUniverse) {
-      const resolved = resolveCensusMapSnapshotForRead();
-      if (resolved.ok) {
-        let hotels = resolved.hotels;
-        if (limit && hotels.length > limit) {
-          hotels = hotels.slice(0, limit);
-        }
-        const skippedNoCoordinates = hotels.filter(
-          (h) =>
-            !(
-              Number.isFinite(h.lat) &&
-              Number.isFinite(h.lng) &&
-              (h.lat !== 0 || h.lng !== 0)
-            )
-        ).length;
-        const response = {
-          success: true,
-          hotels,
-          totalCount: hotels.length,
-          totalWithCoordinates: hotels.length - skippedNoCoordinates,
-          skippedNoCoordinates,
-          hasMore: false,
-          page: parseInt(page, 10) || 0,
-          limit,
-          view,
-          cached: true,
-          source: "census_map_snapshot",
-          snapshot: resolved.meta,
-        };
-        res.setHeader("X-Census-Map-Snapshot", resolved.meta.stale ? "STALE" : "HIT");
-        res.setHeader("X-Census-Map-Age-Ms", String(resolved.meta.ageMs));
-        res.setHeader("X-Census-Map-Generated-At", resolved.meta.generatedAt || "");
-        // Also warm the short TTL map cache for identical query keys.
-        const cacheKey = getCacheKey({ brand, status, region, search, limit, page, view });
-        setCache(cacheKey, response);
-        return res.json(response);
-      }
-
-      // Snapshot miss — instrumented fallback (never silent).
-      noteCensusMapFallbackUsed();
-      console.warn(
-        "[brand-presence] census map snapshot unavailable:",
-        resolved.reason,
-        "fallbackAirtable=",
-        resolved.allowFallback,
-        "metrics=",
-        JSON.stringify(getCensusMapSnapshotMetrics())
-      );
-      res.setHeader("X-Census-Map-Snapshot", "MISS");
-      res.setHeader("X-Census-Map-Fallback", resolved.allowFallback ? "airtable" : "none");
-      if (!resolved.allowFallback) {
-        return res.status(503).json({
-          success: false,
-          error: "census_map_snapshot_unavailable",
-          reason: resolved.reason,
-          message:
-            "Census map snapshot is not loaded. Rebuild with npm run census:map-snapshot:build or enable CENSUS_MAP_SNAPSHOT_FALLBACK_AIRTABLE=1.",
-          metrics: getCensusMapSnapshotMetrics(),
-        });
-      }
-      // Fall through to Airtable path below (instrumented).
-      scheduleCensusMapSnapshotRebuildAfterApply("snapshot_miss_fallback");
-    }
-
     // Check cache first
-    const cacheKey = getCacheKey({ brand, status, region, search, limit, page, view });
+    const cacheKey = getCacheKey({ brand, status, region, search, limit, page });
     const cachedData = getFromCache(cacheKey);
     
     if (cachedData) {
@@ -404,7 +357,7 @@ export async function getBrandPresence(req, res) {
       return res.json(cachedData);
     }
     
-    console.log('🔄 Fetching from Airtable:', { brand, status, region, search, limit, page, view });
+    console.log('🔄 Fetching from Airtable:', { brand, status, region, search, limit, page });
     
     // Build filter formula
     let filterFormula = '';
@@ -434,83 +387,79 @@ export async function getBrandPresence(req, res) {
     if (conditions.length > 0) {
       filterFormula = `AND(${conditions.join(', ')})`;
     }
-
-    // Filtered / full view: use Airtable. Unfiltered map fallback uses canonical fetch.
-    let formattedHotels;
-    let skippedNoCoordinates = 0;
-    let hotelsLen = 0;
-
-    if (view === "map" && !filterFormula) {
-      const universe = await fetchCanonicalMapHotelsFromAirtable(base, {
-        maxRecords: limit || undefined,
-      });
-      formattedHotels = universe.hotels;
-      skippedNoCoordinates = universe.skippedNoCoordinates;
-      hotelsLen = universe.totalCount;
-      res.setHeader("X-Census-Map-Snapshot", "FALLBACK_AIRTABLE");
-    } else {
-      const selectOptions = {
-        fields: view === "map" ? [...MAP_HOTEL_FIELDS] : undefined,
-        pageSize: 100,
-        sort: [{ field: F.hotels.name, direction: 'asc' }]
-      };
-      if (view !== "map") {
-        // full view historically selected MAP fields too for bulk — keep MAP fields for parity
-        selectOptions.fields = [...MAP_HOTEL_FIELDS];
-      }
-      if (limit) {
-        selectOptions.maxRecords = limit;
-      }
-      if (filterFormula && filterFormula.trim() !== '') {
-        selectOptions.filterByFormula = filterFormula;
-      }
-
-      let hotels;
-      try {
-        hotels = await base(F.hotels.table).select(selectOptions).all();
-      } catch (selectErr) {
-        const msg = String(selectErr?.message || selectErr || "");
-        if (
-          selectErr?.error === "UNKNOWN_FIELD_NAME" ||
-          /Unknown field name/i.test(msg)
-        ) {
-          selectOptions.fields = MAP_HOTEL_FIELDS.filter(
-            (field) => field !== F.hotels.market && field !== F.hotels.submarket
-          );
-          hotels = await base(F.hotels.table).select(selectOptions).all();
-        } else {
-          throw selectErr;
-        }
-      }
-
-      hotelsLen = hotels.length;
-      formattedHotels = hotels.map((hotel) => {
-        const formatted = view === "map" ? formatMapHotelRecord(hotel) : formatHotelRecord(hotel);
-        const hasCoords = Number.isFinite(formatted.lat) && Number.isFinite(formatted.lng)
-          && (formatted.lat !== 0 || formatted.lng !== 0);
-        if (!hasCoords) skippedNoCoordinates++;
-        return formatted;
-      });
+    
+    // Bulk map load — lean field set; detail panel fetches full record per hotel on click
+    const selectOptions = {
+      fields: MAP_HOTEL_FIELDS,
+      pageSize: 100, // Airtable's optimal page size
+      sort: [{ field: F.hotels.name, direction: 'asc' }]
+    };
+    if (limit) {
+      selectOptions.maxRecords = limit;
+    }
+    
+    // Only add filterByFormula if we have a valid filter
+    if (filterFormula && filterFormula.trim() !== '') {
+      selectOptions.filterByFormula = filterFormula;
     }
 
+    let hotels;
+    try {
+      hotels = await base(F.hotels.table).select(selectOptions).all();
+    } catch (selectErr) {
+      if (isAirtableCredentialError(selectErr)) {
+        const fixture = fixtureSearchResponse({ search, limit, page, view });
+        if (fixture) {
+          console.warn(
+            "[brand-presence] search falling back to golden-demo fixture",
+            selectErr?.message || selectErr
+          );
+          return res.json(fixture);
+        }
+      }
+      const msg = String(selectErr?.message || selectErr || "");
+      if (
+        selectErr?.error === "UNKNOWN_FIELD_NAME" ||
+        /Unknown field name/i.test(msg)
+      ) {
+        selectOptions.fields = MAP_HOTEL_FIELDS.filter(
+          (field) => field !== F.hotels.market && field !== F.hotels.submarket
+        );
+        hotels = await base(F.hotels.table).select(selectOptions).all();
+      } else {
+        throw selectErr;
+      }
+    }
+    
+    // Format response; track valid coordinates for diagnostics
+    let skippedNoCoordinates = 0;
+    const formattedHotels = hotels.map((hotel) => {
+      const formatted = formatHotelRecord(hotel);
+      const hasCoords = Number.isFinite(formatted.lat) && Number.isFinite(formatted.lng)
+        && (formatted.lat !== 0 || formatted.lng !== 0);
+      if (!hasCoords) skippedNoCoordinates++;
+      return formatted;
+    });
+    
+    // Calculate statistics
+    const stats = calculateStatistics(formattedHotels);
+    
+    // Generate insights
+    const insights = generateInsights(formattedHotels);
+    
     const response = {
       success: true,
       hotels: formattedHotels,
+      statistics: stats,
+      insights: insights,
       totalCount: formattedHotels.length,
       totalWithCoordinates: formattedHotels.length - skippedNoCoordinates,
       skippedNoCoordinates,
-      hasMore: !!limit && hotelsLen === limit,
+      hasMore: !!limit && hotels.length === limit,
       page: parseInt(page, 10),
       limit,
-      view,
       cached: false
     };
-
-    // Full view keeps server-side stats/insights; map view lets the client compute from the sparse DTO.
-    if (view !== "map") {
-      response.statistics = calculateStatistics(formattedHotels);
-      response.insights = generateInsights(formattedHotels);
-    }
 
     // Cache the response
     setCache(cacheKey, response);
@@ -519,12 +468,18 @@ export async function getBrandPresence(req, res) {
     res.json(response);
     
   } catch (error) {
-    const fixture = fixtureSearchResponse();
-    if (fixture || isAirtableCredentialError(error)) {
+    if (isAirtableCredentialError(error)) {
+      const fixture = fixtureSearchResponse({
+        search: req.query?.search,
+        limit: Number.isFinite(parseInt(req.query?.limit, 10))
+          ? parseInt(req.query.limit, 10)
+          : null,
+        page: req.query?.page || 0,
+        view: "full",
+      });
       if (fixture) {
         console.warn(
-          "[brand-presence] search falling back to golden-demo fixture",
-          search,
+          "[brand-presence] search catch falling back to golden-demo fixture",
           error?.message || error
         );
         return res.json(fixture);
@@ -532,8 +487,8 @@ export async function getBrandPresence(req, res) {
     }
     console.error("Error getting brand presence data:", error);
     res.status(500).json({ 
-      error: "Internal Server Error",
-      details: error.message
+      error: "Internal Server Error", 
+      details: error.message 
     });
   }
 }
