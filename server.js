@@ -46,6 +46,27 @@ import { cronMarketAlertsRssSync } from "./api/run-market-alerts-rss-sync.js";
 import { startMarketAlertsRssScheduler } from "./api/market-alerts-rss-scheduler.js";
 import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandPresenceHotelById, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
+import {
+  getGoldenDemoOwnershipIndex,
+  getGoldenDemoHotelOwnership,
+  getGoldenDemoOwnershipGroup,
+  getGoldenDemoOwnershipNeighbors,
+} from "./api/golden-demo-ownership.js";
+import {
+  listHotelIntelligenceDossiers,
+  getHotelIntelligenceDossier,
+  getHotelIntelligenceDossierForHotel,
+  downloadHotelIntelligenceDossierPdf,
+} from "./api/hotel-intelligence-dossier.js";
+import {
+  getHotelResearchCenter,
+  listHotelResearchRequests,
+  getResearchRequest,
+  createHotelResearchRequest,
+  listResearchTemplates,
+  getResearchReportMeta,
+  enrichHotelPeopleProfiles,
+} from "./api/hotel-intelligence-research.js";
 import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } from "./api/operators-by-brand-region.js";
 import { getTravelInfrastructure, getRadarMapTravelInfrastructurePoints, postTravelInfrastructureImportPreview, postTravelInfrastructureImportCommit } from "./api/travel-infrastructure.js";
 import { getDemandAnchors, getRadarMapDemandAnchorsPoints, postDemandAnchorsImportPreview, postDemandAnchorsImportCommit } from "./api/demand-anchors.js";
@@ -716,6 +737,86 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ============================================================
+// HOTEL / OWNER EXPLORER — MEXICO SHARE + GOLDEN DEMO ROUTES
+// Restored onto main so Railway deploys keep no-login share links.
+// ============================================================
+
+// Golden Demo Ownership
+app.get("/api/golden-demo/ownership", getGoldenDemoOwnershipIndex);
+app.get(
+  "/api/golden-demo/ownership/graph/neighbors",
+  getGoldenDemoOwnershipNeighbors
+);
+app.get(
+  "/api/golden-demo/ownership/groups/:slug",
+  getGoldenDemoOwnershipGroup
+);
+app.get(
+  "/api/golden-demo/ownership/hotel/:recordId",
+  getGoldenDemoHotelOwnership
+);
+
+// Hotel Intelligence Dossiers
+app.get(
+  "/api/hotel-intelligence/dossiers",
+  listHotelIntelligenceDossiers
+);
+app.get(
+  "/api/hotel-intelligence/dossiers/:dossierId",
+  getHotelIntelligenceDossier
+);
+app.get(
+  "/api/hotel-intelligence/dossiers/:dossierId/pdf",
+  downloadHotelIntelligenceDossierPdf
+);
+app.get(
+  "/api/hotel-intelligence/hotels/:recordId/dossiers",
+  getHotelIntelligenceDossierForHotel
+);
+app.get(
+  "/api/hotel-intelligence/hotels/:recordId/dossiers/pdf",
+  function (req, res) {
+    req.params.dossierId = "";
+    req.query.recordId = req.params.recordId;
+    return downloadHotelIntelligenceDossierPdf(req, res);
+  }
+);
+
+// Deep Research Center
+app.get(
+  "/api/hotel-intelligence/research/templates",
+  listResearchTemplates
+);
+app.get(
+  "/api/hotel-intelligence/research/reports/:reportId",
+  getResearchReportMeta
+);
+app.get(
+  "/api/hotel-intelligence/research/requests/:requestId",
+  getResearchRequest
+);
+app.get(
+  "/api/hotel-intelligence/hotels/:hotelId/research",
+  getHotelResearchCenter
+);
+app.get(
+  "/api/hotel-intelligence/hotels/:hotelId/research/requests",
+  listHotelResearchRequests
+);
+app.post(
+  "/api/hotel-intelligence/hotels/:hotelId/research/requests",
+  createHotelResearchRequest
+);
+app.post(
+  "/api/hotel-intelligence/hotels/:hotelId/research/enrich-profiles",
+  enrichHotelPeopleProfiles
+);
+
+// ============================================================
+// END HOTEL / OWNER EXPLORER SHARE ROUTES
+// ============================================================
 
 // Memberstack + Airtable user context (Phase A)
 app.get("/api/me", getMe);
@@ -1662,6 +1763,22 @@ app.get("/operator-explorer-preview", (req, res) => {
 app.get("/operator-explorer-preview/", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/operator-explorer-share.html" + q);
+});
+app.get("/hotel-explorer-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-explorer-share.html" + q);
+});
+app.get("/hotel-explorer-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-explorer-share.html" + q);
+});
+app.get("/hotel-explorer-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "hotel-explorer-share.html"));
+});
+app.get("/hotel-intelligence-golden-demo.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "hotel-intelligence-golden-demo.html"));
 });
 app.get("/brand-explorer-share", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
