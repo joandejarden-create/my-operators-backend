@@ -306,9 +306,13 @@ export async function getBrandPresenceHotelById(req, res) {
         formatted.market = presentation.market || formatted.market;
         formatted.submarket = presentation.submarket || formatted.submarket;
         formatted.website = presentation.website || formatted.website;
-        formatted.hotelDescription =
-          presentation.hotelDescription || formatted.hotelDescription;
-        formatted.amenities = presentation.amenities || formatted.amenities;
+        // Fill narrative only when census is empty; never clobber richer census text with stubs.
+        if (!String(formatted.hotelDescription || "").trim() && presentation.hotelDescription) {
+          formatted.hotelDescription = presentation.hotelDescription;
+        }
+        if (!String(formatted.amenities || "").trim() && presentation.amenities) {
+          formatted.amenities = presentation.amenities;
+        }
         formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
       }
     }
