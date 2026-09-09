@@ -14,8 +14,8 @@
   "assetCacheToken": "adp-v71-20260902-bpp-p2",
   "promptManifestHash": "2ceb0f1f2101a394da3a84ac9019a3777c96d5aff9efb79409f631ce28e2c9d5",
   "frozenPackageHash": "69d60d7bacaad5fdaf834da154960344a4ae23244164e78f8950a1a43303e77d",
-  "payloadHash": "ce7ccbe25b9d4e96b794fa1b6de603cabe9aa90625af8f90b1876e5617f5e658",
-  "publishedAt": "2026-09-02T18:47:03.809Z",
+  "payloadHash": "e65d91fffaec49ebfb1fd93ba7e56eb7c844b563ecc25f3039e9056215c52333",
+  "publishedAt": "2026-09-09T17:15:45.101Z",
   "supersedesPublicationVersion": "bpp-customer-v1.1-20260821",
   "period1Archive": "ADP_BRAND_PORTFOLIO_CUSTOMER_PUBLISHED_PERIOD1_ARCHIVE_V1.json",
   "payloads": {
@@ -6497,6 +6497,181 @@
         "promptManifestHash": "2ceb0f1f2101a394da3a84ac9019a3777c96d5aff9efb79409f631ce28e2c9d5",
         "frozenPackageHash": "69d60d7bacaad5fdaf834da154960344a4ae23244164e78f8950a1a43303e77d"
       }
+    },
+    "adp_bethesda_marriott": {
+      "ok": true,
+      "sectionId": "brand-portfolio-position",
+      "contractVersion": "ADP_BRAND_PORTFOLIO_POSITION_CONTRACT_V1",
+      "sectionVisible": true,
+      "title": "Brand & Portfolio Position",
+      "subtitle": "How this hotel performs within its brand, collection, portfolio, or loyalty ecosystem.",
+      "sectionMode": "BRAND_PORTFOLIO_POSITION",
+      "status": "READY",
+      "renderState": "READY",
+      "customerState": null,
+      "emptyMessage": null,
+      "lens": {
+        "lensId": "marriott_bonvoy",
+        "label": "Marriott Bonvoy",
+        "portfolioType": "LOYALTY_ECOSYSTEM",
+        "status": "DEFAULT"
+      },
+      "optionalFutureLenses": [
+        {
+          "lensId": "marriott_hotels",
+          "label": "Marriott Hotels",
+          "status": "OPTIONAL_FUTURE"
+        }
+      ],
+      "assuranceStatus": "CUSTOMER_READY",
+      "showAnalyticalScaffolding": true,
+      "kpis": [
+        {
+          "id": "portfolioAiPresence",
+          "label": "Portfolio AI Presence",
+          "value": "42.1%",
+          "valueRaw": 0.42063492063492064,
+          "meta": "106 of 252 AI observations",
+          "grain": "PROVIDER_OBSERVATION",
+          "available": true
+        },
+        {
+          "id": "portfolioRank",
+          "label": "Portfolio Rank",
+          "value": "#1 of 4",
+          "valueRaw": 1,
+          "meta": "Among 4 relevant Marriott Bonvoy hotels",
+          "grain": "PROVIDER_OBSERVATION",
+          "available": true
+        },
+        {
+          "id": "numberOneAppearance",
+          "label": "#1 Appearance",
+          "value": "1.6%",
+          "valueRaw": 0.015873015873015872,
+          "meta": "1 of 63 scenarios",
+          "grain": "UNIQUE_SCENARIO",
+          "available": true
+        },
+        {
+          "id": "top3Appearance",
+          "label": "Top-3 Appearance",
+          "value": "77.8%",
+          "valueRaw": 0.7777777777777778,
+          "meta": "49 of 63 scenarios",
+          "grain": "UNIQUE_SCENARIO",
+          "available": true
+        }
+      ],
+      "ranking": {
+        "rows": [
+          {
+            "rank": 1,
+            "rankLabel": "#1",
+            "name": "Bethesda Marriott",
+            "brand": "Marriott Hotels",
+            "isSubject": true,
+            "presenceDisplay": "42.1%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "—",
+            "sharedDisplay": "—",
+            "canonicalEntityId": "adp_bethesda_marriott"
+          },
+          {
+            "rank": 2,
+            "rankLabel": "#2",
+            "name": "Bethesda North Marriott Hotel & Conference Center",
+            "brand": "Marriott Hotels",
+            "isSubject": false,
+            "presenceDisplay": "31.3%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "10",
+            "sharedDisplay": "43",
+            "canonicalEntityId": "bethesda_north_marriott"
+          },
+          {
+            "rank": 3,
+            "rankLabel": "#3",
+            "name": "Marriott Bethesda Downtown at Marriott HQ",
+            "brand": "Marriott Hotels",
+            "isSubject": false,
+            "presenceDisplay": "28.2%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "8",
+            "sharedDisplay": "37",
+            "canonicalEntityId": "marriott_bethesda_downtown"
+          },
+          {
+            "rank": 4,
+            "rankLabel": "#4",
+            "name": "AC Hotel Bethesda Downtown",
+            "brand": "AC Hotels",
+            "isSubject": false,
+            "presenceDisplay": "15.5%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "5",
+            "sharedDisplay": "26",
+            "canonicalEntityId": "ac_hotel_bethesda_downtown"
+          }
+        ],
+        "comparisonMode": "PUBLICATION_TIME",
+        "hasPriorPeriod": false,
+        "firstPeriodDeltaLabel": "—"
+      },
+      "tableColumns": [
+        "Rank",
+        "Hotel",
+        "AI Presence",
+        "Δ vs Prior Run",
+        "Displacement vs You",
+        "Scenarios Shared"
+      ],
+      "dataAvailability": {
+        "validObservations": 0,
+        "invalidObservations": 0,
+        "needsRerunObservations": 0,
+        "propertySpecificOtherObservations": 0,
+        "validScenarios": 0,
+        "sufficientForRanking": false,
+        "historicalCandidateReuseAvailable": false,
+        "source": "missing_reclass_report"
+      },
+      "affiliationSnapshot": {
+        "brand": "Marriott Hotels",
+        "affiliation": "Marriott Hotels",
+        "parentCompany": "Marriott International",
+        "officialBrandDomain": "marriott.com",
+        "marriottHotelCode": "WASBT"
+      },
+      "coreIsolation": true,
+      "gate": "CORE_PORTFOLIO_MEASUREMENT_ISOLATION",
+      "principles": [
+        "NO_EMPTY_ANALYTICAL_SCAFFOLDING_BEFORE_MEASUREMENT",
+        "PORTFOLIO_TABLE_REQUIRES_READY_MEASUREMENT",
+        "PORTFOLIO_METRIC_MISSING_IS_NOT_ZERO"
+      ],
+      "doesNotAlterCoreMetrics": true,
+      "periodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "customerPublished": true,
+      "comparisonMode": "PUBLICATION_TIME",
+      "hasPriorPeriod": false,
+      "measurement": {
+        "kpiContractVersion": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+        "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+        "grain": "PROVIDER_OBSERVATION",
+        "periodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+        "priorPeriodId": null,
+        "comparisonMode": "PUBLICATION_TIME",
+        "publicationVersion": "bpp-customer-v1.1-20260902-p2",
+        "customerPublished": true,
+        "compatibleObservationReuse": "PERIOD_CORE_OBSERVATIONS_REUSED_FOR_PEER_RANKING"
+      },
+      "peerSet": {
+        "peerSetId": "bps_adp_bethesda_marriott_marriott_bonvoy_certified_v1",
+        "peerSetVersion": "ADP_LOYALTY_ECOSYSTEM_PEER_UNIVERSE_V1_CERTIFIED",
+        "adequacy": "RANK_ONLY_SUPPRESS_BENCHMARK_INDEX",
+        "peerCount": 3
+      }
     }
   },
   "gates": {
@@ -6508,5 +6683,6 @@
     "CORE_PORTFOLIO_MEASUREMENT_ISOLATION": "PASS",
     "CUSTOMER_REPORT_PUBLICATION_CACHE_INVALIDATION_INTEGRITY": "PASS",
     "BRAND_PORTFOLIO_PERIOD_2_CUSTOMER_PUBLISHED": "YES"
-  }
+  },
+  "bethesdaPublicationNote": "Bethesda Marriott BPP READY_POPULATED added at governed publication #14 (observation reuse; RANK_ONLY)"
 }
