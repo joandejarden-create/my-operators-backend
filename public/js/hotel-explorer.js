@@ -1100,7 +1100,11 @@
     }
     var enriched = enrichHotelFromOwnership(state.hotel, state.ownership);
     if (typeof window.HotelDetailPanel.setPresentationOverrides === "function") {
-      window.HotelDetailPanel.setPresentationOverrides(presentationOverrides(enriched, state.ownership));
+      var presentationOv = presentationOverrides(enriched, state.ownership);
+      // Brand-presence detail is authoritative for market/submarket; pack/ownership must not clobber after fetch.
+      delete presentationOv.market;
+      delete presentationOv.submarket;
+      window.HotelDetailPanel.setPresentationOverrides(presentationOv);
     }
     var host = document.getElementById("hexRadarHost");
     if (!host) return Promise.resolve();
