@@ -34,6 +34,7 @@
     var SHERATON_ID = "recsYJb2R1jarPpK3";
     var VOCO_ID = "recTYaiA4S6fR6ixx";
     var KGPV_ID = "recUNycnMwOVFX0hc";
+    var CAMBRIDGE_ID = "recIwaP1etgx2g9nA";
     var SHERATON_DOSSIER = "dossier_sheraton_gdl_expo_full_hi_v1";
     var VOCO_DOSSIER = "dossier_real_inn_cancun_full_hi_v1";
 
@@ -68,8 +69,16 @@
         label: "KGPV",
         title: "Hotel Explorer — Krystal Grand Puerto Vallarta",
         hotelExplorer: KGPV_ID,
-        hexTab: "ownership",
-        meta: "KGPV · direct URL",
+        hexTab: "hotel",
+        meta: "KGPV · Krystal Grand Puerto Vallarta · direct URL",
+      },
+      cambridge: {
+        key: "cambridge",
+        label: "Cambridge",
+        title: "Hotel Explorer — Cambridge Beaches Resort & Spa",
+        hotelExplorer: CAMBRIDGE_ID,
+        hexTab: "hotel",
+        meta: "Cambridge Beaches · Bermuda · direct URL",
       },
     };
 
@@ -80,6 +89,9 @@
       "mexico-demo": "mexico",
       both: "mexico",
       all: "mexico",
+      "cambridge-beaches": "cambridge",
+      "cambridge-beaches-bermuda": "cambridge",
+      bermuda: "cambridge",
     };
 
     var HUB_PROPERTIES = [
@@ -158,7 +170,7 @@
       if (metaEl) metaEl.textContent = pack.meta;
       if (draftBanner) draftBanner.hidden = !showDraft;
       if (packsEl) {
-        packsEl.innerHTML = ["mexico", "sheraton-gdl", "voco-cancun", "kgpv"]
+        packsEl.innerHTML = ["mexico", "sheraton-gdl", "voco-cancun", "kgpv", "cambridge"]
           .map(function (key) {
             var p = SHARE_PACKS[key];
             var active = key === pack.key ? " is-active" : "";
