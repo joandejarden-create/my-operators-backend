@@ -1,0 +1,58 @@
+{
+  "schema": "ADP_CERTIFIED_PERIOD_CORRECTION_V1",
+  "correctionId": "adp_corr_radisson_santo_domingo_mtt30tb5",
+  "propertyId": "adp_radisson_santo_domingo",
+  "periodId": "adp_period_adp_radisson_santo_domingo_20260908121004_f947f9",
+  "rootCause": "SINGLE_CANONICAL_SUBJECT_PRESENCE_PATH — Path-B enrichObservationsWithRank overwrote Path-A detectPropertyMention; remediation projects governedInterpretation (Option A).",
+  "evidence": {
+    "pathA": "detectPropertyMention / governedInterpretation.subjectMentioned",
+    "pathBRemoved": "extractPropertyRank.mentioned no longer decides presence",
+    "beforeMetrics": {
+      "considerationRate": 23.4,
+      "considerationPresent": 59,
+      "considerationDenom": 252,
+      "scenarioPresence": 41.3,
+      "demandCapture": 42.9
+    },
+    "afterPreview": {
+      "considerationRate": 29,
+      "considerationPresent": 73,
+      "considerationDenom": 252,
+      "scenarioPresence": 42.9,
+      "demandCapture": null,
+      "referenceConsideration": null
+    },
+    "presencePathPreview": {
+      "status": "PASS",
+      "missingGoverned": 0,
+      "dualPathActive": false
+    }
+  },
+  "affectedMetrics": [
+    "AI Consideration",
+    "AI Scenario Presence",
+    "downstream competitive/displacement aggregation"
+  ],
+  "oldValues": {
+    "considerationRate": 23.4,
+    "considerationPresent": 59,
+    "considerationDenom": 252,
+    "scenarioPresence": 41.3,
+    "demandCapture": 42.9
+  },
+  "newValues": {
+    "considerationRate": 29,
+    "considerationPresent": 73,
+    "considerationDenom": 252,
+    "scenarioPresence": 42.9,
+    "demandCapture": null,
+    "referenceConsideration": null
+  },
+  "correctionTimestamp": "2026-09-08T19:48:13.793Z",
+  "supersededVersion": "ORIGINAL_CERTIFIED_PUBLISH",
+  "correctedVersion": "adp_cala_six_client_readiness_remediation_v1",
+  "clientExposureStatus": "NOT_DISTRIBUTED_EXTERNALLY",
+  "externalShareDistributed": false,
+  "immutableLineage": true,
+  "notes": "Share tokens existed internally; no external client distribution occurred."
+}

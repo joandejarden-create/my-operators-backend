@@ -52,7 +52,7 @@
       "A CORE hotel with 0% observed AI presence remains a valid measured result. " +
       "Missing or unavailable provider/observation scope is not converted to zero.<br><br>" +
       "<strong>Why &ldquo;Benchmark not yet certified&rdquo;?</strong><br><br>" +
-      "You may still see AI Presence values for individual CORE hotels in the Competitive Set. " +
+      "You may still see Scenario Appearance values for individual CORE hotels in the Competitive Set. " +
       "Those measurements can be valid before the combined benchmark is certified. " +
       "Dealality only publishes the benchmark once the comparable set and the subject-vs-benchmark comparison " +
       "pass the required coverage and stability checks.";
@@ -62,7 +62,7 @@
     return "<strong>Benchmark not yet certified</strong><br><br>" +
       "Individual CORE hotel presence can be measured before the overall benchmark is certified. " +
       "The benchmark is published only after required coverage and stability checks pass. " +
-      "You may therefore see CORE hotel AI Presence values in the Competitive Set even when this benchmark is not yet certified.";
+      "You may therefore see CORE hotel Scenario Appearance values in the Competitive Set even when this benchmark is not yet certified.";
   }
 
   function adpPropertyRealityCoverageTip() {
@@ -79,9 +79,9 @@
   function adpTopObservedAlternativeTip() {
     return adpExecutiveMetricTip("Top Observed AI Alternative", {
       summary: "This is the hotel that appears most often alongside or instead of yours across monitored answers this period.",
-      definition: "The single non-subject hotel with the highest Overall AI Presence in comparable monitored answers — the same ranking as Competitive Overview Overall.",
+      definition: "The single non-subject hotel with the highest Overall Scenario Appearance in comparable monitored answers — the same ranking as Competitive Overview Overall.",
       formula: "Among hotels named in monitored AI answers, the one present in the most comparable responses (max one credit per hotel per answer). Ties use alphabetical display name.",
-      grain: "Unique-per-observation presence on comparable answers only. Duplicate names in one answer count once. Same grain as Competitive Overview AI Presence.",
+      grain: "Unique-per-observation presence on comparable answers only. Duplicate names in one answer count once. Same grain as Competitive Overview Scenario Appearance. Not the same metric as that hotel's own AI Consideration.",
       whyTrack: "Gives a practical read on which hotel AI surfaces most often in your competitive context — useful for understanding who travelers may see when AI answers stay questions.",
       important: "An observed AI alternative is not automatically a direct commercial competitor. This is an observation from AI answers, not a judgment of brand, rate, or market set membership."
     });
@@ -202,26 +202,61 @@
   var BENCHMARK_UNCERTIFIED_LABEL = "Benchmark not yet certified";
   var BENCHMARK_UNCERTIFIED_LINE1 = "Benchmark not";
   var BENCHMARK_UNCERTIFIED_LINE2 = "yet certified";
+  var INDEX_UNAVAILABLE_LABEL = "Not yet available";
+  var INDEX_UNAVAILABLE_LINE1 = "Not yet";
+  var INDEX_UNAVAILABLE_LINE2 = "available";
+  var SUBJECT_PRESENCE_UNAVAILABLE_LABEL = "Not available";
+  var SUBJECT_PRESENCE_UNAVAILABLE_LINE1 = "Not";
+  var SUBJECT_PRESENCE_UNAVAILABLE_LINE2 = "available";
+  // ADP_TERRITORY_SUBJECT_RATE_INDEPENDENT_OF_BENCHMARK_STATUS
 
-  function developingCell() {
+  function twoLineAvailabilityCell(statusClass, line1, line2, title) {
     if (window.AiVisibilityUi && typeof AiVisibilityUi.formatTwoLineAvailabilityCell === "function") {
-      return AiVisibilityUi.formatTwoLineAvailabilityCell(
-        "insufficient_history",
-        BENCHMARK_UNCERTIFIED_LINE1,
-        BENCHMARK_UNCERTIFIED_LINE2
-      );
+      return AiVisibilityUi.formatTwoLineAvailabilityCell(statusClass, line1, line2);
     }
     return (
-      '<span class="aiv-avail-insufficient_history aiv-delta-none aiv-table-availability-label" title="' +
-      esc(BENCHMARK_UNCERTIFIED_LABEL) +
+      '<span class="aiv-avail-' +
+      esc(statusClass) +
+      ' aiv-delta-none aiv-table-availability-label" title="' +
+      esc(title || line1 + " " + line2) +
       '">' +
       '<span class="aiv-table-availability-label__line">' +
-      esc(BENCHMARK_UNCERTIFIED_LINE1) +
+      esc(line1) +
       "</span>" +
       '<span class="aiv-table-availability-label__line">' +
-      esc(BENCHMARK_UNCERTIFIED_LINE2) +
+      esc(line2) +
       "</span>" +
       "</span>"
+    );
+  }
+
+  /** CORE Benchmark column only — never use for Your AI Presence. */
+  function developingCell() {
+    return twoLineAvailabilityCell(
+      "insufficient_history",
+      BENCHMARK_UNCERTIFIED_LINE1,
+      BENCHMARK_UNCERTIFIED_LINE2,
+      BENCHMARK_UNCERTIFIED_LABEL
+    );
+  }
+
+  /** AI Presence Index when benchmark is not customer-numeric yet. */
+  function indexUnavailableCell() {
+    return twoLineAvailabilityCell(
+      "insufficient_history",
+      INDEX_UNAVAILABLE_LINE1,
+      INDEX_UNAVAILABLE_LINE2,
+      INDEX_UNAVAILABLE_LABEL
+    );
+  }
+
+  /** Your AI Presence missing — not a benchmark certification statement. */
+  function subjectPresenceUnavailableCell() {
+    return twoLineAvailabilityCell(
+      "insufficient_history",
+      SUBJECT_PRESENCE_UNAVAILABLE_LINE1,
+      SUBJECT_PRESENCE_UNAVAILABLE_LINE2,
+      SUBJECT_PRESENCE_UNAVAILABLE_LABEL
     );
   }
 
@@ -681,25 +716,12 @@
         );
       }
 
-      // If publication-meta says this property is customer-published but report BPP is still
-      // awaiting/stale, force one no-store refetch (CUSTOMER_REPORT_PUBLICATION_CACHE_INVALIDATION).
-      // Skip when explicitly previewing controlled Period-2 local output.
+      // Publication-meta for this load is already fetched with cache:no-store above.
+      // A second meta+report round-trip cannot make BPP READY if the first report
+      // already reflected that meta (P4B measured duplicate ~73–197 KB report downloads).
+      // Explicit Load Report / navigation still picks up newer publication versions.
       var pageParams = new URLSearchParams(window.location.search);
       var period2LocalPreview = pageParams.get("bppPeriod2Local") === "1";
-      var metaSaysPublished =
-        pubMeta &&
-        pubMeta.publicationVersion &&
-        String(pubMeta.publicationVersion).indexOf("bpp-customer-") === 0;
-      if (
-        metaSaysPublished &&
-        !period2LocalPreview &&
-        !bppLooksPublishedReady(data.brandPortfolioPosition)
-      ) {
-        pubMeta = (await fetchAdpPublicationMeta()) || pubMeta;
-        res = await authFetch(buildReportUrl(sel.value, pubMeta), { cache: "no-store" });
-        data = await res.json();
-        if (!data.ok) throw new Error(data.message || data.error || "Unable to load report.");
-      }
 
       // CUSTOMER_PUBLISHED_READY_STATE_DELIVERY — normalize published READY for renderer
       var bpp = data.brandPortfolioPosition;
@@ -779,54 +801,203 @@
     } catch (_) {}
   }
 
+  function isAdpExecutiveReadV3QaMode() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      var q = params.get("adpErV3");
+      if (q === "1" || q === "true") return true;
+      if (window.localStorage && window.localStorage.getItem("ADP_ER_V3_QA") === "1") return true;
+    } catch (err) {
+      /* ignore */
+    }
+    return false;
+  }
+
+  function resolveV3Composition(er) {
+    if (!er) return null;
+    if (er.compositionVersion === "ADP_EXECUTIVE_READ_COMPOSITION_V3" && er.sections) return er;
+    if (er.compositionV3 && er.compositionV3.ok && er.compositionV3.sections) return er.compositionV3;
+    return null;
+  }
+
+  var ADP_ER_V3_SECTION_ORDER = [
+    "headline",
+    "keyInsight",
+    "whyItMatters",
+    "focusNow",
+    "watch",
+    "whatToReview",
+  ];
+
+  var ADP_ER_V3_LABELS = {
+    headline: "Headline",
+    keyInsight: "Key Insight",
+    whyItMatters: "Why It Matters",
+    focusNow: "Focus Now",
+    watch: "Watch",
+    whatToReview: "What to Review",
+  };
+
+  function buildExecutiveReadV3StructuredHtml(composition) {
+    if (!composition || !composition.sections) return null;
+    var sections = composition.sections;
+    var html = [];
+    html.push(
+      '<div class="adp-er-v3" data-composition-version="ADP_EXECUTIVE_READ_COMPOSITION_V3" data-er-renderer="ADP_EXECUTIVE_STRUCTURED_RENDERER_V3">'
+    );
+    for (var i = 0; i < ADP_ER_V3_SECTION_ORDER.length; i++) {
+      var key = ADP_ER_V3_SECTION_ORDER[i];
+      var text = sections[key];
+      if (key === "watch" && (text == null || String(text).trim() === "")) continue;
+      if (text == null || String(text).trim() === "") continue;
+      var classes = ["adp-er-v3__section", "adp-er-v3__section--" + key];
+      if (key === "headline") classes.push("adp-er-v3__section--primary");
+      if (key === "focusNow") classes.push("adp-er-v3__section--emphasis");
+      if (key === "watch") classes.push("adp-er-v3__section--secondary");
+      if (key === "whatToReview") classes.push("adp-er-v3__section--closing");
+      if (key === "headline") {
+        html.push(
+          '<div class="' +
+            classes.join(" ") +
+            '" data-er-section="' +
+            esc(key) +
+            '"><p class="adp-er-v3__headline">' +
+            esc(text) +
+            "</p></div>"
+        );
+      } else {
+        html.push(
+          '<div class="' +
+            classes.join(" ") +
+            '" data-er-section="' +
+            esc(key) +
+            '"><p class="adp-er-v3__label">' +
+            esc(ADP_ER_V3_LABELS[key] || key) +
+            '</p><p class="adp-er-v3__text">' +
+            esc(text) +
+            "</p></div>"
+        );
+      }
+    }
+    html.push("</div>");
+    return html.join("");
+  }
+
   function resolveExecutiveReadPresentation(er) {
     if (!er || er.available === false) return null;
 
     var ux = er.ux;
     var summary = er.summary;
     var writeup = er.writeup;
-    var biggestStrength = (ux && ux.biggestStrength) || (summary && summary.biggestStrength) || null;
-    var biggestConstraint = (ux && ux.biggestConstraint) || (summary && summary.biggestConstraint) || null;
+    var scan = er.scanLayer;
+    var biggestStrength =
+      (scan && scan.biggestStrength) ||
+      (ux && ux.biggestStrength) ||
+      (summary && summary.biggestStrength) ||
+      null;
+    var biggestConstraint =
+      (scan && scan.biggestConstraint) ||
+      (ux && ux.biggestConstraint) ||
+      (summary && summary.biggestConstraint) ||
+      null;
     var changeSinceLastRun =
+      (scan && scan.changeSincePrior) ||
       (ux && ux.changeSinceLastRun) ||
       (summary && summary.changeSinceLastComparableRun) ||
       (summary && summary.changeSinceLastRun) ||
       null;
+
+    // ADP_EXECUTIVE_RENDERER_FOLLOWS_STORED_COMPOSITION_VERSION
+    // STORED_COMPOSITION_VERSION_OVERRIDES_DEFAULT_GENERATION_FLAG
+    var stampedV3 =
+      er.compositionVersion === "ADP_EXECUTIVE_READ_COMPOSITION_V3" ||
+      (er.compositionV3 && er.compositionV3.ok === true);
+    var v3Composition = resolveV3Composition(er);
+    var v3Qa = isAdpExecutiveReadV3QaMode();
+    var hasValidV3Sections = Boolean(
+      v3Composition &&
+        v3Composition.sections &&
+        v3Composition.sections.headline &&
+        v3Composition.sections.keyInsight
+    );
+
+    function fallbackBox(sectionLabel, headline, body) {
+      return { sectionLabel: sectionLabel, headline: headline, body: body };
+    }
+
+    var strengthBox =
+      biggestStrength ||
+      fallbackBox(
+        "BIGGEST STRENGTH",
+        "Still developing",
+        "A governed strength summary is not available for this view yet."
+      );
+    var constraintBox =
+      biggestConstraint ||
+      fallbackBox(
+        "BIGGEST CONSTRAINT",
+        "Still developing",
+        "A governed constraint summary is not available for this view yet."
+      );
+    var changeBox =
+      changeSinceLastRun ||
+      fallbackBox(
+        "CHANGE SINCE LAST COMPARABLE RUN",
+        "No comparable prior official period yet",
+        "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+      );
+
+    // ADP_EXECUTIVE_NO_SILENT_COMPOSITION_DOWNGRADE
+    if (stampedV3 && !hasValidV3Sections && !v3Qa) {
+      return {
+        compositionMode: "V3_RENDER_ERROR",
+        renderError: "EXECUTIVE_READ_RENDER_ERROR",
+        title: "Executive Read",
+        narrative: null,
+        v3Composition: null,
+        biggestStrength: strengthBox,
+        biggestConstraint: constraintBox,
+        changeSinceLastRun: changeBox,
+      };
+    }
+
+    var useV3 = Boolean((stampedV3 || v3Qa) && hasValidV3Sections);
+
     var narrative =
       (writeup && writeup.body) ||
       (ux && ux.executiveSummary && ux.executiveSummary.narrative) ||
       (er.current && er.current.narrative) ||
       er.narrative ||
       null;
-    var title =
-      (writeup && writeup.title) ||
-      (ux && ux.executiveSummary && ux.executiveSummary.title) ||
-      "What The Data Says";
 
-    if (!narrative) return null;
+    // Hybrid V3: left scan cards + right structured synthesis.
+    // Do NOT render legacy "What The Data Says" as the main right-side content when V3 is active.
+    if (useV3) {
+      return {
+        biggestStrength: strengthBox,
+        biggestConstraint: constraintBox,
+        changeSinceLastRun: changeBox,
+        title: "Executive Read",
+        narrative: null,
+        compositionMode: "V3_HYBRID",
+        v3Composition: v3Composition,
+        v3QaOnly: useV3 && !stampedV3 && v3Qa,
+      };
+    }
 
-    function fallbackBox(sectionLabel, headline, body) {
-      return { sectionLabel: sectionLabel, headline: headline, body: body };
+    if (!narrative && !biggestStrength) {
+      return null;
     }
 
     return {
-      biggestStrength: biggestStrength || fallbackBox(
-        "BIGGEST STRENGTH",
-        "Still developing",
-        "A governed strength summary is not available for this view yet."
-      ),
-      biggestConstraint: biggestConstraint || fallbackBox(
-        "BIGGEST CONSTRAINT",
-        "Still developing",
-        "A governed constraint summary is not available for this view yet."
-      ),
-      changeSinceLastRun: changeSinceLastRun || fallbackBox(
-        "CHANGE SINCE LAST COMPARABLE RUN",
-        "Change unavailable",
-        "Comparable prior-period change is not available for this view yet."
-      ),
-      title: title,
+      biggestStrength: strengthBox,
+      biggestConstraint: constraintBox,
+      changeSinceLastRun: changeBox,
+      title: (writeup && writeup.title) || (ux && ux.executiveSummary && ux.executiveSummary.title) || "What The Data Says",
       narrative: narrative,
+      compositionMode: "LEGACY_WRITEUP",
+      v3Composition: null,
+      v3QaOnly: false,
     };
   }
 
@@ -841,6 +1012,15 @@
     );
   }
 
+  function bindExecutiveReadPrint(_sectionEl, _useV3) {
+    var btn = document.getElementById("adpExecutiveReadPrintBtn");
+    if (!btn) return;
+    // Print not customer-ready yet — keep hidden until print/PDF is approved.
+    btn.hidden = true;
+    btn.setAttribute("aria-hidden", "true");
+    btn.onclick = null;
+  }
+
   function renderExecutiveRead(d) {
     var gridEl = document.getElementById("adpExecutiveReadGrid");
     var summariesEl = document.getElementById("adpExecutiveReadSummaries");
@@ -852,27 +1032,90 @@
 
     var er = d && d.executiveRead;
     var presentation = resolveExecutiveReadPresentation(er);
+    var useV3 =
+      presentation &&
+      (presentation.compositionMode === "V3_HYBRID" || presentation.compositionMode === "V3_STRUCTURED");
+    var renderError = presentation && presentation.compositionMode === "V3_RENDER_ERROR";
 
-    if (!er || er.available === false || !presentation || !presentation.narrative) {
+    if (renderError) {
+      if (gridEl) gridEl.hidden = false;
+      if (summariesEl) {
+        // Keep left scan cards visible even on V3 render error when available
+        summariesEl.hidden = false;
+        summariesEl.innerHTML =
+          renderExecutiveSummaryBox(presentation.biggestStrength) +
+          renderExecutiveSummaryBox(presentation.biggestConstraint) +
+          renderExecutiveSummaryBox(presentation.changeSinceLastRun);
+      }
+      if (emptyEl) emptyEl.hidden = true;
+      section.classList.add("adp-executive-read--v3", "adp-executive-read--v3-hybrid", "adp-executive-read--v3-error");
+      section.classList.remove("adp-executive-read--v3-qa");
+      if (titleEl) titleEl.textContent = "Executive Read";
+      narrativeEl.classList.remove("adp-executive-read__narrative--legacy");
+      narrativeEl.classList.add("adp-executive-read__narrative--v3");
+      narrativeEl.innerHTML =
+        '<div class="adp-er-v3 adp-er-v3--error" data-er-renderer="EXECUTIVE_READ_RENDER_ERROR">' +
+        '<p class="adp-er-v3__label">Executive Read</p>' +
+        '<p class="adp-er-v3__text">EXECUTIVE_READ_RENDER_ERROR — V3 composition is stamped but structured sections are missing. Legacy summary was not rendered.</p>' +
+        "</div>";
+      bindExecutiveReadPrint(section, false);
+      return;
+    }
+
+    if (!er || er.available === false || !presentation || (!useV3 && !presentation.narrative)) {
       if (gridEl) gridEl.hidden = true;
       narrativeEl.textContent = "";
+      narrativeEl.innerHTML = "";
       if (summariesEl) summariesEl.innerHTML = "";
       if (emptyEl) emptyEl.hidden = false;
+      section.classList.remove(
+        "adp-executive-read--v3",
+        "adp-executive-read--v3-hybrid",
+        "adp-executive-read--v3-qa",
+        "adp-executive-read--v3-error"
+      );
+      bindExecutiveReadPrint(section, false);
       return;
     }
 
     if (emptyEl) emptyEl.hidden = true;
     if (gridEl) gridEl.hidden = false;
 
+    // ADP_EXECUTIVE_SUMMARY_HYBRID_V3_LAYOUT — left scan always rendered when boxes exist
     if (summariesEl) {
+      summariesEl.hidden = false;
       summariesEl.innerHTML =
         renderExecutiveSummaryBox(presentation.biggestStrength) +
         renderExecutiveSummaryBox(presentation.biggestConstraint) +
         renderExecutiveSummaryBox(presentation.changeSinceLastRun);
     }
 
-    if (titleEl) titleEl.textContent = presentation.title || "What The Data Says";
-    narrativeEl.textContent = presentation.narrative;
+    if (titleEl) {
+      titleEl.textContent = useV3 ? "Executive Read" : presentation.title || "What The Data Says";
+    }
+
+    if (useV3) {
+      section.classList.add("adp-executive-read--v3", "adp-executive-read--v3-hybrid");
+      section.classList.remove("adp-executive-read--v3-error");
+      if (presentation.v3QaOnly) section.classList.add("adp-executive-read--v3-qa");
+      else section.classList.remove("adp-executive-read--v3-qa");
+      var structured = buildExecutiveReadV3StructuredHtml(presentation.v3Composition);
+      narrativeEl.classList.remove("adp-executive-read__narrative--legacy");
+      narrativeEl.classList.add("adp-executive-read__narrative--v3");
+      narrativeEl.innerHTML = structured || "";
+    } else {
+      section.classList.remove(
+        "adp-executive-read--v3",
+        "adp-executive-read--v3-hybrid",
+        "adp-executive-read--v3-qa",
+        "adp-executive-read--v3-error"
+      );
+      narrativeEl.classList.add("adp-executive-read__narrative--legacy");
+      narrativeEl.classList.remove("adp-executive-read__narrative--v3");
+      narrativeEl.textContent = presentation.narrative || "";
+    }
+
+    bindExecutiveReadPrint(section, useV3);
   }
 
   function renderExecInsights(d) {
@@ -1381,17 +1624,16 @@
             }
           }
         } else {
-          if (statusLabel) statusLabel.textContent = "Portfolio monitoring not yet available";
+          if (statusLabel) statusLabel.textContent = "Brand & Portfolio not shown";
           if (statusBody) {
             statusBody.textContent =
               bpp.emptyMessage ||
-              "Brand & Portfolio insights will appear here after the first monitoring cycle.";
+              "Brand & Portfolio benchmarking is not shown for this period because the governed peer set does not yet meet the minimum comparability requirement.";
           }
           if (statusSecondary) {
-            statusSecondary.hidden = false;
-            statusSecondary.removeAttribute("hidden");
-            statusSecondary.textContent =
-              "You’ll see AI Presence, portfolio rank, and the properties most often competing with this hotel.";
+            statusSecondary.hidden = true;
+            statusSecondary.setAttribute("hidden", "");
+            statusSecondary.textContent = "";
           }
         }
       }
@@ -1491,14 +1733,29 @@
     }
 
     if (evidenceHost) {
-      if (bpp.evidence) {
+      // ADP_EVIDENCE_LINK_NONEMPTY — only publish clickable BPP evidence when pack is nonempty.
+      var bppPos = (bpp.evidence && bpp.evidence.positive) || [];
+      var bppMiss = (bpp.evidence && bpp.evidence.missing) || [];
+      var bppDisp = (bpp.evidence && bpp.evidence.displacement) || [];
+      var bppBtns = [];
+      if (bppPos.length) {
+        bppBtns.push(
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="positive" data-adp-evidence-type="BPP_PRESENCE">View Positive Evidence</button>'
+        );
+      }
+      if (bppMiss.length) {
+        bppBtns.push(
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="missing" data-adp-evidence-type="BPP_MISSING">View Missing Evidence</button>'
+        );
+      }
+      if (bppDisp.length) {
+        bppBtns.push(
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="displacement" data-adp-evidence-type="BPP_DISPLACEMENT">View Portfolio Displacement Evidence</button>'
+        );
+      }
+      if (bppBtns.length) {
         bppMountAnalyticalShell(evidenceHost, "adp-bpp-evidence-actions");
-        evidenceHost.innerHTML =
-          '<div class="adp-bpp-evidence-bar">' +
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="positive">View Positive Evidence</button>' +
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="missing">View Missing Evidence</button>' +
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="displacement">View Portfolio Displacement Evidence</button>' +
-          "</div>";
+        evidenceHost.innerHTML = '<div class="adp-bpp-evidence-bar">' + bppBtns.join("") + "</div>";
         evidenceHost.querySelectorAll("[data-bpp-evidence]").forEach(function (btn) {
           btn.addEventListener("click", function () {
             openBrandPortfolioEvidenceDrawer(btn.getAttribute("data-bpp-evidence"), bpp);
@@ -1544,7 +1801,7 @@
         '<table class="deals-table aiv-portfolio-table adp-comp-table-fixed" id="adpBrandPortfolioTable" aria-label="Brand and portfolio ranking">' +
         "<thead><tr>" +
         "<th>Rank</th><th>Hotel</th>" +
-        '<th class="num">AI Presence</th>' +
+        '<th class="num">Scenario<br>Appearance</th>' +
         '<th class="num">Δ vs Prior Run</th>' +
         '<th class="num">Displacement vs You</th>' +
         '<th class="num">Scenarios Shared</th>' +
@@ -1637,16 +1894,18 @@
         : kind === "missing"
           ? (bpp.evidence && bpp.evidence.missing) || []
           : (bpp.evidence && bpp.evidence.displacement) || [];
+    // ADP_EVIDENCE_MODAL_TYPE_LABEL_PARITY — Brand & Portfolio Evidence · context
     var heading =
       kind === "positive"
-        ? "Brand & Portfolio — Positive Evidence"
+        ? "Brand & Portfolio Evidence · Positive"
         : kind === "missing"
-          ? "Brand & Portfolio — Missing Evidence"
-          : "Brand & Portfolio — Displacement Evidence";
+          ? "Brand & Portfolio Evidence · Missing"
+          : "Brand & Portfolio Evidence · Displacement";
     if (title) title.textContent = heading;
     if (!body) return;
     if (!pack.length) {
-      body.innerHTML = '<div class="aiv-empty">No evidence items for this view.</div>';
+      // Should not be reachable — empty packs are not published as clickable controls.
+      body.innerHTML = '<div class="aiv-empty">Supporting evidence is unavailable for this claim.</div>';
     } else {
       var html = "";
       pack.forEach(function (ev) {
@@ -2256,23 +2515,46 @@
       var peerGaps = peerGapsByIntent[intent] || 0;
 
       var idxData = currentPayload && currentPayload.intentPresenceIndex && currentPayload.intentPresenceIndex[intent];
-      var subjectPct = idxData && idxData.subjectRatePct != null ? idxData.subjectRatePct : null;
-      var presenceVisual = subjectPct != null
-        ? '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' + Math.round(subjectPct) + '%"></span></span><span class="aiv-presence-cell__value">' + fmtPct(subjectPct) + '</span></span>'
-        : developingCell();
+      // ADP_TERRITORY_SUBJECT_RATE_INDEPENDENT_OF_BENCHMARK_STATUS
+      // Subject rate is independent of benchmark certification status.
+      var subjectPct =
+        idxData && idxData.subjectRatePct != null
+          ? idxData.subjectRatePct
+          : idxData && idxData.myRate != null
+            ? idxData.myRate
+            : data && data.rate != null
+              ? data.rate
+              : null;
+      var presenceVisual =
+        subjectPct != null
+          ? '<span class="aiv-presence-cell aiv-presence-cell--compact"><span class="aiv-presence-cell__bar" aria-hidden="true"><span class="aiv-presence-cell__fill" style="width:' +
+            Math.round(Number(subjectPct)) +
+            '%"></span></span><span class="aiv-presence-cell__value">' +
+            fmtPct(subjectPct) +
+            "</span></span>"
+          : subjectPresenceUnavailableCell();
 
       html += '<tr class="aiv-intent-row aiv-unified-intent-row">';
       html += '<td><span class="project-name-text">' + esc(normalizeLeisureTerritoryLabel((idxData && idxData.territory) || label)) + '</span></td>';
       html += '<td class="aiv-metric-cell aiv-presence-metric-cell aiv-intent-rate-cell">' + presenceVisual + '</td>';
-      if (idxData && idxData.index != null && (idxData.subjectRatePct == null || idxData.coreBenchmarkRatePct == null)) {
+      if (
+        idxData &&
+        idxData.index != null &&
+        ((idxData.subjectRatePct == null && idxData.myRate == null) || idxData.coreBenchmarkRatePct == null)
+      ) {
         html += '<td class="aiv-metric-cell aiv-intent-rate-cell">' + developingCell() + '</td>';
-        html += '<td class="aiv-metric-cell aiv-intent-index-cell">' + developingCell() + '</td>';
+        html += '<td class="aiv-metric-cell aiv-intent-index-cell">' + indexUnavailableCell() + '</td>';
       } else {
         html += '<td class="aiv-metric-cell aiv-intent-rate-cell">' + coreBenchmarkCell(idxData, intent) + '</td>';
-        if (idxData && idxData.index != null && idxData.subjectRatePct != null && idxData.coreBenchmarkRatePct != null) {
+        if (
+          idxData &&
+          idxData.index != null &&
+          (idxData.subjectRatePct != null || idxData.myRate != null) &&
+          idxData.coreBenchmarkRatePct != null
+        ) {
           html += '<td class="aiv-metric-cell aiv-intent-index-cell"><strong>' + idxData.index + '</strong></td>';
         } else {
-          html += '<td class="aiv-metric-cell aiv-intent-index-cell">' + developingCell() + '</td>';
+          html += '<td class="aiv-metric-cell aiv-intent-index-cell">' + indexUnavailableCell() + '</td>';
         }
       }
       var intentDelta =
@@ -2369,16 +2651,24 @@
     if (intent) qs += "&intent=" + encodeURIComponent(intent);
     if (provider) qs += "&provider=" + encodeURIComponent(provider);
     if (titleEl) {
+      // ADP_EVIDENCE_MODAL_TYPE_LABEL_PARITY + typed evidence drawer
       var lane = isPresent ? "Positive Evidence" : "Missing Evidence";
       var ctx = intent ? formatIntentTerritoryLabel(intent) : (provider ? formatProviderDisplayName(provider) : "");
       titleEl.textContent = ctx ? (lane + " · " + ctx) : lane;
+      titleEl.setAttribute(
+        "data-adp-evidence-type",
+        provider
+          ? (isPresent ? "PROVIDER_PRESENCE" : "PROVIDER_MISSING")
+          : (isPresent ? "TERRITORY_SUPPORT" : "TERRITORY_MISSING")
+      );
     }
     authFetch("/api/ai-demand-positioning/property/" + encodeURIComponent(pid) + "/evidence?" + qs)
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (!data.ok || !data.evidence || !data.evidence.length) {
           if (!append) {
-            body.innerHTML = '<div class="aiv-empty">Evidence unavailable for this observation. No valid provider evidence was captured for this filter.</div>';
+            // ADP_NO_INTERNAL_EVIDENCE_DIAGNOSTICS_CUSTOMER_FACING
+            body.innerHTML = '<div class="aiv-empty">Supporting evidence is unavailable for this claim.</div>';
           }
           return;
         }
@@ -2394,9 +2684,18 @@
         data.evidence.forEach(function(ev) {
           var providerLine = formatProviderDisplayName(ev.provider || "unknown");
           var citations = ev.sourcesCited || ev.providerCitations || [];
-          var competitors = ev.competitorsAlongside
+          var competitors = (ev.competitorsAlongside
             ? ev.competitorsAlongside.map(function(c) { return c.name || c; })
-            : (ev.competitorsMentioned || []);
+            : (ev.competitorsMentioned || [])).filter(function(c) {
+              // ADP_CUSTOMER_ENTITY_CHIPS_CANONICAL_HOTELS_ONLY — drop phrase fragments
+              var s = String(c || "").trim();
+              if (!s) return false;
+              if (/^(want|travelers?|looking|expect|choose|situated|located|provides?|houses?|book|a massive|historically)\b/i.test(s)) return false;
+              if (/\b(proximity to|looking for|depending on)\b/i.test(s)) return false;
+              if (!/\b(hotel|resort|inn|suites?|lodge|marriott|hilton|hyatt|intercontinental|radisson|renaissance|embajador|jaragua)\b/i.test(s) && s.split(/\s+/).length < 3) return false;
+              if (/^(a|an|the)\s+\w+,?\s+(hotel|resort)$/i.test(s)) return false;
+              return true;
+            });
           var metaBits = [];
           if (ev.timestamp) metaBits.push(String(ev.timestamp).slice(0, 19).replace("T", " "));
           if (ev.demandTerritory) metaBits.push(ev.demandTerritory);
@@ -2634,7 +2933,15 @@
   function clearAdpEvidenceDrawer() {
     var drawer = document.getElementById("adpEvidenceDrawer");
     var body = document.getElementById("adpEvidenceBody");
-    if (body) body.innerHTML = "";
+    var titleEl = document.getElementById("adpEvidenceTitle");
+    if (body) {
+      body.innerHTML = "";
+      body.removeAttribute("data-adp-displacement-modal-competitor-id");
+    }
+    if (titleEl) {
+      titleEl.textContent = "Evidence";
+      titleEl.removeAttribute("data-adp-evidence-type");
+    }
     if (drawer && typeof drawer.close === "function" && drawer.open) {
       try { drawer.close(); } catch (e) { /* ignore */ }
     }
@@ -2789,6 +3096,7 @@
         dispCell =
           '<button type="button" class="aiv-btn-text aiv-link"' +
           ' data-adp-displacement="1"' +
+          ' data-adp-evidence-type="COMPETITIVE_DISPLACEMENT"' +
           ' data-adp-competitor-id="' + esc(competitorId) + '"' +
           ' data-adp-competitor-name="' + esc(row.name) + '"' +
           ' data-adp-displacement-count="' + dispCount + '">' +
@@ -2841,9 +3149,21 @@
     var scopeKey = opts.scopeKey || selectedCompTerritory || "overall";
     var drawer = document.getElementById("adpEvidenceDrawer");
     var body = document.getElementById("adpEvidenceBody");
+    var titleEl = document.getElementById("adpEvidenceTitle");
     if (!drawer || !body) return;
     body.innerHTML = '<div class="aiv-empty">Loading displacement evidence\u2026</div>';
     body.setAttribute("data-adp-displacement-modal-competitor-id", competitorId || "");
+    // ADP_EVIDENCE_MODAL_TYPE_LABEL_PARITY — never leave prior Positive Evidence title.
+    var scopeLabel =
+      scopeKey === "overall"
+        ? ""
+        : (normalizeLeisureTerritoryLabel(formatIntentTerritoryLabel(scopeKey)) || formatIntentTerritoryLabel(scopeKey) || "");
+    if (titleEl) {
+      titleEl.textContent = scopeLabel
+        ? "Displacement Evidence · " + scopeLabel
+        : "Displacement Evidence";
+      titleEl.setAttribute("data-adp-evidence-type", "COMPETITIVE_DISPLACEMENT");
+    }
     if (typeof drawer.showModal === "function" && !drawer.open) drawer.showModal();
 
     var pid = getActivePropertyId();
@@ -2852,8 +3172,8 @@
       return;
     }
     if (!competitorId) {
-      body.innerHTML =
-        '<div class="aiv-empty">Displacement evidence requires a canonical competitor identity. Please refresh and try again.</div>';
+      console.warn("[ADP] displacement click missing competitorId", { competitorName: competitorName, scopeKey: scopeKey });
+      body.innerHTML = '<div class="aiv-empty">Supporting evidence is unavailable for this claim.</div>';
       return;
     }
 
@@ -2873,25 +3193,40 @@
         var canonicalName = (data && data.competitorName) || competitorName;
         var canonicalId = (data && data.competitorId) || competitorId;
         if (!data.ok || (data.integrity && data.integrity.failClosed)) {
-          body.innerHTML =
-            '<div class="aiv-empty">Displacement evidence failed an analytical integrity check and was not shown. Dealality has logged this for review.</div>';
+          console.warn("[ADP] displacement integrity failClosed", {
+            competitorId: canonicalId,
+            code: data && data.integrity && data.integrity.code,
+          });
+          body.innerHTML = '<div class="aiv-empty">Supporting evidence is unavailable for this claim.</div>';
           return;
         }
         if (!data.evidence || !data.evidence.length) {
-          body.innerHTML = '<div class="aiv-empty">No displacement evidence available for ' + esc(canonicalName) + '.</div>';
+          // ADP_COMPETITIVE_EVIDENCE_DRAWER_NONEMPTY — fail closed; no internal diagnostics.
+          console.warn("[ADP] displacement empty evidence", { competitorId: canonicalId, total: data && data.total });
+          body.innerHTML = '<div class="aiv-empty">Supporting evidence is unavailable for this claim.</div>';
           return;
         }
+        // Prefer canonical entityId parity — never empty the drawer solely because
+        // raw observed competitor strings differ from registry display names.
         var scoped = data.evidence.filter(function(ev) {
           var rowId = ev.displacementCompetitorEntityId || ev.competitorEntityId || "";
-          if (rowId && canonicalId && rowId !== canonicalId) return false;
-          var rowName = String(ev.displacingCompetitor || "").trim().toLowerCase();
-          var want = String(canonicalName || "").trim().toLowerCase();
-          if (rowName && want && rowName !== want) return false;
+          if (canonicalId) {
+            if (rowId) return rowId === canonicalId;
+            // Legacy payloads without entity keys: allow only when names reconcile.
+            var rowName = String(ev.displacingCompetitor || "").trim().toLowerCase();
+            var want = String(canonicalName || "").trim().toLowerCase();
+            if (rowName && want) return rowName === want;
+            return false;
+          }
           return true;
         });
         if (!scoped.length) {
-          body.innerHTML =
-            '<div class="aiv-empty">Displacement evidence was suppressed because competitor identity did not reconcile with the selected row.</div>';
+          console.warn("[ADP] displacement identity scope empty", {
+            competitorId: canonicalId,
+            competitorName: canonicalName,
+            rawCount: (data.evidence || []).length,
+          });
+          body.innerHTML = '<div class="aiv-empty">Supporting evidence is unavailable for this claim.</div>';
           return;
         }
         if (expectedCount > 0 && Number(data.total) !== expectedCount) {
@@ -2932,7 +3267,14 @@
             '<div class="aiv-evidence-value">' + esc(ev.displacingCompetitor || canonicalName) + '</div></div>' +
             '</section>' +
             (competitors.length ? '<section class="aiv-evidence-chips" aria-label="All competitors mentioned">' +
-              competitors.slice(0, 8).map(function(c){ return '<span class="aiv-evidence-chip">' + esc(c) + '</span>'; }).join("") +
+              competitors.filter(function(c) {
+                var s = String(c || "").trim();
+                if (!s) return false;
+                if (/^(want|travelers?|looking|expect|choose|situated|located|provides?|houses?|book|a massive|historically)\b/i.test(s)) return false;
+                if (/\b(proximity to|looking for|depending on)\b/i.test(s)) return false;
+                if (/^(a|an|the)\s+\w+,?\s+(hotel|resort)$/i.test(s)) return false;
+                return true;
+              }).slice(0, 8).map(function(c){ return '<span class="aiv-evidence-chip">' + esc(c) + '</span>'; }).join("") +
               '</section>' : '') +
             '<section class="aiv-evidence-section aiv-evidence-section--ai-response">' +
             '<div class="aiv-evidence-label">AI Response</div>' +
@@ -3004,6 +3346,7 @@
           '<li class="aiv-signal-item aiv-signal-item--gap">' +
           '<span class="aiv-signal-icon">⚡</span>' +
           '<button type="button" class="aiv-btn-text aiv-link aiv-signal-text" data-adp-displacement="1"' +
+          ' data-adp-evidence-type="COMPETITIVE_DISPLACEMENT"' +
           ' data-adp-competitor-id="' +
           esc(cid) +
           '" data-adp-competitor-name="' +

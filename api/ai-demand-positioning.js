@@ -38,6 +38,43 @@ function setAdpNoStoreHeaders(res) {
   res.setHeader("Vary", "Authorization, Cookie");
 }
 
+/** Process-local TTL for published report assembly (open-existing). Opt out: ADP_REPORT_RESPONSE_CACHE=0 */
+const ADP_REPORT_CACHE_TTL_MS = Math.max(
+  15_000,
+  parseInt(process.env.ADP_REPORT_RESPONSE_CACHE_TTL_MS || "120000", 10) || 120000
+);
+const adpReportCacheEnabled = () => {
+  const v = String(process.env.ADP_REPORT_RESPONSE_CACHE || "1").trim().toLowerCase();
+  return v !== "0" && v !== "false" && v !== "off";
+};
+const adpReportResponseCache = new Map();
+const adpReportInflight = new Map();
+
+async function withAdpReportCache(cacheKey, build) {
+  if (!adpReportCacheEnabled()) return { body: await build(), cache: "BYPASS" };
+  const hit = adpReportResponseCache.get(cacheKey);
+  if (hit && hit.expiresAt > Date.now()) return { body: hit.body, cache: "HIT" };
+  if (adpReportInflight.has(cacheKey)) {
+    const body = await adpReportInflight.get(cacheKey);
+    return { body, cache: "JOIN" };
+  }
+  const pending = (async () => {
+    const body = await build();
+    adpReportResponseCache.set(cacheKey, {
+      expiresAt: Date.now() + ADP_REPORT_CACHE_TTL_MS,
+      body,
+    });
+    return body;
+  })();
+  adpReportInflight.set(cacheKey, pending);
+  try {
+    const body = await pending;
+    return { body, cache: "MISS" };
+  } finally {
+    adpReportInflight.delete(cacheKey);
+  }
+}
+
 function readCustomerPublishedPack() {
   for (const rel of BPP_CUSTOMER_PUBLISHED_PACK_CANDIDATES) {
     const p = path.join(process.cwd(), rel);
@@ -241,52 +278,66 @@ export async function getAiDemandPositioningReport(req, res) {
       return res.status(404).json({ ok: false, error: "property_not_found" });
     }
 
-    const result = await getPublishedOwnerReport(propertyId);
-    if (!result.ok) {
-      const status = result.error === "property_not_found" ? 404 : 404;
-      return res.status(status).json(result);
-    }
-
-    const brandPortfolioPosition = resolveBrandPortfolioPosition(propertyId, profile, req);
-    // Strip any stale BPP embedded in Core published snapshot before overlay
-    const { brandPortfolioPosition: _staleBpp, ...corePayload } = result.payload || {};
-
-    const publicationVersion =
-      brandPortfolioPosition?.publicationVersion ||
-      brandPortfolioPosition?.measurement?.publicationVersion ||
-      BPP_CUSTOMER_PUBLICATION_VERSION;
-    const payloadHash = brandPortfolioPosition?._bppPayloadHash || null;
-    const reportCacheKey = buildBppReportCacheKey({
+    const bppPreview =
+      String(req.query.bppPeriod2Local || "") === "1" ? "period2Local" : "default";
+    const cacheKey = JSON.stringify({
       propertyId,
-      publicationVersion,
-      payloadHash,
+      bppPreview,
+      pub: req.query.bppPub || "",
+      hash: req.query.bppHash || "",
     });
 
-    const payload = {
-      ...corePayload,
-      ok: true,
-      propertyId,
-      property: {
-        ...(corePayload.property || {}),
-        propertyId,
-      },
-      // PUBLISHED_BPP_PAYLOAD_PRECEDENCE — always last write wins
-      brandPortfolioPosition,
-      _adpReadSource: result.readSource || {
-        requested: result.source === "airtable" ? "airtable" : "filesystem",
-        active: result.source === "airtable" ? "airtable" : "filesystem",
-      },
-      _bppPublicationVersion: publicationVersion,
-      _bppAssetCacheToken: BPP_ASSET_CACHE_TOKEN,
-      _bppPayloadHash: payloadHash,
-      _reportCacheKey: reportCacheKey,
-      _reportCachePolicy: "no-store",
-      _requestedPropertyId: rawId,
-      _resolvedPropertyId: propertyId,
-    };
+    const { body: payload, cache } = await withAdpReportCache(cacheKey, async () => {
+      const result = await getPublishedOwnerReport(propertyId);
+      if (!result.ok) {
+        return { __error: true, result };
+      }
 
-    res.setHeader("X-ADP-BPP-Publication-Version", publicationVersion);
-    res.setHeader("X-ADP-Report-Cache-Key", reportCacheKey);
+      const brandPortfolioPosition = resolveBrandPortfolioPosition(propertyId, profile, req);
+      const { brandPortfolioPosition: _staleBpp, ...corePayload } = result.payload || {};
+
+      const publicationVersion =
+        brandPortfolioPosition?.publicationVersion ||
+        brandPortfolioPosition?.measurement?.publicationVersion ||
+        BPP_CUSTOMER_PUBLICATION_VERSION;
+      const payloadHash = brandPortfolioPosition?._bppPayloadHash || null;
+      const reportCacheKey = buildBppReportCacheKey({
+        propertyId,
+        publicationVersion,
+        payloadHash,
+      });
+
+      return {
+        ...corePayload,
+        ok: true,
+        propertyId,
+        property: {
+          ...(corePayload.property || {}),
+          propertyId,
+        },
+        brandPortfolioPosition,
+        _adpReadSource: result.readSource || {
+          requested: result.source === "airtable" ? "airtable" : "filesystem",
+          active: result.source === "airtable" ? "airtable" : "filesystem",
+        },
+        _bppPublicationVersion: publicationVersion,
+        _bppAssetCacheToken: BPP_ASSET_CACHE_TOKEN,
+        _bppPayloadHash: payloadHash,
+        _reportCacheKey: reportCacheKey,
+        _reportCachePolicy: adpReportCacheEnabled() ? `process-ttl-${ADP_REPORT_CACHE_TTL_MS}ms` : "no-store",
+        _requestedPropertyId: rawId,
+        _resolvedPropertyId: propertyId,
+      };
+    });
+
+    if (payload?.__error) {
+      const status = payload.result?.error === "property_not_found" ? 404 : 404;
+      return res.status(status).json(payload.result);
+    }
+
+    res.setHeader("X-ADP-BPP-Publication-Version", payload._bppPublicationVersion || "");
+    res.setHeader("X-ADP-Report-Cache-Key", payload._reportCacheKey || "");
+    res.setHeader("X-ADP-Report-Cache", cache);
     return res.json(payload);
   } catch (err) {
     console.error("[AI Demand Positioning] report error:", err);
