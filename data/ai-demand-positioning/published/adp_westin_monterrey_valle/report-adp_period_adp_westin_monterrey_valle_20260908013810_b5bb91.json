@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-09-08T07:39:36.259Z",
+  "publishedAt": "2026-09-10T11:04:40.057Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_westin_monterrey_valle",
   "periodId": "adp_period_adp_westin_monterrey_valle_20260908013810_b5bb91",
@@ -87,7 +87,6 @@
         "status": "CONDITIONALLY_ELIGIBLE",
         "blockers": [
           "provider_concentration_subject",
-          "provider_concentration_core",
           "provider_concentration"
         ],
         "index": null,
@@ -124,7 +123,6 @@
         "status": "CONDITIONALLY_ELIGIBLE",
         "blockers": [
           "provider_concentration_subject",
-          "provider_concentration_core",
           "provider_concentration"
         ],
         "index": null,
@@ -197,6 +195,7 @@
         "status": "CONDITIONALLY_ELIGIBLE",
         "blockers": [
           "provider_concentration_subject",
+          "provider_concentration_core",
           "provider_concentration"
         ],
         "index": null,
@@ -371,29 +370,29 @@
       "highRelevanceLost": 0,
       "displacement": [
         {
+          "name": "Holiday Inn Express & Suites Monterrey Valle",
+          "displacementCount": 5,
+          "entityId": "holiday_inn_express_monterrey_valle"
+        },
+        {
           "name": "JW Marriott Hotel Monterrey Valle",
-          "displacementCount": 11,
+          "displacementCount": 5,
           "entityId": "jw_marriott_monterrey_valle"
         },
         {
           "name": "Holiday Inn Monterrey Valle",
-          "displacementCount": 9,
+          "displacementCount": 4,
           "entityId": "holiday_inn_monterrey_valle"
         },
         {
-          "name": "Live Aqua Urban Resort",
-          "displacementCount": 7,
-          "entityId": null
+          "name": "AC Hotel by Marriott Monterrey Valle",
+          "displacementCount": 3,
+          "entityId": "ac_hotel_monterrey_valle"
         },
         {
-          "name": "Victoria House Resort & Spa",
-          "displacementCount": 7,
-          "entityId": null
-        },
-        {
-          "name": "Live Aqua Urban Resort Monterrey",
-          "displacementCount": 6,
-          "entityId": null
+          "name": "Novotel Monterrey Valle",
+          "displacementCount": 3,
+          "entityId": "novotel_monterrey_valle"
         }
       ],
       "topReasons": [
@@ -410,11 +409,11 @@
         {
           "intent": "business",
           "competitorsPresent": [
-            "Live Aqua Urban Resort Monterrey",
-            "Fiesta Inn Monterrey Valle",
-            "Live Aqua Urban Resort",
-            "Fiesta Inn",
-            "AC Hotel by Marriott Monterrey Valle"
+            "AC Hotel by Marriott Monterrey Valle",
+            "Novotel Monterrey Valle",
+            "Holiday Inn Monterrey Valle",
+            "Hilton Monterrey Valle",
+            "Holiday Inn Express & Suites Monterrey Valle"
           ],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
           "relevance": "MEDIUM"
@@ -422,11 +421,8 @@
         {
           "intent": "group_meeting",
           "competitorsPresent": [
-            "Victoria House Resort",
-            "Matachica Resort",
-            "Las Terrazas Resort",
-            "Mahogany Bay Resort",
-            "Private plantation-style cottages and suites"
+            "Holiday Inn Monterrey Valle",
+            "Holiday Inn Express & Suites Monterrey Valle"
           ],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
           "relevance": "MEDIUM"
@@ -434,11 +430,10 @@
         {
           "intent": "leisure",
           "competitorsPresent": [
-            "Live Aqua Urban Resort Monterrey",
-            "Live Aqua Urban Resort",
             "JW Marriott Hotel Monterrey Valle",
             "Holiday Inn Monterrey Valle",
-            "Fiesta Inn Monterrey Valle"
+            "Hilton Monterrey Valle",
+            "Holiday Inn Express & Suites Monterrey Valle"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -446,71 +441,49 @@
         {
           "intent": "couples",
           "competitorsPresent": [
-            "Hotel Habita Monterrey",
-            "JW Marriott Hotel Monterrey Valle",
-            "Ultra-chic, minimalist, monochrome boutique hotel",
-            "Live Aqua Urban Resort",
-            "Live Aqua Urban Resort Monterrey"
+            "JW Marriott Hotel Monterrey Valle"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
         },
         {
           "intent": "couples",
-          "competitorsPresent": [
-            "Crowne Plaza Los Angeles Harbor Hotel",
-            "Terranea Resort",
-            "Bohemian chic, Latin-inspired luxury, waterfront resort",
-            "The Portofino Hotel & Marina",
-            "Victoria House Resort"
-          ],
+          "competitorsPresent": [],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
         },
         {
           "intent": "family",
           "competitorsPresent": [
-            "Live Aqua Urban Resort Monterrey",
-            "Fiesta Inn Monterrey Valle",
-            "Live Aqua Urban Resort",
-            "Fiesta Inn",
-            "Staybridge Suites Monterrey San Pedro"
-          ],
-          "likelyReason": "High competitor density. Stronger authority signals needed",
-          "relevance": "LOW"
-        },
-        {
-          "intent": "family",
-          "competitorsPresent": [
-            "Victoria House Resort & Spa",
-            "The Phoenix Resort",
-            "Mahogany Bay Resort",
-            "The main resort",
-            "Village Resort"
-          ],
-          "likelyReason": "High competitor density. Stronger authority signals needed",
-          "relevance": "LOW"
-        },
-        {
-          "intent": "celebration",
-          "competitorsPresent": [
-            "Holiday Inn Monterrey Valle",
-            "Known for its luxurious ambiance, this hotel",
-            "Hotel NH Collection Monterrey San Pedro",
-            "JW Marriott Hotel Monterrey Valle",
+            "Novotel Monterrey Valle",
+            "Hilton Monterrey Valle",
             "AC Hotel by Marriott Monterrey Valle"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
         },
         {
+          "intent": "family",
+          "competitorsPresent": [],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
           "intent": "celebration",
           "competitorsPresent": [
+            "Holiday Inn Monterrey Valle",
+            "Holiday Inn Express & Suites Monterrey Valle",
+            "AC Hotel by Marriott Monterrey Valle",
             "JW Marriott Hotel Monterrey Valle",
-            "Live Aqua Urban Resort Monterrey",
-            "Live Aqua Urban Resort",
-            "Aqua Suite",
-            "Elegant rooms and suites"
+            "Novotel Monterrey Valle"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "celebration",
+          "competitorsPresent": [
+            "JW Marriott Hotel Monterrey Valle"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -518,11 +491,8 @@
         {
           "intent": "wellness",
           "competitorsPresent": [
-            "Live Aqua Urban Resort Monterrey",
-            "Live Aqua Urban Resort",
             "JW Marriott Hotel Monterrey Valle",
-            ", to avoid leaving the hotel",
-            "Hotel Chipinque"
+            "Holiday Inn Express & Suites Monterrey Valle"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
@@ -531,118 +501,88 @@
     },
     "competitiveSet": {
       "declaredCount": 6,
-      "observedCount": 210,
-      "overlapRate": 200,
-      "surprises": [
-        {
-          "name": "Live Aqua Urban Resort",
-          "mentions": 67,
-          "scenarioCount": 40,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Live Aqua Urban Resort Monterrey",
-          "mentions": 48,
-          "scenarioCount": 34,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Victoria House Resort",
-          "mentions": 19,
-          "scenarioCount": 4,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Hilton Garden Inn",
-          "mentions": 14,
-          "scenarioCount": 14,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Fiesta Inn",
-          "mentions": 13,
-          "scenarioCount": 10,
-          "entityId": null,
-          "isCore": false
-        }
-      ],
+      "observedCount": 8,
+      "overlapRate": 133.3,
+      "surprises": [],
       "observed": [
         {
           "name": "JW Marriott Hotel Monterrey Valle",
-          "mentions": 122,
+          "mentions": 123,
           "scenarioCount": 45,
           "entityId": "jw_marriott_monterrey_valle",
           "isCore": true
         },
         {
-          "name": "Live Aqua Urban Resort",
-          "mentions": 67,
-          "scenarioCount": 40,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Live Aqua Urban Resort Monterrey",
-          "mentions": 48,
-          "scenarioCount": 34,
-          "entityId": null,
-          "isCore": false
-        },
-        {
           "name": "AC Hotel by Marriott Monterrey Valle",
-          "mentions": 26,
-          "scenarioCount": 13,
+          "mentions": 35,
+          "scenarioCount": 17,
           "entityId": "ac_hotel_monterrey_valle",
           "isCore": true
         },
         {
-          "name": "Victoria House Resort",
-          "mentions": 19,
-          "scenarioCount": 4,
-          "entityId": null,
-          "isCore": false
+          "name": "Holiday Inn Express & Suites Monterrey Valle",
+          "mentions": 17,
+          "scenarioCount": 11,
+          "entityId": "holiday_inn_express_monterrey_valle",
+          "isCore": true
+        },
+        {
+          "name": "Hilton Monterrey Valle",
+          "mentions": 14,
+          "scenarioCount": 14,
+          "entityId": "hilton_monterrey_valle",
+          "isCore": true
+        },
+        {
+          "name": "Novotel Monterrey Valle",
+          "mentions": 12,
+          "scenarioCount": 10,
+          "entityId": "novotel_monterrey_valle",
+          "isCore": true
         },
         {
           "name": "Holiday Inn Monterrey Valle",
-          "mentions": 18,
-          "scenarioCount": 11,
+          "mentions": 7,
+          "scenarioCount": 7,
           "entityId": "holiday_inn_monterrey_valle",
           "isCore": true
         },
         {
-          "name": "Hilton Garden Inn",
-          "mentions": 14,
-          "scenarioCount": 14,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Fiesta Inn",
-          "mentions": 13,
-          "scenarioCount": 10,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Fiesta Inn Monterrey Valle",
-          "mentions": 9,
-          "scenarioCount": 7,
-          "entityId": null,
+          "name": "The Westin Monterrey Valle",
+          "mentions": 2,
+          "scenarioCount": 0,
+          "entityId": "westin_monterrey_valle",
           "isCore": true
         },
         {
-          "name": "Hotel Habita Monterrey",
-          "mentions": 7,
-          "scenarioCount": 6,
-          "entityId": null,
-          "isCore": false
+          "name": "Comfort Inn Monterrey Valle",
+          "mentions": 2,
+          "scenarioCount": 1,
+          "entityId": "comfort_inn_monterrey_valle",
+          "isCore": true
         }
       ],
-      "declaredButNotObserved": []
+      "declaredButNotObserved": [],
+      "topObservedAlternative": {
+        "entityId": "jw_marriott_monterrey_valle",
+        "name": "JW Marriott Hotel Monterrey Valle",
+        "appearances": 67,
+        "aiPresencePct": 26.6,
+        "aiPresenceRate": 0.26587301587301587,
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "mentions": 67
+      },
+      "topObservedAlternativeMeta": {
+        "version": "adp_top_observed_ai_alternative_overall_presence_v1",
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "tiedMaxSet": [
+          {
+            "entityId": "jw_marriott_monterrey_valle",
+            "name": "JW Marriott Hotel Monterrey Valle",
+            "appearances": 67
+          }
+        ]
+      }
     },
     "realityGap": {
       "gapScore": 56.3,
@@ -823,11 +763,11 @@
               "count": 1
             },
             {
-              "name": "Live Aqua Urban Resort Monterrey",
+              "name": "Grand Fiesta Americana Monterrey Valle",
               "count": 1
             },
             {
-              "name": "Live Aqua Urban Resort",
+              "name": "Live Aqua Urban Resort Monterrey",
               "count": 1
             }
           ]
@@ -841,15 +781,11 @@
           "text": "Your property captured 84.1% of relevant AI demand scenarios this period."
         },
         {
-          "type": "insight",
-          "text": "5 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
-        },
-        {
           "type": "gap",
           "text": "AI Reality Gap: 56.3%. AI misses or misrepresents 9 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-09-08T07:39:35.489Z"
+      "generatedAt": "2026-09-10T11:04:36.827Z"
     },
     "actions": [
       {
@@ -863,8 +799,8 @@
       {
         "priority": "MEDIUM",
         "category": "DISPLACEMENT",
-        "title": "Address displacement by JW Marriott Hotel Monterrey Valle",
-        "description": "JW Marriott Hotel Monterrey Valle appears in 11 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
+        "title": "Address displacement by Holiday Inn Express & Suites Monterrey Valle",
+        "description": "Holiday Inn Express & Suites Monterrey Valle appears in 5 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
         "expectedImpact": null,
         "impactNote": "Displacement count is observational; expected reduction is not certified."
       }
@@ -1069,8 +1005,8 @@
     "executiveMetrics": {
       "version": "adp_optional_executive_metrics_v2",
       "considerationRate": {
-        "rate": 38.5,
-        "presentObservations": 97,
+        "rate": 42.5,
+        "presentObservations": 107,
         "comparableObservations": 252
       },
       "scenarioPresence": {
@@ -1079,15 +1015,15 @@
         "eligibleScenarios": 63
       },
       "rankMetrics": {
-        "rankEligibleN": 23,
-        "numberOneAppearanceRate": 26.1,
-        "topThreeAppearanceRate": 65.2,
-        "numberOneCount": 6,
-        "topThreeCount": 15
+        "rankEligibleN": 24,
+        "numberOneAppearanceRate": 29.2,
+        "topThreeAppearanceRate": 66.7,
+        "numberOneCount": 7,
+        "topThreeCount": 16
       },
       "competitorPresentScenarios": {
-        "scenarioCount": 30,
-        "observationCount": 137
+        "scenarioCount": 44,
+        "observationCount": 134
       },
       "currentVsPrior": {
         "currentPeriodId": "adp_period_adp_westin_monterrey_valle_20260908013810_b5bb91",
@@ -1135,9 +1071,9 @@
               "entityId": "jw_marriott_monterrey_valle",
               "name": "JW Marriott Hotel Monterrey Valle",
               "isSubject": false,
-              "appearances": 66,
-              "aiPresenceRate": 0.2619047619047619,
-              "aiPresencePct": 26.2,
+              "appearances": 67,
+              "aiPresenceRate": 0.26587301587301587,
+              "aiPresencePct": 26.6,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 2,
@@ -1150,16 +1086,18 @@
               "displacement": {
                 "count": 5,
                 "evidenceAvailable": true,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
               }
             },
             {
               "entityId": "ac_hotel_monterrey_valle",
               "name": "AC Hotel by Marriott Monterrey Valle",
               "isSubject": false,
-              "appearances": 15,
-              "aiPresenceRate": 0.05952380952380952,
-              "aiPresencePct": 6,
+              "appearances": 23,
+              "aiPresenceRate": 0.09126984126984126,
+              "aiPresencePct": 9.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 3,
@@ -1170,18 +1108,20 @@
               "topDemandTerritory": "Business Travel",
               "topDemandTerritoryIntent": "business",
               "displacement": {
-                "count": 2,
+                "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "ac_hotel_monterrey_valle"
+                "competitorId": "ac_hotel_monterrey_valle",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
-              "entityId": "holiday_inn_monterrey_valle",
-              "name": "Holiday Inn Monterrey Valle",
+              "entityId": "hilton_monterrey_valle",
+              "name": "Hilton Monterrey Valle",
               "isSubject": false,
-              "appearances": 11,
-              "aiPresenceRate": 0.04365079365079365,
-              "aiPresencePct": 4.4,
+              "appearances": 14,
+              "aiPresenceRate": 0.05555555555555555,
+              "aiPresencePct": 5.6,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 4,
@@ -1189,21 +1129,23 @@
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
-              "topDemandTerritory": "Meetings & Groups",
-              "topDemandTerritoryIntent": "group_meeting",
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
               "displacement": {
-                "count": 5,
+                "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "holiday_inn_monterrey_valle"
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
-              "entityId": "holiday_inn_express_monterrey_valle",
-              "name": "Holiday Inn Express & Suites Monterrey Valle",
+              "entityId": "novotel_monterrey_valle",
+              "name": "Novotel Monterrey Valle",
               "isSubject": false,
-              "appearances": 3,
-              "aiPresenceRate": 0.011904761904761904,
-              "aiPresencePct": 1.2,
+              "appearances": 12,
+              "aiPresenceRate": 0.047619047619047616,
+              "aiPresencePct": 4.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -1214,9 +1156,83 @@
               "topDemandTerritory": "Business Travel",
               "topDemandTerritoryIntent": "business",
               "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "novotel_monterrey_valle",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "holiday_inn_express_monterrey_valle",
+              "name": "Holiday Inn Express & Suites Monterrey Valle",
+              "isSubject": false,
+              "appearances": 11,
+              "aiPresenceRate": 0.04365079365079365,
+              "aiPresencePct": 4.4,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Meetings & Groups",
+              "topDemandTerritoryIntent": "group_meeting",
+              "displacement": {
+                "count": 5,
+                "evidenceAvailable": true,
+                "competitorId": "holiday_inn_express_monterrey_valle",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
+              }
+            },
+            {
+              "entityId": "holiday_inn_monterrey_valle",
+              "name": "Holiday Inn Monterrey Valle",
+              "isSubject": false,
+              "appearances": 7,
+              "aiPresenceRate": 0.027777777777777776,
+              "aiPresencePct": 2.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Meetings & Groups",
+              "topDemandTerritoryIntent": "group_meeting",
+              "displacement": {
+                "count": 4,
+                "evidenceAvailable": true,
+                "competitorId": "holiday_inn_monterrey_valle",
+                "supportingObservationCount": 4,
+                "drawerItemCount": 4
+              }
+            },
+            {
+              "entityId": "westin_monterrey_valle",
+              "name": "The Westin Monterrey Valle",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.007936507936507936,
+              "aiPresencePct": 0.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Adventure & Experiences",
+              "topDemandTerritoryIntent": "adventure",
+              "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "holiday_inn_express_monterrey_valle"
+                "competitorId": "westin_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1228,8 +1244,8 @@
               "aiPresencePct": 0.4,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 6,
-              "displayRank": 6,
+              "observedRank": 9,
+              "displayRank": 9,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1238,29 +1254,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "comfort_inn_monterrey_valle"
-              }
-            },
-            {
-              "entityId": "westin_monterrey_valle",
-              "name": "The Westin Monterrey Valle",
-              "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.003968253968253968,
-              "aiPresencePct": 0.4,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
-              "observedRank": 7,
-              "displayRank": 7,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "topDemandTerritory": "Adventure & Experiences",
-              "topDemandTerritoryIntent": "adventure",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "westin_monterrey_valle"
+                "competitorId": "comfort_inn_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -1329,16 +1325,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
               "entityId": "ac_hotel_monterrey_valle",
               "name": "AC Hotel by Marriott Monterrey Valle",
               "isSubject": false,
-              "appearances": 7,
-              "aiPresenceRate": 0.1346153846153846,
-              "aiPresencePct": 13.5,
+              "appearances": 9,
+              "aiPresenceRate": 0.17307692307692307,
+              "aiPresencePct": 17.3,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 3,
@@ -1349,18 +1347,20 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "ac_hotel_monterrey_valle"
+                "competitorId": "ac_hotel_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
-              "entityId": "holiday_inn_monterrey_valle",
-              "name": "Holiday Inn Monterrey Valle",
+              "entityId": "novotel_monterrey_valle",
+              "name": "Novotel Monterrey Valle",
               "isSubject": false,
-              "appearances": 2,
-              "aiPresenceRate": 0.038461538461538464,
-              "aiPresencePct": 3.8,
-              "relationship": "CORE",
-              "isCore": true,
+              "appearances": 5,
+              "aiPresenceRate": 0.09615384615384616,
+              "aiPresencePct": 9.6,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 4,
               "displayRank": 4,
               "isAppendedCore": false,
@@ -1369,56 +1369,83 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "holiday_inn_monterrey_valle"
-              }
-            },
-            {
-              "entityId": "holiday_inn_express_monterrey_valle",
-              "name": "Holiday Inn Express & Suites Monterrey Valle",
-              "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.019230769230769232,
-              "aiPresencePct": 1.9,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
-              "observedRank": 5,
-              "displayRank": 5,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "holiday_inn_express_monterrey_valle"
+                "competitorId": "novotel_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
               "entityId": "hilton_monterrey_valle",
               "name": "Hilton Monterrey Valle",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 4,
+              "aiPresenceRate": 0.07692307692307693,
+              "aiPresencePct": 7.7,
               "relationship": "CORE",
               "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "hilton_monterrey_valle"
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "holiday_inn_express_monterrey_valle",
+              "name": "Holiday Inn Express & Suites Monterrey Valle",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.038461538461538464,
+              "aiPresencePct": 3.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "holiday_inn_express_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "holiday_inn_monterrey_valle",
+              "name": "Holiday Inn Monterrey Valle",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.019230769230769232,
+              "aiPresencePct": 1.9,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "holiday_inn_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 3,
+            "CORE_IN_TOP_10": 4,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 1,
+            "CORE_ZERO_PRESENCE": 0,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1479,7 +1506,9 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -1499,18 +1528,20 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ac_hotel_monterrey_valle"
+                "competitorId": "ac_hotel_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "holiday_inn_monterrey_valle",
-              "name": "Holiday Inn Monterrey Valle",
+              "entityId": "hilton_monterrey_valle",
+              "name": "Hilton Monterrey Valle",
               "isSubject": false,
-              "appearances": 2,
-              "aiPresenceRate": 0.045454545454545456,
-              "aiPresencePct": 4.5,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.06818181818181818,
+              "aiPresencePct": 6.8,
+              "relationship": "CORE",
+              "isCore": true,
               "observedRank": 4,
               "displayRank": 4,
               "isAppendedCore": false,
@@ -1519,16 +1550,18 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "holiday_inn_monterrey_valle"
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
               "entityId": "holiday_inn_express_monterrey_valle",
               "name": "Holiday Inn Express & Suites Monterrey Valle",
               "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.022727272727272728,
-              "aiPresencePct": 2.3,
+              "appearances": 2,
+              "aiPresenceRate": 0.045454545454545456,
+              "aiPresencePct": 4.5,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -1537,59 +1570,63 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "holiday_inn_express_monterrey_valle"
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "holiday_inn_express_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
-              "entityId": "hilton_monterrey_valle",
-              "name": "Hilton Monterrey Valle",
+              "entityId": "holiday_inn_monterrey_valle",
+              "name": "Holiday Inn Monterrey Valle",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "appearances": 1,
+              "aiPresenceRate": 0.022727272727272728,
+              "aiPresencePct": 2.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "hilton_monterrey_valle"
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "holiday_inn_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
               "entityId": "novotel_monterrey_valle",
               "name": "Novotel Monterrey Valle",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 1,
+              "aiPresenceRate": 0.022727272727272728,
+              "aiPresencePct": 2.3,
               "relationship": "CORE",
               "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "novotel_monterrey_valle"
+                "competitorId": "novotel_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 2,
+            "CORE_IN_TOP_10": 4,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 2,
+            "CORE_ZERO_PRESENCE": 0,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1650,7 +1687,53 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "ac_hotel_monterrey_valle",
+              "name": "AC Hotel by Marriott Monterrey Valle",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.027777777777777776,
+              "aiPresencePct": 2.8,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "ac_hotel_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "holiday_inn_express_monterrey_valle",
+              "name": "Holiday Inn Express & Suites Monterrey Valle",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.027777777777777776,
+              "aiPresencePct": 2.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "holiday_inn_express_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1662,36 +1745,39 @@
               "aiPresencePct": 2.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 3,
-              "displayRank": 3,
+              "observedRank": 5,
+              "displayRank": 5,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "holiday_inn_monterrey_valle"
+                "competitorId": "holiday_inn_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "ac_hotel_monterrey_valle",
-              "name": "AC Hotel by Marriott Monterrey Valle",
+              "entityId": "novotel_monterrey_valle",
+              "name": "Novotel Monterrey Valle",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 1,
+              "aiPresenceRate": 0.027777777777777776,
+              "aiPresencePct": 2.8,
               "relationship": "CORE",
               "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ac_hotel_monterrey_valle"
+                "competitorId": "novotel_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1712,36 +1798,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hilton_monterrey_valle"
-              }
-            },
-            {
-              "entityId": "novotel_monterrey_valle",
-              "name": "Novotel Monterrey Valle",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "novotel_monterrey_valle"
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 1,
+            "CORE_IN_TOP_10": 3,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 3,
+            "CORE_ZERO_PRESENCE": 1,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1782,7 +1849,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1806,12 +1875,12 @@
               }
             },
             {
-              "entityId": "holiday_inn_express_monterrey_valle",
-              "name": "Holiday Inn Express & Suites Monterrey Valle",
+              "entityId": "ac_hotel_monterrey_valle",
+              "name": "AC Hotel by Marriott Monterrey Valle",
               "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.05,
-              "aiPresencePct": 5,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 3,
@@ -1820,18 +1889,20 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "holiday_inn_express_monterrey_valle"
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "ac_hotel_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
-              "entityId": "holiday_inn_monterrey_valle",
-              "name": "Holiday Inn Monterrey Valle",
+              "entityId": "hilton_monterrey_valle",
+              "name": "Hilton Monterrey Valle",
               "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.05,
-              "aiPresencePct": 5,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 4,
@@ -1840,36 +1911,61 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "holiday_inn_monterrey_valle"
-              }
-            },
-            {
-              "entityId": "hilton_monterrey_valle",
-              "name": "Hilton Monterrey Valle",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "hilton_monterrey_valle"
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
               "entityId": "novotel_monterrey_valle",
               "name": "Novotel Monterrey Valle",
               "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "novotel_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "holiday_inn_express_monterrey_valle",
+              "name": "Holiday Inn Express & Suites Monterrey Valle",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "holiday_inn_express_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "holiday_inn_monterrey_valle",
+              "name": "Holiday Inn Monterrey Valle",
+              "isSubject": false,
               "appearances": 0,
               "aiPresenceRate": 0,
               "aiPresencePct": 0,
@@ -1884,15 +1980,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "novotel_monterrey_valle"
+                "competitorId": "holiday_inn_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 2,
+            "CORE_IN_TOP_10": 3,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 2,
+            "CORE_ZERO_PRESENCE": 1,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1940,9 +2038,9 @@
               "entityId": "jw_marriott_monterrey_valle",
               "name": "JW Marriott Hotel Monterrey Valle",
               "isSubject": false,
-              "appearances": 13,
-              "aiPresenceRate": 0.29545454545454547,
-              "aiPresencePct": 29.5,
+              "appearances": 14,
+              "aiPresenceRate": 0.3181818181818182,
+              "aiPresencePct": 31.8,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1953,16 +2051,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
               "entityId": "ac_hotel_monterrey_valle",
               "name": "AC Hotel by Marriott Monterrey Valle",
               "isSubject": false,
-              "appearances": 3,
-              "aiPresenceRate": 0.06818181818181818,
-              "aiPresencePct": 6.8,
+              "appearances": 5,
+              "aiPresenceRate": 0.11363636363636363,
+              "aiPresencePct": 11.4,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 3,
@@ -1973,7 +2073,53 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ac_hotel_monterrey_valle"
+                "competitorId": "ac_hotel_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "hilton_monterrey_valle",
+              "name": "Hilton Monterrey Valle",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.09090909090909091,
+              "aiPresencePct": 9.1,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "holiday_inn_express_monterrey_valle",
+              "name": "Holiday Inn Express & Suites Monterrey Valle",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.06818181818181818,
+              "aiPresencePct": 6.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "holiday_inn_express_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -1985,44 +2131,47 @@
               "aiPresencePct": 6.8,
               "relationship": "CORE",
               "isCore": true,
-              "observedRank": 4,
-              "displayRank": 4,
+              "observedRank": 6,
+              "displayRank": 6,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "holiday_inn_monterrey_valle"
+                "competitorId": "holiday_inn_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
-              "entityId": "hilton_monterrey_valle",
-              "name": "Hilton Monterrey Valle",
+              "entityId": "novotel_monterrey_valle",
+              "name": "Novotel Monterrey Valle",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "appearances": 2,
+              "aiPresenceRate": 0.045454545454545456,
+              "aiPresencePct": 4.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hilton_monterrey_valle"
+                "competitorId": "novotel_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 3,
+            "CORE_IN_TOP_10": 4,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 1,
+            "CORE_ZERO_PRESENCE": 0,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -2081,12 +2230,14 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
-              "entityId": "holiday_inn_monterrey_valle",
-              "name": "Holiday Inn Monterrey Valle",
+              "entityId": "holiday_inn_express_monterrey_valle",
+              "name": "Holiday Inn Express & Suites Monterrey Valle",
               "isSubject": false,
               "appearances": 1,
               "aiPresenceRate": 0.0625,
@@ -2101,7 +2252,9 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "holiday_inn_monterrey_valle"
+                "competitorId": "holiday_inn_express_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -2122,7 +2275,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hilton_monterrey_valle"
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -2191,7 +2346,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2211,7 +2368,31 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "comfort_inn_monterrey_valle"
+                "competitorId": "comfort_inn_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "hilton_monterrey_valle",
+              "name": "Hilton Monterrey Valle",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.08333333333333333,
+              "aiPresencePct": 8.3,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2223,15 +2404,17 @@
               "aiPresencePct": 8.3,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 4,
-              "displayRank": 4,
+              "observedRank": 5,
+              "displayRank": 5,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "westin_monterrey_valle"
+                "competitorId": "westin_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2252,28 +2435,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ac_hotel_monterrey_valle"
-              }
-            },
-            {
-              "entityId": "hilton_monterrey_valle",
-              "name": "Hilton Monterrey Valle",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "hilton_monterrey_valle"
+                "competitorId": "ac_hotel_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2294,15 +2458,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "novotel_monterrey_valle"
+                "competitorId": "novotel_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 1,
+            "CORE_IN_TOP_10": 2,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 3,
+            "CORE_ZERO_PRESENCE": 2,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -2363,16 +2529,18 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "jw_marriott_monterrey_valle"
+                "competitorId": "jw_marriott_monterrey_valle",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
               "entityId": "ac_hotel_monterrey_valle",
               "name": "AC Hotel by Marriott Monterrey Valle",
               "isSubject": false,
-              "appearances": 2,
-              "aiPresenceRate": 0.07142857142857142,
-              "aiPresencePct": 7.1,
+              "appearances": 3,
+              "aiPresenceRate": 0.10714285714285714,
+              "aiPresencePct": 10.7,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 3,
@@ -2383,7 +2551,31 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "ac_hotel_monterrey_valle"
+                "competitorId": "ac_hotel_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "holiday_inn_express_monterrey_valle",
+              "name": "Holiday Inn Express & Suites Monterrey Valle",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.03571428571428571,
+              "aiPresencePct": 3.6,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "holiday_inn_express_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -2395,15 +2587,61 @@
               "aiPresencePct": 3.6,
               "relationship": "CORE",
               "isCore": true,
-              "observedRank": 4,
-              "displayRank": 4,
+              "observedRank": 5,
+              "displayRank": 5,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "holiday_inn_monterrey_valle"
+                "competitorId": "holiday_inn_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "novotel_monterrey_valle",
+              "name": "Novotel Monterrey Valle",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.03571428571428571,
+              "aiPresencePct": 3.6,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "novotel_monterrey_valle",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "westin_monterrey_valle",
+              "name": "The Westin Monterrey Valle",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.03571428571428571,
+              "aiPresencePct": 3.6,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "westin_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2424,7 +2662,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hilton_monterrey_valle"
+                "competitorId": "hilton_monterrey_valle",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -2461,21 +2701,21 @@
           "TERRITORY": "Business Travel",
           "intent": "business",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 3,
+          "CORE_IN_TOP_10": 4,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 1,
+          "CORE_ZERO_PRESENCE": 0,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 7
         },
         {
           "PROPERTY": "The Westin Monterrey Valle",
           "TERRITORY": "Leisure Travel",
           "intent": "leisure",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 2,
+          "CORE_IN_TOP_10": 4,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 2,
+          "CORE_ZERO_PRESENCE": 0,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
           "VISIBLE_ROWS": 7
@@ -2485,36 +2725,36 @@
           "TERRITORY": "Couples / Romantic Stay",
           "intent": "couples",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 1,
+          "CORE_IN_TOP_10": 3,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 3,
+          "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 7
         },
         {
           "PROPERTY": "The Westin Monterrey Valle",
           "TERRITORY": "Family Travel",
           "intent": "family",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 2,
+          "CORE_IN_TOP_10": 3,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 2,
+          "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 7
         },
         {
           "PROPERTY": "The Westin Monterrey Valle",
           "TERRITORY": "Meetings & Groups",
           "intent": "group_meeting",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 3,
+          "CORE_IN_TOP_10": 4,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 1,
+          "CORE_ZERO_PRESENCE": 0,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 7
         },
         {
           "PROPERTY": "The Westin Monterrey Valle",
@@ -2533,9 +2773,9 @@
           "TERRITORY": "Adventure & Experiences",
           "intent": "adventure",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 1,
+          "CORE_IN_TOP_10": 2,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 3,
+          "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
           "VISIBLE_ROWS": 7
@@ -2550,12 +2790,12 @@
           "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 8
         }
       ],
       "PROPERTY_SPECIFIC_RANKING_DISPLAY_CODE": 0,
       "PROPERTY_SPECIFIC_OVERALL_RANKING_CODE": 0,
-      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v1",
+      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v2",
       "DISPLAY_AND_MODAL_SAME_SOURCE": true
     },
     "executiveRead": {
@@ -2568,7 +2808,7 @@
       "current": {
         "positionPattern": "BROAD_VISIBILITY_INCONSISTENT_CONSIDERATION",
         "label": "broad AI visibility but less consistent consideration",
-        "narrative": "The Westin Monterrey Valle appears in 84.1% of monitored demand scenarios but in 38.5% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 65.2% of ranked responses. AI visibility is broader than consideration consistency: the hotel appears in 84.1% of monitored demand scenarios but only 38.5% of individual comparable AI responses.",
+        "narrative": "The Westin Monterrey Valle appears in 84.1% of monitored demand scenarios but in 42.5% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 66.7% of ranked responses. AI visibility is broader than consideration consistency: the hotel appears in 84.1% of monitored demand scenarios but only 42.5% of individual comparable AI responses.",
         "primaryStrength": {
           "key": "TOP3_PROMINENCE",
           "label": "Top-3 prominence"
@@ -2601,7 +2841,7 @@
         "key": "CONSIDERATION_CONSISTENCY",
         "label": "Consideration consistency"
       },
-      "narrative": "The Westin Monterrey Valle appears in 84.1% of monitored demand scenarios but in 38.5% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 65.2% of ranked responses. AI visibility is broader than consideration consistency: the hotel appears in 84.1% of monitored demand scenarios but only 38.5% of individual comparable AI responses. This is the baseline monitoring period for this property.",
+      "narrative": "The Westin Monterrey Valle appears in 84.1% of monitored demand scenarios but in 42.5% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 66.7% of ranked responses. AI visibility is broader than consideration consistency: the hotel appears in 84.1% of monitored demand scenarios but only 42.5% of individual comparable AI responses. This is the baseline monitoring period for this property.",
       "meta": {
         "overall": "This is the baseline monitoring period for this property",
         "primaryStrength": "Top-3 prominence",
@@ -2626,12 +2866,12 @@
         "biggestStrength": {
           "sectionLabel": "BIGGEST STRENGTH",
           "headline": "Often placed near the top when AI ranks hotels",
-          "body": "Among AI answers where hotel ranking could be measured, The Westin Monterrey Valle appeared in the Top 3 65.2% of the time. This shows how prominently the hotel is positioned when AI includes it."
+          "body": "Among AI answers where hotel ranking could be measured, The Westin Monterrey Valle appeared in the Top 3 66.7% of the time. This shows how prominently the hotel is positioned when AI includes it."
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
           "headline": "Not appearing consistently in AI answers",
-          "body": "The hotel appeared in at least one AI answer for 84.1% of the traveler needs we tested, but across all individual AI answers it appeared 38.5% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+          "body": "The hotel appeared in at least one AI answer for 84.1% of the traveler needs we tested, but across all individual AI answers it appeared 42.5% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
         },
         "changeSinceLastRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -2640,7 +2880,7 @@
         },
         "executiveSummary": {
           "title": "WHAT THE DATA SAYS",
-          "narrative": "The Westin Monterrey Valle appeared in at least one AI answer for 84.1% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, The Westin Monterrey Valle appeared 38.5% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see The Westin Monterrey Valle in the hotel options surfaced.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, The Westin Monterrey Valle appeared in the Top 3 65.2% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+          "narrative": "The Westin Monterrey Valle appeared in at least one AI answer for 84.1% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, The Westin Monterrey Valle appeared 42.5% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see The Westin Monterrey Valle in the hotel options surfaced.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, The Westin Monterrey Valle appeared in the Top 3 66.7% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
         },
         "safety": {
           "VAGUE_UNEXPLAINED_PHRASES": 0,
@@ -2656,12 +2896,12 @@
         "biggestStrength": {
           "sectionLabel": "BIGGEST STRENGTH",
           "headline": "Often placed near the top when AI ranks hotels",
-          "body": "Among AI answers where hotel ranking could be measured, The Westin Monterrey Valle appeared in the Top 3 65.2% of the time. This shows how prominently the hotel is positioned when AI includes it."
+          "body": "Among AI answers where hotel ranking could be measured, The Westin Monterrey Valle appeared in the Top 3 66.7% of the time. This shows how prominently the hotel is positioned when AI includes it."
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
           "headline": "Not appearing consistently in AI answers",
-          "body": "The hotel appeared in at least one AI answer for 84.1% of the traveler needs we tested, but across all individual AI answers it appeared 38.5% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+          "body": "The hotel appeared in at least one AI answer for 84.1% of the traveler needs we tested, but across all individual AI answers it appeared 42.5% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
         },
         "changeSinceLastComparableRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -2671,8 +2911,557 @@
       },
       "writeup": {
         "title": "WHAT THE DATA SAYS",
-        "body": "The Westin Monterrey Valle appeared in at least one AI answer for 84.1% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, The Westin Monterrey Valle appeared 38.5% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see The Westin Monterrey Valle in the hotel options surfaced.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, The Westin Monterrey Valle appeared in the Top 3 65.2% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+        "body": "The Westin Monterrey Valle appeared in at least one AI answer for 84.1% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, The Westin Monterrey Valle appeared 42.5% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see The Westin Monterrey Valle in the hotel options surfaced.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, The Westin Monterrey Valle appeared in the Top 3 66.7% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+      },
+      "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "sections": {
+        "headline": "The Westin Monterrey Valle's priority is a Reality Gap in how a distinctive part of the proposition is represented in AI answers.",
+        "keyInsight": "Westin Club is recognized in only 3.7% of monitored answers. That is low enough to matter commercially if the attribute is part of how the hotel should win relevant traveler needs. Holiday Inn Express & Suites Monterrey Valle also appears in related absent scenarios, which can compound the representation miss. Broader Scenario Presence (84.1%) and Consideration (42.5%) do not, by themselves, prove the distinctive attribute is traveling into answers.",
+        "whyItMatters": "If distinctive property attributes are weakly represented, the hotel can look broadly visible while still losing the moments where its real proposition should matter. This is a representation problem first, not automatically a peer-competition program.",
+        "focusNow": "Focus first on Westin Club. Verify first-party and major travel-source completeness for that attribute before treating the issue as a peer-competition problem. Confirm the attribute is stated clearly where AI systems are most likely to read it.",
+        "watch": null,
+        "whatToReview": "Open Reality Gap evidence for Westin Club and compare recognition cues with official property pages and high-authority travel sources. Then check a small set of related demand scenarios for whether the attribute appears when competitors are named."
+      },
+      "numericAnchors": [
+        {
+          "metricId": "realityGap.Westin Club.recognitionRate",
+          "displayValue": "3.7%",
+          "section": "KEY_INSIGHT",
+          "reason": "Reality Gap recognition rate",
+          "paritySource": "realityGap.Westin Club.recognitionRate",
+          "removingWeakensInsight": true,
+          "anchorType": "reality_gap_rate"
+        }
+      ],
+      "primaryIssueId": "reality_westin_club",
+      "insightArchetype": "REALITY_DISCONNECT",
+      "evidenceTrace": [
+        {
+          "kind": "metric",
+          "ref": "realityGap.Westin Club.recognitionRate",
+          "value": 3.7
+        },
+        {
+          "kind": "realityGap",
+          "ref": "Westin Club"
+        },
+        {
+          "kind": "numericAnchor",
+          "ref": "realityGap.Westin Club.recognitionRate",
+          "displayValue": "3.7%"
+        },
+        {
+          "kind": "period",
+          "ref": "adp_period_adp_westin_monterrey_valle_20260908013810_b5bb91"
+        }
+      ],
+      "qualityGates": {
+        "gates": {
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+            "pass": true,
+            "detail": "keyInsight length"
+          },
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+            "pass": true,
+            "detail": "property name referenced"
+          },
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+            "pass": true,
+            "detail": null
+          }
+        },
+        "gateIds": [
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+        ],
+        "claimDiscipline": {
+          "unsupportedCausalImplication": 0,
+          "overstated": 0,
+          "pass": true
+        },
+        "wordCount": 200,
+        "allRequiredPass": true,
+        "failed": []
+      },
+      "sourceSnapshotHash": "907f2499fb26d3bf",
+      "compositionHash": "930f40a78e72e87e",
+      "compositionV3": {
+        "ok": true,
+        "contract": "ADP_EXECUTIVE_READ_V3",
+        "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "generatedAt": "2026-09-10T11:04:37.508Z",
+        "propertyId": "adp_westin_monterrey_valle",
+        "propertyName": "The Westin Monterrey Valle",
+        "periodId": "adp_period_adp_westin_monterrey_valle_20260908013810_b5bb91",
+        "primaryIssueId": "reality_westin_club",
+        "insightArchetype": "REALITY_DISCONNECT",
+        "constraintClass": "REALITY_REPRESENTATION",
+        "sections": {
+          "headline": "The Westin Monterrey Valle's priority is a Reality Gap in how a distinctive part of the proposition is represented in AI answers.",
+          "keyInsight": "Westin Club is recognized in only 3.7% of monitored answers. That is low enough to matter commercially if the attribute is part of how the hotel should win relevant traveler needs. Holiday Inn Express & Suites Monterrey Valle also appears in related absent scenarios, which can compound the representation miss. Broader Scenario Presence (84.1%) and Consideration (42.5%) do not, by themselves, prove the distinctive attribute is traveling into answers.",
+          "whyItMatters": "If distinctive property attributes are weakly represented, the hotel can look broadly visible while still losing the moments where its real proposition should matter. This is a representation problem first, not automatically a peer-competition program.",
+          "focusNow": "Focus first on Westin Club. Verify first-party and major travel-source completeness for that attribute before treating the issue as a peer-competition problem. Confirm the attribute is stated clearly where AI systems are most likely to read it.",
+          "watch": null,
+          "whatToReview": "Open Reality Gap evidence for Westin Club and compare recognition cues with official property pages and high-authority travel sources. Then check a small set of related demand scenarios for whether the attribute appears when competitors are named."
+        },
+        "numericAnchors": [
+          {
+            "metricId": "realityGap.Westin Club.recognitionRate",
+            "displayValue": "3.7%",
+            "section": "KEY_INSIGHT",
+            "reason": "Reality Gap recognition rate",
+            "paritySource": "realityGap.Westin Club.recognitionRate",
+            "removingWeakensInsight": true,
+            "anchorType": "reality_gap_rate"
+          }
+        ],
+        "evidenceTrace": [
+          {
+            "kind": "metric",
+            "ref": "realityGap.Westin Club.recognitionRate",
+            "value": 3.7
+          },
+          {
+            "kind": "realityGap",
+            "ref": "Westin Club"
+          },
+          {
+            "kind": "numericAnchor",
+            "ref": "realityGap.Westin Club.recognitionRate",
+            "displayValue": "3.7%"
+          },
+          {
+            "kind": "period",
+            "ref": "adp_period_adp_westin_monterrey_valle_20260908013810_b5bb91"
+          }
+        ],
+        "qualityGates": {
+          "gates": {
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+              "pass": true,
+              "detail": "keyInsight length"
+            },
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+              "pass": true,
+              "detail": "property name referenced"
+            },
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+              "pass": true,
+              "detail": null
+            }
+          },
+          "gateIds": [
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+          ],
+          "claimDiscipline": {
+            "unsupportedCausalImplication": 0,
+            "overstated": 0,
+            "pass": true
+          },
+          "wordCount": 200,
+          "allRequiredPass": true,
+          "failed": []
+        },
+        "sourceSnapshotHash": "907f2499fb26d3bf",
+        "compositionHash": "930f40a78e72e87e",
+        "activated": true,
+        "customerFacingDefault": true,
+        "zeroCodePath": true,
+        "usedHardcodedMap": false,
+        "historicalImmutability": {
+          "enforced": true,
+          "policy": {
+            "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+            "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+            "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+            "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+            "silentInPlaceMutation": "PROHIBITED",
+            "activationRequiredForCustomerDefault": true
+          },
+          "writePolicy": {
+            "allowed": true,
+            "mode": "CUSTOMER_DEFAULT_V3",
+            "reason": "ACTIVATED",
+            "policy": {
+              "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+              "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+              "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+              "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+              "silentInPlaceMutation": "PROHIBITED",
+              "activationRequiredForCustomerDefault": true
+            },
+            "enforced": true,
+            "customerDefault": true
+          }
+        },
+        "wordCount": 200,
+        "watchOmitted": true,
+        "candidates": [
+          {
+            "candidateId": "cand_breadth_sp_vs_consideration",
+            "archetype": "BREADTH_PROBLEM",
+            "priorityScore": 1.1480000000000001,
+            "summary": "Scenario Presence 84.1% versus AI Consideration 42.5% — broad reach with weaker response-level inclusion."
+          },
+          {
+            "candidateId": "cand_consistency_broad_weak",
+            "archetype": "CONSISTENCY_PROBLEM",
+            "priorityScore": 1.0734000000000001,
+            "summary": "Broad scenario reach with materially weaker consideration consistency."
+          },
+          {
+            "candidateId": "cand_rank_metrics_supporting_diagnostic",
+            "archetype": "OTHER_EVIDENCE_BACKED",
+            "priorityScore": 0.33299999999999996,
+            "summary": "Top-3 / #1 metrics are supporting diagnostic only (rank-eligible n=24)."
+          },
+          {
+            "candidateId": "cand_competitor_present_gaps",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.7020000000000001,
+            "summary": "Competitors appear in a material share of scenarios where the hotel is absent (69.8%)."
+          },
+          {
+            "candidateId": "cand_reality_gap_aimbridge_managed",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "Aimbridge Managed is recognized in only 0% of monitored answers."
+          },
+          {
+            "candidateId": "cand_reality_gap_westin_club",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 1.206,
+            "summary": "Westin Club is recognized in only 3.7% of monitored answers."
+          },
+          {
+            "candidateId": "cand_territory_spread",
+            "archetype": "CONSISTENCY_PROBLEM",
+            "priorityScore": 0.7094,
+            "summary": "Territory presence ranges from 25% (Family Travel) to 50% (Celebrations & Events)."
+          },
+          {
+            "candidateId": "cand_top_observed_alternative",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.774,
+            "summary": "JW Marriott Hotel Monterrey Valle is the top observed AI alternative in the monitored set."
+          }
+        ],
+        "selectionMeta": {
+          "rules": [
+            "ADP_EXECUTIVE_READ_INPUT_V3",
+            "ADP_EXECUTIVE_INSIGHT_CANDIDATE_GENERATION_V3",
+            "ADP_EXECUTIVE_INSIGHT_PRIORITY_V3",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY"
+          ],
+          "supportingCandidateIds": [
+            "cand_reality_gap_aimbridge_managed"
+          ]
+        },
+        "doctrine": [
+          "METHODOLOGY_IS_GOVERNED; QUALITY_CONTROLS_LEARN.",
+          "EXECUTIVE_INSIGHT_LEARNS_INTERPRETATION; MEASUREMENT_REMAINS_GOVERNED."
+        ],
+        "methodologyChanged": false,
+        "rendererViewModel": {
+          "ok": true,
+          "contract": "ADP_EXECUTIVE_READ_RENDERER_CONTRACT_V3",
+          "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+          "activated": true,
+          "primaryIssueId": "reality_westin_club",
+          "insightArchetype": "REALITY_DISCONNECT",
+          "sections": [
+            {
+              "key": "headline",
+              "label": "Headline",
+              "text": "The Westin Monterrey Valle's priority is a Reality Gap in how a distinctive part of the proposition is represented in AI answers.",
+              "anchors": []
+            },
+            {
+              "key": "keyInsight",
+              "label": "Key Insight",
+              "text": "Westin Club is recognized in only 3.7% of monitored answers. That is low enough to matter commercially if the attribute is part of how the hotel should win relevant traveler needs. Holiday Inn Express & Suites Monterrey Valle also appears in related absent scenarios, which can compound the representation miss. Broader Scenario Presence (84.1%) and Consideration (42.5%) do not, by themselves, prove the distinctive attribute is traveling into answers.",
+              "anchors": [
+                {
+                  "metricId": "realityGap.Westin Club.recognitionRate",
+                  "displayValue": "3.7%",
+                  "section": "KEY_INSIGHT",
+                  "reason": "Reality Gap recognition rate",
+                  "paritySource": "realityGap.Westin Club.recognitionRate",
+                  "removingWeakensInsight": true,
+                  "anchorType": "reality_gap_rate"
+                }
+              ]
+            },
+            {
+              "key": "whyItMatters",
+              "label": "Why It Matters",
+              "text": "If distinctive property attributes are weakly represented, the hotel can look broadly visible while still losing the moments where its real proposition should matter. This is a representation problem first, not automatically a peer-competition program.",
+              "anchors": []
+            },
+            {
+              "key": "focusNow",
+              "label": "Focus Now",
+              "text": "Focus first on Westin Club. Verify first-party and major travel-source completeness for that attribute before treating the issue as a peer-competition problem. Confirm the attribute is stated clearly where AI systems are most likely to read it.",
+              "anchors": []
+            },
+            {
+              "key": "whatToReview",
+              "label": "What to Review",
+              "text": "Open Reality Gap evidence for Westin Club and compare recognition cues with official property pages and high-authority travel sources. Then check a small set of related demand scenarios for whether the attribute appears when competitors are named.",
+              "anchors": []
+            }
+          ],
+          "flattenedProseForLegacy": "The Westin Monterrey Valle's priority is a Reality Gap in how a distinctive part of the proposition is represented in AI answers.\n\nWestin Club is recognized in only 3.7% of monitored answers. That is low enough to matter commercially if the attribute is part of how the hotel should win relevant traveler needs. Holiday Inn Express & Suites Monterrey Valle also appears in related absent scenarios, which can compound the representation miss. Broader Scenario Presence (84.1%) and Consideration (42.5%) do not, by themselves, prove the distinctive attribute is traveling into answers.\n\nIf distinctive property attributes are weakly represented, the hotel can look broadly visible while still losing the moments where its real proposition should matter. This is a representation problem first, not automatically a peer-competition program.\n\nFocus first on Westin Club. Verify first-party and major travel-source completeness for that attribute before treating the issue as a peer-competition problem. Confirm the attribute is stated clearly where AI systems are most likely to read it.\n\nOpen Reality Gap evidence for Westin Club and compare recognition cues with official property pages and high-authority travel sources. Then check a small set of related demand scenarios for whether the attribute appears when competitors are named."
+        }
       }
+    },
+    "metricScopeLabels": {
+      "version": "adp_metric_scope_labels_v1",
+      "subjectObservationGrain": {
+        "productLabel": "AI Consideration",
+        "technicalLabel": "AI Consideration Rate",
+        "grain": "property × scenario × provider × period (comparable observations)",
+        "definition": "Share of comparable monitored AI responses where the subject hotel appears."
+      },
+      "subjectScenarioGrain": {
+        "productLabel": "AI Scenario Presence",
+        "technicalLabel": "Demand Scenario Coverage",
+        "grain": "property × scenario (aggregates providers)",
+        "definition": "Share of monitored demand scenarios where the subject hotel appears on at least one comparable provider."
+      },
+      "competitorScenarioAppearance": {
+        "productLabel": "Scenario Appearance",
+        "technicalLabel": "Competitor Scenario Appearance",
+        "grain": "non-subject hotel × scenario (within subject hotel report)",
+        "definition": "Share of monitored scenarios in this report where a competitor hotel appears. Not the same metric as that hotel's own AI Consideration.",
+        "forbiddenClientLabels": [
+          "Presence",
+          "AI Presence"
+        ]
+      },
+      "competitorObservationAppearance": {
+        "productLabel": "Observation Appearance",
+        "technicalLabel": "Competitor Observation Appearance",
+        "grain": "non-subject hotel × observation (within subject hotel report)",
+        "definition": "Share of comparable monitored answers in this report where a competitor hotel appears. Not interchangeable with subject AI Consideration unless same-scope certified."
+      },
+      "scopeRule": "SAME_SCOPE_SAME_CANONICAL_METRIC",
+      "ambiguityRule": "ADP_METRIC_SCOPE_UNAMBIGUOUS"
     },
     "trends": [
       {
@@ -2691,7 +3480,7 @@
         "date": "2026-09-08T01:38:10.664Z",
         "propertyRealityCoverage": 43.8,
         "scenarioPresenceRate": 84.1,
-        "considerationRate": 38.5,
+        "considerationRate": 42.5,
         "providerCount": 4,
         "observationCount": 252,
         "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
