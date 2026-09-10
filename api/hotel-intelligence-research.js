@@ -36,12 +36,16 @@ export async function getHotelResearchCenter(req, res) {
     if (!hotelId) {
       return res.status(400).json({ ok: false, error: "hotel_id_required" });
     }
-    const includeAdmin =
-      String(req.query.admin || "") === "1" || String(req.query.includeAdmin || "") === "1";
+    const shareQ = String(req.query.share || "").toLowerCase();
+    const clientSafeShare = shareQ === "1" || shareQ === "true";
+    const includeAdmin = clientSafeShare
+      ? false
+      : String(req.query.admin || "") === "1" || String(req.query.includeAdmin || "") === "1";
     const payload = await buildResearchCenterPayloadAsync({
       hotel_id: hotelId,
       hotel_name: req.query.hotelName || req.query.hotel_name || null,
       includeAdmin,
+      clientSafeShare,
       repository: repoFromReq(req),
       env: process.env,
     });

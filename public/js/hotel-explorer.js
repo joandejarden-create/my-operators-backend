@@ -49,6 +49,16 @@
     access: "access-connectivity",
   };
 
+  function isShareMode() {
+    try {
+      if (window.__HOTEL_EXPLORER_SHARE_MODE === true) return true;
+      var q = new URLSearchParams(window.location.search || "");
+      return q.get("share") === "1" || q.get("share") === "true";
+    } catch (err) {
+      return false;
+    }
+  }
+
   var HI_TABS = {
     ownership: "ownership",
     organization: "organization",
@@ -414,7 +424,7 @@
       '<div class="hex-hero__actions" aria-label="Hotel actions">' +
       '<div class="hex-hero__btn-row">' +
       '<button type="button" class="hex-btn hex-btn--primary" data-hex-deep-research>' +
-      "Deep Research" +
+      (isShareMode() ? "Research Reports" : "Deep Research") +
       '<span class="hex-btn__badge" data-hex-research-badge hidden></span>' +
       "</button>" +
       "</div>" +
@@ -924,7 +934,7 @@
     openDossierForHotel();
   }
 
-  function openDossierById(dossierId) {
+  function openDossierById(dossierId, opts) {
     var id = String(dossierId || "").trim();
     if (!id) return;
     var body = document.getElementById("hexDossierBody");
@@ -936,7 +946,16 @@
     var rootEl = document.getElementById("hexRoot");
     if (rootEl) rootEl.classList.add("hex-root--dossier-open");
     body.innerHTML = '<p class="hex-dossier-loading">Loading Intelligence Dossier…</p>';
-    fetch("/api/hotel-intelligence/dossiers/" + encodeURIComponent(id))
+    var url = "/api/hotel-intelligence/dossiers/" + encodeURIComponent(id);
+    var shareHotel =
+      (opts && opts.shareHotel) ||
+      (isShareMode() && state.hotel && (state.hotel.id || state.hotel.recordId)) ||
+      null;
+    if (shareHotel) {
+      url +=
+        "?share=1&share_hotel=" + encodeURIComponent(String(shareHotel));
+    }
+    fetch(url)
       .then(function (r) {
         return r.json();
       })
