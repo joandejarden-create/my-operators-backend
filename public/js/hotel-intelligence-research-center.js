@@ -198,6 +198,10 @@
     if ("inert" in drawer) drawer.inert = false;
     document.body.style.overflow = "hidden";
     document.getElementById("hiResearchHotel").textContent = state.hotelName || "Hotel";
+    var kicker = document.getElementById("hiResearchKicker");
+    var title = document.getElementById("hiResearchTitle");
+    if (kicker) kicker.textContent = isShareMode() ? "Research Reports" : "Deep Research";
+    if (title) title.textContent = isShareMode() ? "Completed Reports" : "Research Center";
     document.getElementById("hiResearchClose").focus();
     if (window.HotelExplorer && typeof window.HotelExplorer.applyChainScaleTheme === "function") {
       window.HotelExplorer.applyChainScaleTheme();
@@ -249,6 +253,7 @@
 
   function startPollIfNeeded() {
     stopPoll();
+    if (isShareMode()) return;
     var active = state.payload && state.payload.active_requests && state.payload.active_requests.length;
     if (!active || !state.open) return;
     var live = state.payload.execution_mode && state.payload.execution_mode.live;
@@ -331,11 +336,14 @@
       state.loading = true;
       render();
     }
+    var qs = [];
+    if (state.hotelName) qs.push("hotel_name=" + encodeURIComponent(state.hotelName));
+    if (isShareMode()) qs.push("share=1");
     var url =
       "/api/hotel-intelligence/hotels/" +
       encodeURIComponent(state.hotelId) +
       "/research" +
-      (state.hotelName ? "?hotel_name=" + encodeURIComponent(state.hotelName) : "");
+      (qs.length ? "?" + qs.join("&") : "");
     fetch(url)
       .then(function (r) {
         return r.json();
@@ -362,14 +370,24 @@
         }
         var st = payload.header && payload.header.status_line;
         if (st) {
-          document.getElementById("hiResearchStatus").textContent =
-            st.completed_investigations +
-            " Completed Investigation" +
-            (st.completed_investigations === 1 ? "" : "s") +
-            " · " +
-            st.active +
-            " Active · Last Researched: " +
-            (st.last_researched_display || "—");
+          if (isShareMode() || (payload.mode_flags && payload.mode_flags.share_readonly)) {
+            document.getElementById("hiResearchStatus").textContent =
+              st.completed_investigations +
+              " Completed Report" +
+              (st.completed_investigations === 1 ? "" : "s") +
+              (st.last_researched_display
+                ? " · Last Researched: " + st.last_researched_display
+                : "");
+          } else {
+            document.getElementById("hiResearchStatus").textContent =
+              st.completed_investigations +
+              " Completed Investigation" +
+              (st.completed_investigations === 1 ? "" : "s") +
+              " · " +
+              st.active +
+              " Active · Last Researched: " +
+              (st.last_researched_display || "—");
+          }
         }
         render();
         startPollIfNeeded();
@@ -403,10 +421,26 @@
     body.innerHTML = renderCenter(state.payload);
   }
 
+  function shareScopedDossierUrl(dossierId, kind) {
+    var base =
+      "/api/hotel-intelligence/dossiers/" +
+      encodeURIComponent(dossierId) +
+      (kind === "pdf" ? "/pdf" : "");
+    if (!isShareMode() || !state.hotelId) return base;
+    return (
+      base +
+      "?share=1&share_hotel=" +
+      encodeURIComponent(state.hotelId)
+    );
+  }
+
   function renderCenter(p) {
     if (!p) return '<p class="hi-research-empty">No research data.</p>';
     var html = "";
-    if (p.execution_mode) {
+    var shareReadonly =
+      isShareMode() ||
+      (p.mode_flags && p.mode_flags.share_readonly === true);
+    if (p.execution_mode && !shareReadonly) {
       html +=
         '<p class="hi-research-mode-badge" data-live="' +
         (p.execution_mode.live ? "1" : "0") +
@@ -418,7 +452,7 @@
         "</p>";
     }
 
-    if (p.active_requests && p.active_requests.length) {
+    if (!shareReadonly && p.active_requests && p.active_requests.length) {
       html += '<section class="hi-research-section"><h3 class="hi-research-section__title">Research In Progress</h3>';
       p.active_requests.forEach(function (r) {
         html +=
@@ -443,7 +477,7 @@
       html += "</section>";
     }
 
-    if (p.mode === "FIRST_USE_FULL_INVESTIGATION" && p.first_use) {
+    if (!shareReadonly && p.mode === "FIRST_USE_FULL_INVESTIGATION" && p.first_use) {
       html +=
         '<section class="hi-research-section"><h3 class="hi-research-section__title">Latest Investigation</h3>' +
         '<article class="hi-research-card hi-research-card--cta">' +
@@ -452,18 +486,18 @@
         "</h4><p>" +
         esc(p.first_use.description) +
         "</p>" +
-        (isShareMode()
-          ? '<p class="hi-research-meta">Research runs are disabled on shared previews.</p>'
-          : '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="FULL_HOTEL_INTELLIGENCE">Run Full Investigation</button>') +
+        '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="FULL_HOTEL_INTELLIGENCE">Run Full Investigation</button>' +
         "</article></section>";
     } else if (p.latest_investigation) {
       html +=
-        '<section class="hi-research-section"><h3 class="hi-research-section__title">Latest Investigation</h3>' +
+        '<section class="hi-research-section"><h3 class="hi-research-section__title">' +
+        (shareReadonly ? "Latest Report" : "Latest Investigation") +
+        "</h3>" +
         renderLatestCard(p.latest_investigation) +
         "</section>";
     }
 
-    if (p.recommended_follow_up && p.recommended_follow_up.length) {
+    if (!shareReadonly && p.recommended_follow_up && p.recommended_follow_up.length) {
       html += '<section class="hi-research-section"><h3 class="hi-research-section__title">Recommended Follow-up</h3>';
       p.recommended_follow_up.forEach(function (rec) {
         var tid = rec.template && rec.template.template_id;
@@ -479,17 +513,20 @@
           '<button type="button" class="hi-research-btn hi-research-btn--secondary" data-rc-detail="' +
           esc(tid) +
           '">Review Scope</button>' +
-          (isShareMode()
-            ? ""
-            : '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="' +
-              esc(tid) +
-              '">Run Research</button>') +
+          '<button type="button" class="hi-research-btn hi-research-btn--primary" data-rc-run="' +
+          esc(tid) +
+          '">Run Research</button>' +
           "</div></article>";
       });
       html += "</section>";
     }
 
-    if (p.research_more && p.research_more.length && p.mode === "AFTER_FULL_INVESTIGATION") {
+    if (
+      !shareReadonly &&
+      p.research_more &&
+      p.research_more.length &&
+      p.mode === "AFTER_FULL_INVESTIGATION"
+    ) {
       html += '<section class="hi-research-section"><h3 class="hi-research-section__title">Research More</h3><div class="hi-research-list">';
       p.research_more.forEach(function (t) {
         html +=
@@ -508,9 +545,14 @@
       html += "</div></section>";
     }
 
-    html += '<section class="hi-research-section"><h3 class="hi-research-section__title">Research Archive</h3>';
+    html +=
+      '<section class="hi-research-section"><h3 class="hi-research-section__title">' +
+      (shareReadonly ? "Completed Reports" : "Research Archive") +
+      "</h3>";
     if (!p.archive || !p.archive.length) {
-      html += '<p class="hi-research-empty">No completed investigations yet.</p>';
+      html += shareReadonly
+        ? '<p class="hi-research-empty">No completed research reports are available for this hotel.</p>'
+        : '<p class="hi-research-empty">No completed investigations yet.</p>';
     } else {
       p.archive.forEach(function (a) {
         html += renderArchiveRow(a);
@@ -710,6 +752,7 @@
     }
     var detail = e.target.closest("[data-rc-detail]");
     if (detail) {
+      if (isShareMode()) return;
       state.view = "detail";
       state.detailTemplateId = detail.getAttribute("data-rc-detail");
       render();
@@ -720,9 +763,13 @@
       var reportId = view.getAttribute("data-rc-view");
       close({ restoreFocus: document.getElementById("hexDossierLayer") || document.body });
       if (window.HotelExplorer && typeof window.HotelExplorer.openDossierById === "function") {
-        window.HotelExplorer.openDossierById(reportId);
+        window.HotelExplorer.openDossierById(reportId, {
+          shareHotel: isShareMode() ? state.hotelId : null,
+        });
       } else if (typeof window.__hexOpenDossierById === "function") {
-        window.__hexOpenDossierById(reportId);
+        window.__hexOpenDossierById(reportId, {
+          shareHotel: isShareMode() ? state.hotelId : null,
+        });
       }
       return;
     }
@@ -735,8 +782,7 @@
         pdfId;
       // Packet 2.7-R6: fetch+blob so Content-Disposition filename is honored.
       // window.location navigation often ignores CD and reuses a generic name.
-      var url =
-        "/api/hotel-intelligence/dossiers/" + encodeURIComponent(pdfId) + "/pdf";
+      var url = shareScopedDossierUrl(pdfId, "pdf");
       pdf.disabled = true;
       fetch(url, { credentials: "same-origin" })
         .then(function (res) {
@@ -926,6 +972,14 @@
   }
 
   function openConfirmModal(templateId, returnFocusEl) {
+    if (isShareMode()) {
+      showDealalityToast({
+        kind: "error",
+        title: "Shared preview",
+        body: "Research runs are disabled on shared previews.",
+      });
+      return;
+    }
     if (!state.hotelId || !templateId || state.confirmSubmitting) return;
     ensureDom();
     state.confirmTemplateId = templateId;

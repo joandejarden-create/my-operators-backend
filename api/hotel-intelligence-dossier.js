@@ -16,6 +16,33 @@ import {
 import { enrichReportForPublishing } from "../lib/hotel-intelligence/dossier/report-hotel-identity.js";
 import { getPersistedResearchAddendum } from "../lib/hotel-intelligence/research/addendum-store.js";
 
+/**
+ * Share-mode scope: when share=1 or share_hotel/hotelId is present,
+ * the dossier must belong to that hotel or the request is denied.
+ * @returns {{ denied: boolean, scopedHotelId: string|null }}
+ */
+export function assertDossierShareScope(dossier, query = {}) {
+  const shareQ = String(query.share || "").toLowerCase();
+  const shareFlag = shareQ === "1" || shareQ === "true";
+  const scopedHotelId = String(
+    query.share_hotel || query.shareHotel || query.hotelId || query.hotel_id || ""
+  ).trim();
+  if (!shareFlag && !scopedHotelId) {
+    return { denied: false, scopedHotelId: null };
+  }
+  if (!scopedHotelId) {
+    return { denied: true, scopedHotelId: null };
+  }
+  const candidates = [
+    String(dossier?.hotel_airtable_record_id || "").trim(),
+    String(dossier?.hotel_id || "").trim(),
+  ].filter(Boolean);
+  if (!candidates.includes(scopedHotelId)) {
+    return { denied: true, scopedHotelId };
+  }
+  return { denied: false, scopedHotelId };
+}
+
 export function listHotelIntelligenceDossiers(req, res) {
   try {
     const hotelId = String(req.query.hotelId || req.query.hotel_id || "").trim();
@@ -51,6 +78,10 @@ export function getHotelIntelligenceDossier(req, res) {
     const dossier = getDossierById(dossierId);
     if (!dossier) {
       return res.status(404).json({ ok: false, error: "dossier_not_found" });
+    }
+    const scope = assertDossierShareScope(dossier, req.query || {});
+    if (scope.denied) {
+      return res.status(403).json({ ok: false, error: "share_scope_denied" });
     }
     // Never expose raw provider dumps — normalized dossier only.
     const safe = { ...dossier };
@@ -117,6 +148,11 @@ export async function downloadHotelIntelligenceDossierPdf(req, res) {
     }
     if (!dossier) {
       return res.status(404).json({ ok: false, error: "dossier_not_found" });
+    }
+
+    const scope = assertDossierShareScope(dossier, req.query || {});
+    if (scope.denied) {
+      return res.status(403).json({ ok: false, error: "share_scope_denied" });
     }
 
     dossier = enrichReportForPublishing(dossier);
