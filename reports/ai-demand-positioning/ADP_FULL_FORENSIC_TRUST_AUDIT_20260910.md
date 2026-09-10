@@ -39,6 +39,7 @@ Multiple competitors in one subject-absent scenario each receive scenario credit
 |----------|---------|-------------|
 | adp_bethesda_marriott | PASS | — |
 | adp_cambridge_beaches_bermuda | PASS | — |
+| adp_casas_del_xvi | PASS | — |
 | adp_faranda_collection_bogota | PASS | — |
 | adp_hotel_caribe_faranda_grand | PASS | — |
 | adp_hotel_phillips_kansas_city | PASS | — |
