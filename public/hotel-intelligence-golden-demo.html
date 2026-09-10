@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hotel Explorer — Golden Demo</title>
+  <title>Hotel Explorer â€” Golden Demo</title>
   <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=40" />
   <link rel="stylesheet" href="/css/hotel-ownership-intelligence.css?v=24" />
   <link rel="stylesheet" href="/css/hotel-intelligence-workspace.css?v=29" />
@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/brand-alignment-snapshot.css" />
   <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
   <link rel="stylesheet" href="/css/hotel-intelligence-dossier.css?v=24" />
-  <link rel="stylesheet" href="/css/hotel-intelligence-research-center.css?v=7" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-research-center.css?v=12" />
   <style>
     body { margin: 0; min-height: 100vh; background: #080f25; color: #c5cef0; font-family: Inter, "Segoe UI", system-ui, sans-serif; }
     .boot { max-width: 42rem; margin: 10vh auto; padding: 24px; }
@@ -33,7 +33,7 @@
     <div class="links">
       <div><a href="/hotel-explorer-share.html?pack=mexico">Mexico pack (both hotels + reports)</a></div>
       <div><a href="?autopen=1&share=1&hotelExplorer=recsYJb2R1jarPpK3&hexTab=hotel">Sheraton Guadalajara Expo</a></div>
-      <div><a href="?autopen=1&share=1&hotelExplorer=recTYaiA4S6fR6ixx&hexTab=hotel">voco Cancún Zona Hotelera</a></div>
+      <div><a href="?autopen=1&share=1&hotelExplorer=recTYaiA4S6fR6ixx&hexTab=hotel">voco CancÃºn Zona Hotelera</a></div>
       <div><a href="?autopen=1&share=1&hotelExplorer=recUNycnMwOVFX0hc&hexTab=hotel">KGPV route</a></div>
       <div><a href="?autopen=1&hotelExplorer=recIwaP1etgx2g9nA&hexTab=hotel">Cambridge route</a></div>
     </div>
@@ -140,11 +140,11 @@
           return Promise.resolve(null);
         }
         var requestedId = launch.hotelId;
-        setStatus("Opening " + requestedId + "…");
+        setStatus("Opening " + requestedId + "â€¦");
         return enrichHotel(launch.hotel).then(function (hotel) {
           var guard = Route.assertRequestedMatchesRendered(requestedId, hotel);
           if (!guard.ok && hotel && (hotel.id || hotel.recordId)) {
-            // Seed id may be dhl alias mapped to census — allow known Cambridge alias.
+            // Seed id may be dhl alias mapped to census â€” allow known Cambridge alias.
             if (
               requestedId === Route.CAMBRIDGE_DHL &&
               (hotel.id === Route.CAMBRIDGE_ID || hotel.recordId === Route.CAMBRIDGE_ID)
@@ -154,7 +154,7 @@
           }
           if (!guard.ok) {
             console.error("[golden-demo] REQUESTED_HOTEL_ID mismatch before open", guard);
-            setStatus("Route guard failed: requested " + requestedId + " ≠ " + guard.rendered_hotel_id);
+            setStatus("Route guard failed: requested " + requestedId + " â‰  " + guard.rendered_hotel_id);
             return null;
           }
           window.HotelExplorer.open(hotel, {
