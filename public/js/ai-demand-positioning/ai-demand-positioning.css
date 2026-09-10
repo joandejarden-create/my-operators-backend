@@ -20,6 +20,28 @@
 #adpStateSuccess .aiv-theme-group,
 #adpStateSuccess .aiv-theme-group.aiv-theme-group--secondary,
 #adpStateSuccess .aiv-theme-group.aiv-portfolio-section,
+/* ADP evidence AI Response — preserve provider paragraph / line structure */
+.aiv-ai-response-viewport {
+  max-height: min(60vh, 520px);
+  overflow: auto;
+  border: 1px solid var(--neutral--600, #475569);
+  border-radius: 10px;
+  background: rgba(8, 15, 37, 0.45);
+  padding: 12px 14px;
+}
+
+.aiv-ai-response-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--neutral--300, #cbd5e1);
+  max-width: 72ch;
+  margin: 0;
+}
+
 #adpStateSuccess .aiv-theme-group.aiv-evidence-discovery,
 .adp-layer .aiv-theme-group,
 .adp-layer .aiv-theme-group.aiv-theme-group--secondary {
@@ -49,6 +71,25 @@
   grid-template-columns: minmax(220px, 32%) 1fr;
   gap: 14px 18px;
   align-items: stretch;
+}
+/* Hybrid V3: LEFT scan cards + RIGHT structured Executive Read */
+.adp-executive-read--v3.adp-executive-read--v3-hybrid .adp-executive-read__grid,
+.adp-executive-read--v3-hybrid .adp-executive-read__grid {
+  grid-template-columns: minmax(220px, 32%) 1fr;
+}
+.adp-executive-read--v3.adp-executive-read--v3-hybrid .adp-executive-read__summaries,
+.adp-executive-read--v3-hybrid .adp-executive-read__summaries {
+  display: flex !important;
+}
+.adp-executive-read--v3 .adp-executive-read__main-title {
+  display: none;
+}
+/* Legacy single-column V3 without hybrid class (should not be customer default) */
+.adp-executive-read--v3:not(.adp-executive-read--v3-hybrid) .adp-executive-read__grid {
+  grid-template-columns: 1fr;
+}
+.adp-executive-read--v3:not(.adp-executive-read--v3-hybrid) .adp-executive-read__summaries {
+  display: none !important;
 }
 .adp-executive-read__summaries {
   display: flex;
@@ -120,6 +161,185 @@
   max-width: none;
   text-align: left;
   white-space: pre-line;
+}
+.adp-executive-read__narrative--v3 {
+  white-space: normal;
+}
+.adp-executive-read__main-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.adp-executive-read__main-chrome .adp-executive-read__main-title {
+  margin: 0;
+}
+.adp-er-print-btn {
+  display: none !important;
+  appearance: none;
+  border: 0.6px solid var(--neutral--600, #37446b);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--neutral--300, #cbd5e1);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.adp-er-print-btn:hover {
+  color: var(--neutral--100, #f8fafc);
+  border-color: var(--neutral--400, #aeb8d4);
+}
+
+/* Structured V3 Executive Read — hierarchy, no equal cards, Watch collapses */
+.adp-er-v3 {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.adp-er-v3__section {
+  min-width: 0;
+}
+.adp-er-v3__section--watch:empty {
+  display: none;
+}
+.adp-er-v3__headline {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--neutral--100, #f8fafc);
+}
+.adp-er-v3__label {
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+  line-height: 1.25;
+}
+.adp-er-v3__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--neutral--100, #f8fafc);
+}
+.adp-er-v3__section--keyInsight .adp-er-v3__text {
+  font-size: 14px;
+  line-height: 1.65;
+}
+.adp-er-v3__section--whyItMatters .adp-er-v3__text {
+  opacity: 0.92;
+}
+.adp-er-v3__section--emphasis {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.6px solid rgba(55, 68, 107, 0.85);
+}
+.adp-er-v3__section--emphasis .adp-er-v3__label {
+  color: var(--neutral--300, #cbd5e1);
+}
+.adp-er-v3__section--emphasis .adp-er-v3__text {
+  font-weight: 600;
+}
+.adp-er-v3__section--secondary .adp-er-v3__text {
+  font-size: 13px;
+  opacity: 0.88;
+}
+.adp-er-v3__section--closing {
+  padding-top: 2px;
+  border-top: 0.6px solid rgba(55, 68, 107, 0.55);
+}
+.adp-executive-read--v3-qa::after {
+  content: "V3 QA preview — not customer default";
+  display: block;
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--neutral--500, #7e89ac);
+}
+
+@media (max-width: 768px) {
+  .adp-er-v3__headline {
+    font-size: 16px;
+  }
+  .adp-executive-read--v3 .adp-executive-read__main {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* Print / PDF path — same canonical ER payload, report-family grammar */
+@media print {
+  body.adp-er-print-focus * {
+    visibility: hidden !important;
+  }
+  body.adp-er-print-focus #adpExecutiveReadSection,
+  body.adp-er-print-focus #adpExecutiveReadSection * {
+    visibility: visible !important;
+  }
+  body.adp-er-print-focus #adpExecutiveReadSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #fff !important;
+    color: #0b1738 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .adp-er-print-btn {
+    display: none !important;
+  }
+  .adp-er-v3__headline,
+  .adp-er-v3__text,
+  .adp-er-v3__label {
+    color: #0b1738 !important;
+    opacity: 1 !important;
+  }
+  .adp-er-v3__section--emphasis {
+    background: #f4f6fb !important;
+    border-color: #c5cce0 !important;
+  }
+  .adp-er-v3__section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .adp-er-v3__section--emphasis {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .adp-executive-read--v3-qa::after {
+    display: none !important;
+  }
+  /* ADP_EXECUTIVE_HYBRID_PRINT_PARITY — keep left scan cards in print when width allows */
+  .adp-executive-read--v3-hybrid .adp-executive-read__grid {
+    grid-template-columns: minmax(180px, 30%) 1fr !important;
+  }
+  .adp-executive-read--v3-hybrid .adp-executive-read__summaries {
+    display: flex !important;
+  }
+  .adp-er-summary-box {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    background: #f8fafc !important;
+    border-color: #c5cce0 !important;
+    color: #0b1738 !important;
+  }
+  .adp-er-summary-box__label,
+  .adp-er-summary-box__headline,
+  .adp-er-summary-box__body {
+    color: #0b1738 !important;
+    opacity: 1 !important;
+  }
 }
 .adp-executive-read__empty {
   margin: 0;
