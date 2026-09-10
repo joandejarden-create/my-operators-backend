@@ -26,6 +26,7 @@ import {
 } from "../lib/ai-demand-positioning/published-read-service.js";
 import { loadPublishedReport } from "../lib/ai-demand-positioning/published-snapshot.js";
 import { auditProperty, compareWaterstoneRegression } from "../lib/ai-demand-positioning/multi-property-governed-audit-v2.js";
+import { enrichObservationsWithRank } from "../lib/ai-demand-positioning/metrics/executive-metrics-foundation.js";
 
 const UI = join(process.cwd(), "public/js/ai-demand-positioning/ai-demand-positioning.js");
 const WATERSTONE_BASELINE = join(
@@ -49,7 +50,10 @@ async function auditPropertyDisplacement(propertyId) {
   const profile = loadPropertyProfile(propertyId);
   const period = loadLatestPeriod(propertyId);
   const scenarios = buildScenarioUniverse(profile);
-  const observations = (period.observations || []).filter((o) => o.parsed);
+  const observations = enrichObservationsWithRank(
+    (period.observations || []).filter((o) => o.parsed),
+    profile
+  );
   const payload = buildOwnerPayload(period, scenarios, profile, { allPeriods: loadAllPeriods(propertyId) });
   const ranking = payload.competitiveRankingByTerritory;
   assert.ok(ranking?.byTerritory, `${propertyId} ranking`);
@@ -169,7 +173,10 @@ async function main() {
   );
 
   // Overall unique scenario reconciliation (not sum of territories)
-  const observations = (period.observations || []).filter((o) => o.parsed);
+  const observations = enrichObservationsWithRank(
+    (period.observations || []).filter((o) => o.parsed),
+    profile
+  );
   const overallCounts = computeDisplacementCountsByEntity(observations, scenarios, profile, "overall");
   let territorySum = 0;
   for (const [key, block] of Object.entries(payload.competitiveRankingByTerritory.byTerritory)) {

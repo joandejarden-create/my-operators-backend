@@ -1016,6 +1016,14 @@
     var btn = document.getElementById("adpExecutiveReadPrintBtn");
     if (!btn) return;
     // Print not customer-ready yet — keep hidden until print/PDF is approved.
+    // ADP_CLIENT_PRINT_ENABLED = false
+    var ADP_CLIENT_PRINT_ENABLED = false;
+    if (!ADP_CLIENT_PRINT_ENABLED) {
+      btn.hidden = true;
+      btn.setAttribute("aria-hidden", "true");
+      btn.onclick = null;
+      return;
+    }
     btn.hidden = true;
     btn.setAttribute("aria-hidden", "true");
     btn.onclick = null;
@@ -1597,9 +1605,18 @@
 
     var ready = isBrandPortfolioReady(bpp);
     var status = bpp.status || bpp.renderState || "";
+    var customerReadyClass = bpp.bppCustomerState || bpp.customerReadyClass || "";
     section.setAttribute("data-bpp-ready", ready ? "1" : "0");
     section.setAttribute("data-bpp-status", status || "unknown");
-    section.setAttribute("data-bpp-render-mode", ready ? "READY" : "STATUS_ONLY");
+    section.setAttribute(
+      "data-bpp-render-mode",
+      ready
+        ? customerReadyClass === "BPP_READY_POPULATED_RANK_ONLY"
+          ? "POPULATED_RANK_ONLY"
+          : "READY"
+        : "STATUS_ONLY"
+    );
+    if (customerReadyClass) section.setAttribute("data-bpp-customer-state", customerReadyClass);
 
     // NON-READY: header + lens + ONE status card only — no analytical shells
     if (!ready) {
@@ -1624,11 +1641,21 @@
             }
           }
         } else {
-          if (statusLabel) statusLabel.textContent = "Brand & Portfolio not shown";
-          if (statusBody) {
-            statusBody.textContent =
-              bpp.emptyMessage ||
-              "Brand & Portfolio benchmarking is not shown for this period because the governed peer set does not yet meet the minimum comparability requirement.";
+          // Never claim affiliation is unresolved when a lens is already resolved.
+          if (bpp.lens && bpp.lens.label) {
+            if (statusLabel) statusLabel.textContent = "Brand & Portfolio measurement in progress";
+            if (statusBody) {
+              statusBody.textContent =
+                bpp.emptyMessage ||
+                "Brand & Portfolio insights will appear here after the first certified portfolio monitoring cycle for this hotel.";
+            }
+          } else {
+            if (statusLabel) statusLabel.textContent = "Brand & Portfolio not shown";
+            if (statusBody) {
+              statusBody.textContent =
+                bpp.emptyMessage ||
+                "Brand & Portfolio benchmarking is not shown for this period because the governed affiliation and peer path are not yet resolved for display.";
+            }
           }
           if (statusSecondary) {
             statusSecondary.hidden = true;
@@ -1688,11 +1715,26 @@
             ? '<p class="adp-bpp-read-eyebrow" id="adpBrandPortfolioNarrativeHeadline"></p>'
             : "") +
           '<p class="adp-executive-read__narrative" id="adpBrandPortfolioNarrativeBody"></p>' +
+          (bpp.benchmarkLimitation && bpp.benchmarkLimitation.customerNote
+            ? '<p class="adp-bpp-status__secondary" id="adpBrandPortfolioBenchmarkNote"></p>'
+            : "") +
           "</div>";
         var nh = document.getElementById("adpBrandPortfolioNarrativeHeadline");
         var nb = document.getElementById("adpBrandPortfolioNarrativeBody");
+        var bnNarr = document.getElementById("adpBrandPortfolioBenchmarkNote");
         if (nh) nh.textContent = bpp.narrative.headline || "";
         if (nb) nb.textContent = bpp.narrative.body || "";
+        if (bnNarr) bnNarr.textContent = bpp.benchmarkLimitation.customerNote;
+      } else if (bpp.benchmarkLimitation && bpp.benchmarkLimitation.customerNote) {
+        // RANK_ONLY: metric-level benchmark/index limitation — never suppress the section
+        bppMountAnalyticalShell(narrativeHost, "adp-executive-read adp-bpp-portfolio-read");
+        narrativeHost.innerHTML =
+          '<div class="adp-executive-read__main">' +
+          '<h3 class="adp-executive-read__main-title">Portfolio measurement note</h3>' +
+          '<p class="adp-executive-read__narrative" id="adpBrandPortfolioBenchmarkNote"></p>' +
+          "</div>";
+        var bnOnly = document.getElementById("adpBrandPortfolioBenchmarkNote");
+        if (bnOnly) bnOnly.textContent = bpp.benchmarkLimitation.customerNote;
       } else {
         bppUnmountAnalytical([narrativeHost]);
       }
