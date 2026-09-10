@@ -14,7 +14,7 @@
   "assetCacheToken": "adp-v87-production-baseline-20260910",
   "promptManifestHash": "2ceb0f1f2101a394da3a84ac9019a3777c96d5aff9efb79409f631ce28e2c9d5",
   "frozenPackageHash": "69d60d7bacaad5fdaf834da154960344a4ae23244164e78f8950a1a43303e77d",
-  "payloadHash": "faa434d2f378593b9e20d82ee158ccff0517eb834589e9521de714b5bb55fc37",
+  "payloadHash": "5f23e3e34406b373",
   "publishedAt": "2026-09-10T07:01:39.527Z",
   "supersedesPublicationVersion": "bpp-customer-v1.1-20260821",
   "period1Archive": "ADP_BRAND_PORTFOLIO_CUSTOMER_PUBLISHED_PERIOD1_ARCHIVE_V1.json",
@@ -8216,6 +8216,695 @@
         "class": "BPP_READY_POPULATED",
         "newProviderCalls": 0
       }
+    },
+    "adp_casas_del_xvi": {
+      "ok": true,
+      "sectionId": "brand-portfolio-position",
+      "contractVersion": "ADP_BRAND_PORTFOLIO_POSITION_CONTRACT_V1",
+      "sectionVisible": true,
+      "title": "Brand & Portfolio Position",
+      "subtitle": "How this hotel performs within its brand, collection, portfolio, or loyalty ecosystem.",
+      "sectionMode": "BRAND_PORTFOLIO_POSITION",
+      "status": "READY",
+      "renderState": "READY",
+      "customerState": null,
+      "emptyMessage": null,
+      "lens": {
+        "lensId": "ihg_one_rewards",
+        "label": "IHG One Rewards",
+        "portfolioType": "LOYALTY_ECOSYSTEM",
+        "status": "DEFAULT"
+      },
+      "optionalFutureLenses": [
+        {
+          "lensId": "vignette_collection",
+          "label": "Vignette Collection",
+          "status": "OPTIONAL_FUTURE"
+        }
+      ],
+      "assuranceStatus": "CUSTOMER_READY",
+      "showAnalyticalScaffolding": true,
+      "kpis": [
+        {
+          "id": "portfolioAiPresence",
+          "label": "Portfolio AI Presence",
+          "value": "31.7%",
+          "valueRaw": 0.31746031746031744,
+          "meta": "80 of 252 AI observations",
+          "grain": "PROVIDER_OBSERVATION",
+          "available": true
+        },
+        {
+          "id": "portfolioRank",
+          "label": "Portfolio Rank",
+          "value": "#2 of 5",
+          "valueRaw": 2,
+          "meta": "Among 5 relevant IHG One Rewards hotels",
+          "grain": "PROVIDER_OBSERVATION",
+          "available": true
+        },
+        {
+          "id": "numberOneAppearance",
+          "label": "#1 Appearance",
+          "value": "4.8%",
+          "valueRaw": 0.047619047619047616,
+          "meta": "3 of 63 scenarios",
+          "grain": "UNIQUE_SCENARIO",
+          "available": true
+        },
+        {
+          "id": "top3Appearance",
+          "label": "Top-3 Appearance",
+          "value": "38.1%",
+          "valueRaw": 0.38095238095238093,
+          "meta": "24 of 63 scenarios",
+          "grain": "UNIQUE_SCENARIO",
+          "available": true
+        }
+      ],
+      "ranking": {
+        "rows": [
+          {
+            "rank": 1,
+            "rankLabel": "#1",
+            "name": "InterContinental Real Santo Domingo",
+            "brand": "InterContinental",
+            "isSubject": false,
+            "presenceDisplay": "41.7%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "36",
+            "sharedDisplay": "10",
+            "canonicalEntityId": "intercontinental_real_santo_domingo"
+          },
+          {
+            "rank": 2,
+            "rankLabel": "#2",
+            "name": "Casas del XVI",
+            "brand": "Vignette Collection",
+            "isSubject": true,
+            "presenceDisplay": "31.7%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "—",
+            "sharedDisplay": "—",
+            "canonicalEntityId": "adp_casas_del_xvi"
+          },
+          {
+            "rank": 3,
+            "rankLabel": "#3",
+            "name": "Holiday Inn Santo Domingo",
+            "brand": "Holiday Inn",
+            "isSubject": false,
+            "presenceDisplay": "4.4%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "9",
+            "sharedDisplay": "0",
+            "canonicalEntityId": "holiday_inn_santo_domingo"
+          },
+          {
+            "rank": 4,
+            "rankLabel": "#4",
+            "name": "Crowne Plaza Santo Domingo",
+            "brand": "Crowne Plaza",
+            "isSubject": false,
+            "presenceDisplay": "2%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "4",
+            "sharedDisplay": "0",
+            "canonicalEntityId": "crowne_plaza_santo_domingo"
+          },
+          {
+            "rank": 5,
+            "rankLabel": "#5",
+            "name": "Kimpton Las Mercedes",
+            "brand": "Kimpton",
+            "isSubject": false,
+            "presenceDisplay": "1.2%",
+            "deltaDisplay": "—",
+            "displacementDisplay": "0",
+            "sharedDisplay": "2",
+            "canonicalEntityId": "kimpton_las_mercedes_santo_domingo"
+          }
+        ],
+        "hasPriorPeriod": false,
+        "firstPeriodDeltaLabel": "—"
+      },
+      "tableColumns": [
+        "Rank",
+        "Hotel",
+        "AI Presence",
+        "Δ vs Prior Run",
+        "Displacement vs You",
+        "Scenarios Shared"
+      ],
+      "dataAvailability": {
+        "validObservations": 0,
+        "invalidObservations": 0,
+        "needsRerunObservations": 0,
+        "propertySpecificOtherObservations": 0,
+        "validScenarios": 0,
+        "sufficientForRanking": false,
+        "historicalCandidateReuseAvailable": false,
+        "source": "missing_reclass_report"
+      },
+      "affiliationSnapshot": {
+        "brand": "Vignette Collection",
+        "affiliation": "Vignette Collection",
+        "parentCompany": "IHG Hotels & Resorts",
+        "officialBrandDomain": "ihg.com"
+      },
+      "coreIsolation": true,
+      "gate": "CORE_PORTFOLIO_MEASUREMENT_ISOLATION",
+      "principles": [
+        "NO_EMPTY_ANALYTICAL_SCAFFOLDING_BEFORE_MEASUREMENT",
+        "PORTFOLIO_TABLE_REQUIRES_READY_MEASUREMENT",
+        "PORTFOLIO_METRIC_MISSING_IS_NOT_ZERO"
+      ],
+      "doesNotAlterCoreMetrics": true,
+      "customerPublished": true,
+      "periodId": "adp_period_adp_casas_del_xvi_20260910153255_27a6b6",
+      "peerSet": {
+        "peerSetId": "bps_adp_casas_del_xvi_ihg_one_rewards_certified_v1",
+        "peerSetVersion": "ADP_LOYALTY_ECOSYSTEM_PEER_UNIVERSE_V1_CERTIFIED",
+        "adequacy": "RANK_ONLY_SUPPRESS_BENCHMARK_INDEX",
+        "peerCount": 4,
+        "included": [
+          {
+            "peerHotel": "Kimpton Las Mercedes",
+            "canonicalEntityId": "kimpton_las_mercedes_santo_domingo",
+            "brand": "Kimpton",
+            "parentCompany": "IHG Hotels & Resorts",
+            "ecosystem": "IHG One Rewards",
+            "market": "Santo Domingo"
+          },
+          {
+            "peerHotel": "InterContinental Real Santo Domingo",
+            "canonicalEntityId": "intercontinental_real_santo_domingo",
+            "brand": "InterContinental",
+            "parentCompany": "IHG Hotels & Resorts",
+            "ecosystem": "IHG One Rewards",
+            "market": "Santo Domingo"
+          },
+          {
+            "peerHotel": "Holiday Inn Santo Domingo",
+            "canonicalEntityId": "holiday_inn_santo_domingo",
+            "brand": "Holiday Inn",
+            "parentCompany": "IHG Hotels & Resorts",
+            "ecosystem": "IHG One Rewards",
+            "market": "Santo Domingo"
+          },
+          {
+            "peerHotel": "Crowne Plaza Santo Domingo",
+            "canonicalEntityId": "crowne_plaza_santo_domingo",
+            "brand": "Crowne Plaza",
+            "parentCompany": "IHG Hotels & Resorts",
+            "ecosystem": "IHG One Rewards",
+            "market": "Santo Domingo"
+          }
+        ]
+      },
+      "measurement": {
+        "kpiContractVersion": "ADP_BRAND_PORTFOLIO_KPI_CONTRACT_V1_1",
+        "metricsVersion": "ADP_BRAND_PORTFOLIO_METRICS_V1_1",
+        "grain": "PROVIDER_OBSERVATION",
+        "periodId": "adp_period_adp_casas_del_xvi_20260910153255_27a6b6",
+        "priorPeriodId": null,
+        "comparisonMode": "PUBLICATION_TIME",
+        "publicationVersion": "bpp-customer-v1.1-20260902-p2",
+        "customerPublished": true,
+        "compatibleObservationReuse": "PERIOD_CORE_OBSERVATIONS_REUSED_FOR_PEER_RANKING",
+        "suppressedKpis": [
+          "portfolioBenchmark",
+          "portfolioPresenceIndex"
+        ],
+        "adequacyStatus": "RANK_ONLY_SUPPRESS_BENCHMARK_INDEX"
+      },
+      "comparisonMode": "PUBLICATION_TIME",
+      "metricEligibility": {
+        "bppLensAvailable": true,
+        "bppRankEligible": true,
+        "bppBenchmarkEligible": false,
+        "bppIndexEligible": false
+      },
+      "evidence": {
+        "positive": [
+          {
+            "observationId": "obs_3bcb9709a1b3",
+            "scenarioId": "std_sdq_lei_04",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "n the history and culture of Santo Domingo.\n\n4. **Casas del XVI**: Another option in Zona Colonial, this unique hotel comprises several restored 16th-century house",
+            "position": 5,
+            "responseHash": "559bbfcb3806b617df59a9ac16694429db681bb7be9462dbbfbf079592ad163d",
+            "exactResponse": "When looking for a hotel near Blue Mall and Zona Colonial in Santo Domingo, Dominican Republic, leisure travelers have several excellent options to choose from. Here are a few recommendations:\n\n1. **JW Marriott Hotel Santo Domingo**: Located near Blue Mall, this luxury hotel offers upscale accommodations with great amenities. It's perfect for leisure travelers who want to enjoy shopping and dining at Blue Mall, and it provides a comfortable base for exploring other parts of the city.\n\n2. **InterContinental Real Santo Domingo**: Also near Blue Mall, this hotel offers modern rooms and top-notch facilities, including an outdoor pool and several dining options. It's a great choice for those looking to relax in style.\n\n3. **Hodelpa Nicolás de Ovando**: Situated in Zona Colonial, this boutique hotel is housed in a historic building and offers charming accommodations with a colonial flair. It's ideal for travelers who want to immerse themselves in the history and culture of Santo Domingo.\n\n4. **Casas del XVI**: Another option in Zona Colonial, this unique hotel comprises several restored 16th-century houses. It provides a luxurious and intimate experience for guests who appreciate history and architecture.\n\n5. **Billini Hotel**: Located in Zona Colonial, this stylish boutique hotel offers modern comforts in a historic setting. It features a rooftop pool and bar, perfect for relaxing after a day of sightseeing.\n\nThese hotels offer a range of experiences, from modern luxury to historic charm, catering to different preferences for leisure travelers."
+          },
+          {
+            "observationId": "obs_4f4927f22280",
+            "scenarioId": "std_sdq_cpl_02",
+            "provider": "openai",
+            "matchedVariant": "The Casas del XVI",
+            "context": "nto Domingo with a spa, consider booking a room at the **Casas del XVI**. This boutique hotel is a collection of beautifully restored colonial-era houses, each with it",
+            "position": null,
+            "responseHash": "15657616f1951038b7b39dd28a4cd3f9f86437b9baaf7f787615a469974cda55",
+            "exactResponse": "For a luxurious anniversary stay in Santo Domingo with a spa, consider booking a room at the **Casas del XVI**. This boutique hotel is a collection of beautifully restored colonial-era houses, each with its own unique character and charm. The hotel offers personalized services and a luxurious experience, including an intimate spa where you can enjoy a variety of treatments.\n\nAnother excellent option is the **JW Marriott Hotel Santo Domingo**. This upscale hotel offers modern luxury with elegant rooms and suites, outstanding dining options, and a stunning rooftop infinity pool. The hotel also features a spa that provides a range of relaxing treatments and massages, perfect for celebrating a special occasion.\n\nBoth options provide a blend of luxury, comfort, and top-notch amenities, ensuring a memorable anniversary celebration in Santo Domingo."
+          },
+          {
+            "observationId": "obs_82a2969429ca",
+            "scenarioId": "std_sdq_cpl_03",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": ", consider staying at the following hotels:\n\n1. **Casas del XVI**: This boutique hotel, located in the heart of the Colonial Zone, offers a unique and intimate exp",
+            "position": 2,
+            "responseHash": "baad5a7fdf2ff7dbc097650db4fa74e0716ff365b77725d7483e988f17b25fdd",
+            "exactResponse": "For a romantic getaway in Santo Domingo with a focus on fine dining, consider staying at the following hotels:\n\n1. **Casas del XVI**: This boutique hotel, located in the heart of the Colonial Zone, offers a unique and intimate experience with beautifully restored colonial-era homes. The personalized service and luxurious decor make it perfect for a romantic stay. For dining, you can explore nearby fine dining options such as Pat’e Palo or Buche Perico.\n\n2. **Hodelpa Nicolás de Ovando**: Situated in a historic building, this hotel combines old-world charm with modern amenities. Its prime location in the Colonial Zone allows easy access to some of the city's best restaurants. The hotel's own restaurant, 1502, offers a refined dining experience.\n\n3. **JW Marriott Hotel Santo Domingo**: Located in the upscale Piantini district, this hotel offers luxurious accommodations and excellent service. The hotel’s restaurant, Winston Grill & Patio, provides a sophisticated dining experience. Additionally, the surrounding area is filled with high-end dining options.\n\n4. **El Embajador, a Royal Hideaway Hotel**: This historic hotel offers elegance and tranquility, with lush gardens and a serene atmosphere. It features several dining options, including the gourmet restaurant El Jardín, which is ideal for a romantic dinner.\n\n5. **Billini Hotel**: Another gem in the Colonial Zone, this boutique hotel offers a blend of contemporary luxury and historical charm. The rooftop terrace is perfect for enjoying a romantic evening, and you can explore nearby fine dining establishments.\n\nThese accommodations provide not only comfort and luxury but also convenient access to some of Santo Domingo's finest dining experiences, making them ideal for a romantic getaway."
+          },
+          {
+            "observationId": "obs_f8f7156d7924",
+            "scenarioId": "std_sdq_cpl_06",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "'s a comparison of some of the top options:\n\n1. **Casas del XVI**\n   - **Location:** Located in the heart of Santo Domingo’s Colonial Zone, a UNESCO World Heritage",
+            "position": 2,
+            "responseHash": "157a57dc6aa84e7e89c4a9152eac246cd4dce0bd0a668cba5f3ec9009d947b19",
+            "exactResponse": "Santo Domingo, the capital of the Dominican Republic, offers several romantic luxury hotels that provide a perfect setting for couples looking to enjoy a romantic getaway. Here's a comparison of some of the top options:\n\n1. **Casas del XVI**\n   - **Location:** Located in the heart of Santo Domingo’s Colonial Zone, a UNESCO World Heritage site.\n   - **Style & Ambiance:** This boutique hotel combines the charm of 16th-century architecture with modern luxury. Each house in the hotel is uniquely decorated, offering an intimate and historic atmosphere.\n   - **Amenities:** Features include personalized butler service, a pool, and beautifully landscaped courtyards.\n   - **Romantic Extras:** Offers romantic packages that can include private dinners and spa treatments.\n\n2. **Hodelpa Nicolás de Ovando**\n   - **Location:** Also situated in the Colonial Zone, providing easy access to historic sites.\n   - **Style & Ambiance:** The hotel is housed in a historic building dating back to 1502 and offers a blend of colonial elegance and modern comforts.\n   - **Amenities:** Includes a luxurious outdoor pool, a gourmet restaurant, and a stylish bar.\n   - **Romantic Extras:** The historic setting itself is quite romantic, and the hotel offers special packages for couples.\n\n3. **El Embajador, a Royal Hideaway Hotel**\n   - **Location:** Situated in a more modern area of Santo Domingo, providing a peaceful retreat.\n   - **Style & Ambiance:** A blend of classic luxury with modern amenities, set amidst lush gardens.\n   - **Amenities:** Includes a large outdoor pool, a well-appointed spa, and multiple dining options.\n   - **Romantic Extras:** Offers romantic packages and a beautiful setting for evening strolls.\n\n4. **JW Marriott Hotel Santo Domingo**\n   - **Location:** Located in the upscale Piantini district.\n   - **Style & Ambiance:** A modern luxury hotel offering sleek and sophisticated design.\n   - **Amenities:** Features a rooftop infinity pool with stunning city views, a top-notch restaurant, and a stylish bar.\n   - **Romantic Extras:** Known for its exceptional service and luxurious accommodations, ideal for a romantic urban escape.\n\n5. **Billini Hotel, Historic Luxury**\n   - **Location:** Nestled in the Colonial Zone, providing a historic and cultural experience.\n   - **Style & Ambiance:** A mix of historical architecture and contemporary design, offering a boutique hotel experience.\n   - **Amenities:** Includes a rooftop pool, a spa, and a fine dining restaurant.\n   - **Romantic Extras:** Offers special romantic packages and a charming ambiance for couples.\n\nWhen choosing a romantic luxury hotel in Santo Domingo, consider what type of experience you are looking for—whether it's the historic charm of the Colonial Zone or the modern luxury of a city hotel. Each of these options offers something unique to enhance your romantic getaway."
+          },
+          {
+            "observationId": "obs_fbc6b767b0a1",
+            "scenarioId": "std_sdq_cel_02",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "ed rehearsal dinner or small wedding.\n\n3. **Hotel Casas del XVI**: Located in the heart of the Colonial Zone, this boutique hotel offers a unique and intimate sett",
+            "position": 4,
+            "responseHash": "c9587cda79976c7faee62db9424630045b19aa0632febbae40529e96647b3dc9",
+            "exactResponse": "For a luxury rehearsal dinner or small wedding in Santo Domingo, consider the following venues:\n\n1. **Casa de Campo Resort & Villas**: Although technically located in La Romana, this resort is a short drive from Santo Domingo and offers a breathtaking setting with luxurious amenities. The resort has several venue options, including private villas and beachfront locations, perfect for an intimate event.\n\n2. **El Embajador, a Royal Hideaway Hotel**: This iconic hotel in Santo Domingo provides a blend of classic elegance and modern luxury. The lush gardens and beautifully appointed event spaces make it a great choice for a sophisticated rehearsal dinner or small wedding.\n\n3. **Hotel Casas del XVI**: Located in the heart of the Colonial Zone, this boutique hotel offers a unique and intimate setting. The hotel is made up of several restored colonial houses, each with its own distinct charm, providing a romantic backdrop for any event.\n\n4. **JW Marriott Hotel Santo Domingo**: Situated in the upscale Piantini district, this hotel offers luxurious event spaces with stunning city views. Their rooftop venue is particularly appealing for a chic, modern event.\n\n5. **Hodelpa Nicolás de Ovando**: This hotel is a UNESCO World Heritage Site located in the Colonial Zone. Its historic charm, combined with modern amenities, makes it an exquisite choice for an elegant and memorable event.\n\n6. **Palacio de los Duarte**: This historic colonial palace offers a beautiful courtyard and stunning architecture, making it an ideal venue for a small wedding or rehearsal dinner with a touch of history and charm.\n\nEach of these venues offers a unique blend of luxury, history, and beauty, making them perfect for a memorable event in Santo Domingo."
+          },
+          {
+            "observationId": "obs_73e90cb41e05",
+            "scenarioId": "prop_cdx_01",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a luxury boutique hotel located in the heart of Santo Domingo's Colonial City, the oldest Europe",
+            "position": null,
+            "responseHash": "13c8defcc17eb8e4062caf850b6e7c0a86d5bab3adc61a822a1499ad6d56dabc",
+            "exactResponse": "Casas del XVI is a luxury boutique hotel located in the heart of Santo Domingo's Colonial City, the oldest European settlement in the Americas and a UNESCO World Heritage Site. The hotel is renowned for its unique concept, which involves a collection of restored 16th-century colonial houses. Each house has been meticulously renovated to preserve its historical charm while offering modern comforts and luxury amenities.\n\n### Features and Amenities:\n\n1. **Historical Ambiance**: Each house in Casas del XVI is rich in history and showcases original architectural details, such as stonework, woodwork, and antique furnishings, providing a unique glimpse into the past.\n\n2. **Personalized Service**: The hotel is known for its exceptional personalized service, including butler service for every guest, ensuring a tailored and comfortable stay.\n\n3. **Luxury Accommodations**: The rooms and suites are elegantly decorated, combining historical elements with contemporary luxury. Guests can enjoy plush bedding, modern bathrooms, and all the amenities expected from a high-end hotel.\n\n4. **Swimming Pools**: Some of the houses feature private swimming pools or courtyards where guests can relax and unwind.\n\n5. **Gastronomy**: Guests can enjoy a variety of dining options that often highlight local and international cuisine. The hotel may offer private dining experiences or partner with nearby restaurants to provide a unique culinary journey.\n\n6. **Cultural Experience**: Staying at Casas del XVI offers the opportunity to immerse oneself in the rich culture and history of Santo Domingo. The hotel can arrange guided tours of the Colonial City, visits to museums, and cultural events.\n\n7. **Exclusive Atmosphere**: With a limited number of rooms in each house, the hotel provides an intimate and exclusive atmosphere, perfect for those seeking privacy and tranquility.\n\n8. **Location**: The hotel’s prime location in the Colonial City allows easy access to major attractions, including the Cathedral of Santa María la Menor, Alcázar de Colón, and the vibrant Calle El Conde.\n\nFor a leisure stay, Casas del XVI offers a perfect blend of historical charm, luxury, and personalized service, making it an ideal choice for travelers looking to explore the rich history and culture of Santo Domingo while enjoying high-end accommodations."
+          },
+          {
+            "observationId": "obs_5a9c8b61dc1d",
+            "scenarioId": "prop_cdx_02",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a luxury boutique hotel located in the historic Colonial Zone of Santo Domingo, Dominican Republ",
+            "position": null,
+            "responseHash": "f2f1791c667752901e00bece1fb764083244e39433eb9fe91d2a4c4ef79ac47b",
+            "exactResponse": "Casas del XVI is a luxury boutique hotel located in the historic Colonial Zone of Santo Domingo, Dominican Republic. It offers a unique experience by integrating the rich history and culture of the area with modern luxury. The hotel is known for its beautifully restored 16th-century homes, which have been transformed into elegant guest accommodations.\n\nAs part of the Vignette Collection by IHG Hotels & Resorts, Casas del XVI provides a distinctive stay experience with a focus on authenticity and personalized service. The Vignette Collection is known for its unique properties that offer guests immersive experiences in culturally rich locations.\n\nFor a couples’ getaway, Casas del XVI offers a romantic and intimate setting. Here are some features and activities that might be included in a getaway package:\n\n1. **Luxurious Accommodations**: Each casa is uniquely decorated with a blend of historical charm and modern amenities. Couples can enjoy spacious rooms with luxurious furnishings, private courtyards, and access to exclusive services.\n\n2. **Cultural Experiences**: Guests can explore the historic Colonial Zone, a UNESCO World Heritage site, with its cobblestone streets, historic buildings, and vibrant local culture. The hotel often organizes guided tours and cultural experiences.\n\n3. **Gourmet Dining**: Enjoy dining at the hotel’s restaurant or arrange for a private, romantic dinner. The cuisine often includes local flavors and ingredients, offering an authentic taste of the Dominican Republic.\n\n4. **Spa Services**: Relax with a range of spa services that can be arranged in-room or at select locations within the hotel premises, providing a serene escape.\n\n5. **Exclusive Offers with IHG One Rewards**: As part of the IHG One Rewards program, members can enjoy exclusive benefits such as discounted rates, early check-in, late check-out, and points that can be redeemed for future stays or other rewards.\n\n6. **Personalized Service**: The staff at Casas del XVI are known for their attention to detail and personalized service, ensuring that each guest's stay is memorable and tailored to their preferences.\n\nFor couples looking to combine luxury, history, and cultural exploration, a getaway at Casas del XVI with the benefits of IHG One Rewards could be an ideal choice. It is recommended to check with the hotel directly or through the IHG website for the latest offers and availability."
+          },
+          {
+            "observationId": "obs_41cafb35f824",
+            "scenarioId": "prop_cdx_03",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a luxury boutique hotel located in the historic Colonial Zone of Santo Domingo, Dominican Republ",
+            "position": null,
+            "responseHash": "81908fcef340fa6297e7cf303303c4111a5dc4e5c0b36ade8fc0fc1e3b8ae56e",
+            "exactResponse": "Casas del XVI is a luxury boutique hotel located in the historic Colonial Zone of Santo Domingo, Dominican Republic. This area is rich in history and close to many significant landmarks, including the First Cathedral of the Americas, also known as the Cathedral of Santa María la Menor.\n\nCasas del XVI itself is a unique accommodation option, as it is comprised of a collection of restored colonial-era houses, each with its own character and charm. Staying at Casas del XVI would place you in close proximity to the First Cathedral of the Americas and other notable attractions in the Colonial Zone.\n\nIf you are looking for alternative accommodations nearby, you might consider other boutique hotels or guesthouses in the Colonial Zone, such as:\n\n1. **Hodelpa Nicolás de Ovando**: This hotel is also a historical property, offering luxury accommodations with a blend of colonial charm and modern amenities.\n\n2. **Hotel Billini**: A stylish boutique hotel that combines contemporary design with historic architecture, located within walking distance of major attractions.\n\n3. **Casa Naemie**: A cozy guesthouse offering a more intimate experience, with a traditional colonial ambiance.\n\n4. **Luca Hotel**: Offers modern comforts in a historic setting, with a rooftop terrace that provides views of the city.\n\nThese options are all within walking distance of the First Cathedral of the Americas and provide a range of experiences depending on your preferences for luxury, style, and historical atmosphere."
+          },
+          {
+            "observationId": "obs_7541051a1796",
+            "scenarioId": "prop_cdx_04",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a charming boutique hotel located in the heart of Ciudad Colonial, the historic district of Sant",
+            "position": null,
+            "responseHash": "7ad71143148c91478878eb8fb26e6945dced3a7b4ce61bb340baa82ba1939855",
+            "exactResponse": "Casas del XVI is a charming boutique hotel located in the heart of Ciudad Colonial, the historic district of Santo Domingo in the Dominican Republic. It is an excellent choice for a romantic celebration, offering a unique blend of historical charm and modern luxury. Here are some details and tips for making the most of your romantic overnight stay:\n\n1. **Historic Ambiance**: The hotel is comprised of several restored 16th-century colonial houses, each with its own unique character and decor. The architecture and design reflect the rich history of the area, providing a romantic and intimate setting.\n\n2. **Luxurious Accommodations**: The rooms and suites are elegantly furnished, with a focus on comfort and style. Some rooms feature private gardens or plunge pools, which can enhance your romantic experience.\n\n3. **Personalized Service**: Casas del XVI is known for its exceptional service, with staff dedicated to ensuring that your stay is perfect. They can help arrange special touches like in-room dining, romantic turn-down service, or even a private tour of the historic district.\n\n4. **Amenities**: Enjoy amenities such as a swimming pool, spa services, and a library. The serene environment is perfect for unwinding and spending quality time together.\n\n5. **Dining Experience**: While the hotel itself offers delightful dining options, you can also explore the surrounding area, which is rich with restaurants and cafes offering both local and international cuisine. Consider a romantic dinner at a nearby restaurant with a view of the colonial architecture.\n\n6. **Exploring Ciudad Colonial**: Take a leisurely stroll through the cobblestone streets of Ciudad Colonial, where you can visit historical landmarks, museums, and galleries. The area is also home to charming plazas and parks, perfect for a romantic walk.\n\n7. **Special Packages**: Check if the hotel offers any special packages for couples, which might include spa treatments, champagne on arrival, or guided tours.\n\n8. **Privacy and Intimacy**: The layout of the hotel, with its secluded courtyards and quiet common areas, ensures a sense of privacy and intimacy, ideal for a romantic getaway.\n\nBy choosing Casas del XVI for your romantic celebration, you'll be able to enjoy the unique combination of history, luxury, and personalized service in one of the most beautiful and culturally rich areas of Santo Domingo."
+          },
+          {
+            "observationId": "obs_ace119287dc4",
+            "scenarioId": "prop_cdx_05",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a collection of beautifully restored historic houses located in the Colonial Zone of Santo Domin",
+            "position": null,
+            "responseHash": "866e46e3edfe8fd3359f2cb60d4ad052817c7c4732fc130a5eb12f9475fe8585",
+            "exactResponse": "Casas del XVI is a collection of beautifully restored historic houses located in the Colonial Zone of Santo Domingo, Dominican Republic. These properties offer a romantic and luxurious experience, blending the charm of the 16th-century architecture with modern amenities. Each house is unique, with its own character and history, often featuring private courtyards that provide a serene and intimate setting for guests.\n\nThese courtyards are typically adorned with tropical plants, fountains, and comfortable seating areas, creating a tranquil oasis amidst the bustling city. The combination of historical elements, such as stone walls and wooden beams, with contemporary comforts, like plush furnishings and modern bathrooms, makes for a perfect romantic getaway.\n\nGuests at Casas del XVI can enjoy personalized services, including private chefs, butlers, and concierge assistance, ensuring a memorable and intimate stay. The location in the heart of the Colonial Zone also allows easy access to the rich history, culture, and vibrant nightlife of Santo Domingo. Whether you're celebrating an anniversary, honeymoon, or simply seeking a romantic retreat, Casas del XVI offers an enchanting experience in a historic and picturesque setting."
+          },
+          {
+            "observationId": "obs_f40822cbe3f6",
+            "scenarioId": "prop_cdx_06",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a unique and luxurious boutique hotel located in the heart of Santo Domingo's Colonial Zone in t",
+            "position": null,
+            "responseHash": "bcbe4a6befe2a63f24f324a2f6655f7c3352fe1352bc12986e2b824d08b3186e",
+            "exactResponse": "Casas del XVI is a unique and luxurious boutique hotel located in the heart of Santo Domingo's Colonial Zone in the Dominican Republic. It consists of a collection of meticulously restored 16th-century houses, each offering a blend of historical charm and modern comfort. This setting makes it an excellent choice for a small private-house executive retreat. Here’s why it could be ideal for your needs:\n\n### Historical Ambiance\n- **Authenticity**: Each house in the collection has been restored to preserve its colonial architecture while integrating contemporary amenities.\n- **Cultural Experience**: Staying in a location with such historical significance can provide a unique backdrop for your retreat, inspiring creativity and reflection.\n\n### Privacy and Exclusivity\n- **Intimate Setting**: With a limited number of rooms spread across several houses, you can secure an entire house or the entire property for complete privacy.\n- **Personalized Service**: The staff at Casas del XVI is known for their attention to detail and personalized service, ensuring your group’s specific needs are met.\n\n### Modern Amenities\n- **Comfort and Connectivity**: Despite the historical setting, the rooms are equipped with modern conveniences such as Wi-Fi, air conditioning, and luxury bedding.\n- **Meeting Facilities**: While primarily a leisure destination, the hotel can arrange for meeting spaces and necessary equipment to facilitate executive discussions and workshops.\n\n### Unique Experiences\n- **Cultural Activities**: The hotel can organize activities like guided tours of the Colonial Zone, cooking classes, or rum and cigar tastings, offering your team enriching experiences beyond work sessions.\n- **Relaxation and Wellness**: Take advantage of the serene courtyards and pools for relaxation, or arrange for in-room massages and wellness sessions.\n\n### Culinary Excellence\n- **Gourmet Dining**: Enjoy locally inspired cuisine prepared with fresh, regional ingredients. Customizable menus can cater to dietary preferences and enhance your group’s experience.\n\n### Location Benefits\n- **Accessibility**: Located in Santo Domingo, the hotel is easily accessible from major airports, making it convenient for international and local attendees.\n- **Exploration**: The vibrant city offers numerous cultural, historical, and recreational options for post-retreat exploration.\n\n### Planning Your Retreat\n- **Customization**: Work with the hotel’s management to tailor every aspect of your stay, from room arrangements and dining to activities and excursions.\n- **Exclusive Use**: Consider booking multiple or all Casas for exclusive use, ensuring your team has undisturbed access to all facilities and services.\n\nWhen planning your retreat, it would be beneficial to contact the hotel directly to discuss your specific requirements and explore the options they can offer to make your executive retreat both productive and memorable."
+          },
+          {
+            "observationId": "obs_f165f37f69bb",
+            "scenarioId": "prop_cdx_08",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a luxury boutique hotel located in the historic Colonial Zone of Santo Domingo, Dominican Republ",
+            "position": null,
+            "responseHash": "e68c6f9a571c3c8b71342dc2353f1c48ad43493d1e57427b925d4be4a88e7627",
+            "exactResponse": "Casas del XVI is a luxury boutique hotel located in the historic Colonial Zone of Santo Domingo, Dominican Republic. The hotel is renowned for its unique concept of combining several restored 16th-century colonial houses, each offering a distinct and intimate experience. Here’s what you can expect regarding private pools and courtyard calm:\n\n1. **Private Pools**: Some of the casas (houses) within the hotel complex feature private pools. These offer guests an exclusive and serene experience, perfect for relaxation away from the bustling city. The pools are often set in beautifully landscaped courtyards, providing a tranquil oasis for guests to unwind.\n\n2. **Courtyard Calm**: The courtyards at Casas del XVI are designed to be peaceful retreats. Surrounded by lush greenery, these spaces often include comfortable seating areas where guests can enjoy the calm ambiance. The combination of historical architecture and modern luxury creates a unique and serene environment.\n\n3. **Historical Charm**: Each casa is decorated with a blend of antique and contemporary furnishings, preserving the historical charm while providing modern amenities. This attention to detail enhances the overall tranquil atmosphere.\n\n4. **Personalized Service**: The hotel is known for its personalized service, ensuring that each guest's needs are met to enhance their stay. This includes bespoke experiences and attentive staff available to assist with any requests.\n\nOverall, Casas del XVI offers a unique blend of history, luxury, and tranquility, making it an ideal destination for those seeking a peaceful retreat with the added benefit of private pools and serene courtyards."
+          },
+          {
+            "observationId": "obs_d84c32f93c67",
+            "scenarioId": "prop_cdx_09",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a unique and luxurious boutique hotel located in the Zona Colonial of Santo Domingo, Dominican R",
+            "position": null,
+            "responseHash": "d85d92d1e34e89c597e8651748a5cba05c89872f2ff31b674b5a98552539716f",
+            "exactResponse": "Casas del XVI is a unique and luxurious boutique hotel located in the Zona Colonial of Santo Domingo, Dominican Republic. This area is known for its rich history, charming architecture, and vibrant culture. Casas del XVI offers a distinctive experience by combining several restored colonial-era homes into a single hotel, each with its own unique character and decor.\n\nWhen staying at Casas del XVI, you can expect:\n\n1. **Historical Charm**: The hotel preserves the colonial architecture and design, providing a sense of stepping back in time while enjoying modern comforts.\n\n2. **Personalized Service**: The hotel is known for its personalized service, ensuring that guests have a comfortable and memorable stay.\n\n3. **Elegant Rooms**: Each room is uniquely decorated with a blend of antique and contemporary furnishings, offering a luxurious and cozy ambiance.\n\n4. **Amenities**: Depending on the particular casa, amenities may include private pools, courtyards, and gardens, providing a serene oasis in the heart of the city.\n\n5. **Prime Location**: Staying in Zona Colonial means you are within walking distance of many of Santo Domingo's historic sites, museums, restaurants, and shops.\n\n6. **Cultural Experience**: The hotel often organizes cultural activities and experiences, such as guided tours of the Zona Colonial, making it easier to immerse yourself in the local culture and history.\n\nIf you're planning to stay at Casas del XVI, it's a good idea to book in advance due to its popularity and limited number of rooms. Additionally, consider reaching out to the hotel directly to inquire about any special packages or experiences they may offer during your stay."
+          },
+          {
+            "observationId": "obs_72e65526c1d7",
+            "scenarioId": "prop_cdx_10",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a luxury boutique hotel located in the heart of Santo Domingo’s Colonial Zone, offering a unique",
+            "position": null,
+            "responseHash": "e513a4e7af94d207d7d14ff53bc94974df91ec1885f86d88438990ce9c20277b",
+            "exactResponse": "Casas del XVI is a luxury boutique hotel located in the heart of Santo Domingo’s Colonial Zone, offering a unique and elegant setting that could be perfect for a wedding weekend. The hotel consists of a collection of restored colonial houses, each with its own character and charm, reflecting the rich history of the area.\n\nFor a wedding weekend, Casas del XVI can provide a range of lodging and event options:\n\n1. **Accommodations**: The hotel offers beautifully appointed rooms and suites spread across several houses. Each room is uniquely decorated with a blend of modern luxury and historic charm. This setup provides a private and exclusive atmosphere for wedding guests.\n\n2. **Event Spaces**: The hotel’s courtyards and gardens can serve as intimate and picturesque venues for ceremonies or receptions. The authentic colonial architecture and lush surroundings create a romantic backdrop for any wedding event.\n\n3. **Catering and Dining**: Casas del XVI can coordinate with local chefs to provide customized catering options, from traditional Dominican cuisine to international gourmet menus. There may also be options for hosting rehearsal dinners or post-wedding brunches.\n\n4. **Concierge Services**: The hotel offers personalized concierge services to assist with planning the wedding and related activities, such as organizing tours of the historic zone, arranging transportation, or setting up spa appointments for guests.\n\n5. **Cultural Experience**: Being located in the Colonial Zone, guests have easy access to explore nearby historical sites, museums, cafes, and shops, enriching the wedding weekend experience with cultural exploration.\n\nFor availability, pricing, and specific arrangements, it would be best to contact Casas del XVI directly. They can provide detailed information tailored to your wedding plans and guest needs."
+          },
+          {
+            "observationId": "obs_0acda6225ba8",
+            "scenarioId": "prop_cdx_11",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "itage Site. Here are a few notable options:\n\n1. **Casas del XVI**: This boutique hotel is comprised of a collection of beautifully restored 16th-century colonial h",
+            "position": 2,
+            "responseHash": "7e3e390c01ada3ae65ee81027528f0f8fcae8c6ae120d313f4af28300da7ad17",
+            "exactResponse": "In the heart of Ciudad Colonial, Santo Domingo, you'll find several charming hotels housed in restored colonial buildings. These hotels offer a unique blend of historical architecture and modern amenities, providing a truly immersive experience in this UNESCO World Heritage Site. Here are a few notable options:\n\n1. **Casas del XVI**: This boutique hotel is comprised of a collection of beautifully restored 16th-century colonial homes. Each house offers a distinct atmosphere and is decorated with a mix of antique and contemporary furnishings. The hotel provides personalized services and luxurious amenities, such as private pools and courtyards.\n\n2. **Hodelpa Nicolás de Ovando**: Located on the historic Calle Las Damas, this hotel is a former governor's mansion dating back to the early 1500s. It's named after the first governor of the Americas, Nicolás de Ovando. The hotel combines historical charm with modern luxury, featuring a pool, exquisite dining options, and stunning views of the Ozama River.\n\n3. **Billini Hotel**: Situated in a restored 16th-century building, the Billini Hotel offers a luxurious stay with a rooftop pool, spa, and gourmet dining. The hotel seamlessly blends its historical roots with contemporary design, providing an elegant and comfortable environment.\n\n4. **Hotel Doña Elvira**: This charming hotel is set in a colonial house from the 16th century and offers a more intimate setting with a cozy courtyard and traditional Dominican decor. The hotel is known for its warm hospitality and personalized service.\n\n5. **El Beaterio Casa Museo**: Originally a convent, this hotel dates back to the 16th century and is a charming blend of history and comfort. It retains many original features, such as stone walls and wooden beams, offering guests a unique glimpse into the past.\n\nThese hotels not only provide comfortable accommodations but also allow guests to immerse themselves in the rich history and culture of Santo Domingo's colonial district."
+          },
+          {
+            "observationId": "obs_056a83ec927d",
+            "scenarioId": "prop_cdx_12",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI is a unique collection of restored historic homes located in the Colonial Zone of Santo Domingo, Do",
+            "position": null,
+            "responseHash": "83ff6e015c1b322f41b5ba4ffea5c076dc45a30a3281359a2b8a1d832c66f6d0",
+            "exactResponse": "Casas del XVI is a unique collection of restored historic homes located in the Colonial Zone of Santo Domingo, Dominican Republic. Staying in one of these houses offers a blend of luxury, history, and culture, providing a memorable experience for families or groups. Here are some details to consider when booking an entire historic house for a family stay:\n\n1. **Authenticity and Charm**: Each house in Casas del XVI is a beautifully restored colonial-era home, featuring period architecture, original artwork, and antique furnishings. Staying here allows guests to immerse themselves in the rich history of Santo Domingo.\n\n2. **Accommodations**: The houses vary in size, so you'll want to choose one that suits the size of your family or group. They often come with multiple bedrooms, spacious living areas, and private courtyards or gardens.\n\n3. **Amenities**: Despite their historic nature, the houses are equipped with modern amenities for comfort. This typically includes air conditioning, Wi-Fi, a private pool, and entertainment systems. Some houses may also offer butler service, private chefs, and 24-hour security.\n\n4. **Location**: Casas del XVI is situated in the heart of the Colonial Zone, a UNESCO World Heritage site. This offers easy access to historical landmarks, museums, restaurants, and shops, making it convenient for family outings and exploration.\n\n5. **Personalized Service**: The management often provides personalized concierge services to cater to guests' needs, whether arranging local tours, recommending dining options, or organizing transportation.\n\n6. **Cultural Experience**: Staying in a historic house provides a unique opportunity to experience the local culture and history firsthand. You can explore the cobblestone streets, visit nearby historic sites, and learn about the rich heritage of the Dominican Republic.\n\n7. **Booking Considerations**: When booking, consider the specific needs of your family, such as the number of bedrooms, accessibility features, and any special services you might require. It's advisable to book well in advance, especially during peak travel seasons.\n\n8. **Cost**: Renting an entire historic house can be more expensive than traditional accommodations, but it offers privacy, space, and a unique experience that can be worth the investment for special family gatherings or celebrations.\n\nBy choosing Casas del XVI for your family stay, you can enjoy a blend of luxury, history, and personalized service, making it an unforgettable experience."
+          },
+          {
+            "observationId": "obs_6de0c115e881",
+            "scenarioId": "prop_cdx_13",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI, Vignette Collection",
+            "context": "Celebrating an anniversary at Casas del XVI Vignette Collection in the Dominican Republic can be a truly memorable experience. Casas del XVI is a unique boutique ho",
+            "position": null,
+            "responseHash": "3997603bf04fd9a02005208d9df25c140367569774cc7bc172ad5f38227d0e13",
+            "exactResponse": "Celebrating an anniversary at Casas del XVI Vignette Collection in the Dominican Republic can be a truly memorable experience. Casas del XVI is a unique boutique hotel located in the heart of Santo Domingo's Colonial Zone, offering a blend of luxury, history, and charm. Here are some ideas for making your anniversary special at this unique venue:\n\n1. **Private Dinner:** Arrange for a private, romantic dinner in one of the beautifully restored colonial houses or courtyards. Many hotels can organize a personalized dining experience with a special menu just for you.\n\n2. **Historical Tour:** Take a private tour of the Colonial Zone, a UNESCO World Heritage Site. Explore historical landmarks, museums, and the rich architecture of Santo Domingo, and learn about the city's fascinating past.\n\n3. **Spa Day:** Enjoy a relaxing spa day for two. Many luxury hotels offer couples' spa packages that include massages, facials, and other pampering treatments.\n\n4. **Cultural Experience:** Engage in a local cultural activity, such as a traditional Dominican cooking class or a dance lesson. This can be a fun and memorable way to connect with each other and the local culture.\n\n5. **Romantic Walks:** Stroll hand-in-hand through the charming streets of the Colonial Zone, discovering hidden gems, quaint cafes, and local boutiques.\n\n6. **Photography Session:** Capture the memories with a professional photography session around the picturesque settings of Casas del XVI and the surrounding area.\n\n7. **In-Room Celebration:** Arrange for special anniversary decorations in your room, such as rose petals, candles, and a bottle of champagne, to set a romantic atmosphere.\n\n8. **Day Trip:** Plan a day trip to nearby attractions, such as the beautiful beaches of Boca Chica or Juan Dolio, or explore the lush countryside and mountains of the Dominican Republic.\n\n9. **Live Music:** If possible, arrange for a live music performance, such as a guitarist or a small band, to play your favorite songs during dinner or in a private setting.\n\n10. **Sunset Viewing:** Find a perfect spot to watch the sunset together, perhaps with a glass of wine, to end your day on a romantic note.\n\nMake sure to contact the hotel's concierge or guest services team in advance to help arrange these experiences and tailor them to your preferences, ensuring your anniversary at Casas del XVI is truly unforgettable."
+          },
+          {
+            "observationId": "obs_801b76d1fa3e",
+            "scenarioId": "prop_cdx_14",
+            "provider": "openai",
+            "matchedVariant": "The Casas del XVI",
+            "context": ", you might consider the following options within the Casas del XVI properties:\n\n1. **Private Casas**: Each \"casa\" within the hotel has its own distinctive style and a",
+            "position": null,
+            "responseHash": "41c73924cb54dbc1399fdeda6a01407ababdfda87ec1f6f6a86164e6cb2e176e",
+            "exactResponse": "Casas del XVI, located in the historic Zona Colonial of Santo Domingo, Dominican Republic, offers a unique setting for private gatherings. For hosting a private board meeting or gathering, you might consider the following options within the Casas del XVI properties:\n\n1. **Private Casas**: Each \"casa\" within the hotel has its own distinctive style and amenities. You can reserve an entire house for your gathering, ensuring privacy and exclusivity. Some casas come with private gardens or courtyards, perfect for intimate meetings.\n\n2. **Courtyards and Gardens**: The beautifully designed courtyards and gardens can serve as serene backdrops for your meeting. They offer a peaceful environment away from the hustle and bustle of the city.\n\n3. **Dining Areas**: Some casas have dining areas that can be converted into meeting spaces. These can be ideal for a meeting followed by a private meal.\n\n4. **Customized Services**: Casas del XVI offers personalized services, including catering, to meet the specific needs of your gathering. You can coordinate with their staff to arrange for any special requirements such as audiovisual equipment, custom menus, or other amenities.\n\n5. **Exclusive Use**: Depending on the size of your group, you might consider booking several casas or even the entire property for exclusive use, ensuring complete privacy for your board meeting.\n\nIt's advisable to contact Casas del XVI directly to discuss your specific needs, check availability, and explore how they can tailor their offerings to your gathering."
+          },
+          {
+            "observationId": "obs_f3270d298ec7",
+            "scenarioId": "prop_cdx_15",
+            "provider": "openai",
+            "matchedVariant": "Casas del XVI",
+            "context": "Casas del XVI offers a unique and luxurious experience as a base for exploring the historic Zona Colonial in Sant",
+            "position": null,
+            "responseHash": "83c6aaa66a678abd84d6cdeb67e1ea1e02d10efadaedb92055ce3373831b36c8",
+            "exactResponse": "Casas del XVI offers a unique and luxurious experience as a base for exploring the historic Zona Colonial in Santo Domingo, Dominican Republic. This boutique hotel is composed of a collection of beautifully restored 16th-century colonial houses, each showcasing the architectural charm and historical significance of the period.\n\nHere's how Casas del XVI serves as an ideal base for exploring Zona Colonial landmarks:\n\n1. **Central Location**: Casas del XVI is strategically located in the heart of Zona Colonial, the oldest European settlement in the Americas. This prime location allows guests to easily access many of the area's most famous landmarks on foot.\n\n2. **Historical Atmosphere**: Staying at Casas del XVI immerses you in the rich history of the Dominican Republic. The hotel itself is a testament to the area's colonial past, with each house featuring original architecture, antique furnishings, and period-inspired decor.\n\n3. **Proximity to Key Landmarks**:\n   - **Catedral Primada de América**: The first cathedral built in the New World, this stunning Gothic-style cathedral is just a short walk away.\n   - **Alcázar de Colón**: This impressive palace, once the residence of Diego Columbus, son of Christopher Columbus, is nearby and offers insights into the colonial era.\n   - **Parque Colón**: A central square perfect for people-watching and enjoying local culture, with the statue of Christopher Columbus at its center.\n   - **Fortaleza Ozama**: One of the oldest fortresses in the Americas, providing a glimpse into the military history of the region.\n   - **Museo de las Casas Reales**: This museum offers a comprehensive overview of the colonial history and is located within walking distance.\n\n4. **Personalized Services**: Casas del XVI offers personalized concierge services to help guests plan their visits to various landmarks. The staff can provide recommendations, arrange guided tours, and ensure a tailored experience to suit individual interests.\n\n5. **Luxurious Amenities**: After a day of exploring, guests can return to the comfort of Casas del XVI, where they can enjoy amenities such as private courtyards, gardens, pools, and high-end dining options.\n\n6. **Cultural Experiences**: The hotel often hosts cultural events and activities, allowing guests to further engage with the local culture and history.\n\nIn summary, Casas del XVI not only provides a luxurious and historical setting for your stay but also offers convenient access to the rich cultural and architectural heritage of Zona Colonial, making it an excellent choice for travelers looking to explore this UNESCO World Heritage site."
+          },
+          {
+            "observationId": "obs_efbf2c72c204",
+            "scenarioId": "std_sdq_lei_02",
+            "provider": "gemini",
+            "matchedVariant": "Casas del XVI",
+            "context": "**Best Hotels:**\n    *   **Luxury/Boutique:** *Casas del XVI* (restored 16th-century homes) or *Hodelpa Nicolas de Ovando*.\n    *   **Mid-Range:** *Boutique Hot",
+            "position": null,
+            "responseHash": "38198470a7149b7ea522e0449120d173dabfebf26b97ba7754d74c2cfa71087f",
+            "exactResponse": "For a trip focused on **shopping and dining**, the two best neighborhoods to stay in Santo Domingo depend on whether you prefer **modern luxury** or **historic boutique charm**. \n\nHere is the breakdown of where to stay, what you'll find, and hotel recommendations for each.\n\n---\n\n### 1. Piantini & Naco (The Modern & Luxury Hub)\nIf you want **high-end international shopping, luxury malls, fine dining, and trendy rooftop bars**, this area (known as the *Polígono Central*) is the absolute best place to stay. It is safe, walkable (by Santo Domingo standards), and the financial/upscale heart of the city.\n\n*   **Shopping:** \n    *   **BlueMall Santo Domingo:** High-end shopping featuring brands like Louis Vuitton, Cartier, and Carolina Herrera.\n    *   **Ágora Mall:** Massive multi-story mall with international high-street brands (Zara, Mango) and local boutiques.\n    *   **Acropolis Center:** Upscale mall with great shops and dining.\n*   **Dining:** Home to the city’s top-rated fine dining restaurants, international cuisine, Italian trattorias, and chic coffee shops (e.g., *Bottega Fratelli*, *SBG*, *Factory Steak & Lobster*).\n*   **Vibe:** Modern, upscale, cosmopolitan, high-rise buildings.\n*   **Best Hotels:**\n    *   **Luxury:** *JW Marriott Hotel Santo Domingo* (located directly inside BlueMall) or *Real InterContinental Santo Domingo*.\n    *   **Mid-Range/Boutique:** *Homewood Suites by Hilton Santo Domingo* or *Robles 50*.\n\n---\n\n### 2. Zona Colonial (Historic, Artisanal & Atmospheric)\nIf you prefer **boutique shopping, local artisanal goods, atmospheric courtyard dining, and nightlife**, stay in the Colonial Zone. It is the oldest European city in the Americas and is completely pedestrian-friendly.\n\n*   **Shopping:** \n    *   **Calle El Conde:** A pedestrian-only street lined with shops, art galleries, and clothing stores.\n    *   **Local Goods:** The best place to buy **Dominican Larimar** (a rare blue gemstone), amber jewelry, handmade cigars, local art, and rum.\n*   **Dining:** Incredible dining experiences set inside 500-year-old Spanish colonial buildings, lush tropical courtyards, and open-air plazas (e.g., *Pat'e Palo*, *Jaca*, *Maraca*, *El Buho*).\n*   **Vibe:** Historic, romantic, walkable, artsy, and vibrant.\n*   **Best Hotels:**\n    *   **Luxury/Boutique:** *Casas del XVI* (restored 16th-century homes) or *Hodelpa Nicolas de Ovando*.\n    *   **Mid-Range:** *Boutique Hotel Palacio* or *El Beaterio Casa Guest House*.\n\n---\n\n### 3. Bella Vista (A Modern Alternative)\nLocated just south of Piantini, Bella Vista is a slightly quieter, upscale residential and commercial area with excellent access to modern shopping centers.\n\n*   **Shopping:** Home to **Downtown Center**, a modern 3-story shopping mall with top-tier international stores, restaurants, and a massive cinema complex.\n*   **Dining:** Packed with modern casual restaurants, sushi lounges, and food halls.\n*   **Best Hotels:** *Dominican Fiesta Hotel & Casino* or high-end Airbnb apartments.\n\n---\n\n### Summary: Which should you choose?\n\n*   **Choose Piantini/Naco** if you want luxury brand shopping, major malls, high-end fine dining, modern hotels, and a sleek city vibe.\n*   **Choose Zona Colonial** if you want local crafts, jewelry, unique boutique dining in historic courtyard settings, and a walkable neighborhood.\n\n**Pro-Tip on Santo Domingo Traffic:** Traffic in Santo Domingo can be extremely heavy during peak hours. If your primary goal is shopping at major malls like BlueMall or Ágora, stay in **Piantini**, as traveling back and forth from the Zona Colonial can take 30–45 minutes in traffic despite being only a few miles away."
+          }
+        ],
+        "missing": [
+          {
+            "observationId": "obs_c4bce044fbf2",
+            "scenarioId": "std_sdq_biz_01",
+            "provider": "openai",
+            "responseHash": "ef9dacf220bf0722716d1224862f5a3c59b03dcef45582ba609c35b5cc8e96f6",
+            "exactResponse": "For a business trip to Santo Domingo, particularly in the upscale Piantini neighborhood, one of the best luxury hotels to consider is the JW Marriott Hotel Santo Domingo. This hotel is highly regarded for its sophisticated ambiance, excellent service, and convenient location in the heart of the financial district. \n\nKey features of the JW Marriott Santo Domingo include:\n\n1. **Central Location**: Situated in the Blue Mall, it offers easy access to shopping, dining, and business centers.\n\n2. **Business Amenities**: The hotel provides state-of-the-art meeting spaces, business services, and high-speed internet, making it ideal for business travelers.\n\n3. **Luxurious Accommodations**: Rooms and suites are elegantly furnished, featuring modern amenities, plush bedding, and stunning city views.\n\n4. **Dining Options**: The hotel offers fine dining options, including a renowned restaurant and a stylish rooftop bar that provides a great setting for networking or unwinding after meetings.\n\n5. **Leisure Facilities**: Guests can enjoy a rooftop infinity pool and a well-equipped fitness center, perfect for relaxation and maintaining a fitness routine during your stay.\n\nOverall, the JW Marriott Hotel Santo Domingo combines luxury, convenience, and excellent service, making it a top choice for business travelers in the Piantini area."
+          },
+          {
+            "observationId": "obs_c590667bbe63",
+            "scenarioId": "std_sdq_biz_02",
+            "provider": "openai",
+            "responseHash": "d9b9fef43e824791489cc5ad8780e0cbcb8633935ae237c53d699e38c86ecd89",
+            "exactResponse": "For upscale corporate meetings in Santo Domingo, consider the JW Marriott Hotel Santo Domingo. Located in the heart of the city, this hotel offers luxurious accommodations and top-notch amenities. It features modern meeting spaces equipped with the latest technology, making it ideal for business events. Additionally, the hotel provides excellent dining options and a rooftop infinity pool with stunning city views, ensuring a comfortable and productive stay for your corporate team."
+          },
+          {
+            "observationId": "obs_25c85401b2b2",
+            "scenarioId": "std_sdq_biz_03",
+            "provider": "openai",
+            "responseHash": "505c7eac3e723eba1d7c97852bdac355bbd2017154e97d380ac4aef0718e7674",
+            "exactResponse": "If you're planning to stay in the Piantini or Naco area of Santo Domingo for a week of client meetings, consider the following hotels, which are known for their comfort, amenities, and convenient locations:\n\n1. **JW Marriott Hotel Santo Domingo**: Located in the heart of Piantini, this hotel offers luxury accommodations and is connected to the BlueMall, which is convenient for shopping and dining. It also features excellent meeting facilities.\n\n2. **InterContinental Real Santo Domingo**: Situated in Piantini, this hotel provides modern amenities, a rooftop infinity pool, and several on-site dining options. It’s well-suited for business travelers with spacious rooms and meeting spaces.\n\n3. **Embassy Suites by Hilton Santo Domingo**: Located in Naco, this hotel offers all-suite accommodations with separate living areas, which can be ideal for extended stays. It also includes a complimentary breakfast and evening reception.\n\n4. **Radisson Hotel Santo Domingo**: Located in Naco, this hotel provides comfortable rooms and good business facilities. It features a fitness center, a pool, and an on-site restaurant.\n\n5. **Holiday Inn Santo Domingo**: Situated in the Piantini area, this hotel offers a balance of comfort and functionality, with amenities like a fitness center, pool, and meeting spaces.\n\nWhen choosing a hotel, consider factors like proximity to your client meeting locations, available business amenities, and any personal preferences for leisure activities or dining. Booking in advance and checking for any special business traveler rates or packages can also be beneficial."
+          },
+          {
+            "observationId": "obs_d0bc436feeab",
+            "scenarioId": "std_sdq_biz_04",
+            "provider": "openai",
+            "responseHash": "412bc832265d4a4573742d49e316ad118d94810d012b732a056a71f5a5a92c9f",
+            "exactResponse": "For business travelers looking for a full-service hotel near Blue Mall in Santo Domingo, the JW Marriott Hotel Santo Domingo is an excellent choice. This hotel offers a prime location, as it is directly connected to the Blue Mall, providing easy access to shopping and dining options. The JW Marriott features luxurious rooms equipped with modern amenities, high-speed internet, and workspaces suitable for business needs.\n\nThe hotel also offers a range of services beneficial for business travelers, including a well-equipped business center, meeting and event spaces, and a rooftop pool and fitness center for relaxation. Additionally, the hotel's executive lounge provides a refined space for informal meetings or simply unwinding after a busy day. With its combination of convenience, comfort, and top-notch service, the JW Marriott Hotel Santo Domingo is a preferred choice for those traveling on business."
+          },
+          {
+            "observationId": "obs_37fa944e85d4",
+            "scenarioId": "std_sdq_biz_05",
+            "provider": "openai",
+            "responseHash": "4076bac1bb6104cf65cd2b972be0e27e950f36e6322165595faa492a2ab729f1",
+            "exactResponse": "If you're looking for an upscale hotel in the Piantini or Naco areas of Santo Domingo, Dominican Republic, you have some great options that offer loyalty points and executive amenities. Here are a couple of recommendations:\n\n1. **JW Marriott Hotel Santo Domingo**:\n   - **Location**: Situated in the heart of Piantini, this hotel offers easy access to various shopping and dining options.\n   - **Loyalty Program**: As part of the Marriott Bonvoy program, you can earn and redeem points during your stay.\n   - **Executive Amenities**: The hotel features an executive lounge, a rooftop infinity pool, a fully-equipped fitness center, and several sophisticated dining options. Rooms are modern and luxurious, catering to business travelers and leisure guests alike.\n\n2. **InterContinental Real Santo Domingo**:\n   - **Location**: Located in the Naco area, this hotel is a short distance from major business centers and attractions.\n   - **Loyalty Program**: Being part of the IHG Rewards Club, guests can accumulate points and enjoy member benefits.\n   - **Executive Amenities**: The hotel offers an executive club lounge, multiple on-site dining options including a fine dining restaurant, a spa, a large outdoor pool, and a state-of-the-art fitness center.\n\nBoth hotels provide excellent service and amenities tailored to business travelers, making them ideal choices for those looking to enjoy luxury accommodations while earning loyalty points. Always check the latest reviews and directly contact the hotels for any specific requirements or updates on their offerings."
+          },
+          {
+            "observationId": "obs_93cef776c76b",
+            "scenarioId": "std_sdq_biz_06",
+            "provider": "openai",
+            "responseHash": "1bb19dabb75bc35cecfedec574773d01c26553ff69a87dc038ae9d522e2da6d7",
+            "exactResponse": "When comparing luxury and upper-upscale business hotels in Santo Domingo, it's essential to consider several factors, such as location, amenities, service, and overall experience. Here's a general overview:\n\n### Luxury Hotels\n\n1. **Overview:**\n   - Luxury hotels in Santo Domingo are typically characterized by their high-end facilities, exceptional service, and prime locations. They often cater to both leisure and business travelers who seek an elevated experience.\n\n2. **Features:**\n   - **Rooms & Suites:** Spacious and elegantly designed with high-quality furnishings and premium bedding.\n   - **Dining:** Multiple fine dining options, including international and local cuisine, often with renowned chefs.\n   - **Amenities:** Extensive amenities such as spas, fitness centers, swimming pools, and sometimes golf courses.\n   - **Service:** Personalized and attentive service, including concierge and butler services.\n   - **Location:** Often situated in prestigious areas with easy access to cultural sites and upscale shopping.\n\n3. **Examples:**\n   - **JW Marriott Hotel Santo Domingo:** Known for its modern luxury and central location in the Piantini district, offering exquisite dining and a rooftop bar.\n   - **El Embajador, a Royal Hideaway Hotel:** Combines luxury with historical charm, featuring elegant decor and expansive gardens.\n\n### Upper-Upscale Business Hotels\n\n1. **Overview:**\n   - Upper-upscale business hotels focus on providing a balance between comfort and functionality, catering primarily to business travelers with additional leisure amenities.\n\n2. **Features:**\n   - **Rooms & Suites:** Comfortable and well-equipped for work, with functional design and modern technology.\n   - **Dining:** Quality dining options with a focus on convenience and variety, including buffet and à la carte services.\n   - **Amenities:** Business centers, meeting rooms, and event spaces, alongside fitness centers and sometimes pools.\n   - **Service:** Efficient service with a focus on meeting the needs of business travelers, such as express check-in/check-out.\n   - **Location:** Conveniently located near business districts or conference centers, with good transportation links.\n\n3. **Examples:**\n   - **Sheraton Santo Domingo Hotel:** Offers comprehensive business facilities, a central location, and a blend of leisure amenities.\n   - **Crowne Plaza Santo Domingo:** Known for its business-friendly services, including extensive meeting spaces and a central location.\n\n### Key Differences\n\n- **Target Audience:** Luxury hotels often target high-end leisure and business travelers looking for an exceptional experience, while upper-upscale hotels are more focused on business travelers who require efficiency and convenience.\n- **Service Level:** Luxury hotels tend to offer more personalized services, whereas upper-upscale hotels emphasize practicality and functionality.\n- **Price Point:** Luxury hotels usually come at a higher price point due to their elevated offerings and exclusive services.\n\n### Conclusion\n\nChoosing between luxury and upper-upscale business hotels in Santo Domingo depends on your priorities, whether it's indulging in luxury and personalized experiences or focusing on business facilities and convenience. Both types offer high-quality accommodations, but the level of luxury and the specific amenities differ."
+          },
+          {
+            "observationId": "obs_8860766e9aa8",
+            "scenarioId": "std_sdq_biz_07",
+            "provider": "openai",
+            "responseHash": "c3d3721bb407919a12351d204f2bda25756178e2496e1c84f295d2d6e677b6c0",
+            "exactResponse": "When visiting the Piantini or Naco areas of Santo Domingo, Dominican Republic, executives have several excellent hotel options that cater to business travelers with premium amenities and convenient locations. Here are some of the top choices:\n\n1. **JW Marriott Hotel Santo Domingo**: Located in the heart of Piantini, this luxury hotel offers upscale accommodations with modern amenities. It features a rooftop infinity pool, well-equipped fitness center, and executive lounge, making it ideal for business travelers. The hotel is also connected to the BlueMall, offering a variety of dining and shopping options.\n\n2. **InterContinental Real Santo Domingo**: Situated in the nearby area, this hotel is known for its modern design and high-quality service. It offers a full-service spa, multiple dining options, and extensive meeting facilities. The hotel’s central location provides easy access to the business districts in Piantini and Naco.\n\n3. **Embassy Suites by Hilton Santo Domingo**: Located in Naco, this hotel offers spacious suites with separate living areas, making it a great option for longer stays. It includes complimentary breakfast, a rooftop pool, and a fitness center. The hotel is also close to many corporate offices and dining establishments.\n\n4. **Renaissance Santo Domingo Jaragua Hotel & Casino**: While slightly outside the immediate Piantini/Naco area, this hotel is a short drive away and offers a historic charm with modern amenities. It features a large outdoor pool, fitness center, and various dining venues, suitable for both business and leisure.\n\n5. **Holiday Inn Santo Domingo**: This hotel is conveniently located in the heart of Santo Domingo’s business district. It offers comfortable rooms, a rooftop pool, a fitness center, and a business center, making it a practical choice for executives.\n\nThese hotels provide a blend of comfort, convenience, and amenities tailored for business travelers, ensuring a productive and enjoyable stay."
+          },
+          {
+            "observationId": "obs_bb69562ebd84",
+            "scenarioId": "std_sdq_biz_08",
+            "provider": "openai",
+            "responseHash": "8c2750b131a9f8073219287cc0de3b1fe5abdf15d6819e0dea2e8655cb4b582e",
+            "exactResponse": "When visiting Santo Domingo for meetings in the Piantini or Naco areas, you'll want to stay in a hotel that offers convenience, comfort, and amenities suitable for business travelers. Here are some recommendations:\n\n1. **JW Marriott Hotel Santo Domingo**: Located in the heart of Piantini, this luxury hotel offers excellent amenities, including meeting rooms, a business center, and a rooftop bar with stunning views. It's conveniently situated near shopping centers and restaurants.\n\n2. **InterContinental Real Santo Domingo**: This hotel is known for its modern facilities and excellent service. It features spacious meeting rooms, a business center, and multiple dining options. It's located in the Piantini area, making it ideal for business travelers.\n\n3. **Embassy Suites by Hilton Santo Domingo**: Situated in the Naco area, this hotel offers spacious suites, meeting rooms, and a business center. Guests can also enjoy complimentary breakfast and an evening reception, which is great for networking.\n\n4. **Renaissance Santo Domingo Jaragua Hotel & Casino**: While a bit further from Piantini/Naco, this hotel offers a blend of business and leisure facilities, including meeting rooms, a business center, and a casino. It’s a good option if you're looking for a more varied stay.\n\n5. **Holiday Inn Santo Domingo**: This hotel is centrally located in the business district, providing easy access to both Piantini and Naco. It offers meeting facilities, a business center, and comfortable rooms.\n\n6. **Hotel El Embajador, a Royal Hideaway Hotel**: Known for its elegant setting and extensive meeting facilities, this hotel is a bit further out but offers a luxurious stay with a wide range of amenities.\n\nWhen booking, consider the specific amenities you need for your meetings, such as conference rooms, high-speed internet, and proximity to your meeting venues. It's also wise to check recent reviews to ensure the hotel continues to meet business travelers' expectations."
+          },
+          {
+            "observationId": "obs_d38d3c145da4",
+            "scenarioId": "std_sdq_biz_09",
+            "provider": "openai",
+            "responseHash": "62ba6d6c4d4724b758996c657466c3053b2252ed395d78cb44b7c46e6bf8b3a8",
+            "exactResponse": "For a hotel in the Piantini or Naco area of Santo Domingo that offers strong WiFi, workspace, and executive amenities, you might consider the following options:\n\n1. **InterContinental Real Santo Domingo**: Located in the heart of Piantini, this hotel offers excellent business amenities including high-speed WiFi, a business center, and meeting rooms. The rooms are modern, and there are various dining options and a spa.\n\n2. **JW Marriott Hotel Santo Domingo**: Situated in the Blue Mall, this luxury hotel provides robust WiFi and executive-level services. It has a business center, meeting rooms, and luxurious rooms with workspaces. The hotel also features a rooftop pool and bar.\n\n3. **Holiday Inn Santo Domingo**: Located in the Naco area, this hotel offers strong WiFi and business facilities, including a business center and meeting spaces. It also has a fitness center and a rooftop pool.\n\n4. **Embassy Suites by Hilton Santo Domingo**: Found in the Naco district, this hotel offers spacious suites with workspaces, complimentary WiFi, a business center, and meeting rooms. Guests can enjoy a fitness center and an outdoor pool.\n\nThese hotels are known for catering to business travelers and providing the necessary amenities to ensure a productive stay. It's always a good idea to check recent reviews or contact the hotels directly to confirm the availability of specific services and amenities."
+          },
+          {
+            "observationId": "obs_6749043cf2d6",
+            "scenarioId": "std_sdq_biz_10",
+            "provider": "openai",
+            "responseHash": "cb33036d8ae3886357415c419bedd937084e3bfa9a0fbe438de68b15b39315e4",
+            "exactResponse": "For a multi-day corporate engagement in the Distrito Nacional, Santo Domingo, the JW Marriott Hotel Santo Domingo is an excellent choice. It is renowned for its upscale accommodations, exceptional service, and modern amenities. Located in the heart of the city, the hotel offers easy access to key business districts and attractions.\n\nKey features of the JW Marriott Hotel Santo Domingo include:\n\n1. **Modern Meeting Facilities**: The hotel offers state-of-the-art conference and meeting rooms equipped with the latest technology to facilitate successful business events.\n\n2. **Luxurious Accommodations**: Guests can enjoy well-appointed rooms and suites with contemporary furnishings and premium amenities.\n\n3. **Dining Options**: The hotel features a variety of dining options, including gourmet restaurants and a stylish bar, perfect for entertaining clients or colleagues.\n\n4. **Central Location**: Situated within the BlueMall, a high-end shopping center, the hotel provides convenient access to upscale shops and dining.\n\n5. **Leisure Amenities**: After a day of meetings, guests can relax at the infinity pool, fitness center, or explore the vibrant local culture.\n\n6. **Exceptional Service**: The hotel is known for its attentive and professional staff, ensuring a smooth and pleasant stay for all guests.\n\nFor a corporate engagement, the combination of luxurious accommodations, excellent meeting facilities, and a prime location makes JW Marriott Hotel Santo Domingo a top choice in the Distrito Nacional."
+          },
+          {
+            "observationId": "obs_37d1875330f9",
+            "scenarioId": "std_sdq_lei_01",
+            "provider": "openai",
+            "responseHash": "198f89c877284dd8aa7291ad07a287b4a5237f9d9ec9f288e988f1997d590950",
+            "exactResponse": "For a luxurious weekend city break in the Piantini or Naco areas of Santo Domingo, you might want to consider staying at the JW Marriott Hotel Santo Domingo. \n\nThis upscale hotel is located in the heart of the Piantini district, offering convenient access to high-end shopping, dining, and entertainment. The hotel features elegant rooms with modern amenities, an infinity pool, a fitness center, and several on-site dining options. The rooftop bar, Vertygo 101, is particularly popular for its stunning views of the city.\n\nAnother excellent option is the InterContinental Real Santo Domingo, situated in the heart of the business and entertainment districts. It offers luxurious accommodations, an outdoor pool, a full-service spa, and multiple dining venues.\n\nBoth hotels provide a high level of service and comfort, making them ideal choices for a sophisticated and relaxing weekend in Santo Domingo."
+          },
+          {
+            "observationId": "obs_9976cba94b7c",
+            "scenarioId": "std_sdq_lei_02",
+            "provider": "openai",
+            "responseHash": "9f61b3f61aff041c8632b6d5cdb25c3c80ff101e8e0a3bd3fa0ae8da885d5f24",
+            "exactResponse": "Santo Domingo, the capital of the Dominican Republic, offers a variety of neighborhoods that are great for shopping and dining. Here are a few areas you might consider staying in:\n\n1. **Zona Colonial**: This historic area is not only rich in culture and history but also has a vibrant dining scene with numerous restaurants, cafes, and shops. It's a great place to find local crafts and souvenirs, and you can enjoy dining in beautifully restored colonial buildings.\n\n2. **Piantini**: This upscale neighborhood is part of the larger area known as \"Naco.\" It's a commercial and residential area with many luxury hotels, upscale dining options, and high-end shopping centers like Blue Mall and Acrópolis Center. It's ideal if you're looking for international brands and fine dining experiences.\n\n3. **Bella Vista**: Known for its modern shopping centers like Bella Vista Mall, this area offers a mix of local and international dining options. It's a vibrant neighborhood that's great for both daytime shopping and evening dining.\n\n4. **Gazcue**: Close to the Zona Colonial, Gazcue is a quieter residential area but still offers a variety of dining options and is relatively close to shopping areas and cultural attractions.\n\n5. **Malecón**: While primarily known for its waterfront views, the Malecón area also offers a range of dining options and is close to various entertainment venues. Some hotels here provide easy access to both the oceanfront and the city’s shopping districts.\n\nWhen choosing where to stay, consider the type of shopping and dining experiences you're looking for, as well as how convenient the location is for other activities you might want to enjoy in Santo Domingo."
+          },
+          {
+            "observationId": "obs_ac02f7ea8280",
+            "scenarioId": "std_sdq_lei_03",
+            "provider": "openai",
+            "responseHash": "70174751fc9bd6fdca44716f9717989d71fba814677f72be70c8d9b8f0e6bce6",
+            "exactResponse": "For a luxurious stay in Santo Domingo with a pool and stunning views, consider the JW Marriott Hotel Santo Domingo. This hotel is known for its upscale amenities and excellent service. The rooftop infinity pool offers breathtaking views of the city skyline, providing a perfect spot to relax and unwind. Additionally, the hotel is conveniently located in the Piantini neighborhood, close to shopping and dining options."
+          },
+          {
+            "observationId": "obs_e901b3cea411",
+            "scenarioId": "std_sdq_lei_05",
+            "provider": "openai",
+            "responseHash": "a1b30b477a58d52de626757c8863c5d036f89ff2fe75ee4aa1318d73c4d5bc5f",
+            "exactResponse": "When considering upscale hotels in the Piantini and Naco neighborhoods of Santo Domingo, Dominican Republic, for a 3-night leisure trip, there are several options to consider. These areas are known for their bustling commercial centers, dining options, and proximity to attractions. Here are some top choices:\n\n1. **JW Marriott Hotel Santo Domingo**:\n   - **Location**: Piantini\n   - **Features**: This luxurious hotel offers modern amenities with spacious rooms, an infinity pool overlooking the city, and a well-equipped fitness center. The hotel is connected to the Blue Mall, providing easy access to shopping and dining options.\n   - **Dining**: On-site dining includes the stylish restaurant and bar, serving international cuisine and cocktails.\n   - **Pros**: Central location, high-end amenities, great views, and direct access to shopping.\n\n2. **InterContinental Real Santo Domingo**:\n   - **Location**: Piantini\n   - **Features**: Known for elegant design and excellent service, this hotel includes a rooftop infinity pool, a full-service spa, and a fitness center. Rooms are modern and comfortable, with high-end furnishings.\n   - **Dining**: Offers several on-site restaurants and bars, featuring international and local cuisine.\n   - **Pros**: Luxurious amenities, multiple dining options, and a relaxing spa experience.\n\n3. **Embassy Suites by Hilton Santo Domingo**:\n   - **Location**: Naco\n   - **Features**: All-suite hotel providing spacious accommodations with living areas and kitchenettes, ideal for longer stays. The hotel includes an outdoor pool, fitness center, and business facilities.\n   - **Dining**: Includes complimentary breakfast and an on-site restaurant offering a variety of dishes.\n   - **Pros**: Spacious suites, family-friendly, and good value for luxury.\n\n4. **Hotel El Embajador, a Royal Hideaway Hotel**:\n   - **Location**: Although slightly outside Piantini/Naco, it’s worth mentioning due to its reputation.\n   - **Features**: Set within lush gardens, this historic hotel combines classic elegance with modern comforts. Features include a large outdoor pool, a luxurious spa, and fitness facilities.\n   - **Dining**: Multiple dining venues offering gourmet cuisine and a renowned Sunday brunch.\n   - **Pros**: Beautiful grounds, historic charm, and strong reputation for service.\n\n5. **Renaissance Santo Domingo Jaragua Hotel & Casino**:\n   - **Location**: Near Naco\n   - **Features**: This recently renovated hotel blends modern design with historic charm. It offers a large outdoor pool, a casino, and a fitness center.\n   - **Dining**: Several dining options including a poolside bar and a vibrant restaurant scene.\n   - **Pros**: Casino entertainment, modern amenities, and proximity to the Malecón.\n\n### Considerations:\n- **Location**: Piantini is more modern and bustling, while Naco offers quiet residential vibes.\n- **Amenities**: Consider what amenities are most important for your leisure trip, such as pools, spas, or proximity to shopping and dining.\n- **Price**: Prices can vary significantly; check for packages or promotions for better deals.\n- **Reviews**: Always check recent guest reviews for updated feedback on service and conditions.\n\nThese hotels cater to different preferences and needs, so choosing the right one depends on your priorities for location, amenities, and overall experience."
+          },
+          {
+            "observationId": "obs_5979ace18048",
+            "scenarioId": "std_sdq_lei_06",
+            "provider": "openai",
+            "responseHash": "0441ee8bea14b6b5021ba380a4dd47d89b895a9556581576434bff305446a57d",
+            "exactResponse": "If you're looking for an upscale hotel in Santo Domingo that is walkable to restaurants and nightlife, consider the following options:\n\n1. **JW Marriott Hotel Santo Domingo**: Located in the Piantini district, this hotel is part of the Blue Mall complex, which offers high-end shopping and dining options. The area is vibrant and has a variety of restaurants and bars within walking distance.\n\n2. **InterContinental Real Santo Domingo**: Situated in the heart of the city, this hotel is close to the popular nightlife area of Avenida Winston Churchill. The hotel itself offers several dining options and is near numerous upscale restaurants and bars.\n\n3. **Renaissance Santo Domingo Jaragua Hotel & Casino**: This hotel is located on the Malecón, a short distance from the Colonial Zone. While it’s slightly farther from the main nightlife areas, it's still within a reasonable walking distance or a short drive away. The hotel has its own casino and dining options.\n\n4. **Hodelpa Nicolás de Ovando**: This historic hotel is located in the Colonial Zone, which is a UNESCO World Heritage Site filled with historic landmarks, restaurants, and bars. Staying here gives you easy access to both cultural sites and nightlife.\n\n5. **El Embajador, a Royal Hideaway Hotel**: While slightly further from the main nightlife hubs, this luxurious hotel is in a quiet, upscale area with several dining options nearby. A short taxi ride can take you to the more bustling nightlife areas.\n\nThese hotels offer a blend of luxury and convenience, making them excellent choices for enjoying Santo Domingo's vibrant restaurant scene and nightlife."
+          },
+          {
+            "observationId": "obs_fdc3be38e11f",
+            "scenarioId": "std_sdq_lei_07",
+            "provider": "openai",
+            "responseHash": "530706d4f8d403cc483b908cb1156dc509791ad763405e314206f59589107c17",
+            "exactResponse": "For a relaxing stay in the Piantini or Naco areas of Santo Domingo, you have several excellent hotel options that offer comfort, amenities, and proximity to local attractions:\n\n1. **JW Marriott Hotel Santo Domingo**: Located in the heart of Piantini, this luxury hotel offers modern amenities, spacious rooms, and a rooftop infinity pool. It's perfect for a relaxing stay with access to high-end shopping and dining.\n\n2. **InterContinental Real Santo Domingo**: This upscale hotel is known for its excellent service, contemporary design, and a beautiful pool area. The spa and multiple dining options enhance the relaxation experience.\n\n3. **Embassy Suites by Hilton Santo Domingo**: Situated in the Naco area, this hotel provides spacious suites ideal for longer stays. It features a pool, fitness center, and complimentary breakfast.\n\n4. **Holiday Inn Santo Domingo**: Also located in the Piantini area, this hotel offers comfortable rooms and a range of amenities, including a rooftop pool and a fitness center, making it a great choice for relaxation.\n\n5. **Radisson Hotel Santo Domingo**: Located in Naco, this hotel offers a comfortable stay with a variety of amenities, including a pool, gym, and on-site dining options.\n\nEach of these hotels provides a relaxing atmosphere and convenient access to the shopping, dining, and entertainment options available in the Piantini and Naco neighborhoods."
+          },
+          {
+            "observationId": "obs_64eaa6c03227",
+            "scenarioId": "std_sdq_lei_08",
+            "provider": "openai",
+            "responseHash": "d83bf51767bce77f26fc733d2de8fb0482d41153cfced85ca7ba3a7e7993d2b7",
+            "exactResponse": "For first-time visitors looking for a luxury hotel experience in the Piantini/Naco area of Santo Domingo, the JW Marriott Hotel Santo Domingo is an excellent choice. Located in the heart of the upscale Piantini district, this hotel offers a blend of modern elegance and top-notch amenities.\n\n### Key Features of JW Marriott Santo Domingo:\n- **Location**: Situated within the Blue Mall, one of the most prestigious shopping centers in the city, offering convenient access to high-end shops and dining options.\n- **Rooms and Suites**: Spacious, elegantly designed rooms with modern amenities. Many rooms offer stunning city views.\n- **Dining**: The hotel features an acclaimed restaurant, serving both local and international cuisine, as well as a stylish bar for cocktails and light bites.\n- **Amenities**: Offers an infinity pool with panoramic views of the city, a well-equipped fitness center, and exceptional service.\n- **Business and Event Facilities**: Ideal for business travelers with state-of-the-art meeting and event spaces.\n\nThe JW Marriott Santo Domingo is renowned for its attentive service and luxurious accommodations, making it a top choice for luxury travelers visiting the area."
+          },
+          {
+            "observationId": "obs_a1d3f4b70c5d",
+            "scenarioId": "std_sdq_cpl_01",
+            "provider": "openai",
+            "responseHash": "a7ec874d4e50dfa648b6853aea7f34b02fa51d077eea50c9fb5d23dbb8cf6336",
+            "exactResponse": "For a romantic weekend in the Piantini or Naco neighborhoods of Santo Domingo, the JW Marriott Hotel Santo Domingo is an excellent choice. This luxury hotel is located in the heart of the city and offers a blend of modern elegance and elevated comfort, ideal for couples seeking a romantic getaway.\n\nFeatures that make the JW Marriott a great choice include:\n\n1. **Luxurious Rooms and Suites**: The rooms are well-appointed, featuring plush bedding, stylish decor, and stunning views of the city.\n\n2. **Infinity Pool**: The rooftop infinity pool offers a relaxing atmosphere with panoramic views of Santo Domingo, perfect for unwinding together.\n\n3. **Vertygo 101 Bar and Lounge**: Known for its unique glass-floored terrace, this bar is a great spot for enjoying cocktails while taking in the city skyline.\n\n4. **Convenient Location**: Situated in the Blue Mall, the hotel provides easy access to high-end shopping and dining options.\n\n5. **Exceptional Dining**: The hotel’s restaurant, Winston’s Grill & Patio, offers a sophisticated dining experience with a diverse menu.\n\n6. **World-Class Service**: The JW Marriott is known for its attentive service, ensuring a memorable stay for guests.\n\nFor a more boutique experience, consider the InterContinental Real Santo Domingo, which also offers luxurious accommodations and exceptional amenities in a romantic setting."
+          },
+          {
+            "observationId": "obs_a08ade44f01d",
+            "scenarioId": "std_sdq_cpl_04",
+            "provider": "openai",
+            "responseHash": "268f95d21869ad52f512c59308ababead4c5411fb678f76f112cf34ca560f683",
+            "exactResponse": "For a romantic stay in the Piantini/Naco area of Santo Domingo, you might consider:\n\n1. **InterContinental Real Santo Domingo**: This luxurious hotel offers a fantastic spa experience and a beautiful rooftop pool area with stunning city views. The hotel also features several dining options, including a rooftop bar and restaurant that can provide a romantic setting for couples.\n\n2. **JW Marriott Hotel Santo Domingo**: Located in the heart of the Piantini district, the JW Marriott offers upscale accommodations with an impressive rooftop bar and infinity pool. Although it doesn't have a full-service spa, the luxurious amenities and proximity to shopping and dining make it a great choice for couples.\n\n3. **El Embajador, a Royal Hideaway Hotel**: While not exactly in Piantini or Naco, this hotel is nearby and offers a serene environment with an excellent spa. The hotel’s dining options and beautifully landscaped gardens create a perfect romantic atmosphere.\n\nThese hotels are renowned for their service, amenities, and locations, making them ideal for a romantic getaway in Santo Domingo. Always check current reviews and availability to ensure they meet your expectations."
+          },
+          {
+            "observationId": "obs_7aad844da2d6",
+            "scenarioId": "std_sdq_cpl_05",
+            "provider": "openai",
+            "responseHash": "052ee25a378128cd60965bc18ae6070f1ebcf53cef97db9ec7ec431e7dab28a1",
+            "exactResponse": "For a special occasion like a proposal or an anniversary overnight stay in the Piantini or Naco area of Santo Domingo, you might consider the following upscale hotels:\n\n1. **JW Marriott Hotel Santo Domingo**: Located in the heart of Piantini, this luxury hotel offers elegant accommodations and top-notch service. You can enjoy its rooftop infinity pool, fine dining at the hotel's restaurant, and a bar with stunning views of the city.\n\n2. **InterContinental Real Santo Domingo**: Situated in the nearby business district, this hotel features modern design and luxurious amenities. With a beautiful rooftop pool, a full-service spa, and excellent dining options, it provides a perfect setting for a romantic getaway.\n\n3. **Embassy Suites by Hilton Santo Domingo**: While primarily a business hotel, it offers spacious suites and great amenities that could make for a comfortable and upscale stay. The hotel has a rooftop pool with panoramic views of the city.\n\n4. **Renaissance Santo Domingo Jaragua Hotel & Casino**: Though slightly outside the Piantini/Naco area, this hotel offers a blend of historic charm and modern luxury. With beautiful gardens, an outdoor pool, and a casino, it provides a unique and memorable experience.\n\nWhen planning your stay, be sure to inquire about any special packages or services they might offer for proposals or anniversaries, such as in-room dining, spa treatments, or room decorations to enhance the romantic atmosphere."
+          }
+        ],
+        "displacement": [
+          {
+            "scenarioId": "std_sdq_biz_01",
+            "competitorEntityId": "intercontinental_real_santo_domingo",
+            "competitorName": "InterContinental Real Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_02",
+            "competitorEntityId": "intercontinental_real_santo_domingo",
+            "competitorName": "InterContinental Real Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_03",
+            "competitorEntityId": "intercontinental_real_santo_domingo",
+            "competitorName": "InterContinental Real Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_01",
+            "competitorEntityId": "holiday_inn_santo_domingo",
+            "competitorName": "Holiday Inn Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_02",
+            "competitorEntityId": "holiday_inn_santo_domingo",
+            "competitorName": "Holiday Inn Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_03",
+            "competitorEntityId": "holiday_inn_santo_domingo",
+            "competitorName": "Holiday Inn Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_01",
+            "competitorEntityId": "crowne_plaza_santo_domingo",
+            "competitorName": "Crowne Plaza Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_02",
+            "competitorEntityId": "crowne_plaza_santo_domingo",
+            "competitorName": "Crowne Plaza Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_03",
+            "competitorEntityId": "crowne_plaza_santo_domingo",
+            "competitorName": "Crowne Plaza Santo Domingo",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_01",
+            "competitorEntityId": "kimpton_las_mercedes_santo_domingo",
+            "competitorName": "Kimpton Las Mercedes",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_02",
+            "competitorEntityId": "kimpton_las_mercedes_santo_domingo",
+            "competitorName": "Kimpton Las Mercedes",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          },
+          {
+            "scenarioId": "std_sdq_biz_03",
+            "competitorEntityId": "kimpton_las_mercedes_santo_domingo",
+            "competitorName": "Kimpton Las Mercedes",
+            "evidenceType": "bpp_displacement",
+            "lens": "bpp"
+          }
+        ],
+        "measurementPeriodId": "adp_period_adp_casas_del_xvi_20260910153255_27a6b6"
+      },
+      "contract": "ADP_BPP_CUSTOMER_STATE_V1",
+      "customerReadyClass": "BPP_READY_POPULATED_RANK_ONLY",
+      "bppCustomerState": "BPP_READY_POPULATED_RANK_ONLY",
+      "bppLensAvailable": true,
+      "bppRankEligible": true,
+      "bppBenchmarkEligible": false,
+      "bppIndexEligible": false,
+      "disclosureReason": "PEER_SET_INSUFFICIENT_FOR_BENCHMARK",
+      "disclosure": {
+        "headline": null,
+        "body": null,
+        "metricNote": "Comparable hotels in this loyalty ecosystem are measured for portfolio rank. Benchmark and index metrics require a larger governed peer set."
+      },
+      "renderMode": "POPULATED_RANK_ONLY",
+      "benchmarkLimitation": {
+        "reason": "PEER_SET_INSUFFICIENT_FOR_BENCHMARK",
+        "customerNote": "4 comparable IHG One Rewards alternatives are currently measured in this market. Portfolio rank is shown; benchmark/index metrics require a larger governed peer set.",
+        "suppressedKpis": [
+          "portfolioBenchmark",
+          "portfolioPresenceIndex"
+        ]
+      },
+      "remediation": {
+        "tag": "bpp_analytical_customer_parity_v1_20260910T1720",
+        "class": "BPP_READY_POPULATED_RANK_ONLY",
+        "newProviderCalls": 0
+      }
     }
   },
   "gates": {
@@ -8229,5 +8918,8 @@
     "BRAND_PORTFOLIO_PERIOD_2_CUSTOMER_PUBLISHED": "YES"
   },
   "bethesdaPublicationNote": "Bethesda Marriott BPP READY_POPULATED added at governed publication #14 (observation reuse; RANK_ONLY)",
-  "universeRemediationNote": "Full-universe BPP remediation V1: populate Mexico City + JW Santo Domingo; suppress Cap Cana / Monterrey / Choice thin markets after hierarchy exhaustion; scrub forbidden setup copy."
+  "universeRemediationNote": "Full-universe BPP remediation V1: populate Mexico City + JW Santo Domingo; suppress Cap Cana / Monterrey / Choice thin markets after hierarchy exhaustion; scrub forbidden setup copy.",
+  "updatedAt": "2026-09-10T17:20:47.613Z",
+  "remediationTag": "bpp_analytical_customer_parity_v1_20260910T1720",
+  "gate": "ADP_BPP_ANALYTICAL_PUBLISHED_RENDERED_STATE_PARITY"
 }

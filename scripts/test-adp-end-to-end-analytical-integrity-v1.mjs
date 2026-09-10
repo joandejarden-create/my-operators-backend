@@ -11,7 +11,7 @@
 
 import assert from "assert";
 import { createHash } from "crypto";
-import { mkdirSync, writeFileSync, readFileSync, existsSync } from "fs";
+import { mkdirSync, writeFileSync, readFileSync, existsSync, renameSync, unlinkSync } from "fs";
 import { join } from "path";
 import { execSync } from "child_process";
 import { listPublishedPropertyIds, loadPublishedManifest } from "../lib/ai-demand-positioning/published-snapshot.js";
@@ -37,9 +37,16 @@ import {
   ADP_END_TO_END_ANALYTICAL_INTEGRITY_V1,
 } from "../lib/ai-demand-positioning/governance/adp-forensic-audit-recovery-point-20260910.js";
 import {
+  ADP_LOST_DEMAND_DISPLACEMENT_DELEGATE_VERSION,
+  computeLostDemand,
+  SINGLE_CANONICAL_DISPLACEMENT_AGGREGATOR,
+} from "../lib/ai-demand-positioning/intelligence/lost-demand.js";
+import {
+  ADP_CANONICAL_OBSERVATION_INTERPRETATION_V1,
+} from "../lib/ai-demand-positioning/customer/adp-canonical-observation-interpretation-v1.js";
+import {
   ADP_FINAL_TRUST_RECOVERY_POINT_ID,
   buildExternalDistributionHoldState,
-  SINGLE_CANONICAL_DISPLACEMENT_AGGREGATOR,
 } from "../lib/ai-demand-positioning/governance/adp-final-trust-recovery-point-v1.js";
 import {
   RENDERER_ASSET_VERSION,
@@ -47,13 +54,6 @@ import {
 } from "../lib/ai-demand-positioning/governance/adp-production-output-baseline-v1.js";
 import { BPP_CUSTOMER_PUBLICATION_VERSION } from "../lib/ai-demand-positioning/brand-portfolio/bpp-publication-meta-v1.js";
 import { DISPLACEMENT_EVIDENCE_RESOLVER_VERSION } from "../lib/ai-demand-positioning/customer/resolve-displacement-evidence-v1.js";
-import {
-  ADP_LOST_DEMAND_DISPLACEMENT_DELEGATE_VERSION,
-  computeLostDemand,
-} from "../lib/ai-demand-positioning/intelligence/lost-demand.js";
-import {
-  ADP_CANONICAL_OBSERVATION_INTERPRETATION_V1,
-} from "../lib/ai-demand-positioning/customer/adp-canonical-observation-interpretation-v1.js";
 
 const ROOT = process.cwd();
 const OUT_DIR = join(ROOT, "reports/ai-demand-positioning");
@@ -71,6 +71,43 @@ function git(cmd) {
   } catch {
     return null;
   }
+}
+
+function sleepMs(ms) {
+  const end = Date.now() + ms;
+  while (Date.now() < end) {
+    /* busy-wait for Windows file-lock retries */
+  }
+}
+
+function safeWriteText(path, body) {
+  const tmp = `${path}.${process.pid}.${Date.now()}.tmp`;
+  let lastErr;
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    try {
+      writeFileSync(tmp, body, "utf8");
+      try {
+        renameSync(tmp, path);
+      } catch {
+        writeFileSync(path, body, "utf8");
+        try {
+          unlinkSync(tmp);
+        } catch {
+          /* ignore */
+        }
+      }
+      return true;
+    } catch (err) {
+      lastErr = err;
+      sleepMs(120 * (attempt + 1));
+    }
+  }
+  console.error(`[integrity] report write skipped after retries: ${path}: ${lastErr?.message || lastErr}`);
+  return false;
+}
+
+function safeWriteJson(path, data) {
+  return safeWriteText(path, JSON.stringify(data, null, 2) + "\n");
 }
 
 function hashText(t) {
@@ -333,7 +370,7 @@ function writeRecoveryPoint(published) {
     /* ignore */
   }
   mkdirSync(OUT_DIR, { recursive: true });
-  writeFileSync(RECOVERY_PATH, JSON.stringify(point, null, 2) + "\n");
+  safeWriteJson(RECOVERY_PATH, point);
   return point;
 }
 
@@ -377,7 +414,8 @@ async function main() {
     staticDefects.length === 0;
 
   // Parallel displacement/interpretation paths — closed when lost-demand delegates
-  // to resolve-displacement and enrich attaches canonical interpretation.
+  // to the single canonical displacement support set (count === drawer evidence)
+  // and enrich attaches canonical interpretation.
   const lostDemandSrc = existsSync(LOST_DEMAND_SRC)
     ? readFileSync(LOST_DEMAND_SRC, "utf8")
     : "";
@@ -401,7 +439,8 @@ async function main() {
           lost?.displacementSource === SINGLE_CANONICAL_DISPLACEMENT_AGGREGATOR &&
           lost?.lostDemandDisplacementDelegateVersion ===
             ADP_LOST_DEMAND_DISPLACEMENT_DELEGATE_VERSION &&
-          lost?.displacementResolverVersion === DISPLACEMENT_EVIDENCE_RESOLVER_VERSION;
+          lost?.displacementResolverVersion === DISPLACEMENT_EVIDENCE_RESOLVER_VERSION &&
+          Boolean(lost?.displacementSupportSetVersion || lost?.singleSource);
         runtimeCanonicalOk = observations.slice(0, 5).every(
           (o) =>
             o.canonicalInterpretation?.object === ADP_CANONICAL_OBSERVATION_INTERPRETATION_V1
@@ -417,8 +456,10 @@ async function main() {
     }
   }
   const parallelPathsClosed =
-    lostDemandSrc.includes("computeDisplacementCountsByEntity") &&
-    lostDemandSrc.includes(SINGLE_CANONICAL_DISPLACEMENT_AGGREGATOR) &&
+    (lostDemandSrc.includes("buildAllCanonicalDisplacementSupportSets") ||
+      lostDemandSrc.includes("computeDisplacementCountsByEntity")) &&
+    (lostDemandSrc.includes(SINGLE_CANONICAL_DISPLACEMENT_AGGREGATOR) ||
+      lostDemandSrc.includes("SINGLE_CANONICAL_DISPLACEMENT_SUPPORT_SET")) &&
     !/\bfunction aggregateDisplacement\s*\(\s*lostDemand/.test(lostDemandSrc) &&
     enrichSrc.includes("attachCanonicalInterpretation") &&
     runtimeDelegateOk &&
@@ -587,9 +628,9 @@ ${scorecard
     overallVerdict,
     parallelPathsClosed,
   };
-  writeFileSync(FINAL_RECOVERY_PATH, JSON.stringify(finalRecovery, null, 2) + "\n");
-  writeFileSync(AUDIT_JSON, JSON.stringify(audit, null, 2) + "\n");
-  writeFileSync(AUDIT_MD, md);
+  safeWriteJson(FINAL_RECOVERY_PATH, finalRecovery);
+  safeWriteJson(AUDIT_JSON, audit);
+  safeWriteText(AUDIT_MD, md);
 
   console.log(
     JSON.stringify(

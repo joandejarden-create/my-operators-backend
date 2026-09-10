@@ -9,7 +9,7 @@
  */
 
 import assert from "assert";
-import { mkdirSync, writeFileSync, readFileSync, existsSync } from "fs";
+import { mkdirSync, writeFileSync, readFileSync, existsSync, renameSync, unlinkSync } from "fs";
 import { join } from "path";
 import { listPublishedPropertyIds } from "../lib/ai-demand-positioning/published-snapshot.js";
 import { getPublishedOwnerReport } from "../lib/ai-demand-positioning/published-read-service.js";
@@ -59,6 +59,41 @@ function approx(a, b, tol = 0.15) {
   if (a == null && b == null) return true;
   if (a == null || b == null) return false;
   return Math.abs(Number(a) - Number(b)) <= tol;
+}
+
+function sleepMs(ms) {
+  const end = Date.now() + ms;
+  while (Date.now() < end) {
+    /* busy-wait for Windows file-lock retries */
+  }
+}
+
+/** Atomic-ish write with retries — Windows/OneDrive can lock report JSON mid-gate. */
+function safeWriteJson(path, data) {
+  const body = typeof data === "string" ? data : JSON.stringify(data, null, 2) + "\n";
+  const tmp = `${path}.${process.pid}.${Date.now()}.tmp`;
+  let lastErr;
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    try {
+      writeFileSync(tmp, body, "utf8");
+      try {
+        renameSync(tmp, path);
+      } catch {
+        writeFileSync(path, body, "utf8");
+        try {
+          unlinkSync(tmp);
+        } catch {
+          /* ignore */
+        }
+      }
+      return true;
+    } catch (err) {
+      lastErr = err;
+      sleepMs(120 * (attempt + 1));
+    }
+  }
+  console.error(`[customer-surface] report write skipped after retries: ${path}: ${lastErr?.message || lastErr}`);
+  return false;
 }
 
 function resolveV3(er) {
@@ -236,7 +271,14 @@ async function main() {
     }
   }
 
-  // BPP universe: no placeholder copy; ready or suppressed only
+  // BPP universe: no placeholder copy; ready (full/rank-only) or suppressed only
+  const bppGateExtras = {
+    BPP_READY_FULL_RENDERED: true,
+    BPP_READY_RANK_ONLY_RENDERED: true,
+    BPP_SUPPRESSION_REASON_PARITY: true,
+    BPP_NO_GENERIC_FALSE_SUPPRESSION: true,
+    BPP_OWNER_SHARE_PARITY: true,
+  };
   for (const propertyId of listPublishedPropertyIds()) {
     const profile = loadPropertyProfile(propertyId);
     const bpp = resolveBrandPortfolioPosition(propertyId, profile, {});
@@ -246,17 +288,63 @@ async function main() {
       gates.BPP = false;
       failures.push({ propertyId, gate: "BPP", detail: "clientReady gate fail" });
     }
+    const readyClasses = new Set([
+      BPP_CLIENT_READY_CLASS.BPP_READY_POPULATED,
+      BPP_CLIENT_READY_CLASS.BPP_READY_POPULATED_FULL,
+      BPP_CLIENT_READY_CLASS.BPP_READY_POPULATED_RANK_ONLY,
+      BPP_CLIENT_READY_CLASS.BPP_EXCEPTION_SUPPRESSED,
+    ]);
+    if (!readyClasses.has(attempt.clientReadyClass)) {
+      gates.BPP = false;
+      bppGateExtras.BPP_NO_GENERIC_FALSE_SUPPRESSION = false;
+      failures.push({ propertyId, gate: "BPP", detail: attempt.clientReadyClass });
+    }
     if (
-      attempt.clientReadyClass !== BPP_CLIENT_READY_CLASS.BPP_READY_POPULATED &&
-      attempt.clientReadyClass !== BPP_CLIENT_READY_CLASS.BPP_EXCEPTION_SUPPRESSED
+      attempt.clientReadyClass === BPP_CLIENT_READY_CLASS.BPP_READY_POPULATED_RANK_ONLY &&
+      (bpp?.status !== "READY" || !(bpp?.kpis || []).length)
     ) {
       gates.BPP = false;
-      failures.push({ propertyId, gate: "BPP", detail: attempt.clientReadyClass });
+      bppGateExtras.BPP_READY_RANK_ONLY_RENDERED = false;
+      failures.push({ propertyId, gate: "BPP_READY_RANK_ONLY_RENDERED", detail: bpp?.status });
+    }
+    if (
+      attempt.clientReadyClass === BPP_CLIENT_READY_CLASS.BPP_READY_POPULATED_FULL &&
+      bpp?.status !== "READY"
+    ) {
+      gates.BPP = false;
+      bppGateExtras.BPP_READY_FULL_RENDERED = false;
+      failures.push({ propertyId, gate: "BPP_READY_FULL_RENDERED", detail: bpp?.status });
     }
     if (!customerFacingBppCopyIsClean(JSON.stringify(bpp || {}))) {
       gates.BPP = false;
       failures.push({ propertyId, gate: "BPP", detail: "forbidden placeholder copy" });
     }
+    // AFFILIATION_UNRESOLVED copy forbidden when lens is resolved
+    if (
+      bpp?.lens?.label &&
+      /affiliation and peer path are not yet resolved/i.test(JSON.stringify(bpp))
+    ) {
+      gates.BPP = false;
+      bppGateExtras.BPP_SUPPRESSION_REASON_PARITY = false;
+      failures.push({ propertyId, gate: "BPP_SUPPRESSION_REASON_PARITY", detail: "wrong disclosure" });
+    }
+  }
+  // Casas golden: RANK_ONLY must be ready
+  {
+    const casas = resolveBrandPortfolioPosition(
+      "adp_casas_del_xvi",
+      loadPropertyProfile("adp_casas_del_xvi"),
+      {}
+    );
+    if (casas?.status !== "READY" || /not shown/i.test(JSON.stringify(casas?.customerState || {}))) {
+      gates.BPP = false;
+      bppGateExtras.BPP_READY_RANK_ONLY_RENDERED = false;
+      failures.push({ propertyId: "adp_casas_del_xvi", gate: "CASAS_RANK_ONLY_GOLDEN", detail: casas?.status });
+    }
+  }
+  gates.BPP_EXTRAS = bppGateExtras;
+  for (const [k, v] of Object.entries(bppGateExtras)) {
+    if (!v) gates.BPP = false;
   }
 
   // Evidence / trends / provider presence smoke on Bethesda + Cambridge
@@ -282,10 +370,7 @@ async function main() {
   // Universal evidence-link contract (full published universe)
   {
     const evidenceAudit = await auditAllEvidenceLinksClientReady(listPublishedPropertyIds());
-    writeFileSync(
-      join(OUT_DIR, "adp-all-evidence-links-client-ready-v1.json"),
-      JSON.stringify(evidenceAudit, null, 2) + "\n"
-    );
+    safeWriteJson(join(OUT_DIR, "adp-all-evidence-links-client-ready-v1.json"), evidenceAudit);
     const sub = {
       [ALL_EVIDENCE_LINKS_NONEMPTY]: evidenceAudit.emptyLinks.length === 0,
       [ALL_EVIDENCE_SEMANTIC_PARITY]: evidenceAudit.wrongStale.length === 0,
@@ -314,6 +399,25 @@ async function main() {
         gate: "ALL_EVIDENCE_LINKS_CLIENT_READY",
         detail: `fail=${evidenceAudit.totalFail} links=${evidenceAudit.totalLinks}`,
       });
+    }
+
+    // Exact displacement count ↔ drawer support parity (full published universe)
+    {
+      const { spawnSync } = await import("child_process");
+      const parity = spawnSync(
+        process.execPath,
+        ["scripts/test-adp-displacement-evidence-count-parity.mjs"],
+        { encoding: "utf8", cwd: process.cwd() }
+      );
+      const parityOk = parity.status === 0;
+      gates.DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY = parityOk;
+      if (!parityOk) {
+        gates.EVIDENCE = false;
+        failures.push({
+          gate: "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY",
+          detail: (parity.stdout || parity.stderr || "").slice(-500),
+        });
+      }
     }
   }
 
@@ -349,19 +453,21 @@ async function main() {
 
   // Refresh frozen baseline after successful contract (restore pass)
   const allPass =
-    Object.entries(gates).every(([k, v]) => k === "EVIDENCE_SUBGATES" || v === true) &&
+    Object.entries(gates).every(
+      ([k, v]) => k === "EVIDENCE_SUBGATES" || k === "BPP_EXTRAS" || v === true
+    ) &&
+    (gates.BPP_EXTRAS
+      ? Object.values(gates.BPP_EXTRAS).every((v) => v === true)
+      : true) &&
     failures.length === 0;
   if (allPass) {
-    writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + "\n");
+    safeWriteJson(BASELINE_PATH, baseline);
   }
 
   const manifest = buildReleaseManifestV1({
     gitCommit: process.env.GIT_COMMIT || null,
   });
-  writeFileSync(
-    join(OUT_DIR, "adp-production-release-manifest-v1-latest.json"),
-    JSON.stringify(manifest, null, 2) + "\n"
-  );
+  safeWriteJson(join(OUT_DIR, "adp-production-release-manifest-v1-latest.json"), manifest);
 
   const report = {
     title: "ADP_CUSTOMER_SURFACE_CONTRACT_V1",
@@ -385,8 +491,9 @@ async function main() {
     ],
   };
   mkdirSync(OUT_DIR, { recursive: true });
-  writeFileSync(OUT, JSON.stringify(report, null, 2) + "\n");
+  // Always emit gate result to stdout before optional report write.
   console.log(JSON.stringify({ ok: allPass, outPath: OUT, gates, failureCount: failures.length }, null, 2));
+  safeWriteJson(OUT, report);
   if (!allPass) process.exit(1);
 }
 
