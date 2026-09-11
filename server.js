@@ -1884,6 +1884,19 @@ app.get("/hotel-explorer-share.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "hotel-explorer-share.html"));
 });
+// Golden Four client share entry (must survive ADP-only CLI deploys that omit static fallthrough)
+app.get("/hotel-intelligence-golden-demo", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-intelligence-golden-demo.html" + q);
+});
+app.get("/hotel-intelligence-golden-demo/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-intelligence-golden-demo.html" + q);
+});
+app.get("/hotel-intelligence-golden-demo.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "hotel-intelligence-golden-demo.html"));
+});
 app.get("/brand-explorer-share", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/brand-explorer-share.html" + q);
@@ -2953,6 +2966,23 @@ app.listen(PORT, () => {
   } catch (err) {
     console.error("[ADP read] startup source log failed:", err.message);
   }
+  // Census map snapshot — preload (or build once if missing). Non-blocking listen already done.
+  import("./lib/hotel-census/census-map-snapshot.js")
+    .then(async (mod) => {
+      const rebuildMissing =
+        String(process.env.CENSUS_MAP_SNAPSHOT_BOOT_BUILD || "1").trim() !== "0";
+      const result = await mod.bootCensusMapSnapshot({
+        rebuildIfMissing: rebuildMissing,
+        rebuildIfStale: String(process.env.CENSUS_MAP_SNAPSHOT_BOOT_REBUILD_STALE || "").trim() === "1",
+      });
+      mod.startCensusMapSnapshotPeriodicRebuild();
+      if (!result.ok && !result.skipped) {
+        console.warn("[census-map-snapshot] boot incomplete:", result.reason || result.error);
+      }
+    })
+    .catch((err) => {
+      console.error("[census-map-snapshot] boot import failed:", err?.message || err);
+    });
   if (process.env.NODE_ENV !== "production") {
     let gitHead = "unavailable";
     try {
