@@ -47,6 +47,10 @@ import {
   ADP_EXECUTIVE_SUMMARY_HYBRID_V3_LAYOUT,
   ADP_EXECUTIVE_LEFT_CONSTRAINT_PRIMARY_ISSUE_PARITY,
 } from "../lib/ai-demand-positioning/customer/executive-scan-layer-v1.js";
+import {
+  auditBppEvidencePublicationGate,
+  resolveBppEvidenceResponseText,
+} from "../lib/ai-demand-positioning/brand-portfolio/adp-bpp-canonical-evidence-set-v1.js";
 
 const OUT_DIR = join(process.cwd(), "reports/ai-demand-positioning");
 const OUT = join(OUT_DIR, "adp-customer-surface-contract-v1-latest.json");
@@ -278,6 +282,13 @@ async function main() {
     BPP_SUPPRESSION_REASON_PARITY: true,
     BPP_NO_GENERIC_FALSE_SUPPRESSION: true,
     BPP_OWNER_SHARE_PARITY: true,
+    BPP_EVIDENCE_CONTROLS_PRESENT: true,
+    BPP_POSITIVE_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0: true,
+    BPP_MISSING_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0: true,
+    BPP_DISPLACEMENT_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0: true,
+    BPP_RAW_RESPONSE_PRESENT: true,
+    BPP_COUNT_SUPPORT_PARITY: true,
+    BPP_CORE_LENS_ISOLATION: true,
   };
   for (const propertyId of listPublishedPropertyIds()) {
     const profile = loadPropertyProfile(propertyId);
@@ -314,6 +325,54 @@ async function main() {
       gates.BPP = false;
       bppGateExtras.BPP_READY_FULL_RENDERED = false;
       failures.push({ propertyId, gate: "BPP_READY_FULL_RENDERED", detail: bpp?.status });
+    }
+    // Universal BPP evidence contract (populated READY only)
+    if (
+      bpp?.status === "READY" ||
+      attempt.clientReadyClass === BPP_CLIENT_READY_CLASS.BPP_READY_POPULATED_FULL ||
+      attempt.clientReadyClass === BPP_CLIENT_READY_CLASS.BPP_READY_POPULATED_RANK_ONLY
+    ) {
+      const evGate = auditBppEvidencePublicationGate(bpp);
+      if (evGate.applicable && !evGate.pass) {
+        gates.BPP = false;
+        bppGateExtras.BPP_RAW_RESPONSE_PRESENT = false;
+        failures.push({
+          propertyId,
+          gate: "BPP_RAW_RESPONSE_PRESENT",
+          detail: (evGate.defects || []).slice(0, 5),
+        });
+      }
+      const pos = bpp?.evidence?.positive || [];
+      const miss = bpp?.evidence?.missing || [];
+      const disp = bpp?.evidence?.displacement || [];
+      if ((bpp?.evidence?.counts?.positive ?? pos.length) !== pos.length) {
+        bppGateExtras.BPP_COUNT_SUPPORT_PARITY = false;
+        gates.BPP = false;
+        failures.push({ propertyId, gate: "BPP_COUNT_SUPPORT_PARITY", detail: "positive" });
+      }
+      if (pos.length > 0 && pos.some((e) => !resolveBppEvidenceResponseText(e).trim())) {
+        bppGateExtras.BPP_POSITIVE_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0 = false;
+        gates.BPP = false;
+        failures.push({ propertyId, gate: "BPP_POSITIVE_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0" });
+      }
+      if (miss.length > 0 && miss.some((e) => !resolveBppEvidenceResponseText(e).trim())) {
+        bppGateExtras.BPP_MISSING_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0 = false;
+        gates.BPP = false;
+        failures.push({ propertyId, gate: "BPP_MISSING_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0" });
+      }
+      if (disp.length > 0 && disp.some((e) => !resolveBppEvidenceResponseText(e).trim())) {
+        bppGateExtras.BPP_DISPLACEMENT_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0 = false;
+        gates.BPP = false;
+        failures.push({ propertyId, gate: "BPP_DISPLACEMENT_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0" });
+      }
+      const lensLeak = [...pos, ...miss, ...disp].some(
+        (e) => e.lens && e.lens !== "BRAND_PORTFOLIO" && e.lens !== "bpp"
+      );
+      if (lensLeak) {
+        bppGateExtras.BPP_CORE_LENS_ISOLATION = false;
+        gates.BPP = false;
+        failures.push({ propertyId, gate: "BPP_CORE_LENS_ISOLATION" });
+      }
     }
     if (!customerFacingBppCopyIsClean(JSON.stringify(bpp || {}))) {
       gates.BPP = false;

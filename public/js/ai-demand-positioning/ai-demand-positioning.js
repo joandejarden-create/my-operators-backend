@@ -1775,27 +1775,33 @@
     }
 
     if (evidenceHost) {
-      // ADP_EVIDENCE_LINK_NONEMPTY — only publish clickable BPP evidence when pack is nonempty.
+      // BPP_EVIDENCE_IS_A_CORE_PRODUCT_CAPABILITY — always expose controls for populated BPP.
+      var bppReadyPopulated =
+        bpp.status === "READY" ||
+        bpp.bppCustomerState === "BPP_READY_POPULATED_FULL" ||
+        bpp.bppCustomerState === "BPP_READY_POPULATED_RANK_ONLY" ||
+        isBrandPortfolioReady(bpp);
       var bppPos = (bpp.evidence && bpp.evidence.positive) || [];
       var bppMiss = (bpp.evidence && bpp.evidence.missing) || [];
       var bppDisp = (bpp.evidence && bpp.evidence.displacement) || [];
-      var bppBtns = [];
-      if (bppPos.length) {
-        bppBtns.push(
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="positive" data-adp-evidence-type="BPP_PRESENCE">View Positive Evidence</button>'
-        );
-      }
-      if (bppMiss.length) {
-        bppBtns.push(
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="missing" data-adp-evidence-type="BPP_MISSING">View Missing Evidence</button>'
-        );
-      }
-      if (bppDisp.length) {
-        bppBtns.push(
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="displacement" data-adp-evidence-type="BPP_DISPLACEMENT">View Portfolio Displacement Evidence</button>'
-        );
-      }
-      if (bppBtns.length) {
+      if (bppReadyPopulated) {
+        var bppBtns = [
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="positive" data-adp-evidence-type="BPP_PRESENCE"' +
+            (bppPos.length ? "" : ' data-bpp-empty="1"') +
+            ">View Positive Evidence" +
+            (bppPos.length ? " (" + bppPos.length + ")" : "") +
+            "</button>",
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="missing" data-adp-evidence-type="BPP_MISSING"' +
+            (bppMiss.length ? "" : ' data-bpp-empty="1"') +
+            ">View Missing Evidence" +
+            (bppMiss.length ? " (" + bppMiss.length + ")" : "") +
+            "</button>",
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="displacement" data-adp-evidence-type="BPP_DISPLACEMENT"' +
+            (bppDisp.length ? "" : ' data-bpp-empty="1"') +
+            ">View Portfolio Displacement" +
+            (bppDisp.length ? " (" + bppDisp.length + ")" : "") +
+            "</button>",
+        ];
         bppMountAnalyticalShell(evidenceHost, "adp-bpp-evidence-actions");
         evidenceHost.innerHTML = '<div class="adp-bpp-evidence-bar">' + bppBtns.join("") + "</div>";
         evidenceHost.querySelectorAll("[data-bpp-evidence]").forEach(function (btn) {
@@ -1926,6 +1932,18 @@
       .join("");
   }
 
+  function resolveBppEvidenceAiResponse(ev) {
+    return String(
+      (ev &&
+        (ev.aiResponse ||
+          ev.exactResponse ||
+          ev.rawResponse ||
+          ev.excerpt ||
+          ev.responseExcerpt)) ||
+        ""
+    );
+  }
+
   function openBrandPortfolioEvidenceDrawer(kind, bpp) {
     var drawer = document.getElementById("adpEvidenceDrawer");
     var body = document.getElementById("adpEvidenceBody");
@@ -1946,36 +1964,72 @@
     if (title) title.textContent = heading;
     if (!body) return;
     if (!pack.length) {
-      // Should not be reachable — empty packs are not published as clickable controls.
-      body.innerHTML = '<div class="aiv-empty">Supporting evidence is unavailable for this claim.</div>';
+      var emptyLabel =
+        kind === "positive"
+          ? "No positive portfolio evidence this period."
+          : kind === "missing"
+            ? "No missing portfolio evidence this period."
+            : "No portfolio displacement evidence this period.";
+      body.innerHTML = '<div class="aiv-empty">' + esc(emptyLabel) + "</div>";
     } else {
       var html = "";
       pack.forEach(function (ev) {
-        var providerLine = formatProviderDisplayName(ev.provider || ev.sampleProvider || "unknown");
+        var providerLine = formatProviderDisplayName(
+          ev.provider || ev.sampleProvider || "unknown"
+        );
+        var responseBody = resolveBppEvidenceAiResponse(ev);
+        var subjectStatus =
+          kind === "positive"
+            ? "Present"
+            : kind === "missing"
+              ? "Missing"
+              : "Displaced";
+        var rankLine =
+          ev.subjectRank != null
+            ? String(ev.subjectRank)
+            : ev.position != null
+              ? String(ev.position)
+              : "";
         html +=
-          '<div class="aiv-evidence">' +
+          '<div class="aiv-evidence" data-bpp-lens="BRAND_PORTFOLIO">' +
           '<section class="aiv-evidence-meta" aria-label="Evidence details">' +
+          (ev.territory || ev.territoryId
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Demand Territory</div>' +
+              '<div class="aiv-evidence-value">' +
+              esc(ev.territory || ev.territoryId) +
+              "</div></div>"
+            : "") +
+          (ev.scenarioId
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Demand Scenario</div>' +
+              '<div class="aiv-evidence-value">' +
+              esc(ev.scenarioLabel || ev.scenarioId) +
+              "</div></div>"
+            : "") +
           '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Provider</div>' +
           '<div class="aiv-evidence-value">' +
           esc(providerLine) +
           "</div></div>" +
-          (ev.territory
-            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Territory</div>' +
+          '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Subject status</div>' +
+          '<div class="aiv-evidence-value">' +
+          esc(subjectStatus) +
+          "</div></div>" +
+          (rankLine && kind === "positive"
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Rank</div>' +
               '<div class="aiv-evidence-value">' +
-              esc(ev.territory) +
+              esc(rankLine) +
               "</div></div>"
             : "") +
-          (ev.matchedVariant
-            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Match</div>' +
+          (kind === "displacement" && (ev.competitorName || ev.competitorCanonicalHotelId)
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Displacing Portfolio Alternative</div>' +
               '<div class="aiv-evidence-value">' +
-              esc(ev.matchedVariant) +
+              esc(ev.competitorName || ev.competitorCanonicalHotelId) +
               "</div></div>"
             : "") +
           "</section>" +
           '<section class="aiv-evidence-section aiv-evidence-section--ai-response">' +
           '<div class="aiv-evidence-label">AI Response</div>' +
           '<pre class="aiv-evidence-response" style="white-space:pre-wrap;font-family:inherit;margin:0;">' +
-          esc(ev.aiResponse || "") +
+          esc(responseBody) +
           "</pre></section></div>";
       });
       body.innerHTML = html;
