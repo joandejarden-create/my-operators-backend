@@ -77,7 +77,14 @@
   }
   var mountEl = null;
   var isOpen = false;
+  var embedMode = false;
+  var presentationOverrides = null;
   var currentHotel = null;
+
+  function applyPresentation(hotel) {
+    if (!hotel || !presentationOverrides) return hotel;
+    return Object.assign({}, hotel, presentationOverrides);
+  }
 
   var CONTEXT_CONFIG = {
     nearbyLimit: 12,
@@ -701,8 +708,8 @@
 
   function hotelCoords(hotel) {
     if (!hotel) return null;
-    var lat = Number(hotel.lat);
-    var lng = Number(hotel.lng);
+    var lat = Number(hotel.lat != null ? hotel.lat : hotel.latitude);
+    var lng = Number(hotel.lng != null ? hotel.lng : hotel.longitude);
     if (!Number.isFinite(lat) || !Number.isFinite(lng) || (lat === 0 && lng === 0)) return null;
     return { lat: lat, lng: lng };
   }
@@ -1187,7 +1194,7 @@
             renderLocationBlock(hotel) +
           "</section>" +
           '<section class="hdp-section hdp-demand-drivers-body">' +
-            '<h3 class="hdp-section__title">Demand drivers</h3>' +
+            '<h3 class="hdp-section__title">Demand Drivers</h3>' +
             '<div class="hdp-demand-drivers__content">' + (bodyHtml || "") + "</div>" +
           "</section>" +
         "</div>" +
@@ -1258,6 +1265,87 @@
       if (ai !== bi) return ai - bi;
       return b.hotels - a.hotels || b.rooms - a.rooms || String(a.label).localeCompare(String(b.label));
     });
+  }
+
+  /**
+   * Scout / fixture coverage may return count maps `{ "Brand": 3 }` or HDP bucket rows.
+   * Normalize to the bucket-row shape used by footprint tables.
+   */
+  function normalizeCoverageBreakdownRows(raw) {
+    if (!raw) return [];
+    if (Array.isArray(raw)) {
+      return raw
+        .map(function (row) {
+          if (!row || typeof row !== "object") return null;
+          var hotels = fpMetricNum(row.hotels != null ? row.hotels : row.count);
+          var rooms = fpMetricNum(row.rooms);
+          var openHotels = fpMetricNum(row.openHotels);
+          var openRooms = fpMetricNum(row.openRooms);
+          var pipelineHotels = fpMetricNum(row.pipelineHotels);
+          var pipelineRooms = fpMetricNum(row.pipelineRooms);
+          if (!openHotels && !pipelineHotels && hotels) openHotels = hotels;
+          if (!openRooms && !pipelineRooms && rooms) openRooms = rooms;
+          return {
+            label: row.label || row.name || row.key || "Unknown",
+            hotels: hotels || openHotels + pipelineHotels,
+            rooms: rooms || openRooms + pipelineRooms,
+            openHotels: openHotels,
+            openRooms: openRooms,
+            pipelineHotels: pipelineHotels,
+            pipelineRooms: pipelineRooms,
+          };
+        })
+        .filter(Boolean);
+    }
+    if (typeof raw === "object") {
+      return Object.keys(raw)
+        .map(function (key) {
+          var val = raw[key];
+          if (val != null && typeof val === "object" && !Array.isArray(val)) {
+            var hotels = fpMetricNum(val.hotels != null ? val.hotels : val.count);
+            var rooms = fpMetricNum(val.rooms);
+            var openHotels = fpMetricNum(val.openHotels);
+            var openRooms = fpMetricNum(val.openRooms);
+            var pipelineHotels = fpMetricNum(val.pipelineHotels);
+            var pipelineRooms = fpMetricNum(val.pipelineRooms);
+            if (!openHotels && !pipelineHotels && hotels) openHotels = hotels;
+            if (!openRooms && !pipelineRooms && rooms) openRooms = rooms;
+            return {
+              label: val.label || key,
+              hotels: hotels || openHotels + pipelineHotels,
+              rooms: rooms || openRooms + pipelineRooms,
+              openHotels: openHotels,
+              openRooms: openRooms,
+              pipelineHotels: pipelineHotels,
+              pipelineRooms: pipelineRooms,
+            };
+          }
+          var count = fpMetricNum(val);
+          return {
+            label: key,
+            hotels: count,
+            rooms: 0,
+            openHotels: count,
+            openRooms: 0,
+            pipelineHotels: 0,
+            pipelineRooms: 0,
+          };
+        })
+        .sort(function (a, b) {
+          return b.hotels - a.hotels || String(a.label).localeCompare(String(b.label));
+        });
+    }
+    return [];
+  }
+
+  function normalizeCoverageBreakdowns(breakdowns) {
+    breakdowns = breakdowns || {};
+    return {
+      byStatus: normalizeCoverageBreakdownRows(breakdowns.byStatus),
+      byChainScale: normalizeCoverageBreakdownRows(breakdowns.byChainScale),
+      byBrand: normalizeCoverageBreakdownRows(breakdowns.byBrand),
+      byParentCompany: normalizeCoverageBreakdownRows(breakdowns.byParentCompany),
+    };
   }
 
   function groupByField(items, fieldFn) {
@@ -2074,7 +2162,7 @@
       '<div class="hdp-area-hotels-tab">' +
         '<div class="hdp-detail-row">' +
           '<section class="hdp-section hdp-area-hotels-existing">' +
-            '<h3 class="hdp-section__title">Existing hotels</h3>' +
+            '<h3 class="hdp-section__title">Existing Hotels</h3>' +
             renderAreaHotelsScopeLine(scope) +
             existingBody +
           "</section>" +
@@ -2303,30 +2391,43 @@
         if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
         if (!report || !report.success || submarketHotels.length) return;
         var metrics = report.metrics || {};
-        var breakdowns = report.breakdowns || {};
-        setTabPanel(
-          "submarket-snapshot",
-          renderSubmarketSnapshotPanel(
-            hotel,
-            [],
-            {
-              totalHotels: metrics.openHotels + metrics.pipelineHotels,
-              openHotels: metrics.openHotels,
-              openRooms: metrics.openRooms,
-              pipelineHotels: metrics.pipelineHotels,
-              pipelineRooms: metrics.pipelineRooms,
-              totalRooms:
-                fpMetricNum(metrics.openRooms) +
-                fpMetricNum(metrics.pipelineRooms) +
-                fpMetricNum(metrics.candidateRooms),
-              brandCount: metrics.brandCount,
-              parentCompanyCount: metrics.parentCompanyCount,
-            },
-            breakdowns,
-            null
-          ) + '<p class="hdp-empty">Showing Scout submarket data; reload map census for full hotel list.</p>',
-          "partial"
-        );
+        var breakdowns = normalizeCoverageBreakdowns(report.breakdowns || {});
+        var openHotels = fpMetricNum(metrics.openHotels);
+        var openRooms = fpMetricNum(metrics.openRooms);
+        var pipelineHotels = fpMetricNum(metrics.pipelineHotels);
+        var pipelineRooms = fpMetricNum(metrics.pipelineRooms);
+        var totalHotels =
+          fpMetricNum(metrics.totalHotels) || openHotels + pipelineHotels;
+        var totalRooms =
+          fpMetricNum(metrics.totalRooms) ||
+          openRooms + pipelineRooms + fpMetricNum(metrics.candidateRooms);
+        try {
+          setTabPanel(
+            "submarket-snapshot",
+            renderSubmarketSnapshotPanel(
+              hotel,
+              [],
+              {
+                totalHotels: totalHotels,
+                openHotels: openHotels,
+                openRooms: openRooms,
+                pipelineHotels: pipelineHotels,
+                pipelineRooms: pipelineRooms,
+                totalRooms: totalRooms,
+                brandCount: metrics.brandCount,
+                parentCompanyCount: metrics.parentCompanyCount,
+              },
+              breakdowns,
+              null
+            ) +
+              '<p class="hdp-empty">Showing Scout submarket data; reload map census for full hotel list.</p>',
+            totalHotels > 0 ? "partial" : "empty"
+          );
+        } catch (err) {
+          if (typeof console !== "undefined" && console.warn) {
+            console.warn("[hdp] scout submarket snapshot render failed", err);
+          }
+        }
       })
       .catch(function () {
         /* census-first snapshot already rendered */
@@ -2456,60 +2557,175 @@
     );
   }
 
+  function normalizeCensusHotelRow(h) {
+    if (!h || typeof h !== "object") return null;
+    var lat = Number(h.lat != null ? h.lat : h.latitude);
+    var lng = Number(h.lng != null ? h.lng : h.longitude);
+    return Object.assign({}, h, {
+      id: h.id || h.recordId || "",
+      lat: Number.isFinite(lat) ? lat : 0,
+      lng: Number.isFinite(lng) ? lng : 0,
+      latitude: Number.isFinite(lat) ? lat : h.latitude,
+      longitude: Number.isFinite(lng) ? lng : h.longitude,
+    });
+  }
+
+  /**
+   * Area Hotels needs a census pool. On Radar that is window.allHotels.
+   * Outside Radar (e.g. golden demo), fetch a market/city slice from Brand Presence.
+   *
+   * Prefer city over Dealality market labels: many markets (e.g. "Pacific Central")
+   * do not match name/city/country SEARCH and would return an empty set.
+   */
+  function areaHotelsCensusQueries(hotel) {
+    var out = [];
+    var seen = {};
+    function push(raw) {
+      var q = String(raw || "").trim();
+      if (!q) return;
+      if (/^unknown(\s|$)/i.test(q)) return;
+      var key = q.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      out.push(q);
+    }
+    push(hotel && hotel.city);
+    push(hotel && hotel.market);
+    push(hotel && hotel.country);
+    return out;
+  }
+
+  function fetchAreaHotelsCensusByQuery(q) {
+    var url =
+      "/api/brand-presence?search=" +
+      encodeURIComponent(q) +
+      "&limit=400";
+    return fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } })
+      .then(function (r) {
+        if (!r.ok) throw new Error("brand-presence HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (payload) {
+        return ((payload && payload.hotels) || [])
+          .map(normalizeCensusHotelRow)
+          .filter(Boolean);
+      });
+  }
+
+  function ensureAreaHotelsCensus(hotel) {
+    var existing = window.allHotels || [];
+    if (existing.length) return Promise.resolve(existing);
+
+    var cacheKey = areaHotelsCensusCacheKey(hotel);
+    if (
+      window.__hexAreaHotelsCensusCache &&
+      window.__hexAreaHotelsCensusCacheKey === cacheKey &&
+      window.__hexAreaHotelsCensusCache.length
+    ) {
+      return Promise.resolve(window.__hexAreaHotelsCensusCache);
+    }
+
+    var queries = areaHotelsCensusQueries(hotel);
+    if (!queries.length) return Promise.resolve([]);
+
+    function tryNext(i) {
+      if (i >= queries.length) return Promise.resolve([]);
+      return fetchAreaHotelsCensusByQuery(queries[i]).then(function (rows) {
+        if (rows.length) {
+          window.__hexAreaHotelsCensusCache = rows;
+          window.__hexAreaHotelsCensusCacheKey = cacheKey;
+          if (!(window.allHotels && window.allHotels.length)) {
+            window.allHotels = rows;
+          }
+          return rows;
+        }
+        return tryNext(i + 1);
+      });
+    }
+
+    return tryNext(0).catch(function (err) {
+      if (typeof console !== "undefined" && console.warn) {
+        console.warn("[HotelDetailPanel] area hotels census fallback failed:", err);
+      }
+      return [];
+    });
+  }
+
+  function areaHotelsCensusCacheKey(hotel) {
+    if (!hotel) return "";
+    return [
+      hotel.id || hotel.recordId || "",
+      hotel.city || "",
+      hotel.market || "",
+      hotel.country || "",
+    ].join("|");
+  }
+
   function loadAreaHotelsTab(hotel) {
     if (!panelEl || !hotel) return;
     var panel = panelEl.querySelector('[data-panel="area-hotels"]');
     if (!panel) return;
 
-    var allHotels = window.allHotels || [];
-    if (!allHotels.length) {
-      panel.dataset.state = "empty";
-      panel.innerHTML =
-        '<p class="hdp-empty">Hotel census data is not loaded yet. Wait for the map to finish loading and try again.</p>';
-      return;
-    }
+    panel.dataset.state = "loading";
+    panel.innerHTML = '<p class="hdp-empty hdp-context-state">Loading area hotels…</p>';
 
-    var scope = hotelCoords(hotel) ? getPropertyContextScope(hotel) : {
-          mode: "radius",
-          radiusKm: getAreaHotelsBaseRadiusKm(hotel),
-          baseRadiusKm: getAreaHotelsBaseRadiusKm(hotel),
-          expanded: false,
-          locationType: normalizeAreaHotelsLocationType(hotel),
-          corridor: resolveEffectiveSubmarket(hotel),
-          note: "",
-          existing: [],
-          pipeline: [],
-        };
+    ensureAreaHotelsCensus(hotel).then(function (allHotels) {
+      if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
+      if (!allHotels.length) {
+        panel.dataset.state = "empty";
+        panel.innerHTML =
+          '<p class="hdp-empty">No nearby hotels found for this city / market yet.</p>';
+        return;
+      }
 
-    var hasContent = scope.existing.length > 0 || scope.pipeline.length > 0;
+      var scope = hotelCoords(hotel)
+        ? resolveAreaHotelsScope(hotel, allHotels)
+        : {
+            mode: "radius",
+            radiusKm: getAreaHotelsBaseRadiusKm(hotel),
+            baseRadiusKm: getAreaHotelsBaseRadiusKm(hotel),
+            expanded: false,
+            locationType: normalizeAreaHotelsLocationType(hotel),
+            corridor: resolveEffectiveSubmarket(hotel),
+            note: "",
+            existing: [],
+            pipeline: [],
+          };
 
-    panel.dataset.state = hasContent ? "success" : "empty";
-    panel.innerHTML = renderAreaHotelsTabPanel(hotel, scope);
-    bindFilterPills(panel);
+      var hasContent = scope.existing.length > 0 || scope.pipeline.length > 0;
+      panel.dataset.state = hasContent ? "success" : "empty";
+      panel.innerHTML = renderAreaHotelsTabPanel(hotel, scope);
+      bindFilterPills(panel);
+    });
   }
 
   function loadContextTabData(hotel) {
     if (!panelEl || !hotel) return;
 
     loadMarketIntelTabs(hotel);
-    var contextScope = getPropertyContextScope(hotel);
-    loadAreaHotelsTab(hotel);
 
-    if (!hotelCoords(hotel)) {
-      setTabPanel(
-        "demand-drivers",
-        renderDemandDriversTabPanel(
-          hotel,
-          '<p class="hdp-empty">Location coordinates are not available for nearby demand driver search.</p>'
-        ),
-        "empty"
-      );
-      setTabPanel("access-connectivity", '<p class="hdp-empty">Location coordinates are not available.</p>', "empty");
-      return;
-    }
+    ensureAreaHotelsCensus(hotel).then(function () {
+      if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
 
-    loadDemandAnchorTabs(hotel, contextScope);
-    loadAccessConnectivityTab(hotel, contextScope);
+      var contextScope = getPropertyContextScope(hotel);
+      loadAreaHotelsTab(hotel);
+
+      if (!hotelCoords(hotel)) {
+        setTabPanel(
+          "demand-drivers",
+          renderDemandDriversTabPanel(
+            hotel,
+            '<p class="hdp-empty">Location coordinates are not available for nearby demand driver search.</p>'
+          ),
+          "empty"
+        );
+        setTabPanel("access-connectivity", '<p class="hdp-empty">Location coordinates are not available.</p>', "empty");
+        return;
+      }
+
+      loadDemandAnchorTabs(hotel, contextScope);
+      loadAccessConnectivityTab(hotel, contextScope);
+    });
   }
 
   function bindPanelTabs(hotel) {
@@ -2592,7 +2808,7 @@
             '<p class="hdp-description">' + esc(resolveDescriptionText(hotel)) + "</p>" +
           "</section>" +
           '<section class="hdp-section hdp-overview-section">' +
-            '<h3 class="hdp-section__title">Overview</h3>' +
+            '<h3 class="hdp-section__title">Property Facts</h3>' +
             '<div class="hdp-overview">' + overviewHtml + "</div>" +
           "</section>" +
         "</div>" +
@@ -2682,6 +2898,7 @@
   }
 
   function lockTabPanelsHeight(force) {
+    if (embedMode) return;
     if (!panelEl) return;
     var panelsRoot = panelEl.querySelector(".hdp-tab-panels");
     var overviewPanel = panelEl.querySelector('[data-panel="overview"]');
@@ -2800,8 +3017,115 @@
     });
   }
 
-  function open(hotel) {
+  function showEmbeddedPanel(tabId) {
+    if (!panelEl) return;
+    var map = {
+      hotel: "overview",
+      overview: "overview",
+      "submarket-snapshot": "submarket-snapshot",
+      "area-hotels": "area-hotels",
+      "demand-drivers": "demand-drivers",
+      "access-connectivity": "access-connectivity",
+    };
+    var id = map[tabId] || tabId;
+    panelEl.querySelectorAll(".hdp-tab-panels .tab-panel").forEach(function (panel) {
+      var isActive = panel.getAttribute("data-panel") === id;
+      panel.classList.toggle("active", isActive);
+      panel.hidden = !isActive;
+    });
+  }
+
+  /**
+   * Mount Radar hotel tabs into a Hotel Explorer host (no small modal chrome).
+   * Same data loaders as the compact panel — one source of truth.
+   */
+  function embed(hostEl, hotel) {
+    if (!hostEl || !hotel) return Promise.resolve(null);
+    embedMode = true;
+    panelEl = hostEl;
+    currentHotel = applyPresentation(hotel);
+    isOpen = true;
+    hostEl.classList.add("hdp-embed-host");
+    hostEl.innerHTML =
+      '<div class="hdp-tab-panels hdp-tab-panels--embed">' +
+      '<section class="tab-panel active" data-panel="overview"></section>' +
+      '<section class="tab-panel" data-panel="submarket-snapshot" data-state="loading">' +
+      '<p class="hdp-empty hdp-context-state">Loading submarket snapshot…</p></section>' +
+      '<section class="tab-panel" data-panel="area-hotels" data-state="loading">' +
+      '<p class="hdp-empty hdp-context-state">Loading area hotels…</p></section>' +
+      '<section class="tab-panel" data-panel="demand-drivers" data-state="loading">' +
+      '<p class="hdp-empty hdp-context-state">Loading demand drivers…</p></section>' +
+      '<section class="tab-panel" data-panel="access-connectivity" data-state="loading">' +
+      '<p class="hdp-empty hdp-context-state">Loading access and connectivity…</p></section>' +
+      "</div>";
+
+    return fetchHotelDetail(hotel).then(function (fullHotel) {
+      if (!embedMode) return null;
+      currentHotel = applyPresentation(fullHotel);
+      var amenities = resolveAmenitiesDisplay(currentHotel);
+      var overviewRows = buildOverviewRows(currentHotel);
+      var overviewHtml = overviewRows
+        .map(function (row) {
+          return (
+            '<div class="hdp-overview__row">' +
+            '<div class="hdp-overview__label">' +
+            esc(row.label) +
+            "</div>" +
+            '<div class="hdp-overview__value">' +
+            esc(row.value) +
+            "</div></div>"
+          );
+        })
+        .join("");
+      var overviewPanel = hostEl.querySelector('[data-panel="overview"]');
+      if (overviewPanel) {
+        overviewPanel.innerHTML =
+          '<div class="hdp-overview-tab">' +
+          '<div class="hdp-detail-row">' +
+          '<section class="hdp-section hdp-description-section">' +
+          '<h3 class="hdp-section__title">Description</h3>' +
+          (currentHotel.hotelHeadline
+            ? '<p class="hdp-description hdp-description--headline">' +
+              esc(currentHotel.hotelHeadline) +
+              "</p>"
+            : "") +
+          '<p class="hdp-description">' +
+          esc(resolveDescriptionText(currentHotel)) +
+          "</p></section>" +
+          '<section class="hdp-section hdp-overview-section">' +
+          '<h3 class="hdp-section__title">Property Facts</h3>' +
+          '<div class="hdp-overview">' +
+          overviewHtml +
+          "</div></section></div>" +
+          '<section class="hdp-section hdp-amenities-section">' +
+          '<h3 class="hdp-section__title">Amenities' +
+          (amenities.length
+            ? ' <span class="hdp-amenities-count">(' + amenities.length + ")</span>"
+            : "") +
+          "</h3>" +
+          renderAmenitiesSection(amenities) +
+          "</section></div>";
+        bindAmenitiesCarousel();
+      }
+      loadContextTabData(currentHotel);
+      return currentHotel;
+    });
+  }
+
+  function unembed() {
+    embedMode = false;
+    if (panelEl && panelEl.classList.contains("hdp-embed-host")) {
+      panelEl.innerHTML = "";
+      panelEl.classList.remove("hdp-embed-host");
+    }
+    panelEl = null;
+    isOpen = false;
+    currentHotel = null;
+  }
+
+  function openCompact(hotel) {
     if (!hotel) return;
+    embedMode = false;
     ensureMounted();
     resetLockedPanelSize();
     syncPanelLayout({ updateSize: true });
@@ -2817,13 +3141,23 @@
 
     fetchHotelDetail(hotel).then(function (fullHotel) {
       if (!isOpen) return;
-      currentHotel = fullHotel;
-      mountPanelContent(renderPanelContent(fullHotel), fullHotel);
+      currentHotel = applyPresentation(fullHotel);
+      mountPanelContent(renderPanelContent(currentHotel), currentHotel);
       syncPanelLayout({ updateSize: true });
     });
   }
 
+  function open(hotel) {
+    if (!hotel) return;
+    if (window.__DEALALITY_HOTEL_EXPLORER_PRIMARY && window.HotelExplorer && typeof window.HotelExplorer.open === "function") {
+      window.HotelExplorer.open(hotel);
+      return;
+    }
+    openCompact(hotel);
+  }
+
   function close() {
+    if (embedMode) return;
     if (!panelEl || !backdropEl) return;
     panelEl.classList.remove("is-open");
     backdropEl.classList.remove("is-open");
@@ -2874,6 +3208,13 @@
     open: open,
     close: close,
     createMinimalPopup: createMinimalPopup,
-    bindHotelMarker: bindHotelMarker
+    bindHotelMarker: bindHotelMarker,
+    embed: embed,
+    unembed: unembed,
+    openCompact: openCompact,
+    showEmbeddedPanel: showEmbeddedPanel,
+    setPresentationOverrides: function (overrides) {
+      presentationOverrides = overrides || null;
+    },
   };
 })();

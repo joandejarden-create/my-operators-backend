@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Hotel Explorer — Shared Preview</title>
+  <link rel="stylesheet" href="/css/hotel-explorer-share-shell.css?v=2" />
+</head>
+<body>
+  <div class="hes-page">
+    <p class="hes-draft-banner" id="hesDraftBanner" hidden>
+      <strong>Shared preview.</strong>
+      Direct Hotel Explorer links — no login required. Ownership claims are evidence-backed only; operator is not treated as owner.
+    </p>
+    <div class="hes-toolbar">
+      <div>
+        <h1 class="hes-toolbar__title" id="hesTitle">Hotel Explorer</h1>
+        <p class="hes-toolbar__meta" id="hesMeta">Shared preview · no login required</p>
+      </div>
+      <nav class="hes-packs" id="hesPacks" aria-label="Demo packs"></nav>
+    </div>
+    <div class="hes-hub" id="hesHub" hidden></div>
+    <div class="hes-panel" id="hesPanel" hidden>
+      <div class="hes-loading" id="hesLoading" role="status" aria-live="polite">
+        Opening Hotel Explorer…
+      </div>
+    </div>
+  </div>
+  <script>
+  (function () {
+    "use strict";
+
+    var SHERATON_ID = "recsYJb2R1jarPpK3";
+    var VOCO_ID = "recTYaiA4S6fR6ixx";
+    var KGPV_ID = "recUNycnMwOVFX0hc";
+    var CAMBRIDGE_ID = "recIwaP1etgx2g9nA";
+    var SHERATON_DOSSIER = "dossier_sheraton_gdl_expo_full_hi_v1";
+    var VOCO_DOSSIER = "dossier_real_inn_cancun_full_hi_v1";
+
+    var SHARE_PACKS = {
+      mexico: {
+        key: "mexico",
+        label: "Mexico pack",
+        title: "Mexico Hotel Explorer — Demo Pack",
+        meta: "Both hotels + Full HI reports · share this page as one link",
+        hub: true,
+      },
+      "sheraton-gdl": {
+        key: "sheraton-gdl",
+        label: "Sheraton GDL",
+        title: "Hotel Explorer — Sheraton Guadalajara Expo",
+        hotelExplorer: SHERATON_ID,
+        dossier: SHERATON_DOSSIER,
+        hexTab: "hotel",
+        meta: "Sheraton Guadalajara Expo · direct URL",
+      },
+      "voco-cancun": {
+        key: "voco-cancun",
+        label: "voco Cancún",
+        title: "Hotel Explorer — voco Cancún Zona Hotelera",
+        hotelExplorer: VOCO_ID,
+        dossier: VOCO_DOSSIER,
+        hexTab: "hotel",
+        meta: "voco Cancún Zona Hotelera · former Real Inn · direct URL",
+      },
+      kgpv: {
+        key: "kgpv",
+        label: "KGPV",
+        title: "Hotel Explorer — Krystal Grand Puerto Vallarta",
+        hotelExplorer: KGPV_ID,
+        hexTab: "hotel",
+        meta: "KGPV · Krystal Grand Puerto Vallarta · direct URL",
+      },
+      cambridge: {
+        key: "cambridge",
+        label: "Cambridge",
+        title: "Hotel Explorer — Cambridge Beaches Resort & Spa",
+        hotelExplorer: CAMBRIDGE_ID,
+        hexTab: "hotel",
+        meta: "Cambridge Beaches · Bermuda · direct URL",
+      },
+    };
+
+    var PACK_ALIASES = {
+      "real-inn-cancun": "voco-cancun",
+      "voco-cancun-zona-hotelera": "voco-cancun",
+      "sheraton-guadalajara-expo": "sheraton-gdl",
+      "mexico-demo": "mexico",
+      both: "mexico",
+      all: "mexico",
+      "cambridge-beaches": "cambridge",
+      "cambridge-beaches-bermuda": "cambridge",
+      bermuda: "cambridge",
+    };
+
+    var HUB_PROPERTIES = [
+      {
+        name: "Sheraton Guadalajara Expo",
+        location: "Zapopan, Mexico",
+        note: "Marriott Sheraton · Aimbridge LATAM",
+        hotelExplorer: SHERATON_ID,
+        dossier: SHERATON_DOSSIER,
+        pack: "sheraton-gdl",
+      },
+      {
+        name: "voco Cancún Zona Hotelera",
+        location: "Cancun, Mexico",
+        note: "IHG voco · formerly Real Inn Cancun",
+        hotelExplorer: VOCO_ID,
+        dossier: VOCO_DOSSIER,
+        pack: "voco-cancun",
+      },
+    ];
+
+    var DEFAULT_PACK = "mexico";
+    var params = new URLSearchParams(window.location.search || "");
+    var packKey = String(params.get("pack") || DEFAULT_PACK)
+      .trim()
+      .toLowerCase();
+    packKey = PACK_ALIASES[packKey] || packKey;
+    var pack = SHARE_PACKS[packKey] || SHARE_PACKS[DEFAULT_PACK];
+    var tab = String(params.get("hexTab") || params.get("tab") || pack.hexTab || "hotel").trim();
+    var openReport =
+      params.get("report") === "1" ||
+      params.get("dossier") === "1" ||
+      params.get("openReport") === "1";
+    var showDraft =
+      params.get("draft") !== "0" && params.get("draft") !== "false";
+
+    var titleEl = document.getElementById("hesTitle");
+    var metaEl = document.getElementById("hesMeta");
+    var packsEl = document.getElementById("hesPacks");
+    var draftBanner = document.getElementById("hesDraftBanner");
+    var hubEl = document.getElementById("hesHub");
+    var panelEl = document.getElementById("hesPanel");
+    var loading = document.getElementById("hesLoading");
+
+    function esc(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function packHref(key) {
+      var q = new URLSearchParams();
+      q.set("pack", key);
+      if (!showDraft) q.set("draft", "0");
+      return "/hotel-explorer-share.html?" + q.toString();
+    }
+
+    /** Direct top-level Hotel Explorer URL (tabs work; no iframe). */
+    function explorerUrl(hotelId, opts) {
+      opts = opts || {};
+      var q = new URLSearchParams();
+      q.set("autopen", "1");
+      q.set("share", "1");
+      q.set("hotelExplorer", hotelId);
+      q.set("hexTab", opts.hexTab || "hotel");
+      if (opts.dossierId) q.set("dossier", opts.dossierId);
+      if (opts.sharePack) q.set("sharePack", opts.sharePack);
+      return "/hotel-intelligence-golden-demo.html?" + q.toString();
+    }
+
+    function applyChrome() {
+      document.title = pack.title;
+      if (titleEl) titleEl.textContent = pack.title;
+      if (metaEl) metaEl.textContent = pack.meta;
+      if (draftBanner) draftBanner.hidden = !showDraft;
+      if (packsEl) {
+        packsEl.innerHTML = ["mexico", "sheraton-gdl", "voco-cancun", "kgpv", "cambridge"]
+          .map(function (key) {
+            var p = SHARE_PACKS[key];
+            var active = key === pack.key ? " is-active" : "";
+            return (
+              '<a class="hes-pack' +
+              active +
+              '" href="' +
+              esc(packHref(key)) +
+              '">' +
+              esc(p.label) +
+              "</a>"
+            );
+          })
+          .join("");
+      }
+    }
+
+    function renderHub() {
+      if (panelEl) panelEl.hidden = true;
+      if (!hubEl) return;
+      hubEl.hidden = false;
+      hubEl.innerHTML =
+        '<p class="hes-hub__intro">Send this one link. Recipients open either hotel or either Full Hotel Intelligence report — tabs work on the direct explorer URLs.</p>' +
+        '<div class="hes-hub__grid">' +
+        HUB_PROPERTIES.map(function (prop) {
+          var explorer = explorerUrl(prop.hotelExplorer, {
+            hexTab: "hotel",
+            sharePack: prop.pack,
+          });
+          var report = explorerUrl(prop.hotelExplorer, {
+            hexTab: "hotel",
+            dossierId: prop.dossier,
+            sharePack: prop.pack,
+          });
+          return (
+            '<article class="hes-hub__card">' +
+            "<h2>" +
+            esc(prop.name) +
+            "</h2>" +
+            '<p class="hes-hub__loc">' +
+            esc(prop.location) +
+            "</p>" +
+            '<p class="hes-hub__note">' +
+            esc(prop.note) +
+            "</p>" +
+            '<div class="hes-hub__actions">' +
+            '<a class="hes-hub__btn hes-hub__btn--primary" href="' +
+            esc(explorer) +
+            '">Open Hotel Explorer</a>' +
+            '<a class="hes-hub__btn" href="' +
+            esc(report) +
+            '">Full HI Report</a>' +
+            "</div>" +
+            '<p class="hes-hub__url"><span>Explorer URL</span><code>' +
+            esc(explorer) +
+            "</code></p>" +
+            '<p class="hes-hub__url"><span>Report URL</span><code>' +
+            esc(report) +
+            "</code></p>" +
+            "</article>"
+          );
+        }).join("") +
+        "</div>";
+    }
+
+    function redirectToExplorer() {
+      if (hubEl) hubEl.hidden = true;
+      if (panelEl) panelEl.hidden = false;
+      var dossierId = openReport && pack.dossier ? pack.dossier : "";
+      var url = explorerUrl(pack.hotelExplorer, {
+        hexTab: tab,
+        dossierId: dossierId || undefined,
+        sharePack: pack.key,
+      });
+      if (loading) {
+        loading.hidden = false;
+        loading.textContent = "Opening " + (pack.label || "Hotel Explorer") + "…";
+      }
+      window.location.replace(url);
+    }
+
+    applyChrome();
+
+    if (pack.hub) {
+      renderHub();
+    } else if (pack.hotelExplorer) {
+      redirectToExplorer();
+    } else {
+      renderHub();
+    }
+  })();
+  </script>
+</body>
+</html>

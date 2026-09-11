@@ -1,0 +1,235 @@
+/**
+ * Public Hotel Explorer share shell — allowlisted demo packs (no login).
+ */
+
+:root {
+  --neutral--800: #080f25;
+  --neutral--700: #212c4d;
+  --neutral--100: #ffffff;
+  --accent--primary-1: #6c72ff;
+  --muted: #aeb9e1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--neutral--800);
+  color: var(--neutral--100);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.hes-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.hes-draft-banner {
+  width: min(96vw, 1400px);
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 0.6px solid rgba(108, 114, 255, 0.45);
+  background: rgba(108, 114, 255, 0.12);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.hes-draft-banner strong {
+  color: #dfe4ff;
+}
+
+.hes-toolbar {
+  width: min(96vw, 1400px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.hes-toolbar__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.hes-toolbar__meta {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.hes-packs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hes-pack {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(174, 185, 225, 0.35);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.hes-pack.is-active,
+.hes-pack:hover {
+  border-color: var(--accent--primary-1);
+  color: #fff;
+  background: rgba(108, 114, 255, 0.2);
+}
+
+.hes-panel {
+  position: relative;
+  width: min(96vw, 1400px);
+  height: calc(100vh - 120px);
+  min-height: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(174, 185, 225, 0.2);
+  background: #0a122c;
+}
+
+.hes-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  z-index: 2;
+}
+
+.hes-loading.is-error {
+  color: #f0d0d0;
+}
+
+.hes-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #080f25;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.hes-frame.is-ready {
+  opacity: 1;
+}
+
+.hes-loading[hidden],
+.hes-hub[hidden],
+.hes-panel[hidden] {
+  display: none !important;
+}
+
+.hes-hub {
+  width: min(96vw, 1400px);
+}
+
+.hes-hub__intro {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 52rem;
+}
+
+.hes-hub__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.hes-hub__card {
+  padding: 18px 18px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(174, 185, 225, 0.22);
+  background: linear-gradient(165deg, #0f1a38 0%, #0a122c 100%);
+}
+
+.hes-hub__card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 650;
+  color: #fff;
+}
+
+.hes-hub__loc {
+  margin: 6px 0 0;
+  color: #c5cef0;
+  font-size: 13px;
+}
+
+.hes-hub__note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.hes-hub__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.hes-hub__btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(174, 185, 225, 0.35);
+  color: #dfe4ff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hes-hub__btn--primary {
+  border-color: #5eead4;
+  background: rgba(16, 185, 129, 0.22);
+  color: #ecfdf5;
+}
+
+.hes-hub__btn:hover {
+  border-color: var(--accent--primary-1);
+  background: rgba(108, 114, 255, 0.18);
+}
+
+.hes-hub__url {
+  margin: 12px 0 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+  word-break: break-all;
+}
+
+.hes-hub__url span {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: 600;
+  color: #aeb9e1;
+}
+
+.hes-hub__url code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #c5cef0;
+}

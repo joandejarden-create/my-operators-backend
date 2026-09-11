@@ -1,0 +1,112 @@
+{
+  "version": "mexico-native-pilot-2.4c-v1",
+  "pilot_size": 14,
+  "level_4_external": "DISABLED",
+  "webhound": "SELECTIVE_ESCALATION_RD_ONLY",
+  "selection_rationale": "Stratified Mexico cohort across research archetypes and markets. Mix of product Census/GSF-cohort hotels and sparse Census-like seeds for non-GSF diversity. T0 excludes ownership answers, PropCo, people, and decisive URLs.",
+  "hotels": [
+    {
+      "pilot_id": "MX24C-01",
+      "archetype": "PUBLIC_COMPANY",
+      "market_bucket": "Los Cabos",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-01-krystal-grand-los-cabos.json",
+      "why": "GSF public-company filing lane outside KGPV; ownership not product-verified"
+    },
+    {
+      "pilot_id": "MX24C-02",
+      "archetype": "PUBLIC_COMPANY",
+      "market_bucket": "Puerto Vallarta / Riviera Nayarit",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-02-krystal-grand-nuevo-vallarta.json",
+      "why": "Second GSF Pacific asset for MX-PUBCO generalization"
+    },
+    {
+      "pilot_id": "MX24C-03",
+      "archetype": "PUBLIC_COMPANY",
+      "market_bucket": "Mexico City",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-03-fiesta-inn-insurgentes-sur.json",
+      "why": "Likely FibraHotel / listed-issuer filing lane; non-GSF public company"
+    },
+    {
+      "pilot_id": "MX24C-04",
+      "archetype": "PRIVATE_OWNER_OPERATOR",
+      "market_bucket": "Cancún / Riviera Maya",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-04-hotel-xcaret-mexico.json",
+      "why": "Private Grupo Xcaret owner-operator pattern"
+    },
+    {
+      "pilot_id": "MX24C-05",
+      "archetype": "PRIVATE_OWNER_OPERATOR",
+      "market_bucket": "Los Cabos",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-05-rosewood-pedregal.json",
+      "why": "Private luxury owner-operator / group website lane"
+    },
+    {
+      "pilot_id": "MX24C-06",
+      "archetype": "PRIVATE_OWNER_OPERATOR",
+      "market_bucket": "Mexico City",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-06-las-alcobas.json",
+      "why": "Private urban luxury; non-public-company methods"
+    },
+    {
+      "pilot_id": "MX24C-07",
+      "archetype": "JV_TRUST",
+      "market_bucket": "Cancún / Riviera Maya",
+      "seed_file": "fixtures/golden-demo/native-seeds/mahekal-t0-seed.json",
+      "why": "Known JV/fideicomiso transfer case from 2.4B; re-run under pilot harness"
+    },
+    {
+      "pilot_id": "MX24C-08",
+      "archetype": "JV_TRUST",
+      "market_bucket": "Mexico City",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-08-hyatt-regency-cdmx-insurgentes.json",
+      "why": "GSF-operated branded hotel; possible JV/complex ownership"
+    },
+    {
+      "pilot_id": "MX24C-09",
+      "archetype": "THIRD_PARTY_MANAGED",
+      "market_bucket": "Puerto Vallarta / Riviera Nayarit",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-09-krystal-resort-pv.json",
+      "why": "Adjacent Resort identity + operator≠owner discipline (Chartwell/GSF collision lane)"
+    },
+    {
+      "pilot_id": "MX24C-10",
+      "archetype": "THIRD_PARTY_MANAGED",
+      "market_bucket": "Pacific other",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-10-krystal-beach-acapulco.json",
+      "why": "GSF managed; ownership not verified — operator≠owner test"
+    },
+    {
+      "pilot_id": "MX24C-11",
+      "archetype": "INDEPENDENT_FAMILY",
+      "market_bucket": "San Miguel de Allende / Bajío",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-11-krystal-grand-residences-sma.json",
+      "why": "Small independent-style Census hotel under GSF management"
+    },
+    {
+      "pilot_id": "MX24C-12",
+      "archetype": "INDEPENDENT_FAMILY",
+      "market_bucket": "San Miguel de Allende / Bajío",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-12-casa-de-sierra-nevada.json",
+      "why": "Independent/heritage boutique ownership research"
+    },
+    {
+      "pilot_id": "MX24C-13",
+      "archetype": "HARD_OPAQUE",
+      "market_bucket": "Monterrey",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-13-krystal-urban-monterrey.json",
+      "why": "Sparse product fields; expect abstention or escalation candidate"
+    },
+    {
+      "pilot_id": "MX24C-14",
+      "archetype": "HARD_OPAQUE",
+      "market_bucket": "Pacific other",
+      "seed_file": "fixtures/golden-demo/native-seeds/pilot-2.4c/mx24c-14-krystal-ixtapa.json",
+      "why": "Opaque ownership; correct UNKNOWN preferred over false confidence"
+    }
+  ],
+  "excluded_from_pilot_as_hero_baseline": {
+    "note": "KGPV remains hero demo; not counted in 2.4C volume metrics as a new generalization case",
+    "hotel": "Krystal Grand Puerto Vallarta",
+    "seed": "fixtures/golden-demo/native-seeds/kgpv-t0-seed.json"
+  }
+}

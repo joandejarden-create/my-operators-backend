@@ -1,5 +1,12 @@
 import Airtable from "airtable";
 import { buildHiltonAmenitiesDisplay } from "../lib/hilton-amenity-display.js";
+import {
+  getFixtureHotelById,
+  isAirtableCredentialError,
+  isMexicoRadarFixtureHotelId,
+  searchFixtureHotels,
+  shouldUseMexicoRadarFixtureFallback,
+} from "../lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
@@ -11,6 +18,36 @@ function ensureBrandPresenceConfig(res) {
   if (base) return true;
   res.status(500).json({ error: "Missing Airtable API key or base id for brand presence" });
   return false;
+}
+
+function fixtureHotelResponse(recordId) {
+  const hotel = getFixtureHotelById(recordId);
+  if (!hotel) return null;
+  hotel.amenitiesDisplay = buildHiltonAmenitiesDisplay(hotel);
+  return { success: true, hotel, source: "golden_demo_radar_fixture" };
+}
+
+function fixtureSearchResponse({ search, limit, page = 0, view = "full" } = {}) {
+  if (!shouldUseMexicoRadarFixtureFallback({ search, country: search })) return null;
+  const hotels = searchFixtureHotels(search || "", { limit: limit || 400 });
+  if (!hotels.length) return null;
+  return {
+    success: true,
+    hotels,
+    statistics: {},
+    insights: [],
+    totalCount: hotels.length,
+    totalWithCoordinates: hotels.filter(
+      (h) => Number.isFinite(h.lat) && Number.isFinite(h.lng) && (h.lat !== 0 || h.lng !== 0)
+    ).length,
+    skippedNoCoordinates: 0,
+    hasMore: false,
+    page: parseInt(page, 10) || 0,
+    limit,
+    view,
+    cached: false,
+    source: "golden_demo_radar_fixture",
+  };
 }
 
 // In-memory cache for performance optimization
@@ -241,19 +278,56 @@ function formatHotelRecord(hotel) {
 
 // Single hotel detail — fresh read for detail panel (amenities, website, phone, etc.)
 export async function getBrandPresenceHotelById(req, res) {
-  if (!ensureBrandPresenceConfig(res)) return;
-  try {
-    const recordId = String(req.params.recordId || "").trim();
-    if (!recordId || !recordId.startsWith("rec")) {
-      return res.status(400).json({ success: false, error: "Valid Airtable record id required" });
-    }
+  const recordId = String(req.params.recordId || "").trim();
+  if (!recordId || !recordId.startsWith("rec")) {
+    return res.status(400).json({ success: false, error: "Valid Airtable record id required" });
+  }
 
+  if (!base) {
+    const fixture = fixtureHotelResponse(recordId);
+    if (fixture) return res.json(fixture);
+    return res.status(500).json({ error: "Missing Airtable API key or base id for brand presence" });
+  }
+
+  try {
     const hotel = await base(F.hotels.table).find(recordId);
     const formatted = formatHotelRecord(hotel);
     formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
+    // Prefer golden-demo presentation for Mexico share hotels when census still shows former brand.
+    if (isMexicoRadarFixtureHotelId(recordId)) {
+      const presentation = getFixtureHotelById(recordId);
+      if (presentation) {
+        formatted.name = presentation.name || formatted.name;
+        formatted.brand = presentation.brand || formatted.brand;
+        formatted.parentCompany = presentation.parentCompany || formatted.parentCompany;
+        formatted.managementCompany =
+          presentation.managementCompany || formatted.managementCompany;
+        formatted.chainScale = presentation.chainScale || formatted.chainScale;
+        formatted.market = presentation.market || formatted.market;
+        formatted.submarket = presentation.submarket || formatted.submarket;
+        formatted.website = presentation.website || formatted.website;
+        // Fill narrative only when census is empty; never clobber richer census text with stubs.
+        if (!String(formatted.hotelDescription || "").trim() && presentation.hotelDescription) {
+          formatted.hotelDescription = presentation.hotelDescription;
+        }
+        if (!String(formatted.amenities || "").trim() && presentation.amenities) {
+          formatted.amenities = presentation.amenities;
+        }
+        formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
+      }
+    }
 
     res.json({ success: true, hotel: formatted });
   } catch (error) {
+    const fixture = fixtureHotelResponse(recordId);
+    if (fixture) {
+      console.warn(
+        "[brand-presence] hotel detail falling back to golden-demo fixture",
+        recordId,
+        error?.message || error
+      );
+      return res.json(fixture);
+    }
     const status = error?.statusCode === 404 ? 404 : 500;
     console.error("Error getting brand presence hotel detail:", error);
     res.status(status).json({
@@ -266,12 +340,18 @@ export async function getBrandPresenceHotelById(req, res) {
 
 // Get brand presence data
 export async function getBrandPresence(req, res) {
-  if (!ensureBrandPresenceConfig(res)) return;
+  const requestedLimit = parseInt(req.query.limit, 10);
+  const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : null;
+  const { brand, status, region, search, page = 0 } = req.query;
+  const view = "full";
+
+  if (!base) {
+    const fixture = fixtureSearchResponse({ search, limit, page, view });
+    if (fixture) return res.json(fixture);
+    return res.status(500).json({ error: "Missing Airtable API key or base id for brand presence" });
+  }
+
   try {
-    const requestedLimit = parseInt(req.query.limit, 10);
-    const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : null;
-    const { brand, status, region, search, page = 0 } = req.query;
-    
     // Check cache first
     const cacheKey = getCacheKey({ brand, status, region, search, limit, page });
     const cachedData = getFromCache(cacheKey);
@@ -331,6 +411,16 @@ export async function getBrandPresence(req, res) {
     try {
       hotels = await base(F.hotels.table).select(selectOptions).all();
     } catch (selectErr) {
+      if (isAirtableCredentialError(selectErr)) {
+        const fixture = fixtureSearchResponse({ search, limit, page, view });
+        if (fixture) {
+          console.warn(
+            "[brand-presence] search falling back to golden-demo fixture",
+            selectErr?.message || selectErr
+          );
+          return res.json(fixture);
+        }
+      }
       const msg = String(selectErr?.message || selectErr || "");
       if (
         selectErr?.error === "UNKNOWN_FIELD_NAME" ||
@@ -382,6 +472,23 @@ export async function getBrandPresence(req, res) {
     res.json(response);
     
   } catch (error) {
+    if (isAirtableCredentialError(error)) {
+      const fixture = fixtureSearchResponse({
+        search: req.query?.search,
+        limit: Number.isFinite(parseInt(req.query?.limit, 10))
+          ? parseInt(req.query.limit, 10)
+          : null,
+        page: req.query?.page || 0,
+        view: "full",
+      });
+      if (fixture) {
+        console.warn(
+          "[brand-presence] search catch falling back to golden-demo fixture",
+          error?.message || error
+        );
+        return res.json(fixture);
+      }
+    }
     console.error("Error getting brand presence data:", error);
     res.status(500).json({ 
       error: "Internal Server Error", 
