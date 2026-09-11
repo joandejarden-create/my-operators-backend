@@ -10,6 +10,12 @@ Production HI is healthy again on hotfix deploy `2222ebdc`, but **`main` is stil
 
 **Recommendation:** KEEP CLI WITH HARD GUARDS short-term; MOVE TO MAIN-DRIVEN after PR #40 merges and Railway GitHub deploy can target `main` safely.
 
+## Live incident during this packet
+
+After HI hotfix `2222ebdc`, an ADP-only restore `3d8aeb75` ("P0 restore ADP V91…") wiped HI again (golden-demo / research CSS / hotel-explorer.js → 404).  
+
+Coexistence restore via gated tree: deploy `08b72ffc` — **HI + ADP + Brand/Operator share all HTTP 200** (postdeploy smoke PASS).
+
 ## Audited production snapshot
 
 | Item | Fact |
@@ -18,9 +24,10 @@ Production HI is healthy again on hotfix deploy `2222ebdc`, but **`main` is stil
 | Service | `my-operators-backend` |
 | Environment | `production` |
 | URL | https://my-operators-backend-production.up.railway.app |
-| Deploy ID | `2222ebdc` |
+| Deploy ID (current coexistence) | `08b72ffc` |
+| Prior HI-only wipe | `3d8aeb75` (ADP restore) after `2222ebdc` (HI hotfix) |
 | Method | manual CLI `railway up` (not historical GitHub auto-deploy from main) |
-| Root cause of wipe | CLI replace of entire service with ADP-only tree → HI 404s |
+| Root cause of wipe | CLI replace of entire service with incomplete tree → peer product 404s |
 
 ## Gate checklist
 
