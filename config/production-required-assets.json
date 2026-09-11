@@ -1,0 +1,193 @@
+{
+  "version": "production-required-assets-v1",
+  "updatedAt": "2026-09-11",
+  "purpose": "Hard gate: Railway CLI uploads must include every required Dealality product surface. ADP-only or HI-only trees must fail before upload.",
+  "productionBaseUrl": "https://my-operators-backend-production.up.railway.app",
+  "goldenFourHotelIds": [
+    "recUNycnMwOVFX0hc",
+    "recIwaP1etgx2g9nA",
+    "recsYJb2R1jarPpK3",
+    "recTYaiA4S6fR6ixx"
+  ],
+  "surfaces": {
+    "HOTEL_INTELLIGENCE": {
+      "label": "Hotel Explorer / Hotel Intelligence share",
+      "required_files": [
+        "public/hotel-intelligence-golden-demo.html",
+        "public/hotel-explorer-share.html",
+        "public/js/hotel-explorer.js",
+        "public/js/hotel-intelligence-golden-demo-route.js",
+        "public/js/hotel-intelligence-research-center.js",
+        "public/js/hotel-intelligence-dossier.js",
+        "public/js/hotel-detail-panel.js",
+        "public/css/hotel-explorer.css",
+        "public/css/hotel-intelligence-research-center.css",
+        "public/css/hotel-intelligence-dossier.css",
+        "public/css/hotel-detail-panel.css",
+        "api/hotel-intelligence-research.js",
+        "api/hotel-intelligence-dossier.js",
+        "lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js"
+      ],
+      "required_static_assets": [
+        "/hotel-intelligence-golden-demo.html",
+        "/hotel-explorer-share.html",
+        "/js/hotel-explorer.js",
+        "/js/hotel-intelligence-research-center.js",
+        "/css/hotel-intelligence-research-center.css",
+        "/css/hotel-explorer.css"
+      ],
+      "required_routes": [
+        "/hotel-intelligence-golden-demo.html",
+        "/hotel-explorer-share.html"
+      ],
+      "required_api_routes": [
+        "/api/hotel-intelligence/hotels/:hotelId/research",
+        "/api/hotel-intelligence/dossiers",
+        "/api/hotel-intelligence/dossiers/:dossierId"
+      ],
+      "required_server_route_markers": [
+        "hotel-intelligence-golden-demo.html",
+        "hotel-explorer-share.html",
+        "/api/hotel-intelligence/"
+      ],
+      "html_entrypoints_for_static_refs": [
+        "public/hotel-intelligence-golden-demo.html",
+        "public/hotel-explorer-share.html"
+      ],
+      "main_status_note": "Historically HOTFIX_ONLY until PR #40 merges onto main"
+    },
+    "ADP": {
+      "label": "AI Demand Positioning / owner share",
+      "required_files": [
+        "public/owner-ai-demand-share.html",
+        "public/owner-ai-demand.html",
+        "public/js/ai-demand-positioning/ai-demand-positioning.js",
+        "public/js/ai-demand-positioning/ai-demand-positioning.css",
+        "api/ai-demand-positioning.js",
+        "config/client-share/adp-share-registry/active-tokens.json"
+      ],
+      "required_static_assets": [
+        "/owner-ai-demand-share.html",
+        "/js/ai-demand-positioning/ai-demand-positioning.js",
+        "/js/ai-demand-positioning/ai-demand-positioning.css"
+      ],
+      "required_routes": [
+        "/owner-ai-demand-share.html",
+        "/ai-demand-positioning-share"
+      ],
+      "required_api_routes": [
+        "/api/ai-demand-positioning/share/resolve",
+        "/api/ai-demand-positioning/publication-meta",
+        "/api/ai-demand-positioning/property/:propertyId/report"
+      ],
+      "required_server_route_markers": [
+        "owner-ai-demand-share.html",
+        "/api/ai-demand-positioning/share/resolve",
+        "/api/ai-demand-positioning/"
+      ],
+      "html_entrypoints_for_static_refs": [
+        "public/owner-ai-demand-share.html"
+      ]
+    },
+    "BRAND_EXPLORER": {
+      "label": "Brand Explorer share",
+      "required_files": [
+        "public/brand-explorer-share.html",
+        "public/brand-explorer.html",
+        "api/brand-library.js"
+      ],
+      "required_static_assets": [
+        "/brand-explorer-share.html"
+      ],
+      "required_routes": [
+        "/brand-explorer-share.html"
+      ],
+      "required_api_routes": [],
+      "required_server_route_markers": [
+        "brand-explorer-share.html"
+      ],
+      "html_entrypoints_for_static_refs": [
+        "public/brand-explorer-share.html"
+      ]
+    },
+    "OPERATOR_EXPLORER": {
+      "label": "Operator Explorer share",
+      "required_files": [
+        "public/operator-explorer-share.html",
+        "public/operator-explorer.html"
+      ],
+      "required_static_assets": [
+        "/operator-explorer-share.html"
+      ],
+      "required_routes": [
+        "/operator-explorer-share.html"
+      ],
+      "required_api_routes": [],
+      "required_server_route_markers": [
+        "operator-explorer-share.html"
+      ],
+      "html_entrypoints_for_static_refs": [
+        "public/operator-explorer-share.html"
+      ]
+    },
+    "BRAND_AI": {
+      "label": "Brand AI Visibility",
+      "required_files": [
+        "public/ai-visibility-brand.html",
+        "public/brand-ai-visibility-share.html"
+      ],
+      "required_static_assets": [
+        "/ai-visibility-brand.html"
+      ],
+      "required_routes": [
+        "/ai-visibility-brand.html"
+      ],
+      "required_api_routes": [
+        "/api/ai-visibility/brand/share/resolve"
+      ],
+      "required_server_route_markers": [
+        "ai-visibility-brand.html",
+        "/api/ai-visibility/brand/share/resolve"
+      ],
+      "html_entrypoints_for_static_refs": [
+        "public/ai-visibility-brand.html"
+      ]
+    },
+    "PLATFORM_CORE": {
+      "label": "Core server + Railway config",
+      "required_files": [
+        "server.js",
+        "package.json",
+        "railway.toml",
+        ".railwayignore",
+        "public/404.html"
+      ],
+      "required_static_assets": [],
+      "required_routes": [],
+      "required_api_routes": [],
+      "required_server_route_markers": [
+        "express.static"
+      ],
+      "html_entrypoints_for_static_refs": []
+    }
+  },
+  "postdeploy_smoke": {
+    "static_paths": [
+      "/hotel-intelligence-golden-demo.html",
+      "/css/hotel-intelligence-research-center.css",
+      "/js/hotel-explorer.js",
+      "/owner-ai-demand-share.html",
+      "/brand-explorer-share.html",
+      "/operator-explorer-share.html",
+      "/ai-visibility-brand.html"
+    ],
+    "golden_four_query": "autopen=1&share=1&hexTab=ownership"
+  },
+  "deploy_policy": {
+    "normal_branch": "main",
+    "hotfix_override_env": "DEALALITY_ALLOW_HOTFIX_DEPLOY=1",
+    "dirty_tree_override_env": "DEALALITY_ALLOW_DIRTY_DEPLOY=1",
+    "skip_postdeploy_env": "DEALALITY_SKIP_POSTDEPLOY_SMOKE=1",
+    "canonical_command": "npm run deploy:production"
+  }
+}
