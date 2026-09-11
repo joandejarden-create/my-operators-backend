@@ -1,0 +1,44 @@
+{
+  "schema": "ADP_CERTIFIED_PERIOD_CORRECTION_V1",
+  "correctionId": "adp_corr_renaissance_times_square_mtt5pub4",
+  "propertyId": "adp_renaissance_times_square",
+  "periodId": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca",
+  "rootCause": "FULL_UNIVERSE — force Path A subject-presence reprocess + customer payload rebuild (stale governed / top-alt grain).",
+  "evidence": {
+    "beforeMetrics": {
+      "considerationRate": 11.9,
+      "scenarioPresence": 29.2,
+      "demandCapture": 29.2
+    },
+    "afterMetrics": {
+      "considerationRate": 7.7,
+      "scenarioPresence": 24.6,
+      "demandCapture": 24.6
+    },
+    "missingGovernedBefore": null,
+    "force": true
+  },
+  "affectedMetrics": [
+    "AI Consideration",
+    "AI Scenario Presence",
+    "Demand Capture",
+    "Top Observed AI Alternative"
+  ],
+  "oldValues": {
+    "considerationRate": 11.9,
+    "scenarioPresence": 29.2,
+    "demandCapture": 29.2
+  },
+  "newValues": {
+    "considerationRate": 7.7,
+    "scenarioPresence": 24.6,
+    "demandCapture": 24.6
+  },
+  "correctionTimestamp": "2026-09-08T21:03:40.720Z",
+  "supersededVersion": "ORIGINAL_CERTIFIED_PUBLISH",
+  "correctedVersion": "adp_full_universe_governed_subject_force_reprocess_v1",
+  "clientExposureStatus": "NOT_DISTRIBUTED_EXTERNALLY",
+  "externalShareDistributed": false,
+  "immutableLineage": true,
+  "notes": null
+}

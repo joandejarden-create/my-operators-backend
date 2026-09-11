@@ -1,12 +1,12 @@
 {
   "ok": true,
-  "publishedAt": "2026-09-03T02:26:15.806Z",
+  "publishedAt": "2026-09-10T11:20:14.558Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_cambridge_beaches_bermuda",
   "periodId": "adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437",
   "censusRecordId": null,
-  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-  "reportEdition": "CORRECTED_V1_1",
+  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+  "reportEdition": "ORIGINAL_V1",
   "payload": {
     "ok": true,
     "version": "ai_demand_positioning_v1",
@@ -122,11 +122,11 @@
         "territory": "Leisure Travel",
         "status": "PRODUCTION_VALIDATED",
         "blockers": [],
-        "index": 731,
+        "index": 1118,
         "myRate": 79.2,
         "subjectRatePct": 79.2,
-        "coreBenchmarkRatePct": 10.8,
-        "avgCompRate": 10.8,
+        "coreBenchmarkRatePct": 7.1,
+        "avgCompRate": 7.1,
         "developing": false,
         "developingLabel": "Benchmark not yet certified",
         "coreCount": 5,
@@ -155,11 +155,11 @@
         "territory": "Couples / Romantic Stay",
         "status": "PRODUCTION_VALIDATED",
         "blockers": [],
-        "index": 423,
+        "index": 548,
         "myRate": 84.1,
         "subjectRatePct": 84.1,
-        "coreBenchmarkRatePct": 19.9,
-        "avgCompRate": 19.9,
+        "coreBenchmarkRatePct": 15.3,
+        "avgCompRate": 15.3,
         "developing": false,
         "developingLabel": "Benchmark not yet certified",
         "coreCount": 4,
@@ -189,7 +189,8 @@
         "status": "BENCHMARK_DEVELOPING",
         "blockers": [
           "core_lt_4",
-          "scenario_density"
+          "scenario_density",
+          "zero_denominator"
         ],
         "index": null,
         "myRate": 57.1,
@@ -224,11 +225,11 @@
         "territory": "Celebrations & Events",
         "status": "PRODUCTION_VALIDATED",
         "blockers": [],
-        "index": 372,
+        "index": 491,
         "myRate": 67.5,
         "subjectRatePct": 67.5,
-        "coreBenchmarkRatePct": 18.1,
-        "avgCompRate": 18.1,
+        "coreBenchmarkRatePct": 13.8,
+        "avgCompRate": 13.8,
         "developing": false,
         "developingLabel": "Benchmark not yet certified",
         "coreCount": 4,
@@ -257,9 +258,7 @@
         "territory": "Wellness",
         "status": "BENCHMARK_DEVELOPING",
         "blockers": [
-          "scenario_density",
-          "provider_concentration_core",
-          "provider_concentration"
+          "scenario_density"
         ],
         "index": null,
         "myRate": 67.9,
@@ -331,14 +330,19 @@
       "highRelevanceLost": 0,
       "displacement": [
         {
-          "name": "Rosewood Bermuda",
+          "name": "The St. Regis Bermuda Resort",
           "displacementCount": 3,
-          "entityId": "rosewood_bermuda"
+          "entityId": "st_regis_bermuda"
         },
         {
           "name": "The Reefs Resort & Club",
           "displacementCount": 2,
           "entityId": "reefs_resort"
+        },
+        {
+          "name": "Newstead Belmont Hills Golf Resort & Spa",
+          "displacementCount": 1,
+          "entityId": "newstead_belmont"
         }
       ],
       "topReasons": [
@@ -355,7 +359,7 @@
         {
           "intent": "business",
           "competitorsPresent": [
-            "Rosewood Bermuda",
+            "The St. Regis Bermuda Resort",
             "The Reefs Resort & Club"
           ],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
@@ -364,7 +368,7 @@
         {
           "intent": "group_meeting",
           "competitorsPresent": [
-            "Rosewood Bermuda",
+            "The St. Regis Bermuda Resort",
             "The Reefs Resort & Club"
           ],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
@@ -373,7 +377,8 @@
         {
           "intent": "celebration",
           "competitorsPresent": [
-            "Rosewood Bermuda"
+            "The St. Regis Bermuda Resort",
+            "Newstead Belmont Hills Golf Resort & Spa"
           ],
           "likelyReason": "Property may not be positioned as luxury tier by AI",
           "relevance": "LOW"
@@ -382,168 +387,111 @@
     },
     "competitiveSet": {
       "declaredCount": 6,
-      "observedCount": 10,
-      "overlapRate": 100,
+      "observedCount": 12,
+      "overlapRate": 116.7,
       "surprises": [
         {
-          "name": "Elbow Beach Bermuda Resort",
-          "entityId": "elbow_beach_bermuda",
-          "appearances": 14,
-          "aiPresencePct": 5.8,
-          "aiPresenceRate": 0.058333333333333334,
-          "mentions": 14,
-          "scenarioCount": 13,
-          "rawMentionCount": 17,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "name": "The St. Regis Bermuda Resort",
+          "mentions": 58,
+          "scenarioCount": 37,
+          "entityId": "st_regis_bermuda",
           "isCore": false
         },
         {
-          "name": "Rosedon Hotel",
-          "entityId": "rosedon_hotel",
-          "appearances": 7,
-          "aiPresencePct": 2.9,
-          "aiPresenceRate": 0.029166666666666667,
-          "mentions": 7,
-          "scenarioCount": 7,
-          "rawMentionCount": 10,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "name": "Elbow Beach Bermuda Resort",
+          "mentions": 22,
+          "scenarioCount": 17,
+          "entityId": "elbow_beach_bermuda",
           "isCore": false
         },
         {
           "name": "Newstead Belmont Hills Golf Resort & Spa",
+          "mentions": 12,
+          "scenarioCount": 7,
           "entityId": "newstead_belmont",
-          "appearances": 3,
-          "aiPresencePct": 1.3,
-          "aiPresenceRate": 0.0125,
-          "mentions": 3,
-          "scenarioCount": 3,
-          "rawMentionCount": 6,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "isCore": false
+        },
+        {
+          "name": "Rosedon Hotel",
+          "mentions": 10,
+          "scenarioCount": 7,
+          "entityId": "rosedon_hotel",
           "isCore": false
         }
       ],
       "observed": [
         {
           "name": "The Reefs Resort & Club",
-          "entityId": "reefs_resort",
-          "appearances": 79,
-          "aiPresencePct": 32.9,
-          "aiPresenceRate": 0.32916666666666666,
-          "mentions": 79,
+          "mentions": 168,
           "scenarioCount": 44,
-          "rawMentionCount": 153,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "reefs_resort",
           "isCore": true
         },
         {
           "name": "Grotto Bay Beach Resort & Spa",
-          "entityId": "grotto_bay",
-          "appearances": 70,
-          "aiPresencePct": 29.2,
-          "aiPresenceRate": 0.2916666666666667,
-          "mentions": 70,
+          "mentions": 118,
           "scenarioCount": 37,
-          "rawMentionCount": 116,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "grotto_bay",
           "isCore": true
         },
         {
-          "name": "Rosewood Bermuda",
-          "entityId": "rosewood_bermuda",
-          "appearances": 53,
-          "aiPresencePct": 22.1,
-          "aiPresenceRate": 0.22083333333333333,
-          "mentions": 53,
-          "scenarioCount": 38,
-          "rawMentionCount": 58,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": true
+          "name": "The St. Regis Bermuda Resort",
+          "mentions": 58,
+          "scenarioCount": 37,
+          "entityId": "st_regis_bermuda",
+          "isCore": false
         },
         {
           "name": "Elbow Beach Bermuda Resort",
+          "mentions": 22,
+          "scenarioCount": 17,
           "entityId": "elbow_beach_bermuda",
-          "appearances": 14,
-          "aiPresencePct": 5.8,
-          "aiPresenceRate": 0.058333333333333334,
-          "mentions": 14,
-          "scenarioCount": 13,
-          "rawMentionCount": 17,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "isCore": false
+        },
+        {
+          "name": "Newstead Belmont Hills Golf Resort & Spa",
+          "mentions": 12,
+          "scenarioCount": 7,
+          "entityId": "newstead_belmont",
           "isCore": false
         },
         {
           "name": "Rosedon Hotel",
-          "entityId": "rosedon_hotel",
-          "appearances": 7,
-          "aiPresencePct": 2.9,
-          "aiPresenceRate": 0.029166666666666667,
-          "mentions": 7,
+          "mentions": 10,
           "scenarioCount": 7,
-          "rawMentionCount": 10,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "rosedon_hotel",
           "isCore": false
+        },
+        {
+          "name": "Rosewood Bermuda",
+          "mentions": 6,
+          "scenarioCount": 6,
+          "entityId": "rosewood_bermuda",
+          "isCore": true
         },
         {
           "name": "Hamilton Princess & Beach Club",
+          "mentions": 5,
+          "scenarioCount": 0,
           "entityId": "hamilton_princess",
-          "appearances": 4,
-          "aiPresencePct": 1.7,
-          "aiPresenceRate": 0.016666666666666666,
-          "mentions": 4,
-          "scenarioCount": 4,
-          "rawMentionCount": 5,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
           "isCore": true
-        },
-        {
-          "name": "Newstead Belmont Hills Golf Resort & Spa",
-          "entityId": "newstead_belmont",
-          "appearances": 3,
-          "aiPresencePct": 1.3,
-          "aiPresenceRate": 0.0125,
-          "mentions": 3,
-          "scenarioCount": 3,
-          "rawMentionCount": 6,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
         },
         {
           "name": "Pompano Beach Club",
-          "entityId": "pompano_beach_club",
-          "appearances": 2,
-          "aiPresencePct": 0.8,
-          "aiPresenceRate": 0.008333333333333333,
           "mentions": 2,
-          "scenarioCount": 2,
-          "rawMentionCount": 2,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "scenarioCount": 0,
+          "entityId": "pompano_beach_club",
           "isCore": true
-        },
-        {
-          "name": "Coco Reef Resort Bermuda",
-          "entityId": "coco_reef_bermuda",
-          "appearances": 1,
-          "aiPresencePct": 0.4,
-          "aiPresenceRate": 0.004166666666666667,
-          "mentions": 1,
-          "scenarioCount": 1,
-          "rawMentionCount": 1,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
         },
         {
           "name": "The Loren at Pink Beach",
-          "entityId": "loren_pink_beach",
-          "appearances": 1,
-          "aiPresencePct": 0.4,
-          "aiPresenceRate": 0.004166666666666667,
           "mentions": 1,
           "scenarioCount": 1,
-          "rawMentionCount": 1,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "loren_pink_beach",
           "isCore": true
         }
       ],
+      "declaredButNotObserved": [],
       "topObservedAlternative": {
         "entityId": "reefs_resort",
         "name": "The Reefs Resort & Club",
@@ -553,11 +501,17 @@
         "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
         "mentions": 79
       },
-      "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-      "declaredButNotObserved": [
-        "Fairmont Southampton"
-      ],
-      "rawCompetitorMentionMetric": "RAW_COMPETITOR_MENTION_COUNT"
+      "topObservedAlternativeMeta": {
+        "version": "adp_top_observed_ai_alternative_overall_presence_v1",
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "tiedMaxSet": [
+          {
+            "entityId": "reefs_resort",
+            "name": "The Reefs Resort & Club",
+            "appearances": 79
+          }
+        ]
+      }
     },
     "realityGap": {
       "gapScore": 55.6,
@@ -758,7 +712,7 @@
               "count": 1
             },
             {
-              "name": "Located in Tucker's Point, this luxury resort",
+              "name": "This boutique hotel",
               "count": 1
             }
           ]
@@ -775,11 +729,11 @@
               "count": 2
             },
             {
-              "name": "best resort for your guest count, budget, and vibe",
+              "name": "The St. Regis",
               "count": 1
             },
             {
-              "name": "best for a more iconic, classic luxury hotel",
+              "name": "best resort for your guest count, budget, and vibe",
               "count": 1
             }
           ]
@@ -794,14 +748,14 @@
         },
         {
           "type": "insight",
-          "text": "3 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
+          "text": "4 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
         },
         {
           "type": "gap",
           "text": "AI Reality Gap: 55.6%. AI misses or misrepresents 10 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-09-03T02:26:14.935Z"
+      "generatedAt": "2026-09-10T11:20:11.429Z"
     },
     "actions": [
       {
@@ -815,8 +769,8 @@
       {
         "priority": "MEDIUM",
         "category": "DISPLACEMENT",
-        "title": "Address displacement by Rosewood Bermuda",
-        "description": "Rosewood Bermuda appears in 3 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
+        "title": "Address displacement by The St. Regis Bermuda Resort",
+        "description": "The St. Regis Bermuda Resort appears in 3 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
         "expectedImpact": null,
         "impactNote": "Displacement count is observational; expected reduction is not certified."
       }
@@ -1013,60 +967,6 @@
       },
       "ownedDomainsConfigured": true
     },
-    "brandPortfolioPosition": {
-      "ok": true,
-      "sectionId": "brand-portfolio-position",
-      "contractVersion": "ADP_BRAND_PORTFOLIO_POSITION_CONTRACT_V1",
-      "sectionVisible": true,
-      "title": "Brand & Portfolio Position",
-      "subtitle": "How this hotel performs when travelers specifically consider independent hotels in its market.",
-      "sectionMode": "INDEPENDENT_POSITIONING",
-      "status": "AWAITING_FIRST_MONITORING",
-      "renderState": "AWAITING_FIRST_MONITORING",
-      "customerState": {
-        "statusLabel": "Independent positioning not yet available",
-        "headline": "Independent Positioning not yet available",
-        "body": "Independent Positioning will appear here after the first independent-hotel monitoring cycle.",
-        "secondary": "You’ll see AI Presence, relative rank, and the hotels most often competing in this set."
-      },
-      "emptyMessage": "Independent Positioning will appear here after the first independent-hotel monitoring cycle.",
-      "lens": {
-        "lensId": "independent_positioning",
-        "label": "Independent Positioning",
-        "portfolioType": "INDEPENDENT_POSITIONING",
-        "status": "DEFAULT"
-      },
-      "optionalFutureLenses": [],
-      "assuranceStatus": "NOT_READY",
-      "showAnalyticalScaffolding": false,
-      "kpis": null,
-      "ranking": null,
-      "tableColumns": null,
-      "dataAvailability": {
-        "validObservations": 0,
-        "invalidObservations": 0,
-        "needsRerunObservations": 4,
-        "propertySpecificOtherObservations": 56,
-        "validScenarios": 0,
-        "sufficientForRanking": false,
-        "historicalCandidateReuseAvailable": false,
-        "source": "ADP_BRAND_PORTFOLIO_OBSERVATION_RECLASS_V1"
-      },
-      "affiliationSnapshot": {
-        "brand": "Independent",
-        "affiliation": "Independent",
-        "parentCompany": null,
-        "officialBrandDomain": null
-      },
-      "coreIsolation": true,
-      "gate": "CORE_PORTFOLIO_MEASUREMENT_ISOLATION",
-      "principles": [
-        "NO_EMPTY_ANALYTICAL_SCAFFOLDING_BEFORE_MEASUREMENT",
-        "PORTFOLIO_TABLE_REQUIRES_READY_MEASUREMENT",
-        "PORTFOLIO_METRIC_MISSING_IS_NOT_ZERO"
-      ],
-      "doesNotAlterCoreMetrics": true
-    },
     "executiveMetrics": {
       "version": "adp_optional_executive_metrics_v2",
       "considerationRate": {
@@ -1080,24 +980,15 @@
         "eligibleScenarios": 60
       },
       "rankMetrics": {
-        "rankEligibleN": 88,
-        "numberOneAppearanceRate": 17,
-        "topThreeAppearanceRate": 38.6,
-        "numberOneCount": 15,
-        "topThreeCount": 34
+        "rankEligibleN": 67,
+        "numberOneAppearanceRate": 28.4,
+        "topThreeAppearanceRate": 62.7,
+        "numberOneCount": 19,
+        "topThreeCount": 42
       },
       "competitorPresentScenarios": {
         "scenarioCount": 22,
-        "observationCount": 55
-      },
-      "currentVsPrior": {
-        "currentPeriodId": "adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437",
-        "priorComparablePeriodId": "adp_period_adp_cambridge_beaches_bermuda_20260820141258_547a7b",
-        "deltas": {
-          "considerationRate": -0.4,
-          "scenarioPresence": -5,
-          "numberOneAppearanceRate": 3.2
-        }
+        "observationCount": 54
       }
     },
     "competitiveRankingByTerritory": {
@@ -1153,7 +1044,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "reefs_resort"
+                "competitorId": "reefs_resort",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -1175,16 +1068,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "rosewood_bermuda",
-              "name": "Rosewood Bermuda",
+              "entityId": "st_regis_bermuda",
+              "name": "The St. Regis Bermuda Resort",
               "isSubject": false,
-              "appearances": 53,
-              "aiPresenceRate": 0.22083333333333333,
-              "aiPresencePct": 22.1,
+              "appearances": 48,
+              "aiPresenceRate": 0.2,
+              "aiPresencePct": 20,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 4,
@@ -1197,16 +1092,18 @@
               "displacement": {
                 "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "rosewood_bermuda"
+                "competitorId": "st_regis_bermuda",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
               "entityId": "elbow_beach_bermuda",
               "name": "Elbow Beach Bermuda Resort",
               "isSubject": false,
-              "appearances": 14,
-              "aiPresenceRate": 0.058333333333333334,
-              "aiPresencePct": 5.8,
+              "appearances": 19,
+              "aiPresenceRate": 0.07916666666666666,
+              "aiPresencePct": 7.9,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -1219,7 +1116,33 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "elbow_beach_bermuda"
+                "competitorId": "elbow_beach_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "newstead_belmont",
+              "name": "Newstead Belmont Hills Golf Resort & Spa",
+              "isSubject": false,
+              "appearances": 8,
+              "aiPresenceRate": 0.03333333333333333,
+              "aiPresencePct": 3.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Meetings & Groups",
+              "topDemandTerritoryIntent": "group_meeting",
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "newstead_belmont",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -1231,8 +1154,8 @@
               "aiPresencePct": 2.9,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 6,
-              "displayRank": 6,
+              "observedRank": 7,
+              "displayRank": 7,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1241,7 +1164,33 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosedon_hotel"
+                "competitorId": "rosedon_hotel",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosewood_bermuda",
+              "name": "Rosewood Bermuda",
+              "isSubject": false,
+              "appearances": 6,
+              "aiPresenceRate": 0.025,
+              "aiPresencePct": 2.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Leisure Travel",
+              "topDemandTerritoryIntent": "leisure",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosewood_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1253,8 +1202,8 @@
               "aiPresencePct": 1.7,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 7,
-              "displayRank": 7,
+              "observedRank": 9,
+              "displayRank": 9,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1263,29 +1212,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hamilton_princess"
-              }
-            },
-            {
-              "entityId": "newstead_belmont",
-              "name": "Newstead Belmont Hills Golf Resort & Spa",
-              "isSubject": false,
-              "appearances": 3,
-              "aiPresenceRate": 0.0125,
-              "aiPresencePct": 1.3,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
-              "observedRank": 8,
-              "displayRank": 8,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "topDemandTerritory": "Business Travel",
-              "topDemandTerritoryIntent": "business",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "newstead_belmont"
+                "competitorId": "hamilton_princess",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1297,8 +1226,8 @@
               "aiPresencePct": 0.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 9,
-              "displayRank": 9,
+              "observedRank": 10,
+              "displayRank": 10,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1307,29 +1236,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "pompano_beach_club"
-              }
-            },
-            {
-              "entityId": "coco_reef_bermuda",
-              "name": "Coco Reef Resort Bermuda",
-              "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.004166666666666667,
-              "aiPresencePct": 0.4,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
-              "observedRank": 10,
-              "displayRank": 10,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "topDemandTerritory": "Wellness",
-              "topDemandTerritoryIntent": "wellness",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "coco_reef_bermuda"
+                "competitorId": "pompano_beach_club",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -1379,12 +1288,12 @@
               }
             },
             {
-              "entityId": "rosewood_bermuda",
-              "name": "Rosewood Bermuda",
+              "entityId": "st_regis_bermuda",
+              "name": "The St. Regis Bermuda Resort",
               "isSubject": false,
-              "appearances": 10,
-              "aiPresenceRate": 0.4166666666666667,
-              "aiPresencePct": 41.7,
+              "appearances": 9,
+              "aiPresenceRate": 0.375,
+              "aiPresencePct": 37.5,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 2,
@@ -1395,7 +1304,9 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "rosewood_bermuda"
+                "competitorId": "st_regis_bermuda",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -1415,7 +1326,9 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "reefs_resort"
+                "competitorId": "reefs_resort",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -1435,12 +1348,14 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "newstead_belmont",
-              "name": "Newstead Belmont Hills Golf Resort & Spa",
+              "entityId": "fairmont_southampton",
+              "name": "Fairmont Southampton",
               "isSubject": false,
               "appearances": 1,
               "aiPresenceRate": 0.041666666666666664,
@@ -1455,12 +1370,14 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "newstead_belmont"
+                "competitorId": "fairmont_southampton",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "rosedon_hotel",
-              "name": "Rosedon Hotel",
+              "entityId": "newstead_belmont",
+              "name": "Newstead Belmont Hills Golf Resort & Spa",
               "isSubject": false,
               "appearances": 1,
               "aiPresenceRate": 0.041666666666666664,
@@ -1475,7 +1392,53 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosedon_hotel"
+                "competitorId": "newstead_belmont",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosedon_hotel",
+              "name": "Rosedon Hotel",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.041666666666666664,
+              "aiPresencePct": 4.2,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosedon_hotel",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosewood_bermuda",
+              "name": "Rosewood Bermuda",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.041666666666666664,
+              "aiPresencePct": 4.2,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosewood_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1496,7 +1459,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hamilton_princess"
+                "competitorId": "hamilton_princess",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -1550,12 +1515,12 @@
               }
             },
             {
-              "entityId": "rosewood_bermuda",
-              "name": "Rosewood Bermuda",
+              "entityId": "reefs_resort",
+              "name": "The Reefs Resort & Club",
               "isSubject": false,
-              "appearances": 13,
-              "aiPresenceRate": 0.2708333333333333,
-              "aiPresencePct": 27.1,
+              "appearances": 12,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1566,18 +1531,20 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosewood_bermuda"
+                "competitorId": "reefs_resort",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "reefs_resort",
-              "name": "The Reefs Resort & Club",
+              "entityId": "st_regis_bermuda",
+              "name": "The St. Regis Bermuda Resort",
               "isSubject": false,
-              "appearances": 12,
-              "aiPresenceRate": 0.25,
-              "aiPresencePct": 25,
-              "relationship": "CORE",
-              "isCore": true,
+              "appearances": 10,
+              "aiPresenceRate": 0.20833333333333334,
+              "aiPresencePct": 20.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 3,
               "displayRank": 3,
               "isAppendedCore": false,
@@ -1586,7 +1553,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "reefs_resort"
+                "competitorId": "st_regis_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1606,16 +1575,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
               "entityId": "elbow_beach_bermuda",
               "name": "Elbow Beach Bermuda Resort",
               "isSubject": false,
-              "appearances": 3,
-              "aiPresenceRate": 0.0625,
-              "aiPresencePct": 6.3,
+              "appearances": 4,
+              "aiPresenceRate": 0.08333333333333333,
+              "aiPresencePct": 8.3,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -1626,7 +1597,31 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "elbow_beach_bermuda"
+                "competitorId": "elbow_beach_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosewood_bermuda",
+              "name": "Rosewood Bermuda",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.08333333333333333,
+              "aiPresencePct": 8.3,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosewood_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1638,15 +1633,17 @@
               "aiPresencePct": 6.3,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 6,
-              "displayRank": 6,
+              "observedRank": 7,
+              "displayRank": 7,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosedon_hotel"
+                "competitorId": "rosedon_hotel",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1658,15 +1655,39 @@
               "aiPresencePct": 2.1,
               "relationship": "CORE",
               "isCore": true,
-              "observedRank": 7,
-              "displayRank": 7,
+              "observedRank": 8,
+              "displayRank": 8,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hamilton_princess"
+                "competitorId": "hamilton_princess",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "newstead_belmont",
+              "name": "Newstead Belmont Hills Golf Resort & Spa",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.020833333333333332,
+              "aiPresencePct": 2.1,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "newstead_belmont",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1678,15 +1699,17 @@
               "aiPresencePct": 2.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 8,
-              "displayRank": 8,
+              "observedRank": 10,
+              "displayRank": 10,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "pompano_beach_club"
+                "competitorId": "pompano_beach_club",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1707,7 +1730,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "fairmont_southampton"
+                "competitorId": "fairmont_southampton",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1728,7 +1753,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "loren_pink_beach"
+                "competitorId": "loren_pink_beach",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -1797,7 +1824,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "reefs_resort"
+                "competitorId": "reefs_resort",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1817,18 +1846,20 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "rosewood_bermuda",
-              "name": "Rosewood Bermuda",
+              "entityId": "st_regis_bermuda",
+              "name": "The St. Regis Bermuda Resort",
               "isSubject": false,
               "appearances": 8,
               "aiPresenceRate": 0.18181818181818182,
               "aiPresencePct": 18.2,
-              "relationship": "CORE",
-              "isCore": true,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 4,
               "displayRank": 4,
               "isAppendedCore": false,
@@ -1837,16 +1868,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosewood_bermuda"
+                "competitorId": "st_regis_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
               "entityId": "elbow_beach_bermuda",
               "name": "Elbow Beach Bermuda Resort",
               "isSubject": false,
-              "appearances": 3,
-              "aiPresenceRate": 0.06818181818181818,
-              "aiPresencePct": 6.8,
+              "appearances": 4,
+              "aiPresenceRate": 0.09090909090909091,
+              "aiPresencePct": 9.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -1857,7 +1890,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "elbow_beach_bermuda"
+                "competitorId": "elbow_beach_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1877,12 +1912,14 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hamilton_princess"
+                "competitorId": "hamilton_princess",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "pompano_beach_club",
-              "name": "Pompano Beach Club",
+              "entityId": "newstead_belmont",
+              "name": "Newstead Belmont Hills Golf Resort & Spa",
               "isSubject": false,
               "appearances": 1,
               "aiPresenceRate": 0.022727272727272728,
@@ -1897,12 +1934,14 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "pompano_beach_club"
+                "competitorId": "newstead_belmont",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "rosedon_hotel",
-              "name": "Rosedon Hotel",
+              "entityId": "pompano_beach_club",
+              "name": "Pompano Beach Club",
               "isSubject": false,
               "appearances": 1,
               "aiPresenceRate": 0.022727272727272728,
@@ -1917,7 +1956,54 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosedon_hotel"
+                "competitorId": "pompano_beach_club",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosedon_hotel",
+              "name": "Rosedon Hotel",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.022727272727272728,
+              "aiPresencePct": 2.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosedon_hotel",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosewood_bermuda",
+              "name": "Rosewood Bermuda",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosewood_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1938,15 +2024,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "loren_pink_beach"
+                "competitorId": "loren_pink_beach",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 3,
+            "CORE_IN_TOP_10": 2,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 1,
+            "CORE_ZERO_PRESENCE": 2,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1987,7 +2075,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "fairmont_southampton"
+                "competitorId": "fairmont_southampton",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2008,7 +2098,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2029,7 +2121,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hamilton_princess"
+                "competitorId": "hamilton_princess",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -2096,18 +2190,20 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "rosewood_bermuda",
-              "name": "Rosewood Bermuda",
+              "entityId": "st_regis_bermuda",
+              "name": "The St. Regis Bermuda Resort",
               "isSubject": false,
               "appearances": 8,
               "aiPresenceRate": 0.2857142857142857,
               "aiPresencePct": 28.6,
-              "relationship": "CORE",
-              "isCore": true,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 3,
               "displayRank": 3,
               "isAppendedCore": false,
@@ -2116,7 +2212,9 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "rosewood_bermuda"
+                "competitorId": "st_regis_bermuda",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -2136,16 +2234,18 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "reefs_resort"
+                "competitorId": "reefs_resort",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
               "entityId": "newstead_belmont",
               "name": "Newstead Belmont Hills Golf Resort & Spa",
               "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.03571428571428571,
-              "aiPresencePct": 3.6,
+              "appearances": 2,
+              "aiPresenceRate": 0.07142857142857142,
+              "aiPresencePct": 7.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -2156,7 +2256,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "newstead_belmont"
+                "competitorId": "newstead_belmont",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2177,15 +2279,40 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hamilton_princess"
+                "competitorId": "hamilton_princess",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosewood_bermuda",
+              "name": "Rosewood Bermuda",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosewood_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 2,
-            "CORE_IN_TOP_10": 1,
+            "CORE_IN_TOP_10": 0,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 1,
+            "CORE_ZERO_PRESENCE": 2,
             "IDENTIFIABLE_CORE_TOTAL": 2,
             "COUNT_MATCH": true
           },
@@ -2246,7 +2373,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2266,18 +2395,20 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "reefs_resort"
+                "competitorId": "reefs_resort",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "rosewood_bermuda",
-              "name": "Rosewood Bermuda",
+              "entityId": "st_regis_bermuda",
+              "name": "The St. Regis Bermuda Resort",
               "isSubject": false,
               "appearances": 5,
               "aiPresenceRate": 0.17857142857142858,
               "aiPresencePct": 17.9,
-              "relationship": "CORE",
-              "isCore": true,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 4,
               "displayRank": 4,
               "isAppendedCore": false,
@@ -2286,16 +2417,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosewood_bermuda"
+                "competitorId": "st_regis_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "coco_reef_bermuda",
-              "name": "Coco Reef Resort Bermuda",
+              "entityId": "elbow_beach_bermuda",
+              "name": "Elbow Beach Bermuda Resort",
               "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.03571428571428571,
-              "aiPresencePct": 3.6,
+              "appearances": 2,
+              "aiPresenceRate": 0.07142857142857142,
+              "aiPresencePct": 7.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -2306,16 +2439,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "coco_reef_bermuda"
+                "competitorId": "elbow_beach_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "elbow_beach_bermuda",
-              "name": "Elbow Beach Bermuda Resort",
+              "entityId": "newstead_belmont",
+              "name": "Newstead Belmont Hills Golf Resort & Spa",
               "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.03571428571428571,
-              "aiPresencePct": 3.6,
+              "appearances": 2,
+              "aiPresenceRate": 0.07142857142857142,
+              "aiPresencePct": 7.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 6,
@@ -2326,12 +2461,14 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "elbow_beach_bermuda"
+                "competitorId": "newstead_belmont",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "newstead_belmont",
-              "name": "Newstead Belmont Hills Golf Resort & Spa",
+              "entityId": "coco_reef_bermuda",
+              "name": "Coco Reef Resort Bermuda",
               "isSubject": false,
               "appearances": 1,
               "aiPresenceRate": 0.03571428571428571,
@@ -2346,7 +2483,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "newstead_belmont"
+                "competitorId": "coco_reef_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2367,7 +2506,32 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hamilton_princess"
+                "competitorId": "hamilton_princess",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosewood_bermuda",
+              "name": "Rosewood Bermuda",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosewood_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2388,15 +2552,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "loren_pink_beach"
+                "competitorId": "loren_pink_beach",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 2,
+            "CORE_IN_TOP_10": 1,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 2,
+            "CORE_ZERO_PRESENCE": 3,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -2436,7 +2602,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2476,16 +2644,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "reefs_resort"
+                "competitorId": "reefs_resort",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
               "entityId": "elbow_beach_bermuda",
               "name": "Elbow Beach Bermuda Resort",
               "isSubject": false,
-              "appearances": 4,
-              "aiPresenceRate": 0.14285714285714285,
-              "aiPresencePct": 14.3,
+              "appearances": 5,
+              "aiPresenceRate": 0.17857142857142858,
+              "aiPresencePct": 17.9,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 4,
@@ -2496,18 +2666,20 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "elbow_beach_bermuda"
+                "competitorId": "elbow_beach_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "rosewood_bermuda",
-              "name": "Rosewood Bermuda",
+              "entityId": "st_regis_bermuda",
+              "name": "The St. Regis Bermuda Resort",
               "isSubject": false,
               "appearances": 1,
               "aiPresenceRate": 0.03571428571428571,
               "aiPresencePct": 3.6,
-              "relationship": "CORE",
-              "isCore": true,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 5,
               "displayRank": 5,
               "isAppendedCore": false,
@@ -2516,7 +2688,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosewood_bermuda"
+                "competitorId": "st_regis_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2537,15 +2711,40 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "fairmont_southampton"
+                "competitorId": "fairmont_southampton",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rosewood_bermuda",
+              "name": "Rosewood Bermuda",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosewood_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 3,
-            "CORE_IN_TOP_10": 2,
+            "CORE_IN_TOP_10": 1,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 1,
+            "CORE_ZERO_PRESENCE": 2,
             "IDENTIFIABLE_CORE_TOTAL": 3,
             "COUNT_MATCH": true
           },
@@ -2606,7 +2805,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "reefs_resort"
+                "competitorId": "reefs_resort",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2626,18 +2827,20 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "grotto_bay"
+                "competitorId": "grotto_bay",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "rosewood_bermuda",
-              "name": "Rosewood Bermuda",
+              "entityId": "st_regis_bermuda",
+              "name": "The St. Regis Bermuda Resort",
               "isSubject": false,
-              "appearances": 8,
-              "aiPresenceRate": 0.2,
-              "aiPresencePct": 20,
-              "relationship": "CORE",
-              "isCore": true,
+              "appearances": 7,
+              "aiPresenceRate": 0.175,
+              "aiPresencePct": 17.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 4,
               "displayRank": 4,
               "isAppendedCore": false,
@@ -2646,16 +2849,18 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "rosewood_bermuda"
+                "competitorId": "st_regis_bermuda",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
               "entityId": "elbow_beach_bermuda",
               "name": "Elbow Beach Bermuda Resort",
               "isSubject": false,
-              "appearances": 3,
-              "aiPresenceRate": 0.075,
-              "aiPresencePct": 7.5,
+              "appearances": 4,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 5,
@@ -2666,7 +2871,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "elbow_beach_bermuda"
+                "competitorId": "elbow_beach_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2686,7 +2893,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "hamilton_princess"
+                "competitorId": "hamilton_princess",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2706,7 +2915,53 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "rosedon_hotel"
+                "competitorId": "rosedon_hotel",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "newstead_belmont",
+              "name": "Newstead Belmont Hills Golf Resort & Spa",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.025,
+              "aiPresencePct": 2.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "newstead_belmont",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "rosewood_bermuda",
+              "name": "Rosewood Bermuda",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.025,
+              "aiPresencePct": 2.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rosewood_bermuda",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2718,15 +2973,17 @@
               "aiPresencePct": 2.5,
               "relationship": "CORE",
               "isCore": true,
-              "observedRank": 8,
-              "displayRank": 8,
+              "observedRank": 10,
+              "displayRank": 10,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "loren_pink_beach"
+                "competitorId": "loren_pink_beach",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -2768,7 +3025,7 @@
           "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 1,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 7
+          "VISIBLE_ROWS": 9
         },
         {
           "PROPERTY": "Cambridge Beaches Resort & Spa",
@@ -2780,19 +3037,19 @@
           "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 5,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 10
+          "VISIBLE_ROWS": 12
         },
         {
           "PROPERTY": "Cambridge Beaches Resort & Spa",
           "TERRITORY": "Couples / Romantic Stay",
           "intent": "couples",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 3,
+          "CORE_IN_TOP_10": 2,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 1,
+          "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 9
+          "VISIBLE_ROWS": 11
         },
         {
           "PROPERTY": "Cambridge Beaches Resort & Spa",
@@ -2811,36 +3068,36 @@
           "TERRITORY": "Meetings & Groups",
           "intent": "group_meeting",
           "CORE_COUNT": 2,
-          "CORE_IN_TOP_10": 1,
+          "CORE_IN_TOP_10": 0,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 1,
+          "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 2,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 7
         },
         {
           "PROPERTY": "Cambridge Beaches Resort & Spa",
           "TERRITORY": "Wellness",
           "intent": "wellness",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 2,
+          "CORE_IN_TOP_10": 1,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 2,
+          "CORE_ZERO_PRESENCE": 3,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 9
+          "VISIBLE_ROWS": 10
         },
         {
           "PROPERTY": "Cambridge Beaches Resort & Spa",
           "TERRITORY": "Adventure & Experiences",
           "intent": "adventure",
           "CORE_COUNT": 3,
-          "CORE_IN_TOP_10": 2,
+          "CORE_IN_TOP_10": 1,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 1,
+          "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 3,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 7
         },
         {
           "PROPERTY": "Cambridge Beaches Resort & Spa",
@@ -2852,12 +3109,12 @@
           "CORE_ZERO_PRESENCE": 0,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 8
+          "VISIBLE_ROWS": 10
         }
       ],
       "PROPERTY_SPECIFIC_RANKING_DISPLAY_CODE": 0,
       "PROPERTY_SPECIFIC_OVERALL_RANKING_CODE": 0,
-      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v1",
+      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v2",
       "DISPLAY_AND_MODAL_SAME_SOURCE": true
     },
     "executiveRead": {
@@ -2870,7 +3127,7 @@
       "current": {
         "positionPattern": "BROAD_VISIBILITY_INCONSISTENT_CONSIDERATION",
         "label": "broad AI visibility but less consistent consideration",
-        "narrative": "Cambridge Beaches Resort & Spa appears in 95% of monitored demand scenarios but in 71.3% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Leisure Travel is a relative strength: the hotel appears in 79.2% of monitored AI responses compared with a 10.8% CORE benchmark, producing an AI Presence Index of 731. AI visibility is broader than consideration consistency: the hotel appears in 95% of monitored demand scenarios but only 71.3% of individual comparable AI responses.",
+        "narrative": "Cambridge Beaches Resort & Spa appears in 95% of monitored demand scenarios but in 71.3% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Leisure Travel is a relative strength: the hotel appears in 79.2% of monitored AI responses compared with a 7.1% CORE benchmark, producing an AI Presence Index of 1118. AI visibility is broader than consideration consistency: the hotel appears in 95% of monitored demand scenarios but only 71.3% of individual comparable AI responses.",
         "primaryStrength": {
           "key": "ABOVE_BENCHMARK_TERRITORY",
           "label": "Above-benchmark territory presence"
@@ -2882,9 +3139,9 @@
         "benchmarkFinding": {
           "intent": "leisure",
           "territory": "Leisure Travel",
-          "index": 731,
+          "index": 1118,
           "subjectRatePct": 79.2,
-          "coreBenchmarkRatePct": 10.8
+          "coreBenchmarkRatePct": 7.1
         }
       },
       "trend": {
@@ -2909,7 +3166,7 @@
         "key": "CONSIDERATION_CONSISTENCY",
         "label": "Consideration consistency"
       },
-      "narrative": "Cambridge Beaches Resort & Spa appears in 95% of monitored demand scenarios but in 71.3% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Leisure Travel is a relative strength: the hotel appears in 79.2% of monitored AI responses compared with a 10.8% CORE benchmark, producing an AI Presence Index of 731. AI visibility is broader than consideration consistency: the hotel appears in 95% of monitored demand scenarios but only 71.3% of individual comparable AI responses. This is the baseline monitoring period for this property.",
+      "narrative": "Cambridge Beaches Resort & Spa appears in 95% of monitored demand scenarios but in 71.3% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Leisure Travel is a relative strength: the hotel appears in 79.2% of monitored AI responses compared with a 7.1% CORE benchmark, producing an AI Presence Index of 1118. AI visibility is broader than consideration consistency: the hotel appears in 95% of monitored demand scenarios but only 71.3% of individual comparable AI responses. This is the baseline monitoring period for this property.",
       "meta": {
         "overall": "This is the baseline monitoring period for this property",
         "primaryStrength": "Above-benchmark territory presence",
@@ -2934,7 +3191,7 @@
         "biggestStrength": {
           "sectionLabel": "BIGGEST STRENGTH",
           "headline": "Strong visibility for Leisure Travel",
-          "body": "For Leisure Travel searches, Cambridge Beaches Resort & Spa appeared in 79.2% of AI answers, compared with 10.8% for the comparable hotels used in this analysis. That means the hotel was surfaced about 7.3 times as often as the comparable hotels used in this analysis. In practical terms, this is the area where the hotel is showing its clearest visibility advantage versus similar hotels."
+          "body": "For Leisure Travel searches, Cambridge Beaches Resort & Spa appeared in 79.2% of AI answers, compared with 7.1% for the comparable hotels used in this analysis. That means the hotel was surfaced about 11.2 times as often as the comparable hotels used in this analysis. In practical terms, this is the area where the hotel is showing its clearest visibility advantage versus similar hotels."
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
@@ -2948,7 +3205,7 @@
         },
         "executiveSummary": {
           "title": "WHAT THE DATA SAYS",
-          "narrative": "Cambridge Beaches Resort & Spa appeared in at least one AI answer for 95% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Cambridge Beaches Resort & Spa appeared 71.3% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Cambridge Beaches Resort & Spa in the hotel options surfaced.\n\nLeisure Travel is Cambridge Beaches Resort & Spa's clearest competitive strength. The hotel appeared in 79.2% of AI answers for these searches, compared with 10.8% for the comparable hotels used in this analysis — about 7.3 times as often as the comparable hotels used in this analysis. Among AI answers where hotel ranking could be measured, Cambridge Beaches Resort & Spa appeared in the Top 3 38.6% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+          "narrative": "Cambridge Beaches Resort & Spa appeared in at least one AI answer for 95% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Cambridge Beaches Resort & Spa appeared 71.3% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Cambridge Beaches Resort & Spa in the hotel options surfaced.\n\nLeisure Travel is Cambridge Beaches Resort & Spa's clearest competitive strength. The hotel appeared in 79.2% of AI answers for these searches, compared with 7.1% for the comparable hotels used in this analysis — about 11.2 times as often as the comparable hotels used in this analysis. Among AI answers where hotel ranking could be measured, Cambridge Beaches Resort & Spa appeared in the Top 3 62.7% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
         },
         "safety": {
           "VAGUE_UNEXPLAINED_PHRASES": 0,
@@ -2964,7 +3221,7 @@
         "biggestStrength": {
           "sectionLabel": "BIGGEST STRENGTH",
           "headline": "Strong visibility for Leisure Travel",
-          "body": "For Leisure Travel searches, Cambridge Beaches Resort & Spa appeared in 79.2% of AI answers, compared with 10.8% for the comparable hotels used in this analysis. That means the hotel was surfaced about 7.3 times as often as the comparable hotels used in this analysis. In practical terms, this is the area where the hotel is showing its clearest visibility advantage versus similar hotels."
+          "body": "For Leisure Travel searches, Cambridge Beaches Resort & Spa appeared in 79.2% of AI answers, compared with 7.1% for the comparable hotels used in this analysis. That means the hotel was surfaced about 11.2 times as often as the comparable hotels used in this analysis. In practical terms, this is the area where the hotel is showing its clearest visibility advantage versus similar hotels."
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
@@ -2979,24 +3236,565 @@
       },
       "writeup": {
         "title": "WHAT THE DATA SAYS",
-        "body": "Cambridge Beaches Resort & Spa appeared in at least one AI answer for 95% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Cambridge Beaches Resort & Spa appeared 71.3% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Cambridge Beaches Resort & Spa in the hotel options surfaced.\n\nLeisure Travel is Cambridge Beaches Resort & Spa's clearest competitive strength. The hotel appeared in 79.2% of AI answers for these searches, compared with 10.8% for the comparable hotels used in this analysis — about 7.3 times as often as the comparable hotels used in this analysis. Among AI answers where hotel ranking could be measured, Cambridge Beaches Resort & Spa appeared in the Top 3 38.6% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+        "body": "Cambridge Beaches Resort & Spa appeared in at least one AI answer for 95% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, Cambridge Beaches Resort & Spa appeared 71.3% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see Cambridge Beaches Resort & Spa in the hotel options surfaced.\n\nLeisure Travel is Cambridge Beaches Resort & Spa's clearest competitive strength. The hotel appeared in 79.2% of AI answers for these searches, compared with 7.1% for the comparable hotels used in this analysis — about 11.2 times as often as the comparable hotels used in this analysis. Among AI answers where hotel ranking could be measured, Cambridge Beaches Resort & Spa appeared in the Top 3 62.7% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+      },
+      "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "sections": {
+        "headline": "Cambridge Beaches Resort & Spa shows unusual strength in parts of the monitored set, but that strength can hide concentrated soft spots.",
+        "keyInsight": "Peer-relative Presence Index reaches 1118, while overall Consideration is 71.3%. That combination can look like a simple success story if leadership stops at the headline strength. The St. Regis Bermuda Resort still displaces the hotel in specific contexts. The executive value is in the concentrated contrast, not in restating strength alone.",
+        "whyItMatters": "The issue is concentrated, not broad. Leadership needs to understand where strength does not travel — otherwise attention may stay on strengths that already work while missing the soft spots that still affect commercially relevant demand contexts.",
+        "focusNow": "Focus first on the contexts where The St. Regis Bermuda Resort is surfaced instead of Cambridge Beaches Resort & Spa. Keep existing strength in view while closing this concentrated soft spot, and avoid turning a residual gap into a full repositioning exercise.",
+        "watch": null,
+        "whatToReview": "Open displacement evidence for The St. Regis Bermuda Resort and compare cited attributes with Cambridge Beaches Resort & Spa's source representation. Then review the strongest territory evidence to keep the residual work proportional."
+      },
+      "numericAnchors": [
+        {
+          "metricId": "intentPresenceIndex.leisure.index",
+          "displayValue": "1118",
+          "section": "KEY_INSIGHT",
+          "reason": "Peer-relative Presence Index contrast",
+          "paritySource": "intentPresenceIndex.leisure.index",
+          "removingWeakensInsight": true,
+          "anchorType": "peer_relative_index"
+        }
+      ],
+      "primaryIssueId": "business_group_positioning_gap",
+      "insightArchetype": "HIDDEN_STRENGTH",
+      "evidenceTrace": [
+        {
+          "kind": "metric",
+          "ref": "intentPresenceIndex.leisure.index",
+          "value": 1118
+        },
+        {
+          "kind": "territory",
+          "ref": "leisure"
+        },
+        {
+          "kind": "numericAnchor",
+          "ref": "intentPresenceIndex.leisure.index",
+          "displayValue": "1118"
+        },
+        {
+          "kind": "period",
+          "ref": "adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437"
+        }
+      ],
+      "qualityGates": {
+        "gates": {
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+            "pass": true,
+            "detail": "keyInsight length"
+          },
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+            "pass": true,
+            "detail": "property name referenced"
+          },
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+            "pass": true,
+            "detail": null
+          }
+        },
+        "gateIds": [
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+        ],
+        "claimDiscipline": {
+          "unsupportedCausalImplication": 0,
+          "overstated": 0,
+          "pass": true
+        },
+        "wordCount": 185,
+        "allRequiredPass": true,
+        "failed": []
+      },
+      "sourceSnapshotHash": "09e8b1e71c620e14",
+      "compositionHash": "8a765a2834f7ce46",
+      "compositionV3": {
+        "ok": true,
+        "contract": "ADP_EXECUTIVE_READ_V3",
+        "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "generatedAt": "2026-09-10T11:20:11.913Z",
+        "propertyId": "adp_cambridge_beaches_bermuda",
+        "propertyName": "Cambridge Beaches Resort & Spa",
+        "periodId": "adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437",
+        "primaryIssueId": "business_group_positioning_gap",
+        "insightArchetype": "HIDDEN_STRENGTH",
+        "constraintClass": "RANK",
+        "sections": {
+          "headline": "Cambridge Beaches Resort & Spa shows unusual strength in parts of the monitored set, but that strength can hide concentrated soft spots.",
+          "keyInsight": "Peer-relative Presence Index reaches 1118, while overall Consideration is 71.3%. That combination can look like a simple success story if leadership stops at the headline strength. The St. Regis Bermuda Resort still displaces the hotel in specific contexts. The executive value is in the concentrated contrast, not in restating strength alone.",
+          "whyItMatters": "The issue is concentrated, not broad. Leadership needs to understand where strength does not travel — otherwise attention may stay on strengths that already work while missing the soft spots that still affect commercially relevant demand contexts.",
+          "focusNow": "Focus first on the contexts where The St. Regis Bermuda Resort is surfaced instead of Cambridge Beaches Resort & Spa. Keep existing strength in view while closing this concentrated soft spot, and avoid turning a residual gap into a full repositioning exercise.",
+          "watch": null,
+          "whatToReview": "Open displacement evidence for The St. Regis Bermuda Resort and compare cited attributes with Cambridge Beaches Resort & Spa's source representation. Then review the strongest territory evidence to keep the residual work proportional."
+        },
+        "numericAnchors": [
+          {
+            "metricId": "intentPresenceIndex.leisure.index",
+            "displayValue": "1118",
+            "section": "KEY_INSIGHT",
+            "reason": "Peer-relative Presence Index contrast",
+            "paritySource": "intentPresenceIndex.leisure.index",
+            "removingWeakensInsight": true,
+            "anchorType": "peer_relative_index"
+          }
+        ],
+        "evidenceTrace": [
+          {
+            "kind": "metric",
+            "ref": "intentPresenceIndex.leisure.index",
+            "value": 1118
+          },
+          {
+            "kind": "territory",
+            "ref": "leisure"
+          },
+          {
+            "kind": "numericAnchor",
+            "ref": "intentPresenceIndex.leisure.index",
+            "displayValue": "1118"
+          },
+          {
+            "kind": "period",
+            "ref": "adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437"
+          }
+        ],
+        "qualityGates": {
+          "gates": {
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+              "pass": true,
+              "detail": "keyInsight length"
+            },
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+              "pass": true,
+              "detail": "property name referenced"
+            },
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+              "pass": true,
+              "detail": null
+            }
+          },
+          "gateIds": [
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+          ],
+          "claimDiscipline": {
+            "unsupportedCausalImplication": 0,
+            "overstated": 0,
+            "pass": true
+          },
+          "wordCount": 185,
+          "allRequiredPass": true,
+          "failed": []
+        },
+        "sourceSnapshotHash": "09e8b1e71c620e14",
+        "compositionHash": "8a765a2834f7ce46",
+        "activated": true,
+        "customerFacingDefault": true,
+        "zeroCodePath": true,
+        "usedHardcodedMap": false,
+        "historicalImmutability": {
+          "enforced": true,
+          "policy": {
+            "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+            "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+            "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+            "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+            "silentInPlaceMutation": "PROHIBITED",
+            "activationRequiredForCustomerDefault": true
+          },
+          "writePolicy": {
+            "allowed": true,
+            "mode": "CUSTOMER_DEFAULT_V3",
+            "reason": "ACTIVATED",
+            "policy": {
+              "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+              "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+              "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+              "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+              "silentInPlaceMutation": "PROHIBITED",
+              "activationRequiredForCustomerDefault": true
+            },
+            "enforced": true,
+            "customerDefault": true
+          }
+        },
+        "wordCount": 185,
+        "watchOmitted": true,
+        "candidates": [
+          {
+            "candidateId": "cand_breadth_sp_vs_consideration",
+            "archetype": "BREADTH_PROBLEM",
+            "priorityScore": 1.008,
+            "summary": "Scenario Presence 95% versus AI Consideration 71.3% — broad reach with weaker response-level inclusion."
+          },
+          {
+            "candidateId": "cand_peer_relative_surprise",
+            "archetype": "HIDDEN_STRENGTH",
+            "priorityScore": 1.0710000000000002,
+            "summary": "Leisure Travel Presence Index 1118 versus peer parity."
+          },
+          {
+            "candidateId": "cand_strong_index_couples",
+            "archetype": "HIDDEN_STRENGTH",
+            "priorityScore": 1.0550000000000002,
+            "summary": "Couples / Romantic Stay Presence Index 548."
+          },
+          {
+            "candidateId": "cand_competitor_present_gaps",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.7020000000000001,
+            "summary": "Competitors appear in a material share of scenarios where the hotel is absent (36.7%)."
+          },
+          {
+            "candidateId": "cand_reality_gap_island_resort",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "Island Resort is recognized in only 1.2% of monitored answers."
+          },
+          {
+            "candidateId": "cand_reality_gap_all_inclusive_option",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "All-Inclusive Option is recognized in only 7% of monitored answers."
+          },
+          {
+            "candidateId": "cand_strong_protect",
+            "archetype": "STRONG_PROTECT",
+            "priorityScore": 0.6180000000000001,
+            "summary": "Strong Scenario Presence (95%) and Consideration (71.3%) — protect position; do not manufacture a crisis."
+          },
+          {
+            "candidateId": "cand_territory_spread",
+            "archetype": "CONSISTENCY_PROBLEM",
+            "priorityScore": 0.7974000000000001,
+            "summary": "Territory presence ranges from 57.1% (Meetings & Groups) to 84.1% (Couples / Romantic Stay)."
+          },
+          {
+            "candidateId": "cand_top_observed_alternative",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.774,
+            "summary": "The Reefs Resort & Club is the top observed AI alternative in the monitored set."
+          }
+        ],
+        "selectionMeta": {
+          "rules": [
+            "ADP_EXECUTIVE_READ_INPUT_V3",
+            "ADP_EXECUTIVE_INSIGHT_CANDIDATE_GENERATION_V3",
+            "ADP_EXECUTIVE_INSIGHT_PRIORITY_V3",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY"
+          ],
+          "supportingCandidateIds": [
+            "cand_reality_gap_island_resort"
+          ]
+        },
+        "doctrine": [
+          "METHODOLOGY_IS_GOVERNED; QUALITY_CONTROLS_LEARN.",
+          "EXECUTIVE_INSIGHT_LEARNS_INTERPRETATION; MEASUREMENT_REMAINS_GOVERNED."
+        ],
+        "methodologyChanged": false,
+        "rendererViewModel": {
+          "ok": true,
+          "contract": "ADP_EXECUTIVE_READ_RENDERER_CONTRACT_V3",
+          "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+          "activated": true,
+          "primaryIssueId": "business_group_positioning_gap",
+          "insightArchetype": "HIDDEN_STRENGTH",
+          "sections": [
+            {
+              "key": "headline",
+              "label": "Headline",
+              "text": "Cambridge Beaches Resort & Spa shows unusual strength in parts of the monitored set, but that strength can hide concentrated soft spots.",
+              "anchors": []
+            },
+            {
+              "key": "keyInsight",
+              "label": "Key Insight",
+              "text": "Peer-relative Presence Index reaches 1118, while overall Consideration is 71.3%. That combination can look like a simple success story if leadership stops at the headline strength. The St. Regis Bermuda Resort still displaces the hotel in specific contexts. The executive value is in the concentrated contrast, not in restating strength alone.",
+              "anchors": [
+                {
+                  "metricId": "intentPresenceIndex.leisure.index",
+                  "displayValue": "1118",
+                  "section": "KEY_INSIGHT",
+                  "reason": "Peer-relative Presence Index contrast",
+                  "paritySource": "intentPresenceIndex.leisure.index",
+                  "removingWeakensInsight": true,
+                  "anchorType": "peer_relative_index"
+                }
+              ]
+            },
+            {
+              "key": "whyItMatters",
+              "label": "Why It Matters",
+              "text": "The issue is concentrated, not broad. Leadership needs to understand where strength does not travel — otherwise attention may stay on strengths that already work while missing the soft spots that still affect commercially relevant demand contexts.",
+              "anchors": []
+            },
+            {
+              "key": "focusNow",
+              "label": "Focus Now",
+              "text": "Focus first on the contexts where The St. Regis Bermuda Resort is surfaced instead of Cambridge Beaches Resort & Spa. Keep existing strength in view while closing this concentrated soft spot, and avoid turning a residual gap into a full repositioning exercise.",
+              "anchors": []
+            },
+            {
+              "key": "whatToReview",
+              "label": "What to Review",
+              "text": "Open displacement evidence for The St. Regis Bermuda Resort and compare cited attributes with Cambridge Beaches Resort & Spa's source representation. Then review the strongest territory evidence to keep the residual work proportional.",
+              "anchors": []
+            }
+          ],
+          "flattenedProseForLegacy": "Cambridge Beaches Resort & Spa shows unusual strength in parts of the monitored set, but that strength can hide concentrated soft spots.\n\nPeer-relative Presence Index reaches 1118, while overall Consideration is 71.3%. That combination can look like a simple success story if leadership stops at the headline strength. The St. Regis Bermuda Resort still displaces the hotel in specific contexts. The executive value is in the concentrated contrast, not in restating strength alone.\n\nThe issue is concentrated, not broad. Leadership needs to understand where strength does not travel — otherwise attention may stay on strengths that already work while missing the soft spots that still affect commercially relevant demand contexts.\n\nFocus first on the contexts where The St. Regis Bermuda Resort is surfaced instead of Cambridge Beaches Resort & Spa. Keep existing strength in view while closing this concentrated soft spot, and avoid turning a residual gap into a full repositioning exercise.\n\nOpen displacement evidence for The St. Regis Bermuda Resort and compare cited attributes with Cambridge Beaches Resort & Spa's source representation. Then review the strongest territory evidence to keep the residual work proportional."
+        }
       }
     },
-    "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-    "correction": null,
-    "reportVersionLabel": "CORRECTED_V1_1",
-    "trends": [
-      {
-        "periodId": "adp_period_adp_cambridge_beaches_bermuda_20260820141258_547a7b",
-        "date": "2026-08-20T14:12:58.937Z",
-        "propertyRealityCoverage": 44.4,
-        "scenarioPresenceRate": 100,
-        "considerationRate": 71.7,
-        "providerCount": 4,
-        "observationCount": 240,
-        "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-        "role": "prior_run"
+    "metricScopeLabels": {
+      "version": "adp_metric_scope_labels_v1",
+      "subjectObservationGrain": {
+        "productLabel": "AI Consideration",
+        "technicalLabel": "AI Consideration Rate",
+        "grain": "property × scenario × provider × period (comparable observations)",
+        "definition": "Share of comparable monitored AI responses where the subject hotel appears."
       },
+      "subjectScenarioGrain": {
+        "productLabel": "AI Scenario Presence",
+        "technicalLabel": "Demand Scenario Coverage",
+        "grain": "property × scenario (aggregates providers)",
+        "definition": "Share of monitored demand scenarios where the subject hotel appears on at least one comparable provider."
+      },
+      "competitorScenarioAppearance": {
+        "productLabel": "Scenario Appearance",
+        "technicalLabel": "Competitor Scenario Appearance",
+        "grain": "non-subject hotel × scenario (within subject hotel report)",
+        "definition": "Share of monitored scenarios in this report where a competitor hotel appears. Not the same metric as that hotel's own AI Consideration.",
+        "forbiddenClientLabels": [
+          "Presence",
+          "AI Presence"
+        ]
+      },
+      "competitorObservationAppearance": {
+        "productLabel": "Observation Appearance",
+        "technicalLabel": "Competitor Observation Appearance",
+        "grain": "non-subject hotel × observation (within subject hotel report)",
+        "definition": "Share of comparable monitored answers in this report where a competitor hotel appears. Not interchangeable with subject AI Consideration unless same-scope certified."
+      },
+      "scopeRule": "SAME_SCOPE_SAME_CANONICAL_METRIC",
+      "ambiguityRule": "ADP_METRIC_SCOPE_UNAMBIGUOUS"
+    },
+    "trends": [
       {
         "periodId": "adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437",
         "date": "2026-09-03T01:08:29.034Z",

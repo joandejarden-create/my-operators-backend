@@ -1,12 +1,12 @@
 {
   "ok": true,
-  "publishedAt": "2026-09-03T02:26:21.124Z",
+  "publishedAt": "2026-09-10T11:03:24.195Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_now_now_noho",
   "periodId": "adp_period_adp_now_now_noho_20260903014340_520794",
   "censusRecordId": null,
-  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-  "reportEdition": "CORRECTED_V1_1",
+  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+  "reportEdition": "ORIGINAL_V1",
   "payload": {
     "ok": true,
     "version": "ai_demand_positioning_v1",
@@ -16,15 +16,15 @@
       "city": "New York",
       "state": "New York",
       "chainScale": "Upper Upscale",
-      "affiliation": "Independent",
+      "affiliation": "Hyatt",
       "rooms": 115,
       "website": "https://www.nownownyc.com/",
       "ownedDomains": [
         "nownownyc.com",
         "nownownoho.com"
       ],
-      "officialBrandDomain": null,
-      "officialPropertyPageUrl": "https://www.nownownyc.com/"
+      "officialBrandDomain": "hyatt.com",
+      "officialPropertyPageUrl": "https://www.hyatt.com/en-US/hotel/new-york/now-now-noho/nycnh"
     },
     "period": {
       "periodId": "adp_period_adp_now_now_noho_20260903014340_520794",
@@ -358,7 +358,7 @@
       }
     },
     "lostDemand": {
-      "totalLost": 54,
+      "totalLost": 55,
       "highRelevanceLost": 2,
       "displacement": [
         {
@@ -368,7 +368,7 @@
         },
         {
           "name": "Soho Grand Hotel",
-          "displacementCount": 28,
+          "displacementCount": 30,
           "entityId": "soho_grand"
         },
         {
@@ -390,19 +390,11 @@
       "topReasons": [
         {
           "reason": "High competitor density. Stronger authority signals needed",
-          "count": 31
-        },
-        {
-          "reason": "Competitor has stronger authority or recency signals for this demand",
-          "count": 14
+          "count": 47
         },
         {
           "reason": "Meeting/event capability may be underrepresented in AI sources",
           "count": 8
-        },
-        {
-          "reason": "Property not strongly associated with this traveler segment",
-          "count": 1
         }
       ],
       "scenarios": [
@@ -429,11 +421,11 @@
         {
           "intent": "business",
           "competitorsPresent": [
-            "The Greenwich Hotel",
             "The Beekman, A Thompson Hotel",
             "Soho Grand Hotel",
+            "The Greenwich Hotel",
             "The Bowery Hotel",
-            "The Standard, High Line"
+            "Four Seasons Hotel New York Downtown"
           ],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
           "relevance": "MEDIUM"
@@ -454,8 +446,8 @@
             "The Standard, High Line",
             "The Greenwich Hotel",
             "The Beekman, A Thompson Hotel",
-            "Crosby Street Hotel",
-            "Four Seasons Hotel New York Downtown"
+            "Four Seasons Hotel New York Downtown",
+            "Crosby Street Hotel"
           ],
           "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
           "relevance": "MEDIUM"
@@ -463,10 +455,10 @@
         {
           "intent": "leisure",
           "competitorsPresent": [
+            "Soho Grand Hotel",
             "The Greenwich Hotel",
             "The Dominick Hotel",
             "The Marlton Hotel",
-            "Soho Grand Hotel",
             "The Jane Hotel"
           ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
@@ -475,10 +467,10 @@
         {
           "intent": "business",
           "competitorsPresent": [
-            "The Bowery Hotel",
-            "The Beekman, A Thompson Hotel"
+            "The Beekman, A Thompson Hotel",
+            "The Bowery Hotel"
           ],
-          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
+          "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "MEDIUM"
         },
         {
@@ -487,7 +479,7 @@
             "Crosby Street Hotel",
             "The Bowery Hotel"
           ],
-          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
+          "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "MEDIUM"
         },
         {
@@ -497,15 +489,15 @@
             "Crosby Street Hotel",
             "The Nolitan Hotel"
           ],
-          "likelyReason": "Competitor has stronger authority or recency signals for this demand",
+          "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "MEDIUM"
         },
         {
           "intent": "leisure",
           "competitorsPresent": [
-            "The Marlton Hotel",
             "Walker Hotel Greenwich Village",
             "Washington Square Hotel",
+            "The Marlton Hotel",
             "The Mercer Hotel",
             "The Bowery Hotel"
           ],
@@ -520,188 +512,114 @@
       "overlapRate": 100,
       "surprises": [
         {
-          "name": "The Bowery Hotel",
-          "entityId": "bowery_hotel",
-          "appearances": 59,
-          "aiPresencePct": 23.4,
-          "aiPresenceRate": 0.23412698412698413,
-          "mentions": 59,
-          "scenarioCount": 31,
-          "rawMentionCount": 59,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "name": "Walker Hotel Greenwich Village",
+          "mentions": 64,
+          "scenarioCount": 15,
+          "entityId": "walker_hotel_gv",
           "isCore": false
         },
         {
           "name": "Soho Grand Hotel",
+          "mentions": 60,
+          "scenarioCount": 35,
           "entityId": "soho_grand",
-          "appearances": 56,
-          "aiPresencePct": 22.2,
-          "aiPresenceRate": 0.2222222222222222,
-          "mentions": 56,
-          "scenarioCount": 33,
-          "rawMentionCount": 56,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "isCore": false
+        },
+        {
+          "name": "The Bowery Hotel",
+          "mentions": 59,
+          "scenarioCount": 31,
+          "entityId": "bowery_hotel",
           "isCore": false
         },
         {
           "name": "The Marlton Hotel",
-          "entityId": "marlton_hotel",
-          "appearances": 39,
-          "aiPresencePct": 15.5,
-          "aiPresenceRate": 0.15476190476190477,
-          "mentions": 39,
+          "mentions": 45,
           "scenarioCount": 16,
-          "rawMentionCount": 47,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "marlton_hotel",
           "isCore": false
         },
         {
           "name": "The Beekman, A Thompson Hotel",
-          "entityId": "beekman_hotel",
-          "appearances": 37,
-          "aiPresencePct": 14.7,
-          "aiPresenceRate": 0.14682539682539683,
-          "mentions": 37,
+          "mentions": 44,
           "scenarioCount": 21,
-          "rawMentionCount": 38,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
-        },
-        {
-          "name": "Walker Hotel Greenwich Village",
-          "entityId": "walker_hotel_gv",
-          "appearances": 30,
-          "aiPresencePct": 11.9,
-          "aiPresenceRate": 0.11904761904761904,
-          "mentions": 30,
-          "scenarioCount": 15,
-          "rawMentionCount": 58,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "beekman_hotel",
           "isCore": false
         }
       ],
       "observed": [
         {
           "name": "Crosby Street Hotel",
-          "entityId": "crosby_street_hotel",
-          "appearances": 88,
-          "aiPresencePct": 34.9,
-          "aiPresenceRate": 0.3492063492063492,
           "mentions": 88,
           "scenarioCount": 45,
-          "rawMentionCount": 88,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": true
-        },
-        {
-          "name": "The Bowery Hotel",
-          "entityId": "bowery_hotel",
-          "appearances": 59,
-          "aiPresencePct": 23.4,
-          "aiPresenceRate": 0.23412698412698413,
-          "mentions": 59,
-          "scenarioCount": 31,
-          "rawMentionCount": 59,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
-        },
-        {
-          "name": "Soho Grand Hotel",
-          "entityId": "soho_grand",
-          "appearances": 56,
-          "aiPresencePct": 22.2,
-          "aiPresenceRate": 0.2222222222222222,
-          "mentions": 56,
-          "scenarioCount": 33,
-          "rawMentionCount": 56,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
-        },
-        {
-          "name": "The Marlton Hotel",
-          "entityId": "marlton_hotel",
-          "appearances": 39,
-          "aiPresencePct": 15.5,
-          "aiPresenceRate": 0.15476190476190477,
-          "mentions": 39,
-          "scenarioCount": 16,
-          "rawMentionCount": 47,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
-        },
-        {
-          "name": "The Beekman, A Thompson Hotel",
-          "entityId": "beekman_hotel",
-          "appearances": 37,
-          "aiPresencePct": 14.7,
-          "aiPresenceRate": 0.14682539682539683,
-          "mentions": 37,
-          "scenarioCount": 21,
-          "rawMentionCount": 38,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-          "isCore": false
-        },
-        {
-          "name": "The Greenwich Hotel",
-          "entityId": "greenwich_hotel",
-          "appearances": 36,
-          "aiPresencePct": 14.3,
-          "aiPresenceRate": 0.14285714285714285,
-          "mentions": 36,
-          "scenarioCount": 24,
-          "rawMentionCount": 36,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "crosby_street_hotel",
           "isCore": true
         },
         {
           "name": "Walker Hotel Greenwich Village",
-          "entityId": "walker_hotel_gv",
-          "appearances": 30,
-          "aiPresencePct": 11.9,
-          "aiPresenceRate": 0.11904761904761904,
-          "mentions": 30,
+          "mentions": 64,
           "scenarioCount": 15,
-          "rawMentionCount": 58,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "walker_hotel_gv",
           "isCore": false
         },
         {
-          "name": "Washington Square Hotel",
-          "entityId": "washington_square_hotel",
-          "appearances": 29,
-          "aiPresencePct": 11.5,
-          "aiPresenceRate": 0.11507936507936507,
-          "mentions": 29,
-          "scenarioCount": 14,
-          "rawMentionCount": 33,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "name": "Soho Grand Hotel",
+          "mentions": 60,
+          "scenarioCount": 35,
+          "entityId": "soho_grand",
+          "isCore": false
+        },
+        {
+          "name": "The Bowery Hotel",
+          "mentions": 59,
+          "scenarioCount": 31,
+          "entityId": "bowery_hotel",
+          "isCore": false
+        },
+        {
+          "name": "The Marlton Hotel",
+          "mentions": 45,
+          "scenarioCount": 16,
+          "entityId": "marlton_hotel",
+          "isCore": false
+        },
+        {
+          "name": "The Beekman, A Thompson Hotel",
+          "mentions": 44,
+          "scenarioCount": 21,
+          "entityId": "beekman_hotel",
           "isCore": false
         },
         {
           "name": "Four Seasons Hotel New York Downtown",
-          "entityId": "four_seasons_downtown_nyc",
-          "appearances": 22,
-          "aiPresencePct": 8.7,
-          "aiPresenceRate": 0.0873015873015873,
-          "mentions": 22,
+          "mentions": 43,
           "scenarioCount": 12,
-          "rawMentionCount": 40,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "four_seasons_downtown_nyc",
+          "isCore": false
+        },
+        {
+          "name": "The Greenwich Hotel",
+          "mentions": 36,
+          "scenarioCount": 24,
+          "entityId": "greenwich_hotel",
+          "isCore": true
+        },
+        {
+          "name": "Washington Square Hotel",
+          "mentions": 34,
+          "scenarioCount": 14,
+          "entityId": "washington_square_hotel",
           "isCore": false
         },
         {
           "name": "PUBLIC Hotel",
-          "entityId": "public_hotel",
-          "appearances": 21,
-          "aiPresencePct": 8.3,
-          "aiPresenceRate": 0.08333333333333333,
-          "mentions": 21,
+          "mentions": 26,
           "scenarioCount": 15,
-          "rawMentionCount": 23,
-          "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+          "entityId": "public_hotel",
           "isCore": false
         }
       ],
+      "declaredButNotObserved": [],
       "topObservedAlternative": {
         "entityId": "crosby_street_hotel",
         "name": "Crosby Street Hotel",
@@ -711,16 +629,24 @@
         "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
         "mentions": 88
       },
-      "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
-      "declaredButNotObserved": [],
-      "rawCompetitorMentionMetric": "RAW_COMPETITOR_MENTION_COUNT"
+      "topObservedAlternativeMeta": {
+        "version": "adp_top_observed_ai_alternative_overall_presence_v1",
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "tiedMaxSet": [
+          {
+            "entityId": "crosby_street_hotel",
+            "name": "Crosby Street Hotel",
+            "appearances": 88
+          }
+        ]
+      }
     },
     "realityGap": {
-      "gapScore": 71.4,
-      "display": "71.4%",
-      "totalAttributes": 7,
+      "gapScore": 75,
+      "display": "75.0%",
+      "totalAttributes": 8,
       "recognizedCount": 2,
-      "gapCount": 5,
+      "gapCount": 6,
       "recognized": [
         {
           "attribute": "design_forward",
@@ -746,6 +672,15 @@
           "count": 2,
           "total": 8,
           "severity": "LOW"
+        },
+        {
+          "attribute": "fitness_center",
+          "label": "Fitness Center",
+          "priority": "medium",
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 8,
+          "severity": "HIGH"
         },
         {
           "attribute": "pet_friendly",
@@ -787,7 +722,7 @@
       "totalPropertyMentions": 8
     },
     "whiteSpace": {
-      "totalOpportunities": 9,
+      "totalOpportunities": 7,
       "highOpportunities": 1,
       "opportunities": [
         {
@@ -806,7 +741,7 @@
               "count": 2
             },
             {
-              "name": "Situated in the heart of SoHo, the hotel",
+              "name": ", the Michelin-starred French restaurant located inside the hotel",
               "count": 1
             }
           ]
@@ -819,36 +754,15 @@
           "rationale": "Competitor presence is inconsistent. Opportunity to establish authority. Your 18,899 sq ft event space is relevant.",
           "topCompetitors": [
             {
+              "name": "The Beekman, A Thompson Hotel",
+              "count": 2
+            },
+            {
+              "name": "Soho Grand Hotel",
+              "count": 2
+            },
+            {
               "name": "The Greenwich Hotel",
-              "count": 2
-            },
-            {
-              "name": "Soho Grand Hotel",
-              "count": 2
-            },
-            {
-              "name": "Crosby Street Hotel",
-              "count": 2
-            }
-          ]
-        },
-        {
-          "intent": "leisure",
-          "ownerIntentSummary": "Best upscale hotel near Washington Square Park and NYU",
-          "opportunityScore": "MEDIUM",
-          "currentOwnership": "contested",
-          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority.",
-          "topCompetitors": [
-            {
-              "name": "Washington Square Hotel",
-              "count": 2
-            },
-            {
-              "name": "Soho Grand Hotel",
-              "count": 2
-            },
-            {
-              "name": "Crosby Street Hotel",
               "count": 2
             }
           ]
@@ -861,7 +775,7 @@
           "rationale": "No clear leader in AI responses for this demand. Your 18,899 sq ft event space is relevant.",
           "topCompetitors": [
             {
-              "name": "The Mercer Hotel",
+              "name": "mercer hotel",
               "count": 1
             },
             {
@@ -886,33 +800,12 @@
               "count": 2
             },
             {
-              "name": "The Beekman Hotel",
+              "name": "beekman hotel",
               "count": 2
             },
             {
               "name": "The Standard, High Line",
               "count": 1
-            }
-          ]
-        },
-        {
-          "intent": "celebration",
-          "ownerIntentSummary": "Best upscale hotel in Lower Manhattan for a milestone celebr...",
-          "opportunityScore": "MEDIUM",
-          "currentOwnership": "contested",
-          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority.",
-          "topCompetitors": [
-            {
-              "name": "Four Seasons Hotel New York Downtown",
-              "count": 2
-            },
-            {
-              "name": "Four Seasons Hotel",
-              "count": 2
-            },
-            {
-              "name": "The Greenwich Hotel",
-              "count": 2
             }
           ]
         },
@@ -924,11 +817,11 @@
           "rationale": "Competitor presence is inconsistent. Opportunity to establish authority. Your 18,899 sq ft event space is relevant.",
           "topCompetitors": [
             {
-              "name": "The Dominick Hotel",
+              "name": "Soho Grand Hotel",
               "count": 2
             },
             {
-              "name": "Soho Grand Hotel",
+              "name": "The Dominick Hotel",
               "count": 2
             },
             {
@@ -949,11 +842,11 @@
               "count": 2
             },
             {
-              "name": "Four Seasons Hotel",
+              "name": "The Beekman, A Thompson Hotel",
               "count": 2
             },
             {
-              "name": "Thompson Hotel",
+              "name": "Conrad New York Downtown",
               "count": 2
             }
           ]
@@ -974,7 +867,7 @@
               "count": 2
             },
             {
-              "name": "The NoMad Hotel",
+              "name": "The Bowery Hotel",
               "count": 1
             }
           ]
@@ -1001,17 +894,17 @@
         },
         {
           "type": "gap",
-          "text": "AI Reality Gap: 71.4%. AI misses or misrepresents 5 of your property's key attributes."
+          "text": "AI Reality Gap: 75.0%. AI misses or misrepresents 6 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-09-03T02:26:19.973Z"
+      "generatedAt": "2026-09-10T11:03:19.509Z"
     },
     "actions": [
       {
         "priority": "HIGH",
         "category": "REALITY_GAP",
-        "title": "Improve AI representation of pet-friendly",
-        "description": "AI currently misses or underrepresents your pet-friendly. Review third-party content and authority signals for this attribute before estimating impact.",
+        "title": "Improve AI representation of fitness center",
+        "description": "AI currently misses or underrepresents your fitness center. Review third-party content and authority signals for this attribute before estimating impact.",
         "expectedImpact": null,
         "impactNote": "Review evidence for this attribute gap before estimating scenario impact."
       },
@@ -1237,61 +1130,6 @@
       },
       "ownedDomainsConfigured": true
     },
-    "brandPortfolioPosition": {
-      "ok": true,
-      "sectionId": "brand-portfolio-position",
-      "contractVersion": "ADP_BRAND_PORTFOLIO_POSITION_CONTRACT_V1",
-      "sectionVisible": true,
-      "title": "Brand & Portfolio Position",
-      "subtitle": "How this hotel performs when travelers specifically consider independent hotels in its market.",
-      "sectionMode": "INDEPENDENT_POSITIONING",
-      "status": "AWAITING_FIRST_MONITORING",
-      "renderState": "AWAITING_FIRST_MONITORING",
-      "customerState": {
-        "statusLabel": "Independent positioning not yet available",
-        "headline": "Independent Positioning not yet available",
-        "body": "Independent Positioning will appear here after the first independent-hotel monitoring cycle.",
-        "secondary": "You’ll see AI Presence, relative rank, and the hotels most often competing in this set."
-      },
-      "emptyMessage": "Independent Positioning will appear here after the first independent-hotel monitoring cycle.",
-      "lens": {
-        "lensId": "independent_positioning",
-        "label": "Independent Positioning",
-        "portfolioType": "INDEPENDENT_POSITIONING",
-        "status": "DEFAULT"
-      },
-      "optionalFutureLenses": [],
-      "assuranceStatus": "NOT_READY",
-      "showAnalyticalScaffolding": false,
-      "kpis": null,
-      "ranking": null,
-      "tableColumns": null,
-      "dataAvailability": {
-        "validObservations": 0,
-        "invalidObservations": 8,
-        "needsRerunObservations": 0,
-        "propertySpecificOtherObservations": 56,
-        "validScenarios": 0,
-        "sufficientForRanking": false,
-        "historicalCandidateReuseAvailable": false,
-        "source": "ADP_BRAND_PORTFOLIO_OBSERVATION_RECLASS_V1"
-      },
-      "affiliationSnapshot": {
-        "brand": "Independent",
-        "affiliation": "Independent",
-        "parentCompany": null,
-        "operatorCompany": "Dovetail + Co",
-        "officialBrandDomain": null
-      },
-      "coreIsolation": true,
-      "gate": "CORE_PORTFOLIO_MEASUREMENT_ISOLATION",
-      "principles": [
-        "NO_EMPTY_ANALYTICAL_SCAFFOLDING_BEFORE_MEASUREMENT",
-        "PORTFOLIO_TABLE_REQUIRES_READY_MEASUREMENT",
-        "PORTFOLIO_METRIC_MISSING_IS_NOT_ZERO"
-      ],
-      "doesNotAlterCoreMetrics": true
-    },
     "executiveMetrics": {
       "version": "adp_optional_executive_metrics_v2",
       "considerationRate": {
@@ -1306,15 +1144,7 @@
       },
       "competitorPresentScenarios": {
         "scenarioCount": 54,
-        "observationCount": 227
-      },
-      "currentVsPrior": {
-        "currentPeriodId": "adp_period_adp_now_now_noho_20260903014340_520794",
-        "priorComparablePeriodId": "adp_period_adp_now_now_noho_20260820141258_2fe3a3",
-        "deltas": {
-          "considerationRate": 0.1,
-          "scenarioPresence": 0
-        }
+        "observationCount": 233
       }
     },
     "competitiveRankingByTerritory": {
@@ -1348,7 +1178,33 @@
               "displacement": {
                 "count": 39,
                 "evidenceAvailable": true,
-                "competitorId": "crosby_street_hotel"
+                "competitorId": "crosby_street_hotel",
+                "supportingObservationCount": 39,
+                "drawerItemCount": 39
+              }
+            },
+            {
+              "entityId": "soho_grand",
+              "name": "Soho Grand Hotel",
+              "isSubject": false,
+              "appearances": 60,
+              "aiPresenceRate": 0.23809523809523808,
+              "aiPresencePct": 23.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Leisure Travel",
+              "topDemandTerritoryIntent": "leisure",
+              "displacement": {
+                "count": 30,
+                "evidenceAvailable": true,
+                "competitorId": "soho_grand",
+                "supportingObservationCount": 30,
+                "drawerItemCount": 30
               }
             },
             {
@@ -1360,28 +1216,6 @@
               "aiPresencePct": 23.4,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 2,
-              "displayRank": 2,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "topDemandTerritory": "Leisure Travel",
-              "topDemandTerritoryIntent": "leisure",
-              "displacement": {
-                "count": 23,
-                "evidenceAvailable": true,
-                "competitorId": "bowery_hotel"
-              }
-            },
-            {
-              "entityId": "soho_grand",
-              "name": "Soho Grand Hotel",
-              "isSubject": false,
-              "appearances": 56,
-              "aiPresenceRate": 0.2222222222222222,
-              "aiPresencePct": 22.2,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
               "observedRank": 3,
               "displayRank": 3,
               "isAppendedCore": false,
@@ -1390,9 +1224,35 @@
               "topDemandTerritory": "Leisure Travel",
               "topDemandTerritoryIntent": "leisure",
               "displacement": {
-                "count": 28,
+                "count": 23,
                 "evidenceAvailable": true,
-                "competitorId": "soho_grand"
+                "competitorId": "bowery_hotel",
+                "supportingObservationCount": 23,
+                "drawerItemCount": 23
+              }
+            },
+            {
+              "entityId": "beekman_hotel",
+              "name": "The Beekman, A Thompson Hotel",
+              "isSubject": false,
+              "appearances": 41,
+              "aiPresenceRate": 0.1626984126984127,
+              "aiPresencePct": 16.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 20,
+                "evidenceAvailable": true,
+                "competitorId": "beekman_hotel",
+                "supportingObservationCount": 20,
+                "drawerItemCount": 20
               }
             },
             {
@@ -1404,8 +1264,8 @@
               "aiPresencePct": 15.5,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 4,
-              "displayRank": 4,
+              "observedRank": 5,
+              "displayRank": 5,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1414,29 +1274,9 @@
               "displacement": {
                 "count": 15,
                 "evidenceAvailable": true,
-                "competitorId": "marlton_hotel"
-              }
-            },
-            {
-              "entityId": "beekman_hotel",
-              "name": "The Beekman, A Thompson Hotel",
-              "isSubject": false,
-              "appearances": 37,
-              "aiPresenceRate": 0.14682539682539683,
-              "aiPresencePct": 14.7,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
-              "observedRank": 5,
-              "displayRank": 5,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "topDemandTerritory": "Business Travel",
-              "topDemandTerritoryIntent": "business",
-              "displacement": {
-                "count": 20,
-                "evidenceAvailable": true,
-                "competitorId": "beekman_hotel"
+                "competitorId": "marlton_hotel",
+                "supportingObservationCount": 15,
+                "drawerItemCount": 15
               }
             },
             {
@@ -1458,7 +1298,9 @@
               "displacement": {
                 "count": 22,
                 "evidenceAvailable": true,
-                "competitorId": "greenwich_hotel"
+                "competitorId": "greenwich_hotel",
+                "supportingObservationCount": 22,
+                "drawerItemCount": 22
               }
             },
             {
@@ -1480,16 +1322,18 @@
               "displacement": {
                 "count": 13,
                 "evidenceAvailable": true,
-                "competitorId": "walker_hotel_gv"
+                "competitorId": "walker_hotel_gv",
+                "supportingObservationCount": 13,
+                "drawerItemCount": 13
               }
             },
             {
               "entityId": "washington_square_hotel",
               "name": "Washington Square Hotel",
               "isSubject": false,
-              "appearances": 29,
-              "aiPresenceRate": 0.11507936507936507,
-              "aiPresencePct": 11.5,
+              "appearances": 30,
+              "aiPresenceRate": 0.11904761904761904,
+              "aiPresencePct": 11.9,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 8,
@@ -1502,7 +1346,9 @@
               "displacement": {
                 "count": 13,
                 "evidenceAvailable": true,
-                "competitorId": "washington_square_hotel"
+                "competitorId": "washington_square_hotel",
+                "supportingObservationCount": 13,
+                "drawerItemCount": 13
               }
             },
             {
@@ -1524,7 +1370,9 @@
               "displacement": {
                 "count": 12,
                 "evidenceAvailable": true,
-                "competitorId": "four_seasons_downtown_nyc"
+                "competitorId": "four_seasons_downtown_nyc",
+                "supportingObservationCount": 12,
+                "drawerItemCount": 12
               }
             },
             {
@@ -1596,7 +1444,31 @@
               "displacement": {
                 "count": 7,
                 "evidenceAvailable": true,
-                "competitorId": "crosby_street_hotel"
+                "competitorId": "crosby_street_hotel",
+                "supportingObservationCount": 7,
+                "drawerItemCount": 7
+              }
+            },
+            {
+              "entityId": "beekman_hotel",
+              "name": "The Beekman, A Thompson Hotel",
+              "isSubject": false,
+              "appearances": 14,
+              "aiPresenceRate": 0.2692307692307692,
+              "aiPresencePct": 26.9,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 7,
+                "evidenceAvailable": true,
+                "competitorId": "beekman_hotel",
+                "supportingObservationCount": 7,
+                "drawerItemCount": 7
               }
             },
             {
@@ -1608,35 +1480,17 @@
               "aiPresencePct": 23.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 2,
-              "displayRank": 2,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "displacement": {
-                "count": 5,
-                "evidenceAvailable": true,
-                "competitorId": "soho_grand"
-              }
-            },
-            {
-              "entityId": "beekman_hotel",
-              "name": "The Beekman, A Thompson Hotel",
-              "isSubject": false,
-              "appearances": 12,
-              "aiPresenceRate": 0.23076923076923078,
-              "aiPresencePct": 23.1,
-              "relationship": "CORE",
-              "isCore": true,
               "observedRank": 3,
               "displayRank": 3,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 7,
+                "count": 5,
                 "evidenceAvailable": true,
-                "competitorId": "beekman_hotel"
+                "competitorId": "soho_grand",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
               }
             },
             {
@@ -1656,7 +1510,9 @@
               "displacement": {
                 "count": 6,
                 "evidenceAvailable": true,
-                "competitorId": "bowery_hotel"
+                "competitorId": "bowery_hotel",
+                "supportingObservationCount": 6,
+                "drawerItemCount": 6
               }
             },
             {
@@ -1676,7 +1532,9 @@
               "displacement": {
                 "count": 5,
                 "evidenceAvailable": true,
-                "competitorId": "greenwich_hotel"
+                "competitorId": "greenwich_hotel",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
               }
             },
             {
@@ -1696,7 +1554,9 @@
               "displacement": {
                 "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "four_seasons_downtown_nyc"
+                "competitorId": "four_seasons_downtown_nyc",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
@@ -1716,7 +1576,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "marlton_hotel"
+                "competitorId": "marlton_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -1736,7 +1598,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "roxy_hotel"
+                "competitorId": "roxy_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -1756,7 +1620,9 @@
               "displacement": {
                 "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "mercer_hotel"
+                "competitorId": "mercer_hotel",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
@@ -1776,7 +1642,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "walker_hotel_gv"
+                "competitorId": "walker_hotel_gv",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -1796,7 +1664,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "public_hotel"
+                "competitorId": "public_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -1816,7 +1686,9 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "wall_street_hotel"
+                "competitorId": "wall_street_hotel",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -1887,7 +1759,9 @@
               "displacement": {
                 "count": 10,
                 "evidenceAvailable": true,
-                "competitorId": "crosby_street_hotel"
+                "competitorId": "crosby_street_hotel",
+                "supportingObservationCount": 10,
+                "drawerItemCount": 10
               }
             },
             {
@@ -1907,16 +1781,18 @@
               "displacement": {
                 "count": 7,
                 "evidenceAvailable": true,
-                "competitorId": "bowery_hotel"
+                "competitorId": "bowery_hotel",
+                "supportingObservationCount": 7,
+                "drawerItemCount": 7
               }
             },
             {
               "entityId": "soho_grand",
               "name": "Soho Grand Hotel",
               "isSubject": false,
-              "appearances": 18,
-              "aiPresenceRate": 0.3,
-              "aiPresencePct": 30,
+              "appearances": 20,
+              "aiPresenceRate": 0.3333333333333333,
+              "aiPresencePct": 33.3,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 3,
@@ -1925,9 +1801,11 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 7,
+                "count": 8,
                 "evidenceAvailable": true,
-                "competitorId": "soho_grand"
+                "competitorId": "soho_grand",
+                "supportingObservationCount": 8,
+                "drawerItemCount": 8
               }
             },
             {
@@ -1947,7 +1825,9 @@
               "displacement": {
                 "count": 5,
                 "evidenceAvailable": true,
-                "competitorId": "marlton_hotel"
+                "competitorId": "marlton_hotel",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
               }
             },
             {
@@ -1967,7 +1847,9 @@
               "displacement": {
                 "count": 5,
                 "evidenceAvailable": true,
-                "competitorId": "washington_square_hotel"
+                "competitorId": "washington_square_hotel",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
               }
             },
             {
@@ -1987,7 +1869,9 @@
               "displacement": {
                 "count": 5,
                 "evidenceAvailable": true,
-                "competitorId": "walker_hotel_gv"
+                "competitorId": "walker_hotel_gv",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
               }
             },
             {
@@ -2007,7 +1891,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "public_hotel"
+                "competitorId": "public_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -2027,7 +1913,9 @@
               "displacement": {
                 "count": 5,
                 "evidenceAvailable": true,
-                "competitorId": "greenwich_hotel"
+                "competitorId": "greenwich_hotel",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
               }
             },
             {
@@ -2047,7 +1935,9 @@
               "displacement": {
                 "count": 4,
                 "evidenceAvailable": true,
-                "competitorId": "mercer_hotel"
+                "competitorId": "mercer_hotel",
+                "supportingObservationCount": 4,
+                "drawerItemCount": 4
               }
             },
             {
@@ -2087,7 +1977,9 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "ludlow_hotel"
+                "competitorId": "ludlow_hotel",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             }
           ],
@@ -2137,7 +2029,9 @@
               "displacement": {
                 "count": 8,
                 "evidenceAvailable": true,
-                "competitorId": "crosby_street_hotel"
+                "competitorId": "crosby_street_hotel",
+                "supportingObservationCount": 8,
+                "drawerItemCount": 8
               }
             },
             {
@@ -2157,16 +2051,18 @@
               "displacement": {
                 "count": 8,
                 "evidenceAvailable": true,
-                "competitorId": "bowery_hotel"
+                "competitorId": "bowery_hotel",
+                "supportingObservationCount": 8,
+                "drawerItemCount": 8
               }
             },
             {
               "entityId": "soho_grand",
               "name": "Soho Grand Hotel",
               "isSubject": false,
-              "appearances": 7,
-              "aiPresenceRate": 0.19444444444444445,
-              "aiPresencePct": 19.4,
+              "appearances": 8,
+              "aiPresenceRate": 0.2222222222222222,
+              "aiPresencePct": 22.2,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 3,
@@ -2177,7 +2073,9 @@
               "displacement": {
                 "count": 4,
                 "evidenceAvailable": true,
-                "competitorId": "soho_grand"
+                "competitorId": "soho_grand",
+                "supportingObservationCount": 4,
+                "drawerItemCount": 4
               }
             },
             {
@@ -2197,7 +2095,9 @@
               "displacement": {
                 "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "greenwich_hotel"
+                "competitorId": "greenwich_hotel",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
@@ -2217,7 +2117,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "marlton_hotel"
+                "competitorId": "marlton_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -2237,12 +2139,14 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "walker_hotel_gv"
+                "competitorId": "walker_hotel_gv",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
-              "entityId": "mercer_hotel",
-              "name": "The Mercer Hotel",
+              "entityId": "beekman_hotel",
+              "name": "The Beekman, A Thompson Hotel",
               "isSubject": false,
               "appearances": 4,
               "aiPresenceRate": 0.1111111111111111,
@@ -2255,9 +2159,33 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "beekman_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "mercer_hotel",
+              "name": "The Mercer Hotel",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.1111111111111111,
+              "aiPresencePct": 11.1,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
                 "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "mercer_hotel"
+                "competitorId": "mercer_hotel",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
@@ -2269,15 +2197,17 @@
               "aiPresencePct": 8.3,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 8,
-              "displayRank": 8,
+              "observedRank": 9,
+              "displayRank": 9,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "dominick_hotel"
+                "competitorId": "dominick_hotel",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
@@ -2289,35 +2219,17 @@
               "aiPresencePct": 8.3,
               "relationship": "CORE",
               "isCore": true,
-              "observedRank": 9,
-              "displayRank": 9,
-              "isAppendedCore": false,
-              "status": null,
-              "statusLabel": null,
-              "displacement": {
-                "count": 2,
-                "evidenceAvailable": true,
-                "competitorId": "ludlow_hotel"
-              }
-            },
-            {
-              "entityId": "washington_square_hotel",
-              "name": "Washington Square Hotel",
-              "isSubject": false,
-              "appearances": 3,
-              "aiPresenceRate": 0.08333333333333333,
-              "aiPresencePct": 8.3,
-              "relationship": "OBSERVED_ALTERNATIVE",
-              "isCore": false,
               "observedRank": 10,
               "displayRank": 10,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 1,
+                "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "washington_square_hotel"
+                "competitorId": "ludlow_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             }
           ],
@@ -2364,7 +2276,9 @@
               "displacement": {
                 "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "crosby_street_hotel"
+                "competitorId": "crosby_street_hotel",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
@@ -2384,7 +2298,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "beekman_hotel"
+                "competitorId": "beekman_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -2404,7 +2320,9 @@
               "displacement": {
                 "count": 3,
                 "evidenceAvailable": true,
-                "competitorId": "soho_grand"
+                "competitorId": "soho_grand",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
               }
             },
             {
@@ -2424,7 +2342,9 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "marlton_hotel"
+                "competitorId": "marlton_hotel",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -2444,7 +2364,9 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "greenwich_hotel"
+                "competitorId": "greenwich_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
@@ -2464,16 +2386,18 @@
               "displacement": {
                 "count": 2,
                 "evidenceAvailable": true,
-                "competitorId": "mercer_hotel"
+                "competitorId": "mercer_hotel",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             },
             {
-              "entityId": "four_seasons_downtown_nyc",
-              "name": "Four Seasons Hotel New York Downtown",
+              "entityId": "washington_square_hotel",
+              "name": "Washington Square Hotel",
               "isSubject": false,
-              "appearances": 2,
-              "aiPresenceRate": 0.08333333333333333,
-              "aiPresencePct": 8.3,
+              "appearances": 3,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 7,
@@ -2484,12 +2408,14 @@
               "displacement": {
                 "count": 1,
                 "evidenceAvailable": true,
-                "competitorId": "four_seasons_downtown_nyc"
+                "competitorId": "washington_square_hotel",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
-              "entityId": "bowery_hotel",
-              "name": "The Bowery Hotel",
+              "entityId": "four_seasons_downtown_nyc",
+              "name": "Four Seasons Hotel New York Downtown",
               "isSubject": false,
               "appearances": 2,
               "aiPresenceRate": 0.08333333333333333,
@@ -2502,14 +2428,16 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "bowery_hotel"
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "four_seasons_downtown_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
-              "entityId": "ludlow_hotel",
-              "name": "The Ludlow Hotel",
+              "entityId": "bowery_hotel",
+              "name": "The Bowery Hotel",
               "isSubject": false,
               "appearances": 2,
               "aiPresenceRate": 0.08333333333333333,
@@ -2522,14 +2450,16 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 1,
-                "evidenceAvailable": true,
-                "competitorId": "ludlow_hotel"
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "bowery_hotel",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "nolitan_hotel",
-              "name": "The Nolitan Hotel",
+              "entityId": "ludlow_hotel",
+              "name": "The Ludlow Hotel",
               "isSubject": false,
               "appearances": 2,
               "aiPresenceRate": 0.08333333333333333,
@@ -2542,9 +2472,11 @@
               "status": null,
               "statusLabel": null,
               "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "nolitan_hotel"
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "ludlow_hotel",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
               }
             },
             {
@@ -2644,7 +2576,7 @@
       ],
       "PROPERTY_SPECIFIC_RANKING_DISPLAY_CODE": 0,
       "PROPERTY_SPECIFIC_OVERALL_RANKING_CODE": 0,
-      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v1",
+      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v2",
       "DISPLAY_AND_MODAL_SAME_SOURCE": true
     },
     "executiveRead": {
@@ -2720,7 +2652,7 @@
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
           "headline": "AI does not fully reflect the property",
-          "body": "AI currently reflects 28.6% of the monitored facts and attributes that define the hotel. Important parts of the property's proposition are not consistently reflected in AI results."
+          "body": "AI currently reflects 25% of the monitored facts and attributes that define the hotel. Important parts of the property's proposition are not consistently reflected in AI results."
         },
         "changeSinceLastRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -2729,7 +2661,7 @@
         },
         "executiveSummary": {
           "title": "WHAT THE DATA SAYS",
-          "narrative": "NOW NOW NOHO appeared in at least one AI answer for 12.7% of the traveler needs we tested, and across every individual AI answer it appeared 3.2% of the time. Together, these results show how broadly AI recognizes the hotel and how consistently a traveler would encounter it.\n\nAI currently reflects 28.6% of the monitored facts and attributes that define the hotel, so important parts of the property proposition are not consistently represented in AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+          "narrative": "NOW NOW NOHO appeared in at least one AI answer for 12.7% of the traveler needs we tested, and across every individual AI answer it appeared 3.2% of the time. Together, these results show how broadly AI recognizes the hotel and how consistently a traveler would encounter it.\n\nAI currently reflects 25% of the monitored facts and attributes that define the hotel, so important parts of the property proposition are not consistently represented in AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
         },
         "safety": {
           "VAGUE_UNEXPLAINED_PHRASES": 0,
@@ -2750,7 +2682,7 @@
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
           "headline": "AI does not fully reflect the property",
-          "body": "AI currently reflects 28.6% of the monitored facts and attributes that define the hotel. Important parts of the property's proposition are not consistently reflected in AI results."
+          "body": "AI currently reflects 25% of the monitored facts and attributes that define the hotel. Important parts of the property's proposition are not consistently reflected in AI results."
         },
         "changeSinceLastComparableRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -2760,28 +2692,549 @@
       },
       "writeup": {
         "title": "WHAT THE DATA SAYS",
-        "body": "NOW NOW NOHO appeared in at least one AI answer for 12.7% of the traveler needs we tested, and across every individual AI answer it appeared 3.2% of the time. Together, these results show how broadly AI recognizes the hotel and how consistently a traveler would encounter it.\n\nAI currently reflects 28.6% of the monitored facts and attributes that define the hotel, so important parts of the property proposition are not consistently represented in AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+        "body": "NOW NOW NOHO appeared in at least one AI answer for 12.7% of the traveler needs we tested, and across every individual AI answer it appeared 3.2% of the time. Together, these results show how broadly AI recognizes the hotel and how consistently a traveler would encounter it.\n\nAI currently reflects 25% of the monitored facts and attributes that define the hotel, so important parts of the property proposition are not consistently represented in AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+      },
+      "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "sections": {
+        "headline": "NOW NOW NOHO's primary issue is entering AI consideration at all, especially for Couples / Romantic Stay.",
+        "keyInsight": "AI Consideration is 3.2%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, Crosby Street Hotel repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+        "whyItMatters": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+        "focusNow": "Focus first on how the hotel is represented for Couples / Romantic Stay. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+        "watch": null,
+        "whatToReview": "Compare evidence from scenarios where Crosby Street Hotel appears with the property information currently available for NOW NOW NOHO. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+      },
+      "numericAnchors": [
+        {
+          "metricId": "executiveMetrics.considerationRate.rate",
+          "displayValue": "3.2%",
+          "section": "KEY_INSIGHT",
+          "reason": "Establishes severity of consideration / entry",
+          "paritySource": "executiveMetrics.considerationRate.rate",
+          "removingWeakensInsight": true,
+          "anchorType": "severity_indicator"
+        }
+      ],
+      "primaryIssueId": "lifestyle_couples_entry",
+      "insightArchetype": "HIDDEN_WEAKNESS",
+      "evidenceTrace": [
+        {
+          "kind": "metric",
+          "ref": "executiveMetrics.considerationRate.rate",
+          "value": 3.2
+        },
+        {
+          "kind": "territory",
+          "ref": "couples"
+        },
+        {
+          "kind": "numericAnchor",
+          "ref": "executiveMetrics.considerationRate.rate",
+          "displayValue": "3.2%"
+        },
+        {
+          "kind": "period",
+          "ref": "adp_period_adp_now_now_noho_20260903014340_520794"
+        }
+      ],
+      "qualityGates": {
+        "gates": {
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+            "pass": true,
+            "detail": "keyInsight length"
+          },
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+            "pass": true,
+            "detail": "property name referenced"
+          },
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+            "pass": true,
+            "detail": null
+          }
+        },
+        "gateIds": [
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+        ],
+        "claimDiscipline": {
+          "unsupportedCausalImplication": 0,
+          "overstated": 0,
+          "pass": true
+        },
+        "wordCount": 212,
+        "allRequiredPass": true,
+        "failed": []
+      },
+      "sourceSnapshotHash": "d76aad5509886a57",
+      "compositionHash": "09159c099a1546b6",
+      "compositionV3": {
+        "ok": true,
+        "contract": "ADP_EXECUTIVE_READ_V3",
+        "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "generatedAt": "2026-09-10T11:03:20.376Z",
+        "propertyId": "adp_now_now_noho",
+        "propertyName": "NOW NOW NOHO",
+        "periodId": "adp_period_adp_now_now_noho_20260903014340_520794",
+        "primaryIssueId": "lifestyle_couples_entry",
+        "insightArchetype": "HIDDEN_WEAKNESS",
+        "constraintClass": "ENTRY",
+        "sections": {
+          "headline": "NOW NOW NOHO's primary issue is entering AI consideration at all, especially for Couples / Romantic Stay.",
+          "keyInsight": "AI Consideration is 3.2%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, Crosby Street Hotel repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+          "whyItMatters": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+          "focusNow": "Focus first on how the hotel is represented for Couples / Romantic Stay. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+          "watch": null,
+          "whatToReview": "Compare evidence from scenarios where Crosby Street Hotel appears with the property information currently available for NOW NOW NOHO. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+        },
+        "numericAnchors": [
+          {
+            "metricId": "executiveMetrics.considerationRate.rate",
+            "displayValue": "3.2%",
+            "section": "KEY_INSIGHT",
+            "reason": "Establishes severity of consideration / entry",
+            "paritySource": "executiveMetrics.considerationRate.rate",
+            "removingWeakensInsight": true,
+            "anchorType": "severity_indicator"
+          }
+        ],
+        "evidenceTrace": [
+          {
+            "kind": "metric",
+            "ref": "executiveMetrics.considerationRate.rate",
+            "value": 3.2
+          },
+          {
+            "kind": "territory",
+            "ref": "couples"
+          },
+          {
+            "kind": "numericAnchor",
+            "ref": "executiveMetrics.considerationRate.rate",
+            "displayValue": "3.2%"
+          },
+          {
+            "kind": "period",
+            "ref": "adp_period_adp_now_now_noho_20260903014340_520794"
+          }
+        ],
+        "qualityGates": {
+          "gates": {
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+              "pass": true,
+              "detail": "keyInsight length"
+            },
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+              "pass": true,
+              "detail": "property name referenced"
+            },
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+              "pass": true,
+              "detail": null
+            }
+          },
+          "gateIds": [
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+          ],
+          "claimDiscipline": {
+            "unsupportedCausalImplication": 0,
+            "overstated": 0,
+            "pass": true
+          },
+          "wordCount": 212,
+          "allRequiredPass": true,
+          "failed": []
+        },
+        "sourceSnapshotHash": "d76aad5509886a57",
+        "compositionHash": "09159c099a1546b6",
+        "activated": true,
+        "customerFacingDefault": true,
+        "zeroCodePath": true,
+        "usedHardcodedMap": false,
+        "historicalImmutability": {
+          "enforced": true,
+          "policy": {
+            "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+            "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+            "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+            "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+            "silentInPlaceMutation": "PROHIBITED",
+            "activationRequiredForCustomerDefault": true
+          },
+          "writePolicy": {
+            "allowed": true,
+            "mode": "CUSTOMER_DEFAULT_V3",
+            "reason": "ACTIVATED",
+            "policy": {
+              "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+              "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+              "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+              "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+              "silentInPlaceMutation": "PROHIBITED",
+              "activationRequiredForCustomerDefault": true
+            },
+            "enforced": true,
+            "customerDefault": true
+          }
+        },
+        "wordCount": 212,
+        "watchOmitted": true,
+        "candidates": [
+          {
+            "candidateId": "cand_concentrated_displacement",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.969,
+            "summary": "Crosby Street Hotel appears in 39 monitored scenarios where the hotel is absent."
+          },
+          {
+            "candidateId": "cand_competitor_present_gaps",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.7020000000000001,
+            "summary": "Competitors appear in a material share of scenarios where the hotel is absent (85.7%)."
+          },
+          {
+            "candidateId": "cand_reality_gap_fitness_center",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "Fitness Center is recognized in only 0% of monitored answers."
+          },
+          {
+            "candidateId": "cand_reality_gap_full_service",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "Full-Service Hotel is recognized in only 0% of monitored answers."
+          },
+          {
+            "candidateId": "cand_entry_problem",
+            "archetype": "HIDDEN_WEAKNESS",
+            "priorityScore": 1.314,
+            "summary": "AI Consideration is 3.2% — the primary constraint is entering consideration, not rank after inclusion."
+          },
+          {
+            "candidateId": "cand_top_observed_alternative",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.774,
+            "summary": "Crosby Street Hotel is the top observed AI alternative in the monitored set."
+          }
+        ],
+        "selectionMeta": {
+          "rules": [
+            "ADP_EXECUTIVE_READ_INPUT_V3",
+            "ADP_EXECUTIVE_INSIGHT_CANDIDATE_GENERATION_V3",
+            "ADP_EXECUTIVE_INSIGHT_PRIORITY_V3",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY"
+          ],
+          "supportingCandidateIds": []
+        },
+        "doctrine": [
+          "METHODOLOGY_IS_GOVERNED; QUALITY_CONTROLS_LEARN.",
+          "EXECUTIVE_INSIGHT_LEARNS_INTERPRETATION; MEASUREMENT_REMAINS_GOVERNED."
+        ],
+        "methodologyChanged": false,
+        "rendererViewModel": {
+          "ok": true,
+          "contract": "ADP_EXECUTIVE_READ_RENDERER_CONTRACT_V3",
+          "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+          "activated": true,
+          "primaryIssueId": "lifestyle_couples_entry",
+          "insightArchetype": "HIDDEN_WEAKNESS",
+          "sections": [
+            {
+              "key": "headline",
+              "label": "Headline",
+              "text": "NOW NOW NOHO's primary issue is entering AI consideration at all, especially for Couples / Romantic Stay.",
+              "anchors": []
+            },
+            {
+              "key": "keyInsight",
+              "label": "Key Insight",
+              "text": "AI Consideration is 3.2%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, Crosby Street Hotel repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+              "anchors": [
+                {
+                  "metricId": "executiveMetrics.considerationRate.rate",
+                  "displayValue": "3.2%",
+                  "section": "KEY_INSIGHT",
+                  "reason": "Establishes severity of consideration / entry",
+                  "paritySource": "executiveMetrics.considerationRate.rate",
+                  "removingWeakensInsight": true,
+                  "anchorType": "severity_indicator"
+                }
+              ]
+            },
+            {
+              "key": "whyItMatters",
+              "label": "Why It Matters",
+              "text": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+              "anchors": []
+            },
+            {
+              "key": "focusNow",
+              "label": "Focus Now",
+              "text": "Focus first on how the hotel is represented for Couples / Romantic Stay. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+              "anchors": []
+            },
+            {
+              "key": "whatToReview",
+              "label": "What to Review",
+              "text": "Compare evidence from scenarios where Crosby Street Hotel appears with the property information currently available for NOW NOW NOHO. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes.",
+              "anchors": []
+            }
+          ],
+          "flattenedProseForLegacy": "NOW NOW NOHO's primary issue is entering AI consideration at all, especially for Couples / Romantic Stay.\n\nAI Consideration is 3.2%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, Crosby Street Hotel repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.\n\nFine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.\n\nFocus first on how the hotel is represented for Couples / Romantic Stay. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.\n\nCompare evidence from scenarios where Crosby Street Hotel appears with the property information currently available for NOW NOW NOHO. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+        }
       }
     },
-    "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-    "correction": null,
-    "reportVersionLabel": "CORRECTED_V1_1",
-    "trends": [
-      {
-        "periodId": "adp_period_adp_now_now_noho_20260820141258_2fe3a3",
-        "date": "2026-08-20T14:12:58.940Z",
-        "propertyRealityCoverage": 28.6,
-        "scenarioPresenceRate": 12.7,
-        "considerationRate": 3.2,
-        "providerCount": 4,
-        "observationCount": 252,
-        "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1_1",
-        "role": "prior_run"
+    "metricScopeLabels": {
+      "version": "adp_metric_scope_labels_v1",
+      "subjectObservationGrain": {
+        "productLabel": "AI Consideration",
+        "technicalLabel": "AI Consideration Rate",
+        "grain": "property × scenario × provider × period (comparable observations)",
+        "definition": "Share of comparable monitored AI responses where the subject hotel appears."
       },
+      "subjectScenarioGrain": {
+        "productLabel": "AI Scenario Presence",
+        "technicalLabel": "Demand Scenario Coverage",
+        "grain": "property × scenario (aggregates providers)",
+        "definition": "Share of monitored demand scenarios where the subject hotel appears on at least one comparable provider."
+      },
+      "competitorScenarioAppearance": {
+        "productLabel": "Scenario Appearance",
+        "technicalLabel": "Competitor Scenario Appearance",
+        "grain": "non-subject hotel × scenario (within subject hotel report)",
+        "definition": "Share of monitored scenarios in this report where a competitor hotel appears. Not the same metric as that hotel's own AI Consideration.",
+        "forbiddenClientLabels": [
+          "Presence",
+          "AI Presence"
+        ]
+      },
+      "competitorObservationAppearance": {
+        "productLabel": "Observation Appearance",
+        "technicalLabel": "Competitor Observation Appearance",
+        "grain": "non-subject hotel × observation (within subject hotel report)",
+        "definition": "Share of comparable monitored answers in this report where a competitor hotel appears. Not interchangeable with subject AI Consideration unless same-scope certified."
+      },
+      "scopeRule": "SAME_SCOPE_SAME_CANONICAL_METRIC",
+      "ambiguityRule": "ADP_METRIC_SCOPE_UNAMBIGUOUS"
+    },
+    "trends": [
       {
         "periodId": "adp_period_adp_now_now_noho_20260903014340_520794",
         "date": "2026-09-03T01:43:40.107Z",
-        "propertyRealityCoverage": 28.6,
+        "propertyRealityCoverage": 25,
         "scenarioPresenceRate": 12.7,
         "considerationRate": 3.2,
         "providerCount": 4,

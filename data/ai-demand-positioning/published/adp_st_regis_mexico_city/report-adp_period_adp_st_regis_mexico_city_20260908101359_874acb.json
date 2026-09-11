@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "publishedAt": "2026-09-08T14:33:48.689Z",
+  "publishedAt": "2026-09-10T11:04:22.199Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_st_regis_mexico_city",
   "periodId": "adp_period_adp_st_regis_mexico_city_20260908101359_874acb",
@@ -84,8 +84,11 @@
         "methodology": "adp_governed_ai_presence_index_v2",
         "customerRender": "governed",
         "territory": "Business Travel",
-        "status": "BENCHMARK_DEVELOPING",
-        "blockers": [],
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "provider_concentration_core",
+          "provider_concentration"
+        ],
         "index": null,
         "myRate": 88.5,
         "subjectRatePct": 88.5,
@@ -361,118 +364,103 @@
     },
     "competitiveSet": {
       "declaredCount": 6,
-      "observedCount": 229,
-      "overlapRate": 316.7,
+      "observedCount": 9,
+      "overlapRate": 133.3,
       "surprises": [
         {
           "name": "Marquis Reforma Hotel",
-          "mentions": 50,
-          "scenarioCount": 22,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Rooms/suites:",
-          "mentions": 8,
-          "scenarioCount": 8,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Spacious suites",
-          "mentions": 5,
-          "scenarioCount": 5,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Executive Suites",
-          "mentions": 5,
-          "scenarioCount": 5,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "St. Regis Suite",
-          "mentions": 4,
-          "scenarioCount": 3,
-          "entityId": null,
+          "mentions": 54,
+          "scenarioCount": 23,
+          "entityId": "marquis_reforma_mexico_city",
           "isCore": false
         }
       ],
       "observed": [
         {
           "name": "Four Seasons Hotel Mexico City",
-          "mentions": 199,
+          "mentions": 242,
           "scenarioCount": 49,
           "entityId": "four_seasons_mexico_city",
           "isCore": true
         },
         {
+          "name": "Sofitel Mexico City Reforma",
+          "mentions": 113,
+          "scenarioCount": 43,
+          "entityId": "sofitel_mexico_city_reforma",
+          "isCore": true
+        },
+        {
           "name": "JW Marriott Hotel Mexico City",
-          "mentions": 61,
-          "scenarioCount": 20,
+          "mentions": 66,
+          "scenarioCount": 21,
           "entityId": "jw_marriott_mexico_city",
           "isCore": true
         },
         {
           "name": "Marquis Reforma Hotel",
-          "mentions": 50,
-          "scenarioCount": 22,
-          "entityId": null,
+          "mentions": 54,
+          "scenarioCount": 23,
+          "entityId": "marquis_reforma_mexico_city",
           "isCore": false
-        },
-        {
-          "name": "Mexico City Marriott Reforma Hotel",
-          "mentions": 18,
-          "scenarioCount": 16,
-          "entityId": null,
-          "isCore": true
         },
         {
           "name": "Sheraton Mexico City Maria Isabel Hotel",
-          "mentions": 9,
-          "scenarioCount": 9,
-          "entityId": null,
+          "mentions": 29,
+          "scenarioCount": 14,
+          "entityId": "sheraton_maria_isabel_mexico_city",
           "isCore": true
         },
         {
-          "name": "Rooms/suites:",
-          "mentions": 8,
-          "scenarioCount": 8,
-          "entityId": null,
-          "isCore": false
-        },
-        {
-          "name": "Las Alcobas, a Luxury Collection Hotel",
-          "mentions": 6,
-          "scenarioCount": 4,
-          "entityId": null,
+          "name": "Mexico City Marriott Reforma Hotel",
+          "mentions": 26,
+          "scenarioCount": 19,
+          "entityId": "marriott_mexico_city_reforma",
           "isCore": true
         },
         {
-          "name": "Spacious suites",
-          "mentions": 5,
-          "scenarioCount": 5,
-          "entityId": null,
-          "isCore": false
+          "name": "InterContinental Presidente Mexico City",
+          "mentions": 18,
+          "scenarioCount": 13,
+          "entityId": "intercontinental_presidente_mexico_city",
+          "isCore": true
         },
         {
-          "name": "Executive Suites",
-          "mentions": 5,
-          "scenarioCount": 5,
-          "entityId": null,
-          "isCore": false
+          "name": "The St. Regis Mexico City",
+          "mentions": 1,
+          "scenarioCount": 0,
+          "entityId": "st_regis_mexico_city",
+          "isCore": true
         },
         {
-          "name": "The Four Seasons Hotel",
-          "mentions": 4,
-          "scenarioCount": 4,
-          "entityId": null,
+          "name": "The Ritz-Carlton Mexico City",
+          "mentions": 1,
+          "scenarioCount": 1,
+          "entityId": "ritz_carlton_mexico_city",
           "isCore": true
         }
       ],
-      "declaredButNotObserved": []
+      "declaredButNotObserved": [],
+      "topObservedAlternative": {
+        "entityId": "four_seasons_mexico_city",
+        "name": "Four Seasons Hotel Mexico City",
+        "appearances": 125,
+        "aiPresencePct": 49.6,
+        "aiPresenceRate": 0.49603174603174605,
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "mentions": 125
+      },
+      "topObservedAlternativeMeta": {
+        "version": "adp_top_observed_ai_alternative_overall_presence_v1",
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "tiedMaxSet": [
+          {
+            "entityId": "four_seasons_mexico_city",
+            "name": "Four Seasons Hotel Mexico City",
+            "appearances": 125
+          }
+        ]
+      }
     },
     "realityGap": {
       "gapScore": 46.2,
@@ -602,14 +590,14 @@
         },
         {
           "type": "insight",
-          "text": "5 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
+          "text": "1 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
         },
         {
           "type": "gap",
           "text": "AI Reality Gap: 46.2%. AI misses or misrepresents 6 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-09-08T14:33:47.882Z"
+      "generatedAt": "2026-09-10T11:04:18.337Z"
     },
     "actions": [
       {
@@ -821,13 +809,13 @@
     "executiveMetrics": {
       "version": "adp_optional_executive_metrics_v2",
       "considerationRate": {
-        "rate": 50,
-        "presentObservations": 126,
+        "rate": 85.7,
+        "presentObservations": 216,
         "comparableObservations": 252
       },
       "scenarioPresence": {
-        "rate": 92.1,
-        "capturedScenarios": 58,
+        "rate": 100,
+        "capturedScenarios": 63,
         "eligibleScenarios": 63
       },
       "rankMetrics": {
@@ -838,14 +826,14 @@
         "topThreeCount": 34
       },
       "competitorPresentScenarios": {
-        "scenarioCount": 40,
-        "observationCount": 111
+        "scenarioCount": 23,
+        "observationCount": 32
       },
       "currentVsPrior": {
         "currentPeriodId": "adp_period_adp_st_regis_mexico_city_20260908101359_874acb",
         "priorComparablePeriodId": "adp_period_adp_st_regis_mexico_city_20260908101233_c508ce",
         "deltas": {
-          "scenarioPresence": 92.1
+          "scenarioPresence": 100
         }
       }
     },
@@ -887,9 +875,9 @@
               "entityId": "four_seasons_mexico_city",
               "name": "Four Seasons Hotel Mexico City",
               "isSubject": false,
-              "appearances": 109,
-              "aiPresenceRate": 0.43253968253968256,
-              "aiPresencePct": 43.3,
+              "appearances": 125,
+              "aiPresenceRate": 0.49603174603174605,
+              "aiPresencePct": 49.6,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 2,
@@ -902,16 +890,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "jw_marriott_mexico_city",
-              "name": "JW Marriott Hotel Mexico City",
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
               "isSubject": false,
-              "appearances": 27,
-              "aiPresenceRate": 0.10714285714285714,
-              "aiPresencePct": 10.7,
+              "appearances": 112,
+              "aiPresenceRate": 0.4444444444444444,
+              "aiPresencePct": 44.4,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 3,
@@ -924,16 +914,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "sofitel_mexico_city_reforma",
-              "name": "Sofitel Mexico City Reforma",
+              "entityId": "jw_marriott_mexico_city",
+              "name": "JW Marriott Hotel Mexico City",
               "isSubject": false,
-              "appearances": 2,
-              "aiPresenceRate": 0.007936507936507936,
-              "aiPresencePct": 0.8,
+              "appearances": 30,
+              "aiPresenceRate": 0.11904761904761904,
+              "aiPresencePct": 11.9,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
               "observedRank": 4,
@@ -946,7 +938,153 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "sofitel_mexico_city_reforma"
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marquis_reforma_mexico_city",
+              "name": "Marquis Reforma Hotel",
+              "isSubject": false,
+              "appearances": 29,
+              "aiPresenceRate": 0.11507936507936507,
+              "aiPresencePct": 11.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Meetings & Groups",
+              "topDemandTerritoryIntent": "group_meeting",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marquis_reforma_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sheraton_maria_isabel_mexico_city",
+              "name": "Sheraton Mexico City Maria Isabel Hotel",
+              "isSubject": false,
+              "appearances": 26,
+              "aiPresenceRate": 0.10317460317460317,
+              "aiPresencePct": 10.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sheraton_maria_isabel_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
+              "isSubject": false,
+              "appearances": 23,
+              "aiPresenceRate": 0.09126984126984126,
+              "aiPresencePct": 9.1,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "intercontinental_presidente_mexico_city",
+              "name": "InterContinental Presidente Mexico City",
+              "isSubject": false,
+              "appearances": 17,
+              "aiPresenceRate": 0.06746031746031746,
+              "aiPresencePct": 6.7,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "intercontinental_presidente_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "ritz_carlton_mexico_city",
+              "name": "The Ritz-Carlton Mexico City",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.003968253968253968,
+              "aiPresencePct": 0.4,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "ritz_carlton_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "st_regis_mexico_city",
+              "name": "The St. Regis Mexico City",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.003968253968253968,
+              "aiPresencePct": 0.4,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Meetings & Groups",
+              "topDemandTerritoryIntent": "group_meeting",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "st_regis_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -999,12 +1137,12 @@
               }
             },
             {
-              "entityId": "four_seasons_mexico_city",
-              "name": "Four Seasons Hotel Mexico City",
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
               "isSubject": false,
-              "appearances": 18,
-              "aiPresenceRate": 0.34615384615384615,
-              "aiPresencePct": 34.6,
+              "appearances": 22,
+              "aiPresenceRate": 0.4230769230769231,
+              "aiPresencePct": 42.3,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1015,16 +1153,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "jw_marriott_mexico_city",
-              "name": "JW Marriott Hotel Mexico City",
+              "entityId": "four_seasons_mexico_city",
+              "name": "Four Seasons Hotel Mexico City",
               "isSubject": false,
-              "appearances": 8,
-              "aiPresenceRate": 0.15384615384615385,
-              "aiPresencePct": 15.4,
+              "appearances": 21,
+              "aiPresenceRate": 0.40384615384615385,
+              "aiPresencePct": 40.4,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 3,
@@ -1035,18 +1175,20 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "sofitel_mexico_city_reforma",
-              "name": "Sofitel Mexico City Reforma",
+              "entityId": "sheraton_maria_isabel_mexico_city",
+              "name": "Sheraton Mexico City Maria Isabel Hotel",
               "isSubject": false,
-              "appearances": 1,
-              "aiPresenceRate": 0.019230769230769232,
-              "aiPresencePct": 1.9,
-              "relationship": "CORE",
-              "isCore": true,
+              "appearances": 12,
+              "aiPresenceRate": 0.23076923076923078,
+              "aiPresencePct": 23.1,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 4,
               "displayRank": 4,
               "isAppendedCore": false,
@@ -1055,36 +1197,127 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "sofitel_mexico_city_reforma"
+                "competitorId": "sheraton_maria_isabel_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "jw_marriott_mexico_city",
+              "name": "JW Marriott Hotel Mexico City",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.17307692307692307,
+              "aiPresencePct": 17.3,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.17307692307692307,
+              "aiPresencePct": 17.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "intercontinental_presidente_mexico_city",
+              "name": "InterContinental Presidente Mexico City",
+              "isSubject": false,
+              "appearances": 6,
+              "aiPresenceRate": 0.11538461538461539,
+              "aiPresencePct": 11.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "intercontinental_presidente_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marquis_reforma_mexico_city",
+              "name": "Marquis Reforma Hotel",
+              "isSubject": false,
+              "appearances": 6,
+              "aiPresenceRate": 0.11538461538461539,
+              "aiPresencePct": 11.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marquis_reforma_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
               "entityId": "ritz_carlton_mexico_city",
               "name": "The Ritz-Carlton Mexico City",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 1,
+              "aiPresenceRate": 0.019230769230769232,
+              "aiPresencePct": 1.9,
               "relationship": "CORE",
               "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ritz_carlton_mexico_city"
+                "competitorId": "ritz_carlton_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 3,
+            "CORE_IN_TOP_10": 4,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 1,
+            "CORE_ZERO_PRESENCE": 0,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1132,9 +1365,9 @@
               "entityId": "four_seasons_mexico_city",
               "name": "Four Seasons Hotel Mexico City",
               "isSubject": false,
-              "appearances": 18,
-              "aiPresenceRate": 0.4090909090909091,
-              "aiPresencePct": 40.9,
+              "appearances": 21,
+              "aiPresenceRate": 0.4772727272727273,
+              "aiPresencePct": 47.7,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1145,7 +1378,31 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
+              "isSubject": false,
+              "appearances": 18,
+              "aiPresenceRate": 0.4090909090909091,
+              "aiPresencePct": 40.9,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1157,15 +1414,83 @@
               "aiPresencePct": 11.4,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 3,
-              "displayRank": 3,
+              "observedRank": 4,
+              "displayRank": 4,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marquis_reforma_mexico_city",
+              "name": "Marquis Reforma Hotel",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.11363636363636363,
+              "aiPresencePct": 11.4,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marquis_reforma_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "intercontinental_presidente_mexico_city",
+              "name": "InterContinental Presidente Mexico City",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.06818181818181818,
+              "aiPresencePct": 6.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "intercontinental_presidente_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.022727272727272728,
+              "aiPresencePct": 2.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1186,28 +1511,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "las_alcobas_mexico_city"
-              }
-            },
-            {
-              "entityId": "sofitel_mexico_city_reforma",
-              "name": "Sofitel Mexico City Reforma",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "sofitel_mexico_city_reforma"
+                "competitorId": "las_alcobas_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1228,15 +1534,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ritz_carlton_mexico_city"
+                "competitorId": "ritz_carlton_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 1,
+            "CORE_IN_TOP_10": 2,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 3,
+            "CORE_ZERO_PRESENCE": 2,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1284,9 +1592,9 @@
               "entityId": "four_seasons_mexico_city",
               "name": "Four Seasons Hotel Mexico City",
               "isSubject": false,
-              "appearances": 19,
-              "aiPresenceRate": 0.5277777777777778,
-              "aiPresencePct": 52.8,
+              "appearances": 23,
+              "aiPresenceRate": 0.6388888888888888,
+              "aiPresencePct": 63.9,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1297,7 +1605,53 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
+              "isSubject": false,
+              "appearances": 16,
+              "aiPresenceRate": 0.4444444444444444,
+              "aiPresencePct": 44.4,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marquis_reforma_mexico_city",
+              "name": "Marquis Reforma Hotel",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.1111111111111111,
+              "aiPresencePct": 11.1,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marquis_reforma_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1309,35 +1663,39 @@
               "aiPresencePct": 2.8,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 3,
-              "displayRank": 3,
+              "observedRank": 5,
+              "displayRank": 5,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "sofitel_mexico_city_reforma",
-              "name": "Sofitel Mexico City Reforma",
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
               "isSubject": false,
               "appearances": 1,
               "aiPresenceRate": 0.027777777777777776,
               "aiPresencePct": 2.8,
-              "relationship": "CORE",
-              "isCore": true,
-              "observedRank": 4,
-              "displayRank": 4,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "sofitel_mexico_city_reforma"
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1358,7 +1716,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "las_alcobas_mexico_city"
+                "competitorId": "las_alcobas_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1379,7 +1739,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ritz_carlton_mexico_city"
+                "competitorId": "ritz_carlton_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
@@ -1435,9 +1797,9 @@
               "entityId": "four_seasons_mexico_city",
               "name": "Four Seasons Hotel Mexico City",
               "isSubject": false,
-              "appearances": 9,
-              "aiPresenceRate": 0.45,
-              "aiPresencePct": 45,
+              "appearances": 10,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1448,7 +1810,53 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
+              "isSubject": false,
+              "appearances": 7,
+              "aiPresenceRate": 0.35,
+              "aiPresencePct": 35,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "intercontinental_presidente_mexico_city",
+              "name": "InterContinental Presidente Mexico City",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.2,
+              "aiPresencePct": 20,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "intercontinental_presidente_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1460,36 +1868,61 @@
               "aiPresencePct": 20,
               "relationship": "CORE",
               "isCore": true,
-              "observedRank": 3,
-              "displayRank": 3,
+              "observedRank": 5,
+              "displayRank": 5,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "sofitel_mexico_city_reforma",
-              "name": "Sofitel Mexico City Reforma",
+              "entityId": "marquis_reforma_mexico_city",
+              "name": "Marquis Reforma Hotel",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "sofitel_mexico_city_reforma"
+                "competitorId": "marquis_reforma_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1510,15 +1943,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ritz_carlton_mexico_city"
+                "competitorId": "ritz_carlton_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 2,
+            "CORE_IN_TOP_10": 3,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 2,
+            "CORE_ZERO_PRESENCE": 1,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1563,14 +1998,14 @@
               }
             },
             {
-              "entityId": "four_seasons_mexico_city",
-              "name": "Four Seasons Hotel Mexico City",
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
               "isSubject": false,
-              "appearances": 18,
-              "aiPresenceRate": 0.4090909090909091,
-              "aiPresencePct": 40.9,
-              "relationship": "CORE",
-              "isCore": true,
+              "appearances": 21,
+              "aiPresenceRate": 0.4772727272727273,
+              "aiPresencePct": 47.7,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
               "observedRank": 2,
               "displayRank": 2,
               "isAppendedCore": false,
@@ -1579,16 +2014,18 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
-              "entityId": "jw_marriott_mexico_city",
-              "name": "JW Marriott Hotel Mexico City",
+              "entityId": "four_seasons_mexico_city",
+              "name": "Four Seasons Hotel Mexico City",
               "isSubject": false,
-              "appearances": 6,
-              "aiPresenceRate": 0.13636363636363635,
-              "aiPresencePct": 13.6,
+              "appearances": 19,
+              "aiPresenceRate": 0.4318181818181818,
+              "aiPresencePct": 43.2,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 3,
@@ -1599,28 +2036,141 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sheraton_maria_isabel_mexico_city",
+              "name": "Sheraton Mexico City Maria Isabel Hotel",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.20454545454545456,
+              "aiPresencePct": 20.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sheraton_maria_isabel_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "jw_marriott_mexico_city",
+              "name": "JW Marriott Hotel Mexico City",
+              "isSubject": false,
+              "appearances": 8,
+              "aiPresenceRate": 0.18181818181818182,
+              "aiPresencePct": 18.2,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marquis_reforma_mexico_city",
+              "name": "Marquis Reforma Hotel",
+              "isSubject": false,
+              "appearances": 7,
+              "aiPresenceRate": 0.1590909090909091,
+              "aiPresencePct": 15.9,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marquis_reforma_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.11363636363636363,
+              "aiPresencePct": 11.4,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
               "entityId": "intercontinental_presidente_mexico_city",
               "name": "InterContinental Presidente Mexico City",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 4,
+              "aiPresenceRate": 0.09090909090909091,
+              "aiPresencePct": 9.1,
               "relationship": "CORE",
               "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "intercontinental_presidente_mexico_city"
+                "competitorId": "intercontinental_presidente_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "st_regis_mexico_city",
+              "name": "The St. Regis Mexico City",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.022727272727272728,
+              "aiPresencePct": 2.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "st_regis_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1641,15 +2191,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ritz_carlton_mexico_city"
+                "competitorId": "ritz_carlton_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 2,
+            "CORE_IN_TOP_10": 3,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 2,
+            "CORE_ZERO_PRESENCE": 1,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1710,7 +2262,75 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
+              "isSubject": false,
+              "appearances": 8,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marquis_reforma_mexico_city",
+              "name": "Marquis Reforma Hotel",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.1875,
+              "aiPresencePct": 18.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marquis_reforma_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1722,15 +2342,17 @@
               "aiPresencePct": 6.3,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 3,
-              "displayRank": 3,
+              "observedRank": 6,
+              "displayRank": 6,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1751,28 +2373,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "las_alcobas_mexico_city"
-              }
-            },
-            {
-              "entityId": "sofitel_mexico_city_reforma",
-              "name": "Sofitel Mexico City Reforma",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "sofitel_mexico_city_reforma"
+                "competitorId": "las_alcobas_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1793,15 +2396,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ritz_carlton_mexico_city"
+                "competitorId": "ritz_carlton_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 1,
+            "CORE_IN_TOP_10": 2,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 3,
+            "CORE_ZERO_PRESENCE": 2,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1846,12 +2451,12 @@
               }
             },
             {
-              "entityId": "four_seasons_mexico_city",
-              "name": "Four Seasons Hotel Mexico City",
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
               "isSubject": false,
-              "appearances": 3,
-              "aiPresenceRate": 0.25,
-              "aiPresencePct": 25,
+              "appearances": 7,
+              "aiPresenceRate": 0.5833333333333334,
+              "aiPresencePct": 58.3,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1862,7 +2467,53 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "four_seasons_mexico_city",
+              "name": "Four Seasons Hotel Mexico City",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.4166666666666667,
+              "aiPresencePct": 41.7,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.08333333333333333,
+              "aiPresencePct": 8.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1883,7 +2534,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -1904,36 +2557,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "las_alcobas_mexico_city"
-              }
-            },
-            {
-              "entityId": "sofitel_mexico_city_reforma",
-              "name": "Sofitel Mexico City Reforma",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "sofitel_mexico_city_reforma"
+                "competitorId": "las_alcobas_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 1,
+            "CORE_IN_TOP_10": 2,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 3,
+            "CORE_ZERO_PRESENCE": 2,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1981,9 +2615,9 @@
               "entityId": "four_seasons_mexico_city",
               "name": "Four Seasons Hotel Mexico City",
               "isSubject": false,
-              "appearances": 13,
-              "aiPresenceRate": 0.4642857142857143,
-              "aiPresencePct": 46.4,
+              "appearances": 15,
+              "aiPresenceRate": 0.5357142857142857,
+              "aiPresencePct": 53.6,
               "relationship": "CORE",
               "isCore": true,
               "observedRank": 2,
@@ -1994,7 +2628,97 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "four_seasons_mexico_city"
+                "competitorId": "four_seasons_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sofitel_mexico_city_reforma",
+              "name": "Sofitel Mexico City Reforma",
+              "isSubject": false,
+              "appearances": 13,
+              "aiPresenceRate": 0.4642857142857143,
+              "aiPresencePct": 46.4,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sofitel_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sheraton_maria_isabel_mexico_city",
+              "name": "Sheraton Mexico City Maria Isabel Hotel",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.17857142857142858,
+              "aiPresencePct": 17.9,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sheraton_maria_isabel_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marquis_reforma_mexico_city",
+              "name": "Marquis Reforma Hotel",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.10714285714285714,
+              "aiPresencePct": 10.7,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marquis_reforma_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "marriott_mexico_city_reforma",
+              "name": "Mexico City Marriott Reforma Hotel",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.10714285714285714,
+              "aiPresencePct": 10.7,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "marriott_mexico_city_reforma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2006,15 +2730,17 @@
               "aiPresencePct": 7.1,
               "relationship": "OBSERVED_ALTERNATIVE",
               "isCore": false,
-              "observedRank": 3,
-              "displayRank": 3,
+              "observedRank": 7,
+              "displayRank": 7,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "jw_marriott_mexico_city"
+                "competitorId": "jw_marriott_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2035,28 +2761,9 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "las_alcobas_mexico_city"
-              }
-            },
-            {
-              "entityId": "sofitel_mexico_city_reforma",
-              "name": "Sofitel Mexico City Reforma",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "sofitel_mexico_city_reforma"
+                "competitorId": "las_alcobas_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             },
             {
@@ -2077,15 +2784,17 @@
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "ritz_carlton_mexico_city"
+                "competitorId": "ritz_carlton_mexico_city",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
               }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 1,
+            "CORE_IN_TOP_10": 2,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 3,
+            "CORE_ZERO_PRESENCE": 2,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -2114,24 +2823,24 @@
           "TERRITORY": "Business Travel",
           "intent": "business",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 3,
+          "CORE_IN_TOP_10": 4,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 1,
+          "CORE_ZERO_PRESENCE": 0,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 9
         },
         {
           "PROPERTY": "The St. Regis Mexico City",
           "TERRITORY": "Leisure Travel",
           "intent": "leisure",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 1,
+          "CORE_IN_TOP_10": 2,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 3,
+          "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 9
         },
         {
           "PROPERTY": "The St. Regis Mexico City",
@@ -2143,72 +2852,72 @@
           "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 8
         },
         {
           "PROPERTY": "The St. Regis Mexico City",
           "TERRITORY": "Family Travel",
           "intent": "family",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 2,
+          "CORE_IN_TOP_10": 3,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 2,
+          "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 8
         },
         {
           "PROPERTY": "The St. Regis Mexico City",
           "TERRITORY": "Meetings & Groups",
           "intent": "group_meeting",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 2,
+          "CORE_IN_TOP_10": 3,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 2,
+          "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 10
         },
         {
           "PROPERTY": "The St. Regis Mexico City",
           "TERRITORY": "Wellness",
           "intent": "wellness",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 1,
+          "CORE_IN_TOP_10": 2,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 3,
+          "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 8
         },
         {
           "PROPERTY": "The St. Regis Mexico City",
           "TERRITORY": "Adventure & Experiences",
           "intent": "adventure",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 1,
+          "CORE_IN_TOP_10": 2,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 3,
+          "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 6
         },
         {
           "PROPERTY": "The St. Regis Mexico City",
           "TERRITORY": "Celebrations & Events",
           "intent": "celebration",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 1,
+          "CORE_IN_TOP_10": 2,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 3,
+          "CORE_ZERO_PRESENCE": 2,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 9
         }
       ],
       "PROPERTY_SPECIFIC_RANKING_DISPLAY_CODE": 0,
       "PROPERTY_SPECIFIC_OVERALL_RANKING_CODE": 0,
-      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v1",
+      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v2",
       "DISPLAY_AND_MODAL_SAME_SOURCE": true
     },
     "executiveRead": {
@@ -2219,16 +2928,16 @@
       "COMPARABLE_PRIOR_AVAILABLE": false,
       "CURRENT_READ_INDEPENDENT_OF_TREND": true,
       "current": {
-        "positionPattern": "BROAD_VISIBILITY_INCONSISTENT_CONSIDERATION",
-        "label": "broad AI visibility but less consistent consideration",
-        "narrative": "The St. Regis Mexico City appears in 92.1% of monitored demand scenarios but in 50% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 75.6% of ranked responses. AI visibility is broader than consideration consistency: the hotel appears in 92.1% of monitored demand scenarios but only 50% of individual comparable AI responses.",
+        "positionPattern": "STRONG_AND_CONSISTENT_AI_PRESENCE",
+        "label": "strong and consistent AI presence",
+        "narrative": "The St. Regis Mexico City appears in 100% of monitored demand scenarios but in 85.7% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 75.6% of ranked responses. AI currently reflects only 53.8% of monitored property attributes despite (100% scenario presence), so parts of the hotel proposition are not consistently represented.",
         "primaryStrength": {
           "key": "TOP3_PROMINENCE",
           "label": "Top-3 prominence"
         },
         "primaryConstraint": {
-          "key": "CONSIDERATION_CONSISTENCY",
-          "label": "Consideration consistency"
+          "key": "PROPERTY_REPRESENTATION",
+          "label": "Property representation"
         },
         "benchmarkFinding": null
       },
@@ -2243,22 +2952,22 @@
         "materialityPolicy": "HEURISTIC_PENDING_LONGITUDINAL_VALIDATION"
       },
       "currentPosition": {
-        "pattern": "BROAD_VISIBILITY_INCONSISTENT_CONSIDERATION",
-        "label": "broad AI visibility but less consistent consideration"
+        "pattern": "STRONG_AND_CONSISTENT_AI_PRESENCE",
+        "label": "strong and consistent AI presence"
       },
       "primaryStrength": {
         "key": "TOP3_PROMINENCE",
         "label": "Top-3 prominence"
       },
       "primaryConstraint": {
-        "key": "CONSIDERATION_CONSISTENCY",
-        "label": "Consideration consistency"
+        "key": "PROPERTY_REPRESENTATION",
+        "label": "Property representation"
       },
-      "narrative": "The St. Regis Mexico City appears in 92.1% of monitored demand scenarios but in 50% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 75.6% of ranked responses. AI visibility is broader than consideration consistency: the hotel appears in 92.1% of monitored demand scenarios but only 50% of individual comparable AI responses. This is the baseline monitoring period for this property.",
+      "narrative": "The St. Regis Mexico City appears in 100% of monitored demand scenarios but in 85.7% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. When ranked, the hotel appears in the Top 3 in 75.6% of ranked responses. AI currently reflects only 53.8% of monitored property attributes despite (100% scenario presence), so parts of the hotel proposition are not consistently represented. This is the baseline monitoring period for this property.",
       "meta": {
         "overall": "This is the baseline monitoring period for this property",
         "primaryStrength": "Top-3 prominence",
-        "primaryConstraint": "Consideration consistency"
+        "primaryConstraint": "Property representation"
       },
       "safety": {
         "FREE_FORM_UNGOVERNED_NARRATIVE": 0,
@@ -2283,8 +2992,8 @@
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
-          "headline": "Not appearing consistently in AI answers",
-          "body": "The hotel appeared in at least one AI answer for 92.1% of the traveler needs we tested, but across all individual AI answers it appeared 50% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+          "headline": "No single dominant weakness",
+          "body": "The St. Regis Mexico City shows mixed results across the monitored measures. No one limitation clearly outweighs the others in the current data."
         },
         "changeSinceLastRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -2293,7 +3002,7 @@
         },
         "executiveSummary": {
           "title": "WHAT THE DATA SAYS",
-          "narrative": "The St. Regis Mexico City appeared in at least one AI answer for 92.1% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, The St. Regis Mexico City appeared 50% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see The St. Regis Mexico City in the hotel options surfaced.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, The St. Regis Mexico City appeared in the Top 3 75.6% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+          "narrative": "The St. Regis Mexico City appeared in at least one AI answer for 100% of the traveler needs we tested, and across every individual AI answer it appeared 85.7% of the time. Together, these results show how broadly AI recognizes the hotel and how consistently a traveler would encounter it.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, The St. Regis Mexico City appeared in the Top 3 75.6% of the time, showing how prominently it is positioned when AI includes it.\n\nAI currently reflects 53.8% of the monitored facts and attributes that define the hotel, so important parts of the property proposition are not consistently represented in AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
         },
         "safety": {
           "VAGUE_UNEXPLAINED_PHRASES": 0,
@@ -2313,8 +3022,8 @@
         },
         "biggestConstraint": {
           "sectionLabel": "BIGGEST CONSTRAINT",
-          "headline": "Not appearing consistently in AI answers",
-          "body": "The hotel appeared in at least one AI answer for 92.1% of the traveler needs we tested, but across all individual AI answers it appeared 50% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+          "headline": "No single dominant weakness",
+          "body": "The St. Regis Mexico City shows mixed results across the monitored measures. No one limitation clearly outweighs the others in the current data."
         },
         "changeSinceLastComparableRun": {
           "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
@@ -2324,8 +3033,545 @@
       },
       "writeup": {
         "title": "WHAT THE DATA SAYS",
-        "body": "The St. Regis Mexico City appeared in at least one AI answer for 92.1% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, The St. Regis Mexico City appeared 50% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see The St. Regis Mexico City in the hotel options surfaced.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, The St. Regis Mexico City appeared in the Top 3 75.6% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+        "body": "The St. Regis Mexico City appeared in at least one AI answer for 100% of the traveler needs we tested, and across every individual AI answer it appeared 85.7% of the time. Together, these results show how broadly AI recognizes the hotel and how consistently a traveler would encounter it.\n\nThe clearest strength in this period is often placed near the top when ai ranks hotels. See the summary at left for the supporting numbers. Among AI answers where hotel ranking could be measured, The St. Regis Mexico City appeared in the Top 3 75.6% of the time, showing how prominently it is positioned when AI includes it.\n\nAI currently reflects 53.8% of the monitored facts and attributes that define the hotel, so important parts of the property proposition are not consistently represented in AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+      },
+      "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "sections": {
+        "headline": "The St. Regis Mexico City's priority is a Reality Gap in how a distinctive part of the proposition is represented in AI answers.",
+        "keyInsight": "Urban Luxury is recognized in only 0.9% of monitored answers. That is low enough to matter commercially if the attribute is part of how the hotel should win relevant traveler needs. Overall scores can hide this concentrated representation miss. Broader Scenario Presence (100%) and Consideration (85.7%) do not, by themselves, prove the distinctive attribute is traveling into answers.",
+        "whyItMatters": "If distinctive property attributes are weakly represented, the hotel can look broadly visible while still losing the moments where its real proposition should matter. This is a representation problem first, not automatically a peer-competition program.",
+        "focusNow": "Focus first on Urban Luxury. Verify first-party and major travel-source completeness for that attribute before treating the issue as a peer-competition problem. Confirm the attribute is stated clearly where AI systems are most likely to read it.",
+        "watch": null,
+        "whatToReview": "Open Reality Gap evidence for Urban Luxury and compare recognition cues with official property pages and high-authority travel sources. Then check a small set of related demand scenarios for whether the attribute appears when competitors are named."
+      },
+      "numericAnchors": [
+        {
+          "metricId": "realityGap.Urban Luxury.recognitionRate",
+          "displayValue": "0.9%",
+          "section": "KEY_INSIGHT",
+          "reason": "Reality Gap recognition rate",
+          "paritySource": "realityGap.Urban Luxury.recognitionRate",
+          "removingWeakensInsight": true,
+          "anchorType": "reality_gap_rate"
+        }
+      ],
+      "primaryIssueId": "signature_urban_representation",
+      "insightArchetype": "REALITY_DISCONNECT",
+      "evidenceTrace": [
+        {
+          "kind": "metric",
+          "ref": "realityGap.Urban Luxury.recognitionRate",
+          "value": 0.9
+        },
+        {
+          "kind": "realityGap",
+          "ref": "Urban Luxury"
+        },
+        {
+          "kind": "numericAnchor",
+          "ref": "realityGap.Urban Luxury.recognitionRate",
+          "displayValue": "0.9%"
+        },
+        {
+          "kind": "period",
+          "ref": "adp_period_adp_st_regis_mexico_city_20260908101359_874acb"
+        }
+      ],
+      "qualityGates": {
+        "gates": {
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+            "pass": true,
+            "detail": "keyInsight length"
+          },
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+            "pass": true,
+            "detail": "property name referenced"
+          },
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+            "pass": true,
+            "detail": null
+          }
+        },
+        "gateIds": [
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+        ],
+        "claimDiscipline": {
+          "unsupportedCausalImplication": 0,
+          "overstated": 0,
+          "pass": true
+        },
+        "wordCount": 190,
+        "allRequiredPass": true,
+        "failed": []
+      },
+      "sourceSnapshotHash": "5f905b9e03c6965f",
+      "compositionHash": "e0b78d0d1ea8e481",
+      "compositionV3": {
+        "ok": true,
+        "contract": "ADP_EXECUTIVE_READ_V3",
+        "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "generatedAt": "2026-09-10T11:04:18.782Z",
+        "propertyId": "adp_st_regis_mexico_city",
+        "propertyName": "The St. Regis Mexico City",
+        "periodId": "adp_period_adp_st_regis_mexico_city_20260908101359_874acb",
+        "primaryIssueId": "signature_urban_representation",
+        "insightArchetype": "REALITY_DISCONNECT",
+        "constraintClass": "REALITY_REPRESENTATION",
+        "sections": {
+          "headline": "The St. Regis Mexico City's priority is a Reality Gap in how a distinctive part of the proposition is represented in AI answers.",
+          "keyInsight": "Urban Luxury is recognized in only 0.9% of monitored answers. That is low enough to matter commercially if the attribute is part of how the hotel should win relevant traveler needs. Overall scores can hide this concentrated representation miss. Broader Scenario Presence (100%) and Consideration (85.7%) do not, by themselves, prove the distinctive attribute is traveling into answers.",
+          "whyItMatters": "If distinctive property attributes are weakly represented, the hotel can look broadly visible while still losing the moments where its real proposition should matter. This is a representation problem first, not automatically a peer-competition program.",
+          "focusNow": "Focus first on Urban Luxury. Verify first-party and major travel-source completeness for that attribute before treating the issue as a peer-competition problem. Confirm the attribute is stated clearly where AI systems are most likely to read it.",
+          "watch": null,
+          "whatToReview": "Open Reality Gap evidence for Urban Luxury and compare recognition cues with official property pages and high-authority travel sources. Then check a small set of related demand scenarios for whether the attribute appears when competitors are named."
+        },
+        "numericAnchors": [
+          {
+            "metricId": "realityGap.Urban Luxury.recognitionRate",
+            "displayValue": "0.9%",
+            "section": "KEY_INSIGHT",
+            "reason": "Reality Gap recognition rate",
+            "paritySource": "realityGap.Urban Luxury.recognitionRate",
+            "removingWeakensInsight": true,
+            "anchorType": "reality_gap_rate"
+          }
+        ],
+        "evidenceTrace": [
+          {
+            "kind": "metric",
+            "ref": "realityGap.Urban Luxury.recognitionRate",
+            "value": 0.9
+          },
+          {
+            "kind": "realityGap",
+            "ref": "Urban Luxury"
+          },
+          {
+            "kind": "numericAnchor",
+            "ref": "realityGap.Urban Luxury.recognitionRate",
+            "displayValue": "0.9%"
+          },
+          {
+            "kind": "period",
+            "ref": "adp_period_adp_st_regis_mexico_city_20260908101359_874acb"
+          }
+        ],
+        "qualityGates": {
+          "gates": {
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+              "pass": true,
+              "detail": "keyInsight length"
+            },
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+              "pass": true,
+              "detail": "property name referenced"
+            },
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+              "pass": true,
+              "detail": null
+            }
+          },
+          "gateIds": [
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+          ],
+          "claimDiscipline": {
+            "unsupportedCausalImplication": 0,
+            "overstated": 0,
+            "pass": true
+          },
+          "wordCount": 190,
+          "allRequiredPass": true,
+          "failed": []
+        },
+        "sourceSnapshotHash": "5f905b9e03c6965f",
+        "compositionHash": "e0b78d0d1ea8e481",
+        "activated": true,
+        "customerFacingDefault": true,
+        "zeroCodePath": true,
+        "usedHardcodedMap": false,
+        "historicalImmutability": {
+          "enforced": true,
+          "policy": {
+            "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+            "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+            "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+            "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+            "silentInPlaceMutation": "PROHIBITED",
+            "activationRequiredForCustomerDefault": true
+          },
+          "writePolicy": {
+            "allowed": true,
+            "mode": "CUSTOMER_DEFAULT_V3",
+            "reason": "ACTIVATED",
+            "policy": {
+              "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+              "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+              "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+              "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+              "silentInPlaceMutation": "PROHIBITED",
+              "activationRequiredForCustomerDefault": true
+            },
+            "enforced": true,
+            "customerDefault": true
+          }
+        },
+        "wordCount": 190,
+        "watchOmitted": true,
+        "candidates": [
+          {
+            "candidateId": "cand_competitor_present_gaps",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.7020000000000001,
+            "summary": "Competitors appear in a material share of scenarios where the hotel is absent (36.5%)."
+          },
+          {
+            "candidateId": "cand_reality_gap_urban_luxury",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 1.2252,
+            "summary": "Urban Luxury is recognized in only 0.9% of monitored answers."
+          },
+          {
+            "candidateId": "cand_reality_gap_five_diamond",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "Five Diamond Positioning is recognized in only 0% of monitored answers."
+          },
+          {
+            "candidateId": "cand_strong_protect",
+            "archetype": "STRONG_PROTECT",
+            "priorityScore": 0.6180000000000001,
+            "summary": "Strong Scenario Presence (100%) and Consideration (85.7%) — protect position; do not manufacture a crisis."
+          },
+          {
+            "candidateId": "cand_territory_spread",
+            "archetype": "CONSISTENCY_PROBLEM",
+            "priorityScore": 0.7094,
+            "summary": "Territory presence ranges from 60% (Family Travel) to 91.7% (Couples / Romantic Stay)."
+          },
+          {
+            "candidateId": "cand_top_observed_alternative",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.774,
+            "summary": "Four Seasons Hotel Mexico City is the top observed AI alternative in the monitored set."
+          }
+        ],
+        "selectionMeta": {
+          "rules": [
+            "ADP_EXECUTIVE_READ_INPUT_V3",
+            "ADP_EXECUTIVE_INSIGHT_CANDIDATE_GENERATION_V3",
+            "ADP_EXECUTIVE_INSIGHT_PRIORITY_V3",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY"
+          ],
+          "supportingCandidateIds": [
+            "cand_reality_gap_five_diamond"
+          ]
+        },
+        "doctrine": [
+          "METHODOLOGY_IS_GOVERNED; QUALITY_CONTROLS_LEARN.",
+          "EXECUTIVE_INSIGHT_LEARNS_INTERPRETATION; MEASUREMENT_REMAINS_GOVERNED."
+        ],
+        "methodologyChanged": false,
+        "rendererViewModel": {
+          "ok": true,
+          "contract": "ADP_EXECUTIVE_READ_RENDERER_CONTRACT_V3",
+          "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+          "activated": true,
+          "primaryIssueId": "signature_urban_representation",
+          "insightArchetype": "REALITY_DISCONNECT",
+          "sections": [
+            {
+              "key": "headline",
+              "label": "Headline",
+              "text": "The St. Regis Mexico City's priority is a Reality Gap in how a distinctive part of the proposition is represented in AI answers.",
+              "anchors": []
+            },
+            {
+              "key": "keyInsight",
+              "label": "Key Insight",
+              "text": "Urban Luxury is recognized in only 0.9% of monitored answers. That is low enough to matter commercially if the attribute is part of how the hotel should win relevant traveler needs. Overall scores can hide this concentrated representation miss. Broader Scenario Presence (100%) and Consideration (85.7%) do not, by themselves, prove the distinctive attribute is traveling into answers.",
+              "anchors": [
+                {
+                  "metricId": "realityGap.Urban Luxury.recognitionRate",
+                  "displayValue": "0.9%",
+                  "section": "KEY_INSIGHT",
+                  "reason": "Reality Gap recognition rate",
+                  "paritySource": "realityGap.Urban Luxury.recognitionRate",
+                  "removingWeakensInsight": true,
+                  "anchorType": "reality_gap_rate"
+                }
+              ]
+            },
+            {
+              "key": "whyItMatters",
+              "label": "Why It Matters",
+              "text": "If distinctive property attributes are weakly represented, the hotel can look broadly visible while still losing the moments where its real proposition should matter. This is a representation problem first, not automatically a peer-competition program.",
+              "anchors": []
+            },
+            {
+              "key": "focusNow",
+              "label": "Focus Now",
+              "text": "Focus first on Urban Luxury. Verify first-party and major travel-source completeness for that attribute before treating the issue as a peer-competition problem. Confirm the attribute is stated clearly where AI systems are most likely to read it.",
+              "anchors": []
+            },
+            {
+              "key": "whatToReview",
+              "label": "What to Review",
+              "text": "Open Reality Gap evidence for Urban Luxury and compare recognition cues with official property pages and high-authority travel sources. Then check a small set of related demand scenarios for whether the attribute appears when competitors are named.",
+              "anchors": []
+            }
+          ],
+          "flattenedProseForLegacy": "The St. Regis Mexico City's priority is a Reality Gap in how a distinctive part of the proposition is represented in AI answers.\n\nUrban Luxury is recognized in only 0.9% of monitored answers. That is low enough to matter commercially if the attribute is part of how the hotel should win relevant traveler needs. Overall scores can hide this concentrated representation miss. Broader Scenario Presence (100%) and Consideration (85.7%) do not, by themselves, prove the distinctive attribute is traveling into answers.\n\nIf distinctive property attributes are weakly represented, the hotel can look broadly visible while still losing the moments where its real proposition should matter. This is a representation problem first, not automatically a peer-competition program.\n\nFocus first on Urban Luxury. Verify first-party and major travel-source completeness for that attribute before treating the issue as a peer-competition problem. Confirm the attribute is stated clearly where AI systems are most likely to read it.\n\nOpen Reality Gap evidence for Urban Luxury and compare recognition cues with official property pages and high-authority travel sources. Then check a small set of related demand scenarios for whether the attribute appears when competitors are named."
+        }
       }
+    },
+    "metricScopeLabels": {
+      "version": "adp_metric_scope_labels_v1",
+      "subjectObservationGrain": {
+        "productLabel": "AI Consideration",
+        "technicalLabel": "AI Consideration Rate",
+        "grain": "property × scenario × provider × period (comparable observations)",
+        "definition": "Share of comparable monitored AI responses where the subject hotel appears."
+      },
+      "subjectScenarioGrain": {
+        "productLabel": "AI Scenario Presence",
+        "technicalLabel": "Demand Scenario Coverage",
+        "grain": "property × scenario (aggregates providers)",
+        "definition": "Share of monitored demand scenarios where the subject hotel appears on at least one comparable provider."
+      },
+      "competitorScenarioAppearance": {
+        "productLabel": "Scenario Appearance",
+        "technicalLabel": "Competitor Scenario Appearance",
+        "grain": "non-subject hotel × scenario (within subject hotel report)",
+        "definition": "Share of monitored scenarios in this report where a competitor hotel appears. Not the same metric as that hotel's own AI Consideration.",
+        "forbiddenClientLabels": [
+          "Presence",
+          "AI Presence"
+        ]
+      },
+      "competitorObservationAppearance": {
+        "productLabel": "Observation Appearance",
+        "technicalLabel": "Competitor Observation Appearance",
+        "grain": "non-subject hotel × observation (within subject hotel report)",
+        "definition": "Share of comparable monitored answers in this report where a competitor hotel appears. Not interchangeable with subject AI Consideration unless same-scope certified."
+      },
+      "scopeRule": "SAME_SCOPE_SAME_CANONICAL_METRIC",
+      "ambiguityRule": "ADP_METRIC_SCOPE_UNAMBIGUOUS"
     },
     "trends": [
       {
@@ -2342,9 +3588,9 @@
       {
         "periodId": "adp_period_adp_st_regis_mexico_city_20260908101359_874acb",
         "date": "2026-09-08T10:13:59.355Z",
-        "propertyRealityCoverage": 46.2,
-        "scenarioPresenceRate": 92.1,
-        "considerationRate": 50,
+        "propertyRealityCoverage": 53.8,
+        "scenarioPresenceRate": 100,
+        "considerationRate": 85.7,
         "providerCount": 4,
         "observationCount": 252,
         "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
