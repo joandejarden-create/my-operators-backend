@@ -2599,8 +2599,14 @@
     var url =
       "/api/brand-presence?search=" +
       encodeURIComponent(q) +
-      "&limit=400";
-    return fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } })
+      "&limit=400&censusSource=hpc&product=hotel-explorer";
+    return fetch(url, {
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+        "X-Dealality-Census-Source": "hpc",
+        "X-Dealality-Product": "hotel-explorer",
+      },
+    })
       .then(function (r) {
         if (!r.ok) throw new Error("brand-presence HTTP " + r.status);
         return r.json();
@@ -2958,13 +2964,40 @@
     if (!recordId || String(recordId).indexOf("rec") !== 0) {
       return Promise.resolve(hotel);
     }
-    return fetch("/api/brand-presence/hotel/" + encodeURIComponent(recordId), {
-      headers: { "ngrok-skip-browser-warning": "true" }
-    })
+    return fetch(
+      "/api/brand-presence/hotel/" +
+        encodeURIComponent(recordId) +
+        "?censusSource=hpc&product=hotel-explorer",
+      {
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+          "X-Dealality-Census-Source": "hpc",
+          "X-Dealality-Product": "hotel-explorer",
+        },
+      }
+    )
       .then(function (res) { return res.json(); })
       .then(function (payload) {
         if (payload && payload.success && payload.hotel) {
-          return Object.assign({}, hotel, payload.hotel);
+          // HPC is authoritative on HE path — do not keep Legacy rooms/brand when HPC returns Unknown.
+          var api = payload.hotel;
+          return Object.assign({}, hotel, api, {
+            brand: api.brand != null ? api.brand : "Unknown Brand",
+            rooms: api.rooms,
+            roomsDisplay: api.roomsDisplay != null ? api.roomsDisplay : (api.rooms == null ? "Unknown" : api.rooms),
+            dhl_: api.dhl_ || hotel.dhl_ || null,
+            _source: api._source || "hotel_property_census",
+          });
+        }
+        // No silent Legacy fill when HPC miss — keep name/geo for shell, clear unclean Legacy enrichment.
+        if (payload && payload.noLegacyFallback) {
+          return Object.assign({}, hotel, {
+            brand: "Unknown Brand",
+            rooms: null,
+            roomsDisplay: "Unknown",
+            _source: "hotel_property_census_miss",
+            _hpcMiss: true,
+          });
         }
         return hotel;
       })

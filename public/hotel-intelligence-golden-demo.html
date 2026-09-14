@@ -80,9 +80,18 @@
       function enrichHotel(hotel) {
         var id = hotel && (hotel.id || hotel.recordId);
         if (!id || String(id).indexOf("rec") !== 0) return Promise.resolve(hotel);
-        return fetch("/api/brand-presence/hotel/" + encodeURIComponent(id), {
-          headers: { "ngrok-skip-browser-warning": "true" },
-        })
+        return fetch(
+          "/api/brand-presence/hotel/" +
+            encodeURIComponent(id) +
+            "?censusSource=hpc&product=hotel-explorer",
+          {
+            headers: {
+              "ngrok-skip-browser-warning": "true",
+              "X-Dealality-Census-Source": "hpc",
+              "X-Dealality-Product": "hotel-explorer",
+            },
+          }
+        )
           .then(function (r) {
             return r.json();
           })
