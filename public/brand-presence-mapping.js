@@ -115,6 +115,7 @@ const MAP_LAYER_FILTERS = {
         Midscale: true,
         Economy: true,
         Independent: true,
+        Unknown: true,
     },
     cityAggFilter: 'hotels:3',
     whiteSpaceLevels: { high: true, medium: true },
@@ -402,8 +403,17 @@ function normalizeMapChainScale(hotel) {
     const brand = String((hotel && hotel.brand) || '').trim().toLowerCase();
     if (brand === 'independent') return 'Independent';
 
+    // P8.6: prefer shared helper; Unknown is a first-class bucket (never hide pins)
+    if (window.DealalityRadarCensusSource && typeof window.DealalityRadarCensusSource.normalizeChainScaleUnknown === 'function') {
+        const normalized = window.DealalityRadarCensusSource.normalizeChainScaleUnknown(hotel);
+        if (normalized === 'Unknown') return 'Unknown';
+        const scaleKey = String(normalized).toLowerCase();
+        if (scaleKey === 'independent' || scaleKey === 'indepandant') return 'Independent';
+        return normalized;
+    }
+
     let scale = String((hotel && (hotel.chainScale || hotel.propertyType)) || '').trim();
-    if (!scale || scale === 'Unknown') return null;
+    if (!scale || scale === 'Unknown') return 'Unknown';
 
     scale = scale.replace(/\s+Chain\s*$/i, '').trim() || scale;
     const scaleKey = scale.toLowerCase();
@@ -416,13 +426,13 @@ function isMapLayerHotelStatusVisible(status) {
     if (key === 'Open') return MAP_LAYER_FILTERS.hotelStatuses.Open !== false;
     if (key === 'Pipeline') return MAP_LAYER_FILTERS.hotelStatuses.Pipeline !== false;
     if (key === 'Candidate') return MAP_LAYER_FILTERS.hotelStatuses.Candidate !== false;
+    // HPC has no Candidate — Closed/other remain visible unless explicitly filtered
     return true;
 }
 
 function isMapLayerChainScaleVisible(hotel) {
     if (!isChainScaleView) return true;
-    const scale = normalizeMapChainScale(hotel);
-    if (!scale) return false;
+    const scale = normalizeMapChainScale(hotel) || 'Unknown';
     if (MAP_LAYER_FILTERS.chainScales[scale] === false) return false;
     return true;
 }
@@ -798,22 +808,45 @@ async function loadHotelData() {
     try {
         showLoading(true);
         showSystemStatus('Loading Market Signals…');
-        
-        // Fetch all data from API with high limit
-        const response = await fetch('/api/brand-presence?limit=100000', {
-            headers: {
-                'ngrok-skip-browser-warning': 'true'
-            }
-        });
+
+        // P8.6/P8.7: production default from RADAR_HPC_V2 via /api/dealality-runtime-flags.
+        // Overrides: ?radarHpc=1|0 or localStorage. Scout never uses this path.
+        const src = window.DealalityRadarCensusSource;
+        if (src && typeof src.ensureFlags === 'function') {
+            await src.ensureFlags();
+        }
+        const url = src && typeof src.brandPresenceUrl === 'function'
+            ? src.brandPresenceUrl(100000)
+            : '/api/brand-presence?limit=100000';
+        const headers = src && typeof src.brandPresenceHeaders === 'function'
+            ? src.brandPresenceHeaders()
+            : { 'ngrok-skip-browser-warning': 'true' };
+        const hpcActive = !!(src && src.isRadarHpcOptInActive && src.isRadarHpcOptInActive());
+        window.DEALALITY_RADAR_HPC_ACTIVE = hpcActive;
+
+        const response = await fetch(url, { headers: headers });
         const result = await response.json();
         
         if (result.success) {
             updateSystemStatus('Processing Market Signals…');
-            allHotels = result.hotels;
+            allHotels = (result.hotels || []).map(function (h) {
+                if (src && typeof src.annotateHotelIdentity === 'function') {
+                    return src.annotateHotelIdentity(h);
+                }
+                return h;
+            });
             window.allHotels = allHotels;
             hotelData = [...allHotels];
             currentFilteredHotels = [...allHotels];
             if (result.skippedNoCoordinates) console.warn(result.skippedNoCoordinates + " Airtable records have no coordinates and are not shown on the map.");
+            if (hpcActive) {
+                console.info('[Radar] HPC opt-in active', {
+                    source: result.source || null,
+                    adapter: result.adapter || null,
+                    noLegacyFallback: result.noLegacyFallback === true,
+                    pinCount: allHotels.length,
+                });
+            }
             
             updateSystemStatus('Displaying hotels on map…');
             await displayHotels(hotelData);

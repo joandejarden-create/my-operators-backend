@@ -46,6 +46,7 @@ import { cronMarketAlertsRssSync } from "./api/run-market-alerts-rss-sync.js";
 import { startMarketAlertsRssScheduler } from "./api/market-alerts-rss-scheduler.js";
 import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandPresenceHotelById, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
+import { getDealalityRuntimeFlagsHandler } from "./api/dealality-runtime-flags.js";
 import {
   getGoldenDemoOwnershipIndex,
   getGoldenDemoHotelOwnership,
@@ -2189,6 +2190,7 @@ app.post("/api/cron/market-alerts-rss-sync", cronMarketAlertsRssSync);
 app.post("/api/deal-intelligence/analyze", analyzeDeal);
 
 // Brand Presence API endpoints
+app.get("/api/dealality-runtime-flags", getDealalityRuntimeFlagsHandler);
 app.get("/api/brand-presence/hotel/:recordId", getBrandPresenceHotelById);
 app.get("/api/brand-presence", getBrandPresence);
 app.get("/api/brand-presence/statistics", getBrandStatistics);
