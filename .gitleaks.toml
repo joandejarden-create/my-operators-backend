@@ -1,29 +1,9 @@
-# Dealality gitleaks config — extends defaults; scoped allowlists only.
-# IMPORTANT: CI uses gitleaks-action @ 8.24.x, which only honors [allowlist]
-# (singular). [[allowlists]] is silently ignored until gitleaks ≥8.25.
-title = "Dealality secret scan"
+# Gitleaks allowlist — Airtable record ID remaps are not secrets
+title = "Dealality gitleaks"
 
-[extend]
-useDefault = true
-
-# Path-only global allowlist (OR across paths). Keep regex-based suppressions
-# out of this block — mixing paths+regexes uses AND and would over-suppress.
 [allowlist]
-description = "Known-safe Dealality metadata paths (not signing secrets / API keys)"
+description = "Hotel census Legacy→HPC id remap (Airtable rec ids)"
 paths = [
-  # Share capability registries store public token IDs (sht_… / sht_baip_…),
-  # not HMAC signing secrets. Signed capability strings live in env / issued URLs.
-  '''config/client-share/.+-share-registry/active-tokens\.json$''',
-  '''data/.+/share-registry/active-tokens\.json$''',
-  # Local Playwright shell E2E uses a clearly invalid Memberstack-shaped JWT.
-  '''scripts/playwright-adp-owner-app-shell-property-access-v1\.mjs$''',
-  # Cache/deploy version tokens (adp-vNN-…) are public asset cache busters.
-  '''lib/ai-demand-positioning/brand-portfolio/bpp-publication-meta-v1\.js$''',
-  '''data/ai-demand-positioning/published/_cache_token\.json$''',
-  '''public/adp-core-trends-p2-deploy-marker\.json$''',
-  # Hotel Intelligence golden-demo / Mexico share fixtures embed Airtable
-  # record IDs (rec…) and Census identity strings — not API keys/tokens.
-  '''fixtures/golden-demo/.+$''',
-  '''fixtures/hotel-intelligence/.+$''',
-  '''lib/hotel-intelligence/.+$''',
+  '''config/hotel-census/legacy-to-hpc-id-map\.json''',
+  '''data/hotel-census-v2/.*/legacy-to-hpc-id-map\.json''',
 ]
