@@ -213,13 +213,19 @@
         if (filters[key]) q.set(key, filters[key]);
       }
     );
+    var src = window.DealalityScoutCensusSource;
+    if (src && src.appendScoutCensusParams) src.appendScoutCensusParams(q);
     return q.toString();
   }
 
   function loadInsights(callback) {
     var filters = readFilters();
     el("scoutMapLoadStatus").textContent = "Loading market insights…";
-    fetch("/api/scout/market-insights?" + buildInsightQuery(filters))
+    var headers =
+      window.DealalityScoutCensusSource && window.DealalityScoutCensusSource.scoutCensusHeaders
+        ? window.DealalityScoutCensusSource.scoutCensusHeaders()
+        : { Accept: "application/json", "ngrok-skip-browser-warning": "true" };
+    fetch("/api/scout/market-insights?" + buildInsightQuery(filters), { headers: headers })
       .then(function (r) {
         return r.json();
       })
@@ -607,6 +613,8 @@
       if (filters[key]) q.set(key, filters[key]);
     });
     if (filters.overlayCategory) q.set("category", filters.overlayCategory);
+    var src = window.DealalityScoutCensusSource;
+    if (src && src.appendScoutCensusParams) src.appendScoutCensusParams(q);
     return q.toString();
   }
 
@@ -1261,7 +1269,12 @@
       : "Loading Hotel Census and map layers (first load may take 15–30s)…";
     el("scoutMapResults").innerHTML = '<div class="scout-map-empty">Loading…</div>';
 
-    fetch("/api/scout/market-map?" + buildQuery(filters))
+    var headers =
+      window.DealalityScoutCensusSource && window.DealalityScoutCensusSource.scoutCensusHeaders
+        ? window.DealalityScoutCensusSource.scoutCensusHeaders()
+        : { Accept: "application/json", "ngrok-skip-browser-warning": "true" };
+
+    fetch("/api/scout/market-map?" + buildQuery(filters), { headers: headers })
       .then(function (r) {
         return r.json();
       })
@@ -1273,6 +1286,9 @@
         (json.generatedSignals || []).forEach(function (s) {
           state.signalById[s.signalId] = s;
         });
+        var srcLabel =
+          (json.source && json.source.hotelSource) ||
+          (json.source && json.source.censusSource === "hpc" ? "Hotel Property Census" : "Hotel Census");
         renderKpis(json.summary, json.demandOverlaySummary);
         updateDemandAnchorsAvailability(json);
         hydrateFilterOptions(json, filters);
@@ -1290,7 +1306,9 @@
         el("scoutMapLoadStatus").textContent =
           "Loaded " +
           (json.summary?.hotelMarkers || 0) +
-          " hotels · " +
+          " hotels · source " +
+          srcLabel +
+          " · " +
           ((json.demandOverlaySummary && json.demandOverlaySummary.overlayMarkers) || 0) +
           " demand drivers · read-only";
       })
@@ -1364,7 +1382,13 @@
     });
     var stored = loadFiltersFromStorage();
     if (stored) applyFiltersToForm(stored);
-    loadData();
+    var ready = Promise.resolve();
+    if (window.DealalityScoutCensusSource && window.DealalityScoutCensusSource.ensureFlags) {
+      ready = window.DealalityScoutCensusSource.ensureFlags();
+    }
+    ready.finally(function () {
+      loadData();
+    });
   }
 
   if (document.readyState === "loading") {

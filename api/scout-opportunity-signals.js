@@ -10,12 +10,13 @@
 import { buildOpportunitySignalsReport } from "../lib/scout/opportunity-signals.js";
 import { annotateGeneratedSignalsWithSavedStatus } from "../lib/scout/scout-signal-watchlist.js";
 import { ensurePlatformConfig } from "../lib/hotel-census/platform-base.js";
+import { withScoutHpcQuery } from "../lib/scout/scout-hpc-request.js";
 
 export async function getScoutOpportunitySignals(req, res) {
   if (!ensurePlatformConfig(res)) return;
 
   try {
-    const report = await buildOpportunitySignalsReport(req.query || {});
+    const report = await buildOpportunitySignalsReport(withScoutHpcQuery(req, req.query || {}));
 
     if (!report.ok) {
       const status = /required|Invalid signalType/i.test(report.error || "") ? 400 : 500;

@@ -44,6 +44,7 @@
         _flags = {
           BRAND_PRESENCE_HPC_V2: !!(body && body.BRAND_PRESENCE_HPC_V2),
           RADAR_HPC_V2: !!(body && body.RADAR_HPC_V2),
+          SCOUT_HPC_V2: !!(body && body.SCOUT_HPC_V2),
         };
         try {
           global.DEALALITY_RUNTIME_FLAGS = _flags;
@@ -53,7 +54,7 @@
         return _flags;
       })
       .catch(function () {
-        _flags = { BRAND_PRESENCE_HPC_V2: false, RADAR_HPC_V2: false };
+        _flags = { BRAND_PRESENCE_HPC_V2: false, RADAR_HPC_V2: false, SCOUT_HPC_V2: false };
         return _flags;
       });
     return _flagsPromise;

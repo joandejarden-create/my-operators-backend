@@ -5,12 +5,13 @@
 
 import { buildMarketInsightsReport } from "../lib/scout/market-insights.js";
 import { ensurePlatformConfig } from "../lib/hotel-census/platform-base.js";
+import { withScoutHpcQuery } from "../lib/scout/scout-hpc-request.js";
 
 export async function getScoutMarketInsights(req, res) {
   if (!ensurePlatformConfig(res)) return;
 
   try {
-    const report = await buildMarketInsightsReport(req.query || {});
+    const report = await buildMarketInsightsReport(withScoutHpcQuery(req, req.query || {}));
 
     if (!report.ok) {
       return res.status(500).json({ success: false, error: report.error });
