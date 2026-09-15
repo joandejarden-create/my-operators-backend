@@ -1,23 +1,51 @@
 /**
- * Explicit routing matrix for Brand Presence HPC V2 (P8.5B / P8.7 / P8.8).
- * FLAG alone must never switch Scout/Radar to HPC.
+ * Explicit routing matrix for Brand Presence HPC V2 (P8.5B / P8.7 / P8.8 / P8.10).
+ * FLAG alone must never switch Scout/Radar/BE to HPC.
  * Radar requires RADAR_HPC_V2=1 in addition to BRAND_PRESENCE_HPC_V2=1.
  * Scout census requires SCOUT_HPC_V2=1 + product=scout (separate gate).
+ * Brand Explorer metrics require BRAND_EXPLORER_HPC_V2=1 + product=brand-explorer|beHpc.
  */
 import assert from "node:assert/strict";
 import {
   shouldUseHpcBrandPresence,
   shouldUseHpcScoutCensus,
+  shouldUseHpcBrandExplorerMetrics,
 } from "../lib/hotel-census/brand-presence-hpc-request.js";
 
 function req(query = {}, headers = {}) {
   return { query, headers };
 }
 
-const FLAG_OFF = { BRAND_PRESENCE_HPC_V2: "0", RADAR_HPC_V2: "0", SCOUT_HPC_V2: "0" };
-const FLAG_BP_ONLY = { BRAND_PRESENCE_HPC_V2: "1", RADAR_HPC_V2: "0", SCOUT_HPC_V2: "0" };
-const FLAG_BOTH = { BRAND_PRESENCE_HPC_V2: "1", RADAR_HPC_V2: "1", SCOUT_HPC_V2: "0" };
-const FLAG_SCOUT = { BRAND_PRESENCE_HPC_V2: "1", RADAR_HPC_V2: "1", SCOUT_HPC_V2: "1" };
+const FLAG_OFF = {
+  BRAND_PRESENCE_HPC_V2: "0",
+  RADAR_HPC_V2: "0",
+  SCOUT_HPC_V2: "0",
+  BRAND_EXPLORER_HPC_V2: "0",
+};
+const FLAG_BP_ONLY = {
+  BRAND_PRESENCE_HPC_V2: "1",
+  RADAR_HPC_V2: "0",
+  SCOUT_HPC_V2: "0",
+  BRAND_EXPLORER_HPC_V2: "0",
+};
+const FLAG_BOTH = {
+  BRAND_PRESENCE_HPC_V2: "1",
+  RADAR_HPC_V2: "1",
+  SCOUT_HPC_V2: "0",
+  BRAND_EXPLORER_HPC_V2: "0",
+};
+const FLAG_SCOUT = {
+  BRAND_PRESENCE_HPC_V2: "1",
+  RADAR_HPC_V2: "1",
+  SCOUT_HPC_V2: "1",
+  BRAND_EXPLORER_HPC_V2: "0",
+};
+const FLAG_BE = {
+  BRAND_PRESENCE_HPC_V2: "1",
+  RADAR_HPC_V2: "1",
+  SCOUT_HPC_V2: "1",
+  BRAND_EXPLORER_HPC_V2: "1",
+};
 const FLAG_UNSET = {};
 
 const brandPresenceCases = [
@@ -38,6 +66,7 @@ const brandPresenceCases = [
   { name: "BOTH + Scout still Legacy on BP gate", env: FLAG_BOTH, req: req({ limit: "100000" }), expect: false },
   { name: "BOTH + product=scout never BP HPC", env: FLAG_SCOUT, req: req({ product: "scout", censusSource: "hpc" }), expect: false },
   { name: "BOTH + HE still HPC", env: FLAG_BOTH, req: req({ product: "hotel-explorer" }), expect: true },
+  { name: "BE product never BP HPC", env: FLAG_BE, req: req({ product: "brand-explorer", censusSource: "hpc" }), expect: false },
 ];
 
 const scoutCases = [
@@ -47,6 +76,18 @@ const scoutCases = [
   { name: "Scout gate ON + no product", env: FLAG_SCOUT, req: req({ country: "Mexico" }), expect: false },
   { name: "Scout gate ON + HE product", env: FLAG_SCOUT, req: req({ product: "hotel-explorer" }), expect: false },
   { name: "Scout gate ON + radar product", env: FLAG_SCOUT, req: req({ product: "radar" }), expect: false },
+];
+
+const beCases = [
+  { name: "BE OFF + product=brand-explorer", env: FLAG_SCOUT, req: req({ product: "brand-explorer" }), expect: false },
+  { name: "BE OFF + beHpc=1", env: FLAG_SCOUT, req: req({ beHpc: "1" }), expect: false },
+  { name: "BE ON + product=brand-explorer", env: FLAG_BE, req: req({ product: "brand-explorer" }), expect: true },
+  { name: "BE ON + product=be", env: FLAG_BE, req: req({ product: "be" }), expect: true },
+  { name: "BE ON + beHpc=1", env: FLAG_BE, req: req({ beHpc: "1" }), expect: true },
+  { name: "BE ON + header product", env: FLAG_BE, req: req({}, { "x-dealality-product": "brand-explorer" }), expect: true },
+  { name: "BE ON + brand-library default (no product)", env: FLAG_BE, req: req({ brandId: "x" }), expect: true },
+  { name: "BE ON ignores HE product on BE gate", env: FLAG_BE, req: req({ product: "hotel-explorer" }), expect: true },
+  { name: "BP only + product=brand-explorer", env: FLAG_BP_ONLY, req: req({ product: "brand-explorer" }), expect: false },
 ];
 
 const results = [];
@@ -66,6 +107,18 @@ for (const c of scoutCases) {
   const got = shouldUseHpcScoutCensus(c.req, c.env);
   results.push({
     gate: "scout-census",
+    name: c.name,
+    expected: c.expect ? "HPC" : "LEGACY",
+    got: got ? "HPC" : "LEGACY",
+    pass: got === c.expect,
+  });
+  assert.equal(got, c.expect, c.name);
+}
+
+for (const c of beCases) {
+  const got = shouldUseHpcBrandExplorerMetrics(c.req, c.env);
+  results.push({
+    gate: "brand-explorer-metrics",
     name: c.name,
     expected: c.expect ? "HPC" : "LEGACY",
     got: got ? "HPC" : "LEGACY",
