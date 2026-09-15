@@ -1,0 +1,122 @@
+{
+  "hotelId": "recLuxvwwxID7U2B8",
+  "displayName": "Bethesda Marriott",
+  "aliases": {
+    "adpPropertyId": "adp_bethesda_marriott",
+    "marriottHotelCode": "WASBT",
+    "note": "Product key is census hotelId. ADP id is read-only alias."
+  },
+  "commercialPriorities": {
+    "targetSegments": [
+      "Associations",
+      "Medical",
+      "Healthcare",
+      "Scientific",
+      "Corporate",
+      "Government",
+      "Government contractor",
+      "Weekend group",
+      "Social",
+      "Sports",
+      "University / education"
+    ],
+    "coreTargetPeakRoomsMin": 100,
+    "coreTargetPeakRoomsMax": 300,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [
+      "NIH",
+      "Walter Reed National Military Medical Center",
+      "federal health / research ecosystem",
+      "Washington DC metro access",
+      "Montgomery County employers",
+      "District of Columbia",
+      "Prince George's County (commercially relevant)",
+      "Northern Virginia",
+      "broader Washington metropolitan / DMV",
+      "universities",
+      "government contractors"
+    ],
+    "weekendFocus": true,
+    "notes": "Bethesda pilot demand priorities — configuration/data, not architecture. Territory expanded to DMV (Sep 2026 GM feedback) while still requiring realistic hotel competition."
+  },
+  "demandTerritory": {
+    "label": "DMV",
+    "includes": [
+      "District of Columbia",
+      "Montgomery County",
+      "Prince George's County (where commercially relevant)",
+      "Northern Virginia",
+      "broader Washington metropolitan area where reasonable"
+    ],
+    "evaluationQuestion": "Could Bethesda Marriott realistically compete for this event?",
+    "classifications": [
+      "BETHESDA_MONTGOMERY_CORE",
+      "NORTH_DC_MEDICAL_CORRIDOR",
+      "DMV_COMPETITIVE",
+      "DMV_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "notes": "Do not scrape every DMV event. Geography outside Bethesda can still be strong if the hotel is a credible alternative."
+  },
+  "competitiveContext": {
+    "strCompSet": [
+      {
+        "name": "The Bethesdan Hotel, Tapestry Collection by Hilton",
+        "class": "STR_COMP_SET",
+        "source": "hotel_gm_provided_str_set_2026-09",
+        "canonicalNote": "Resolve to Dealality hotel entity when available; do not invent duplicate records."
+      },
+      {
+        "name": "Rockville Hotel, a Ramada by Wyndham",
+        "class": "STR_COMP_SET",
+        "source": "hotel_gm_provided_str_set_2026-09"
+      },
+      {
+        "name": "Hilton Washington DC/Rockville Hotel & Executive Meeting Center",
+        "class": "STR_COMP_SET",
+        "source": "hotel_gm_provided_str_set_2026-09"
+      },
+      {
+        "name": "Hyatt Regency Bethesda",
+        "class": "STR_COMP_SET",
+        "source": "hotel_gm_provided_str_set_2026-09"
+      },
+      {
+        "name": "Sheraton Hotel Rockville",
+        "class": "STR_COMP_SET",
+        "source": "hotel_gm_provided_str_set_2026-09"
+      }
+    ],
+    "relevantGroupDemandAlternatives": [
+      {
+        "name": "Bethesda Marriott at Marriott HQ",
+        "class": "RELEVANT_GROUP_DEMAND_ALTERNATIVE",
+        "alsoKnownAs": ["Marriott Bethesda Downtown at Marriott HQ"],
+        "source": "hotel_gm_nearby_marriott_alternatives_2026-09",
+        "note": "May compete for the same group business even outside formal STR set. Also listed as identity-confusable exclusion for this property."
+      },
+      {
+        "name": "Bethesda North Marriott Hotel & Conference Center",
+        "class": "RELEVANT_GROUP_DEMAND_ALTERNATIVE",
+        "source": "hotel_gm_nearby_marriott_alternatives_2026-09",
+        "note": "Conference-center competitor for larger association / medical groups."
+      },
+      {
+        "name": "AC Hotel Bethesda Downtown",
+        "class": "RELEVANT_GROUP_DEMAND_ALTERNATIVE",
+        "alsoKnownAs": ["AC Hotel by Marriott Bethesda Downtown"],
+        "source": "hotel_gm_nearby_marriott_alternatives_2026-09",
+        "note": "Smaller boutique alternative; relevant for overflow / select segments."
+      }
+    ],
+    "notes": "Do not treat all eight hotels identically. STR set is hotel-provided configuration; Marriott-area properties are broader group alternatives."
+  },
+  "identityExclusions": [
+    "Bethesda North Marriott Hotel & Conference Center",
+    "Marriott Bethesda Downtown at Marriott HQ",
+    "Bethesda Marriott at Marriott HQ",
+    "Residence Inn by Marriott Bethesda Downtown",
+    "AC Hotel by Marriott Bethesda Downtown",
+    "AC Hotel Bethesda Downtown"
+  ]
+}

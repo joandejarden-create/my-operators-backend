@@ -65,6 +65,16 @@ import {
 } from "./api/owner-intelligence.js";
 
 import {
+  getContactIntelligenceMeta,
+  getContactIntelligenceHotel,
+  getContactIntelligenceOwner,
+  getContactIntelligenceSliceTen,
+  getContactIntelligenceBenchmark100,
+  getContactIntelligenceLiveSliceTen,
+  postContactIntelligenceHotelRefresh,
+} from "./api/contact-intelligence.js";
+
+import {
   listHotelIntelligenceDossiers,
   getHotelIntelligenceDossier,
   getHotelIntelligenceDossierForHotel,
@@ -91,6 +101,7 @@ import {
   getAiDemandPositioningEvidence,
   getAiDemandPositioningReadHealth,
   getAiDemandPositioningPublicationMeta,
+  getAdpMonthlyExecutiveReview,
 } from "./api/ai-demand-positioning.js";
 import {
   getAdminLeakAuditMeta,
@@ -107,6 +118,23 @@ import {
   getLeakAuditPortfolioSampleReport,
   getLeakAuditDemoDiagnostics,
 } from "./api/admin-adp-leak-audits.js";
+import {
+  getAdminMonthlyReviews,
+  getAdminMonthlyReviewById,
+  getAdminMonthlyReviewPdf,
+  getAdminCurrentReportPdf,
+  postAdminMonthlyReviewRegenerate,
+  postAdminMonthlyReviewGenerate,
+  postAdminMonthlyReviewGenerateEligible,
+  postAdminMonthlyReviewArchive,
+  getAdminMonthlyReviewCompare,
+  postAdminActionFeedback,
+  postAdminReportFeedback,
+  postAdminMarkClientIssued,
+  getAdminGeneratePreview,
+  getAdminActionPlanExport,
+  getAdminActionPlanCatalog,
+} from "./api/admin-adp-monthly-reviews.js";
 
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
 import {
@@ -230,6 +258,28 @@ import {
   postPreviewDemandCenterImport,
 } from "./api/market-demand.js";
 import {
+  getGdiFlag,
+  getGdiHotels,
+  getGdiSummary,
+  getGdiProfile,
+  getGdiOpportunities,
+  getGdiOpportunityDetail,
+  getGdiWeeklyBrief,
+  getGdiResearchRuns,
+  getGdiResearchRun,
+  postGdiRunResearch,
+  postGdiFeedback,
+  getGdiFeedback,
+  getGdiShareResolve,
+  getGdiShareBrief,
+  getGdiShareOpportunities,
+  getGdiShareOpportunityDetail,
+  postGdiShareValidation,
+  getGdiShareValidation,
+  postGdiIssueShare,
+  postGdiRevokeShare,
+} from "./api/group-demand-intelligence.js";
+import {
   getOperatorAlignmentSnapshotProfile,
   getOperatorAlignmentSnapshotCompanies,
 } from "./api/operator-alignment-snapshot.js";
@@ -325,6 +375,7 @@ import {
 } from "./api/dealality-airtable-chatgpt.js";
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
+import { gdiPilotReadAuth } from "./middleware/gdiPilotReadAuth.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
 import { requireOperatorDealsAccess } from "./middleware/requireOperatorDealsAccess.js";
 import { requireBrandAiVisibilityAccess } from "./middleware/requireBrandAiVisibilityAccess.js";
@@ -422,6 +473,7 @@ import { requireDealRecordAccess } from "./middleware/requireDealRecordAccess.js
 import { mapBodyDealIdToRecordId } from "./middleware/mapBodyDealIdToRecordId.js";
 import { mapParamDealIdToRecordId } from "./middleware/mapParamDealIdToRecordId.js";
 import { requireAdminAccess } from "./middleware/requireAdminAccess.js";
+import { requireAdpMonthlyReviewAdminAccess } from "./middleware/requireAdpMonthlyReviewAdminAccess.js";
 import { requireInternalRunbookAdmin } from "./middleware/requireInternalRunbookAdmin.js";
 import {
   postAcquisitionConnectionsPreview,
@@ -817,6 +869,20 @@ app.get(
   getHotelOwnerAnchor
 );
 
+// Contact Intelligence V1 (Census + Hotel/Owner Explorer)
+app.get("/api/contact-intelligence/meta", getContactIntelligenceMeta);
+app.get("/api/contact-intelligence/slice/ten", getContactIntelligenceSliceTen);
+app.get("/api/contact-intelligence/benchmark/100", getContactIntelligenceBenchmark100);
+app.get("/api/contact-intelligence/hotels/:hotelId", getContactIntelligenceHotel);
+app.get("/api/contact-intelligence/owners/:ownerId", getContactIntelligenceOwner);
+app.get("/api/contact-intelligence/live-slice/ten", getContactIntelligenceLiveSliceTen);
+app.post(
+  "/api/contact-intelligence/hotels/:hotelId/refresh",
+  memberstackAuth,
+  requireDealalityUser,
+  postContactIntelligenceHotelRefresh
+);
+
 // Hotel Intelligence Dossiers
 app.get(
   "/api/hotel-intelligence/dossiers",
@@ -881,6 +947,104 @@ app.post(
 app.post(
   "/api/hotel-intelligence/hotels/:hotelId/research/enrich-profiles",
   enrichHotelPeopleProfiles
+);
+
+// ============================================================
+// GROUP DEMAND INTELLIGENCE (EXPERIMENTAL / PILOT — not ADP)
+// ============================================================
+app.get("/api/group-demand-intelligence/flag", getGdiFlag);
+app.get(
+  "/api/group-demand-intelligence/hotels",
+  gdiPilotReadAuth,
+  getGdiHotels
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/summary",
+  gdiPilotReadAuth,
+  getGdiSummary
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/profile",
+  gdiPilotReadAuth,
+  getGdiProfile
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities",
+  gdiPilotReadAuth,
+  getGdiOpportunities
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId",
+  gdiPilotReadAuth,
+  getGdiOpportunityDetail
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/weekly-brief",
+  gdiPilotReadAuth,
+  getGdiWeeklyBrief
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/research-runs",
+  gdiPilotReadAuth,
+  getGdiResearchRuns
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/research-runs/:runId",
+  gdiPilotReadAuth,
+  getGdiResearchRun
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/feedback",
+  gdiPilotReadAuth,
+  getGdiFeedback
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/feedback",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiFeedback
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/research/run",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  postGdiRunResearch
+);
+app.get("/api/group-demand-intelligence/share/resolve", getGdiShareResolve);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/weekly-brief",
+  getGdiShareBrief
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities",
+  getGdiShareOpportunities
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId",
+  getGdiShareOpportunityDetail
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/validation",
+  getGdiShareValidation
+);
+app.post(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/validation",
+  postGdiShareValidation
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/share/issue",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  postGdiIssueShare
+);
+app.post(
+  "/api/group-demand-intelligence/share/revoke",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  postGdiRevokeShare
 );
 
 // ============================================================
@@ -1054,6 +1218,96 @@ app.post(
   ...adpLeakAuditAdminAuth,
   postAdminLeakAuditPromote
 );
+
+// ADP Monthly Executive Review admin archive + Action Plan export (ADMIN ONLY)
+const adpMonthlyReviewAdminAuth = [
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdpMonthlyReviewAdminAccess,
+];
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminMonthlyReviews
+);
+app.get(
+  "/api/admin/ai-demand-positioning/action-plan-export",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminActionPlanExport
+);
+app.get(
+  "/api/admin/ai-demand-positioning/action-plan-catalog",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminActionPlanCatalog
+);
+app.get(
+  "/api/admin/ai-demand-positioning/current-report-pdf/:propertyId",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminCurrentReportPdf
+);
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews/generate-preview",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGeneratePreview
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/generate",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMonthlyReviewGenerate
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/generate-eligible",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMonthlyReviewGenerateEligible
+);
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminMonthlyReviewById
+);
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/pdf",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminMonthlyReviewPdf
+);
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/compare",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminMonthlyReviewCompare
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/regenerate",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMonthlyReviewRegenerate
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/archive",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMonthlyReviewArchive
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/action-feedback",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminActionFeedback
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/report-feedback",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminReportFeedback
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/mark-client-issued",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMarkClientIssued
+);
+
+app.get(
+  "/api/ai-demand-positioning/monthly-review/:propertyId",
+  memberstackAuth,
+  requireDealalityUser,
+  getAdpMonthlyExecutiveReview
+);
+
 app.get("/api/adp-leak-audit/sample-report", getLeakAuditSampleReport);
 app.get("/api/adp-leak-audit/sample-portfolio-report", getLeakAuditPortfolioSampleReport);
 app.get("/api/adp-leak-audit/demo-diagnostics", getLeakAuditDemoDiagnostics);
@@ -1738,6 +1992,27 @@ app.get("/market-demand/", (req, res) => {
 app.get("/market-demand.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "market-demand.html"));
+});
+app.get("/group-demand-intelligence", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/group-demand-intelligence.html" + q);
+});
+app.get("/group-demand-intelligence/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/group-demand-intelligence.html" + q);
+});
+app.get("/group-demand-intelligence.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "group-demand-intelligence.html"));
+});
+app.get("/group-demand-intelligence-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/group-demand-intelligence-share.html" + q);
+});
+app.get("/group-demand-intelligence-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+    res.sendFile(path.join(__dirname, "public", "group-demand-intelligence-share.html"));
 });
 app.get("/operator-alignment-snapshot", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
@@ -2727,6 +3002,12 @@ app.get("/opportunity-review", (req, res) => {
 });
 app.get("/opportunity-review/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "opportunity-review.html"));
+});
+app.get("/joan-dejarden", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "joan-dejarden.html"));
+});
+app.get("/joan-dejarden/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "joan-dejarden.html"));
 });
 app.get("/largest-operators-by-brand", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'largest-operators-by-brand.html'));
