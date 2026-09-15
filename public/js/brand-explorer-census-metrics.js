@@ -537,6 +537,76 @@
     fp.regionalDistribution = regionalDistribution;
     fp.locationDistribution = breakdownToLocationDistribution(b.locationType);
 
+    var hpcPath = cs.hpcPath === true || (cs.source && cs.source.censusSource === 'hpc');
+    var sourceNote = SOURCE_NOTE_CENSUS;
+    var metricsBanner = null;
+    var chainRows = sortBreakdownForPortfolioDisplay(b.chainScale || []);
+    if (hpcPath) {
+      sourceNote =
+        'Based on Dealality Hotel Property Census (confirmed branded footprint; affiliation unknowns excluded from brand stock).';
+      // Rooms safety: ~1.2% clean coverage must not look like complete inventory.
+      var cov =
+        m.roomsCoveragePctOpen != null ? Number(m.roomsCoveragePctOpen) : null;
+      var roomsIncomplete = cov == null || !(cov >= 95);
+      if (roomsIncomplete) {
+        fp.totalExistingRooms = null;
+        fp.totalNewBuildRooms = null;
+        fp.totalConversionRooms = null;
+        fp.totalPipelineRooms = null;
+        if (fp.regionalDistribution && typeof fp.regionalDistribution === 'object') {
+          Object.keys(fp.regionalDistribution).forEach(function (rk) {
+            var row = fp.regionalDistribution[rk];
+            if (row && typeof row === 'object') {
+              row.rooms = null;
+              row.pipelineRooms = null;
+            }
+          });
+        }
+        if (fp.locationDistribution && typeof fp.locationDistribution === 'object') {
+          Object.keys(fp.locationDistribution).forEach(function (lk) {
+            var loc = fp.locationDistribution[lk];
+            if (loc && typeof loc === 'object') loc.rooms = null;
+          });
+        }
+        censusRegionRows = censusRegionRows.map(function (r) {
+          return Object.assign({}, r, { keys: null, pipelineKeys: null, keysPct: null });
+        });
+        censusCountryRows = censusCountryRows.map(function (r) {
+          return Object.assign({}, r, { keys: null, pipelineKeys: null, keysPct: null });
+        });
+        metricsBanner =
+          'Room/key totals suppressed — clean Census rooms coverage is partial' +
+          (cov != null ? ' (' + cov + '% of open hotels)' : '') +
+          '; known-room counts are not complete brand inventory. Legacy rooms are not used.';
+      } else if (cov != null && cov < 100) {
+        metricsBanner =
+          'Known rooms: ' +
+          Number(m.totalOpenKeys || 0).toLocaleString() +
+          ' · Rooms coverage: ' +
+          cov +
+          '% of open hotels (product-governed counts only).';
+      }
+      var aff = cs.affiliationClassCounts || {};
+      var unk =
+        Number(aff.AFFILIATION_UNKNOWN || 0) +
+        Number(aff.BRAND_UNCONFIRMED || 0);
+      if (unk > 0) {
+        metricsBanner =
+          (metricsBanner ? metricsBanner + ' ' : '') +
+          'Affiliation unknown / unconfirmed (excluded from brand stock): ' +
+          unk +
+          '.';
+      }
+      if (
+        chainRows.length &&
+        chainRows.every(function (r) {
+          return normText(r.label) === 'unknown';
+        })
+      ) {
+        chainRows = [];
+      }
+    }
+
     return finalizeFootprintDisplayModel({
       useCensus: true,
       sourceUsed: 'census',
@@ -545,15 +615,15 @@
       isUnverifiedFallback: false,
       showVerifiedMetrics: true,
       displaySourceLabel: trust.displaySourceLabel,
-      sourceNote: SOURCE_NOTE_CENSUS,
-      metricsBanner: null,
+      sourceNote: sourceNote,
+      metricsBanner: metricsBanner,
       censusBreakdownNotice: stillNoDistribution ? BREAKDOWN_EMPTY_MESSAGE : null,
       verifiedEmptyMessage: VERIFIED_EMPTY_MESSAGE,
       breakdownEmptyMessage: BREAKDOWN_EMPTY_MESSAGE,
       fp: fp,
       countryBreakdown: censusCountryRows.length ? censusCountryRows : null,
       dealalityRegionBreakdown: censusRegionRows.length ? censusRegionRows : null,
-      chainScaleBreakdown: sortBreakdownForPortfolioDisplay(b.chainScale || []),
+      chainScaleBreakdown: chainRows.length ? chainRows : null,
       locationTypeBreakdown: sortBreakdownForPortfolioDisplay(b.locationType || [])
     }, brand);
   }

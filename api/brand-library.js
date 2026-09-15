@@ -1514,10 +1514,15 @@ export async function getBrandLibraryBrandById(req, res) {
     const loadWarnings = [];
 
     const censusPromise = isBrandExplorerCensusMetricsEnabled()
-      ? import("../lib/hotel-census/build-brand-census-summary.js")
-          .then(({ buildBrandCensusSummary }) =>
-            buildBrandCensusSummary(brandName, brandFields[F.brandBasics.parentCompany] || null)
-          )
+      ? import("../lib/hotel-census/brand-presence-hpc-request.js").then(({ shouldUseHpcBrandExplorerMetrics }) => {
+          const useHpc = shouldUseHpcBrandExplorerMetrics(req);
+          return import("../lib/hotel-census/build-brand-census-summary.js").then(
+            ({ buildBrandCensusSummary }) =>
+              buildBrandCensusSummary(brandName, brandFields[F.brandBasics.parentCompany] || null, {
+                useHpc,
+              })
+          );
+        })
           .catch((censusErr) => {
             console.error("Error building brand censusSummary:", censusErr.message);
             return {

@@ -1307,6 +1307,7 @@
 
     <script src="/js/explorer-filter-drawer.js?v=3"></script>
     <script src="/js/brand-explorer-favorites.js" defer></script>
+    <script src="/js/brand-explorer-census-source.js"></script>
     <script src="/js/brand-explorer-brand-fetch.js" defer></script>
     <script src="/js/profile-governance-trust-chip.js" defer></script>
     <script src="/js/brand-explorer-gold-detail.js" defer></script>
@@ -1316,6 +1317,12 @@
     <script defer>
 (function () {
     'use strict';
+
+    try {
+      if (window.DealalityBrandExplorerCensusSource && typeof window.DealalityBrandExplorerCensusSource.ensureFlags === 'function') {
+        window.DealalityBrandExplorerCensusSource.ensureFlags();
+      }
+    } catch (err) { /* ignore */ }
 
     var CHAIN_SCALE_ORDER = ['Luxury', 'Upper Upscale', 'Upscale', 'Upper Midscale', 'Midscale', 'Economy'];
     var BRAND_PROJECT_TYPE_FILTER_ALIASES = {

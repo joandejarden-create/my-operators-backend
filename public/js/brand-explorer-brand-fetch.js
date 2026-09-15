@@ -9,18 +9,28 @@
   /** @type {Map<string, { at: number, promise: Promise<any>, data: object|null }>} */
   var cache = new Map();
 
-  function cacheKey(brandId) {
-    return String(brandId || '').trim();
+  function cacheKey(brandId, useHpc) {
+    return String(brandId || '').trim() + (useHpc ? '|hpc' : '|legacy');
   }
 
   function isFresh(entry) {
     return entry && Date.now() - entry.at < CACHE_TTL_MS;
   }
 
+  function beHpcActive() {
+    try {
+      var src = typeof window !== 'undefined' && window.DealalityBrandExplorerCensusSource;
+      return !!(src && typeof src.isBeHpcOptInActive === 'function' && src.isBeHpcOptInActive());
+    } catch (err) {
+      return false;
+    }
+  }
+
   function fetchBrandDetail(brandId, options) {
     options = options || {};
-    var key = cacheKey(brandId);
-    if (!key) {
+    var useHpc = beHpcActive();
+    var key = cacheKey(brandId, useHpc);
+    if (!key || key === '|legacy' || key === '|hpc') {
       return Promise.reject(new Error('Brand id is required'));
     }
 
@@ -34,12 +44,28 @@
       }
     }
 
-    var url = '/api/brand-library/brand?brandId=' + encodeURIComponent(key);
+    var url = '/api/brand-library/brand?brandId=' + encodeURIComponent(String(brandId || '').trim());
     if (options.refresh) {
       url += '&refresh=1';
     }
+    if (useHpc) {
+      url += '&censusSource=hpc&product=brand-explorer&beHpc=1';
+    }
 
-    var promise = fetch(url, { cache: 'no-store' })
+    var headers = { Accept: 'application/json', 'ngrok-skip-browser-warning': 'true' };
+    try {
+      var src = typeof window !== 'undefined' && window.DealalityBrandExplorerCensusSource;
+      if (src && typeof src.beCensusHeaders === 'function') {
+        headers = src.beCensusHeaders();
+      } else if (useHpc) {
+        headers['X-Dealality-Census-Source'] = 'hpc';
+        headers['X-Dealality-Product'] = 'brand-explorer';
+      }
+    } catch (err) {
+      /* ignore */
+    }
+
+    var promise = fetch(url, { cache: 'no-store', headers: headers })
       .then(function (res) {
         if (!res.ok) {
           throw new Error('Failed to load brand (' + res.status + ')');
@@ -68,7 +94,8 @@
 
   function clearBrandDetailCache(brandId) {
     if (brandId) {
-      cache.delete(cacheKey(brandId));
+      cache.delete(cacheKey(brandId, false));
+      cache.delete(cacheKey(brandId, true));
       return;
     }
     cache.clear();
