@@ -5,6 +5,15 @@
  */
 
 import Airtable from "airtable";
+import {
+  shouldUseHpcOperatorIntelligence,
+} from "../lib/hotel-census/brand-presence-hpc-request.js";
+import {
+  buildOperatorIntelligenceHpcReport,
+  OI_HPC_ADAPTER,
+  resetOperatorIntelligenceReadCounters,
+  snapshotOperatorIntelligenceReadCounters,
+} from "../lib/hotel-census/operator-intelligence-hpc.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
@@ -151,8 +160,69 @@ function matchesSearch(prop, searchStr) {
 /**
  * GET /api/operators-by-brand-region
  * Query: search, parentCompany, brand, status, chainScale, region, locationType, operationType
+ *
+ * When OPERATOR_INTELLIGENCE_HPC_V2=1 (+ BRAND_PRESENCE_HPC_V2): HPC path via
+ * canonical operator↔hotel relationships (no Legacy Management Company).
  */
 export async function getLargestOperatorsByBrandRegion(req, res) {
+  if (shouldUseHpcOperatorIntelligence(req)) {
+    try {
+      resetOperatorIntelligenceReadCounters();
+      const report = await buildOperatorIntelligenceHpcReport({
+        region: req.query?.region,
+        brand: req.query?.brand,
+        country: req.query?.country,
+        limit: 200,
+      });
+      if (!report.ok) {
+        return res.status(500).json({
+          success: false,
+          error: report.error || "Operator Intelligence HPC failed",
+          adapter: OI_HPC_ADAPTER,
+        });
+      }
+      const counters = snapshotOperatorIntelligenceReadCounters();
+      return res.json({
+        success: true,
+        operators: (report.operators || []).map((op) => ({
+          operator_name: op.operator_name,
+          operator_id: op.operator_id,
+          hotel_count: op.hotel_count,
+          total_keys: op.total_keys,
+          brands: op.brands,
+          countries: op.countries,
+          properties: (op.properties || []).map((p) => ({
+            property_name: p.name,
+            dhl_: p.dhl_,
+            brand: p.brand,
+            city: p.city,
+            country: p.country,
+            status: p.status,
+            keys: p.rooms,
+            chain_scale: null,
+          })),
+        })),
+        brands: report.brands || [],
+        regions: report.regions || [],
+        metrics: report.metrics,
+        warnings: report.warnings || [],
+        source: {
+          ...(report.source || {}),
+          readCounters: counters,
+        },
+        adapter: OI_HPC_ADAPTER,
+        censusSource: "hpc",
+      });
+    } catch (err) {
+      console.error("[operators-by-brand-region] HPC path error:", err?.message || err);
+      return res.status(500).json({
+        success: false,
+        error: err?.message || "Operator Intelligence HPC error",
+        adapter: OI_HPC_ADAPTER,
+      });
+    }
+  }
+
   if (!ensureOperatorsByBrandRegionConfig(res)) return;
   try {
     const {
