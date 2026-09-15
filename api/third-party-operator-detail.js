@@ -39,6 +39,9 @@ import {
   buildOperatorCensusFootprint,
   applyCensusFootprintToOperatorDetail,
 } from "../lib/hotel-census/build-operator-census-footprint.js";
+import { buildOperatorHpcCensusFootprint } from "../lib/hotel-census/operator-explorer-hpc-metrics.js";
+import { shouldUseHpcOperatorExplorerMetrics } from "../lib/hotel-census/brand-presence-hpc-request.js";
+import { operatorExplorerCensusReadCounters } from "../lib/hotel-census/operator-explorer-hpc-metrics.js";
 import { buildEngagementReportingPayloadFromIntakeBody } from "./lib/operator-engagement-reporting-map.js";
 import { buildOperatingPlatformPayloadFromIntakeBody } from "./lib/operator-operating-platform-map.js";
 import { buildBrandRelationshipsPayloadFromIntakeBody } from "./lib/operator-brand-relationships-map.js";
@@ -174,10 +177,19 @@ export default async function getThirdPartyOperatorDetail(req, res) {
       let footprintPortfolioSource = "operator_setup";
       let censusFootprint = null;
       try {
-        censusFootprint = await buildOperatorCensusFootprint({
-          masterId: master.id,
-          prefill,
-        });
+        const useHpc = shouldUseHpcOperatorExplorerMetrics(req);
+        if (useHpc) {
+          censusFootprint = await buildOperatorHpcCensusFootprint({
+            masterId: master.id,
+            prefill,
+          });
+        } else {
+          operatorExplorerCensusReadCounters.legacy += 1;
+          censusFootprint = await buildOperatorCensusFootprint({
+            masterId: master.id,
+            prefill,
+          });
+        }
         const applied = applyCensusFootprintToOperatorDetail(
           { prefill, fields },
           censusFootprint
@@ -191,6 +203,7 @@ export default async function getThirdPartyOperatorDetail(req, res) {
             applied: applied.applied,
             totalHotels: censusFootprint.totals?.totalHotels ?? 0,
             brandRows: censusFootprint.brandsPortfolioDetail?.length ?? 0,
+            censusSource: useHpc ? "hpc" : "legacy",
           });
         }
       } catch (censusFootprintErr) {

@@ -918,13 +918,42 @@
   }
 
   function footprintMetricsSection(p) {
+    var avail =
+      nz(p.footprintAvailabilityState) ||
+      (p.footprintPresentation && p.footprintPresentation.footprintAvailabilityState) ||
+      "";
+    if (
+      avail === "INSUFFICIENT_CONFIRMED_DATA" ||
+      avail === "CENSUS_DISABLED" ||
+      nz(p.footprintPortfolioSource) === "hotel_census_unavailable" ||
+      (p.footprintPresentation && p.footprintPresentation.suppressFootprintMetrics)
+    ) {
+      if (avail === "CENSUS_DISABLED") return "";
+      var msg =
+        (p.footprintPresentation && p.footprintPresentation.publicCopyNote) ||
+        "Verified property footprint not yet available";
+      return (
+        '<section class="section"><h2 class="section-title">Footprint Metrics</h2>' +
+        '<p class="gold-mock-tab-empty">' +
+        escapeHtml(msg) +
+        "</p></section>"
+      );
+    }
     var evo = existingVsPipelineTableHtml(p);
     var dist = footprintDistributionBlockHtml(p);
     var staff = unitsStaffingTableHtml(p);
     var inner = evo + dist + staff;
     if (!inner) return "";
+    var note = "";
+    if (avail === "PARTIAL_CONFIRMED" || nz(p.portfolioCoverage) === "Partial") {
+      note =
+        '<p class="gold-footprint-table-note">Confirmed properties only — verified footprint is partial.</p>';
+    } else if (avail === "COMPLETE_CONFIRMED") {
+      note = '<p class="gold-footprint-table-note">Confirmed portfolio from official current source.</p>';
+    }
     return (
       '<section class="section"><h2 class="section-title">Footprint Metrics</h2><div class="gold-footprint-metrics">' +
+      note +
       inner +
       "</div></section>"
     );
@@ -2542,7 +2571,46 @@
   function applyCensusFootprintFromDetailPayload(detailPayload, prefill, fields) {
     if (!prefill || nz(prefill.footprintPortfolioSource) === "hotel_census") return;
     var cf = detailPayload && detailPayload.censusFootprint;
-    if (!cf || !cf.ok || !(cf.totals && cf.totals.totalHotels > 0)) return;
+    if (!cf) return;
+
+    var avail =
+      cf.footprintAvailabilityState ||
+      (cf.footprintPresentation && cf.footprintPresentation.footprintAvailabilityState) ||
+      "";
+
+    // P8.12D: intentional unavailable / disabled — never paint factual zeroes
+    if (
+      !cf.ok ||
+      avail === "INSUFFICIENT_CONFIRMED_DATA" ||
+      avail === "CENSUS_DISABLED" ||
+      cf.reason === "no_confirmed_operator_relationships" ||
+      cf.reason === "census_footprint_disabled_for_master"
+    ) {
+      prefill.footprintAvailabilityState =
+        avail ||
+        (cf.reason === "census_footprint_disabled_for_master"
+          ? "CENSUS_DISABLED"
+          : "INSUFFICIENT_CONFIRMED_DATA");
+      prefill.footprintPresentation = cf.footprintPresentation || {
+        suppressFootprintMetrics: true,
+        publicCopyNote:
+          prefill.footprintAvailabilityState === "CENSUS_DISABLED"
+            ? "Census footprint not shown for this profile"
+            : "Verified property footprint not yet available",
+      };
+      prefill.portfolioCoverage = "Unknown";
+      prefill.footprintPrimaryLabel = "";
+      delete prefill.totalProperties;
+      delete prefill.confirmedProperties;
+      delete prefill.confirmedOperatingHotels;
+      delete prefill.confirmedPipelineHotels;
+      delete prefill.geo_total_existing_hotels;
+      delete prefill.geo_total_pipeline_hotels;
+      prefill.footprintPortfolioSource = "hotel_census_unavailable";
+      return;
+    }
+
+    if (!(cf.totals && cf.totals.totalHotels > 0)) return;
 
     if (cf.brandsPortfolioDetail && cf.brandsPortfolioDetail.length) {
       prefill.brandsPortfolioDetail = cf.brandsPortfolioDetail;
@@ -2565,13 +2633,44 @@
       prefill.geo_total_existing_rooms = String(cf.totals.totalExistingRooms || "");
       prefill.geo_total_pipeline_hotels = String(cf.totals.totalPipelineHotels || "");
       prefill.geo_total_pipeline_rooms = String(cf.totals.totalPipelineRooms || "");
-      prefill.totalProperties = String(cf.totals.totalHotels || "");
-      prefill.totalRooms = String(
-        (Number(cf.totals.totalExistingRooms) || 0) + (Number(cf.totals.totalPipelineRooms) || 0)
+      var confirmed =
+        cf.totals.confirmedProperties != null
+          ? cf.totals.confirmedProperties
+          : cf.totals.totalHotels;
+      prefill.totalProperties = String(confirmed || "");
+      prefill.confirmedProperties = String(confirmed || "");
+      prefill.confirmedOperatingHotels = String(
+        cf.totals.confirmedOperatingHotels != null
+          ? cf.totals.confirmedOperatingHotels
+          : cf.totals.totalExistingHotels || ""
       );
+      prefill.confirmedPipelineHotels = String(
+        cf.totals.confirmedPipelineHotels != null
+          ? cf.totals.confirmedPipelineHotels
+          : cf.totals.totalPipelineHotels || ""
+      );
+      if (cf.totals.roomsSuppressed) {
+        prefill.totalRooms = "";
+      } else {
+        prefill.totalRooms = String(
+          (Number(cf.totals.totalExistingRooms) || 0) + (Number(cf.totals.totalPipelineRooms) || 0)
+        );
+      }
     }
     prefill.footprintPortfolioSource = "hotel_census";
     prefill.footprintPortfolioManagementCompany = nz(cf.managementCompany);
+    if (cf.footprintPresentation) {
+      prefill.footprintPresentation = cf.footprintPresentation;
+      prefill.portfolioCoverage = cf.footprintPresentation.portfolioCoverage || "Partial";
+      prefill.footprintPrimaryLabel =
+        cf.footprintPresentation.primaryLabel || "Confirmed properties";
+      prefill.footprintAvailabilityState =
+        cf.footprintPresentation.footprintAvailabilityState ||
+        cf.footprintAvailabilityState ||
+        "PARTIAL_CONFIRMED";
+    } else {
+      prefill.footprintAvailabilityState = cf.footprintAvailabilityState || "PARTIAL_CONFIRMED";
+    }
   }
 
   function buildViewModel(detailPayload, listRow) {
@@ -2690,11 +2789,40 @@
         nz(fields["Branded vs Independent Mix"]) || nz(prefill.brandedVsIndependentMix) || ""
       );
 
+    var footprintLabel =
+      nz(prefill.footprintPrimaryLabel) ||
+      (prefill.footprintPresentation && prefill.footprintPresentation.primaryLabel) ||
+      "Confirmed properties";
+    var portfolioCoverage =
+      nz(prefill.portfolioCoverage) ||
+      (prefill.footprintPresentation && prefill.footprintPresentation.portfolioCoverage) ||
+      "";
+    // When HPC shadow presents confirmed-only footprint, never market as "Total hotels"
+    var hotelsMetricLabel =
+      prefill.footprintPortfolioSource === "hotel_census" || nz(prefill.confirmedProperties)
+        ? footprintLabel
+        : "Hotels";
+
     var heroMeta = [];
     if (meaningfulMetaValue(hq)) heroMeta.push(["Headquarters", hq]);
     if (meaningfulMetaValue(yearsBiz)) heroMeta.push(["Years in Business", yearsBiz]);
     var hotelsStr = formatInt(totalHotels);
-    if (meaningfulMetaValue(hotelsStr)) heroMeta.push(["Hotels Managed", hotelsStr]);
+    var footprintUnavailable =
+      nz(prefill.footprintAvailabilityState) === "INSUFFICIENT_CONFIRMED_DATA" ||
+      nz(prefill.footprintAvailabilityState) === "CENSUS_DISABLED" ||
+      nz(prefill.footprintPortfolioSource) === "hotel_census_unavailable";
+    if (!footprintUnavailable && meaningfulMetaValue(hotelsStr)) {
+      heroMeta.push([hotelsMetricLabel, hotelsStr]);
+    }
+    if (
+      !footprintUnavailable &&
+      portfolioCoverage &&
+      meaningfulMetaValue(hotelsStr) &&
+      portfolioCoverage !== "Complete" &&
+      nz(prefill.footprintAvailabilityState) !== "COMPLETE_CONFIRMED"
+    ) {
+      heroMeta.push(["Portfolio coverage", "Partial"]);
+    }
     var roomsStr = formatInt(totalRooms);
     if (meaningfulMetaValue(roomsStr)) heroMeta.push(["Rooms Managed", roomsStr]);
     var assetFocusStr = assetFocusHeroValue(prefill, fields);
@@ -3485,11 +3613,23 @@
       (footprintMetricsHtml || "");
 
     var portfolioScaleLine = (function () {
+      if (
+        nz(p.footprintAvailabilityState) === "INSUFFICIENT_CONFIRMED_DATA" ||
+        nz(p.footprintAvailabilityState) === "CENSUS_DISABLED" ||
+        nz(p.footprintPortfolioSource) === "hotel_census_unavailable"
+      ) {
+        return "";
+      }
       var h = formatInt(pick(ex, p, "totalProperties", p.totalProperties));
       var r = formatInt(pick(ex, p, "totalRooms", p.totalRooms));
+      var label =
+        nz(p.footprintPrimaryLabel) ||
+        (nz(p.footprintAvailabilityState) === "COMPLETE_CONFIRMED"
+          ? "confirmed portfolio"
+          : "confirmed properties");
       if (!meaningfulMetaValue(h) && !meaningfulMetaValue(r)) return "";
-      if (meaningfulMetaValue(h) && meaningfulMetaValue(r)) return h + " hotels / " + r + " rooms";
-      return meaningfulMetaValue(h) ? h + " hotels" : r + " rooms";
+      if (meaningfulMetaValue(h) && meaningfulMetaValue(r)) return h + " " + label + " / " + r + " rooms";
+      return meaningfulMetaValue(h) ? h + " " + label : r + " rooms";
     })();
 
     var OwnerEngagement =
@@ -3703,9 +3843,24 @@
       .catch(function () {
         return {};
       });
-    var detailPromise = fetch(
-      "/api/intake/third-party-operators/" + encodeURIComponent(recordId)
-    );
+    var detailUrl =
+      "/api/intake/third-party-operators/" + encodeURIComponent(recordId);
+    var detailHeaders = { Accept: "application/json" };
+    try {
+      var src = typeof window !== "undefined" && window.DealalityOperatorExplorerCensusSource;
+      if (src && typeof src.ensureFlags === "function") {
+        await src.ensureFlags();
+      }
+      if (src && typeof src.appendOeCensusParams === "function") {
+        detailUrl = src.appendOeCensusParams(detailUrl);
+      }
+      if (src && typeof src.oeCensusHeaders === "function") {
+        detailHeaders = src.oeCensusHeaders();
+      }
+    } catch (err) {
+      /* ignore */
+    }
+    var detailPromise = fetch(detailUrl, { headers: detailHeaders });
 
     var listData = await listPromise;
     var rows = Array.isArray(listData.operators) ? listData.operators : [];
@@ -3727,11 +3882,23 @@
     // Always reconcile from census endpoint when available so share/staging hosts match
     // local Explorer even if the detail API build predates server-side census merge.
     try {
-      var cfRes = await fetch(
+      var cfUrl =
         "/api/intake/third-party-operators/" +
-          encodeURIComponent(recordId) +
-          "/census-footprint"
-      );
+        encodeURIComponent(recordId) +
+        "/census-footprint";
+      var cfHeaders = { Accept: "application/json" };
+      try {
+        var oeSrc = typeof window !== "undefined" && window.DealalityOperatorExplorerCensusSource;
+        if (oeSrc && typeof oeSrc.appendOeCensusParams === "function") {
+          cfUrl = oeSrc.appendOeCensusParams(cfUrl);
+        }
+        if (oeSrc && typeof oeSrc.oeCensusHeaders === "function") {
+          cfHeaders = oeSrc.oeCensusHeaders();
+        }
+      } catch (err2) {
+        /* ignore */
+      }
+      var cfRes = await fetch(cfUrl, { headers: cfHeaders });
       if (cfRes.ok) {
         var cfData = await cfRes.json().catch(function () { return {}; });
         if (cfData && cfData.censusFootprint && cfData.censusFootprint.ok) {
