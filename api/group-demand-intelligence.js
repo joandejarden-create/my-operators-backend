@@ -53,6 +53,9 @@ import {
   SHARE_EMAIL_ASSESSMENT_LABEL,
   SHARE_PHONE_ASSESSMENT,
   SHARE_PHONE_ASSESSMENT_LABEL,
+  mapOpportunitiesToListDto,
+  toOpportunityListDto,
+  GDI_OPPORTUNITY_LIST_SCHEMA,
 } from "../lib/group-demand-intelligence/index.js";
 
 function shareSanitizeWithCanonical(hotelId, opportunity) {
@@ -74,7 +77,7 @@ function flagGate(req, res) {
     ok: false,
     error: "feature_disabled",
     message:
-      "Group Demand Intelligence is disabled. Set GROUP_DEMAND_INTELLIGENCE_V1=1 or GROUP_DEMAND_INTELLIGENCE_PILOT_READ=1.",
+      "Group Demand Intelligence is disabled. Local servers auto-enable pilot read; set GROUP_DEMAND_INTELLIGENCE_V1=1 or GROUP_DEMAND_INTELLIGENCE_PILOT_READ=1, or remove PILOT_READ=0.",
     flag: getGroupDemandIntelligenceFlagState(),
   });
   return false;
@@ -165,17 +168,25 @@ export function getGdiOpportunities(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
+  const view = String(req.query.view || "list").trim().toLowerCase();
+  const wantFull = view === "full" || view === "complete";
   const doc = loadOpportunities(hotelId);
   let opportunities = doc.opportunities || [];
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
   }
+  if (!wantFull) {
+    opportunities = mapOpportunitiesToListDto(opportunities);
+  }
+  res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
   return res.json({
     ok: true,
     hotelId,
     updatedAt: doc.updatedAt,
     runId: doc.runId || null,
     count: opportunities.length,
+    view: wantFull ? "full" : "list",
+    schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
     opportunities,
   });
 }
@@ -497,11 +508,14 @@ export function getGdiShareOpportunities(req, res) {
   const doc = loadOpportunities(hotelId);
   const validationDoc = loadShareValidation(hotelId);
   const byVal = new Map((validationDoc.items || []).map((v) => [v.opportunityId, v]));
+  const view = String(req.query.view || "list").trim().toLowerCase();
+  const wantFull = view === "full" || view === "complete";
   const opportunities = filterSalespersonView(doc.opportunities || []).map((o) => {
     const sanitized = shareSanitizeWithCanonical(hotelId, o);
     const v = byVal.get(o.id);
+    const base = wantFull ? sanitized : toOpportunityListDto(sanitized);
     return {
-      ...sanitized,
+      ...base,
       shareValidation: v
         ? {
             familiarityStatus: v.familiarityStatus,
@@ -515,11 +529,14 @@ export function getGdiShareOpportunities(req, res) {
         : null,
     };
   });
+  res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
   return res.json({
     ok: true,
     mode: "read_only",
     hotelId,
     count: opportunities.length,
+    view: wantFull ? "full" : "list",
+    schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
     opportunities,
     validationEnums: {
       familiarityStatus: SHARE_FAMILIARITY_STATUS,

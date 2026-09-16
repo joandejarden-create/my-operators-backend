@@ -5,6 +5,12 @@
  *   GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET=1 node scripts/gdi-issue-share.mjs
  *   node scripts/gdi-issue-share.mjs --expires=2026-12-31
  *   node scripts/gdi-revoke-share.mjs --token-id=gdisht_...
+ *   node scripts/gdi-restore-share.mjs --share="https://…?share=gdishare.v1.…"
+ *
+ * Production note: keep GDI_SHARE_CAPABILITY_SECRET stable across Railway deploys.
+ * Signature self-heal re-seeds missing registry rows so client URLs survive
+ * ephemeral disk wipes. Still commit active-tokens.json for known client links,
+ * or mount GDI_SHARE_REGISTRY_DIR on a Railway volume for durable runtime writes.
  */
 
 import {

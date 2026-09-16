@@ -1,8 +1,11 @@
 (function () {
   "use strict";
 
-  var PILOT_HOTEL_ID = "recLuxvwwxID7U2B8";
-  var DEFAULT_BRIEF_QUESTION = "What should the sales team pursue?";
+  var UI = window.DealalityGdiUi;
+  if (!UI) throw new Error("DealalityGdiUi missing");
+
+  // Pilot default hotelId only (HOTEL_SPECIFIC_DATA). Display names come from profile.
+  var DEFAULT_HOTEL_ID = "recLuxvwwxID7U2B8";
   var root = document.getElementById("gdiRoot");
   var loading = document.getElementById("gdiLoading");
   var drawer = document.getElementById("gdiDrawer");
@@ -10,19 +13,72 @@
   var drawerBody = document.getElementById("gdiDrawerBody");
   var drawerClose = document.getElementById("gdiDrawerClose");
 
+  var STORAGE_PREFIX = "gdi-auth-";
   var state = {
-    hotelId: PILOT_HOTEL_ID,
+    hotelId: DEFAULT_HOTEL_ID,
+    hotelProfile: null,
     summary: null,
     opportunities: [],
-    brief: null,
     runs: [],
-    tab: "brief",
+    tab: "opportunities",
     sortKey: "priority",
     sortDir: 1,
+    viewMode: "list",
     filters: { priority: "", segment: "", booking: "", territory: "" },
     isAdmin: false,
     flag: null,
   };
+
+  function readPersistedBrowse() {
+    try {
+      var v = sessionStorage.getItem(STORAGE_PREFIX + "viewMode");
+      if (v === "list" || v === "tiles") state.viewMode = v;
+      var s = sessionStorage.getItem(STORAGE_PREFIX + "sortKey");
+      if (s) state.sortKey = s;
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function persistBrowse() {
+    try {
+      sessionStorage.setItem(STORAGE_PREFIX + "viewMode", state.viewMode);
+      sessionStorage.setItem(STORAGE_PREFIX + "sortKey", state.sortKey);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function resetBrowseView() {
+    state.filters = { priority: "", segment: "", booking: "", territory: "" };
+    state.sortKey = "priority";
+    state.sortDir = 1;
+    state.viewMode = "list";
+    try {
+      sessionStorage.removeItem(STORAGE_PREFIX + "viewMode");
+      sessionStorage.removeItem(STORAGE_PREFIX + "sortKey");
+    } catch (e) {
+      /* ignore */
+    }
+    render();
+  }
+
+  function propertyBarActionsHtml() {
+    var resetBtn =
+      '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>';
+    if (memberFetch) {
+      return (
+        '<button type="button" class="aiv-btn-apply" id="gdiRunBtn">Run Research</button>' +
+        resetBtn
+      );
+    }
+    return (
+      '<span class="gdi-muted gdi-property-bar__hint">Sign in for research writes</span>' +
+      resetBtn
+    );
+  }
+
+  readPersistedBrowse();
 
   // Prefer plain fetch for GDI pilot reads (PILOT_READ allows unauth).
   // Memberstack is used only when a session exists and for admin actions.
@@ -88,13 +144,11 @@
     root.innerHTML =
       '<div class="gdi-error" role="alert"><p>' +
       esc(msg) +
-      "</p><p>Enable GROUP_DEMAND_INTELLIGENCE_V1 or GROUP_DEMAND_INTELLIGENCE_PILOT_READ for local pilot read. Admin actions still require sign-in.</p></div>";
+      "</p><p>Local servers enable pilot read automatically. On production set GROUP_DEMAND_INTELLIGENCE_V1=1. Admin actions still require sign-in.</p></div>";
   }
 
   function priorityPill(p) {
-    if (p === "HIGH_PRIORITY") return '<span class="gdi-pill gdi-pill-high">High</span>';
-    if (p === "MEDIUM_PRIORITY") return '<span class="gdi-pill gdi-pill-med">Medium</span>';
-    return '<span class="gdi-pill gdi-pill-watch">Watchlist</span>';
+    return UI.priorityPill(p);
   }
 
   function countEnteringWindow() {
@@ -128,38 +182,6 @@
     }
     if (contact.email) return contact.email;
     return "—";
-  }
-
-  function briefContactBlock(it, linked) {
-    var c = (linked && linked.primaryContact) || it.primaryContact || null;
-    var grade =
-      (linked && (linked.contactGradeLabel || linked.contactGrade)) ||
-      it.contactGradeLabel ||
-      it.contactGrade ||
-      (c && (c.contactGradeLabel || c.contactGrade)) ||
-      it.contactQualityLabel ||
-      "—";
-    if (!c) {
-      return (
-        '<div><span class="gdi-meta-label">Primary Contact</span><span class="gdi-meta-value">—</span></div>' +
-        '<div><span class="gdi-meta-label">Contact Quality</span><span class="gdi-meta-value">' +
-        esc(grade) +
-        "</span></div>"
-      );
-    }
-    return (
-      '<div><span class="gdi-meta-label">Primary Contact</span><span class="gdi-meta-value">' +
-      esc(c.name || "—") +
-      '</span></div><div><span class="gdi-meta-label">Role</span><span class="gdi-meta-value">' +
-      esc(c.role || c.title || "—") +
-      '</span></div><div><span class="gdi-meta-label">Email</span><span class="gdi-meta-value">' +
-      esc(c.email || "—") +
-      '</span></div><div><span class="gdi-meta-label">Phone</span><span class="gdi-meta-value">' +
-      esc(c.phone || "—") +
-      '</span></div><div><span class="gdi-meta-label">Contact Quality</span><span class="gdi-meta-value">' +
-      esc(grade) +
-      "</span></div>"
-    );
   }
 
   function whoShouldSalesContactHtml(o) {
@@ -226,10 +248,6 @@
     return s.slice(0, n) + "…";
   }
 
-  function briefHeading() {
-    return DEFAULT_BRIEF_QUESTION;
-  }
-
   function api(path, opts) {
     return fetchFn(path, opts).then(function (r) {
       return r.json().then(function (data) {
@@ -246,19 +264,29 @@
 
   function loadAll() {
     var id = encodeURIComponent(state.hotelId);
+    // Critical path for useful browse: flag + summary + list opportunities + profile.
+    // Research-runs are audit-tab only — load after first paint.
     return Promise.all([
       api("/api/group-demand-intelligence/flag"),
       api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
       api("/api/group-demand-intelligence/hotels/" + id + "/opportunities"),
-      api("/api/group-demand-intelligence/hotels/" + id + "/weekly-brief"),
-      api("/api/group-demand-intelligence/hotels/" + id + "/research-runs"),
+      api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
+        return { ok: false, profile: null };
+      }),
     ]).then(function (parts) {
       state.flag = parts[0].flag;
       state.summary = parts[1].summary;
       state.opportunities = parts[2].opportunities || [];
-      state.brief = parts[3].brief;
-      state.runs = parts[4].runs || [];
+      state.hotelProfile = (parts[3] && parts[3].profile) || null;
       render();
+      return api("/api/group-demand-intelligence/hotels/" + id + "/research-runs")
+        .then(function (runsPayload) {
+          state.runs = runsPayload.runs || [];
+          if (state.tab === "audit") render();
+        })
+        .catch(function () {
+          state.runs = [];
+        });
     });
   }
 
@@ -288,41 +316,105 @@
   }
 
   function filteredSorted() {
-    var rows = state.opportunities.slice();
-    if (state.filters.priority) {
-      rows = rows.filter(function (o) {
-        return o.priority === state.filters.priority;
-      });
+    return UI.sortOpportunities(
+      UI.filterOpportunities(state.opportunities, state.filters),
+      state.sortKey,
+      state.sortDir
+    );
+  }
+
+  function applyTilePairFilter(priority, booking, e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
-    if (state.filters.segment) {
-      rows = rows.filter(function (o) {
-        return o.segment === state.filters.segment;
+    state.filters.priority = priority || "";
+    state.filters.booking = booking || "";
+    render();
+  }
+
+  function wireBrowseControls() {
+    root.querySelectorAll("[data-gdi-priority]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.filters.priority = btn.getAttribute("data-gdi-priority") || "";
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "priority"
+        );
+        render();
       });
-    }
-    if (state.filters.booking) {
-      rows = rows.filter(function (o) {
-        return o.bookingWindowStatus === state.filters.booking;
-      });
-    }
-    if (state.filters.territory) {
-      rows = rows.filter(function (o) {
-        return o.demandTerritoryFit === state.filters.territory;
-      });
-    }
-    var key = state.sortKey;
-    var dir = state.sortDir;
-    rows.sort(function (a, b) {
-      var av = a[key];
-      var bv = b[key];
-      if (key === "priority") {
-        var rank = { HIGH_PRIORITY: 0, MEDIUM_PRIORITY: 1, WATCHLIST: 2 };
-        av = rank[a.priority] != null ? rank[a.priority] : 9;
-        bv = rank[b.priority] != null ? rank[b.priority] : 9;
-      }
-      if (typeof av === "number" && typeof bv === "number") return (av - bv) * dir;
-      return String(av || "").localeCompare(String(bv || "")) * dir;
     });
-    return rows;
+    root.querySelectorAll("[data-gdi-booking]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.filters.booking = btn.getAttribute("data-gdi-booking") || "";
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "booking"
+        );
+        render();
+      });
+    });
+    root.querySelectorAll("[data-gdi-tile-priority][data-gdi-tile-booking]").forEach(
+      function (btn) {
+        btn.addEventListener("click", function (e) {
+          applyTilePairFilter(
+            btn.getAttribute("data-gdi-tile-priority"),
+            btn.getAttribute("data-gdi-tile-booking"),
+            e
+          );
+        });
+      }
+    );
+    var sortSel = document.getElementById("gdiSortSelect");
+    if (sortSel) {
+      sortSel.addEventListener("change", function () {
+        state.sortKey = sortSel.value || "priority";
+        state.sortDir = 1;
+        persistBrowse();
+        render();
+      });
+    }
+    var sortDirBtn = document.getElementById("gdiSortDirBtn");
+    if (sortDirBtn) {
+      sortDirBtn.addEventListener("click", function () {
+        state.sortDir = state.sortDir === 1 ? -1 : 1;
+        render();
+      });
+    }
+    root.querySelectorAll("[data-gdi-view]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.viewMode = btn.getAttribute("data-gdi-view") === "tiles" ? "tiles" : "list";
+        persistBrowse();
+        render();
+      });
+    });
+  }
+
+  function renderOpportunityCards(rows) {
+    if (!rows.length) {
+      return '<div class="gdi-empty">No opportunities match the current filters. Run research or clear filters.</div>';
+    }
+    return UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters);
+  }
+
+  function renderBrowseBody(opts) {
+    opts = opts || {};
+    var rows = filteredSorted();
+    var total = state.opportunities.length;
+    var chrome = UI.opportunityBrowseChromeHtml({
+      activePriority: state.filters.priority,
+      priorityCounts: UI.facetCountByPriority(state.opportunities, state.filters),
+      activeBooking: state.filters.booking,
+      actionCounts: UI.facetCountByActionStatus(state.opportunities, state.filters),
+      shown: rows.length,
+      total: total,
+      sort: state.sortKey,
+      viewMode: state.viewMode,
+      noun: opts.noun || "Opportunities",
+    });
+    return chrome + (opts.lede || "") + renderOpportunityCards(rows);
   }
 
   function openDetail(id) {
@@ -464,11 +556,13 @@
       " · Published peak: " +
       esc(fmtVal(o.publishedPeakRooms)) +
       "</p></div>" +
-      '<div class="gdi-section"><h3>6. Why Bethesda Marriott?</h3><p>' +
+      '<div class="gdi-section"><h3>6. Why This Hotel?</h3><p>' +
       esc(o.summaryWhyHotel || o.fitExplanation) +
       "</p>" +
-      (o.bethesdaWinThesis
-        ? '<p><strong>Bethesda Win Thesis:</strong> ' + esc(o.bethesdaWinThesis) + "</p>"
+      (o.hotelOpportunityThesis || o.bethesdaWinThesis
+        ? "<p><strong>Hotel opportunity thesis:</strong> " +
+          esc(o.hotelOpportunityThesis || o.bethesdaWinThesis) +
+          "</p>"
         : "") +
       "</div>" +
       '<div class="gdi-section"><h3>7. Why Now?</h3><p><strong>' +
@@ -567,165 +661,6 @@
     );
   }
 
-  function renderTable() {
-    var rows = filteredSorted();
-    if (!rows.length) {
-      return '<div class="gdi-empty">No opportunities match the current filters. Run research or clear filters.</div>';
-    }
-    return (
-      '<div class="gdi-table-wrap"><table class="gdi-table"><thead><tr>' +
-      [
-        ["priority", "Priority"],
-        ["title", "Opportunity"],
-        ["opportunityType", "Type"],
-        ["organizationName", "Organization"],
-        ["segment", "Segment"],
-        ["eventStartDate", "Event Date"],
-        ["estimatedAttendance", "Size"],
-        ["bookingWindowStatus", "Booking Window"],
-        ["hotelFitScore", "Hotel Fit"],
-        ["opportunityQualification", "Qualification"],
-        ["roomDemandStatus", "Room Demand"],
-        ["venueSourcingStatus", "Venue Status"],
-        ["evidenceConfidence", "Evidence Confidence"],
-        ["demandTerritoryFit", "Demand Territory"],
-        ["whyNow", "Why Now"],
-        ["primaryContact", "Contact"],
-      ]
-        .map(function (c) {
-          return '<th data-sort="' + c[0] + '">' + c[1] + "</th>";
-        })
-        .join("") +
-      "<th>Action</th></tr></thead><tbody>" +
-      rows
-        .map(function (o) {
-          return (
-            "<tr><td>" +
-            priorityPill(o.priority) +
-            '</td><td><button type="button" class="gdi-link" data-open="' +
-            esc(o.id) +
-            '">' +
-            esc(o.title) +
-            "</button></td><td>" +
-            esc(o.opportunityTypeLabel || o.opportunityType || "—") +
-            "</td><td>" +
-            esc(o.organizationName) +
-            "</td><td>" +
-            esc(o.segment) +
-            "</td><td>" +
-            esc(o.eventStartDate || "TBD") +
-            "</td><td>" +
-            esc(fmtVal(o.estimatedAttendance)) +
-            "</td><td>" +
-            esc(o.bookingWindowLabel || o.bookingWindowStatus) +
-            "</td><td>" +
-            esc(o.hotelFitScore) +
-            "</td><td>" +
-            esc(o.opportunityQualificationLabel || o.opportunityQualification || "—") +
-            "</td><td>" +
-            esc(o.roomDemandStatusLabel || o.roomDemandStatus || "—") +
-            "</td><td>" +
-            esc(o.venueSourcingStatusLabel || o.venueSourcingStatus || "—") +
-            "</td><td>" +
-            esc(o.evidenceConfidence) +
-            "</td><td>" +
-            esc(o.demandTerritoryFitLabel || o.demandTerritoryFit || "—") +
-            '</td><td class="gdi-why-cell">' +
-            esc(trunc(o.whyNow, 90)) +
-            "</td><td>" +
-            esc(contactLabel(o.primaryContact)) +
-            '</td><td><button type="button" class="gdi-btn" data-open="' +
-            esc(o.id) +
-            '">Open</button></td></tr>'
-          );
-        })
-        .join("") +
-      "</tbody></table></div>"
-    );
-  }
-
-  function renderBriefCard(it) {
-    var linked = oppById(it.opportunityId);
-    var priority = linked ? linked.priority : it.priority || "WATCHLIST";
-    var contact = contactLabel(it.primaryContact);
-    var badge = incrementalBadge(linked || it);
-    return (
-      '<article class="gdi-brief-card">' +
-      '<div class="gdi-brief-card__top">' +
-      '<div class="gdi-brief-card__title-row">' +
-      priorityPill(priority) +
-      badge +
-      "<h3>" +
-      esc(it.title) +
-      "</h3></div>" +
-      '<div class="gdi-brief-card__date">' +
-      esc(it.eventTiming || "Dates TBD") +
-      "</div></div>" +
-      '<div class="gdi-brief-meta">' +
-      "<span>" +
-      esc(it.organizationName) +
-      "</span><span>·</span><span>" +
-      esc(it.segment) +
-      '</span><span class="gdi-score-chip">Hotel Fit <strong>' +
-      esc(it.hotelFitScore) +
-      '</strong></span><span class="gdi-score-chip">Qualification <strong>' +
-      esc(
-        (linked && (linked.opportunityQualificationLabel || linked.opportunityQualification)) ||
-          it.opportunityQualificationLabel ||
-          it.opportunityQualification ||
-          "—"
-      ) +
-      '</strong></span><span class="gdi-score-chip" title="How confident Dealality is in the facts based on source quality, recency, corroboration, and verified vs inferred.">Evidence Confidence <strong>' +
-      esc(it.evidenceConfidence) +
-      "</strong></span></div>" +
-      '<div class="gdi-brief-grid">' +
-      '<div><span class="gdi-meta-label">Opportunity Type</span><span class="gdi-meta-value">' +
-      esc(
-        (linked && (linked.opportunityTypeLabel || linked.opportunityType)) ||
-          it.opportunityTypeLabel ||
-          it.opportunityType ||
-          "—"
-      ) +
-      '</span></div><div><span class="gdi-meta-label">Size</span><span class="gdi-meta-value">' +
-      esc(it.estimatedSize) +
-      '</span></div><div><span class="gdi-meta-label">Demand Territory</span><span class="gdi-meta-value">' +
-      esc(it.demandTerritoryFitLabel || "—") +
-      '</span></div><div><span class="gdi-meta-label">Sourcing Status</span><span class="gdi-meta-value">' +
-      esc(it.sourcingStatusLabel || "Unknown — requires hotel validation") +
-      '</span></div><div><span class="gdi-meta-label">Why Now</span><span class="gdi-meta-value">' +
-      esc(it.whyNow) +
-      '</span></div><div><span class="gdi-meta-label">Why This Matters</span><span class="gdi-meta-value">' +
-      esc(it.whyItMatters) +
-      "</span></div>" +
-      briefContactBlock(it, linked) +
-      "</div>" +
-      '<div class="gdi-brief-action">' +
-      '<div class="gdi-brief-action__label">Recommended Action</div>' +
-      '<p class="gdi-brief-action__text">' +
-      esc(it.recommendedNextStep) +
-      '</p><div class="gdi-brief-footer">' +
-      '<span class="gdi-brief-contact">' +
-      esc(it.bookingWindowLabel || "") +
-      '</span><button type="button" class="gdi-btn gdi-btn-primary" data-open="' +
-      esc(it.opportunityId) +
-      '">View Details</button></div></div></article>'
-    );
-  }
-
-  function renderBrief() {
-    var items = (state.brief && state.brief.items) || [];
-    if (!items.length) {
-      return '<div class="gdi-empty">No weekly brief items yet. Run research first.</div>';
-    }
-    return (
-      '<p class="gdi-lede">' +
-      esc(briefHeading()) +
-      '</p><div class="gdi-brief-list">' +
-      items.map(renderBriefCard).join("") +
-      "</div>"
-    );
-  }
-
   function renderAudit() {
     var latest = state.runs[0];
     if (!latest) {
@@ -751,187 +686,72 @@
     );
   }
 
-  function territoryCounts() {
-    var counts = {
-      BETHESDA_MONTGOMERY_CORE: 0,
-      NORTH_DC_MEDICAL_CORRIDOR: 0,
-      DMV_COMPETITIVE: 0,
-      DMV_STRETCH: 0,
-    };
-    state.opportunities.forEach(function (o) {
-      if (counts[o.demandTerritoryFit] != null) counts[o.demandTerritoryFit] += 1;
-    });
-    return counts;
-  }
-
   function render() {
     if (loading) loading.style.display = "none";
     var s = state.summary || {};
-    var segments = Array.from(
-      new Set(
-        state.opportunities.map(function (o) {
-          return o.segment;
-        })
-      )
-    ).filter(Boolean);
 
     var body =
-      state.tab === "brief"
-        ? renderBrief()
-        : state.tab === "audit"
-          ? renderAudit()
-          : '<div class="gdi-filters">' +
-            '<select id="gdiFilterPriority"><option value="">All priorities</option><option value="HIGH_PRIORITY">High</option><option value="MEDIUM_PRIORITY">Medium</option><option value="WATCHLIST">Watchlist</option></select>' +
-            '<select id="gdiFilterSegment"><option value="">All segments</option>' +
-            segments
-              .map(function (seg) {
-                return (
-                  '<option value="' +
-                  esc(seg) +
-                  '"' +
-                  (state.filters.segment === seg ? " selected" : "") +
-                  ">" +
-                  esc(seg) +
-                  "</option>"
-                );
-              })
-              .join("") +
-            '</select><select id="gdiFilterBooking"><option value="">All booking windows</option><option value="CONTACT_NOW">Contact Now</option><option value="QUALIFY_NOW">Qualify Now</option><option value="WATCH">Watch</option><option value="TOO_EARLY">Too Early</option></select>' +
-            '<select id="gdiFilterTerritory"><option value="">All territories</option><option value="BETHESDA_MONTGOMERY_CORE">Bethesda / Montgomery Core</option><option value="NORTH_DC_MEDICAL_CORRIDOR">North DC / Medical Corridor</option><option value="DMV_COMPETITIVE">DMV Competitive</option><option value="DMV_STRETCH">DMV Stretch</option></select></div>' +
-            renderTable();
+      state.tab === "audit"
+        ? renderAudit()
+        : renderBrowseBody({ noun: "Opportunities" });
 
-    var tc = territoryCounts();
+    var identity = (state.hotelProfile && state.hotelProfile.identity) || {};
+    var hotelName = identity.hotelName || "Hotel";
+    var hotel = {
+      hotelName: hotelName,
+      city: identity.city || null,
+      state: identity.state || null,
+    };
+    root.className = "gdi-shell dashboard-container aiv-dashboard";
     root.innerHTML =
-      '<header class="gdi-header">' +
-      '<div class="gdi-header__eyebrow"><span class="gdi-badge">PILOT</span></div>' +
-      "<h1>Group Demand Intelligence</h1>" +
-      '<p class="gdi-header__subtitle">Identifies group demand the hotel may be positioned to pursue, why the opportunity matters, and the recommended sales action.</p>' +
-      '<div class="gdi-entity"><span class="gdi-entity__name">Bethesda Marriott</span><span class="gdi-entity__meta">Bethesda, Maryland · DMV demand territory</span></div>' +
-      "</header>" +
-      '<div class="gdi-toolbar"><div class="gdi-field"><label for="gdiHotel">Hotel</label><select id="gdiHotel"><option value="' +
-      esc(PILOT_HOTEL_ID) +
-      '">Bethesda Marriott (Bethesda, MD)</option></select></div>' +
-      '<div class="gdi-field"><label>Last research</label><div>' +
-      esc(formatDate(s.lastResearchAt)) +
-      "</div></div>" +
-      '<div class="gdi-field"><label>Run status</label><div>' +
-      esc(s.runStatus || "NEVER_RUN") +
-      "</div></div>" +
-      '<div class="gdi-toolbar-actions">' +
-      (memberFetch
-        ? '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiRunBtn">Run Research</button>'
-        : '<span class="gdi-muted">Read-only pilot view · sign in for research</span>') +
-      "</div></div>" +
-      '<div class="gdi-kpis">' +
-      [
-        ["High Priority", s.highPriorityCount || 0],
-        ["Medium Priority", s.mediumPriorityCount || 0],
-        ["Watchlist", s.watchlistCount || 0],
-        ["Qualified", qualifiedCount()],
-        ["Entering Booking Window", countEnteringWindow()],
-        ["Sources", s.sourceCount || 0],
-      ]
-        .map(function (k) {
-          return (
-            '<div class="gdi-kpi"><div class="val">' +
-            esc(k[1]) +
-            '</div><div class="lab">' +
-            esc(k[0]) +
-            "</div></div>"
-          );
-        })
-        .join("") +
-      "</div>" +
-      '<div class="gdi-kpis gdi-kpis--territory">' +
-      [
-        ["Bethesda / Montgomery Core", tc.BETHESDA_MONTGOMERY_CORE],
-        ["North DC / Medical Corridor", tc.NORTH_DC_MEDICAL_CORRIDOR],
-        ["DMV Competitive", tc.DMV_COMPETITIVE],
-        ["DMV Stretch", tc.DMV_STRETCH],
-      ]
-        .map(function (k) {
-          return (
-            '<div class="gdi-kpi"><div class="val">' +
-            esc(k[1]) +
-            '</div><div class="lab">' +
-            esc(k[0]) +
-            "</div></div>"
-          );
-        })
-        .join("") +
-      "</div>" +
-      '<div class="gdi-tabs" role="tablist">' +
-      '<button type="button" class="gdi-tab" data-tab="brief" aria-selected="' +
-      (state.tab === "brief") +
-      '">WEEKLY BRIEF</button>' +
-      '<button type="button" class="gdi-tab" data-tab="opportunities" aria-selected="' +
-      (state.tab === "opportunities") +
-      '">OPPORTUNITIES</button>' +
-      '<button type="button" class="gdi-tab" data-tab="audit" aria-selected="' +
-      (state.tab === "audit") +
-      '">RESEARCH AUDIT</button></div>' +
+      UI.hotelShellHtml({
+        mode: "auth",
+        badges: { pilot: true },
+      }) +
+      UI.contentTabsHtml(state.tab, [
+        UI.GDI_MAIN_TAB,
+        { id: "audit", label: "Research Audit" },
+      ]) +
+      UI.propertyBarHtml({
+        mode: "auth",
+        hotel: hotel,
+        hotelId: state.hotelId,
+        lastResearch: formatDate(s.lastResearchAt),
+        runStatus: s.runStatus || "NEVER_RUN",
+        actionHtml: propertyBarActionsHtml(),
+      }) +
       '<div id="gdiTabBody">' +
       body +
       "</div>";
 
     var runBtn = document.getElementById("gdiRunBtn");
     if (runBtn) runBtn.addEventListener("click", runResearch);
+    var resetBtn = document.getElementById("gdiResetViewBtn");
+    if (resetBtn) resetBtn.addEventListener("click", resetBrowseView);
 
-    root.querySelectorAll(".gdi-tab").forEach(function (btn) {
+    root.querySelectorAll(".section-nav-item[data-tab]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         state.tab = btn.getAttribute("data-tab");
         render();
       });
     });
 
-    var fp = document.getElementById("gdiFilterPriority");
-    if (fp) {
-      fp.value = state.filters.priority;
-      fp.addEventListener("change", function () {
-        state.filters.priority = fp.value;
-        render();
-      });
-    }
-    var fs = document.getElementById("gdiFilterSegment");
-    if (fs) {
-      fs.addEventListener("change", function () {
-        state.filters.segment = fs.value;
-        render();
-      });
-    }
-    var fb = document.getElementById("gdiFilterBooking");
-    if (fb) {
-      fb.value = state.filters.booking;
-      fb.addEventListener("change", function () {
-        state.filters.booking = fb.value;
-        render();
-      });
-    }
-    var ft = document.getElementById("gdiFilterTerritory");
-    if (ft) {
-      ft.value = state.filters.territory;
-      ft.addEventListener("change", function () {
-        state.filters.territory = ft.value;
-        render();
-      });
-    }
+    wireBrowseControls();
 
-    root.querySelectorAll("th[data-sort]").forEach(function (th) {
-      th.addEventListener("click", function () {
-        var k = th.getAttribute("data-sort");
-        if (state.sortKey === k) state.sortDir *= -1;
-        else {
-          state.sortKey = k;
-          state.sortDir = 1;
-        }
-        render();
+    root.querySelectorAll("[data-open]").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        var innermost = e.target.closest("[data-open]");
+        if (innermost !== el) return;
+        openDetail(el.getAttribute("data-open"));
       });
-    });
-
-    root.querySelectorAll("[data-open]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        openDetail(btn.getAttribute("data-open"));
-      });
+      if (el.tagName === "ARTICLE") {
+        el.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openDetail(el.getAttribute("data-open"));
+          }
+        });
+      }
     });
   }
 
