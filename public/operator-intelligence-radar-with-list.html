@@ -679,8 +679,8 @@
                 </div>
                 <div class="state-empty" id="stateEmpty">
                     <div class="state-icon">📊</div>
-                    <div class="state-title">No results</div>
-                    <p>Adjust the filters above to see ranked 3rd-party operators. Results update automatically as you change filters.</p>
+                    <div class="state-title" id="stateEmptyTitle">No results</div>
+                    <p id="stateEmptyText">Adjust the filters above to see ranked 3rd-party operators. Results update automatically as you change filters.</p>
                 </div>
                 <div class="state-loading hidden" id="stateLoading">
                     <div class="loading">
@@ -1396,10 +1396,17 @@
             .then(function (r) { return r.ok ? r.json() : r.json().then(function (j) { throw new Error(j.error || j.details || 'Request failed'); }); })
             .then(function (data) {
                 lastData = data;
+                var isHpc = data.censusSource === 'hpc' || (data.source && data.source.censusSource === 'hpc');
                 var properties = data.properties || [];
                 var propNum = (data.total_properties != null ? data.total_properties : properties.length);
                 propertyCount.textContent = propNum;
-                if (fullDatasetWrap) fullDatasetWrap.textContent = (data.total_in_census != null) ? ' (of ' + Number(data.total_in_census).toLocaleString() + ' in full dataset)' : '';
+                if (fullDatasetWrap) {
+                    if (isHpc) {
+                        fullDatasetWrap.textContent = ' (confirmed relationships)';
+                    } else {
+                        fullDatasetWrap.textContent = (data.total_in_census != null) ? ' (of ' + Number(data.total_in_census).toLocaleString() + ' in full dataset)' : '';
+                    }
+                }
                 applyRankView();
                 renderMap(properties);
                 var oLen = (data.operators || []).length;
@@ -1409,17 +1416,31 @@
                 var cLen = (data.chain_scales || []).length;
                 var sLen = (data.statuses || []).length;
                 var totalCensus = data.total_in_census != null ? Number(data.total_in_census).toLocaleString() : '';
-                var propLine = totalCensus ? '<strong>' + propNum.toLocaleString() + '</strong> properties with operator (of ' + totalCensus + ' in full dataset)' : '<strong>' + propNum.toLocaleString() + '</strong> properties with operator';
+                var coverageNote = (data.metricSemantics && data.metricSemantics.coverageLabel) || 'Based on confirmed operator relationships';
+                var propLine = isHpc
+                    ? '<strong>' + propNum.toLocaleString() + '</strong> confirmed properties · ' + coverageNote
+                    : (totalCensus ? '<strong>' + propNum.toLocaleString() + '</strong> properties with operator (of ' + totalCensus + ' in full dataset)' : '<strong>' + propNum.toLocaleString() + '</strong> properties with operator');
                 insightsList.innerHTML =
-                    '<div class="insight-item"><strong>' + oLen + '</strong> operators (only where listed)</div>' +
-                    '<div class="insight-item"><strong>' + bLen + '</strong> brands (only where listed)</div>' +
-                    '<div class="insight-item"><strong>' + pLen + '</strong> parent companies (only where listed)</div>' +
+                    '<div class="insight-item"><strong>' + oLen + '</strong> operators' + (isHpc ? ' (confirmed presence)' : ' (only where listed)') + '</div>' +
+                    '<div class="insight-item"><strong>' + bLen + '</strong> brands' + (isHpc ? ' (confirmed affiliation)' : ' (only where listed)') + '</div>' +
+                    (isHpc ? '' : '<div class="insight-item"><strong>' + pLen + '</strong> parent companies (only where listed)</div>') +
                     '<div class="insight-item"><strong>' + rLen + '</strong> regions</div>' +
-                    '<div class="insight-item"><strong>' + cLen + '</strong> chain scales</div>' +
+                    (isHpc ? '' : '<div class="insight-item"><strong>' + cLen + '</strong> chain scales</div>') +
                     '<div class="insight-item"><strong>' + sLen + '</strong> statuses</div>' +
                     '<div class="insight-item">' + propLine + '</div>' +
-                    '<div class="insight-item">Switch "Rank by" to see biggest by Operator, Brand, Parent Company, Region, Chain Scale, or Status.</div>';
+                    (isHpc
+                        ? '<div class="insight-item">Rankings use confirmed operator relationships — not market share.</div>'
+                        : '<div class="insight-item">Switch "Rank by" to see biggest by Operator, Brand, Parent Company, Region, Chain Scale, or Status.</div>');
                 var ranked = getRankedList();
+                var emptyTitle = document.getElementById('stateEmptyTitle');
+                var emptyText = document.getElementById('stateEmptyText');
+                if (!ranked.list.length && isHpc && data.emptyState) {
+                    if (emptyTitle) emptyTitle.textContent = data.emptyState.title || 'No confirmed operator relationships';
+                    if (emptyText) emptyText.textContent = data.emptyState.message || 'Dealality does not currently have confirmed operator relationships matching this selection.';
+                } else if (emptyTitle && emptyText) {
+                    emptyTitle.textContent = 'No results';
+                    emptyText.textContent = 'Adjust the filters above to see ranked 3rd-party operators. Results update automatically as you change filters.';
+                }
                 showState(ranked.list.length ? 'results' : 'empty');
             })
             .catch(function (err) {

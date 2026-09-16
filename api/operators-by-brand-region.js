@@ -10,6 +10,7 @@ import {
 } from "../lib/hotel-census/brand-presence-hpc-request.js";
 import {
   buildOperatorIntelligenceHpcReport,
+  buildOperatorIntelligenceHpcFilters,
   OI_HPC_ADAPTER,
   resetOperatorIntelligenceReadCounters,
   snapshotOperatorIntelligenceReadCounters,
@@ -172,7 +173,9 @@ export async function getLargestOperatorsByBrandRegion(req, res) {
         region: req.query?.region,
         brand: req.query?.brand,
         country: req.query?.country,
+        search: req.query?.search,
         limit: 200,
+        includePipeline: true,
       });
       if (!report.ok) {
         return res.status(500).json({
@@ -182,29 +185,23 @@ export async function getLargestOperatorsByBrandRegion(req, res) {
         });
       }
       const counters = snapshotOperatorIntelligenceReadCounters();
+      // UI-compatible shape (largest-operators / radar-with-list) + confirmed semantics.
       return res.json({
         success: true,
-        operators: (report.operators || []).map((op) => ({
-          operator_name: op.operator_name,
-          operator_id: op.operator_id,
-          hotel_count: op.hotel_count,
-          total_keys: op.total_keys,
-          brands: op.brands,
-          countries: op.countries,
-          properties: (op.properties || []).map((p) => ({
-            property_name: p.name,
-            dhl_: p.dhl_,
-            brand: p.brand,
-            city: p.city,
-            country: p.country,
-            status: p.status,
-            keys: p.rooms,
-            chain_scale: null,
-          })),
-        })),
+        operators: report.operators || [],
         brands: report.brands || [],
+        parent_companies: report.parent_companies || [],
         regions: report.regions || [],
+        chain_scales: report.chain_scales || [],
+        statuses: report.statuses || [],
+        properties: report.properties || [],
+        total_properties: report.total_properties ?? (report.properties || []).length,
+        total_in_census: report.total_in_census,
+        pipeline_operators: report.pipeline_operators || [],
         metrics: report.metrics,
+        metricSemantics: report.metricSemantics,
+        emptyState: report.emptyState,
+        filterSupport: report.filterSupport,
         warnings: report.warnings || [],
         source: {
           ...(report.source || {}),
@@ -541,6 +538,40 @@ function getFieldValues(rec, ...keys) {
  * Returns parent companies, brands (Affiliation), and location types for dropdowns.
  */
 export async function getOperatorsByBrandRegionFilters(req, res) {
+  if (shouldUseHpcOperatorIntelligence(req)) {
+    try {
+      const filters = await buildOperatorIntelligenceHpcFilters();
+      if (!filters.ok) {
+        return res.status(500).json({
+          success: false,
+          error: filters.error || "Operator Intelligence HPC filters failed",
+          adapter: OI_HPC_ADAPTER,
+        });
+      }
+      return res.json({
+        success: true,
+        parentCompanies: filters.parentCompanies || [],
+        brands: filters.brands || [],
+        locationTypes: filters.locationTypes || [],
+        operationTypes: filters.operationTypes || [],
+        chainScales: filters.chainScales || [],
+        regions: filters.regions || [],
+        filterSupport: filters.filterSupport,
+        source: filters.source,
+        note: filters.note,
+        adapter: OI_HPC_ADAPTER,
+        censusSource: "hpc",
+      });
+    } catch (err) {
+      console.error("[operators-by-brand-region/filters] HPC path error:", err?.message || err);
+      return res.status(500).json({
+        success: false,
+        error: err?.message || "Operator Intelligence HPC filters error",
+        adapter: OI_HPC_ADAPTER,
+      });
+    }
+  }
+
   if (!ensureOperatorsByBrandRegionConfig(res)) return;
   try {
     const records = await base(F.table)

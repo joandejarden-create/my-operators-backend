@@ -742,13 +742,20 @@
                     document.getElementById('rlLoading').classList.add('hidden');
                     rlApplyView();
                     var listLen = rlGetRankedList().list.length;
+                    var isHpc = data.censusSource === 'hpc' || (data.source && data.source.censusSource === 'hpc');
                     if (listLen) {
                         document.getElementById('rlTableWrap').classList.remove('hidden');
                         document.getElementById('rlEmpty').classList.add('hidden');
                     } else {
                         document.getElementById('rlTableWrap').classList.add('hidden');
                         document.getElementById('rlEmpty').classList.remove('hidden');
-                        document.getElementById('rlEmpty').innerHTML = '<p>No data. Adjust filters and try again.</p>';
+                        if (isHpc && data.emptyState) {
+                            document.getElementById('rlEmpty').innerHTML =
+                                '<p><strong>' + rlEsc(data.emptyState.title || 'No confirmed operator relationships') + '</strong></p>' +
+                                '<p>' + rlEsc(data.emptyState.message || 'Dealality does not currently have confirmed operator relationships matching this selection.') + '</p>';
+                        } else {
+                            document.getElementById('rlEmpty').innerHTML = '<p>No data. Adjust filters and try again.</p>';
+                        }
                     }
                 })
                 .catch(function (err) {
