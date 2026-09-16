@@ -167,7 +167,7 @@ function gateSubject(subject) {
         subject_id: subject.id,
       },
     ],
-    { provider: "surfe" }
+    { provider: "surfe", workflow: "gdi_contact" }
   );
 }
 
