@@ -61,12 +61,20 @@ Re-apply is idempotent (second `--apply` → `actionCreated: false`, `outcomeCre
 
 ## Deployment / production verification
 
-Filled after Railway deploy of this change.
+| Field | Value |
+|-------|--------|
+| Deploy commit | `bf3e569c3b44415c729e8fb9540c245df4bb7887` |
+| Railway deploy | `fdf44094-767d-453a-b5b2-1cf447c5e4d8` · SUCCESS |
+| Existing Bethesda client URL | **UNCHANGED** · STILL WORKING |
+| HTTP page | PASS (200) |
+| Token resolve | PASS · Bethesda Marriott (`recLuxvwwxID7U2B8`) |
+| NICE opportunity | PASS · list badge “Added to sourcing” |
+| CONTACTED action | VISIBLE · “Hotel contacted opportunity” · Sep 17, 2026 |
+| ADDED TO SOURCED PROPERTIES | VISIBLE · “Added to sourced properties” |
+| Raw enums in customer DTO | none |
+| Share URL replaced | NO |
 
-- Deploy commit: _pending_
-- Railway deploy: _pending_
-- Existing Bethesda client URL: unchanged (must remain working)
-- Production verification: _pending_
+Production share verify (query `share=` on existing token `gdisht_47c25d74c79216021fb36150`).
 
 ## Apply artifact
 
