@@ -269,12 +269,15 @@ import {
   getGdiResearchRun,
   postGdiRunResearch,
   postGdiFeedback,
+  postGdiCustomerValidation,
   getGdiFeedback,
   getGdiShareResolve,
   getGdiShareBrief,
   getGdiShareOpportunities,
   getGdiShareOpportunityDetail,
   postGdiShareValidation,
+  postGdiShareAction,
+  postGdiShareOutcome,
   getGdiShareValidation,
   postGdiIssueShare,
   postGdiRevokeShare,
@@ -1020,6 +1023,12 @@ app.post(
   postGdiFeedback
 );
 app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/customer-validation",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiCustomerValidation
+);
+app.post(
   "/api/group-demand-intelligence/hotels/:hotelId/research/run",
   memberstackAuth,
   requireDealalityUser,
@@ -1046,6 +1055,14 @@ app.get(
 app.post(
   "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/validation",
   postGdiShareValidation
+);
+app.post(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/actions",
+  postGdiShareAction
+);
+app.post(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/outcomes",
+  postGdiShareOutcome
 );
 app.post(
   "/api/group-demand-intelligence/hotels/:hotelId/share/issue",

@@ -1205,6 +1205,19 @@
     }
   }
 
+  function fitLabel(key) {
+    var map = {
+      physicalFit: "Physical Fit",
+      geographyFit: "Demand Territory Fit",
+      timing: "Timing / Winnability",
+      commercialValue: "Commercial Potential",
+      historicalFit: "Historical Hotel / Brand Fit",
+      competitiveAccessibility: "Competitive Accessibility",
+      contactability: "Contactability",
+    };
+    return map[key] || key;
+  }
+
   /**
    * Customer-facing commercial progression block (auth + share parity).
    * Never shows raw enums / event IDs / causal jargon.
@@ -1430,11 +1443,68 @@
     return { ok: hits.length === 0, hits: hits };
   }
 
-  /**
-   * Canonical customer Hotel Validation form (share + auth presentation).
-   * Permission context controls whether the form renders — same markup either way.
-   * permissionContext: { canValidate: boolean }
-   */
+  var CUSTOMER_VALIDATION_ENUMS = {
+    familiarityStatus: [
+      "NEVER_SEEN_BEFORE",
+      "ALREADY_KNOWN",
+      "ACTIVELY_PURSUING",
+      "PREVIOUSLY_PURSUED_LOST",
+      "BOOKED_WON",
+      "NOT_RELEVANT",
+      "UNSURE",
+    ],
+    familiarityLabels: {
+      NEVER_SEEN_BEFORE: "Never seen before",
+      ALREADY_KNOWN: "Already known",
+      ACTIVELY_PURSUING: "Actively pursuing",
+      PREVIOUSLY_PURSUED_LOST: "Previously pursued / lost",
+      BOOKED_WON: "Booked / won",
+      NOT_RELEVANT: "Not relevant",
+      UNSURE: "Unsure",
+    },
+    commercialValue: [
+      "WORTH_PURSUING_NOW",
+      "WORTH_WATCHING",
+      "NOT_WORTH_PURSUING",
+    ],
+    commercialValueLabels: {
+      WORTH_PURSUING_NOW: "Worth pursuing now",
+      WORTH_WATCHING: "Worth watching",
+      NOT_WORTH_PURSUING: "Not worth pursuing",
+    },
+    contactPerson: [
+      "RIGHT_PERSON",
+      "RELEVANT_NOT_DECISION_MAKER",
+      "WRONG_PERSON",
+      "UNSURE",
+    ],
+    contactPersonLabels: {
+      RIGHT_PERSON: "Right person",
+      RELEVANT_NOT_DECISION_MAKER: "Relevant but not decision maker",
+      WRONG_PERSON: "Wrong person",
+      UNSURE: "Unsure",
+    },
+    emailAssessment: ["USEFUL", "WRONG", "GENERIC", "NOT_TESTED"],
+    emailAssessmentLabels: {
+      USEFUL: "Useful",
+      WRONG: "Wrong",
+      GENERIC: "Generic",
+      NOT_TESTED: "Not tested",
+    },
+    phoneAssessment: [
+      "DIRECT_USABLE",
+      "MAIN_SHARED_LINE",
+      "WRONG",
+      "NOT_TESTED",
+    ],
+    phoneAssessmentLabels: {
+      DIRECT_USABLE: "Direct / usable",
+      MAIN_SHARED_LINE: "Main / shared line",
+      WRONG: "Wrong",
+      NOT_TESTED: "Not tested",
+    },
+  };
+
   function enumSelectOptions(values, labels, selected) {
     var opts = '<option value="">Select…</option>';
     (values || []).forEach(function (val) {
@@ -1492,6 +1562,89 @@
     );
   }
 
+  /**
+   * Shared customer feedback lifecycle — auth + authorized share parity.
+   * permissionContext: { canValidate, canRecordAction, canRecordOutcome }
+   */
+  function customerFeedbackLifecycleHtml(o, enums, permissionContext, progression) {
+    permissionContext = permissionContext || {};
+    var bits = [];
+    if (progression) {
+      bits.push(commercialProgressionHtml(progression));
+    }
+    bits.push(
+      '<div class="gdi-section gdi-section--validation gdi-validation-panel gdi-hotel-feedback" data-gdi-customer-lifecycle="1">' +
+        "<h3>Hotel Validation</h3>"
+    );
+    bits.push(shareCustomerValidationFormHtml(o, enums, permissionContext));
+
+    if (permissionContext.canRecordAction) {
+      bits.push(
+        '<div class="gdi-lifecycle-step" data-gdi-lifecycle-action="1">' +
+          "<h4>Action</h4>" +
+          '<p class="gdi-lifecycle-q">What did the team do?</p>' +
+          '<div class="gdi-feedback">' +
+          '<label>Action<select id="gdiDoAction"><option value="">Select action...</option>' +
+          '<option value="NOT_CONTACTED">Not Contacted</option>' +
+          '<option value="PLANNED_TO_CONTACT">Planned To Contact</option>' +
+          '<option value="CONTACTED">Contacted</option>' +
+          '<option value="FOLLOW_UP_REQUIRED">Follow Up Required</option>' +
+          '<option value="RFP_REQUESTED">RFP Requested</option>' +
+          '<option value="RFP_RECEIVED">RFP Received</option>' +
+          '<option value="SITE_VISIT_REQUESTED">Site Visit Requested</option>' +
+          '<option value="SITE_VISIT_COMPLETED">Site Visit Completed</option>' +
+          '<option value="PROPOSAL_SUBMITTED">Proposal Submitted</option>' +
+          '<option value="NEGOTIATING">Negotiating</option>' +
+          '<option value="NO_ACTION">No Action</option></select></label>' +
+          '<div class="gdi-validation-actions">' +
+          '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiDoActionSave" data-id="' +
+          esc((o && o.id) || "") +
+          '">Save Action</button>' +
+          '<span class="gdi-validation-status" id="gdiDoActionSaveStatus" hidden></span>' +
+          "</div></div></div>"
+      );
+    }
+
+    if (permissionContext.canRecordOutcome) {
+      bits.push(
+        '<div class="gdi-lifecycle-step" data-gdi-lifecycle-outcome="1">' +
+          "<h4>Outcome</h4>" +
+          '<p class="gdi-lifecycle-q">What happened?</p>' +
+          '<div class="gdi-feedback">' +
+          '<label>Outcome<select id="gdiDoOutcome"><option value="">Select outcome...</option>' +
+          '<option value="WON">Won</option>' +
+          '<option value="LOST">Lost</option>' +
+          '<option value="BOOKED">Booked</option>' +
+          '<option value="NO_RESPONSE">No Response</option>' +
+          '<option value="NOT_QUALIFIED">Not Qualified</option>' +
+          '<option value="OPPORTUNITY_CLOSED">Opportunity Closed</option>' +
+          '<option value="DEFERRED">Deferred</option>' +
+          '<option value="ADDED_TO_SOURCED_PROPERTIES">Added to sourced properties</option>' +
+          '<option value="UNKNOWN">Unknown</option></select></label>' +
+          '<label id="gdiDoLossWrap" hidden>Loss reason<select id="gdiDoLoss"><option value="">Select loss reason...</option>' +
+          '<option value="RATE">Rate</option>' +
+          '<option value="AVAILABILITY">Availability</option>' +
+          '<option value="LOCATION">Location</option>' +
+          '<option value="MEETING_SPACE">Meeting Space</option>' +
+          '<option value="BRAND">Brand</option>' +
+          '<option value="COMPETITOR">Competitor</option>' +
+          '<option value="ROOM_BLOCK">Room Block</option>' +
+          '<option value="DATES">Dates</option>' +
+          '<option value="NO_RESPONSE">No Response</option>' +
+          '<option value="OTHER">Other</option></select></label>' +
+          '<div class="gdi-validation-actions">' +
+          '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiDoOutcomeSave" data-id="' +
+          esc((o && o.id) || "") +
+          '">Save Outcome</button>' +
+          '<span class="gdi-validation-status" id="gdiDoOutcomeSaveStatus" hidden></span>' +
+          "</div></div></div>"
+      );
+    }
+
+    bits.push("</div>");
+    return bits.join("");
+  }
+
   /** Customer-safe inactive-link copy (shared auth/share). */
   function inactiveShareLinkHtml(message) {
     var msg =
@@ -1547,6 +1700,8 @@
     fitLabel: fitLabel,
     assertNoHotelHardcode: assertNoHotelHardcode,
     shareCustomerValidationFormHtml: shareCustomerValidationFormHtml,
+    customerFeedbackLifecycleHtml: customerFeedbackLifecycleHtml,
+    CUSTOMER_VALIDATION_ENUMS: CUSTOMER_VALIDATION_ENUMS,
     commercialProgressionHtml: commercialProgressionHtml,
     commercialProgressionCompactPill: commercialProgressionCompactPill,
     formatShortDate: formatShortDate,

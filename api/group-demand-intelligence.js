@@ -61,6 +61,11 @@ import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opp
 import {
   ingestGdiAuthFeedback,
   ingestGdiShareValidation,
+  ensureGdiOpportunityDecision,
+  recordAction,
+  recordOutcome,
+  GDI_ACTION_TYPE,
+  GDI_OUTCOME_TYPE,
 } from "../lib/decision-outcomes/index.js";
 import {
   loadGdiCommercialProgressionBySubject,
@@ -469,6 +474,68 @@ export async function postGdiFeedback(req, res) {
   });
 }
 
+/**
+ * Authenticated customer validation — same field contract as share validation.
+ * Writes share-validation store + canonical Decision Events.
+ */
+export async function postGdiCustomerValidation(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  const opportunityId = String(req.params.opportunityId || "").trim();
+  const doc = await loadOppDoc(hotelId);
+  const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
+  if (!opportunity || opportunity.priority === "DISQUALIFIED") {
+    return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+  }
+  try {
+    const body = req.body || {};
+    const { item } = saveShareValidationItem(hotelId, {
+      opportunityId,
+      validator:
+        body.validator ||
+        req.dealalityUser?.email ||
+        req.dealalityUser?.id ||
+        "AUTH_REVIEWER",
+      familiarityStatus: body.familiarityStatus || null,
+      commercialValue: body.commercialValue || null,
+      contactPersonAssessment: body.contactPersonAssessment || null,
+      emailAssessment: body.emailAssessment || null,
+      phoneAssessment: body.phoneAssessment || null,
+      note: body.note || "",
+    });
+
+    await ingestGdiShareValidation({
+      hotelId,
+      opportunityId,
+      opportunity,
+      validation: item,
+      actor: {
+        userId: req.dealalityUser?.email || req.dealalityUser?.id || "AUTH_REVIEWER",
+        role: req.dealalityUser?.role || "OTHER",
+      },
+    });
+
+    return res.json({
+      ok: true,
+      validation: {
+        familiarityStatus: item.familiarityStatus,
+        commercialValue: item.commercialValue,
+        contactPersonAssessment: item.contactPersonAssessment,
+        emailAssessment: item.emailAssessment,
+        phoneAssessment: item.phoneAssessment,
+        note: item.note || "",
+        validatedAt: item.validatedAt,
+      },
+    });
+  } catch (err) {
+    if (err.code === "invalid_share_validation") {
+      return res.status(400).json({ ok: false, error: err.code, errors: err.errors });
+    }
+    console.error("[gdi] auth customer validation failed", err);
+    return res.status(500).json({ ok: false, error: "customer_validation_failed" });
+  }
+}
+
 export function getGdiFeedback(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
@@ -524,6 +591,10 @@ export async function getGdiShareResolve(req, res) {
     mode: "read_only",
     capabilities: verified.capabilities || verified.claims.capabilities || [],
     canValidate: (verified.capabilities || []).includes("CAN_VALIDATE"),
+    canRecordAction: (verified.capabilities || []).includes("CAN_RECORD_ACTION"),
+    canRecordOutcome: (verified.capabilities || []).includes(
+      "CAN_RECORD_OUTCOME"
+    ),
     pilotLabel: "Pilot",
     hotelId,
     hotelName: profile?.identity?.hotelName || "Hotel",
@@ -821,6 +892,154 @@ export async function getGdiShareValidation(req, res) {
     })),
     summary,
   });
+}
+
+function requireShareCapability(verified, res, capability) {
+  const caps = verified.capabilities || [];
+  if (!caps.includes(capability)) {
+    res.status(403).json({
+      ok: false,
+      error: "SHARE_SURFACE",
+      code: "SHARE_SURFACE",
+      message:
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
+    });
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Share-token ACTION write → canonical Decision Events.
+ * Requires CAN_RECORD_ACTION (registry grant or explicit token capability).
+ */
+export async function postGdiShareAction(req, res) {
+  const verified = requireGdiShare(req, res, "opportunity_detail");
+  if (!verified) return;
+  if (!requireShareCapability(verified, res, "CAN_RECORD_ACTION")) return;
+
+  const hotelId = String(req.params.hotelId || "").trim();
+  const opportunityId = String(req.params.opportunityId || "").trim();
+  if (hotelId !== verified.claims.hotelId) {
+    return res.status(403).json({
+      ok: false,
+      error: "SHARE_HOTEL_SCOPE",
+      code: "SHARE_HOTEL_SCOPE",
+      message:
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
+    });
+  }
+  const doc = await loadOppDoc(hotelId);
+  const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
+  if (!opportunity || opportunity.priority === "DISQUALIFIED") {
+    return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+  }
+  const actionType = String(req.body?.actionType || "").trim();
+  if (!actionType || !Object.values(GDI_ACTION_TYPE).includes(actionType)) {
+    return res.status(400).json({ ok: false, error: "invalid_action_type" });
+  }
+  try {
+    const ensured = await ensureGdiOpportunityDecision({ hotelId, opportunity });
+    const decision = ensured.decision;
+    if (!decision) {
+      return res.status(500).json({ ok: false, error: "decision_ensure_failed" });
+    }
+    const result = await recordAction(hotelId, decision.decisionId, {
+      actionType,
+      actionDate: req.body?.actionDate || new Date().toISOString(),
+      sourceSurface: "gdi_share",
+      displayName: req.body?.displayName || "Share reviewer",
+      userId: req.body?.validator || "SHARE_REVIEWER",
+      provenance: {
+        tokenId: verified.claims.tid,
+        opportunityId,
+        source: "CUSTOMER_SHARE",
+      },
+    });
+    return res.status(201).json({
+      ok: true,
+      decisionId: decision.decisionId,
+      event: result.event,
+      created: result.created !== false,
+      current: result.current,
+      commercialProgression: result.current?.commercialProgression || null,
+    });
+  } catch (err) {
+    console.error("[gdi] share action failed", err);
+    return res.status(500).json({
+      ok: false,
+      error: err.code || "share_action_failed",
+      message: err.message,
+    });
+  }
+}
+
+/**
+ * Share-token OUTCOME write → canonical Decision Events.
+ * Requires CAN_RECORD_OUTCOME.
+ */
+export async function postGdiShareOutcome(req, res) {
+  const verified = requireGdiShare(req, res, "opportunity_detail");
+  if (!verified) return;
+  if (!requireShareCapability(verified, res, "CAN_RECORD_OUTCOME")) return;
+
+  const hotelId = String(req.params.hotelId || "").trim();
+  const opportunityId = String(req.params.opportunityId || "").trim();
+  if (hotelId !== verified.claims.hotelId) {
+    return res.status(403).json({
+      ok: false,
+      error: "SHARE_HOTEL_SCOPE",
+      code: "SHARE_HOTEL_SCOPE",
+      message:
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
+    });
+  }
+  const doc = await loadOppDoc(hotelId);
+  const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
+  if (!opportunity || opportunity.priority === "DISQUALIFIED") {
+    return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+  }
+  const outcomeType = String(req.body?.outcomeType || "").trim();
+  if (!outcomeType || !Object.values(GDI_OUTCOME_TYPE).includes(outcomeType)) {
+    return res.status(400).json({ ok: false, error: "invalid_outcome_type" });
+  }
+  try {
+    const ensured = await ensureGdiOpportunityDecision({ hotelId, opportunity });
+    const decision = ensured.decision;
+    if (!decision) {
+      return res.status(500).json({ ok: false, error: "decision_ensure_failed" });
+    }
+    const result = await recordOutcome(hotelId, decision.decisionId, {
+      outcomeType,
+      outcomeReason: req.body?.outcomeReason || req.body?.lossReason || null,
+      outcomeNote: req.body?.note || null,
+      outcomeDate: req.body?.outcomeDate || new Date().toISOString(),
+      causalConfidence: "UNKNOWN",
+      sourceSurface: "gdi_share",
+      displayName: req.body?.displayName || "Share reviewer",
+      userId: req.body?.validator || "SHARE_REVIEWER",
+      provenance: {
+        tokenId: verified.claims.tid,
+        opportunityId,
+        source: "CUSTOMER_SHARE",
+      },
+    });
+    return res.status(201).json({
+      ok: true,
+      decisionId: decision.decisionId,
+      event: result.event,
+      created: result.created !== false,
+      current: result.current,
+      commercialProgression: result.current?.commercialProgression || null,
+    });
+  } catch (err) {
+    console.error("[gdi] share outcome failed", err);
+    return res.status(500).json({
+      ok: false,
+      error: err.code || "share_outcome_failed",
+      message: err.message,
+    });
+  }
 }
 
 /** Admin-only: issue share token */

@@ -159,22 +159,144 @@
   }
 
   function validationFormHtml(o) {
+    var caps = (state.resolve && state.resolve.capabilities) || [];
     var canValidate =
       state.resolve &&
       (state.resolve.canValidate === true ||
-        (Array.isArray(state.resolve.capabilities) &&
-          state.resolve.capabilities.indexOf("CAN_VALIDATE") >= 0) ||
-        // Legacy resolve payloads without capabilities still allow validation
-        // when opportunity_detail surface was granted (pre-capability tokens).
+        caps.indexOf("CAN_VALIDATE") >= 0 ||
         (!state.resolve.capabilities &&
           Array.isArray(state.resolve.surfaces) &&
           state.resolve.surfaces.indexOf("opportunity_detail") >= 0));
+    var canRecordAction =
+      state.resolve &&
+      (state.resolve.canRecordAction === true ||
+        caps.indexOf("CAN_RECORD_ACTION") >= 0);
+    var canRecordOutcome =
+      state.resolve &&
+      (state.resolve.canRecordOutcome === true ||
+        caps.indexOf("CAN_RECORD_OUTCOME") >= 0);
+    if (UI.customerFeedbackLifecycleHtml) {
+      return UI.customerFeedbackLifecycleHtml(
+        o,
+        state.validationEnums,
+        {
+          canValidate: !!canValidate,
+          canRecordAction: !!canRecordAction,
+          canRecordOutcome: !!canRecordOutcome,
+        },
+        o.commercialProgression || null
+      );
+    }
     if (UI.shareCustomerValidationFormHtml) {
       return UI.shareCustomerValidationFormHtml(o, state.validationEnums, {
         canValidate: canValidate,
       });
     }
     return "";
+  }
+
+  function wireLifecycleControls(opportunityId) {
+    wireValidationForm(opportunityId);
+
+    var outcomeEl = document.getElementById("gdiDoOutcome");
+    var lossWrap = document.getElementById("gdiDoLossWrap");
+    function syncLossVisibility() {
+      if (!lossWrap) return;
+      var show = outcomeEl && outcomeEl.value === "LOST";
+      lossWrap.hidden = !show;
+      if (!show) {
+        var lossEl = document.getElementById("gdiDoLoss");
+        if (lossEl) lossEl.value = "";
+      }
+    }
+    if (outcomeEl) {
+      outcomeEl.addEventListener("change", syncLossVisibility);
+      syncLossVisibility();
+    }
+
+    function showStatus(id, text) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.hidden = false;
+      el.textContent = text;
+    }
+
+    var actionBtn = document.getElementById("gdiDoActionSave");
+    if (actionBtn) {
+      actionBtn.addEventListener("click", function () {
+        var actionType = (document.getElementById("gdiDoAction") || {}).value || "";
+        if (!actionType) {
+          showStatus("gdiDoActionSaveStatus", "Select action...");
+          return;
+        }
+        showStatus("gdiDoActionSaveStatus", "Saving…");
+        apiPost(
+          "/api/group-demand-intelligence/share/hotels/" +
+            encodeURIComponent(state.hotelId) +
+            "/opportunities/" +
+            encodeURIComponent(opportunityId) +
+            "/actions",
+          { actionType: actionType, validator: "SHARE_REVIEWER" }
+        )
+          .then(function (data) {
+            if (data.commercialProgression) {
+              for (var i = 0; i < state.opportunities.length; i++) {
+                if (state.opportunities[i].id === opportunityId) {
+                  state.opportunities[i].commercialProgression =
+                    data.commercialProgression;
+                  break;
+                }
+              }
+            }
+            showStatus("gdiDoActionSaveStatus", "Saved");
+          })
+          .catch(function (err) {
+            showStatus("gdiDoActionSaveStatus", err.message || "Save failed");
+          });
+      });
+    }
+
+    var outcomeBtn = document.getElementById("gdiDoOutcomeSave");
+    if (outcomeBtn) {
+      outcomeBtn.addEventListener("click", function () {
+        var outcomeType =
+          (document.getElementById("gdiDoOutcome") || {}).value || "";
+        if (!outcomeType) {
+          showStatus("gdiDoOutcomeSaveStatus", "Select outcome...");
+          return;
+        }
+        var lossReason =
+          (document.getElementById("gdiDoLoss") || {}).value || null;
+        showStatus("gdiDoOutcomeSaveStatus", "Saving…");
+        apiPost(
+          "/api/group-demand-intelligence/share/hotels/" +
+            encodeURIComponent(state.hotelId) +
+            "/opportunities/" +
+            encodeURIComponent(opportunityId) +
+            "/outcomes",
+          {
+            outcomeType: outcomeType,
+            lossReason: lossReason,
+            validator: "SHARE_REVIEWER",
+          }
+        )
+          .then(function (data) {
+            if (data.commercialProgression) {
+              for (var j = 0; j < state.opportunities.length; j++) {
+                if (state.opportunities[j].id === opportunityId) {
+                  state.opportunities[j].commercialProgression =
+                    data.commercialProgression;
+                  break;
+                }
+              }
+            }
+            showStatus("gdiDoOutcomeSaveStatus", "Saved");
+          })
+          .catch(function (err) {
+            showStatus("gdiDoOutcomeSaveStatus", err.message || "Save failed");
+          });
+      });
+    }
   }
 
   function wireValidationForm(opportunityId) {
@@ -361,7 +483,7 @@
       });
       if (typeof drawer.showModal === "function") drawer.showModal();
       else drawer.setAttribute("open", "open");
-      wireValidationForm(o.id);
+      wireLifecycleControls(o.id);
     });
   }
 

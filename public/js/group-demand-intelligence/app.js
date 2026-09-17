@@ -900,81 +900,22 @@
       "</p><p>" +
       esc(o.summaryWhyMatters || "") +
       "</p></div>" +
-      '<div class="gdi-section gdi-section--validation gdi-validation-panel gdi-hotel-feedback">' +
-      "<h3>Hotel Validation</h3>" +
-      renderLifecycleSummary(decisionCurrent) +
-      '<p class="gdi-lede">Your feedback helps track this opportunity and improve future recommendations.</p>' +
-      '<div class="gdi-lifecycle-step" data-gdi-validation-mode="AUTH_FULL">' +
-      "<h4>Validation</h4>" +
-      "<p class=\"gdi-lifecycle-q\">Is this opportunity useful to your hotel?</p>" +
-      '<div class="gdi-feedback">' +
-      '<label>Familiarity<select id="gdiFbFamiliarity"><option value="">Select…</option><option>Never Seen</option><option>Familiar</option><option>Already Received</option><option>Already Pursuing</option></select></label>' +
-      '<label>Commercial Status<select id="gdiFbCommercial"><option value="">Select…</option><option>Worth Pursuing</option><option>Not a Fit</option><option>Already Lost</option><option>Already Won</option><option>Already Booked Elsewhere</option></select></label>' +
-      '<label>Value<select id="gdiFbValue"><option value="">Select…</option><option>Excellent</option><option>Useful</option><option>Marginal</option><option>No Incremental Value</option></select></label>' +
-      '<label>Incremental?<select id="gdiFbIncremental"><option value="">Select…</option><option value="NEW_TO_HOTEL">New to hotel</option><option value="ALREADY_KNOWN_USEFUL_ADDITIONAL">Already known / useful additional</option><option value="ALREADY_KNOWN_NO_INCREMENTAL">Already known / no incremental value</option><option value="DUPLICATE_OF_EXISTING_SALES_LEAD">Duplicate of existing sales lead</option><option value="NEW_TIMING_CONTACT_COMPETITIVE_INTEL">New timing / contact / competitive intel</option></select></label>' +
-      '<label>Qualification failure<select id="gdiFbFailReason"><option value="">Select…</option><option value="VENUE_ALREADY_SELECTED">Venue already selected</option><option value="HOTEL_ALREADY_SELECTED">Hotel already selected</option><option value="NO_OVERFLOW_OPPORTUNITY">No overflow opportunity</option><option value="EVENT_LOCATION_POOR_FIT">Event location poor fit</option><option value="ROOM_DEMAND_TOO_SMALL">Room demand too small</option><option value="MOST_ATTENDEES_LOCAL">Most attendees local</option><option value="WRONG_EVENT_CYCLE">Wrong event cycle</option><option value="CONTACT_NOT_RELEVANT">Contact not relevant</option><option value="DUPLICATE">Duplicate</option><option value="TOO_EARLY">Too early</option><option value="TOO_LATE">Too late</option><option value="WEAK_EVIDENCE">Weak evidence</option><option value="NOT_HOTEL_DEMAND">Not hotel demand</option><option value="OTHER">Other</option></select></label>' +
-      '<textarea id="gdiFbComment" placeholder="Optional comment"></textarea>' +
-      '<div class="gdi-validation-actions">' +
-      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiFbSave" data-id="' +
-      esc(o.id) +
-      '">Save Hotel Validation</button>' +
-      '<span class="gdi-validation-status" id="gdiFbSaveStatus" hidden></span>' +
-      "</div></div></div>" +
-      '<div class="gdi-lifecycle-step">' +
-      "<h4>Action</h4>" +
-      "<p class=\"gdi-lifecycle-q\">What did the team do?</p>" +
-      '<div class="gdi-feedback">' +
-      '<label>Action<select id="gdiDoAction"><option value="">Select action...</option>' +
-      '<option value="NOT_CONTACTED">Not Contacted</option>' +
-      '<option value="PLANNED_TO_CONTACT">Planned To Contact</option>' +
-      '<option value="CONTACTED">Contacted</option>' +
-      '<option value="FOLLOW_UP_REQUIRED">Follow Up Required</option>' +
-      '<option value="RFP_REQUESTED">RFP Requested</option>' +
-      '<option value="RFP_RECEIVED">RFP Received</option>' +
-      '<option value="SITE_VISIT_REQUESTED">Site Visit Requested</option>' +
-      '<option value="SITE_VISIT_COMPLETED">Site Visit Completed</option>' +
-      '<option value="PROPOSAL_SUBMITTED">Proposal Submitted</option>' +
-      '<option value="NEGOTIATING">Negotiating</option>' +
-      '<option value="NO_ACTION">No Action</option></select></label>' +
-      '<p class="gdi-lede">Add when there is an update.</p>' +
-      '<div class="gdi-validation-actions">' +
-      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiDoActionSave" data-id="' +
-      esc(o.id) +
-      '">Save Action</button>' +
-      '<span class="gdi-validation-status" id="gdiDoActionSaveStatus" hidden></span>' +
-      "</div></div></div>" +
-      '<div class="gdi-lifecycle-step">' +
-      "<h4>Outcome</h4>" +
-      "<p class=\"gdi-lifecycle-q\">What happened?</p>" +
-      '<div class="gdi-feedback">' +
-      '<label>Outcome<select id="gdiDoOutcome"><option value="">Select outcome...</option>' +
-      '<option value="WON">Won</option>' +
-      '<option value="LOST">Lost</option>' +
-      '<option value="BOOKED">Booked</option>' +
-      '<option value="NO_RESPONSE">No Response</option>' +
-      '<option value="NOT_QUALIFIED">Not Qualified</option>' +
-      '<option value="OPPORTUNITY_CLOSED">Opportunity Closed</option>' +
-      '<option value="DEFERRED">Deferred</option>' +
-      '<option value="ADDED_TO_SOURCED_PROPERTIES">Added to sourced properties</option>' +
-      '<option value="UNKNOWN">Unknown</option></select></label>' +
-      '<label id="gdiDoLossWrap" hidden>Loss reason<select id="gdiDoLoss"><option value="">Select loss reason...</option>' +
-      '<option value="RATE">Rate</option>' +
-      '<option value="AVAILABILITY">Availability</option>' +
-      '<option value="LOCATION">Location</option>' +
-      '<option value="MEETING_SPACE">Meeting Space</option>' +
-      '<option value="BRAND">Brand</option>' +
-      '<option value="COMPETITOR">Competitor</option>' +
-      '<option value="ROOM_BLOCK">Room Block</option>' +
-      '<option value="DATES">Dates</option>' +
-      '<option value="NO_RESPONSE">No Response</option>' +
-      '<option value="OTHER">Other</option>' +
-      '<option value="UNKNOWN">Unknown</option></select></label>' +
-      '<div class="gdi-validation-actions">' +
-      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiDoOutcomeSave" data-id="' +
-      esc(o.id) +
-      '">Save Outcome</button>' +
-      '<span class="gdi-validation-status" id="gdiDoOutcomeSaveStatus" hidden></span>' +
-      "</div></div></div></div>"
+      '<div class="gdi-customer-lifecycle-host">' +
+      (UI.customerFeedbackLifecycleHtml
+        ? UI.customerFeedbackLifecycleHtml(
+            o,
+            UI.CUSTOMER_VALIDATION_ENUMS || {},
+            {
+              canValidate: true,
+              canRecordAction: true,
+              canRecordOutcome: true,
+            },
+            (decisionCurrent && decisionCurrent.commercialProgression) ||
+              o.commercialProgression ||
+              null
+          )
+        : "") +
+      "</div>"
     );
   }
 
@@ -1102,45 +1043,53 @@
         el.textContent = message;
       }
 
-      if (t && t.id === "gdiFbSave") {
+      if (t && (t.id === "gdiFbSave" || t.id === "gdiSvSave" || t.id === "gdiSvSaveNext")) {
         var id = t.getAttribute("data-id");
-        var familiarityEl = document.getElementById("gdiFbFamiliarity");
-        var commercialEl = document.getElementById("gdiFbCommercial");
-        var valueEl = document.getElementById("gdiFbValue");
-        var incrementalEl = document.getElementById("gdiFbIncremental");
-        var failReasonEl = document.getElementById("gdiFbFailReason");
-        var comment = document.getElementById("gdiFbComment").value;
+        var statusId =
+          t.id === "gdiFbSave" ? "gdiFbSaveStatus" : "gdiSvStatus";
+        var familiarityEl =
+          document.getElementById("gdiSvFamiliarity") ||
+          document.getElementById("gdiFbFamiliarity");
+        var commercialEl =
+          document.getElementById("gdiSvCommercial") ||
+          document.getElementById("gdiFbCommercial");
+        var personEl = document.getElementById("gdiSvPerson");
+        var emailEl = document.getElementById("gdiSvEmail");
+        var phoneEl = document.getElementById("gdiSvPhone");
+        var noteEl =
+          document.getElementById("gdiSvNote") ||
+          document.getElementById("gdiFbComment");
         var familiarity = familiarityEl ? familiarityEl.value : "";
         var commercialStatus = commercialEl ? commercialEl.value : "";
-        var value = valueEl ? valueEl.value : "";
-        var incrementalValueStatus = incrementalEl ? incrementalEl.value : "";
-        var qualificationFailureReason = failReasonEl ? failReasonEl.value : "";
+        var comment = noteEl ? noteEl.value : "";
+        if (!familiarity && !commercialStatus) {
+          showSaveOk(statusId, "Pick familiarity or commercial value.");
+          return;
+        }
         t.disabled = true;
         api(
           "/api/group-demand-intelligence/hotels/" +
             encodeURIComponent(state.hotelId) +
             "/opportunities/" +
             encodeURIComponent(id) +
-            "/feedback",
+            "/customer-validation",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              familiarity: familiarity || null,
-              commercialStatus: commercialStatus || null,
-              value: value || null,
-              quality: value || null,
-              salesOutcome: commercialStatus || "Not Reviewed",
-              incrementalValueStatus: incrementalValueStatus || null,
-              qualificationFailureReason: qualificationFailureReason || null,
-              comment: comment,
+              familiarityStatus: familiarity || null,
+              commercialValue: commercialStatus || null,
+              contactPersonAssessment: personEl ? personEl.value || null : null,
+              emailAssessment: emailEl ? emailEl.value || null : null,
+              phoneAssessment: phoneEl ? phoneEl.value || null : null,
+              note: comment || "",
+              validator: "AUTH_REVIEWER",
             }),
           }
         )
           .then(function () {
             t.disabled = false;
-            showSaveOk("gdiFbSaveStatus", "✓ Validation saved");
-            // Refresh projection for stage strip (best-effort)
+            showSaveOk(statusId, "✓ Validation saved");
             return api(
               "/api/hotels/" +
                 encodeURIComponent(state.hotelId) +
@@ -1156,8 +1105,9 @@
           })
           .catch(function (err) {
             t.disabled = false;
-            showSaveOk("gdiFbSaveStatus", err.message || "Failed");
+            showSaveOk(statusId, err.message || "Failed");
           });
+        return;
       }
 
       function ensureThenRecord(opportunityId, kind, payload, btn, statusId, okMessage) {
