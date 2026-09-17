@@ -279,6 +279,7 @@ import {
   postGdiIssueShare,
   postGdiRevokeShare,
 } from "./api/group-demand-intelligence.js";
+import { assertGdiShareProductionConfig } from "./lib/group-demand-intelligence/share/gdi-signed-share-capability-v1.js";
 import {
   postDecision,
   getDecisionById,
@@ -3322,6 +3323,13 @@ app.use((req, res, next) => {
 });
 
 const PORT = process.env.PORT || 8080;
+
+try {
+  assertGdiShareProductionConfig();
+} catch (err) {
+  console.error("[gdi-share] FATAL production config:", err.message);
+  process.exit(1);
+}
 
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);

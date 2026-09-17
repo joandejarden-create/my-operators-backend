@@ -1369,6 +1369,82 @@
     return { ok: hits.length === 0, hits: hits };
   }
 
+  /**
+   * Canonical customer Hotel Validation form (share + auth presentation).
+   * Permission context controls whether the form renders — same markup either way.
+   * permissionContext: { canValidate: boolean }
+   */
+  function enumSelectOptions(values, labels, selected) {
+    var opts = '<option value="">Select…</option>';
+    (values || []).forEach(function (val) {
+      var lab = (labels && labels[val]) || val;
+      opts +=
+        '<option value="' +
+        esc(val) +
+        '"' +
+        (selected === val ? " selected" : "") +
+        ">" +
+        esc(lab) +
+        "</option>";
+    });
+    return opts;
+  }
+
+  function shareCustomerValidationFormHtml(o, enums, permissionContext) {
+    if (!permissionContext || !permissionContext.canValidate) {
+      return (
+        '<p class="gdi-lede">Validation is not enabled on this access link. ' +
+        "Request an updated Dealality link if your team needs to record hotel validation.</p>"
+      );
+    }
+    var v = (o && o.shareValidation) || {};
+    var e = enums || {};
+    return (
+      '<p class="gdi-lede">Fast review for sales. Stored for learning — does not overwrite research evidence.</p>' +
+      '<div class="gdi-feedback gdi-hotel-validation-form" id="gdiShareValidation" data-gdi-validation-mode="SHARE_CUSTOMER">' +
+      "<label>Familiarity / Status<select id=\"gdiSvFamiliarity\">" +
+      enumSelectOptions(e.familiarityStatus, e.familiarityLabels, v.familiarityStatus) +
+      "</select></label>" +
+      "<label>Commercial Value<select id=\"gdiSvCommercial\">" +
+      enumSelectOptions(e.commercialValue, e.commercialValueLabels, v.commercialValue) +
+      "</select></label>" +
+      "<label>Contact Person<select id=\"gdiSvPerson\">" +
+      enumSelectOptions(e.contactPerson, e.contactPersonLabels, v.contactPersonAssessment) +
+      "</select></label>" +
+      "<label>Email Quality<select id=\"gdiSvEmail\">" +
+      enumSelectOptions(e.emailAssessment, e.emailAssessmentLabels, v.emailAssessment) +
+      "</select></label>" +
+      "<label>Phone Quality<select id=\"gdiSvPhone\">" +
+      enumSelectOptions(e.phoneAssessment, e.phoneAssessmentLabels, v.phoneAssessment) +
+      "</select></label>" +
+      '<textarea id="gdiSvNote" placeholder="Optional note" rows="2">' +
+      esc(v.note || "") +
+      "</textarea>" +
+      '<div class="gdi-validation-actions">' +
+      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiSvSave" data-id="' +
+      esc((o && o.id) || "") +
+      '">Save</button>' +
+      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiSvSaveNext" data-id="' +
+      esc((o && o.id) || "") +
+      '">Save + Next</button>' +
+      '<span class="gdi-validation-status" id="gdiSvStatus"></span></div></div>'
+    );
+  }
+
+  /** Customer-safe inactive-link copy (shared auth/share). */
+  function inactiveShareLinkHtml(message) {
+    var msg =
+      message ||
+      "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.";
+    return (
+      '<div class="gdi-error gdi-share-inactive" role="alert">' +
+      "<h2>Access link unavailable</h2>" +
+      "<p>" +
+      esc(msg) +
+      "</p></div>"
+    );
+  }
+
   root.DealalityGdiUi = {
     PRIORITY_DISPLAY: PRIORITY_DISPLAY,
     ACTION_STATUS_DISPLAY: ACTION_STATUS_DISPLAY,
@@ -1409,5 +1485,8 @@
     intelligenceDetailHtml: intelligenceDetailHtml,
     fitLabel: fitLabel,
     assertNoHotelHardcode: assertNoHotelHardcode,
+    shareCustomerValidationFormHtml: shareCustomerValidationFormHtml,
+    inactiveShareLinkHtml: inactiveShareLinkHtml,
+    enumSelectOptions: enumSelectOptions,
   };
 })(typeof window !== "undefined" ? window : globalThis);

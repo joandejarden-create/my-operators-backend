@@ -166,7 +166,9 @@
         "lib/group-demand-intelligence/canonical-contact-external-projection.js",
         "lib/group-demand-intelligence/canonical-contacts-store.js",
         "lib/group-demand-intelligence/share-validation.js",
-        "config/client-share/gdi-share-registry/active-tokens.json"
+        "config/client-share/gdi-share-registry/active-tokens.json",
+        "config/client-share/gdi-share-registry/revoked-token-ids.json",
+        "config/client-share/production-share-contract-tokens.json"
       ],
       "required_static_assets": [
         "/group-demand-intelligence-share.html",
@@ -185,7 +187,8 @@
       "required_server_route_markers": [
         "group-demand-intelligence-share.html",
         "/api/group-demand-intelligence/share/resolve",
-        "postGdiShareValidation"
+        "postGdiShareValidation",
+        "assertGdiShareProductionConfig"
       ],
       "html_entrypoints_for_static_refs": [
         "public/group-demand-intelligence-share.html"

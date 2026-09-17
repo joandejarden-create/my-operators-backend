@@ -131,6 +131,9 @@ try {
 console.log("\n--- assert:production-assets ---");
 runNode("scripts/assert-production-assets.mjs", ["--write-snapshot"]);
 
+console.log("\n--- verify:production-share-contract ---");
+runNode("scripts/verify-production-share-contract.mjs");
+
 console.log("\n--- test:production-routes-local ---");
 runNode("scripts/test-production-routes-local.mjs");
 
@@ -210,6 +213,20 @@ if (!skipPost) {
     fs.writeFileSync(recordPath, JSON.stringify(record, null, 2));
     console.error("FAIL: production smoke failed after upload — treat deploy as FAILED");
     process.exit(smoke.status || 1);
+  }
+  console.log("\n--- verify:production-share-contract --live ---");
+  const shareLive = spawnSync(
+    process.execPath,
+    ["scripts/verify-production-share-contract.mjs", "--live"],
+    { cwd: root, stdio: "inherit", env: process.env }
+  );
+  record.gates.postdeployShareContract = shareLive.status === 0 ? "PASS" : "FAIL";
+  if (shareLive.status !== 0) {
+    record.status = "POSTDEPLOY_SHARE_CONTRACT_FAILED";
+    record.finishedAt = new Date().toISOString();
+    fs.writeFileSync(recordPath, JSON.stringify(record, null, 2));
+    console.error("FAIL: existing client share token failed after deploy — treat as FAILED");
+    process.exit(shareLive.status || 1);
   }
 } else {
   console.warn("WARN skipped postdeploy smoke (DEALALITY_SKIP_POSTDEPLOY_SMOKE=1)");

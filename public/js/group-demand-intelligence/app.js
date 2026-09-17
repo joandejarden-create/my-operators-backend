@@ -857,11 +857,11 @@
       "</p><p>" +
       esc(o.summaryWhyMatters || "") +
       "</p></div>" +
-      '<div class="gdi-section gdi-hotel-feedback">' +
-      "<h3>Hotel Feedback</h3>" +
+      '<div class="gdi-section gdi-section--validation gdi-validation-panel gdi-hotel-feedback">' +
+      "<h3>Hotel Validation</h3>" +
       renderLifecycleSummary(decisionCurrent) +
       '<p class="gdi-lede">Your feedback helps track this opportunity and improve future recommendations.</p>' +
-      '<div class="gdi-lifecycle-step">' +
+      '<div class="gdi-lifecycle-step" data-gdi-validation-mode="AUTH_FULL">' +
       "<h4>Validation</h4>" +
       "<p class=\"gdi-lifecycle-q\">Is this opportunity useful to your hotel?</p>" +
       '<div class="gdi-feedback">' +

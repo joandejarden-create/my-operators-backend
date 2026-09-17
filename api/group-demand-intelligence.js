@@ -451,7 +451,10 @@ function requireGdiShare(req, res, requiredSurface) {
     res.status(403).json({
       ok: false,
       error: verified.code || verified.error,
-      message: "Invalid, expired, or unauthorized share link.",
+      code: verified.code || verified.error,
+      message:
+        verified.customerMessage ||
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
     });
     return null;
   }
@@ -466,7 +469,10 @@ export async function getGdiShareResolve(req, res) {
     return res.status(403).json({
       ok: false,
       error: verified.code || verified.error,
-      message: "Invalid, expired, or revoked share link.",
+      code: verified.code || verified.error,
+      message:
+        verified.customerMessage ||
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
     });
   }
   const hotelId = verified.claims.hotelId;
@@ -482,6 +488,8 @@ export async function getGdiShareResolve(req, res) {
   return res.json({
     ok: true,
     mode: "read_only",
+    capabilities: verified.capabilities || verified.claims.capabilities || [],
+    canValidate: (verified.capabilities || []).includes("CAN_VALIDATE"),
     pilotLabel: "Pilot",
     hotelId,
     hotelName: profile?.identity?.hotelName || "Hotel",
@@ -652,15 +660,31 @@ export async function getGdiShareOpportunityDetail(req, res) {
 
 /**
  * Share-token validation write — stores separately from research/canonical.
- * Uses opportunity_detail surface (present on existing Rad tokens).
+ * Requires CAN_VALIDATE (legacy tokens with opportunity_detail surface qualify).
  */
 export async function postGdiShareValidation(req, res) {
   const verified = requireGdiShare(req, res, "opportunity_detail");
   if (!verified) return;
+  const caps = verified.capabilities || [];
+  if (!caps.includes("CAN_VALIDATE")) {
+    return res.status(403).json({
+      ok: false,
+      error: "SHARE_SURFACE",
+      code: "SHARE_SURFACE",
+      message:
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
+    });
+  }
   const hotelId = String(req.params.hotelId || "").trim();
   const opportunityId = String(req.params.opportunityId || "").trim();
   if (hotelId !== verified.claims.hotelId) {
-    return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
+    return res.status(403).json({
+      ok: false,
+      error: "SHARE_HOTEL_SCOPE",
+      code: "SHARE_HOTEL_SCOPE",
+      message:
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
+    });
   }
   const doc = await loadOppDoc(hotelId);
   const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);

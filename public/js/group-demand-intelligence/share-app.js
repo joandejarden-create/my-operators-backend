@@ -65,9 +65,16 @@
 
   readPersistedBrowse();
 
-  function showError(msg) {
+  function showError(msg, code) {
     if (loading) loading.style.display = "none";
-    root.innerHTML = '<div class="gdi-error" role="alert"><p>' + esc(msg) + "</p></div>";
+    var customerMsg =
+      msg ||
+      "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.";
+    if (UI.inactiveShareLinkHtml) {
+      root.innerHTML = UI.inactiveShareLinkHtml(customerMsg);
+      return;
+    }
+    root.innerHTML = '<div class="gdi-error" role="alert"><p>' + esc(customerMsg) + "</p></div>";
   }
 
   function formatDate(iso) {
@@ -86,7 +93,12 @@
     return fetch(path + sep + "share=" + encodeURIComponent(share)).then(function (r) {
       return r.json().then(function (data) {
         if (!r.ok || data.ok === false) {
-          throw new Error(data.message || data.error || "Request failed");
+          var err = new Error(
+            data.message ||
+              "This Dealality access link is no longer active. Please request an updated link from your Dealality contact."
+          );
+          err.code = data.code || data.error || "INTERNAL_ERROR";
+          throw err;
         }
         return data;
       });
@@ -147,38 +159,22 @@
   }
 
   function validationFormHtml(o) {
-    var v = o.shareValidation || {};
-    var e = state.validationEnums || {};
-    return (
-      '<p class="gdi-lede">Fast review for sales. Stored separately — does not overwrite research.</p>' +
-      '<div class="gdi-feedback" id="gdiShareValidation">' +
-      "<label>Familiarity / Status<select id=\"gdiSvFamiliarity\">" +
-      enumOptions(e.familiarityStatus, e.familiarityLabels, v.familiarityStatus) +
-      "</select></label>" +
-      "<label>Commercial Value<select id=\"gdiSvCommercial\">" +
-      enumOptions(e.commercialValue, e.commercialValueLabels, v.commercialValue) +
-      "</select></label>" +
-      "<label>Contact Person<select id=\"gdiSvPerson\">" +
-      enumOptions(e.contactPerson, e.contactPersonLabels, v.contactPersonAssessment) +
-      "</select></label>" +
-      "<label>Email Quality<select id=\"gdiSvEmail\">" +
-      enumOptions(e.emailAssessment, e.emailAssessmentLabels, v.emailAssessment) +
-      "</select></label>" +
-      "<label>Phone Quality<select id=\"gdiSvPhone\">" +
-      enumOptions(e.phoneAssessment, e.phoneAssessmentLabels, v.phoneAssessment) +
-      "</select></label>" +
-      '<textarea id="gdiSvNote" placeholder="Optional note" rows="2">' +
-      esc(v.note || "") +
-      "</textarea>" +
-      '<div class="gdi-validation-actions">' +
-      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiSvSave" data-id="' +
-      esc(o.id) +
-      '">Save</button>' +
-      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiSvSaveNext" data-id="' +
-      esc(o.id) +
-      '">Save + Next</button>' +
-      '<span class="gdi-validation-status" id="gdiSvStatus"></span></div></div>'
-    );
+    var canValidate =
+      state.resolve &&
+      (state.resolve.canValidate === true ||
+        (Array.isArray(state.resolve.capabilities) &&
+          state.resolve.capabilities.indexOf("CAN_VALIDATE") >= 0) ||
+        // Legacy resolve payloads without capabilities still allow validation
+        // when opportunity_detail surface was granted (pre-capability tokens).
+        (!state.resolve.capabilities &&
+          Array.isArray(state.resolve.surfaces) &&
+          state.resolve.surfaces.indexOf("opportunity_detail") >= 0));
+    if (UI.shareCustomerValidationFormHtml) {
+      return UI.shareCustomerValidationFormHtml(o, state.validationEnums, {
+        canValidate: canValidate,
+      });
+    }
+    return "";
   }
 
   function wireValidationForm(opportunityId) {
