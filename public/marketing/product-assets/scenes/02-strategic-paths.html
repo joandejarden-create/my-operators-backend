@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harbour House — Strategic Paths</title>
+  <link rel="stylesheet" href="/marketing/product-assets/scenes/product-assets-scenes.css" />
+</head>
+<body class="pa-capture" data-scene="02-strategic-paths" data-stage="0">
+  <div class="pa-frame" id="capture-root">
+    <div class="pa-topline">
+      <div class="pa-brand-mark"><span class="pa-brand-mark__dot" aria-hidden="true"></span>Strategic Paths</div>
+      <span class="pa-illus">Illustrative Opportunity</span>
+    </div>
+
+    <header class="pa-header">
+      <h1>Harbour House Hotel</h1>
+      <p class="pa-sub">One hotel · five credible paths · shortlist before outreach</p>
+      <div class="pa-meta">
+        <span class="pa-chip pa-chip--accent">Cartagena · 118 keys</span>
+        <span class="pa-chip">Owner goals · ADR quality · control · flexibility</span>
+      </div>
+    </header>
+
+    <div class="pa-grid pa-grid--paths" style="margin-top:20px" id="paths">
+      <article class="pa-path" data-path="0">
+        <span class="pa-path__tag">Path A</span>
+        <h3>Soft-brand conversion</h3>
+        <p>Distribution + standards with lighter brand presence.</p>
+        <ul>
+          <li><strong>Fit:</strong> upscale leisure guests</li>
+          <li><strong>Limit:</strong> soft-brand PIP still material</li>
+          <li><strong>Unknown:</strong> territory terms</li>
+        </ul>
+        <div class="pa-path__fit">Strong cultural fit</div>
+      </article>
+
+      <article class="pa-path" data-path="1">
+        <span class="pa-path__tag">Path B</span>
+        <h3>Independent lifestyle</h3>
+        <p>Reposition as design-led independent with selective partnerships.</p>
+        <ul>
+          <li><strong>Fit:</strong> character preservation</li>
+          <li><strong>Limit:</strong> weaker global demand</li>
+          <li><strong>Unknown:</strong> marketing lift</li>
+        </ul>
+        <div class="pa-path__fit pa-path__fit--warn">Keep as comparator</div>
+      </article>
+
+      <article class="pa-path" data-path="2">
+        <span class="pa-path__tag">Path C</span>
+        <h3>Third-party operator</h3>
+        <p>Professional management without forcing a hard flag.</p>
+        <ul>
+          <li><strong>Fit:</strong> ops upgrade path</li>
+          <li><strong>Limit:</strong> fee stack vs control</li>
+          <li><strong>Unknown:</strong> F&amp;B model</li>
+        </ul>
+        <div class="pa-path__fit">Strong ops case</div>
+      </article>
+
+      <article class="pa-path" data-path="3">
+        <span class="pa-path__tag">Path D</span>
+        <h3>Branded residences</h3>
+        <p>Explore limited residential overlay on adjacent parcel.</p>
+        <ul>
+          <li><strong>Fit:</strong> long-term value</li>
+          <li><strong>Limit:</strong> zoning / capital intensity</li>
+          <li><strong>Unknown:</strong> entitlement path</li>
+        </ul>
+        <div class="pa-path__fit pa-path__fit--warn">Later-phase only</div>
+      </article>
+
+      <article class="pa-path" data-path="4">
+        <span class="pa-path__tag">Path E</span>
+        <h3>Capital / strategic partner</h3>
+        <p>Bring partner capital while retaining operating optionality.</p>
+        <ul>
+          <li><strong>Fit:</strong> PIP funding flexibility</li>
+          <li><strong>Limit:</strong> governance trade-offs</li>
+          <li><strong>Unknown:</strong> preferred return</li>
+        </ul>
+        <div class="pa-path__fit">Shortlist candidate</div>
+      </article>
+    </div>
+
+    <section class="pa-panel" style="margin-top:14px" data-fade data-on-stage="6">
+      <h3>Shortlist view</h3>
+      <p style="margin:0;color:#dbe6f8;font-size:13px;line-height:1.5">
+        Pursue <strong style="color:#fff">Soft-brand conversion</strong>, <strong style="color:#fff">Third-party operator</strong>, and
+        <strong style="color:#fff">Capital / strategic partner</strong>. Hold independent lifestyle as a comparator. Defer branded residences pending entitlement clarity.
+      </p>
+    </section>
+
+    <p class="pa-disclaimer">Illustrative paths only. Fictional brands, operators, and capital parties — no endorsement implied.</p>
+    <div class="pa-stage-label" id="stage-label">Stage 0</div>
+  </div>
+  <script src="/marketing/product-assets/scenes/scene-controller.js"></script>
+  <script>
+    window.__paSceneHooks = {
+      applyStage: function (stage) {
+        var paths = document.querySelectorAll('.pa-path');
+        paths.forEach(function (el, i) {
+          el.classList.remove('is-visible', 'is-shortlisted', 'is-dimmed');
+          if (stage >= i + 1) el.classList.add('is-visible');
+          if (stage >= 6) {
+            if (i === 0 || i === 2 || i === 4) el.classList.add('is-shortlisted');
+            else el.classList.add('is-dimmed');
+          }
+        });
+      }
+    };
+  </script>
+</body>
+</html>
