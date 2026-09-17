@@ -1,0 +1,143 @@
+{
+  "hotelId": "recgMYovrrZDJMqzX",
+  "displayName": "Waterstone Resort & Marina Boca Raton",
+  "hotelIdentityStatus": "CANONICAL_HPC",
+  "aliases": {
+    "adpPropertyId": "adp_waterstone_boca_raton",
+    "hiltonPropertyPath": "bocar-curio",
+    "censusRecordId": "recgMYovrrZDJMqzX",
+    "provisionalGdiHotelId": "gdi_hotel_waterstone_boca_raton",
+    "note": "Canonical hotelId is HPC record. Provisional GDI key retained as alias only."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/waterstone-property-profile.json",
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 25,
+    "coreTargetPeakRoomsMax": 100,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": true,
+    "notes": "HOTEL_SPECIFIC_DATA derived from ADP rooms=139 and meeting space (~18.9k sq ft / Atlantic Ballroom ~225 theater). Peak-room band sized for realistic primary pursuit; overflow/reactivation may exceed band. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions (Waterstone GDI first-run law)."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 139,
+    "totalMeetingSpaceSqFt": 18899,
+    "largestBallroomSqFt": 4650,
+    "largestTheaterCapacity": 225,
+    "meetingRoomsIndoor": 4,
+    "outdoorEventSpace": true,
+    "marinaAccess": true,
+    "softBrand": "Curio Collection by Hilton",
+    "serviceLevel": "full_service_resort",
+    "classification": "resort_marina_coastal",
+    "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture — not hardcoded into scoring engine."
+  },
+  "demandTerritory": {
+    "label": "South Florida / Palm Beach",
+    "includes": [
+      "Boca Raton",
+      "Palm Beach County",
+      "Delray Beach / Deerfield Beach corridor where commercially relevant",
+      "broader South Florida where Waterstone is a credible alternative"
+    ],
+    "evaluationQuestion": "Could Waterstone Resort & Marina realistically compete for this group demand?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Boca Raton / Palm Beach Core",
+      "TERRITORY_NEARBY": "Nearby Palm Beach / Broward Corridor",
+      "TERRITORY_COMPETITIVE": "South Florida Competitive",
+      "TERRITORY_STRETCH": "South Florida Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "boca raton",
+        "boca",
+        "mizner",
+        "intracoastal",
+        "palm beach county"
+      ],
+      "TERRITORY_NEARBY": [
+        "delray",
+        "deerfield",
+        "boynton",
+        "pompano",
+        "coral springs",
+        "west palm"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "fort lauderdale",
+        "fll",
+        "palm beach",
+        "jupiter",
+        "miami gardens"
+      ],
+      "TERRITORY_STRETCH": [
+        "miami",
+        "miami beach",
+        "tampa",
+        "naples",
+        "orlando"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "jacksonville",
+        "atlanta",
+        "new york",
+        "national convention 5000",
+        "las vegas",
+        "chicago"
+      ]
+    },
+    "notes": "HOTEL_SPECIFIC_DATA. Generic class codes (TERRITORY_*) are REUSABLE_PRODUCT_LOGIC; keyword maps and displayLabels are hotel/market config."
+  },
+  "competitiveContext": {
+    "strCompSet": [
+      {
+        "name": "The Boca Raton",
+        "class": "STR_COMP_SET",
+        "source": "adp_declared_comp_set_read_only"
+      },
+      {
+        "name": "Boca Beach Club",
+        "class": "STR_COMP_SET",
+        "source": "adp_declared_comp_set_read_only"
+      },
+      {
+        "name": "Renaissance Boca Raton Hotel",
+        "class": "STR_COMP_SET",
+        "source": "adp_declared_comp_set_read_only"
+      },
+      {
+        "name": "Marriott Boca Raton",
+        "class": "STR_COMP_SET",
+        "source": "adp_declared_comp_set_read_only"
+      },
+      {
+        "name": "Hilton Boca Raton Suites",
+        "class": "STR_COMP_SET",
+        "source": "adp_declared_comp_set_read_only"
+      },
+      {
+        "name": "Wyndham Boca Raton",
+        "class": "STR_COMP_SET",
+        "source": "adp_declared_comp_set_read_only"
+      }
+    ],
+    "relevantGroupDemandAlternatives": [],
+    "notes": "HOTEL_SPECIFIC_DATA from ADP declaredCompSet — resolve to Dealality entities when available."
+  },
+  "identityExclusions": [],
+  "gdiOnboarding": {
+    "status": "FIRST_RUN_PORTABILITY",
+    "pilotGeneration": 2,
+    "reuseAdpProfile": true,
+    "paidEnrichmentEnabled": false,
+    "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING"
+  }
+}

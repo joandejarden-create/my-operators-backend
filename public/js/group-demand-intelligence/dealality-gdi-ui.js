@@ -335,19 +335,49 @@
     var propertyLabel = location ? name + " — " + location : name;
     var mode = opts.mode === "share" ? "share" : "auth";
     var hotelId = opts.hotelId || "";
+    var hotels = Array.isArray(opts.hotels) ? opts.hotels : null;
 
-    var propertyField =
-      mode === "share" || opts.readOnlyProperty
-        ? '<div class="filter-group filter-group--grow"><label class="filter-label">Property</label>' +
-          '<div class="filter-select gdi-filter-static">' +
-          esc(propertyLabel) +
-          "</div></div>"
-        : '<div class="filter-group filter-group--grow"><label class="filter-label" for="gdiHotel">Property</label>' +
-          '<select class="filter-select" id="gdiHotel"><option value="' +
-          esc(hotelId) +
-          '">' +
-          esc(propertyLabel) +
-          "</option></select></div>";
+    var propertyField;
+    if (mode === "share" || opts.readOnlyProperty) {
+      propertyField =
+        '<div class="filter-group filter-group--grow"><label class="filter-label">Property</label>' +
+        '<div class="filter-select gdi-filter-static">' +
+        esc(propertyLabel) +
+        "</div></div>";
+    } else if (hotels && hotels.length) {
+      var options = hotels
+        .map(function (h) {
+          var id = h.hotelId || "";
+          var label =
+            h.optionLabel ||
+            (h.locationLine
+              ? (h.hotelName || h.displayName || id) + " — " + h.locationLine
+              : h.hotelName || h.displayName || id);
+          return (
+            '<option value="' +
+            esc(id) +
+            '"' +
+            (id === hotelId ? " selected" : "") +
+            ">" +
+            esc(label) +
+            "</option>"
+          );
+        })
+        .join("");
+      propertyField =
+        '<div class="filter-group filter-group--grow"><label class="filter-label" for="gdiHotel">Property</label>' +
+        '<select class="filter-select" id="gdiHotel" aria-label="Select GDI hotel">' +
+        options +
+        "</select></div>";
+    } else {
+      propertyField =
+        '<div class="filter-group filter-group--grow"><label class="filter-label" for="gdiHotel">Property</label>' +
+        '<select class="filter-select" id="gdiHotel"><option value="' +
+        esc(hotelId) +
+        '">' +
+        esc(propertyLabel) +
+        "</option></select></div>";
+    }
 
     return (
       '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection">' +

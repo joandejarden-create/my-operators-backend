@@ -1,5 +1,6 @@
-﻿
 # Keep Railway uploads lean — local-only / generated bulk paths
+# Cloudflare rejects CLI uploads over ~200MB (413 Payload Too Large).
+artifacts/
 matcha/
 # Lean-exclude report trees, but keep the customer BPP published pack deployable.
 reports/*
@@ -18,20 +19,55 @@ deploy-census-v4-worker-v3c/
 deploy-census-v4-worker-v3d/
 security/
 .agents/
+strix_runs/
+tmp/
 tmp-*/
+*.tgz
+_railway-test.tgz
+# Non-runtime marketing / fixture / docs bulk (safe for share surfaces)
+public/marketing/qa-shots/
+public/marketing/screenshots/
+fixtures/choice-fdd-text/
+docs/old-home-problem-deal-desk-snapshots-cinematic/
+docs/old-home-problem-deal-desk-snapshots-cinematic-webflow/
+docs/old-home-manual-process-staging-qa-20260731/
+docs/old-home-problem-deal-desk-snapshots-phaseB/
+docs/old-home-deal-desk-phaseB2-qa/
+docs/old-home-problem-deal-desk-snapshots-v2/
+docs/old-home-problem-deal-desk-snapshots/
+docs/old-home-problem-deal-desk-snapshots-staging/
+docs/old-home-problem-phase1b-snapshots/
 # Ignore data contents (not the directory node) so ADP un-ignores can take effect.
 data/*
 # ADP customer SoT only — published snapshots + certified period runtimes (not full history corpora).
 !data/ai-demand-positioning/
 !data/ai-demand-positioning/published/
 !data/ai-demand-positioning/published/**
+# Drop non-customer ADP corpora under the un-ignored tree
+data/ai-demand-positioning/editions/
+data/ai-demand-positioning/editions/**
+data/ai-demand-positioning/corrections/
+data/ai-demand-positioning/corrections/**
+data/ai-demand-positioning/archive/
+data/ai-demand-positioning/archive/**
+data/ai-demand-positioning/admin-reviews/
+data/ai-demand-positioning/admin-reviews/**
+data/ai-demand-positioning/leak-audit/
+data/ai-demand-positioning/leak-audit/**
+data/ai-demand-positioning/baselines/
+data/ai-demand-positioning/baselines/**
+data/ai-demand-positioning/contracts/
+data/ai-demand-positioning/contracts/**
 # Group Demand Intelligence Bethesda pilot pack (file-backed opportunities + canonical contacts for share)
 !data/group-demand-intelligence/
 !data/group-demand-intelligence/hotels/
 !data/group-demand-intelligence/hotels/**
-# Exclude GDI eval/runtime corpora from Railway upload (keep hotel packs only)
+# Exclude GDI eval/research corpora from Railway upload (keep hotel packs only)
 data/group-demand-intelligence/evals/
 data/group-demand-intelligence/evals/**
+data/group-demand-intelligence/research-artifacts/
+data/group-demand-intelligence/research-artifacts/**
+data/group-demand-intelligence/*.json
 # Owner-app property allowlist (admin emails / assignments — not share tokens)
 !data/ai-demand-positioning/owner-property-access/
 !data/ai-demand-positioning/owner-property-access/**
@@ -55,12 +91,13 @@ data/ai-demand-positioning/runtime/*
 !data/ai-demand-positioning/runtime/adp_period_adp_hotel_phillips_kansas_city_20260903003324_88084d.json
 !data/ai-demand-positioning/runtime/adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437.json
 !data/ai-demand-positioning/runtime/adp_period_adp_now_now_noho_20260903014340_520794.json
-# Brand AI Visibility V1 pilot measured baseline (no raw monitoring corpora / experiments)
-!data/ai-visibility/runtime/wave1-showcase/
-!data/ai-visibility/runtime/wave1-showcase/**
-!data/ai-visibility/runtime/provider-baselines/
-!data/ai-visibility/runtime/provider-baselines/**
-# BAI Period 2 certified customer longitudinal (immutable). Exclude Aug 18 Period 1.
+# Brand AI: parent-chain un-ignore so nested allowlists work under data/*
+!data/ai-visibility/
+data/ai-visibility/*
+!data/ai-visibility/runtime/
+data/ai-visibility/runtime/*
+# Customer SoT = Period 2 longitudinal (immutable). Do NOT ship wave1/provider-baselines
+# (~130MB) — exceeds Cloudflare railway-up limit; federated baseline remains on prior disks only.
 !data/ai-visibility/runtime/brand-longitudinal/
 !data/ai-visibility/runtime/brand-longitudinal/aiv_brand_longitudinal_period_20260902_d3d713/
 !data/ai-visibility/runtime/brand-longitudinal/aiv_brand_longitudinal_period_20260902_d3d713/**

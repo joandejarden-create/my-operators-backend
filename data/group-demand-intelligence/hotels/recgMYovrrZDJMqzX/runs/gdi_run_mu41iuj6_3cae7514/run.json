@@ -1,0 +1,386 @@
+{
+  "id": "gdi_run_mu41iuj6_3cae7514",
+  "hotelId": "gdi_hotel_waterstone_boca_raton",
+  "status": "COMPLETED",
+  "productVersion": "group-demand-intelligence-v1.0.0",
+  "startedAt": "2026-09-16T11:51:43.891Z",
+  "completedAt": "2026-09-16T11:51:43.940Z",
+  "trigger": "waterstone_gdi_second_run_a1_a3",
+  "discoveryMode": "INDEPENDENT_CANDIDATES",
+  "configuration": {
+    "demandConfig": {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "displayName": "Waterstone Resort & Marina",
+      "aliases": {
+        "adpPropertyId": "adp_waterstone_boca_raton",
+        "hiltonPropertyPath": "bocar-curio",
+        "censusRecordId": null,
+        "note": "HOTEL_SPECIFIC_DATA. Provisional GDI product key until Hotel Property Census link exists (ADP census-links: pending_census_match). ADP id is read-only alias."
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/waterstone-property-profile.json",
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 25,
+        "coreTargetPeakRoomsMax": 100,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": true,
+        "notes": "HOTEL_SPECIFIC_DATA derived from ADP rooms=139 and meeting space (~18.9k sq ft / Atlantic Ballroom ~225 theater). Peak-room band sized for realistic primary pursuit; overflow/reactivation may exceed band. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions (Waterstone GDI first-run law)."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 139,
+        "totalMeetingSpaceSqFt": 18899,
+        "largestBallroomSqFt": 4650,
+        "largestTheaterCapacity": 225,
+        "meetingRoomsIndoor": 4,
+        "outdoorEventSpace": true,
+        "marinaAccess": true,
+        "softBrand": "Curio Collection by Hilton",
+        "serviceLevel": "full_service_resort",
+        "classification": "resort_marina_coastal",
+        "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture — not hardcoded into scoring engine."
+      },
+      "demandTerritory": {
+        "label": "South Florida / Palm Beach",
+        "includes": [
+          "Boca Raton",
+          "Palm Beach County",
+          "Delray Beach / Deerfield Beach corridor where commercially relevant",
+          "broader South Florida where Waterstone is a credible alternative"
+        ],
+        "evaluationQuestion": "Could Waterstone Resort & Marina realistically compete for this group demand?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "Boca Raton / Palm Beach Core",
+          "TERRITORY_NEARBY": "Nearby Palm Beach / Broward Corridor",
+          "TERRITORY_COMPETITIVE": "South Florida Competitive",
+          "TERRITORY_STRETCH": "South Florida Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "boca raton",
+            "boca",
+            "mizner",
+            "intracoastal",
+            "palm beach county"
+          ],
+          "TERRITORY_NEARBY": [
+            "delray",
+            "deerfield",
+            "boynton",
+            "pompano",
+            "coral springs",
+            "west palm"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "fort lauderdale",
+            "fll",
+            "palm beach",
+            "jupiter",
+            "miami gardens"
+          ],
+          "TERRITORY_STRETCH": [
+            "miami",
+            "miami beach",
+            "tampa",
+            "naples",
+            "orlando"
+          ],
+          "OUTSIDE_REALISTIC_TERRITORY": [
+            "jacksonville",
+            "atlanta",
+            "new york",
+            "national convention 5000",
+            "las vegas",
+            "chicago"
+          ]
+        },
+        "notes": "HOTEL_SPECIFIC_DATA. Generic class codes (TERRITORY_*) are REUSABLE_PRODUCT_LOGIC; keyword maps and displayLabels are hotel/market config."
+      },
+      "competitiveContext": {
+        "strCompSet": [
+          {
+            "name": "The Boca Raton",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "Boca Beach Club",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "Renaissance Boca Raton Hotel",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "Marriott Boca Raton",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "Hilton Boca Raton Suites",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "Wyndham Boca Raton",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          }
+        ],
+        "relevantGroupDemandAlternatives": [],
+        "notes": "HOTEL_SPECIFIC_DATA from ADP declaredCompSet — resolve to Dealality entities when available."
+      },
+      "identityExclusions": [],
+      "gdiOnboarding": {
+        "status": "FIRST_RUN_PORTABILITY",
+        "pilotGeneration": 2,
+        "reuseAdpProfile": true,
+        "paidEnrichmentEnabled": false,
+        "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING"
+      }
+    },
+    "webhoundHardCapUsd": 15,
+    "ampfyStatus": {
+      "provider": "ampfy",
+      "status": "provider_not_configured",
+      "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+    },
+    "methodsVersion": "gdi-research-methods-v1-experimental"
+  },
+  "providers": {
+    "dealality_existing_knowledge": true,
+    "gdi_research_methods": true,
+    "standard_web": true,
+    "ampfy": "provider_not_configured",
+    "apify": "not_invoked_pilot_default",
+    "webhound": {
+      "sessions": [
+        {
+          "sessionId": "98619702-e4ca-4ca5-9047-e6fd0ca8aa60",
+          "costUsd": null,
+          "url": "https://webhound.ai/session/98619702-e4ca-4ca5-9047-e6fd0ca8aa60",
+          "status": "pending_cost"
+        }
+      ],
+      "costUsd": 0,
+      "hardCapUsd": 15
+    }
+  },
+  "researchMethods": [
+    "GDI-ASSOC-EVENT-01",
+    "GDI-MED-SCI-01",
+    "GDI-HIST-MEETING-01",
+    "GDI-GOV-EVENT-01",
+    "GDI-WEEKEND-01",
+    "GDI-CONTACT-01",
+    "GDI-VENUE-HOUSING-01",
+    "GDI-ANCHOR-01"
+  ],
+  "metrics": {
+    "candidatesResearched": 29,
+    "opportunitiesQualified": 24,
+    "highPriorityCount": 0,
+    "mediumPriorityCount": 16,
+    "watchlistCount": 8,
+    "disqualifiedCount": 5,
+    "sourceCount": 32,
+    "duplicatesRemoved": 0,
+    "expiredRemoved": 0
+  },
+  "cost": {
+    "totalUsd": 0,
+    "webhoundUsd": 0,
+    "ampfyUsd": 0,
+    "apifyUsd": 0,
+    "serpApiUsd": 0,
+    "llmUsd": 0,
+    "standardSearchUsd": 0,
+    "otherUsd": 0,
+    "queryCount": 0,
+    "providerCallCount": 0,
+    "webhoundCalls": [],
+    "ampfyCalls": [],
+    "apifyCalls": [],
+    "escalationLog": [
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Load hotel group demand profile from Dealality knowledge",
+        "result": "started",
+        "at": "2026-09-16T11:51:43.892Z"
+      },
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Hotel profile from ADP RO fixture + GDI demand config",
+        "result": "ok",
+        "sources": [
+          "fixtures/ai-demand-positioning/waterstone-property-profile.json (READ_ONLY)",
+          "config/group-demand-intelligence/hotels/gdi_hotel_waterstone_boca_raton.json"
+        ],
+        "adpCanonicalReuse": {
+          "classification": "HOTEL_SPECIFIC_DATA",
+          "reusedFields": [
+            "name",
+            "address/city/state",
+            "brand/affiliation",
+            "rooms",
+            "meetingSpace",
+            "declaredCompSet",
+            "positioning",
+            "geography",
+            "attributes"
+          ],
+          "missingGdiCriticalFields": [
+            "censusRecordId (provisional GDI key in use)"
+          ],
+          "newlyResearchedFields": [],
+          "adpFixturePath": "fixtures/ai-demand-positioning/waterstone-property-profile.json",
+          "note": "No duplicate hotel profile created — ADP fixture consumed read-only."
+        },
+        "at": "2026-09-16T11:51:43.893Z"
+      },
+      {
+        "level": "L2_CANONICAL_DEALALITY_RESEARCH_METHODS",
+        "question": "Apply GDI experimental research methods / seed qualification",
+        "methods": [
+          "GDI-ASSOC-EVENT-01",
+          "GDI-MED-SCI-01",
+          "GDI-HIST-MEETING-01",
+          "GDI-GOV-EVENT-01",
+          "GDI-WEEKEND-01",
+          "GDI-CONTACT-01",
+          "GDI-VENUE-HOUSING-01",
+          "GDI-ANCHOR-01"
+        ],
+        "result": "ok",
+        "at": "2026-09-16T11:51:43.893Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Independent discovery candidates (no Bethesda seed path)",
+        "result": "ok",
+        "note": "Candidates supplied via seedCandidates / Webhound import — not Bethesda demand-type seeds",
+        "at": "2026-09-16T11:51:43.893Z"
+      },
+      {
+        "level": "L4_AMPFY_APIFY_SUPPLEMENTAL",
+        "question": "Ampfy/Apify supplemental enrichment",
+        "result": "provider_not_configured",
+        "ampfy": {
+          "provider": "ampfy",
+          "status": "provider_not_configured",
+          "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+        },
+        "apify": "not_invoked_pilot_default",
+        "at": "2026-09-16T11:51:43.893Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Ingest independent discovery candidates",
+        "result": "ok",
+        "candidateCount": 29,
+        "discoveryMode": "INDEPENDENT_CANDIDATES",
+        "note": "No Bethesda pilot seeds; no DMV expansion pass",
+        "at": "2026-09-16T11:51:43.925Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Waterstone Boca Raton GDI second-run (A1–A3 corrected engine)",
+        "result": "pending_cost",
+        "sessionId": "98619702-e4ca-4ca5-9047-e6fd0ca8aa60",
+        "at": "2026-09-16T11:51:43.940Z"
+      }
+    ],
+    "incrementalRoi": [],
+    "radFeedbackEnrichment": {
+      "pass": "rad_feedback_dmv_product_quality_v1",
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Product-quality enrichment only. Webhound hard cap unchanged; no additional Webhound spend in this pass (prior pilot already at/near $15).",
+      "appliedAt": "2026-09-16T11:51:43.935Z"
+    },
+    "qualificationPrecision": {
+      "pass": "qualification_precision_v1",
+      "commercialQaPass": "commercial_qa_high_retention_v1_20260915",
+      "commercialQaApplied": [],
+      "mediumContactNotes": {
+        "gdi_opp_amwa_2027_annual": {
+          "bucket": "A_WEAK_OR_INCOMPLETE_QUALIFICATION",
+          "note": "Venue TBD is promising, but room demand remains UNKNOWN and contact is a generic association inbox. Medium is correct — not merely a named-contact miss."
+        },
+        "gdi_opp_nice_2027": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / venue open / estimated rooms / NIST-adjacent — blocked from High only by generic inbox (nice@nist.gov). High contact rule is appropriately strict for 'act this week'; Medium correctly preserves the opportunity for contact deepening."
+        },
+        "gdi_opp_acts_ts27": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / DC venue TBD / estimated rooms / NIH-adjacent — blocked from High by unnamed staff desk. Do not auto-promote; deepen named meetings contact first."
+        }
+      },
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Precision re-score + commercial QA High retention check — no broad discovery, no additional Webhound spend.",
+      "appliedAt": "2026-09-16T11:51:43.939Z",
+      "priorityCounts": {
+        "HIGH_PRIORITY": 0,
+        "MEDIUM_PRIORITY": 16,
+        "WATCHLIST": 8,
+        "DISQUALIFIED": 5
+      }
+    },
+    "costPerDiscoveredOpportunityUsd": null,
+    "costPerQualifiedOpportunityUsd": 0,
+    "costPerHighPriorityOpportunityUsd": 0,
+    "webhoundHardCapUsd": 15,
+    "webhoundRemainingUsd": 15,
+    "externalResearchEnabled": false
+  },
+  "opportunityIds": [
+    "gdi_opp_fia_boca_2027_official_overflow_block_0",
+    "gdi_opp_athletic_championships_west_palm_beach_nationals_1",
+    "gdi_opp_fau_commencement_fall_2026_and_spring_2027_2",
+    "gdi_opp_palm_beach_international_boat_show_2027_vip_over_3",
+    "gdi_opp_operation_sailfish_2027_4",
+    "gdi_opp_fau_football_home_game_weekends_2027_visiting_te_5",
+    "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+    "gdi_opp_office_depot_the_odp_corporation_preferred_corpo_7",
+    "gdi_opp_bric_d_wave_relocation_executive_housing_program_8",
+    "gdi_opp_uca_convergence_2027_overflow_vip_housing_9",
+    "gdi_opp_lynn_university_commencement_2027_10",
+    "gdi_opp_florida_challenge_all_star_cheerleading_champion_11",
+    "gdi_opp_east_coast_championships_soflo_nationals_2027_12",
+    "gdi_opp_sunshine_challenge_2027_13",
+    "gdi_opp_spirit_sports_west_palm_beach_nationals_2027_14",
+    "gdi_opp_palm_beach_juniors_winter_classic_2027_15",
+    "gdi_opp_palm_beach_juniors_cloverleaf_2027_16",
+    "gdi_opp_bluewater_movements_2027_series_partnership_17",
+    "gdi_opp_prevue_meetings_hosted_buyer_relationship_expans_18",
+    "gdi_opp_tomorrow_city_usa_2027_19",
+    "gdi_opp_delray_beach_open_2027_player_vip_housing_20",
+    "gdi_opp_jewish_federation_of_south_palm_beach_county_eve_21",
+    "gdi_opp_palm_beach_county_government_training_retreat_de_22",
+    "gdi_opp_nrc_remsa_annual_conference_2027_23",
+    "gdi_opp_nann_43rd_annual_conference_2027_24",
+    "gdi_opp_incentive_live_2027_25",
+    "gdi_opp_governor_s_hurricane_conference_2027_26",
+    "gdi_opp_perfect_game_wwba_florida_invitational_27",
+    "gdi_opp_flibs_as_direct_waterstone_group_opportunity_28"
+  ],
+  "errors": [],
+  "adpTouched": false,
+  "censusWritten": false,
+  "portability": {
+    "bethesdaSeedPathUsed": false,
+    "dmvExpansionUsed": false,
+    "hotelConfigPath": "config/group-demand-intelligence/hotels/gdi_hotel_waterstone_boca_raton.json"
+  }
+}

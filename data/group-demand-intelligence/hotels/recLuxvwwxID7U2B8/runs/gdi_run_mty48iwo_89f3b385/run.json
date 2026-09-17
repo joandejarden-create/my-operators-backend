@@ -1,0 +1,435 @@
+{
+  "id": "gdi_run_mty48iwo_89f3b385",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "status": "COMPLETED",
+  "productVersion": "group-demand-intelligence-v1.0.0",
+  "startedAt": "2026-09-12T08:21:04.057Z",
+  "completedAt": "2026-09-12T08:21:04.106Z",
+  "trigger": "cli_bethesda_pilot_full_15",
+  "configuration": {
+    "demandConfig": {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "displayName": "Bethesda Marriott",
+      "aliases": {
+        "adpPropertyId": "adp_bethesda_marriott",
+        "marriottHotelCode": "WASBT",
+        "note": "Product key is census hotelId. ADP id is read-only alias."
+      },
+      "commercialPriorities": {
+        "targetSegments": [
+          "Associations",
+          "Medical",
+          "Healthcare",
+          "Scientific",
+          "Corporate",
+          "Government",
+          "Government contractor",
+          "Weekend group",
+          "Social",
+          "Sports",
+          "University / education"
+        ],
+        "coreTargetPeakRoomsMin": 100,
+        "coreTargetPeakRoomsMax": 300,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [
+          "NIH",
+          "Walter Reed National Military Medical Center",
+          "federal health / research ecosystem",
+          "Washington DC metro access",
+          "Montgomery County employers",
+          "universities",
+          "government contractors"
+        ],
+        "weekendFocus": true,
+        "notes": "Bethesda pilot demand priorities — configuration/data, not architecture."
+      },
+      "identityExclusions": [
+        "Bethesda North Marriott Hotel & Conference Center",
+        "Marriott Bethesda Downtown at Marriott HQ",
+        "Residence Inn by Marriott Bethesda Downtown",
+        "AC Hotel by Marriott Bethesda Downtown"
+      ]
+    },
+    "webhoundHardCapUsd": 15,
+    "ampfyStatus": {
+      "provider": "ampfy",
+      "status": "provider_not_configured",
+      "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+    },
+    "methodsVersion": "gdi-research-methods-v1-experimental"
+  },
+  "providers": {
+    "dealality_existing_knowledge": true,
+    "gdi_research_methods": true,
+    "standard_web": true,
+    "ampfy": "provider_not_configured",
+    "apify": "not_invoked_pilot_default",
+    "webhound": {
+      "sessions": [
+        {
+          "sessionId": "4f99b00b-ca62-44af-b45c-3af61a6d325d",
+          "costUsd": 5,
+          "url": "https://webhound.ai/session/4f99b00b-ca62-44af-b45c-3af61a6d325d"
+        },
+        {
+          "sessionId": "1716a70c-1e4c-45d9-b905-525c4c97a933",
+          "costUsd": 5,
+          "url": "https://webhound.ai/session/1716a70c-1e4c-45d9-b905-525c4c97a933"
+        },
+        {
+          "sessionId": "ab352b86-4c20-47b5-86ec-11b6fae181a1",
+          "costUsd": 5,
+          "url": "https://webhound.ai/session/ab352b86-4c20-47b5-86ec-11b6fae181a1"
+        }
+      ],
+      "costUsd": 15,
+      "hardCapUsd": 15
+    }
+  },
+  "researchMethods": [
+    "GDI-ASSOC-EVENT-01",
+    "GDI-MED-SCI-01",
+    "GDI-HIST-MEETING-01",
+    "GDI-GOV-EVENT-01",
+    "GDI-WEEKEND-01",
+    "GDI-CONTACT-01",
+    "GDI-ANCHOR-01"
+  ],
+  "metrics": {
+    "candidatesResearched": 27,
+    "opportunitiesQualified": 17,
+    "highPriorityCount": 5,
+    "mediumPriorityCount": 8,
+    "watchlistCount": 4,
+    "disqualifiedCount": 10,
+    "sourceCount": 40,
+    "duplicatesRemoved": 0,
+    "expiredRemoved": 0
+  },
+  "cost": {
+    "totalUsd": 15,
+    "webhoundUsd": 15,
+    "ampfyUsd": 0,
+    "apifyUsd": 0,
+    "serpApiUsd": 0,
+    "llmUsd": 0,
+    "standardSearchUsd": 0,
+    "otherUsd": 0,
+    "queryCount": 0,
+    "providerCallCount": 3,
+    "webhoundCalls": [
+      {
+        "sessionId": "4f99b00b-ca62-44af-b45c-3af61a6d325d",
+        "question": "Wave 1 — Bethesda group demand seed enrichment",
+        "costUsd": 5,
+        "opportunityIds": [],
+        "recordedAt": "2026-09-12T08:21:04.105Z",
+        "level": "L5_WEBHOUND_DEEP_RESEARCH"
+      },
+      {
+        "sessionId": "1716a70c-1e4c-45d9-b905-525c4c97a933",
+        "question": "Deepen Mediums — NICE SHOW AFCEA MSYSA",
+        "costUsd": 5,
+        "opportunityIds": [],
+        "recordedAt": "2026-09-12T08:21:04.106Z",
+        "level": "L5_WEBHOUND_DEEP_RESEARCH"
+      },
+      {
+        "sessionId": "ab352b86-4c20-47b5-86ec-11b6fae181a1",
+        "question": "Association discovery + corporate public-source test",
+        "costUsd": 5,
+        "opportunityIds": [],
+        "recordedAt": "2026-09-12T08:21:04.106Z",
+        "level": "L5_WEBHOUND_DEEP_RESEARCH"
+      }
+    ],
+    "ampfyCalls": [],
+    "apifyCalls": [],
+    "escalationLog": [
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Load hotel group demand profile from Dealality knowledge",
+        "result": "started",
+        "at": "2026-09-12T08:21:04.061Z"
+      },
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Hotel profile from ADP RO fixture + GDI demand config",
+        "result": "ok",
+        "sources": [
+          "fixtures/ai-demand-positioning/bethesda-marriott-property-profile.json (READ_ONLY)",
+          "config/group-demand-intelligence/hotels/recLuxvwwxID7U2B8.json"
+        ],
+        "at": "2026-09-12T08:21:04.065Z"
+      },
+      {
+        "level": "L2_CANONICAL_DEALALITY_RESEARCH_METHODS",
+        "question": "Apply GDI experimental research methods / seed qualification",
+        "methods": [
+          "GDI-ASSOC-EVENT-01",
+          "GDI-MED-SCI-01",
+          "GDI-HIST-MEETING-01",
+          "GDI-GOV-EVENT-01",
+          "GDI-WEEKEND-01",
+          "GDI-CONTACT-01",
+          "GDI-ANCHOR-01"
+        ],
+        "result": "ok",
+        "at": "2026-09-12T08:21:04.067Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Official association / NIH / tournament / SAM.gov sources",
+        "result": "ok",
+        "note": "Pilot seed embeds Level-3 verified source URLs; live SerpAPI loop deferred to scale phase",
+        "at": "2026-09-12T08:21:04.067Z"
+      },
+      {
+        "level": "L4_AMPFY_APIFY_SUPPLEMENTAL",
+        "question": "Ampfy/Apify supplemental enrichment",
+        "result": "provider_not_configured",
+        "ampfy": {
+          "provider": "ampfy",
+          "status": "provider_not_configured",
+          "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+        },
+        "apify": "not_invoked_pilot_default",
+        "at": "2026-09-12T08:21:04.067Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Wave 1 — Bethesda group demand seed enrichment",
+        "result": "recorded",
+        "sessionId": "4f99b00b-ca62-44af-b45c-3af61a6d325d",
+        "costUsd": 5,
+        "at": "2026-09-12T08:21:04.106Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Deepen Mediums — NICE SHOW AFCEA MSYSA",
+        "result": "recorded",
+        "sessionId": "1716a70c-1e4c-45d9-b905-525c4c97a933",
+        "costUsd": 5,
+        "at": "2026-09-12T08:21:04.106Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Association discovery + corporate public-source test",
+        "result": "recorded",
+        "sessionId": "ab352b86-4c20-47b5-86ec-11b6fae181a1",
+        "costUsd": 5,
+        "at": "2026-09-12T08:21:04.106Z"
+      }
+    ],
+    "incrementalRoi": [
+      {
+        "opportunityId": "gdi_opp_nice_2027",
+        "researchQuestion": "NICE 2027 venue status, historical hotels, attendance, Maryland fit, FIU ops",
+        "provider": "L3_web + webhound_deepen",
+        "costUsd": 1.25,
+        "before": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 73,
+          "conf": 69,
+          "booking": "CONTACT_NOW"
+        },
+        "after": {
+          "priority": "HIGH_PRIORITY",
+          "fit": 81,
+          "conf": 89,
+          "booking": "CONTACT_NOW"
+        },
+        "materialChange": true
+      },
+      {
+        "opportunityId": "gdi_opp_show_2026_nih",
+        "researchQuestion": "SHOW 2026 housing status, registration window, contact, Natcher lodging precedent",
+        "provider": "L3_web + webhound_deepen",
+        "costUsd": 1.25,
+        "before": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 67,
+          "conf": 71,
+          "booking": "CONTACT_NOW"
+        },
+        "after": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 74,
+          "conf": 84,
+          "booking": "CONTACT_NOW"
+        },
+        "materialChange": true,
+        "note": "Kept Medium — free/hybrid format limits contracted block ceiling despite High contactability"
+      },
+      {
+        "opportunityId": "gdi_opp_afcea_hits_2027",
+        "researchQuestion": "AFCEA 2027 host status, overflow path, 2028 displacement odds, contacts",
+        "provider": "webhound_deepen",
+        "costUsd": 1.25,
+        "before": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 65,
+          "conf": 73,
+          "booking": "RESEARCH_FURTHER"
+        },
+        "after": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 65,
+          "conf": 83,
+          "booking": "RESEARCH_FURTHER"
+        },
+        "materialChange": true,
+        "note": "Confirmed not hostable in 2027; contactability up; stay Medium"
+      },
+      {
+        "opportunityId": "gdi_opp_msysa_state_cup_2027",
+        "researchQuestion": "MSYSA 2027 housing, stay-to-play, geography vs WASBT",
+        "provider": "webhound_deepen",
+        "costUsd": 1.25,
+        "before": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 68,
+          "conf": 57,
+          "booking": "RESEARCH_FURTHER"
+        },
+        "after": {
+          "priority": "WATCHLIST",
+          "fit": 49,
+          "conf": 67,
+          "booking": "WATCH"
+        },
+        "materialChange": true,
+        "note": "Downgraded due to weak geography / no housing program"
+      },
+      {
+        "opportunityId": "gdi_opp_marriott_hq_adjacent_corporate_watch",
+        "researchQuestion": "Can public sources surface corporate/gov contractor group demand?",
+        "provider": "webhound_discovery",
+        "costUsd": 2.5,
+        "before": {
+          "priority": "WATCHLIST",
+          "fit": 63,
+          "conf": 12,
+          "booking": "RESEARCH_FURTHER"
+        },
+        "after": {
+          "priority": "DISQUALIFIED",
+          "fit": 0,
+          "conf": 33,
+          "booking": "RESEARCH_FURTHER"
+        },
+        "materialChange": true,
+        "note": "Negative finding — no fabricated corporate opportunities added"
+      },
+      {
+        "opportunityId": "gdi_opp_acts_ts27",
+        "researchQuestion": "Association discovery — named meeting with hotel/venue gap",
+        "provider": "webhound_discovery",
+        "costUsd": 0.5,
+        "before": null,
+        "after": {
+          "priority": "HIGH_PRIORITY",
+          "fit": 78,
+          "conf": 71,
+          "booking": "CONTACT_NOW"
+        },
+        "materialChange": true
+      },
+      {
+        "opportunityId": "gdi_opp_ahima_advocacy_2027",
+        "researchQuestion": "Association discovery — named meeting with hotel/venue gap",
+        "provider": "webhound_discovery",
+        "costUsd": 0.5,
+        "before": null,
+        "after": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 66,
+          "conf": 60,
+          "booking": "CONTACT_NOW"
+        },
+        "materialChange": true
+      },
+      {
+        "opportunityId": "gdi_opp_ndss_advocacy_2027",
+        "researchQuestion": "Association discovery — named meeting with hotel/venue gap",
+        "provider": "webhound_discovery",
+        "costUsd": 0.5,
+        "before": null,
+        "after": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 69,
+          "conf": 67,
+          "booking": "CONTACT_NOW"
+        },
+        "materialChange": true
+      },
+      {
+        "opportunityId": "gdi_opp_acc_legislative_2027",
+        "researchQuestion": "Association discovery — named meeting with hotel/venue gap",
+        "provider": "webhound_discovery",
+        "costUsd": 0.5,
+        "before": null,
+        "after": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 61,
+          "conf": 58,
+          "booking": "WATCH"
+        },
+        "materialChange": true
+      },
+      {
+        "opportunityId": "gdi_opp_cmss_spring_2027",
+        "researchQuestion": "Association discovery — named meeting with hotel/venue gap",
+        "provider": "webhound_discovery",
+        "costUsd": 0.5,
+        "before": null,
+        "after": {
+          "priority": "MEDIUM_PRIORITY",
+          "fit": 63,
+          "conf": 63,
+          "booking": "WATCH"
+        },
+        "materialChange": true
+      }
+    ],
+    "costPerDiscoveredOpportunityUsd": null,
+    "costPerQualifiedOpportunityUsd": 0.8824,
+    "costPerHighPriorityOpportunityUsd": 3,
+    "webhoundHardCapUsd": 15,
+    "webhoundRemainingUsd": 0,
+    "externalResearchEnabled": false
+  },
+  "opportunityIds": [
+    "gdi_opp_amwa_2027_annual",
+    "gdi_opp_amwa_2027_interim",
+    "gdi_opp_amwa_2028_annual",
+    "gdi_opp_bethesda_premier_cup_2026",
+    "gdi_opp_nih_research_festival_2026",
+    "gdi_opp_aan_2027_disqualified",
+    "gdi_opp_asa_advance_2027_disqualified",
+    "gdi_opp_fba_qui_tam_2027_disqualified",
+    "gdi_opp_ntca_2027_disqualified",
+    "gdi_opp_ptab_2027_disqualified",
+    "gdi_opp_agb_2027_disqualified",
+    "gdi_opp_ada_2027_disqualified",
+    "gdi_opp_nih_sbpo_vos_pattern",
+    "gdi_opp_umd_alumni_weekend_watch",
+    "gdi_opp_marriott_hq_adjacent_corporate_watch",
+    "gdi_opp_ajas_hq_rockville_watch",
+    "gdi_opp_nice_2027",
+    "gdi_opp_potomac_memorial_2027",
+    "gdi_opp_show_2026_nih",
+    "gdi_opp_afcea_hits_2027",
+    "gdi_opp_georgetown_homecoming_2027",
+    "gdi_opp_msysa_state_cup_2027",
+    "gdi_opp_acts_ts27",
+    "gdi_opp_ahima_advocacy_2027",
+    "gdi_opp_ndss_advocacy_2027",
+    "gdi_opp_acc_legislative_2027",
+    "gdi_opp_cmss_spring_2027"
+  ],
+  "errors": [],
+  "adpTouched": false,
+  "censusWritten": false
+}

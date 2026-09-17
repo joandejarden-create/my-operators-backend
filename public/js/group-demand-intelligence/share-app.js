@@ -25,7 +25,7 @@
     tab: "opportunities",
     sortKey: "priority",
     sortDir: 1,
-    viewMode: "list",
+    viewMode: "tiles",
     filters: { priority: "", segment: "", booking: "", territory: "" },
   };
 
@@ -53,7 +53,7 @@
     state.filters = { priority: "", segment: "", booking: "", territory: "" };
     state.sortKey = "priority";
     state.sortDir = 1;
-    state.viewMode = "list";
+    state.viewMode = "tiles";
     try {
       sessionStorage.removeItem(STORAGE_PREFIX + "viewMode");
       sessionStorage.removeItem(STORAGE_PREFIX + "sortKey");

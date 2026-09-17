@@ -427,11 +427,17 @@
     opts = opts || {};
     var shareUrl = withAdpShareCapability(url);
     var auth = window.DealalityMemberstackAuth;
+    // Preserve method/body — owner-app feedback POSTs depend on this.
     var fetchOpts = {
+      method: opts.method || "GET",
       headers: { Accept: "application/json", ...(opts.headers || {}) },
-      credentials: "include",
+      credentials: opts.credentials || "include",
       cache: opts.cache || "no-store",
     };
+    if (opts.body != null) fetchOpts.body = opts.body;
+    if (opts.signal) fetchOpts.signal = opts.signal;
+    if (opts.mode) fetchOpts.mode = opts.mode;
+    if (opts.redirect) fetchOpts.redirect = opts.redirect;
     var token = getAdpShareCapabilityToken();
     if (token) {
       fetchOpts.headers["X-ADP-Share-Capability"] = token;
@@ -473,8 +479,12 @@
       return auth.authFetch(shareUrl, {
         waitForLogin: true,
         maxWaitMs: 12000,
+        method: fetchOpts.method,
+        body: fetchOpts.body,
         cache: fetchOpts.cache,
+        credentials: fetchOpts.credentials,
         headers: fetchOpts.headers,
+        signal: fetchOpts.signal,
       });
     }
     return fetch(shareUrl, fetchOpts);
@@ -1775,27 +1785,33 @@
     }
 
     if (evidenceHost) {
-      // ADP_EVIDENCE_LINK_NONEMPTY — only publish clickable BPP evidence when pack is nonempty.
+      // BPP_EVIDENCE_IS_A_CORE_PRODUCT_CAPABILITY — always expose controls for populated BPP.
+      var bppReadyPopulated =
+        bpp.status === "READY" ||
+        bpp.bppCustomerState === "BPP_READY_POPULATED_FULL" ||
+        bpp.bppCustomerState === "BPP_READY_POPULATED_RANK_ONLY" ||
+        isBrandPortfolioReady(bpp);
       var bppPos = (bpp.evidence && bpp.evidence.positive) || [];
       var bppMiss = (bpp.evidence && bpp.evidence.missing) || [];
       var bppDisp = (bpp.evidence && bpp.evidence.displacement) || [];
-      var bppBtns = [];
-      if (bppPos.length) {
-        bppBtns.push(
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="positive" data-adp-evidence-type="BPP_PRESENCE">View Positive Evidence</button>'
-        );
-      }
-      if (bppMiss.length) {
-        bppBtns.push(
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="missing" data-adp-evidence-type="BPP_MISSING">View Missing Evidence</button>'
-        );
-      }
-      if (bppDisp.length) {
-        bppBtns.push(
-          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="displacement" data-adp-evidence-type="BPP_DISPLACEMENT">View Portfolio Displacement Evidence</button>'
-        );
-      }
-      if (bppBtns.length) {
+      if (bppReadyPopulated) {
+        var bppBtns = [
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="positive" data-adp-evidence-type="BPP_PRESENCE"' +
+            (bppPos.length ? "" : ' data-bpp-empty="1"') +
+            ">View Positive Evidence" +
+            (bppPos.length ? " (" + bppPos.length + ")" : "") +
+            "</button>",
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="missing" data-adp-evidence-type="BPP_MISSING"' +
+            (bppMiss.length ? "" : ' data-bpp-empty="1"') +
+            ">View Missing Evidence" +
+            (bppMiss.length ? " (" + bppMiss.length + ")" : "") +
+            "</button>",
+          '<button type="button" class="aiv-btn-text aiv-link" data-bpp-evidence="displacement" data-adp-evidence-type="BPP_DISPLACEMENT"' +
+            (bppDisp.length ? "" : ' data-bpp-empty="1"') +
+            ">View Portfolio Displacement" +
+            (bppDisp.length ? " (" + bppDisp.length + ")" : "") +
+            "</button>",
+        ];
         bppMountAnalyticalShell(evidenceHost, "adp-bpp-evidence-actions");
         evidenceHost.innerHTML = '<div class="adp-bpp-evidence-bar">' + bppBtns.join("") + "</div>";
         evidenceHost.querySelectorAll("[data-bpp-evidence]").forEach(function (btn) {
@@ -1926,6 +1942,18 @@
       .join("");
   }
 
+  function resolveBppEvidenceAiResponse(ev) {
+    return String(
+      (ev &&
+        (ev.aiResponse ||
+          ev.exactResponse ||
+          ev.rawResponse ||
+          ev.excerpt ||
+          ev.responseExcerpt)) ||
+        ""
+    );
+  }
+
   function openBrandPortfolioEvidenceDrawer(kind, bpp) {
     var drawer = document.getElementById("adpEvidenceDrawer");
     var body = document.getElementById("adpEvidenceBody");
@@ -1946,36 +1974,72 @@
     if (title) title.textContent = heading;
     if (!body) return;
     if (!pack.length) {
-      // Should not be reachable — empty packs are not published as clickable controls.
-      body.innerHTML = '<div class="aiv-empty">Supporting evidence is unavailable for this claim.</div>';
+      var emptyLabel =
+        kind === "positive"
+          ? "No positive portfolio evidence this period."
+          : kind === "missing"
+            ? "No missing portfolio evidence this period."
+            : "No portfolio displacement evidence this period.";
+      body.innerHTML = '<div class="aiv-empty">' + esc(emptyLabel) + "</div>";
     } else {
       var html = "";
       pack.forEach(function (ev) {
-        var providerLine = formatProviderDisplayName(ev.provider || ev.sampleProvider || "unknown");
+        var providerLine = formatProviderDisplayName(
+          ev.provider || ev.sampleProvider || "unknown"
+        );
+        var responseBody = resolveBppEvidenceAiResponse(ev);
+        var subjectStatus =
+          kind === "positive"
+            ? "Present"
+            : kind === "missing"
+              ? "Missing"
+              : "Displaced";
+        var rankLine =
+          ev.subjectRank != null
+            ? String(ev.subjectRank)
+            : ev.position != null
+              ? String(ev.position)
+              : "";
         html +=
-          '<div class="aiv-evidence">' +
+          '<div class="aiv-evidence" data-bpp-lens="BRAND_PORTFOLIO">' +
           '<section class="aiv-evidence-meta" aria-label="Evidence details">' +
+          (ev.territory || ev.territoryId
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Demand Territory</div>' +
+              '<div class="aiv-evidence-value">' +
+              esc(ev.territory || ev.territoryId) +
+              "</div></div>"
+            : "") +
+          (ev.scenarioId
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Demand Scenario</div>' +
+              '<div class="aiv-evidence-value">' +
+              esc(ev.scenarioLabel || ev.scenarioId) +
+              "</div></div>"
+            : "") +
           '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Provider</div>' +
           '<div class="aiv-evidence-value">' +
           esc(providerLine) +
           "</div></div>" +
-          (ev.territory
-            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Territory</div>' +
+          '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Subject status</div>' +
+          '<div class="aiv-evidence-value">' +
+          esc(subjectStatus) +
+          "</div></div>" +
+          (rankLine && kind === "positive"
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Rank</div>' +
               '<div class="aiv-evidence-value">' +
-              esc(ev.territory) +
+              esc(rankLine) +
               "</div></div>"
             : "") +
-          (ev.matchedVariant
-            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Match</div>' +
+          (kind === "displacement" && (ev.competitorName || ev.competitorCanonicalHotelId)
+            ? '<div class="aiv-evidence-meta-item"><div class="aiv-evidence-label">Displacing Portfolio Alternative</div>' +
               '<div class="aiv-evidence-value">' +
-              esc(ev.matchedVariant) +
+              esc(ev.competitorName || ev.competitorCanonicalHotelId) +
               "</div></div>"
             : "") +
           "</section>" +
           '<section class="aiv-evidence-section aiv-evidence-section--ai-response">' +
           '<div class="aiv-evidence-label">AI Response</div>' +
           '<pre class="aiv-evidence-response" style="white-space:pre-wrap;font-family:inherit;margin:0;">' +
-          esc(ev.aiResponse || "") +
+          esc(responseBody) +
           "</pre></section></div>";
       });
       body.innerHTML = html;
@@ -3439,14 +3503,241 @@
     var html = '<div class="aiv-hdv-review-grid">';
     actions.slice(0, 4).forEach(function (a, idx) {
       var title = toProperCase(a.title || "");
-      html += '<article class="aiv-theme-card aiv-hdv-review-card">' +
+      var findingId = String(a.id || a.findingId || a.actionId || ("adp_action_" + (idx + 1))).trim();
+      var recommendation = String(a.title || a.recommendation || "").trim() || title;
+      html += '<article class="aiv-theme-card aiv-hdv-review-card adp-action-with-feedback" data-finding-id="' + esc(findingId) + '">' +
         '<div class="aiv-hdv-review-index">' + (idx + 1) + '</div>' +
         '<h3 class="aiv-review-kind">' + esc(title) + '</h3>' +
         '<p class="aiv-hdv-review-desc">' + esc(a.description || "") + '</p>' +
+        '<div class="adp-hotel-feedback">' +
+        '<h4 class="adp-hotel-feedback__title">Hotel Feedback</h4>' +
+        '<p class="adp-hotel-feedback__lede">Response · What do you think of this recommendation?</p>' +
+        '<label class="adp-hotel-feedback__label">Response<select class="adp-fb-response" data-finding-id="' + esc(findingId) + '">' +
+        '<option value="">Select…</option>' +
+        '<option value="AGREE">Agree</option>' +
+        '<option value="DISAGREE">Disagree</option>' +
+        '<option value="ALREADY_ADDRESSING">Already addressing</option>' +
+        '<option value="ALREADY_COMPLETED">Already completed</option>' +
+        '<option value="NOT_ACTIONABLE">Not actionable</option>' +
+        '<option value="NEED_HELP">Need help</option>' +
+        '<option value="UNSURE">Unsure</option>' +
+        '</select></label>' +
+        '<p class="adp-hotel-feedback__lede">Action · What did the hotel do?</p>' +
+        '<label class="adp-hotel-feedback__label">Action<select class="adp-fb-action" data-finding-id="' + esc(findingId) + '">' +
+        '<option value="">Select…</option>' +
+        '<option value="WEBSITE_CONTENT_UPDATED">Website content updated</option>' +
+        '<option value="BRAND_SITE_CONTENT_REQUESTED">Brand site content requested</option>' +
+        '<option value="OTA_CONTENT_UPDATED">OTA content updated</option>' +
+        '<option value="LOCAL_CONTENT_UPDATED">Local content updated</option>' +
+        '<option value="STRUCTURED_DATA_UPDATED">Structured data updated</option>' +
+        '<option value="REVIEW_REPUTATION_ACTION">Review / reputation action</option>' +
+        '<option value="SOURCE_CITATION_ACTION">Source / citation action</option>' +
+        '<option value="MARKETING_ACTION">Marketing action</option>' +
+        '<option value="BRAND_ESCALATION">Brand escalation</option>' +
+        '<option value="OTHER_ACTION">Other action</option>' +
+        '<option value="NO_ACTION">No action</option>' +
+        '</select></label>' +
+        '<p class="adp-hotel-feedback__lede">Outcome · What happened afterward?</p>' +
+        '<label class="adp-hotel-feedback__label">Outcome<select class="adp-fb-outcome" data-finding-id="' + esc(findingId) + '">' +
+        '<option value="">Pending / select…</option>' +
+        '<option value="PRESENCE_IMPROVED">Presence improved</option>' +
+        '<option value="CONSIDERATION_IMPROVED">Consideration improved</option>' +
+        '<option value="SEGMENT_POSITION_IMPROVED">Segment position improved</option>' +
+        '<option value="CITATION_IMPROVED">Citation improved</option>' +
+        '<option value="COMPETITOR_DISPLACEMENT_IMPROVED">Competitor displacement improved</option>' +
+        '<option value="NO_MEASURABLE_CHANGE">No measurable change</option>' +
+        '<option value="DECLINED">Declined</option>' +
+        '<option value="TOO_EARLY_TO_MEASURE">Too early to measure</option>' +
+        '<option value="UNKNOWN">Unknown</option>' +
+        '</select></label>' +
+        '<div class="adp-hotel-feedback__actions">' +
+        '<button type="button" class="aiv-btn aiv-btn-primary adp-fb-save" data-finding-id="' + esc(findingId) + '" data-recommendation="' + esc(recommendation) + '">Save hotel feedback</button>' +
+        '<span class="adp-hotel-feedback__status" data-status-for="' + esc(findingId) + '" hidden></span>' +
+        '</div>' +
+        '<p class="adp-hotel-feedback__state" data-state-for="' + esc(findingId) + '"></p>' +
+        '</div>' +
         '</article>';
     });
     html += '</div>';
     el.innerHTML = html;
+    bindAdpHotelFeedbackHandlers(el);
+  }
+
+  function getAdpCanonicalHotelId() {
+    var d = currentPayload || {};
+    if (d.censusRecordId) return String(d.censusRecordId).trim();
+    if (d.property && d.property.censusRecordId) return String(d.property.censusRecordId).trim();
+    // Fallback: known ADP → HPC links (also resolved server-side on ensure-adp)
+    var pid = getActivePropertyId();
+    var map = {
+      adp_bethesda_marriott: "recLuxvwwxID7U2B8",
+      adp_waterstone_boca_raton: "recgMYovrrZDJMqzX",
+      adp_renaissance_times_square: "recG66DQJKP2c0UNh",
+      adp_now_now_noho: "recGkME49yYuxQl0u",
+      adp_hotel_phillips_kansas_city: "rec8hHupaSwiWI3r7",
+      adp_cambridge_beaches_bermuda: "recIwaP1etgx2g9nA",
+      adp_jw_marriott_monterrey_valle: "recsn3BUKJ9PNfeZW",
+      adp_westin_monterrey_valle: "recD17Kxn6BcJjGFh",
+      adp_st_regis_mexico_city: "recRXmrakhSAuctwz",
+      adp_st_regis_cap_cana: "recN76iEE6yAaPh8H",
+      adp_jw_marriott_santo_domingo: "recESHsNsWUFYZrxR",
+      adp_radisson_santo_domingo: "recUOyzOXn2Zdp98I",
+      adp_hotel_caribe_faranda_grand: "recCEpdskZeUBvQwG",
+      adp_faranda_collection_bogota: "rec9Tp0WBb2uk6w3u",
+      adp_casas_del_xvi: "recjDsNzu93CFfe87"
+    };
+    return map[pid] || pid;
+  }
+
+  function bindAdpHotelFeedbackHandlers(root) {
+    if (!root) return;
+    root.querySelectorAll(".adp-fb-save").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        saveAdpHotelFeedback(btn).catch(function (err) {
+          console.error("[ADP] hotel feedback save failed", err);
+        });
+      });
+    });
+  }
+
+  async function saveAdpHotelFeedback(btn) {
+    var findingId = btn.getAttribute("data-finding-id");
+    var recommendation = btn.getAttribute("data-recommendation") || findingId;
+    var hotelId = getAdpCanonicalHotelId();
+    var card = btn.closest(".adp-action-with-feedback");
+    var responseEl = card && card.querySelector(".adp-fb-response");
+    var actionEl = card && card.querySelector(".adp-fb-action");
+    var outcomeEl = card && card.querySelector(".adp-fb-outcome");
+    var statusEl = card && card.querySelector('[data-status-for="' + findingId + '"]');
+    var stateEl = card && card.querySelector('[data-state-for="' + findingId + '"]');
+    var validationValue = responseEl && responseEl.value;
+    var actionType = actionEl && actionEl.value;
+    var outcomeType = outcomeEl && outcomeEl.value;
+
+    function setStatus(msg, ok) {
+      if (!statusEl) return;
+      statusEl.hidden = false;
+      statusEl.textContent = msg;
+      statusEl.style.color = ok ? "var(--success--color, #34d399)" : "var(--danger--color, #f87171)";
+    }
+
+    if (!hotelId || !findingId) {
+      setStatus("Missing hotel or finding id", false);
+      return;
+    }
+    if (!validationValue && !actionType && !outcomeType) {
+      setStatus("Select a response, action, or outcome", false);
+      return;
+    }
+
+    btn.disabled = true;
+    setStatus("Saving…", true);
+    try {
+      var ensureRes = await authFetch(
+        "/api/hotels/" + encodeURIComponent(hotelId) + "/decisions/ensure-adp",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            findingId: findingId,
+            recommendation: recommendation,
+            recommendationSummary: recommendation,
+          }),
+        }
+      );
+      var ensureBody = await ensureRes.json().catch(function () { return null; });
+      if (!ensureRes.ok || !ensureBody || !ensureBody.ok) {
+        throw new Error((ensureBody && (ensureBody.message || ensureBody.error)) || "ensure_adp_failed");
+      }
+      var decisionId = ensureBody.decision && ensureBody.decision.decisionId;
+      var canonHotel = ensureBody.hotelId || hotelId;
+      if (!decisionId) throw new Error("decision_missing");
+
+      var saved = [];
+      if (validationValue) {
+        var vRes = await authFetch(
+          "/api/decisions/" + encodeURIComponent(decisionId) + "/validations",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              hotelId: canonHotel,
+              validationType: "HOTEL_RESPONSE",
+              validationValue: validationValue,
+              sourceSurface: "adp_ui",
+            }),
+          }
+        );
+        var vBody = await vRes.json().catch(function () { return null; });
+        if (!vRes.ok || !vBody || !vBody.ok) {
+          throw new Error((vBody && (vBody.message || vBody.error)) || "validation_failed");
+        }
+        saved.push("✓ Response saved");
+      }
+      if (actionType) {
+        var aRes = await authFetch(
+          "/api/decisions/" + encodeURIComponent(decisionId) + "/actions",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              hotelId: canonHotel,
+              actionType: actionType,
+              sourceSurface: "adp_ui",
+            }),
+          }
+        );
+        var aBody = await aRes.json().catch(function () { return null; });
+        if (!aRes.ok || !aBody || !aBody.ok) {
+          throw new Error((aBody && (aBody.message || aBody.error)) || "action_failed");
+        }
+        saved.push("✓ Action saved");
+      }
+      if (outcomeType) {
+        var oRes = await authFetch(
+          "/api/decisions/" + encodeURIComponent(decisionId) + "/outcomes",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              hotelId: canonHotel,
+              outcomeType: outcomeType,
+              causalConfidence: "TEMPORAL_ASSOCIATION_ONLY",
+              sourceSurface: "adp_ui",
+            }),
+          }
+        );
+        var oBody = await oRes.json().catch(function () { return null; });
+        if (!oRes.ok || !oBody || !oBody.ok) {
+          throw new Error((oBody && (oBody.message || oBody.error)) || "outcome_failed");
+        }
+        saved.push("✓ Outcome saved");
+      }
+
+      setStatus(saved.join(" · ") || "Saved", true);
+
+      var stateRes = await authFetch(
+        "/api/hotels/" + encodeURIComponent(canonHotel) + "/subjects/" + encodeURIComponent(findingId) + "/decision?module=ADP",
+        { cache: "no-store" }
+      );
+      var stateBody = await stateRes.json().catch(function () { return null; });
+      if (stateEl && stateBody && stateBody.ok && stateBody.current) {
+        var cs = stateBody.current;
+        var lastAct = (cs.latestAction && (cs.latestAction.actionType || cs.latestAction.eventValue)) || "—";
+        var lastOut = (cs.latestOutcome && (cs.latestOutcome.outcomeType || cs.latestOutcome.eventValue)) || "Pending";
+        stateEl.textContent =
+          "Current status: " +
+          (cs.decisionLifecycleStage || "—") +
+          " · Last action: " +
+          lastAct +
+          " · Latest outcome: " +
+          lastOut;
+      }
+    } catch (err) {
+      setStatus(err.message || "Save failed", false);
+    } finally {
+      btn.disabled = false;
+    }
   }
 
   function renderExecWhiteSpace(ws) {
@@ -3756,10 +4047,113 @@
     });
   }
 
+  function isAdpAdminPdfRender() {
+    if (window.__ADP_ADMIN_PDF_RENDER__) return true;
+    try {
+      return new URLSearchParams(window.location.search || "").get("pdfRender") === "1";
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  function markAdpPdfReady(payload) {
+    var host = document.getElementById("adp-pdf-ready-host");
+    if (!host) {
+      host = document.createElement("div");
+      host.id = "adp-pdf-ready-host";
+      document.body.appendChild(host);
+    }
+    var actions = (payload && payload.actions) || [];
+    host.setAttribute("data-adp-pdf-ready", "1");
+    host.removeAttribute("hidden");
+    host.setAttribute("aria-hidden", "false");
+    // Keep marker out of print layout but visible to Playwright readiness checks.
+    host.style.cssText =
+      "position:fixed;left:0;top:0;width:1px;height:1px;opacity:0.01;z-index:99999;";
+    host.setAttribute(
+      "data-adp-property-id",
+      (payload && payload.property && payload.property.propertyId) ||
+        (payload && payload.propertyId) ||
+        ""
+    );
+    host.setAttribute(
+      "data-adp-property-name",
+      (payload && payload.property && payload.property.name) || ""
+    );
+    host.setAttribute(
+      "data-adp-period-id",
+      (payload && payload.period && payload.period.periodId) || ""
+    );
+    host.setAttribute("data-adp-action-count", String(actions.length));
+    host.setAttribute(
+      "data-adp-has-er",
+      payload && (payload.executiveRead || payload.executiveReadV3) ? "1" : "0"
+    );
+    host.setAttribute(
+      "data-adp-gate",
+      "ADP_ADMIN_PDF_USES_CURRENT_REPORT_PRINT_RENDERER"
+    );
+    var boot = document.getElementById("adp-pdf-boot");
+    if (boot) boot.hidden = true;
+  }
+
+  function markAdpPdfError(message) {
+    var boot = document.getElementById("adp-pdf-boot");
+    if (boot) {
+      boot.hidden = false;
+      boot.textContent = "PDF render failed: " + (message || "unknown_error");
+      boot.setAttribute("data-adp-pdf-error", "1");
+    }
+  }
+
   // --- Init ---
   document.addEventListener("DOMContentLoaded", function () {
     bindColumnInfo();
     initTabs();
+
+    if (isAdpAdminPdfRender()) {
+      // Admin PDF path: same live renderer + published payload; no guided tour.
+      document.body.classList.add("adp-pdf-export");
+      var propertyId = getQueryPropertyId();
+      var sel = document.getElementById("adpProperty");
+      if (!propertyId) {
+        markAdpPdfError("propertyId_required");
+        return;
+      }
+      if (sel) {
+        sel.innerHTML = "";
+        var opt = document.createElement("option");
+        opt.value = propertyId;
+        opt.textContent = propertyId;
+        sel.appendChild(opt);
+        sel.value = propertyId;
+      }
+      var originalRender = renderExecutive;
+      // Wrap completion after successful loadReport → renderExecutive
+      var _load = loadReport;
+      loadReport = async function () {
+        try {
+          await _load();
+          var success = document.getElementById("adpStateSuccess");
+          if (currentPayload && success && !success.hidden) {
+            markAdpPdfReady(currentPayload);
+          } else {
+            var errEl = document.getElementById("adpErrorMessage");
+            markAdpPdfError(
+              (errEl && errEl.textContent) ||
+                (currentPayload && (currentPayload.message || currentPayload.error)) ||
+                "report_unavailable"
+            );
+          }
+        } catch (err) {
+          markAdpPdfError(err && err.message ? err.message : err);
+        }
+      };
+      void originalRender;
+      loadReport();
+      return;
+    }
+
     loadProperties();
     var btn = document.getElementById("adpLoadReport");
     if (btn) btn.addEventListener("click", loadReport);

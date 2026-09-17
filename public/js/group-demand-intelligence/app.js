@@ -4,7 +4,7 @@
   var UI = window.DealalityGdiUi;
   if (!UI) throw new Error("DealalityGdiUi missing");
 
-  // Pilot default hotelId only (HOTEL_SPECIFIC_DATA). Display names come from profile.
+  // Pilot default hotelId only (HOTEL_SPECIFIC_DATA). Display names come from profile/API.
   var DEFAULT_HOTEL_ID = "recLuxvwwxID7U2B8";
   var root = document.getElementById("gdiRoot");
   var loading = document.getElementById("gdiLoading");
@@ -14,8 +14,21 @@
   var drawerClose = document.getElementById("gdiDrawerClose");
 
   var STORAGE_PREFIX = "gdi-auth-";
+  function resolveInitialHotelId() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      var fromQuery = String(params.get("hotelId") || "").trim();
+      if (fromQuery) return fromQuery;
+      var fromStore = String(localStorage.getItem(STORAGE_PREFIX + "hotelId") || "").trim();
+      if (fromStore) return fromStore;
+    } catch (e) {
+      /* ignore */
+    }
+    return DEFAULT_HOTEL_ID;
+  }
   var state = {
-    hotelId: DEFAULT_HOTEL_ID,
+    hotelId: resolveInitialHotelId(),
+    hotels: [],
     hotelProfile: null,
     summary: null,
     opportunities: [],
@@ -23,7 +36,7 @@
     tab: "opportunities",
     sortKey: "priority",
     sortDir: 1,
-    viewMode: "list",
+    viewMode: "tiles",
     filters: { priority: "", segment: "", booking: "", territory: "" },
     isAdmin: false,
     flag: null,
@@ -53,7 +66,7 @@
     state.filters = { priority: "", segment: "", booking: "", territory: "" };
     state.sortKey = "priority";
     state.sortDir = 1;
-    state.viewMode = "list";
+    state.viewMode = "tiles";
     try {
       sessionStorage.removeItem(STORAGE_PREFIX + "viewMode");
       sessionStorage.removeItem(STORAGE_PREFIX + "sortKey");
@@ -262,31 +275,85 @@
     });
   }
 
+  function clearHotelScopedState() {
+    state.hotelProfile = null;
+    state.summary = null;
+    state.opportunities = [];
+    state.runs = [];
+    state.filters = { priority: "", segment: "", booking: "", territory: "" };
+    state.sortKey = "priority";
+    state.sortDir = 1;
+    state.viewMode = "tiles";
+    state.tab = "opportunities";
+    if (typeof drawer !== "undefined" && drawer) {
+      if (typeof drawer.close === "function") drawer.close();
+      else drawer.removeAttribute("open");
+    }
+  }
+
+  function selectHotel(hotelId) {
+    var next = String(hotelId || "").trim();
+    if (!next || next === state.hotelId) return Promise.resolve();
+    state.hotelId = next;
+    try {
+      localStorage.setItem(STORAGE_PREFIX + "hotelId", next);
+      var url = new URL(window.location.href);
+      url.searchParams.set("hotelId", next);
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    } catch (e) {
+      /* ignore */
+    }
+    clearHotelScopedState();
+    if (loading) loading.style.display = "";
+    return loadAll();
+  }
+
+  function loadHotelCatalog() {
+    return api("/api/group-demand-intelligence/hotels")
+      .then(function (payload) {
+        state.hotels = Array.isArray(payload.hotels) ? payload.hotels : [];
+        var ids = state.hotels.map(function (h) {
+          return h.hotelId;
+        });
+        if (ids.length && ids.indexOf(state.hotelId) === -1) {
+          state.hotelId = ids[0];
+        }
+        return state.hotels;
+      })
+      .catch(function () {
+        state.hotels = [];
+        return state.hotels;
+      });
+  }
+
   function loadAll() {
     var id = encodeURIComponent(state.hotelId);
-    // Critical path for useful browse: flag + summary + list opportunities + profile.
+    // Critical path: hotel catalog + flag + summary + opportunities + profile.
     // Research-runs are audit-tab only — load after first paint.
-    return Promise.all([
-      api("/api/group-demand-intelligence/flag"),
-      api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
-      api("/api/group-demand-intelligence/hotels/" + id + "/opportunities"),
-      api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
-        return { ok: false, profile: null };
-      }),
-    ]).then(function (parts) {
-      state.flag = parts[0].flag;
-      state.summary = parts[1].summary;
-      state.opportunities = parts[2].opportunities || [];
-      state.hotelProfile = (parts[3] && parts[3].profile) || null;
-      render();
-      return api("/api/group-demand-intelligence/hotels/" + id + "/research-runs")
-        .then(function (runsPayload) {
-          state.runs = runsPayload.runs || [];
-          if (state.tab === "audit") render();
-        })
-        .catch(function () {
-          state.runs = [];
-        });
+    return loadHotelCatalog().then(function () {
+      id = encodeURIComponent(state.hotelId);
+      return Promise.all([
+        api("/api/group-demand-intelligence/flag"),
+        api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
+        api("/api/group-demand-intelligence/hotels/" + id + "/opportunities"),
+        api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
+          return { ok: false, profile: null };
+        }),
+      ]).then(function (parts) {
+        state.flag = parts[0].flag;
+        state.summary = parts[1].summary;
+        state.opportunities = parts[2].opportunities || [];
+        state.hotelProfile = (parts[3] && parts[3].profile) || null;
+        render();
+        return api("/api/group-demand-intelligence/hotels/" + id + "/research-runs")
+          .then(function (runsPayload) {
+            state.runs = runsPayload.runs || [];
+            if (state.tab === "audit") render();
+          })
+          .catch(function () {
+            state.runs = [];
+          });
+      });
     });
   }
 
@@ -417,19 +484,161 @@
     return chrome + (opts.lede || "") + renderOpportunityCards(rows);
   }
 
+  function humanizeToken(value) {
+    if (!value) return "";
+    return String(value)
+      .replace(/_/g, " ")
+      .toLowerCase()
+      .replace(/\b\w/g, function (c) {
+        return c.toUpperCase();
+      });
+  }
+
+  function formatShortDate(iso) {
+    if (!iso) return "";
+    try {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function eventStamp(ev) {
+    if (!ev) return "";
+    return (
+      ev.validatedAt ||
+      ev.reportedAt ||
+      ev.completedAt ||
+      ev.actionDate ||
+      ev.outcomeDate ||
+      ev.createdAt ||
+      ""
+    );
+  }
+
+  /** Prefer latest action/outcome label over raw lifecycle enum for customer UI. */
+  function deriveDisplayStage(current) {
+    if (!current) return null;
+    if (current.latestOutcome && current.latestOutcome.outcomeType) {
+      return humanizeToken(current.latestOutcome.outcomeType);
+    }
+    if (current.latestAction && current.latestAction.actionType) {
+      return humanizeToken(current.latestAction.actionType);
+    }
+    if (current.decisionLifecycleStage) {
+      return humanizeToken(current.decisionLifecycleStage);
+    }
+    return null;
+  }
+
+  function renderLifecycleSummary(current) {
+    if (!current) return "";
+    var stage = deriveDisplayStage(current);
+    var bits = [];
+    if (stage) {
+      bits.push(
+        '<p class="gdi-lifecycle-stage">Current stage: <strong>' +
+          esc(stage) +
+          "</strong></p>"
+      );
+    }
+    var hist = [];
+    if (current.latestAction && current.latestAction.actionType) {
+      var actionLine =
+        "Last action: " + humanizeToken(current.latestAction.actionType);
+      var ad = formatShortDate(eventStamp(current.latestAction));
+      if (ad) actionLine += " · " + ad;
+      hist.push(actionLine);
+    }
+    if (current.latestOutcome && current.latestOutcome.outcomeType) {
+      hist.push(
+        "Latest outcome: " + humanizeToken(current.latestOutcome.outcomeType)
+      );
+    } else if (current.latestAction) {
+      hist.push("Latest outcome: Pending");
+    }
+    if (hist.length) {
+      bits.push(
+        '<p class="gdi-lifecycle-history">' +
+          hist.map(function (line) {
+            return esc(line);
+          }).join("<br>") +
+          "</p>"
+      );
+    }
+    if (!bits.length) return "";
+    return '<div class="gdi-lifecycle-summary" id="gdiLifecycleSummary">' + bits.join("") + "</div>";
+  }
+
+  function updateLifecycleSummary(current) {
+    var el = document.getElementById("gdiLifecycleSummary");
+    if (!el) return;
+    var html = renderLifecycleSummary(current);
+    if (!html) return;
+    var tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    var next = tmp.firstChild;
+    if (next) el.replaceWith(next);
+  }
+
   function openDetail(id) {
-    api(
+    var oppUrl =
       "/api/group-demand-intelligence/hotels/" +
-        encodeURIComponent(state.hotelId) +
-        "/opportunities/" +
-        encodeURIComponent(id)
-    ).then(function (data) {
+      encodeURIComponent(state.hotelId) +
+      "/opportunities/" +
+      encodeURIComponent(id);
+    var decisionUrl =
+      "/api/hotels/" +
+      encodeURIComponent(state.hotelId) +
+      "/subjects/" +
+      encodeURIComponent(id) +
+      "/decision?module=GDI";
+
+    Promise.all([
+      api(oppUrl),
+      api(decisionUrl).catch(function () {
+        return null;
+      }),
+    ]).then(function (results) {
+      var data = results[0];
+      var decisionBundle = results[1];
       var o = data.opportunity;
+      var current =
+        (decisionBundle && decisionBundle.current) ||
+        (decisionBundle &&
+          decisionBundle.decision &&
+          decisionBundle.current) ||
+        null;
       drawerTitle.textContent = o.title;
-      drawerBody.innerHTML = renderDetail(o, data.scoreAudit);
+      drawerBody.innerHTML = renderDetail(o, data.scoreAudit, current);
+      wireDetailLifecycleControls();
       if (typeof drawer.showModal === "function") drawer.showModal();
       else drawer.setAttribute("open", "open");
     });
+  }
+
+  function wireDetailLifecycleControls() {
+    var outcomeEl = document.getElementById("gdiDoOutcome");
+    var lossWrap = document.getElementById("gdiDoLossWrap");
+    function syncLossVisibility() {
+      if (!lossWrap) return;
+      var show = outcomeEl && outcomeEl.value === "LOST";
+      lossWrap.hidden = !show;
+      if (!show) {
+        var lossEl = document.getElementById("gdiDoLoss");
+        if (lossEl) lossEl.value = "";
+      }
+    }
+    if (outcomeEl) {
+      outcomeEl.addEventListener("change", syncLossVisibility);
+      syncLossVisibility();
+    }
   }
 
   function claimLabel(kind) {
@@ -466,7 +675,7 @@
     return "";
   }
 
-  function renderDetail(o, audit) {
+  function renderDetail(o, audit, decisionCurrent) {
     var hist = (o.meetingHistory || [])
       .map(function (h) {
         return "<li>" + esc(h.year) + " — " + esc(h.city) + " (" + esc(claimLabel(h.claimKind)) + ")</li>";
@@ -648,16 +857,80 @@
       "</p><p>" +
       esc(o.summaryWhyMatters || "") +
       "</p></div>" +
-      '<div class="gdi-section"><h3>18. Hotel Validation</h3><div class="gdi-feedback">' +
-      '<label>Familiarity<select id="gdiFbFamiliarity"><option value="">—</option><option>Never Seen</option><option>Familiar</option><option>Already Received</option><option>Already Pursuing</option></select></label>' +
-      '<label>Commercial Status<select id="gdiFbCommercial"><option value="">—</option><option>Worth Pursuing</option><option>Not a Fit</option><option>Already Lost</option><option>Already Won</option><option>Already Booked Elsewhere</option></select></label>' +
-      '<label>Value<select id="gdiFbValue"><option value="">—</option><option>Excellent</option><option>Useful</option><option>Marginal</option><option>No Incremental Value</option></select></label>' +
-      '<label>Incremental?<select id="gdiFbIncremental"><option value="">—</option><option value="NEW_TO_HOTEL">New to hotel</option><option value="ALREADY_KNOWN_USEFUL_ADDITIONAL">Already known / useful additional</option><option value="ALREADY_KNOWN_NO_INCREMENTAL">Already known / no incremental value</option><option value="DUPLICATE_OF_EXISTING_SALES_LEAD">Duplicate of existing sales lead</option><option value="NEW_TIMING_CONTACT_COMPETITIVE_INTEL">New timing / contact / competitive intel</option></select></label>' +
-      '<label>Qualification failure<select id="gdiFbFailReason"><option value="">—</option><option value="VENUE_ALREADY_SELECTED">Venue already selected</option><option value="HOTEL_ALREADY_SELECTED">Hotel already selected</option><option value="NO_OVERFLOW_OPPORTUNITY">No overflow opportunity</option><option value="EVENT_LOCATION_POOR_FIT">Event location poor fit</option><option value="ROOM_DEMAND_TOO_SMALL">Room demand too small</option><option value="MOST_ATTENDEES_LOCAL">Most attendees local</option><option value="WRONG_EVENT_CYCLE">Wrong event cycle</option><option value="CONTACT_NOT_RELEVANT">Contact not relevant</option><option value="DUPLICATE">Duplicate</option><option value="TOO_EARLY">Too early</option><option value="TOO_LATE">Too late</option><option value="WEAK_EVIDENCE">Weak evidence</option><option value="NOT_HOTEL_DEMAND">Not hotel demand</option><option value="OTHER">Other</option></select></label>' +
+      '<div class="gdi-section gdi-hotel-feedback">' +
+      "<h3>Hotel Feedback</h3>" +
+      renderLifecycleSummary(decisionCurrent) +
+      '<p class="gdi-lede">Your feedback helps track this opportunity and improve future recommendations.</p>' +
+      '<div class="gdi-lifecycle-step">' +
+      "<h4>Validation</h4>" +
+      "<p class=\"gdi-lifecycle-q\">Is this opportunity useful to your hotel?</p>" +
+      '<div class="gdi-feedback">' +
+      '<label>Familiarity<select id="gdiFbFamiliarity"><option value="">Select…</option><option>Never Seen</option><option>Familiar</option><option>Already Received</option><option>Already Pursuing</option></select></label>' +
+      '<label>Commercial Status<select id="gdiFbCommercial"><option value="">Select…</option><option>Worth Pursuing</option><option>Not a Fit</option><option>Already Lost</option><option>Already Won</option><option>Already Booked Elsewhere</option></select></label>' +
+      '<label>Value<select id="gdiFbValue"><option value="">Select…</option><option>Excellent</option><option>Useful</option><option>Marginal</option><option>No Incremental Value</option></select></label>' +
+      '<label>Incremental?<select id="gdiFbIncremental"><option value="">Select…</option><option value="NEW_TO_HOTEL">New to hotel</option><option value="ALREADY_KNOWN_USEFUL_ADDITIONAL">Already known / useful additional</option><option value="ALREADY_KNOWN_NO_INCREMENTAL">Already known / no incremental value</option><option value="DUPLICATE_OF_EXISTING_SALES_LEAD">Duplicate of existing sales lead</option><option value="NEW_TIMING_CONTACT_COMPETITIVE_INTEL">New timing / contact / competitive intel</option></select></label>' +
+      '<label>Qualification failure<select id="gdiFbFailReason"><option value="">Select…</option><option value="VENUE_ALREADY_SELECTED">Venue already selected</option><option value="HOTEL_ALREADY_SELECTED">Hotel already selected</option><option value="NO_OVERFLOW_OPPORTUNITY">No overflow opportunity</option><option value="EVENT_LOCATION_POOR_FIT">Event location poor fit</option><option value="ROOM_DEMAND_TOO_SMALL">Room demand too small</option><option value="MOST_ATTENDEES_LOCAL">Most attendees local</option><option value="WRONG_EVENT_CYCLE">Wrong event cycle</option><option value="CONTACT_NOT_RELEVANT">Contact not relevant</option><option value="DUPLICATE">Duplicate</option><option value="TOO_EARLY">Too early</option><option value="TOO_LATE">Too late</option><option value="WEAK_EVIDENCE">Weak evidence</option><option value="NOT_HOTEL_DEMAND">Not hotel demand</option><option value="OTHER">Other</option></select></label>' +
       '<textarea id="gdiFbComment" placeholder="Optional comment"></textarea>' +
+      '<div class="gdi-validation-actions">' +
       '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiFbSave" data-id="' +
       esc(o.id) +
-      '">Save Hotel Validation</button></div><p class="gdi-lede">Validation is stored as hotel feedback. It does not overwrite public research facts. Failure labels are for evaluation, not automatic retraining.</p></div>'
+      '">Save Hotel Validation</button>' +
+      '<span class="gdi-validation-status" id="gdiFbSaveStatus" hidden></span>' +
+      "</div></div></div>" +
+      '<div class="gdi-lifecycle-step">' +
+      "<h4>Action</h4>" +
+      "<p class=\"gdi-lifecycle-q\">What did the team do?</p>" +
+      '<div class="gdi-feedback">' +
+      '<label>Action<select id="gdiDoAction"><option value="">Select action...</option>' +
+      '<option value="NOT_CONTACTED">Not Contacted</option>' +
+      '<option value="PLANNED_TO_CONTACT">Planned To Contact</option>' +
+      '<option value="CONTACTED">Contacted</option>' +
+      '<option value="FOLLOW_UP_REQUIRED">Follow Up Required</option>' +
+      '<option value="RFP_REQUESTED">RFP Requested</option>' +
+      '<option value="RFP_RECEIVED">RFP Received</option>' +
+      '<option value="SITE_VISIT_REQUESTED">Site Visit Requested</option>' +
+      '<option value="SITE_VISIT_COMPLETED">Site Visit Completed</option>' +
+      '<option value="PROPOSAL_SUBMITTED">Proposal Submitted</option>' +
+      '<option value="NEGOTIATING">Negotiating</option>' +
+      '<option value="NO_ACTION">No Action</option></select></label>' +
+      '<p class="gdi-lede">Add when there is an update.</p>' +
+      '<div class="gdi-validation-actions">' +
+      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiDoActionSave" data-id="' +
+      esc(o.id) +
+      '">Save Action</button>' +
+      '<span class="gdi-validation-status" id="gdiDoActionSaveStatus" hidden></span>' +
+      "</div></div></div>" +
+      '<div class="gdi-lifecycle-step">' +
+      "<h4>Outcome</h4>" +
+      "<p class=\"gdi-lifecycle-q\">What happened?</p>" +
+      '<div class="gdi-feedback">' +
+      '<label>Outcome<select id="gdiDoOutcome"><option value="">Select outcome...</option>' +
+      '<option value="WON">Won</option>' +
+      '<option value="LOST">Lost</option>' +
+      '<option value="BOOKED">Booked</option>' +
+      '<option value="NO_RESPONSE">No Response</option>' +
+      '<option value="NOT_QUALIFIED">Not Qualified</option>' +
+      '<option value="OPPORTUNITY_CLOSED">Opportunity Closed</option>' +
+      '<option value="DEFERRED">Deferred</option>' +
+      '<option value="UNKNOWN">Unknown</option></select></label>' +
+      '<label id="gdiDoLossWrap" hidden>Loss reason<select id="gdiDoLoss"><option value="">Select loss reason...</option>' +
+      '<option value="RATE">Rate</option>' +
+      '<option value="AVAILABILITY">Availability</option>' +
+      '<option value="LOCATION">Location</option>' +
+      '<option value="MEETING_SPACE">Meeting Space</option>' +
+      '<option value="BRAND">Brand</option>' +
+      '<option value="COMPETITOR">Competitor</option>' +
+      '<option value="ROOM_BLOCK">Room Block</option>' +
+      '<option value="DATES">Dates</option>' +
+      '<option value="NO_RESPONSE">No Response</option>' +
+      '<option value="OTHER">Other</option>' +
+      '<option value="UNKNOWN">Unknown</option></select></label>' +
+      '<div class="gdi-validation-actions">' +
+      '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiDoOutcomeSave" data-id="' +
+      esc(o.id) +
+      '">Save Outcome</button>' +
+      '<span class="gdi-validation-status" id="gdiDoOutcomeSaveStatus" hidden></span>' +
+      "</div></div></div></div>"
     );
   }
 
@@ -716,6 +989,7 @@
         mode: "auth",
         hotel: hotel,
         hotelId: state.hotelId,
+        hotels: state.hotels,
         lastResearch: formatDate(s.lastResearchAt),
         runStatus: s.runStatus || "NEVER_RUN",
         actionHtml: propertyBarActionsHtml(),
@@ -723,6 +997,15 @@
       '<div id="gdiTabBody">' +
       body +
       "</div>";
+
+    var hotelSelect = document.getElementById("gdiHotel");
+    if (hotelSelect) {
+      hotelSelect.addEventListener("change", function () {
+        selectHotel(hotelSelect.value).catch(function (err) {
+          showError(err.message || "Failed to switch hotel");
+        });
+      });
+    }
 
     var runBtn = document.getElementById("gdiRunBtn");
     if (runBtn) runBtn.addEventListener("click", runResearch);
@@ -767,6 +1050,14 @@
   drawerBody &&
     drawerBody.addEventListener("click", function (e) {
       var t = e.target;
+
+      function showSaveOk(statusId, message) {
+        var el = document.getElementById(statusId);
+        if (!el) return;
+        el.hidden = false;
+        el.textContent = message;
+      }
+
       if (t && t.id === "gdiFbSave") {
         var id = t.getAttribute("data-id");
         var familiarityEl = document.getElementById("gdiFbFamiliarity");
@@ -780,6 +1071,7 @@
         var value = valueEl ? valueEl.value : "";
         var incrementalValueStatus = incrementalEl ? incrementalEl.value : "";
         var qualificationFailureReason = failReasonEl ? failReasonEl.value : "";
+        t.disabled = true;
         api(
           "/api/group-demand-intelligence/hotels/" +
             encodeURIComponent(state.hotelId) +
@@ -802,11 +1094,108 @@
           }
         )
           .then(function () {
-            t.textContent = "Saved";
+            t.disabled = false;
+            showSaveOk("gdiFbSaveStatus", "✓ Validation saved");
+            // Refresh projection for stage strip (best-effort)
+            return api(
+              "/api/hotels/" +
+                encodeURIComponent(state.hotelId) +
+                "/subjects/" +
+                encodeURIComponent(id) +
+                "/decision?module=GDI"
+            ).catch(function () {
+              return null;
+            });
+          })
+          .then(function (bundle) {
+            if (bundle && bundle.current) updateLifecycleSummary(bundle.current);
           })
           .catch(function (err) {
-            t.textContent = err.message || "Failed";
+            t.disabled = false;
+            showSaveOk("gdiFbSaveStatus", err.message || "Failed");
           });
+      }
+
+      function ensureThenRecord(opportunityId, kind, payload, btn, statusId, okMessage) {
+        var opp =
+          (state.opportunities || []).find(function (o) {
+            return o.id === opportunityId;
+          }) || {
+            id: opportunityId,
+            title: opportunityId,
+            priority: "MEDIUM_PRIORITY",
+            recommendedAction: "Recorded from GDI detail",
+          };
+        btn.disabled = true;
+        api("/api/hotels/" + encodeURIComponent(state.hotelId) + "/decisions/ensure-gdi", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ opportunity: opp }),
+        })
+          .then(function (ensured) {
+            var decisionId =
+              (ensured.decision && ensured.decision.decisionId) ||
+              (ensured.decision &&
+                ensured.decision.decision &&
+                ensured.decision.decision.decisionId);
+            if (!decisionId) throw new Error("decision_missing");
+            var path =
+              kind === "action"
+                ? "/api/decisions/" + encodeURIComponent(decisionId) + "/actions"
+                : "/api/decisions/" + encodeURIComponent(decisionId) + "/outcomes";
+            return api(path, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(Object.assign({ hotelId: state.hotelId }, payload)),
+            });
+          })
+          .then(function (result) {
+            btn.disabled = false;
+            showSaveOk(statusId, okMessage);
+            if (result && result.current) updateLifecycleSummary(result.current);
+          })
+          .catch(function (err) {
+            btn.disabled = false;
+            showSaveOk(statusId, err.message || "Failed");
+          });
+      }
+
+      if (t && t.id === "gdiDoActionSave") {
+        var actionEl = document.getElementById("gdiDoAction");
+        var actionType = actionEl ? actionEl.value : "";
+        if (!actionType) {
+          showSaveOk("gdiDoActionSaveStatus", "Select action...");
+          return;
+        }
+        ensureThenRecord(
+          t.getAttribute("data-id"),
+          "action",
+          { actionType: actionType },
+          t,
+          "gdiDoActionSaveStatus",
+          "✓ Action saved"
+        );
+      }
+      if (t && t.id === "gdiDoOutcomeSave") {
+        var outcomeEl = document.getElementById("gdiDoOutcome");
+        var lossEl = document.getElementById("gdiDoLoss");
+        var outcomeType = outcomeEl ? outcomeEl.value : "";
+        if (!outcomeType) {
+          showSaveOk("gdiDoOutcomeSaveStatus", "Select outcome...");
+          return;
+        }
+        ensureThenRecord(
+          t.getAttribute("data-id"),
+          "outcome",
+          {
+            outcomeType: outcomeType,
+            outcomeReason:
+              outcomeType === "LOST" && lossEl && lossEl.value ? lossEl.value : null,
+          },
+          t,
+          "gdiDoOutcomeSaveStatus",
+          "✓ Outcome saved"
+        );
       }
     });
 

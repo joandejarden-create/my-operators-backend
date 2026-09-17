@@ -280,6 +280,20 @@ import {
   postGdiRevokeShare,
 } from "./api/group-demand-intelligence.js";
 import {
+  postDecision,
+  getDecisionById,
+  getDecisionTimelineRoute,
+  postDecisionValidation,
+  postDecisionAction,
+  postDecisionOutcome,
+  getHotelDecisions,
+  getHotelDecisionMetricsRoute,
+  getSubjectDecisionRoute,
+  getAdminDecisionAudit,
+  postEnsureGdiDecision,
+  postEnsureAdpDecision,
+} from "./api/decision-outcomes.js";
+import {
   getOperatorAlignmentSnapshotProfile,
   getOperatorAlignmentSnapshotCompanies,
 } from "./api/operator-alignment-snapshot.js";
@@ -1045,6 +1059,75 @@ app.post(
   requireDealalityUser,
   requireAdminAccess,
   postGdiRevokeShare
+);
+
+// Canonical Decision & Outcome layer (GDI + ADP shared)
+app.post("/api/decisions", memberstackAuth, requireDealalityUser, postDecision);
+app.get(
+  "/api/decisions/:decisionId",
+  memberstackAuth,
+  requireDealalityUser,
+  getDecisionById
+);
+app.get(
+  "/api/decisions/:decisionId/timeline",
+  memberstackAuth,
+  requireDealalityUser,
+  getDecisionTimelineRoute
+);
+app.post(
+  "/api/decisions/:decisionId/validations",
+  memberstackAuth,
+  requireDealalityUser,
+  postDecisionValidation
+);
+app.post(
+  "/api/decisions/:decisionId/actions",
+  memberstackAuth,
+  requireDealalityUser,
+  postDecisionAction
+);
+app.post(
+  "/api/decisions/:decisionId/outcomes",
+  memberstackAuth,
+  requireDealalityUser,
+  postDecisionOutcome
+);
+app.get(
+  "/api/hotels/:hotelId/decisions",
+  memberstackAuth,
+  requireDealalityUser,
+  getHotelDecisions
+);
+app.get(
+  "/api/hotels/:hotelId/decisions/metrics",
+  memberstackAuth,
+  requireDealalityUser,
+  getHotelDecisionMetricsRoute
+);
+app.get(
+  "/api/hotels/:hotelId/subjects/:subjectId/decision",
+  memberstackAuth,
+  requireDealalityUser,
+  getSubjectDecisionRoute
+);
+app.post(
+  "/api/hotels/:hotelId/decisions/ensure-gdi",
+  memberstackAuth,
+  requireDealalityUser,
+  postEnsureGdiDecision
+);
+app.post(
+  "/api/hotels/:hotelId/decisions/ensure-adp",
+  memberstackAuth,
+  requireDealalityUser,
+  postEnsureAdpDecision
+);
+app.get(
+  "/api/admin/decision-outcomes/audit",
+  memberstackAuth,
+  requireDealalityUser,
+  getAdminDecisionAudit
 );
 
 // ============================================================

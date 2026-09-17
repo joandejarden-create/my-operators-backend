@@ -1,0 +1,115 @@
+{
+  "hotelId": "recG66DQJKP2c0UNh",
+  "displayName": "Renaissance New York Times Square Hotel",
+  "aliases": {
+    "adpPropertyId": "adp_renaissance_times_square",
+    "marriottPropertyCode": "NYCRN",
+    "censusRecordId": "recG66DQJKP2c0UNh",
+    "note": "Canonical hotelId is HPC record. Provisional GDI key retained as alias only.",
+    "provisionalGdiHotelId": "gdi_hotel_renaissance_times_square"
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/renaissance-times-square-property-profile.json",
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 40,
+    "coreTargetPeakRoomsMax": 180,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=310 and modest meeting space (~5k sq ft / Broadway Ballroom ~200 theater). Peak band sized for realistic Midtown primary pursuit; citywide/Javits demand is overflow-only when housing access is evidenced. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 310,
+    "totalMeetingSpaceSqFt": 5000,
+    "largestBallroomSqFt": 2400,
+    "largestTheaterCapacity": 200,
+    "meetingRoomsIndoor": 4,
+    "outdoorEventSpace": false,
+    "softBrand": "Renaissance Hotels (Marriott)",
+    "serviceLevel": "full_service_urban",
+    "classification": "times_square_midtown_lifestyle",
+    "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture — not hardcoded into scoring engine. Limited meeting inventory vs large Manhattan convention hotels."
+  },
+  "demandTerritory": {
+    "label": "Manhattan Midtown / Times Square",
+    "includes": [
+      "Times Square / Theater District",
+      "Midtown Manhattan where Renaissance is a credible alternative",
+      "selected Manhattan overflow only when housing access is realistic"
+    ],
+    "evaluationQuestion": "Could Renaissance Times Square realistically capture this group demand given rooms, meeting limits, and Midtown positioning?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Times Square / Midtown Core",
+      "TERRITORY_NEARBY": "Nearby Manhattan Corridor",
+      "TERRITORY_COMPETITIVE": "Manhattan Competitive",
+      "TERRITORY_STRETCH": "NYC Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "times square",
+        "theater district",
+        "broadway",
+        "midtown",
+        "42nd street",
+        "two times square"
+      ],
+      "TERRITORY_NEARBY": [
+        "herald square",
+        "penn station",
+        "bryant park",
+        "rockefeller",
+        "grand central",
+        "hells kitchen",
+        "chelsea"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "manhattan",
+        "nyc",
+        "new york city",
+        "upper west",
+        "upper east",
+        "financial district"
+      ],
+      "TERRITORY_STRETCH": [
+        "brooklyn",
+        "queens",
+        "javits",
+        "hudson yards",
+        "long island city"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "newark",
+        "jersey city",
+        "westchester",
+        "connecticut",
+        "philadelphia",
+        "boston"
+      ]
+    }
+  },
+  "strCompetitiveSet": [
+    "New York Marriott Marquis",
+    "W New York - Times Square",
+    "The Westin New York at Times Square",
+    "Crowne Plaza Times Square Manhattan",
+    "Hilton Times Square",
+    "The Knickerbocker"
+  ],
+  "gdiOnboarding": {
+    "status": "ONBOARDED",
+    "discoveryMode": "INDEPENDENT_CANDIDATES",
+    "paidEnrichmentEnabled": false,
+    "bethesdaSeedPathAllowed": false,
+    "dmvExpansionAllowed": false,
+    "notes": "Third-hotel portability stress test — precision over volume in NYC."
+  },
+  "hotelIdentityStatus": "CANONICAL_HPC"
+}

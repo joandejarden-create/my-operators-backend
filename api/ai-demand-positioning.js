@@ -25,6 +25,8 @@ import {
 } from "../lib/ai-demand-positioning/brand-portfolio/bpp-publication-meta-v1.js";
 import { filterPropertiesForOwnerApp } from "../lib/ai-demand-positioning/share/adp-owner-app-property-access-v1.js";
 import { attachBppRowLevelPriorComparisons } from "../lib/ai-demand-positioning/longitudinal/attach-row-level-prior-comparisons-v1.js";
+import { buildMonthlyExecutiveReviewV1 } from "../lib/ai-demand-positioning/monthly-review/build-monthly-executive-review-v1.js";
+import { loadReviewPayload } from "../lib/ai-demand-positioning/monthly-review/admin/archive-store-v1.js";
 import fs from "fs";
 import path from "path";
 
@@ -387,5 +389,67 @@ export function getAiDemandPositioningCostEstimate(req, res) {
     return res.json({ ok: true, propertyId, ...estimate });
   } catch (err) {
     return res.status(500).json({ ok: false, error: "internal_error" });
+  }
+}
+
+/**
+ * Monthly Executive Review composition (archive or live build).
+ * Memberstack-authenticated — not share-token accessible.
+ * Does not alter ADP measurement methodology.
+ */
+export function getAdpMonthlyExecutiveReview(req, res) {
+  try {
+    setAdpNoStoreHeaders(res);
+    const propertyId = String(req.params.propertyId || "").trim();
+    if (!propertyId) {
+      return res.status(400).json({ ok: false, error: "propertyId_required" });
+    }
+    if (!loadPropertyProfile(propertyId)) {
+      return res.status(404).json({ ok: false, error: "property_not_found" });
+    }
+
+    const source = String(req.query.source || "golden").toLowerCase();
+    const reviewId = String(req.query.reviewId || "").trim();
+
+    if (source === "archive" && reviewId) {
+      const pack = loadReviewPayload(reviewId);
+      if (!pack) {
+        return res.status(404).json({ ok: false, error: "review_not_found" });
+      }
+      if (pack.meta?.propertyId && pack.meta.propertyId !== propertyId) {
+        return res.status(404).json({
+          ok: false,
+          error: "review_property_mismatch",
+          message: "Archive review does not belong to the requested property.",
+        });
+      }
+      return res.json({
+        ok: true,
+        source: "archive",
+        reviewId,
+        review: pack.review,
+        meta: pack.meta,
+        liveProviderCalls: 0,
+      });
+    }
+
+    try {
+      const review = buildMonthlyExecutiveReviewV1(propertyId);
+      return res.json({
+        ok: true,
+        source: source === "live" ? "live" : "golden",
+        review,
+        liveProviderCalls: 0,
+      });
+    } catch (buildErr) {
+      return res.status(422).json({
+        ok: false,
+        error: "monthly_review_unavailable",
+        message: buildErr.message,
+      });
+    }
+  } catch (err) {
+    console.error("[AI Demand Positioning] monthly review error:", err);
+    return res.status(500).json({ ok: false, error: "internal_error", message: err.message });
   }
 }

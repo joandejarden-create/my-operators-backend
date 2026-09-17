@@ -8,8 +8,8 @@ import {
   getGroupDemandIntelligenceFlagState,
   runGroupDemandResearch,
   listRegisteredHotels,
+  listGdiSelectableHotels,
   loadHotelProfile,
-  loadOpportunities,
   loadLatestSummary,
   listResearchRuns,
   loadResearchRun,
@@ -57,6 +57,16 @@ import {
   toOpportunityListDto,
   GDI_OPPORTUNITY_LIST_SCHEMA,
 } from "../lib/group-demand-intelligence/index.js";
+import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
+import {
+  ingestGdiAuthFeedback,
+  ingestGdiShareValidation,
+} from "../lib/decision-outcomes/index.js";
+
+/** Canonical opportunity load (Airtable primary when configured). */
+async function loadOppDoc(hotelId) {
+  return loadOpportunitiesCanonical(hotelId);
+}
 
 function shareSanitizeWithCanonical(hotelId, opportunity) {
   const { opportunity: overlaid } = resolveCanonicalOverlayForOpportunity(
@@ -96,40 +106,53 @@ export function getGdiFlag(req, res) {
 
 export function getGdiHotels(req, res) {
   if (!flagGate(req, res)) return;
-  const hotels = listRegisteredHotels();
+  const hotels = listGdiSelectableHotels();
   if (hotels.length === 0) {
+    // Fallback: materialized profiles only (legacy)
+    const registered = listRegisteredHotels();
+    if (registered.length === 0) {
+      return res.json({
+        ok: true,
+        hotels: [],
+        experimentalLabel: "EXPERIMENTAL / PILOT",
+        note: "No GDI-enabled hotels discovered yet. Add config + run research.",
+      });
+    }
     return res.json({
       ok: true,
-      hotels: [
-        {
-          hotelId: PILOT_HOTEL_ID,
-          hotelName: "Bethesda Marriott",
-          onboarded: false,
-          note: "Run research to materialize profile",
-        },
-      ],
+      hotels: registered.map((h) => ({
+        hotelId: h.hotelId,
+        hotelName: h.identity?.hotelName || h.hotelId,
+        displayName: h.identity?.hotelName || h.hotelId,
+        brand: h.identity?.brand,
+        city: h.identity?.city,
+        state: h.identity?.state,
+        locationLine: [h.identity?.city, h.identity?.state].filter(Boolean).join(", "),
+        optionLabel: [h.identity?.hotelName || h.hotelId, [h.identity?.city, h.identity?.state].filter(Boolean).join(", ")]
+          .filter(Boolean)
+          .join(" — "),
+        hasProfile: true,
+        hasOpportunities: false,
+        identityStatus: h.canonicalIds?.censusRecordId
+          ? "canonical_census"
+          : "provisional_gdi_key",
+      })),
       experimentalLabel: "EXPERIMENTAL / PILOT",
     });
   }
   return res.json({
     ok: true,
-    hotels: hotels.map((h) => ({
-      hotelId: h.hotelId,
-      hotelName: h.identity?.hotelName || h.hotelId,
-      brand: h.identity?.brand,
-      city: h.identity?.city,
-      state: h.identity?.state,
-    })),
+    hotels,
     experimentalLabel: "EXPERIMENTAL / PILOT",
   });
 }
 
-export function getGdiSummary(req, res) {
+export async function getGdiSummary(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const summary = loadLatestSummary(hotelId);
   const profile = loadHotelProfile(hotelId);
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   const feedback = loadFeedback(hotelId);
   const pilotMetrics = buildPilotMetrics(doc.opportunities || [], feedback);
   return res.json({
@@ -164,13 +187,13 @@ export function getGdiProfile(req, res) {
   return res.json({ ok: true, profile });
 }
 
-export function getGdiOpportunities(req, res) {
+export async function getGdiOpportunities(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
   const view = String(req.query.view || "list").trim().toLowerCase();
   const wantFull = view === "full" || view === "complete";
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   let opportunities = doc.opportunities || [];
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
@@ -191,11 +214,11 @@ export function getGdiOpportunities(req, res) {
   });
 }
 
-export function getGdiOpportunityDetail(req, res) {
+export async function getGdiOpportunityDetail(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const opportunityId = String(req.params.opportunityId || "").trim();
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
   if (!opportunity) {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
@@ -207,10 +230,10 @@ export function getGdiOpportunityDetail(req, res) {
   });
 }
 
-export function getGdiWeeklyBrief(req, res) {
+export async function getGdiWeeklyBrief(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   const brief = buildWeeklyBrief(doc.opportunities || []);
   return res.json({ ok: true, hotelId, brief });
 }
@@ -275,7 +298,7 @@ export async function postGdiRunResearch(req, res) {
   }
 }
 
-export function postGdiFeedback(req, res) {
+export async function postGdiFeedback(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const opportunityId = String(req.params.opportunityId || "").trim();
@@ -367,10 +390,48 @@ export function postGdiFeedback(req, res) {
     // Hotel validation must never rewrite canonical opportunity facts
     doesNotOverwriteCanonicalFacts: true,
   });
+
+  // Dual-write into canonical Decision & Outcome layer (does not replace legacy store)
+  let decisionOutcome = null;
+  try {
+    const oppDoc = await loadOppDoc(hotelId);
+    const opportunity = (oppDoc.opportunities || []).find(
+      (o) => o.id === opportunityId
+    );
+    decisionOutcome = await ingestGdiAuthFeedback({
+      hotelId,
+      opportunityId,
+      opportunity: opportunity || null,
+      feedback: saved,
+      actor: {
+        userId: req.dealalityUser?.email || req.dealalityUser?.id || "unknown",
+        role: req.dealalityUser?.role || "OTHER",
+      },
+    });
+  } catch (err) {
+    console.error("[gdi] decision-outcome dual-write failed", err?.message || err);
+    return res.status(502).json({
+      ok: false,
+      error: "decision_outcome_persist_failed",
+      message: err?.message || "Canonical Decision & Outcome write failed",
+      feedback: saved,
+      note: "Legacy feedback was stored, but durable Decision & Outcome persistence failed.",
+    });
+  }
+
   return res.json({
     ok: true,
     feedback: saved,
-    note: "Hotel validation stored as feedback only. Does not overwrite public research facts or auto-retrain scoring weights.",
+    decisionOutcome: decisionOutcome
+      ? {
+          decisionId:
+            decisionOutcome.decision?.decision?.decisionId ||
+            decisionOutcome.decision?.decisionId ||
+            null,
+          eventCount: (decisionOutcome.events || []).length,
+        }
+      : null,
+    note: "Your feedback helps track this opportunity and improve future recommendations.",
   });
 }
 
@@ -398,7 +459,7 @@ function requireGdiShare(req, res, requiredSurface) {
 }
 
 /** Public resolve — no Memberstack; token is the auth. */
-export function getGdiShareResolve(req, res) {
+export async function getGdiShareResolve(req, res) {
   const token = extractGdiShareCapabilityFromRequest(req);
   const verified = verifyGdiShareCapability(token);
   if (!verified.ok) {
@@ -411,7 +472,7 @@ export function getGdiShareResolve(req, res) {
   const hotelId = verified.claims.hotelId;
   const profile = loadHotelProfile(hotelId);
   const summary = loadLatestSummary(hotelId);
-  const oppDoc = loadOpportunities(hotelId);
+  const oppDoc = await loadOppDoc(hotelId);
   const active = filterSalespersonView(oppDoc.opportunities || []);
   const validationDoc = loadShareValidation(hotelId);
   const validationSummary = buildShareValidationSummary({
@@ -447,14 +508,14 @@ export function getGdiShareResolve(req, res) {
   });
 }
 
-export function getGdiShareBrief(req, res) {
+export async function getGdiShareBrief(req, res) {
   const verified = requireGdiShare(req, res, "brief");
   if (!verified) return;
   const hotelId = String(req.params.hotelId || "").trim();
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   const overlaid = applyCanonicalOverlaysToOpportunities(
     hotelId,
     doc.opportunities || []
@@ -498,14 +559,14 @@ export function getGdiShareBrief(req, res) {
   });
 }
 
-export function getGdiShareOpportunities(req, res) {
+export async function getGdiShareOpportunities(req, res) {
   const verified = requireGdiShare(req, res, "opportunities");
   if (!verified) return;
   const hotelId = String(req.params.hotelId || "").trim();
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   const validationDoc = loadShareValidation(hotelId);
   const byVal = new Map((validationDoc.items || []).map((v) => [v.opportunityId, v]));
   const view = String(req.query.view || "list").trim().toLowerCase();
@@ -553,7 +614,7 @@ export function getGdiShareOpportunities(req, res) {
   });
 }
 
-export function getGdiShareOpportunityDetail(req, res) {
+export async function getGdiShareOpportunityDetail(req, res) {
   const verified = requireGdiShare(req, res, "opportunity_detail");
   if (!verified) return;
   const hotelId = String(req.params.hotelId || "").trim();
@@ -561,7 +622,7 @@ export function getGdiShareOpportunityDetail(req, res) {
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
   if (!opportunity || opportunity.priority === "DISQUALIFIED") {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
@@ -593,7 +654,7 @@ export function getGdiShareOpportunityDetail(req, res) {
  * Share-token validation write — stores separately from research/canonical.
  * Uses opportunity_detail surface (present on existing Rad tokens).
  */
-export function postGdiShareValidation(req, res) {
+export async function postGdiShareValidation(req, res) {
   const verified = requireGdiShare(req, res, "opportunity_detail");
   if (!verified) return;
   const hotelId = String(req.params.hotelId || "").trim();
@@ -601,7 +662,7 @@ export function postGdiShareValidation(req, res) {
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
   if (!opportunity || opportunity.priority === "DISQUALIFIED") {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
@@ -618,6 +679,25 @@ export function postGdiShareValidation(req, res) {
       phoneAssessment: body.phoneAssessment || null,
       note: body.note || "",
     });
+
+    try {
+      await ingestGdiShareValidation({
+        hotelId,
+        opportunityId,
+        opportunity,
+        validation: item,
+        actor: {
+          userId: body.validator || "SHARE_REVIEWER",
+          role: "OTHER",
+        },
+      });
+    } catch (dualErr) {
+      console.error(
+        "[gdi] share decision-outcome dual-write failed",
+        dualErr?.message || dualErr
+      );
+    }
+
     const validationDoc = loadShareValidation(hotelId);
     const summary = buildShareValidationSummary({
       opportunities: filterSalespersonView(doc.opportunities || []),
@@ -635,7 +715,7 @@ export function postGdiShareValidation(req, res) {
         validatedAt: item.validatedAt,
       },
       summary,
-      note: "Validation stored separately. Does not overwrite research facts or mutate canonical contacts.",
+      note: "Validation stored separately. Does not overwrite research facts or mutate canonical contacts. Dual-written to canonical Decision layer.",
     });
   } catch (err) {
     if (err.code === "invalid_share_validation") {
@@ -646,14 +726,14 @@ export function postGdiShareValidation(req, res) {
   }
 }
 
-export function getGdiShareValidation(req, res) {
+export async function getGdiShareValidation(req, res) {
   const verified = requireGdiShare(req, res, "opportunity_detail");
   if (!verified) return;
   const hotelId = String(req.params.hotelId || "").trim();
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
-  const doc = loadOpportunities(hotelId);
+  const doc = await loadOppDoc(hotelId);
   const validationDoc = loadShareValidation(hotelId);
   const summary = buildShareValidationSummary({
     opportunities: filterSalespersonView(doc.opportunities || []),
