@@ -62,6 +62,10 @@ import {
   ingestGdiAuthFeedback,
   ingestGdiShareValidation,
 } from "../lib/decision-outcomes/index.js";
+import {
+  loadGdiCommercialProgressionBySubject,
+  toCustomerCommercialProgressionDto,
+} from "../lib/decision-outcomes/gdi-commercial-progression.js";
 
 /** Canonical opportunity load (Airtable primary when configured). */
 async function loadOppDoc(hotelId) {
@@ -74,6 +78,14 @@ function shareSanitizeWithCanonical(hotelId, opportunity) {
     opportunity
   );
   return sanitizeOpportunityForShare(overlaid);
+}
+
+async function attachCommercialProgression(hotelId, opportunities) {
+  const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
+  return (opportunities || []).map((o) => {
+    const dto = toCustomerCommercialProgressionDto(bySubject.get(o.id));
+    return dto ? { ...o, commercialProgression: dto } : o;
+  });
 }
 
 function flagGate(req, res) {
@@ -201,6 +213,7 @@ export async function getGdiOpportunities(req, res) {
   if (!wantFull) {
     opportunities = mapOpportunitiesToListDto(opportunities);
   }
+  opportunities = await attachCommercialProgression(hotelId, opportunities);
   res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
   return res.json({
     ok: true,
@@ -223,9 +236,15 @@ export async function getGdiOpportunityDetail(req, res) {
   if (!opportunity) {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
   }
+  const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
+  const commercialProgression = toCustomerCommercialProgressionDto(
+    bySubject.get(opportunityId)
+  );
   return res.json({
     ok: true,
-    opportunity,
+    opportunity: commercialProgression
+      ? { ...opportunity, commercialProgression }
+      : opportunity,
     scoreAudit: reconstructScoreAudit(opportunity),
   });
 }
@@ -235,7 +254,22 @@ export async function getGdiWeeklyBrief(req, res) {
   const hotelId = String(req.params.hotelId || "").trim();
   const doc = await loadOppDoc(hotelId);
   const brief = buildWeeklyBrief(doc.opportunities || []);
-  return res.json({ ok: true, hotelId, brief });
+  const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
+  const attachItems = (items) =>
+    (items || []).map((it) => {
+      const dto = toCustomerCommercialProgressionDto(
+        bySubject.get(it.opportunityId || it.id)
+      );
+      return dto ? { ...it, commercialProgression: dto } : it;
+    });
+  const enriched = {
+    ...brief,
+    items: attachItems(brief.items),
+    highPriority: attachItems(brief.highPriority),
+    mediumPriority: attachItems(brief.mediumPriority),
+    watchlist: attachItems(brief.watchlist),
+  };
+  return res.json({ ok: true, hotelId, brief: enriched });
 }
 
 export function getGdiResearchRuns(req, res) {
@@ -598,15 +632,19 @@ export async function getGdiShareOpportunities(req, res) {
         : null,
     };
   });
+  const withProgression = await attachCommercialProgression(
+    hotelId,
+    opportunities
+  );
   res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
   return res.json({
     ok: true,
     mode: "read_only",
     hotelId,
-    count: opportunities.length,
+    count: withProgression.length,
     view: wantFull ? "full" : "list",
     schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
-    opportunities,
+    opportunities: withProgression,
     validationEnums: {
       familiarityStatus: SHARE_FAMILIARITY_STATUS,
       familiarityLabels: SHARE_FAMILIARITY_LABEL,
@@ -637,11 +675,16 @@ export async function getGdiShareOpportunityDetail(req, res) {
   }
   const sanitized = shareSanitizeWithCanonical(hotelId, opportunity);
   const validation = getShareValidationForOpportunity(hotelId, opportunityId);
+  const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
+  const commercialProgression = toCustomerCommercialProgressionDto(
+    bySubject.get(opportunityId)
+  );
   return res.json({
     ok: true,
     mode: "read_only",
     opportunity: {
       ...sanitized,
+      ...(commercialProgression ? { commercialProgression } : {}),
       shareValidation: validation
         ? {
             familiarityStatus: validation.familiarityStatus,

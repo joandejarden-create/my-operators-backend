@@ -522,11 +522,22 @@
     );
   }
 
-  /** Prefer latest action/outcome label over raw lifecycle enum for customer UI. */
+  /** Prefer commercial progression labels over raw lifecycle enums for customer UI. */
   function deriveDisplayStage(current) {
     if (!current) return null;
+    if (
+      current.commercialProgression &&
+      current.commercialProgression.currentStatusLabel
+    ) {
+      return current.commercialProgression.currentStatusLabel;
+    }
     if (current.latestOutcome && current.latestOutcome.outcomeType) {
-      return humanizeToken(current.latestOutcome.outcomeType);
+      var outLabel =
+        (UI &&
+          UI.labelGdiOutcomeType &&
+          UI.labelGdiOutcomeType(current.latestOutcome.outcomeType)) ||
+        null;
+      return outLabel || humanizeToken(current.latestOutcome.outcomeType);
     }
     if (current.latestAction && current.latestAction.actionType) {
       return humanizeToken(current.latestAction.actionType);
@@ -539,11 +550,19 @@
 
   function renderLifecycleSummary(current) {
     if (!current) return "";
+    if (
+      current.commercialProgression &&
+      current.commercialProgression.currentStatusLabel &&
+      UI &&
+      UI.commercialProgressionHtml
+    ) {
+      return UI.commercialProgressionHtml(current.commercialProgression);
+    }
     var stage = deriveDisplayStage(current);
     var bits = [];
     if (stage) {
       bits.push(
-        '<p class="gdi-lifecycle-stage">Current stage: <strong>' +
+        '<p class="gdi-lifecycle-stage">Current status: <strong>' +
           esc(stage) +
           "</strong></p>"
       );
@@ -551,33 +570,50 @@
     var hist = [];
     if (current.latestAction && current.latestAction.actionType) {
       var actionLine =
-        "Last action: " + humanizeToken(current.latestAction.actionType);
+        "Latest activity: Hotel contacted opportunity";
+      if (current.latestAction.actionType !== "CONTACTED") {
+        actionLine =
+          "Latest activity: " + humanizeToken(current.latestAction.actionType);
+      }
       var ad = formatShortDate(eventStamp(current.latestAction));
       if (ad) actionLine += " · " + ad;
       hist.push(actionLine);
     }
     if (current.latestOutcome && current.latestOutcome.outcomeType) {
-      hist.push(
-        "Latest outcome: " + humanizeToken(current.latestOutcome.outcomeType)
-      );
+      var outLabel =
+        current.latestOutcome.outcomeType === "ADDED_TO_SOURCED_PROPERTIES"
+          ? "Added to sourced properties"
+          : humanizeToken(current.latestOutcome.outcomeType);
+      var outLine = "Latest result: " + outLabel;
+      var od = formatShortDate(eventStamp(current.latestOutcome));
+      if (od) outLine += " · " + od;
+      hist.push(outLine);
     } else if (current.latestAction) {
-      hist.push("Latest outcome: Pending");
+      hist.push("Latest result: Pending");
     }
     if (hist.length) {
       bits.push(
         '<p class="gdi-lifecycle-history">' +
-          hist.map(function (line) {
-            return esc(line);
-          }).join("<br>") +
+          hist
+            .map(function (line) {
+              return esc(line);
+            })
+            .join("<br>") +
           "</p>"
       );
     }
     if (!bits.length) return "";
-    return '<div class="gdi-lifecycle-summary" id="gdiLifecycleSummary">' + bits.join("") + "</div>";
+    return (
+      '<div class="gdi-lifecycle-summary" id="gdiLifecycleSummary">' +
+      bits.join("") +
+      "</div>"
+    );
   }
 
   function updateLifecycleSummary(current) {
-    var el = document.getElementById("gdiLifecycleSummary");
+    var el =
+      document.getElementById("gdiCommercialProgression") ||
+      document.getElementById("gdiLifecycleSummary");
     if (!el) return;
     var html = renderLifecycleSummary(current);
     if (!html) return;
@@ -615,6 +651,13 @@
           decisionBundle.decision &&
           decisionBundle.current) ||
         null;
+      if (o && o.commercialProgression) {
+        current = current
+          ? Object.assign({}, current, {
+              commercialProgression: o.commercialProgression,
+            })
+          : { commercialProgression: o.commercialProgression };
+      }
       drawerTitle.textContent = o.title;
       drawerBody.innerHTML = renderDetail(o, data.scoreAudit, current);
       wireDetailLifecycleControls();
@@ -912,6 +955,7 @@
       '<option value="NOT_QUALIFIED">Not Qualified</option>' +
       '<option value="OPPORTUNITY_CLOSED">Opportunity Closed</option>' +
       '<option value="DEFERRED">Deferred</option>' +
+      '<option value="ADDED_TO_SOURCED_PROPERTIES">Added to sourced properties</option>' +
       '<option value="UNKNOWN">Unknown</option></select></label>' +
       '<label id="gdiDoLossWrap" hidden>Loss reason<select id="gdiDoLoss"><option value="">Select loss reason...</option>' +
       '<option value="RATE">Rate</option>' +

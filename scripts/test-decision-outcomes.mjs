@@ -1,6 +1,6 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
- * Decision & Outcome regression suite — canonical layer + GDI/ADP bridges.
+ * Decision & Outcome regression suite â€” canonical layer + GDI/ADP bridges.
  * Forces filesystem persistence so unit tests stay offline.
  */
 
@@ -46,6 +46,7 @@ import {
 } from "../lib/decision-outcomes/airtable-base.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, "..");
 const FIXTURE_HOTEL = "dec_outcome_fixture_hotel";
 let failed = 0;
 
@@ -469,6 +470,174 @@ await check("fixture_f_adp_too_early", async () => {
     bundle.current.latestOutcome.outcomeType,
     ADP_OUTCOME_TYPE.TOO_EARLY_TO_MEASURE
   );
+});
+
+await check("gdi_added_to_sourced_properties_progression", async () => {
+  wipeFixtureHotel();
+  const usageDir = path.join(
+    ROOT,
+    "data/group-demand-intelligence/hotels",
+    FIXTURE_HOTEL
+  );
+  if (fs.existsSync(usageDir)) fs.rmSync(usageDir, { recursive: true, force: true });
+  const {
+    createDeterministicEventId,
+    deriveCommercialFunnelStage,
+    projectCommercialProgression,
+    labelGdiOutcomeType,
+    GDI_COMMERCIAL_FUNNEL_STAGE,
+  } = await import("../lib/decision-outcomes/index.js");
+  const { upsertCustomerUsageObservation } =
+    await import("../lib/group-demand-intelligence/customer-usage-observations.js");
+
+  assert.equal(
+    labelGdiOutcomeType(GDI_OUTCOME_TYPE.ADDED_TO_SOURCED_PROPERTIES),
+    "Added to sourced properties"
+  );
+  assert.ok(GDI_OUTCOME_TYPE.WON);
+  assert.ok(GDI_OUTCOME_TYPE.LOST);
+
+  const ensured = await ensureGdiOpportunityDecision({
+    hotelId: FIXTURE_HOTEL,
+    opportunity: {
+      id: "gdi_opp_nice_fixture",
+      title: "18th Annual NICE Conference fixture",
+      priority: "MEDIUM_PRIORITY",
+      opportunityType: "PRIMARY_PURSUIT",
+      recommendedAction: "Contact NICE program office",
+      evidenceConfidence: 70,
+    },
+  });
+  const decisionId = ensured.decision.decisionId;
+  const evidenceKey = "test_francesca_email_2026-09-17";
+  const actionEventId = createDeterministicEventId({
+    prefix: "act",
+    hotelId: FIXTURE_HOTEL,
+    decisionId,
+    eventKind: "ACTION",
+    subtype: GDI_ACTION_TYPE.CONTACTED,
+    eventDate: "2026-09-17",
+    evidenceKey,
+  });
+  const outcomeEventId = createDeterministicEventId({
+    prefix: "out",
+    hotelId: FIXTURE_HOTEL,
+    decisionId,
+    eventKind: "OUTCOME",
+    subtype: GDI_OUTCOME_TYPE.ADDED_TO_SOURCED_PROPERTIES,
+    eventDate: "2026-09-17",
+    evidenceKey,
+  });
+
+  assert.equal(
+    loadEvents(FIXTURE_HOTEL, decisionId).length,
+    0,
+    "fresh decision must start with zero events"
+  );
+
+  const a1 = await recordAction(FIXTURE_HOTEL, decisionId, {
+    actionEventId,
+    actionType: GDI_ACTION_TYPE.CONTACTED,
+    actionDate: "2026-09-17T12:00:00.000Z",
+    sourceSurface: "CUSTOMER_REPORTED",
+  });
+  const a2 = await recordAction(FIXTURE_HOTEL, decisionId, {
+    actionEventId,
+    actionType: GDI_ACTION_TYPE.CONTACTED,
+    actionDate: "2026-09-17T12:00:00.000Z",
+    sourceSurface: "CUSTOMER_REPORTED",
+  });
+  assert.equal(a1.created, true);
+  assert.equal(a2.created, false);
+
+  const o1 = await recordOutcome(FIXTURE_HOTEL, decisionId, {
+    outcomeEventId,
+    outcomeType: GDI_OUTCOME_TYPE.ADDED_TO_SOURCED_PROPERTIES,
+    outcomeDate: "2026-09-17T12:00:00.000Z",
+    causalConfidence: CAUSAL_CONFIDENCE.UNKNOWN,
+    sourceSurface: "CUSTOMER_REPORTED",
+  });
+  const o2 = await recordOutcome(FIXTURE_HOTEL, decisionId, {
+    outcomeEventId,
+    outcomeType: GDI_OUTCOME_TYPE.ADDED_TO_SOURCED_PROPERTIES,
+    outcomeDate: "2026-09-17T12:00:00.000Z",
+    causalConfidence: CAUSAL_CONFIDENCE.UNKNOWN,
+    sourceSurface: "CUSTOMER_REPORTED",
+  });
+  assert.equal(o1.created, true);
+  assert.equal(o2.created, false);
+
+  const bundle = await getDecision(FIXTURE_HOTEL, decisionId);
+  assert.equal(bundle.decision.hotelId, FIXTURE_HOTEL);
+  assert.equal(
+    bundle.current.latestAction.actionType,
+    GDI_ACTION_TYPE.CONTACTED
+  );
+  assert.equal(
+    bundle.current.latestOutcome.outcomeType,
+    GDI_OUTCOME_TYPE.ADDED_TO_SOURCED_PROPERTIES
+  );
+  assert.equal(
+    deriveCommercialFunnelStage(bundle.events),
+    GDI_COMMERCIAL_FUNNEL_STAGE.ADDED_TO_SOURCING
+  );
+  assert.equal(
+    bundle.current.commercialProgression.currentStatusLabel,
+    "Added to sourced properties"
+  );
+  assert.equal(
+    bundle.current.commercialProgression.compactStatusLabel,
+    "Added to sourcing"
+  );
+  assert.equal(
+    projectCommercialProgression(bundle.decision, bundle.events)
+      .latestActionLabel,
+    "Hotel contacted opportunity"
+  );
+
+  const events = loadEvents(FIXTURE_HOTEL, decisionId);
+  assert.equal(
+    events.filter((e) => e.actionType === GDI_ACTION_TYPE.CONTACTED).length,
+    1
+  );
+  assert.equal(
+    events.filter(
+      (e) => e.outcomeType === GDI_OUTCOME_TYPE.ADDED_TO_SOURCED_PROPERTIES
+    ).length,
+    1
+  );
+
+  assert.throws(
+    () => assertHotelBoundary("other_hotel", FIXTURE_HOTEL),
+    /hotel_boundary_violation/
+  );
+
+  const usage1 = upsertCustomerUsageObservation(FIXTURE_HOTEL, {
+    kind: "OUTREACH_SUMMARY",
+    observationDate: "2026-09-17",
+    evidenceKey: "test_21_of_29",
+    opportunitiesSurfaced: 29,
+    opportunitiesContacted: 21,
+    sourceActor: "Francesca Moore",
+  });
+  const usage2 = upsertCustomerUsageObservation(FIXTURE_HOTEL, {
+    kind: "OUTREACH_SUMMARY",
+    observationDate: "2026-09-17",
+    evidenceKey: "test_21_of_29",
+    opportunitiesSurfaced: 29,
+    opportunitiesContacted: 21,
+    sourceActor: "Francesca Moore",
+  });
+  assert.equal(usage1.created, true);
+  assert.equal(usage2.created, false);
+  assert.equal(usage1.observation.opportunitiesContacted, 21);
+
+  const metrics = await getHotelDecisionMetrics(FIXTURE_HOTEL, {
+    productModule: PRODUCT_MODULE.GDI,
+  });
+  assert.ok(metrics.commercialFunnel);
+  assert.ok(metrics.commercialFunnel.addedToSourcing >= 1);
+  assert.ok(metrics.commercialFunnel.contacted >= 1);
 });
 
 if (failed) {

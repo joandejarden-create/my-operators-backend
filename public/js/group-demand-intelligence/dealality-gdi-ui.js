@@ -1015,6 +1015,9 @@
       '<div class="brand-card__pills gdi-tile-pills">' +
       tileActionPill(bookingStatus, priority, activeFilters) +
       tileEventDatePill(it, linked) +
+      commercialProgressionCompactPill(
+        linked.commercialProgression || it.commercialProgression
+      ) +
       "</div>" +
       '<div class="brand-card__meta">' +
       esc(org) +
@@ -1149,6 +1152,9 @@
       '">' +
       '<div class="gdi-brief-card__top">' +
       priorityPill(priority) +
+      commercialProgressionCompactPill(
+        linked.commercialProgression || it.commercialProgression
+      ) +
       '<div class="gdi-brief-card__heading">' +
       "<h3>" +
       esc(scrubEventDatesFromText(it.title) || it.title || "—") +
@@ -1184,17 +1190,71 @@
     );
   }
 
-  function fitLabel(key) {
-    var map = {
-      physicalFit: "Physical Fit",
-      geographyFit: "Demand Territory Fit",
-      timing: "Timing / Winnability",
-      commercialValue: "Commercial Potential",
-      historicalFit: "Historical Hotel / Brand Fit",
-      competitiveAccessibility: "Competitive Accessibility",
-      contactability: "Contactability",
-    };
-    return map[key] || key;
+  function formatShortDate(iso) {
+    if (!iso) return "";
+    try {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    } catch (e) {
+      return "";
+    }
+  }
+
+  /**
+   * Customer-facing commercial progression block (auth + share parity).
+   * Never shows raw enums / event IDs / causal jargon.
+   */
+  function commercialProgressionHtml(progression) {
+    if (!progression || !progression.currentStatusLabel) return "";
+    var bits = [];
+    bits.push(
+      '<p class="gdi-progression-status">Current status: <strong>' +
+        esc(progression.currentStatusLabel) +
+        "</strong></p>"
+    );
+    var hist = [];
+    if (progression.latestActionLabel) {
+      var actionLine = "Latest activity: " + progression.latestActionLabel;
+      var ad = formatShortDate(progression.latestActionDate);
+      if (ad) actionLine += " · " + ad;
+      hist.push(actionLine);
+    }
+    if (progression.latestOutcomeLabel) {
+      var outLine = "Latest result: " + progression.latestOutcomeLabel;
+      var od = formatShortDate(progression.latestOutcomeDate);
+      if (od) outLine += " · " + od;
+      hist.push(outLine);
+    }
+    if (hist.length) {
+      bits.push(
+        '<p class="gdi-progression-history">' +
+          hist
+            .map(function (line) {
+              return esc(line);
+            })
+            .join("<br>") +
+          "</p>"
+      );
+    }
+    return (
+      '<div class="gdi-commercial-progression" id="gdiCommercialProgression">' +
+      bits.join("") +
+      "</div>"
+    );
+  }
+
+  function commercialProgressionCompactPill(progression) {
+    if (!progression || !progression.compactStatusLabel) return "";
+    return (
+      '<span class="gdi-badge gdi-badge--progression">' +
+      esc(progression.compactStatusLabel) +
+      "</span>"
+    );
   }
 
   function whoShouldSalesContactHtml(o, whoFn) {
@@ -1273,6 +1333,7 @@
 
     return (
       '<div class="gdi-detail-framework">' +
+      commercialProgressionHtml(o.commercialProgression) +
       '<section class="gdi-section gdi-section--see"><h3>What We See</h3>' +
       "<p>" +
       esc(o.summaryWhat) +
@@ -1486,6 +1547,9 @@
     fitLabel: fitLabel,
     assertNoHotelHardcode: assertNoHotelHardcode,
     shareCustomerValidationFormHtml: shareCustomerValidationFormHtml,
+    commercialProgressionHtml: commercialProgressionHtml,
+    commercialProgressionCompactPill: commercialProgressionCompactPill,
+    formatShortDate: formatShortDate,
     inactiveShareLinkHtml: inactiveShareLinkHtml,
     enumSelectOptions: enumSelectOptions,
   };
