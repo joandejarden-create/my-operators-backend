@@ -1,0 +1,238 @@
+{
+  "validationMarker": "gdi_discovery_hygiene_v3_offline_fixtures_20260921",
+  "asOfDate": "2026-02-01",
+  "subjectHotelId": "recCEpdskZeUBvQwG",
+  "subjectHotelName": "Hotel Caribe by Faranda Grand, Cartagena",
+  "geoNote": "Cartagena destination tokens exercise generic geo fit — fixtures are not Cartagena-specific rules.",
+  "policy": {
+    "hotelSpecific": false,
+    "personSpecific": false,
+    "eventNameHardcodes": false
+  },
+  "cases": [
+    {
+      "id": "real_event_sourcing_open",
+      "expect": "TRUE_ACTIONABLE",
+      "opportunityType": "PRIMARY_PURSUIT",
+      "opp": {
+        "id": "fx_open_1",
+        "title": "Regional Industry Conference 2026",
+        "organizationName": "Industry Association",
+        "eventStartDate": "2026-05-12",
+        "eventEndDate": "2026-05-14",
+        "destinationStatus": "Cartagena",
+        "venueSourcingStatus": "HOTEL_VENUE_TBD",
+        "roomDemandStatus": "UNKNOWN",
+        "housingEvidence": "Official page lists hotel venue TBD and accepting hotel proposals",
+        "evidenceSources": [
+          {
+            "url": "https://example.org/conference-2026"
+          }
+        ],
+        "openSourcingEvidence": true,
+        "hotelDemandEvidence": true
+      }
+    },
+    {
+      "id": "real_event_sourcing_unknown",
+      "expect": "VALID_WATCH",
+      "opp": {
+        "id": "fx_unknown_1",
+        "title": "Regional Industry Conference 2026",
+        "organizationName": "Industry Association",
+        "eventStartDate": "2026-05-12",
+        "eventEndDate": "2026-05-14",
+        "destinationStatus": "Cartagena",
+        "venueSourcingStatus": "UNKNOWN",
+        "roomDemandStatus": "UNKNOWN",
+        "evidenceSources": [
+          {
+            "url": "https://example.org/conference-2026"
+          }
+        ],
+        "hotelDemandEvidence": true
+      }
+    },
+    {
+      "id": "real_event_host_locked",
+      "expect": "VALID_WATCH",
+      "failureClass": "NO_OVERFLOW_EVIDENCE",
+      "opp": {
+        "id": "fx_host_1",
+        "title": "Regional Industry Conference 2026",
+        "organizationName": "Industry Association",
+        "eventStartDate": "2026-05-12",
+        "eventEndDate": "2026-05-14",
+        "destinationStatus": "Cartagena",
+        "venueSourcingStatus": "UNKNOWN",
+        "hostHotel": "Competitor Grand Hotel",
+        "overflowEvidence": false,
+        "hotelDemandEvidence": true,
+        "evidenceSources": [
+          {
+            "url": "https://example.org/conference-2026"
+          }
+        ]
+      }
+    },
+    {
+      "id": "host_locked_overflow_evidence",
+      "expect": "TRUE_ACTIONABLE",
+      "opportunityType": "OVERFLOW_HOUSING",
+      "opp": {
+        "id": "fx_host_ov_1",
+        "title": "International Congress 2026",
+        "organizationName": "Scientific Society",
+        "eventStartDate": "2026-06-01",
+        "eventEndDate": "2026-06-05",
+        "destinationStatus": "Cartagena",
+        "meetingVenue": "City Convention Center",
+        "meetingVenueRoomsOpen": true,
+        "overflowEvidence": true,
+        "hotelDemandEvidence": true,
+        "evidenceSources": [
+          {
+            "url": "https://example.org/congress-2026"
+          }
+        ]
+      }
+    },
+    {
+      "id": "host_locked_no_overflow",
+      "expect": "VALID_WATCH",
+      "failureClass": "NO_OVERFLOW_EVIDENCE",
+      "opp": {
+        "id": "fx_host_no_ov_1",
+        "title": "Leadership Retreat 2026",
+        "organizationName": "Professional Network",
+        "eventStartDate": "2026-03-10",
+        "eventEndDate": "2026-03-12",
+        "destinationStatus": "Cartagena",
+        "hostHotel": "Blue Apple Exclusive Resort",
+        "fullyPlaced": false,
+        "overflowEvidence": false,
+        "hotelDemandEvidence": true,
+        "evidenceSources": [
+          {
+            "url": "https://example.org/retreat-2026"
+          }
+        ]
+      }
+    },
+    {
+      "id": "past_event",
+      "expect": "INVALID",
+      "failureClass": "PAST_EVENT",
+      "opp": {
+        "id": "fx_past_1",
+        "title": "Annual Symposium 2025",
+        "organizationName": "Academic Coalition",
+        "eventStartDate": "2025-10-21",
+        "eventEndDate": "2025-10-21",
+        "destinationStatus": "Cartagena",
+        "pastEventConfirmed": true,
+        "evidenceSources": [
+          {
+            "url": "https://example.org/symposium-2025"
+          }
+        ]
+      }
+    },
+    {
+      "id": "past_annual_next_cycle_confirmed",
+      "expect": "VALID_WATCH",
+      "failureClass": "PAST_EVENT",
+      "opp": {
+        "id": "fx_past_reactivate_1",
+        "title": "Annual Symposium 2025",
+        "organizationName": "Academic Coalition",
+        "eventStartDate": "2025-10-21",
+        "eventEndDate": "2025-10-21",
+        "destinationStatus": "Cartagena",
+        "pastEventConfirmed": true,
+        "recurrenceEvidence": true,
+        "evidenceSources": [
+          {
+            "url": "https://example.org/symposium-2025"
+          }
+        ]
+      }
+    },
+    {
+      "id": "strategic_plan_non_event",
+      "expect": "INVALID",
+      "failureClass": "NON_EVENT_CONTENT",
+      "opp": {
+        "id": "fx_plan_1",
+        "title": "Action Plan City Government 2026-2027",
+        "organizationName": "Municipality",
+        "destinationStatus": "Cartagena",
+        "semanticTypeHint": "PLAN",
+        "evidenceSources": [
+          {
+            "url": "https://example.org/action-plan"
+          }
+        ]
+      }
+    },
+    {
+      "id": "program_page_non_event",
+      "expect": "INVALID",
+      "failureClass": "NON_EVENT_CONTENT",
+      "opp": {
+        "id": "fx_prog_1",
+        "title": "Community Wellness Initiative Program Overview",
+        "organizationName": "Civic Org",
+        "destinationStatus": "Cartagena",
+        "semanticTypeHint": "PROGRAM",
+        "evidenceSources": [
+          {
+            "url": "https://example.org/program"
+          }
+        ]
+      }
+    },
+    {
+      "id": "valid_event_unknown_rooms",
+      "expect": "VALID_WATCH",
+      "opp": {
+        "id": "fx_rooms_unknown_1",
+        "title": "Citywide Developers Conference 2026",
+        "organizationName": "Builders Guild",
+        "eventStartDate": "2026-04-08",
+        "eventEndDate": "2026-04-10",
+        "destinationStatus": "Cartagena",
+        "venueSourcingStatus": "UNKNOWN",
+        "roomDemandStatus": "UNKNOWN",
+        "evidenceSources": [
+          {
+            "url": "https://example.org/devcon-2026"
+          }
+        ]
+      }
+    },
+    {
+      "id": "valid_event_housing_evidence",
+      "expect": "TRUE_ACTIONABLE",
+      "opportunityType": "OVERFLOW_HOUSING",
+      "opp": {
+        "id": "fx_housing_1",
+        "title": "International Medical Congress 2026",
+        "organizationName": "Medical Society",
+        "eventStartDate": "2026-09-01",
+        "eventEndDate": "2026-09-05",
+        "destinationStatus": "Cartagena",
+        "meetingVenue": "National Convention Centre",
+        "meetingVenueRoomsOpen": true,
+        "housingEvidence": "Official housing program with multi-hotel room block and overflow hotels listed",
+        "overflowEvidence": true,
+        "hotelDemandEvidence": true,
+        "evidenceSources": [
+          {
+            "url": "https://example.org/medcongress-2026/housing"
+          }
+        ]
+      }
+    }
+  ]
+}
