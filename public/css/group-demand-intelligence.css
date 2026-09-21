@@ -497,6 +497,52 @@ body.gdi-page.embed-mode .gdi-shell {
   border: 1px solid rgba(126, 137, 172, 0.35);
 }
 
+/* Weekly delta pills — REUSABLE_PRODUCT_UI */
+.gdi-pill-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.gdi-pill-delta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 auto;
+}
+.gdi-pill-delta-new {
+  background: rgba(20, 202, 116, 0.2);
+  color: #7dffb2;
+  border: 1px solid rgba(20, 202, 116, 0.5);
+}
+.gdi-pill-delta-updated {
+  background: rgba(108, 114, 255, 0.18);
+  color: #b8bbff;
+  border: 1px solid rgba(108, 114, 255, 0.45);
+}
+.gdi-pill-delta-reactivated {
+  background: rgba(253, 181, 42, 0.18);
+  color: #ffd27a;
+  border: 1px solid rgba(253, 181, 42, 0.45);
+}
+.gdi-weekly-summary {
+  margin: 0 0 10px;
+  font-size: 0.92rem;
+  color: var(--gdi-text);
+  font-weight: 600;
+}
+.gdi-tile-delta-meta {
+  margin: 2px 0 6px;
+  font-size: 0.72rem;
+  color: var(--gdi-muted);
+}
+
 /* Action Window pills — violet / orange / cyan / pink (distinct from Priority). */
 .gdi-pill-action-pursue {
   background: rgba(168, 85, 247, 0.18);

@@ -37,7 +37,7 @@
     sortKey: "priority",
     sortDir: 1,
     viewMode: "tiles",
-    filters: { priority: "", segment: "", booking: "", territory: "" },
+    filters: { priority: "", segment: "", booking: "", territory: "", weekly: "" },
     isAdmin: false,
     flag: null,
   };
@@ -63,7 +63,7 @@
   }
 
   function resetBrowseView() {
-    state.filters = { priority: "", segment: "", booking: "", territory: "" };
+    state.filters = { priority: "", segment: "", booking: "", territory: "", weekly: "" };
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -280,7 +280,7 @@
     state.summary = null;
     state.opportunities = [];
     state.runs = [];
-    state.filters = { priority: "", segment: "", booking: "", territory: "" };
+    state.filters = { priority: "", segment: "", booking: "", territory: "", weekly: "" };
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -423,6 +423,17 @@
         render();
       });
     });
+    root.querySelectorAll("[data-gdi-weekly]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.filters.weekly = btn.getAttribute("data-gdi-weekly") || "";
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "weekly"
+        );
+        render();
+      });
+    });
     root.querySelectorAll("[data-gdi-tile-priority][data-gdi-tile-booking]").forEach(
       function (btn) {
         btn.addEventListener("click", function (e) {
@@ -475,6 +486,9 @@
       priorityCounts: UI.facetCountByPriority(state.opportunities, state.filters),
       activeBooking: state.filters.booking,
       actionCounts: UI.facetCountByActionStatus(state.opportunities, state.filters),
+      activeWeekly: state.filters.weekly,
+      weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
+      weeklyHeaderCounts: UI.weeklyDeltaHeaderCounts(state.opportunities),
       shown: rows.length,
       total: total,
       sort: state.sortKey,

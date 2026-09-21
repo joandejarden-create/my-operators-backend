@@ -688,14 +688,157 @@
         booking: "",
         segment: "",
         territory: "",
+        weekly: "",
       },
       filters || {}
     );
     if (!filterOpportunities(opportunities, filters).length) {
       if (changedKey === "priority") filters.booking = "";
       else if (changedKey === "booking") filters.priority = "";
+      else if (changedKey === "weekly") {
+        filters.priority = "";
+        filters.booking = "";
+      }
     }
     return filters;
+  }
+
+  function weeklyDeltaStateOf(opp) {
+    opp = opp || {};
+    if (opp.isNewThisWeek === true || opp.weeklyDeltaState === "NEW") return "NEW";
+    return opp.weeklyDeltaState || "";
+  }
+
+  function weeklyDeltaPillHtml(opp) {
+    var state = weeklyDeltaStateOf(opp);
+    if (!state || state === "UNCHANGED" || state === "NOT_IN_CURRENT") return "";
+    var map = {
+      NEW: { label: "NEW", cls: "gdi-pill gdi-pill-delta gdi-pill-delta-new" },
+      UPDATED: {
+        label: "UPDATED",
+        cls: "gdi-pill gdi-pill-delta gdi-pill-delta-updated",
+      },
+      REACTIVATED: {
+        label: "REACTIVATED",
+        cls: "gdi-pill gdi-pill-delta gdi-pill-delta-reactivated",
+      },
+    };
+    var m = map[state];
+    if (!m) return "";
+    return (
+      '<span class="' +
+      m.cls +
+      '" title="' +
+      esc(m.label) +
+      ' this week"><span class="gdi-pill-delta-dot" aria-hidden="true"></span>' +
+      esc(m.label) +
+      "</span>"
+    );
+  }
+
+  function weeklyDeltaMetaLine(opp) {
+    opp = opp || {};
+    var state = weeklyDeltaStateOf(opp);
+    var iso =
+      state === "NEW"
+        ? opp.firstSeenAt
+        : opp.lastMaterialChangeAt || opp.lastSeenAt || null;
+    if (!iso || (state !== "NEW" && state !== "UPDATED" && state !== "REACTIVATED")) {
+      return "";
+    }
+    var label =
+      state === "NEW" ? "Added" : state === "REACTIVATED" ? "Reactivated" : "Updated";
+    var d = formatShortDate(iso);
+    if (!d) return "";
+    return (
+      '<div class="gdi-tile-delta-meta">' + esc(label + " " + d) + "</div>"
+    );
+  }
+
+  function weeklyDeltaHeaderSummaryHtml(counts) {
+    counts = counts || {};
+    var parts = [];
+    if (counts.newThisWeek > 0) {
+      parts.push(counts.newThisWeek + " new this week");
+    }
+    if (counts.updated > 0) {
+      parts.push(counts.updated + " updated");
+    }
+    if (counts.reactivated > 0) {
+      parts.push(counts.reactivated + " reactivated");
+    }
+    if (!parts.length) return "";
+    return (
+      '<div class="gdi-weekly-summary" role="status">' +
+      esc(parts.join(" · ")) +
+      "</div>"
+    );
+  }
+
+  function weeklyDeltaPresetHtml(opts) {
+    opts = opts || {};
+    var active = opts.active != null ? opts.active : "";
+    var counts = opts.counts || {};
+    var presets = [
+      { value: "", label: "All" },
+      { value: "NEW", label: "New This Week" },
+      { value: "UPDATED", label: "Updated" },
+      { value: "REACTIVATED", label: "Reactivated" },
+      { value: "HIGH_PRIORITY", label: "High Priority" },
+    ];
+    return (
+      '<div class="chain-scale-legend gdi-browse-legend" role="group" aria-label="Weekly change filters">' +
+      "<span>This Week</span>" +
+      presets
+        .map(function (p) {
+          var n =
+            p.value === ""
+              ? counts.all != null
+                ? counts.all
+                : 0
+              : counts[p.value] != null
+                ? counts[p.value]
+                : 0;
+          var isActive = active === p.value;
+          var noRecords = p.value !== "" && n === 0;
+          return (
+            '<button type="button" class="chain-scale-legend-item' +
+            (isActive ? " active" : "") +
+            (noRecords ? " no-records" : "") +
+            '" data-gdi-weekly="' +
+            esc(p.value) +
+            '" aria-pressed="' +
+            isActive +
+            '"><span class="chain-scale-legend-label">' +
+            esc(presetLabelWithCount(p.label, p.value === "" ? null : n)) +
+            "</span></button>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function countByWeeklyDelta(rows) {
+    var out = { NEW: 0, UPDATED: 0, REACTIVATED: 0, HIGH_PRIORITY: 0, all: 0 };
+    (rows || []).forEach(function (o) {
+      out.all += 1;
+      var st = weeklyDeltaStateOf(o);
+      if (st === "NEW") out.NEW += 1;
+      if (st === "UPDATED") out.UPDATED += 1;
+      if (st === "REACTIVATED") out.REACTIVATED += 1;
+      if (o.priority === "HIGH_PRIORITY") out.HIGH_PRIORITY += 1;
+    });
+    return out;
+  }
+
+  function weeklyDeltaHeaderCounts(rows) {
+    var c = countByWeeklyDelta(rows);
+    return {
+      newThisWeek: c.NEW,
+      updated: c.UPDATED,
+      reactivated: c.REACTIVATED,
+    };
   }
 
   function priorityToneClass(priority) {
@@ -895,6 +1038,17 @@
         return o.demandTerritoryFit === filters.territory;
       });
     }
+    if (filters.weekly) {
+      if (filters.weekly === "HIGH_PRIORITY") {
+        rows = rows.filter(function (o) {
+          return o.priority === "HIGH_PRIORITY";
+        });
+      } else {
+        rows = rows.filter(function (o) {
+          return weeklyDeltaStateOf(o) === filters.weekly;
+        });
+      }
+    }
     return rows;
   }
 
@@ -1013,12 +1167,14 @@
       esc(title) +
       "</div>" +
       '<div class="brand-card__pills gdi-tile-pills">' +
+      weeklyDeltaPillHtml(linked) +
       tileActionPill(bookingStatus, priority, activeFilters) +
       tileEventDatePill(it, linked) +
       commercialProgressionCompactPill(
         linked.commercialProgression || it.commercialProgression
       ) +
       "</div>" +
+      weeklyDeltaMetaLine(linked) +
       '<div class="brand-card__meta">' +
       esc(org) +
       (segment ? " · " + esc(String(segment).toUpperCase()) : "") +
@@ -1070,7 +1226,13 @@
     opts = opts || {};
     return (
       '<div class="gdi-browse">' +
+      (opts.weeklySummaryHtml ||
+        weeklyDeltaHeaderSummaryHtml(opts.weeklyHeaderCounts || {})) +
       '<div class="gdi-browse-presets">' +
+      weeklyDeltaPresetHtml({
+        active: opts.activeWeekly != null ? opts.activeWeekly : "",
+        counts: opts.weeklyCounts || {},
+      }) +
       priorityPresetHtml({
         active: opts.activePriority != null ? opts.activePriority : "",
         counts: opts.priorityCounts || {},
@@ -1274,10 +1436,22 @@
     if (typeof whoFn === "function") return whoFn(o);
     var c = o.primaryContact;
     if (!c) return "<p>No usable contact resolved yet.</p>";
+    var primaryKind =
+      c.contactKind === "FUNCTIONAL"
+        ? "FUNCTIONAL CONTACT"
+        : c.functionalEntity
+          ? "FUNCTIONAL CONTACT"
+          : "PRIMARY CONTACT";
     var backups = (o.backupContacts || [])
       .map(function (b) {
+        var kind =
+          b.contactKind === "FUNCTIONAL_BACKUP" || b.functionalEntity
+            ? "Functional"
+            : "Backup";
         return (
-          "<li><strong>" +
+          "<li><span class=\"gdi-contact-kind\">" +
+          esc(kind) +
+          "</span> · <strong>" +
           esc(b.name || "—") +
           "</strong> · " +
           esc(b.role || "") +
@@ -1289,9 +1463,12 @@
       })
       .join("");
     return (
+      '<p class="gdi-contact-kind-label"><strong>' +
+      esc(primaryKind) +
+      "</strong></p>" +
       contactSummaryHtml(c) +
       "<p><strong>Why this contact:</strong> " +
-      esc(c.whyThisContact || o.whyThisContact || "—") +
+      esc(o.whoPrimaryReason || c.whyThisContact || o.whyThisContact || "—") +
       "</p>" +
       (o.contactGradeLabel || c.contactGradeLabel
         ? '<p class="gdi-contact-quality-quiet">Contact quality: ' +
@@ -1301,7 +1478,9 @@
             : "") +
           "</p>"
         : "") +
-      (backups ? "<h4>Backup contacts</h4><ul>" + backups + "</ul>" : "")
+      (backups
+        ? "<h4>Backup / functional contacts</h4><ul>" + backups + "</ul>"
+        : "")
     );
   }
 
@@ -1694,6 +1873,12 @@
     opportunityTileHtml: opportunityTileHtml,
     opportunityCardsGridHtml: opportunityCardsGridHtml,
     opportunityBrowseChromeHtml: opportunityBrowseChromeHtml,
+    weeklyDeltaPillHtml: weeklyDeltaPillHtml,
+    weeklyDeltaPresetHtml: weeklyDeltaPresetHtml,
+    weeklyDeltaHeaderSummaryHtml: weeklyDeltaHeaderSummaryHtml,
+    weeklyDeltaHeaderCounts: weeklyDeltaHeaderCounts,
+    countByWeeklyDelta: countByWeeklyDelta,
+    weeklyDeltaStateOf: weeklyDeltaStateOf,
     contactSummaryHtml: contactSummaryHtml,
     weeklyBriefCardHtml: weeklyBriefCardHtml,
     intelligenceDetailHtml: intelligenceDetailHtml,
