@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Many Futures — Phase B local prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --shell-ink: #15201c;
+      --shell-muted: #5c6b64;
+      --shell-line: rgba(21, 32, 28, 0.12);
+      --shell-paper: #f3efe6;
+      --shell-deep: #1a2e28;
+      --shell-accent: #2f6b5a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Manrope, system-ui, sans-serif;
+      color: var(--shell-ink);
+      background:
+        radial-gradient(ellipse 80% 50% at 10% 0%, rgba(47, 107, 90, 0.08), transparent 50%),
+        linear-gradient(180deg, #f7f4ed 0%, var(--shell-paper) 40%, #ebe6db 100%);
+    }
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--shell-line);
+    }
+    .site-nav__brand {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.45rem;
+      letter-spacing: 0.02em;
+      color: var(--shell-deep);
+      text-decoration: none;
+    }
+    .site-nav__links {
+      display: flex;
+      gap: 1.25rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .site-nav__links a { color: var(--shell-muted); text-decoration: none; }
+    .site-nav__links a:hover { color: var(--shell-accent); }
+    .page-intro {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 1.25rem;
+      text-align: center;
+    }
+    .page-intro__eyebrow {
+      margin: 0 0 0.85rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--shell-accent);
+    }
+    .page-intro h1 {
+      margin: 0 0 1rem;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.35rem);
+      font-weight: 400;
+      line-height: 1.12;
+      color: var(--shell-deep);
+      letter-spacing: -0.02em;
+    }
+    .page-intro p {
+      margin: 0 auto;
+      max-width: 38rem;
+      font-size: 1.02rem;
+      line-height: 1.65;
+      color: var(--shell-muted);
+    }
+    .note {
+      max-width: 920px;
+      margin: 0 auto 1.5rem;
+      padding: 0 1.5rem;
+      font-size: 0.78rem;
+      color: var(--shell-muted);
+      text-align: center;
+    }
+    .embed-host { max-width: 1440px; margin: 0 auto; padding: 0 0 4rem; }
+    @media (max-width: 720px) {
+      .site-nav__links { display: none; }
+      .page-intro { padding-top: 2.5rem; }
+    }
+  </style>
+  <link rel="stylesheet" href="./many-futures.css" />
+</head>
+<body>
+  <header class="site-nav" aria-label="Site">
+    <a class="site-nav__brand" href="#">Dealality</a>
+    <ul class="site-nav__links">
+      <li><a href="#">Platform</a></li>
+      <li><a href="#">Intelligence</a></li>
+      <li><a href="#">For owners</a></li>
+    </ul>
+  </header>
+
+  <section class="page-intro">
+    <p class="page-intro__eyebrow">Features · Structured. Confidential. Owner-Led.</p>
+    <h1>One Hotel. Many Futures. The Capabilities to Evaluate Each One.</h1>
+    <p>
+      A hotel opportunity may support more than one credible path. Dealality helps
+      owners explore brands, operators, market context, readiness, economics, and
+      strategic alternatives through one confidential, owner-controlled process —
+      while still protecting what matters most in dealmaking: relationships.
+    </p>
+  </section>
+
+  <p class="note">
+    Phase B local prototype only — Webflow not modified. Feature panels are curated
+    product presentations from live Dealality interfaces. Final hotel asset installed; Illustrative Opportunity retained.
+  </p>
+
+  <div class="embed-host">
+    <!-- MANY_FUTURES_MARKUP -->
+  </div>
+
+  <script src="./many-futures.js"></script>
+</body>
+</html>
