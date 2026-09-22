@@ -199,7 +199,7 @@ Market locale + demand-archetype configuration: **acceptable**.
 
 TESTS: **16/16** V4 offline · Hygiene V3 suite **PASS**
 
-COMMIT SHA: *(filled after commit)*
+COMMIT SHA: `9b9dcc7403e98262ec31aed20d2dcffb8fa825c3`
 
 ---
 
