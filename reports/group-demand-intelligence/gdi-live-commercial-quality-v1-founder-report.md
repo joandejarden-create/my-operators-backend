@@ -129,8 +129,8 @@ Apply: **YES** · IDs preserved: **YES**
 | EVENT-SPECIFIC | **NO** |
 | PERSON-SPECIFIC | **NO** |
 | DOMAIN-SPECIFIC | **NO** |
-| COMMIT SHA | *(post-commit)* |
-| DEPLOY ID | pending gates |
+| COMMIT SHA | `b79f7175700944e483bd36c3324a7564338e57cc` |
+| DEPLOY ID | pending live 200 gates |
 
 ### Files
 
