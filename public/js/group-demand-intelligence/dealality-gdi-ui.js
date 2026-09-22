@@ -1019,6 +1019,7 @@
     var sort = opts.sort || "priority";
     var viewMode = opts.viewMode === "tiles" ? "tiles" : "list";
     var noun = opts.noun || "Opportunities";
+    var exportHref = opts.exportHref || "";
     return (
       '<div class="results-toolbar gdi-browse-toolbar">' +
       '<div class="results-count" aria-live="polite">Showing <strong>' +
@@ -1029,6 +1030,11 @@
       esc(noun) +
       "</div>" +
       '<div class="results-toolbar-sort">' +
+      (exportHref
+        ? '<a class="gdi-export-btn" id="gdiExportCsvBtn" href="' +
+          esc(exportHref) +
+          '" download>Export CSV</a>'
+        : '<button type="button" class="gdi-export-btn" id="gdiExportCsvBtn">Export CSV</button>') +
       '<button type="button" class="sort-icon" id="gdiSortDirBtn" title="Toggle sort direction" aria-label="Toggle sort direction">⇅</button>' +
       '<div class="filter-group filter-group-sort">' +
       '<select class="filter-select sort-select" id="gdiSortSelect" aria-label="Sort opportunities">' +
@@ -1288,6 +1294,7 @@
         sort: opts.sort,
         viewMode: opts.viewMode,
         noun: opts.noun,
+        exportHref: opts.exportHref || "",
       }) +
       "</div>"
     );
@@ -1544,7 +1551,33 @@
       })
       .join("");
 
-    var thesis = o.hotelOpportunityThesis || o.bethesdaWinThesis || "—";
+    var thesis =
+      o.hotelDemandThesis || o.hotelOpportunityThesis || o.bethesdaWinThesis || "Not publicly found";
+    var dateLabel =
+      o.eventDateDisplay ||
+      eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Date not yet confirmed");
+    var peakLabel = fmtVal(o.peakRooms ?? o.estimatedPeakRooms);
+    var attLabel = fmtVal(o.attendance ?? o.estimatedAttendance);
+    if (!peakLabel || peakLabel === "—") peakLabel = "Not publicly found";
+    if (!attLabel || attLabel === "—") attLabel = "Not publicly found";
+    var relatedN = o.relatedOpportunityCount || (o.relatedOpportunityIds || []).length || 0;
+    var relatedHtml =
+      relatedN > 0
+        ? '<p class="gdi-related"><strong>Related opportunities:</strong> ' +
+          esc(relatedN) +
+          (o.eventSeriesId
+            ? " · series <code>" + esc(o.eventSeriesId) + "</code>"
+            : "") +
+          "</p>"
+        : "";
+    var actionBasis = o.actionBasis
+      ? "<p><strong>Why this action:</strong> " + esc(o.actionBasis) + "</p>"
+      : "";
+    var nextCycle =
+      o.nextCycleDisplay
+        ? "<p><strong>Cycle:</strong> " + esc(o.nextCycleDisplay) + "</p>"
+        : "";
+
     var scoreGrid =
       '<div class="gdi-score-grid">' +
       '<div class="gdi-score-cell"><div class="n">' +
@@ -1566,31 +1599,40 @@
     return (
       '<div class="gdi-detail-framework">' +
       commercialProgressionHtml(o.commercialProgression) +
-      '<section class="gdi-section gdi-section--see"><h3>What We See</h3>' +
+      '<section class="gdi-section gdi-section--see"><h3>Event / Opportunity</h3>' +
       "<p>" +
-      esc(o.summaryWhat) +
+      esc(o.summaryWhat || o.title || "—") +
       "</p>" +
       '<div class="gdi-detail-meta-row">' +
+      "<span><strong>Date</strong> " +
+      esc(dateLabel) +
+      (o.eventDateStatus ? " · " + esc(o.eventDateStatus) : "") +
+      "</span>" +
       "<span><strong>Type</strong> " +
       esc(o.opportunityTypeLabel || o.opportunityType || "—") +
       "</span>" +
-      "<span><strong>Venue</strong> " +
-      esc(o.venueSourcingStatusLabel || o.venueSourcingStatus || "—") +
+      "<span><strong>Venue / sourcing</strong> " +
+      esc(o.venueSourcingStatusLabel || o.venueSourcingStatus || "Unknown") +
       "</span>" +
       "<span><strong>Room demand</strong> " +
-      esc(o.roomDemandStatusLabel || o.roomDemandStatus || "—") +
+      esc(o.roomDemandLive || o.roomDemandStatusLabel || o.roomDemandStatus || "Unknown") +
       "</span></div>" +
+      nextCycle +
       "<p>" +
       esc(o.venueSourcingRationale || "") +
       "</p>" +
-      "<p>Attendees: " +
-      esc(fmtVal(o.estimatedAttendance)) +
+      "<p>Attendance: " +
+      esc(attLabel) +
+      (o.attendanceStatus ? " (" + esc(o.attendanceStatus) + ")" : "") +
       " · Peak rooms: " +
-      esc(fmtVal(o.estimatedPeakRooms)) +
+      esc(peakLabel) +
+      (o.peakRoomsStatus ? " (" + esc(o.peakRoomsStatus) + ")" : "") +
       "</p>" +
-      "<p><em>" +
+      "<p><strong>Room-demand thesis:</strong> <em>" +
       esc(thesis) +
-      "</em></p></section>" +
+      "</em></p>" +
+      relatedHtml +
+      "</section>" +
       '<section class="gdi-section gdi-section--matters"><h3>Why It Matters</h3><p>' +
       esc(o.summaryWhyMatters || "—") +
       "</p><p>" +
@@ -1621,13 +1663,20 @@
       "</p><p>Demand Territory: " +
       esc(o.demandTerritoryFitLabel || "—") +
       "</p></section>" +
-      '<section class="gdi-section gdi-section--action"><h3>Recommended Action</h3><p>' +
+      '<section class="gdi-section gdi-section--action"><h3>Suggested Action</h3><p>' +
       esc(o.recommendedAction || "—") +
-      "</p></section>" +
+      "</p>" +
+      actionBasis +
+      "</section>" +
       '<section class="gdi-section gdi-section--contact"><h3>Contact</h3>' +
       whoShouldSalesContactHtml(o, extras.whoContactHtml) +
+      (o.contactPathClass
+        ? '<p class="gdi-contact-quality-quiet">Contact path: ' +
+          esc(o.contactPathClass) +
+          "</p>"
+        : "") +
       "</section>" +
-      '<section class="gdi-section gdi-section--evidence"><h3>Evidence</h3>' +
+      '<section class="gdi-section gdi-section--evidence"><h3>Sources</h3>' +
       "<p>" +
       esc(o.evidenceConfidenceExplanation || audit.evidenceConfidenceExplanation || "") +
       "</p>" +
@@ -1636,10 +1685,10 @@
       " · Group: " +
       esc(o.likelyGroupCompetitor || "—") +
       "</p><ul>" +
-      (sources || "<li>See opportunity evidence.</li>") +
+      (sources || "<li>Not publicly found</li>") +
       "</ul></section>" +
       (extras.validationHtml
-        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation</h3>' +
+        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Validation / Action / Outcome</h3>' +
           extras.validationHtml +
           "</section>"
         : "") +

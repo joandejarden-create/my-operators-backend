@@ -263,6 +263,7 @@ import {
   getGdiSummary,
   getGdiProfile,
   getGdiOpportunities,
+  getGdiOpportunitiesExport,
   getGdiOpportunityDetail,
   getGdiWeeklyBrief,
   getGdiResearchRuns,
@@ -274,6 +275,7 @@ import {
   getGdiShareResolve,
   getGdiShareBrief,
   getGdiShareOpportunities,
+  getGdiShareOpportunitiesExport,
   getGdiShareOpportunityDetail,
   postGdiShareValidation,
   postGdiShareAction,
@@ -992,6 +994,11 @@ app.get(
   getGdiOpportunities
 );
 app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/export.csv",
+  gdiPilotReadAuth,
+  getGdiOpportunitiesExport
+);
+app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId",
   gdiPilotReadAuth,
   getGdiOpportunityDetail
@@ -1043,6 +1050,10 @@ app.get(
 app.get(
   "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities",
   getGdiShareOpportunities
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/export.csv",
+  getGdiShareOpportunitiesExport
 );
 app.get(
   "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId",

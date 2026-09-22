@@ -466,6 +466,23 @@
     return UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters);
   }
 
+  function buildExportHref() {
+    if (!state.hotelId) return "";
+    var q = [];
+    if (state.filters && state.filters.weekly) {
+      q.push("weekly=" + encodeURIComponent(state.filters.weekly));
+    }
+    if (state.filters && state.filters.priority) {
+      q.push("priority=" + encodeURIComponent(state.filters.priority));
+    }
+    return (
+      "/api/group-demand-intelligence/hotels/" +
+      encodeURIComponent(state.hotelId) +
+      "/opportunities/export.csv" +
+      (q.length ? "?" + q.join("&") : "")
+    );
+  }
+
   function renderBrowseBody(opts) {
     opts = opts || {};
     var rows = filteredSorted();
@@ -481,6 +498,7 @@
       sort: state.sortKey,
       viewMode: state.viewMode,
       noun: opts.noun || "Opportunities",
+      exportHref: buildExportHref(),
     });
     return chrome + (opts.lede || "") + renderOpportunityCards(rows);
   }

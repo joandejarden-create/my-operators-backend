@@ -56,6 +56,11 @@ import {
   mapOpportunitiesToListDto,
   toOpportunityListDto,
   GDI_OPPORTUNITY_LIST_SCHEMA,
+  applyLiveCommercialQuality,
+  buildRelatedOpportunityGroups,
+  buildExportCsv,
+  HOTEL_VALIDATION_REASON,
+  HOTEL_VALIDATION_REASON_LABEL,
 } from "../lib/group-demand-intelligence/index.js";
 import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import {
@@ -77,12 +82,31 @@ async function loadOppDoc(hotelId) {
   return loadOpportunitiesCanonical(hotelId);
 }
 
+function asOfToday() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/** Apply live commercial quality + related-opportunity grouping (read path). */
+function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) {
+  const related = buildRelatedOpportunityGroups(opportunities || []);
+  return (opportunities || []).map((o) => {
+    const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
+    const relatedIds = related[o.id] || [];
+    return {
+      ...cq,
+      relatedOpportunityIds: relatedIds,
+      relatedOpportunityCount: relatedIds.length,
+    };
+  });
+}
+
 function shareSanitizeWithCanonical(hotelId, opportunity) {
   const { opportunity: overlaid } = resolveCanonicalOverlayForOpportunity(
     hotelId,
     opportunity
   );
-  return sanitizeOpportunityForShare(overlaid);
+  const [projected] = projectOpportunitiesCommercialQuality([overlaid]);
+  return sanitizeOpportunityForShare(projected);
 }
 
 async function attachCommercialProgression(hotelId, opportunities) {
@@ -211,7 +235,7 @@ export async function getGdiOpportunities(req, res) {
   const view = String(req.query.view || "list").trim().toLowerCase();
   const wantFull = view === "full" || view === "complete";
   const doc = await loadOppDoc(hotelId);
-  let opportunities = doc.opportunities || [];
+  let opportunities = projectOpportunitiesCommercialQuality(doc.opportunities || []);
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
   }
@@ -237,7 +261,8 @@ export async function getGdiOpportunityDetail(req, res) {
   const hotelId = String(req.params.hotelId || "").trim();
   const opportunityId = String(req.params.opportunityId || "").trim();
   const doc = await loadOppDoc(hotelId);
-  const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
+  const projected = projectOpportunitiesCommercialQuality(doc.opportunities || []);
+  const opportunity = projected.find((o) => o.id === opportunityId);
   if (!opportunity) {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
   }
@@ -251,7 +276,69 @@ export async function getGdiOpportunityDetail(req, res) {
       ? { ...opportunity, commercialProgression }
       : opportunity,
     scoreAudit: reconstructScoreAudit(opportunity),
+    validationReasons: HOTEL_VALIDATION_REASON,
+    validationReasonLabels: HOTEL_VALIDATION_REASON_LABEL,
   });
+}
+
+/**
+ * CSV export of current hotel opportunities (honors includeDisqualified + ids filter).
+ * Query: ids=comma (optional), includeDisqualified=1, weekly=, priority=
+ */
+export async function getGdiOpportunitiesExport(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
+  const idsFilter = String(req.query.ids || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const weekly = String(req.query.weekly || "").trim().toUpperCase();
+  const priority = String(req.query.priority || "").trim().toUpperCase();
+
+  const doc = await loadOppDoc(hotelId);
+  let opportunities = projectOpportunitiesCommercialQuality(doc.opportunities || []);
+  if (!includeDisqualified) {
+    opportunities = filterSalespersonView(opportunities);
+  }
+  if (idsFilter.length) {
+    const set = new Set(idsFilter);
+    opportunities = opportunities.filter((o) => set.has(o.id));
+  }
+  if (weekly && weekly !== "ALL") {
+    opportunities = opportunities.filter((o) => {
+      if (weekly === "NEW") return o.isNewThisWeek === true || o.weeklyDeltaState === "NEW";
+      return String(o.weeklyDeltaState || "").toUpperCase() === weekly;
+    });
+  }
+  if (priority && priority !== "ALL") {
+    opportunities = opportunities.filter(
+      (o) => String(o.priority || "").toUpperCase() === priority
+    );
+  }
+
+  const hotels = listRegisteredHotels();
+  const hotel =
+    hotels.find((h) => h.hotelId === hotelId) ||
+    { hotelId, name: hotelId };
+
+  const csv = buildExportCsv(opportunities, hotel, {
+    weekly: weekly || "ALL",
+    priority: priority || "ALL",
+    includeDisqualified,
+    ids: idsFilter,
+  });
+  const slug = String(hotel.name || hotelId)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 48);
+  res.setHeader("Content-Type", "text/csv; charset=utf-8");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename="gdi-${slug}-export.csv"`
+  );
+  return res.send(csv);
 }
 
 export async function getGdiWeeklyBrief(req, res) {
@@ -721,14 +808,56 @@ export async function getGdiShareOpportunities(req, res) {
       familiarityLabels: SHARE_FAMILIARITY_LABEL,
       commercialValue: SHARE_COMMERCIAL_VALUE,
       commercialValueLabels: SHARE_COMMERCIAL_VALUE_LABEL,
-      contactPerson: SHARE_CONTACT_PERSON_ASSESSMENT,
+      contactPersonAssessment: SHARE_CONTACT_PERSON_ASSESSMENT,
       contactPersonLabels: SHARE_CONTACT_PERSON_LABEL,
       emailAssessment: SHARE_EMAIL_ASSESSMENT,
       emailAssessmentLabels: SHARE_EMAIL_ASSESSMENT_LABEL,
       phoneAssessment: SHARE_PHONE_ASSESSMENT,
       phoneAssessmentLabels: SHARE_PHONE_ASSESSMENT_LABEL,
+      validationReason: Object.values(HOTEL_VALIDATION_REASON),
+      validationReasonLabels: HOTEL_VALIDATION_REASON_LABEL,
     },
   });
+}
+
+/** Share-scoped CSV export (same capability gate as list). */
+export async function getGdiShareOpportunitiesExport(req, res) {
+  const verified = requireGdiShare(req, res, "opportunities");
+  if (!verified) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  if (hotelId !== verified.claims.hotelId) {
+    return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
+  }
+  const weekly = String(req.query.weekly || "").trim().toUpperCase();
+  const priority = String(req.query.priority || "").trim().toUpperCase();
+  const doc = await loadOppDoc(hotelId);
+  let opportunities = projectOpportunitiesCommercialQuality(
+    filterSalespersonView(doc.opportunities || [])
+  );
+  if (weekly && weekly !== "ALL") {
+    opportunities = opportunities.filter((o) => {
+      if (weekly === "NEW") return o.isNewThisWeek === true || o.weeklyDeltaState === "NEW";
+      return String(o.weeklyDeltaState || "").toUpperCase() === weekly;
+    });
+  }
+  if (priority && priority !== "ALL") {
+    opportunities = opportunities.filter(
+      (o) => String(o.priority || "").toUpperCase() === priority
+    );
+  }
+  const hotels = listRegisteredHotels();
+  const hotel = hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
+  const csv = buildExportCsv(opportunities, hotel, {
+    weekly: weekly || "ALL",
+    priority: priority || "ALL",
+    share: true,
+  });
+  res.setHeader("Content-Type", "text/csv; charset=utf-8");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename="gdi-share-${hotelId}-export.csv"`
+  );
+  return res.send(csv);
 }
 
 export async function getGdiShareOpportunityDetail(req, res) {

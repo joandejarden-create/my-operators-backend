@@ -580,6 +580,18 @@
       sort: state.sortKey,
       viewMode: state.viewMode,
       noun: "Opportunities",
+      exportHref: (function () {
+        if (!state.hotelId || !share) return "";
+        var q = ["share=" + encodeURIComponent(share)];
+        if (state.filters.weekly) q.push("weekly=" + encodeURIComponent(state.filters.weekly));
+        if (state.filters.priority) q.push("priority=" + encodeURIComponent(state.filters.priority));
+        return (
+          "/api/group-demand-intelligence/share/hotels/" +
+          encodeURIComponent(state.hotelId) +
+          "/opportunities/export.csv?" +
+          q.join("&")
+        );
+      })(),
     });
     if (!rows.length) {
       return (
