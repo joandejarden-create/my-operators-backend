@@ -1,0 +1,121 @@
+{
+  "hotelId": "recGkME49yYuxQl0u",
+  "displayName": "NOW NOW NOHO",
+  "hotelIdentityStatus": "CANONICAL_HPC",
+  "aliases": {
+    "adpPropertyId": "adp_now_now_noho",
+    "censusRecordId": "recGkME49yYuxQl0u",
+    "note": "Canonical hotelId is HPC record. V8 3-hotel blind validation Hotel A."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/now-now-noho-property-profile.json",
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 15,
+    "coreTargetPeakRoomsMax": 60,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": true,
+    "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=115 and small meeting inventory (~2.5k sq ft). Peak band sized for boutique downtown primary pursuit; large Midtown/Javits is overflow-only when housing access is evidenced. targetSegments empty — no demand-type seeding."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 115,
+    "totalMeetingSpaceSqFt": 2500,
+    "largestBallroomSqFt": 1200,
+    "largestTheaterCapacity": 60,
+    "meetingRoomsIndoor": 2,
+    "outdoorEventSpace": false,
+    "softBrand": "Hyatt",
+    "serviceLevel": "full_service_urban_boutique",
+    "classification": "noho_lower_manhattan_lifestyle",
+    "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture."
+  },
+  "demandTerritory": {
+    "label": "Lower Manhattan / NoHo–SoHo–Village",
+    "includes": [
+      "NoHo / Lafayette corridor",
+      "SoHo / Greenwich Village where NOW NOW is a credible boutique alternative",
+      "selected downtown Manhattan overflow when housing access is realistic"
+    ],
+    "evaluationQuestion": "Could NOW NOW NOHO realistically capture this group demand given boutique scale and downtown positioning?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "NoHo / SoHo / Village Core",
+      "TERRITORY_NEARBY": "Nearby Downtown Corridor",
+      "TERRITORY_COMPETITIVE": "Manhattan Competitive",
+      "TERRITORY_STRETCH": "NYC Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "noho",
+        "soho",
+        "greenwich village",
+        "lafayette",
+        "bowery",
+        "nyu",
+        "washington square"
+      ],
+      "TERRITORY_NEARBY": [
+        "tribeca",
+        "little italy",
+        "chinatown",
+        "hudson square",
+        "east village",
+        "west village",
+        "financial district"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "manhattan",
+        "nyc",
+        "new york city",
+        "downtown manhattan",
+        "lower manhattan"
+      ],
+      "TERRITORY_STRETCH": [
+        "midtown",
+        "chelsea",
+        "brooklyn",
+        "williamsburg",
+        "javits"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "newark",
+        "jersey city",
+        "westchester",
+        "philadelphia",
+        "boston",
+        "times square convention 5000"
+      ]
+    }
+  },
+  "competitiveContext": {
+    "strCompSet": [
+      { "name": "The NoMad Hotel", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "The Standard, High Line", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "Crosby Street Hotel", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "The Greenwich Hotel", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "The Ludlow Hotel", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "Ace Hotel New York", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" }
+    ],
+    "relevantGroupDemandAlternatives": [],
+    "notes": "HOTEL_SPECIFIC_DATA from ADP declaredCompSet."
+  },
+  "identityExclusions": [],
+  "gdiOnboarding": {
+    "status": "V8_3HOTEL_BLIND_VALIDATION",
+    "validationMarker": "v8_3hotel_blind_validation_20260918",
+    "slot": "A_URBAN",
+    "reuseAdpProfile": true,
+    "paidEnrichmentEnabled": false,
+    "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING",
+    "bethesdaSeedPathAllowed": false,
+    "dmvExpansionAllowed": false,
+    "notes": "Hotel A — urban major-market generalization test. No Webhound. No mid-run WHO engine patches."
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "hotelId": "recIwaP1etgx2g9nA",
+  "displayName": "Cambridge Beaches Resort & Spa",
+  "hotelIdentityStatus": "CANONICAL_HPC",
+  "aliases": {
+    "adpPropertyId": "adp_cambridge_beaches_bermuda",
+    "censusRecordId": "recIwaP1etgx2g9nA",
+    "note": "Canonical hotelId is HPC record. V8 3-hotel blind validation Hotel B."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/cambridge-beaches-bermuda-property-profile.json",
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 20,
+    "coreTargetPeakRoomsMax": 70,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": true,
+    "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=86 and ~4.5k sq ft meeting. Peak band for island resort primary pursuit (weddings, retreats, wellness). targetSegments empty — no demand-type seeding."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 86,
+    "totalMeetingSpaceSqFt": 4500,
+    "largestBallroomSqFt": 2200,
+    "largestTheaterCapacity": 150,
+    "meetingRoomsIndoor": 3,
+    "outdoorEventSpace": true,
+    "softBrand": "Independent",
+    "serviceLevel": "full_service_resort",
+    "classification": "bermuda_west_end_cottage_colony",
+    "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture — adults-oriented cottage-colony resort."
+  },
+  "demandTerritory": {
+    "label": "Bermuda / West End",
+    "includes": [
+      "Sandys Parish / Somerset / Mangrove Bay",
+      "Bermuda island-wide where Cambridge Beaches is a credible resort alternative",
+      "selected US East Coast feeder demand when Bermuda destination is evidenced"
+    ],
+    "evaluationQuestion": "Could Cambridge Beaches realistically capture this group demand as a Bermuda destination resort?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "West End / Somerset Core",
+      "TERRITORY_NEARBY": "Bermuda Island Nearby",
+      "TERRITORY_COMPETITIVE": "Bermuda Competitive",
+      "TERRITORY_STRETCH": "Atlantic Feeder Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "cambridge beaches",
+        "somerset",
+        "sandys",
+        "mangrove bay",
+        "west end bermuda",
+        "dockyard"
+      ],
+      "TERRITORY_NEARBY": [
+        "hamilton bermuda",
+        "southampton bermuda",
+        "warwick bermuda",
+        "paget",
+        "bermuda"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "bermuda resort",
+        "bermuda wedding",
+        "bermuda retreat",
+        "bermuda spa"
+      ],
+      "TERRITORY_STRETCH": [
+        "east coast usa",
+        "new york bermuda",
+        "boston bermuda",
+        "mid-atlantic bermuda"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "caribbean cruise 3000",
+        "las vegas",
+        "orlando theme",
+        "mainland florida convention"
+      ]
+    }
+  },
+  "competitiveContext": {
+    "strCompSet": [
+      { "name": "Rosewood Bermuda", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "Hamilton Princess & Beach Club", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "The Loren at Pink Beach", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "Fairmont Southampton", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "The Reefs Resort & Club", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" },
+      { "name": "Grotto Bay Beach Resort & Spa", "class": "STR_COMP_SET", "source": "adp_declared_comp_set_read_only" }
+    ],
+    "relevantGroupDemandAlternatives": [],
+    "notes": "HOTEL_SPECIFIC_DATA from ADP declaredCompSet."
+  },
+  "identityExclusions": [],
+  "gdiOnboarding": {
+    "status": "V8_3HOTEL_BLIND_VALIDATION",
+    "validationMarker": "v8_3hotel_blind_validation_20260918",
+    "slot": "B_RESORT",
+    "reuseAdpProfile": true,
+    "paidEnrichmentEnabled": false,
+    "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING",
+    "bethesdaSeedPathAllowed": false,
+    "dmvExpansionAllowed": false,
+    "notes": "Hotel B — resort/leisure destination generalization test. No Webhound. No mid-run WHO engine patches."
+  }
+}
