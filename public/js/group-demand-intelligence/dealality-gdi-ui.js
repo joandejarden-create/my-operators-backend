@@ -382,6 +382,7 @@
     return (
       '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection">' +
       propertyField +
+      weeklyThisWeekFilterHtml(opts) +
       '<div class="filter-group gdi-property-stat">' +
       '<span class="filter-label">Last Research</span>' +
       '<div class="gdi-property-stat__value">' +
@@ -396,6 +397,48 @@
         ? '<div class="filter-group aiv-filter-actions">' + opts.actionHtml + "</div>"
         : "") +
       "</section>"
+    );
+  }
+
+  /**
+   * This Week delta filter — compact select in the property bar (left of Last Research).
+   * Classification: REUSABLE_PRODUCT_UI
+   */
+  function weeklyThisWeekFilterHtml(opts) {
+    opts = opts || {};
+    if (opts.showWeeklyFilter === false) return "";
+    var active = opts.activeWeekly != null ? opts.activeWeekly : "";
+    var counts = opts.weeklyCounts || {};
+    var options = [
+      { value: "", label: "All", countKey: "all" },
+      { value: "NEW", label: "New This Week", countKey: "NEW" },
+      { value: "UPDATED", label: "Updated", countKey: "UPDATED" },
+      { value: "REACTIVATED", label: "Reactivated", countKey: "REACTIVATED" },
+      { value: "HIGH_PRIORITY", label: "High Priority", countKey: "HIGH_PRIORITY" },
+    ];
+    return (
+      '<div class="filter-group gdi-weekly-filter">' +
+      '<label class="filter-label" for="gdiWeeklyFilter">This Week</label>' +
+      '<select class="filter-select" id="gdiWeeklyFilter" aria-label="Filter by weekly change">' +
+      options
+        .map(function (o) {
+          var n = counts[o.countKey];
+          var text =
+            n == null || n === ""
+              ? o.label
+              : o.label + " (" + n + ")";
+          return (
+            '<option value="' +
+            esc(o.value) +
+            '"' +
+            (active === o.value ? " selected" : "") +
+            ">" +
+            esc(text) +
+            "</option>"
+          );
+        })
+        .join("") +
+      "</select></div>"
     );
   }
 
@@ -606,6 +649,7 @@
   };
 
   function presetLabelWithCount(label, n) {
+    if (n == null || n === "") return label;
     return label + " (" + n + ")";
   }
   var SORT_OPTIONS = [
@@ -810,7 +854,7 @@
             '" aria-pressed="' +
             isActive +
             '"><span class="chain-scale-legend-label">' +
-            esc(presetLabelWithCount(p.label, p.value === "" ? null : n)) +
+            esc(presetLabelWithCount(p.label, n)) +
             "</span></button>"
           );
         })
@@ -1229,10 +1273,6 @@
       (opts.weeklySummaryHtml ||
         weeklyDeltaHeaderSummaryHtml(opts.weeklyHeaderCounts || {})) +
       '<div class="gdi-browse-presets">' +
-      weeklyDeltaPresetHtml({
-        active: opts.activeWeekly != null ? opts.activeWeekly : "",
-        counts: opts.weeklyCounts || {},
-      }) +
       priorityPresetHtml({
         active: opts.activePriority != null ? opts.activePriority : "",
         counts: opts.priorityCounts || {},
@@ -1875,6 +1915,7 @@
     opportunityBrowseChromeHtml: opportunityBrowseChromeHtml,
     weeklyDeltaPillHtml: weeklyDeltaPillHtml,
     weeklyDeltaPresetHtml: weeklyDeltaPresetHtml,
+    weeklyThisWeekFilterHtml: weeklyThisWeekFilterHtml,
     weeklyDeltaHeaderSummaryHtml: weeklyDeltaHeaderSummaryHtml,
     weeklyDeltaHeaderCounts: weeklyDeltaHeaderCounts,
     countByWeeklyDelta: countByWeeklyDelta,

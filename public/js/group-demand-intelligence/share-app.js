@@ -528,17 +528,6 @@
         render();
       });
     });
-    root.querySelectorAll("[data-gdi-weekly]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.filters.weekly = btn.getAttribute("data-gdi-weekly") || "";
-        state.filters = UI.reconcileBrowseFilters(
-          state.opportunities,
-          state.filters,
-          "weekly"
-        );
-        render();
-      });
-    });
     root.querySelectorAll("[data-gdi-tile-priority][data-gdi-tile-booking]").forEach(
       function (btn) {
         btn.addEventListener("click", function (e) {
@@ -585,8 +574,6 @@
       priorityCounts: UI.facetCountByPriority(state.opportunities, state.filters),
       activeBooking: state.filters.booking,
       actionCounts: UI.facetCountByActionStatus(state.opportunities, state.filters),
-      activeWeekly: state.filters.weekly,
-      weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
       weeklyHeaderCounts: UI.weeklyDeltaHeaderCounts(state.opportunities),
       shown: rows.length,
       total: state.opportunities.length,
@@ -621,6 +608,8 @@
       UI.propertyBarHtml({
         mode: "share",
         hotel: hotel,
+        activeWeekly: state.filters.weekly,
+        weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
         lastResearch: formatDate(s.lastResearchAt),
         runStatus: s.runStatus || "—",
         actionHtml:
@@ -632,6 +621,19 @@
       '<div class="gdi-disclaimer">Pilot brief for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
 
     wireBrowseControls();
+
+    var weeklySelect = document.getElementById("gdiWeeklyFilter");
+    if (weeklySelect) {
+      weeklySelect.addEventListener("change", function () {
+        state.filters.weekly = weeklySelect.value || "";
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "weekly"
+        );
+        render();
+      });
+    }
 
     var resetBtn = document.getElementById("gdiResetViewBtn");
     if (resetBtn) resetBtn.addEventListener("click", resetBrowseView);

@@ -191,6 +191,16 @@ body.gdi-page.embed-mode .gdi-shell {
   width: auto;
 }
 
+.gdi-page .gdi-weekly-filter {
+  flex: 0 0 auto;
+  min-width: 160px;
+  max-width: 220px;
+}
+
+.gdi-page .gdi-weekly-filter .filter-select {
+  min-width: 160px;
+}
+
 .gdi-page .gdi-property-stat__value {
   display: flex;
   align-items: center;
@@ -980,10 +990,12 @@ button.gdi-tile-pill.is-filter-active {
   padding: 8px 10px;
   margin-bottom: 16px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 6px;
   align-items: center;
-  flex: 1 1 320px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
 }
 
 .gdi-page .chain-scale-legend > span:first-child {
@@ -991,6 +1003,8 @@ button.gdi-tile-pill.is-filter-active {
   font-size: 12px;
   font-weight: 600;
   margin-right: 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .gdi-page .chain-scale-legend-item {
@@ -1006,6 +1020,8 @@ button.gdi-tile-pill.is-filter-active {
   font-size: 12px;
   font-family: inherit;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .gdi-page .chain-scale-legend-item:hover {
@@ -1036,6 +1052,14 @@ button.gdi-tile-pill.is-filter-active {
 .gdi-page .chain-scale-legend-label {
   color: inherit;
   font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Wide: keep the three filter groups on one row when space allows */
+@media (min-width: 1200px) {
+  .gdi-browse-presets {
+    flex-wrap: nowrap;
+  }
 }
 
 .gdi-page .results-toolbar {

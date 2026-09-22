@@ -228,11 +228,12 @@ check("ui_exports_weekly_helpers", () => {
   const ui = fs.readFileSync(uiPath, "utf8");
   const css = fs.readFileSync(cssPath, "utf8");
   assert.match(ui, /weeklyDeltaPillHtml/);
-  assert.match(ui, /data-gdi-weekly/);
+  assert.match(ui, /gdiWeeklyFilter/);
+  assert.match(ui, /weeklyThisWeekFilterHtml/);
   assert.match(ui, /New This Week/);
   assert.match(ui, /weeklyDeltaHeaderSummaryHtml/);
   assert.match(css, /gdi-pill-delta-new/);
-  assert.match(css, /gdi-weekly-summary/);
+  assert.match(css, /gdi-weekly-filter/);
   const app = fs.readFileSync(
     path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
     "utf8"
@@ -241,10 +242,10 @@ check("ui_exports_weekly_helpers", () => {
     path.join(ROOT, "public/js/group-demand-intelligence/share-app.js"),
     "utf8"
   );
-  assert.match(app, /data-gdi-weekly/);
-  assert.match(share, /data-gdi-weekly/);
-  assert.match(app, /weeklyHeaderCounts/);
-  assert.match(share, /weeklyHeaderCounts/);
+  assert.match(app, /gdiWeeklyFilter/);
+  assert.match(share, /gdiWeeklyFilter/);
+  assert.match(app, /weeklyCounts/);
+  assert.match(share, /weeklyCounts/);
 });
 
 if (failed) {
