@@ -8,13 +8,15 @@ Scope: Export live + ACTIONABLE_NOW denominator + contact/action bar. No Wave 4.
 
 ## A. DEPLOYMENT
 
-CURRENT SHA: _(filled after commit)_  
-DEPLOY ID: _(filled after Railway deploy)_  
-DEPLOY STATUS: _(filled after Railway deploy)_  
+CURRENT SHA: `c84d770`  
+DEPLOY ID: `428a6afc-9e34-4f80-aeb0-b6bdbad6c1bc`  
+DEPLOY STATUS: **SUCCESS** (lean production upload of deploy-branch tree + V1.1)
 
-EXPORT AUTH: _(post-deploy)_  
-EXPORT SHARE: _(post-deploy)_  
-ALL EXISTING SHARE URLS: _(post-deploy)_  
+Note: An intermediate `railway redeploy --from-source` briefly pulled GitHub **main** (no GDI) and took shares offline. Restored via lean `railway up` from `c84d770` tree. Do **not** use `--from-source` while Railway Git source is pinned to `main`.
+
+EXPORT AUTH: **PASS** (HTTP 200, `text/csv`, non-empty; `?format=csv` and `/export.csv`)  
+EXPORT SHARE: **PASS** (HTTP 200, `text/csv`, Bethesda IDs stable, all required columns present)  
+ALL EXISTING SHARE URLS: **PASS** (5/5 page + resolve + opportunities = 200; tokens unchanged)
 
 ---
 
@@ -54,9 +56,8 @@ COUNT: **12**
 
 ## D. CONTACT UPGRADES
 
-SCOPED OPPORTUNITIES: **12** (ACTIONABLE_NOW only; no mass enrich of 38)  
-CONTACT UPGRADES (new named reachability vs prior best): **0**  
-(Best-current path already in place for actionable; official L1 + resolution pass; no Surfe/PDL this cycle)
+SCOPED OPPORTUNITIES: **12** (ACTIONABLE_NOW only)  
+CONTACT UPGRADES (new named reachability vs prior best): **0**
 
 | Tier | Count |
 | --- | ---: |
@@ -66,7 +67,7 @@ CONTACT UPGRADES (new named reachability vs prior best): **0**
 | GENERIC | 4 |
 | NO CONTACT | 0 |
 
-Named path (DIRECT+PARTIAL): **7/12 (58%)**. All 12 contactable (named, functional, or generic inbox with defensible action).
+Named path (DIRECT+PARTIAL): **7/12**. All 12 contactable with defensible next action.
 
 ---
 
@@ -80,7 +81,7 @@ Named path (DIRECT+PARTIAL): **7/12 (58%)**. All 12 contactable (named, function
 | PDL CALLS | 0 |
 | PDL INCREMENTAL | 0 |
 
-Discipline: no provider call when adequate contact already present.
+No provider call when adequate contact already present.
 
 ---
 
@@ -93,13 +94,13 @@ Discipline: no provider call when adequate contact already present.
 | PEAK ROOMS NEW CONFIRMED | 0 |
 | PEAK ROOMS NEW ESTIMATED | 0 |
 
-No fabrication. Existing published evidence retained; completeness not forced. Attendance/peak remain watch items where sources do not support CONFIRMED/ESTIMATED.
+No fabrication. Completeness not forced. Attendance/peak remain **minor watch** where sources do not support CONFIRMED/ESTIMATED.
 
 ---
 
 ## G. ACTION QUALITY
 
-ACTION CORRECTIONS: **24** (reconciled to precise salesperson next steps / watch-appropriate language)
+ACTION CORRECTIONS: **24**
 
 | Bar | Result |
 | --- | --- |
@@ -146,21 +147,21 @@ Expected: 0 / 0 / 0 / 0 / 0 / 0 — **met**.
 | Weekly delta | PASS |
 | Share durability | PASS |
 | Customer lifecycle / Decision-Outcome | PASS |
-| Foundation (incl. UI unification asserts) | PASS |
+| Foundation (UI asserts → `dealality-gdi-ui.js`) | PASS |
 | Future-cycle watch | PASS |
 | Share canonical external safety | PASS |
-| V11/V12 | Not rewritten; contact-resolution + foundation gates still PASS |
+| Live share+export smoke (5 hotels) | PASS (export columns audited) |
 
 PASS: **all run suites**  
-FAIL: **0** (after foundation UI assert alignment to `dealality-gdi-ui.js`)
+FAIL: **0**
 
 ---
 
 ## K. PERSISTENCE
 
-COMMIT SHA: _(filled after commit)_  
+COMMIT SHA: `c84d770`
 
-| Hardcode | Prod logic? |
+| Hardcode (prod logic) | |
 | --- | --- |
 | HOTEL-SPECIFIC | **NO** |
 | CITY-SPECIFIC | **NO** |
@@ -168,40 +169,46 @@ COMMIT SHA: _(filled after commit)_
 | PERSON-SPECIFIC | **NO** |
 | DOMAIN-SPECIFIC | **NO** |
 
-Canary script targets Bethesda hotelId for apply only; reusable product code has no hotel/event/person hardcodes.
+Canary apply script targets Bethesda hotelId only; reusable product code has no hotel/event/person hardcodes.
 
-### Code files changed (V1.1)
+### Code files (V1.1)
 
-- `api/group-demand-intelligence.js` — `?format=csv` on auth + share list (compat with `/export.csv`)
+- `api/group-demand-intelligence.js` — `?format=csv` on auth + share list
 - `lib/group-demand-intelligence/live-commercial-quality-v1.js` — title-year date inference
-- `lib/group-demand-intelligence/commercial-evidence-v4.js` — named+role-inbox still NAMED
+- `lib/group-demand-intelligence/commercial-evidence-v4.js` — named + role-inbox still NAMED
 - `lib/group-demand-intelligence/contact-resolution.js` — stricter person-name gate
 - `public/js/group-demand-intelligence/app.js` / `share-app.js` — export href → `?format=csv`
-- `scripts/gdi-live-commercial-quality-v1-1-closure.mjs` — partition + apply
-- `scripts/test-gdi-foundation.mjs` — UI asserts vs shared module
+- `scripts/gdi-live-commercial-quality-v1-1-closure.mjs`
+- `scripts/test-gdi-foundation.mjs`
 
 ### Data
 
-- Bethesda 38 IDs preserved; ACTIONABLE_NOW actions/CQ fields applied via canonical persistence
+- Bethesda 38 IDs preserved; ACTIONABLE_NOW actions/CQ applied via canonical persistence
 
 ---
 
 ## L. DECISION
 
-1. Is export now confirmed live? — _(post-deploy)_  
-2. Correct ACTIONABLE_NOW denominator? — **Yes: 12**  
-3. Every actionable has defensible action? — **Yes 12/12**  
-4. Every actionable has meaningful source? — **Yes 12/12**  
-5. Every actionable has credible room-demand thesis? — **Yes 12/12**  
-6. Named-contact coverage materially improve? — **No new upgrades this cycle; 7/12 already named (DIRECT+PARTIAL); 0 Surfe/PDL**  
-7. Provider calls economically disciplined? — **Yes (0/0)**  
-8. Attendance/peak better where they matter? — **Unchanged; no defensible new estimates (watch remains)**  
-9. Bethesda salesperson-ready? — **Yes on ACTIONABLE_NOW (12 READY / 0 NOT_READY)**  
-10. Global GDI surfaces intact? — **Yes (tests + share token IDs unchanged)**  
-11. Can controlled expansion resume? — _(post-deploy export)_  
+1. Is export now confirmed live? — **YES**
+2. Correct ACTIONABLE_NOW denominator? — **Yes: 12**
+3. Every actionable has defensible action? — **Yes 12/12**
+4. Every actionable has meaningful source? — **Yes 12/12**
+5. Every actionable has credible room-demand thesis? — **Yes 12/12**
+6. Did named-contact coverage materially improve? — **No this cycle** (7/12 already named; 0 Surfe/PDL)
+7. Provider calls economically disciplined? — **Yes (0/0)**
+8. Are attendance/peak rooms better where they matter? — **Unchanged; minor watch remains**
+9. Is Bethesda now salesperson-ready? — **Yes on ACTIONABLE_NOW (12 READY / 0 NOT_READY)**
+10. Are global GDI surfaces intact? — **Yes** (shares restored + green)
+11. Can controlled expansion resume? — **Yes**
 
 ---
 
 ## M. FINAL VERDICT
 
-_(filled after deploy + export smoke)_
+**PASSES WITH MINOR WATCH ITEMS — RESUME EXPANSION**
+
+Minor watch (non-blocking):
+- Attendance / peak rooms still incomplete on half of ACTIONABLE_NOW where public evidence does not support a defensible estimate
+- Named WHO at 58% (contactable path 100%; further V12/Surfe only when a named person is evidenced and reachability is missing)
+
+Do not start Wave 4 until founder explicitly queues the next controlled expansion cohort.
