@@ -81,25 +81,52 @@ import {
   loadGdiCommercialProgressionBySubject,
   toCustomerCommercialProgressionDto,
 } from "../lib/decision-outcomes/gdi-commercial-progression.js";
+import { withTimeout, gdiReadTimeoutMs } from "../lib/http/with-timeout.js";
 
 /** Canonical opportunity load (Airtable primary when configured). Short-TTL cached. */
 async function loadOppDoc(hotelId) {
   const t0 = Date.now();
-  const doc = await loadOpportunitiesCanonical(hotelId);
-  const ms = Date.now() - t0;
-  if (ms >= 1000 || process.env.GDI_PERF_LOG === "1") {
-    console.info(
-      JSON.stringify({
-        gdi_perf: true,
-        route: "loadOppDoc",
-        hotelId,
-        durationMs: ms,
-        cacheHit: doc?.cacheHit === true,
-        recordCount: Array.isArray(doc?.opportunities) ? doc.opportunities.length : 0,
-      })
+  try {
+    const doc = await withTimeout(
+      loadOpportunitiesCanonical(hotelId),
+      gdiReadTimeoutMs(),
+      "gdi_load_opportunities"
     );
+    const ms = Date.now() - t0;
+    if (ms >= 1000 || process.env.GDI_PERF_LOG === "1") {
+      console.info(
+        JSON.stringify({
+          gdi_perf: true,
+          route: "loadOppDoc",
+          hotelId,
+          durationMs: ms,
+          cacheHit: doc?.cacheHit === true,
+          recordCount: Array.isArray(doc?.opportunities) ? doc.opportunities.length : 0,
+        })
+      );
+    }
+    return doc;
+  } catch (err) {
+    if (err?.code === "UPSTREAM_TIMEOUT") {
+      console.error(
+        JSON.stringify({
+          gdi_perf: true,
+          route: "loadOppDoc",
+          hotelId,
+          error: "UPSTREAM_TIMEOUT",
+          timeoutMs: err.timeoutMs,
+          durationMs: Date.now() - t0,
+        })
+      );
+      const timeoutErr = new Error(
+        "Group Demand data is taking too long to load. Please retry in a moment."
+      );
+      timeoutErr.code = "UPSTREAM_TIMEOUT";
+      timeoutErr.status = 504;
+      throw timeoutErr;
+    }
+    throw err;
   }
-  return doc;
 }
 
 /**
@@ -176,11 +203,29 @@ function shareSanitizeWithCanonical(hotelId, opportunity) {
 }
 
 async function attachCommercialProgression(hotelId, opportunities) {
-  const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
-  return (opportunities || []).map((o) => {
-    const dto = toCustomerCommercialProgressionDto(bySubject.get(o.id));
-    return dto ? { ...o, commercialProgression: dto } : o;
-  });
+  try {
+    const bySubject = await withTimeout(
+      loadGdiCommercialProgressionBySubject(hotelId),
+      gdiReadTimeoutMs(),
+      "gdi_commercial_progression"
+    );
+    return (opportunities || []).map((o) => {
+      const dto = toCustomerCommercialProgressionDto(bySubject.get(o.id));
+      return dto ? { ...o, commercialProgression: dto } : o;
+    });
+  } catch (err) {
+    // Non-fatal for browse: return list without progression rather than hang/fail the page.
+    console.error(
+      JSON.stringify({
+        gdi_perf: true,
+        route: "attachCommercialProgression",
+        hotelId,
+        error: err?.code || err?.message || String(err),
+        degraded: true,
+      })
+    );
+    return opportunities || [];
+  }
 }
 
 /** Apply list/export filters (ids + browse facets). */
@@ -255,6 +300,31 @@ function flagGate(req, res) {
   return false;
 }
 
+function sendGdiUpstreamError(res, err, route) {
+  const code = err?.code || "server_error";
+  const status =
+    err?.status ||
+    (code === "UPSTREAM_TIMEOUT" ? 504 : code === "hotel_boundary_violation" ? 403 : 500);
+  console.error(
+    JSON.stringify({
+      gdi_error: true,
+      route,
+      code,
+      status,
+      message: err?.message || String(err),
+    })
+  );
+  return res.status(status).json({
+    ok: false,
+    error: code === "UPSTREAM_TIMEOUT" ? "upstream_timeout" : code,
+    message:
+      err?.message ||
+      (status === 504
+        ? "Upstream data timed out. Please retry."
+        : "Failed to load Group Demand Intelligence."),
+  });
+}
+
 export function getGdiFlag(req, res) {
   return res.json({
     ok: true,
@@ -310,29 +380,33 @@ export function getGdiHotels(req, res) {
 }
 
 export async function getGdiSummary(req, res) {
-  if (!flagGate(req, res)) return;
-  const hotelId = String(req.params.hotelId || "").trim();
-  const summary = loadLatestSummary(hotelId);
-  const profile = loadHotelProfile(hotelId);
-  const doc = await loadOppDoc(hotelId);
-  const feedback = loadFeedback(hotelId);
-  const pilotMetrics = buildPilotMetrics(doc.opportunities || [], feedback);
-  return res.json({
-    ok: true,
-    experimentalLabel: "EXPERIMENTAL / PILOT",
-    hotelId,
-    profileReady: Boolean(profile),
-    summary,
-    competitiveContext: profile
-      ? {
-          strCompSet: profile.strCompSet || [],
-          relevantGroupDemandAlternatives: profile.relevantGroupDemandAlternatives || [],
-          demandTerritory: profile.demandTerritory || null,
-        }
-      : null,
-    pilotMetrics,
-    flag: getGroupDemandIntelligenceFlagState(),
-  });
+  try {
+    if (!flagGate(req, res)) return;
+    const hotelId = String(req.params.hotelId || "").trim();
+    const summary = loadLatestSummary(hotelId);
+    const profile = loadHotelProfile(hotelId);
+    const doc = await loadOppDoc(hotelId);
+    const feedback = loadFeedback(hotelId);
+    const pilotMetrics = buildPilotMetrics(doc.opportunities || [], feedback);
+    return res.json({
+      ok: true,
+      experimentalLabel: "EXPERIMENTAL / PILOT",
+      hotelId,
+      profileReady: Boolean(profile),
+      summary,
+      competitiveContext: profile
+        ? {
+            strCompSet: profile.strCompSet || [],
+            relevantGroupDemandAlternatives: profile.relevantGroupDemandAlternatives || [],
+            demandTerritory: profile.demandTerritory || null,
+          }
+        : null,
+      pilotMetrics,
+      flag: getGroupDemandIntelligenceFlagState(),
+    });
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "getGdiSummary");
+  }
 }
 
 export function getGdiProfile(req, res) {
@@ -350,82 +424,111 @@ export function getGdiProfile(req, res) {
 }
 
 export async function getGdiOpportunities(req, res) {
-  if (!flagGate(req, res)) return;
-  const hotelId = String(req.params.hotelId || "").trim();
-  const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
-  const view = String(req.query.view || "list").trim().toLowerCase();
-  const format = String(req.query.format || "").trim().toLowerCase();
-  const wantFull = view === "full" || view === "complete";
-  const doc = await loadOppDoc(hotelId);
-  let opportunities = projectOpportunitiesCommercialQuality(doc.opportunities || []);
-  if (!includeDisqualified) {
-    opportunities = filterSalespersonView(opportunities);
-  }
+  try {
+    if (!flagGate(req, res)) return;
+    const hotelId = String(req.params.hotelId || "").trim();
+    const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
+    const view = String(req.query.view || "list").trim().toLowerCase();
+    const format = String(req.query.format || "").trim().toLowerCase();
+    const wantFull = view === "full" || view === "complete";
+    const doc = await loadOppDoc(hotelId);
+    let opportunities = projectOpportunitiesCommercialQuality(doc.opportunities || []);
+    if (!includeDisqualified) {
+      opportunities = filterSalespersonView(opportunities);
+    }
 
-  // CSV via ?format=csv (compat path; dedicated /export.csv also exists)
-  if (format === "csv") {
-    const hotels = listRegisteredHotels();
-    const hotel = hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
-    opportunities = filterOpportunitiesForExport(opportunities, req.query);
+    // CSV via ?format=csv (compat path; dedicated /export.csv also exists)
+    if (format === "csv") {
+      const hotels = listRegisteredHotels();
+      const hotel = hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
+      opportunities = filterOpportunitiesForExport(opportunities, req.query);
+      opportunities = await attachCommercialProgression(hotelId, opportunities);
+      return sendCustomerCsv(res, opportunities, hotel);
+    }
+
+    if (!wantFull) {
+      opportunities = mapOpportunitiesToListDto(opportunities);
+    }
     opportunities = await attachCommercialProgression(hotelId, opportunities);
-    return sendCustomerCsv(res, opportunities, hotel);
+    res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
+    return res.json({
+      ok: true,
+      hotelId,
+      updatedAt: doc.updatedAt,
+      runId: doc.runId || null,
+      count: opportunities.length,
+      view: wantFull ? "full" : "list",
+      schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
+      opportunities,
+    });
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "getGdiOpportunities");
   }
-
-  if (!wantFull) {
-    opportunities = mapOpportunitiesToListDto(opportunities);
-  }
-  opportunities = await attachCommercialProgression(hotelId, opportunities);
-  res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
-  return res.json({
-    ok: true,
-    hotelId,
-    updatedAt: doc.updatedAt,
-    runId: doc.runId || null,
-    count: opportunities.length,
-    view: wantFull ? "full" : "list",
-    schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
-    opportunities,
-  });
 }
 
 export async function getGdiOpportunityDetail(req, res) {
-  if (!flagGate(req, res)) return;
-  const hotelId = String(req.params.hotelId || "").trim();
-  const opportunityId = String(req.params.opportunityId || "").trim();
-  const t0 = Date.now();
-  const loaded = await loadOpportunityForDetail(hotelId, opportunityId);
-  if (!loaded.opportunity) {
-    return res.status(404).json({ ok: false, error: "opportunity_not_found" });
-  }
-  const projected = projectOpportunitiesCommercialQuality([loaded.opportunity]);
-  const opportunity = projected[0];
-  const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
-  const commercialProgression = toCustomerCommercialProgressionDto(
-    bySubject.get(opportunityId)
-  );
-  const durationMs = Date.now() - t0;
-  if (durationMs >= 1000 || process.env.GDI_PERF_LOG === "1") {
-    console.info(
-      JSON.stringify({
-        gdi_perf: true,
-        route: "getGdiOpportunityDetail",
-        hotelId,
-        durationMs,
-        loadSource: loaded.source,
-        loadMs: loaded.durationMs,
-      })
+  try {
+    if (!flagGate(req, res)) return;
+    const hotelId = String(req.params.hotelId || "").trim();
+    const opportunityId = String(req.params.opportunityId || "").trim();
+    const t0 = Date.now();
+    const loaded = await withTimeout(
+      loadOpportunityForDetail(hotelId, opportunityId),
+      gdiReadTimeoutMs(),
+      "gdi_opportunity_detail"
     );
+    if (!loaded.opportunity) {
+      return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+    }
+    const projected = projectOpportunitiesCommercialQuality([loaded.opportunity]);
+    const opportunity = projected[0];
+    let commercialProgression = null;
+    try {
+      const bySubject = await withTimeout(
+        loadGdiCommercialProgressionBySubject(hotelId),
+        gdiReadTimeoutMs(),
+        "gdi_detail_progression"
+      );
+      commercialProgression = toCustomerCommercialProgressionDto(
+        bySubject.get(opportunityId)
+      );
+    } catch (progErr) {
+      console.error(
+        JSON.stringify({
+          gdi_perf: true,
+          route: "getGdiOpportunityDetail.progression",
+          hotelId,
+          error: progErr?.code || progErr?.message || String(progErr),
+          degraded: true,
+        })
+      );
+    }
+    const durationMs = Date.now() - t0;
+    if (durationMs >= 1000 || process.env.GDI_PERF_LOG === "1") {
+      console.info(
+        JSON.stringify({
+          gdi_perf: true,
+          route: "getGdiOpportunityDetail",
+          hotelId,
+          durationMs,
+          loadSource: loaded.source,
+          loadMs: loaded.durationMs,
+        })
+      );
+    }
+    res.setHeader("X-GDI-Detail-Source", loaded.source);
+    return res.json({
+      ok: true,
+      opportunity: commercialProgression
+        ? { ...opportunity, commercialProgression }
+        : opportunity,
+      scoreAudit: reconstructScoreAudit(opportunity),
+      validationReasons: HOTEL_VALIDATION_REASON,
+      validationReasonLabels: HOTEL_VALIDATION_REASON_LABEL,
+    });
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "getGdiOpportunityDetail");
   }
-  res.setHeader("X-GDI-Detail-Source", loaded.source);
-  return res.json({
-    ok: true,
-    opportunity: commercialProgression
-      ? { ...opportunity, commercialProgression }
-      : opportunity,
-    scoreAudit: reconstructScoreAudit(opportunity),
-    validationReasons: HOTEL_VALIDATION_REASON,
-    validationReasonLabels: HOTEL_VALIDATION_REASON_LABEL,
-  });
 }
 
 /**

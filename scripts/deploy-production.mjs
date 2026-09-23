@@ -128,6 +128,9 @@ try {
   console.warn("WARN could not diff against origin/main");
 }
 
+console.log("\n--- smoke:esm-imports ---");
+runNode("scripts/smoke-esm-imports.mjs");
+
 console.log("\n--- assert:production-assets ---");
 runNode("scripts/assert-production-assets.mjs", ["--write-snapshot"]);
 
