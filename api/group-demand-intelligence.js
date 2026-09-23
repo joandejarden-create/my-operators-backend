@@ -64,6 +64,10 @@ import {
 } from "../lib/group-demand-intelligence/index.js";
 import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import {
+  getCachedOpportunityDoc,
+  invalidateGdiHotelReadCache,
+} from "../lib/group-demand-intelligence/read-cache.js";
+import {
   ingestGdiAuthFeedback,
   ingestGdiShareValidation,
   ensureGdiOpportunityDecision,
@@ -77,9 +81,70 @@ import {
   toCustomerCommercialProgressionDto,
 } from "../lib/decision-outcomes/gdi-commercial-progression.js";
 
-/** Canonical opportunity load (Airtable primary when configured). */
+/** Canonical opportunity load (Airtable primary when configured). Short-TTL cached. */
 async function loadOppDoc(hotelId) {
-  return loadOpportunitiesCanonical(hotelId);
+  const t0 = Date.now();
+  const doc = await loadOpportunitiesCanonical(hotelId);
+  const ms = Date.now() - t0;
+  if (ms >= 1000 || process.env.GDI_PERF_LOG === "1") {
+    console.info(
+      JSON.stringify({
+        gdi_perf: true,
+        route: "loadOppDoc",
+        hotelId,
+        durationMs: ms,
+        cacheHit: doc?.cacheHit === true,
+        recordCount: Array.isArray(doc?.opportunities) ? doc.opportunities.length : 0,
+      })
+    );
+  }
+  return doc;
+}
+
+/**
+ * Prefer cached hotel doc; on miss load single Airtable row when possible
+ * instead of re-listing the full hotel set for View Details.
+ */
+async function loadOpportunityForDetail(hotelId, opportunityId) {
+  const t0 = Date.now();
+  const cached = getCachedOpportunityDoc(hotelId);
+  if (cached) {
+    const found = (cached.opportunities || []).find((o) => o.id === opportunityId);
+    if (found) {
+      return {
+        opportunity: found,
+        source: "cache",
+        durationMs: Date.now() - t0,
+      };
+    }
+  }
+  // Cache miss: try single-record Airtable path when configured
+  try {
+    const {
+      loadOpportunity,
+      isGdiOpportunityAirtableConfigured,
+    } = await import("../lib/group-demand-intelligence/airtable-opportunity-store.js");
+    if (isGdiOpportunityAirtableConfigured()) {
+      const one = await loadOpportunity(hotelId, opportunityId);
+      if (one) {
+        return {
+          opportunity: one,
+          source: "airtable_single",
+          durationMs: Date.now() - t0,
+        };
+      }
+    }
+  } catch (err) {
+    if (err?.code === "hotel_boundary_violation") throw err;
+    // fall through to full doc
+  }
+  const doc = await loadOppDoc(hotelId);
+  const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
+  return {
+    opportunity: opportunity || null,
+    source: "full_doc",
+    durationMs: Date.now() - t0,
+  };
 }
 
 function asOfToday() {
@@ -298,16 +363,31 @@ export async function getGdiOpportunityDetail(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const opportunityId = String(req.params.opportunityId || "").trim();
-  const doc = await loadOppDoc(hotelId);
-  const projected = projectOpportunitiesCommercialQuality(doc.opportunities || []);
-  const opportunity = projected.find((o) => o.id === opportunityId);
-  if (!opportunity) {
+  const t0 = Date.now();
+  const loaded = await loadOpportunityForDetail(hotelId, opportunityId);
+  if (!loaded.opportunity) {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
   }
+  const projected = projectOpportunitiesCommercialQuality([loaded.opportunity]);
+  const opportunity = projected[0];
   const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
   const commercialProgression = toCustomerCommercialProgressionDto(
     bySubject.get(opportunityId)
   );
+  const durationMs = Date.now() - t0;
+  if (durationMs >= 1000 || process.env.GDI_PERF_LOG === "1") {
+    console.info(
+      JSON.stringify({
+        gdi_perf: true,
+        route: "getGdiOpportunityDetail",
+        hotelId,
+        durationMs,
+        loadSource: loaded.source,
+        loadMs: loaded.durationMs,
+      })
+    );
+  }
+  res.setHeader("X-GDI-Detail-Source", loaded.source);
   return res.json({
     ok: true,
     opportunity: commercialProgression
@@ -912,8 +992,9 @@ export async function getGdiShareOpportunityDetail(req, res) {
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
-  const doc = await loadOppDoc(hotelId);
-  const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
+  const t0 = Date.now();
+  const loaded = await loadOpportunityForDetail(hotelId, opportunityId);
+  const opportunity = loaded.opportunity;
   if (!opportunity || opportunity.priority === "DISQUALIFIED") {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
   }
@@ -923,6 +1004,20 @@ export async function getGdiShareOpportunityDetail(req, res) {
   const commercialProgression = toCustomerCommercialProgressionDto(
     bySubject.get(opportunityId)
   );
+  const durationMs = Date.now() - t0;
+  if (durationMs >= 1000 || process.env.GDI_PERF_LOG === "1") {
+    console.info(
+      JSON.stringify({
+        gdi_perf: true,
+        route: "getGdiShareOpportunityDetail",
+        hotelId,
+        durationMs,
+        loadSource: loaded.source,
+        loadMs: loaded.durationMs,
+      })
+    );
+  }
+  res.setHeader("X-GDI-Detail-Source", loaded.source);
   return res.json({
     ok: true,
     mode: "read_only",
@@ -1129,6 +1224,7 @@ export async function postGdiShareAction(req, res) {
         source: "CUSTOMER_SHARE",
       },
     });
+    invalidateGdiHotelReadCache(hotelId);
     return res.status(201).json({
       ok: true,
       decisionId: decision.decisionId,
@@ -1197,6 +1293,7 @@ export async function postGdiShareOutcome(req, res) {
         source: "CUSTOMER_SHARE",
       },
     });
+    invalidateGdiHotelReadCache(hotelId);
     return res.status(201).json({
       ok: true,
       decisionId: decision.decisionId,

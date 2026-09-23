@@ -45,6 +45,18 @@
       .replace(/"/g, "&quot;");
   }
 
+  /** Allow only http(s) for external source links — reject javascript:/data:/file:. */
+  function isSafeHttpUrl(url) {
+    var s = String(url == null ? "" : url).trim();
+    if (!s) return false;
+    try {
+      var u = new URL(s, "https://example.invalid");
+      return u.protocol === "https:" || u.protocol === "http:";
+    } catch (e) {
+      return false;
+    }
+  }
+
   function fmtVal(v) {
     if (v == null || v === "" || v === "UNKNOWN") return "—";
     return v;
@@ -1542,9 +1554,10 @@
     var labels = o.hotelFitComponentLabels || {};
     var sources = (o.sources || [])
       .map(function (s) {
-        var link = s.url
-          ? '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.name) + "</a>"
-          : esc(s.name);
+        var link =
+          s.url && isSafeHttpUrl(s.url)
+            ? '<a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(s.name) + "</a>"
+            : esc(s.name || s.url || "");
         return (
           "<li>" + link + (s.supportsFact ? " — " + esc(s.supportsFact) : "") + "</li>"
         );
@@ -1932,6 +1945,7 @@
     ACTION_STATUS_DISPLAY: ACTION_STATUS_DISPLAY,
     SORT_OPTIONS: SORT_OPTIONS,
     esc: esc,
+    isSafeHttpUrl: isSafeHttpUrl,
     fmtVal: fmtVal,
     trunc: trunc,
     scrubEventDatesFromText: scrubEventDatesFromText,

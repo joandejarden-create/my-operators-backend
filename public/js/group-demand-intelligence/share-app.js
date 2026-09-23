@@ -468,23 +468,39 @@
   }
 
   function openDetail(id) {
+    var listRow = (state.opportunities || []).find(function (o) {
+      return o.id === id;
+    });
+    // Immediate visual acknowledgement (<100ms target)
+    drawerTitle.textContent = (listRow && listRow.title) || "Opportunity";
+    drawerBody.innerHTML =
+      '<div class="gdi-detail-loading" role="status" aria-live="polite">' +
+      '<p class="gdi-muted">Loading details…</p></div>';
+    if (typeof drawer.showModal === "function") drawer.showModal();
+    else drawer.setAttribute("open", "open");
+
     api(
       "/api/group-demand-intelligence/share/hotels/" +
         encodeURIComponent(state.hotelId) +
         "/opportunities/" +
         encodeURIComponent(id)
-    ).then(function (data) {
-      var o = data.opportunity;
-      var audit = data.scoreAudit || {};
-      drawerTitle.textContent = o.title;
-      drawerBody.innerHTML = UI.intelligenceDetailHtml(o, audit, {
-        validationHtml: validationFormHtml(o),
-        whoContactHtml: whoShouldSalesContactHtml,
+    )
+      .then(function (data) {
+        var o = data.opportunity;
+        var audit = data.scoreAudit || {};
+        drawerTitle.textContent = o.title;
+        drawerBody.innerHTML = UI.intelligenceDetailHtml(o, audit, {
+          validationHtml: validationFormHtml(o),
+          whoContactHtml: whoShouldSalesContactHtml,
+        });
+        wireLifecycleControls(o.id);
+      })
+      .catch(function (err) {
+        drawerBody.innerHTML =
+          '<div class="gdi-error" role="alert"><p>' +
+          esc(err.message || "Unable to load opportunity detail.") +
+          "</p></div>";
       });
-      if (typeof drawer.showModal === "function") drawer.showModal();
-      else drawer.setAttribute("open", "open");
-      wireLifecycleControls(o.id);
-    });
   }
 
   function filteredSorted() {
@@ -675,6 +691,23 @@
     return;
   }
 
+  function peekShareHotelId(token) {
+    try {
+      var raw = String(token || "");
+      var marker = "gdishare.v1.";
+      var body = raw.indexOf(marker) === 0 ? raw.slice(marker.length) : raw;
+      var dot = body.lastIndexOf(".");
+      if (dot <= 0) return null;
+      var b64 = body.slice(0, dot).replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4) b64 += "=";
+      var json = JSON.parse(atob(b64));
+      var hid = json && (json.hotelId || json.hid);
+      return hid ? String(hid) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   if (drawerClose) {
     drawerClose.addEventListener("click", function () {
       if (typeof drawer.close === "function") drawer.close();
@@ -682,10 +715,32 @@
     });
   }
 
-  api("/api/group-demand-intelligence/share/resolve")
-    .then(function (resolve) {
+  // Parallel resolve + opportunities when hotelId is present in signed payload
+  // (auth still enforced server-side on both calls).
+  var peekedHotelId = peekShareHotelId(share);
+  var resolvePromise = api("/api/group-demand-intelligence/share/resolve");
+  var oppsPromise = peekedHotelId
+    ? api(
+        "/api/group-demand-intelligence/share/hotels/" +
+          encodeURIComponent(peekedHotelId) +
+          "/opportunities"
+      ).catch(function () {
+        return null;
+      })
+    : Promise.resolve(null);
+
+  Promise.all([resolvePromise, oppsPromise])
+    .then(function (pair) {
+      var resolve = pair[0];
+      var data = pair[1];
       state.resolve = resolve;
       state.hotelId = resolve.hotelId;
+      if (data && data.opportunities) {
+        state.opportunities = data.opportunities || [];
+        state.validationEnums = data.validationEnums || null;
+        render();
+        return null;
+      }
       return api(
         "/api/group-demand-intelligence/share/hotels/" +
           encodeURIComponent(resolve.hotelId) +
@@ -693,6 +748,7 @@
       );
     })
     .then(function (data) {
+      if (!data) return;
       state.opportunities = data.opportunities || [];
       state.validationEnums = data.validationEnums || null;
       render();

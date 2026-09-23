@@ -643,6 +643,16 @@
   }
 
   function openDetail(id) {
+    var listRow = (state.opportunities || []).find(function (o) {
+      return o && o.id === id;
+    });
+    drawerTitle.textContent = (listRow && listRow.title) || "Opportunity";
+    drawerBody.innerHTML =
+      '<div class="gdi-detail-loading" role="status" aria-live="polite">' +
+      '<p class="gdi-muted">Loading details…</p></div>';
+    if (typeof drawer.showModal === "function") drawer.showModal();
+    else drawer.setAttribute("open", "open");
+
     var oppUrl =
       "/api/group-demand-intelligence/hotels/" +
       encodeURIComponent(state.hotelId) +
@@ -660,29 +670,34 @@
       api(decisionUrl).catch(function () {
         return null;
       }),
-    ]).then(function (results) {
-      var data = results[0];
-      var decisionBundle = results[1];
-      var o = data.opportunity;
-      var current =
-        (decisionBundle && decisionBundle.current) ||
-        (decisionBundle &&
-          decisionBundle.decision &&
-          decisionBundle.current) ||
-        null;
-      if (o && o.commercialProgression) {
-        current = current
-          ? Object.assign({}, current, {
-              commercialProgression: o.commercialProgression,
-            })
-          : { commercialProgression: o.commercialProgression };
-      }
-      drawerTitle.textContent = o.title;
-      drawerBody.innerHTML = renderDetail(o, data.scoreAudit, current);
-      wireDetailLifecycleControls();
-      if (typeof drawer.showModal === "function") drawer.showModal();
-      else drawer.setAttribute("open", "open");
-    });
+    ])
+      .then(function (results) {
+        var data = results[0];
+        var decisionBundle = results[1];
+        var o = data.opportunity;
+        var current =
+          (decisionBundle && decisionBundle.current) ||
+          (decisionBundle &&
+            decisionBundle.decision &&
+            decisionBundle.current) ||
+          null;
+        if (o && o.commercialProgression) {
+          current = current
+            ? Object.assign({}, current, {
+                commercialProgression: o.commercialProgression,
+              })
+            : { commercialProgression: o.commercialProgression };
+        }
+        drawerTitle.textContent = o.title;
+        drawerBody.innerHTML = renderDetail(o, data.scoreAudit, current);
+        wireDetailLifecycleControls();
+      })
+      .catch(function (err) {
+        drawerBody.innerHTML =
+          '<div class="gdi-error" role="alert"><p>' +
+          esc((err && err.message) || "Unable to load opportunity detail.") +
+          "</p></div>";
+      });
   }
 
   function wireDetailLifecycleControls() {
