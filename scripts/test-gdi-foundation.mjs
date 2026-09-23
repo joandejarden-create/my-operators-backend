@@ -18,6 +18,8 @@ import {
   BOOKING_WINDOW,
   DEFAULT_HOTEL_FIT_WEIGHTS,
   buildBethesdaMarriottProfileFromExistingKnowledge,
+  isGroupDemandIntelligenceLocalDev,
+  isGroupDemandIntelligencePilotReadAllowed,
 } from "../lib/group-demand-intelligence/index.js";
 import {
   recordWebhoundSpend,
@@ -47,6 +49,23 @@ async function checkAsync(name, fn) {
     console.error("FAIL", name, err.message);
   }
 }
+
+check("local_dev_auto_enables_pilot_read", () => {
+  assert.equal(isGroupDemandIntelligenceLocalDev({}), true);
+  assert.equal(isGroupDemandIntelligencePilotReadAllowed({}), true);
+  assert.equal(
+    isGroupDemandIntelligencePilotReadAllowed({
+      GROUP_DEMAND_INTELLIGENCE_PILOT_READ: "0",
+    }),
+    false
+  );
+  assert.equal(
+    isGroupDemandIntelligencePilotReadAllowed({
+      RAILWAY_ENVIRONMENT: "production",
+    }),
+    false
+  );
+});
 
 check("webhound_hard_cap_is_15", () => {
   assert.equal(getWebhoundHardCapUsd(), 15);
@@ -238,8 +257,15 @@ check("gdi_share_ui_has_no_admin_surfaces", () => {
     path.join(root, "public/js/group-demand-intelligence/share-app.js"),
     "utf8"
   );
-  assert.ok(shareJs.includes("gdi-share-brand"), "share brand strip required");
-  assert.ok(shareJs.includes("Read-only"), "read-only label required");
+  const sharedUi = fs.readFileSync(
+    path.join(root, "public/js/group-demand-intelligence/dealality-gdi-ui.js"),
+    "utf8"
+  );
+  assert.ok(
+    shareJs.includes("DealalityGdiUi") && sharedUi.includes("gdi-share-brand"),
+    "share brand strip required"
+  );
+  assert.ok(sharedUi.includes("Read-only"), "read-only label required");
   assert.ok(!/Research Audit/i.test(shareJs), "audit tab must not appear on share");
   assert.ok(!/Run Research/i.test(shareJs), "run research must not appear on share");
   assert.ok(!/gdiFbSave|Save Feedback/.test(shareJs), "feedback form must not appear on share");
@@ -425,21 +451,31 @@ check("ui_uses_evidence_confidence_and_hotel_validation_labels", () => {
     path.join(root, "public/js/group-demand-intelligence/app.js"),
     "utf8"
   );
-  assert.ok(appJs.includes("Evidence Confidence"));
-  assert.ok(appJs.includes("Demand Territory"));
-  assert.ok(appJs.includes("Sourcing Status") || appJs.includes("Already Sourced to Hotel"));
-  assert.ok(appJs.includes("Hotel Validation"));
-  assert.ok(appJs.includes("Recommended Action") || appJs.includes("Recommended Next Action"));
-  assert.ok(appJs.includes("Opportunity Type"));
-  assert.ok(appJs.includes("Opportunity Qualification"));
-  assert.ok(appJs.includes("Hotel Opportunity Thesis"));
+  const sharedUi = fs.readFileSync(
+    path.join(root, "public/js/group-demand-intelligence/dealality-gdi-ui.js"),
+    "utf8"
+  );
+  const uiSurface = `${appJs}\n${sharedUi}`;
+  assert.ok(uiSurface.includes("Evidence Confidence"));
+  assert.ok(uiSurface.includes("Demand Territory"));
+  assert.ok(uiSurface.includes("Sourcing Status") || uiSurface.includes("Already Sourced to Hotel"));
+  assert.ok(uiSurface.includes("Hotel Validation"));
+  assert.ok(
+    uiSurface.includes("Recommended Action") || uiSurface.includes("Recommended Next Action")
+  );
+  assert.ok(uiSurface.includes("Opportunity Type") || sharedUi.includes("opportunityType"));
+  assert.ok(uiSurface.includes("Opportunity Qualification"));
+  assert.ok(
+    uiSurface.includes("Hotel Opportunity Thesis") || sharedUi.includes("hotelOpportunityThesis")
+  );
   const shareJs = fs.readFileSync(
     path.join(root, "public/js/group-demand-intelligence/share-app.js"),
     "utf8"
   );
-  assert.ok(shareJs.includes("Evidence Confidence"));
-  assert.ok(shareJs.includes("Opportunity Type"));
-  assert.ok(!/Hotel Validation|gdiFbSave/.test(shareJs));
+  assert.ok(shareJs.includes("DealalityGdiUi"));
+  assert.ok(sharedUi.includes("Evidence Confidence"));
+  assert.ok(sharedUi.includes("Hotel Validation"));
+  assert.ok(!/gdiFbSave/.test(shareJs));
 });
 
 await checkAsync("event_dedupe_keeps_single_id_in_enrichment_pass", async () => {

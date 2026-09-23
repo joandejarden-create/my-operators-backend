@@ -233,12 +233,50 @@ export async function getGdiOpportunities(req, res) {
   const hotelId = String(req.params.hotelId || "").trim();
   const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
   const view = String(req.query.view || "list").trim().toLowerCase();
+  const format = String(req.query.format || "").trim().toLowerCase();
   const wantFull = view === "full" || view === "complete";
   const doc = await loadOppDoc(hotelId);
   let opportunities = projectOpportunitiesCommercialQuality(doc.opportunities || []);
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
   }
+
+  // CSV via ?format=csv (compat path; dedicated /export.csv also exists)
+  if (format === "csv") {
+    const weekly = String(req.query.weekly || "").trim().toUpperCase();
+    const priority = String(req.query.priority || "").trim().toUpperCase();
+    if (weekly && weekly !== "ALL") {
+      opportunities = opportunities.filter((o) => {
+        if (weekly === "NEW") return o.isNewThisWeek === true || o.weeklyDeltaState === "NEW";
+        return String(o.weeklyDeltaState || "").toUpperCase() === weekly;
+      });
+    }
+    if (priority && priority !== "ALL") {
+      opportunities = opportunities.filter(
+        (o) => String(o.priority || "").toUpperCase() === priority
+      );
+    }
+    const hotels = listRegisteredHotels();
+    const hotel = hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
+    const csv = buildExportCsv(opportunities, hotel, {
+      weekly: weekly || "ALL",
+      priority: priority || "ALL",
+      includeDisqualified,
+      via: "format=csv",
+    });
+    const slug = String(hotel.name || hotelId)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 48);
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="gdi-${slug}-export.csv"`
+    );
+    return res.send(csv);
+  }
+
   if (!wantFull) {
     opportunities = mapOpportunitiesToListDto(opportunities);
   }
@@ -770,7 +808,13 @@ export async function getGdiShareOpportunities(req, res) {
   const validationDoc = loadShareValidation(hotelId);
   const byVal = new Map((validationDoc.items || []).map((v) => [v.opportunityId, v]));
   const view = String(req.query.view || "list").trim().toLowerCase();
+  const format = String(req.query.format || "").trim().toLowerCase();
   const wantFull = view === "full" || view === "complete";
+
+  if (format === "csv") {
+    return getGdiShareOpportunitiesExport(req, res);
+  }
+
   const opportunities = filterSalespersonView(doc.opportunities || []).map((o) => {
     const sanitized = shareSanitizeWithCanonical(hotelId, o);
     const v = byVal.get(o.id);

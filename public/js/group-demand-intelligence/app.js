@@ -468,7 +468,7 @@
 
   function buildExportHref() {
     if (!state.hotelId) return "";
-    var q = [];
+    var q = ["format=csv"];
     if (state.filters && state.filters.weekly) {
       q.push("weekly=" + encodeURIComponent(state.filters.weekly));
     }
@@ -478,8 +478,8 @@
     return (
       "/api/group-demand-intelligence/hotels/" +
       encodeURIComponent(state.hotelId) +
-      "/opportunities/export.csv" +
-      (q.length ? "?" + q.join("&") : "")
+      "/opportunities?" +
+      q.join("&")
     );
   }
 
