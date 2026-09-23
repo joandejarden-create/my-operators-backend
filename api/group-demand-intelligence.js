@@ -226,7 +226,12 @@ function filterOpportunitiesForExport(opportunities, query = {}) {
 
 function sendCustomerCsv(res, opportunities, hotel) {
   const csv = buildExportCsv(opportunities, hotel, {});
-  const name = hotel?.name || hotel?.displayName || "Hotel";
+  const name =
+    hotel?.name ||
+    hotel?.displayName ||
+    hotel?.identity?.hotelName ||
+    hotel?.hotelName ||
+    "Hotel";
   res.setHeader("Content-Type", "text/csv; charset=utf-8");
   res.setHeader("Content-Disposition", customerCsvContentDisposition(name));
   res.setHeader("X-Content-Type-Options", "nosniff");
