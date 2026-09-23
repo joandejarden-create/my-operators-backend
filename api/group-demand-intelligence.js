@@ -59,6 +59,7 @@ import {
   applyLiveCommercialQuality,
   buildRelatedOpportunityGroups,
   buildExportCsv,
+  customerCsvContentDisposition,
   HOTEL_VALIDATION_REASON,
   HOTEL_VALIDATION_REASON_LABEL,
 } from "../lib/group-demand-intelligence/index.js";
@@ -180,6 +181,56 @@ async function attachCommercialProgression(hotelId, opportunities) {
     const dto = toCustomerCommercialProgressionDto(bySubject.get(o.id));
     return dto ? { ...o, commercialProgression: dto } : o;
   });
+}
+
+/** Apply list/export filters (ids + browse facets). */
+function filterOpportunitiesForExport(opportunities, query = {}) {
+  let rows = opportunities || [];
+  const idsFilter = String(query.ids || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (idsFilter.length) {
+    const set = new Set(idsFilter);
+    rows = rows.filter((o) => set.has(o.id) || set.has(o.opportunityId));
+  }
+  const weekly = String(query.weekly || "").trim().toUpperCase();
+  const priority = String(query.priority || "").trim().toUpperCase();
+  const booking = String(query.booking || "").trim().toUpperCase();
+  const segment = String(query.segment || "").trim();
+  const territory = String(query.territory || "").trim().toUpperCase();
+  if (weekly && weekly !== "ALL") {
+    rows = rows.filter((o) => {
+      if (weekly === "NEW") return o.isNewThisWeek === true || o.weeklyDeltaState === "NEW";
+      return String(o.weeklyDeltaState || "").toUpperCase() === weekly;
+    });
+  }
+  if (priority && priority !== "ALL") {
+    rows = rows.filter((o) => String(o.priority || "").toUpperCase() === priority);
+  }
+  if (booking && booking !== "ALL") {
+    rows = rows.filter(
+      (o) => String(o.bookingWindowStatus || "").toUpperCase() === booking
+    );
+  }
+  if (segment) {
+    rows = rows.filter((o) => String(o.segment || "") === segment);
+  }
+  if (territory && territory !== "ALL") {
+    rows = rows.filter(
+      (o) => String(o.demandTerritoryFit || "").toUpperCase() === territory
+    );
+  }
+  return rows;
+}
+
+function sendCustomerCsv(res, opportunities, hotel) {
+  const csv = buildExportCsv(opportunities, hotel, {});
+  const name = hotel?.name || hotel?.displayName || "Hotel";
+  res.setHeader("Content-Type", "text/csv; charset=utf-8");
+  res.setHeader("Content-Disposition", customerCsvContentDisposition(name));
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  return res.status(200).send(csv);
 }
 
 function flagGate(req, res) {
@@ -308,38 +359,11 @@ export async function getGdiOpportunities(req, res) {
 
   // CSV via ?format=csv (compat path; dedicated /export.csv also exists)
   if (format === "csv") {
-    const weekly = String(req.query.weekly || "").trim().toUpperCase();
-    const priority = String(req.query.priority || "").trim().toUpperCase();
-    if (weekly && weekly !== "ALL") {
-      opportunities = opportunities.filter((o) => {
-        if (weekly === "NEW") return o.isNewThisWeek === true || o.weeklyDeltaState === "NEW";
-        return String(o.weeklyDeltaState || "").toUpperCase() === weekly;
-      });
-    }
-    if (priority && priority !== "ALL") {
-      opportunities = opportunities.filter(
-        (o) => String(o.priority || "").toUpperCase() === priority
-      );
-    }
     const hotels = listRegisteredHotels();
     const hotel = hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
-    const csv = buildExportCsv(opportunities, hotel, {
-      weekly: weekly || "ALL",
-      priority: priority || "ALL",
-      includeDisqualified,
-      via: "format=csv",
-    });
-    const slug = String(hotel.name || hotelId)
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "")
-      .slice(0, 48);
-    res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="gdi-${slug}-export.csv"`
-    );
-    return res.send(csv);
+    opportunities = filterOpportunitiesForExport(opportunities, req.query);
+    opportunities = await attachCommercialProgression(hotelId, opportunities);
+    return sendCustomerCsv(res, opportunities, hotel);
   }
 
   if (!wantFull) {
@@ -401,62 +425,27 @@ export async function getGdiOpportunityDetail(req, res) {
 
 /**
  * CSV export of current hotel opportunities (honors includeDisqualified + ids filter).
- * Query: ids=comma (optional), includeDisqualified=1, weekly=, priority=
+ * Query: ids=comma (optional), includeDisqualified=1, weekly=, priority=, booking=, segment=, territory=
  */
 export async function getGdiOpportunitiesExport(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
-  const idsFilter = String(req.query.ids || "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const weekly = String(req.query.weekly || "").trim().toUpperCase();
-  const priority = String(req.query.priority || "").trim().toUpperCase();
 
   const doc = await loadOppDoc(hotelId);
   let opportunities = projectOpportunitiesCommercialQuality(doc.opportunities || []);
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
   }
-  if (idsFilter.length) {
-    const set = new Set(idsFilter);
-    opportunities = opportunities.filter((o) => set.has(o.id));
-  }
-  if (weekly && weekly !== "ALL") {
-    opportunities = opportunities.filter((o) => {
-      if (weekly === "NEW") return o.isNewThisWeek === true || o.weeklyDeltaState === "NEW";
-      return String(o.weeklyDeltaState || "").toUpperCase() === weekly;
-    });
-  }
-  if (priority && priority !== "ALL") {
-    opportunities = opportunities.filter(
-      (o) => String(o.priority || "").toUpperCase() === priority
-    );
-  }
+  opportunities = filterOpportunitiesForExport(opportunities, req.query);
+  opportunities = await attachCommercialProgression(hotelId, opportunities);
 
   const hotels = listRegisteredHotels();
   const hotel =
     hotels.find((h) => h.hotelId === hotelId) ||
     { hotelId, name: hotelId };
 
-  const csv = buildExportCsv(opportunities, hotel, {
-    weekly: weekly || "ALL",
-    priority: priority || "ALL",
-    includeDisqualified,
-    ids: idsFilter,
-  });
-  const slug = String(hotel.name || hotelId)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 48);
-  res.setHeader("Content-Type", "text/csv; charset=utf-8");
-  res.setHeader(
-    "Content-Disposition",
-    `attachment; filename="gdi-${slug}-export.csv"`
-  );
-  return res.send(csv);
+  return sendCustomerCsv(res, opportunities, hotel);
 }
 
 export async function getGdiWeeklyBrief(req, res) {
@@ -952,36 +941,15 @@ export async function getGdiShareOpportunitiesExport(req, res) {
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
-  const weekly = String(req.query.weekly || "").trim().toUpperCase();
-  const priority = String(req.query.priority || "").trim().toUpperCase();
   const doc = await loadOppDoc(hotelId);
   let opportunities = projectOpportunitiesCommercialQuality(
     filterSalespersonView(doc.opportunities || [])
   );
-  if (weekly && weekly !== "ALL") {
-    opportunities = opportunities.filter((o) => {
-      if (weekly === "NEW") return o.isNewThisWeek === true || o.weeklyDeltaState === "NEW";
-      return String(o.weeklyDeltaState || "").toUpperCase() === weekly;
-    });
-  }
-  if (priority && priority !== "ALL") {
-    opportunities = opportunities.filter(
-      (o) => String(o.priority || "").toUpperCase() === priority
-    );
-  }
+  opportunities = filterOpportunitiesForExport(opportunities, req.query);
+  opportunities = await attachCommercialProgression(hotelId, opportunities);
   const hotels = listRegisteredHotels();
   const hotel = hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
-  const csv = buildExportCsv(opportunities, hotel, {
-    weekly: weekly || "ALL",
-    priority: priority || "ALL",
-    share: true,
-  });
-  res.setHeader("Content-Type", "text/csv; charset=utf-8");
-  res.setHeader(
-    "Content-Disposition",
-    `attachment; filename="gdi-share-${hotelId}-export.csv"`
-  );
-  return res.send(csv);
+  return sendCustomerCsv(res, opportunities, hotel);
 }
 
 export async function getGdiShareOpportunityDetail(req, res) {

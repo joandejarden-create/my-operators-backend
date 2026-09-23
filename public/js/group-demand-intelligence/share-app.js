@@ -578,6 +578,85 @@
         render();
       });
     });
+    var exportBtn = document.getElementById("gdiExportCsvBtn");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", downloadCustomerCsv);
+    }
+  }
+
+  function buildExportHref() {
+    if (!state.hotelId || !share) return "";
+    var rows = filteredSorted();
+    var q = ["share=" + encodeURIComponent(share)];
+    var ids = rows
+      .map(function (o) {
+        return o.id || o.opportunityId;
+      })
+      .filter(Boolean);
+    if (ids.length && ids.length <= 200) {
+      q.push("ids=" + encodeURIComponent(ids.join(",")));
+    } else {
+      if (state.filters.weekly) q.push("weekly=" + encodeURIComponent(state.filters.weekly));
+      if (state.filters.priority) {
+        q.push("priority=" + encodeURIComponent(state.filters.priority));
+      }
+      if (state.filters.booking) {
+        q.push("booking=" + encodeURIComponent(state.filters.booking));
+      }
+      if (state.filters.segment) {
+        q.push("segment=" + encodeURIComponent(state.filters.segment));
+      }
+      if (state.filters.territory) {
+        q.push("territory=" + encodeURIComponent(state.filters.territory));
+      }
+    }
+    return (
+      "/api/group-demand-intelligence/share/hotels/" +
+      encodeURIComponent(state.hotelId) +
+      "/opportunities/export.csv?" +
+      q.join("&")
+    );
+  }
+
+  function downloadCustomerCsv(e) {
+    if (e) e.preventDefault();
+    var href = buildExportHref();
+    if (!href) return;
+    fetch(href)
+      .then(function (r) {
+        var ct = String(r.headers.get("content-type") || "").toLowerCase();
+        if (!r.ok || ct.indexOf("text/csv") < 0) {
+          return r.text().then(function (body) {
+            throw new Error(
+              "CSV export failed. Got " + (ct || r.status) + " " + String(body || "").slice(0, 80)
+            );
+          });
+        }
+        var disp = r.headers.get("content-disposition") || "";
+        var match = /filename\*?=(?:UTF-8''|")?([^\";]+)/i.exec(disp);
+        var filename = match
+          ? decodeURIComponent(match[1].replace(/"/g, ""))
+          : "GDI Opportunities.csv";
+        return r.blob().then(function (blob) {
+          return { blob: blob, filename: filename };
+        });
+      })
+      .then(function (pack) {
+        var url = URL.createObjectURL(pack.blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = pack.filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () {
+          URL.revokeObjectURL(url);
+        }, 2000);
+      })
+      .catch(function (err) {
+        console.error("gdi_share_csv_export_failed", err);
+        alert("Could not download CSV. Please try again.");
+      });
   }
 
   function renderOpps() {
@@ -596,21 +675,7 @@
       sort: state.sortKey,
       viewMode: state.viewMode,
       noun: "Opportunities",
-      exportHref: (function () {
-        if (!state.hotelId || !share) return "";
-        var q = [
-          "share=" + encodeURIComponent(share),
-          "format=csv",
-        ];
-        if (state.filters.weekly) q.push("weekly=" + encodeURIComponent(state.filters.weekly));
-        if (state.filters.priority) q.push("priority=" + encodeURIComponent(state.filters.priority));
-        return (
-          "/api/group-demand-intelligence/share/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/opportunities?" +
-          q.join("&")
-        );
-      })(),
+      exportHref: buildExportHref(),
     });
     if (!rows.length) {
       return (

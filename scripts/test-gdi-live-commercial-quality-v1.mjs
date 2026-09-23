@@ -175,16 +175,29 @@ test("export_stable_opportunity_id_and_filters_meta", () => {
         id: "gdi_opp_stable_1",
         title: "Test Event",
         organizationName: "Org",
+        priority: "MEDIUM_PRIORITY",
+        bookingWindowStatus: "QUALIFY_NOW",
         sources: [{ url: "https://example.com" }],
+        primaryContact: { name: "Alex", role: "Planner", email: "a@example.com" },
+        commercialProgression: {
+          currentStatusLabel: "In progress",
+          latestActionLabel: "Contacted",
+          latestActionDate: "2026-09-01",
+        },
       },
     ],
     { hotelId: "recX", name: "Test Hotel" },
     { weekly: "NEW", priority: "HIGH" }
   );
-  assert.match(csv, /Dealality Opportunity ID/);
+  assert.match(csv, /^\uFEFF?Dealality Opportunity ID,/);
   assert.match(csv, /gdi_opp_stable_1/);
-  assert.match(csv, /generatedAt=/);
-  assert.match(csv, /filter=.*NEW/);
+  assert.match(csv, /Medium Priority/);
+  assert.match(csv, /Qualify Now/);
+  assert.doesNotMatch(csv, /hotelId/);
+  assert.doesNotMatch(csv, /schemaVersion/);
+  assert.doesNotMatch(csv, /_listDto/);
+  assert.doesNotMatch(csv, /hotelFitScore/);
+  assert.doesNotMatch(csv, /^\s*\{/);
 });
 
 test("list_dto_includes_weekly_and_commercial", () => {

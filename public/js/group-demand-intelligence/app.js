@@ -457,6 +457,10 @@
         render();
       });
     });
+    var exportBtn = document.getElementById("gdiExportCsvBtn");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", downloadCustomerCsv);
+    }
   }
 
   function renderOpportunityCards(rows) {
@@ -468,19 +472,85 @@
 
   function buildExportHref() {
     if (!state.hotelId) return "";
-    var q = ["format=csv"];
-    if (state.filters && state.filters.weekly) {
-      q.push("weekly=" + encodeURIComponent(state.filters.weekly));
-    }
-    if (state.filters && state.filters.priority) {
-      q.push("priority=" + encodeURIComponent(state.filters.priority));
+    var rows = filteredSorted();
+    var q = [];
+    var ids = rows
+      .map(function (o) {
+        return o.id || o.opportunityId;
+      })
+      .filter(Boolean);
+    if (ids.length && ids.length <= 200) {
+      q.push("ids=" + encodeURIComponent(ids.join(",")));
+    } else {
+      if (state.filters && state.filters.weekly) {
+        q.push("weekly=" + encodeURIComponent(state.filters.weekly));
+      }
+      if (state.filters && state.filters.priority) {
+        q.push("priority=" + encodeURIComponent(state.filters.priority));
+      }
+      if (state.filters && state.filters.booking) {
+        q.push("booking=" + encodeURIComponent(state.filters.booking));
+      }
+      if (state.filters && state.filters.segment) {
+        q.push("segment=" + encodeURIComponent(state.filters.segment));
+      }
+      if (state.filters && state.filters.territory) {
+        q.push("territory=" + encodeURIComponent(state.filters.territory));
+      }
     }
     return (
       "/api/group-demand-intelligence/hotels/" +
       encodeURIComponent(state.hotelId) +
-      "/opportunities?" +
-      q.join("&")
+      "/opportunities/export.csv" +
+      (q.length ? "?" + q.join("&") : "")
     );
+  }
+
+  function downloadCustomerCsv(e) {
+    if (e) e.preventDefault();
+    var href = buildExportHref();
+    if (!href || !state.hotelId) return;
+    fetchFn(href)
+      .then(function (r) {
+        var ct = String(r.headers.get("content-type") || "").toLowerCase();
+        if (!r.ok || ct.indexOf("text/csv") < 0) {
+          return r.text().then(function (body) {
+            var preview = String(body || "").slice(0, 120);
+            throw new Error(
+              "CSV export failed (expected text/csv). Got " +
+                (ct || r.status) +
+                ". " +
+                preview
+            );
+          });
+        }
+        var disp = r.headers.get("content-disposition") || "";
+        var match = /filename\*?=(?:UTF-8''|")?([^\";]+)/i.exec(disp);
+        var filename = match
+          ? decodeURIComponent(match[1].replace(/"/g, ""))
+          : "GDI Opportunities.csv";
+        return r.blob().then(function (blob) {
+          return { blob: blob, filename: filename };
+        });
+      })
+      .then(function (pack) {
+        var url = URL.createObjectURL(pack.blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = pack.filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () {
+          URL.revokeObjectURL(url);
+        }, 2000);
+      })
+      .catch(function (err) {
+        console.error("gdi_csv_export_failed", err);
+        alert(
+          "Could not download CSV. Please try again or contact Dealality support."
+        );
+      });
   }
 
   function renderBrowseBody(opts) {
