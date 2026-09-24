@@ -223,9 +223,9 @@
     return '<div class="gdi-status-badges">' + bits.join("") + "</div>";
   }
 
-  var GDI_PAGE_TITLE = "Group Demand Intelligence";
+  var GDI_PAGE_TITLE = "Group & Demand Intelligence";
   var GDI_PAGE_SUBTITLE =
-    "See which group opportunities your hotel may be positioned to pursue, why they matter now, and what sales action to take next.";
+    "Dealality identifies future hotel demand, shows which opportunities matter most, and tells the sales team who to pursue and what to do next.";
   var GDI_METHODOLOGY = [
     "Based on structured research into group and meeting demand the hotel may be positioned to pursue.",
     "Findings are research-assisted and observational. Sales teams should validate before outreach.",
@@ -590,7 +590,7 @@
 
   var GDI_MAIN_TAB = {
     id: "opportunities",
-    label: "Group Demand\nIntelligence",
+    label: "Group &\nDemand Intelligence",
   };
 
   function formatTabLabel(label) {
@@ -616,7 +616,7 @@
     };
     if (!tabs.length) return "";
     return (
-      '<nav class="bdd-section-nav aiv-section-nav gdi-section-nav" aria-label="Group Demand views" role="tablist">' +
+      '<nav class="bdd-section-nav aiv-section-nav gdi-section-nav" aria-label="Group & Demand views" role="tablist">' +
       tabs
         .map(function (t) {
           var isActive = activeTab === t.id;
@@ -1240,7 +1240,23 @@
       '<div class="brand-card__meta">' +
       esc(org) +
       (segment ? " · " + esc(String(segment).toUpperCase()) : "") +
-      "</div></div></div>" +
+      "</div>" +
+      (function () {
+        var dst =
+          linked.demandSignalTypeLabel ||
+          it.demandSignalTypeLabel ||
+          linked.demandSignalType ||
+          it.demandSignalType ||
+          "";
+        if (!dst || String(dst).toUpperCase() === "EVENT") return "";
+        return (
+          '<div class="brand-card__meta brand-card__meta--demand-type">' +
+          "<strong>" +
+          esc(String(dst).toUpperCase()) +
+          "</strong></div>"
+        );
+      })() +
+      "</div></div>" +
       (summary
         ? '<div class="brand-card__description">' + esc(summary) + "</div>"
         : "") +
@@ -1494,13 +1510,32 @@
   function whoShouldSalesContactHtml(o, whoFn) {
     if (typeof whoFn === "function") return whoFn(o);
     var c = o.primaryContact;
-    if (!c) return "<p>No usable contact resolved yet.</p>";
+    var pathLabel = o.commercialContactPathLabel || o.commercialContactPath || null;
+    var officialUrl = o.contactOfficialUrl || (c && c.officialContactUrl) || null;
+    var officialLink =
+      officialUrl && isSafeHttpUrl(officialUrl)
+        ? '<p><a href="' +
+          esc(officialUrl) +
+          '" target="_blank" rel="noopener noreferrer">Official venue contact / inquiry page</a></p>'
+        : "";
+
+    if (!c) {
+      if (pathLabel || o.commercialContactPath) {
+        return (
+          "<p><strong>Contact path:</strong> " +
+          esc(pathLabel || "Venue / organization contact path") +
+          "</p>" +
+          officialLink +
+          "<p class=\"gdi-contact-quality-quiet\">No named individual published — use the venue organization path.</p>"
+        );
+      }
+      return "<p>No usable contact resolved yet.</p>";
+    }
+
     var primaryKind =
-      c.contactKind === "FUNCTIONAL"
-        ? "FUNCTIONAL CONTACT"
-        : c.functionalEntity
-          ? "FUNCTIONAL CONTACT"
-          : "PRIMARY CONTACT";
+      c.contactKind === "FUNCTIONAL" || c.functionalEntity
+        ? "FUNCTIONAL / ORGANIZATION PATH"
+        : "PRIMARY CONTACT";
     var backups = (o.backupContacts || [])
       .map(function (b) {
         var kind =
@@ -1525,7 +1560,11 @@
       '<p class="gdi-contact-kind-label"><strong>' +
       esc(primaryKind) +
       "</strong></p>" +
+      (pathLabel
+        ? "<p><strong>Contact path:</strong> " + esc(pathLabel) + "</p>"
+        : "") +
       contactSummaryHtml(c) +
+      officialLink +
       "<p><strong>Why this contact:</strong> " +
       esc(o.whoPrimaryReason || c.whyThisContact || o.whyThisContact || "—") +
       "</p>" +
@@ -1543,26 +1582,292 @@
     );
   }
 
-  /**
-   * Intelligence-to-action detail framework.
-   * WHAT WE SEE / WHY IT MATTERS / WHY NOW / RECOMMENDED ACTION / CONTACT / EVIDENCE / VALIDATION
-   */
-  function intelligenceDetailHtml(o, audit, extras) {
-    extras = extras || {};
-    audit = audit || {};
-    var comps = (audit.hotelFit && audit.hotelFit.components) || {};
-    var labels = o.hotelFitComponentLabels || {};
-    var sources = (o.sources || [])
+  function sourceListHtml(sources) {
+    var list = (sources || [])
       .map(function (s) {
+        var label = s.name || s.title || s.url || "";
+        if (!label) return "";
         var link =
           s.url && isSafeHttpUrl(s.url)
-            ? '<a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(s.name) + "</a>"
-            : esc(s.name || s.url || "");
+            ? '<a href="' +
+              esc(s.url) +
+              '" target="_blank" rel="noopener noreferrer">' +
+              esc(label) +
+              "</a>"
+            : esc(label);
+        var support = s.supportsFact || s.whatItSupports || "";
+        var meta = [
+          s.sourceType ? esc(s.sourceType) : "",
+          s.date ? esc(s.date) : "",
+        ]
+          .filter(Boolean)
+          .join(" · ");
         return (
-          "<li>" + link + (s.supportsFact ? " — " + esc(s.supportsFact) : "") + "</li>"
+          "<li>" +
+          link +
+          (meta ? " · " + meta : "") +
+          (support ? " — " + esc(support) : "") +
+          "</li>"
+        );
+      })
+      .filter(Boolean)
+      .join("");
+    return list || "<li>No source links available.</li>";
+  }
+
+  function peKnownListHtml(items, emptyMsg) {
+    var rows = (items || [])
+      .map(function (x) {
+        return (
+          "<li><strong>" +
+          esc(x.field) +
+          ":</strong> " +
+          esc(x.value) +
+          (x.status ? " <em>(" + esc(x.status) + ")</em>" : "") +
+          "</li>"
         );
       })
       .join("");
+    return rows || "<li>" + esc(emptyMsg || "None") + "</li>";
+  }
+
+  function venuePartnershipDetailHtml(o, audit, extras) {
+    extras = extras || {};
+    audit = audit || {};
+    var ps = o.partnershipStatusDisplay || {};
+    var address = [o.venueAddress, o.venueCity, o.venueRegion]
+      .filter(Boolean)
+      .join(", ");
+    var fitRows = [
+      ["Catchment", o.lodgingCatchmentFitLabel || o.lodgingCatchmentFit],
+      ["Product fit", o.productFitLabel || o.productFit],
+      ["Partnership potential", o.partnershipPotentialLabel || o.partnershipPotential],
+      ["Lodging capture", o.lodgingCapturePotentialLabel || o.lodgingCapturePotential],
+      [
+        "Distance",
+        o.distanceMiles != null
+          ? o.distanceMiles +
+            " mi" +
+            (o.driveTimeMinutes != null ? " · ~" + o.driveTimeMinutes + " min" : "")
+          : null,
+      ],
+      ["Venue lodging", o.onSiteLodgingStatusLabel || o.venueLodgingStatus || o.onSiteLodgingStatus],
+    ]
+      .filter(function (r) {
+        return r[1];
+      })
+      .map(function (r) {
+        return (
+          "<li><strong>" + esc(r[0]) + ":</strong> " + esc(r[1]) + "</li>"
+        );
+      })
+      .join("");
+
+    return (
+      '<div class="gdi-detail-framework gdi-detail-framework--venue-partnership">' +
+      commercialProgressionHtml(o.commercialProgression) +
+      '<section class="gdi-section"><h3>Opportunity Summary</h3><p>' +
+      esc(o.summaryWhat || o.title || "—") +
+      "</p>" +
+      '<div class="gdi-detail-meta-row">' +
+      "<span><strong>Type</strong> " +
+      esc(o.opportunityTypeLabel || o.opportunityType || "Venue Partnership") +
+      "</span>" +
+      "<span><strong>Demand family</strong> " +
+      esc(o.demandFamilyLabel || o.demandFamily || "Private Events") +
+      "</span>" +
+      "<span><strong>Timing</strong> " +
+      esc(o.eventDateDisplay || "Ongoing partnership opportunity") +
+      "</span>" +
+      "<span><strong>Evidence</strong> " +
+      esc(o.evidenceConfidence != null ? o.evidenceConfidence : "—") +
+      "</span></div></section>" +
+      '<section class="gdi-section"><h3>Venue</h3>' +
+      "<p><strong>" +
+      esc(o.venueName || o.organizationName || "—") +
+      "</strong>" +
+      (o.venueType ? " · " + esc(o.venueType) : "") +
+      "</p>" +
+      (address ? "<p>" + esc(address) + "</p>" : "") +
+      "<ul>" +
+      (o.distanceMiles != null
+        ? "<li><strong>Distance:</strong> " + esc(o.distanceMiles) + " mi from hotel</li>"
+        : "") +
+      (o.driveTimeMinutes != null
+        ? "<li><strong>Drive time:</strong> ~" + esc(o.driveTimeMinutes) + " min</li>"
+        : "") +
+      (o.lodgingCatchmentFitLabel || o.lodgingCatchmentFit
+        ? "<li><strong>Catchment:</strong> " +
+          esc(o.lodgingCatchmentFitLabel || o.lodgingCatchmentFit) +
+          "</li>"
+        : "") +
+      (o.venueCapacity != null || o.maxCapacity != null
+        ? "<li><strong>Capacity:</strong> " +
+          esc(o.venueCapacity ?? o.maxCapacity) +
+          "</li>"
+        : "") +
+      (o.onSiteLodgingStatusLabel || o.onSiteLodgingStatus
+        ? "<li><strong>On-site lodging:</strong> " +
+          esc(o.onSiteLodgingStatusLabel || o.onSiteLodgingStatus) +
+          "</li>"
+        : "") +
+      (o.eventActivityEvidenceStatusLabel || o.eventActivityEvidenceStatus
+        ? "<li><strong>Event activity:</strong> " +
+          esc(
+            o.eventActivityEvidenceStatusLabel || o.eventActivityEvidenceStatus
+          ) +
+          "</li>"
+        : "") +
+      "</ul></section>" +
+      '<section class="gdi-section"><h3>Why This Matters</h3><p>' +
+      esc(o.summaryWhyMatters || o.hotelOpportunityThesis || o.whyNow || "—") +
+      "</p></section>" +
+      '<section class="gdi-section"><h3>Hotel Fit</h3><ul>' +
+      (fitRows || "<li>Fit details not available.</li>") +
+      "</ul>" +
+      (o.fitRationale ? "<p>" + esc(o.fitRationale) + "</p>" : "") +
+      "</section>" +
+      '<section class="gdi-section"><h3>Partnership Status</h3><ul>' +
+      "<li><strong>Partner status:</strong> " +
+      esc(
+        ps.partnerStatusLabel ||
+          o.partnerStatusLabel ||
+          o.partnerStatus ||
+          "—"
+      ) +
+      "</li>" +
+      "<li><strong>Partnership potential:</strong> " +
+      esc(
+        ps.partnershipPotentialLabel ||
+          o.partnershipPotentialLabel ||
+          o.partnershipPotential ||
+          "—"
+      ) +
+      "</li>" +
+      "<li><strong>Venue lodging:</strong> " +
+      esc(
+        ps.venueLodgingStatusLabel ||
+          o.onSiteLodgingStatusLabel ||
+          o.onSiteLodgingStatus ||
+          "—"
+      ) +
+      "</li></ul></section>" +
+      '<section class="gdi-section"><h3>Who Sales Should Contact</h3>' +
+      whoShouldSalesContactHtml(o, extras.whoContactHtml) +
+      "</section>" +
+      '<section class="gdi-section"><h3>Evidence / Sources</h3>' +
+      "<p>" +
+      esc(o.evidenceConfidenceExplanation || audit.evidenceConfidenceExplanation || "") +
+      "</p>" +
+      "<ul>" +
+      sourceListHtml(o.sources) +
+      "</ul>" +
+      "<h4>Verified</h4><ul>" +
+      peKnownListHtml(
+        o.knownVsEstimated && o.knownVsEstimated.verified,
+        "No verified fields listed."
+      ) +
+      "</ul><h4>Estimated</h4><ul>" +
+      peKnownListHtml(
+        o.knownVsEstimated && o.knownVsEstimated.estimated,
+        "No estimated fields."
+      ) +
+      "</ul><h4>Inferred</h4><ul>" +
+      peKnownListHtml(
+        o.knownVsEstimated && o.knownVsEstimated.inferred,
+        "No inferred fields."
+      ) +
+      "</ul></section>" +
+      '<section class="gdi-section"><h3>Recommended Action</h3><p>' +
+      esc(o.recommendedAction || "—") +
+      "</p></section>" +
+      (extras.validationHtml
+        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation / Action / Outcome</h3>' +
+          extras.validationHtml +
+          "</section>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function specificPrivateEventDetailHtml(o, audit, extras) {
+    extras = extras || {};
+    audit = audit || {};
+    var dateLabel =
+      o.eventDateDisplay ||
+      eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Date not yet confirmed");
+    return (
+      '<div class="gdi-detail-framework gdi-detail-framework--specific-pe">' +
+      commercialProgressionHtml(o.commercialProgression) +
+      '<section class="gdi-section"><h3>Event</h3><p>' +
+      esc(o.summaryWhat || o.title || "—") +
+      "</p>" +
+      '<div class="gdi-detail-meta-row">' +
+      "<span><strong>Date</strong> " +
+      esc(dateLabel) +
+      "</span>" +
+      "<span><strong>Type</strong> " +
+      esc(o.opportunityTypeLabel || o.opportunityType || "Specific Private Event") +
+      "</span>" +
+      "<span><strong>Demand family</strong> " +
+      esc(o.demandFamilyLabel || o.demandFamily || "Private Events") +
+      "</span></div></section>" +
+      '<section class="gdi-section"><h3>Venue</h3><p><strong>' +
+      esc(o.venueName || o.organizationName || "—") +
+      "</strong></p><p>" +
+      esc(o.eventLocationSummary || [o.venueAddress, o.venueCity].filter(Boolean).join(", ") || "—") +
+      "</p></section>" +
+      '<section class="gdi-section"><h3>Demand</h3><p>Attendance: ' +
+      esc(fmtVal(o.attendance ?? o.estimatedAttendance)) +
+      " · Peak rooms: " +
+      esc(fmtVal(o.peakRooms ?? o.estimatedPeakRooms)) +
+      "</p><p>" +
+      esc(o.summaryWhyMatters || o.hotelOpportunityThesis || "—") +
+      "</p></section>" +
+      '<section class="gdi-section"><h3>Who Sales Should Contact</h3>' +
+      whoShouldSalesContactHtml(o, extras.whoContactHtml) +
+      "</section>" +
+      '<section class="gdi-section"><h3>Evidence / Sources</h3><p>' +
+      esc(o.evidenceConfidenceExplanation || "") +
+      "</p><ul>" +
+      sourceListHtml(o.sources) +
+      "</ul></section>" +
+      '<section class="gdi-section"><h3>Recommended Action</h3><p>' +
+      esc(o.recommendedAction || "—") +
+      "</p></section>" +
+      (extras.validationHtml
+        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation / Action / Outcome</h3>' +
+          extras.validationHtml +
+          "</section>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  /**
+   * Intelligence-to-action detail framework.
+   * WHAT WE SEE / WHY IT MATTERS / WHY NOW / RECOMMENDED ACTION / CONTACT / EVIDENCE / VALIDATION
+   * Type-aware: VENUE_PARTNERSHIP / SPECIFIC_PRIVATE_EVENT use PE layouts.
+   */
+  function intelligenceDetailHtml(o, audit, extras) {
+    extras = extras || {};
+    if (
+      o.detailLayout === "VENUE_PARTNERSHIP" ||
+      o.opportunityType === "VENUE_PARTNERSHIP"
+    ) {
+      return venuePartnershipDetailHtml(o, audit, extras);
+    }
+    if (
+      o.detailLayout === "SPECIFIC_PRIVATE_EVENT" ||
+      o.opportunityType === "SPECIFIC_PRIVATE_EVENT"
+    ) {
+      return specificPrivateEventDetailHtml(o, audit, extras);
+    }
+
+    audit = audit || {};
+    var comps = (audit.hotelFit && audit.hotelFit.components) || {};
+    var labels = o.hotelFitComponentLabels || {};
+    var sources = sourceListHtml(o.sources);
 
     var thesis =
       o.hotelDemandThesis || o.hotelOpportunityThesis || o.bethesdaWinThesis || "Not publicly found";
@@ -1621,6 +1926,18 @@
       esc(dateLabel) +
       (o.eventDateStatus ? " · " + esc(o.eventDateStatus) : "") +
       "</span>" +
+      "<span><strong>Demand type</strong> " +
+      esc(
+        o.demandSignalTypeLabel ||
+          o.demandSignalType ||
+          o.opportunityTypeLabel ||
+          o.opportunityType ||
+          "—"
+      ) +
+      "</span>" +
+      "<span><strong>Demand family</strong> " +
+      esc(o.demandFamilyLabel || o.demandFamily || "—") +
+      "</span>" +
       "<span><strong>Type</strong> " +
       esc(o.opportunityTypeLabel || o.opportunityType || "—") +
       "</span>" +
@@ -1640,11 +1957,53 @@
       " · Peak rooms: " +
       esc(peakLabel) +
       (o.peakRoomsStatus ? " (" + esc(o.peakRoomsStatus) + ")" : "") +
+      (o.potentialRoomNights != null
+        ? " · Potential room nights: " +
+          esc(o.potentialRoomNights) +
+          (o.potentialRoomNightsStatus
+            ? " (" + esc(o.potentialRoomNightsStatus) + ")"
+            : "")
+        : "") +
       "</p>" +
       "<p><strong>Room-demand thesis:</strong> <em>" +
       esc(thesis) +
       "</em></p>" +
       relatedHtml +
+      "</section>" +
+      '<section class="gdi-section gdi-section--hotel-demand"><h3>Why This May Create Hotel Demand</h3><p>' +
+      esc(
+        o.whyHotelDemand ||
+          o.hotelDemandThesis ||
+          o.hotelOpportunityThesis ||
+          o.summaryWhyHotel ||
+          "—"
+      ) +
+      "</p>" +
+      (o.commercialFactors
+        ? "<ul class=\"gdi-demand-factors\">" +
+          "<li><strong>Timing:</strong> " +
+          esc(o.timingClass || o.commercialFactors.timing || "—") +
+          "</li>" +
+          "<li><strong>Recurrence:</strong> " +
+          esc(o.recurrenceClass || o.commercialFactors.recurrence || "—") +
+          "</li>" +
+          "<li><strong>Buyer path:</strong> " +
+          esc(
+            o.buyerAccessibility ||
+              (o.commercialFactors.buyerAccessibility) ||
+              "—"
+          ) +
+          "</li>" +
+          "<li><strong>Geographic fit:</strong> " +
+          esc(
+            (o.commercialFactors.geographicFit &&
+              (o.commercialFactors.geographicFit.label ||
+                o.commercialFactors.geographicFit.status)) ||
+              o.demandTerritoryFitLabel ||
+              "—"
+          ) +
+          "</li></ul>"
+        : "") +
       "</section>" +
       '<section class="gdi-section gdi-section--matters"><h3>Why It Matters</h3><p>' +
       esc(o.summaryWhyMatters || "—") +
@@ -1698,7 +2057,7 @@
       " · Group: " +
       esc(o.likelyGroupCompetitor || "—") +
       "</p><ul>" +
-      (sources || "<li>Not publicly found</li>") +
+      sources +
       "</ul></section>" +
       (extras.validationHtml
         ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Validation / Action / Outcome</h3>' +
@@ -1986,6 +2345,10 @@
     contactSummaryHtml: contactSummaryHtml,
     weeklyBriefCardHtml: weeklyBriefCardHtml,
     intelligenceDetailHtml: intelligenceDetailHtml,
+    venuePartnershipDetailHtml: venuePartnershipDetailHtml,
+    specificPrivateEventDetailHtml: specificPrivateEventDetailHtml,
+    sourceListHtml: sourceListHtml,
+    whoShouldSalesContactHtml: whoShouldSalesContactHtml,
     fitLabel: fitLabel,
     assertNoHotelHardcode: assertNoHotelHardcode,
     shareCustomerValidationFormHtml: shareCustomerValidationFormHtml,

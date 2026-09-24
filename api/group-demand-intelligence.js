@@ -15,6 +15,8 @@ import {
   loadResearchRun,
   buildWeeklyBrief,
   filterSalespersonView,
+  filterCustomerFacingOpportunities,
+  isGdiTestOrFixtureOpportunity,
   saveFeedbackItem,
   loadFeedback,
   FEEDBACK_QUALITY,
@@ -68,6 +70,7 @@ import {
   getCachedOpportunityDoc,
   invalidateGdiHotelReadCache,
 } from "../lib/group-demand-intelligence/read-cache.js";
+import { enrichPrivateEventOpportunityDetail } from "../lib/group-demand-intelligence/private-events/customer-detail-enrichment.js";
 import {
   ingestGdiAuthFeedback,
   ingestGdiShareValidation,
@@ -436,6 +439,7 @@ export async function getGdiOpportunities(req, res) {
     if (!includeDisqualified) {
       opportunities = filterSalespersonView(opportunities);
     }
+    opportunities = filterCustomerFacingOpportunities(opportunities);
 
     // CSV via ?format=csv (compat path; dedicated /export.csv also exists)
     if (format === "csv") {
@@ -481,7 +485,33 @@ export async function getGdiOpportunityDetail(req, res) {
       return res.status(404).json({ ok: false, error: "opportunity_not_found" });
     }
     const projected = projectOpportunitiesCommercialQuality([loaded.opportunity]);
-    const opportunity = projected[0];
+    let opportunity = projected[0];
+    if (isGdiTestOrFixtureOpportunity(opportunity)) {
+      return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+    }
+    try {
+      const pe = await withTimeout(
+        enrichPrivateEventOpportunityDetail(opportunity),
+        gdiReadTimeoutMs(),
+        "gdi_pe_detail_enrich"
+      );
+      if (pe?.opportunity) opportunity = pe.opportunity;
+      if (pe?.peEnriched && !pe.hasOfficialSource) {
+        console.error(
+          JSON.stringify({
+            gdi_pe_detail: true,
+            warning: "TRUE_PE_OPPORTUNITY_MISSING_SOURCES",
+            opportunityId,
+            hotelId,
+          })
+        );
+      }
+    } catch (peErr) {
+      console.error(
+        "[gdi] PE detail enrichment failed",
+        peErr?.message || peErr
+      );
+    }
     let commercialProgression = null;
     try {
       const bySubject = await withTimeout(
@@ -545,6 +575,7 @@ export async function getGdiOpportunitiesExport(req, res) {
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
   }
+  opportunities = filterCustomerFacingOpportunities(opportunities);
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
   opportunities = await attachCommercialProgression(hotelId, opportunities);
 
@@ -560,7 +591,9 @@ export async function getGdiWeeklyBrief(req, res) {
   if (!flagGate(req, res)) return;
   const hotelId = String(req.params.hotelId || "").trim();
   const doc = await loadOppDoc(hotelId);
-  const brief = buildWeeklyBrief(doc.opportunities || []);
+  const brief = buildWeeklyBrief(
+    filterCustomerFacingOpportunities(doc.opportunities || [])
+  );
   const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
   const attachItems = (items) =>
     (items || []).map((it) => {
@@ -882,7 +915,9 @@ export async function getGdiShareResolve(req, res) {
   const profile = loadHotelProfile(hotelId);
   const summary = loadLatestSummary(hotelId);
   const oppDoc = await loadOppDoc(hotelId);
-  const active = filterSalespersonView(oppDoc.opportunities || []);
+  const active = filterCustomerFacingOpportunities(
+    filterSalespersonView(oppDoc.opportunities || [])
+  );
   const validationDoc = loadShareValidation(hotelId);
   const validationSummary = buildShareValidationSummary({
     opportunities: active,
@@ -992,7 +1027,9 @@ export async function getGdiShareOpportunities(req, res) {
     return getGdiShareOpportunitiesExport(req, res);
   }
 
-  const opportunities = filterSalespersonView(doc.opportunities || []).map((o) => {
+  const opportunities = filterCustomerFacingOpportunities(
+    filterSalespersonView(doc.opportunities || [])
+  ).map((o) => {
     const sanitized = shareSanitizeWithCanonical(hotelId, o);
     const v = byVal.get(o.id);
     const base = wantFull ? sanitized : toOpportunityListDto(sanitized);
@@ -1051,7 +1088,7 @@ export async function getGdiShareOpportunitiesExport(req, res) {
   }
   const doc = await loadOppDoc(hotelId);
   let opportunities = projectOpportunitiesCommercialQuality(
-    filterSalespersonView(doc.opportunities || [])
+    filterCustomerFacingOpportunities(filterSalespersonView(doc.opportunities || []))
   );
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
   opportunities = await attachCommercialProgression(hotelId, opportunities);
@@ -1070,9 +1107,19 @@ export async function getGdiShareOpportunityDetail(req, res) {
   }
   const t0 = Date.now();
   const loaded = await loadOpportunityForDetail(hotelId, opportunityId);
-  const opportunity = loaded.opportunity;
-  if (!opportunity || opportunity.priority === "DISQUALIFIED") {
+  let opportunity = loaded.opportunity;
+  if (
+    !opportunity ||
+    opportunity.priority === "DISQUALIFIED" ||
+    isGdiTestOrFixtureOpportunity(opportunity)
+  ) {
     return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+  }
+  try {
+    const pe = await enrichPrivateEventOpportunityDetail(opportunity);
+    if (pe?.opportunity) opportunity = pe.opportunity;
+  } catch (peErr) {
+    console.error("[gdi] share PE detail enrichment failed", peErr?.message || peErr);
   }
   const sanitized = shareSanitizeWithCanonical(hotelId, opportunity);
   const validation = getShareValidationForOpportunity(hotelId, opportunityId);

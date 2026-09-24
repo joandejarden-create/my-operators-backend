@@ -198,8 +198,18 @@
   }
 
   function whoShouldSalesContactHtml(o) {
+    if (UI && typeof UI.whoShouldSalesContactHtml === "function") {
+      return UI.whoShouldSalesContactHtml(o);
+    }
     var c = o.primaryContact;
     if (!c) {
+      if (o.commercialContactPathLabel || o.commercialContactPath) {
+        return (
+          "<p><strong>Contact path:</strong> " +
+          esc(o.commercialContactPathLabel || o.commercialContactPath) +
+          "</p>"
+        );
+      }
       return "<p>No usable contact resolved yet.</p>";
     }
     var backups = (o.backupContacts || [])
@@ -823,6 +833,35 @@
   }
 
   function renderDetail(o, audit, decisionCurrent) {
+    // Private Events V1.6 — reuse shared type-aware detail layout
+    if (
+      UI &&
+      typeof UI.intelligenceDetailHtml === "function" &&
+      (o.detailLayout === "VENUE_PARTNERSHIP" ||
+        o.detailLayout === "SPECIFIC_PRIVATE_EVENT" ||
+        o.opportunityType === "VENUE_PARTNERSHIP" ||
+        o.opportunityType === "SPECIFIC_PRIVATE_EVENT")
+    ) {
+      var peValidation =
+        UI.customerFeedbackLifecycleHtml
+          ? UI.customerFeedbackLifecycleHtml(
+              o,
+              UI.CUSTOMER_VALIDATION_ENUMS || {},
+              {
+                canValidate: true,
+                canRecordAction: true,
+                canRecordOutcome: true,
+              },
+              (decisionCurrent && decisionCurrent.commercialProgression) ||
+                o.commercialProgression ||
+                null
+            )
+          : "";
+      return UI.intelligenceDetailHtml(o, audit, {
+        validationHtml: peValidation,
+      });
+    }
+
     var hist = (o.meetingHistory || [])
       .map(function (h) {
         return "<li>" + esc(h.year) + " — " + esc(h.city) + " (" + esc(claimLabel(h.claimKind)) + ")</li>";
@@ -830,21 +869,24 @@
       .join("");
     var comps = (audit && audit.hotelFit && audit.hotelFit.components) || {};
     var labels = (o.hotelFitComponentLabels) || {};
-    var sources = (o.sources || [])
-      .map(function (s) {
-        var link = s.url
-          ? '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.name) + "</a>"
-          : esc(s.name);
-        return (
-          "<li>" +
-          link +
-          (s.sourceType ? " · " + esc(s.sourceType) : "") +
-          (s.supportsFact ? " — supports " + esc(s.supportsFact) : "") +
-          (s.date ? " · " + esc(s.date) : "") +
-          "</li>"
-        );
-      })
-      .join("");
+    var sources = (UI && UI.sourceListHtml
+      ? UI.sourceListHtml(o.sources)
+      : (o.sources || [])
+          .map(function (s) {
+            var label = s.name || s.title || s.url || "";
+            var link = s.url
+              ? '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(label) + "</a>"
+              : esc(label);
+            return (
+              "<li>" +
+              link +
+              (s.sourceType ? " · " + esc(s.sourceType) : "") +
+              (s.supportsFact ? " — supports " + esc(s.supportsFact) : "") +
+              (s.date ? " · " + esc(s.date) : "") +
+              "</li>"
+            );
+          })
+          .join("")) || "<li>No source links available.</li>";
     var verified = ((o.knownVsEstimated && o.knownVsEstimated.verified) || [])
       .map(function (x) {
         return "<li><strong>" + esc(x.field) + ":</strong> " + esc(x.value) + " <em>(" + esc(x.status) + ")</em></li>";
@@ -991,7 +1033,7 @@
       whoShouldSalesContactHtml(o) +
       "</div>" +
       '<div class="gdi-section"><h3>16. Sources</h3><ul>' +
-      (sources || "<li>No sources listed.</li>") +
+      sources +
       "</ul><h4>What we know</h4><ul>" +
       (verified || "<li>See evidence table for verified fields.</li>") +
       "</ul><h4>Estimated</h4><ul>" +
@@ -1068,7 +1110,7 @@
     root.innerHTML =
       UI.hotelShellHtml({
         mode: "auth",
-        badges: { pilot: true },
+        badges: {},
       }) +
       UI.contentTabsHtml(state.tab, [
         UI.GDI_MAIN_TAB,
@@ -1313,6 +1355,6 @@
     });
 
   loadAll().catch(function (err) {
-    showError(err.message || "Failed to load Group Demand Intelligence");
+    showError(err.message || "Failed to load Group & Demand Intelligence");
   });
 })();

@@ -376,8 +376,20 @@
   }
 
   function whoShouldSalesContactHtml(o) {
+    if (UI && typeof UI.whoShouldSalesContactHtml === "function") {
+      return UI.whoShouldSalesContactHtml(o);
+    }
     var c = o.primaryContact;
-    if (!c) return "<p>No usable contact resolved yet.</p>";
+    if (!c) {
+      if (o.commercialContactPathLabel || o.commercialContactPath) {
+        return (
+          "<p><strong>Contact path:</strong> " +
+          esc(o.commercialContactPathLabel || o.commercialContactPath) +
+          "</p>"
+        );
+      }
+      return "<p>No usable contact resolved yet.</p>";
+    }
     var backups = (o.backupContacts || [])
       .map(function (b) {
         return (
@@ -698,7 +710,7 @@
     root.innerHTML =
       UI.hotelShellHtml({
         mode: "share",
-        badges: { pilot: true, readOnly: true },
+        badges: { readOnly: true },
       }) +
       UI.contentTabsHtml(state.tab, [UI.GDI_MAIN_TAB]) +
       UI.propertyBarHtml({
@@ -714,7 +726,7 @@
       '<div id="gdiTabBody">' +
       renderOpps() +
       "</div>" +
-      '<div class="gdi-disclaimer">Pilot brief for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
+      '<div class="gdi-disclaimer">Share brief for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
 
     wireBrowseControls();
 
