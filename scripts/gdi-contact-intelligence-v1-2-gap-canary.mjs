@@ -120,24 +120,53 @@ async function main() {
   let publicPhones = 0;
   let unresolvedPersisted = 0;
 
-  if (APPLY) {
+    if (APPLY) {
     for (const row of batch.rows) {
       const next = row.opportunity;
       if (!next?.id) continue;
-      const idx = working.findIndex((o) => o.id === next.id);
-      if (idx >= 0) working[idx] = next;
-      else working.push(next);
+      // Ensure top-level contact fields sync from primaryContact (Airtable field map).
+      const candidate = {
+        ...next,
+        weeklyDeltaState: next.weeklyDeltaState,
+        isNewThisWeek: next.isNewThisWeek,
+        primaryContactName:
+          next.primaryContactName || next.primaryContact?.name || null,
+        primaryContactRole:
+          next.primaryContactRole || next.primaryContact?.role || null,
+        primaryContactEmail:
+          next.primaryContactEmail || next.primaryContact?.email || null,
+        primaryContactPhone:
+          next.primaryContactPhone || next.primaryContact?.phone || null,
+      };
+      const write = await promoteQualifiedGdiOpportunity({
+        candidate,
+        existingOpps: working,
+        hotelId: HOTEL,
+        runId: "gdi_contact_intelligence_v1_2_gap_canary",
+        method: "contact_intelligence_v1_2_gap_closure",
+        dryRun: false,
+        forceUpdateId: next.id,
+        materialUpdateOnly: true,
+      });
+      const persisted = write.opportunity || candidate;
+      const idx = working.findIndex((o) => o.id === persisted.id);
+      if (idx >= 0) working[idx] = persisted;
+      else working.push(persisted);
       publicUpdates += 1;
-      if (next.primaryContactEmail || next.primaryContact?.email) publicEmails += 1;
-      if (next.primaryContactPhone || next.primaryContact?.phone) publicPhones += 1;
-      if (next.unresolvedContactReason) unresolvedPersisted += 1;
+      if (persisted.primaryContactEmail || persisted.primaryContact?.email) publicEmails += 1;
+      if (persisted.primaryContactPhone || persisted.primaryContact?.phone) publicPhones += 1;
+      if (persisted.unresolvedContactReason) unresolvedPersisted += 1;
+      row.opportunity = persisted;
+      row.afterTier = classifyContactTier(persisted);
+      row.improved =
+        row.beforeTier !== row.afterTier &&
+        [
+          CONTACT_TIER.NAMED_DIRECT,
+          CONTACT_TIER.NAMED_PARTIAL,
+          CONTACT_TIER.FUNCTIONAL_CONTACT,
+          CONTACT_TIER.ORGANIZATION_PATH,
+        ].includes(row.afterTier);
     }
-    await promoteQualifiedGdiOpportunity({
-      hotelId: HOTEL,
-      opportunities: working,
-      mode: "replace_hotel_set",
-      source: "contact_intelligence_v1_2_gap_canary",
-    });
   } else {
     // Dry-run still counts planned persistence fields
     for (const row of batch.rows) {
