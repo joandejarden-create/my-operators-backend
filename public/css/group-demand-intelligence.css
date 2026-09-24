@@ -1,10 +1,10 @@
 /**
- * Group Demand Intelligence — Dealality-native product styling.
+ * Group Demand Intelligence â Dealality-native product styling.
  * Tokens aligned with Market Demand / ADP / Brand AI (not a separate prototype theme).
  */
 
 :root {
-  /* Platform Dealality tokens (ADP / Brand AI / DWS) — REUSABLE_PRODUCT_UI */
+  /* Platform Dealality tokens (ADP / Brand AI / DWS) â REUSABLE_PRODUCT_UI */
   --neutral--800: #080f25;
   --neutral--700: #212c4d;
   --neutral--600: #37446b;
@@ -22,7 +22,7 @@
   --system--red-400: #dc2b2b;
   --general--shadow-01: #14142b0f;
 
-  /* GDI aliases → platform (no parallel palette) */
+  /* GDI aliases â platform (no parallel palette) */
   --gdi-bg: var(--neutral--800);
   --gdi-panel: var(--secondary--color-1);
   --gdi-panel-2: #141d3a;
@@ -48,7 +48,7 @@
 
 * { box-sizing: border-box; }
 
-/* Platform scrollbar chrome — match Hotel Explorer / app shell (no OS arrows).
+/* Platform scrollbar chrome â match Hotel Explorer / app shell (no OS arrows).
    GDI CSS is page-scoped, so html/body/* is safe here. */
 html,
 body.gdi-page {
@@ -118,7 +118,7 @@ body.gdi-page.embed-mode .gdi-shell {
   padding: 30px 30px 48px;
 }
 
-/* —— ADP-identical product page header + property bar —— */
+/* ââ ADP-identical product page header + property bar ââ */
 .gdi-page.aiv-page {
   background: var(--neutral--800);
   color: var(--gdi-text);
@@ -347,12 +347,16 @@ body.gdi-page.embed-mode .gdi-shell {
   }
 }
 
-.gdi-loading,
 .gdi-empty,
 .gdi-error {
   padding: 40px 20px;
   text-align: center;
   color: var(--gdi-muted);
+}
+
+.gdi-detail-loading.aiv-empty {
+  margin: 0;
+  text-align: left;
 }
 
 .gdi-error {
@@ -362,7 +366,7 @@ body.gdi-page.embed-mode .gdi-shell {
   color: #ffb4b4;
 }
 
-/* —— Share brand strip —— */
+/* ââ Share brand strip ââ */
 .gdi-share-brand {
   display: flex;
   flex-wrap: wrap;
@@ -404,7 +408,7 @@ body.gdi-page.embed-mode .gdi-shell {
   align-items: center;
 }
 
-/* —— Header —— */
+/* ââ Header ââ */
 .gdi-header {
   margin-bottom: 20px;
 }
@@ -456,7 +460,7 @@ body.gdi-page.embed-mode .gdi-shell {
   color: var(--gdi-muted);
 }
 
-/* —— Badges —— */
+/* ââ Badges ââ */
 .gdi-badge {
   display: inline-flex;
   align-items: center;
@@ -507,7 +511,7 @@ body.gdi-page.embed-mode .gdi-shell {
   border: 1px solid rgba(126, 137, 172, 0.35);
 }
 
-/* Weekly delta pills — REUSABLE_PRODUCT_UI */
+/* Weekly delta pills â REUSABLE_PRODUCT_UI */
 .gdi-pill-delta {
   display: inline-flex;
   align-items: center;
@@ -553,7 +557,7 @@ body.gdi-page.embed-mode .gdi-shell {
   color: var(--gdi-muted);
 }
 
-/* Action Window pills — violet / orange / cyan / pink (distinct from Priority). */
+/* Action Window pills â violet / orange / cyan / pink (distinct from Priority). */
 .gdi-pill-action-pursue {
   background: rgba(168, 85, 247, 0.18);
   color: #ddb3ff;
@@ -618,7 +622,7 @@ button.gdi-tile-pill.is-filter-active {
   box-shadow: 0 0 0 2px var(--accent--primary-1);
 }
 
-/* —— Toolbar —— */
+/* ââ Toolbar ââ */
 .gdi-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -686,7 +690,7 @@ button.gdi-tile-pill.is-filter-active {
   font-size: 12px;
 }
 
-/* —— Buttons —— */
+/* ââ Buttons ââ */
 .gdi-btn {
   border: 1px solid var(--gdi-border);
   background: transparent;
@@ -746,7 +750,7 @@ button.gdi-tile-pill.is-filter-active {
   color: #fff;
 }
 
-/* —— KPI cards (Market Demand pattern) —— */
+/* ââ KPI cards (Market Demand pattern) ââ */
 .gdi-kpis {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -787,7 +791,7 @@ button.gdi-tile-pill.is-filter-active {
   color: var(--gdi-muted);
 }
 
-/* —— Tabs (section-nav inspired) —— */
+/* ââ Tabs (section-nav inspired) ââ */
 .gdi-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -825,7 +829,7 @@ button.gdi-tile-pill.is-filter-active {
   box-shadow: inset 0 -2px 0 var(--gdi-accent);
 }
 
-/* —— Weekly Brief —— */
+/* ââ Weekly Brief ââ */
 .gdi-lede {
   margin: 0 0 14px;
   color: #fff;
@@ -962,7 +966,7 @@ button.gdi-tile-pill.is-filter-active {
   color: var(--gdi-muted);
 }
 
-/* —— Filters / table —— */
+/* ââ Filters / table ââ */
 .gdi-filters {
   display: flex;
   flex-wrap: wrap;
@@ -970,7 +974,7 @@ button.gdi-tile-pill.is-filter-active {
   margin-bottom: 12px;
 }
 
-/* —— Brand Explorer list chrome (copied class language) —— */
+/* ââ Brand Explorer list chrome (copied class language) ââ */
 .gdi-browse-presets {
   display: flex;
   flex-wrap: wrap;
@@ -1490,7 +1494,7 @@ button.gdi-tile-pill.is-filter-active {
   font-size: 13px;
 }
 
-/* Opportunity column — primary row label (ADP territory-name treatment) */
+/* Opportunity column â primary row label (ADP territory-name treatment) */
 .gdi-table td.gdi-col-opportunity,
 .gdi-table td:nth-child(2) {
   color: #ffffff;
@@ -1519,7 +1523,7 @@ button.gdi-tile-pill.is-filter-active {
   font-weight: 400;
 }
 
-/* —— Drawer —— */
+/* ââ Drawer ââ */
 .gdi-drawer {
   border: none;
   padding: 0;
@@ -1935,7 +1939,7 @@ button.gdi-tile-pill.is-filter-active {
   }
 }
 
-/* Live Commercial Quality V1 � export control */
+/* Live Commercial Quality V1  export control */
 .gdi-export-btn {
   display: inline-flex;
   align-items: center;

@@ -814,9 +814,6 @@
   function weeklyDeltaHeaderSummaryHtml(counts) {
     counts = counts || {};
     var parts = [];
-    if (counts.newThisWeek > 0) {
-      parts.push(counts.newThisWeek + " new this week");
-    }
     if (counts.updated > 0) {
       parts.push(counts.updated + " updated");
     }
@@ -1511,31 +1508,71 @@
     if (typeof whoFn === "function") return whoFn(o);
     var c = o.primaryContact;
     var pathLabel = o.commercialContactPathLabel || o.commercialContactPath || null;
-    var officialUrl = o.contactOfficialUrl || (c && c.officialContactUrl) || null;
+    var tier = o.contactTier || (c && c.contactTier) || null;
+    var tierLabel =
+      o.contactTierLabel ||
+      (tier === "NAMED_DIRECT"
+        ? "Named decision-maker with direct reachability"
+        : tier === "NAMED_PARTIAL"
+          ? "Named decision-maker — reachability incomplete"
+          : tier === "FUNCTIONAL_CONTACT"
+            ? "Functional events / meetings / housing contact"
+            : tier === "ORGANIZATION_PATH"
+              ? "Organization or official contact path"
+              : tier === "GENERIC_ONLY"
+                ? "Generic inbox only"
+                : null);
+    var officialUrl =
+      o.contactOfficialUrl ||
+      (c && (c.officialContactUrl || c.sourceUrl)) ||
+      o.officialSource ||
+      null;
     var officialLink =
       officialUrl && isSafeHttpUrl(officialUrl)
         ? '<p><a href="' +
           esc(officialUrl) +
-          '" target="_blank" rel="noopener noreferrer">Official venue contact / inquiry page</a></p>'
+          '" target="_blank" rel="noopener noreferrer">Official contact / program page</a></p>'
+        : "";
+    var getDetailsCta =
+      c &&
+      c.name &&
+      !c.email &&
+      !c.phone &&
+      (tier === "NAMED_PARTIAL" || tier === "NAMED_DIRECT" || !tier)
+        ? '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1">Get Contact Details</button></p>'
         : "";
 
+    if (
+      !c &&
+      (pathLabel ||
+        o.commercialContactPath ||
+        tier === "FUNCTIONAL_CONTACT" ||
+        tier === "ORGANIZATION_PATH" ||
+        officialUrl)
+    ) {
+      return (
+        (tierLabel
+          ? '<p class="gdi-contact-kind-label"><strong>' + esc(tierLabel) + "</strong></p>"
+          : "") +
+        "<p><strong>Contact path:</strong> " +
+        esc(pathLabel || "Organization / official program contact path") +
+        "</p>" +
+        officialLink +
+        '<p class="gdi-contact-quality-quiet">No named individual published — use the organization path.</p>'
+      );
+    }
+
     if (!c) {
-      if (pathLabel || o.commercialContactPath) {
-        return (
-          "<p><strong>Contact path:</strong> " +
-          esc(pathLabel || "Venue / organization contact path") +
-          "</p>" +
-          officialLink +
-          "<p class=\"gdi-contact-quality-quiet\">No named individual published — use the venue organization path.</p>"
-        );
-      }
-      return "<p>No usable contact resolved yet.</p>";
+      return (
+        '<p class="gdi-contact-quality-quiet">Contact research in progress for this opportunity.</p>' +
+        officialLink
+      );
     }
 
     var primaryKind =
-      c.contactKind === "FUNCTIONAL" || c.functionalEntity
-        ? "FUNCTIONAL / ORGANIZATION PATH"
-        : "PRIMARY CONTACT";
+      c.contactKind === "FUNCTIONAL" || c.functionalEntity || tier === "FUNCTIONAL_CONTACT"
+        ? "Functional / organization contact"
+        : tierLabel || "Who sales should contact";
     var backups = (o.backupContacts || [])
       .map(function (b) {
         var kind =
@@ -1549,8 +1586,7 @@
           esc(b.name || "—") +
           "</strong> · " +
           esc(b.role || "") +
-          " · " +
-          esc(b.email || "") +
+          (b.email ? " · " + esc(b.email) : "") +
           (b.phone ? " · " + esc(b.phone) : "") +
           "</li>"
         );
@@ -1563,7 +1599,18 @@
       (pathLabel
         ? "<p><strong>Contact path:</strong> " + esc(pathLabel) + "</p>"
         : "") +
-      contactSummaryHtml(c) +
+      "<p><strong>Name:</strong> " +
+      esc(c.name || "—") +
+      "</p>" +
+      "<p><strong>Role:</strong> " +
+      esc(c.role || c.title || "—") +
+      "</p>" +
+      "<p><strong>Organization:</strong> " +
+      esc(c.organization || o.organizationName || "—") +
+      "</p>" +
+      (c.email ? "<p><strong>Email:</strong> " + esc(c.email) + "</p>" : "") +
+      (c.phone ? "<p><strong>Phone:</strong> " + esc(c.phone) + "</p>" : "") +
+      getDetailsCta +
       officialLink +
       "<p><strong>Why this contact:</strong> " +
       esc(o.whoPrimaryReason || c.whyThisContact || o.whyThisContact || "—") +
@@ -2299,6 +2346,53 @@
     );
   }
 
+  /** Brand AI / ADP intelligence-product loading toast (deal-workspace-shell .bdd-toast). */
+  var DEFAULT_PAGE_LOADING_MESSAGE = "Loading Group Demand Intelligence\u2026";
+  var DETAIL_LOADING_MESSAGE = "Loading\u2026";
+
+  function detailLoadingHtml() {
+    return (
+      '<div class="gdi-detail-loading aiv-empty" role="status" aria-live="polite">' +
+      '<p class="gdi-muted">' +
+      DETAIL_LOADING_MESSAGE +
+      "</p></div>"
+    );
+  }
+
+  /**
+   * Show/hide canonical top-right loading toast (same controller pattern as Brand AI setLoading).
+   * @param {HTMLElement|null} el toast root (.bdd-toast.aiv-loading-toast)
+   * @param {boolean} on
+   * @param {string} [message]
+   */
+  function setLoadingToast(el, on, message) {
+    if (!el) return;
+    var msgEl =
+      (el.id ? document.getElementById(el.id + "Message") : null) ||
+      el.querySelector(".toast-message");
+    if (msgEl && message) msgEl.textContent = message;
+    if (on) {
+      if (msgEl && !message) msgEl.textContent = DEFAULT_PAGE_LOADING_MESSAGE;
+      el.hidden = false;
+      el.style.display = "flex";
+      el.setAttribute("aria-busy", "true");
+      el.classList.remove("show");
+      void el.offsetHeight;
+      requestAnimationFrame(function () {
+        el.classList.add("show");
+      });
+    } else {
+      el.classList.remove("show");
+      el.setAttribute("aria-busy", "false");
+      setTimeout(function () {
+        if (!el.classList.contains("show")) {
+          el.style.display = "none";
+          el.hidden = true;
+        }
+      }, 300);
+    }
+  }
+
   root.DealalityGdiUi = {
     PRIORITY_DISPLAY: PRIORITY_DISPLAY,
     ACTION_STATUS_DISPLAY: ACTION_STATUS_DISPLAY,
@@ -2351,6 +2445,10 @@
     whoShouldSalesContactHtml: whoShouldSalesContactHtml,
     fitLabel: fitLabel,
     assertNoHotelHardcode: assertNoHotelHardcode,
+    DEFAULT_PAGE_LOADING_MESSAGE: DEFAULT_PAGE_LOADING_MESSAGE,
+    DETAIL_LOADING_MESSAGE: DETAIL_LOADING_MESSAGE,
+    detailLoadingHtml: detailLoadingHtml,
+    setLoadingToast: setLoadingToast,
     shareCustomerValidationFormHtml: shareCustomerValidationFormHtml,
     customerFeedbackLifecycleHtml: customerFeedbackLifecycleHtml,
     CUSTOMER_VALIDATION_ENUMS: CUSTOMER_VALIDATION_ENUMS,

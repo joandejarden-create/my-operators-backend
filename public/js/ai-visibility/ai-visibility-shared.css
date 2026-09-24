@@ -290,6 +290,22 @@ body.aiv-page {
   100% { transform: translateY(0) scale(0); opacity: 0; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .aiv-loading-toast.bdd-toast,
+  .bdd-toast {
+    transition: none !important;
+  }
+  .aiv-loading-toast.bdd-toast .wave-1,
+  .aiv-loading-toast.bdd-toast .wave-2,
+  .aiv-loading-toast.bdd-toast .wave-3,
+  .aiv-loading-toast.bdd-toast .particle,
+  .bdd-toast .wave-1,
+  .bdd-toast .wave-2,
+  .bdd-toast .wave-3 {
+    animation: none !important;
+  }
+}
+
 .aiv-error {
   background: #2a1216;
   border: 1px solid var(--system--red-400);

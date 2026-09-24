@@ -47,7 +47,7 @@ check("product_page_header_adp_pattern", () => {
     mode: "auth",
     badges: {},
   });
-  assert.match(html, /Group Demand Intelligence/);
+  assert.match(html, /Group (&amp;|\&) Demand Intelligence/);
   assert.match(html, /Methodology/);
   assert.match(html, /aiv-dashboard-header/);
   assert.match(html, /aiv-disclaimer-box/);
@@ -163,7 +163,7 @@ check("weekly_brief_action_first", () => {
 
 check("main_tab_label_two_lines", () => {
   const tabs = UI.contentTabsHtml("opportunities", [UI.GDI_MAIN_TAB]);
-  assert.match(tabs, /Group Demand<br>Intelligence/);
+  assert.match(tabs, /Group (&amp;|\&)<br>Demand Intelligence/);
   assert.doesNotMatch(tabs, /Weekly Brief/);
 });
 
@@ -399,13 +399,13 @@ check("detail_intelligence_to_action_framework", () => {
     {},
     { validationHtml: "<div>validation</div>" }
   );
-  assert.match(html, /What We See/);
+  assert.match(html, /Event \/ Opportunity/);
   assert.match(html, /Why It Matters/);
   assert.match(html, /Why Now/);
-  assert.match(html, /Recommended Action/);
+  assert.match(html, /Suggested Action/);
   assert.match(html, /Contact/);
-  assert.match(html, /Evidence/);
-  assert.match(html, /Hotel Validation/);
+  assert.match(html, /Sources/);
+  assert.match(html, /Validation \/ Action \/ Outcome/);
   assert.match(html, /PURSUE NOW/);
   assert.doesNotMatch(html, /Why Bethesda/);
 });
@@ -423,9 +423,8 @@ check("share_app_uses_shared_shell_and_no_hardcoded_territory_options", () => {
   assert.match(share, /propertyBarHtml/);
   assert.match(share, /opportunityBrowseChromeHtml/);
   assert.match(share, /opportunityCardsGridHtml/);
-  assert.match(share, /buildMetricModel/);
   assert.match(share, /intelligenceDetailHtml/);
-  assert.match(share, /Hotel Validation/);
+  assert.match(share, /setLoadingToast/);
   assert.doesNotMatch(share, /BETHESDA_MONTGOMERY_CORE/);
   assert.doesNotMatch(share, /Why Bethesda Marriott/);
   assert.doesNotMatch(share, /weekly-brief/);
@@ -505,6 +504,36 @@ check("css_defines_platform_tokens_and_page_header", () => {
   assert.match(css, /\.aiv-kpi/);
   assert.match(css, /\.gdi-brief-card--action/);
   assert.match(css, /\.gdi-detail-framework/);
+  assert.doesNotMatch(css, /\.gdi-loading\s*,/);
+});
+
+check("canonical_loading_toast_helpers", () => {
+  assert.equal(typeof UI.setLoadingToast, "function");
+  assert.equal(typeof UI.detailLoadingHtml, "function");
+  assert.match(UI.DEFAULT_PAGE_LOADING_MESSAGE, /Loading Group Demand Intelligence/);
+  assert.equal(UI.DETAIL_LOADING_MESSAGE, "Loading…");
+  assert.match(UI.detailLoadingHtml(), /aiv-empty/);
+  assert.doesNotMatch(UI.detailLoadingHtml(), /Loading details/);
+});
+
+check("auth_and_share_use_aiv_loading_toast", () => {
+  const auth = read("public/group-demand-intelligence.html");
+  const share = read("public/group-demand-intelligence-share.html");
+  const app = read("public/js/group-demand-intelligence/app.js");
+  const shareApp = read("public/js/group-demand-intelligence/share-app.js");
+  for (const html of [auth, share]) {
+    assert.match(html, /bdd-toast aiv-loading-toast/);
+    assert.match(html, /toast-wave-container/);
+    assert.match(html, /Loading Group Demand Intelligence/);
+    assert.doesNotMatch(html, /Loading Demand Intelligence/);
+    assert.doesNotMatch(html, /class="gdi-loading"/);
+  }
+  assert.match(app, /setLoadingToast/);
+  assert.match(app, /detailLoadingHtml/);
+  assert.match(app, /Refreshing/);
+  assert.doesNotMatch(app, /Running research/);
+  assert.match(shareApp, /setLoadingToast/);
+  assert.match(shareApp, /detailLoadingHtml/);
 });
 
 if (failed) {

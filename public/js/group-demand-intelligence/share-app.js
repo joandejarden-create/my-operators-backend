@@ -65,8 +65,12 @@
 
   readPersistedBrowse();
 
+  function setLoading(on, message) {
+    UI.setLoadingToast(loading, on, message);
+  }
+
   function showError(msg, code) {
-    if (loading) loading.style.display = "none";
+    setLoading(false);
     var customerMsg =
       msg ||
       "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.";
@@ -485,9 +489,7 @@
     });
     // Immediate visual acknowledgement (<100ms target)
     drawerTitle.textContent = (listRow && listRow.title) || "Opportunity";
-    drawerBody.innerHTML =
-      '<div class="gdi-detail-loading" role="status" aria-live="polite">' +
-      '<p class="gdi-muted">Loading details…</p></div>';
+    drawerBody.innerHTML = UI.detailLoadingHtml();
     if (typeof drawer.showModal === "function") drawer.showModal();
     else drawer.setAttribute("open", "open");
 
@@ -699,7 +701,7 @@
   }
 
   function render() {
-    if (loading) loading.style.display = "none";
+    setLoading(false);
     var s = (state.resolve && state.resolve.summary) || {};
     var hotel = {
       hotelName: entityName(),

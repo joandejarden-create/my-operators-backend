@@ -152,8 +152,12 @@
     }
   }
 
+  function setLoading(on, message) {
+    UI.setLoadingToast(loading, on, message);
+  }
+
   function showError(msg) {
-    if (loading) loading.style.display = "none";
+    setLoading(false);
     root.innerHTML =
       '<div class="gdi-error" role="alert"><p>' +
       esc(msg) +
@@ -314,7 +318,7 @@
       /* ignore */
     }
     clearHotelScopedState();
-    if (loading) loading.style.display = "";
+    setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
     return loadAll();
   }
 
@@ -375,10 +379,7 @@
     ) {
       return;
     }
-    if (loading) {
-      loading.style.display = "block";
-      loading.textContent = "Running research…";
-    }
+    setLoading(true, "Refreshing\u2026");
     api("/api/group-demand-intelligence/hotels/" + encodeURIComponent(state.hotelId) + "/research/run", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -727,9 +728,7 @@
       return o && o.id === id;
     });
     drawerTitle.textContent = (listRow && listRow.title) || "Opportunity";
-    drawerBody.innerHTML =
-      '<div class="gdi-detail-loading" role="status" aria-live="polite">' +
-      '<p class="gdi-muted">Loading details…</p></div>';
+    drawerBody.innerHTML = UI.detailLoadingHtml();
     if (typeof drawer.showModal === "function") drawer.showModal();
     else drawer.setAttribute("open", "open");
 
@@ -1091,7 +1090,7 @@
   }
 
   function render() {
-    if (loading) loading.style.display = "none";
+    setLoading(false);
     var s = state.summary || {};
 
     var body =

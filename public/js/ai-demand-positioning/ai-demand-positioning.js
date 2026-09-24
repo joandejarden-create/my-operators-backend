@@ -553,6 +553,43 @@
   function hide(id) { var el = document.getElementById(id); if (el) el.hidden = true; }
   function hideAll() { ["adpStateLoading","adpStateError","adpStateNoData","adpStateSuccess"].forEach(hide); }
 
+  /** Brand AI–parity: .bdd-toast needs .show for display:flex + slide-in. */
+  function setAdpLoadingToast(on, message) {
+    var toast = document.getElementById("adpLoadingToast");
+    var msgEl = document.getElementById("adpLoadingMessage");
+    if (msgEl && message) msgEl.textContent = message;
+    if (!toast) return;
+    if (on) {
+      toast.hidden = false;
+      toast.style.display = "flex";
+      toast.setAttribute("aria-busy", "true");
+      toast.classList.remove("show");
+      void toast.offsetHeight;
+      requestAnimationFrame(function () {
+        toast.classList.add("show");
+      });
+    } else {
+      toast.classList.remove("show");
+      toast.setAttribute("aria-busy", "false");
+      setTimeout(function () {
+        if (!toast.classList.contains("show")) {
+          toast.style.display = "none";
+        }
+      }, 300);
+    }
+  }
+
+  function showLoadingState(message) {
+    hideAll();
+    show("adpStateLoading");
+    setAdpLoadingToast(true, message || "Loading AI Demand Intelligence\u2026");
+  }
+
+  function hideLoadingState() {
+    setAdpLoadingToast(false);
+    hide("adpStateLoading");
+  }
+
   // --- Tab management (Executive Summary only; Detailed View removed) ---
   function initTabs() {
     var tab = document.getElementById("adpTabExec");
@@ -701,7 +738,7 @@
   async function loadReport() {
     var sel = document.getElementById("adpProperty");
     if (!sel || !sel.value) return;
-    hideAll(); show("adpStateLoading");
+    hideAll(); showLoadingState();
     try {
       var pubMeta = (await fetchAdpPublicationMeta()) || readStoredBppMeta();
       var reportUrl = buildReportUrl(sel.value, pubMeta);
